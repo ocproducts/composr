@@ -305,8 +305,9 @@ class Hook_task_import_member_csv
                     $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($linked_id, 'm_photo_url');
                 } else {
                     require_code('images');
-                    $photo_thumb_url = get_custom_file_base() . '/uploads/cns_photos_thumbs/' . uniqid('', true) . '.png';
-                    convert_image($photo_url, $photo_thumb_url, -1, -1, intval(get_option('thumb_width')), false);
+                    $photo_thumb_url = 'uploads/cns_photos_thumbs/' . uniqid('', true) . '.png';
+                    $photo_thumb_path = get_custom_file_base() . '/' . $photo_thumb_url;
+                    convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false);
                 }
             } else {
                 $photo_thumb_url = '';
@@ -323,7 +324,7 @@ class Hook_task_import_member_csv
                 } elseif ($cpf['cf_type'] == 'tick') {
                     $custom_fields[$cpf['id']] = ((strtoupper($custom_fields[$cpf['id']]) == 'YES' || strtoupper($custom_fields[$cpf['id']]) == 'Y' || strtoupper($custom_fields[$cpf['id']]) == 'ON' || $custom_fields[$cpf['id']] == '1') ? 1 : 0);
                 } elseif (($cpf['cf_type'] == 'short_text') || ($cpf['cf_type'] == 'short_trans')) {
-                    $custom_fields[$cpf['id']] = substr(str_replace("\n", ', ', str_replace(',' . "\n", "\n", $custom_fields[$cpf['id']])), 0, 255);
+                    $custom_fields[$cpf['id']] = cms_mb_substr(str_replace("\n", ', ', str_replace(',' . "\n", "\n", $custom_fields[$cpf['id']])), 0, 255);
                 } elseif (($cpf['cf_type'] == 'long_text') || ($cpf['cf_type'] == 'long_trans')) {
                     //$custom_fields[$cpf['id']]=$custom_fields[$cpf['id']];  Duh, no transform required
                 } elseif ($cpf['cf_type'] == 'float') {

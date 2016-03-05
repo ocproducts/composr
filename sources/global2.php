@@ -171,12 +171,12 @@ function init__global2()
      *
      * @global boolean $DEV_MODE
      */
-    $DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
+    $DEV_MODE = (((empty($SITE_INFO['dev_mode']) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))) && ((!array_key_exists('keep_no_dev_mode', $_GET) || ($_GET['keep_no_dev_mode'] == '0'))));
     /** Whether Composr is running in a more limited development mode, which may make things a bit slower and more verbose, but won't run such severe standard enforcement tricks
      *
      * @global boolean $SEMI_DEV_MODE
      */
-    $SEMI_DEV_MODE = (((!array_key_exists('dev_mode', $SITE_INFO) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))));
+    $SEMI_DEV_MODE = (((empty($SITE_INFO['dev_mode']) || ($SITE_INFO['dev_mode'] == '1')) && (is_dir(get_file_base() . '/.git') || (function_exists('ocp_mark_as_escaped')))));
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
@@ -389,7 +389,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = !array_key_exists('base_url', $SITE_INFO) && get_value('last_base_url', null, true) !== get_base_url(false);
+        $changed_base_url = empty($SITE_INFO['base_url']) && get_value('last_base_url', null, true) !== get_base_url(false);
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
@@ -454,7 +454,7 @@ function init__global2()
         register_shutdown_function('memory_tracking');
     }
 
-    if (count(array_diff(array_keys($_POST), array('x', 'y'))) != 0) {
+    if (count(array_diff(array_keys($_POST), array('x', 'y', 'http_referer'/*added by our JS*/))) != 0) {
         // Detect and deal with spammers that triggered the spam blackhole
         if (get_option('spam_blackhole_detection') == '1') {
             $blackhole = post_param_string('y' . md5(get_site_name() . ': antispam'), '');
@@ -605,7 +605,7 @@ function get_charset()
     }
 
     global $SITE_INFO;
-    $lang = array_key_exists('default_lang', $SITE_INFO) ? $SITE_INFO['default_lang'] : 'EN';
+    $lang = (!empty($SITE_INFO['default_lang'])) ? $SITE_INFO['default_lang'] : 'EN';
     $path = get_file_base() . '/lang_custom/' . $lang . '/global.ini';
     if (!is_file($path)) {
         $path = get_file_base() . '/lang/' . $lang . '/global.ini';
@@ -638,7 +638,7 @@ function load_user_stuff()
 
         require_code('forum_stub');
 
-        if (!array_key_exists('forum_type', $SITE_INFO)) {
+        if (empty($SITE_INFO['forum_type'])) {
             $SITE_INFO['forum_type'] = 'cns';
         }
         require_code('forum/' . $SITE_INFO['forum_type']);     // So we can at least get user details
@@ -938,7 +938,8 @@ function cms_version()
 function cms_version_pretty()
 {
     $minor = cms_version_minor();
-    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', strval(cms_version()) . (($minor == '') ? '' : '.' . $minor));
+    $dotted = strval(cms_version()) . (($minor == '') ? '' : '.' . $minor);
+    return preg_replace('#\.(alpha|beta|RC)#', ' ${1}', $dotted);
 }
 
 /**
@@ -949,7 +950,7 @@ function cms_version_pretty()
 function get_domain()
 {
     global $SITE_INFO;
-    $ret = array_key_exists('domain', $SITE_INFO) ? $SITE_INFO['domain'] : '';
+    $ret = (!empty($SITE_INFO['domain'])) ? $SITE_INFO['domain'] : '';
 
     // Ah, no explicit setting, so derive...
     if ($ret == '') {
@@ -1227,7 +1228,7 @@ function get_base_url($https = null, $zone_for = null)
     if ($VIRTUALISED_ZONES_CACHE) { // Special searching if we are doing a complex zone scheme
         $zone_doing = ($zone_for === null) ? '' : str_replace('/', '', $zone_for);
 
-        if (array_key_exists('ZONE_MAPPING_' . $zone_doing, $SITE_INFO)) {
+        if (!empty($SITE_INFO['ZONE_MAPPING_' . $zone_doing])) {
             $domain = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][0];
             $path = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][1];
             $base_url = 'http://' . $domain;

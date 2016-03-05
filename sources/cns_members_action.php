@@ -468,14 +468,15 @@ function cns_make_boiler_custom_field($type)
  * Find how to store a field in the database.
  *
  * @param  ID_TEXT $type The field type.
+ * @param  BINARY $encrypted Whether the field is encrypted.
  * @return array A pair: the DB field type, whether to index.
  */
-function get_cpf_storage_for($type)
+function get_cpf_storage_for($type, $encrypted = 0)
 {
     require_code('fields');
     $ob = get_fields_hook($type);
     list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $type, 'cf_default' => ''));
-    $_type = 'SHORT_TEXT';
+    $_type = ($encrypted == 1) ? 'LONG_TEXT' : 'SHORT_TEXT';
     switch ($storage_type) {
         case 'short_trans':
             $_type = 'SHORT_TRANS__COMCODE';
@@ -598,7 +599,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map, true); // Still upgrading, cf_encrypted does not exist yet
     }
 
-    list($_type, $index) = get_cpf_storage_for($type);
+    list($_type, $index) = get_cpf_storage_for($type, $encrypted);
 
     require_code('database_action');
 

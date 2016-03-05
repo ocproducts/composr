@@ -608,7 +608,7 @@ class Module_search
         foreach (array_keys($_hooks) as $hook) {
             $test = get_param_integer('search_' . $hook, 0);
 
-            if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
+            if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook))) {
                 require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
                 $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
                 if (is_null($ob)) {
@@ -620,7 +620,7 @@ class Module_search
                 }
             }
 
-            if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && ($info['default'])) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
+            if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && ($info['default'])) || ($id == $hook))) {
                 // Category filter
                 if (($search_under != '!') && ($search_under != '-1') && (array_key_exists('category', $info))) {
                     $cats = explode(',', $search_under);
@@ -688,7 +688,7 @@ class Module_search
             $GLOBALS['SITE_DB']->query_insert('searches_logged', array(
                 's_member_id' => get_member(),
                 's_time' => time(),
-                's_primary' => substr($content, 0, 255),
+                's_primary' => cms_mb_substr($content, 0, 255),
                 's_auxillary' => serialize(array_merge($_POST, $_GET)),
                 's_num_results' => count($results),
             ));

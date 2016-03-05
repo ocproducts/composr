@@ -37,7 +37,7 @@ function init__tempcode_compiler()
     global $DIRECTIVES_NEEDING_VARS;
     $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true, 'SET_NOPREEVAL' => true);
 
-    // Work out what symbols may be compiled out
+    // Work out what symbols may be compiled out (look at patterns at top of caches3.php if changing this)
     global $COMPILABLE_SYMBOLS;
     $_compilable_symbols = array(
         'LANG',

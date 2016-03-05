@@ -1881,16 +1881,10 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     breadcrumb_set_parents($_breadcrumbs);
 
     set_extra_request_metadata(array(
-        'created' => date('Y-m-d', $entry['ce_add_date']),
-        'creator' => $GLOBALS['FORUM_DRIVER']->get_username($entry['ce_submitter']),
-        'publisher' => '', // blank means same as creator
-        'modified' => ($entry['ce_edit_date'] === null) ? '' : date('Y-m-d', $entry['ce_edit_date']),
         'type' => get_translated_text($catalogue['c_title']) . ' entry',
         'title' => comcode_escape($title_to_use_2),
         'identifier' => '_SEARCH:catalogues:entry:' . strval($id),
-        'description' => '',
-        //'category' => ???,
-    ));
+    ), $entry, 'catalogue_entry', strval($id));
 
     return do_template('CATALOGUE_' . $tpl_set . '_ENTRY_SCREEN', $map, null, false, 'CATALOGUE_DEFAULT_ENTRY_SCREEN');
 }

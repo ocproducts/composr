@@ -22,6 +22,7 @@
 			while ( ( tag = tagsBlock.pop() ) ) {
 				trailing = tagsBlock.length ? ',' : '';
 
+				CKEDITOR.dtd.$block['comcode-' + tag] = 1;
 				CKEDITOR.dtd['comcode-' + tag] = CKEDITOR.dtd.div;
 
 				cssBlock += 'comcode-' + tag + trailing;

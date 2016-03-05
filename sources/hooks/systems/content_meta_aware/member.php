@@ -39,6 +39,7 @@ class Hook_content_meta_aware_member
             'support_custom_fields' => false,
 
             'content_type_label' => 'global:MEMBER',
+            'content_type_universal_label' => 'Profile',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_members',
@@ -61,6 +62,7 @@ class Hook_content_meta_aware_member
             'description_field' => 'm_title',
             'thumb_field' => 'm_avatar_url',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:members:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:members:view:_WILD',

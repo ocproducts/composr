@@ -204,7 +204,7 @@ class Hook_cms_merge
             } else {
                 $this_site_info = $SITE_INFO;
                 $SITE_INFO = $backup_site_info;
-                if (!array_key_exists('db_forums_host', $SITE_INFO)) {
+                if (empty($SITE_INFO['db_forums_host'])) {
                     $SITE_INFO['db_forums_host'] = 'localhost';
                 }
                 $same_forum = ($this_site_info['db_forums'] == $SITE_INFO['db_forums']) && ($this_site_info['db_forums_host'] == $SITE_INFO['db_forums_host']) && ($db->table_prefix);

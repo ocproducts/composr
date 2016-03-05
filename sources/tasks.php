@@ -68,7 +68,14 @@ function execute_task_background($task_row)
     }
 
     $hook = $task_row['t_hook'];
-    $args = unserialize($task_row['t_args']);
+    $args = @unserialize($task_row['t_args']);
+    if ($args === false) {
+        $GLOBALS['SITE_DB']->query_delete('task_queue', array(
+            'id' => $task_row['id'],
+        ), '', 1);
+
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
     require_code('hooks/systems/tasks/' . filter_naughty($hook));
     $ob = object_factory('Hook_task_' . $hook);
     $result = call_user_func_array(array($ob, 'run'), $args);

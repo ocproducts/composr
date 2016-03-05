@@ -125,6 +125,10 @@ function lookup_member_page($member, &$name, &$id, &$ip)
  */
 function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_and_time', $sort_order = 'DESC')
 {
+    if (!addon_installed('stats')) {
+        return new Tempcode();
+    }
+
     $sortables = array('date_and_time' => do_lang_tempcode('DATE'), 'the_page' => do_lang_tempcode('PAGE'));
     if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
         log_hack_attack_and_exit('ORDERBY_HACK');

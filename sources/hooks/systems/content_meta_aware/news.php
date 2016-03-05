@@ -34,6 +34,7 @@ class Hook_content_meta_aware_news
         return array(
             'support_custom_fields' => true,
             'content_type_label' => 'news:NEWS_ARTICLE',
+            'content_type_universal_label' => 'News article',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'news',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_news
             'description_field' => 'news',
             'thumb_field' => 'news_image',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:news:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_news:_edit:_WILD',

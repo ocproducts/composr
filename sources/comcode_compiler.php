@@ -225,7 +225,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             } else {
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
-            $raw_comcode = escape_html($raw_comcode_start) . $_embed . escape_html($raw_comcode_end);
+            $raw_comcode = escape_html($raw_comcode_start) . escape_html($_embed) . escape_html($raw_comcode_end);
             return '<input class="cms_keep_ui_controlled" size="45" title="' . $raw_comcode . '" type="button" value="' . $comcode_title . '" />';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
@@ -593,14 +593,18 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     if (((!$comcode_dangerous_html) || ($semiparse_mode)) && ($next == '<')) {
                         $tag_match = array();
                         if (preg_match('#(/)?(\w+)#A', $comcode, $tag_match, 0, $pos) != 0) {
-                            if ($tag_match[1] == '/') { // Closing
-                                if (array_peek($html_element_stack) === $tag_match[2]) {
-                                    array_pop($html_element_stack);
-                                } else {
-                                    $html_errors = true;
+                            $slash_pos = strpos($comcode, '/', $pos);
+                            $close_pos = strpos($comcode, '>', $pos);
+                            if ($slash_pos === false || $close_pos === false || $slash_pos + 1 !== $close_pos) { // If not a self-closing tag
+                                if ($tag_match[1] == '/') { // Closing
+                                    if (array_peek($html_element_stack) === $tag_match[2]) {
+                                        array_pop($html_element_stack);
+                                    } else {
+                                        $html_errors = true;
+                                    }
+                                } else { // Opening
+                                    array_push($html_element_stack, $tag_match[2]);
                                 }
-                            } else { // Opening
-                                array_push($html_element_stack, $tag_match[2]);
                             }
                         }
 
@@ -1101,7 +1105,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
                                     $matches = array();
                                     $explicit_username = ($next == '{');
-                                    if (preg_match($explicit_username ? '#^\{([^"{}&\'\$<>]+)\}\}#' : '#^(\w[^\n]*)#', $comcode, $matches, 0, $pos) != 0) {
+                                    if (preg_match($explicit_username ? '#\{([^"{}&\'\$<>]+)\}\}#A' : '#(\w[^\n]*)#A', $comcode, $matches, 0, $pos) != 0) {
                                         $username = $matches[1];
 
                                         if ($explicit_username) {
@@ -1269,7 +1273,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                         'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2.0) / 2.0), 2),
                                                     )));
                                                 }
-                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? rtrim($cells[$to_float]) : '', $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
+                                                $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
 
                                                 // Do non-floated ones
@@ -1296,7 +1300,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                                     'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                                 )));
                                                             }
-                                                            $tag_output->attach(comcode_to_tempcode(rtrim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
+                                                            $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
                                                             $tag_output->attach(do_template('COMCODE_FAKE_TABLE_END_CELL'));
                                                         }
                                                         $cell_i++;
@@ -1363,7 +1367,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                     if ($spec) {
                                                         $c_type = (strpos($cell, '!') !== false) ? 'th' : 'td';
                                                     } else {
-                                                        $_mid = comcode_to_tempcode(rtrim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
+                                                        $_mid = comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
 
                                                         $tag_output->attach(do_template('COMCODE_REAL_TABLE_CELL', array(
                                                             '_GUID' => '6640df8b503f65e3d36f595b0acf7600',

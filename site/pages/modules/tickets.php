@@ -525,7 +525,7 @@ class Module_tickets
                 }
 
                 $this->title = get_screen_title('_VIEW_SUPPORT_TICKET', true, array(escape_html($ticket_title), escape_html($ticket_type_name)));
-                breadcrumb_set_self($ticket_title);
+                breadcrumb_set_self(escape_html($ticket_title));
             }
 
             // Help text
@@ -579,14 +579,10 @@ class Module_tickets
                 set_extra_request_metadata(array(
                     'created' => date('Y-m-d', $_comments[0]['date']),
                     'creator' => $GLOBALS['FORUM_DRIVER']->get_username($_comments[0]['member']),
-                    'publisher' => '', // blank means same as creator
-                    'modified' => '',
                     'type' => 'Support ticket',
                     'title' => $_comments[0]['title'],
                     'identifier' => '_SEARCH:tickets:ticket:' . $id,
-                    'description' => '',
                     'image' => find_theme_image('icons/48x48/menu/site_meta/tickets'),
-                    //'category' => ???,
                 ));
 
                 // "Staff only reply" tickbox
@@ -702,7 +698,7 @@ class Module_tickets
 
             // Post templates
             $post_templates = new Tempcode();
-            if ($has_staff_only) {
+            if (($has_staff_only) && (addon_installed('cns_post_templates'))) {
                 require_code('cns_posts_action');
                 require_lang('cns_post_templates');
 
@@ -733,7 +729,7 @@ class Module_tickets
             }
 
             // Render ticket screen
-            $post_url = build_url(array('page' => '_SELF', 'id' => $id, 'type' => 'post', 'redirect' => get_param_string('redirect', null), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
+            $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $id, 'redirect' => get_param_string('redirect', null), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
             $tpl = do_template('SUPPORT_TICKET_SCREEN', array(
                 '_GUID' => 'd21a9d161008c6c44fe7309a14be2c5b',
                 'ID' => is_null($id) ? '' : $id,
@@ -960,7 +956,7 @@ class Module_tickets
         $results = sort_search_results($hook_results, array(), 'ASC');
         $out = build_search_results_interface($results, 0, $max, 'ASC');
 
-        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array('_GUID' => '427e28208e15494a8f126eb4fb2aa60c', 'TITLE' => $title, 'URL' => build_url(array('page' => '_SELF', 'id' => $ticket_id, 'type' => 'post'), '_SELF'), 'POST_FIELDS' => build_keep_post_fields(), 'RESULTS' => $out));
+        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array('_GUID' => '427e28208e15494a8f126eb4fb2aa60c', 'TITLE' => $title, 'URL' => build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id), '_SELF'), 'POST_FIELDS' => build_keep_post_fields(), 'RESULTS' => $out));
     }
 
     /**

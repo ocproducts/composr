@@ -55,5 +55,6 @@ var editor_settings={
 	allowedContent: true,
 	browserContextMenuOnCtrl: true,
 	comcodeXMLBlockTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}',
-	comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}'
+	comcodeXMLInlineTags: '{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}',
+	magicline_everywhere: true
 };

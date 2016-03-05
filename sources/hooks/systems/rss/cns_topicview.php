@@ -56,7 +56,7 @@ class Hook_rss_cns_topicview
         }
 
         $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND p_validated=1 ' : '') . ' AND ' . $filters . ' ORDER BY p_time DESC,id DESC', $max, null, false, true);
-        $categories = list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT id,t_cache_first_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_last_time>' . strval($cutoff), $max));
+        $categories = list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_last_time>' . strval($cutoff), $max));
 
         $content = new Tempcode();
         foreach ($rows as $row) {

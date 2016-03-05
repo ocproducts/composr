@@ -440,10 +440,9 @@ class Module_admin_actionlog
 
         if (addon_installed('securitylogging')) {
             if (array_key_exists('ip', $row)) {
-                if ($row['ip'] == get_ip_address()) {
-                    $banned_test_1 = ip_banned($row['ip'], true);
-                    $fields['IP_BANNED'] = (!$banned_test_1) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
-                } else {
+                $banned_test_1 = ip_banned($row['ip'], true);
+                $fields['IP_BANNED'] = (!$banned_test_1) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
+                if ($row['ip'] != get_ip_address()) {
                     $fields['IP_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => 'eff2890f2193ece32df8ec8ee48b252d', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $row['ip'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
                 }
 

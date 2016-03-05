@@ -499,7 +499,9 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     }
 
     $out[0] = $url[0];
+    $out[1] = '';
     $out[2] = $url[1];
+    $out[3] = '';
 
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
@@ -569,17 +571,15 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
         if (!is_null($thumb)) {
             $out[1] = $thumb;
-        } else {
-            $out[1] = '';
         }
     }
 
     // For reentrance of previews
     if ($specify_name != '') {
-        $_POST[$specify_name] = array_key_exists(0, $out) ? $out[0] : '';
+        $_POST[$specify_name] = $out[0];
     }
     if ($thumb_specify_name != '') {
-        $_POST[$thumb_specify_name] = array_key_exists(1, $out) ? $out[1] : '';
+        $_POST[$thumb_specify_name] = $out[1];
     }
 
     if (count($filearrays) != 0) {

@@ -159,7 +159,11 @@ class Hook_sitemap_page extends Hook_sitemap_base
                     $struct['title'] = make_string_tempcode(do_lang('MODULE') . ': ' . $page);
 
                     $matches = array();
-                    if (preg_match('#@package\s+(\w+)#', file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $path)), $matches) != 0) {
+                    $normal_path = str_replace('_custom', '', $path); // We want to find normal package, not package of an override
+                    if (!is_file($normal_path)) {
+                        $normal_path = $path;
+                    }
+                    if (preg_match('#@package\s+(\w+)#', file_get_contents(zone_black_magic_filterer(get_file_base() . '/' . $normal_path)), $matches) != 0) {
                         $package = $matches[1];
                         $path_addon = get_file_base() . '/sources/hooks/systems/addon_registry/' . $package . '.php';
                         if (!file_exists($path_addon)) {

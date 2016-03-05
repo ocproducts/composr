@@ -294,18 +294,10 @@ class Module_wiki
             $description_comcode = get_translated_text($page['description']);
 
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $page['add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($page['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Wiki+ Page',
-                'title' => comcode_escape(get_translated_text($page['title'])),
                 'identifier' => '_SEARCH:wiki:browse:' . strval($page['id']),
                 'description' => (strlen($description_comcode) < 200) ? $description_comcode : '',
                 'numposts' => strval($num_posts),
-                'image' => find_theme_image('icons/48x48/menu/rich_content/wiki'),
-                //'category' => ???,
-            ));
+            ), $page, 'wiki_page', strval($id));
 
             breadcrumb_set_parents($breadcrumbs);
 
@@ -317,7 +309,7 @@ class Module_wiki
                     $non_canonical[$n] = null;
                 }
             }
-            $CANONICAL_URL = get_self_url(true, false, $non_canonical + array('id' => $id, 'type' => 'browse', 'find' => null));
+            $CANONICAL_URL = get_self_url(true, false, $non_canonical + array('type' => 'browse', 'id' => $id, 'find' => null));
 
             $this->id = $id;
             $this->chain = $chain;
@@ -766,7 +758,7 @@ class Module_wiki
     {
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, true)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $merge_url = build_url(array('page' => '_SELF', 'redirect' => $redir_url, 'type' => 'do', 'id' => get_param_string('id', false, true)), '_SELF', null, true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF', null, true);
 
         $merged = '';
         $markers = $this->get_markers();
@@ -873,7 +865,7 @@ class Module_wiki
 
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, true)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $move_url = build_url(array('page' => '_SELF', 'redirect' => $redir_url, 'type' => '_move', 'id' => get_param_string('id', false, true)), '_SELF');
+        $move_url = build_url(array('page' => '_SELF', 'type' => '_move', 'id' => get_param_string('id', false, true), 'redirect' => $redir_url), '_SELF');
 
         require_code('form_templates');
 
@@ -1077,7 +1069,7 @@ class Module_wiki
 
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($id), true)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $post_url = build_url(array('page' => '_SELF', 'id' => get_param_string('id', strval(db_get_first_id()), false), 'redirect' => $redir_url, 'type' => '_post'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), false), 'redirect' => $redir_url), '_SELF');
 
         $hidden_fields->attach(form_input_hidden('post_id', ($post_id === null) ? '' : strval($post_id)));
 

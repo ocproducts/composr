@@ -35,6 +35,7 @@ class Hook_content_meta_aware_banner_type
             'support_custom_fields' => false,
 
             'content_type_label' => 'banners:_BANNER_TYPE',
+            'content_type_universal_label' => 'Banner type',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'banner_types',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_banner_type
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/cms/banners',
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => null,

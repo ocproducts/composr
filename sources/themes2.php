@@ -159,7 +159,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
 
         if (addon_installed('!ssl')) {
             require_code('caches3');
-            erase_cached_templates(); // Paths may have been cached
+            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
         }
 
         log_it('EDIT_THEME_IMAGE', $id, $theme);
@@ -279,7 +279,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     if (addon_installed('!ssl')) {
         require_code('caches3');
-        erase_cached_templates(); // Paths may have been cached
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }
 }
 
@@ -319,7 +319,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, false);
 
-        $theme_img_code = $type . '/' . $urls[1];
+        $theme_img_code = $type . '/' . basename($urls[2], '.' . get_file_extension($urls[2]));
         if (find_theme_image($theme_img_code, true) != '') {
             $theme_img_code = $type . '/' . uniqid('', true);
         }

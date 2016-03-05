@@ -178,7 +178,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
                       'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_downloads')),
+                      'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_forums')),
                   ) + $partial_struct;
 
         $struct['extra_meta'] = array(

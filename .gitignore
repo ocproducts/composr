@@ -11,6 +11,7 @@ test_a
 .DS_Store
 /.ftaccess
 /.ftpquota
+*.cms
 *.lcd
 *.tcp
 *.tcd

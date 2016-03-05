@@ -40,7 +40,7 @@ class Hook_secpay
      */
     protected function _get_remote_form_url()
     {
-        return 'https://secure.worldpay.com/wcc/purchase';
+        return 'https://www.secpay.com/java-bin/ValCard';
     }
 
     /**

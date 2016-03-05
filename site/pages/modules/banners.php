@@ -60,7 +60,9 @@ class Module_banners
         delete_privilege('use_php_banner');
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/banners', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/banners', true);
+        }
     }
 
     /**
@@ -279,17 +281,10 @@ class Module_banners
             $myrow = $rows[0];
 
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'Banner',
-                'title' => get_translated_text($myrow['caption']),
+                'title' => get_translated_text($myrow['caption']), // Different from CMA hook
                 'identifier' => '_SEARCH:banners:view:' . $source,
-                'description' => '',
-                'image' => $myrow['img_url'],
-                //'category' => $type,
-            ));
+                'description' => '', // Different from CMA hook
+            ), $myrow, 'banner', $source);
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('BANNERS'))));
 

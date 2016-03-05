@@ -612,11 +612,15 @@ function do_lang_tempcode($lang_string, $token1 = null, $token2 = null, $token3 
  */
 function kid_gloves_html_escaping(&$parameters)
 {
+    global $KNOWN_TRUE_HTML;
+
     $param = mixed();
     foreach ($parameters as &$param) {
         if (is_string($param)) {
             if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
-                $param = escape_html($param);
+                if (!isset($KNOWN_TRUE_HTML[$param])) {
+                    $param = escape_html($param);
+                }
             }
         } elseif (is_array($param)) {
             kid_gloves_html_escaping($param);
@@ -631,8 +635,12 @@ function kid_gloves_html_escaping(&$parameters)
  */
 function kid_gloves_html_escaping_singular(&$param)
 {
+    global $KNOWN_TRUE_HTML;
+
     if ((strpos($param, "'") !== false) || (strpos($param, '"') !== false) || (strpos($param, '<') !== false) || (strpos($param, '>') !== false)) {
-        $param = escape_html($param);
+        if (!isset($KNOWN_TRUE_HTML[$param])) {
+            $param = escape_html($param);
+        }
     }
 }
 
@@ -827,7 +835,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             $__data->attach('<!-- END-TEMPLATE=' . escape_html($codename) . ' -->');
             $ret = $__data;
         }
-        if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO')) {
+        if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO') && ($codename != 'TEMPLATE_EDIT_LINK') && ($codename != 'GLOBAL_HTML_WRAP'/*For some obscure reason letting this go through causes content to disappear, maybe because it has already started output streaming*/)) {
             $edit_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $codename), 'adminzone');
 
             $parameters2 = array();
@@ -845,9 +853,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             }
             $param_info = do_template('PARAM_INFO', array('_GUID' => '0070acad5e82e0877ad49e25283d342e', 'MAP' => $parameters2));
 
-            $SHOW_EDIT_LINKS = false;
             $ret = do_template('TEMPLATE_EDIT_LINK', array('_GUID' => '511ae911d31a5b237a4371ff22fc78fd', 'PARAM_INFO' => $param_info, 'CONTENTS' => $ret, 'CODENAME' => $codename, 'EDIT_URL' => $edit_url));
-            $SHOW_EDIT_LINKS = true;
         }
     }
 
@@ -1557,8 +1563,7 @@ class Tempcode
             $this->children = array();
         }
 
-        $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/
-            eval($raw_data);
+        $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/@eval($raw_data);
         if ($result === false) {
             if ($allow_failure) {
                 return false;
@@ -1829,6 +1834,11 @@ class Tempcode
         $tmp = ob_get_clean();
         if ((!$MEMORY_OVER_SPEED) && (!$NO_EVAL_CACHE) && (!$GLOBALS['STUCK_ABORT_SIGNAL'])) {
             $this->cached_output = $tmp; // Optimisation to store it in here. We don't do the same for evaluate_echo as that's a final use case and hence it would be unnecessarily inefficient to store the result
+
+            global $DECLARATIONS_STATE, $KNOWN_TRUE_HTML;
+            if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+                $KNOWN_TRUE_HTML[$tmp] = true;
+            }
         }
         if (!$no_eval_cache_before) {
             $NO_EVAL_CACHE = $no_eval_cache_before;
@@ -1867,7 +1877,7 @@ class Tempcode
             return '';
         }
 
-        global $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $USER_LANG_CACHED, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE, $DEV_MODE;
+        global $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $USER_LANG_CACHED, $XSS_DETECT, $KEEP_TPL_FUNCS, $FULL_RESET_VAR_CODE, $RESET_VAR_CODE, $DEV_MODE, $KNOWN_TRUE_HTML, $DECLARATIONS_STATE;
 
         ob_start();
 
@@ -1929,6 +1939,10 @@ class Tempcode
 
         if (!$no_eval_cache_before) {
             $NO_EVAL_CACHE = $no_eval_cache_before;
+        }
+
+        if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+            $KNOWN_TRUE_HTML[$ret] = true;
         }
 
         return $ret;

@@ -313,7 +313,7 @@ function get_site_default_lang()
 {
     // Site default then
     global $SITE_INFO;
-    if (!array_key_exists('default_lang', $SITE_INFO)) { // We must be installing
+    if (empty($SITE_INFO['default_lang'])) { // We must be installing
         global $IN_MINIKERNEL_VERSION;
         if ($IN_MINIKERNEL_VERSION) {
             if (array_key_exists('lang', $_POST)) {
@@ -524,7 +524,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
             require_code('caches3');
             global $ERASED_TEMPLATES_ONCE;
             if (!$ERASED_TEMPLATES_ONCE) {
-                erase_cached_templates(true);
+                erase_cached_templates(true, null, TEMPLATE_DECACHE_WITH_LANG);
             }
         }
     }

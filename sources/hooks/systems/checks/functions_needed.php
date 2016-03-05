@@ -96,7 +96,7 @@ class Hook_check_functions_needed
             ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1
             array_diff_key inet_pton array_product array_diff_ukey array_intersect_ukey
             inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
-            var_export array_intersect_key ini_restore end fileinode get_class_methods get_class_vars
+            var_export array_intersect_key end fileinode get_class_methods get_class_vars
             get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
             imagecolorallocatealpha imageistruecolor key pi print set_exception_handler acos
 END;

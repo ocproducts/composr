@@ -85,6 +85,10 @@ function cache_and_carry($func, $args)
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0777);
+        fix_permissions(dirname($path));
+    }
     if (is_file($path)) {
         $ret = @unserialize(file_get_contents($path));
     } else {
@@ -161,6 +165,10 @@ function _intelligent_write_error_inline($path)
 function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
+    if (!file_exists($local_path)) {
+        mkdir($local_path, 0777);
+        fix_permissions($local_path);
+    }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
     } else {
@@ -764,7 +772,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
 function check_shared_bandwidth_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_bandwidth_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
         $total_bandwidth = intval(get_value('download_bandwidth'));
@@ -772,7 +780,7 @@ function check_shared_bandwidth_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_bandwidth_complementary', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_bandwidth_complementary'])) {
         // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
         // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
@@ -792,7 +800,7 @@ function check_shared_bandwidth_usage($extra)
 function check_shared_space_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_space_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_space_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_space_registered'];
         $total_space = get_directory_size(get_custom_file_base() . '/uploads');
@@ -800,7 +808,7 @@ function check_shared_space_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_space_complementary', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_space_complementary'])) {
         // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
         // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
@@ -1806,7 +1814,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
-        $errstr = $php_errormsg;
+        $errstr = @strval($php_errormsg);
         if ($trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);

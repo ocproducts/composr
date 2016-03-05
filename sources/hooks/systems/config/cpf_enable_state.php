@@ -50,6 +50,10 @@ class Hook_config_cpf_enable_state
      */
     public function get_default()
     {
+        require_code('locations');
+        if (geolocate_ip() == 'US') {
+            return '1';
+        }
         return '0';
     }
 }

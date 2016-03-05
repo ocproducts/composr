@@ -389,7 +389,7 @@ function get_charset()
         return do_lang('charset');
     }
     global $SITE_INFO;
-    $lang = array_key_exists('default_lang', $SITE_INFO) ? $SITE_INFO['default_lang'] : 'EN';
+    $lang = (!empty($SITE_INFO['default_lang'])) ? $SITE_INFO['default_lang'] : 'EN';
     $path = get_file_base() . '/lang_custom/' . $lang . '/global.ini';
     if (!file_exists($path)) {
         $path = get_file_base() . '/lang/' . $lang . '/global.ini';
@@ -499,7 +499,7 @@ function cms_version_pretty()
 function get_domain()
 {
     global $SITE_INFO;
-    if (!array_key_exists('domain', $SITE_INFO)) {
+    if (empty($SITE_INFO['domain'])) {
         $SITE_INFO['domain'] = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
     }
     return $SITE_INFO['domain'];
@@ -513,7 +513,7 @@ function get_domain()
 function get_forum_type()
 {
     global $SITE_INFO;
-    if (!array_key_exists('forum_type', $SITE_INFO)) {
+    if (empty($SITE_INFO['forum_type'])) {
         return 'none';
     }
     return $SITE_INFO['forum_type'];
@@ -530,7 +530,7 @@ function get_forum_base_url()
         return '';
     }
     global $SITE_INFO;
-    if (!array_key_exists('board_prefix', $SITE_INFO)) {
+    if (empty($SITE_INFO['board_prefix'])) {
         return get_base_url();
     }
     return $SITE_INFO['board_prefix'];
@@ -556,7 +556,7 @@ function get_site_name()
 function get_base_url($https = null, $zone_for = '')
 {
     global $SITE_INFO;
-    if (!array_key_exists('base_url', $SITE_INFO)) {
+    if (empty($SITE_INFO['base_url'])) {
         $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
         if (substr($base_url, -1) == '/') {
             $base_url = substr($base_url, 0, strlen($base_url) - 1);

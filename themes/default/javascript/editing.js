@@ -403,7 +403,7 @@ function wysiwyg_editor_init_for(element,id)
 	window.lang_NO_IMAGE_PASTE_SAFARI='{!javascript:NO_IMAGE_PASTE_SAFARI;}';
 
 	// Mainly used by autosaving
-	editor.on('key', function (event) {
+	editor.on('key',function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
@@ -505,7 +505,7 @@ function find_tags_in_editor(editor,element)
 					var field_name=editor.name;
 					if ((typeof window.event!='undefined') && (window.event)) window.event.returnValue=false;
 					if (this.id=='') this.id='comcode_tag_'+Math.round(Math.random()*10000000);
-					var tag_type=this.title.replace(/^\[/,'').replace(/[= \]].*$/,'');
+					var tag_type=this.title.replace(/^\[/,'').replace(/[= \]](.|\n)*$/,'');
 					if (tag_type=='block')
 					{
 						var block_name=this.title.replace(/\[\/block\]$/,'').replace(/^(.|\s)*\]/,'');

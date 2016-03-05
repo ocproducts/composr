@@ -35,6 +35,7 @@ class Hook_content_meta_aware_catalogue
             'support_custom_fields' => false,
 
             'content_type_label' => 'catalogues:CATALOGUE',
+            'content_type_universal_label' => 'Catalogue',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'catalogues',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_catalogue
             'description_field' => 'c_description',
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/catalogues/catalogues',
 
             'view_page_link_pattern' => '_SEARCH:catalogues:index:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit_catalogue:_WILD',

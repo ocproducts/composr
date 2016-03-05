@@ -151,7 +151,12 @@ function get_award_fields($content_type, $id = null)
                 $has_award = (get_param_integer('award', null) === $row['id']);
             }
 
-            $description = (get_translated_text($row['a_description']) == '') ? new Tempcode() : do_lang_tempcode('PRESENT_AWARD', get_translated_tempcode('award_types', $row, 'a_description'));
+            if (get_translated_text($row['a_description']) == '') {
+                $description = new Tempcode();
+            } else {
+                $just_row = db_map_restrict($row, array('id', 'a_description'));
+                $description = do_lang_tempcode('PRESENT_AWARD', get_translated_tempcode('award_types', $just_row, 'a_description'));
+            }
 
             if (!$has_award) {
                 $current_content_title = mixed();

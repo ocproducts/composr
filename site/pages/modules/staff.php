@@ -154,7 +154,7 @@ class Module_staff
             }
 
             $username = $row_staff['username'];
-            $url = build_url(array('page' => '_SELF', 'id' => $username, 'type' => 'view'), '_SELF');
+            $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $username), '_SELF');
             $role = escape_html(get_cms_cpf('role', $id));
             if (is_null($role)) {
                 $description = ''; // Null should not happen, but sometimes things corrupt

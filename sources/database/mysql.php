@@ -92,7 +92,7 @@ class Database_Static_mysql extends Database_super_mysql
         $this->last_select_db = $db_name;
 
         global $SITE_INFO;
-        if (!array_key_exists('database_charset', $SITE_INFO)) {
+        if (empty($SITE_INFO['database_charset'])) {
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
@@ -167,6 +167,8 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         static $mres = null;
         if ($mres === null) {
             $mres = function_exists('mysql_real_escape_string');

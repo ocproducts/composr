@@ -226,7 +226,7 @@ class Module_admin_menus
 
                 // Config option saves into templates
                 require_code('caches3');
-                erase_cached_templates();
+                erase_cached_templates(false, array('GLOBAL_HTML_WRAP'));
             }
         }
 

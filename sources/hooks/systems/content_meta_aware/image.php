@@ -35,6 +35,7 @@ class Hook_content_meta_aware_image
             'support_custom_fields' => true,
 
             'content_type_label' => 'global:IMAGE',
+            'content_type_universal_label' => 'Image',
 
             'connection' => $GLOBALS['SITE_DB'],
             'where' => 'cat NOT LIKE \'' . db_encode_like('download\_%') . '\'',
@@ -57,6 +58,7 @@ class Hook_content_meta_aware_image
             'description_field' => 'description',
             'thumb_field' => 'thumb_url',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:galleries:image:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_galleries:_edit:_WILD',

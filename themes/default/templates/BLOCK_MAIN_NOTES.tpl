@@ -23,8 +23,8 @@
 			</form>
 
 			<script>// <![CDATA[
-				require_javascript('ajax');
-				require_javascript('checking');
+				require_javascript('ajax',window.do_ajax_request);
+				require_javascript('checking',window.set_field_error);
 			//]]></script>
 		</div>
 	</section>

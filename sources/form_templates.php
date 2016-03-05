@@ -442,7 +442,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             '_GUID' => 'e4fe3bc16cec070e06532fedc598d075',
             'DIVIDER' => $divider,
             'FIELD_NAME' => $field_name,
-            'TITLE' => ($button == 'thumb' && browser_matches('simplified_attachments_ui')) ? do_lang_tempcode('INPUT_COMCODE_attachment') : do_lang_tempcode('INPUT_COMCODE_' . $button),
+            'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button),
             'B' => $button,
         )));
     }
@@ -548,7 +548,7 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @return Tempcode The input field
  */
-function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $extra_chars = null, $placeholder = null)
+function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = null, $placeholder = null)
 {
     if (is_null($default)) {
         $default = '';

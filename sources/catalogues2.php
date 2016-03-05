@@ -987,7 +987,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             }
         } else {
             if ($sup_table_name == 'short') {
-                $val = substr($val, 0, 255);
+                $val = cms_mb_substr($val, 0, 255);
             }
 
             if ($sup_table_name == 'float') {

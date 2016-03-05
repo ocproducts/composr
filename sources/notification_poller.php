@@ -333,7 +333,7 @@ function get_pts($max = null, $start = 0)
 
     $out = new Tempcode();
     foreach ($rows as $i => $topic) {
-        $topic_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'findpost'), get_module_zone('topicview'));
+        $topic_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['id']), get_module_zone('topicview'));
         $topic_url->attach('#post_' . strval($topic['id']));
         $title = $topic['t_cache_first_title'];
         $date = get_timezoned_date($topic['t_cache_last_time'], true);

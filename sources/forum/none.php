@@ -33,7 +33,7 @@ class Forum_driver_none extends Forum_driver_base
     public function get_admin_username()
     {
         global $SITE_INFO;
-        $ret = array_key_exists('admin_username', $SITE_INFO) ? $SITE_INFO['admin_username'] : 'admin';
+        $ret = (!empty($SITE_INFO['admin_username'])) ? $SITE_INFO['admin_username'] : 'admin';
         if ($ret == '') {
             $ret = 'admin';
         }

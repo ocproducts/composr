@@ -409,7 +409,7 @@ function prevent_double_submit($type, $a = null, $b = null)
             return; // Cannot work with this
         }
         $where += array(
-            'param_a' => substr($a, 0, 80),
+            'param_a' => cms_mb_substr($a, 0, 80),
         );
     }
     if (!is_null($b)) {
@@ -417,7 +417,7 @@ function prevent_double_submit($type, $a = null, $b = null)
             return; // Cannot work with this
         }
         $where += array(
-            'param_b' => substr($b, 0, 80),
+            'param_b' => cms_mb_substr($b, 0, 80),
         );
     }
     $time_window = 60 * 5; // 5 minutes seems reasonable
@@ -452,7 +452,7 @@ function _log_it($type, $a = null, $b = null)
                 require_code('config2');
                 set_option('copyright', $new_copyright);
                 require_code('caches3');
-                erase_cached_templates(true, array('GLOBAL_HTML_WRAP'));
+                erase_cached_templates(false, array('GLOBAL_HTML_WRAP'));
             }
         }
     }
@@ -480,8 +480,8 @@ function _log_it($type, $a = null, $b = null)
         $ip = get_ip_address();
         $log_id = $GLOBALS['SITE_DB']->query_insert('actionlogs', array(
             'the_type' => $type,
-            'param_a' => is_null($a) ? '' : substr($a, 0, 80),
-            'param_b' => is_null($b) ? '' : substr($b, 0, 80),
+            'param_a' => is_null($a) ? '' : cms_mb_substr($a, 0, 80),
+            'param_b' => is_null($b) ? '' : cms_mb_substr($b, 0, 80),
             'date_and_time' => time(),
             'member_id' => get_member(),
             'ip' => $ip,
