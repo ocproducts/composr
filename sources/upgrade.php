@@ -2028,7 +2028,6 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
     $templates_rename = array();
     $templates_borked = array();
 
-    // TODO: Implement upgrade for next version
     if (false) {
         $css_recognition_string = '2004-2011'; // Must be defined. Ensures theme is right version.
 

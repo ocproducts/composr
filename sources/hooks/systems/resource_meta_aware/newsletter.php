@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_newsletter
             'support_custom_fields' => false,
 
             'content_type_label' => 'newsletter:NEWSLETTER',
+            'content_type_universal_label' => 'Newsletter',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'newsletters',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_newsletter
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_newsletter:_edit:_WILD',

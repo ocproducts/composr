@@ -140,12 +140,31 @@ class Module_authors
 
         seo_meta_load_for('authors', $author);
 
+        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), array('author' => $author), '', 1);
+        if (!array_key_exists(0, $rows)) {
+            if ((has_actual_page_access(get_member(), 'cms_authors')) && (has_edit_author_permission(get_member(), $author))) {
+                set_http_status_code('404');
+
+                $_author_add_url = build_url(array('page' => 'cms_authors', 'type' => '_add', 'author' => $author), get_module_zone('cms_authors'));
+                $author_add_url = $_author_add_url->evaluate();
+                $message = do_lang_tempcode('NO_SUCH_AUTHOR_CONFIGURE_ONE', escape_html($author), escape_html($author_add_url));
+
+                attach_message($message, 'inform');
+            } else {
+                $message = do_lang_tempcode('NO_SUCH_AUTHOR', escape_html($author));
+            }
+            $details = array('author' => $author, 'url' => '', 'member_id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($author), 'description' => null, 'skills' => null,);
+        } else {
+            $details = $rows[0];
+        }
+
         // Metadata
         set_extra_request_metadata(array(
             'identifier' => '_SEARCH:authors:browse:' . $author,
-        ), $myrow, 'author', $author);
+        ), $details, 'author', $author);
 
         $this->author = $author;
+        $this->details = $details;
 
         return null;
     }
@@ -179,24 +198,7 @@ class Module_authors
     public function show_author()
     {
         $author = $this->author;
-
-        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), array('author' => $author), '', 1);
-        if (!array_key_exists(0, $rows)) {
-            if ((has_actual_page_access(get_member(), 'cms_authors')) && (has_edit_author_permission(get_member(), $author))) {
-                set_http_status_code('404');
-
-                $_author_add_url = build_url(array('page' => 'cms_authors', 'type' => '_add', 'author' => $author), get_module_zone('cms_authors'));
-                $author_add_url = $_author_add_url->evaluate();
-                $message = do_lang_tempcode('NO_SUCH_AUTHOR_CONFIGURE_ONE', escape_html($author), escape_html($author_add_url));
-
-                attach_message($message, 'inform');
-            } else {
-                $message = do_lang_tempcode('NO_SUCH_AUTHOR', escape_html($author));
-            }
-            $details = array('author' => $author, 'url' => '', 'member_id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($author), 'description' => null, 'skills' => null,);
-        } else {
-            $details = $rows[0];
-        }
+        $details = $this->details;
 
         // Links associated with the mapping between the author and a forum member
         $handle = get_author_id_from_name($author);

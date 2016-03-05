@@ -35,6 +35,7 @@ class Hook_resource_meta_aware_menu_item
             'support_custom_fields' => false,
 
             'content_type_label' => 'menus:MENU_ITEM',
+            'content_type_universal_label' => 'Menu item',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'menu_items',
@@ -56,6 +57,7 @@ class Hook_resource_meta_aware_menu_item
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => null,

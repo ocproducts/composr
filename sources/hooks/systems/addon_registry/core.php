@@ -1005,6 +1005,7 @@ class Hook_addon_registry_core
             'data/soundmanager/soundmanager2_flash9.swf',
             'data/soundmanager/soundmanager2_flash9_debug.swf',
             'data/soundmanager/soundmanager2_debug.swf',
+            'data/soundmanager/index.html',
             'data/sounds/index.html',
             'data_custom/execute_temp.php',
             'data_custom/functions.dat',

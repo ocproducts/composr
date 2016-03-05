@@ -286,7 +286,7 @@ class Module_chat
             set_feed_url('?mode=chat&select=' . strval($room_id));
             $this->room_id = $room_id;
 
-            $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id', 'room_name', 'is_im', 'allow_list', 'allow_list_groups', 'disallow_list', 'disallow_list_groups', 'room_owner'), array('id' => $room_id), '', 1);
+            $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
             if (!array_key_exists(0, $room_check)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
             }
@@ -300,7 +300,7 @@ class Module_chat
             // Metadata
             set_extra_request_metadata(array(
                 'identifier' => '_SEARCH:chat:room:' . strval($room_id),
-            ), $myrow, 'chat', strval($room_id));
+            ), $room_check[0], 'chat', strval($room_id));
         }
 
         if ($type == 'download_logs') {
