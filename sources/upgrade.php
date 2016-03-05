@@ -558,10 +558,10 @@ function up_do_login($message = null)
     $ftp_folder = get_value('ftp_directory');
     $ftp_domain = get_value('ftp_domain');
     if (is_null($ftp_domain)) {
-        $ftp_domain = array_key_exists('ftp_domain', $SITE_INFO) ? $SITE_INFO['ftp_domain'] : 'localhost';
+        $ftp_domain = (!empty($SITE_INFO['ftp_domain'])) ? $SITE_INFO['ftp_domain'] : 'localhost';
     }
     if (is_null($ftp_username)) {
-        if (!array_key_exists('ftp_username', $SITE_INFO)) {
+        if (empty($SITE_INFO['ftp_username'])) {
             if (php_function_allowed('posix_getpwuid')) {
                 $u_info = posix_getpwuid(fileowner(get_file_base() . '/index.php'));
                 $ftp_username = $u_info['name'];
@@ -576,7 +576,7 @@ function up_do_login($message = null)
         }
     }
     if (is_null($ftp_folder)) {
-        if (!array_key_exists('ftp_folder', $SITE_INFO)) {
+        if (empty($SITE_INFO['ftp_folder'])) {
             $dr = cms_srv('DOCUMENT_ROOT');
             if (strpos($dr, '/') !== false) {
                 $dr_parts = explode('/', $dr);
@@ -726,7 +726,7 @@ function clear_caches_2()
 {
     require_code('caches3');
     erase_comcode_cache();
-    erase_block_cache();
+    erase_block_cache(true);
     erase_comcode_page_cache();
     erase_persistent_cache();
 }
@@ -1842,8 +1842,8 @@ function cns_upgrade()
     if ($version_files != $version_database) {
         global $SITE_INFO;
         $SITE_INFO['db_forums'] = $SITE_INFO['db_site'];
-        $SITE_INFO['db_forums_host'] = array_key_exists('db_site_host', $SITE_INFO) ? $SITE_INFO['db_site_host'] : 'localhost';
-        $SITE_INFO['db_forums_user'] = array_key_exists('db_site_user', $SITE_INFO) ? $SITE_INFO['db_site_user'] : 'root';
+        $SITE_INFO['db_forums_host'] = (!empty($SITE_INFO['db_site_host'])) ? $SITE_INFO['db_site_host'] : 'localhost';
+        $SITE_INFO['db_forums_user'] = (!empty($SITE_INFO['db_site_user'])) ? $SITE_INFO['db_site_user'] : 'root';
         $SITE_INFO['db_forums_password'] = array_key_exists('db_site_password', $SITE_INFO) ? $SITE_INFO['db_site_password'] : '';
         $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
 
@@ -1867,7 +1867,7 @@ function cns_upgrade()
 function fix_mysql_database_charset()
 {
     global $SITE_INFO;
-    if (!array_key_exists('database_charset', $SITE_INFO)) {
+    if (empty($SITE_INFO['database_charset'])) {
         $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1';
     }
     change_mysql_database_charset($SITE_INFO['database_charset'], $GLOBALS['SITE_DB']);

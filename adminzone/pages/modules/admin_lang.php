@@ -813,7 +813,7 @@ class Module_admin_lang
 
         require_code('caches3');
         erase_cached_language();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_LANG);
         persistent_cache_delete('LANGS_LIST');
 
         // Show it worked / Refresh
@@ -897,7 +897,7 @@ class Module_admin_lang
 
         require_code('caches3');
         erase_cached_language();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_LANG);
         persistent_cache_delete('LANGS_LIST');
 
         // Show it worked / Refresh

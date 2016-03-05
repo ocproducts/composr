@@ -772,7 +772,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
 function check_shared_bandwidth_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_bandwidth_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
         $total_bandwidth = intval(get_value('download_bandwidth'));
@@ -780,7 +780,7 @@ function check_shared_bandwidth_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_bandwidth_complementary', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_bandwidth_complementary'])) {
         // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
         // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
@@ -800,7 +800,7 @@ function check_shared_bandwidth_usage($extra)
 function check_shared_space_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_space_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_space_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_space_registered'];
         $total_space = get_directory_size(get_custom_file_base() . '/uploads');
@@ -808,7 +808,7 @@ function check_shared_space_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_space_complementary', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_space_complementary'])) {
         // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
         // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
@@ -1814,7 +1814,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
-        $errstr = $php_errormsg;
+        $errstr = @strval($php_errormsg);
         if ($trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);

@@ -47,6 +47,10 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
         return $PRIVATE_POST_ROWS_CACHE[$cache_key];
     }
 
+    if (!addon_installed('cns_forum')) {
+        return array();
+    }
+
     $member_id = get_member();
 
     $query = '';

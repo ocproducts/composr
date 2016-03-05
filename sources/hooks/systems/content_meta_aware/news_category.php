@@ -35,6 +35,7 @@ class Hook_content_meta_aware_news_category
             'support_custom_fields' => false,
 
             'content_type_label' => 'news:NEWS_CATEGORY',
+            'content_type_universal_label' => 'News category',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'news_categories',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_news_category
             'description_field' => null,
             'thumb_field' => 'nc_img',
             'thumb_field_is_theme_image' => true,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:news:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_news:_edit_category:_WILD',

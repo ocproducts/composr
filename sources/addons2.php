@@ -549,7 +549,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
 }
 
 /**
- * Uninstall an addon.
+ * Install an addon.
  *
  * @param  string $file Name of the addon TAR file
  * @param  ?array $files The files to install (null: all)
@@ -670,9 +670,17 @@ function install_addon($file, $files = null)
     // Clear some caching
     require_code('caches3');
     erase_comcode_page_cache();
-    erase_block_cache();
+    erase_block_cache(true);
     erase_persistent_cache();
-    erase_cached_templates();
+    erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
+    $template_files_to_erase = array();
+    foreach ($directory as $dir) {
+        $addon_file = $dir['path'];
+        if (substr($addon_file, 0, 7) == 'themes/') {
+            $template_files_to_erase[] = preg_replace('#\..*$#', '', basename($addon_file));
+        }
+    }
+    erase_cached_templates(false, $template_files_to_erase);
     erase_cached_language();
 
     // Load addon_install_code.php if it exists
@@ -774,9 +782,16 @@ function uninstall_addon($addon, $clear_caches = true)
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         erase_persistent_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
+        $template_files_to_erase = array();
+        foreach ($addon_info['files'] as $addon_file) {
+            if (substr($addon_file, 0, 7) == 'themes/') {
+                $template_files_to_erase[] = preg_replace('#\..*$#', '', basename($addon_file));
+            }
+        }
+        erase_cached_templates(false, $template_files_to_erase);
         erase_cached_language();
         erase_theme_images_cache();
         global $HOOKS_CACHE;

@@ -15,13 +15,6 @@
 {+START,IF_PASSED,CHANGE_DETECTION_URL}{+START,IF_NON_EMPTY,{CHANGE_DETECTION_URL}}
 	<script>
 	// <![CDATA[
-		if (typeof window.soundManager!='undefined')
-		{
-			soundManager.onload=function() {
-				soundManager.createSound('message_received','{$BASE_URL;/}/data/sounds/message_received.mp3');
-			}
-		}
-
 		{+START,IF_NON_EMPTY,{REFRESH_TIME}}
 			window.detect_interval=window.setInterval(
 				function() {

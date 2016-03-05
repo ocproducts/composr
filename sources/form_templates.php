@@ -548,7 +548,7 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @return Tempcode The input field
  */
-function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $extra_chars = null, $placeholder = null)
+function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = null, $placeholder = null)
 {
     if (is_null($default)) {
         $default = '';

@@ -68,7 +68,9 @@ class Module_downloads
         delete_value('num_downloads_downloaded');
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/downloads', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/downloads', true);
+        }
     }
 
     /**
@@ -280,22 +282,8 @@ class Module_downloads
             // Metadata
             seo_meta_load_for('downloads_category', strval($category_id), $title_to_use);
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $category['add_date']),
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Download category',
-                'title' => comcode_escape($title_to_use),
                 'identifier' => '_SEARCH:downloads:browse:' . strval($category_id),
-                'description' => get_translated_text($category['description']),
-                //'category' => ???,
-            ));
-            $main_rep_image = $category['rep_image'];
-            if ($main_rep_image != '') {
-                set_extra_request_metadata(array(
-                    'image' => (url_is_local($main_rep_image) ? (get_custom_base_url() . '/') : '') . $main_rep_image,
-                ));
-            }
+            ), $category, 'download_category', strval($category_id));
 
             $this->category_id = $category_id;
             $this->category = $category;
@@ -400,17 +388,9 @@ class Module_downloads
 
             // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_date']),
-                'creator' => $myrow['author'],
-                'publisher' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'Download',
-                'title' => comcode_escape(get_translated_text($myrow['name'])),
                 'identifier' => '_SEARCH:downloads:view:' . strval($id),
-                'description' => get_translated_text($myrow['description']),
                 'image' => $image_url,
-                //'category' => ???,
-            ));
+            ), $myrow, 'download', strval($id));
 
             $this->id = $id;
             $this->myrow = $myrow;

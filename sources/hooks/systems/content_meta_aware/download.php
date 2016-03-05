@@ -35,6 +35,7 @@ class Hook_content_meta_aware_download
             'support_custom_fields' => true,
 
             'content_type_label' => 'downloads:DOWNLOAD_NOUN',
+            'content_type_universal_label' => 'Download',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'download_downloads',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_download
             'description_field' => 'description',
             'thumb_field' => 'rep_image',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_downloads:_edit:_WILD',

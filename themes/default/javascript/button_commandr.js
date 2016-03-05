@@ -21,8 +21,8 @@ function load_commandr()
 		tmp_element.id='commandr_img_loader';
 		img.parentNode.appendChild(tmp_element);
 
-		require_javascript('ajax');
-		require_javascript('commandr','commandr');
+		require_javascript('ajax',window.do_ajax_request);
+		require_javascript('commandr',window.commandr_handle_history);
 		require_css('commandr');
 		window.setTimeout(load_commandr,200);
 		return false;

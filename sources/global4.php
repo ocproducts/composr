@@ -452,7 +452,7 @@ function _log_it($type, $a = null, $b = null)
                 require_code('config2');
                 set_option('copyright', $new_copyright);
                 require_code('caches3');
-                erase_cached_templates(true, array('GLOBAL_HTML_WRAP'));
+                erase_cached_templates(false, array('GLOBAL_HTML_WRAP'));
             }
         }
     }

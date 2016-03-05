@@ -1766,7 +1766,9 @@ class Module_topics
 
         if (get_option('enable_pt_restrict') == '1') {
             $agreed = get_param_integer('agreed', 0);
-            $rules = get_translated_tempcode('f_members', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id), 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
+            $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
+            $just_member_row = db_map_restrict($member_row, array('id', 'm_pt_rules_text'));
+            $rules = get_translated_tempcode('f_members', $member_row, 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
             if (($agreed == 0) && (!$rules->is_empty())) {
                 $url = get_self_url(false, false, array('agreed' => '1'));
                 $title = get_screen_title('NEW_PRIVATE_TOPIC');
@@ -2411,7 +2413,7 @@ END;
                     regenerate_event_reminder_jobs($event_id);
 
                     $text = do_lang_tempcode('SUCCESS');
-                    $map = array('page' => 'topicview', 'id' => $topic_id, 'type' => 'first_unread');
+                    $map = array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic_id);
                     $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
                     if (($test != -1) && ($test != 0)) {
                         $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
@@ -2485,7 +2487,7 @@ END;
                 require_code('cns_topicview');
                 $url = find_post_id_url($post_id);
             } else {
-                $map = array('page' => 'topicview', 'id' => $post_id, 'type' => 'findpost');
+                $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id);
                 $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
                 if (($test != -1) && ($test != 0)) {
                     $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
@@ -2903,7 +2905,7 @@ END;
             }
             $fields->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('COPY_EXISTING_POLL'), 'existing', $list, null, false, false));
 
-            $javascript = 'var existing=document.getElementById(\'existing\'); var form=existing.form; var ch_func=function() { var disable_all=(existing.selectedIndex!=0); var i; for (i=0;i<form.elements.length;i++) if ((form.elements[i]!=existing) && (form.elements[i].id!=\'perform_keywordcheck\') && ((form.elements[i].getAttribute(\'type\')==\'checkbox\') || (form.elements[i].getAttribute(\'type\')==\'text\'))) { set_required(form.elements[i].name,(!disable_all) && ((form.elements[i].id==\'question\') || (form.elements[i].id==\'answer_0\'))); set_locked(form.elements[i].name,disable_all); } }; for (i=0;i<form.elements.length;i++) add_event_listener_abstract(form.elements[i],\'change\',ch_func);';
+            $javascript = 'var existing=document.getElementById(\'existing\'); var form=existing.form; var ch_func=function() { var disable_all=(existing.selectedIndex!=0); var i; for (i=0;i<form.elements.length;i++) if ((form.elements[i]!=existing) && (form.elements[i].id!=\'perform_keywordcheck\') && ((form.elements[i].getAttribute(\'type\')==\'checkbox\') || (form.elements[i].getAttribute(\'type\')==\'text\'))) { set_required(form.elements[i].name,(!disable_all) && ((form.elements[i].id==\'question\') || (form.elements[i].id==\'answer_0\'))); set_locked(form.elements[i],disable_all); } }; for (i=0;i<form.elements.length;i++) add_event_listener_abstract(form.elements[i],\'change\',ch_func);';
         } else {
             $javascript = '';
         }

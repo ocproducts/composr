@@ -85,7 +85,23 @@ class Module_cms_galleries extends Standard_crud_module
     public function get_privilege_overrides()
     {
         require_lang('galleries');
-        return array('view_private_content' => 0, 'mass_import' => 0, 'have_personal_category' => 0, 'submit_cat_midrange_content' => array(0, 'ADD_GALLERY'), 'edit_own_cat_midrange_content' => array(0, 'EDIT_OWN_GALLERY'), 'edit_cat_midrange_content' => array(0, 'EDIT_GALLERY'), 'delete_own_cat_midrange_content' => array(0, 'DELETE_OWN_GALLERY'), 'delete_cat_midrange_content' => array(0, 'DELETE_GALLERY'), 'may_download_gallery' => 1, 'submit_midrange_content' => array(1, 'ADD_MEDIA'), 'bypass_validation_midrange_content' => array(1, 'BYPASS_VALIDATION_MEDIA'), 'edit_own_midrange_content' => array(1, 'EDIT_OWN_MEDIA'), 'edit_midrange_content' => array(1, 'EDIT_MEDIA'), 'delete_own_midrange_content' => array(1, 'DELETE_OWN_MEDIA'), 'delete_midrange_content' => array(1, 'DELETE_MEDIA'));
+        return array(
+            'view_private_content' => 0,
+            'mass_import' => 0,
+            'have_personal_category' => array(0, 'HAVE_PERSONAL_GALLERIES'),
+            'submit_cat_midrange_content' => array(0, 'ADD_GALLERY'),
+            'edit_own_cat_midrange_content' => array(0, 'EDIT_OWN_GALLERY'),
+            'edit_cat_midrange_content' => array(0, 'EDIT_GALLERY'),
+            'delete_own_cat_midrange_content' => array(0, 'DELETE_OWN_GALLERY'),
+            'delete_cat_midrange_content' => array(0, 'DELETE_GALLERY'),
+            'may_download_gallery' => 1,
+            'submit_midrange_content' => array(1, 'ADD_MEDIA'),
+            'bypass_validation_midrange_content' => array(1, 'BYPASS_VALIDATION_MEDIA'),
+            'edit_own_midrange_content' => array(1, 'EDIT_OWN_MEDIA'),
+            'edit_midrange_content' => array(1, 'EDIT_MEDIA'),
+            'delete_own_midrange_content' => array(1, 'DELETE_OWN_MEDIA'),
+            'delete_midrange_content' => array(1, 'DELETE_MEDIA'),
+        );
     }
 
     public $title;
@@ -1090,7 +1106,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         } else {
             $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = 'root'; // Only option!
             }
         }
@@ -1103,7 +1119,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_images', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_images' => 1));
                 $hidden->attach(form_input_hidden('cat', $cat));
             } else {
@@ -1668,7 +1684,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
         } else {
             $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = 'root'; // Only option!
             }
         }
@@ -1681,7 +1697,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_videos', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_videos' => 1));
                 $hidden->attach(form_input_hidden('cat', $cat));
             } else {

@@ -35,6 +35,7 @@ class Hook_content_meta_aware_chat
             'support_custom_fields' => false,
 
             'content_type_label' => 'chat:CHATROOM',
+            'content_type_universal_label' => 'Chatroom',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'chat_rooms',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_chat
             'description_field' => null,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/chat/chat',
 
             'view_page_link_pattern' => '_SEARCH:chat:room:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_chat:room:_WILD',

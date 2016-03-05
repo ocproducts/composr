@@ -174,10 +174,8 @@ function get_member($quick_only = false)
 
     // Try via restricted_manually_enabled_backdoor that someone with full server access can place
     $backdoor_ip_address = mixed(); // Enable to a real IP address to force login from FTP access (if lost admin password)
-    if (array_key_exists('backdoor_ip', $SITE_INFO)) {
-        if (!empty($SITE_INFO['backdoor_ip'])) {
-            $backdoor_ip_address = normalise_ip_address($SITE_INFO['backdoor_ip']);
-        }
+    if (!empty($SITE_INFO['backdoor_ip'])) {
+        $backdoor_ip_address = normalise_ip_address($SITE_INFO['backdoor_ip']);
     }
     if ((is_string($backdoor_ip_address)) && ($backdoor_ip_address != '') && (get_ip_address() == $backdoor_ip_address)) {
         require_code('users_active_actions');
@@ -521,7 +519,7 @@ function delete_expired_sessions_or_recover($member = null)
 function get_member_cookie()
 {
     global $SITE_INFO;
-    if (!array_key_exists('user_cookie', $SITE_INFO)) {
+    if (empty($SITE_INFO['user_cookie'])) {
         $SITE_INFO['user_cookie'] = 'cms_member_id';
     }
     return $SITE_INFO['user_cookie'];
@@ -535,7 +533,7 @@ function get_member_cookie()
 function get_session_cookie()
 {
     global $SITE_INFO;
-    if (!array_key_exists('session_cookie', $SITE_INFO)) {
+    if (empty($SITE_INFO['session_cookie'])) {
         $SITE_INFO['session_cookie'] = 'cms_session';
     }
     return $SITE_INFO['session_cookie'];
@@ -549,7 +547,7 @@ function get_session_cookie()
 function get_pass_cookie()
 {
     global $SITE_INFO;
-    if (!array_key_exists('pass_cookie', $SITE_INFO)) {
+    if (empty($SITE_INFO['pass_cookie'])) {
         $SITE_INFO['pass_cookie'] = 'cms_member_hash';
     }
     return $SITE_INFO['pass_cookie'];

@@ -296,6 +296,11 @@ class Module_chat
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CHAT_LOBBY_END_CHAT'))));
 
             $this->title = get_screen_title('_CHATROOM', true, array(escape_html($this->room_row['room_name'])));
+
+            // Metadata
+            set_extra_request_metadata(array(
+                'identifier' => '_SEARCH:chat:room:' . strval($room_id),
+            ), $myrow, 'chat', strval($room_id));
         }
 
         if ($type == 'download_logs') {

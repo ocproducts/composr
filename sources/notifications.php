@@ -883,7 +883,10 @@ function notifications_setting($notification_code, $notification_category, $memb
 
     $db = (substr($notification_code, 0, 4) == 'cns_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
-    if (!notification_locked_down($notification_code)) {
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
+        'l_notification_code' => substr($notification_code, 0, 80),
+    ));
+    if ($test === null) {
         $test = $db->query_select_value_if_there('notifications_enabled', 'l_setting', $specific_where);
 
         if (($test === null) && ($notification_category !== null)) {

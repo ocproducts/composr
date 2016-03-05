@@ -57,6 +57,7 @@ function init__site()
             }
             set_http_status_code('301');
             header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            require_code('urls');
             header('Location: ' . get_self_url(true, false, $non_canonical));
             exit();
         }
@@ -105,7 +106,7 @@ function init__site()
             $parsed_base_url = parse_url(get_base_url());
 
             if ((array_key_exists('host', $parsed_base_url)) && (strtolower($parsed_base_url['host']) != strtolower($access_host))) {
-                if (!array_key_exists('ZONE_MAPPING_' . get_zone_name(), $SITE_INFO)) {
+                if (empty($SITE_INFO['ZONE_MAPPING_' . get_zone_name()])) {
                     if ((!is_null($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
@@ -1796,16 +1797,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
-            'created' => date('Y-m-d', $comcode_page_row['p_add_date']),
-            'creator' => (is_guest($comcode_page_row['p_submitter'])) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($comcode_page_row['p_submitter']),
-            'publisher' => '', // blank means same as creator
-            'modified' => ($comcode_page_row['p_edit_date'] === null) ? '' : date('Y-m-d', $comcode_page_row['p_edit_date']),
-            'type' => 'Comcode page',
             'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
             'identifier' => $zone . ':' . $codename,
-            'description' => '',
-            //'category' => ???,
-        ));
+        ), $comcode_page_row, 'comcode_page', $zone . ':' . $codename);
     }
 
     if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
@@ -1899,6 +1893,9 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             $_title = get_translated_text($PT_PAIR_CACHE_CP[$the_page]['cc_page_title'], null, null, true);
             if ($_title === null) {
                 $_title = $the_page;
+            }
+            if ($GLOBALS['XSS_DETECT']) {
+                ocp_mark_as_escaped($_title);
             }
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }

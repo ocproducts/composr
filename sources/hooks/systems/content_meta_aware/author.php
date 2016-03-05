@@ -35,6 +35,7 @@ class Hook_content_meta_aware_author
             'support_custom_fields' => true,
 
             'content_type_label' => 'global:AUTHOR',
+            'content_type_universal_label' => 'Author',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'authors',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_author
             'description_field' => 'description',
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/rich_content/authors',
 
             'view_page_link_pattern' => '_SEARCH:authors:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_authors:_add:_WILD',

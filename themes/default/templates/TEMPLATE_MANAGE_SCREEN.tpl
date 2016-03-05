@@ -9,6 +9,8 @@
 {+END}
 
 <script>// <![CDATA[
-	window.current_theme='{THEME;/}';
-	load_template_previews();
+	add_event_listener_abstract(window,'load',function() {
+		window.current_theme='{THEME;/}';
+		load_template_previews();
+	});
 //]]></script>

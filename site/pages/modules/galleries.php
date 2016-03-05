@@ -67,8 +67,10 @@ class Module_galleries
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'galleries'));
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/galleries', true, true);
-        deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/galleries', true, true);
+            deldir_contents(get_custom_file_base() . '/uploads/galleries_thumbs', true);
+        }
     }
 
     /**
@@ -352,21 +354,8 @@ class Module_galleries
             // Metadata
             seo_meta_load_for('gallery', $cat, $title_to_use_2);
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_date']),
-                'creator' => is_null($myrow['g_owner']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_owner']),
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Gallery',
-                'title' => comcode_escape($fullname),
                 'identifier' => '_SEARCH:galleries:browse:' . $cat,
-                'description' => get_translated_text($myrow['description']),
-                //'category' => ???,
-            ));
-            if ($rep_image != '') {
-                set_extra_request_metadata(array(
-                    'image' => (url_is_local($rep_image) ? (get_custom_base_url() . '/') : '') . $rep_image,
-                ));
-            }
+            ), $myrow, 'gallery', $cat);
 
             $this->cat = $cat;
             $this->root = $root;
@@ -450,34 +439,18 @@ class Module_galleries
                 require_code('mime_types');
                 $mime_type = get_mime_type($extension, has_privilege($myrow['submitter'], 'comcode_dangerous'));
                 set_extra_request_metadata(array(
-                    'created' => date('Y-m-d', $myrow['add_date']),
-                    'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                    'publisher' => '', // blank means same as creator
-                    'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                    'type' => 'Video',
-                    'title' => get_translated_text($myrow['title']),
                     'identifier' => '_SEARCH:galleries:video:' . strval($id),
-                    'description' => get_translated_text($myrow['description']),
                     'image' => $thumb_url,
                     'video' => $url,
                     'video:height' => strval($myrow['video_height']),
                     'video:width' => strval($myrow['video_width']),
                     'video:type' => $mime_type,
-                    //'category' => ???,
-                ));
+                ), $myrow, 'video', strval($id));
             } else {
                 set_extra_request_metadata(array(
-                    'created' => date('Y-m-d', $myrow['add_date']),
-                    'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                    'publisher' => '', // blank means same as creator
-                    'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                    'type' => 'Image',
-                    'title' => get_translated_text($myrow['title']),
                     'identifier' => '_SEARCH:galleries:' . $type . ':' . strval($id),
-                    'description' => get_translated_text($myrow['description']),
                     'image' => $url,
-                    //'category' => ???,
-                ));
+                ), $myrow, 'image', strval($id));
             }
 
             $this->id = $id;

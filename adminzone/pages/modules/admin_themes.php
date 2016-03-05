@@ -1047,7 +1047,7 @@ class Module_admin_themes
             return $this->choose_theme($this->title);
         }
 
-        $url = build_url(array('page' => '_SELF', 'file' => $file, 'type' => '_edit_css'), '_SELF');
+        $url = build_url(array('page' => '_SELF', 'type' => '_edit_css', 'file' => $file), '_SELF');
 
         $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
         if (!file_exists($path)) {
@@ -1216,7 +1216,8 @@ class Module_admin_themes
         }
 
         require_code('caches3');
-        erase_cached_templates();
+        erase_cached_templates(false, array(preg_replace('#\..*#', '', $file)));
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
 
         log_it('EDIT_CSS', $theme, $file);
 
@@ -1757,6 +1758,8 @@ class Module_admin_themes
     {
         $theme = $this->theme;
 
+        require_code('caches3');
+
         foreach (array_keys($_REQUEST) as $_i) {
             $matches = array();
             if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
@@ -1845,13 +1848,14 @@ class Module_admin_themes
                 }
             }
             log_it('EDIT_TEMPLATES', $file, $theme);
+
+            // Erase cache
+            erase_cached_templates(false, array(preg_replace('#\..*#', '', basename($file))));
         }
 
         // Erase cache
-        $theme = filter_naughty(post_param_string('theme'));
-        require_code('caches3');
-        erase_cached_templates();
-        erase_block_cache();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
+        erase_block_cache(false, $theme);
 
         if (get_param_integer('save_and_stay', 0) == 1) {
             return inform_screen($this->title, protect_from_escaping('
@@ -1985,7 +1989,7 @@ class Module_admin_themes
 
         require_code('caches3');
         Self_learning_cache::erase_smart_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE);
 
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, $lang, 'image', $id);
     }
@@ -2179,7 +2183,7 @@ class Module_admin_themes
 
         require_code('caches3');
         Self_learning_cache::erase_smart_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE);
         persistent_cache_delete('IMAGE_DIMS');
 
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, $lang, 'image', $id);

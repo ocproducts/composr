@@ -35,6 +35,7 @@ class Hook_content_meta_aware_gallery
             'support_custom_fields' => true,
 
             'content_type_label' => 'galleries:GALLERY',
+            'content_type_universal_label' => 'Gallery',
 
             'connection' => $GLOBALS['SITE_DB'],
             'where' => 'name NOT LIKE \'' . db_encode_like('download\_%') . '\'',
@@ -57,6 +58,7 @@ class Hook_content_meta_aware_gallery
             'description_field' => 'description',
             'thumb_field' => 'rep_image',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:galleries:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_galleries:_edit_category:_WILD',
@@ -68,7 +70,7 @@ class Hook_content_meta_aware_gallery
 
             'views_field' => null,
             'order_field' => null,
-            'submitter_field' => null,
+            'submitter_field' => 'g_owner',
             'author_field' => null,
             'add_time_field' => 'add_date',
             'edit_time_field' => null,

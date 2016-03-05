@@ -135,8 +135,9 @@ function init__global3()
     define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
     define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
 
-    global $ESCAPE_HTML_OUTPUT; // Used to track what is already escaped in kid-gloves modes
+    global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
+    $KNOWN_TRUE_HTML = array();
 }
 
 /**
@@ -511,11 +512,145 @@ function attach_to_screen_footer($data)
  * @sets_output_state
  *
  * @param  array $metadata Extra metadata
+ * @param  ?array $row Content row to automatically grab data from, if we also have $content_type (null: unknown)
+ * @param  ?ID_TEXT $content_type Content type (null: unknown)
+ * @param  ?ID_TEXT $content_id Content ID (null: unknown)
  */
-function set_extra_request_metadata($metadata)
+function set_extra_request_metadata($metadata, $row = null, $content_type = null, $content_id = null)
 {
     global $METADATA;
     $METADATA += $metadata;
+
+    if ($content_type !== null) {
+        require_code('content');
+        $cma_ob = get_content_object($content_type);
+        if ($cma_ob !== null) {
+            $cma_info = $cma_ob->info();
+            if ($cma_ob === null) {
+                $content_type = null;
+            }
+        } else {
+            $content_type = null;
+        }
+    }
+
+    if ($row !== null && $content_type !== null) {
+        // Add in generic data...
+
+        $cma_mappings = array(
+            'created' => 'add_time_field',
+            'creator' => isset($cma_info['author_field']) ? 'author_field' : 'submitter_field',
+            'publisher' => 'submitter_field',
+            'modified' => 'edit_time_field',
+            'title' => 'title_field',
+            'description' => 'description_field',
+            'views' => 'views_field',
+            'validated' => 'validated_field',
+            'type' => 'content_type_universal_label',
+        );
+
+        foreach ($cma_mappings as $meta_type => $cma_field) {
+            if (!isset($METADATA[$meta_type])) {
+                if (isset($row[$cma_info[$cma_field]])) {
+                    switch ($meta_type) {
+                        case 'created':
+                        case 'modified':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = date('Y-m-d', $row[$cma_info[$cma_field]]);
+                            break;
+
+                        case 'publisher':
+                        case 'creator':
+                            if ($cma_field == 'author_field') {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                                $val = $val_raw;
+                            } else {
+                                $val_raw = strval($row[$cma_info[$cma_field]]);
+                                $val = $GLOBALS['FORUM_DRIVER']->get_username($row[$cma_info[$cma_field]]);
+                            }
+                            break;
+
+                        case 'title':
+                            if ($cma_info['title_field_dereference']) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
+                            if ((!isset($cma_info['title_field_supports_comcode'])) || (!$cma_info['title_field_supports_comcode'])) {
+                                $val = comcode_escape($val_raw);
+                            } else {
+                                $val = $val_raw;
+                            }
+                            break;
+
+                        case 'description':
+                            $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            $val = $val_raw;
+                            break;
+
+                        case 'views':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = $val_raw;
+                            break;
+
+                        case 'validated':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = $val_raw;
+                            break;
+
+                        default:
+                            $val_raw = $row[$cma_info[$cma_field]];
+                            $val = $val_raw;
+                            break;
+                    }
+
+                    if ($val !== null) {
+                        $METADATA[$meta_type] = $val;
+                        $METADATA[$meta_type . '_RAW'] = $val_raw;
+                    }
+                }
+            }
+        }
+
+        // Add in image...
+
+        $image_url = '';
+        if ($cma_info['thumb_field'] !== null) {
+            if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
+                $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
+            } else {
+                $image_url = $row[$cma_info['thumb_field']];
+            }
+            if ($image_url != '') {
+                if ($cma_info['thumb_field_is_theme_image']) {
+                    $image_url = find_theme_image($image_url, true);
+                } else {
+                    if (url_is_local($image_url)) {
+                        $image_url = get_custom_base_url() . '/' . $image_url;
+                    }
+                }
+            }
+        }
+        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '')) {
+            $METADATA['image'] = find_theme_image($cma_info['alternate_icon_theme_image'], true);
+        }
+        if (!empty($image_url)) {
+            $METADATA['image'] = $image_url;
+        }
+
+        // Add all $cma_info
+        $METADATA += $cma_info;
+        unset($METADATA['connection']);
+        $METADATA['content_type_label_trans'] = do_lang($cma_info['content_type_label']);
+    }
+
+    if ($content_type !== null) {
+        $METADATA['content_type'] = $content_type;
+    }
+
+    if ($content_id !== null) {
+        $METADATA['content_id'] = $content_id;
+    }
 }
 
 /**
@@ -1359,13 +1494,13 @@ function fix_id($param)
  */
 function match_key_match($match_keys, $support_post = false, $current_params = null, $current_zone_name = null, $current_page_name = null)
 {
-    if (!running_script('index') && !running_script('iframe')) {
-        return false;
-    }
-
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
+        if (!running_script('index') && !running_script('iframe')) {
+            return false;
+        }
+
         $current_zone_name = get_zone_name();
     }
     if ($current_page_name === null) {
@@ -1428,6 +1563,19 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
         }
     }
     return false;
+}
+
+/**
+ * Get the name of the page in the URL or active script.
+ *
+ * @return ID_TEXT The current page/script name
+ */
+function get_page_or_script_name()
+{
+    if (running_script('index') || running_script('iframe')) {
+        return get_page_name();
+    }
+    return current_script();
 }
 
 /**
@@ -1679,7 +1827,7 @@ function get_ip_address($amount = 4, $ip = null)
     }
 
     global $SITE_INFO;
-    if (($amount == 3) && (array_key_exists('full_ips', $SITE_INFO)) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
+    if (($amount == 3) && (!empty($SITE_INFO['full_ips'])) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
         $amount = 4;
     }
 

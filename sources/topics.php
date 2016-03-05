@@ -759,7 +759,8 @@ class CMS_Topic
             if (get_forum_type() == 'cns') {
                 require_code('cns_topicview');
                 require_code('cns_posts');
-                $post += cns_get_details_to_show_post($post, $topic_info);
+                $only_post = (($depth == 0) && (count($rendered) == 1) && ((!isset($post['children'])) || (count($post['children']) == 0)));
+                $post += cns_get_details_to_show_post($post, $topic_info, $only_post);
             }
 
             // Misc details
@@ -852,7 +853,9 @@ class CMS_Topic
                     if (array_key_exists($post['member'], $SIGNATURES_CACHE)) {
                         $sig = $SIGNATURES_CACHE[$post['member']];
                     } else {
-                        $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($post['member']), 'm_signature', $GLOBALS['FORUM_DB']);
+                        $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($post['member']);
+                        $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+                        $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
                         $SIGNATURES_CACHE[$post['member']] = $sig;
                     }
                 }
@@ -925,6 +928,7 @@ class CMS_Topic
                 }
             }
 
+            // Ratings
             if (get_forum_type() == 'cns') {
                 require_code('feedback');
                 actualise_rating(true, 'post', strval($post['id']), get_self_url(), $post['title']);
@@ -933,6 +937,7 @@ class CMS_Topic
                 $rating = new Tempcode();
             }
 
+            // Mark read
             if (array_key_exists('intended_solely_for', $post)) {
                 // Has now read
                 decache('side_cns_personal_topics', null, get_member());
@@ -952,6 +957,8 @@ class CMS_Topic
                     }
                 }
             }
+
+            // Render...
 
             $is_unread = is_null($this->topic_last_read) || ($this->topic_last_read <= $post['date']) || ((get_forum_type() == 'cns') && ($this->topic_last_read <= $post['p_last_edit_time']));
             if ($post['member'] == get_member()) {
@@ -1004,7 +1011,6 @@ class CMS_Topic
                 )));
             }
 
-            // Render
             $sequence->attach($post_tempcode);
         }
 

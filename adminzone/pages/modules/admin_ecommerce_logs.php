@@ -446,7 +446,7 @@ class Module_admin_ecommerce_logs
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
-        $_type_code = $products[$type_code][4];
+        $item_name = $products[$type_code][4];
 
         if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
             if (($purchase_id == '') || (post_param_string('username', '') != '')) {

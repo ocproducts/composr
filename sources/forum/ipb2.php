@@ -701,7 +701,7 @@ class Forum_driver_ipb2 extends forum_driver_ipb_shared
 
         // Set stronghold
         global $SITE_INFO;
-        if ((array_key_exists('stronghold_cookies', $SITE_INFO)) && ($SITE_INFO['stronghold_cookies'] == 1)) {
+        if ((!empty($SITE_INFO['stronghold_cookies'])) && ($SITE_INFO['stronghold_cookies'] == '1')) {
             $ip_octets = explode('.', cms_srv('REMOTE_ADDR'));
             $crypt_salt = md5(get_db_forums_password() . get_db_forums_user());
             $a = get_member_cookie();
@@ -766,7 +766,7 @@ class Forum_driver_ipb2 extends forum_driver_ipb_shared
 
             // Check stronghold
             global $SITE_INFO;
-            if ((array_key_exists('stronghold_cookies', $SITE_INFO)) && ($SITE_INFO['stronghold_cookies'] == 1)) {
+            if ((!empty($SITE_INFO['stronghold_cookies'])) && ($SITE_INFO['stronghold_cookies'] == 1)) {
                 $ip_octets = explode('.', cms_srv('REMOTE_ADDR'));
                 $crypt_salt = md5(get_db_forums_password() . get_db_forums_user());
                 $a = get_member_cookie();

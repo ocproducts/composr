@@ -39,6 +39,7 @@ class Hook_content_meta_aware_group
             'support_custom_fields' => true,
 
             'content_type_label' => 'global:USERGROUP',
+            'content_type_universal_label' => 'Usergroup',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_groups',
@@ -62,6 +63,7 @@ class Hook_content_meta_aware_group
             //'thumb_field_is_theme_image' => true,
             'thumb_field' => null,
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/groups',
 
             'view_page_link_pattern' => '_SEARCH:groups:view:_WILD',
             'edit_page_link_pattern' => 'adminzone:admin_cns_groups:_edit:_WILD',

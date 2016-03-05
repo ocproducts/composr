@@ -776,6 +776,35 @@ function ecv_IMG($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
+function ecv_IMG_MTIME($lang, $escaped, $param)
+{
+    if (isset($param[0])) {
+        $path = find_theme_image($param[0], true, true);
+        if ($path != '') {
+            $full_path = get_custom_file_base() . '/' . $path;
+            if (!is_file($full_path)) {
+                $full_path = get_file_base() . '/' . $path;
+            }
+            $value = @strval(filemtime($full_path));
+        }
+    }
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
 function ecv_IMG_WIDTH($lang, $escaped, $param)
 {
     require_code('images');
@@ -2265,7 +2294,7 @@ function ecv_BANNER($lang, $escaped, $param)
     if (addon_installed('banners')) {
         global $SITE_INFO;
         $is_on_banners = ((isset($param[1])) && ($param[1] == '1')) || (((!has_privilege(get_member(), 'banner_free')) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (get_option('admin_banners') == '1')) || (!is_null($GLOBALS['CURRENT_SHARE_USER']))));
-        if (array_key_exists('throttle_bandwidth_registered', $SITE_INFO)) {
+        if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
             $views_till_now = intval(get_value('page_views'));
             $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
             $total_bandwidth = intval(get_value('download_bandwidth'));

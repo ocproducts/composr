@@ -192,7 +192,9 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
             } else {
-                $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']), 'm_signature', $GLOBALS['FORUM_DB']);
+                $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']);
+                $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+                $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
                 $SIGNATURES_CACHE[$_postdetails['p_poster']] = $sig;
             }
             $post['signature'] = $sig;
@@ -349,16 +351,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_really_threaded' => is_null($topic_info['f_is_threaded']) ? 0 : $topic_info['f_is_threaded'],
             'last_time' => $topic_info['t_cache_last_time'],
             'metadata' => array(
-                'created' => date('Y-m-d', $topic_info['t_cache_first_time']),
-                'creator' => $topic_info['t_cache_first_username'],
-                'publisher' => '', // blank means same as creator
-                'modified' => date('Y-m-d', $topic_info['t_cache_last_time']),
-                'type' => 'Forum topic',
-                'title' => $topic_info['t_cache_first_title'],
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
-                'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category' => ???,
             ),
             'row' => $topic_info,
         );

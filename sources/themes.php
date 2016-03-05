@@ -222,6 +222,11 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         }
     }
 
+    // Add to cache
+    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
+        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $path);
+    }
+
     // Make absolute
     if ((url_is_local($path)) && (!$leave_local) && ($path != '')) {
         if (is_forum_db($db)) {
@@ -248,9 +253,6 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
     }
 
     $ret = cdn_filter($path);
-    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
-    }
 
     if ($RECORD_THEME_IMAGES_CACHE) {
         global $RECORDED_THEME_IMAGES;

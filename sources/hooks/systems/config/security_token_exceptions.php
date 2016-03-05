@@ -51,6 +51,8 @@ class Hook_config_security_token_exceptions
      */
     public function get_default()
     {
-        return '';
+        return 'purchase
+subscriptions
+invoices';
     }
 }

@@ -1385,9 +1385,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
 
             // Work out our queries
-            $query = ' FROM ' . $table_clause . ' WHERE ' . (($where_clause == '') ? '' : ($where_clause . (($where_clause_and == '') ? '' : ' AND ')));
+            $query = ' FROM ' . $table_clause . (($where_clause == '') ? '' : (' WHERE ' . $where_clause));
             if ($where_clause_and != '') {
-                $query .= '(' . $where_clause_and . ')';
+                $query .= (($where_clause == '') ? ' WHERE ' : ' AND ') . '(' . $where_clause_and . ')';
             }
             if ($group_by_ok && false/*Actually we cannot assume that r.id exists*/) {
                 $_count_query_main_search = 'SELECT COUNT(DISTINCT r.id)' . $query;

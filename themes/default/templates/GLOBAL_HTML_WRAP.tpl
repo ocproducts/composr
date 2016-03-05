@@ -129,7 +129,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{+START,INCLUDE,GLOBAL_HTML_WRAP_mobile}{+END}
 		{+END}
 
-		{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+START,IF,{$SHOW_FOOTER}}
+			{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+END}
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}

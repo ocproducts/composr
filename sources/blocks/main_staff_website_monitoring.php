@@ -305,10 +305,7 @@ class Block_main_staff_website_monitoring
             }
         }
 
-        $map_comcode = '';
-        foreach ($map as $key => $val) {
-            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
-        }
+        $map_comcode = get_block_ajax_submit_map($map);
         return do_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array('_GUID' => '0abf65878c508bf133836589a8cc45da', 'URL' => get_self_url(), 'BLOCK_NAME' => 'main_staff_website_monitoring', 'MAP' => $map_comcode, 'SITES_BEING_WATCHED' => $sites_being_watched, 'GRID_DATA' => $grid_data));
     }
 }

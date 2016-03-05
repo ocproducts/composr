@@ -1034,7 +1034,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('notifications');
     require_code('comcode');
     $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
-    dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), $ocproducts ? '?' : get_ip_address(), null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
+    dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), $ocproducts ? '?' : get_ip_address(), null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
@@ -1095,12 +1095,12 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'File(/tmp/) is not within the allowed path') === false)
     ) {
         require_code('mail');
-        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
     }
     if (($ocproducts) && (!is_null(get_value('agency_email_address')))) {
         require_code('mail');
         $agency_email_address = get_value('agency_email_address');
-        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
     }
 }
 

@@ -45,8 +45,8 @@ The presence of the blogs CMS module does not stop you using the regular news CM
 Permissions required for blogs are:
  - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permissions tree editor]
  - Permissions to access the [tt]cms:cms_blogs[/tt] module (it's on by default) [set in Admin Zone > Security > Permissions tree editor]
- - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
- - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the Permissions tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
+ - The 'Have personal categories' privilege [set in Admin Zone > Security > Privileges, or as 'Have blog' in the Permissions tree editor on the [tt]cms:cms:news[/tt] module if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
+ - The 'Add mid-impact content' privilege [set in Admin Zone > Security > Privileges, or as 'Add news' in the Permissions tree editor on the [tt]cms:cms:news[/tt] module if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
 [/surround]
 
 [title="2"]Advanced filtering of the news archive[/title]

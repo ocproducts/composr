@@ -84,7 +84,7 @@ class Block_side_cns_private_topics
         require_lang('cns');
         $out = new Tempcode();
         foreach ($rows as $topic) {
-            $topic_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'findpost'), get_module_zone('topicview'));
+            $topic_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['id']), get_module_zone('topicview'));
             $topic_url->attach('#post_' . strval($topic['id']));
             $title = $topic['t_cache_first_title'];
             $date = get_timezoned_date($topic['t_cache_last_time'], true);

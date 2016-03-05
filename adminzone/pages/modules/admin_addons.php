@@ -69,8 +69,10 @@ class Module_admin_addons
         $GLOBALS['SITE_DB']->drop_table_if_exists('addons_files');
         $GLOBALS['SITE_DB']->drop_table_if_exists('addons_dependencies');
 
-        require_code('files');
-        deldir_contents(get_custom_file_base() . '/exports/addons', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            require_code('files');
+            deldir_contents(get_custom_file_base() . '/exports/addons', true);
+        }
     }
 
     /**
@@ -632,10 +634,10 @@ class Module_admin_addons
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
@@ -784,10 +786,10 @@ class Module_admin_addons
         // Clear some caching
         require_code('caches3');
         erase_comcode_page_cache();
-        erase_block_cache();
+        erase_block_cache(true);
         //persistent_cache_delete('OPTIONS');  Done by set_option
         erase_persistent_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

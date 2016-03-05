@@ -36,6 +36,7 @@ class Hook_content_meta_aware_catalogue_entry
             'support_custom_fields' => false,
 
             'content_type_label' => 'catalogues:CATALOGUE_ENTRY',
+            'content_type_universal_label' => 'Catalogue entry',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'catalogue_entries',
@@ -57,6 +58,7 @@ class Hook_content_meta_aware_catalogue_entry
             'description_field' => null,
             'thumb_field' => 'CALL: generate_catalogue_thumb_field',
             'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit:_WILD',

@@ -72,7 +72,7 @@ class Database_Static_mysql_dbx extends Database_super_mysql
         $this->last_select_db = $db;
 
         global $SITE_INFO;
-        if (!array_key_exists('database_charset', $SITE_INFO)) {
+        if (empty($SITE_INFO['database_charset'])) {
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         @dbx_query($db, 'SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"');

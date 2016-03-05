@@ -460,6 +460,7 @@ body#standalone_html_wrap {
 }
 
 header {
+	background-color: {$GET,main_background};
 }
 
 header h1 {
