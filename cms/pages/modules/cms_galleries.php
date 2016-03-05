@@ -1106,7 +1106,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         } else {
             $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = 'root'; // Only option!
             }
         }
@@ -1119,7 +1119,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_images', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_images' => 1));
                 $hidden->attach(form_input_hidden('cat', $cat));
             } else {
@@ -1684,7 +1684,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             }
         } else {
             $num_galleries = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = 'root'; // Only option!
             }
         }
@@ -1697,7 +1697,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             if (empty($root_cat) && $GLOBALS['SITE_DB']->query_select_value('galleries', 'accept_videos', array('name' => 'root')) == 0) {
                 $root_cat = 'root'; // Don't show 'root' itself
             }
-            if ($num_galleries == 1) {
+            if ($num_galleries == 1 && $GLOBALS['SITE_DB']->query_select_value('galleries', 'is_member_synched') == 0) {
                 $cat = $GLOBALS['SITE_DB']->query_select_value('galleries', 'name', array('accept_videos' => 1));
                 $hidden->attach(form_input_hidden('cat', $cat));
             } else {
