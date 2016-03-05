@@ -265,7 +265,7 @@ class Module_admin
             array('wysiwyg', 'rte'),
             array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system', 'package', 'install'),
             array('name', 'title', 'label', ''/*May be a stop word*/),
-            array('analytics', 'statistics', 'hits', 'stats'),
+            array('engagement', 'metric', 'kpi', 'analytics', 'statistics', 'hits', 'stats'),
             array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
             array('announcement', 'cascading'),
             array('description', 'caption', 'summary'),
@@ -298,6 +298,7 @@ class Module_admin
             array('cache', 'decache', 'cleanup'),
             array('ssl', 'https'),
             array('seed', 'theme wizard'),
+            array('chart', 'graph'),
             array('author', 'bio', 'biography'),
             array('block', 'widget'), // Joomla uses 'module', but we don't want to synonym this as it means something else in Composr
             array('moniker', 'slug'),
