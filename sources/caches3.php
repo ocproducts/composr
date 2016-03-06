@@ -309,6 +309,11 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                     $_dir = @opendir($dir_path);
                     if ($_dir !== false) {
                         while (false !== ($file = readdir($_dir))) {
+                            // Basic filter
+                            if ($file[0] == '.' || $file == 'index.html') {
+                                continue;
+                            }
+
                             if (!isset($all_template_data[$file])) {
                                 $all_template_data[$file] = array();
                             }
