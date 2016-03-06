@@ -145,6 +145,7 @@ function composr_homesite_install()
     set_option('leader_board_size', '8');
     set_option('allowed_post_submitters', "compo.sr\nocproducts.com\nlocalhost\n127.0.0.1\n192.168.1.100\npaypal.com\nsandbox.paypal.com");
     set_option('security_token_exceptions', "_make_release\npurchase\nsubscriptions\ninvoices");
+    set_option('keywords', 'cms,content management,website,web property,dynamic,interactive,social media,social networking,forum,community,build,make,create,software,php');
 
     // Downloads structure
     // -------------------
