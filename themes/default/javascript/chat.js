@@ -96,7 +96,7 @@ function check_chat_options(ob)
 {
 	if (!ob.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/))
 	{
-		window.fauxmodal_alert('{!BAD_HTML_COLOUR;^}');
+		window.fauxmodal_alert('{!chat:BAD_HTML_COLOUR;^}');
 		return false;
 	}
 
@@ -147,7 +147,7 @@ function get_ticked_people(form)
 
 	if (people=='')
 	{
-		window.fauxmodal_alert('{!NOONE_SELECTED_YET;^}');
+		window.fauxmodal_alert('{!chat:NOONE_SELECTED_YET;^}');
 		return '';
 	}
 
