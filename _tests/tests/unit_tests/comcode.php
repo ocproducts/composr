@@ -40,4 +40,36 @@ class comcode_test_set extends cms_test_case
             $this->assertTrue($matches, '"' . $comcode . '" produced instead of "' . $actual_altered . '" "' . $html . '"');
         }
     }
+
+    public function testMentions()
+    {
+        global $MEMBER_MENTIONS_IN_COMCODE;
+
+        $tests = array(
+            // Positives
+            '@test' => true,
+            ' @test' => true,
+            '@test ' => true,
+            ' @test ' => true,
+            '@test,' => true,
+
+            // Negatives
+            ',@test' => false, // Must be preceded white-space or nothing
+            ',@test,' => false, // "
+            'x@test ' => false, // "
+            '@testx' => false, // Must not have junk on tail-end
+        );
+
+        foreach ($tests as $test => $expected) {
+            $MEMBER_MENTIONS_IN_COMCODE = array();
+            comcode_to_tempcode($test);
+
+            if ($expected) {
+                $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 1, 'Expected to see a mention for: "' . $test . '"');
+            } else 
+            {
+                $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 0, 'Expected to NOT see a mention for: "' . $test . '"');
+            }
+        }
+    }
 }

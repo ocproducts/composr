@@ -1102,7 +1102,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
 
                                 // Usernames
-                                if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
+                                if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (($pos <= 1) || (trim($comcode[$pos - 2]) == '')) && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
                                     $matches = array();
                                     $explicit_username = ($next == '{');
                                     if (preg_match($explicit_username ? '#\{([^"{}&\'\$<>]+)\}\}#A' : '#(\w[^\n]*)#A', $comcode, $matches, 0, $pos) != 0) {
