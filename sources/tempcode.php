@@ -1992,7 +1992,7 @@ class Tempcode
         $TEMPCODE_OUTPUT_STARTED = true;
         $tpl_funcs = $KEEP_TPL_FUNCS;
         $seq_parts_group_cnt = count($this->seq_parts);
-        $i = &$this->evaluate_echo_offset_group;
+        $i = &$this->evaluate_echo_offset_group; // A reference, so evaluate_echo_offset_group will go up naturally via looping of $i
         if ($stop_if_stuck) {
             $stop_if_stuck_bak = $STOP_IF_STUCK;
             $STOP_IF_STUCK = true;
