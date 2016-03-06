@@ -54,7 +54,7 @@ class comcode_test_set extends cms_test_case
             '@test,' => true,
 
             // Negatives
-            ',@test' => false, // Must be preceded white-space or nothing
+            ',@test' => false, // Must be preceded by white-space or nothing
             ',@test,' => false, // "
             'x@test ' => false, // "
             '@testx' => false, // Must not have junk on tail-end
