@@ -424,7 +424,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         require_code('site');
     }
 
-    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml')) {
+    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
         $restrict_answer = cns_get_best_group_property($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()), 'flood_control_submit_secs');
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;

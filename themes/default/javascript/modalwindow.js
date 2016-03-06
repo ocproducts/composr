@@ -612,7 +612,7 @@ function ModalWindow()
 			this.box_wrapper.childNodes[0].style.width=box_width;
 			this.box_wrapper.childNodes[0].style.height=box_height;
 			var iframe=this.box_wrapper.getElementsByTagName('iframe');
-			if ((typeof iframe[0]!='undefined') && (iframe[0].contentWindow) && (iframe[0].contentWindow.location.host==window.location.host) && (iframe[0].contentWindow.document) && (iframe[0].contentWindow.document.body)) // Balance iframe height
+			if ((has_iframe_ownership(iframe[0])) && (iframe[0].contentWindow.document.body)) // Balance iframe height
 			{
 				iframe[0].style.width='100%';
 				if (height=='auto')
@@ -675,7 +675,7 @@ function ModalWindow()
 				{+END}
 
 				if ((init) || (was_fixed)) do_scroll=true;
-				if (/*maybe a navigation has happened and we need to scroll back up*/(typeof iframe[0]!='undefined') && (typeof iframe[0].contentWindow.scrolled_up_for=='undefined'))
+				if (/*maybe a navigation has happened and we need to scroll back up*/(typeof iframe[0]!='undefined') && (has_iframe_ownership(iframe[0])) && (typeof iframe[0].contentWindow.scrolled_up_for=='undefined'))
 				{
 					do_scroll=true;
 				}
@@ -691,7 +691,7 @@ function ModalWindow()
 				try // Scroll to top to see
 				{
 					this.top_window.scrollTo(0,0);
-					if (typeof iframe[0]!='undefined')
+					if ((typeof iframe[0]!='undefined') && (has_iframe_ownership(iframe[0])))
 						iframe[0].contentWindow.scrolled_up_for=true;
 				}
 				catch (e) {}
@@ -861,7 +861,7 @@ function ModalWindow()
 					window.setTimeout(function() { _this.add_event(_this.box_wrapper,'click',_this.clickout_finished); },1000);
 
 					this.add_event(iframe,'load',function() {
-						if ((iframe.contentWindow.location.host==window.location.host) && (iframe.contentWindow.document) && (typeof iframe.contentWindow.document.getElementsByTagName('h1')[0]=='undefined') && (typeof iframe.contentWindow.document.getElementsByTagName('h2')[0]=='undefined'))
+						if ((has_iframe_ownership(iframe)) && (typeof iframe.contentWindow.document.getElementsByTagName('h1')[0]=='undefined') && (typeof iframe.contentWindow.document.getElementsByTagName('h2')[0]=='undefined'))
 						{
 							if (iframe.contentWindow.document.title!='')
 							{
@@ -874,7 +874,7 @@ function ModalWindow()
 					// Fiddle it, to behave like a popup would
 					var name=this.name;
 					var make_frame_like_popup=function() {
-						if ((iframe) && (iframe.contentWindow) && (iframe.contentWindow.location.host==window.location.host) && (iframe.contentWindow.document) && (iframe.contentWindow.document.body) && (typeof iframe.contentWindow.document.body.done_popup_trans=='undefined'))
+						if ((has_iframe_ownership(iframe)) && (iframe.contentWindow.document.body) && (typeof iframe.contentWindow.document.body.done_popup_trans=='undefined'))
 						{
 							iframe.contentWindow.document.body.style.background='transparent';
 
