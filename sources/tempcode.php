@@ -481,6 +481,18 @@ function make_string_tempcode($string)
 }
 
 /**
+ * Add entity entity escaping to a string/Tempcode.
+ *
+ * @param  mixed $data String
+ * @return Tempcode Tempcode
+ */
+function escape_html_tempcode($data)
+{
+    // This is a bit of a hack, but it works. We don't want to have to have a route for altering Tempcode structure (because that has a performance hit, so we piggy-back on recursing through a null language string and add escaping when we do it)
+	return build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($data), array(FORCIBLY_ENTITY_ESCAPED));
+}
+
+/**
  * Apply whatever escaping is requested to the given value.
  *
  * @param  array $escaped A list of escaping to do
