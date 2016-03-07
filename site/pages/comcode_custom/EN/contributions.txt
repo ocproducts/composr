@@ -108,6 +108,8 @@
 
 					<p class="niceBoxBreak"><strong><a href="http://php.opensourcecms.com/scripts/details.php?scriptid=210">Rate us on OpenSourceCMS</a></strong></p>
 
+					<p class="niceBoxBreak"><strong><a href="http://www.cmsmatrix.org/matrix/cms-matrix/composr-cms">Rate us on CMS Matrix</a></strong></p>
+
 					<p class="niceBoxBreak"><strong><a href="https://www.facebook.com/composrcms/">Like us on Facebook</a></strong></p>
 
 					<p class="niceBoxBreak"><strong><a href="https://twitter.com/composr_cms">Follow us on Twitter</a></strong></p>
