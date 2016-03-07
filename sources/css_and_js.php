@@ -118,7 +118,6 @@ function js_compile($j, $js_cache_path, $minify = true)
 {
     cms_profile_start_for('js_compile');
 
-    require_lang('javascript');
     global $KEEP_MARKERS, $SHOW_EDIT_LINKS;
     $temp_keep_markers = $KEEP_MARKERS;
     $temp_show_edit_links = $SHOW_EDIT_LINKS;

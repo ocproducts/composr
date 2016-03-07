@@ -309,7 +309,6 @@ class Hook_addon_registry_newsletter
      */
     public function tpl_preview__block_main_newsletter_signup()
     {
-        require_lang('javascript');
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_NEWSLETTER_SIGNUP', array(
                 'URL' => placeholder_url(),

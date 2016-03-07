@@ -155,8 +155,7 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
-    require_lang('javascript');
-    warn_exit(do_lang_tempcode('NOT_INTEGER'));
+    warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
     return '';
 }
 

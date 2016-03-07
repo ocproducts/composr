@@ -93,7 +93,6 @@ class Hook_profiles_tabs_edit_signature
         $required = false;
         $has_preview = true;
 
-        require_lang('javascript');
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('ajax');
