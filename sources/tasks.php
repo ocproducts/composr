@@ -24,13 +24,16 @@
 function tasks_script()
 {
     $id = get_param_integer('id');
-    $secure_ref = get_param_string('secure_ref');
+    $secure_ref = get_param_string('secure_ref', '');
 
-    $task_rows = $GLOBALS['SITE_DB']->query_select('task_queue', array('*'), array(
+    $where = array(
         'id' => $id,
-        't_secure_ref' => $secure_ref,
         't_locked' => 0,
-    ), '', 1);
+    );
+    if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+        $where['t_secure_ref'] = $secure_ref;
+    }
+    $task_rows = $GLOBALS['SITE_DB']->query_select('task_queue', array('*'), $where, '', 1);
     if (!array_key_exists(0, $task_rows)) {
         return; // Missing / locked / secure_ref error
     }

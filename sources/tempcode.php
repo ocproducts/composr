@@ -481,6 +481,18 @@ function make_string_tempcode($string)
 }
 
 /**
+ * Add entity entity escaping to a string/Tempcode.
+ *
+ * @param  mixed $data String
+ * @return Tempcode Tempcode
+ */
+function escape_html_tempcode($data)
+{
+    // This is a bit of a hack, but it works. We don't want to have to have a route for altering Tempcode structure (because that has a performance hit, so we piggy-back on recursing through a null language string and add escaping when we do it)
+	return build_closure_tempcode(TC_LANGUAGE_REFERENCE, 'dont_escape_trick', array($data), array(FORCIBLY_ENTITY_ESCAPED));
+}
+
+/**
  * Apply whatever escaping is requested to the given value.
  *
  * @param  array $escaped A list of escaping to do
@@ -1980,7 +1992,7 @@ class Tempcode
         $TEMPCODE_OUTPUT_STARTED = true;
         $tpl_funcs = $KEEP_TPL_FUNCS;
         $seq_parts_group_cnt = count($this->seq_parts);
-        $i = &$this->evaluate_echo_offset_group;
+        $i = &$this->evaluate_echo_offset_group; // A reference, so evaluate_echo_offset_group will go up naturally via looping of $i
         if ($stop_if_stuck) {
             $stop_if_stuck_bak = $STOP_IF_STUCK;
             $STOP_IF_STUCK = true;

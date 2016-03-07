@@ -872,7 +872,8 @@ function do_site()
 
     // Caching for spiders
     if ($GLOBALS['STATIC_CACHE_ENABLED']) {
-        save_static_caching($out);
+        $out2 = clone $out; // This is needed to stop things messing up during output streaming
+        save_static_caching($out2);
     }
 
     // Something to do now rather than output normal screen?

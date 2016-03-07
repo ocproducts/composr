@@ -593,8 +593,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     if (((!$comcode_dangerous_html) || ($semiparse_mode)) && ($next == '<')) {
                         $tag_match = array();
                         if (preg_match('#(/)?(\w+)#A', $comcode, $tag_match, 0, $pos) != 0) {
-                            $slash_pos = strpos($comcode, '/', $pos);
                             $close_pos = strpos($comcode, '>', $pos);
+                            $slash_pos = ($close_pos === false) ? false : strrpos(substr($comcode, 0, $close_pos), '/');
                             if ($slash_pos === false || $close_pos === false || $slash_pos + 1 !== $close_pos) { // If not a self-closing tag
                                 if ($tag_match[1] == '/') { // Closing
                                     if (array_peek($html_element_stack) === $tag_match[2]) {
@@ -603,6 +603,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $html_errors = true;
                                     }
                                 } else { // Opening
+                                    if ($tag_match[2] == 'img')
+                                    {
+                                        @var_dump(substr($comcode,$pos,$close_pos-$pos));
+                                        exit();
+                                    }
                                     array_push($html_element_stack, $tag_match[2]);
                                 }
                             }
@@ -1102,7 +1107,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
 
                                 // Usernames
-                                if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
+                                if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (($pos <= 1) || (trim($comcode[$pos - 2]) == '')) && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
                                     $matches = array();
                                     $explicit_username = ($next == '{');
                                     if (preg_match($explicit_username ? '#\{([^"{}&\'\$<>]+)\}\}#A' : '#(\w[^\n]*)#A', $comcode, $matches, 0, $pos) != 0) {

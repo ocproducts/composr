@@ -46,7 +46,7 @@ class Hook_checklist_unvalidated
             '_GUID' => '48f2bc149dca356c8b6bd87092f70d3c',
             'URL' => '',
             'STATUS' => $_status,
-            'TASK' => do_lang_tempcode('NAG_VALIDATE', $url->evaluate()),
+            'TASK' => do_lang_tempcode('NAG_VALIDATE', escape_html_tempcode($url)),
             'INFO' => do_lang_tempcode('UNVALIDATED_ENTRIES', escape_html(integer_format($num_unvalidated_1)), escape_html(integer_format($num_unvalidated_2))),
         ));
 
