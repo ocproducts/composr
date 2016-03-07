@@ -41,7 +41,7 @@
 		<h2>{!PROCEED}</h2>
 
 		<p class="proceed_button">
-			<input accesskey="u" class="buttons__save button_screen" type="submit" value="{SUBMIT_NAME*}" />
+			<input accesskey="u" class="button_screen buttons__save" type="submit" value="{SUBMIT_NAME*}" />
 		</p>
 	</div>
 </form>

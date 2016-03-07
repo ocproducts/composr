@@ -5,7 +5,7 @@
 				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<input class="buttons__cart_add button_screen_item"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
+					<input class="button_screen_item buttons__cart_add"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
 					<input type="hidden" id="quantity" name="quantity" value="1" />
 					<input type="hidden" name="product_id" value="{PRODUCT_ID*}" />
 				</form>
@@ -19,7 +19,7 @@
 					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<input class="buttons__cart_checkout button_screen_item" type="submit" value="{!BUY_NOW}" />
+						<input class="button_screen_item buttons__cart_checkout" type="submit" value="{!BUY_NOW}" />
 
 						{+START,IF,{ALLOW_OPTOUT_TAX}}
 							<div class="tax_opted_out">

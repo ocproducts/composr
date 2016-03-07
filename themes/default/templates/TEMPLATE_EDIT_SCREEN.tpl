@@ -30,11 +30,11 @@
 			{+END}
 
 			<div class="right">
-				<input onclick="disable_button_just_clicked(this); this.form.target='_self'; this.form.action='{URL;*}';" class="buttons__save button_screen" type="submit" value="{!SAVE}" />
+				<input onclick="disable_button_just_clicked(this); this.form.target='_self'; this.form.action='{URL;*}';" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 			</div>
 			{+START,IF,{$JS_ON}}
 				<div class="right">
-					<input onclick="disable_button_just_clicked(this); this.form.target='save_frame'; this.form.action='{URL;*}{$?,{$IN_STR,{URL},?},&amp;,?}save_and_stay=1';" accesskey="U" class="buttons__save_and_stay button_screen" type="submit" value="{!SAVE_AND_STAY}" />
+					<input onclick="disable_button_just_clicked(this); this.form.target='save_frame'; this.form.action='{URL;*}{$?,{$IN_STR,{URL},?},&amp;,?}save_and_stay=1';" accesskey="U" class="button_screen buttons__save_and_stay" type="submit" value="{!SAVE_AND_STAY}" />
 				</div>
 			{+END}
 		</div>

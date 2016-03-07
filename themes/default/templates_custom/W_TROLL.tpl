@@ -8,6 +8,6 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{QUESTIONS}
-	<p><input class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" /></p>
+	<p><input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" /></p>
 </form>
 

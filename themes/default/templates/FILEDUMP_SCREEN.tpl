@@ -53,7 +53,7 @@
 						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
 					</select>
 
-					<input class="buttons__filter button_micro" type="submit" value="{!FILTER}" />
+					<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 				</p>
 			</form>
 		{+END}
@@ -80,7 +80,7 @@
 				<option value="zip">{!FILEDUMP_ZIP}</option>
 			</select>
 
-			<input type="submit" value="{!PROCEED}" class="buttons__proceed button_micro" />
+			<input type="submit" value="{!PROCEED}" class="button_micro buttons__proceed" />
 		</div>
 	</div>
 {+END}

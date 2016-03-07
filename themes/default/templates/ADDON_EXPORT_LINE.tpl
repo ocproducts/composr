@@ -3,7 +3,7 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="right float_separation">
-			<input onclick="disable_button_just_clicked(this);" class="menu___generic_admin__export button_screen_item" type="submit" title="{!EXPORT_ADDON}: {NAME*}" value="{!EXPORT_ADDON}" />
+			<input onclick="disable_button_just_clicked(this);" class="button_screen_item menu___generic_admin__export" type="submit" title="{!EXPORT_ADDON}: {NAME*}" value="{!EXPORT_ADDON}" />
 		</div>
 
 		{FILES}

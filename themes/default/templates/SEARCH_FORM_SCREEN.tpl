@@ -192,7 +192,7 @@
 			</table></div>
 
 			<p class="proceed_button">
-				<input onclick="disable_button_just_clicked(this);" accesskey="u" class="buttons__search button_screen" type="submit" value="{!SEARCH_TITLE}" />
+				<input onclick="disable_button_just_clicked(this);" accesskey="u" class="button_screen buttons__search" type="submit" value="{!SEARCH_TITLE}" />
 			</p>
 		</form>
 	</div>

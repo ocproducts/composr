@@ -39,8 +39,8 @@
 	//]]></script>
 
 	<p class="buttons_group">
-		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
-		<input class="buttons__yes button_screen" type="button" value="{!MARK_ALL_UNDONE}" onclick="window.fauxmodal_confirm('{!MARK_ALL_UNDONE_SURE}',function(answer) { if (answer) mark_all_undone(); });" />
+		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+		<input class="button_screen buttons__yes" type="button" value="{!MARK_ALL_UNDONE}" onclick="window.fauxmodal_confirm('{!MARK_ALL_UNDONE_SURE}',function(answer) { if (answer) mark_all_undone(); });" />
 	</p>
 </form>
 

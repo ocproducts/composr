@@ -29,7 +29,7 @@
 		</div>
 
 		<p>
-			<input onclick="disable_button_just_clicked(this);" class="menu___generic_admin__export button_screen_item" type="submit" value="{!EXPORT_ADDON}" />
+			<input onclick="disable_button_just_clicked(this);" class="button_screen_item menu___generic_admin__export" type="submit" value="{!EXPORT_ADDON}" />
 		</p>
 	</form>
 {+END}

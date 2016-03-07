@@ -116,7 +116,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+		<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>
 

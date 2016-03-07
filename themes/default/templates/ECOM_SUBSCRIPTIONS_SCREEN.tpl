@@ -97,5 +97,5 @@
 {+END}
 
 <p class="buttons_group">
-	<a class="buttons__proceed button_screen" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{!START_NEW_SUBSCRIPTION}</span></a>
+	<a class="button_screen buttons__proceed" rel="add" href="{$PAGE_LINK*,_SEARCH:purchase:type_filter={$PRODUCT_SUBSCRIPTION}}"><span>{!START_NEW_SUBSCRIPTION}</span></a>
 </p>

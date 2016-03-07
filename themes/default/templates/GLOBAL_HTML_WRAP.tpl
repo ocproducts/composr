@@ -173,7 +173,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<div class="accessibility_hidden"><label for="su">{!SU}</label></div>
-								<input onkeypress="if (enter_pressed(event)) this.form.submit();" accesskey="w" size="10" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" type="text" value="{$USERNAME;*}" id="su" name="keep_su" /><input onclick="disable_button_just_clicked(this);" class="menu__site_meta__user_actions__login button_micro" type="submit" value="{!SU}" />
+								<input onkeypress="if (enter_pressed(event)) this.form.submit();" accesskey="w" size="10" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" type="text" value="{$USERNAME;*}" id="su" name="keep_su" /><input onclick="disable_button_just_clicked(this);" class="button_micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
 							</div>
 						</form>
 					{+END}
@@ -184,7 +184,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
-								<select onchange="staff_actions_change(this);" id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT}" />
+								<select onchange="staff_actions_change(this);" id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="button_micro buttons__proceed" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}

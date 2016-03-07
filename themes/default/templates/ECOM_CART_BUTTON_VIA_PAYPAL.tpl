@@ -43,7 +43,7 @@
 	{+END}
 
 	<p class="purchase_button">
-		<input class="buttons__cart_checkout button_screen" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
+		<input class="button_screen buttons__cart_checkout" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
 	</p>
 </form>
 

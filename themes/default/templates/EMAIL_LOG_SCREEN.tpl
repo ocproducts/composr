@@ -7,14 +7,14 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="inline">
-			<input class="menu___generic_admin__delete button_screen" type="submit" value="{!DELETE_ALL}" />
+			<input class="button_screen menu___generic_admin__delete" type="submit" value="{!DELETE_ALL}" />
 		</div>
 	</form>
 	<form title="{!SEND_ALL}" class="right" action="{MASS_SEND_URL*}" method="post">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="inline">
-			<input class="buttons__send button_screen" type="submit" value="{!SEND_ALL}" />
+			<input class="button_screen buttons__send" type="submit" value="{!SEND_ALL}" />
 		</div>
 	</form>
 </div>

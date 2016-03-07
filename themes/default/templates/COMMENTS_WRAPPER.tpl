@@ -50,7 +50,7 @@
 						<option{+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
 						<option{+START,IF,{$EQ,{SORT},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 						<option{+START,IF,{$EQ,{SORT},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
-					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="buttons__sort button_micro" />{+END}
+					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />{+END}
 				</form>
 			</div>
 

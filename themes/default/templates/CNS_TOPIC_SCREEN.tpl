@@ -93,7 +93,7 @@
 						<select class="dropdown_actions" id="tma_type" name="type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input class="buttons__proceed button_micro" type="submit" onclick="if (document.getElementById('tma_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; }  return false;" value="{!PROCEED}" />
+						</select><input class="button_micro buttons__proceed" type="submit" onclick="if (document.getElementById('tma_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; }  return false;" value="{!PROCEED}" />
 					</div>
 				</form>
 			{+END}
@@ -111,7 +111,7 @@
 										<option value="browse">-</option>
 									{+END}
 									{MARKED_POST_ACTIONS}
-								</select><input class="buttons__proceed button_micro" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; } return false;" value="{!PROCEED}" />
+								</select><input class="button_micro buttons__proceed" type="submit" onclick="if (!add_form_marked_posts(this.form,'mark_')) { window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false; } if (document.getElementById('mpa_type').selectedIndex!=-1) { disable_button_just_clicked(this); return true; } return false;" value="{!PROCEED}" />
 							</div>
 						</form>
 					{+END}
@@ -131,7 +131,7 @@
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 							<option{+START,IF,{$EQ,{$_POST,comments_sort,oldest},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 						</select>
-						<input type="submit" value="{!SORT}" class="buttons__sort button_micro" />
+						<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />
 					</div>
 				</form>
 			{+END}

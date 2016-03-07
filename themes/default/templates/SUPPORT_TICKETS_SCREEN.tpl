@@ -26,7 +26,7 @@
 				</div>
 
 				<div class="inline spaced">
-					<input onclick="disable_button_just_clicked(this);" class="buttons__filter button_screen_item" type="submit" value="{!FILTER}" />
+					<input onclick="disable_button_just_clicked(this);" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}" />
 				</div>
 			</div>
 		</form>
@@ -69,6 +69,6 @@
 {+END}
 
 <p class="buttons_group">
-	<a class="buttons__add_ticket button_screen" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
+	<a class="button_screen buttons__add_ticket" rel="add" href="{ADD_TICKET_URL*}"><span>{!ADD_TICKET}</span></a>
 </p>
 

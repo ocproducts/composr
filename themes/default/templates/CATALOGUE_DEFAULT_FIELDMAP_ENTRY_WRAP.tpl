@@ -39,12 +39,12 @@
 
 			{+START,IF_NON_EMPTY,{VIEW_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
-					<a class="buttons__more button_screen_item" title="{!VIEW}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}{+END}" href="{VIEW_URL*}"><span>{!VIEW}</span></a>
+					<a class="button_screen_item buttons__more" title="{!VIEW}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+START,IF_PASSED_AND_TRUE,COMMENT_COUNT} ({$STRIP_TAGS,{$COMMENT_COUNT,catalogues,{ID}}}){+END}{+END}" href="{VIEW_URL*}"><span>{!VIEW}</span></a>
 				</p>
 			{+END}
 			{+START,IF_EMPTY,{VIEW_URL}}{+START,IF_NON_EMPTY,{EDIT_URL}}
 				<p class="{$?,{GIVE_CONTEXT},shunted_button,right}">
-					<a class="buttons__edit button_screen_item" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
+					<a class="button_screen_item buttons__edit" href="{EDIT_URL*}" title="{!EDIT}{+START,IF_PASSED,FIELD_0}: {$STRIP_TAGS*,{FIELD_0}}{+END}"><span>{!EDIT}</span></a>
 				</p>
 			{+END}{+END}
 		</div>

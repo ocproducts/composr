@@ -54,7 +54,7 @@
 		</div>
 
 		<p class="proceed_button">
-			<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
+			<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 		</p>
 	</form>
 {+END}

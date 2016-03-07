@@ -84,7 +84,7 @@
 						<select class="dropdown_actions" name="type" id="fma_type">
 							<option value="browse">-</option>
 							{MODERATOR_ACTIONS}
-						</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="buttons__proceed button_micro" type="submit" value="{!PROCEED}" />
+						</select><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
 					</div>
 				</form>
 
@@ -101,7 +101,7 @@
 								<option value="50"{$?,{$EQ,{MAX},50}, selected="selected",}>50</option>
 								<option value="100"{$?,{$EQ,{MAX},100}, selected="selected",}>100</option>
 								<option value="300"{$?,{$EQ,{MAX},300}, selected="selected",}>300</option>
-							</select></label><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="buttons__proceed button_micro" type="submit" value="{!PROCEED}" />
+							</select></label><input onclick="if (add_form_marked_posts(this.form,'mark_')) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOTHING_SELECTED=;}'); return false;" class="button_micro buttons__proceed" type="submit" value="{!PROCEED}" />
 						</div>
 					</form>
 
@@ -115,7 +115,7 @@
 								<option value="first_post"{$?,{$EQ,{ORDER},first_post}, selected="selected",}>{!FORUM_ORDER_BY_FIRST_POST}</option>
 								<option value="title"{$?,{$EQ,{ORDER},title}, selected="selected",}>{!FORUM_ORDER_BY_TITLE}</option>
 							</select>
-							</label>{+START,IF,{$NOT,{$JS_ON}}}<input onclick="disable_button_just_clicked(this);" class="buttons__sort button_micro" type="submit" value="{!SORT}" />{+END}
+							</label>{+START,IF,{$NOT,{$JS_ON}}}<input onclick="disable_button_just_clicked(this);" class="button_micro buttons__sort" type="submit" value="{!SORT}" />{+END}
 						</div>
 					</form>
 				{+END}

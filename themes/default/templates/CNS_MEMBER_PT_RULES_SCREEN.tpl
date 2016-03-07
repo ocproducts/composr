@@ -12,7 +12,7 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p class="proceed_button">
-		 <input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+		 <input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>
 

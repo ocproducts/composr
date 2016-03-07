@@ -74,7 +74,7 @@
 
 			{+START,IF,{$NOT,{$_GET,blog}}}
 				{$,Actually breadcrumbs will do fine!,<div>
-					<a class="buttons__all2 button_screen" rel="archives" href="\{ARCHIVE_URL*\}"><span>\{!VIEW_ARCHIVE\}</span></a>
+					<a class="button_screen buttons__all2" rel="archives" href="\{ARCHIVE_URL*\}"><span>\{!VIEW_ARCHIVE\}</span></a>
 				</div>}
 			{+END}
 		</nav></aside>

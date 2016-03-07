@@ -34,7 +34,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input accesskey="u" class="buttons__save button_screen" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
+				<input accesskey="u" class="button_screen buttons__save" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
 			</p>
 		</div>
 
@@ -104,7 +104,7 @@
 					<input type="hidden" name="confirm" value="1" />
 					<input type="hidden" name="delete_confirm" value="1" />
 
-					<input class="menu___generic_admin__delete button_screen_item" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
+					<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
 				</p>
 			</form>
 		</div>
