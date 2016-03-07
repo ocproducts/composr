@@ -363,9 +363,11 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
             break;
 
         default:
-            if (isset($node['permissions'][1]['page_name'])) {
-                $_privilege_access = $GLOBALS['SITE_DB']->query_select('group_privileges', array('*'), array('module_the_name' => $node['permissions'][2]['permission_module'], 'category_name' => $id));
-                $privilege_access = _organise_loaded_privileges($admin_groups, $groups, $_privilege_access);
+            foreach ($node['permissions'] as $p) {
+                if (isset($p['permission_module'])) {
+                    $_privilege_access = $GLOBALS['SITE_DB']->query_select('group_privileges', array('*'), array('module_the_name' => $p['permission_module'], 'category_name' => $id));
+                    $privilege_access = _organise_loaded_privileges($admin_groups, $groups, $_privilege_access);
+                }
             }
             break;
     }

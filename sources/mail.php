@@ -731,7 +731,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 ), $lang, false, null, '.tpl', 'templates', $theme);
             }
             require_css('email');
-            $css = css_tempcode(true, true, $message_html->evaluate($lang), $theme);
+            $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {

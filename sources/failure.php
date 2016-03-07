@@ -1029,7 +1029,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('urls');
     require_code('tempcode');
 
-    $error_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true));
+    $error_url = get_self_url_easy();
 
     require_code('notifications');
     require_code('comcode');

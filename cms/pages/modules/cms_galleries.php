@@ -1079,6 +1079,11 @@ class Module_cms_galleries extends Standard_crud_module
 
         if ($adding) {
             $cat = get_param_string('cat', '');
+            if ($cat != '') {
+                if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'is_member_synched', array('name' => $cat)) === 1) {
+                    $cat = 'member_' . strval(get_member()) . '_' . $cat;
+                }
+            }
         }
 
         require_code('images');
@@ -1663,6 +1668,11 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         if ($cat == '') {
             $cat = get_param_string('cat', '');
+            if ($cat != '') {
+                if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'is_member_synched', array('name' => $cat)) === 1) {
+                    $cat = 'member_' . strval(get_member()) . '_' . $cat;
+                }
+            }
         }
 
         $fields = new Tempcode();
