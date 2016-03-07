@@ -60,7 +60,7 @@ img, img a { border:none; outline:none; }
 .overlay .cntMain { width:auto; }
 .cntRow { overflow:hidden; margin-bottom:10px; }
 .cntRow p, .p_like { font-size:14px; color:#666666; text-align:justify; }
-.cntRow p, { margin:0; padding:0 0 10px 0; line-height:22px; }
+.cntRow p { margin:0; padding:0 0 10px 0; line-height:22px; }
 .cntRow .sub-head, .cntRow .sub-head-big { font-weight:bold; }
 .cntRow .sub-head { font-size:16px; }
 .cntRow .sub-head-big { font-size:22px; }
