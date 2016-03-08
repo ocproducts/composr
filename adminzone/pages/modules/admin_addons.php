@@ -1117,7 +1117,7 @@ class Module_admin_addons
         $list->attach(form_input_list_entry('_block', false, do_lang_tempcode('BLOCKS')));
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'view'), '_SELF', null, false, true);
-        $fields = form_input_list(do_lang_tempcode('ZONE_OR_BLOCKS'), '', 'id', $list, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('ZONE_OR_BLOCKS'), '', 'id', $list, null, true);
         $submit_name = do_lang_tempcode('PROCEED');
 
         return do_template('FORM_SCREEN', array('_GUID' => '43cc3d9031a3094b62e78461eb99fb5d', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('CHOOSE_ZONE_OF_MODULES'), 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));

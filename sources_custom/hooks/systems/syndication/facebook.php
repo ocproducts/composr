@@ -89,7 +89,7 @@ class Hook_syndication_facebook
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return get_value($save_to, null, true) !== null;
+        return !empty(get_value($save_to, null, true));
     }
 
     public function auth_set($member_id, $oauth_url)
@@ -101,7 +101,12 @@ class Hook_syndication_facebook
         $code = get_param_string('code', '', true);
 
         if ($code == '') {
-            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_actions')));
+            $scope = array('publish_actions');
+            if (is_null($member_id)) {
+                $scope[] = 'manage_pages';
+                $scope[] = 'publish_pages';
+            }
+            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => $scope));
             require_code('site2');
             smart_redirect($oauth_redir_url);
         }
