@@ -907,7 +907,7 @@ function check_page_name($zone, $page)
         }
         if ($url_scheme == 'HTM') {
             // No naming a welcome zone page the same as a zone
-            if ((file_exists(get_file_base() . '/' . $page . '/index.php')) || (file_exists(get_custom_file_base() . '/' . $page . '/index.php'))) {
+            if ((file_exists(get_file_base() . '/' . $page . '/pages/comcode')) || (file_exists(get_custom_file_base() . '/' . $page . '/pages/comcode'))) {
                 require_lang('zones');
                 warn_exit(do_lang_tempcode('CONFLICTING_PAGE_NAME'));
             }

@@ -42,7 +42,7 @@ function init__site()
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
-        foreach (array_merge(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
+        foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[] = $key;
                 $is_non_canonical = true;
@@ -714,6 +714,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                     if (is_numeric($url_id)) { // Lookup and redirect to moniker
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
+                            set_http_status_code('301');
                             header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
@@ -738,6 +739,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         if (($deprecated) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
+                                set_http_status_code('301');
                                 header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
@@ -1798,7 +1800,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
-            'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
+            'title' => ($title_to_use == '') ? null : ('[semihtml]' . $title_to_use . '[/semihtml]'),
             'identifier' => $zone . ':' . $codename,
         ), $comcode_page_row, 'comcode_page', $zone . ':' . $codename);
     }
