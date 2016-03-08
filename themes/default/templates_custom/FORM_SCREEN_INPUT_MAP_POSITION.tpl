@@ -77,8 +77,6 @@
 			catch (e) {}
 		}
 	}
-
-	google.load('maps', '3',  {callback: google_map_users_initialize, other_params:''});
 //]]></script>
 
 <div id="map_position_{NAME*}" style="width:100%; height:300px"></div>
@@ -94,3 +92,9 @@
 </label>
 
 <input class="button_micro buttons__search" type="button" value="{!FIND_ME}" onclick="geolocate_user_for_map_field(); return false;" />
+
+<script>// <![CDATA[
+	add_event_listener_abstract(window,'load',function() {
+		google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
+	});
+//]]></script>
