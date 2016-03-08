@@ -47,7 +47,7 @@
 {+START,IF,{$NEQ,{$PAGE},404}}<link rel="canonical" href="{$CANONICAL_URL*}" />{+END}
 <link rel="baseurl" href="{$BASE_URL*}" />
 <link rel="sitemap" href="{$BASE_URL*}/cms_sitemap.xml" />
-<meta name="description" content="{+START,IF,{$NEQ,{$METADATA,meta_description},{!NA},???}}{$METADATA*,meta_description}{+END}" />
+<meta name="description" content="{$METADATA*,meta_description}" />
 <meta name="keywords" content="{$METADATA*,keywords}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	<meta name="GENERATOR" content="{$BRAND_NAME*}" />
@@ -74,13 +74,14 @@
 	{+START,IF_NON_EMPTY,{$METADATA,description}}<meta name="DC.Description" content="{$TRIM,{$METADATA*,description}}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$METADATA,title}}<meta property="og:title" content="{$METADATA*,title}" />{+END}
-{+START,IF_NON_EMPTY,{$METADATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$METADATA,type}}}" />{+END}
-<meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
-{+START,COMMENT,Commented out by default to save bandwidth}
-	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
-	this is usually better... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />{+END}
+{+START,COMMENT,cms has to be replaced with proper OpenGraph namespace}
+	{+START,IF_NON_EMPTY,{$METADATA,type}}<meta property="og:type" content="cms:{$REPLACE*, ,_,{$LCASE,{$METADATA,type}}}" />{+END}
 {+END}
-{+START,IF_NON_EMPTY,{$METADATA,description}}<meta property="og:description" content="{$TRIM,{$METADATA*,description}}" />{+END}
+<meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
+<meta property="fb:admins" content="685610576" />
+{+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_appid}}<meta property="fb:app_id" content="{$CONFIG_OPTION*,facebook_appid}" />
+{+END}
+{+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" content="{$METADATA*,meta_description}" />{+END}
 {+START,IF_NON_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$METADATA*,image}" />{$,NB: You may also want to define a image_src link tag for some social sites}{+END}{+START,IF_EMPTY,{$METADATA,image}}<meta property="og:image" content="{$IMG*,logo/standalone_logo}" />{+END}
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
 <meta property="og:locale" content="{$REPLACE,-,_,{!locale}}" />

@@ -146,6 +146,7 @@ function composr_homesite_install()
     set_option('allowed_post_submitters', "compo.sr\nocproducts.com\nlocalhost\n127.0.0.1\n192.168.1.100\npaypal.com\nsandbox.paypal.com");
     set_option('security_token_exceptions', "_make_release\npurchase\nsubscriptions\ninvoices");
     set_option('keywords', 'cms,content management,website,web property,dynamic,interactive,social media,social networking,forum,community,build,make,create,software,php');
+    set_option('description', 'CMS with advanced content, social, interactive and dynamic features. Fully flexible, themeable and extendible: suitable for building almost any kind of website.');
 
     // Downloads structure
     // -------------------

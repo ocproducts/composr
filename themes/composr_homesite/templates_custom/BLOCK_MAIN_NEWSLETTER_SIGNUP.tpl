@@ -15,7 +15,7 @@
 				</p>
 			{+END}
 
-			<form class="inpEmail" title="{!NEWSLETTER}" onsubmit="if ((check_field_for_blankness(this.elements['address{NID*}'],event)) &amp;&amp; (this.elements['address{NID*}'].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!NOT_A_EMAIL;=*}'); return false;" action="{URL*}" method="post">
+			<form class="inpEmail" title="{!NEWSLETTER}" onsubmit="if ((check_field_for_blankness(this.elements['address{NID*}'],event)) &amp;&amp; (this.elements['address{NID*}'].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;=*}'); return false;" action="{URL*}" method="post">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<input id="bfirstname" name="firstname{NID*}" class="user" type="text" placeholder="Please enter your name" />
