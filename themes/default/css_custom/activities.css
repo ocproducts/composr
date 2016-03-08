@@ -1,0 +1,134 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2016
+*/
+
+/* Activities feed */
+
+#activities_feed .nothing_here {
+	margin: 0;
+}
+
+.activities_holder {
+	padding-left: 0;
+	margin-left: 0;
+	display: block;
+	list-style: none;
+}
+
+.activities_box {
+	overflow: hidden;
+	height: auto;
+	list-style: none;
+	margin: 0.5em 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-{!en_left}: 5px;
+	vertical-align: top;
+}
+
+.activities_avatar_box {
+	width: 40px;
+	float: left;
+	margin-right: 1em;
+}
+
+.activities_line {
+	margin-top: 0;
+	font-size: 0.95em;
+}
+
+form.activities_remove {
+	float: right;
+	overflow: hidden;
+	width: 22px;
+}
+
+form.activities_remove .remove_cross {
+	width: 14px;
+	height: 14px;
+	background: url('{$IMG;,stop12}') transparent no-repeat;
+	font-size: 0;
+	color: transparent;
+	border: none;
+	margin-top: 4px;
+	padding: 0;
+}
+
+form.activities_remove .remove_cross:hover {
+	background: url('{$IMG;,stop12_hover}') transparent no-repeat;
+	cursor: pointer;
+}
+
+form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all about, eh? Standards compliant are we Mozilla? What-ever*/
+	border: 0;
+}
+
+.activities_content {
+	width: auto;
+	float: none;
+	padding: 0.5em 0.5em 0.5em 45px;
+	font-size: 1.1em;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+}
+
+.activities_line .activity_name {
+	float: left;
+	padding-{!en_right}: 2em;
+	margin-top: 10px;
+	font-size: 0.95em;
+	font-weight: bold;
+}
+
+.activities_line .activity_name a, .activities_line .activity_name a[href*=".php"] {
+	text-decoration: none;
+}
+
+.activities_line .activity_time {
+	float: right;
+	font-size: 0.80em;
+	{$BETA_CSS_PROPERTY,opacity: 0.8;}
+}
+
+.activities_line .activity_name, .activities_line .activity_time {
+	margin: 5px 1em 0 0;
+	text-decoration: none;
+}
+
+.activities_content__remove_success {
+	color: {$GET,green_highlight_text};
+}
+
+.activities_content__remove_failure {
+	color: {$GET,red_highlight_text};
+}
+
+/* Status posting */
+
+.status_box_outer {
+	margin: 0 1em 0 0;
+	margin-right: 14em;
+}
+
+.status_box {
+	width: 100%;
+	overflow: auto;
+	height: 2.3em;
+	font-size: 1.2em;
+	{$BETA_CSS_PROPERTY,box-sizing: content-box;}
+}
+
+.status_controls {
+	float: right;
+	text-align: right;
+	width: 14em;
+	margin-top: -2px;
+}
+
+#activities_update_notify {
+	white-space: normal;
+	font-size: 0.85em;
+	margin: 0.25em 0 0 0;
+}
+
