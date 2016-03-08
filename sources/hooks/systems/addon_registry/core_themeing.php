@@ -123,15 +123,15 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/THEME_IMAGE_PREVIEW.tpl',
             'themes/default/templates/THEME_MANAGE_SCREEN.tpl',
             'themes/default/templates/THEME_COLOUR_CHOOSER.tpl',
-            'themes/default/templates/THEME_EDIT_CSS_SCREEN.tpl',
+            'themes/default/templates/THEME_CSS_EDIT_SCREEN.tpl',
             'adminzone/pages/modules/admin_themes.php',
-            'themes/default/templates/TEMPLATE_EDIT_SCREEN.tpl',
-            'themes/default/templates/TEMPLATE_EDIT_SCREEN_DROPDOWN.tpl',
+            'themes/default/templates/THEME_TEMPLATE_MANAGE_SCREEN.tpl',
+            'themes/default/templates/THEME_TEMPLATE_EDIT_SCREEN.tpl',
+            'themes/default/templates/THEME_TEMPLATE_EDIT_SCREEN_DROPDOWN.tpl',
+            'themes/default/templates/THEME_TEMPLATE_EDIT_SCREEN_EDITOR.tpl',
             'themes/default/templates/TEMPLATE_LIST_ENTRY.tpl',
             'themes/default/templates/TEMPLATE_LIST_SCREEN.tpl',
-            'themes/default/templates/TEMPLATE_MANAGE_SCREEN.tpl',
             'themes/default/templates/TEMPLATE_EDIT_LINK.tpl',
-            'themes/default/templates/TEMPLATE_EDIT_SCREEN_EDITOR.tpl',
             'themes/default/templates/TEMPLATE_TREE.tpl',
             'themes/default/templates/TEMPLATE_TREE_ITEM.tpl',
             'themes/default/templates/TEMPLATE_TREE_ITEM_WRAP.tpl',
@@ -158,11 +158,11 @@ class Hook_addon_registry_core_themeing
         return array(
             'templates/THEME_MANAGE_SCREEN.tpl' => 'administrative__theme_manage_screen',
             'templates/THEME_COLOUR_CHOOSER.tpl' => 'administrative__theme_edit_css_screen',
-            'templates/THEME_EDIT_CSS_SCREEN.tpl' => 'administrative__theme_edit_css_screen',
-            'templates/TEMPLATE_MANAGE_SCREEN.tpl' => 'administrative__template_manage_screen',
-            'templates/TEMPLATE_EDIT_SCREEN_DROPDOWN.tpl' => 'administrative__template_edit_screen',
-            'templates/TEMPLATE_EDIT_SCREEN_EDITOR.tpl' => 'administrative__template_edit_screen',
-            'templates/TEMPLATE_EDIT_SCREEN.tpl' => 'administrative__template_edit_screen',
+            'templates/THEME_CSS_EDIT_SCREEN.tpl' => 'administrative__theme_css_edit_screen',
+            'templates/THEME_TEMPLATE_MANAGE_SCREEN.tpl' => 'administrative__theme_template_manage_screen',
+            'templates/THEME_TEMPLATE_EDIT_SCREEN.tpl' => 'administrative__theme_template_edit_screen',
+            'templates/THEME_TEMPLATE_EDIT_SCREEN_DROPDOWN.tpl' => 'administrative__theme_template_edit_screen',
+            'templates/THEME_TEMPLATE_EDIT_SCREEN_EDITOR.tpl' => 'administrative__theme_template_edit_screen',
             'templates/THEME_IMAGE_MANAGE_SCREEN.tpl' => 'administrative__theme_image_manage_screen',
             'templates/THEME_IMAGE_PREVIEW.tpl' => 'administrative__theme_image_preview',
             'templates/TEMPLATE_LIST_ENTRY.tpl' => 'administrative__template_list_screen',
@@ -248,7 +248,7 @@ class Hook_addon_registry_core_themeing
         ));
 
         return array(
-            lorem_globalise(do_lorem_template('THEME_EDIT_CSS_SCREEN', array(
+            lorem_globalise(do_lorem_template('THEME_CSS_EDIT_SCREEN', array(
                 'PING_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',
                 'REVISIONS' => placeholder_table(),
@@ -273,10 +273,10 @@ class Hook_addon_registry_core_themeing
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__template_manage_screen()
+    public function tpl_preview__administrative__theme_template_manage_screen()
     {
         return array(
-            lorem_globalise(do_lorem_template('TEMPLATE_MANAGE_SCREEN', array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_MANAGE_SCREEN', array(
                 'THEME' => lorem_phrase(),
                 'PING_URL' => placeholder_url(),
                 'WARNING_DETAILS' => '',
@@ -311,7 +311,7 @@ class Hook_addon_registry_core_themeing
 
         $parameters = array();
         for ($i = 0; $i < 8; $i++) {
-            $parameters[$i] = do_lorem_template('TEMPLATE_EDIT_SCREEN_DROPDOWN', array(
+            $parameters[$i] = do_lorem_template('THEME_TEMPLATE_EDIT_SCREEN_DROPDOWN', array(
                 'ID' => placeholder_id() . strval($i),
                 'PARAMETERS' => $_parameters,
                 'NAME' => lorem_word() . strval($i),
@@ -321,7 +321,7 @@ class Hook_addon_registry_core_themeing
 
         $template_editors = new Tempcode();
 
-        $template_editors->attach(do_lorem_template('TEMPLATE_EDIT_SCREEN_EDITOR', array(
+        $template_editors->attach(do_lorem_template('THEME_TEMPLATE_EDIT_SCREEN_EDITOR', array(
             'CODENAME' => lorem_word(),
             'I' => lorem_word(),
             'NAME' => lorem_word(),
@@ -345,7 +345,7 @@ class Hook_addon_registry_core_themeing
         )));
 
         return array(
-            lorem_globalise(do_lorem_template('TEMPLATE_EDIT_SCREEN', array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_EDIT_SCREEN', array(
                 'MULTIPLE' => lorem_phrase(),
                 'FIRST_ID' => placeholder_id(),
                 'THEME' => lorem_phrase(),

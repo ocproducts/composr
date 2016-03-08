@@ -96,7 +96,8 @@ function code_editor_do_header($type, $target = '_top')
         a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
     </style>';
     echo '
-        <script src="data/editarea/edit_area_full.js"></script>
+        <script src="data/ace/ace.js"></script>
+        <script src="data/ace/ace_composr.js"></script>
 
         <meta name="robots" content="noindex, nofollow" />
         ';
@@ -118,13 +119,7 @@ function code_editor_do_footer()
 <script>// <![CDATA[
 if (document.getElementById('file'))
 {
-    editAreaLoader.init({
-        id : "file"
-        ,syntax: "php"
-        ,start_highlight: true
-        ,allow_resize: true
-        ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-    });
+    ace_composr_loader('file','php');
 }
 //]]></script>
 

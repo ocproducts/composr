@@ -1119,7 +1119,7 @@ class Module_admin_themes
         require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution($file);
 
-        return do_template('THEME_EDIT_CSS_SCREEN', array(
+        return do_template('THEME_CSS_EDIT_SCREEN', array(
             '_GUID' => '3e34b2f44d7a73202f1bb475fd4ac593',
             'PING_URL' => $ping_url,
             'OLD_CONTENTS' => $old_contents,
@@ -1379,7 +1379,7 @@ class Module_admin_themes
 
         list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
 
-        return do_template('TEMPLATE_MANAGE_SCREEN', array(
+        return do_template('THEME_TEMPLATE_MANAGE_SCREEN', array(
             '_GUID' => '529cd009f85a84f60b7934b5e969c55b',
             'THEME' => $theme,
             'PING_URL' => $ping_url,
@@ -1566,7 +1566,7 @@ class Module_admin_themes
                 $p_done[$matches[1][$j]] = 1;
                 $parameters->attach(form_input_list_entry($matches[1][$j] . '__0', false, $matches[1][$j]));
             }
-            $parameters = do_template('TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => '50f31c49c99b864c1719fb51ed426274', 'ID' => $i, 'PARAMETERS' => $parameters, 'NAME' => 'ppparameter', 'LANG' => do_lang_tempcode('INSERT_PARAMETER')));
+            $parameters = do_template('THEME_TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => '50f31c49c99b864c1719fb51ed426274', 'ID' => $i, 'PARAMETERS' => $parameters, 'NAME' => 'ppparameter', 'LANG' => do_lang_tempcode('INSERT_PARAMETER')));
 
             $_directives = array(
                 array('BOX', '1'),
@@ -1680,7 +1680,7 @@ class Module_admin_themes
 
             $file_save_target = preg_replace('#^default/#', $theme . '/', $file);
 
-            $template_editors->attach(do_template('TEMPLATE_EDIT_SCREEN_EDITOR', array(
+            $template_editors->attach(do_template('THEME_TEMPLATE_EDIT_SCREEN_EDITOR', array(
                 '_GUID' => '9d3b75215c34c2b4b366118605b4cd59',
                 'PREVIEW_URL' => $preview_url,
                 'CODENAME' => str_replace('.tpl', '', $codename),
@@ -1717,7 +1717,7 @@ class Module_admin_themes
             warn_exit(do_lang_tempcode('NO_TEMPLATES_SELECTED'));
         }
 
-        return do_template('TEMPLATE_EDIT_SCREEN', array(
+        return do_template('THEME_TEMPLATE_EDIT_SCREEN', array(
             '_GUID' => 'cbcd6d18c2456f94f72624e1a39a36a5',
             'TITLE' => $this->title,
             'MULTIPLE' => $count > 1,
@@ -1746,7 +1746,7 @@ class Module_admin_themes
             $lang = do_lang_tempcode($stub . '__' . $op);
             $out->attach(form_input_list_entry($op . '__' . $arity, false, $lang));
         }
-        return do_template('TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => 'c6d24f278ec874a4b6abff8c359f80ba', 'ID' => $id, 'PARAMETERS' => $out, 'NAME' => 'pp' . strtolower($stub), 'LANG' => do_lang_tempcode('INSERT_' . $stub)));
+        return do_template('THEME_TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => 'c6d24f278ec874a4b6abff8c359f80ba', 'ID' => $id, 'PARAMETERS' => $out, 'NAME' => 'pp' . strtolower($stub), 'LANG' => do_lang_tempcode('INSERT_' . $stub)));
     }
 
     /**

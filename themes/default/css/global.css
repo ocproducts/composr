@@ -368,6 +368,10 @@ iframe {
 		white-space: normal !important;
 		{$BETA_CSS_PROPERTY,word-wrap: break-word !important;}
 	}
+	/* Exceptions */
+	.ace_layer * {
+		white-space: pre !important;
+	}
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
