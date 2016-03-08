@@ -18,23 +18,23 @@
 				<h2>{!QUICK_CSS_CHANGE_LINKS}:</h2>
 				<ul>
 					<li>
-						<a onclick="do_editarea_search('font-family'); return false;" href="#">{!CHANGE_FONT}</a>
+						<a onclick="editarea_do_search('css','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
 					</li>
 					<li>
-						<a onclick="do_editarea_search('inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
+						<a onclick="editarea_do_search('css','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
 					</li>
 					<li>
-						<a onclick="do_editarea_search('block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
+						<a onclick="editarea_do_search('css','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
 					</li>
 					{+START,IF,{$CONFIG_OPTION,fixed_width}}
 						<li>
-							<a onclick="do_editarea_search('outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
+							<a onclick="editarea_do_search('css','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
 						</li>
 						<li>
-							<a onclick="do_editarea_search('logo_outer'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
+							<a onclick="editarea_do_search('css','logo_outer'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
 						</li>
 						<li>
-							<a onclick="do_editarea_search('#main_website #main_website_inner'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
+							<a onclick="editarea_do_search('css','#main_website #main_website_inner'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
 						</li>
 					{+END}
 				</ul>
@@ -491,11 +491,13 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		if (window.location.hash) window.setTimeout(function() {
-			document.getElementById('frame_css').contentWindow.editArea.execCommand('show_search');
-			document.getElementById('frame_css').contentWindow.document.getElementById('area_search').value=window.location.hash.substr(1,window.location.hash.length-1);
-			document.getElementById('frame_css').contentWindow.editArea.execCommand('area_search');
-		} , 2000);
+		if (window.location.hash)
+		{
+			window.setTimeout(function() {
+				var hash=window.location.hash.substr(1,window.location.hash.length-1);
+				editarea_do_search('css',hash);
+			},2000);
+		}
 
 		// If this is a contextual edit, start talking to the parent window
 		if ((window.opener) && (window.opener.document))

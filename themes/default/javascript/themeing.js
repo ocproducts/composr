@@ -76,32 +76,31 @@ function load_previews()
 	}
 }
 
-function template_edit_page(name,id)
+function template_insert_parameter(name,id)
 {
 	if (typeof window.insert_textbox_wrapping=='undefined') return false;
 	if (typeof window.insert_textbox=='undefined') return false;
 
 	var params='';
 
-	var box=document.getElementById('f'+id+'_new');
+	var textbox=document.getElementById('f'+id+'_new');
 	var value=document.getElementById(name).value;
 	var value_parts=value.split('__');
 	value=value_parts[0];
 
 	if (value=='---') return false;
 
-	var ecw=document.getElementById('frame_'+box.name).contentWindow;
+	var has_editarea=editarea_is_loaded(textbox.name);
 
 	if ((value=='BLOCK')/*{+START,IF,{$NOT,{$CONFIG_OPTION,js_overlays}}}*/ && (typeof window.showModalDialog!='undefined')/*{+END}*/)
 	{
-		if (ecw) box.value=window.editAreaLoader.getValue(box.name);
-		var url='{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name='+box.name+'&block_type=template'+keep_stub();
+		var url='{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name='+textbox.name+'&block_type=template'+keep_stub();
 		window.faux_showModalDialog(
 			maintain_theme_in_link(url),
 			null,
 			'dialogWidth=750;dialogHeight=600;status=no;resizable=yes;scrollbars=yes;unadorned=yes',
 			function() {
-				if (ecw) window.editAreaLoader.setValue(box.name,box.value);
+				if (has_editarea) editarea_refresh(textbox.name);
 			}
 		);
 		return;
@@ -124,18 +123,16 @@ function template_edit_page(name,id)
 		definite_gets,
 		parameter,
 		arity,
-		box,
+		textbox,
 		name,
 		value,
 		0,
 		'',
-		function(box,name,value,params)
+		function(textbox,name,value,params)
 		{
-			if (ecw) box.value=window.editAreaLoader.getValue(box.name);
-
 			if (name.indexOf('ppdirective')!=-1)
 			{
-				insert_textbox_wrapping(box,'{'+'+START,'+value+params+'}','{'+'+END}');
+				insert_textbox_wrapping(textbox,'{'+'+START,'+value+params+'}','{'+'+END}');
 			} else
 			{
 				var st_value;
@@ -149,10 +146,10 @@ function template_edit_page(name,id)
 
 				value=st_value+value+'*'+params+'}';
 
-				insert_textbox(box,value);
+				insert_textbox(textbox,value);
 			}
 
-			if (ecw) window.editAreaLoader.setValue(box.name,box.value);
+			if (has_editarea) editarea_refresh(textbox.name);
 		}
 	);
 
@@ -238,9 +235,12 @@ function load_contextual_css_editor(file)
 		window.css_recompiler_timer=window.setInterval(function() {
 			if ((window.opener) && (window.opener.document))
 			{
-				if (typeof window.opener.have_set_up_parent_page_highlighting=='undefined') { set_up_parent_page_highlighting(); last_css='';/*force new CSS to apply*/ }
+				if (typeof window.opener.have_set_up_parent_page_highlighting=='undefined') {
+					set_up_parent_page_highlighting();
+					last_css='';/*force new CSS to apply*/
+				}
 
-				var new_value=window.editAreaLoader.getValue('css');
+				var new_value=document.getElementById('css').value;
 				if (new_value!=last_css)
 				{
 					var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();
@@ -288,7 +288,7 @@ function set_up_parent_page_highlighting()
 		// Jump-to
 		a.onclick=function(selector) { return function(event) {
 			cancel_bubbling(event);
-			do_editarea_search('^[ \t]*'+selector.replace(/\./g,'\\.').replace(/\[/g,'\\[').replace(/\]/g,'\\]').replace(/\{/g,'\\{').replace(/\}/g,'\\}').replace(/\+/g,'\\+').replace(/\*/g,'\\*').replace(/\s/g,'[ \t]+')+'\\s*\\{'); // Opera does not support \s
+			editarea_do_search('css','^[ \t]*'+selector.replace(/\./g,'\\.').replace(/\[/g,'\\[').replace(/\]/g,'\\]').replace(/\{/g,'\\{').replace(/\}/g,'\\}').replace(/\+/g,'\\+').replace(/\*/g,'\\*').replace(/\s/g,'[ \t]+')+'\\s*\\{'); // Opera does not support \s
 			return false;
 		} }(selector);
 
@@ -383,25 +383,6 @@ function find_selectors_for(opener,selector)
 		}
 	}
 	return result;
-}
-
-function do_editarea_search(regexp)
-{
-	var ecw=document.getElementById('frame_css').contentWindow;
-	ecw.editArea.execCommand('show_search');
-	ecw.document.getElementById('area_search_reg_exp').checked=true;
-	ecw.document.getElementById('area_search').value=regexp;
-	ecw.editArea.execCommand('area_search');
-	ecw.editArea.execCommand('hidden_search');
-	try
-	{
-		window.scrollTo(0,find_pos_y(document.getElementById('css').parentNode));
-	}
-	catch (e) {}
-
-	// Force scroll to bottom, so scrolls up when searching and shows result without scrolling back down
-	ecw.document.getElementById('result').scrollTop=ecw.document.getElementById('result').scrollHeight;
-	ecw.editArea.scroll_to_view();
 }
 
 function receive_compiled_css(ajax_result_frame,win)

@@ -1027,17 +1027,12 @@ class Module_admin_themes
 
         if (get_option('editarea') == '1') {
             attach_to_screen_footer(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
+                <script language="javascript" src="' . get_base_url() . '/data/ace/ace.js"></script>
+                <script language="javascript" src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
                 <script>// <![CDATA[
-                    editAreaLoader.init({
-                        id : "css"
-                        ,syntax: "css"
-                        ,start_highlight: true
-                        ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                        ,allow_resize: true
-                        ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                    });
-                //]]></script>')); // XHTMLXHTML
+                    ace_composr_loader(\'css\',\'css\');
+                //]]></script>
+            ')); // XHTMLXHTML
         }
 
         require_javascript('ajax');
@@ -1444,7 +1439,8 @@ class Module_admin_themes
 
         if (get_option('editarea') == '1') {
             attach_to_screen_footer(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
+                <script language="javascript" src="' . get_base_url() . '/data/ace/ace.js"></script>
+                <script language="javascript" src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
             ')); // XHTMLXHTML
         }
 
@@ -1489,27 +1485,20 @@ class Module_admin_themes
             // Syntax highlighting
             $syntax = 'html';
             if (substr($file, -3) == '.js') {
-                $syntax = 'js';
+                $syntax = 'javascript';
             } elseif (substr($file, -4) == '.xml') {
                 $syntax = 'xml';
             } elseif (substr($file, -3) == '.txt') {
-                $syntax = 'txt';
+                $syntax = 'text';
             } elseif (substr($file, -4) == '.css') {
                 $syntax = 'css';
             }
             if (get_option('editarea') == '1') {
                 attach_to_screen_footer('
                     <script>// <![CDATA[
-                    editAreaLoader.init({
-                        id : "f' . $i . '_new"
-                        ' . (($syntax == 'txt') ? '' : (',syntax: "' . $syntax . '"')) . '
-                        ,start_highlight: true
-                        ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                        ,allow_resize: true
-                        ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                    });
+                        ace_composr_loader("f' . $i . '_new","' . $syntax . '");
                     //]]></script>
-                    '); // XHTMLXHTML
+                '); // XHTMLXHTML
             }
 
             $codename = basename($file);
@@ -2328,15 +2317,9 @@ class Module_admin_themes
             attach_to_screen_header(make_string_tempcode('
                 <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
                 <script>// <![CDATA[
-                editAreaLoader.init({
-                    id : "tempcode"
-                    ,syntax: "tempcode"
-                    ,start_highlight: true
-                    ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                    ,allow_resize: true
-                    ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                });
-                //]]></script>')); // XHTMLXHTML
+                    ace_composr_loader(\'tempcode\',\'text\');
+                //]]></script>
+            ')); // XHTMLXHTML
         }
 
         return do_template('TEMPCODE_TESTER_SCREEN', array('_GUID' => 'b7ea146fffc0dfdcefcb8e8e0c0168a4', 'TITLE' => $this->title));

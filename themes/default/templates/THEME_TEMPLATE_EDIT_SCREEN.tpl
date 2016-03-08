@@ -13,7 +13,7 @@
 			<div class="float_surrounder">
 				<p class="right">
 					<label for="template_switcher">{!TEMPLATE}</label>:
-					<select onchange="document.getElementById('template_editing_'+(window.previous_value?window.previous_value:{FIRST_ID*})).style.display='none'; document.getElementById('template_editing_'+this.options[this.selectedIndex].value).style.display='block'; window.previous_value=this.options[this.selectedIndex].value; /* Workaround to make editarea render right */ eAL.toggle('f'+this.options[this.selectedIndex].value+'_new'); eAL.toggle('f'+this.options[this.selectedIndex].value+'_new');" id="template_switcher" name="template_switcher">
+					<select onchange="document.getElementById('template_editing_'+(window.previous_value?window.previous_value:{FIRST_ID*})).style.display='none'; document.getElementById('template_editing_'+this.options[this.selectedIndex].value).style.display='block'; window.previous_value=this.options[this.selectedIndex].value;" id="template_switcher" name="template_switcher">
 						{+START,LOOP,TEMPLATES}
 							<option value="{I*}">{FILE*}</option>
 						{+END}
