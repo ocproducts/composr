@@ -296,7 +296,17 @@ function handle_facebook_connection_login($current_logged_in_member)
                 if (!empty($details[$facebook_field])) {
                     $composr_field_id = find_cms_cpf_field_id($composr_field_title);
                     if (!is_null($composr_field_id)) {
-                        $changes['field_' . strval($composr_field_id)] = $details[$facebook_field];
+                        switch ($facebook_field) {
+                            case 'user_currency':
+                                $changes['field_' . strval($composr_field_id)] = $details[$facebook_field]['user_currency'];
+                                break;
+
+                            default:
+                                if (!is_array($details[$facebook_field])) {
+                                    $changes['field_' . strval($composr_field_id)] = $details[$facebook_field];
+                                }
+                                break;
+                        }
                     }
                 }
             }

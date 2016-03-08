@@ -67,9 +67,10 @@ class Hook_activities_activities
     /**
      * Get syndication field UI.
      *
+     * @param  string $content_type The content type this is for
      * @return Tempcode Syndication fields (or empty)
      */
-    public function get_syndication_option_fields()
+    public function get_syndication_option_fields($content_type)
     {
         $fields = new Tempcode();
         require_code('activities');
@@ -77,7 +78,8 @@ class Hook_activities_activities
             require_lang('activities');
 
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ded75eeb85f5bb8a6c1b6da597555750', 'TITLE' => do_lang_tempcode('SYNDICATION'))));
-            $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_THIS'), do_lang_tempcode('DESCRIPTION_SYNDICATE_THIS'), 'syndicate_this', true));
+            $default = in_array($content_type, array_map('trim', explode(',', get_option('syndicate_site_activity_default'))));
+            $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_THIS'), do_lang_tempcode('DESCRIPTION_SYNDICATE_THIS'), 'syndicate_this', $default));
         }
         return $fields;
     }
