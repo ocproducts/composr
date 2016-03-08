@@ -3,7 +3,7 @@
 /\[block="\d+"\]side_calendar\[\/block\]/
 [block message="You could be earning as much as $xxx per year after your first year" equation="Math.pow((this.totalPerSale*this.numAverageSales)*this.numPerLevel,(1+this.levelsAchieved*(this.fractionPerLevel/100)))" totalPerSale="Commission per sale in $" numAverageSales="Number of sales per reseller per year" numPerLevel="Number of partners per reseller per year" levelsAchieved="The number of partner levels in a year" fractionPerLevel="Relative partner commission per sale in %"]main_calculator[/block]
 <blockquote class="twitter-tweet">
-/<blockquote class="twitter-tweet" lang="[^"]+">/
+/<blockquote class="twitter-tweet" (data-)?lang="[^"]+">/
 </blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8">
 <script async="async" charset="utf-8" src="//platform.twitter.com/widgets.js">

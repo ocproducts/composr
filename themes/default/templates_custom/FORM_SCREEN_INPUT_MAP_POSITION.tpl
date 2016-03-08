@@ -97,6 +97,6 @@
 	add_event_listener_abstract(window,'load',function() {
 		window.setTimeout(function() {
 			google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
-		},0);
+		},0); // Timeout is needed, as if this form works in a member profile tab, the run-time set_inner_html handler may run the JavaScript in an odd-order
 	});
 //]]></script>
