@@ -8,7 +8,7 @@ function ace_composr_loader(textarea_id,programming_language)
 	var div=document.createElement('div');
 	var ace_id=textarea_id+'__ace';
 	div.id=ace_id;
-	div.style.height=(textarea.rows*30)+'px';
+	div.style.height=(textarea.rows*20)+'px';
 	textarea.style.display='none';
 	textarea.parentNode.insertBefore(div,textarea);
 
@@ -20,13 +20,19 @@ function ace_composr_loader(textarea_id,programming_language)
 	editor_session.setUseWrapMode(false);
 	editor.setHighlightActiveLine(true);
 	editor.setShowPrintMargin(false);
+	editor.$blockScrolling=Infinity;
+	if (val.indexOf('{+')!=-1 || val.indexOf('{$')!=-1)
+	{
+		// Troublesome Tempcode, so no syntax validation
+		editor_session.setOption('useWorker',false);
+	}
 
 	// Save reference
 	window.ace_editors[textarea_id]=editor;
 
 	// Keep textarea in sync with the Ace editor
 	editor_session.setValue(val);
-	editor_session.on('change', function(){
+	editor_session.on('change',function(){
 		textarea.value=editor_session.getValue();
 	});
 }
@@ -41,7 +47,7 @@ function editarea_do_search(textarea_id,regexp)
 	var editor=window.ace_editors[textarea_id];
 
 	editor.find(regexp,{
-		wrap: false,
+		wrap: true,
 		caseSensitive: false,
 		regExp: true
 	});
@@ -57,14 +63,14 @@ function editarea_refresh(textarea_id)
 {
 	var editor=window.ace_editors[textarea_id];
 
-	editor.setValue(document.getElementById(textarea_id).value);
+	editor.setValue(document.getElementById(textarea_id).value,-1);
 }
 
 function editarea_set_value(textarea_id,value)
 {
 	var editor=window.ace_editors[textarea_id];
 
-	editor.setValue(value);
+	editor.setValue(value,-1);
 }
 
 function editarea_get_value(textarea_id,value)

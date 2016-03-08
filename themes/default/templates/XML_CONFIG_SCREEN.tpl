@@ -13,7 +13,8 @@
 	</p>
 </form>
 
-<script language="javascript" src="{$BASE_URL*}/data/editarea/edit_area_full.js"></script>
+<script src="{$BASE_URL*}/data/ace/ace.js"></script>
+<script src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
 <script>// <![CDATA[
 	ace_composr_loader('xml','xml');
 //]]></script>

@@ -2315,7 +2315,8 @@ class Module_admin_themes
 
         if (get_option('editarea') == '1') {
             attach_to_screen_header(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
+                <script src="' . get_base_url() . '/data/ace/ace.js"></script>
+                <script src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
                 <script>// <![CDATA[
                     ace_composr_loader(\'tempcode\',\'text\');
                 //]]></script>
