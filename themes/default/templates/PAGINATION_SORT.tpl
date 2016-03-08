@@ -7,11 +7,11 @@
 		{+START,SET,sort_button}
 			{+START,IF,{$OR,{$GET,show_sort_button},{$NOT,{$JS_ON}}}}
 				{+START,IF_NON_PASSED,FILTER}
-					<input onclick="disable_button_just_clicked(this);" class="buttons__sort button_micro" type="submit" title="{!SORT_BY}: {$GET*,TEXT_ID}" value="{!SORT_BY}" />
+					<input onclick="disable_button_just_clicked(this);" class="button_micro buttons__sort" type="submit" title="{!SORT_BY}: {$GET*,TEXT_ID}" value="{!SORT_BY}" />
 				{+END}
 			{+END}
 			{+START,IF_PASSED,FILTER}
-				<input onclick="disable_button_just_clicked(this);" class="buttons__filter button_micro" type="submit" title="{!PROCEED}: {$GET*,TEXT_ID}" value="{!PROCEED}" />
+				<input onclick="disable_button_just_clicked(this);" class="button_micro buttons__filter" type="submit" title="{!PROCEED}: {$GET*,TEXT_ID}" value="{!PROCEED}" />
 			{+END}
 		{+END}
 

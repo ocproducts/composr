@@ -30,16 +30,16 @@
 <p class="proceed_button{+START,IF_PASSED,SUBMIT_BUTTON_CLASS} {SUBMIT_BUTTON_CLASS*}{+END}">
 	{+START,IF,{$JS_ON}}
 		{+START,IF_PASSED_AND_TRUE,BACK}
-			<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+			<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 		{+END}
 		{+START,IF_PASSED,BACK_URL}
-			<input class="buttons__back button_screen" type="button" onclick="if (form.method=='get') { window.location='{BACK_URL;^*}'; return false; } form.action='{BACK_URL;^*}'; form.submit(); return false;" value="{!GO_BACK}" />
+			<input class="button_screen buttons__back" type="button" onclick="if (form.method=='get') { window.location='{BACK_URL;^*}'; return false; } form.action='{BACK_URL;^*}'; form.submit(); return false;" value="{!GO_BACK}" />
 		{+END}
 	{+END}
 
 	{+START,IF_PASSED,EXTRA_BUTTONS}{EXTRA_BUTTONS}{+END}
 	{+START,IF_PASSED_AND_TRUE,PREVIEW}{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}
-		<input class="tabs__preview button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,window.form_preview_url{+START,IF_PASSED_AND_TRUE,SEPARATE_PREVIEW},true{+END})) { if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements)) form.submit(); return true; } return false;" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
+		<input class="button_screen tabs__preview" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,window.form_preview_url{+START,IF_PASSED_AND_TRUE,SEPARATE_PREVIEW},true{+END})) { if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements)) form.submit(); return true; } return false;" id="preview_button" accesskey="p" tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}" type="button" value="{!PREVIEW}" />
 	{+END}{+END}{+END}
 	<input class="{SUBMIT_ICON*} button_screen" onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; return do_form_submit(form,event);"{+START,IF_NON_PASSED_OR_FALSE,SECONDARY_FORM} id="submit_button" accesskey="u"{+END} tabindex="{+START,IF_PASSED,TABINDEX}{TABINDEX}{+END}{+START,IF_NON_PASSED,TABINDEX}250{+END}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{SUBMIT_NAME*}" />
 </p>

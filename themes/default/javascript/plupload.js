@@ -13132,7 +13132,7 @@ function begin_form_uploading(e,ob,recurse)
 		smooth_scroll(find_pos_y(filename_field,true));
 
 		if (find_height(btn_submit.form)>get_window_height()) // If possibly cannot see upload progress bars
-			window.fauxmodal_alert('{!PLEASE_WAIT_WHILE_UPLOADING;}');
+			window.fauxmodal_alert('{!javascript:PLEASE_WAIT_WHILE_UPLOADING;}');
 	} else
 	{
 		window.form_submitting=btn_submit.form; // For IE
@@ -13273,7 +13273,7 @@ function upload_update_progress(ob,file)
 	if (!progress.completed) // In case it reflects progress after completion, which can happen
 	{
 		progress.setProgress(percent);
-		progress.setStatus('{!PLUPLOAD_UPLOADING^;}');
+		progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
 	}
 }
 
@@ -13281,7 +13281,7 @@ function upload_finished(ob,file,data)
 {
 	var progress=new FileProgress(file,ob.settings.progress_target);
 	progress.setComplete();
-	progress.setStatus('{!PLUPLOAD_COMPLETE^;}');
+	progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
 	var btn_submit=document.getElementById(ob.settings.btn_submit_id);
 
@@ -13619,7 +13619,7 @@ function get_uploader_settings(name,page_type,_btn_submit_id,posting_field_name,
 			?
 			[{title: '*.*', extensions: '*'}]
 			:
-			[{title: '{!ALLOWED_FILES^#}', extensions: filter}]
+			[{title: '{!javascript:ALLOWED_FILES^#}', extensions: filter}]
 		,
 
 		// Callbacks
@@ -13919,7 +13919,7 @@ function html5_upload(event,field_name,files)
 		// Progress bar
 		var progress=new FileProgress(file_upload.file_progress,'container_for_'+field_name);
 		progress.setProgress(0);
-		progress.setStatus('{!PLUPLOAD_UPLOADING^;}');
+		progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
 
 		// Keep tabs of it
 		window.extra_attachment_base++;
@@ -13933,7 +13933,7 @@ function html5_upload_progress(event,field_name)
 		if (percentage<100) {
 			var progress=new FileProgress(event.target.file_progress,'container_for_'+field_name);
 			progress.setProgress(percentage);
-			progress.setStatus('{!PLUPLOAD_UPLOADING^;}');
+			progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
 		}
 	}
 }
@@ -13948,7 +13948,7 @@ function build_html5_upload_handler(request,file_progress,attachment_base,field_
 
 					var progress=new FileProgress(file_progress,'container_for_'+field_name);
 					progress.setProgress(100);
-					progress.setStatus('{!PLUPLOAD_FAILED^;}');
+					progress.setStatus('{!javascript:PLUPLOAD_FAILED^;}');
 				} else
 				{
 					var element=document.getElementById(field_name);
@@ -13958,7 +13958,7 @@ function build_html5_upload_handler(request,file_progress,attachment_base,field_
 					var progress=new FileProgress(file_progress,'container_for_'+field_name);
 					progress.setProgress(100);
 					progress.setComplete();
-					progress.setStatus('{!PLUPLOAD_COMPLETE^;}');
+					progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
 					var decoded_data=eval('('+request.responseText+')');
 					document.getElementById('hidFileID_file'+attachment_base).value=decoded_data['upload_id'];

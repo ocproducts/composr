@@ -96,7 +96,7 @@ function sign_in_func($raw_params)
         'max_jpg_size' => mobiquo_val($user_details['max_jpg_size'], 'int'),
         'post_countdown' => mobiquo_val($user_details['post_countdown'], 'int'),
     );
-    if ($user_details['display_text'] != $user_details['username']) {
+    if (isset($user_details['display_text'])) {
         $arr += array(
             'display_text' => mobiquo_val($user_details['display_text'], 'base64'),
         );

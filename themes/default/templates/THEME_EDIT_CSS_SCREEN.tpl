@@ -450,11 +450,11 @@
 
 		<div class="float_surrounder buttons_group">
 			<div class="right">
-				<input id="save_button" onclick="disable_button_just_clicked(this); this.form.target='_self'; this.form.action='{URL;*}';" class="buttons__save button_screen" type="submit" value="{!SAVE}" />
+				<input id="save_button" onclick="disable_button_just_clicked(this); this.form.target='_self'; this.form.action='{URL;*}';" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 			</div>
 			{+START,IF,{$JS_ON}}
 				<div class="right">
-					<input onclick="disable_button_just_clicked(this); this.form.target='save_frame'; this.form.action='{URL;*}{$?,{$IN_STR,{URL},?},&amp;,?}save_and_stay=1';" class="buttons__save_and_stay button_screen" type="submit" accesskey="U" value="{!SAVE_AND_STAY}" />
+					<input onclick="disable_button_just_clicked(this); this.form.target='save_frame'; this.form.action='{URL;*}{$?,{$IN_STR,{URL},?},&amp;,?}save_and_stay=1';" class="button_screen buttons__save_and_stay" type="submit" accesskey="U" value="{!SAVE_AND_STAY}" />
 				</div>
 			{+END}
 		</div>
@@ -520,7 +520,7 @@
 				<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 				<input name="css_equation" id="css_equation" type="text" value="100% seed" />
 
-				<input onclick="cancel_bubbling(event,this); var result=load_snippet('themewizard_equation&amp;theme={THEME;*}&amp;css_equation='+window.encodeURIComponent(document.getElementById('css_equation').value),false); if (result=='' || result.indexOf('&lt;html')!=-1) window.fauxmodal_alert('{!ERROR_OCCURRED;}'); else document.getElementById('css_result').value=result; return false;" class="buttons__calculate button_screen_item" type="submit" value="{!CALCULATE}" />
+				<input onclick="cancel_bubbling(event,this); var result=load_snippet('themewizard_equation&amp;theme={THEME;*}&amp;css_equation='+window.encodeURIComponent(document.getElementById('css_equation').value),false); if (result=='' || result.indexOf('&lt;html')!=-1) window.fauxmodal_alert('{!ERROR_OCCURRED;}'); else document.getElementById('css_result').value=result; return false;" class="button_screen_item buttons__calculate" type="submit" value="{!CALCULATE}" />
 
 				&rarr;
 

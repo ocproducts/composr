@@ -11,7 +11,7 @@
 
 	<div>
 		<div class="proceed_button">
-			<input class="buttons__proceed button_screen" onclick="this.disabled=true; this.form.submit();" accesskey="u" type="submit" value="{!PROCEED}" />
+			<input class="button_screen buttons__proceed" onclick="this.disabled=true; this.form.submit();" accesskey="u" type="submit" value="{!PROCEED}" />
 		</div>
 	</div>
 </form>

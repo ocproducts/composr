@@ -18,7 +18,7 @@
 				{+START,LOOP,1\,2}
 					<option{+START,IF,{$EQ,{$_GET,seconds_back},{$MULT*,604800,{_loop_var}}}} selected="selected"{+END} value="{$MULT*,604800,{_loop_var}}">{!POSTS_SINCE_WEEKS,{$NUMBER_FORMAT*,{_loop_var}}}</option>
 				{+END}
-			</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" class="buttons__filter button_micro" value="{!FILTER}" />{+END}
+			</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" class="button_micro buttons__filter" value="{!FILTER}" />{+END}
 		</p>
 	</form>
 </div>

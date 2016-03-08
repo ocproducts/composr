@@ -8,7 +8,7 @@
 		<div class="constrain_field"><textarea class="textarea_scroll wide_field" cols="60" rows="10" id="edit_content{$GET%,rndx}" name="edit_content">{FILE_CONTENTS*}</textarea></div>
 
 		<p>
-			<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+			<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</div>
 </form>

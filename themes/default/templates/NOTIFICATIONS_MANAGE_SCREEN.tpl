@@ -7,7 +7,7 @@
 		{INTERFACE}
 
 		<p class="proceed_button">
-			<input type="submit" class="buttons__save button_screen" value="{!SAVE}" />
+			<input type="submit" class="button_screen buttons__save" value="{!SAVE}" />
 		</p>
 	</div>
 </form>

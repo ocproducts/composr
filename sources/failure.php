@@ -155,8 +155,7 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
-    require_lang('javascript');
-    warn_exit(do_lang_tempcode('NOT_INTEGER'));
+    warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
     return '';
 }
 
@@ -1029,7 +1028,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('urls');
     require_code('tempcode');
 
-    $error_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true));
+    $error_url = get_self_url_easy();
 
     require_code('notifications');
     require_code('comcode');

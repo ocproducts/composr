@@ -866,8 +866,8 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_posts', '#posts_search__combined', array('p_post', 'p_title'));
 
         // Has to be done after f_groups is added
-        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_edit_time_limit', false);
-        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_delete_time_limit', false);
+        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_edit_time_limit', true);
+        add_privilege('FORUMS_AND_MEMBERS', 'exceed_post_delete_time_limit', true);
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_required_cpfs');
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_required_cpfs_if_already_empty');
         add_privilege('FORUMS_AND_MEMBERS', 'bypass_email_address');

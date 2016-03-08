@@ -158,7 +158,7 @@ function do_input_private_message(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_RECIPIENT;^}',
+		'{!chat:ENTER_RECIPIENT;^}',
 		'',
 		function(va)
 		{
@@ -183,14 +183,14 @@ function do_input_invite(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_RECIPIENT;^}',
+		'{!chat:ENTER_RECIPIENT;^}',
 		'',
 		function(va)
 		{
 			if (va!=null)
 			{
 				var vb=window.fauxmodal_prompt(
-					'{!ENTER_CHATROOM;^}',
+					'{!chat:ENTER_CHATROOM;^}',
 					'',
 					function(vb)
 					{
@@ -208,14 +208,14 @@ function do_input_new_room(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_CHATROOM;^}',
+		'{!chat:ENTER_CHATROOM;^}',
 		'',
 		function(va)
 		{
 			if (va!=null)
 			{
 				var vb=window.prompt(
-					'{!ENTER_ALLOW;^}',
+					'{!chat:ENTER_ALLOW;^}',
 					'',
 					function(vb)
 					{

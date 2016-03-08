@@ -594,6 +594,9 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     }
     $db = ((substr($ob_info['table'], 0, 2) != 'f_') || (get_forum_type() == 'none')) ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
     $where = get_content_where_for_str_id($effective_id, $ob_info);
+    if (isset($where['the_zone'])) {
+        $where['the_zone'] = $zone;
+    }
     $_moniker_src = $db->query_select($ob_info['table'], $select, $where); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
     if (!array_key_exists(0, $_moniker_src)) {
@@ -724,7 +727,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
     $moniker_origin = $moniker;
     $next_num = 1;
     if (is_numeric($moniker)) {
-        $moniker .= '_1';
+        $moniker .= '-1';
     }
     $test = mixed();
     do {
@@ -753,7 +756,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
         $test = $GLOBALS['SITE_DB']->query_value_if_there($dupe_sql, false, true);
         if (!is_null($test)) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
-            $moniker = $moniker_origin . '_' . strval($next_num);
+            $moniker = $moniker_origin . '-' . strval($next_num);
         }
     } while (!is_null($test));
 
@@ -842,7 +845,11 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (!is_null($ob_info['parent_category_field'])) {
             $select[] = $ob_info['parent_category_field'];
         }
-        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, get_content_where_for_str_id(($type == '') ? $page : $id, $ob_info));
+        $where = get_content_where_for_str_id(($type == '') ? $page : $id, $ob_info);
+        if (isset($where['the_zone'])) {
+            $where['the_zone'] = $zone;
+        }
+        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where);
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
         if (!array_key_exists(0, $_moniker_src)) {
             return $moniker; // been deleted?

@@ -36,7 +36,7 @@
 	</table></div>
 
 	<p class="proceed_button">
-		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__save button_screen" type="submit" value="{!SAVE}" />
+		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 	</p>
 
 	{+START,IF,{TOO_MANY}}

@@ -202,7 +202,8 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
         $dispatcher->dispatch();
     } else {
         require_code('tasks');
-        call_user_func_array__long_task(do_lang('_SEND_NOTIFICATION'), get_screen_title('_SEND_NOTIFICATION', true, null, null, null, false), 'dispatch_notification', array($dispatcher), true, false, false);
+        global $CSSS;
+        call_user_func_array__long_task(do_lang('_SEND_NOTIFICATION'), get_screen_title('_SEND_NOTIFICATION', true, null, null, null, false), 'dispatch_notification', array($dispatcher, array_keys($CSSS)), true, false, false);
     }
 
     global $LAST_NOTIFICATION_LANG_CALL;
@@ -608,7 +609,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                     false,
                     false,
                     'MAIL',
-                    null,
+                    true,
                     $attachments,
                     null,
                     $join_time

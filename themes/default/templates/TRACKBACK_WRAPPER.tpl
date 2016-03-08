@@ -16,7 +16,7 @@
 		{TRACKBACKS}
 		{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,_SEARCH:admin_trackbacks}}
 			<p class="proceed_button">
-				<input onclick="disable_button_just_clicked(this);" class="menu___generic_admin__delete button_screen" type="submit" value="{!MANAGE_TRACKBACKS}" />
+				<input onclick="disable_button_just_clicked(this);" class="button_screen menu___generic_admin__delete" type="submit" value="{!MANAGE_TRACKBACKS}" />
 			</p>
 		</form>
 		{+END}

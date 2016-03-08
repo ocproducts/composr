@@ -212,7 +212,6 @@ function get_attachments($posting_field_name)
 {
     $image_types = str_replace(',', ', ', get_option('valid_images'));
 
-    require_lang('javascript');
     require_lang('comcode');
     require_javascript('plupload');
     require_css('widget_plupload');
@@ -307,7 +306,6 @@ function get_attachments($posting_field_name)
  */
 function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
-    require_lang('javascript');
     require_javascript('posting');
     require_javascript('ajax');
     require_javascript('plupload');
@@ -1466,7 +1464,6 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
  */
 function form_input_upload($pretty_name, $description, $name, $required, $default = null, $tabindex = null, $plupload = true, $filter = '', $syndication_json = null)
 {
-    require_lang('javascript');
     if ($plupload) {
         require_javascript('plupload');
         require_css('widget_plupload');
@@ -1526,7 +1523,6 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
  */
 function form_input_upload_multi($pretty_name, $description, $name, $required, $tabindex = null, $default = null, $plupload = true, $filter = '', $syndication_json = null)
 {
-    require_lang('javascript');
     if ($plupload) {
         require_javascript('plupload');
         require_css('widget_plupload');

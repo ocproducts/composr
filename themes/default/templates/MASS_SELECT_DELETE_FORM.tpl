@@ -2,6 +2,6 @@
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p class="proceed_button">
-		<input class="menu___generic_admin__delete button_screen_item" type="submit" value="{!DELETE_SELECTION}" />
+		<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE_SELECTION}" />
 	</p>
 </form>

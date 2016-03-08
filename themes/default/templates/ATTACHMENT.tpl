@@ -30,7 +30,7 @@
 								document.getElementById('file{I;/}').setAttribute('unselectable','on');
 							//]]></script>
 
-							{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="buttons__clear button_micro" type="button" id="clear_button_file{I*}" value="{!CLEAR}" onclick="return clear_attachment({I%},form.elements['post']);" title="{!CLEAR}: {!ATTACHMENT,{I*}}" />{+END}
+							{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="button_micro buttons__clear" type="button" id="clear_button_file{I*}" value="{!CLEAR}" onclick="return clear_attachment({I%},form.elements['post']);" title="{!CLEAR}: {!ATTACHMENT,{I*}}" />{+END}
 						</span>
 
 						{+START,IF_PASSED,SYNDICATION_JSON}
