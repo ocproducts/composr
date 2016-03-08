@@ -101,7 +101,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>We support the highest levels of compliance (AAA).</td>
 		</tr>
 		<tr>
-			<td>[url="http://en.wikipedia.org/wiki/Access_key#UK_Government_recommendation_for_access_keys"]UK Gov. recommendation for access keys[/url] and [url="http://www.webrichtlijnen.nl/besluit/tekst-besluit-en-toelichting/"]Besluit Kwaliteit Rijksoverheidswebsites[/url] and [url="http://www.section508.gov"]Section 508[/url]</td>
+			<td>[url="http://en.wikipedia.org/wiki/Access_key#UK_Government_recommendation_for_access_keys"]UK Gov. recommendation for access keys[/url] and [url="https://zoek.officielebekendmakingen.nl/stcrt-2006-136-p23-SC75949.html"]Besluit Kwaliteit Rijksoverheidswebsites[/url] and [url="http://www.section508.gov"]Section 508[/url]</td>
 			<td>Detailed accessibility standards from particular countries.</td>
 			<td>We support these standards.</td>
 		</td>
