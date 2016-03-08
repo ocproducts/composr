@@ -27,6 +27,28 @@ Integration is done via configuring an app on Facebook; no actual app code needs
 9) Scroll back up and click "Skip quickstart"
 10) Note down your App ID and your App Secret
 
+[i]Update[/i]: Facebook keep making the app process more and more complex. You may also want to enter:
+ - Settings
+  - your app domain name
+  - a contact email
+ - App Details
+  - a short description
+  - a publisher name
+  - a category
+  - a privacy policy URL
+  - a 16x16 app icon
+  - a 1024x1024 app icon
+  - a user support email
+If you want to allow admin publishing to a Facebook page, go to App Review and enabling (with explanations of why):
+ - publish_pages
+ - manage_pages
+And if you want to request additional member details for logging in users:
+ - user_about_me
+ - user_birthday
+ - user_website
+ - user_hometown
+ - user_location
+
 [title="4"]Special case: Delegating access[/title]
 
 If you need to add someone else to your Facebook app (what you added above), to help development/debug it:

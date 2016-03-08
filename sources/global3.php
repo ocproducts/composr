@@ -554,8 +554,13 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
         foreach ($cma_mappings as $meta_type => $cma_field) {
             if (!isset($METADATA[$meta_type])) {
-                if (isset($row[$cma_info[$cma_field]])) {
+                if ($cma_field == 'content_type_universal_label' || isset($row[$cma_info[$cma_field]])) {
                     switch ($meta_type) {
+                        case 'type':
+                            $val_raw = $cma_info[$cma_field];
+                            $val = $val_raw;
+                            break;
+
                         case 'created':
                         case 'modified':
                             $val_raw = strval($row[$cma_info[$cma_field]]);
