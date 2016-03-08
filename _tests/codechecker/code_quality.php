@@ -616,7 +616,6 @@ if (isset($GLOBALS['API'])) {
 
 // To get it started
 if (isset($_GET['test'])) {
-
     // Checking an internal test
 
     $GLOBALS['API'] = 1;
@@ -628,7 +627,6 @@ if (isset($_GET['test'])) {
     $parsed = parse(lex('<' . '?php' . "\n" . $tests[$_GET['test']] . "\n"));
     check($parsed);
 } elseif ((!isset($_GET['to_use'])) && (!isset($_SERVER['argv'][1]))) {
-
     // Search for stuff to check
 
     $GLOBALS['API'] = 1;
@@ -657,7 +655,6 @@ if (isset($_GET['test'])) {
         }
     }
 } else {
-
     // Given list of things to check
 
     $_to_use = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : $_GET['to_use'];
