@@ -95,6 +95,8 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
+		window.setTimeout(function() {
+			google.load('maps','3', {callback: google_map_users_initialize, other_params:''});
+		},0);
 	});
 //]]></script>
