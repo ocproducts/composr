@@ -27,7 +27,7 @@ $api_key = get_option('twitter_api_key');
 $api_secret = get_option('twitter_api_secret');
 
 if ($api_key == '' || $api_secret == '') {
-    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE', 'redirect' => get_self_url(true)), get_module_zone('admin_config'), null, false, false, false, 'group_TWITTER_SYNDICATION');
+    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'COMPOSR_APIS', 'redirect' => get_self_url(true)), get_module_zone('admin_config'), null, false, false, false, 'group_TWITTER_SYNDICATION');
     $echo = redirect_screen($title, $config_url, do_lang_tempcode('TWITTER_SETUP_FIRST'));
     $echo->evaluate_echo();
     return;
@@ -36,7 +36,12 @@ if ($api_key == '' || $api_secret == '') {
 require_code('hooks/systems/syndication/twitter');
 $ob = new Hook_syndication_twitter();
 
-$result = $ob->auth_set(null, get_self_url(false, false, array('oauth_in_progress' => 1)));
+try {
+    $result = $ob->auth_set(null, get_self_url(false, false, array('oauth_in_progress' => 1)));
+}
+catch (Exception $e) {
+    warn_exit($e->getMessage());
+}
 
 if ($result) {
     $out = do_lang_tempcode('TWITTER_OAUTH_SUCCESS');

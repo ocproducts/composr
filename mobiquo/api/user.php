@@ -88,7 +88,7 @@ function login_func($raw_params)
         'ignored_uids' => mobiquo_val($user_details['ignored_uids'], 'string'),
     );
 
-    if ($user_details['display_text'] != $user_details['username']) {
+    if (isset($user_details['display_text'])) {
         $arr += array(
             'display_text' => mobiquo_val($user_details['display_text'], 'base64'),
         );
