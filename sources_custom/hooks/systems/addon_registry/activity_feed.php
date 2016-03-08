@@ -176,6 +176,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'themes/default/css_custom/activities.css',
             'sources_custom/hooks/systems/profiles_tabs/activities.php',
             'sources_custom/hooks/systems/profiles_tabs/posts.php',
+            'sources_custom/hooks/systems/config/syndicate_site_activity_default.php',
             'uploads/addon_avatar_normalise/index.html',
             'uploads/addon_icon_normalise/index.html',
             'sources_custom/activities.php',
