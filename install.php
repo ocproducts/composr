@@ -2389,8 +2389,8 @@ function require_code($codename)
 
     if (!array_key_exists('type', $_GET)) {
         $prior = memory_get_usage();
-        echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n";
-        echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
+        //echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n"; Can break JS validity if we inject this
+        //echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
         flush();
     }
 

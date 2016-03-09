@@ -1350,6 +1350,10 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         }
     }
 
+    if (($function == 'isset' || $function == 'empty') && (@$c[2][0][0] != 'VARIABLE')) {
+        log_warning('Can only pass variables to ' . $function, $c_pos);
+    }
+
     if (($function == 'tempnam') && (@$c[2][0][0] == 'LITERAL') && (substr(@$c[2][0][1][1], 0, 4) == '/tmp')) {
         log_warning('Don\'t assume you can write to the shared temp directory -- safe mode won\'t tolerate it', $c_pos);
     }

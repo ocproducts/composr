@@ -592,7 +592,11 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
                             break;
 
                         case 'description':
-                            $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            if (is_integer($row[$cma_info[$cma_field]])) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
                             $val = $val_raw;
                             break;
 

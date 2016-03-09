@@ -89,7 +89,8 @@ class Hook_syndication_facebook
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return !empty(get_value($save_to, null, true));
+        $val = get_value($save_to, null, true);
+        return !empty($val);
     }
 
     public function auth_set($member_id, $oauth_url)

@@ -61,7 +61,7 @@ if (!function_exists('mu_result')) {
         $normal_bore = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/';
         $shortened = get_file_base() . '/upgrades/';
         if (!file_exists($shortened)) {
-            link($normal_bore, 'upgrades');
+            symlink($normal_bore, 'upgrades');
         }
         if (substr($path, 0, strlen($normal_bore)) == $normal_bore) {
             $path = $shortened . substr($path, strlen($normal_bore));
