@@ -710,7 +710,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     $special_treatment = ((($KEEP_MARKERS) || ($SHOW_EDIT_LINKS)) && ($XHTML_SPIT_OUT === null));
 
     if ($RECORD_TEMPLATES_USED) {
-        $RECORDED_TEMPLATES_USED[] = $directory . '/' . $codename . $suffix;
+        record_template_used($directory . '/' . $codename . $suffix);
     }
 
     // Variables we'll need
@@ -954,7 +954,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $tpl_path_descrip = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]) . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
 
                 if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-                    $GLOBALS['RECORDED_TEMPLATES_USED'][] = $tpl_path_descrip;
+                    record_template_used($tpl_path_descrip);
                 }
 
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
@@ -2146,4 +2146,49 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
 function debug_call_user_func($function, $a, $b = null, $c = null)
 {
     return call_user_func($function, $a, $b, $c);
+}
+
+/**
+ * Record (in memory) that a template has been loaded up. Tallies are kept.
+ *
+ * @param  string $tpl_path_descrip Template that's getting loaded
+ */
+function record_template_used($tpl_path_descrip)
+{
+    static $called_once = false;
+
+    global $RECORDED_TEMPLATES_USED;
+
+    record_template_used($tpl_path_descrip);
+    if (!isset($RECORDED_TEMPLATES_USED[$tpl_path_descrip])) {
+        $RECORDED_TEMPLATES_USED[$tpl_path_descrip] = 0;
+    }
+    $RECORDED_TEMPLATES_USED[$tpl_path_descrip]++;
+
+    if (!$called_once) {
+        register_shutdown_function('_record_template_used');
+    }
+
+    $called_once = true;
+}
+
+/**
+ * Save template relationships into the database.
+ *
+ * @ignore
+ */
+function _record_template_used()
+{
+    global $RECORDED_TEMPLATES_USED;
+
+    foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_a) {
+        foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_b) {
+            if ($rel_a != $rel_b) {
+                $GLOBALS['SITE_DB']->query_insert('theme_template_relationships', array(
+                    'rel_a' => $rel_a,
+                    'rel_b' => $rel_b
+                ), false, true);
+            }
+        }
+    }
 }

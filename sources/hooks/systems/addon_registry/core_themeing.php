@@ -144,6 +144,7 @@ class Hook_addon_registry_core_themeing
             'sources/themes3.php',
             'lang/EN/themes.ini',
             'sources/lorem.php',
+            'sources/themes_meta_tree.php',
             'sources/hooks/systems/config/enable_theme_img_buttons.php',
         );
     }

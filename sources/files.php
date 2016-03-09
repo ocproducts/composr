@@ -235,6 +235,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              // Stuff from composr_homesite deployment
                                              'upgrades' => '',
 
+                                             // Dynamically created meta-tree
+                                             '_meta_tree' => '.*',
+
                                              // Specially-recognised naming conventions
                                              '_old' => '.*',
                                              '_old_backups' => '.*',

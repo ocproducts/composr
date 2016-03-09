@@ -332,8 +332,7 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
         $theme = 'default';
     }
     if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-        global $RECORDED_TEMPLATES_USED;
-        $RECORDED_TEMPLATES_USED[] = 'css/' . $c . '.css';
+        record_template_used('css/' . $c . '.css');
     }
     require_code('tempcode_compiler');
     global $ATTACHED_MESSAGES_RAW;

@@ -35,7 +35,7 @@ class Module_admin_themes
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -92,6 +92,13 @@ class Module_admin_themes
                 'path' => 'webclipicon.png',
                 'lang' => fallback_lang()
             ), false, true);
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+            $GLOBALS['SITE_DB']->create_table('theme_template_relationships', array(
+                'rel_a' => '*ID_TEXT',
+                'rel_b' => '*ID_TEXT'
+            ));
         }
     }
 

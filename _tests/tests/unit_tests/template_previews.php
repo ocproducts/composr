@@ -127,8 +127,8 @@ class template_previews_test_set extends cms_test_case
                         continue;
                     }
 
-                    $this->assertTrue(in_array($template_2, $RECORDED_TEMPLATES_USED), $template_2 . ' not used in preview as claimed in ' . $hook . '/' . $function);
-                    if (!in_array($template_2, $RECORDED_TEMPLATES_USED)) {
+                    $this->assertTrue(array_key_exists($template_2, $RECORDED_TEMPLATES_USED), $template_2 . ' not used in preview as claimed in ' . $hook . '/' . $function);
+                    if (!array_key_exists($template_2, $RECORDED_TEMPLATES_USED)) {
                         $flag = true;
                     }
                 }

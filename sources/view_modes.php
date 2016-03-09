@@ -182,7 +182,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             }
         }
 
-        foreach (array_unique($RECORDED_TEMPLATES_USED) as $name) {
+        foreach (array_keys($RECORDED_TEMPLATES_USED) as $name) {
             $search = find_template_place(
                 basename($name, '.' . get_file_extension($name)),
                 get_site_default_lang(),
@@ -394,9 +394,8 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         if ($special_page_type == 'templates') {
             $title = get_screen_title('TEMPLATES');
 
-            $_RECORDED_TEMPLATES_USED = array_count_values($RECORDED_TEMPLATES_USED);
-            ksort($_RECORDED_TEMPLATES_USED);
-            foreach ($_RECORDED_TEMPLATES_USED as $name => $count) {
+            asort($_RECORDED_TEMPLATES_USED);
+            foreach ($RECORDED_TEMPLATES_USED as $name => $count) {
                 $edit_url_map = array(
                     'page' => 'admin_themes',
                     'type' => '_edit_templates',
