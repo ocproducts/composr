@@ -1556,7 +1556,7 @@ class Module_admin_themes
             // Lots of UI stuff...
 
             $matches = array();
-            $cnt = preg_match_all('#\{([\w][\w\_]*)\}#', $old_contents, $matches);
+            $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', $old_contents, $matches);
             $parameters = new Tempcode();
             $p_done = array();
             for ($j = 0; $j < $cnt; $j++) {
@@ -2320,7 +2320,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function Tempcode_tester()
+    public function tempcode_tester()
     {
         require_javascript('ajax');
 
