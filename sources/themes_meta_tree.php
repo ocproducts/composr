@@ -12,11 +12,212 @@
 
 */
 
+/*EXTRA FUNCTIONS: symlink*/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_themeing
  */
+
+/**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__themes_meta_tree()
+{
+    define('TEMPLATE_TREE_NODE__UNKNOWN', 0);
+    define('TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE', 1);
+    define('TEMPLATE_TREE_NODE__SET', 2);
+    define('TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER', 3);
+    define('TEMPLATE_TREE_NODE__BLOCK', 4);
+    define('TEMPLATE_TREE_NODE__TRIM', 5);
+    define('TEMPLATE_TREE_NODE__PANEL', 6);
+    define('TEMPLATE_TREE_NODE__PAGE', 7);
+    define('TEMPLATE_TREE_NODE__JS_TEMPCODE', 8);
+    define('TEMPLATE_TREE_NODE__CSS_TEMPCODE', 9);
+    define('TEMPLATE_TREE_NODE__INCLUDE', 10);
+    define('TEMPLATE_TREE_NODE__ATTACHED', 11);
+    define('TEMPLATE_TREE_NODE__TEMPLATE_GUID', 12); // The GUID for a template call. Not quite a part of the tree, but it fits in nicely as it is a template parameter.
+}
+
+/**
+ * Prepare template tree metadata.
+ *
+ * @param  integer $type Tree node type (a TEMPLATE_TREE_NODE__* constant)
+ * @param  mixed $identifier Identifier (Tempcode or string)
+ * @param  ?mixed $children Child nodes (array) or Tempcode node to get children from (Tempcode) (null: none)
+ * @return array Metadata structure
+ */
+function create_template_tree_metadata($type = 0, $identifier = '', $children = null)
+{
+    if (is_object($identifier)) {
+        $identifier = $identifier->evaluate();
+    }
+
+    if ($children === null) {
+        $children = array();
+    }
+    if (is_object($children)) {
+        if (isset($children->metadata)) {
+            $children = array($children->metadata);
+        } else {
+            $children = array();
+        }
+    }
+
+    return array(
+        'type' => $type,
+        'identifier' => $identifier,
+        'children' => $children,
+    );
+}
+
+/**
+ * Convert a template tree structure into a HTML representation.
+ *
+ * @param  array $metadata Tempcode metadata node
+ * @return string HTML representation
+ */
+function find_template_tree_nice($metadata)
+{
+    $identifier = $metadata['identifier'];
+    $children = $metadata['children'];
+
+    // Basic node rendering
+    switch ($metadata['type']) {
+        case TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE: // Full template editing link
+            $file = $identifier;
+            $codename = basename($identifier, '.tpl');
+
+            // Find GUID
+            $guid = mixed();
+            foreach ($children as $child) {
+                if ($child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_GUID) {
+                    $guid = $child['identifier'];
+                }
+            }
+
+            // Find edit URL
+            $edit_url_map = array(
+                'page' => 'admin_themes',
+                'type' => '_edit_templates',
+                'f0file' => $file,
+                'f0guid' => $guid,
+                'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+                'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+            );
+            $edit_url = build_url($edit_url_map, 'adminzone');
+
+            // Render
+            $source = do_template('TEMPLATE_TREE_ITEM', array(
+                '_GUID' => 'be8eb00699631677d459b0f7c5ba60c8',
+                'FILE' => $file,
+                'EDIT_URL' => $edit_url,
+                'CODENAME' => $codename,
+                'GUID' => $guid,
+                'ID' => strval(mt_rand(0, mt_getrandmax())),
+            ));
+            $out = $source->evaluate();
+
+            break;
+
+        case TEMPLATE_TREE_NODE__SET:
+            $out = 'set: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER:
+            $out = 'parameter: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__BLOCK:
+            $out = 'block: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__TRIM:
+            $out = 'trim';
+            break;
+
+        case TEMPLATE_TREE_NODE__PANEL:
+            $out = 'panel: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__PAGE:
+            $out = 'page: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__JS_TEMPCODE:
+            $out = 'js_files: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__CSS_TEMPCODE:
+            $out = 'css_files';
+            break;
+
+        case TEMPLATE_TREE_NODE__INCLUDE:
+            $out = 'include: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__ATTACHED:
+            $out = 'attached';
+            break;
+
+        case TEMPLATE_TREE_NODE__TEMPLATE_GUID:
+            $out = 'guid: ' . $identifier;
+            break;
+
+        case TEMPLATE_TREE_NODE__UNKNOWN:
+        case TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE:
+            $out = $identifier;
+            break;
+
+        default:
+            $out = '(mixed)';
+            break;
+    }
+
+    // Now for the children...
+
+    // Simplify down
+    $_children = array();
+    foreach ($children as $child) {
+        if (
+            ((count($child['children']) != 0) && ($child['type'] != TEMPLATE_TREE_NODE__SET))
+            ||
+            (($child['identifier'] != '') && ($child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE))
+        ) {
+            $_children[] = $child;
+        }
+    }
+    $children = $_children;
+
+    // Remove duplicates
+    $children_unique = array();
+    foreach ($children as $child) {
+        $children_unique[serialize(array_diff_key($child, array('children' => true)))] = $child;
+    }
+
+    // Render
+    $child_items = '';
+    foreach ($children_unique as $child) {
+        $child_rendered = find_template_tree_nice($child);
+        if ($child_rendered != '') {
+            $_middle = do_template('TEMPLATE_TREE_ITEM_WRAP', array('_GUID' => '59f003e298db3b621132649d2e315f9d', 'CONTENT' => $child_rendered));
+            $child_items .= $_middle->evaluate();
+        }
+    }
+    if (($child_items == '') && (($codename == '') || ($codename != TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE))) {
+        return '';
+    }
+    if ($child_items != '') {
+        $_out = do_template('TEMPLATE_TREE_NODE', array('_GUID' => 'ff937cbe28f1988af9fc7861ef01ffee', 'ITEMS' => $child_items));
+        $out .= $_out->evaluate();
+    }
+
+    // Done
+    return $out;
+}
 
 /**
  * Sitemap node type base class.
@@ -36,7 +237,7 @@ class Meta_tree_builder
     public function __construct($theme)
     {
         $this->theme = $theme;
-        $this->addons = array_keys(find_all_addons());
+        $this->addons = array_keys(find_all_hooks('systems', 'addon_registry'));
     }
 
     /**
@@ -44,6 +245,8 @@ class Meta_tree_builder
      */
     public function refresh()
     {
+        $theme = $this->theme;
+
         require_code('files');
 
         $theme_dir = get_custom_file_base() . '/themes/' . $theme;
@@ -78,31 +281,123 @@ class Meta_tree_builder
             'text-related',
         );
         foreach ($meta_dirs_to_build as $meta_dir_to_build) {
-            mkdir($meta_dir . '/' . $meta_dir_to_build, 0777);
-            fix_permissions($meta_dir . '/' . $meta_dir_to_build);
+            $_path = $meta_dir . '/' . $meta_dir_to_build;
+            mkdir($_path, 0777);
+            fix_permissions($_path);
 
             switch ($meta_dir_to_build) {
                 case 'screens':
-                    TODO
+                    $this->put_in_screens($_path, $theme);
                     break;
 
-                case 'templates',
-                case 'css',
-                case 'javascript',
-                case 'xml',
-                case 'text',
-                    $this->put_in_addon_tree($meta_dir, $meta_dir_to_build);
+                case 'templates':
+                case 'css':
+                case 'javascript':
+                case 'xml':
+                case 'text':
+                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme);
                     break;
 
-                case 'templates-related',
-                case 'css-related',
-                case 'javascript-related',
-                case 'xml-related',
-                case 'text-related',
-                    // TODO: Requires different logic
-                    $this->put_in_addon_tree($meta_dir, $meta_dir_to_build);
+                case 'templates-related':
+                case 'css-related':
+                case 'javascript-related':
+                case 'xml-related':
+                case 'text-related':
+                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, true);
                     break;
             }
+        }
+    }
+
+    /**
+     * Put in an screen template/page hierarchy under a path.
+     *
+     * @param  PATH $path The path
+     * @param  ID_TEXT $theme The theme
+     */
+    private function put_in_screens($path, $theme)
+    {
+        $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link', 'json_tree'));
+        foreach ($screens as $screen) {
+            $page_link = $screen['page_link'];
+            $page_link_parts = explode(':', $page_link);
+            $tree = json_decode($screen['json_tree']);
+
+            // Turn page-link into deep subtree
+            $_path = $path;
+            foreach ($page_link_parts as $part) {
+               $_path .= '/' . urlencode($part);
+
+               mkdir($_path, 0777);
+               fix_permissions($_path);
+            }
+
+            // Create our screen tree under the page-link subtree
+            $this->put_in_screen($_path, $tree, $theme);
+        }
+    }
+
+    /**
+     * Put in an screen template/page hierarchy under a path.
+     *
+     * @param  PATH $path The path
+     * @param  array $node The tree node
+     * @param  ID_TEXT $theme The theme
+     */
+    private function put_in_screen($path, $node, $theme)
+    {
+        // Create directory for this level
+        $_path = $path . '/' . urlencode($node['name']);
+        mkdir($_path, 0777);
+        fix_permissions($_path);
+
+        /*
+        Structure is like this:
+
+        $node = array(
+            'type' => 'template',
+            'subdir' => 'templates',
+            'name' => 'EXAMPLE.tpl',
+            'instance_calls' => array(
+                array(
+                    'parameter_as' => 'FOOBAR',
+                    'guid_used' => 'r32t9yt9iy9045hkgrt0g',
+                ),
+                ...
+            );
+            'children' => (recursive)
+        );
+        */
+
+        // Create _self symlink
+        switch ($node['type']) {
+            case 'comcode_page':
+                list($zone, $page) = explode(':', $node['name'], 2);
+                list(, , $page_path) = find_comcode_page(get_site_default_lang(), $page, $zone);
+                if ($page_path == '') {
+                    $page_path = get_file_base() . '/pages/comcode/EN/404.txt';
+                }
+                symlink($page_path, $_path . '/_self.txt');
+                break;
+
+            case 'template':
+                $template_path = $this->find_template_path($node['name'], $node['subdir'], $theme);
+                symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
+                break;
+
+            default:
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
+        // Create _instance_calls.txt
+        $instance_calls = '';
+        foreach ($node['instance_calls'] as $instance_call) {
+            $instance_calls .= '{' . $instance_call['parameter_as'] . '}, GUID=' . $instance_call['guid_used'] . "\n";
+        }
+
+        // Process children
+        foreach ($node['children'] as $child) {
+            $this->put_in_screen($_path, $node, $theme);
         }
     }
 
@@ -111,8 +406,10 @@ class Meta_tree_builder
      *
      * @param  PATH $path The path
      * @param  ID_TEXT $subdir The theme subdirectory we're working against
+     * @param  ID_TEXT $theme The theme
+     * @param  boolean $relationships_mode Whether we have an extra level, the relationships mode
      */
-    private function put_in_addon_tree($path, $subdir)
+    private function put_in_addon_tree($path, $subdir, $theme, $relationships_mode = false)
     {
         $_all_path = $path . '/_all';
         mkdir($_all_path, 0777);
@@ -123,11 +420,31 @@ class Meta_tree_builder
             mkdir($_path, 0777);
             fix_permissions($_path);
 
-            $files = find_theme_files_from_addon($addon, $subdir);
+            $files = $this->find_theme_files_from_addon($addon, $subdir, $theme);
             foreach ($files as $file) {
-                symlink($file['full_path'], $_path . '/' . $file['stub']);
+                $places_for_referencing = array(
+                    $_path . '/' . $file['filename'],
+                    $_all_path . '/' . $file['filename'],
+                );
 
-                symlink($file['full_path'], $_all_path . '/' . $file['stub']);
+                if ($relationships_mode) {
+                    $_relationships = $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $file['filename']));
+                    $relationships = collapse_1d_complexity('rel_b', $_relationships);
+
+                    foreach ($places_for_referencing as $place) {
+                        mkdir($place, 0777);
+                        fix_permissions($place);
+
+                        foreach ($relationships as $relationship) {
+                            symlink($this->find_template_path($relationship, $subdir, $theme), $place . '/' . $relationship);
+                        }
+                        symlink($file['full_path'], $place . '/' . $file['filename']);
+                    }
+                } else {
+                    foreach ($places_for_referencing as $place) {
+                        symlink($file['full_path'], $place);
+                    }
+                }
             }
         }
     }
@@ -137,9 +454,10 @@ class Meta_tree_builder
      *
      * @param  ID_TEXT $addon The addon
      * @param  ID_TEXT $subdir The theme subdirectory we're working against
+     * @param  ID_TEXT $theme The theme
      * @return array The files
      */
-    private function find_theme_files_from_addon($addon, $subdir)
+    private function find_theme_files_from_addon($addon, $subdir, $theme)
     {
         static $cache = array();
         if (isset($cache[$addon][$subdir])) {
@@ -152,12 +470,16 @@ class Meta_tree_builder
         $ob = object_factory('Hook_addon_registry_' . $addon);
         $_files = $ob->get_file_list();
         $test_for = 'themes/default/' . $subdir . '/';
-        foreach ($_files as $file) {
-            if (substr($file, 0, strlen($test_for)) == $test_for) {
-                if ((basename($file) != 'index.html') && (basename($file) != '.htaccess')) {
+        foreach ($_files as $file_path) {
+            if (substr($file_path, 0, strlen($test_for)) == $test_for) {
+                $file = basename($file_path);
+
+                if (($file != 'index.html') && ($file != '.htaccess')) {
+                    $template_path = $this->find_template_path($file, $subdir, $theme);
+
                     $files[] = array(
-                        'full_path' => get_file_base() . '/' . $file, // TODO: Should be override path
-                        'stub' => substr($file, strlen($test_for)),
+                        'full_path' => $template_path,
+                        'filename' => $file,
                     );
                 }
             }
@@ -169,6 +491,33 @@ class Meta_tree_builder
     }
 
     /**
+     * Find where a template is.
+     *
+     * @param  ID_TEXT $file The addon
+     * @param  ID_TEXT $subdir The theme subdirectory we're working against
+     * @param  ID_TEXT $theme The theme
+     * @return PATH The path
+     */
+    private function find_template_path($file, $subdir, $theme)
+    {
+        static $cache = array();
+        if (isset($cache[$file][$subdir][$theme])) {
+            return $cache[$file][$subdir][$theme];
+        }
+
+        $suffix = '.' . get_file_extension($file);
+        list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($file, get_site_default_lang(), $theme, $suffix, $subdir);
+        $template_path = get_custom_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
+        if (!is_file($template_path)) {
+            $template_path = get_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
+        }
+
+        $cache[$file][$subdir][$theme] = $template_path;
+
+        return $template_path;
+    }
+
+    /**
      * Put standard directory files (security files) into a directory.
      *
      * @param  PATH $path The path
@@ -176,9 +525,9 @@ class Meta_tree_builder
     private function put_in_standard_dir_files($path)
     {
         copy(get_custom_file_base() . '/themes/default/templates/index.html', $path . '/index.html');
-        fix_permissions($meta_dir . '/index.html');
+        fix_permissions($path . '/index.html');
 
         copy(get_custom_file_base() . '/themes/default/templates/.htaccess', $path . '/.htaccess');
-        fix_permissions($meta_dir . '/.htaccess');
+        fix_permissions($path . '/.htaccess');
     }
 }

@@ -435,7 +435,11 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             );
             $edit_url = build_url($edit_url_map, 'adminzone', null, false, true);
 
-            $tree = find_template_tree_nice($out->codename, $out->children, $out->fresh);
+            require_code('themes_meta_tree');
+            if (!isset($out->metadata)) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            }
+            $tree = find_template_tree_nice($out->metadata);
 
             $templates = do_template('TEMPLATE_TREE', array(
                 '_GUID' => 'ff2a2233b8b4045ba4d8777595ef64c7',
@@ -493,107 +497,6 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     $echo->evaluate_echo();
 
     exit();
-}
-
-/**
- * Convert a template tree structure into a HTML representation.
- *
- * @param  ID_TEXT $codename The codename of the current template item in the recursion
- * @param  array $children The template tree structure for children
- * @param  boolean $fresh Whether the template tree came from a cache (if so, we can take some liberties with it's presentation)
- * @param  boolean $cache_started As $fresh, except something underneath at any unknown point did come from the cache, so this must have by extension
- * @return string HTML representation
- */
-function find_template_tree_nice($codename, $children, $fresh, $cache_started = false)
-{
-    // Basic node rendering
-    if ($codename == '') {
-        $source = make_string_tempcode('?');
-    } elseif ($codename[0] == ':') {
-        $source = make_string_tempcode(substr($codename, 1));
-    } elseif ($codename == '(mixed)') {
-        $source = make_string_tempcode($codename);
-    } else {
-        if (strpos($codename, '/') === false ) {
-            $file = 'templates/' . $codename . '.tpl';
-        } else {
-            $file = $codename;
-            $codename = basename($codename, '.tpl');
-        }
-
-        $guid = mixed();
-        foreach ($children as $child) {
-            if ($child[0] == ':guid') {
-                $guid = substr($child[1][0][0], 1);
-            }
-        }
-
-        $edit_url_map = array(
-            'page' => 'admin_themes',
-            'type' => '_edit_templates',
-            'f0file' => $file,
-            'f0guid' => $guid,
-            'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
-            'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
-        );
-        $edit_url = build_url($edit_url_map, 'adminzone');
-
-        $source = do_template('TEMPLATE_TREE_ITEM', array(
-            '_GUID' => 'be8eb00699631677d459b0f7c5ba60c8',
-            'FILE' => $file,
-            'EDIT_URL' => $edit_url,
-            'CODENAME' => $codename,
-            'GUID' => $guid,
-            'ID' => strval(mt_rand(0, mt_getrandmax())),
-        ));
-    }
-    $out = $source->evaluate();
-
-    // Now for the children...
-
-    $middle = '';
-
-    // Simplify down
-    do {
-        $_children = array();
-        foreach ($children as $child) {
-            if (
-                (
-                    (count($child[1]) != 0)
-                    ||
-                    ((strlen($child[0]) != 0) && ($child[0][0] != ':'))
-                )
-                &&
-                (substr($child[0], 0, 5) != ':set:') // Not this as it rebinds all owner template properties, meaning huge template tree repetition
-            ) {
-                $_children[] = $child;
-            }
-        }
-        $children = $_children;
-    } while ((count($children) == 1) && ($children[0][0] == ':container'));
-
-    // Remove duplicates
-    $children_unique = array();
-    foreach ($children as $child) {
-        $children_unique[serialize($child)] = $child;
-    }
-
-    foreach ($children_unique as $child) {
-        $middle2 = find_template_tree_nice($child[0], $child[1], $child[2], $cache_started || !$fresh);
-        if ($middle2 != '') {
-            $_middle = do_template('TEMPLATE_TREE_ITEM_WRAP', array('_GUID' => '59f003e298db3b621132649d2e315f9d', 'CONTENT' => $middle2));
-            $middle .= $_middle->evaluate();
-        }
-    }
-    if (($middle == '') && ((strlen($codename) == 0) || ($codename[0] == ':'))) {
-        return '';
-    }
-    if ($middle != '') {
-        $_out = do_template('TEMPLATE_TREE_NODE', array('_GUID' => 'ff937cbe28f1988af9fc7861ef01ffee', 'ITEMS' => $middle));
-        $out .= $_out->evaluate();
-    }
-
-    return $out;
 }
 
 /**

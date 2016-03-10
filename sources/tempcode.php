@@ -817,6 +817,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     if (!isset($parameters)) { // Streamlined if no parameters involved
         $out = new Tempcode();
         $out->codename = $codename;
+        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            $out->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($_data->metadata) ? $_data->metadata['children'] : array());
+        }
         $out->code_to_preexecute = $_data->code_to_preexecute;
         if (!$GLOBALS['OUTPUT_STREAMING']) {
             $out->preprocessable_bits = $_data->preprocessable_bits;
@@ -835,8 +838,11 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
 
     $ret = $_data->bind($parameters, $codename);
-    if ($special_treatment) {
-        $ret->codename = '(mixed)'; // Stop optimisation that assumes the codename represents the sole content of it
+    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($_data->metadata) ? $_data->metadata['children'] : array());
+        if ($special_treatment) {
+            $ret->metadata['type'] = TEMPLATE_TREE_NODE__UNKNOWN; // Stop optimisation that assumes the codename represents the sole content of it
+        }
     }
 
     if ($special_treatment) {
@@ -959,11 +965,9 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     $param = $seq_part[3];
-                    $children[] = array(
-                        $tpl_path_descrip,
-                        isset($param[1]->children) ? $param[1]->children : array(),
-                        isset($param[1]->fresh) ? $param[1]->fresh : false
-                    );
+
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip);
                 }
             }
             return;
@@ -987,9 +991,12 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
                     }
                 }
+
                 $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
+
                 if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (is_object($param[1]))) {
-                    $children[] = array(':set: ' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]), isset($param[1]->children) ? $param[1]->children : array(), isset($param[1]->fresh) ? $param[1]->fresh : false);
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $param[0], $param[1]);
                 }
             }
             return;
@@ -1053,7 +1060,8 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     }
 
                     if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                        $children[] = array(':block: ' . $block_parms['block'], array(array($b_value->codename, isset($b_value->children) ? $b_value->children : array(), isset($b_value->fresh) ? $b_value->fresh : false)), true);
+                        require_code('themes_meta_tree');
+                        $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__BLOCK, $block_parms['block'], $b_value);
                     }
                     $b_value->handle_symbol_preprocessing();
 
@@ -1099,7 +1107,9 @@ function handle_symbol_preprocessing($seq_part, &$children)
             if ((isset($param[0])) && (is_object($param[0]))) {
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     $param[0]->handle_symbol_preprocessing();
-                    $children[] = array(':trim', isset($param[0]->children) ? $param[0]->children : array(), isset($param[0]->fresh) ? $param[0]->fresh : false, true);
+
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TRIM, '', $param[0]);
                 }
             }
             break;
@@ -1144,8 +1154,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         }
 
                         $tp_value->handle_symbol_preprocessing();
+
                         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                            $children[] = array(':panel: ' . $param[0], array(array($tp_value->codename, isset($tp_value->children) ? $tp_value->children : array(), isset($tp_value->fresh) ? $tp_value->fresh : false)), true);
+                            require_code('themes_meta_tree');
+                            $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PANEL, $param[0], $tp_value);
                         }
 
                         $value = $tp_value->evaluate();
@@ -1174,7 +1186,8 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 $temp = javascript_tempcode(array_key_exists(0, $param) ? $param[0] : null);
 
-                $children[] = array(':container', isset($temp->children) ? $temp->children : array(), isset($temp->fresh) ? $temp->fresh : false);
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__JS_TEMPCODE, $param[0], $temp);
             }
             return;
 
@@ -1184,7 +1197,8 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 $temp = css_tempcode();
 
-                $children[] = array(':container', isset($temp->children) ? $temp->children : array(), isset($temp->fresh) ? $temp->fresh : false);
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__CSS_TEMPCODE, '', $temp);
             }
             return;
 
@@ -1248,7 +1262,8 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     flush();
                 }
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $children[] = array(':page: ' . $param[0], isset($tp_value->children) ? $tp_value->children : array(), isset($tp_value->fresh) ? $tp_value->fresh : false);
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PAGE, $param[0], $tp_value);
                 }
             } else {
                 $tp_value = new Tempcode();
@@ -1280,11 +1295,10 @@ class Tempcode
     public $evaluate_echo_offset_inner = 0;
 
     public $codename = ':container'; // The name of the template it came from
+    public $metadata = null;
 
     public $preprocessed = false;
     public $cached_output;
-
-    public $children = null, $fresh = null;
 
     /**
      * Constructor of Tempcode
@@ -1349,8 +1363,8 @@ class Tempcode
         }
 
         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = true;
-            $this->children = array();
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
     }
 
@@ -1427,8 +1441,12 @@ class Tempcode
                 }
             }
 
-            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_TREE'])) {
-                $this->children[] = array($attach->codename, isset($attach->children) ? $attach->children : array(), isset($attach->fresh) ? $attach->fresh : false);
+            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($attach->metadata))) {
+                if (!isset($this->metadata)) {
+                    require_code('themes_meta_tree');
+                    $this->metadata = create_template_tree_metadata();
+                }
+                $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__ATTACHED, '', $attach);
             }
         } else { // Consider it a string
             if (end($this->seq_parts) !== false) {
@@ -1465,8 +1483,6 @@ class Tempcode
             $this->code_to_preexecute[$myfunc] = $funcdef;
             $end[] = array($myfunc, array(), TC_KNOWN, '', '');
         }
-
-        $this->codename = '(mixed)';
     }
 
     /**
@@ -1492,8 +1508,8 @@ class Tempcode
     public function from_assembly_executed($file, $forced_reload_details)
     {
         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = false;
-            $this->children = array();
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
 
         $result = tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
@@ -1571,8 +1587,8 @@ class Tempcode
     public function from_assembly(&$raw_data, $allow_failure = false)
     {
         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = false;
-            $this->children = array();
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
 
         $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/@eval($raw_data);
@@ -1647,15 +1663,18 @@ class Tempcode
         }
 
         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $out->children = isset($this->children) ? $this->children : array();
+            require_code('themes_meta_tree');
+            $out->metadata = isset($this->metadata) ? $this->metadata : create_template_tree_metadata();
             foreach ($parameters as $key => $parameter) {
                 if (is_object($parameter)) {
                     if (count($parameter->preprocessable_bits) != 0) {
                         $parameter->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
                     }
-                    $out->children[] = array($parameter->codename, isset($parameter->children) ? $parameter->children : array(), isset($parameter->fresh) ? $parameter->fresh : false);
-                } elseif ((is_string($parameter)) && ($key == '_GUID')) {
-                    $out->children[] = array(':guid', array(array(':' . $parameter, array(), true)), true);
+                    $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
+                } else {
+                    if ((is_string($parameter)) && ($key == '_GUID')) {
+                        $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_GUID, $parameter);
+                    }
                 }
             }
         }
@@ -1737,7 +1756,11 @@ class Tempcode
         }
 
         foreach ($this->preprocessable_bits as $seq_part) {
-            handle_symbol_preprocessing($seq_part, $this->children);
+            $children = array();
+            if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($this->metadata['children']))) {
+                $children = &$this->metadata['children'];
+            }
+            handle_symbol_preprocessing($seq_part, $children);
         }
 
         $this->preprocessed = true;
@@ -2184,7 +2207,7 @@ function _record_template_used()
     foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_a) {
         foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_b) {
             if ($rel_a != $rel_b) {
-                $GLOBALS['SITE_DB']->query_insert('theme_template_relationships', array(
+                $GLOBALS['SITE_DB']->query_insert('theme_template_relations', array(
                     'rel_a' => $rel_a,
                     'rel_b' => $rel_b
                 ), false, true);

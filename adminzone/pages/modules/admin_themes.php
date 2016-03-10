@@ -47,6 +47,8 @@ class Module_admin_themes
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('theme_images');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('theme_template_relations');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('theme_screen_tree');
 
         require_code('files');
         $langs = find_all_langs(true);
@@ -95,10 +97,17 @@ class Module_admin_themes
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
-            $GLOBALS['SITE_DB']->create_table('theme_template_relationships', array(
+            $GLOBALS['SITE_DB']->create_table('theme_template_relations', array(
                 'rel_a' => '*ID_TEXT',
                 'rel_b' => '*ID_TEXT'
             ));
+
+            $GLOBALS['SITE_DB']->create_table('theme_screen_tree', array(
+                'id' => '*AUTO',
+                'page_link' => 'SHORT_TEXT',
+                'json_tree' => 'LONG_TEXT'
+            ));
+            $GLOBALS['SITE_DB']->create_index('theme_screen_tree', 'page_link', array('page_link'));
         }
     }
 
