@@ -2182,7 +2182,6 @@ function record_template_used($tpl_path_descrip)
 
     global $RECORDED_TEMPLATES_USED;
 
-    record_template_used($tpl_path_descrip);
     if (!isset($RECORDED_TEMPLATES_USED[$tpl_path_descrip])) {
         $RECORDED_TEMPLATES_USED[$tpl_path_descrip] = 0;
     }

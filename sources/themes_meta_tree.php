@@ -66,15 +66,16 @@ function _record_templates_used()
         if ($has_currently != $templates_used_copy) {
             foreach ($templates_used_copy as $rel_b) {
                 if (!isset($has_currently_flipped[$rel_b])) {
-                    $GLOBALS['SITE_DB']->query_insert('theme_template_relations', array(
+                    $insert_map = array(
                         'rel_a' => $rel_a,
                         'rel_b' => $rel_b
-                    ), false, true);
+                    );
+                    $GLOBALS['SITE_DB']->query_insert('theme_template_relations', $insert_map, false, true);
                 }
             }
 
             $meta_tree_builder = new Meta_tree_builder();
-            $meta_tree_builder->refresh(dirname($rel_a), basename($rel_a));
+            $meta_tree_builder->refresh(dirname($rel_a) . '-related', basename($rel_a));
         }
     }
 }
@@ -396,6 +397,8 @@ class Meta_tree_builder
         $this->addons = array_keys(find_all_hooks('systems', 'addon_registry'));
 
         require_code('files');
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
     }
 
     /**
@@ -429,7 +432,7 @@ class Meta_tree_builder
             mkdir($theme_dir, 0777);
             fix_permissions($theme_dir);
         }
-        $meta_dir = $theme_dir . '/_meta_dir';
+        $meta_dir = $theme_dir . '/_meta_tree';
 
         if (is_dir($meta_dir)) {
             if ($full_rebuild) {
@@ -488,7 +491,7 @@ class Meta_tree_builder
                 case 'javascript-related':
                 case 'xml-related':
                 case 'text-related':
-                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, $filter_level_b, true);
+                    $this->put_in_addon_tree($_path, preg_replace('#-related$#', '', $meta_dir_to_build), $theme, $filter_level_b, true);
                     break;
             }
         }
@@ -568,13 +571,13 @@ class Meta_tree_builder
                 if ($page_path == '') {
                     $page_path = get_file_base() . '/pages/comcode/EN/404.txt';
                 }
-                symlink($page_path, $_path . '/_self.txt');
+                @symlink($page_path, $_path . '/_self.txt');
                 break;
 
             case 'template':
                 $template_path = $this->find_template_path($node['name'], $node['subdir'], $theme);
                 if ($template_path !== null) {
-                    symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
+                    @symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
                 }
                 break;
 
@@ -613,18 +616,24 @@ class Meta_tree_builder
     private function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false)
     {
         $_all_path = $path . '/_all';
-        if (!is_dir($_all_path)) {
+        if (is_dir($_all_path)) {
+            if ($filter_level_b === null) {
+                deldir_contents($_all_path);
+            }
+        } else {
             mkdir($_all_path, 0777);
             fix_permissions($_all_path);
         }
 
-        if ($filter_level_b === null) {
-            $addons = $this->addons;
-        } else {
-            $addons = array($filter_level_b);
-        }
+        $addons = $this->addons;
         foreach ($addons as $addon) {
             $files = $this->find_theme_files_from_addon($addon, $subdir, $theme);
+
+            if ($filter_level_b !== null) {
+                if (!isset($files[$subdir . '/' . $filter_level_b])) {
+                    continue;
+                }
+            }
 
             $_path = $path . '/' . $addon;
             if (is_dir($_path)) {
@@ -644,24 +653,29 @@ class Meta_tree_builder
                 );
 
                 if ($relationships_mode) {
-                    $_relationships = $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $file['filename']));
+                    $_relationships = $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $file['mini_path']));
                     $relationships = collapse_1d_complexity('rel_b', $_relationships);
 
-                    foreach ($places_for_referencing as $place) {
-                        mkdir($place, 0777);
-                        fix_permissions($place);
-
-                        foreach ($relationships as $relationship) {
-                            $relations_template_path = $this->find_template_path($relationship, $subdir, $theme);
-                            if ($relations_template_path !== null) {
-                                symlink($relations_template_path, $place . '/' . $relationship);
+                    if (count($relationships) > 0) {
+                        foreach ($places_for_referencing as $place) {
+                            if (!is_dir($place)) {
+                                mkdir($place, 0777);
+                                fix_permissions($place);
                             }
+
+                            foreach ($relationships as $relationship) {
+                                $relations_template_path = $this->find_template_path(basename($relationship), dirname($relationship), $theme);
+                                if ($relations_template_path !== null) {
+                                    @symlink($relations_template_path, $place . '/' . basename($relationship));
+                                }
+                            }
+
+                            @symlink($file['full_path'], $place . '/' . $file['filename']);
                         }
-                        symlink($file['full_path'], $place . '/' . $file['filename']);
                     }
                 } else {
                     foreach ($places_for_referencing as $place) {
-                        symlink($file['full_path'], $place);
+                        @symlink($file['full_path'], $place);
                     }
                 }
             }
@@ -696,8 +710,11 @@ class Meta_tree_builder
                 if (($file != 'index.html') && ($file != '.htaccess')) {
                     $template_path = $this->find_template_path($file, $subdir, $theme);
 
-                    $files[] = array(
+                    $mini_path = substr($file_path, strlen('themes/default/'));
+
+                    $files[$mini_path] = array(
                         'full_path' => $template_path,
+                        'mini_path' => $mini_path,
                         'filename' => $file,
                     );
                 }
@@ -712,7 +729,7 @@ class Meta_tree_builder
     /**
      * Find where a template is.
      *
-     * @param  ID_TEXT $file The addon
+     * @param  ID_TEXT $file The file
      * @param  ID_TEXT $subdir The theme subdirectory we're working against
      * @param  ID_TEXT $theme The theme
      * @return ?PATH The path (null: not found)
@@ -725,10 +742,11 @@ class Meta_tree_builder
         }
 
         $suffix = '.' . get_file_extension($file);
-        list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($file, get_site_default_lang(), $theme, $suffix, $subdir);
-        $template_path = get_custom_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
+        $_file = basename($file, $suffix);
+        list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($_file, get_site_default_lang(), $theme, $suffix, $subdir);
+        $template_path = get_custom_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
         if (!is_file($template_path)) {
-            $template_path = get_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
+            $template_path = get_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
             if (!is_file($template_path)) {
                 $template_path = null;
             }
