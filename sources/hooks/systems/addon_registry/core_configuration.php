@@ -265,6 +265,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/wysiwyg.php',
             'sources/hooks/systems/config/editarea.php',
             'sources/hooks/systems/config/autoban.php',
+            'sources/hooks/systems/config/grow_template_meta_tree.php',
             'sources/hooks/systems/config/js_overlays.php',
             'sources/hooks/systems/config/likes.php',
             'sources/hooks/systems/config/tree_lists.php',

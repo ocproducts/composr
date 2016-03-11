@@ -29,17 +29,177 @@ function init__themes_meta_tree()
 {
     define('TEMPLATE_TREE_NODE__UNKNOWN', 0);
     define('TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE', 1);
-    define('TEMPLATE_TREE_NODE__SET', 2);
-    define('TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER', 3);
-    define('TEMPLATE_TREE_NODE__BLOCK', 4);
-    define('TEMPLATE_TREE_NODE__TRIM', 5);
-    define('TEMPLATE_TREE_NODE__PANEL', 6);
-    define('TEMPLATE_TREE_NODE__PAGE', 7);
-    define('TEMPLATE_TREE_NODE__JS_TEMPCODE', 8);
-    define('TEMPLATE_TREE_NODE__CSS_TEMPCODE', 9);
-    define('TEMPLATE_TREE_NODE__INCLUDE', 10);
-    define('TEMPLATE_TREE_NODE__ATTACHED', 11);
-    define('TEMPLATE_TREE_NODE__TEMPLATE_GUID', 12); // The GUID for a template call. Not quite a part of the tree, but it fits in nicely as it is a template parameter.
+    define('TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER', 2);
+    define('TEMPLATE_TREE_NODE__TEMPLATE_GUID', 3); // The GUID for a template call. Not quite a part of the tree, but it fits in nicely as it is a template parameter.
+    define('TEMPLATE_TREE_NODE__SET', 4);
+    define('TEMPLATE_TREE_NODE__BLOCK', 5);
+    define('TEMPLATE_TREE_NODE__TRIM', 6);
+    define('TEMPLATE_TREE_NODE__PANEL', 7);
+    define('TEMPLATE_TREE_NODE__PAGE', 8);
+    define('TEMPLATE_TREE_NODE__JS_TEMPCODE', 9);
+    define('TEMPLATE_TREE_NODE__CSS_TEMPCODE', 10);
+    define('TEMPLATE_TREE_NODE__INCLUDE', 11);
+    define('TEMPLATE_TREE_NODE__ATTACHED', 12);
+}
+
+/**
+ * Save template relationships into the database.
+ *
+ * @ignore
+ */
+function _record_templates_used()
+{
+    global $RECORDED_TEMPLATES_USED;
+    $templates_used = array_keys($RECORDED_TEMPLATES_USED);
+    sort($templates_used);
+
+    foreach ($templates_used as $i => $rel_a) {
+        $has_currently = collapse_1d_complexity('rel_b', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array(
+            'rel_a' => $rel_a,
+        )));
+        sort($has_currently);
+        $has_currently_flipped = array_flip($has_currently);
+
+        $templates_used_copy = $templates_used;
+        unset($templates_used_copy[$i]);
+
+        if ($has_currently != $templates_used_copy) {
+            foreach ($templates_used_copy as $rel_b) {
+                if (!isset($has_currently_flipped[$rel_b])) {
+                    $GLOBALS['SITE_DB']->query_insert('theme_template_relations', array(
+                        'rel_a' => $rel_a,
+                        'rel_b' => $rel_b
+                    ), false, true);
+                }
+            }
+
+            $meta_tree_builder = new Meta_tree_builder();
+            $meta_tree_builder->refresh(dirname($rel_a), basename($rel_a));
+        }
+    }
+}
+
+/**
+ * Save screen template tree into the database.
+ *
+ * @param  Tempcode $out Tempcode structure
+ */
+function record_template_tree_used($out)
+{
+    if (!isset($out->metadata)) {
+        return;
+    }
+
+    $tree = convert_template_tree_metadata_to_screen_tree($out->metadata);
+
+    $page_link = get_zone_name() . ':' . get_page_name();
+    $type = get_param_string('type', null);
+    if ($type !== null) {
+        $page_link .= ':' . $type;
+    }
+
+    $current_json_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_screen_tree', 'json_tree', array(
+        'page_link' => $page_link,
+    ));
+
+    $new_json_tree = json_encode($tree);
+
+    if ($current_json_tree !== $new_json_tree) {
+        if ($current_json_tree !== null) {
+            $GLOBALS['SITE_DB']->query_delete('theme_screen_tree', array(
+                'page_link' => $page_link,
+            ), '', 1);
+        }
+
+        if ($tree !== null) {
+            $GLOBALS['SITE_DB']->query_insert('theme_screen_tree', array(
+                'page_link' => $page_link,
+                'json_tree' => $new_json_tree,
+            ));
+
+            $meta_tree_builder = new Meta_tree_builder();
+            $meta_tree_builder->refresh('screens', $page_link);
+        }
+    }
+}
+
+/**
+ * Convert the metadata template tree gathered in the Tempcode engine, to a simplified screen tree.
+ *
+ * @param  array $metadata Metadata structure (with 'type', 'identifier', and 'children')
+ * @return ?array Screen tree structure (null: omitted node)
+ */
+function convert_template_tree_metadata_to_screen_tree($metadata)
+{
+    if (!in_array($metadata['type'], array(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, TEMPLATE_TREE_NODE__PANEL, TEMPLATE_TREE_NODE__PAGE))) {
+        if (count($metadata['children']) == 0) {
+            return null;
+        }
+    }
+
+    // Search for GUIDs and parameter name
+    $parameter_as = null;
+    $guid_used = null;
+    foreach ($metadata['children'] as $_child) {
+        if ($_child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER) {
+            $parameter_as = $_child['identifier'];
+        }
+        if ($_child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_GUID) {
+            $guid_used = $_child['identifier'];
+        }
+    }
+    $instance_calls = array();
+    $instance_calls[] = array(
+        'parameter_as' => $parameter_as,
+        'guid_used' => $guid_used,
+    ); // More will be added to array when equivalent child nodes are merged together
+
+    // Basic settings
+    $tree = array(
+        'type' => '_other',
+        'subdir' => '',
+        'name' => '_container',
+        'instance_calls' => $instance_calls,
+        'children' => array(),
+    );
+
+    // Accurate settings
+    switch ($metadata['type']) {
+        case TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE:
+            $tree['type'] = 'template';
+            $tree['subdir'] = dirname($metadata['identifier']);
+            $tree['name'] = basename($metadata['identifier']);
+            break;
+
+        case TEMPLATE_TREE_NODE__PANEL:
+        case TEMPLATE_TREE_NODE__PAGE:
+            $tree['type'] = 'comcode_page';
+            $tree['name'] = $metadata['identifier'];
+            break;
+    }
+
+    // Children
+    foreach ($metadata['children'] as $_child) {
+        $child = convert_template_tree_metadata_to_screen_tree($_child);
+        if ($child !== null) {
+            if ($child['type'] == '_other') { // We don't actually want these '_other' nodes, so we'll skip to the node's children
+                $to_merge = $child['children'];
+            } else {
+                $to_merge = array($child);
+            }
+
+            foreach ($to_merge as $__child) {
+                $sz = serialize(array($__child['type'], $__child['subdir'], $__child['name']));
+                if (isset($tree['children'][$sz])) {
+                    $tree['children'][$sz]['instance_calls'] = array_merge($tree['children'][$sz]['instance_calls'], $__child['instance_calls']);
+                } else {
+                    $tree['children'][$sz] = $__child;
+                }
+            }
+        }
+    }
+
+    return $tree;
 }
 
 /**
@@ -226,28 +386,43 @@ function find_template_tree_nice($metadata)
  */
 class Meta_tree_builder
 {
-    private $theme;
     private $addons;
 
     /**
      * Constructor.
-     *
-     * @param  ID_TEXT $theme The theme
      */
-    public function __construct($theme)
+    public function __construct()
     {
-        $this->theme = $theme;
         $this->addons = array_keys(find_all_hooks('systems', 'addon_registry'));
+
+        require_code('files');
     }
 
     /**
-     * Build out meta-directories for a theme. (Sym-links etc).
+     * Build out meta-directories. (Sym-links etc).
+     *
+     * @param  ?string $filter_level_a The first level of filter (null: no filter, full rebuild)
+     * @param  ?string $filter_level_b The second level of filter (null: no filter)
      */
-    public function refresh()
+    public function refresh($filter_level_a = null, $filter_level_b = null)
     {
-        $theme = $this->theme;
+        require_code('themes2');
+        $themes = array_keys(find_all_themes());
+        foreach ($themes as $theme) {
+            $this->refresh_for_theme($theme, $filter_level_a, $filter_level_b);
+        }
+    }
 
-        require_code('files');
+    /**
+     * Build out meta-directories for a theme.
+     *
+     * @param  ID_TEXT $theme The theme
+     * @param  ?string $filter_level_a The first level of filter (null: no filter, full rebuild)
+     * @param  ?string $filter_level_b The second level of filter (null: no filter)
+     */
+    public function refresh_for_theme($theme, $filter_level_a = null, $filter_level_b = null)
+    {
+        $full_rebuild = ($filter_level_a === null);
 
         $theme_dir = get_custom_file_base() . '/themes/' . $theme;
         if (!file_exists($theme_dir)) {
@@ -257,7 +432,9 @@ class Meta_tree_builder
         $meta_dir = $theme_dir . '/_meta_dir';
 
         if (is_dir($meta_dir)) {
-            deldir_contents($meta_dir);
+            if ($full_rebuild) {
+                deldir_contents($meta_dir);
+            }
         } else {
             mkdir($meta_dir, 0777);
             fix_permissions($meta_dir);
@@ -265,29 +442,37 @@ class Meta_tree_builder
             $this->put_in_standard_dir_files($meta_dir);
         }
 
-        $meta_dirs_to_build = array(
-            'screens',
+        if ($filter_level_a === null) {
+            $meta_dirs_to_build = array(
+                'screens',
 
-            'templates',
-            'css',
-            'javascript',
-            'xml',
-            'text',
+                'templates',
+                'css',
+                'javascript',
+                'xml',
+                'text',
 
-            'templates-related',
-            'css-related',
-            'javascript-related',
-            'xml-related',
-            'text-related',
-        );
+                'templates-related',
+                'css-related',
+                'javascript-related',
+                'xml-related',
+                'text-related',
+            );
+        } else {
+            $meta_dirs_to_build = array(
+                $filter_level_a,
+            );
+        }
         foreach ($meta_dirs_to_build as $meta_dir_to_build) {
             $_path = $meta_dir . '/' . $meta_dir_to_build;
-            mkdir($_path, 0777);
-            fix_permissions($_path);
+            if (!is_dir($_path)) {
+                mkdir($_path, 0777);
+                fix_permissions($_path);
+            }
 
             switch ($meta_dir_to_build) {
                 case 'screens':
-                    $this->put_in_screens($_path, $theme);
+                    $this->put_in_screens($_path, $theme, $filter_level_b);
                     break;
 
                 case 'templates':
@@ -295,7 +480,7 @@ class Meta_tree_builder
                 case 'javascript':
                 case 'xml':
                 case 'text':
-                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme);
+                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, $filter_level_b);
                     break;
 
                 case 'templates-related':
@@ -303,7 +488,7 @@ class Meta_tree_builder
                 case 'javascript-related':
                 case 'xml-related':
                 case 'text-related':
-                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, true);
+                    $this->put_in_addon_tree($_path, $meta_dir_to_build, $theme, $filter_level_b, true);
                     break;
             }
         }
@@ -314,20 +499,44 @@ class Meta_tree_builder
      *
      * @param  PATH $path The path
      * @param  ID_TEXT $theme The theme
+     * @param  ?string $filter_level_b The second level of filter (null: no filter)
      */
-    private function put_in_screens($path, $theme)
+    private function put_in_screens($path, $theme, $filter_level_b = null)
     {
-        $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link', 'json_tree'));
+        if ($filter_level_b === null) {
+            $where = null;
+        } else {
+            $where = array('page_link' => $filter_level_b);
+        }
+
+        $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link', 'json_tree'), $where);
         foreach ($screens as $screen) {
             $page_link = $screen['page_link'];
             $page_link_parts = explode(':', $page_link);
             $tree = json_decode($screen['json_tree']);
+
+            $zone = $page_link[0];
+            if (!is_dir(get_custom_file_base() . '/' . $zone) && !is_dir(get_file_base() . '/' . $zone)) {
+                continue; // No zone
+            }
+
+            if (!empty($page_link[1])) {
+                require_code('site');
+                $found = _request_page($page_link[1], $zone);
+                if ($found === false) {
+                    continue; // No page
+                }
+            }
 
             // Turn page-link into deep subtree
             $_path = $path;
             foreach ($page_link_parts as $part) {
                $_path .= '/' . urlencode($part);
 
+               if (is_dir($_path)) {
+                   deldir_contents($_path);
+                   rmdir($_path);
+               }
                mkdir($_path, 0777);
                fix_permissions($_path);
             }
@@ -351,24 +560,6 @@ class Meta_tree_builder
         mkdir($_path, 0777);
         fix_permissions($_path);
 
-        /*
-        Structure is like this:
-
-        $node = array(
-            'type' => 'template',
-            'subdir' => 'templates',
-            'name' => 'EXAMPLE.tpl',
-            'instance_calls' => array(
-                array(
-                    'parameter_as' => 'FOOBAR',
-                    'guid_used' => 'r32t9yt9iy9045hkgrt0g',
-                ),
-                ...
-            );
-            'children' => (recursive)
-        );
-        */
-
         // Create _self symlink
         switch ($node['type']) {
             case 'comcode_page':
@@ -382,17 +573,26 @@ class Meta_tree_builder
 
             case 'template':
                 $template_path = $this->find_template_path($node['name'], $node['subdir'], $theme);
-                symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
+                if ($template_path !== null) {
+                    symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
+                }
                 break;
 
             default:
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                // Nothing to do
         }
 
         // Create _instance_calls.txt
         $instance_calls = '';
         foreach ($node['instance_calls'] as $instance_call) {
-            $instance_calls .= '{' . $instance_call['parameter_as'] . '}, GUID=' . $instance_call['guid_used'] . "\n";
+            $instance_call_parts = array();
+            if ($instance_call['parameter_as'] !== null) {
+                $instance_call_parts[] = '{' . $instance_call['parameter_as'] . '}';
+            }
+            if ($instance_call['guid_used'] !== null) {
+                $instance_call_parts[] = 'GUID=' . $instance_call['guid_used'];
+            }
+            $instance_calls .= implode(', ', $instance_call_parts) . "\n";
         }
 
         // Process children
@@ -407,20 +607,36 @@ class Meta_tree_builder
      * @param  PATH $path The path
      * @param  ID_TEXT $subdir The theme subdirectory we're working against
      * @param  ID_TEXT $theme The theme
+     * @param  ?string $filter_level_b The second level of filter (null: no filter)
      * @param  boolean $relationships_mode Whether we have an extra level, the relationships mode
      */
-    private function put_in_addon_tree($path, $subdir, $theme, $relationships_mode = false)
+    private function put_in_addon_tree($path, $subdir, $theme, $filter_level_b = null, $relationships_mode = false)
     {
         $_all_path = $path . '/_all';
-        mkdir($_all_path, 0777);
-        fix_permissions($_all_path);
+        if (!is_dir($_all_path)) {
+            mkdir($_all_path, 0777);
+            fix_permissions($_all_path);
+        }
 
-        foreach ($this->addons as $addon) {
-            $_path = $path . '/' . $addon;
-            mkdir($_path, 0777);
-            fix_permissions($_path);
-
+        if ($filter_level_b === null) {
+            $addons = $this->addons;
+        } else {
+            $addons = array($filter_level_b);
+        }
+        foreach ($addons as $addon) {
             $files = $this->find_theme_files_from_addon($addon, $subdir, $theme);
+
+            $_path = $path . '/' . $addon;
+            if (is_dir($_path)) {
+                deldir_contents($_path);
+                rmdir($_path);
+            }
+
+            if (count($files) > 0) {
+                mkdir($_path, 0777);
+                fix_permissions($_path);
+            }
+
             foreach ($files as $file) {
                 $places_for_referencing = array(
                     $_path . '/' . $file['filename'],
@@ -436,7 +652,10 @@ class Meta_tree_builder
                         fix_permissions($place);
 
                         foreach ($relationships as $relationship) {
-                            symlink($this->find_template_path($relationship, $subdir, $theme), $place . '/' . $relationship);
+                            $relations_template_path = $this->find_template_path($relationship, $subdir, $theme);
+                            if ($relations_template_path !== null) {
+                                symlink($relations_template_path, $place . '/' . $relationship);
+                            }
                         }
                         symlink($file['full_path'], $place . '/' . $file['filename']);
                     }
@@ -496,7 +715,7 @@ class Meta_tree_builder
      * @param  ID_TEXT $file The addon
      * @param  ID_TEXT $subdir The theme subdirectory we're working against
      * @param  ID_TEXT $theme The theme
-     * @return PATH The path
+     * @return ?PATH The path (null: not found)
      */
     private function find_template_path($file, $subdir, $theme)
     {
@@ -510,6 +729,9 @@ class Meta_tree_builder
         $template_path = get_custom_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
         if (!is_file($template_path)) {
             $template_path = get_file_base() . '/themes/' . $searched_theme . '/' . $searched_directory . '/' . $file . $suffix;
+            if (!is_file($template_path)) {
+                $template_path = null;
+            }
         }
 
         $cache[$file][$subdir][$theme] = $template_path;

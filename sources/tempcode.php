@@ -839,7 +839,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
     $ret = $_data->bind($parameters, $codename);
     if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($_data->metadata) ? $_data->metadata['children'] : array());
+        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($ret->metadata) ? $ret->metadata['children'] : array());
         if ($special_treatment) {
             $ret->metadata['type'] = TEMPLATE_TREE_NODE__UNKNOWN; // Stop optimisation that assumes the codename represents the sole content of it
         }
@@ -2189,29 +2189,9 @@ function record_template_used($tpl_path_descrip)
     $RECORDED_TEMPLATES_USED[$tpl_path_descrip]++;
 
     if (!$called_once) {
-        register_shutdown_function('_record_template_used');
+        require_code('themes_meta_tree');
+        register_shutdown_function('_record_templates_used');
     }
 
     $called_once = true;
-}
-
-/**
- * Save template relationships into the database.
- *
- * @ignore
- */
-function _record_template_used()
-{
-    global $RECORDED_TEMPLATES_USED;
-
-    foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_a) {
-        foreach (array_keys($RECORDED_TEMPLATES_USED) as $rel_b) {
-            if ($rel_a != $rel_b) {
-                $GLOBALS['SITE_DB']->query_insert('theme_template_relations', array(
-                    'rel_a' => $rel_a,
-                    'rel_b' => $rel_b
-                ), false, true);
-            }
-        }
-    }
 }

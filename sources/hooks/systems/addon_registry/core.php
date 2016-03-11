@@ -714,6 +714,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/32x32/filetypes/page_txt.png',
             'themes/default/images/icons/32x32/filetypes/page_xls.png',
             'data/autosave.php',
+            'sources/hooks/systems/tasks/meta_tree_rebuild.php',
             'sources/hooks/systems/addon_registry/core.php',
             'sources/hooks/modules/video_syndication/.htaccess',
             'sources_custom/hooks/modules/video_syndication/.htaccess',

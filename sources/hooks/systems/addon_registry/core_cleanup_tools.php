@@ -104,6 +104,7 @@ class Hook_addon_registry_core_cleanup_tools
             'sources/hooks/systems/config/is_on_comcode_page_cache.php',
             'sources/hooks/systems/config/is_on_lang_cache.php',
             'sources/hooks/systems/config/is_on_template_cache.php',
+            'sources/hooks/systems/cleanup/meta_tree_rebuild.php',
             'data/modules/admin_cleanup/.htaccess',
             'data/modules/admin_cleanup/index.html',
             'sources/hooks/systems/addon_registry/core_cleanup_tools.php',

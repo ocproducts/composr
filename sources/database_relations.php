@@ -227,6 +227,8 @@ function get_table_purpose_flags()
         'task_queue' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'temp_block_permissions' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
         'theme_images' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_STAGING_COPY/*as can deal in files*/,
+        'theme_screen_tree' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
+        'theme_template_relations' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE,
         'ticket_extra_access' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_topics*/,
         'ticket_known_emailers' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE | TABLE_PURPOSE__SUBDATA/*under f_members*/,
         'ticket_types' => TABLE_PURPOSE__NORMAL,
