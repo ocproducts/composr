@@ -150,10 +150,12 @@ function convert_template_tree_metadata_to_screen_tree($metadata)
         }
     }
     $instance_calls = array();
-    $instance_calls[] = array(
-        'parameter_as' => $parameter_as,
-        'guid_used' => $guid_used,
-    ); // More will be added to array when equivalent child nodes are merged together
+    if ($parameter_as !== null || $guid_used !== null) {
+        $instance_calls[] = array(
+            'parameter_as' => $parameter_as,
+            'guid_used' => $guid_used,
+        ); // More will be added to array when equivalent child nodes are merged together
+    }
 
     // Basic settings
     $tree = array(
@@ -180,6 +182,7 @@ function convert_template_tree_metadata_to_screen_tree($metadata)
     }
 
     // Children
+    $children = array();
     foreach ($metadata['children'] as $_child) {
         $child = convert_template_tree_metadata_to_screen_tree($_child);
         if ($child !== null) {
@@ -191,14 +194,15 @@ function convert_template_tree_metadata_to_screen_tree($metadata)
 
             foreach ($to_merge as $__child) {
                 $sz = serialize(array($__child['type'], $__child['subdir'], $__child['name']));
-                if (isset($tree['children'][$sz])) {
-                    $tree['children'][$sz]['instance_calls'] = array_merge($tree['children'][$sz]['instance_calls'], $__child['instance_calls']);
+                if (isset($children[$sz])) {
+                    $children[$sz]['instance_calls'] = array_unique(array_merge($children[$sz]['instance_calls'], $__child['instance_calls']));
                 } else {
-                    $tree['children'][$sz] = $__child;
+                    $children[$sz] = $__child;
                 }
             }
         }
     }
+    $tree['children'] = array_values($children);
 
     return $tree;
 }
@@ -222,6 +226,8 @@ function create_template_tree_metadata($type = 0, $identifier = '', $children = 
     }
     if (is_object($children)) {
         if (isset($children->metadata)) {
+            $children->handle_symbol_preprocessing();
+
             $children = array($children->metadata);
         } else {
             $children = array();
@@ -245,6 +251,11 @@ function find_template_tree_nice($metadata)
 {
     $identifier = $metadata['identifier'];
     $children = $metadata['children'];
+
+    // Simplify?
+    if (($metadata['type'] != TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE) && (count($metadata['children']) == 1)) {
+        return find_template_tree_nice($metadata['children'][0]);
+    }
 
     // Basic node rendering
     switch ($metadata['type']) {
@@ -278,7 +289,6 @@ function find_template_tree_nice($metadata)
                 'EDIT_URL' => $edit_url,
                 'CODENAME' => $codename,
                 'GUID' => $guid,
-                'ID' => strval(mt_rand(0, mt_getrandmax())),
             ));
             $out = $source->evaluate();
 
@@ -331,6 +341,9 @@ function find_template_tree_nice($metadata)
         case TEMPLATE_TREE_NODE__UNKNOWN:
         case TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE:
             $out = $identifier;
+            if ($out == '') {
+                $out = '(mixed)';
+            }
             break;
 
         default:
@@ -340,39 +353,37 @@ function find_template_tree_nice($metadata)
 
     // Now for the children...
 
-    // Simplify down
+    // Reduce down unnecessary children under here
     $_children = array();
     foreach ($children as $child) {
         if (
-            ((count($child['children']) != 0) && ($child['type'] != TEMPLATE_TREE_NODE__SET))
+            (count($child['children']) > 0)
             ||
-            (($child['identifier'] != '') && ($child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE))
+            ($child['type'] == TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE)
         ) {
             $_children[] = $child;
         }
     }
     $children = $_children;
 
-    // Remove duplicates
-    $children_unique = array();
-    foreach ($children as $child) {
-        $children_unique[serialize(array_diff_key($child, array('children' => true)))] = $child;
-    }
-
     // Render
-    $child_items = '';
-    foreach ($children_unique as $child) {
+    $child_items = array();
+    foreach ($children as $child) {
         $child_rendered = find_template_tree_nice($child);
         if ($child_rendered != '') {
             $_middle = do_template('TEMPLATE_TREE_ITEM_WRAP', array('_GUID' => '59f003e298db3b621132649d2e315f9d', 'CONTENT' => $child_rendered));
-            $child_items .= $_middle->evaluate();
+            $child_items[$_middle->evaluate()] = true;
         }
     }
-    if (($child_items == '') && (($codename == '') || ($codename != TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE))) {
+    if (($child_items == array()) && ($metadata['type'] != TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE)) {
         return '';
     }
-    if ($child_items != '') {
-        $_out = do_template('TEMPLATE_TREE_NODE', array('_GUID' => 'ff937cbe28f1988af9fc7861ef01ffee', 'ITEMS' => $child_items));
+    if ($child_items != array()) {
+        $_child_items = '';
+        foreach (array_keys($child_items) as $_child_item) {
+            $_child_items .= str_replace('__id__', strval(mt_rand(0, mt_getrandmax())), $_child_item);
+        }
+        $_out = do_template('TEMPLATE_TREE_NODE', array('_GUID' => 'ff937cbe28f1988af9fc7861ef01ffee', 'ITEMS' => $_child_items));
         $out .= $_out->evaluate();
     }
 
@@ -439,7 +450,10 @@ class Meta_tree_builder
                 deldir_contents($meta_dir);
             }
         } else {
-            mkdir($meta_dir, 0777);
+            @mkdir($meta_dir, 0777);
+            if (!is_dir($meta_dir)) {
+                return; // Can't do it on this server
+            }
             fix_permissions($meta_dir);
 
             $this->put_in_standard_dir_files($meta_dir);
@@ -516,16 +530,16 @@ class Meta_tree_builder
         foreach ($screens as $screen) {
             $page_link = $screen['page_link'];
             $page_link_parts = explode(':', $page_link);
-            $tree = json_decode($screen['json_tree']);
+            $tree = json_decode($screen['json_tree'], true);
 
-            $zone = $page_link[0];
+            $zone = $page_link_parts[0];
             if (!is_dir(get_custom_file_base() . '/' . $zone) && !is_dir(get_file_base() . '/' . $zone)) {
                 continue; // No zone
             }
 
-            if (!empty($page_link[1])) {
+            if (!empty($page_link_parts[1])) {
                 require_code('site');
-                $found = _request_page($page_link[1], $zone);
+                $found = _request_page($page_link_parts[1], $zone);
                 if ($found === false) {
                     continue; // No page
                 }
@@ -533,15 +547,27 @@ class Meta_tree_builder
 
             // Turn page-link into deep subtree
             $_path = $path;
-            foreach ($page_link_parts as $part) {
-               $_path .= '/' . urlencode($part);
+            foreach ($page_link_parts as $i => $part) {
+                if ($part == '') {
+                    switch ($i) {
+                        case 0:
+                            $part = 'root';
+                            break;
 
-               if (is_dir($_path)) {
+                        default:
+                            $part = 'default';
+                            break;
+                    }
+                }
+
+                $_path .= '/' . urlencode($part);
+
+                if (is_dir($_path)) {
                    deldir_contents($_path);
                    rmdir($_path);
-               }
-               mkdir($_path, 0777);
-               fix_permissions($_path);
+                }
+                mkdir($_path, 0777);
+                fix_permissions($_path);
             }
 
             // Create our screen tree under the page-link subtree
@@ -571,13 +597,17 @@ class Meta_tree_builder
                 if ($page_path == '') {
                     $page_path = get_file_base() . '/pages/comcode/EN/404.txt';
                 }
-                @symlink($page_path, $_path . '/_self.txt');
+                $new_symlink = $_path . '/_self.txt';
+                @symlink($page_path, $new_symlink);
+                fix_permissions($new_symlink);
                 break;
 
             case 'template':
                 $template_path = $this->find_template_path($node['name'], $node['subdir'], $theme);
                 if ($template_path !== null) {
-                    @symlink($template_path, $_path . '/_self.' . get_file_extension($node['name']));
+                    $new_symlink = $_path . '/_self.' . get_file_extension($node['name']);
+                    @symlink($template_path, $new_symlink);
+                    fix_permissions($new_symlink);
                 }
                 break;
 
@@ -597,10 +627,14 @@ class Meta_tree_builder
             }
             $instance_calls .= implode(', ', $instance_call_parts) . "\n";
         }
+        if ($instance_calls != '') {
+            file_put_contents($_path . '/_instance_calls.txt', $instance_calls);
+            fix_permissions($_path . '/_instance_calls.txt');
+        }
 
         // Process children
         foreach ($node['children'] as $child) {
-            $this->put_in_screen($_path, $node, $theme);
+            $this->put_in_screen($_path, $child, $theme);
         }
     }
 
@@ -666,16 +700,22 @@ class Meta_tree_builder
                             foreach ($relationships as $relationship) {
                                 $relations_template_path = $this->find_template_path(basename($relationship), dirname($relationship), $theme);
                                 if ($relations_template_path !== null) {
-                                    @symlink($relations_template_path, $place . '/' . basename($relationship));
+                                    $new_symlink = $place . '/' . basename($relationship);
+                                    @symlink($relations_template_path, $new_symlink);
+                                    fix_permissions($new_symlink);
                                 }
                             }
 
-                            @symlink($file['full_path'], $place . '/' . $file['filename']);
+                            $new_symlink = $place . '/' . $file['filename'];
+                            @symlink($file['full_path'], $new_symlink);
+                            fix_permissions($new_symlink);
                         }
                     }
                 } else {
                     foreach ($places_for_referencing as $place) {
-                        @symlink($file['full_path'], $place);
+                        $new_symlink = $place;
+                        @symlink($file['full_path'], $new_symlink);
+                        fix_permissions($new_symlink);
                     }
                 }
             }

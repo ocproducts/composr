@@ -1,4 +1,4 @@
 <ul>
-	{ITEMS}
+	{ITEMS`}
 </ul>
 

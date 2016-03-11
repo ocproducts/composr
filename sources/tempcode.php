@@ -276,7 +276,9 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
             $funcdef .= "ecv(\\\$cl," . ($_escaping) . "," . ($_type) . ",\\\"" . ($_name) . "\\\",array(" . $_parameters . "));\";\n";
         }
 
-        $parameters = array();
+        if ($name != 'BLOCK') {
+            $parameters = array(); // Optimisation (we need for BLOCK though, so we can build the template tree correctly)
+        }
     }
 
     $ret = new Tempcode(array(array($myfunc => $funcdef), array(array(array($myfunc, ($parameters === null) ? array() : $parameters, $type, $name, '')))));
@@ -818,7 +820,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         $out = new Tempcode();
         $out->codename = $codename;
         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $out->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($_data->metadata) ? $_data->metadata['children'] : array());
+            $out->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($_data->metadata) ? $_data->metadata['children'] : array());
         }
         $out->code_to_preexecute = $_data->code_to_preexecute;
         if (!$GLOBALS['OUTPUT_STREAMING']) {
@@ -839,7 +841,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
     $ret = $_data->bind($parameters, $codename);
     if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $codename, isset($ret->metadata) ? $ret->metadata['children'] : array());
+        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($ret->metadata) ? $ret->metadata['children'] : array());
         if ($special_treatment) {
             $ret->metadata['type'] = TEMPLATE_TREE_NODE__UNKNOWN; // Stop optimisation that assumes the codename represents the sole content of it
         }
@@ -957,7 +959,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $param[2] = make_string_tempcode('templates');
                 }
 
-                $tpl_path_descrip = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]) . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
+                $template_subdir = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]);
+                $template_file = (is_object($param[0]) ? $param[0]->evaluate() : $param[0]);
+                $template_suffix = (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
+                $tpl_path_descrip = $template_subdir . '/' . $template_file . $template_suffix;
 
                 if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                     record_template_used($tpl_path_descrip);
@@ -966,8 +971,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     $param = $seq_part[3];
 
+                    $temp = @do_template($template_file, null, null, true, null, $template_suffix, $template_subdir);
+
                     require_code('themes_meta_tree');
-                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip);
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);
                 }
             }
             return;
@@ -992,11 +999,13 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     }
                 }
 
-                $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
+                $key = isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0];
+                $val = implode(',', $param_copy);
+                $TEMPCODE_SETGET[$key] = $val;
 
                 if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (is_object($param[1]))) {
                     require_code('themes_meta_tree');
-                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $param[0], $param[1]);
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $key);
                 }
             }
             return;
@@ -1050,6 +1059,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
                 if (isset($block_parms['block'])) {
                     $b_value = do_block($block_parms['block'], $block_parms);
+
                     if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
                         require_code('files');
                         @ob_end_flush();
@@ -1059,11 +1069,12 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         flush();
                     }
 
+                    $b_value->handle_symbol_preprocessing();
                     if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                         require_code('themes_meta_tree');
+
                         $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__BLOCK, $block_parms['block'], $b_value);
                     }
-                    $b_value->handle_symbol_preprocessing();
 
                     $BLOCKS_CACHE[serialize($param)] = $b_value;
                 }
@@ -1106,8 +1117,6 @@ function handle_symbol_preprocessing($seq_part, &$children)
             $param = $seq_part[3];
             if ((isset($param[0])) && (is_object($param[0]))) {
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $param[0]->handle_symbol_preprocessing();
-
                     require_code('themes_meta_tree');
                     $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TRIM, '', $param[0]);
                 }
@@ -1157,7 +1166,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                         if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                             require_code('themes_meta_tree');
-                            $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PANEL, $param[0], $tp_value);
+                            $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PANEL, (array_key_exists(1, $param) ? $param[1] : get_zone_name()) . ':panel_' . $param[0], $tp_value);
                         }
 
                         $value = $tp_value->evaluate();
@@ -1261,9 +1270,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     print('<!-- page: ' . htmlentities($param[0]) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
                     flush();
                 }
+
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     require_code('themes_meta_tree');
-                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PAGE, $param[0], $tp_value);
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PAGE, $zone . ':' . $page, $tp_value);
                 }
             } else {
                 $tp_value = new Tempcode();
@@ -1317,7 +1327,7 @@ class Tempcode
             $this->code_to_preexecute = $details[0];
             $this->seq_parts = $details[1];
 
-            if (!$GLOBALS['OUTPUT_STREAMING']) {
+            if (!$GLOBALS['OUTPUT_STREAMING'] || $GLOBALS['RECORD_TEMPLATES_TREE']) {
                 $pp_bits = array();
 
                 foreach ($this->seq_parts as $seq_parts_group) {
@@ -1678,6 +1688,7 @@ class Tempcode
                 }
             }
         }
+
         foreach ($parameters as $key => $parameter) {
             $p_type = gettype($parameter);
             if ($p_type === 'string') {
@@ -1715,12 +1726,27 @@ class Tempcode
     /**
      * Replace the named parameter with a specific value. Hardly used, but still important. Note that this will bind to all kinds of things that might not normally take named parameters, like symbols; this should not cause problems though.
      *
-     * @param  string $parameter Named parameter
-     * @param  Tempcode $value Specific value
+     * @param  string $key Named parameter
+     * @param  Tempcode $parameter Specific value
      */
-    public function singular_bind($parameter, $value)
+    public function singular_bind($key, $parameter)
     {
         $this->cached_output = null;
+
+        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if (is_object($parameter)) {
+                require_code('themes_meta_tree');
+
+                if (!isset($this->metadata)) {
+                    $this->metadata = create_template_tree_metadata();
+                }
+
+                if (count($parameter->preprocessable_bits) != 0) {
+                    $parameter->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
+                }
+                $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
+            }
+        }
 
         if ($this->seq_parts == array()) {
             return;
@@ -1729,14 +1755,14 @@ class Tempcode
         foreach ($this->seq_parts as &$seq_parts_group) {
             foreach ($seq_parts_group as &$seq_part) {
                 if ((($seq_part[0][0] != 's') || (substr($seq_part[0], 0, 14) != 'string_attach_')) && ($seq_part[2] != TC_LANGUAGE_REFERENCE)) {
-                    $seq_part[1][$parameter] = $value;
+                    $seq_part[1][$key] = $parameter;
                 }
             }
         }
 
         if (!$GLOBALS['OUTPUT_STREAMING']) {
-            if (isset($value->preprocessable_bits)) { // Is Tempcode
-                foreach ($value->preprocessable_bits as $b) {
+            if (isset($parameter->preprocessable_bits)) { // Is Tempcode
+                foreach ($parameter->preprocessable_bits as $b) {
                     $this->preprocessable_bits[] = $b;
                 }
             }
@@ -1755,12 +1781,14 @@ class Tempcode
             return;
         }
 
+        $children = array();
+
         foreach ($this->preprocessable_bits as $seq_part) {
-            $children = array();
-            if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($this->metadata['children']))) {
-                $children = &$this->metadata['children'];
-            }
             handle_symbol_preprocessing($seq_part, $children);
+        }
+
+        if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($this->metadata['children']))) {
+            $this->metadata['children'] = array_merge($this->metadata['children'], $children);
         }
 
         $this->preprocessed = true;

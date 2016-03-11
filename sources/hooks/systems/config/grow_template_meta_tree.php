@@ -50,6 +50,6 @@ class Hook_config_grow_template_meta_tree
      */
     public function get_default()
     {
-        return $GLOBALS['DEV_MODE'] ? '1' : '0';
+        return '0';
     }
 }

@@ -883,6 +883,19 @@ function do_site()
         save_static_caching($out2);
     }
 
+    // Save template tree
+    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        require_code('themes_meta_tree');
+        global $CSSS, $JAVASCRIPTS;
+        foreach (array_keys($CSSS) as $css) {
+            $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'css/' . $css . '.css');
+        }
+        foreach (array_keys($JAVASCRIPTS) as $javascript) {
+            $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'javascript/' . $javascript . '.js');
+        }
+        record_template_tree_used($out);
+    }
+
     // Something to do now rather than output normal screen?
     if ($doing_special_page_type) {
         special_page_types($special_page_type, $out, $out_evaluated);
@@ -913,12 +926,6 @@ function do_site()
                     ob_start('_compress_html_output');*/
             $out->evaluate_echo(null);
         }
-    }
-
-    // Save template tree
-    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-        require_code('themes_meta_tree');
-        record_template_tree_used($out);
     }
 
     // Finally, stats
@@ -1833,8 +1840,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'IS_PANEL' => $is_panel,
         'BEING_INCLUDED' => $being_included,
         'SUBMITTER' => strval($comcode_page_row['p_submitter']),
-        'TAGS' => (get_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/
-            new Tempcode() : get_loaded_tags('comcode_pages'),
+        'TAGS' => (get_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/new Tempcode() : get_loaded_tags('comcode_pages'),
         'WARNING_DETAILS' => $warning_details,
         'EDIT_DATE_RAW' => ($comcode_page_row['p_edit_date'] === null) ? '' : strval($comcode_page_row['p_edit_date']),
         'SHOW_AS_EDIT' => $comcode_page_row['p_show_as_edit'] == 1,
