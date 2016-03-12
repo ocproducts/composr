@@ -784,6 +784,9 @@ class Meta_tree_builder
         $suffix = '.' . get_file_extension($file);
         $_file = basename($file, $suffix);
         list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($_file, get_site_default_lang(), $theme, $suffix, $subdir);
+        if ($searched_theme === null) {
+            return null;
+        }
         $template_path = get_custom_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
         if (!is_file($template_path)) {
             $template_path = get_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
