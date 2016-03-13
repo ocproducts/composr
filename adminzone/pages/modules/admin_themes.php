@@ -179,7 +179,7 @@ class Module_admin_themes
         if ($type == 'edit_templates') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
 
-            $this->title = get_screen_title('_EDIT_TEMPLATES', escape_html($this->theme));
+            $this->title = get_screen_title('_EDIT_TEMPLATES', true, array(escape_html($this->theme)));
         }
 
         if ($type == 'manage_images') {

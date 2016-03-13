@@ -1,5 +1,9 @@
 {TITLE}
 
+{$REQUIRE_JAVASCRIPT,jquery}
+{$REQUIRE_JAVASCRIPT,jquery_ui}
+{$REQUIRE_CSS,jquery_ui}
+
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
 {+START,IF_PASSED,WARNING_DETAILS}
 	{WARNING_DETAILS}
@@ -13,12 +17,14 @@
 	<div class="float_surrounder">
 		{$,Tree list}
 		<div class="theme_editor_file_selector">
-			<input type="hidden" id="theme_files" name="theme_files" value="" />
-			<div id="tree_list__root_theme_files">
-				<!-- List put in here -->
-			</div>
+			<div class="inner">
+				<input type="hidden" id="theme_files" name="theme_files" value="" />
+				<div id="tree_list__root_theme_files">
+					<!-- List put in here -->
+				</div>
 
-			<input onclick="disable_button_just_clicked(this); return add_template();" class="button_screen menu___generic_admin__add_one" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" />
+				<p><input onclick="disable_button_just_clicked(this); return add_template();" class="button_screen_item menu___generic_admin__add_one" type="submit" title="{!ADD_TEMPLATE_HELP}" value="{!ADD_TEMPLATE}" /></p>
+			</div>
 		</div>
 
 		{$,Tabs}
@@ -47,6 +53,8 @@
 		{+START,LOOP,FILES_TO_LOAD}
 			theme_editor_add_tab('{_loop_var;^/}');
 		{+END}
+
+		$('.theme_editor_file_selector').resizable();
 	});
 //]]></script>
 

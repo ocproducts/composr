@@ -51,6 +51,8 @@ class Hook_snippet_theme_editor_load
 
         $revisions = new Tempcode();
 
+        $preview_url = null;
+
         if (strpos($file, ':') === false) {
             // Template...
 
@@ -119,6 +121,22 @@ class Hook_snippet_theme_editor_load
             $guids = find_template_guids($file, $active_guid);
 
             $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns($file, $file_id);
+
+            $all_previews = find_all_previews__by_template();
+            if (array_key_exists($file, $all_previews)) {
+                $url_map = array(
+                    'page' => '_SELF',
+                    'type' => 'screen_preview',
+                    'id' => $file,
+                    'hook' => $all_previews[$file][0],
+                    'function' => $all_previews[$file][1],
+                    'arg' => '',
+                    'keep_theme' => $theme,
+                    'keep_wide_high' => 1,
+                );
+                $_preview_url = build_url($url_map, '_SELF');
+                $preview_url = $_preview_url->evaluate();
+            }
         } else {
             // Comcode page...
 
@@ -168,24 +186,6 @@ class Hook_snippet_theme_editor_load
         $custom_path = get_custom_file_base() . '/' . $custom_path_short;
         if (!file_exists(dirname($custom_path))) {
             make_missing_directory(dirname($custom_path));
-        }
-
-        $all_previews = find_all_previews__by_template();
-        if (array_key_exists($file, $all_previews)) {
-            $url_map = array(
-                'page' => '_SELF',
-                'type' => 'screen_preview',
-                'id' => $file,
-                'hook' => $all_previews[$file][0],
-                'function' => $all_previews[$file][1],
-                'arg' => '',
-                'keep_theme' => $theme,
-                'keep_wide_high' => 1,
-            );
-            $_preview_url = build_url($url_map, '_SELF');
-            $preview_url = $_preview_url->evaluate();
-        } else {
-            $preview_url = null;
         }
 
         return do_template('THEME_EDITOR_TAB', array(

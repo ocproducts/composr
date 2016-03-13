@@ -13,6 +13,10 @@
 	border-collapse: collapse;
 }
 
+.theme_manage_table_icon_column {
+	width: 350px;
+}
+
 .theme_manage_table th, .theme_manage_table td {
 	border: 1px solid {$GET,standard_border};
 }
@@ -52,12 +56,18 @@
 /* Theme editor (template editor) */
 
 .theme_editor_file_selector {
-	width: 30em;
+	width: 20em;
+	padding-right: 16px;
 	float: left;
-	margin-right: 1em;
-	max-height: 60em;
-	overflow-y: auto;
+	height: 45em;
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
+}
+
+.theme_editor_file_selector>.inner {
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 100%;
+	height: 100%;
 }
 
 .theme_editor_tabs {

@@ -9,13 +9,13 @@
 
 <h2>{!EXISTING_THEMES}</h2>
 
-<div class="autosized_table theme_manage_table">
-	<table class="columned_table">
+<div class="autosized_table theme_manage_table wide_table_wrap">
+	<table class="columned_table wide_table">
 		<thead>
 			<tr>
 				<th>{!THEME}</th>
 				<th>{!TOOLS}</th>
-				<th colspan="3">{!EDIT}</th>
+				<th class="theme_manage_table_icon_column" colspan="3">{!EDIT}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,7 +58,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="manage_theme_theme_usage">
+					<td colspan="5" class="manage_theme_theme_usage">
 						{+START,IF_NON_EMPTY,{THEME_USAGE}}{THEME_USAGE*}{+END}
 						{+START,IF,{$EQ,{NAME},default}}
 							<p>{!DEFAULT_THEME_INHERITANCE}</p>
@@ -81,10 +81,6 @@
 		{+END}
 	</div>
 </div>
-
-<script>// <![CDATA[
-	load_previews();
-//]]></script>
 
 <h2>{!ADD_THEME}</h2>
 

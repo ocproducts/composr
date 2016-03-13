@@ -151,7 +151,6 @@ function theme_editor_add_tab(file)
 	load_snippet(url,null,function(ajax_result) {
 		theme_editor_tab_loaded_content(ajax_result,file);
 	});
-	do_ajax_request(url,callback__method);
 
 	// Cleanup
 	theme_editor_clean_tabs();
@@ -213,22 +212,49 @@ function theme_editor_tab_mark_nonchanged_content(file)
 	document.getElementById('t_'+file_id).className='tab file_nonchanged';
 }
 
+function theme_editor_get_tab_count()
+{
+	var count=0;
+	for (var k in window.theme_editor_open_files)
+	{
+		if (window.theme_editor_open_files.hasOwnProperty(k)) count++;
+	}
+	return count;
+}
+
 function theme_editor_tab_unload_content(file)
 {
 	var file_id=file_to_file_id(file);
-	theme_editor_remove_tab(file_id);
+	var was_active=theme_editor_remove_tab(file_id);
 
 	delete window.theme_editor_open_files[file];
+
+	if (was_active)
+	{
+		// Select tab
+		var c=document.getElementById('theme_editor_tab_headers').childNodes;
+		if (typeof c[0]!='undefined')
+			select_tab('g',c[0].id.substr(2));
+	}
 }
 
 function theme_editor_remove_tab(file_id)
 {
 	var header=document.getElementById('t_'+file_id);
-	if (header) header.parentNode.removeChild(header);
-	var body=document.getElementById('g_'+file_id);
-	if (body) body.parentNode.removeChild(body);
+	if (header)
+	{
+		var is_active=(header.className.indexOf(' tab_active')!=-1);
 
-	theme_editor_clean_tabs();
+		header.parentNode.removeChild(header);
+		var body=document.getElementById('g_'+file_id);
+		if (body) body.parentNode.removeChild(body);
+
+		theme_editor_clean_tabs();
+
+		return is_active;
+	}
+
+	return false;
 }
 
 function theme_editor_clean_tabs()
