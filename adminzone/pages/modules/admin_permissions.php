@@ -477,8 +477,6 @@ class Module_admin_permissions
      */
     public function _access_header($admin_groups, $groups)
     {
-        require_code('themes2');
-
         $css_path = get_custom_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_cached/' . user_lang() . '/global.css';
         $color = 'FF00FF';
         if (file_exists($css_path)) {

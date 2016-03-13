@@ -90,9 +90,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     if (substr($special_page_type, -4) == '.css') {
         $url_map = array(
             'page' => 'admin_themes',
-            'type' => 'edit_css',
+            'type' => 'edit_templates',
             'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
-            'file' => $special_page_type,
+            'f0file' => $special_page_type,
             'keep_wide_high' => 1,
         );
         $url = build_url($url_map, get_module_zone('admin_themes'));
@@ -394,11 +394,11 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         if ($special_page_type == 'templates') {
             $title = get_screen_title('TEMPLATES');
 
-            asort($_RECORDED_TEMPLATES_USED);
+            asort($RECORDED_TEMPLATES_USED);
             foreach ($RECORDED_TEMPLATES_USED as $name => $count) {
                 $edit_url_map = array(
                     'page' => 'admin_themes',
-                    'type' => '_edit_templates',
+                    'type' => 'edit_templates',
                     'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
                     'f0file' => $name,
                 );
@@ -429,7 +429,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
             $edit_url_map = array(
                 'page' => 'admin_themes',
-                'type' => '_edit_templates',
+                'type' => 'edit_templates',
                 'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
                 'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
             );

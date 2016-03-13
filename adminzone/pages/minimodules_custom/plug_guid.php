@@ -13,6 +13,8 @@
  * @package    composr_release_build
  */
 
+// This inserts GUIDs throughout, and records them all to guids.dat (which the theme editor uses).
+
 /*
     NB: Multi line do_template calls may be uglified. You can find those in your IDE using
     do_template[^\n]*_GUID[^\n]*\n\t+'

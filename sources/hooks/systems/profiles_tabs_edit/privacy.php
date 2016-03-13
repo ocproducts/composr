@@ -115,7 +115,6 @@ class Hook_profiles_tabs_edit_privacy
 
         $fields = new Tempcode();
         require_code('form_templates');
-        require_code('themes2');
 
         $tmp_groups = $GLOBALS['CNS_DRIVER']->get_usergroup_list(true);
 

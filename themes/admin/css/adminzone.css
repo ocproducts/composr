@@ -94,13 +94,6 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	{$BETA_CSS_PROPERTY,background-image: none !important;}
 }
 
-.footer_inner {
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}
-		width: 980px;
-		margin: 0 auto;
-	{+END}{+END}
-}
-
 footer .global_footer_left #special_page_type {
 	width: auto;
 }

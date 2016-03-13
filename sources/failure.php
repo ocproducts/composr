@@ -1389,17 +1389,6 @@ function _access_denied($class, $param, $force_login)
         // We do want to supply a nice login screen for attachment/dload scripts because they are sometimes externally linked to (e.g. in emails or hotlinks)
         // Otherwise we want flat access denied due to a flat request/response model
         // NB: Also see similar running_script lines in globalise function
-        if (get_param_integer('save_and_stay', 0) == 1) {
-            $middle = inform_screen(get_screen_title('ERROR_OCCURRED'), protect_from_escaping('
-                    <script type="text/javascript">// <![CDATA[
-                            window.fauxmodal_alert(\'' . addslashes(strip_html($message->evaluate())) . '\');
-                    //]]></script>
-            '));
-
-            $echo = globalise($middle, null, '', true);
-            $echo->evaluate_echo(null, true);
-            exit();
-        }
 
         @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 

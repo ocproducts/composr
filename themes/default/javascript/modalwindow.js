@@ -257,14 +257,15 @@ function open_link_as_overlay(ob,width,height,target)
 	}
 /*{+END}*/
 
-function fauxmodal_confirm(question,callback,title)
+function fauxmodal_confirm(question,callback,title,unescaped)
 {
 	if (typeof title=='undefined') title='{!Q_SURE;}';
+	if (typeof unescaped=='undefined') unescaped=false;
 
 	/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
 		var my_confirm={
 			type: 'confirm',
-			text: escape_html(question).replace(/\n/g,'<br />'),
+			text: unescaped?question:escape_html(question).replace(/\n/g,'<br />'),
 			yes_button: '{!YES;^}',
 			no_button: '{!NO;^}',
 			cancel_button: null,

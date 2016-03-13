@@ -3,29 +3,7 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.theme_wizard_preview_wrap {
-	margin: 1.5em 0;
-	overflow: scroll;
-}
-
-.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
-	font-weight: bold;
-}
-
-.theme_wizard_use_colour {
-	font-weight: bold;
-	text-align: center;
-}
-
-.theme_wizard_preview {
-	width: 100%;
-	height: 300px;
-}
-
-.theme_wizard_info_box {
-	float: {!en_right};
-	text-align: center;
-}
+/* Main management screen */
 
 .theme_manage_table {
 	margin: 1em 0;
@@ -71,15 +49,37 @@
 	vertical-align: middle;
 }
 
-.theme_image_preview {
-	float: {!en_left};
-	margin-{!en_right}: 0.5em;
-	margin-top: 1em;
-	max-width: 100%;
+/* Theme editor (template editor) */
+
+.theme_editor_file_selector {
+	width: 30em;
+	float: left;
+	margin-right: 1em;
+	max-height: 60em;
+	overflow-y: auto;
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
 }
 
-.theme_image_preview_wide {
-	max-width: 100%;
+.theme_editor_tabs {
+}
+
+.file_changed {
+	font-style: italic;
+}
+
+.file_unchanged {
+}
+
+.tpl_dropdown_row_a {
+	background-color: {$GET,area_zebra_background};
+}
+
+.tpl_dropdown_row_b {
+	background-color: {$GET,area_background};
+}
+
+.tpl_dropdown_row_a, .tpl_dropdown_row_b {
+	padding: 0.3em;
 }
 
 .css_editor_selector_tips {
@@ -105,24 +105,43 @@
 	font-size: 0.9em;
 }
 
-#colours_go_here {
-	margin-top: 3em;
+/* Theme images */
+
+.theme_image_preview {
+	float: {!en_left};
+	margin-{!en_right}: 0.5em;
+	margin-top: 1em;
+	max-width: 100%;
 }
 
-.tpl_dropdown_row_a {
-	background-color: {$GET,area_zebra_background};
+.theme_image_preview_wide {
+	max-width: 100%;
 }
 
-.tpl_dropdown_row_b {
-	background-color: {$GET,area_background};
+/* Theme Wizard */
+
+.theme_wizard_preview_wrap {
+	margin: 1.5em 0;
+	overflow: scroll;
 }
 
-.tpl_dropdown_row_a, .tpl_dropdown_row_b {
-	padding: 0.3em;
+.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
+	font-weight: bold;
 }
 
-.original_template {
-	margin-top: 3em;
+.theme_wizard_use_colour {
+	font-weight: bold;
+	text-align: center;
+}
+
+.theme_wizard_preview {
+	width: 100%;
+	height: 300px;
+}
+
+.theme_wizard_info_box {
+	float: {!en_right};
+	text-align: center;
 }
 
 /* Logo Wizard */

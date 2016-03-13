@@ -82,7 +82,7 @@ class Block_main_staff_checklist
                 do_lang('CHECKLIST_INITIAL_TASK_THEME'),
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
-                '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
+                '[page="adminzone:admin_themes:edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_P3P') . '"]http://www.p3pwiz.com/[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',

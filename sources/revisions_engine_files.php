@@ -20,7 +20,7 @@
 
 /*
 RevisionsEngineDatabase is normally used, but for some very special actions RevisionEngineFiles will be used instead.
-This only works for some pre-specified actions that are hard-coded into this class: EDIT_CSS, etc.
+This only works for some pre-specified actions that are hard-coded into this class: EDIT_TEMPLATE, etc.
 
 RevisionsEngineDatabase and RevisionEngineFiles are not API-compatible but are designed to work similarly.
 */
@@ -291,13 +291,7 @@ class RevisionEngineFiles
                 $ext = 'txt';
                 break;
 
-            case 'EDIT_CSS':
-                $directory = 'themes/' . $row['param_a'] . '/css_custom';
-                $filename_id = basename($row['param_b'], '.' . get_file_extension($row['param_b']));
-                $ext = 'css';
-                break;
-
-            case 'EDIT_TEMPLATES':
+            case 'EDIT_TEMPLATE':
                 $directory = 'themes/' . $row['param_b'] . '/' . dirname($row['param_a']);
                 $ext = get_file_extension($row['param_a']);
                 $filename_id = basename($row['param_a'], '.' . $ext);

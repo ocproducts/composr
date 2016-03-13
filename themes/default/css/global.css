@@ -401,8 +401,8 @@ body.website_body.frame {
 	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 	html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
 		/* Want to change the tiled background?
 			Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
@@ -429,6 +429,11 @@ body.website_body.frame {
 		.global_banner {
 			top: 0 !important;
 		}
+	}
+/*{+END}*/
+/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	#main_website #main_website_inner {
+		margin: 15px;
 	}
 /*{+END}*/
 /*{+END}*/
@@ -480,7 +485,7 @@ header h1 {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		top: -16px;
 	/*{+END}*/
 	padding-top: 6px;
@@ -619,10 +624,10 @@ header h1 {
 .global_breadcrumbs {
 	padding: 7px 0 7px 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+		/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			text-align: {!en_right};
 		/*{+END}*/
-		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+		/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			float: {!en_right};
 		/*{+END}*/
 		margin-left: 0.5em;
@@ -882,7 +887,7 @@ footer {
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,footer_background}\, {$GET,footer_2_background});}
 
 	color: {$GET,footer_text};
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		{$BETA_CSS_PROPERTY,box-shadow: 0 0 2px 2px {$GET,footer_tinting};}
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
@@ -2414,6 +2419,7 @@ div.wysiwyg_toolbar_color_finder {
 }
 .tree_list_highlighted *, .tree_list_nonhighlighted * {
 	vertical-align: middle;
+	white-space: nowrap;
 }
 .tree_list_highlighted a, .tree_list_nonhighlighted a {
 	background-color: {$GET,native_ui_background};
@@ -3480,9 +3486,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
-.buttons__save_and_stay {
-	background-image: url('{$IMG,icons/24x24/buttons/save_and_stay}') !important;
-}
 .buttons__search {
 	background-image: url('{$IMG,icons/24x24/buttons/search}') !important;
 }
@@ -3664,9 +3667,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
-	}
-	.buttons__save_and_stay {
-		background-image: url('{$IMG,icons/48x48/buttons/save_and_stay}') !important;
 	}
 	.buttons__search {
 		background-image: url('{$IMG,icons/48x48/buttons/search}') !important;
@@ -3856,11 +3856,11 @@ a.tab, a.tab:visited, a.tab:hover {
 	width: 20px;
 }
 
-.tab_first {
+.tab_first, a.tab:first-child {
 }
 
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
-	.tab_last {
+	.tab_last, a.tab:last-child {
 		border-right: 1px solid;
 		border-color: {$GET,tab_border};
 	}

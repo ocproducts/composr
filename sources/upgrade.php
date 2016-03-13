@@ -2237,6 +2237,7 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
     // Theme images
     require_code('themes2');
+    require_code('themes3');
     $langs = array('EN' => 'lang');//find_all_langs();
     foreach ($theme_images_renames as $old => $new) {
         foreach (array_keys($langs) as $lang) {

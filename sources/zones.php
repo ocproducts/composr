@@ -1509,7 +1509,7 @@ function find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = 
  *
  * @param  ID_TEXT $zone The zone name
  * @param  ID_TEXT $type The page type
- * @set    modules comcode html
+ * @set    modules modules_custom comcode/EN comcode_custom/EN html/EN html_custom/EN
  * @param  string $ext The file extension to limit us to (without a dot)
  * @param  boolean $keep_ext_on Whether to leave file extensions on the page name
  * @param  ?TIME $cutoff_time Only show pages newer than (null: no restriction)

@@ -196,8 +196,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/48x48/buttons/clear.png',
             'themes/default/images/icons/24x24/buttons/closed.png',
             'themes/default/images/icons/48x48/buttons/closed.png',
-            'themes/default/images/icons/24x24/buttons/save_and_stay.png',
-            'themes/default/images/icons/48x48/buttons/save_and_stay.png',
             'themes/default/images/icons/24x24/buttons/filter.png',
             'themes/default/images/icons/48x48/buttons/filter.png',
             'themes/default/images/icons/24x24/buttons/new_comment.png',

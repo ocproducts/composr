@@ -580,9 +580,8 @@ class Module_admin
                     if (!is_null($_entrypoints[0])) {
                         $entry_points = is_array($_entrypoints[0]) ? call_user_func_array($_entrypoints[0][0], $_entrypoints[0][1]) : eval($_entrypoints[0]);
                         if ($page == 'admin_themes') {
-                            $entry_points['!themes'] = array('EDIT_CSS', 'menu/adminzone/style/themes/css');
-                            $entry_points['!!themes'] = array('EDIT_TEMPLATES', 'menu/adminzone/style/themes/templates');
-                            $entry_points['!!!themes'] = array('EDIT_THEME_IMAGES', 'menu/adminzone/style/themes/theme_images');
+                            $entry_points['!themes'] = array('EDIT_TEMPLATES', 'menu/adminzone/style/themes/templates');
+                            $entry_points['!!themes'] = array('EDIT_THEME_IMAGES', 'menu/adminzone/style/themes/theme_images');
                         }
                         if (is_null($entry_points)) {
                             $entry_points = array();
@@ -1170,7 +1169,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'browse'), get_module_zone('admin_themes')), do_lang_tempcode('THEMES'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                    $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'edit_css', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
+                    $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'manage_images', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(escape_html($image['theme']));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
@@ -1195,13 +1194,11 @@ class Module_admin
                     if (((substr(strtolower($file), -4) == '.tpl') || (substr(strtolower($file), -4) == '.xml') || (substr(strtolower($file), -4) == '.txt') || (substr(strtolower($file), -3) == '.js')) && (!array_key_exists($file, $tpl_found))) {
                         $n = $file;
                         if (($this->_keyword_match(basename($n, '.' . get_file_extension($n)))) || ($this->_keyword_match($n)) || (($template_dir == 'templates_custom') && ($this->_keyword_match(file_get_contents(get_file_base() . '/themes/default/' . $template_dir . '/' . $n))))) {
-                            $_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $default_theme, 'f0file' => $template_dir . '/' . $file), get_module_zone('admin_themes'));
+                            $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme, 'f0file' => $template_dir . '/' . $file), get_module_zone('admin_themes'));
                             $breadcrumbs = new Tempcode();
                             $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => 'style'), 'adminzone'), do_lang_tempcode('STYLE'), false, false));
                             $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                             $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'browse'), get_module_zone('admin_themes')), do_lang_tempcode('THEMES'), false, false));
-                            $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                            $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_TEMPLATES'), false, false));
                             $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                             $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '5cd222ad77fe4bfdf05b4856a5f7b8ac', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                             $tpl_found[$file] = 1;
@@ -1222,7 +1219,7 @@ class Module_admin
                 if (substr(strtolower($file), -4) == '.css') {
                     $n = $file;
                     if ($this->_keyword_match(file_get_contents(get_file_base() . '/themes/default/css/' . $n))) {
-                        $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_css', 'theme' => $default_theme, 'file' => $file), get_module_zone('admin_themes'));
+                        $_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme, 'f0file' => 'css/' . $file), get_module_zone('admin_themes'));
                         $url = $_url->evaluate();
                         if (isset($keywords[0])) {
                             $url .= '#' . $keywords[0][0];
@@ -1231,8 +1228,6 @@ class Module_admin
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin', 'type' => 'style'), 'adminzone'), do_lang_tempcode('STYLE'), false, false));
                         $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                         $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'browse'), get_module_zone('admin_themes')), do_lang_tempcode('THEMES'), false, false));
-                        $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                        $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'choose_css', 'theme' => $default_theme), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_CSS'), false, false));
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '3ac82fa3d03b3367a03116f57993769b', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                     }

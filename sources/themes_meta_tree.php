@@ -274,7 +274,7 @@ function find_template_tree_nice($metadata)
             // Find edit URL
             $edit_url_map = array(
                 'page' => 'admin_themes',
-                'type' => '_edit_templates',
+                'type' => 'edit_templates',
                 'f0file' => $file,
                 'f0guid' => $guid,
                 'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
@@ -408,6 +408,7 @@ class Meta_tree_builder
         $this->addons = array_keys(find_all_hooks('systems', 'addon_registry'));
 
         require_code('files');
+        require_code('themes2');
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
     }
@@ -603,7 +604,7 @@ class Meta_tree_builder
                 break;
 
             case 'template':
-                $template_path = $this->find_template_path($node['name'], $node['subdir'], $theme);
+                $template_path = find_template_path($node['name'], $node['subdir'], $theme);
                 if ($template_path !== null) {
                     $new_symlink = $_path . '/_self.' . get_file_extension($node['name']);
                     @symlink($template_path, $new_symlink);
@@ -698,7 +699,7 @@ class Meta_tree_builder
                             }
 
                             foreach ($relationships as $relationship) {
-                                $relations_template_path = $this->find_template_path(basename($relationship), dirname($relationship), $theme);
+                                $relations_template_path = find_template_path(basename($relationship), dirname($relationship), $theme);
                                 if ($relations_template_path !== null) {
                                     $new_symlink = $place . '/' . basename($relationship);
                                     @symlink($relations_template_path, $new_symlink);
@@ -743,12 +744,13 @@ class Meta_tree_builder
         $ob = object_factory('Hook_addon_registry_' . $addon);
         $_files = $ob->get_file_list();
         $test_for = 'themes/default/' . $subdir . '/';
+        $test_for_2 = 'themes/default/' . $subdir . '_custom/';
         foreach ($_files as $file_path) {
-            if (substr($file_path, 0, strlen($test_for)) == $test_for) {
+            if (substr($file_path, 0, strlen($test_for)) == $test_for || substr($file_path, 0, strlen($test_for_2)) == $test_for_2) {
                 $file = basename($file_path);
 
                 if (($file != 'index.html') && ($file != '.htaccess')) {
-                    $template_path = $this->find_template_path($file, $subdir, $theme);
+                    $template_path = find_template_path($file, $subdir, $theme);
 
                     $mini_path = substr($file_path, strlen('themes/default/'));
 
@@ -764,40 +766,6 @@ class Meta_tree_builder
         $cache[$addon][$subdir] = $files;
 
         return $files;
-    }
-
-    /**
-     * Find where a template is.
-     *
-     * @param  ID_TEXT $file The file
-     * @param  ID_TEXT $subdir The theme subdirectory we're working against
-     * @param  ID_TEXT $theme The theme
-     * @return ?PATH The path (null: not found)
-     */
-    private function find_template_path($file, $subdir, $theme)
-    {
-        static $cache = array();
-        if (isset($cache[$file][$subdir][$theme])) {
-            return $cache[$file][$subdir][$theme];
-        }
-
-        $suffix = '.' . get_file_extension($file);
-        $_file = basename($file, $suffix);
-        list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($_file, get_site_default_lang(), $theme, $suffix, $subdir);
-        if ($searched_theme === null) {
-            return null;
-        }
-        $template_path = get_custom_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
-        if (!is_file($template_path)) {
-            $template_path = get_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
-            if (!is_file($template_path)) {
-                $template_path = null;
-            }
-        }
-
-        $cache[$file][$subdir][$theme] = $template_path;
-
-        return $template_path;
     }
 
     /**

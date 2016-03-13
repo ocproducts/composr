@@ -19,27 +19,6 @@
  */
 
 /**
- * Export neatly named dump of all theme images for active theme.
- */
-function export_theme_images()
-{
-    header('Content-type: text/csv; charset=' . get_charset());
-    header('Content-Disposition: attachment; filename="theme_images.tar"');
-
-    require_code('tar');
-    require_code('files');
-    $my_tar = tar_open(null, 'wb');
-    $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT id'));
-    foreach ($theme_images as $theme_image) {
-        $path = rawurldecode(find_theme_image($theme_image['id'], true, true));
-        if (($path != '') && (substr($path, 0, strlen('themes/default/images/')) != 'themes/default/images/')) {
-            tar_add_file($my_tar, $theme_image['id'] . '.' . get_file_extension($path), $path, 0644, null, true);
-        }
-    }
-    tar_close($my_tar);
-}
-
-/**
  * Try and find some CDNs to use.
  *
  * @return string List of CDNs
@@ -99,188 +78,269 @@ function autoprobe_cdns()
 }
 
 /**
- * Edit a theme image.
+ * Get an array listing all the themes present.
  *
- * @param  SHORT_TEXT $old_id The current theme image ID
- * @param  ID_TEXT $theme The theme the theme image is in
- * @param  LANGUAGE_NAME $lang The language the theme image is for (blank: all languages)
- * @param  SHORT_TEXT $id The new theme image ID
- * @param  URLPATH $path The URL to the theme image
- * @param  boolean $quick Whether to avoid cleanup, etc
+ * @param  boolean $full_details Whether to gather full details for each theme
+ * @return array A map of all themes (name=>title) OR if requested a map of theme name to full theme details
  */
-function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = false)
+function find_all_themes($full_details = false)
 {
-    if ($old_id != $id) {
-        $where_map = array('theme' => $theme, 'id' => $id);
-        if ($lang != '') {
-            $where_map['lang'] = $lang;
-        }
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', $where_map);
-        if (!is_null($test)) {
-            warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
-        }
+    if ($GLOBALS['IN_MINIKERNEL_VERSION']) {
+        return $full_details ? array('default' => array()) : array('default' => do_lang('DEFAULT'));
     }
 
-    if (!$quick) {
-        $old_url = find_theme_image($id, true, true, $theme, ($lang == '') ? null : $lang);
+    require_code('files');
 
-        if (($old_url != $path) && ($old_url != '')) {
-            if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
-                $where_map = array('theme' => $theme, 'id' => $id);
-                if ($lang != '') {
-                    $where_map['lang'] = $lang;
+    $themes = array();
+    $_dir = opendir(get_file_base() . '/themes/');
+    while (false !== ($file = readdir($_dir))) {
+        $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
+        if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
+            $details = better_parse_ini_file($ini_file);
+            if (!array_key_exists('title', $details)) {
+                $details['title'] = '?';
+            }
+            if (!array_key_exists('description', $details)) {
+                $details['description'] = '?';
+            }
+            if (!array_key_exists('author', $details)) {
+                $details['author'] = '?';
+            }
+            $themes[$file] = $full_details ? $details : $details['title'];
+        }
+    }
+    closedir($_dir);
+    if (get_custom_file_base() != get_file_base()) {
+        $_dir = @opendir(get_custom_file_base() . '/themes/');
+        if ($_dir !== false) {
+            while (false !== ($file = readdir($_dir))) {
+                $ini_file = get_custom_file_base() . '/themes/' . $file . '/theme.ini';
+                if ((strpos($file, '.') === false) && (is_dir(get_custom_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
+                    $details = better_parse_ini_file($ini_file);
+                    if (!array_key_exists('title', $details)) {
+                        $details['title'] = '?';
+                    }
+                    if (!array_key_exists('description', $details)) {
+                        $details['description'] = '?';
+                    }
+                    if (!array_key_exists('author', $details)) {
+                        $details['author'] = '?';
+                    }
+                    $themes[$file] = $full_details ? $details : $details['title'];
                 }
-                $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
-
-                require_code('themes3');
-                cleanup_theme_images($old_url);
             }
+            closedir($_dir);
         }
     }
+    if (!array_key_exists('default', $themes)) {
+        $details = better_parse_ini_file(get_file_base() . '/themes/default/theme.ini');
+        if (!array_key_exists('title', $details)) {
+            $details['title'] = '?';
+        }
+        if (!array_key_exists('description', $details)) {
+            $details['description'] = '?';
+        }
+        if (!array_key_exists('author', $details)) {
+            $details['author'] = '?';
+        }
+        $themes['default'] = $full_details ? $details : $details['title'];
+    }
 
-    if ($lang == '') {
-        $langs = array_keys(find_all_langs());
+    if ($full_details) {
+        sort_maps_by($themes, 'title');
     } else {
-        $langs = array($lang);
+        natsort($themes);
     }
 
-    $where_map = array('theme' => $theme, 'id' => $id);
-    if ($lang != '') {
-        $where_map['lang'] = $lang;
-    }
-    $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
-
-    foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
-    }
-
-    if (!$quick) {
-        Self_learning_cache::erase_smart_cache();
-
-        if (addon_installed('!ssl')) {
-            require_code('caches3');
-            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
-        }
-
-        log_it('EDIT_THEME_IMAGE', $id, $theme);
-    }
+    return $themes;
 }
 
 /**
- * Replace colour codes with references (helper callback function)
+ * Get a UI list for choosing a theme.
  *
- * @param  array $matches List of found regular expression matches (only index 0 relevant).
- * @return string Replacement.
+ * @param  ?ID_TEXT $theme The theme to select by default (null: no specific default)
+ * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
+ * @param  boolean $show_everything Whether to forget about permissions for this list
+ * @param  ID_TEXT $default_message_string The language string to use for the default answer
+ * @return Tempcode The list
  */
-function css_preg($matches)
+function create_selection_list_themes($theme = null, $no_rely = false, $show_everything = false, $default_message_string = 'RELY_FORUMS')
 {
-    global $CSS_MATCHES;
-    $ret = count($CSS_MATCHES);
-    $CSS_MATCHES[] = $matches[0];
-
-    return '<color-' . strval($ret) . '>';
+    if (!$no_rely) {
+        $entries = form_input_list_entry('-1', false, do_lang_tempcode($default_message_string));
+    } else {
+        $entries = new Tempcode();
+    }
+    $themes = find_all_themes();
+    foreach ($themes as $_theme => $title) {
+        if (($show_everything) || (has_category_access(get_member(), 'theme', $_theme))) {
+            $selected = ($theme == $_theme);
+            $entries->attach(form_input_list_entry($_theme, $selected, $title));
+        }
+    }
+    if ($entries->is_empty()) {
+        $entries->attach(form_input_list_entry('default', false, $themes['default']));
+    }
+    return $entries;
 }
 
 /**
- * Add a theme.
+ * Get all the templates for a theme.
  *
- * @param  ID_TEXT $name The theme name
+ * @param  ID_TEXT $theme The theme to search for
+ * @param  string $directory Subdirectory type to look in
+ * @set    templates javascript xml text css
+ * @param  ?string $suffix File type suffix of template file (e.g. .tpl) (null: calculate for the $directory norm)
+ * @set    .tpl .js .xml .txt .css
+ * @param  boolean $this_theme_only Just for this theme
+ * @return array A map of the files (file=>path)
  */
-function actual_add_theme($name)
+function get_template_files_list($theme, $directory, $suffix = null, $this_theme_only = false)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    if ($suffix === null) {
+        switch ($directory) {
+            case 'templates':
+                $suffix = '.tpl';
+                break;
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
-        warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
-    }
+            case 'javascript':
+                $suffix = '.js';
+                break;
 
-    require_code('abstract_file_manager');
-    force_have_afm_details();
+            case 'xml':
+                $suffix = '.xml';
+                break;
 
-    // Create directories
-    $dir_list = array(
-        '',
-        'images',
-        'images/logo',
-        'images_custom',
-        'templates',
-        'templates_custom',
-        'javascript',
-        'javascript_custom',
-        'xml',
-        'xml_custom',
-        'text',
-        'text_custom',
-        'templates_cached',
-        'css',
-        'css_custom',
-    );
-    $langs = find_all_langs(true);
-    foreach (array_keys($langs) as $lang) {
-        $dir_list[] = 'templates_cached/' . $lang;
-    }
-    $dir_list_access = array('', 'images', 'images_custom', 'css');
-    foreach ($dir_list as $dir) {
-        $path = 'themes/' . $name . '/' . $dir;
-        afm_make_directory($path, true);
-        $path = 'themes/' . $name . '/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html';
-        if (file_exists(get_file_base() . '/themes/default/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html')) {
-            afm_copy('themes/default/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html', $path, false);
-        }
-        $path = 'themes/' . $name . '/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess';
-        if (file_exists(get_file_base() . '/themes/default/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess')) {
-            afm_copy('themes/default/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess', $path, false);
+            case 'text':
+                $suffix = '.txt';
+                break;
+
+            case 'css':
+                $suffix = '.css';
+                break;
         }
     }
-    afm_copy('themes/default/theme.ini', 'themes/' . $name . '/theme.ini', true);
 
-    // Copy image references from default
-    $start = 0;
-    do {
-        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => 'default'), '', 100, $start);
-        foreach ($theme_images as $theme_image) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('theme' => $name, 'id' => $theme_image['id'], 'lang' => $theme_image['lang']));
-            if (is_null($test)) {
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'path' => $theme_image['path'], 'lang' => $theme_image['lang']));
+    $out = array();
+    if (($theme == 'default') || (!$this_theme_only)) {
+        $out = array_merge($out, _get_template_files_list(get_file_base(), 'default/' . $directory, $suffix));
+        $out = array_merge($out, _get_template_files_list(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix));
+    }
+    if ($theme != 'default') {
+        $out = array_merge($out, _get_template_files_list(get_custom_file_base(), $theme . '/' . $directory, $suffix));
+        $out = array_merge($out, _get_template_files_list(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix));
+    }
+    ksort($out);
+
+    return $out;
+}
+
+/**
+ * Get all the template files / revisions for a template file, in a certain directory.
+ *
+ * @param  PATH $base_dir The path to search relative to
+ * @param  PATH $subdir The subdirectory to search
+ * @param  string $suffix File type suffix of template file (e.g. .tpl)
+ * @set    .tpl .js .xml .txt .css
+ * @return array A map of the files (file=>path)
+ *
+ * @ignore
+ */
+function _get_template_files_list($base_dir, $subdir, $suffix)
+{
+    $_dir = @opendir($base_dir . '/themes/' . $subdir);
+    if ($_dir !== false) {
+        // Find all the themes
+        $files_list = array();
+        while (false !== ($file = readdir($_dir))) {
+            if (strtolower(substr($file, -strlen($suffix))) == $suffix) {
+                $files_list[$file] = $base_dir . '/themes/' . $subdir . '/' . $file;
             }
         }
-        $start += 100;
-    } while (count($theme_images) == 100);
-
-    Self_learning_cache::erase_smart_cache();
-
-    log_it('ADD_THEME', $name);
+        closedir($_dir);
+        return $files_list;
+    }
+    return array();
 }
 
 /**
- * Add a theme image.
+ * Find where a template is.
  *
- * @param  ID_TEXT $theme The theme the theme image is in
- * @param  LANGUAGE_NAME $lang The language the theme image is for
- * @param  SHORT_TEXT $id The theme image ID
- * @param  URLPATH $path The URL to the theme image
- * @param  boolean $fail_ok Whether to allow failure without bombing out
+ * @param  ID_TEXT $file The file
+ * @param  ID_TEXT $subdir The theme subdirectory we're working against
+ * @param  ID_TEXT $theme The theme
+ * @return ?PATH The path (null: not found)
  */
-function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
+function find_template_path($file, $subdir, $theme)
 {
-    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
-    if (!is_null($test)) {
-        if ($fail_ok) {
-            return;
+    static $cache = array();
+    if (isset($cache[$file][$subdir][$theme])) {
+        return $cache[$file][$subdir][$theme];
+    }
+
+    $suffix = '.' . get_file_extension($file);
+    $_file = basename($file, $suffix);
+    list($searched_theme, $searched_directory, $searched_suffix) = find_template_place($_file, get_site_default_lang(), $theme, $suffix, $subdir);
+    if ($searched_theme === null) {
+        return null;
+    }
+    $template_path = get_custom_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
+    if (!is_file($template_path)) {
+        $template_path = get_file_base() . '/themes/' . $searched_theme . $searched_directory . $_file . $suffix;
+        if (!is_file($template_path)) {
+            $template_path = null;
         }
-        warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
     }
 
-    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+    $cache[$file][$subdir][$theme] = $template_path;
 
-    log_it('ADD_THEME_IMAGE', $id, $theme);
+    return $template_path;
+}
 
-    Self_learning_cache::erase_smart_cache();
+/**
+ * Find GUIDs used for a template.
+ *
+ * @param  ID_TEXT $file The template (including subdirectory and suffix)
+ * @return array List of templates
+ */
+function find_template_guids($file)
+{
+    // TODO: Write unit test too
 
-    if (addon_installed('!ssl')) {
-        require_code('caches3');
-        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
+    $suffix = '.' . get_file_extension($file);
+    $clean_file = basename($file, $suffix);
+
+    $guids = array();
+    $_guids = @unserialize(@file_get_contents(get_file_base() . '/data/guids.dat'));
+    if (($_guids !== false) && (array_key_exists($clean_file, $_guids))) {
+        foreach ($_guids[$clean_file] as $_guid) {
+            $guids[] = array(
+                'GUID_FILENAME' => $_guid[0],
+                'GUID_LINE' => integer_format($_guid[1]),
+                'GUID_GUID' => $_guid[2],
+                'GUID_IS_LIVE' => TODO,
+            );
+        }
     }
+    return $guids;
+}
+
+/**
+ * Find parameters used by a template.
+ *
+ * @param  ID_TEXT $file The template (including subdirectory and suffix)
+ * @return array List of templates
+ */
+function find_template_parameters($file)
+{
+    // TODO: Write unit test too
+
+    // TODO: Implement via template preview analysing
+    // TODO: Allow fallback via simple template scanning
+
+    return array(
+        'TODO',
+    );
 }
 
 /**
@@ -815,113 +875,6 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
     }
 
     return $out;
-}
-
-/**
- * Get a UI list for choosing a theme.
- *
- * @param  ?ID_TEXT $theme The theme to select by default (null: no specific default)
- * @param  boolean $no_rely Whether to skip the 'rely on forums' entry
- * @param  boolean $show_everything Whether to forget about permissions for this list
- * @param  ID_TEXT $default_message_string The language string to use for the default answer
- * @return Tempcode The list
- */
-function create_selection_list_themes($theme = null, $no_rely = false, $show_everything = false, $default_message_string = 'RELY_FORUMS')
-{
-    if (!$no_rely) {
-        $entries = form_input_list_entry('-1', false, do_lang_tempcode($default_message_string));
-    } else {
-        $entries = new Tempcode();
-    }
-    $themes = find_all_themes();
-    foreach ($themes as $_theme => $title) {
-        if (($show_everything) || (has_category_access(get_member(), 'theme', $_theme))) {
-            $selected = ($theme == $_theme);
-            $entries->attach(form_input_list_entry($_theme, $selected, $title));
-        }
-    }
-    if ($entries->is_empty()) {
-        $entries->attach(form_input_list_entry('default', false, $themes['default']));
-    }
-    return $entries;
-}
-
-/**
- * Get an array listing all the themes present.
- *
- * @param  boolean $full_details Whether to gather full details for each theme
- * @return array A map of all themes (name=>title) OR if requested a map of theme name to full theme details
- */
-function find_all_themes($full_details = false)
-{
-    if ($GLOBALS['IN_MINIKERNEL_VERSION']) {
-        return $full_details ? array('default' => array()) : array('default' => do_lang('DEFAULT'));
-    }
-
-    require_code('files');
-
-    $themes = array();
-    $_dir = opendir(get_file_base() . '/themes/');
-    while (false !== ($file = readdir($_dir))) {
-        $ini_file = get_file_base() . '/themes/' . $file . '/theme.ini';
-        if ((strpos($file, '.') === false) && (is_dir(get_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
-            $details = better_parse_ini_file($ini_file);
-            if (!array_key_exists('title', $details)) {
-                $details['title'] = '?';
-            }
-            if (!array_key_exists('description', $details)) {
-                $details['description'] = '?';
-            }
-            if (!array_key_exists('author', $details)) {
-                $details['author'] = '?';
-            }
-            $themes[$file] = $full_details ? $details : $details['title'];
-        }
-    }
-    closedir($_dir);
-    if (get_custom_file_base() != get_file_base()) {
-        $_dir = @opendir(get_custom_file_base() . '/themes/');
-        if ($_dir !== false) {
-            while (false !== ($file = readdir($_dir))) {
-                $ini_file = get_custom_file_base() . '/themes/' . $file . '/theme.ini';
-                if ((strpos($file, '.') === false) && (is_dir(get_custom_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
-                    $details = better_parse_ini_file($ini_file);
-                    if (!array_key_exists('title', $details)) {
-                        $details['title'] = '?';
-                    }
-                    if (!array_key_exists('description', $details)) {
-                        $details['description'] = '?';
-                    }
-                    if (!array_key_exists('author', $details)) {
-                        $details['author'] = '?';
-                    }
-                    $themes[$file] = $full_details ? $details : $details['title'];
-                }
-            }
-            closedir($_dir);
-        }
-    }
-    if (!array_key_exists('default', $themes)) {
-        $details = better_parse_ini_file(get_file_base() . '/themes/default/theme.ini');
-        if (!array_key_exists('title', $details)) {
-            $details['title'] = '?';
-        }
-        if (!array_key_exists('description', $details)) {
-            $details['description'] = '?';
-        }
-        if (!array_key_exists('author', $details)) {
-            $details['author'] = '?';
-        }
-        $themes['default'] = $full_details ? $details : $details['title'];
-    }
-
-    if ($full_details) {
-        sort_maps_by($themes, 'title');
-    } else {
-        natsort($themes);
-    }
-
-    return $themes;
 }
 
 /**

@@ -36,23 +36,14 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
     }
 
     // TODO: This will be replaced later with a more thorough system #115 on tracker
-    if (($type == 'EDIT_TEMPLATES') && (strpos($a, ',') === false)) {
+    if (($type == 'EDIT_TEMPLATE') && (strpos($a, ',') === false)) {
         if ($b == '') {
             $b = 'default';
         }
-        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $b, 'f0file' => $a), get_module_zone('admin_themes'));
+        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $b, 'f0file' => $a), get_module_zone('admin_themes'));
         $a = basename($a, '.tpl');
         $_a = tpl_crop_text_mouse_over($a, 14);
         $_a = hyperlink($tmp_url, $_a, false, false, $type_str);
-        return array($_a, $_b);
-    }
-    if ($type == 'EDIT_CSS') {
-        if ($b == '') {
-            $b = 'global.css';
-        }
-        $tmp_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_css', 'theme' => $a, 'file' => $b), get_module_zone('admin_themes'));
-        $b = basename($b, '.css');
-        $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
         return array($_a, $_b);
     }
     if ($type == 'COMCODE_PAGE_EDIT') {

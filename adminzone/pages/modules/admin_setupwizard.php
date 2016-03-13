@@ -834,6 +834,7 @@ class Module_admin_setupwizard
 
         require_code('config2');
         require_code('themes2');
+        require_code('themes3');
         require_lang('zones');
 
         $header_text = post_param_string('header_text');

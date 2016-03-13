@@ -631,7 +631,7 @@ The 'keep' parameters available are:
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_no_frames[/tt] -- set this to '1' to disable optional iframes / AJAX frame-simulation
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
- - [tt]keep_grow_template_meta_tree[/tt] -- set this to '1' for the "Grow template meta tree" configuration option to be considered as temporarily enabled
+ - [tt]keep_grow_template_meta_tree[/tt] -- set this to '1' for the "Grow template meta-tree" configuration option to be considered as temporarily enabled
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

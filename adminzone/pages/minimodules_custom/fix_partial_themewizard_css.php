@@ -124,6 +124,7 @@ load_themewizard_params_from_theme('default');
 global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD, $THEME_IMAGES_CACHE;
 if (function_exists('imagecolorallocatealpha')) {
     require_code('themes2');
+    require_code('themes3');
     require_code('abstract_file_manager');
     $full_img_set = array();
     foreach ($THEME_WIZARD_IMAGES as $expression) {

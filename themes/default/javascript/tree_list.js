@@ -1,6 +1,6 @@
 "use strict";
 
-window.tree_list=function(name,hook,root_id,options,multi_selection,tabindex,all_nodes_selectable,use_server_id)
+window.tree_list=function(name,ajax_url,root_id,options,multi_selection,tabindex,all_nodes_selectable,use_server_id)
 {
 	if (typeof window.do_ajax_request=='undefined') return;
 	if (typeof use_server_id=='undefined') use_server_id=false;
@@ -8,7 +8,7 @@ window.tree_list=function(name,hook,root_id,options,multi_selection,tabindex,all
 	if ((typeof multi_selection=='undefined') || (!multi_selection)) var multi_selection=false;
 
 	this.name=name;
-	this.hook=hook;
+	this.ajax_url=ajax_url;
 	this.options=options;
 	this.multi_selection=multi_selection;
 	this.tabindex=tabindex?tabindex:null;
@@ -19,7 +19,7 @@ window.tree_list=function(name,hook,root_id,options,multi_selection,tabindex,all
 	set_inner_html(element,'<div class="ajax_loading vertical_alignment"><img src="'+'{$IMG*;,loading}'.replace(/^https?:/,window.location.protocol)+'" alt="" /> <span>{!LOADING;^}</span></div>');
 
 	// Initial rendering
-	var url='{$BASE_URL_NOHTTP;}/'+hook;
+	var url='{$BASE_URL_NOHTTP;}/'+ajax_url;
 	if (root_id!==null) url+='&id='+window.encodeURIComponent(root_id);
 	url+='&options='+options;
 	url+='&default='+window.encodeURIComponent(document.getElementById(name).value);
@@ -320,6 +320,8 @@ tree_list.prototype.render_tree=function(xml,html,element)
 			}
 		} else // Assume entry
 		{
+			new_html=null;
+
 			escaped_title=escape_html((typeof node.getAttribute('title')!='undefined')?node.getAttribute('title'):'');
 			if (escaped_title=='') escaped_title='{!NA_EM;^}';
 
@@ -337,7 +339,7 @@ tree_list.prototype.render_tree=function(xml,html,element)
 
 			// Render self
 			initially_expanded=false;
-			set_inner_html(node_self,'<div><img alt="{!ENTRY;^}" src="'+'{$IMG*;,1x/treefield/entry}'.replace(/^https?:/,window.location.protocol)+'" srcset="'+'{$IMG*;,2x/treefield/entry} 2x'.replace(/^https?:/,window.location.protocol)+'" style="width: 14px; height: 14px; padding-left: 16px" /> <label id="'+this.name+'tsel_e_'+node.getAttribute('id')+'" class="ajax_tree_magic_button '+colour+'" for="'+this.name+'tsel_s_'+node.getAttribute('id')+'" onmouseout="if (typeof window.deactivate_tooltip!=\'undefined\') deactivate_tooltip(this);" onmousemove="if (typeof window.activate_tooltip!=\'undefined\') reposition_tooltip(this,event);" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(\''+(description_in_use.replace(/\n/g,'').replace(/'/g,'\\'+'\''))+'\'),\'800px\');"><input'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' id="'+this.name+'tsel_s_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" />'+escaped_title+'</label>'+extra+'</div>');
+			set_inner_html(node_self,'<div><img alt="{!ENTRY;^}" src="'+'{$IMG*;,1x/treefield/entry}'.replace(/^https?:/,window.location.protocol)+'" srcset="'+'{$IMG*;,2x/treefield/entry} 2x'.replace(/^https?:/,window.location.protocol)+'" style="width: 14px; height: 14px" /> <label id="'+this.name+'tsel_e_'+node.getAttribute('id')+'" class="ajax_tree_magic_button '+colour+'" for="'+this.name+'tsel_s_'+node.getAttribute('id')+'" onmouseout="if (typeof window.deactivate_tooltip!=\'undefined\') deactivate_tooltip(this);" onmousemove="if (typeof window.activate_tooltip!=\'undefined\') reposition_tooltip(this,event);" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(\''+(description_in_use.replace(/\n/g,'').replace(/'/g,'\\'+'\''))+'\'),\'800px\');"><input'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' id="'+this.name+'tsel_s_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" />'+escaped_title+'</label>'+extra+'</div>');
 			var a=node_self.getElementsByTagName('label')[0];
 			a.handle_selection=this.handle_selection;
 			a.childNodes[0].onfocus=function() { this.parentNode.style.outline='1px dotted'; };
@@ -529,7 +531,7 @@ tree_list.prototype.handle_tree_click=function(event,automated) // Not called as
 
 		if ((xml_node.getAttribute('has_children')=='true') && (!has_child_nodes(xml_node)))
 		{
-			var url='{$BASE_URL_NOHTTP;}/'+this.object.hook+'&id='+window.encodeURIComponent(real_clicked_id)+'&options='+this.object.options+'&default='+window.encodeURIComponent(element.value);
+			var url='{$BASE_URL_NOHTTP;}/'+this.object.ajax_url+'&id='+window.encodeURIComponent(real_clicked_id)+'&options='+this.object.options+'&default='+window.encodeURIComponent(element.value);
 			var ob=this.object;
 			do_ajax_request(url,function (ajax_result_frame,ajax_result) { set_inner_html(html_node,''); ob.response(ajax_result_frame,ajax_result,clicked_id); });
 			set_inner_html(html_node,'<div aria-busy="true" class="vertical_alignment"><img src="'+'{$IMG*;,loading}'.replace(/^https?:/,window.location.protocol)+'" alt="" /> <span>{!LOADING;^}</span></div>');

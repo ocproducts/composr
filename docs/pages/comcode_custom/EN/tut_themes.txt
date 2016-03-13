@@ -281,5 +281,6 @@ Many more tips and points of guidance are included in the [page="_SEARCH:tut_des
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:sup_making_a_theme"]Making a new theme[/page]
  - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
 
 {$SET,tutorial_tags,themewizard,core_themeing,core_primary_layout,core_html_abstractions,core_form_interfaces,core_abstract_interfaces,core_abstract_components,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Our key themeing tutorial - how to re-theme your site, by changing CSS, templates, and theme images.}[block]main_tutorial_rating[/block]
