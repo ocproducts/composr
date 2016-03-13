@@ -28,6 +28,9 @@ function init__lorem()
     global $LOREM_RANDOM_VAR, $LOREM_AVOID_GLOBALISE;
     $LOREM_RANDOM_VAR = 0;
     $LOREM_AVOID_GLOBALISE = false;
+
+    global $KNOWN_TEMPLATE_PARAMETERS;
+    $KNOWN_TEMPLATE_PARAMETERS = array();
 }
 
 /**
@@ -519,6 +522,13 @@ function placeholder_breadcrumbs()
  */
 function do_lorem_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates')
 {
+    if ($parameters === null) {
+        $parameters = array();
+    }
+
+    global $KNOWN_TEMPLATE_PARAMETERS;
+    $KNOWN_TEMPLATE_PARAMETERS[$codename] = array_keys($parameters);
+
     return do_template($codename, $parameters, $lang, $light_error, $fallback, $suffix, $directory);
 }
 

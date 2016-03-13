@@ -44,10 +44,7 @@ class Hook_snippet_theme_editor_load
         $file = get_param_string('file');
         $file_id = str_replace(array('/', ':'), array('__', '__'), $file);
         $theme = get_param_string('theme');
-        $subdir = dirname($file);
-        $_file = basename($file);
-        $suffix = '.' . get_file_extension($file);
-        $clean_file = basename($file, $suffix);
+        $active_guid = get_param_string('active_guid', null);
 
         $include_tempcode_editing = true;
         $include_css_editing = false;
@@ -56,6 +53,11 @@ class Hook_snippet_theme_editor_load
 
         if (strpos($file, ':') === false) {
             // Template...
+
+            $subdir = dirname($file);
+            $_file = basename($file);
+            $suffix = '.' . get_file_extension($file);
+            $clean_file = basename($file, $suffix);
 
             $file_parts = explode('/', $file, 2);
 
@@ -85,7 +87,7 @@ class Hook_snippet_theme_editor_load
                     break;
             }
 
-            $custom_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $subdir . '_custom/' . $_file;
+            $custom_path_short = 'themes/' . filter_naughty($theme) . '/' . $subdir . '_custom/' . $_file;
 
             // Read contents
             $path = find_template_path($_file, $subdir, $theme);
@@ -104,7 +106,7 @@ class Hook_snippet_theme_editor_load
                     $revision_engine = new RevisionEngineFiles();
                     $revision_loaded = mixed();
                     $revisions = $revision_engine->ui_revision_undoer(
-                        'themes/' . $theme . '/' . $subdir . '_custom',
+                        dirname($custom_path_short),
                         $clean_file,
                         ltrim($suffix, '.'),
                         'EDIT_TEMPLATE',
@@ -113,26 +115,57 @@ class Hook_snippet_theme_editor_load
                     );
                 }
             }
+
+            $guids = find_template_guids($file, $active_guid);
+
+            $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns($file, $file_id);
         } else {
             // Comcode page...
 
+            list($zone, $page) = explode(':', $file);
+
             $highlighter_type = 'text';
 
-            // Read contents
-            $path = TODO;
-            $contents = ''; // TODO
-            $custom_path = TODO;
+            $custom_path_short = $zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . get_site_default_lang() . '/' . $page . '.txt';
 
-            $revisions = TODO;
+            // Read contents
+            list(, , $path) = find_comcode_page(get_site_default_lang(), $page, $zone);
+            if ($path == '') {
+                $contents = '';
+            } else {
+                $tmp = fopen($path, 'rb');
+                @flock($tmp, LOCK_SH);
+                $contents = unixify_line_format(file_get_contents($path));
+                @flock($tmp, LOCK_UN);
+                fclose($tmp);
+
+                // Revisions
+                if (addon_installed('actionlog')) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    $revision_loaded = mixed();
+                    $revisions = $revision_engine->ui_revision_undoer(
+                        dirname($custom_path_short),
+                        $page,
+                        'txt',
+                        'COMCODE_PAGE_EDIT',
+                        $contents,
+                        $revision_loaded
+                    );
+                }
+            }
+
+            $guids = array();
+
+            $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns(null, $file_id);
         }
+
+        list($parameters, $directives, $misc_symbols, $programmatic_symbols, $abstraction_symbols, $arithmetical_symbols, $formatting_symbols, $logical_symbols) = $editing_toolbar_dropdowns;
 
         check_suhosin_request_size(strlen($contents));
 
-        list($parameters, $directives, $misc_symbols, $programmatic_symbols, $abstraction_symbols, $arithmetical_symbols, $formatting_symbols, $logical_symbols) = $this->get_tempcode_editing_toolbar_dropdowns($file, $file_id);
-
-        $guids = find_template_guids($file);
-
         // Make sure we have directory before we allow editing to start, in case of an error
+        $custom_path = get_custom_file_base() . '/' . $custom_path_short;
         if (!file_exists(dirname($custom_path))) {
             make_missing_directory(dirname($custom_path));
         }
@@ -182,24 +215,26 @@ class Hook_snippet_theme_editor_load
     /**
      * Get dropdowns of things to insert from the editing toolbar.
      *
-     * @param  ID_TEXT $file The template
+     * @param  ?ID_TEXT $file The template (null: not a template)
      * @param  string $file_id The ID of the actual template editor we are working with
      * @return array Tuple of dropdowns
      */
     private function get_tempcode_editing_toolbar_dropdowns($file, $file_id)
     {
         $parameters = new Tempcode();
-        $_parameters = find_template_parameters($file);
-        foreach ($_parameters as $parameter) {
-            $parameters->attach(form_input_list_entry($parameter . '__0', false, $parameter));
+        if ($file !== null) {
+            $_parameters = find_template_parameters($file);
+            foreach ($_parameters as $parameter) {
+                $parameters->attach(form_input_list_entry($parameter . '__0', false, $parameter));
+            }
+            $parameters = do_template('THEME_EDITOR_TEMPCODE_DROPDOWN', array(
+                '_GUID' => '50f31c49c99b864c1719fb51ed426274',
+                'FILE_ID' => $file_id,
+                'PARAMETERS' => $parameters,
+                'STUB' => 'parameter',
+                'LANG' => do_lang_tempcode('INSERT_PARAMETER'),
+            ));
         }
-        $parameters = do_template('THEME_EDITOR_TEMPCODE_DROPDOWN', array(
-            '_GUID' => '50f31c49c99b864c1719fb51ed426274',
-            'FILE_ID' => $file_id,
-            'PARAMETERS' => $parameters,
-            'STUB' => 'parameter',
-            'LANG' => do_lang_tempcode('INSERT_PARAMETER'),
-        ));
 
         $_directives = array(
             array('BOX', '1'),

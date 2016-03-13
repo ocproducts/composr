@@ -18,11 +18,6 @@ function file_to_file_id(file)
 
 /* Tab and file management */
 
-function file_to_tab_name(file)
-{
-	return file_to_file_id(file);
-}
-
 function add_template()
 {
 	window.fauxmodal_prompt(
@@ -81,27 +76,27 @@ function theme_editor_add_tab(file)
 {
 	var tab_title=file.replace(/^.*\//,'');
 
-	var tab_name=file_to_tab_name(file);
+	var file_id=file_to_file_id(file);
 
 	// Switch to tab if exists
-	if (document.getElementById('t_'+tab_name))
+	if (document.getElementById('t_'+file_id))
 	{
-		select_tab('g',tab_name);
+		select_tab('g',file_id);
 		return;
 	}
 
 	// Create new tab header
 	var headers=document.getElementById('theme_editor_tab_headers');
 	var header=document.createElement('a');
-	header.setAttribute('aria-controls','g_'+tab_name);
+	header.setAttribute('aria-controls','g_'+file_id);
 	header.setAttribute('role','tab');
 	header.setAttribute('href','#');
-	header.id='t_'+tab_name;
+	header.id='t_'+file_id;
 	header.className='tab file_nonchanged';
 	header.onclick=function(event) {
 		if (typeof event=='undefined') event=window.event;
 		event.returnValue=false;
-		select_tab('g',tab_name);
+		select_tab('g',file_id);
 		return false;
 	};
 	var span=document.createElement('span');
@@ -139,26 +134,55 @@ function theme_editor_add_tab(file)
 	// Create new tab body
 	var bodies=document.getElementById('theme_editor_tab_bodies');
 	var body=document.createElement('div');
-	body.setAttribute('aria-labeledby','t_'+tab_name);
+	body.setAttribute('aria-labeledby','t_'+file_id);
 	body.setAttribute('role','tabpanel');
-	body.id='g_'+tab_name;
+	body.id='g_'+file_id;
 	body.style.display='none';
 	bodies.appendChild(body);
 
 	// Set content
-	// TODO: set body via AJAX
-	window.setTimeout(function() { return function() { theme_editor_tab_loaded_content(file); if (Math.random()<0.5) theme_editor_tab_mark_changed_content(file); }; }(),0);
+	var url='theme_editor_load';
+	url+='&file='+window.encodeURIComponent(file);
+	url+='&theme='+window.encodeURIComponent(window.theme_editor_theme);
+	if (typeof window.theme_editor_active_guid!='undefined')
+	{
+		url+='&active_guid='+window.encodeURIComponent(window.theme_editor_active_guid);
+	}
+	load_snippet(url,null,function(ajax_result) {
+		theme_editor_tab_loaded_content(ajax_result,file);
+	});
+	do_ajax_request(url,callback__method);
 
 	// Cleanup
 	theme_editor_clean_tabs();
 
 	// Select tab
-	select_tab('g',tab_name);
+	select_tab('g',file_id);
 }
 
-function theme_editor_tab_loaded_content(file)
+function theme_editor_tab_loaded_content(ajax_result,file)
 {
-	// TODO: Put it all in there from AJAX
+	var file_id=file_to_file_id(file);
+
+	set_inner_html(document.getElementById('g_'+file_id),ajax_result.responseText);
+
+	window.setTimeout(function() {
+		var textarea_id='e_'+file_id;
+		if (editarea_is_loaded(textarea_id))
+		{
+			var editor=window.ace_editors[textarea_id];
+			var editor_session=editor.getSession();
+			editor_session.on('change',function() {
+				theme_editor_tab_mark_changed_content(file);
+			});
+		} else
+		{
+			add_event_listener_abstract(get_file_textbox(file),'change',function() {
+				theme_editor_tab_mark_changed_content(file);
+			});
+		}
+	},100);
+
 	window.theme_editor_open_files[file]={
 		unsaved_changes: false
 	};
@@ -168,32 +192,40 @@ function theme_editor_tab_mark_changed_content(file)
 {
 	window.theme_editor_open_files[file].unsaved_changes=true;
 
-	var tab_name=file_to_tab_name(file);
-	document.getElementById('t_'+tab_name).className='tab file_changed';
+	var file_id=file_to_file_id(file);
+	document.getElementById('t_'+file_id).className='tab file_changed';
 }
 
 function theme_editor_tab_save_content(file)
 {
-	// TODO: Do save
+	var url='theme_editor_save';
+	url+='&file='+window.encodeURIComponent(file);
+	url+='&theme='+window.encodeURIComponent(window.theme_editor_theme);
+	var post='contents='+window.encodeURIComponent(get_file_textbox(file).value);
+	load_snippet(url,post,function(ajax_result) {
+		fauxmodal_alert(ajax_result.responseText,null,null,true);
+	});
 }
 
 function theme_editor_tab_mark_nonchanged_content(file)
 {
 	window.theme_editor_open_files[file].unsaved_changes=false;
-	document.getElementById('t_'+tab_name).className='tab file_nonchanged';
+	document.getElementById('t_'+file_id).className='tab file_nonchanged';
 }
 
 function theme_editor_tab_unload_content(file)
 {
-	var tab_name=file_to_tab_name(file);
-	theme_editor_remove_tab(tab_name);
+	var file_id=file_to_file_id(file);
+	theme_editor_remove_tab(file_id);
+
+	delete window.theme_editor_open_files[file];
 }
 
-function theme_editor_remove_tab(tab_name)
+function theme_editor_remove_tab(file_id)
 {
-	var header=document.getElementById('t_'+tab_name);
+	var header=document.getElementById('t_'+file_id);
 	if (header) header.parentNode.removeChild(header);
-	var body=document.getElementById('g_'+tab_name);
+	var body=document.getElementById('g_'+file_id);
 	if (body) body.parentNode.removeChild(body);
 
 	theme_editor_clean_tabs();
@@ -219,11 +251,6 @@ function theme_editor_clean_tabs()
 		set_inner_html(headers,'<a href="#" id="t_default" class="tab" onclick="event.returnValue=false;"><span>&mdash;</span></a>');
 		set_inner_html(bodies,'<div id="g_default"><p class="nothing_here">{!NA}</p<</div>');
 	}
-}
-
-function file_to_tab_name(file)
-{
-	return file.replace(/\//,'__');
 }
 
 /* Editing */
@@ -418,7 +445,7 @@ function load_contextual_css_editor(file,file_id)
 	// Set up background compiles
 	if (typeof window.do_ajax_request!='undefined')
 	{
-		var textarea=document.getElementById('e_'+file_id);
+		var textarea=get_file_textbox(file);
 		var last_css=textarea.value;
 		window.css_recompiler_timer=window.setInterval(function() {
 			if ((window.opener) && (window.opener.document))
@@ -429,7 +456,7 @@ function load_contextual_css_editor(file,file_id)
 					last_css='';/*force new CSS to apply*/
 				}
 
-				var new_value=document.getElementById('e_'+file_id).value;
+				var new_value=textarea.value;
 				if (new_value!=last_css)
 				{
 					var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();

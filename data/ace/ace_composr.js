@@ -32,7 +32,7 @@ function ace_composr_loader(textarea_id,programming_language)
 
 	// Keep textarea in sync with the Ace editor
 	editor_session.setValue(val);
-	editor_session.on('change',function(){
+	editor_session.on('change',function() {
 		textarea.value=editor_session.getValue();
 	});
 }

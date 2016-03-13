@@ -34,25 +34,25 @@ class Hook_snippet_theme_editor_save
             access_denied('I_ERROR');
         }
 
-        require_code('themes2');
-        require_code('themes3');
-        require_lang('themes');
         require_code('files');
         require_code('files2');
 
-        $file = get_param_string('file');
-        $theme = get_param_string('theme');
-        $subdir = dirname($file);
-        $_file = basename($file);
-        $suffix = '.' . get_file_extension($file);
-        $clean_file = basename($file, $suffix);
-
         $contents = post_param_string('contents');
+
+        $file = get_param_string('file');
 
         if (strpos($file, ':') === false) {
             // Template...
 
-            // TODO
+            require_code('themes2');
+            require_code('themes3');
+            require_lang('themes');
+
+            $theme = get_param_string('theme');
+            $subdir = dirname($file);
+            $_file = basename($file);
+            $suffix = '.' . get_file_extension($file);
+            $clean_file = basename($file, $suffix);
 
             $custom_path = get_custom_file_base() . '/themes/' . $theme . '/' . $subdir . '_custom/' . $_file;
             $original_path = get_file_base() . '/themes/default/' . $subdir . '/' . $_file;
@@ -129,9 +129,12 @@ class Hook_snippet_theme_editor_save
         } else {
             // Comcode page...
 
-            // TODO
+            list($zone, $page) = explode(':', $file, 2);
+
+            require_code('zones3');
+            save_comcode_page($zone, $page, get_site_default_lang(), $contents, null, null, null, null, time(), 0, null, null, null, null);
         }
 
-        // TODO
+        return do_lang_tempcode('SUCCESS');
     }
 }

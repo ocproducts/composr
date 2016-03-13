@@ -34,6 +34,11 @@
 </form>
 
 <script>// <![CDATA[
+	window.theme_editor_theme='{THEME;^/}';
+	{+START,IF_PASSED,ACTIVE_GUID}
+		window.theme_editor_active_guid='{ACTIVE_GUID;^/}';
+	{+END}
+
 	add_event_listener_abstract(window,'load',function() {
 		theme_editor_clean_tabs();
 

@@ -179,7 +179,7 @@ class Module_admin_themes
         if ($type == 'edit_templates') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
 
-            $this->title = get_screen_title('EDIT_TEMPLATES');
+            $this->title = get_screen_title('_EDIT_TEMPLATES', escape_html($this->theme));
         }
 
         if ($type == 'manage_images') {
@@ -786,6 +786,8 @@ class Module_admin_themes
         require_code('form_templates');
         require_code('lorem');
 
+        $active_guid = get_param_string('active_guid', null);
+
         // Files to load
         $files_to_load = array();
         foreach ($_GET + $_POST as $key => $val) {
@@ -828,6 +830,7 @@ class Module_admin_themes
             'PREVIEW_URL' => $preview_url,
             'WARNING_DETAILS' => $warning_details,
             'PING_URL' => $ping_url,
+            'ACTIVE_GUID' => $active_guid,
         ));
     }
 

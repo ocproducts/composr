@@ -298,15 +298,14 @@ function find_template_path($file, $subdir, $theme)
 }
 
 /**
- * Find GUIDs used for a template.
+ * Find GUIDs used for a template, for use with the template editor.
  *
  * @param  ID_TEXT $file The template (including subdirectory and suffix)
- * @return array List of templates
+ * @param  ?ID_TEXT $active_guid GUID currently in use, to highlight; e.g. opening up the editor on a template instance within a screen meta-tree (null: none)
+ * @return array List of GUID details (template-ready)
  */
-function find_template_guids($file)
+function find_template_guids($file, $active_guid = null)
 {
-    // TODO: Write unit test too
-
     $suffix = '.' . get_file_extension($file);
     $clean_file = basename($file, $suffix);
 
@@ -318,7 +317,7 @@ function find_template_guids($file)
                 'GUID_FILENAME' => $_guid[0],
                 'GUID_LINE' => integer_format($_guid[1]),
                 'GUID_GUID' => $_guid[2],
-                'GUID_IS_LIVE' => TODO,
+                'GUID_IS_LIVE' => ($_guid[2] === $active_guid),
             );
         }
     }
@@ -329,18 +328,40 @@ function find_template_guids($file)
  * Find parameters used by a template.
  *
  * @param  ID_TEXT $file The template (including subdirectory and suffix)
- * @return array List of templates
+ * @return array List of template parameters
  */
 function find_template_parameters($file)
 {
-    // TODO: Write unit test too
+    $parameters = array();
 
-    // TODO: Implement via template preview analysing
-    // TODO: Allow fallback via simple template scanning
+    require_code('lorem');
+    $all_previews = find_all_previews__by_template();
+    if (array_key_exists($file, $all_previews)) {
+        list($hook, $function) = $all_previews[$file];
+        render_screen_preview($file, $hook, $function);
+    }
 
-    return array(
-        'TODO',
-    );
+    global $KNOWN_TEMPLATE_PARAMETERS;
+    $_file = basename($file, '.' . get_file_extension($file));
+    if (isset($KNOWN_TEMPLATE_PARAMETERS[$_file])) {
+        return $KNOWN_TEMPLATE_PARAMETERS[$_file];
+    }
+
+    // No screen preview, so look inside the template instead...
+
+    $template_path = find_template_path(basename($file), dirname($file), 'default');
+    if ($template_path === null) {
+        return $parameters;
+    }
+
+    $matches = array();
+    $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', file_get_contents($template_path), $matches);
+    $p_done = array();
+    for ($j = 0; $j < $cnt; $j++) {
+        $parameters[] = $matches[1][$j];
+    }
+
+    return array_unique($parameters);
 }
 
 /**
