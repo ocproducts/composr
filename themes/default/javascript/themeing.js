@@ -203,6 +203,7 @@ function theme_editor_tab_save_content(file)
 	var url='theme_editor_save';
 	url+='&file='+window.encodeURIComponent(file);
 	url+='&theme='+window.encodeURIComponent(window.theme_editor_theme);
+	editarea_reverse_refresh('e_'+file_to_file_id(file));
 	var post='contents='+window.encodeURIComponent(get_file_textbox(file).value);
 	load_snippet(url,post,function(ajax_result) {
 		fauxmodal_alert(ajax_result.responseText,null,null,true);
@@ -307,6 +308,8 @@ function insert_guid(file,guid)
 
 	var has_editarea=editarea_is_loaded(textbox.name);
 
+	editarea_reverse_refresh('e_'+file_to_file_id(file));
+
 	insert_textbox(textbox,'{'+'+START,IF,{'+'$EQ,{'+'_GUID},'+guid+'}}\n{'+'+END}');
 	if (has_editarea) editarea_refresh(textbox.id);
 
@@ -318,6 +321,8 @@ function template_insert_parameter(dropdown_name,file_id)
 	var params='';
 
 	var textbox=document.getElementById('e_'+file_id);
+
+	editarea_reverse_refresh('e_'+file_id);
 
 	var dropdown=document.getElementById(dropdown_name);
 	var value=dropdown.options[dropdown.selectedIndex].value;
@@ -476,6 +481,7 @@ function load_contextual_css_editor(file,file_id)
 	if (typeof window.do_ajax_request!='undefined')
 	{
 		var textarea=get_file_textbox(file);
+		editarea_reverse_refresh('e_'+file_id);
 		var last_css=textarea.value;
 		window.css_recompiler_timer=window.setInterval(function() {
 			if ((window.opener) && (window.opener.document))

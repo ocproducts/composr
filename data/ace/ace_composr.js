@@ -1,7 +1,9 @@
 window.ace_editors={};
 
-function ace_composr_loader(textarea_id,programming_language)
+function ace_composr_loader(textarea_id,programming_language,auto_refresh)
 {
+	if (typeof auto_refresh=='undefined') auto_refresh=true;
+
 	// Create Ace editor div from textarea
 	var textarea=document.getElementById(textarea_id);
 	var val=textarea.value;
@@ -32,9 +34,12 @@ function ace_composr_loader(textarea_id,programming_language)
 
 	// Keep textarea in sync with the Ace editor
 	editor_session.setValue(val);
-	editor_session.on('change',function() {
-		textarea.value=editor_session.getValue();
-	});
+	if (auto_refresh)
+	{
+		editor_session.on('change',function() {
+			editarea_reverse_refresh(textarea_id);
+		});
+	}
 }
 
 function editarea_is_loaded(textarea_id)
@@ -59,9 +64,18 @@ function editarea_do_search(textarea_id,regexp)
 	catch (e) {}
 }
 
+function editarea_reverse_refresh(textarea_id)
+{
+	var editor=window.ace_editors[textarea_id];
+	if (typeof editor=='undefined') return;
+
+	document.getElementById(textarea_id).value=editor.getValue();
+}
+
 function editarea_refresh(textarea_id)
 {
 	var editor=window.ace_editors[textarea_id];
+	if (typeof editor=='undefined') return;
 
 	editor.setValue(document.getElementById(textarea_id).value,-1);
 }

@@ -545,7 +545,7 @@
 		{+END}
 
 		{+START,IF,{$CONFIG_OPTION,editarea}}
-			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}');
+			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}',false);
 		{+END}
 
 		$('#e_{FILE_ID;^/}_wrap').resizable({
