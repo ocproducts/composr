@@ -211,7 +211,7 @@ class Module_admin_themes
             $file = '';
             foreach (array_keys($_REQUEST) as $_i) {
                 if (preg_match('#f(\d+)file#', $_i) != 0) {
-                    $file = basename($_i);
+                    $file = either_param_string($_i);
                 }
             }
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_templates:theme=' . $theme, do_lang_tempcode('CHOOSE_TEMPLATES')), array('_SELF:_SELF:_edit_templates:theme=' . $theme . ':file=' . $file, do_lang_tempcode('EDIT_TEMPLATES'))));
@@ -1775,7 +1775,11 @@ class Module_admin_themes
 
             // Convert from current path to save path
             $directory = dirname($_file);
-            $file = str_replace($directory . '/', $directory . '_custom/', $_file);
+            if ($directory == '.' || $directory == '') {
+                $file = 'templates_custom/' . $_file;
+            } else {
+                $file = str_replace($directory . '/', $directory . '_custom/', $_file);
+            }
             $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
             if (!file_exists(dirname($full_path))) {
                 require_code('files2');
