@@ -207,12 +207,15 @@ function theme_editor_tab_save_content(file)
 	var post='contents='+window.encodeURIComponent(get_file_textbox(file).value);
 	load_snippet(url,post,function(ajax_result) {
 		fauxmodal_alert(ajax_result.responseText,null,null,true);
+		theme_editor_tab_mark_nonchanged_content(file);
 	});
 }
 
 function theme_editor_tab_mark_nonchanged_content(file)
 {
 	window.theme_editor_open_files[file].unsaved_changes=false;
+
+	var file_id=file_to_file_id(file);
 	var ob=document.getElementById('t_'+file_id);
 	ob.className=ob.className.replace(/ file_changed/,' file_nonchanged');
 }
