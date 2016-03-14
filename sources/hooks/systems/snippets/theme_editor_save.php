@@ -85,6 +85,26 @@ class Hook_snippet_theme_editor_save
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
                 sync_file($custom_path);
+
+                // Make base-hash-thingy
+                if (is_file($original_path) && !is_file($custom_path . '.editfrom')) {
+                    $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
+                    if ($myfile === false) {
+                        intelligent_write_error($custom_path);
+                    }
+                    @flock($myfile, LOCK_EX);
+                    if (!GOOGLE_APPENGINE) {
+                        ftruncate($myfile, 0);
+                    }
+                    $hash = file_get_contents($original_path);
+                    if (fwrite($myfile, $hash) < strlen($hash)) {
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    }
+                    @flock($myfile, LOCK_UN);
+                    fclose($myfile);
+                    fix_permissions($custom_path . '.editfrom');
+                    sync_file($custom_path . '.editfrom');
+                }
             }
 
             // Store revision
@@ -94,30 +114,10 @@ class Hook_snippet_theme_editor_save
             $revision_engine->add_revision(
                 dirname($custom_path),
                 $clean_file,
-                'contents',
+                ltrim($suffix, '.'),
                 file_get_contents($existing_path),
                 filemtime($existing_path)
             );
-
-            // Make base-hash-thingy
-            if (is_file($original_path) && !is_file($custom_path . '.editfrom')) {
-                $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
-                if ($myfile === false) {
-                    intelligent_write_error($custom_path);
-                }
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
-                $hash = file_get_contents($original_path);
-                if (fwrite($myfile, $hash) < strlen($hash)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                }
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                fix_permissions($custom_path . '.editfrom');
-                sync_file($custom_path . '.editfrom');
-            }
 
             // Clear cacheing
             require_code('caches3');

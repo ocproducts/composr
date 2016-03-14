@@ -469,7 +469,6 @@ function ajax_form_submit__admin__headless(event,form,block_name,map)
 /* Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message) */
 function do_ajax_field_test(url,post)
 {
-	if (typeof window.keep_stub!='undefined') url=url+keep_stub();
 	var xmlhttp=do_ajax_request(url,null,post);
 	if ((xmlhttp.responseText!='') && (xmlhttp.responseText.replace(/[ \t\n\r]/g,'')!='0'/*some cache layers may change blank to zero*/))
 	{

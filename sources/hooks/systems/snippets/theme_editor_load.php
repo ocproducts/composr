@@ -238,9 +238,10 @@ class Hook_snippet_theme_editor_load
 
         $_directives = array(
             array('BOX', '1'),
-            array('WHILE', '1'),
             array('IF_NON_EMPTY', '1'),
             array('IF_EMPTY', '1'),
+            array('IF_PASSED', '1'),
+            array('IF_NON_PASSED', '1'),
             array('IF', '1'),
             array('SET', '1'),
             array('LOOP', '1'), // To simplify things, we won't throw all options at the user
@@ -255,12 +256,21 @@ class Hook_snippet_theme_editor_load
             array('SITE_NAME', '0'),
             array('STAFF_ADDRESS', '0'),
             array('MEMBER', '0'),
+            array('AVATAR', '0-1'),
+            array('PHOTO', '0-1'),
             array('DATE_AND_TIME', '0'),
             array('DATE', '0'),
             array('TIME', '0'),
+            array('ZONE', '0'),
+            array('PAGE', '0'),
+            array('_GET', '1'),
+            array('JS_ON', '0'),
             array('USERNAME', '0-1'),
-            array('IS_STAFF', '0'),
+            array('DISPLAYED_USERNAME', '1'),
             array('MATCH_KEY_MATCH', '1'),
+            array('BROWSER_MATCHES', '1'),
+            array('REQUIRE_CSS', '1'),
+            array('REQUIRE_JAVASCRIPT', '1'),
         );
         $misc_symbols = $this->generate_dropdown_from($_misc_symbols, 'MISC_SYMBOL', $file_id);
 
@@ -279,11 +289,21 @@ class Hook_snippet_theme_editor_load
         $_abstraction_symbols = array(
             array('IMG', '1'),
             array('PAGE_LINK', '1'),
+            array('SELF_URL', '0'),
+            array('MEMBER_PROFILE_URL', '0-1'),
             array('MAILTO', '0'),
             array('BLOCK', '2'),
+            array('METADATA', '1'),
             array('THUMBNAIL', '2'),
             array('LOAD_PAGE', '1'),
             array('LOAD_PANEL', '1'),
+            array('HAS_ZONE_ACCESS', '1-2'),
+            array('HAS_ACTUAL_PAGE_ACCESS', '1-2'),
+            array('HAS_PRIVILEGE', '1-2'),
+            array('IS_ADMIN', '0-1'),
+            array('IS_STAFF', '0-1'),
+            array('IS_GUEST', '0'),
+            array('IS_IN_GROUP', '1'),
         );
         $abstraction_symbols = $this->generate_dropdown_from($_abstraction_symbols, 'ABSTRACTION_SYMBOL', $file_id);
 
@@ -306,8 +326,10 @@ class Hook_snippet_theme_editor_load
             array('REPLACE', '3'),
             array('AT', '2'),
             array('SUBSTR', '3'),
+            array('IN_STR', '2'),
             array('LENGTH', '1'),
-            array('WORDWRAP', '2'),
+            array('TRIM', '1'),
+            array('STRIP_TAGS', '1'),
             array('TRUNCATE_LEFT', '2'),
             array('TRUNCATE_SPREAD', '2'),
         );
@@ -345,7 +367,7 @@ class Hook_snippet_theme_editor_load
         }
         return do_template('THEME_EDITOR_TEMPCODE_DROPDOWN', array(
             '_GUID' => 'c6d24f278ec874a4b6abff8c359f80ba',
-            'FILE' => $file_id,
+            'FILE_ID' => $file_id,
             'PARAMETERS' => $out,
             'STUB' => $stub,
             'LANG' => do_lang_tempcode('INSERT_' . $stub),

@@ -194,7 +194,8 @@ function theme_editor_tab_mark_changed_content(file)
 	window.theme_editor_open_files[file].unsaved_changes=true;
 
 	var file_id=file_to_file_id(file);
-	document.getElementById('t_'+file_id).className='tab file_changed';
+	var ob=document.getElementById('t_'+file_id);
+	ob.className=ob.className.replace(/ file_nonchanged/,' file_changed');
 }
 
 function theme_editor_tab_save_content(file)
@@ -211,7 +212,8 @@ function theme_editor_tab_save_content(file)
 function theme_editor_tab_mark_nonchanged_content(file)
 {
 	window.theme_editor_open_files[file].unsaved_changes=false;
-	document.getElementById('t_'+file_id).className='tab file_nonchanged';
+	var ob=document.getElementById('t_'+file_id);
+	ob.className=ob.className.replace(/ file_changed/,' file_nonchanged');
 }
 
 function theme_editor_get_tab_count()
@@ -446,7 +448,7 @@ function css_equation_helper(file_id,theme)
 	url+='&theme='+window.encodeURIComponent(theme);
 	url+='&css_equation='+window.encodeURIComponent(document.getElementById('css_equation_'+file_id).value);
 
-	var result=load_snippet(url,false);
+	var result=load_snippet(url);
 
 	if (result=='' || result.indexOf('<html')!=-1)
 		window.fauxmodal_alert('{!ERROR_OCCURRED;}');
