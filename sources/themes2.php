@@ -338,7 +338,9 @@ function find_template_parameters($file)
     $all_previews = find_all_previews__by_template();
     if (array_key_exists($file, $all_previews)) {
         list($hook, $function) = $all_previews[$file];
-        render_screen_preview($file, $hook, $function);
+        global $LOREM_AVOID_GLOBALISE;
+        $LOREM_AVOID_GLOBALISE = true;
+        $temp = render_screen_preview($file, $hook, $function);
     }
 
     global $KNOWN_TEMPLATE_PARAMETERS;

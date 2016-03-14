@@ -548,17 +548,19 @@
 			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}',false);
 		{+END}
 
-		$('#e_{FILE_ID;^/}_wrap').resizable({
-			resize: function(event,ui) {
-				var editor=window.ace_editors['e_{FILE_ID;^/}'];
-				if (typeof editor!='undefined')
-				{
-					$('#e_{FILE_ID;^/}__ace')[0].style.height='100%';
-					$('#e_{FILE_ID;^/}__ace')[0].parentNode.style.height='100%';
-					editor.resize();
-				}
-			},
-			handles: 's'
-		});
+		window.setTimeout(function() {
+			$('#e_{FILE_ID;^/}_wrap').resizable({
+				resize: function(event,ui) {
+					var editor=window.ace_editors['e_{FILE_ID;^/}'];
+					if (typeof editor!='undefined')
+					{
+						$('#e_{FILE_ID;^/}__ace')[0].style.height='100%';
+						$('#e_{FILE_ID;^/}__ace')[0].parentNode.style.height='100%';
+						editor.resize();
+					}
+				},
+				handles: 's'
+			});
+		},2000);
 	});
 //]]></script>

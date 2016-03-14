@@ -4,6 +4,11 @@
 {$REQUIRE_JAVASCRIPT,jquery_ui}
 {$REQUIRE_CSS,jquery_ui}
 
+{+START,IF,{$CONFIG_OPTION,editarea}}
+	<script src="{$BASE_URL*}/data/ace/ace.js"></script>
+	<script src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
+{+END}
+
 {+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}
 {+START,IF_PASSED,WARNING_DETAILS}
 	{WARNING_DETAILS}
@@ -18,7 +23,7 @@
 		{$,Tree list}
 		<div class="theme_editor_file_selector">
 			<div class="inner">
-				<input type="hidden" id="theme_files" name="theme_files" value="" />
+				<input type="hidden" id="theme_files" name="theme_files" value="" onchange="theme_editor_add_tab_wrap();" />
 				<div id="tree_list__root_theme_files">
 					<!-- List put in here -->
 				</div>
@@ -50,15 +55,12 @@
 
 		window.sitemap=new tree_list('theme_files','data/ajax_tree.php?hook=choose_theme_files&theme={THEME;/}{$KEEP;/}',null,'',false,null,false,true);
 
-		{+START,LOOP,FILES_TO_LOAD}
-			theme_editor_add_tab('{_loop_var;^/}');
-		{+END}
+		window.setTimeout(function() {
+			{+START,LOOP,FILES_TO_LOAD}
+				theme_editor_add_tab('{_loop_var;^/}');
+			{+END}
+		},1000);
 
 		$('.theme_editor_file_selector').resizable();
 	});
 //]]></script>
-
-{+START,IF,{$CONFIG_OPTION,editarea}}
-	<script language="javascript" src="{$BASE_URL*}/data/ace/ace.js"></script>
-	<script language="javascript" src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
-{+END}

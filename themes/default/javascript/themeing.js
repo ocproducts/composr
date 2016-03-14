@@ -74,6 +74,11 @@ function add_template()
 	return false;
 }
 
+function theme_editor_add_tab_wrap(file)
+{
+	theme_editor_add_tab(document.getElementById('theme_files').value);
+}
+
 function theme_editor_add_tab(file)
 {
 	var tab_title=file.replace(/^.*\//,'');

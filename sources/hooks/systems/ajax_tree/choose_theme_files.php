@@ -72,7 +72,8 @@ class Hook_choose_theme_files
 
                 $out .= '
                 <category
-                    id="' . xmlentities($_id) . '"
+                    id="' . xmlentities($this->get_next_id()) . '"
+                    serverid="' . xmlentities($_id) . '"
                     title="' . xmlentities($title) . '"
                     has_children="true"
                     selectable="false"
@@ -102,7 +103,8 @@ class Hook_choose_theme_files
 
                         $out .= '
                         <entry
-                            id="' . xmlentities($template_file) . '"
+                            id="' . xmlentities($this->get_next_id()) . '"
+                            serverid="' . xmlentities($template_file) . '"
                             title="' . xmlentities($_template_file) . '"
                             selectable="true"
                             description_html="' . xmlentities($description_html->evaluate()) . '"
@@ -117,7 +119,8 @@ class Hook_choose_theme_files
 
                         $out .= '
                         <category
-                            id="' . xmlentities($page_link) . '"
+                            id="' . xmlentities($this->get_next_id()) . '"
+                            serverid="' . xmlentities($page_link) . '"
                             title="' . xmlentities($page_link) . '"
                             has_children="true"
                             selectable="false"
@@ -152,7 +155,8 @@ class Hook_choose_theme_files
 
                             $out .= '
                             <entry
-                                id="' . xmlentities($zone . ':' . $page) . '"
+                                id="' . xmlentities($this->get_next_id()) . '"
+                                serverid="' . xmlentities($zone . ':' . $page) . '"
                                 title="' . xmlentities($page) . '"
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
@@ -343,7 +347,7 @@ class Hook_choose_theme_files
 
         return '
         <' . $tag_type . '
-            id="' . xmlentities('screen_node_' . strval(mt_rand(0, mt_getrandmax()))) . '"
+            id="' . xmlentities($this->get_next_id()) . '"
             serverid="' . xmlentities($file) . '"
             title="' . xmlentities(basename($file)) . '"
             selectable="true"
@@ -351,6 +355,18 @@ class Hook_choose_theme_files
             has_children="' . ($has_children ? 'true' : 'false') . '"
             expanded="' . ($has_children ? 'true' : 'false') . '"
         >' . $children . '</' . $tag_type . '>';
+    }
+
+    /**
+     * Get next unique ID.
+     *
+     * @return string ID
+     */
+    private function get_next_id()
+    {
+        static $counter = 0;
+        $counter++;
+        return 'screen_node_' . strval($counter) . '_' . md5(serialize($_GET));
     }
 }
 

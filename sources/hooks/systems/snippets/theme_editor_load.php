@@ -125,7 +125,7 @@ class Hook_snippet_theme_editor_load
             $all_previews = find_all_previews__by_template();
             if (array_key_exists($file, $all_previews)) {
                 $url_map = array(
-                    'page' => '_SELF',
+                    'page' => 'admin_themes',
                     'type' => 'screen_preview',
                     'id' => $file,
                     'hook' => $all_previews[$file][0],
@@ -134,7 +134,7 @@ class Hook_snippet_theme_editor_load
                     'keep_theme' => $theme,
                     'keep_wide_high' => 1,
                 );
-                $_preview_url = build_url($url_map, '_SELF');
+                $_preview_url = build_url($url_map, get_module_zone('admin_themes'));
                 $preview_url = $_preview_url->evaluate();
             }
         } else {
