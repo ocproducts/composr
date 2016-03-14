@@ -341,16 +341,20 @@ class CMSUserRead
                 }
             }
 
-            if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_reveal_age') == 1) {
-                $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_day');
-                $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_month');
-                $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_year');
-                if (!is_null($day)) {
+            $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_day');
+            $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_month');
+            $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_year');
+            if (($day !== null) && ($month !== null) && ($year !== null)) {
+                if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_reveal_age') == 1) {
                     if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-                        $custom_fields_list[do_lang('DATE_OF_BIRTH')] = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+                        $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                     } else {
                         $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true, true);
                     }
+                    $custom_fields_list[do_lang('DATE_OF_BIRTH')] = $dob;
+                } else {
+                    $dob = strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+                    $custom_fields_list[do_lang('ENTER_YOUR_BIRTHDAY')] = $dob;
                 }
             }
 
