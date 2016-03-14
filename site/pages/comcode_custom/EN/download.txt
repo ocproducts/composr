@@ -80,7 +80,7 @@
 
 			<p>We often commit fixes to Git before patch releases come out.</p>
 
-			<p>Be aware that the Git repository also has all the ocProducts addons in it. We develop them in there, to keep them up-to-date. There is a script called [tt]killjunk.sh[/tt] which will erase them.</p>
+			<p>Be aware that the Git repository also has all the ocProducts addons in it. We develop them in there, to keep them up-to-date. There is a script called [tt]delete_alien_files.php[/tt] which will erase them. You need to first delete the [tt]sources_custom/hooks/systems/addon_registry/*.php[/tt] files of any addons you don't want, then run the script, then run the commands the script says (after reviewing), then install.</p>
 
 			<h3 class="colrBl">Git write access</h3>
 
