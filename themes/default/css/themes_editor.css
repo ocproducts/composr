@@ -92,6 +92,16 @@
 	padding: 0.3em;
 }
 
+.tempcode_editing_toolbar {
+	margin-bottom: 1em;
+}
+
+.main_editor {
+}
+
+.guids {
+}
+
 .css_editor_selector_tips {
 	width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}

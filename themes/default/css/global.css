@@ -1643,11 +1643,11 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .toggleable_tray_title .toggleable_tray_button img {
 	margin-top: -1px !important;
 }
-.toggleable_tray_button img {
+.toggleable_tray_button img, .box .toggleable_tray_title .toggleable_tray_button img {
 	width: 20px;
 }
-.box .toggleable_tray_title .toggleable_tray_button img {
-	width: 20px;
+h3 .toggleable_tray_button img {
+	width: 18px;
 }
 .ttb_left_spaced, .ttb_left_spaced div {
 	margin-top: 0.3em;

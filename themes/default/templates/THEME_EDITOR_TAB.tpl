@@ -1,9 +1,9 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div style="display: none" id="selectors">
+	<div style="display: none" id="selectors_{FILE_ID*}">
 		<div class="float_surrounder">
-			<div id="selectors_inner">
+			<div id="selectors_inner_{FILE_ID*}">
 				<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
 			</div>
 
@@ -420,7 +420,7 @@
 {+END}
 
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
-	<div>
+	<div class="tempcode_editing_toolbar">
 		<h3>
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('b_{FILE_ID;^*}');"><img alt="{!EXPAND}: {!SYMBOLS_AND_DIRECTIVES}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link" href="#" onclick="return toggleable_tray('b_{FILE_ID;^*}');">{!SYMBOLS_AND_DIRECTIVES}</a>
@@ -438,11 +438,13 @@
 	</div>
 {+END}
 
-{$,Main editor}
+<div id="e_{FILE_ID*}_wrap" class="main_editor">
+	{$,Main editor}
 
-<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
-<div class="constrain_field">
-	<textarea onkeydown="return template_editor_keypress(event);" id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field textarea_scroll">{CONTENTS*}</textarea>
+	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
+	<div class="constrain_field">
+		<textarea onkeydown="return template_editor_keypress(event);" id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field textarea_scroll">{CONTENTS*}</textarea>
+	</div>
 </div>
 
 {$,Buttons}
@@ -458,7 +460,7 @@
 {$,GUIDs}
 
 {+START,IF_NON_EMPTY,{GUIDS}}
-	<div>
+	<div class="guids">
 		<h3>
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">GUIDs</a>
@@ -504,7 +506,7 @@
 {$,CSS equation helper}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<section class="box"><div class="box_inner">
+	<section class="box box__css_equation_helper"><div class="box_inner">
 		<h2>{!CSS_EQUATION_HELPER}</h2>
 
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>
@@ -545,5 +547,18 @@
 		{+START,IF,{$CONFIG_OPTION,editarea}}
 			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}');
 		{+END}
+
+		$('#e_{FILE_ID;^/}_wrap').resizable({
+			resize: function(event,ui) {
+				var editor=window.ace_editors['e_{FILE_ID;^/}'];
+				if (typeof editor!='undefined')
+				{
+					$('#e_{FILE_ID;^/}__ace')[0].style.height='100%';
+					$('#e_{FILE_ID;^/}__ace')[0].parentNode.style.height='100%';
+					editor.resize();
+				}
+			},
+			handles: 's'
+		});
 	});
 //]]></script>

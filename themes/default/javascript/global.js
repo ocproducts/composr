@@ -2100,7 +2100,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 			tooltip_element.style.width=width;
 		} else
 		{
-			tooltip_element.style.maxWidth=width;
+			tooltip_element.style.maxWidth=(width=='auto')?((get_window_width(win)-30-window.mouse_x)+'px'):width;
 			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
 		}
 		if ((height) && (height!='auto'))

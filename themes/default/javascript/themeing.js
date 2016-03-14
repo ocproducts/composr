@@ -22,7 +22,7 @@ function add_template()
 {
 	window.fauxmodal_prompt(
 		'{!themes:INPUT_TEMPLATE_TYPE;^}',
-		'template',
+		'templates',
 		function(subdir) {
 			if (subdir!==null)
 			{
@@ -60,6 +60,8 @@ function add_template()
 									file+='.xml';
 									break;
 							}
+
+							theme_editor_add_tab(file);
 						}
 					},
 					'{!themes:ADD_TEMPLATE;^}'
@@ -460,10 +462,10 @@ function load_contextual_css_editor(file,file_id)
 {
 	window.doing_css_for=file.replace('.css','');
 
-	var ui=document.getElementById('selectors');
+	var ui=document.getElementById('selectors_'+file_id);
 	ui.style.display='block';
 	var list=document.createElement('ul');
-	document.getElementById('selectors_inner').appendChild(list);
+	document.getElementById('selectors_inner_'+file_id).appendChild(list);
 	list.id='selector_list';
 
 	set_up_parent_page_highlighting(file,file_id);
@@ -501,7 +503,7 @@ function set_up_parent_page_highlighting(file,file_id)
 
 	var li,a,selector,elements,element,j;
 	var selectors=window.opener.find_active_selectors(window.doing_css_for,window.opener);
-	var list=document.getElementById('selector_list'),cssText;
+	var list=document.getElementById('selector_list_'+file_id),cssText;
 	set_inner_html(list,'');
 
 	for (var i=0;i<selectors.length;i++)
