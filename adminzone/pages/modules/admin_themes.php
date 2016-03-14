@@ -1241,7 +1241,7 @@ class Module_admin_themes
      * @param  string $suffix File type suffix of template file (e.g. .tpl)
      * @set    .tpl .js .xml .txt .css
      * @param  boolean $this_theme_only Just for this theme
-     * @return array A map of the files (for revisions, file=>timestamp, generally, file=>path)
+     * @return array A map of the files (file=>path)
      */
     private function get_template_files_list($theme, $directory, $suffix, $this_theme_only = false)
     {

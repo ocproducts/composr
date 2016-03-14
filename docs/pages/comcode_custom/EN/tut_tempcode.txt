@@ -475,7 +475,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MEMBER_PROFILE_URL,2}</td>
-			<td>The member's profile URK (optionally takes a member ID, else assumes current user)</td>
+			<td>The member's profile URL (optionally takes a member ID, else assumes current user)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CNS_MEMBER_HTML,2}</td>

@@ -1170,7 +1170,7 @@ class Module_admin
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'browse'), get_module_zone('admin_themes')), do_lang_tempcode('THEMES'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
-                    $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'edit_css', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
+                    $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'manage_images', 'theme' => $image['theme']), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME_IMAGE'), false, false));
                     $breadcrumbs->attach(do_template('BREADCRUMB_SEPARATOR'));
                     $breadcrumbs->attach(escape_html($image['theme']));
                     $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
