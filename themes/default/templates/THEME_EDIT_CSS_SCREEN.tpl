@@ -520,7 +520,7 @@
 				<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 				<input name="css_equation" id="css_equation" type="text" value="100% seed" />
 
-				<input onclick="cancel_bubbling(event,this); var result=load_snippet('themewizard_equation&amp;theme={THEME;*}&amp;css_equation='+window.encodeURIComponent(document.getElementById('css_equation').value),false); if (result=='' || result.indexOf('&lt;html')!=-1) window.fauxmodal_alert('{!ERROR_OCCURRED;}'); else document.getElementById('css_result').value=result; return false;" class="button_screen_item buttons__calculate" type="submit" value="{!CALCULATE}" />
+				<input onclick="cancel_bubbling(event,this); var result=load_snippet('themewizard_equation&amp;theme={THEME;*}&amp;css_equation='+window.encodeURIComponent(document.getElementById('css_equation').value)); if (result=='' || result.indexOf('&lt;html')!=-1) window.fauxmodal_alert('{!ERROR_OCCURRED;}'); else document.getElementById('css_result').value=result; return false;" class="button_screen_item buttons__calculate" type="submit" value="{!CALCULATE}" />
 
 				&rarr;
 
