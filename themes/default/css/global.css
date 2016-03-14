@@ -2176,7 +2176,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .pagination * {
 	vertical-align: middle;
 }
-.pagination .inline {
+.pagination .inline, .pagination nav {
 	display: inline-block;
 }
 

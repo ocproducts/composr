@@ -174,6 +174,8 @@ class Database_Static_mysql_dbx extends Database_super_mysql
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query)));
+                } else {
+                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...' . integer_format(strlen($query))), 'warn');
                 }
                 return null;
             }

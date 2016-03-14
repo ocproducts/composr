@@ -65,7 +65,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $db = $GLOBALS['SITE_DB'];
     }
 
-    $true_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+    $true_theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     if ($theme === null) {
         $theme = $true_theme;
     }
