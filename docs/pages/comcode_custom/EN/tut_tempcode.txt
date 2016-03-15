@@ -1712,7 +1712,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>These allow the 'standard box' layout convention to be used without duplicating a lot of HTML in different templates. CSS could never provide this itself, as the box 'styling' actually involves a large chunk of complex structure.
 		          <br />The parameters to the directive are (all may be blank or left out):<ol>
 						<li>the title (blank means no title is used)</li>
-						<li>the type of the table (there will be a template, STANDARDBOX_&lt;type&gt; for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+						<li>the type of the table (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
 						<li>the CSS width</li>
 						<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
 						<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>
@@ -1738,7 +1738,7 @@ Note that you cannot use directives for symbol parameters because directives con
 	            Do a loop over an array. This is not used much in default templates and only works if arrays are actually what is passed into the template (unless the third operating mode is used, see below).
 	            It operates in 3 possible ways:<ol>
 	                <li>With a template parameter that is a simple 1-dimensional list of strings. E.g. <kbd>'EXAMPLE'=>array('a','b','c')</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop).</li>
-	                <li>With a template parameter that is a 2-dimensional array structure, a list of maps of key names to strings. E.g. <kbd>'EXAMPLE'=>array(array('FOO'=>'a1','BAR'=>'b1'),array('FOO'=>'a2','BAR'=>'b2'))</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{FOO}</kbd> and <kbd>{BAR}</kbd> are bound.</li>
+	                <li>With a template parameter that is a 2-dimensional array structure, a list of maps of key names to strings. E.g. 'EXAMPLE'=>array(array('FOO'=>'a1', 'BAR'=>'b1'), array('FOO'=>'a2', 'BAR'=>'b2'))</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{FOO}</kbd> and <kbd>{BAR}</kbd> are bound.</li>
 	                <li>With no template parameter, just a hard-coded list within the template. E.g. <kbd>{+START,LOOP,a\,b\,c}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop with hard-coded data). The "\" is required to encode a comma-separated list within a single directive parameter.</li>
 	            </ol>
 	            If also has support for automatic HTML table columnisation and sorting, as an advanced feature (very rarely used). If you want to use that check at the implementation in the PHP code to see how it works.

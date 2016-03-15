@@ -956,7 +956,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $HTTP_DOWNLOAD_SIZE = filesize($file_path);
                 $HTTP_DOWNLOAD_MTIME = filemtime($file_path);
                 $HTTP_MESSAGE = '200';
-                $HTTP_FILENAME = null;
+                $HTTP_FILENAME = basename($file_path);
             }
 
             if (!is_null($byte_limit)) {
@@ -1295,7 +1295,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                     if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
                                                         if (is_null($HTTP_FILENAME)) {
-                                                            $HTTP_FILENAME = basename($matches[1]);
+                                                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                                                         }
 
                                                         if (strpos($matches[1], '://') === false) {
@@ -1381,7 +1381,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $errno = 0;
     $errstr = '';
-    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen')) && (php_function_allowed('shell_exec'))) {
+    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {
             $proxy = null;
@@ -1517,7 +1517,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     _read_in_headers($line);
                     if (preg_match("#^Refresh: (\d*);(.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1543,7 +1543,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                     if (preg_match("#^Location: (.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1802,6 +1802,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             safe_ini_set('allow_url_fopen', '0');
             safe_ini_set('default_socket_timeout', $timeout_before);
+            foreach ($http_response_header as $header) {
+                _read_in_headers($header . "\r\n");
+            }
             if ($read_file !== false) {
                 $DOWNLOAD_LEVEL--;
                 if ($put !== null) {
