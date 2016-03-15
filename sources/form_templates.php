@@ -1918,7 +1918,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
     // Show each category
     $content = new Tempcode();
     foreach ($categories as $cat => $ids) {
-        $cat = titleify($cat);
+        $cat = $direct_titles ? $cat : titleify($cat);
 
         if ($avatars) {
             $cut_pos = strpos($cat, '/');

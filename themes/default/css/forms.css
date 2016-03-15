@@ -418,6 +418,8 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	float: none;
 	margin: 1em;
 	border: 1px solid {$GET,standard_border};
+	min-height: auto;
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
 }
 
 .radio_list_picture img {
