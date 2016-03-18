@@ -4,7 +4,7 @@
  * -------------
  * Author: Roberto Rossi
  * Copyright: (c) 2005 Roberto Rossi (http://rsoftware.altervista.org)
- * Release Version: 1.0.8.6
+ * Release Version: 1.0.8.12
  * Date Started: 2005/08/19
  *
  * FreeBasic (http://www.freebasic.net/) language file for GeSHi.
@@ -67,7 +67,7 @@ $language_data = array (
             "once", "open", "option", "or", "out", "output", "overload", "paint", "palette",
             "pascal", "pcopy", "peek", "peeki", "peeks", "pipe", "pmap", "point", "pointer",
             "poke", "pokei", "pokes", "pos", "preserve", "preset", "print", "private",
-            "prcmstr", "pset", "ptr", "public", "put", "random", "randomize", "read",
+            "procptr", "pset", "ptr", "public", "put", "random", "randomize", "read",
             "reallocate", "redim", "rem", "reset", "restore", "resume",
             "return", "rgb", "rgba", "right", "rmdir", "rnd", "rset", "rtrim", "run",
             "sadd", "screen", "screencopy", "screeninfo", "screenlock", "screenptr",
@@ -137,5 +137,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         )
 );
-
-?>

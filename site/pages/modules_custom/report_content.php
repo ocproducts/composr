@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    reported_content
  */
 
 /**
@@ -30,7 +31,7 @@ class Module_report_content
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 3;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -69,7 +70,7 @@ class Module_report_content
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -118,6 +119,13 @@ class Module_report_content
     {
         require_code('form_templates');
 
+        require_code('cns_forums');
+
+        $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
+        if (is_null($forum_id)) {
+            warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
+        }
+
         $url = get_param_string('url', false, true);
         $content_type = get_param_string('content_type'); // Equates to a content_meta_aware hook
         $content_id = get_param_string('content_id');
@@ -157,7 +165,7 @@ class Module_report_content
         $specialisation = new Tempcode();
         if (!is_guest()) {
             $options = array();
-            if (get_option('is_on_anonymous_posts') == '1') {
+            if (cns_forum_allows_anonymous_posts($forum_id)) {
                 $options[] = array(do_lang_tempcode('_MAKE_ANONYMOUS_POST'), 'anonymous', false, do_lang_tempcode('MAKE_ANONYMOUS_POST_DESCRIPTION'));
             }
             $specialisation = form_input_various_ticks($options, '');
@@ -215,9 +223,6 @@ class Module_report_content
 
         // Create reported post...
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));
-        if (is_null($forum_id)) {
-            warn_exit(do_lang_tempcode('cns:NO_REPORTED_POST_FORUM'));
-        }
         // See if post already reported...
         $post = post_param_string('post');
         $anonymous = post_param_integer('anonymous', 0);
@@ -254,7 +259,7 @@ class Module_report_content
         ));
         if ($count >= intval(get_option('reported_times'))) {
             // Mark as unvalidated
-            if ((isset($cma_info['validated_field'])) && (strpos($cma_info['table'], '(') === false)) {
+            if ((!is_null($cma_info['validated_field'])) && (strpos($cma_info['table'], '(') === false)) {
                 $db = $GLOBALS[(substr($cma_info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
                 $db->query_update($cma_info['table'], array($cma_info['validated_field'] => 0), get_content_where_for_str_id($content_id, $cma_info));
             }
@@ -275,7 +280,7 @@ class Module_report_content
 }
 
 
-/*HACKHACK...
+/*FUDGE...
 
 Before this can be an official Composr feature new content_meta_aware hooks are needed. Currently for instance there's no 'post' one.
 */

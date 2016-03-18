@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ function get_num_chatters()
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
         define('CHAT_ACTIVITY_PRUNE', 25);
     }
-    return $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT member_id) FROM ' . get_table_prefix() . 'chat_active a LEFT JOIN ' . get_table_prefix() . 'sessions s ON s.member_id=a.member_id WHERE session_invisible=0 AND date_and_time>=' . strval(time() - CHAT_ACTIVITY_PRUNE));
+    return $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(DISTINCT a.member_id) FROM ' . get_table_prefix() . 'chat_active a LEFT JOIN ' . get_table_prefix() . 'sessions s ON s.member_id=a.member_id WHERE session_invisible=0 AND date_and_time>=' . strval(time() - CHAT_ACTIVITY_PRUNE));
 }
 
 /**

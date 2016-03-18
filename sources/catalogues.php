@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__catalogues()
 {
@@ -45,7 +47,7 @@ function init__catalogues()
  * Get a catalogue row.
  *
  * @param  ID_TEXT $catalogue_name The catalogue name
- * @param  boolean $fail_ok Whether to return NULL if we can't find it (as opposed to a fatal error)
+ * @param  boolean $fail_ok Whether to return null if we can't find it (as opposed to a fatal error)
  * @return ?array Catalogue row (null: could not find it, and $fail_ok was set to true)
  */
 function load_catalogue_row($catalogue_name, $fail_ok = false)
@@ -57,7 +59,7 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
             if ($fail_ok) {
                 return null;
             }
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue'));
         }
         $catalogues_cache[$catalogue_name] = $catalogue_rows[0];
     }
@@ -159,7 +161,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         $rep_image = do_image_thumb($row['rep_image'], $_title, false);
     }
 
-    // Meta data
+    // Metadata
     $child_counts = count_catalogue_category_children($row['id']);
     $num_children = $child_counts['num_children_children'];
     $num_entries = $child_counts['num_entries_children'];
@@ -179,6 +181,7 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'RESOURCE_TYPE' => 'catalogue_category',
     ));
 }
 
@@ -222,20 +225,8 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_catalogues:__edit_catalogue:' . $row['c_name'],
+        'RESOURCE_TYPE' => 'catalogue',
     ));
-}
-
-/**
- * Grant all usergroups access to the specified catalogue category.
- *
- * @param  AUTO_LINK $category_id The ID of the category that access is being given to
- */
-function grant_catalogue_full_access($category_id)
-{
-    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-    foreach (array_keys($groups) as $group_id) {
-        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($category_id), 'group_id' => $group_id));
-    }
 }
 
 /**
@@ -594,6 +585,7 @@ function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $ca
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
@@ -618,8 +610,8 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  *
  * @param  ID_TEXT $catalogue_name Name of the catalogue
  * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)
- * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not NULL) (null: all)
- * @param  ?integer $start The entry number to start at (ignored if $filter is not NULL) (null: all)
+ * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not null) (null: all)
+ * @param  ?integer $start The entry number to start at (ignored if $filter is not null) (null: all)
  * @param  ?mixed $filter The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $filtercode List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value
@@ -859,9 +851,10 @@ function catalogue_entries_manual_sort($fields, &$entries, $order_by, $direction
  * @param  boolean $breadcrumbs_details Whether to grab the breadcrumbs details
  * @param  ?integer $order_by Field index to order by (null: none)
  * @param  ?array $_breadcrumbs Write breadcrumbs into here (null: don't bother)
+ * @param  boolean $force_view_all Whether to render everything
  * @return array A map of information relating to the entry. The map contains 'FIELDS' (Tempcode for all accumulated fields), 'FIELD_x' (for each field x applying to the entry), STAFF_DETAILS, COMMENT_DETAILS, RATING_DETAILS, VIEW_URL, BREADCRUMBS
  */
-function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null)
+function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root = null, $fields = null, $only_fields = null, $feedback_details = false, $breadcrumbs_details = false, $order_by = null, &$_breadcrumbs = null, $force_view_all = false)
 {
     $id = $entry['id'];
     $all_visible = true;
@@ -887,8 +880,8 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['FIELDS_GRID'] = new Tempcode();
     $map['FIELDS_TABULAR'] = new Tempcode();
     $map['fields'] = $fields;
-    //$fields_1d=array();
-    //$fields_2d=array();
+    //$fields_1d = array();
+    //$fields_2d = array();
 
     $no_catalogue_field_assembly = (get_value('no_catalogue_field_assembly') === '1');
     $no_catalogue_field_assembly_fieldmaps__this = (get_value('no_catalogue_field_assembly_fieldmaps__' . $catalogue['c_name']) === '1');
@@ -931,13 +924,13 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         }
 
         // If the field should be shown, show it
-        if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH'))) {
+        if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH')) || ($force_view_all)) {
             // Different ways of accessing the main field value, and pure version of it
             $field_name = get_translated_text($field['cf_name']);
-            //$map['FIELDNAME_'.$str_i]=$field_name;
-            //$fields_2d[]=array('NAME'=>$field_name,'VALUE'=>$use_ev);
+            //$map['FIELDNAME_' . $str_i] = $field_name;
+            //$fields_2d[] = array('NAME' => $field_name, 'VALUE' => $use_ev);
             $field_type = $field['cf_type'];
-            //$map['FIELDTYPE_'.$str_i]=$field_type;
+            //$map['FIELDTYPE_' . $str_i] = $field_type;
             $map['FIELD_' . $str_i] = $use_ev;
             $map['_FIELD_' . $str_id] = &$map['FIELD_' . $str_i];
             if ($use_ev === $ev) {
@@ -954,7 +947,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
             $map['_FIELD_' . $str_id . '_PURE'] = &$map['FIELD_' . $str_i . '_PURE'];
 
             if (($field['cf_visible'] == 1) || ($i == 0)) {
-                if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/)) {
+                if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/) || ($force_view_all)) {
                     $f = array('ENTRYID' => strval($id), 'CATALOGUE' => $catalogue_name, 'TYPE' => $field['cf_type'], 'FIELD' => $field_name, 'FIELDID' => $str_i, '_FIELDID' => $str_id, 'FIELDTYPE' => $field_type, 'VALUE_PLAIN' => $ev, 'VALUE' => $use_ev);
                     if (!$no_catalogue_field_assembly_fieldmaps__this) {
                         if ((!$no_catalogue_field_assembly_fieldmaps) || (!$feedback_details/*no feedback details implies wants all field data [as is a category view]*/)) {
@@ -994,7 +987,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         $map['EDIT_URL'] = '';
     }
 
-    // Various bits of meta data
+    // Various bits of metadata
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
     $map['VIEWS'] = strval($entry['ce_views']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
@@ -1012,7 +1005,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $zone = get_module_zone('catalogues');
 
     // Feedback
-    $c_value = array_key_exists('FIELD_0_PLAIN_PURE', $map) ? $map['FIELD_0_PLAIN_PURE'] : $map['FIELD_0_PLAIN'];
+    $c_value = isset($map['FIELD_0_PLAIN_PURE']) ? $map['FIELD_0_PLAIN_PURE'] : (isset($map['FIELD_0_PLAIN']) ? $map['FIELD_0_PLAIN'] : do_lang('UNKNOWN'));
     if (is_object($c_value)) {
         $c_value = $c_value->evaluate();
     }
@@ -1142,6 +1135,8 @@ function get_catalogue_entry_field_values($catalogue_name, $entry_id, $only_fiel
  * @param  mixed $entry_id The ID of the entry we are getting OR the row
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @param  array $target Save the result into here
+ *
+ * @ignore
  */
 function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$target)
 {
@@ -1214,6 +1209,7 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
  * @set    short long
  * @param  ?array $only_field_ids A list of field IDs that we are limiting ourselves to (null: get ALL fields)
  * @return ?array The row (null: not found)
+ * @ignore
  */
 function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only_field_ids = null)
 {
@@ -1325,7 +1321,8 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
-    $out = new Tempcode();
+
+    $catalogues = array();
     foreach ($rows as $row) {
         if (substr($row['c_name'], 0, 1) == '_') {
             continue;
@@ -1340,9 +1337,16 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         }
 
         if (($row['c_ecommerce'] == 0) || (addon_installed('shopping'))) {
-            $selected = ($row['c_name'] == $it);
-            $out->attach(form_input_list_entry($row['c_name'], $selected, get_translated_text($row['c_title'])));
+            $catalogues[$row['c_name']] = get_translated_text($row['c_title']);
         }
+    }
+
+    asort($catalogues);
+
+    $out = new Tempcode();
+    foreach ($catalogues as $name => $title) {
+        $selected = ($name == $it);
+        $out->attach(form_input_list_entry($name, $selected, $title));
     }
 
     return $out;
@@ -1364,9 +1368,9 @@ function create_selection_list_catalogue_category_tree($catalogue_name, $it = nu
     }
 
     $tree = array();
-    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+    $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
-        attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+        attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
     foreach ($temp_rows as $row) {
         $category_id = $row['id'];
@@ -1422,7 +1426,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     if ($category_details === null && $category_id !== null) {
         $_category_details = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_title'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $_category_details)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
         }
         $category_details = $_category_details[0];
     }
@@ -1434,7 +1438,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     $children = array();
     $is_tree = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
     if ($is_tree === null) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'catalogue:' . escape_html($catalogue_name)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($catalogue_name), 'catalogue'));
     }
     if ($category_id !== null) {
         $children[0]['id'] = $category_id;
@@ -1448,16 +1452,12 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
     }
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
-    foreach ($rows as $i => $child) {
-        $rows[$i]['_cc_title'] = get_translated_text($child['cc_title']);
-    }
+    $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => $category_id), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
     if (get_page_name() == 'cms_catalogues') {
         if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
-            attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+            attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
         }
     }
-    sort_maps_by($rows, '_cc_title');
     $no_root = !array_key_exists(0, $children);
     if (!$no_root) {
         $children[0]['child_count'] = count($rows);
@@ -1541,10 +1541,10 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return array();
         }
         if ($is_tree == 0) {
-            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
+            $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), intval(get_option('general_safety_listing_limit'))/*reasonable limit to stop it dying*/);
             if (get_page_name() == 'cms_catalogues') {
                 if (count($temp_rows) == intval(get_option('general_safety_listing_limit'))) {
-                    attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__RECENT_ONLY', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
+                    attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
                 }
             }
             $children = array();
@@ -1554,7 +1554,7 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
             return $children;
         }
 
-        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY id', 1);
+        $temp_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array('c_name' => $catalogue_name, 'cc_parent_id' => null), 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'), 1);
         if (!array_key_exists(0, $temp_rows)) {
             return array();
         }
@@ -1620,13 +1620,9 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
     $children[0]['child_count'] = count($rows);
     $breadcrumbs .= ' > ';
     if ($levels !== 0) {
-        foreach ($rows as $i => $child) {
-            $rows[$i]['_cc_title'] = get_translated_text($child['cc_title']);
-        }
-        sort_maps_by($rows, '_cc_title');
         foreach ($rows as $child) {
             $child_id = $child['id'];
-            $child_title = $child['_cc_title'];
+            $child_title = get_translated_text($child['cc_title']);
             $child_breadcrumbs = $breadcrumbs;
 
             $child_children = get_catalogue_entries_tree($catalogue_name, $submitter, $child_id, $child_breadcrumbs, $child_title, ($levels === null) ? null : ($levels - 1), $editable_filter);
@@ -1664,13 +1660,13 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
         if (!array_key_exists($category_id, $PT_PAIR_CACHE)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
-                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id))));
+                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
             }
             $PT_PAIR_CACHE[$category_id] = $category_rows[0];
         }
 
         if ($PT_PAIR_CACHE[$category_id]['cc_parent_id'] == $category_id) {
-            fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id))));
+            fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html(strval($category_id)), 'catalogue_category'));
         }
     }
 
@@ -1684,7 +1680,7 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
 
     if (!$no_link_for_me_sir) {
         $title = get_translated_text($PT_PAIR_CACHE[$category_id]['cc_title']);
-        $segments[] = array($page_link, $title);
+        $segments[] = array($page_link, escape_html($title));
     }
 
     return array_merge($below, $segments);
@@ -1756,13 +1752,13 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
 
     $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $entries)) {
-        return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+        return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
     }
     $entry = $entries[0];
 
     $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $entry['cc_id']), '', 1);
     if (!array_key_exists(0, $categories)) {
-        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', strval($entry['cc_id'])));
+        warn_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($entry['cc_id'])), 'catalogue_category'));
     }
     $category = $categories[0];
     require_code('site');
@@ -1804,7 +1800,10 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
             access_denied('PRIVILEGE', 'jump_to_unvalidated');
         }
 
-        $map['WARNINGS'] = do_template('WARNING_BOX', array('_GUID' => 'bf604859a572ca53e969bec3d91f9cfb', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+        $map['WARNINGS'] = do_template('WARNING_BOX', array(
+            '_GUID' => 'bf604859a572ca53e969bec3d91f9cfb',
+            'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'catalogue_entry'),
+        ));
     } else {
         $map['WARNINGS'] = '';
     }
@@ -1830,7 +1829,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     if ($title_to_use_2 === null) {
         $title_to_use = do_lang_tempcode('DEFAULT__CATALOGUE_ENTRY', make_fractionable_editable('catalogue_entry', $id, is_object($map['FIELD_0']) ? $map['FIELD_0'] : make_string_tempcode($map['FIELD_0'])));
         $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_ENTRY', is_object($map['FIELD_0']) ? $map['FIELD_0']->evaluate() : $map['FIELD_0']);
-        $len = strlen(trim(strip_tags($title_to_use_2)));
+        $len = strlen(trim(strip_html($title_to_use_2)));
         if (($len > 20) || ($len < 3)) {// We revert to raw ID if it appeared the rendered one was not strippable back from HTML to text; raw ID is possibly cryptic unfortunately
             $title_to_use_2 = do_lang('DEFAULT__CATALOGUE_ENTRY', $map['FIELD_0_PLAIN']);
         }
@@ -1852,7 +1851,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     if (is_object($title_to_use_2)) {
         $title_to_use_2 = $title_to_use_2->evaluate();
     }
-    seo_meta_load_for('catalogue_entry', strval($id), strip_tags($title_to_use_2));
+    seo_meta_load_for('catalogue_entry', strval($id), strip_html($title_to_use_2));
 
     if ($map['BREADCRUMBS'] === '') {
         $breadcrumbs = array();
@@ -1876,20 +1875,16 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
         $_breadcrumbs[] = array('_SELF:_SELF:browse' . ($ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'));
         $breadcrumbs = $_breadcrumbs;
     }
+    $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
+    $breadcrumbs = array_merge($breadcrumbs, $_breadcrumbs);
     $breadcrumbs[] = array('', $title_to_use);
     breadcrumb_set_parents($_breadcrumbs);
 
     set_extra_request_metadata(array(
-        'created' => date('Y-m-d', $entry['ce_add_date']),
-        'creator' => $GLOBALS['FORUM_DRIVER']->get_username($entry['ce_submitter']),
-        'publisher' => '', // blank means same as creator
-        'modified' => ($entry['ce_edit_date'] === null) ? '' : date('Y-m-d', $entry['ce_edit_date']),
         'type' => get_translated_text($catalogue['c_title']) . ' entry',
         'title' => comcode_escape($title_to_use_2),
         'identifier' => '_SEARCH:catalogues:entry:' . strval($id),
-        'description' => '',
-        //'category'=>???,
-    ));
+    ), $entry, 'catalogue_entry', strval($id));
 
     return do_template('CATALOGUE_' . $tpl_set . '_ENTRY_SCREEN', $map, null, false, 'CATALOGUE_DEFAULT_ENTRY_SCREEN');
 }

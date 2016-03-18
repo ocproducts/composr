@@ -29,7 +29,7 @@
 				{+END}
 
 				<p class="proceed_button">
-					<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />
+					<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 				</p>
 			</div>
 		</form>
@@ -39,10 +39,10 @@
 			<li><a onclick="return open_link_as_overlay(this);" rel="nofollow" href="{FULL_LOGIN_URL*}" title="{!MORE}: {!_LOGIN}">{!MORE}</a></li>
 		</ul>
 
-		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+		{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 			{+START,IF_EMPTY,{$FB_CONNECT_UID}}
-				<div style="margin-top: 0.4em; text-align: center"><div class="fb-login-button" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div></div>
+				<div style="margin-top: 0.4em; text-align: center"><div class="fb-login-button" data-scope="email{$,Asking for this stuff is now a big hassle as it needs a screencast(s) making: user_birthday,user_about_me,user_hometown,user_location,user_website}{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions,publish_pages{+END}"></div></div>
 			{+END}
-		{+END}
+		{+END}{+END}
 	</div></section>
 {+END}

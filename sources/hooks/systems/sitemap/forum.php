@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -53,6 +53,35 @@ class Hook_sitemap_forum extends Hook_sitemap_content
     }
 
     /**
+     * Find if a page-link will be covered by this node.
+     *
+     * @param  ID_TEXT $page_link The page-link.
+     * @return integer A SITEMAP_NODE_* constant.
+     */
+    public function handles_page_link($page_link)
+    {
+        $matches = array();
+        if (preg_match('#^([^:]*):([^:]*)#', $page_link, $matches) != 0) {
+            $zone = $matches[1];
+            $page = $matches[2];
+
+            require_code('content');
+            $cma_ob = get_content_object($this->content_type);
+            $cma_info = $cma_ob->info();
+            require_code('site');
+            if (($cma_info['module'] == $page) && ($zone != '_SEARCH') && (_request_page($page, $zone) !== false)) { // Ensure the given page matches the content type, and it really does exist in the given zone
+                if ($matches[0] == $page_link) {
+                    return SITEMAP_NODE_HANDLED_VIRTUALLY; // No type/ID specified
+                }
+                if (preg_match('#^([^:]*):([^:]*):id=#', $page_link, $matches) != 0) {
+                    return SITEMAP_NODE_HANDLED;
+                }
+            }
+        }
+        return SITEMAP_NODE_NOT_HANDLED;
+    }
+
+    /**
      * Find details of a virtual position in the sitemap. Virtual positions have no structure of their own, but can find child structures to be absorbed down the tree. We do this for modularity reasons.
      *
      * @param  ID_TEXT $page_link The page-link we are finding.
@@ -77,8 +106,10 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $parent = (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) ? db_get_first_id() : null;
+
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)', array('f_parent_forum' => null));
+            $count = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)', array('f_parent_forum' => $parent));
             if ($count > $child_cutoff) {
                 return $nodes;
             }
@@ -86,7 +117,7 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => null), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('f_parent_forum' => $parent), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . strval($row['id']);
                 $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
@@ -119,6 +150,8 @@ class Hook_sitemap_forum extends Hook_sitemap_content
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false)
     {
+        $page_link = str_replace(':id=', ':browse:', $page_link);
+
         $_ = $this->_create_partial_node_structure($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
         if ($_ === null) {
             return null;
@@ -145,8 +178,13 @@ class Hook_sitemap_forum extends Hook_sitemap_content
 
                       'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_downloads')),
+                      'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_forums')),
                   ) + $partial_struct;
+
+        $struct['extra_meta'] = array(
+            'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/social/forum/forums') : null,
+            'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
+        ) + $struct['extra_meta'];
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    buildr
  */
 class Hook_page_groupings_buildr
 {
@@ -28,7 +29,7 @@ class Hook_page_groupings_buildr
         }
 
         return array(
-            array('rich_content', 'menu/buildr', array('buildr', array(), $zone), do_lang_tempcode('buildr:OCWORLD')),
+            array('rich_content', 'menu/buildr', array('buildr', array(), $zone), do_lang_tempcode('buildr:BUILDR')),
         );
     }
 }

@@ -1,5 +1,3 @@
-[block=":rules,cms:cms_comcode_pages,site:rules,forum:rules" caption="[title]{$SITE_NAME} Rules[/title]"]main_only_if_match[/block]
-
 [title="2"]Usage[/title]
 
 This is a company website, and it must be used in coordination with this. The company and staff are not responsible for content placed on this website by ordinary members: no liability is accepted for the possible results of this content, and no warranty is provided for it.

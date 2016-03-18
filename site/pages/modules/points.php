@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,9 +35,9 @@ class Module_points
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 8;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -122,7 +122,7 @@ class Module_points
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -143,7 +143,7 @@ class Module_points
     public $member_id_of;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -170,6 +170,8 @@ class Module_points
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MEMBER_POINT_FIND'))));
 
             $this->title = get_screen_title('MEMBER_POINT_FIND');
+
+            breadcrumb_set_self(do_lang_tempcode('RESULTS'));
         }
 
         if ($type == 'give') {
@@ -330,7 +332,7 @@ class Module_points
             if ($trans_type == 'gift') {
                 $anonymous = post_param_integer('anonymous', 0);
                 $viewer_gift_points_available = get_gift_points_to_give($member_id_viewing);
-                //$viewer_gift_points_used=get_gift_points_used($member_id_viewing);
+                //$viewer_gift_points_used = get_gift_points_used($member_id_viewing);
 
                 if (($viewer_gift_points_available < $amount) && (!has_privilege($member_id_viewing, 'have_negative_gift_points'))) { // Validate we have enough for this, and add to usage
                     $message = do_lang_tempcode('PE_LACKING_GIFT_POINTS');
@@ -345,13 +347,11 @@ class Module_points
 
                     // Randomised gifts
                     $gift_reward_chance = intval(get_option('gift_reward_chance'));
-                    if (mt_rand(0, 100) < $gift_reward_chance) {
-                        $gift_reward_amount = intval(get_option('gift_reward_amount'));
+                    $gift_reward_amount = intval(get_option('gift_reward_amount'));
+                    if (mt_rand(0, 100) < $gift_reward_chance && floatval($gift_reward_chance) / 100.0 * $gift_reward_amount >= floatval($amount)) {
+                        system_gift_transfer(do_lang('_PR_LUCKY'), $gift_reward_amount, $member_id_viewing, $anonymous == 0/*if original transaction anonymous we can't log this, otherwise could be worked out via some cross-checking*/);
 
-                        $message = do_lang_tempcode('PR_LUCKY');
-                        $_current_gift = point_info($member_id_viewing);
-                        $current_gift = array_key_exists('points_gained_given', $_current_gift) ? $_current_gift['points_gained_given'] : 0;
-                        $GLOBALS['FORUM_DRIVER']->set_custom_field($member_id_viewing, 'points_gained_given', $current_gift + $gift_reward_amount);
+                        $message = do_lang_tempcode('PR_LUCKY', escape_html(integer_format($gift_reward_amount)));
                     } else {
                         $message = do_lang_tempcode('PR_NORMAL');
                     }

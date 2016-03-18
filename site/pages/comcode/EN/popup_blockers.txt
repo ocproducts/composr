@@ -1,22 +1,35 @@
-[title]Enabling popups[/title]
+[title]Enabling pop-ups[/title]
 
-Some of our systems rely on your web browser allowing {$SITE_NAME} to allow popup windows.
+Some of our systems rely on your web browser allowing {$SITE_NAME} to allow pop-up windows.
 {+START,IF,{$EQ,{$_GET,failure},1}}
-[b]You have been brought here as we detected a failure to open a popup window.[/b]{+END}
+[b]You have been brought here as we detected a failure to open a pop-up window.[/b]{+END}
 [title="2"]Web browsers[/title]
 
-Often web browsers come built in with popup blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
+Often web browsers come built-in with pop-up blockers, so you'll need to grant permission. Your web browser is the software you use for viewing websites, it's what you're using now.
 
-[title="3"]Microsoft Internet Explorer[/title]
+[title="3"]Microsoft Edge / Microsoft Internet Explorer[/title]
 
-If you are a Windows user and haven't installed a new web browser, you are probably using the standard one: Microsoft Internet Explorer.
+If you are a Windows user and haven't installed a new web browser, you are probably using the standard one: Microsoft Edge or Microsoft Internet Explorer.
+
+[title="4"]Microsoft Edge[/title]
 
 Instructions:
- - From the [b]Tools[/b] menu, click [b]Pop-up Blocker[/b].
- - Click [b]Pop-up Blocker Settings[/b].
- - In the [b]Address of web site to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
+ - From the "..." menu, go to [b]Settings[/b]
+ - Click "View advanced settings"
+ - Make sure "Block pop-ups" is set to Off.
+
+As this is a global setting (not a per-site setting), you'll want to put it back to "On" when you're done.
+
+[title="4"]Microsoft Internet Explorer[/title]
+
+Instructions:
+ - From the gear menu, go to [b]Internet Options[/b]
+ - Click the Privacy tab
+ - Under Pop-up Blocker, click [b]Settings[/b].
+ - In the [b]Address of website to allow[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
  - Click [b]Add[/b].
  - Click [b]Close[/b].
+ - Click [b]OK[/b].
 
 [title="3"]Google Chrome[/title]
 
@@ -44,7 +57,7 @@ Instructions:
  - Click the [b]Content[/b] icon located at the top of the window.
  - Click the [b]Exceptions[/b] button located to the right of [b]Block pop-up windows[/b].
  - You will see the [b]Allowed Sites[/b] dialog box.
- - In the [b]Address of web site[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
+ - In the [b]Address of website[/b] field, type [semihtml]<kbd>{$PREG_REPLACE,^\w+://,,{$BASE_URL*}}</kbd>[/semihtml].
  - Click [b]Allow[/b].
  - Click [b]Close[/b].
  - Click [b]OK[/b] to close the [i]Options[/i] dialog box.
@@ -56,7 +69,7 @@ Safari has no per-website control over blocking pop-ups windows. Pop-ups are eit
  - Click [b]Security[/b].
  - Make sure [b]Block pop-up windows[/b] is unchecked.
 
-You should go back and check [b]Block pop-up windows[/b] when you are done using the site for the day, to avoid inconvenience if other websites abuse popup windows.
+You should go back and check [b]Block pop-up windows[/b] when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
 You may wish to install a more featured web browser, such as Google Chrome for greater convenience.
 
@@ -70,8 +83,8 @@ Opera has no per-website control over blocking pop-ups windows. Pop-ups are eith
  - Make sure you are looking at the [b]General[/b] tab.
  - Make sure [b]Pop-ups[/b] is set to "Open all pop-ups".
 
-You should go back and change [b]Pop-ups[/b] to "Block unwanted pop-ups" when you are done using the site for the day, to avoid inconvenience if other websites abuse popup windows.
+You should go back and change [b]Pop-ups[/b] to "Block unwanted pop-ups" when you are done using the site for the day, to avoid inconvenience if other websites abuse pop-up windows.
 
 [title="2"]Browser extensions / addons[/title]
 
-It is also possible you have installed your own popup blocker into your web browser. If this is the case then you'll need to configure that to allow popups from [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml].
+It is also possible you have installed your own pop-up blocker into your web browser. If this is the case then you'll need to configure that to allow pop-ups from [semihtml]<kbd>{$BASE_URL*}</kbd>[/semihtml].

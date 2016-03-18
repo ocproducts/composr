@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_abstract_interfaces
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -123,9 +124,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/INDEX_SCREEN_FANCIER_ENTRY.tpl',
             'themes/default/templates/MAP_TABLE.tpl',
             'themes/default/templates/MAP_TABLE_FIELD.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_ABBR.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_RAW.tpl',
-            'themes/default/templates/MAP_TABLE_FIELD_RAW_ABBR.tpl',
             'themes/default/templates/MAP_TABLE_SCREEN.tpl',
             'themes/default/templates/COLUMNED_TABLE.tpl',
             'themes/default/templates/COLUMNED_TABLE_SCREEN.tpl',
@@ -245,9 +243,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/PAGINATION_LIST_PAGES.tpl' => 'result_table_screen',
             'templates/PAGINATION_WRAP.tpl' => 'result_table_screen',
             'templates/MAP_TABLE_FIELD.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_ABBR.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_RAW.tpl' => 'map_table',
-            'templates/MAP_TABLE_FIELD_RAW_ABBR.tpl' => 'map_table',
             'templates/INTERNALISED_AJAX_SCREEN.tpl' => 'internalised_ajax_screen',
             'templates/WARN_SCREEN.tpl' => 'warn_screen',
             'templates/DO_NEXT_SCREEN.tpl' => 'administrative__do_next_screen',
@@ -263,7 +258,7 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/COLUMNED_TABLE_ROW_CELL_SELECT.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_TICK.tpl' => 'full_table_screen',
             'templates/COLUMNED_TABLE_ROW_CELL_LINE.tpl' => 'full_table_screen',
-            'templates/COLUMNED_TABLE_SCREEN.tpl' => 'administrative__columned_table_screen'
+            'templates/COLUMNED_TABLE_SCREEN.tpl' => 'administrative__columned_table_screen',
         );
     }
 
@@ -277,7 +272,10 @@ class Hook_addon_registry_core_abstract_interfaces
     public function tpl_preview__ajax_pagination()
     {
         return array(
-            lorem_globalise(do_lorem_template('AJAX_PAGINATION', array()), null, '', true)
+            do_lorem_template('AJAX_PAGINATION', array(
+                'BLOCK_PARAMS' => '',
+                'ALLOW_INFINITE_SCROLL' => '1',
+            ))
         );
     }
 
@@ -399,7 +397,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 'URL' => placeholder_url(),
                 'NAME' => $value,
                 'DESCRIPTION' => lorem_paragraph_html(),
-                'COUNT' => placeholder_random(),
+                'COUNT' => placeholder_number(),
             )));
         }
 
@@ -425,20 +423,6 @@ class Hook_addon_registry_core_abstract_interfaces
     {
         $fields = new Tempcode();
         $fields->attach(do_lorem_template('MAP_TABLE_FIELD', array(
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_ABBR', array(
-            'ABBR' => lorem_phrase(),
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW_ABBR', array(
-            'ABBR' => lorem_phrase(),
-            'NAME' => lorem_word(),
-            'VALUE' => lorem_phrase(),
-        )));
-        $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW', array(
             'NAME' => lorem_word(),
             'VALUE' => lorem_phrase(),
         )));
@@ -520,6 +504,7 @@ class Hook_addon_registry_core_abstract_interfaces
             lorem_globalise(do_lorem_template('SIMPLE_PREVIEW_BOX', array(
                 'SUMMARY' => lorem_paragraph_html(),
                 'URL' => placeholder_url(),
+                'RESOURCE_TYPE' => '',
             )), null, '', true)
         );
     }
@@ -624,7 +609,6 @@ class Hook_addon_registry_core_abstract_interfaces
             $option = $_option[0];
             $next_items->attach(do_lorem_template('DO_NEXT_ITEM', array(
                 'I' => strval($i),
-                'I2' => placeholder_random_id() . '_' . strval($i),
                 'TARGET' => null,
                 'PICTURE' => $option,
                 'DESCRIPTION' => lorem_phrase(),
@@ -764,7 +748,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 lorem_word(),
                 lorem_word(),
                 lorem_word(),
-                placeholder_time(),
+                placeholder_date(),
                 $line,
                 $select,
                 $tick,
@@ -887,7 +871,7 @@ class Hook_addon_registry_core_abstract_interfaces
 
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $order_entries,
             'MESSAGE' => '',
@@ -971,7 +955,7 @@ class Hook_addon_registry_core_abstract_interfaces
 
         $results_table = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
-            'TEXT_ID' => lorem_phrase(),
+            'TEXT_ID' => placeholder_random_id(),
             'FIELDS_TITLE' => $fields_title,
             'FIELDS' => $order_entries,
             'MESSAGE' => '',

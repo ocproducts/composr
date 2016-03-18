@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,7 +45,7 @@ class Hook_rss_filedump
         }
 
         if (!file_exists(get_custom_file_base() . '/uploads/filedump/')) {
-            return array();
+            return null;
         }
 
         $filters = explode(',', $_filters);
@@ -81,8 +81,12 @@ class Hook_rss_filedump
 
             $id = $file;
 
+            $mtime = filemtime(get_custom_file_base() . '/uploads/filedump/' . $file);
+            if ($mtime < $cutoff) {
+                continue;
+            }
             $news_date = date($date_string, filectime(get_custom_file_base() . '/uploads/filedump/' . $file));
-            $edit_date = date($date_string, filemtime(get_custom_file_base() . '/uploads/filedump/' . $file));
+            $edit_date = date($date_string, $mtime);
             if ($news_date == $edit_date) {
                 $edit_date = '';
             }

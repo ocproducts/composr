@@ -2,6 +2,9 @@
 
 # NB: This script is not needed if you have suexec
 
+# Clear cache first, as we don't chmod cache files in this code
+sh fixperms.sh
+
 # Reset to good start state first
 touch _config.php
 find . -type f -not -path "./sites/*" -not -path "./servers/*" -not -path "./_old/*" -not -path "./uploads/*" -exec chmod 644 {} \;
@@ -13,7 +16,7 @@ if [ ! -e "uploads" ]; then
 fi
 
 # Change permissions
-chmod -f a+w caches/*/* caches/*/*/* safe_mode_temp safe_mode_temp/* themes/map.ini data_custom/*.xml data_custom/modules/admin_backup data_custom/modules/web_notifications data_custom/modules/chat data_custom/spelling/personal_dicts data_custom/spelling/personal_dicts/* themes themes/* text_custom/*.txt text_custom/EN/*.txt *_custom *_custom/* *_custom/*/* themes/*/*_custom themes/*/*_custom/* themes/*/templates_cached themes/*/theme.ini themes/*/templates_cached/* themes/*/templates_cached/*/* themes/*/css_custom themes/*/css_custom/*.css themes/*/templates_custom themes/*/templates_custom/*.tpl themes/*/javascript_custom themes/*/javascript_custom/*.tpl themes/*/xml_custom themes/*/xml_custom/*.tpl themes/*/text_custom themes/*/text_custom/*.tpl data_custom/errorlog.php cms_*sitemap.xml data_custom/permissioncheckslog.php data_custom/modules/admin_stats exports/* data_custom/modules/web_notifications/* data_custom/modules/chat/*.dat exports/*/* imports/* imports/*/* uploads/* pages/*_custom pages/*_custom/* pages/*_custom/*/* */pages/*_custom */pages/*_custom/* */pages/*_custom/*/* _config.php 2>/dev/null
+chmod -f a+w adminzone/pages/comcode_custom/* adminzone/pages/comcode_custom/*/*.txt adminzone/pages/html_custom/* adminzone/pages/html_custom/*/*.htm caches/* caches/lang/* cms/pages/comcode_custom/* cms/pages/comcode_custom/*/*.txt cms/pages/html_custom/* cms/pages/html_custom/*/*.htm collaboration/pages/comcode_custom/* collaboration/pages/comcode_custom/*/*.txt collaboration/pages/html_custom/* collaboration/pages/html_custom/*/*.htm data_custom/errorlog.php data_custom/firewall_rules.txt data_custom/modules/admin_backup data_custom/modules/admin_backup/* data_custom/modules/admin_stats data_custom/modules/admin_stats/* data_custom/modules/chat data_custom/modules/chat/* data_custom/modules/web_notifications data_custom/modules/web_notifications/* data_custom/sitemaps data_custom/sitemaps/* data_custom/spelling/personal_dicts data_custom/spelling/personal_dicts/* data_custom/xml_config data_custom/xml_config/*.xml exports/* exports/*/* forum/pages/comcode_custom/* forum/pages/comcode_custom/*/*.txt forum/pages/html_custom/* forum/pages/html_custom/*/*.htm imports/* imports/*/* lang_custom lang_custom/* lang_custom/*/*.ini pages/comcode_custom/* pages/comcode_custom/*/*.txt pages/html_custom/* pages/html_custom/*/*.htm safe_mode_temp safe_mode_temp/* site/pages/comcode_custom/* site/pages/comcode_custom/*/*.txt site/pages/html_custom/* site/pages/html_custom/*/*.htm text_custom text_custom/* text_custom/*.txt text_custom/*/*.txt themes themes/*/css_custom themes/*/css_custom/* themes/*/images_custom themes/*/images_custom/* themes/*/javascript_custom themes/*/javascript_custom/* themes/*/templates_cached/* themes/*/templates_custom themes/*/templates_custom/* themes/*/text_custom themes/*/text_custom/* themes/*/theme.ini themes/*/xml_custom themes/*/xml_custom/* themes/map.ini uploads/* _config.php 2>/dev/null
 
 # Demonstratr
 if [ -z "$1" ]; then

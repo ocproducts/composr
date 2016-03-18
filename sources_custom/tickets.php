@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_homesite_support_credits
+ */
 
 function get_composr_support_timings_wrap($open, $topic_id, $ticket_type_name, $say_more = false)
 {
@@ -34,27 +47,18 @@ function get_composr_support_timings($open, $member_id, $ticket_type_name, $last
     } else {
         $timestamp_to_answer_by = mixed();
         switch ($ticket_type_name) {
-            // Very rough. Ignores weekends (okay, as means over-delivering) and in-day times (will be tracking more carefully for v. high priority tickets)
-            case 'Budget priority':
-                $timestamp_to_answer_by = within_business_hours(7 * 8, $last_time);
+            // Very rough. Ignores weekends (okay, as means over-delivering) and in-day times
+            case 'Back-burner priority':
+                $timestamp_to_answer_by = within_business_hours(14 * 8, $last_time);
                 break;
-            case 'Normal priority':
+            case 'Regular priority':
                 $timestamp_to_answer_by = within_business_hours(3 * 8, $last_time);
-                break;
-            case 'Day priority':
-                $timestamp_to_answer_by = within_business_hours(8, $last_time);
-                break;
-            case 'High priority':
-                $timestamp_to_answer_by = within_business_hours(3, $last_time);
-                break;
-            case 'Emergencies':
-                $timestamp_to_answer_by = within_business_hours(1, $last_time);
                 break;
         }
         if (!is_null($timestamp_to_answer_by)) {
             $text = 'Next reply due by: ' . date('D jS M Y', $timestamp_to_answer_by);
             if ($say_more) {
-                $text .= ' (Response times are determined by the requested ticket priority. Any requested programming tasks are started at the time of response. Response times apply between replies, as well as initially. Tickets may not be read until the next response time, so higher priority requests should be made in a new ticket. Often we will beat response times but this should not be considered a precedent.)';
+                $text .= ' (Response times are determined by the requested ticket priority. Any requested programming tasks are started at the time of response. Response times apply between replies, as well as initially. Tickets may not be read until the next response time, so higher priority requests should be made in a new ticket. Sometimes we will beat response times but this should not be considered a precedent.)';
             }
             $d->attach(div(make_string_tempcode($text)));
         }

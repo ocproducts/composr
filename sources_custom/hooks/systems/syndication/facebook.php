@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
 
 /**
  * Hook class.
@@ -33,40 +46,39 @@ class Hook_syndication_facebook
             var fb_button=document.getElementById('syndicate_start__facebook');
             if (fb_button)
             {
-                    var fb_input;
-                    if (typeof fb_button.form.elements['facebook_syndicate_to_page']=='undefined')
-                    {
-                            fb_input=document.createElement('input');
-                            fb_input.type='hidden';
-                            fb_input.name='facebook_syndicate_to_page';
-                            fb_input.value='0';
-                            fb_button.form.appendChild(fb_input);
-                    } else
-                    {
-                            fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
-                    }
-                    fb_button.onclick=function() {
-                            generate_question_ui(
-                                        '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
+                var fb_input;
+                if (typeof fb_button.form.elements['facebook_syndicate_to_page']=='undefined')
+                {
+                    fb_input=document.createElement('input');
+                    fb_input.type='hidden';
+                    fb_input.name='facebook_syndicate_to_page';
+                    fb_input.value='0';
+                    fb_button.form.appendChild(fb_input);
+                } else
+                {
+                    fb_input=fb_button.form.elements['facebook_syndicate_to_page'];
+                }
+                fb_button.onclick=function() {
+                    generate_question_ui(
+                        '" . addslashes(do_lang('HOW_TO_SYNDICATE_DESCRIPTION')) . "',
 
-                                        ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],
+                        ['" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "','" . addslashes(do_lang('FACEBOOK_PAGE')) . "','" . addslashes(do_lang('FACEBOOK_WALL')) . "'],
 
-                                        '" . addslashes(do_lang('HOW_TO_SYNDICATE')) . "',
+                        '" . addslashes(do_lang('HOW_TO_SYNDICATE')) . "',
 
-                                        '" . addslashes(do_lang('SYNDICATE_TO_OWN_WALL', get_site_name())) . "',
+                        '" . addslashes(do_lang('SYNDICATE_TO_OWN_WALL', get_site_name())) . "',
 
-                                        function(val) {
-                                                        if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "')
-                                                        {
-                                                                            fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
-                                                                            fb_button.onclick=null;
-                                                                            click_link(fb_button);
-                                                        }
-                                        }
-                            );
+                        function(val) {
+                            if (val!='" . addslashes(do_lang('INPUTSYSTEM_CANCEL')) . "') {
+                                fb_input.value=(val=='" . addslashes(do_lang('FACEBOOK_PAGE')) . "')?'1':'0';
+                                fb_button.onclick=null;
+                                click_link(fb_button);
+                            }
+                        }
+                    );
 
-                            return false;
-                    };
+                    return false;
+                };
             }
         ";
     }
@@ -77,7 +89,8 @@ class Hook_syndication_facebook
         if (!is_null($member_id)) {
             $save_to .= '__' . strval($member_id);
         }
-        return get_value($save_to, null, true) !== null;
+        $val = get_value($save_to, null, true);
+        return !empty($val);
     }
 
     public function auth_set($member_id, $oauth_url)
@@ -89,7 +102,12 @@ class Hook_syndication_facebook
         $code = get_param_string('code', '', true);
 
         if ($code == '') {
-            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => array('publish_actions')));
+            $scope = array('publish_actions');
+            if (is_null($member_id)) {
+                $scope[] = 'manage_pages';
+                $scope[] = 'publish_pages';
+            }
+            $oauth_redir_url = $FACEBOOK_CONNECT->getLoginUrl(array('redirect_uri' => $oauth_url->evaluate(), 'scope' => $scope));
             require_code('site2');
             smart_redirect($oauth_redir_url);
         }

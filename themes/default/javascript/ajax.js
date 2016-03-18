@@ -188,12 +188,13 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 	return false;
 }
 
-function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too)
+function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too,scroll_to_top)
 {
 	if (typeof look_for=='undefined') look_for=[];
 	if (typeof extra_params=='undefined') extra_params=[];
 	if (typeof append=='undefined') append=false;
 	if (typeof forms_too=='undefined') forms_too=false;
+	if (typeof scroll_to_top=='undefined') scroll_to_top=true;
 
 	var _link_wrappers=get_elements_by_class_name(block,'ajax_block_wrapper_links');
 	if (_link_wrappers.length==0) _link_wrappers=[block];
@@ -263,7 +264,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 				}
 
 				// Make AJAX block call
-				return call_block(url_stem+url_stub,'',block,append,function() { window.scrollTo(0,0); },false,post_params);
+				return call_block(url_stem+url_stub,'',block,append,function() { if (scroll_to_top) window.scrollTo(0,0); },false,post_params);
 			};
 			if (links[i].nodeName.toLowerCase()=='a')
 			{
@@ -294,16 +295,18 @@ function guarded_form_submit(form)
 }
 
 // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-function call_block(url,new_block_params,target_div,append,callback,scroll_to_top_of_wrapper,post_params,inner)
+function call_block(url,new_block_params,target_div,append,callback,scroll_to_top_of_wrapper,post_params,inner,show_loading_animation)
 {
 	if (typeof scroll_to_top_of_wrapper=='undefined') scroll_to_top_of_wrapper=false;
 	if (typeof post_params=='undefined') post_params=null;
 	if (typeof inner=='undefined') inner=false;
+	if (typeof show_loading_animation=='undefined') show_loading_animation=true;
 	if ((typeof block_data_cache[url]=='undefined') && (new_block_params!=''))
 		block_data_cache[url]=get_inner_html(target_div); // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
 
 	var ajax_url=url;
 	if (new_block_params!='') ajax_url+='&block_map_sup='+window.encodeURIComponent(new_block_params);
+	if (typeof window.cms_theme!='undefined') ajax_url+='&utheme='+window.cms_theme;
 	if (typeof block_data_cache[ajax_url]!='undefined')
 	{
 		// Show results from cache
@@ -314,7 +317,7 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 
 	// Show loading animation
 	var loading_wrapper=target_div;
-	if ((loading_wrapper.id.indexOf('carousel_')==-1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading')==-1))
+	if ((loading_wrapper.id.indexOf('carousel_')==-1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading_block')==-1) && (show_loading_animation))
 	{
 		var raw_ajax_grow_spot=get_elements_by_class_name(target_div,'raw_ajax_grow_spot');
 		if (typeof raw_ajax_grow_spot[0]!='undefined' && append) loading_wrapper=raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
@@ -368,7 +371,7 @@ function _call_block_render(raw_ajax_result,ajax_url,target_div,append,callback,
 	block_data_cache[ajax_url]=new_html;
 
 	// Remove loading animation if there is one
-	var ajax_loading=get_elements_by_class_name(target_div,'ajax_loading');
+	var ajax_loading=get_elements_by_class_name(target_div,'ajax_loading_block');
 	if (typeof ajax_loading[0]!='undefined')
 	{
 		ajax_loading[0].parentNode.parentNode.removeChild(ajax_loading[0].parentNode);
@@ -426,7 +429,7 @@ function ajax_form_submit__admin__headless(event,form,block_name,map)
 	}
 	for (var i=0;i<form.elements.length;i++)
 	{
-		if (!form.elements[i].disabled)
+		if (!form.elements[i].disabled && typeof form.elements[i].name!='undefined' && form.elements[i].name!=null && form.elements[i].name!='')
 			post+='&'+form.elements[i].name+'='+window.encodeURIComponent(clever_find_value(form,form.elements[i]));
 	}
 	var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}'+keep_stub(true)),null,post);
@@ -515,8 +518,11 @@ function do_ajax_request(url,callback__method,post) // Note: 'post' is not an ar
 		window.AJAX_REQUESTS[index]=new XMLHttpRequest();
 	}
 	if (!synchronous) window.AJAX_REQUESTS[index].onreadystatechange=process_request_changes;
-	if (post)
+	if (typeof post!='undefined' && post!==null)
 	{
+		if (post.indexOf('&csrf_token')==-1)
+			post+='&csrf_token='+window.encodeURIComponent(get_csrf_token()); // For CSRF prevention
+
 		window.AJAX_REQUESTS[index].open('POST',url,!synchronous);
 		window.AJAX_REQUESTS[index].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 		window.AJAX_REQUESTS[index].send(post);

@@ -1,16 +1,18 @@
 <script>
 // <![CDATA[
-	if (typeof window.soundManager!='undefined')
-	{
-		add_event_listener_abstract(window,'real_load',function () {
-			window.soundManager.setup({url: get_base_url()+'/data', debugMode: false, preferFlash : false, html5Only : true});
-
-			soundManager.onload=function() {
-				{+START,LOOP,SOUND_EFFECTS}
-					soundManager.createSound('{KEY;/}','{VALUE;/}');
-				{+END}
-			}
-		} );
-	}
+	add_event_listener_abstract(window,'load',function () {
+		if (typeof window.soundManager!='undefined')
+		{
+			window.soundManager.setup({
+				url: get_base_url()+'/data',
+				debugMode: false,
+				onready: function() {
+					{+START,LOOP,SOUND_EFFECTS}
+						window.soundManager.createSound('{KEY;/}','{VALUE;/}');
+					{+END}
+				}
+			});
+		}
+	} );
 // ]]>
 </script>

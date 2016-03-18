@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_download
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_downloads') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = (get_page_name() == 'cms_downloads') && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, null, false);
     }
 

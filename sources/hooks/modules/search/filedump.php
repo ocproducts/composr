@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_search_filedump
+class Hook_search_filedump extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.
@@ -51,7 +51,7 @@ class Hook_search_filedump
         $info = array();
         $info['lang'] = do_lang_tempcode('FILEDUMP');
         $info['default'] = false;
-        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('_FILE_SIZE'));
+        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('FILE_SIZE'));
 
         $info['permissions'] = array(
             array(
@@ -162,10 +162,11 @@ class Hook_search_filedump
                         'ID' => $_path,
                         'TITLE' => basename($_path),
                         'SUMMARY' => $tpl,
+                        'RESOURCE_TYPE' => '_filedump_file',
                     ));
                 } else {
-                    if (function_exists('set_time_limit')) {
-                        @set_time_limit(5);
+                    if (php_function_allowed('set_time_limit')) {
+                        set_time_limit(5);
                     }
 
                     $tpl = do_image_thumb($url, $caption, true, false, null, null, true);
@@ -176,6 +177,7 @@ class Hook_search_filedump
                         'SUMMARY' => $tpl,
                         'BREADCRUMBS' => $file_breadcrumbs,
                         'URL' => $url,
+                        'RESOURCE_TYPE' => '_filedump_file_image',
                     ));
                 }
 

@@ -22,7 +22,7 @@
 					{!MEMBER}
 				</th>
 				<th>
-					{!GROUP}
+					{!USERGROUP}
 				</th>
 				<th>
 					{!GROUP_MEMBER_TIMEOUT_DATE}
@@ -38,7 +38,7 @@
 					</td>
 
 					<td>
-						<label class="accessibility_hidden" for="gmt_group_id_{_loop_key*}">{!GROUP}</label>
+						<label class="accessibility_hidden" for="gmt_group_id_{_loop_key*}">{!USERGROUP}</label>
 						<input name="gmt_old_group_id_{_loop_key*}" value="{GROUP_ID*}" type="hidden" />
 						<select id="gmt_group_id_{_loop_key*}" name="gmt_group_id_{_loop_key*}">
 							{+START,LOOP,GROUPS}
@@ -60,7 +60,7 @@
 				</td>
 
 				<td>
-					<label class="accessibility_hidden" for="gmt_group_id_new">{!GROUP}</label>
+					<label class="accessibility_hidden" for="gmt_group_id_new">{!USERGROUP}</label>
 					<select id="gmt_group_id_new" name="gmt_group_id_new">
 						<option value="">---</option>
 						{+START,LOOP,GROUPS}
@@ -77,6 +77,6 @@
 	</table></div>
 
 	<p class="proceed_button">
-		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__save button_screen" type="submit" value="{!SAVE}" />
+		<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 	</p>
 </form>

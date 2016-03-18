@@ -18,7 +18,7 @@
 
 		<label for="order_filter">
 			<span class="invisible_ref_point"></span>
-			<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input onclick="disable_button_just_clicked(this);" class="buttons__search button_micro" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
+			<input maxlength="255" type="text" id="order_filter" name="search" value="{SEARCH_VAL*}" /><input onclick="disable_button_just_clicked(this);" class="button_micro buttons__search" type="submit" value="{!SEARCH}" /> ({!SEARCH_ORDERS})
 		</label>
 	</div>
 </form>
@@ -28,8 +28,10 @@
 <p class="lonely_label">
 	{!ACTIONS}:
 </p>
-<ul role="navigation" class="actions_list">
-	<li class="actions_list_strong">
-		<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
-	</li>
-</ul>
+<nav>
+	<ul class="actions_list">
+		<li class="actions_list_strong">
+			<a href="{$PAGE_LINK*,_SELF:_SELF:order_export}">{!EXPORT_ORDER_LIST}</a>
+		</li>
+	</ul>
+</nav>

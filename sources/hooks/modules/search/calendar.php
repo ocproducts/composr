@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -122,6 +122,10 @@ class Hook_search_calendar extends FieldsSearchHook
             $where_clause .= $privacy_where;
         } else {
             $privacy_join = '';
+        }
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('event', 'r.id');
         }
         $where_clause .= ' AND ';
         $where_clause .= '(e_member_calendar IS NULL'; // Not a privacy thing, more of a relevance thing

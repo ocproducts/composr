@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_config_is_on_anonymous_posts
     public function get_details()
     {
         return array(
-            'human_name' => 'IS_ON_ANONYMOUS_POSTS',
+            'human_name' => 'IS_ON_ANONYMOUS_POSTS_PRIVATE_TOPICS',
             'type' => 'tick',
             'category' => 'FORUMS',
             'group' => 'FORUM_TOPICS',

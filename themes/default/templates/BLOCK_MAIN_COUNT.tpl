@@ -6,6 +6,6 @@
 
 {+START,IF_PASSED,UPDATE}
 	<script>// <![CDATA[
-		load_snippet('count&name={UPDATE;/}');
+		load_snippet('count','name={UPDATE;/}');
 	//]]></script>
 {+END}

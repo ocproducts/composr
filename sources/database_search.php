@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database_search()
 {
@@ -967,9 +969,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         $g_or = _get_where_clause_groups(get_member());
 
         // this destroys mysqls query optimiser by forcing complexed OR's into the join, so we'll do this in PHP code
-        //     $table.=' LEFT JOIN '.$GLOBALS['SITE_DB']->get_table_prefix().'group_category_access z ON ('.db_string_equal_to('z.module_the_name',$permissions_module).' AND z.category_name='.$permissions_field.(($g_or!='')?(' AND '.str_replace('group_id','z.group_id',$g_or)):'').')';
-        //     $where_clause.=' AND ';
-        //     $where_clause.='z.category_name IS NOT NULL';
+        /*$table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_category_access z ON (' . db_string_equal_to('z.module_the_name', $permissions_module) . ' AND z.category_name=' . $permissions_field . (($g_or != '') ? (' AND ' . str_replace('group_id', 'z.group_id', $g_or)) : '') . ')';
+        $where_clause .= ' AND ';
+        $where_clause .= 'z.category_name IS NOT NULL';*/
 
         $cat_access = list_to_map('category_name', $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $g_or . ') AND ' . db_string_equal_to('module_the_name', $permissions_module) . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval((integer)get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', $permissions_module), null, null, false, true));
     }
@@ -986,7 +988,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
-    // This is so for example catalogue_entries.php can use brackets in it's table specifier whilst avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
+    // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {
         $table_clause = '(' . $table_clause;
@@ -1310,6 +1312,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         }
                     }
 
+                    $fields_keys = array_keys($fields);
+
                     $where_clause_or = '';
                     $where_clause_or_fields = '';
                     foreach ($all_fields as $field) {
@@ -1317,7 +1321,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             continue;
                         }
 
-                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== key($fields))) {
+                        if (($only_titles) && ($field !== current($raw_fields)) && ($field !== $fields_keys[0]) && (!isset($fields_keys[1]) || $fields_keys[0] !== '!' || $field !== $fields_keys[1])) {
                             break;
                         }
 
@@ -1349,10 +1353,13 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                         $where_clause_or .= preg_replace('#\?#', $where_clause_or_fields, $__where);
                     }
 
-                    if ($where_clause_and != '') {
-                        $where_clause_and .= ' ' . $boolean_operator . ' ';
+                    if ($where_clause_or != '') {
+                        if ($where_clause_and != '') {
+                            $where_clause_and .= ' ' . $boolean_operator . ' ';
+                        }
+
+                        $where_clause_and .= '(' . $where_clause_or . ')';
                     }
-                    $where_clause_and .= '(' . $where_clause_or . ')';
                 }
             }
             if ($disclude_where != '') {
@@ -1378,9 +1385,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
 
             // Work out our queries
-            $query = ' FROM ' . $table_clause . ' WHERE ' . (($where_clause == '') ? '' : ($where_clause . (($where_clause_and == '') ? '' : ' AND ')));
+            $query = ' FROM ' . $table_clause . (($where_clause == '') ? '' : (' WHERE ' . $where_clause));
             if ($where_clause_and != '') {
-                $query .= '(' . $where_clause_and . ')';
+                $query .= (($where_clause == '') ? ' WHERE ' : ' AND ') . '(' . $where_clause_and . ')';
             }
             if ($group_by_ok && false/*Actually we cannot assume that r.id exists*/) {
                 $_count_query_main_search = 'SELECT COUNT(DISTINCT r.id)' . $query;
@@ -1471,7 +1478,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         } else {
             $results = var_export($t_rows, true);
         }
-        attach_message(do_lang('_RESULTS') . ': ' . $results, 'inform');
+        attach_message(do_lang('COUNT_RESULTS') . ': ' . $results, 'inform');
     }
 
     if (isset($cat_access)) {
@@ -1494,6 +1501,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
  *
  * @param  string $search_filter The search string
  * @return array Words to search under the boolean operator, words that must be included, words that must not be included.
+ *
+ * @ignore
  */
 function _boolean_search_prepare($search_filter)
 {

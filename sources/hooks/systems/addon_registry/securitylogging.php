@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_securitylogging
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -119,6 +120,9 @@ class Hook_addon_registry_securitylogging
             'lang/EN/submitban.ini',
             'adminzone/pages/modules/admin_lookup.php',
             'sources/lookup.php',
+            'sources/hooks/systems/commandr_fs_extended_member/banned_from_submitting.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_banned.php',
+            'sources/hooks/systems/commandr_fs_extended_config/ip_unbannable.php',
         );
     }
 
@@ -157,6 +161,7 @@ class Hook_addon_registry_securitylogging
                 'WARNING_DETAILS' => '',
                 'TITLE' => lorem_title(),
                 'BANS' => placeholder_ip(),
+                'UNBANNABLE' => placeholder_ip(),
                 'LOCKED_BANS' => placeholder_ip(),
                 'URL' => placeholder_url(),
             )), null, '', true)
@@ -250,11 +255,10 @@ class Hook_addon_registry_securitylogging
         foreach (placeholder_array() as $value) {
             $inner_ip_list->attach(do_lorem_template('LOOKUP_IP_LIST_ENTRY', array(
                 'LOOKUP_URL' => placeholder_url(),
-                'DATE' => placeholder_time(),
-                '_DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
+                '_DATE' => placeholder_date(),
                 'IP' => placeholder_ip(),
                 'BANNED' => do_lang_tempcode('YES'),
-                'UNIQID' => placeholder_random(),
             )));
         }
 
@@ -263,7 +267,6 @@ class Hook_addon_registry_securitylogging
             'MASK' => placeholder_ip(),
             'GROUP' => $inner_ip_list,
             'OPEN_DEFAULT' => true,
-            'UNIQID' => placeholder_random(),
         ));
         return array(
             lorem_globalise(do_lorem_template('LOOKUP_SCREEN', array(

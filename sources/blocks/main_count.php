@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -79,7 +79,7 @@ class Block_main_count
         $hit_count = array_key_exists('hit_count', $map) ? intval($map['hit_count']) : 1;
         $update = mixed();
         if ($hit_count == 1) {
-            //update_stat($name,1); Actually, use AJAX
+            //update_stat($name, 1); Actually, use AJAX
             $update = $name;
         }
 

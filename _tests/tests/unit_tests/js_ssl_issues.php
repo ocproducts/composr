@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -18,11 +18,6 @@
  */
 class js_ssl_issues_test_set extends cms_test_case
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testSSLIssues()
     {
         $templates = array();
@@ -39,10 +34,5 @@ class js_ssl_issues_test_set extends cms_test_case
                 }
             }
         }
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

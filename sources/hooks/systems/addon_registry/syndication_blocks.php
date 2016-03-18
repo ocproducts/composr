@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_syndication_blocks
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -105,15 +106,7 @@ class Hook_addon_registry_syndication_blocks
             'sources/hooks/systems/config/is_rss_advertised.php',
             'sources/hooks/systems/config/rss_update_time.php',
             'themes/default/templates/BLOCK_MAIN_RSS.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_CATEGORY.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_CATEGORY_NO_IMG.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_FROM_TITLE.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_FULL.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_LIST_FIRST.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_LIST_LAST.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_LIST_MIDDLE.tpl',
             'themes/default/templates/BLOCK_MAIN_RSS_SUMMARY.tpl',
-            'themes/default/templates/BLOCK_MAIN_RSS_TITLE.tpl',
             'themes/default/templates/BLOCK_SIDE_RSS.tpl',
             'themes/default/templates/BLOCK_SIDE_RSS_SUMMARY.tpl',
             'themes/default/css/rss.css',
@@ -136,14 +129,6 @@ class Hook_addon_registry_syndication_blocks
         return array(
             'templates/BLOCK_SIDE_RSS_SUMMARY.tpl' => 'block_side_rss',
             'templates/BLOCK_SIDE_RSS.tpl' => 'block_side_rss',
-            'templates/BLOCK_MAIN_RSS_TITLE.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_FULL.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_LIST_FIRST.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_LIST_MIDDLE.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_LIST_LAST.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_CATEGORY.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_CATEGORY_NO_IMG.tpl' => 'block_main_rss',
-            'templates/BLOCK_MAIN_RSS_FROM_TITLE.tpl' => 'block_main_rss',
             'templates/BLOCK_MAIN_RSS_SUMMARY.tpl' => 'block_main_rss',
             'templates/BLOCK_MAIN_RSS.tpl' => 'block_main_rss'
         );
@@ -164,7 +149,7 @@ class Hook_addon_registry_syndication_blocks
                 'FEED_URL' => placeholder_url(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'SUMMARY' => lorem_paragraph(),
                 'TICKER' => lorem_word(),
             )));
@@ -191,51 +176,20 @@ class Hook_addon_registry_syndication_blocks
     {
         require_lang('news');
         require_css('news');
+
         $content = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
-            $news_full = do_lorem_template('BLOCK_MAIN_RSS_FULL', array(
-                'NEWS_FULL' => lorem_paragraph(),
-            ));
-
-            $tails = do_lorem_template('BLOCK_MAIN_RSS_LIST_FIRST', array(
-                'X' => lorem_phrase(),
-            ));
-            $tails->attach(do_lorem_template('BLOCK_MAIN_RSS_LIST_MIDDLE', array(
-                'X' => placeholder_url(),
-            )));
-            $tails->attach(do_lorem_template('BLOCK_MAIN_RSS_LIST_LAST', array(
-                'X' => placeholder_url(),
-            )));
-
-            $category = do_lorem_template('BLOCK_MAIN_RSS_CATEGORY', array(
-                'IMG' => placeholder_image_url(),
-                'CATEGORY' => lorem_phrase(),
-            ));
-            $category->attach(do_lorem_template('BLOCK_MAIN_RSS_CATEGORY_NO_IMG', array(
-                'CATEGORY' => lorem_phrase(),
-            )));
-
-            $_title = do_lorem_template('BLOCK_MAIN_RSS_TITLE', array(
-                'CATEGORY' => lorem_phrase(),
-                'TITLE' => lorem_phrase(),
-            ));
-            $__title = do_lorem_template('BLOCK_MAIN_RSS_FROM_TITLE', array(
-                'FEED_URL' => placeholder_url(),
-                'NEWS_TITLE' => lorem_phrase(),
-                'DATE' => placeholder_time(),
-            ));
-
             $content->attach(do_lorem_template('BLOCK_MAIN_RSS_SUMMARY', array(
+                'NEWS_TITLE' => lorem_phrase(),
                 'FEED_URL' => placeholder_url(),
-                'NEWS_FULL' => $news_full,
-                'DATE' => placeholder_time(),
-                'TAILS' => $tails,
+                'DATE' => placeholder_date(),
                 'AUTHOR' => lorem_phrase(),
-                'CATEGORY' => $category,
+                'CATEGORY_IMG' => placeholder_image_url(),
+                'CATEGORY' => lorem_phrase(),
                 'FULL_URL' => placeholder_link(),
                 'FULL_URL_RAW' => placeholder_url(),
-                'NEWS_TITLE' => $__title,
                 'NEWS' => lorem_paragraph(),
+                'NEWS_FULL' => lorem_paragraph(),
             )));
         }
 

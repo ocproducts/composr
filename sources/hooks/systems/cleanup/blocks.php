@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,7 +45,7 @@ class Hook_cleanup_blocks
      */
     public function run()
     {
-        erase_block_cache();
+        erase_block_cache(true);
         erase_persistent_cache();
 
         return new Tempcode();

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,14 +48,19 @@ class Hook_rss_news
         $filters_2 = selectcode_to_sqlfragment($_filters, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
         $filters = '(' . $filters_1 . ' OR ' . $filters_2 . ')';
 
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'p');
+            list($extra_join, $extra_where) = get_privacy_where_clause('news', 'p');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $privacy_join . ' WHERE date_and_time>' . strval($cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . ' AND ' . $filters . (can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . $privacy_where . ' ORDER BY date_and_time DESC', $max);
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('news', 'p.id');
+        }
+
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $extra_join . ' WHERE date_and_time>' . strval($cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . ' AND ' . $filters . $extra_where . (can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . ' ORDER BY date_and_time DESC', $max);
         $rows = remove_duplicate_rows($rows, 'id');
         $_categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('id', 'nc_title'), array('nc_owner' => null));
         foreach ($_categories as $i => $_category) {

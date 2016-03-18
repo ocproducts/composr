@@ -9,14 +9,16 @@
 		<div class="cns_information_bar float_surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
 				<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_a">
-					<img alt="{!AVATAR}" title="{!AVATAR}" src="{AVATAR_URL*}" />
+					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				</div>
 			{+END}
 
 			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_b">
 				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-					<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					{+START,IF,{$NOT,{$MOBILE}}}
+						<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					{+END}
 				{+END}
 
 				<dl class="meta_details_list">
@@ -41,9 +43,9 @@
 				</div>
 			</div>
 
-			<nav{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_d" role="navigation">
+			<nav{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
-				<ul role="navigation" class="actions_list">
+				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
 					<li><a onclick="return open_link_as_overlay(this);" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a onclick="return open_link_as_overlay(this);" href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>

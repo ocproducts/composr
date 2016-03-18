@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,6 +35,8 @@ Some checks are commented out, as practical JavaScript does not tend to be at al
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webstandards_js_lint()
 {
@@ -52,7 +54,7 @@ function init__webstandards_js_lint()
     global $JS_PROTOTYPES; // Note that '!' prefixed methods are static (only belong to the prototype). All objects also have a constructor, which is what is called when they are called as a function.
     $JS_PROTOTYPES = array( // Each entry is a pair: inherit-from, properties array. Each property is a list: type, name, [function-return-type]. Types prefixed with ! are "this type or anything inherited from it"
                             /* ECMA */
-                            'Object' => array(null, array(array('!', 'prototype'),/*array('String','Value'),array('function','Get','!Object'),array('function','Put'),array('function','CanPut','Boolean'),array('function','HasProperty','Boolean'),array('function','Delete'),array('String','DefaultValue'),array('function','Construct','!Object'),array('function','Match','Boolean'),*/
+                            'Object' => array(null, array(array('!', 'prototype'),/*array('String', 'Value'), array('function', 'Get', '!Object'), array('function', 'Put'), array('function', 'CanPut', 'Boolean'), array('function', 'HasProperty', 'Boolean'), array('function', 'Delete'), array('String', 'DefaultValue'), array('function', 'Construct', '!Object'), array('function', 'Match', 'Boolean'),*/
                                                           array('function', '!constructor', '!Object'), array('function', '!toString', 'String'), array('function', '!toLocaleString', 'String'), array('function', '!valueOf', '!Object'), array('function', '!hasOwnProperty', 'Boolean'), array('function', '!isPrototypeOf', 'Boolean'), array('function', '!propertyIsEnumerable', 'Boolean'),)),
                             'function' => array('Object', array(array('arguments', 'arguments'), array('function', 'Call', '!Object'), array('function', 'HasInstance', 'Boolean'),)), // Has special language support
                             'Function' => array('function', array()),
@@ -62,7 +64,7 @@ function init__webstandards_js_lint()
                             'Number' => array('Object', array(array('Number', '!MAX_VALUE'), array('Number', '!MIN_VALUE'), array('Number', '!NaN'), array('Number', '!NEGATIVE_INFINITY'), array('Number', '!POSITIVE_INFINITY'), array('function', 'toString', 'String'), array('function', 'toLocaleString', 'String'), array('function', 'toFixed', 'String'), array('function', 'toExponential', 'String'), array('function', 'toPrecision', 'String'),)), // Has special language support
                             'Math' => array('Object', array(array('Number', '!E'), array('Number', '!LN10'), array('Number', '!LN2'), array('Number', '!LOG2E'), array('Number', '!LOG10E'), array('Number', '!PI'), array('Number', '!SQRT1_2'), array('Number', '!SQRT2'), array('function', '!abs', 'Number'), array('function', '!acos', 'Number'), array('function', '!asin', 'Number'), array('function', '!atan', 'Number'), array('function', '!atan2', 'Number'), array('function', '!ceil', 'Number'), array('function', '!cos', 'Number'), array('function', '!exp', 'Number'), array('function', '!floor', 'Number'), array('function', '!log', 'Number'), array('function', '!max', 'Number'), array('function', '!min', 'Number'), array('function', '!pox', 'Number'), array('function', '!random', 'Number'), array('function', '!round', 'Number'), array('function', '!sin', 'Number'), array('function', '!sqrt', 'Number'), array('function', '!tan', 'Number'),)),
                             'Date' => array('Object', array(array('function', '!parse', 'Number'), array('function', '!UTC', 'Number'), array('function', 'toDateString', 'String'), array('function', 'toTimeString', 'String'), array('function', 'toLocaleString', 'String'), array('function', 'toLocaleDateString', 'String'), array('function', 'toLocaleTimeString', 'String'), array('function', 'getTime', 'Number'), array('function', 'getFullYear', 'Number'), array('function', 'getUTCFullYear', 'Number'), array('function', 'getMonth', 'Number'), array('function', 'getUTCMonth', 'Number'), array('function', 'getDate', 'Number'), array('function', 'getUTCDate', 'Number'), array('function', 'getDay', 'Number'), array('function', 'getUTCDay', 'Number'), array('function', 'getHours', 'Number'), array('function', 'getUTCHours', 'Number'), array('function', 'getMinutes', 'Number'), array('function', 'getUTCMinutes', 'Number'), array('function', 'getSeconds', 'Number'), array('function', 'getUTCSeconds', 'Number'), array('function', 'getMilliseconds', 'Number'), array('function', 'getUTCMilliseconds', 'Number'), array('function', 'getTimezoneOffset', 'Number'), array('function', 'setTime'), array('function', 'setMilliseconds'), array('function', 'setUTCMilliseconds'), array('function', 'setSeconds'), array('function', 'setUTCSeconds'), array('function', 'setMinutes'), array('function', 'setUTCMinutes'), array('function', 'setHours'), array('function', 'setUTCHours'), array('function', 'setDate'), array('function', 'setUTCDate'), array('function', 'setMonth'), array('function', 'setUTCMonth'), array('function', 'setFullYear'), array('function', 'setUTCFullYear'), array('function', 'toUTCString', 'String'),)),
-                            'RegExp' => array('Object', array(array('String', '$1'),/*array('function','compile'),*/
+                            'RegExp' => array('Object', array(array('String', '$1'),/*array('function', 'compile'),*/
                                                               array('String', '$2'), array('String', '$3'), array('String', '$4'), array('String', '$5'), array('function', 'exec', 'Boolean'), array('function', 'test', 'Boolean'), array('String', 'source'), array('Boolean', 'global'), array('Boolean', 'ignoreCase'), array('Boolean', 'multiline'), array('Number', 'lastIndex'),)), // Has special language support
                             'Error' => array('Object', array(array('String', '!name'), array('String', '!message'),)),
                             'EvalError' => array('Error', array()),
@@ -78,13 +80,13 @@ function init__webstandards_js_lint()
                             /* Browser-Library / DOM */
                             'Node' => array('Object', array(array('String', 'nodeName'), array('Number', 'nodeType'), array('String', 'nodeValue'), array('NodeArray', 'childNodes'), array('!Node', 'firstChild'), array('!Node', 'lastChild'), array('!Node', 'nextSibling'), array('!Node', 'parentNode'), array('!Node', 'previousSibling'), array('!XMLDocument', 'ownerDocument'), array('function', 'appendChild', '!Node'), array('function', 'cloneNode', '!Node'), array('function', 'insertBefore', '!Node'), array('function', 'removeChild', '!Node'), array('function', 'replaceChild', '!Node'), array('function', 'hasChildNodes', 'Boolean'),)), // nodeType: 1=Element,2=Attribute,3=Text,9=Document
                             'XMLDocument' => array('Node', array(array('Implementation', 'implementation'), array('function', 'createElement', '!Element'), array('function', 'createTextNode', 'TextNode'), array('function', 'getElementById', '!Element'), array('function', 'createAttribute', 'Attribute'), array('HTML', 'documentElement'), array('Boolean', 'async'), array('function', 'load'), array('function', 'loadXML'), array('function', 'importNode', '!Node'), array('function', 'cloneNode', '!Node'),)),
-                            'Document' => array('XMLDocument', array(array('String', 'referrer'), array('String', 'title'), array('String', 'URL'), array('String', 'cookie'), array('Body', 'body'), array('function', 'getElementsByName', 'ElementArray'), array('function', 'getElementsByTagName', 'ElementArray'),/*array('ElementArray','images'),array('ElementArray','links'),array('FormArray','forms'),*/
+                            'Document' => array('XMLDocument', array(array('String', 'referrer'), array('String', 'title'), array('String', 'URL'), array('String', 'cookie'), array('Body', 'body'), array('function', 'getElementsByName', 'ElementArray'), array('function', 'getElementsByTagName', 'ElementArray'),/*array('ElementArray', 'images'), array('ElementArray', 'links'), array('FormArray', 'forms'),*/
                                                                      array('Selection', 'selection'), array('function', 'createRange', 'Range'), array('function', 'open'), array('function', 'write'), array('function', 'close'), array('Boolean', 'designMode'), array('function', 'execCommand', 'Boolean'), array('function', 'queryCommandEnabled', 'Boolean'), array('function', 'queryCommandState', 'Boolean'), array('function', 'queryCommandValue', '!Object'),)),
-                            'Element' => array('Node', array(array('function', 'addEventListener', 'Boolean'), array('function', 'attachEvent', 'Boolean'), array('function', 'getElementsByTagName', 'ElementArray'), array('function', 'setAttribute'), array('function', 'getAttribute'), array('function', 'Attribute'), array('Array', 'attributes' /* this is only good for Raw-XML, not XHTML-in-IE */), array('function', 'onresize'), array('function', 'onmouseup'), array('function', 'onmouseover'), array('function', 'onmouseout'), array('function', 'onmousemove'), array('function', 'onmousedown'), array('function', 'onkeyup'), array('function', 'onkeypress'), array('function', 'onkeydown'), array('function', 'ondblclick'), array('function', 'onclick'), array('Number', 'selectionStart'), array('Number', 'selectionEnd'), array('String', 'className'), array('String', 'id'),/*array('String','innerHTML'),*/
+                            'Element' => array('Node', array(array('function', 'addEventListener', 'Boolean'), array('function', 'attachEvent', 'Boolean'), array('function', 'getElementsByTagName', 'ElementArray'), array('function', 'setAttribute'), array('function', 'getAttribute'), array('function', 'Attribute'), array('Array', 'attributes' /* this is only good for Raw-XML, not XHTML-in-IE */), array('function', 'onresize'), array('function', 'onmouseup'), array('function', 'onmouseover'), array('function', 'onmouseout'), array('function', 'onmousemove'), array('function', 'onmousedown'), array('function', 'onkeyup'), array('function', 'onkeypress'), array('function', 'onkeydown'), array('function', 'ondblclick'), array('function', 'onclick'), array('Number', 'selectionStart'), array('Number', 'selectionEnd'), array('String', 'className'), array('String', 'id'),/*array('String', 'innerHTML'),*/
                                                              array('String', 'innerText'), array('!Object', 'style'), array('Number', 'selectionStart'), array('Number', 'selectionEnd'), array('Number', 'offsetWidth'), array('Number', 'offsetHeight'), array('Number', 'offsetLeft'), array('Number', 'offsetTop'), array('String', 'role'), array('!Element', 'offsetParent'),)),
                             'TextNode' => array('Node', array(array('function', 'appendData'), array('function', 'deleteData'), array('function', 'insertData'), array('function', 'replaceData'), array('function', 'substringData', 'String'), array('function', 'splitText', 'TextNode'), array('String', 'data'),)),
                             'Attribute' => array('Object', array(array('String', 'name'), array('String', 'value'),)),
-                            'Body' => array('Element', array(/*array('function','onmousewheel'),*/
+                            'Body' => array('Element', array(/*array('function', 'onmousewheel'),*/
                                                              array('function', 'onpagehide'), array('function', 'onpageshow'), array('function', 'onunload'), array('function', 'onload'), array('Number', 'offsetWidth'), array('Number', 'offsetHeight'), array('Number', 'scrollWidth'), array('Number', 'scrollHeight'), array('Number', 'scrollTop'), array('Number', 'scrollLeft'),)),
                             'Caption' => array('Element', array()),
                             'HTML' => array('Element', array(array('Number', 'clientWidth'), array('Number', 'clientHeight'), array('Number', 'scrollWidth'), array('Number', 'scrollHeight'), array('Number', 'scrollTop'), array('Number', 'scrollLeft'),)),
@@ -102,8 +104,8 @@ function init__webstandards_js_lint()
                             'TableRow' => array('Element', array(array('ElementArray', 'cells'), array('Number', 'sectionRowIndex'), array('Number', 'rowIndex'), array('function', 'insertCell', 'TableData'), array('function', 'deleteCell'),)),
                             'Self' => array('Window', array(array('Number', 'outerHeight'), array('Number', 'outerWidth'), array('Number', 'screenTop'), array('Number', 'screenLeft'), array('Number', 'screenX'), array('Number', 'screenY'),)),
                             'Screen' => array('Object', array(array('Number', 'availWidth'), array('Number', 'availHeight'), array('Number', 'colorDepth'), array('Number', 'width'), array('Number', 'height'),)),
-                            'Window' => array('Object', array(array('JSON', 'JSON'), array('Console', 'console'), array('Storage', 'sessionStorage'), array('Storage', 'localStorage'),/*array('function','onmousewheel'),*/
-                                                              array('function', 'onpagehide'), array('function', 'onpageshow'), array('function', 'onunload'), array('function', 'onload'), array('History', 'history'), array('Event', 'event'), array('String', 'status'), array('Document', 'document'), array('WindowArray', 'frames'), array('Navigator', 'navigator'), array('Location', 'location'), array('Screen', 'screen'), array('Boolean', 'closed'), array('Window', 'opener'), array('Window', 'parent'), array('Self', 'self'), array('Window', 'top'), array('function', 'alert'), array('function', 'blur'), array('function', 'focus'), array('function', 'clearInterval'), array('function', 'clearTimeout'), array('function', 'close'), array('function', 'confirm', 'Boolean'), array('function', 'moveBy'), array('function', 'open', 'Window'), array('function', 'print'), array('function', 'prompt', '!Object'), array('function', 'scrollBy'), array('function', 'scrollTo'), array('function', 'setInterval', 'Number'), array('function', 'setTimeout', 'Number'), array('function', 'encodeURIComponent', 'String'), array('function', 'encodeURI', 'String'), array('function', 'decodeURIComponent', 'String'), array('function', 'decodeURI', 'String'), array('function', 'isFinite', 'Boolean'), array('function', 'isNaN', 'Boolean'), array('function', 'parseFloat', 'Number'), array('function', 'parseInt', 'Number'), array('function', 'eval', '!Object'), array('function', 'void', 'undefined')/*,array('function','getAttention')*/,)),
+                            'Window' => array('Object', array(array('JSON', 'JSON'), array('Console', 'console'), array('Storage', 'sessionStorage'), array('Storage', 'localStorage'),/* array('function', 'onmousewheel'),*/
+                                                              array('function', 'onpagehide'), array('function', 'onpageshow'), array('function', 'onunload'), array('function', 'onload'), array('History', 'history'), array('Event', 'event'), array('String', 'status'), array('Document', 'document'), array('WindowArray', 'frames'), array('Navigator', 'navigator'), array('Location', 'location'), array('Screen', 'screen'), array('Boolean', 'closed'), array('Window', 'opener'), array('Window', 'parent'), array('Self', 'self'), array('Window', 'top'), array('function', 'alert'), array('function', 'blur'), array('function', 'focus'), array('function', 'clearInterval'), array('function', 'clearTimeout'), array('function', 'close'), array('function', 'confirm', 'Boolean'), array('function', 'moveBy'), array('function', 'open', 'Window'), array('function', 'print'), array('function', 'prompt', '!Object'), array('function', 'scrollBy'), array('function', 'scrollTo'), array('function', 'setInterval', 'Number'), array('function', 'setTimeout', 'Number'), array('function', 'encodeURIComponent', 'String'), array('function', 'encodeURI', 'String'), array('function', 'decodeURIComponent', 'String'), array('function', 'decodeURI', 'String'), array('function', 'isFinite', 'Boolean'), array('function', 'isNaN', 'Boolean'), array('function', 'parseFloat', 'Number'), array('function', 'parseInt', 'Number'), array('function', 'eval', '!Object'), array('function', 'void', 'undefined')/*, array('function', 'getAttention')*/,)),
                             'Event' => array('Object', array(array('function', 'stopPropagation'), array('Boolean', 'cancelBubble'), array('!Element', 'target'), array('!Element', 'srcElement'), array('!Element', 'fromElement'), array('!Element', 'relatedTarget'), array('Number', 'clientX'), array('Number', 'clientY'), array('Number', 'offsetX'), array('Number', 'offsetY'), array('Number', 'pageX'), array('Number', 'pageY'), array('Number', 'screenX'), array('Number', 'screenY'), array('Boolean', 'altKey'), array('Boolean', 'metaKey'), array('Boolean', 'ctrlKey'), array('Boolean', 'shiftKey'), array('Number', 'keyCode'), array('Number', 'which'), array('String', 'charCode'), array('Number', 'button'), array('String', 'type'),)),
                             'History' => array('Object', array(array('Number', 'length'), array('function', 'back'), array('function', 'forward'), array('function', 'go'),)),
                             'Location' => array('Object', array(array('String', 'hash'), array('String', 'host'), array('String', 'hostname'), array('String', 'href'), array('String', 'pathname'), array('Number', 'port'), array('String', 'protocol'), array('String', 'search'), array('function', 'assign'), array('function', 'reload'), array('function', 'replace'),)),
@@ -229,6 +231,8 @@ function check_js($data, $raw_errors = false)
  * Do the actual code check on the parse structure.
  *
  * @param  map $structure Parse structure
+ *
+ * @ignore
  */
 function _check_js($structure)
 {
@@ -353,7 +357,7 @@ function js_check_variable_list($JS_LOCAL_VARIABLES)
 
         // Check for non-used variables
         if (($v['unused_value']) && ($name != '__return') && ($name != '_') && (!$v['is_global']) && (!in_array($name, array('this', 'arguments', 'event')))) {
-            //       js_log_warning('CHECKER','Non-used '.($v['unused_value']?'value':'variable').' (\''.$name.'\')',$v['first_mention']);   Annoying error, unneeded, inaccurate
+            //js_log_warning('CHECKER', 'Non-used ' . ($v['unused_value'] ? 'value' : 'variable') . ' (\'' . $name . '\')', $v['first_mention']);   Annoying error, unneeded, inaccurate
         }
     }
 }
@@ -399,11 +403,14 @@ function js_check_command($command, $depth)
             case 'SWITCH':
                 $switch_type = js_check_expression($c[1]);
                 foreach ($c[2] as $case) {
-                    /*if (!is_null($case[0]))
-                            {
-                                        $passes=js_ensure_type(array($switch_type),js_check_expression($case[0]),$c_pos,'Switch type inconsistency');
-                                        if ($passes) js_infer_expression_type_to_variable_type($switch_type,$case[0]);
-                            }*/
+                    /*
+                    if (!is_null($case[0])) {
+                        $passes = js_ensure_type(array($switch_type), js_check_expression($case[0]), $c_pos, 'Switch type inconsistency');
+                        if ($passes) {
+                            js_infer_expression_type_to_variable_type($switch_type, $case[0]);
+                        }
+                    }
+                    */
                     js_check_command($case[1], $depth + 1);
                 }
                 break;
@@ -417,8 +424,10 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (if) [is '.$t.']');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if) [is ' . $t . ']');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Boolean', $c[1]);
+                }*/
                 js_check_command($c[2], $depth);
                 break;
             case 'IF_ELSE':
@@ -426,14 +435,18 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (if-else)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if-else)');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Boolean', $c[1]);
+                }*/
                 js_check_command($c[2], $depth);
                 js_check_command($c[3], $depth);
                 break;
             case 'FOREACH_list':
-                //$passes=js_ensure_type(array('Array'),js_check_expression($c[1]),$c_pos,'FOR-OF must take Array');
-                //if ($passes) js_infer_expression_type_to_variable_type('Array',$c[1]);
+                /*$passes = js_ensure_type(array('Array'), js_check_expression($c[1]), $c_pos, 'FOR-OF must take Array');
+                if ($passes) {
+                    js_infer_expression_type_to_variable_type('Array', $c[1]);
+                }*/
                 js_add_variable_reference($c[2][1], $c_pos, true);
                 js_check_command($c[3], $depth + 1);
                 break;
@@ -445,7 +458,7 @@ function js_check_command($command, $depth)
                     js_check_command(array($c[3]), $depth + 1);
                 }
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[2]), $c_pos, 'Loop conditionals must be Boolean (for)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[2]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[2]);
                 if (!is_null($c[4])) {
                     js_check_command($c[4], $depth + 1);
                 }
@@ -453,11 +466,11 @@ function js_check_command($command, $depth)
             case 'DO':
                 js_check_command($c[2], $depth + 1);
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[1]), $c_pos, 'Loop conditionals must be Boolean (do)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 break;
             case 'WHILE':
                 $passes = js_ensure_type(array('Boolean'), js_check_expression($c[1]), $c_pos, 'Loop conditionals must be Boolean (while)');
-                //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$c[1]);
+                //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 js_check_command($c[2], $depth + 1);
                 $rem = $GLOBALS['JS_PARSING_CONDITIONAL'];
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
@@ -575,40 +588,40 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
         $t = js_check_expression($e[1], false, $is_guarded);
         $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-        //$passes=js_ensure_type(array('Boolean'),$t,$c_pos,'Conditionals must be Boolean (unary)');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[1]);
+        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (unary)');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $type_a = js_check_expression($e[2][0]);
         $type_b = js_check_expression($e[2][1]);
-        /*if (($type_a!='Null') && ($type_b!='Null'))
+        /*if (($type_a != 'Null') && ($type_b != 'Null'))
         {
-            $passes=js_ensure_type(array($type_a),$type_b,$c_pos,'Type symettry error in unary operator');
-            //if ($passes) js_infer_expression_type_to_variable_type($type_a,$e[2][1]);
+            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in unary operator');
+            //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2][1]);
         }*/
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR'))) {
         $exp = js_check_expression($e[1], false, $is_guarded);
-        //$passes=js_ensure_type(array('Boolean'),$exp,$c_pos-1,'Can only use Boolean combinators with Booleans');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[1]);
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos - 1, 'Can only use Boolean combinators with Booleans');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $exp = js_check_expression($e[2]);
-        //$passes=js_ensure_type(array('Boolean'),$exp,$c_pos,'Can only use Boolean combinators with Booleans');
-        //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$e[2]);
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos, 'Can only use Boolean combinators with Booleans');
+        //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[2]);
         return 'Boolean';
     }
     if (in_array($e[0], array('BW_XOR', 'BW_AND', 'BW_OR', 'SL', 'SR', 'ZSR', 'REMAINDER'))) {
         $passes = js_ensure_type(array('Number'), js_check_expression($e[1], false, $is_guarded), $c_pos - 1, 'Can only use integer combinators with Numbers');
-        //if ($passes) js_infer_expression_type_to_variable_type('Number',$e[1]);
+        //if ($passes) js_infer_expression_type_to_variable_type('Number', $e[1]);
         $passes = js_ensure_type(array('Number'), js_check_expression($e[2]), $c_pos, 'Can only use integer combinators with Numbers');
-        //if ($passes) js_infer_expression_type_to_variable_type('Number',$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type('Number', $e[2]);
         return 'Number';
     }
     if (in_array($e[0], array('CONC'))) {
         $type_a = js_check_expression($e[1], false, $is_guarded);
         $type_b = js_check_expression($e[2]);
         $passes = js_ensure_type(array('String'), $type_a, $c_pos - 1, 'Can only use string combinators with Strings (1) (not ' . $type_a . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type('String',$e[1]);
+        //if ($passes) js_infer_expression_type_to_variable_type('String', $e[1]);
         $passes = js_ensure_type(array('String'), $type_b, $c_pos, 'Can only use string combinators with Strings (2) (not ' . $type_b . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type('String',$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type('String', $e[2]);
         return 'String';
     }
     if (in_array($e[0], array('SUBTRACT', 'MULTIPLY', 'DIVIDE'))) {
@@ -643,7 +656,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             js_log_warning('CHECKER', 'It\'s redundant to equate to truths', $c_pos);
         }
         $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Comparators must have type symmetric operands (' . $type_a . ' vs ' . $type_b . ')');
-        //if ($passes) js_infer_expression_type_to_variable_type($type_a,$e[2]);
+        //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2]);
         return 'Boolean';
     }
     if ($e[0] == 'INSTANCEOF') {
@@ -703,8 +716,8 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return js_check_expression($inner[1], false, $is_guarded);
         case 'BOOLEAN_NOT':
             $expression = js_check_expression($inner[1], false, $is_guarded);
-            //$passes=js_ensure_type(array('Boolean'),$expression,$c_pos,'Can only \'NOT\' a Boolean');
-            //if ($passes) js_infer_expression_type_to_variable_type('Boolean',$inner[1]);
+            //$passes = js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');
+            //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $inner[1]);
             return 'Boolean';
         case 'TYPEOF':
             js_check_expression($inner[1], false, true);
@@ -815,7 +828,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
                 if (($GLOBALS['JS_PARSING_CONDITIONAL']) && (count($variable[2]) == 0)) { // We're running a conditional on this, meaning the user is likely checking to see if it exists (if it's a boolean that doesn't exist, we're in trouble, but unfortunately it's ambiguous).
                     // We add the variable, because it might have been guaranteed. We're screwed if it is not a guaranteeing conditional, but it's impossible to test that ("the halting problem")
                     if (($class == 'Window') || ($class == 'Self')) {
-                        //js_add_variable_reference($identifier,$variable[count($variable)-1],true,false,NULL,true); Causes confusion
+                        //js_add_variable_reference($identifier, $variable[count($variable) - 1], true, false, null, true); Causes confusion
                     }
                     $JS_PROTOTYPES[$class][1][] = array('!Object', $identifier); // Could be any type
                 }
@@ -857,14 +870,16 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             js_scan_extractive_expressions($variable[2][2]);
         }
 
-        //js_add_variable_reference($identifier,$variable[count($variable)-1],false,true);
+        //js_add_variable_reference($identifier, $variable[count($variable) - 1], false, true);
 
         if ($variable[2][0] == 'ARRAY_AT') {
             js_check_expression($variable[2][1]);
             $exp_type = js_check_variable(array('VARIABLE', $identifier, array(), $variable[count($variable) - 1]), true, false, $class);
 
-//       $passes=js_ensure_type(array('!Array'),$exp_type,$variable[3],'Variable \''.$identifier.'\' must be an Array due to dereferencing (is '.$exp_type.')');
-//       if ($passes) js_infer_expression_type_to_variable_type('!Array',$variable[2][1]);
+            /*$passes = js_ensure_type(array('!Array'), $exp_type, $variable[3], 'Variable \'' . $identifier . '\' must be an Array due to dereferencing (is ' . $exp_type . ')');
+            if ($passes) {
+                js_infer_expression_type_to_variable_type('!Array', $variable[2][1]);
+            }*/
             $pos = strpos($exp_type, 'Array');
             if ($pos !== false) {
                 $exp_type = substr($exp_type, 0, $pos);
@@ -1003,11 +1018,12 @@ function js_add_variable_reference($identifier, $first_mention, $instantiation =
  */
 function js_infer_expression_type_to_variable_type($type, $expr)
 {
-    /*   if (($expression[0]=='VARIABLE') && (count($expression[1][2])==0))      Not reliable enough, JS is very dynamic
-    {
-        $identifier=$expression[1][1];
-        js_set_composr_type($identifier,$type);
-    }*/
+    /* Not reliable enough, JS is very dynamic
+    if (($expression[0] == 'VARIABLE') && (count($expression[1][2]) == 0)) {
+        $identifier = $expression[1][1];
+        js_set_composr_type($identifier, $type);
+    }
+    */
 }
 
 /**

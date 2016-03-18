@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    amazon_affiliate_sales
+ */
+
+/**
+ * Block class.
  */
 class Block_side_amazon_affiliate_sales
 {
@@ -27,7 +32,7 @@ class Block_side_amazon_affiliate_sales
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('associates_id', 'product_line', 'subject_keywords', 'items_number');
+        $info['parameters'] = array('associates_id', 'product_line', 'subject_keywords', 'items_number', 'region');
         return $info;
     }
 
@@ -39,7 +44,7 @@ class Block_side_amazon_affiliate_sales
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'associates_id\',$map)?$map[\'associates_id\']:\'\',array_key_exists(\'product_line\',$map)?$map[\'product_line\']:\'\',array_key_exists(\'subject_keywords\',$map)?$map[\'subject_keywords\']:\'\',array_key_exists(\'items_number\',$map)?$map[\'items_number\']:\'\')';
+        $info['cache_on'] = '$map';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
@@ -59,34 +64,20 @@ class Block_side_amazon_affiliate_sales
         if (!array_key_exists('associates_id', $map)) {
             return do_lang_tempcode('NO_PARAMETER_SENT', 'associates_id');
         }
-        if (!array_key_exists('product_line', $map)) {
-            return do_lang_tempcode('NO_PARAMETER_SENT', 'product_line');
-        }
-        if (!array_key_exists('subject_keywords', $map)) {
-            return do_lang_tempcode('NO_PARAMETER_SENT', 'subject_keywords');
-        }
-        if (!array_key_exists('items_number', $map)) {
-            return do_lang_tempcode('NO_PARAMETER_SENT', 'items_number');
-        }
 
-        $associates_id = $map['associates_id'];//'we4u-20';//
-        $product_line = $map['product_line'];
-        $subject_keywords = preg_replace('#\s#', '+', $map['subject_keywords']);
-        $n = (isset($map['items_number']) && intval($map['items_number']) > 0) ? intval($map['items_number']) : 3;
+        $associates_id = $map['associates_id'];
+        $product_line = isset($map['product_line']) ? $map['product_line'] : '';
+        $subject_keywords = isset($map['subject_keywords']) ? $map['subject_keywords'] : '';
+        $items_number = (isset($map['items_number']) && intval($map['items_number']) >= 2) ? intval($map['items_number']) : 2;
+        $region = isset($map['region']) ? $map['region'] : 'US';
 
-        $out = '';
-
-        for ($i = 0; $i < $n; $i++) {
-            $out .= '<iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&t=' . escape_html($associates_id) . '&o=1&p=8&l=st1&mode=' . escape_html($product_line) . '&search=' . escape_html($subject_keywords) . '&t1=_blank&lc1=00FFFF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="120px" height="240" border="0" frameborder="0" style="width: 120px; border:none;" scrolling="no"></iframe><br /><br />';
-        }
-
-        return do_template('BLOCK_SIDE_AMAZON_AFFILIATES', array(
+        return do_template('BLOCK_SIDE_AMAZON_AFFILIATE_SALES', array(
             '_GUID' => '5edc2fd386f1688fca8e0e6eefa5f455',
-            'TITLE' => do_lang_tempcode('BLOCK_AMAZON_AFFILIATE_SALES_TITLE'),
-            'CONTENT' => $out,
             'ASSOCIATES_ID' => $associates_id,
             'PRODUCT_LINE' => $product_line,
             'SUBJECT_KEYWORDS' => $subject_keywords,
+            'ITEMS_NUMBER' => strval($items_number),
+            'REGION' => $region,
         ));
     }
 }

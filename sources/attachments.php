@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -64,8 +64,11 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     }
 
     // Work out URL, going through the attachment frontend script
+    $url_safe = $attachment_row['a_url'];
+    if (url_is_local($url_safe)) {
+        $url_safe = get_custom_base_url() . '/' . $url_safe;
+    }
     $url = mixed();
-    $url_safe = mixed();
     if ($tag == 'attachment') {
         $url = new Tempcode();
 
@@ -76,8 +79,6 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         } else {
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '0'));
         }
-        $url_safe = new Tempcode();
-        $url_safe->attach($url);
         $keep = symbol_tempcode('KEEP');
         $url->attach($keep);
         if (get_option('anti_leech') == '1') {
@@ -91,11 +92,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
             $attributes['thumb_url']->attach('&thumb=1&no_count=1');
         }
     } else { // attachment_safe
-        $url = $attachment_row['a_url'];
-        if (url_is_local($url)) {
-            $url = get_custom_base_url() . '/' . $url;
-        }
-        $url_safe = $url;
+        $url = $url_safe;
 
         if ((!array_key_exists('thumb_url', $attributes)) || ($attributes['thumb_url'] == '')) {
             $attributes['thumb_url'] = $attachment_row['a_thumb_url'];
@@ -185,7 +182,7 @@ function attachments_script()
     // Lookup
     $rows = $connection->query_select('attachments', array('*'), array('id' => $id), 'ORDER BY a_add_time DESC');
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ATTACHMENT')));
     }
     $myrow = $rows[0];
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s \G\M\T', $myrow['a_add_time']));
@@ -292,8 +289,8 @@ function attachments_script()
         }
     }
     header('Content-Length: ' . strval($new_length));
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     error_reporting(0);
 
@@ -310,7 +307,7 @@ function attachments_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size==$new_length)    Uses a lot of memory :S
+    /*if ($size == $new_length)    Uses a lot of memory :S
     {
         fpassthru($myfile);
     } else {*/
@@ -361,11 +358,11 @@ function attachment_popup_script()
         $list->attach(form_input_list_entry(strval($member_id), $member_id == $member_now, $username));
     }
 
-    $field_name = get_param_string('field_name', 'post');
+    $field_name = filter_naughty_harsh(get_param_string('field_name', 'post'));
     $post_url = get_self_url();
 
     $rows = $connection->query_select('attachments', array('*'), array('a_member_id' => $member_now));
-    $content = new Tempcode();
+    $attachments = array();
     foreach ($rows as $myrow) {
         $may_delete = (get_member() == $myrow['a_member_id']) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
 
@@ -377,18 +374,17 @@ function attachment_popup_script()
 
         $myrow['description'] = $myrow['a_description'];
         $tpl = render_attachment('attachment', array(), $myrow, uniqid('', true), get_member(), false, $connection, null, get_member());
-        $content->attach(do_template('ATTACHMENTS_BROWSER_ATTACHMENT', array(
-            '_GUID' => '64356d30905c99325231d3bbee92128c',
+        $attachments[] = array(
             'FIELD_NAME' => $field_name,
             'TPL' => $tpl,
             'DESCRIPTION' => $myrow['a_description'],
             'ID' => strval($myrow['id']),
             'MAY_DELETE' => $may_delete,
             'DELETE_URL' => $post_url,
-        )));
+        );
     }
 
-    $content = do_template('ATTACHMENTS_BROWSER', array('_GUID' => '7773aad46fb0bfe563a142030beb1a36', 'LIST' => $list, 'CONTENT' => $content, 'URL' => $post_url));
+    $content = do_template('ATTACHMENTS_BROWSER', array('_GUID' => '7773aad46fb0bfe563a142030beb1a36', 'LIST' => $list, 'ATTACHMENTS' => $attachments, 'URL' => $post_url));
 
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

@@ -35,7 +35,7 @@
 					<strong>{IP*}</strong>
 
 					<div class="mini_indent">
-						<div><em>{!_BANNED}, {$LCASE,{IP_BANNED*}}</em>{+START,IF_PASSED,IP_BAN_LINK} {IP_BAN_LINK}{+END}</div>
+						<div><em>{!BANNED}, {$LCASE,{IP_BANNED*}}</em>{+START,IF_PASSED,IP_BAN_LINK} {IP_BAN_LINK}{+END}</div>
 
 						{+START,IF_NON_EMPTY,{$CONFIG_OPTION,stopforumspam_api_key}{$CONFIG_OPTION,tornevall_api_username}}
 							<div><span class="associated_link"><a href="{$PAGE_LINK*,_SEARCH:admin_actionlog:syndicate_ip_ban:ip={IP}:member_id={ID}:reason={!MANUAL}:redirect={$SELF_URL&}}">{!SYNDICATE_TO_STOPFORUMSPAM}</a></span></div>
@@ -48,23 +48,25 @@
 		<tr>
 			<th>{!RELATED_SCREENS}</th>
 			<td>
-				<ul class="actions_list" role="navigation">
-					{+START,IF_PASSED,PROFILE_URL}
-						<li><a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
-					{+END}
-					{+START,IF_PASSED,ACTIONLOG_URL}
-						<li><a href="{ACTIONLOG_URL*}">{!VIEW_ACTIONLOGS}</a></li>
-					{+END}
-					{+START,IF_PASSED,POINTS_URL}
-						<li><a href="{POINTS_URL*}">{!POINTS}</a></li>
-					{+END}
-					{+START,IF_PASSED,AUTHOR_URL}
-						<li><a href="{AUTHOR_URL*}">{!VIEW_AUTHOR}</a></li>
-					{+END}
-					{+START,IF_PASSED,SEARCH_URL}
-						<li><a rel="search" href="{SEARCH_URL*}">{!SEARCH}</a></li>
-					{+END}
-				</ul>
+				<nav>
+					<ul class="actions_list">
+						{+START,IF_PASSED,PROFILE_URL}
+							<li><a href="{PROFILE_URL*}">{!VIEW_PROFILE}</a></li>
+						{+END}
+						{+START,IF_PASSED,ACTIONLOG_URL}
+							<li><a href="{ACTIONLOG_URL*}">{!VIEW_ACTIONLOGS}</a></li>
+						{+END}
+						{+START,IF_PASSED,POINTS_URL}
+							<li><a href="{POINTS_URL*}">{!POINTS}</a></li>
+						{+END}
+						{+START,IF_PASSED,AUTHOR_URL}
+							<li><a href="{AUTHOR_URL*}">{!VIEW_AUTHOR}</a></li>
+						{+END}
+						{+START,IF_PASSED,SEARCH_URL}
+							<li><a rel="search" href="{SEARCH_URL*}">{!SEARCH}</a></li>
+						{+END}
+					</ul>
+				</nav>
 			</td>
 		</tr>
 
@@ -73,12 +75,14 @@
 				<th>{!ACTIONS}</th>
 				<td>
 					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank"  -->
-					<ul class="actions_list" role="navigation">
-						<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>
-						<li><a rel="external" href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
-						<li><a rel="external" href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
-						<li><a rel="external" href="http://www.infosniper.net/index.php?ip_address={IP*}">Geo-Lookup</a></li>
-					</ul>
+					<nav>
+						<ul class="actions_list">
+							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>
+							<li><a rel="external" href="http://network-tools.com/default.asp?prog=ping&amp;Netnic=whois.arin.net&amp;host={IP*}">Ping</a></li>
+							<li><a rel="external" href="http://network-tools.com/default.asp?prog=trace&amp;Netnic=whois.arin.net&amp;host={IP*}">Tracert</a></li>
+							<li><a rel="external" href="http://www.infosniper.net/index.php?ip_address={IP*}">Geo-Lookup</a></li>
+						</ul>
+					</nav>
 				</td>
 			</tr>
 		{+END}
@@ -98,7 +102,7 @@
 			{IP_LIST}
 		</ul>
 
-		<input onclick="disable_button_just_clicked(this);" class="buttons__save button_screen" type="submit" value="{!SET}" />
+		<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__save" type="submit" value="{!SET}" />
 	</form>
 {+END}
 {+START,IF_EMPTY,{IP_LIST}}
@@ -107,7 +111,7 @@
 	</p>
 {+END}
 
-<h2>{!_VIEWS} ({!IP_ADDRESS})</h2>
+<h2>{!VIEWS} ({!IP_ADDRESS})</h2>
 
 {STATS}
 

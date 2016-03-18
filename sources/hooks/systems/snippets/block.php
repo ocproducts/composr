@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -56,7 +56,11 @@ class Hook_snippet_block
         // Cleanup
         if (mt_rand(0, 1000) == 123) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('temp_block_permissions')) {
-                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'temp_block_permissions WHERE p_time<' . strval(time() - intval(60.0 * 60.0 * floatval(get_option('session_expiry_time')))));
+                $sql = 'DELETE FROM ' . get_table_prefix() . 'temp_block_permissions WHERE p_time<' . strval(time() - intval(60.0 * 60.0 * floatval(get_option('session_expiry_time'))));
+                if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
+                    $sql .= ' AND NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'sessions WHERE the_session=p_session_id)';
+                }
+                $GLOBALS['SITE_DB']->query($sql);
             }
         }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -27,6 +27,10 @@
 function cns_list_multi_moderations($forum_id)
 {
     if (!addon_installed('cns_multi_moderations')) {
+        return array();
+    }
+
+    if (is_null($forum_id)) {
         return array();
     }
 

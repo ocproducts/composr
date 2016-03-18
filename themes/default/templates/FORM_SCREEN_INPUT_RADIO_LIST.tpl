@@ -1,3 +1,5 @@
+{$SET,early_description,1}
+
 {+START,IF_PASSED,NAME}
 	<div id="error_{NAME*}" style="display: none" class="input_error_here"></div>
 {+END}
@@ -14,7 +16,7 @@
 	{+START,IF_PASSED,CODE}
 		<script>// <![CDATA[
 			add_event_listener_abstract(window,'load',function() {
-				choose_picture('j_{NAME|;}_{CODE|;}',document.getElementById('j_{NAME|;}_{CODE|;}_img'),'{NAME;/}',null);
+				choose_picture('j_{NAME|;}_{CODE|;}',null,'{NAME;/}',null);
 			});
 		//]]></script>
 	{+END}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_page_groupings_tester
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('rich_content', 'menu/_generic_admin/tool', array('tester', array('type' => 'go'), get_page_zone('tester')), do_lang_tempcode('tester:TESTER')),
+            array(addon_installed('collaboration_zone') ? 'collaboration' : 'rich_content', 'menu/_generic_admin/tool', array('tester', array('type' => 'go'), get_page_zone('tester')), do_lang_tempcode('tester:TESTER')),
         );
     }
 }

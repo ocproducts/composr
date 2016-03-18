@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_twitter_support
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -90,11 +91,16 @@ class Hook_addon_registry_twitter_support
     {
         return 'Syndicate site activities to Twitter.
 
-This addon sits on top of the activity feed addon to syndicate out logged activities to the user\'s associated twitter account (if they have one).
+Activity can be syndicated:
+1) On a site level, for any news or calendar events added by the staff
+2) By individual users to their own Twitter accounts (if they have authorised this via the activity tab in their profile)
 
-The code is based on \'Twitter class\' by \'Tijs Verkoyen\'.
+Set up is a little tricky:
+1) you need to set up an application on Twitter
+2) you need to configure Composr to use the Twitter API via Admin Zone > Setup > Configuration > Composr APIs > Twitter syndication
+3) you need to authorise the site via Admin Zone > Setup > Twitter syndication
 
-Set up is a little tricky, you need to set up an application on Twitter, and authorise the site to it via the option on the Admin Zone drop-down menu. Setting up the application is explained by the configuration options.';
+Once configured then syndication will be an option when adding news posts or calendar events, and will happen automatically for any users who have set up their own authorisation.';
     }
 
     /**

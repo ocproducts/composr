@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    classifieds
+ * @package    classified_ads
  */
 
 /**
@@ -33,8 +33,8 @@ class Hook_cron_classifieds
             return; // Don't do more than once per hour
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $start = 0;
@@ -69,7 +69,7 @@ class Hook_cron_classifieds
                     }
 
                     $subject_line = do_lang('SUBJECT_CLASSIFIED_ADVERT_EXPIRING', $ad_title, get_site_name(), null, get_lang($member_id), false);
-                    $mail = do_lang('MAIL_CLASSIFIED_ADVERT_EXPIRING', $ad_title, comcode_escape(get_site_name()), comcode_escape($renew_url->evaluate()), get_lang($member_id), false);
+                    $mail = do_notification_lang('MAIL_CLASSIFIED_ADVERT_EXPIRING', $ad_title, comcode_escape(get_site_name()), comcode_escape($renew_url->evaluate()), get_lang($member_id), false);
 
                     // Send actual notification
                     dispatch_notification('classifieds__' . $entry['c_name'], '', $subject_line, $mail, array($member_id), A_FROM_SYSTEM_PRIVILEGED);

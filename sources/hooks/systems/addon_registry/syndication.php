@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_syndication
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -114,10 +115,12 @@ class Hook_addon_registry_syndication
             'themes/default/xml/OPML_WRAPPER.xml',
             'themes/default/xml/OPML_XSLT.xml',
             'backend.php',
-            'backend_cloud.php',
+            'data/backend_cloud.php',
             'sources/rss2.php',
             'sources/hooks/systems/rss/.htaccess',
+            'sources_custom/hooks/systems/rss/.htaccess',
             'sources/hooks/systems/rss/index.html',
+            'sources_custom/hooks/systems/rss/index.html',
             'sources/hooks/systems/non_active_urls/news_rss_cloud.php',
         );
     }
@@ -200,8 +203,8 @@ class Hook_addon_registry_syndication
         $content = do_lorem_template('ATOM_ENTRY', array(
             'TITLE' => lorem_phrase(),
             'VIEW_URL' => placeholder_url(),
-            'DATE' => placeholder_time(),
-            'EDIT_DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
+            'EDIT_DATE' => placeholder_date(),
             'CATEGORY_RAW' => lorem_word(),
             'CATEGORY' => lorem_word(),
             'AUTHOR' => lorem_word(),
@@ -214,7 +217,7 @@ class Hook_addon_registry_syndication
                 'MODE' => lorem_word(),
                 'MODE_NICE' => lorem_word(),
                 'SELECT' => lorem_word_2(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'LOGO_URL' => placeholder_image_url(),
                 'CONTENT' => $content,
                 'CUTOFF' => placeholder_number(),
@@ -296,7 +299,7 @@ class Hook_addon_registry_syndication
             do_lorem_template('OPML_WRAPPER', array(
                 'FEEDS' => placeholder_array(),
                 'ABOUT' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'TITLE' => lorem_phrase(),
                 'MODE' => lorem_word(),
             ), null, false, null, '.xml', 'xml'

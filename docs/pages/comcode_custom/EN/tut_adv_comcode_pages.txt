@@ -1,65 +1,83 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using Blocks[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Using blocks[/title]
 
-Composr provides features to allow Comcode pages to be very feature rich. This tutorial explains how you can add blocks to your pages. It will give an example of how to add third-party widgets to a page. Finally it will also explain how Composr allows your website content to be organised using different methodologies.
+Composr provides features to allow Comcode pages to be very feature rich. This tutorial explains how you can add blocks to your pages. Blocks can be used to display dynamic data such as recent forum posts onto a page (i.e. embedding it within the flower of the wider page). It will give an example of how to add third-party widgets to a page. Finally it will also explain how Composr allows your website content to be organised using different methodologies.
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Blocks[/title]
+[title="2"]Introduction[/title]
 
-If you have read the 'Adding standalone pages of content' tutorial, you will know that using Comcode pages, you can type in text that visually resembles the look of the page (unlike HTML, which can look very complicated). This is a very powerful tool, but it is ultimately limited by the fact that you are only producing a document, not an interactive data-bound part of a website. If this was all you could do (forgetting modules for a minute) then Composr would not be much more powerful than a word processor.
+[surround]
+[media width="150" description="An illustration to how blocks work" float="right"]data_custom/images/docs/tut_adv_comcode_pages/comcode_pages_blocks.png[/media]
+If you have read the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode) tutorial[/page], you will know that using Comcode pages, you can type in text that visually resembles the look of the page (unlike HTML, which can look very complicated). This is a very powerful tool, but it is ultimately limited by the fact that you are only producing a document, not an interactive data-bound part of a website. If this was all you could do (forgetting modules for a minute) then Composr would not be much more powerful than a word processor.
 
-[media width="150" description="An illustration to how blocks work" float="right"]data_custom/images/docs/comcode_pages_blocks.png[/media]
 Composr has a concept called a 'block'. Blocks are building blocks that can be inserted into a Comcode page in order to add the aforementioned interactive and data-bound functionality that is so important to a modern website.
 Put another way, blocks are dynamic elements, elements that automatically generate content that could not be pre-prepared. For example:
  - a list of recent topics on a forum ([tt]main_forum_topics[/tt])
  - information about the currently logged in user ([tt]side_personal_stats[/tt])
 
 The default start page in the Welcome Zone, and the panels make use of blocks.
+[/surround]
 
+[title="2"]Available blocks[/title]
+
+[media width="150" description="List of blocks" float="right"]data_custom/images/docs/tut_adv_comcode_pages/block_add.png[/media]
+[surround]
+[media width="150" description="Sample form for adding a block selected from the long list to the right" float="right"]data_custom/images/docs/tut_adv_comcode_pages/block_add_2.png[/media]
+[media width="150" description="Actual Comcode that references blocks (with WYSIWYG on, highlighting the add block button)" float="right"]data_custom/images/docs/tut_adv_comcode_pages/wysiwyg.png[/media]
+[media width="150" description="Actual Comcode that references blocks (with WYSIWYG off, highlighting the add block button)" float="right"]data_custom/images/docs/tut_adv_comcode_pages/add_block_button.png[/media]
 At the time of writing Composr contains 75 blocks for you to use.
 
-The available blocks are classified into three groups:
- - Side blocks. These are intended to be shown on a menu page.
- - Main blocks. These are intended to be shown on the body of the site (an actual page).
- - Bottom blocks. These are intended for use in the footer of the site.
-These classifications are not forced however. It is common, for example, to use the [tt]main_poll[/tt] block on a menu; by re-templating, any pre-written visual assumptions about placement may be broken down.
+The block construction assistant (available as a button above the editor) will help you add a block. It will:
+1) show you what exact blocks are available (grouped by addon)
+2) provide a form for setting the block parameters
+3) let you preview
+4) add the Comcode for you
+If WYSIWYG is on then the button to do this is built into the WYSIWYG editor toolbar; otherwise it is in the panel of Comcode buttons (see screenshots).
 
-[title="2"]How to use a block[/title]
+The available blocks are classified into the following groups:
+ - [b]Side blocks[/b]: These are intended to be shown on a panel page (i.e. left or right column).
+ - [b]Main blocks[/b]: These are intended to be shown on the body of the site (an actual page).
+ - [b]Top blocks[/b]: These are intended for use in the header of the site.
+ - [b]Bottom blocks[/b]: These are intended for use in the footer of the site.
 
-[media width="150" description="Actual Comcode that references blocks" float="right"]data_custom/images/docs/adv_comcode_pages.png[/media]
-Unlike other systems that you may have experience with, Composr blocks (such as news blocks or poll blocks) are not arranged graphically. Usage of blocks is easiest shown by example. If you log in to your site as your administrator member, and choose to edit the front page of the Welcome Zone, then you will see the page consists of Comcode: in particular, you will see (if you turn WYSIWYG off) that the '\[block]' tag is used many times in the page.
+The above classifications are not forced however. You can use any block anywhere.
+For example, it is common to use the [tt]main_poll[/tt] block on a panel.
+With some re-styling (changing CSS and/or templates), any visual assumptions about placement may be swept away.
+[/surround]
 
-To use a block, all you actually need to do is to use the Comcode '\[block]' tag, with the name of the block as the tag contents. Parameters passed to the block simply get placed as parameters for the block tag itself.
+[title="2"]Block code (advanced)[/title]
 
-You don't actually need to know the syntax because the Add Block Assistant (available as a button above the editor) will write the code for you. If WYSIWYG is on then the button to do this is built into the WYSIWYG editor toolbar; otherwise it is in the panel of Comcode buttons. This assistant will list all the blocks, provide a helpful interface to defining the block parameters, and allow you to preview the blocks.
+[i]This section is only relevant if you don't want to use the block construction assistant (if you prefer hand-coding) or otherwise wish to understand the Comcode produced.[/i]
 
-To move block code around on a page you can cut and paste it. This includes when the WYSIWYG editor is on, as you can cut and paste the placeholder button/code for it.
+The Comcode to add blocks is easiest shown by example. If you log in to your site as your administrator member, and choose to edit the front page of the Welcome Zone, then you will see the page consists of Comcode: in particular, you will see (if you turn WYSIWYG off) that the [tt][block][/tt] tag is used many times in the page.
 
-[title="2"]Syntax[/title]
+To use a block, all you actually need to do is to use the Comcode [tt][block][/tt] tag, with the name of the block as the tag contents. Parameters passed to the block simply get placed as parameters for the block tag itself.
 
-If you want to learn the syntax you can use the Add Block Assistant to add a block then study how the Comcode looks. That is the easiest way to learn. However, we will describe the syntax here for reference...
+To move block code around on a page you can cut and paste it. This even works when the WYSIWYG editor is on, as you can cut and paste the placeholder button/code for it.
 
-A block called 'example' with no parameters would be included like follows:
-[code]
+[title="3"]Comcode syntax[/title]
+
+A block called [tt]example[/tt] with no parameters would be included like follows:
+[code="Comcode"]
 [block]example[/block]
 [/code]
 
-A block called 'example' with a parameter 'someparameter' would be included like follows:
-[code]
+A block called [tt]example[/tt] with a parameter [tt]someparameter[/tt] would be included like follows:
+[code="Comcode"]
 [block someparameter="somevalue"]example[/block]
 [/code]
 
 If we have multiple parameters:
-[code]
+[code="Comcode"]
 [block someparameter="somevalue" otherparameter="othervalue"]example[/block]
 [/code]
 
-We have a specially named parameter, 'param', which many blocks use. You may define it in full like:
-[code]
+We have a specially named parameter, [tt]param[/tt], which many blocks use. You may define it in full like:
+[code="Comcode"]
 [block param="somevalue"]example[/block]
 [/code]
 However we actually have a shorthand syntax for referencing this parameter:
-[code]
+[code="Comcode"]
 [block="somevalue"]example[/block]
 [/code]
 
@@ -67,22 +85,22 @@ However we actually have a shorthand syntax for referencing this parameter:
 
 Templates may include blocks via a Tempcode symbol. This also works in Comcode if you prefer to write Tempcode style.
 
-A block called 'example' with no parameters would be included like follows:
-[code]
+A block called [tt]example[/tt] with no parameters would be included like follows:
+[code="Comcode"]
 {$BLOCK,block=example}
 [/code]
 
-A block called 'example' with a parameter 'someparameter' would be included like follows:
-[code]
+A block called [tt]example[/tt] with a parameter [tt]someparameter[/tt] would be included like follows:
+[code="Comcode"]
 {$BLOCK,block=example,someparameter=somevalue}
 [/code]
 
 If we have multiple parameters:
-[code]
+[code="Comcode"]
 {$BLOCK,block=example,someparameter=somevalue,otherparameter=othervalue}
 [/code]
 
-The special 'param' parameter has no short-hand syntax in Tempcode.
+The special [tt]param[/tt] parameter has no short-hand syntax in Tempcode.
 
 [title="2"]Specific advice on customising Composr blocks[/title]
 
@@ -91,18 +109,87 @@ The special 'param' parameter has no short-hand syntax in Tempcode.
 Often blocks will truncate long lines in order to make sure things fit in to your design neatly. You may want to customise the truncation point to meet your own design/content needs.
 
 The truncation is performed within the obvious template for the block. For example, the [tt]main_forum_topics[/tt] block uses a [tt]BLOCK_MAIN_FORUM_TOPICS_TOPIC.tpl[/tt] template that contains this code:
-[code]
+[code="Tempcode"]
 {$TRUNCATE_LEFT,{TITLE},30,0,1}
 [/code]
 Change the number '30' to whatever is appropriate for you.
 
-[title="2"]Blocks vs Boxes[/title]
+[title="2"]Styling[/title]
+
+Blocks are styled via editing the templates and CSS associated. Typically templates are directly named after the block they are for. For example, the [tt]main_news[/tt] block uses a [tt]BLOCK_MAIN_NEWS.tpl[/tt] template. CSS can be targeted to the HTML within the template in a normal way.
+
+Writing HTML and CSS is outside the scope of this tutorial.
+
+[title="3"]Blocks vs Boxes[/title]
 
 A common point of confusion is the difference between blocks and boxes.
 
 Boxes are a visual convention in Composr. They are what they sound like.
 
 A block does not necessarily have any visual form. It could create a popup. It could hover over the site in a circle. It may take on the form of a greek goddess. In practice, however, a block almost always does actually put itself in a box in the default templates.
+
+[title="3"]Customising a block template, for different circumstances (advanced)[/title]
+
+Sometimes you need one block, to look different, in different contexts.
+
+The easiest way to do this is using the Tempcode [tt]SET[/tt] symbol.
+
+Let's set up a contrived situation just to make the explanation simple...
+
+Let's imagine on a Comcode page we are displaying the [tt]main_quotes[/tt] block twice, and it should look different each time. We could do it like this...
+
+[code="Comcode"]
+{$SET,main_quote_display_method,A}[block _="A"]main_quotes[/block]{$SET,main_quote_display_method,}
+{$SET,main_quote_display_method,B}[block _="B"]main_quotes[/block]{$SET,main_quote_display_method,}
+[/code]
+
+This puts a setting in a Tempcode variable called [tt]main_quote_display_method[/tt] to identify our "display method", and unsets it after the block is called. The pattern repeats for each display of the block.
+
+We had to do a little fudge with the [tt]_="A"[/tt] and [tt]_="B"[/tt] stuff. This is to stop Composr internally caching the block's displayed Tempcode into a single unit while it is generating the page. All we have done is set a non-existent parameter ([tt]_[/tt]) to a different value each time to cause Composr to not try and optimise things for us. We could have actually used any random parameter names and values, there's no real relationship with the values we stored in [tt]main_quote_display_method[/tt].
+
+And then alter the [tt]BLOCK_MAIN_QUOTES.tpl[/tt] template like...
+
+[code="HTML"]
+{$GET,main_quote_display_method}
+
+{+START,IF,{$EQ,{$GET,main_quote_display_method},A}}
+    <p>
+        <strong>Random quote:</strong> {CONTENT}
+    </p>
+{+END}
+
+{+START,IF,{$EQ,{$GET,main_quote_display_method},B}}
+    <p>
+        {CONTENT} (our random quote)
+    </p>
+{+END}
+
+{+START,IF,{$NEQ,{$GET,main_quote_display_method},A,B}}
+    <section class="box box___block_main_quotes"><div class="box_inner">
+        {+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
+
+        <blockquote class="quotes_block">
+            {CONTENT}
+        </blockquote>
+
+        {+START,IF_NON_EMPTY,{EDIT_URL}}
+            <ul class="horizontal_links associated_links_block_group">
+                <li>{EDIT_URL*}</li>
+            </ul>
+        {+END}
+    </div></section>
+{+END}
+[/code]
+
+We have latched onto the value of [tt]main_quote_display_method[/tt], providing different output if it has values [tt]A[/tt] or [tt]B[/tt], or the normal Tempcode for the template if it is neither [tt]A[/tt] nor [tt]B[/tt].
+
+That's it :).
+
+It's worth pointing out that there are some other similar approaches for similar situations:
+1) Using the [tt]MATCH_KEY_MATCH[/tt] or [tt]_GET[/tt] symbols to distinguish by URL parameter, if the different block layouts are for different URLs. This doesn't apply to the above example as in the above case the block is looking different within a single page. If it's looking different between different pages then this is a great approach.
+2) If the issue is with a shared template rather than a block, the [tt]_GUID[/tt] parameter is usually passed in different for each different place the template is used, so you can base logic around that value. GUIDs are explained in the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page].
+3) If the particular block supports template sets, you can differentiate based on this. For example, the menu block allows you to specify the 'type' of the menu, which determines which templates will be used. You can therefore invent your own new 'type' of menu and store the HTML for it in a new set of templates. Not much in Composr template sets though.
+4) Sometimes there is a particular template parameter value that you can tie your logic into. For example, if we are making the [tt]NEWS_BOX.tpl[/tt] template look a little different for a particular news category, we could latch on to the [tt]CATEGORY[/tt] parameter carrying the name of that news category.
 
 [title="2"]Third-party widgets[/title]
 
@@ -112,26 +199,30 @@ Composr has some built-in support for many, try just pasting in a normal URL and
 
 If you need to manually embed widget code it is very simple. If you are in the WYSIWYG editor, open the source view (HTML view) of the editor, and paste it in there. If you are not using the WYSIWYG editor then paste it in inside an [tt][html]...[/html][/tt] tag.
 
-These widgets aren't Composr blocks, but we are including this explanation in the blocks tutorial because of the similarity.
+These widgets aren't Composr blocks, but we are including this explanation in this tutorial because of the similarity.
 
 [title="3"]Practical example: TokBox[/title]
 
 You can add a video chat box to your site without any special API integration, just via a simple HTML embed. Here's a brief step by step to go through the process:
 [list]
-[*]Sign up for an account at [url="TokBox"]http://www.tokbox.com/[/url]
-[*]Create a Comcode page on your site where you want the video chat/conferencing to be located
-[*]Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the user name and password from step 1 if you aren't already logged in.
-[*]Select the size you want your video chat to be
-[*]Choose whether you want to add text chat or not
-[*]Choose whether you want to show the list of participants or not
-[*]Click "Add to my site"
-[*]Click "Copy code"
-[*]Go to your previously created video chat/conference page and click to edit it
-[*]Disable the WYSIWYG editor (if the WYSIWYG editor is already disabled jump to step 12)
-[*]On the pop up agree and convert the page to Comcode
-[*]After the title or the text where you want to box to appear paste the code you have copied in between [tt][html][/tt] and [tt][/html][/tt] tags which will look something like this:
-[code][html]<object type="application/x-shockwave-flash" data="http://www.tokbox.com/vc/zy57q6aodg1k7lvw" width="800" height="600" pid="4b9a2b80beb18ab2"> <param name="movie" value="http://www.tokbox.com/vc/zy57q6aodg1k7lvw"/> <param name="flashvars" value="guestList=true&textChat=true&showExpandButton=true"/></object><br /><a href="http://www.tokbox.com/">TokBox - Free Video Chat and Video Messaging</a>[/html][/code]
-[*]Fill in the rest of the page data and save the page
+[*] Sign up for an account at [url="TokBox"]http://www.tokbox.com/[/url]
+[*] Create a Comcode page on your site where you want the video chat/conferencing to be located
+[*] Go to [url="http://www.tokbox.com/#embed="]http://www.tokbox.com/#embed=[/url] and log in using the username and password from step 1 if you aren't already logged in.
+[*] Select the size you want your video chat to be
+[*] Choose whether you want to add text chat or not
+[*] Choose whether you want to show the list of participants or not
+[*] Click "Add to my site"
+[*] Click "Copy code"
+[*] Go to your previously created video chat/conference page and click to edit it
+[*] Disable the WYSIWYG editor (if the WYSIWYG editor is already disabled jump to step 12)
+[*] On the pop up agree and convert the page to Comcode
+[*] After the title or the text where you want to box to appear paste the code you have copied in between [tt][html][/tt] and [tt][/html][/tt] tags which will look something like this:
+[code="Comcode"]
+[html]
+<object type="application/x-shockwave-flash" data="http://www.tokbox.com/vc/zy57q6aodg1k7lvw" width="800" height="600" pid="4b9a2b80beb18ab2"> <param name="movie" value="http://www.tokbox.com/vc/zy57q6aodg1k7lvw"/> <param name="flashvars" value="guestList=true&textChat=true&showExpandButton=true"/></object><br /><a href="http://www.tokbox.com/">TokBox - Free Video Chat and Video Messaging</a>
+[/html]
+[/code]
+[*] Fill in the rest of the page data and save the page
 [/list]
 
 If the size is not quite right you can modify the width and height easily to make sure it fits into your website nicely. Your website users will need to sign up to TokBox to use the video conference.
@@ -141,24 +232,26 @@ If the size is not quite right you can modify the width and height easily to mak
 [title="3"]Website content organisation[/title]
 
 Web Content Management systems typically provide one of two systems for organising content:
- - Organising content types separately via modules
- - Organising content types together via a single tree structure (or often, just categories without an actual tree structure)
+1) Organising content types separately via modules
+2) Organising content types together via a single tree structure (or often, just categories without an actual tree structure)
 
 Composr organises content types via modules (with their own tree structures), but it also provides functionality so that your website can appear organised under a single tree structure.
 
 Comcode pages may be organised to form that tree structure and then those Comcode pages may have blocks placed within them to display content.
 
+You can even give Comcode pages multi-part paths to simulate a directory structure all from within a single Composr zone (by editing the page monikers).
+
 [title="3"]Embedding entries[/title]
 
-To embed entries you may use the '[tt]main_content[/tt]' block. This is described in more detail in the 'Providing featured content' tutorial.
+To embed entries in a Comcode page you may use the [tt]main_content[/tt] block. This is described in more detail in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
 
 [title="3"]Embedding categories[/title]
 
-The '[tt]main_multi_content[/tt]', '[tt]main_cc_embed[/tt]', '[tt]main_gallery_embed'[/tt] and '[tt]main_news[/tt]' blocks allow you to combine categories with your own personal surrounding Comcode.
+The [tt]main_multi_content[/tt], [tt]main_cc_embed[/tt], [tt]main_gallery_embed[/tt] and [tt]main_news[/tt] blocks allow you to pull in multiple entries (e.g. all entries in a particular category) and embed them within a Comcode page.
 
 [title="3"]Embedding anything[/title]
 
-We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the '[tt]main_include_module[/tt]' block. Further details in the 'Provided featured content' tutorial.
+We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the [tt]main_include_module[/tt] block. Further details in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
 
 [concepts
  1_key="Block"   1_value="Building blocks that can be inserted into a Comcode page, in order to add interactive and data-bound functionality"

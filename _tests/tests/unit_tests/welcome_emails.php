@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,6 +23,7 @@ class welcome_emails_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_general_action');
         require_code('cns_general_action2');
         $this->email_id = cns_make_welcome_email('test_mail', 'test subject', 'test content', 1262671781, 0, null, '');
@@ -38,6 +39,7 @@ class welcome_emails_test_set extends cms_test_case
     public function tearDown()
     {
         cns_delete_welcome_email($this->email_id);
+
         parent::tearDown();
     }
 }

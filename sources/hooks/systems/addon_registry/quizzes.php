@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_quizzes
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -173,7 +174,7 @@ class Hook_addon_registry_quizzes
     {
         $fields = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
-            $fields->attach(do_lorem_template('MAP_TABLE_FIELD_RAW', array(
+            $fields->attach(do_lorem_template('MAP_TABLE_FIELD', array(
                 'ABBR' => '',
                 'NAME' => lorem_phrase(),
                 'VALUE' => lorem_phrase(),
@@ -277,7 +278,7 @@ class Hook_addon_registry_quizzes
         foreach (placeholder_array() as $k => $v) {
             $link = do_lorem_template('QUIZ_BOX', array(
                 'TYPE' => lorem_word(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
                 'START_TEXT' => lorem_phrase(),

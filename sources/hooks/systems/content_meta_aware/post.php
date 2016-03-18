@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,14 +31,22 @@ class Hook_content_meta_aware_post
      */
     public function info($zone = null)
     {
-        if (get_forum_type() != 'cns') {
+        if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }
 
+        if (is_null($zone)) {
+            $zone = get_module_zone('forumview');
+            if (is_null($zone)) {
+                return null;
+            }
+        }
+
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_POST',
+            'content_type_universal_label' => 'Forum post',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_posts',
@@ -59,17 +67,21 @@ class Hook_content_meta_aware_post
             'title_field_dereference' => false,
             'description_field' => 'p_post',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:findpost:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_post:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'add_url' => '',
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('forumview')) . ':forumview',
+            'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => 'p_poster',
+            'author_field' => null,
             'add_time_field' => 'p_time',
             'edit_time_field' => 'p_last_edit_time',
             'date_field' => 'p_time',
@@ -82,6 +94,11 @@ class Hook_content_meta_aware_post
             'permissions_type_code' => 'forums',
 
             'search_hook' => 'cns_posts',
+            'rss_hook' => null,
+            'attachment_hook' => 'cns_post',
+            'unvalidated_hook' => 'cns_posts',
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'cns_forum',
 
@@ -91,7 +108,11 @@ class Hook_content_meta_aware_post
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => true,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_POST',
         );

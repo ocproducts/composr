@@ -36,7 +36,7 @@
 				<div>
 					<label for="vga_username">{!USERNAME}: </label>
 					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" alt="{!USERNAME}" type="text" id="vga_username" name="username" value="" />
-					<input class="menu___generic_admin__add_one button_screen_item" type="submit" value="{!ADD}" />
+					<input class="button_screen_item menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 				</div>
 			</form>
 		</div></div>
@@ -44,9 +44,11 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{APPLY_URL}}
-	<ul class="force_margin actions_list" role="navigation">
-		<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
-	</ul>
+	<nav>
+		<ul class="force_margin actions_list">
+			<li><a href="{APPLY_URL*}">{APPLY_TEXT*}</a></li>
+		</ul>
+	</nav>
 {+END}
 
 {$REVIEW_STATUS,group,{ID}}
@@ -63,7 +65,7 @@
 
 	{$BLOCK,block=main_forum_topics,param={FORUM}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 {+END}{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_debrand
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -59,7 +59,7 @@ class Module_admin_debrand
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -153,7 +153,7 @@ class Module_admin_debrand
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
-        $submit_name = do_lang_tempcode('SUPER_DEBRAND');
+        $submit_name = do_lang_tempcode('PROCEED');
 
         return do_template('FORM_SCREEN', array('_GUID' => 'fd47f191ac51f7754eb17e3233f53bcc', 'HIDDEN' => '', 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('WARNING_SUPER_DEBRAND_MAJOR_CHANGES'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
     }
@@ -178,7 +178,6 @@ class Module_admin_debrand
         set_option('show_docs', post_param_string('show_docs', '0'));
 
         require_code('database_action');
-        //set_option('allow_member_integration','off');
 
         foreach (array(get_file_base() . '/pages/comcode_custom/' . get_site_default_lang(), get_file_base() . '/adminzone/pages/comcode_custom/' . get_site_default_lang()) as $dir) {
             if (!file_exists($dir)) {
@@ -247,7 +246,7 @@ class Module_admin_debrand
             afm_make_file($critical_errors_path, $critical_errors, false);
         }
 
-        $save_header_path = get_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
+        $save_header_path = get_file_base() . '/themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_custom/GLOBAL_HTML_WRAP.tpl';
         if (!file_exists(dirname($save_header_path))) {
             require_code('files2');
             make_missing_directory(dirname($save_header_path));
@@ -289,17 +288,26 @@ class Module_admin_debrand
 
         // Clean up the theme images
         //  background-image
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+        $theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
         find_theme_image('background_image');
         //  logo/*
         if (addon_installed('zone_logos')) {
-            find_theme_image('logo/adminzone-logo');
-            find_theme_image('logo/cms-logo');
-            find_theme_image('logo/collaboration-logo');
             $main_logo_url = find_theme_image('logo/-logo', false, true);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
-            $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
+
+            $test = find_theme_image('logo/adminzone-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/adminzone-logo', 'theme' => $theme), '', 1);
+            }
+
+            $test = find_theme_image('logo/cms-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/cms-logo', 'theme' => $theme), '', 1);
+            }
+
+            $test = find_theme_image('logo/collaboration-logo', true);
+            if ($test != '') {
+                $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $main_logo_url), array('id' => 'logo/collaboration-logo', 'theme' => $theme), '', 1);
+            }
         }
 
         // Various other icons
@@ -318,6 +326,11 @@ class Module_admin_debrand
                 $GLOBALS['SITE_DB']->query_update('theme_images', array('path' => $path[0]), array('id' => 'cns_default_avatars/system'));
             }
         }
+
+        // Decache
+        require_code('caches3');
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_CONFIG);
+        erase_cached_templates(false, array('GLOBAL_HTML_WRAP'));
 
         // Redirect them back to editing screen
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');

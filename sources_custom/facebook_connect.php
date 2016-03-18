@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
 
 function init__facebook_connect()
 {
@@ -77,7 +83,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         return $current_logged_in_member;
     }
     try {
-        $details = $FACEBOOK_CONNECT->api('/me');
+        $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,bio,website,currency,first_name,last_name,gender,location,hometown'));
     } catch (Exception $e) {
         return $current_logged_in_member;
     }
@@ -129,9 +135,11 @@ function handle_facebook_connection_login($current_logged_in_member)
     $dob_year = mixed();
     if ($dob != '') {
         $_dob = explode('/', $dob);
-        $dob_day = intval($_dob[1]);
-        $dob_month = intval($_dob[0]);
-        $dob_year = intval($_dob[2]);
+        if (count($_dob) == 3) {
+            $dob_day = intval($_dob[1]);
+            $dob_month = intval($_dob[0]);
+            $dob_year = intval($_dob[2]);
+        }
     }
 
     // See if they have logged in before - i.e. have a synched account
@@ -141,11 +149,10 @@ function handle_facebook_connection_login($current_logged_in_member)
         $member_id = null;
     }
 
-    /*if (!is_null($member_id)) // Useful for debugging
-    {
+    /*if (!is_null($member_id)) { // Useful for debugging
         require_code('cns_members_action2');
         cns_delete_member($member_id);
-        $member_id=NULL;
+        $member_id = null;
     }*/
 
     if ((!is_null($member_id)) && ($current_logged_in_member !== null) && (!is_guest($current_logged_in_member)) && ($current_logged_in_member != $member_id)) {
@@ -211,15 +218,16 @@ function handle_facebook_connection_login($current_logged_in_member)
     if ((is_null($member_id)) && ($in_a_sane_place)) {
         // Bind to existing Composr login?
         if (!is_null($current_logged_in_member)) {
-            /*if (post_param_integer('associated_confirm',0)==0)     Won't work because Facebook is currently done in JS and cookies force this. If user wishes to cancel they must go to http://www.facebook.com/settings?tab=applications and remove the app, then run a lost password reset.
-            {
-                    $title=get_screen_title('LOGIN_FACEBOOK_HEADER');
-                    $message=do_lang_tempcode('LOGGED_IN_SURE_FACEBOOK',escape_html($GLOBALS['FORUM_DRIVER']->get_username($current_logged_in_member)));
-                    $middle=do_template('CONFIRM_SCREEN',array('_GUID'=>'3d80095b18cf57717d0b091cf3680252','TITLE'=>$title,'TEXT'=>$message,'HIDDEN'=>form_input_hidden('associated_confirm','1'),'URL'=>get_self_url_easy(),'FIELDS'=>''));
-                    $tpl=globalise($middle,NULL,'',true);
-                    $tpl->evaluate_echo();
-                    exit();
-            }*/
+            /* Won't work because Facebook is currently done in JS and cookies force this. If user wishes to cancel they must go to http://www.facebook.com/settings?tab=applications and remove the app, then run a lost password reset.
+            if (post_param_integer('associated_confirm', 0) == 0) {
+                $title = get_screen_title('LOGIN_FACEBOOK_HEADER');
+                $message = do_lang_tempcode('LOGGED_IN_SURE_FACEBOOK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($current_logged_in_member)));
+                $middle = do_template('CONFIRM_SCREEN', array('_GUID' => '3d80095b18cf57717d0b091cf3680252', 'TITLE' => $title, 'TEXT' => $message, 'HIDDEN' => form_input_hidden('associated_confirm', '1'), 'URL' => get_self_url_easy(), 'FIELDS' => ''));
+                $tpl = globalise($middle, null, '', true);
+                $tpl->evaluate_echo();
+                exit();
+            }
+            */
 
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_compat_scheme' => 'facebook', 'm_pass_hash_salted' => $facebook_uid), array('id' => $current_logged_in_member), '', 1);
             require_code('site');
@@ -266,12 +274,68 @@ function handle_facebook_connection_login($current_logged_in_member)
                 check_stopforumspam(post_param_string('username', $username), $email_address);
             }
 
-            $username = post_param_string('username', $username)/*user may have customised username*/
-            ;
+            $username = post_param_string('username', $username);//user may have customised username
             if ((count($_custom_fields) != 0) && (get_value('no_finish_profile') !== '1')) {// Was not auto-generated, so needs to be checked
                 cns_check_name_valid($username, null, null);
             }
             $member_id = cns_member_external_linker($username, $facebook_uid, 'facebook', false, $email_address, $dob_day, $dob_month, $dob_year, $timezone, $language, $avatar_url, $photo_url, $photo_thumb_url);
+
+            // Custom profile fields should be filled, as possible
+            $changes = array();
+            require_lang('cns_special_cpf');
+            $mappings = array(
+                'about' => do_lang('DEFAULT_CPF_about_NAME'),
+                'bio' => do_lang('DEFAULT_CPF_interests_NAME'),
+                'website' => do_lang('DEFAULT_CPF_website_NAME'),
+                'currency' => 'cms_currency',
+                'first_name' => 'cms_firstname',
+                'last_name' => 'cms_lastname',
+                'gender' => do_lang('DEFAULT_CPF_gender_NAME'),
+            );
+            foreach ($mappings as $facebook_field => $composr_field_title) {
+                if (!empty($details[$facebook_field])) {
+                    $composr_field_id = find_cms_cpf_field_id($composr_field_title);
+                    if (!is_null($composr_field_id)) {
+                        switch ($facebook_field) {
+                            case 'user_currency':
+                                $changes['field_' . strval($composr_field_id)] = $details[$facebook_field]['user_currency'];
+                                break;
+
+                            default:
+                                if (!is_array($details[$facebook_field])) {
+                                    $changes['field_' . strval($composr_field_id)] = $details[$facebook_field];
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            $facebook_field = 'location'; // Could also be 'hometown', but tends to get left outdated
+            if (!empty($details[$facebook_field])) {
+                try {
+                    $details3 = $FACEBOOK_CONNECT->api('/' . $details[$facebook_field], array('fields' => 'location'));
+
+                    $mappings = array(
+                        'latitude' => 'cms_latitude',
+                        'longitude' => 'cms_longitude',
+                        'city' => 'cms_city',
+                        'state' => 'cms_state',
+                        'country' => 'cms_country',
+                    );
+                    foreach ($mappings as $facebook_field => $composr_field_title) {
+                        if (!empty($details3[$facebook_field])) {
+                            $composr_field_id = find_cms_cpf_field_id($composr_field_title);
+                            if (!is_null($composr_field_id)) {
+                                $changes['field_' . strval($composr_field_id)] = $details3[$facebook_field];
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                }
+            }
+            if (!empty($changes)) {
+                $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', $changes, array('mf_member_id' => $member_id), '', 1);
+            }
         }
     }
 

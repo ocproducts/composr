@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -90,8 +90,8 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
             $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true, true);
 
             $friend = array(
-                /*'DATE_AND_TIME_RAW'=>strval($friend['date_and_time']),
-                'DATE_AND_TIME'=>get_timezoned_date($friend['date_and_time'],false),*/
+                /*'DATE_AND_TIME_RAW' => strval($friend['date_and_time']),
+                'DATE_AND_TIME' => get_timezoned_date($friend['date_and_time'], false),*/
                 'MEMBER_PROFILE_URL' => $member_profile_url,
                 'MEMBER_ID' => strval($friend['member_liked']),
                 'USERNAME' => $username,
@@ -125,7 +125,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
 /**
  * Prune timed-out private chatrooms.
  *
- * @param  array $row The row of the chat room to possibly prune
+ * @param  array $row The row of the chatroom to possibly prune
  * @return boolean Whether the room was pruned
  */
 function handle_chatroom_pruning($row)

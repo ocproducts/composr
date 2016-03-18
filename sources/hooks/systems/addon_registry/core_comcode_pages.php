@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_comcode_pages
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -101,9 +102,7 @@ class Hook_addon_registry_core_comcode_pages
         return array(
             'themes/default/images/icons/24x24/menu/cms/comcode_page_edit.png',
             'themes/default/images/icons/48x48/menu/cms/comcode_page_edit.png',
-            'sources/hooks/systems/config/number_revisions_show.php',
             'sources/hooks/systems/config/points_COMCODE_PAGE_ADD.php',
-            'sources/hooks/systems/config/store_revisions.php',
             'sources/hooks/systems/addon_registry/core_comcode_pages.php',
             'themes/default/templates/COMCODE_PAGE_EDIT_ACTIONS.tpl',
             'themes/default/templates/COMCODE_PAGE_BOX.tpl',
@@ -258,7 +257,7 @@ class Hook_addon_registry_core_comcode_pages
                 'CONTENT' => lorem_phrase(),
                 'EDIT_URL' => placeholder_url(),
                 'ADD_CHILD_URL' => placeholder_url(),
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_id(),
                 'NATIVE_ZONE' => lorem_word(),
             )), null, '', true)
         );

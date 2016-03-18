@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -69,7 +69,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $name));
     if ((!is_null($test)) && ($test != $group_id)) {
         if ($uniqify) {
-            $name .= '_' . uniqid('', true);
+            $name .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
         }
@@ -77,7 +77,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 
     $_group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_title', 'g_rank_image'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $_group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
     $_name = $_group_info[0]['g_name'];
     $_title = $_group_info[0]['g_title'];
@@ -172,7 +172,7 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('group', strval($group_id));
+        generate_resource_fs_moniker('group', strval($group_id));
     }
 
     persistent_cache_delete('GROUPS');
@@ -205,7 +205,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     $_group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_title', 'g_rank_image'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $_group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
     $_name = $_group_info[0]['g_name'];
     $_title = $_group_info[0]['g_title'];
@@ -241,7 +241,7 @@ function cns_delete_group($group_id, $target_group = null)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('group', strval($group_id));
+        expunge_resource_fs_moniker('group', strval($group_id));
     }
 
     persistent_cache_delete('GROUPS_COUNT');
@@ -268,7 +268,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 
     $group_info = $GLOBALS['FORUM_DB']->query_select('f_groups', array('g_name', 'g_group_leader'), array('id' => $group_id), '', 1);
     if (!array_key_exists(0, $group_info)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
     if (is_null($member_id)) {
@@ -315,11 +315,11 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 
         $leader_id = $group_info[0]['g_group_leader'];
         if (!is_null($leader_id)) {
-            $mail = do_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_lang($leader_id));
+            $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_lang($leader_id));
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_lang($leader_id));
             dispatch_notification('cns_group_join_request', null, $subject, $mail, array($leader_id));
         } else {
-            $mail = do_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_site_default_lang());
+            $mail = do_notification_lang('GROUP_JOIN_REQUEST_MAIL', comcode_escape($their_username), comcode_escape($group_name), array($url), get_site_default_lang());
             $subject = do_lang('GROUP_JOIN_REQUEST_MAIL_SUBJECT', null, null, null, get_site_default_lang());
             dispatch_notification('cns_group_join_request_staff', null, $subject, $mail, null, get_member(), 3, false, false, null, null, '', '', '', '', null, true);
         }
@@ -375,7 +375,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
 
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_is_presented_at_install', array('id' => $id));
     if (is_null($test)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));
     }
 
     if ($validated == 1) {
@@ -401,7 +401,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
         $group_name = cns_get_group_name($id);
         $subject = do_lang('MJG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $username, $group_name);
         $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $id), get_module_zone('groups'), null, false, false, true);
-        $mail = do_lang('MJG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($group_name), $group_url->evaluate(), comcode_escape($displayname)));
+        $mail = do_notification_lang('MJG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($group_name), $group_url->evaluate(), comcode_escape($displayname)));
         dispatch_notification('cns_member_joined_group', strval($id), $subject, $mail);
     }
 
@@ -449,13 +449,13 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
 
         log_it('MEMBER_ADDED_TO_GROUP', strval($prospective_member_id), strval($group_id));
 
-        $mail = do_lang('GROUP_ACCEPTED_MAIL', get_site_name(), $name, null, get_lang($prospective_member_id));
+        $mail = do_notification_lang('GROUP_ACCEPTED_MAIL', get_site_name(), $name, null, get_lang($prospective_member_id));
         $subject = do_lang('GROUP_ACCEPTED_MAIL_SUBJECT', $name, null, null, get_lang($prospective_member_id));
     } else {
         if ($reason != '') {
-            $mail = do_lang('GROUP_DECLINED_MAIL_REASON', comcode_escape(get_site_name()), comcode_escape($name), comcode_escape($reason), get_lang($prospective_member_id));
+            $mail = do_notification_lang('GROUP_DECLINED_MAIL_REASON', comcode_escape(get_site_name()), comcode_escape($name), comcode_escape($reason), get_lang($prospective_member_id));
         } else {
-            $mail = do_lang('GROUP_DECLINED_MAIL', comcode_escape(get_site_name()), comcode_escape($name), null, get_lang($prospective_member_id));
+            $mail = do_notification_lang('GROUP_DECLINED_MAIL', comcode_escape(get_site_name()), comcode_escape($name), null, get_lang($prospective_member_id));
         }
         $subject = do_lang('GROUP_DECLINED_MAIL_SUBJECT', $name, null, null, get_lang($prospective_member_id));
     }
@@ -466,7 +466,7 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
 /**
  * Copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having it's permissions replaced.
+ * @param  GROUP $to The that is having its permissions replaced.
  * @param  GROUP $from The that the permissions are being drawn from.
  */
 function cns_group_absorb_privileges_of($to, $from)
@@ -480,11 +480,13 @@ function cns_group_absorb_privileges_of($to, $from)
 /**
  * Helper function, for copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having it's permissions replaced.
+ * @param  GROUP $to The that is having its permissions replaced.
  * @param  GROUP $from The that the permissions are being drawn from.
  * @param  ID_TEXT $table The table holding the permissions.
  * @param  ID_TEXT $id The name of the field in the table that holds the ID.
  * @param  boolean $cns Whether the operation is being carried out over the Conversr driver.
+ *
+ * @ignore
  */
 function _cns_group_absorb_privileges_of($to, $from, $table, $id = 'group_id', $cns = false)
 {

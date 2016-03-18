@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webstandards_js_lex()
 {
@@ -502,7 +504,7 @@ function webstandards_js_lex($text)
 }
 
 /**
- * Get the next character whilst lexing
+ * Get the next character while lexing
  *
  * @param  integer $i Get character at this position
  * @return list Get triplet about the next character (whether end reached, new position, character)
@@ -518,7 +520,7 @@ function lex__get_next_char($i)
 }
 
 /**
- * Get the next characters whilst lexing
+ * Get the next characters while lexing
  *
  * @param  integer $i Get character at this position
  * @param  integer $num How many to get
@@ -568,7 +570,7 @@ function js_pos_to_line_details($i, $absolute = false)
  * @param  string $line The line
  * @param  string $message The error
  * @param  integer $i The global position
- * @return ?boolean Always NULL (null: exit)
+ * @return ?boolean Always null (null: exit)
  */
 function js_die_error($system, $pos, $line, $message, $i)
 {

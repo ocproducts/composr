@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_members()
 {
@@ -173,7 +175,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         }
 
         global $TABLE_LANG_FIELDS_CACHE;
-        $_result = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields f ' . $where . ' ORDER BY cf_order', null, null, false, true, isset($TABLE_LANG_FIELDS_CACHE['f_custom_fields']) ? $TABLE_LANG_FIELDS_CACHE['f_custom_fields'] : array());
+        $_result = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields f ' . $where . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, true, isset($TABLE_LANG_FIELDS_CACHE['f_custom_fields']) ? $TABLE_LANG_FIELDS_CACHE['f_custom_fields'] : array());
         $result = array();
         foreach ($_result as $row) {
             $row['trans_name'] = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
@@ -185,6 +187,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
                 }
 
                 require_lang('cns');
+                require_lang('cns_special_cpf');
                 $test = do_lang('SPECIAL_CPF__' . $row['trans_name'], null, null, null, null, false);
                 if ($test !== null) {
                     $row['trans_name'] = $test;
@@ -240,19 +243,22 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     $editable_without_comcode = array('list' => 1, 'short_text' => 1, 'codename' => 1, 'url' => 1, 'integer' => 1, 'float' => 1, 'email' => 1);
 
     foreach ($fields_to_show as $i => $field_to_show) {
-        $member_value = $member_mappings['field_' . strval($field_to_show['id'])];
+        $key = 'field_' . strval($field_to_show['id']);
+        if (!array_key_exists($key, $member_mappings))
+        {
+            continue;
+        }
+        $member_value = $member_mappings[$key];
         if (!is_string($member_value)) {
-            if ($member_value === null) {
-                $member_value = '';
-            } elseif (is_float($member_value)) {
+            if (is_float($member_value)) {
                 $member_value = float_to_raw_string($member_value);
-            } else {
+            } elseif (!is_null($member_value)) {
                 $member_value = strval($member_value);
             }
         }
 
         // Decrypt the value if appropriate
-        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1)) {
+        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
             require_code('encryption');
             if ((is_encryption_enabled()) && (post_param_string('decrypt', null) !== null)) {
                 $member_value = decrypt_data($member_value, post_param_string('decrypt'));
@@ -263,17 +269,21 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         list(, , $storage_type) = $ob->get_field_value_row_bits($field_to_show);
 
         if ($storage_type == 'short_trans' || $storage_type == 'long_trans') {
-            if (($member_value === null) || ($member_value == '0')) {
+            if (($member_value === null) || ((multi_lang_content()) && ($member_value == '0'))) {
                 $member_value_raw = '';
                 $member_value = ''; // This is meant to be '' for blank, not new Tempcode()
             } else {
                 $member_value_raw = get_translated_text($member_mappings['field_' . strval($field_to_show['id'])], $GLOBALS['FORUM_DB']);
-                $member_value = get_translated_tempcode('f_member_custom_fields', $member_mappings, 'field_' . strval($field_to_show['id']), $GLOBALS['FORUM_DB']);
+                $member_mappings_copy = db_map_restrict($member_mappings, array('mf_member_id', 'field_' . strval($field_to_show['id'])));
+                $member_value = get_translated_tempcode('f_member_custom_fields', $member_mappings_copy, 'field_' . strval($field_to_show['id']), $GLOBALS['FORUM_DB']);
                 if ((is_object($member_value)) && ($member_value->is_empty())) {
                     $member_value = '';
                 }
             }
         } else {
+            if ($member_value === null) {
+                $member_value = '';
+            }
             $member_value_raw = $member_value;
         }
 
@@ -332,7 +342,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         if ($display_cpf) {
             $rendered_value = $ob->render_field_value($field_to_show, $member_value, $i, null, 'f_members', $member_id, 'mf_member_id', null, 'field_' . strval($field_to_show['id']), $member_id);
 
-            $editability = mixed(); // If stays as NULL, not editable
+            $editability = mixed(); // If stays as null, not editable
             if (isset($editable_with_comcode[$field_to_show['cf_type']])) {
                 $editability = true; // Editable: Supports Comcode
             } elseif (isset($editable_without_comcode[$field_to_show['cf_type']])) {
@@ -340,9 +350,9 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
             }
 
             $edit_type = 'line';
-            if (in_array($field_to_show['cf_type'], array('list'))) {
+            if ($field_to_show['cf_type']  == 'list') {
                 $edit_type = $field_to_show['cf_default'];
-            } elseif (in_array($field_to_show['cf_type'], array('long_text', 'long_trans'))) {
+            } elseif (($field_to_show['cf_type'] == 'long_text') || ($field_to_show['cf_type'] == 'long_trans')) {
                 $edit_type = 'textarea';
             }
 
@@ -368,12 +378,41 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
  */
 function find_cpf_field_id($title)
 {
+    static $cache = array();
+    if (array_key_exists($title, $cache)) {
+        return $cache[$title];
+    }
     $fields_to_show = cns_get_all_custom_fields_match(null);
     foreach ($fields_to_show as $field_to_show) {
         if ($field_to_show['trans_name'] == $title) {
+            $cache[$title] = $field_to_show['id'];
             return $field_to_show['id'];
         }
     }
+    $cache[$title] = null;
+    return null;
+}
+
+/**
+ * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
+ *
+ * @param  SHORT_TEXT $title The title.
+ * @return ?AUTO_LINK The ID (null: could not find).
+ */
+function find_cms_cpf_field_id($title)
+{
+    static $cache = array();
+    if (array_key_exists($title, $cache)) {
+        return $cache[$title];
+    }
+    $fields_to_show = cns_get_all_custom_fields_match(null, null, null, null, null, null, null, 1);
+    foreach ($fields_to_show as $field_to_show) {
+        if ($field_to_show['trans_name'] == $title) {
+            $cache[$title] = $field_to_show['id'];
+            return $field_to_show['id'];
+        }
+    }
+    $cache[$title] = null;
     return null;
 }
 
@@ -395,10 +434,10 @@ function cns_get_custom_field_mappings($member_id)
         if (!isset($query[0])) { // Repair
             $value = mixed();
 
-            $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type'));
+            $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_required', 'cf_default'));
             foreach ($all_fields_regardless as $field) {
                 $ob = get_fields_hook($field['cf_type']);
-                list(, $value, $storage_type) = $ob->get_field_value_row_bits($field, false, '', $GLOBALS['FORUM_DB']);
+                list(, $value, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, $field['cf_default'], $GLOBALS['FORUM_DB']);
 
                 $row['field_' . strval($field['id'])] = $value;
                 if (is_string($value)) { // Should not normally be needed, but the grabbing from cf_default further up is not converted yet
@@ -406,7 +445,7 @@ function cns_get_custom_field_mappings($member_id)
                         case 'short_trans':
                         case 'long_trans':
                             if ($value !== null) {
-                                $row += insert_lang_comcode('field_' . strval($field['id']), $value, 3, $GLOBALS['FORUM_DB']);
+                                $row = insert_lang_comcode('field_' . strval($field['id']), $value, 3, $GLOBALS['FORUM_DB']) + $row;
                             } else {
                                 $row['field_' . strval($field['id'])] = null;
                             }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     public $file_resource_type = 'wiki_post';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -47,7 +47,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -57,7 +57,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'wiki_post':
-                $_ret = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('the_message') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('the_message') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -65,7 +65,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
                 return $ret;
 
             case 'wiki_page':
-                $_ret = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -76,27 +76,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'hide_posts' => 'BINARY',
-            'submitter' => 'member',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -110,7 +90,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             $category = strval(db_get_first_id());
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('wiki');
 
@@ -118,9 +98,9 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $hide_posts = $this->_default_property_int($properties, 'hide_posts');
-        $member = $this->_default_property_int_null($properties, 'submitter');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $member = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
@@ -135,11 +115,13 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             $GLOBALS['SITE_DB']->query_insert('wiki_children', array('parent_id' => $parent_id, 'child_id' => $id, 'the_order' => $the_order, 'title' => $label));
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -157,22 +139,24 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('wiki_page', strval($row['id']));
 
-        return array(
-            'label' => $row['title'],
-            'description' => $row['description'],
+        $properties = array(
+            'label' => get_translated_text($row['title']),
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
             'hide_posts' => $row['hide_posts'],
-            'submitter' => $row['submitter'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
             'views' => $row['wiki_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -184,6 +168,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('wiki');
 
@@ -192,15 +177,15 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $hide_posts = $this->_default_property_int($properties, 'hide_posts');
-        $member = $this->_default_property_int_null($properties, 'member');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_date = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         $id = intval($resource_id);
-        wiki_edit_page($id, $label, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $member, $edit_date, $add_time, $views, true);
+        wiki_edit_page($id, $label, $description, $notes, $hide_posts, $meta_keywords, $meta_description, $submitter, $edit_date, $add_time, $views, true);
 
         // Move
         $old_path = $this->search($resource_type, $resource_id, false);
@@ -223,11 +208,13 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
             }
         }
 
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -244,24 +231,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'validated' => 'BINARY',
-            'send_notification' => 'BINARY',
-            'views' => 'INTEGER',
-            'poster' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -271,7 +241,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -284,17 +254,19 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_int_null($properties, 'poster');
-        $send_notification = $this->_default_property_int($properties, 'send_notification');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $member = $this->_default_property_member($properties, 'member_id');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
-        $id = wiki_add_post($page_id, $label, $validated, $member, $send_notification, $add_time, $views, $edit_date);
+        $id = wiki_add_post($page_id, $label, $validated, $member, true, $add_time, $views, $edit_date);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -310,19 +282,20 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
-            'label' => $row['the_message'],
+        $properties = array(
+            'label' => get_translated_text($row['the_message']),
             'validated' => $row['validated'],
-            'send_notification' => $row['send_notification'],
             'views' => $row['wiki_views'],
-            'poster' => $row['poster'],
-            'add_date' => $row['date_and_time'],
-            'edit_date' => $row['edit_date'],
+            'member_id' => remap_resource_id_as_portable('member', $row['member_id']),
+            'add_date' => remap_time_as_portable($row['date_and_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -333,7 +306,7 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -347,19 +320,20 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $member = $this->_default_property_int_null($properties, 'poster');
-        $send_notification = $this->_default_property_int($properties, 'send_notification');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $member = $this->_default_property_member($properties, 'member_id');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
 
         wiki_edit_post(intval($resource_id), $label, $validated, $member, $page_id, $edit_time, $add_time, $views, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

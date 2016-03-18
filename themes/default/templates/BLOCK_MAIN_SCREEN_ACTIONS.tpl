@@ -1,6 +1,6 @@
-<aside role="navigation" class="screen_actions_outer box"><div class="screen_actions box_inner">
+<aside class="screen_actions_outer box"><nav class="screen_actions box_inner">
 	<div class="print"><a class="link_exempt" rel="print nofollow" target="_blank" title="{!PRINT_THIS_SCREEN} {!LINK_NEW_WINDOW}" href="{PRINT_URL*}"><span>{!PRINT_THIS_SCREEN}</span></a></div>
-	<div class="recommend"><a onclick="return open_link_as_overlay(this);" class="link_exempt" rel="nofollow" target="_blank" title="{!CMS_RECOMMEND} {!LINK_NEW_WINDOW}" href="{RECOMMEND_URL*}"><span>{!CMS_RECOMMEND}</span></a></div>
+	<div class="recommend"><a onclick="return open_link_as_overlay(this);" class="link_exempt" rel="nofollow" target="_blank" title="{!RECOMMEND_LINK} {!LINK_NEW_WINDOW}" href="{RECOMMEND_URL*}"><span>{!RECOMMEND_LINK}</span></a></div>
 	{+START,IF,{$BROWSER_MATCHES,ie}}
 		<div class="favorites"><a class="link_exempt" title="{!ADD_TO_FAVORITES}" href="#" onclick="window.external.AddFavorite(window.location.href,document.title); return false;"><span>{!ADD_TO_FAVORITES}</span></a></div>
 	{+END}
@@ -16,4 +16,4 @@
 		<div class="g-plusone" data-size="medium" data-count="true" data-href="{EASY_SELF_URL*}"></div>
 		{$EXTRA_FOOT,<script src="https://apis.google.com/js/plusone.js"></script>}
 	</div>
-</div></aside>
+</nav></aside>

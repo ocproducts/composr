@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts/Tapatalk, 2004-2015
+ Copyright (c) ocProducts/Tapatalk, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -66,7 +66,7 @@ function push_content_check_test()
                 'authorid' => '2',
 
                 // For PMs
-                //'mid'=>123,
+                //'mid' => 123,
             )),
         )
     );

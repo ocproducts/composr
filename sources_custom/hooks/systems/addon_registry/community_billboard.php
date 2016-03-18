@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_community_billboard
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -222,11 +223,13 @@ class Hook_addon_registry_community_billboard
     {
         require_css('forms');
 
+        require_lang('community_billboard');
+
         $about_current = do_lorem_template('COMMUNITY_BILLBOARD_DETAILS', array(
             'USERNAME' => lorem_word_html(),
             'DAYS_ORDERED' => lorem_phrase(),
-            'DATE_RAW' => placeholder_time(),
-            'DATE' => placeholder_time(),
+            'DATE_RAW' => placeholder_date(),
+            'DATE' => placeholder_date(),
         ));
 
         $out = new Tempcode();
@@ -243,11 +246,11 @@ class Hook_addon_registry_community_billboard
                 'TEXT' => $text->evaluate(),
             )));
         }
-
+        $name = placeholder_random_id();
         $input = do_lorem_template('FORM_SCREEN_INPUT_LIST', array(
             'TABINDEX' => '5',
             'REQUIRED' => '_required',
-            'NAME' => lorem_word(),
+            'NAME' => $name,
             'CONTENT' => $out,
             'INLINE_LIST' => true,
             'SIZE' => '9',
@@ -256,7 +259,7 @@ class Hook_addon_registry_community_billboard
             'REQUIRED' => true,
             'SKIP_LABEL' => false,
             'PRETTY_NAME' => lorem_word(),
-            'NAME' => lorem_word(),
+            'NAME' => $name,
             'DESCRIPTION' => lorem_sentence_html(),
             'DESCRIPTION_SIDE' => '',
             'INPUT' => $input,

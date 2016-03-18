@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ class Block_main_include_module
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'strip_title', 'only_if_permissions', 'leave_page_and_zone', 'merge_parameters', 'use_http_status', 'use_meta_data', 'use_attached_messages', 'use_breadcrumbs', 'use_refreshes', 'use_helper_panel');
+        $info['parameters'] = array('param', 'strip_title', 'only_if_permissions', 'leave_page_and_zone', 'merge_parameters', 'use_http_status', 'use_metadata', 'use_attached_messages', 'use_breadcrumbs', 'use_refreshes', 'use_helper_panel');
         return $info;
     }
 
@@ -56,7 +56,7 @@ class Block_main_include_module
         $merge_parameters = array_key_exists('merge_parameters', $map) ? ($map['merge_parameters'] == '1') : false;
 
         $use_http_status = array_key_exists('use_http_status', $map) ? ($map['use_http_status'] == '1') : false;
-        $use_meta_data = array_key_exists('use_meta_data', $map) ? ($map['use_meta_data'] == '1') : false;
+        $use_metadata = array_key_exists('use_metadata', $map) ? ($map['use_metadata'] == '1') : false;
         $use_attached_messages = array_key_exists('use_attached_messages', $map) ? ($map['use_attached_messages'] == '1') : false;
         $use_breadcrumbs = array_key_exists('use_breadcrumbs', $map) ? ($map['use_breadcrumbs'] == '1') : false;
         $use_refreshes = array_key_exists('use_refreshes', $map) ? ($map['use_refreshes'] == '1') : false;
@@ -132,9 +132,9 @@ class Block_main_include_module
                 'HTTP_STATUS_CODE',
             );
         }
-        if ($use_meta_data) {
+        if ($use_metadata) {
             $keep += array(
-                'META_DATA',
+                'METADATA',
                 'SEO_KEYWORDS',
                 'SEO_DESCRIPTION',
                 'DISPLAYED_TITLE',
@@ -186,9 +186,10 @@ class Block_main_include_module
             }
             if (strpos($_out, $attributes['page']) !== false) {
                 $_out = str_replace($url_from, $url_to, $_out);
-                $out = make_string_tempcode($_out);
             }
         }
+
+        $out = make_string_tempcode($_out);
 
         // Done
         return $out;

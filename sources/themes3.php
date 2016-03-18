@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -242,7 +242,7 @@ function actual_copy_theme($theme, $to)
     foreach ($images as $i) {
         $i['theme'] = $to;
         $i['path'] = str_replace('themes/' . $theme . '/', 'themes/' . $to . '/', $i['path']);
-        $GLOBALS['SITE_DB']->query_insert('theme_images', $i);
+        $GLOBALS['SITE_DB']->query_insert('theme_images', $i, false, true);
     }
 
     Self_learning_cache::erase_smart_cache();

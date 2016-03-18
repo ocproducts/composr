@@ -42,7 +42,7 @@
 		1_ICON=menu/_generic_admin/add_one
 		2_URL={EDIT_URL*}
 		2_ACCESSKEY=q
-		2_TITLE={!_EDIT_LINK}
+		2_TITLE={!EDIT_LINK}
 		2_ICON=menu/_generic_admin/edit_this
 		2_REL=edit
 		3_URL={NEWSLETTER_URL*}
@@ -62,7 +62,7 @@
 			</div>
 		{+END}
 
-		<aside role="navigation" class="box box___news_entry_screen"><div class="box_inner">
+		<aside class="box box___news_entry_screen"><nav class="box_inner">
 			<p class="lonely_label">
 				{$?,{BLOG},{!BLOG_NEWS_UNDER_THESE},{!NEWS_UNDER_THESE}}
 			</p>
@@ -74,10 +74,10 @@
 
 			{+START,IF,{$NOT,{$_GET,blog}}}
 				{$,Actually breadcrumbs will do fine!,<div>
-					<a class="buttons__all2 button_screen" rel="archives" href="\{ARCHIVE_URL*\}"><span>\{!VIEW_ARCHIVE\}</span></a>
+					<a class="button_screen buttons__all2" rel="archives" href="\{ARCHIVE_URL*\}"><span>\{!VIEW_ARCHIVE\}</span></a>
 				</div>}
 			{+END}
-		</div></aside>
+		</nav></aside>
 	</div>
 
 	{$REVIEW_STATUS,news,{ID}}

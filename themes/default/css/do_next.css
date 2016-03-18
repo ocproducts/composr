@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .do_next_page_question {
@@ -70,7 +70,7 @@
 }
 
 .do_theme_item {
-	width: 16%;
+	width: 15.5%;
 }
 
 .do_next_item a, .do_theme_item a {

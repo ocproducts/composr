@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .theme_wizard_preview_wrap {
@@ -78,6 +78,10 @@
 	max-width: 100%;
 }
 
+.theme_image_preview_wide {
+	max-width: 100%;
+}
+
 .css_editor_selector_tips {
 	width: 50%;
 	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
@@ -135,6 +139,33 @@
 	float: left;
 	min-width: 19em;
 	height: 2em;
+}
+
+/* Template edit links */
+
+.template_edit_link_wrap {
+	margin: 1px;
+	padding: 1px;
+	display: inline-block;
+	{$BETA_CSS_PROPERTY,border-radius: 5px 5px 5px 5px;}
+	border: 1px solid;
+}
+
+.template_edit_link {
+	display: block;
+}
+
+.template_edit_link span {
+	text-decoration: underline;
+	cursor: pointer;
+	background: rgba(255,255,255,0.8);
+	display: inline-block;
+	border: 1px dotted black;
+	margin: 3px;
+}
+
+.template_edit_link span kbd {
+	color: black;
 }
 
 /*

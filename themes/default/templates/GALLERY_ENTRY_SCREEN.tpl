@@ -28,14 +28,14 @@
 
 				<tbody>
 					<tr>
-						<th class="de_th meta_data_title">{!ADDED}</th>
+						<th class="de_th metadata_title">{!ADDED}</th>
 						<td>
 							<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{ADD_DATE*}</time>
 						</td>
 					</tr>
 
 					<tr>
-						<th class="de_th meta_data_title">{!BY}</th>
+						<th class="de_th metadata_title">{!BY}</th>
 						<td>
 							<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}" itemprop="author">{$USERNAME*,{SUBMITTER},1}</a>
 
@@ -45,21 +45,21 @@
 
 					{+START,IF_NON_EMPTY,{RATING_DETAILS}}
 						<tr>
-							<th class="de_th meta_data_title">{!RATING}</th>
+							<th class="de_th metadata_title">{!RATING}</th>
 							<td>{$RATING,{MEDIA_TYPE},{ID},,,,RATING_INLINE_DYNAMIC}</td>
 						</tr>
 					{+END}
 
 					{+START,IF_NON_EMPTY,{EDIT_DATE}}
 						<tr>
-							<th class="de_th meta_data_title">{!EDITED}</th>
+							<th class="de_th metadata_title">{!EDITED}</th>
 							<td>{EDIT_DATE*}</td>
 						</tr>
 					{+END}
 
 					{+START,IF,{$INLINE_STATS}}
 						<tr>
-							<th class="de_th meta_data_title">{!COUNT_VIEWS}</th>
+							<th class="de_th metadata_title">{!COUNT_VIEWS}</th>
 							<td>{VIEWS*}</td>
 						</tr>
 					{+END}
@@ -100,15 +100,15 @@
 
 	<div class="media_box">
 		{+START,IF_NON_PASSED,VIDEO}
-			<img class="scale_down" alt="{!IMAGE}" src="{URL*}" itemprop="contentURL" />
+			<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 		{+END}
 		{+START,IF_PASSED,VIDEO}
-			{+START,IF,{$GT,{$META_DATA,video:width},500}}
+			{+START,IF,{$GT,{$METADATA,video:width},500}}
 				{VIDEO}
 			{+END}
 
 			{$,If the video is not large, we will put the boxes right alongside it}
-			{+START,IF,{$NOT,{$GT,{$META_DATA,video:width},500}}}
+			{+START,IF,{$NOT,{$GT,{$METADATA,video:width},500}}}
 				<div class="float_surrounder">
 					<div class="lined_up_boxes">
 						{$GET,boxes}
@@ -145,7 +145,7 @@
 			</div>
 		{+END}
 
-		{+START,IF,{$OR,{$NEQ,{MEDIA_TYPE},video},{$GT,{$META_DATA,video:width},500}}}
+		{+START,IF,{$OR,{$NEQ,{MEDIA_TYPE},video},{$GT,{$METADATA,video:width},500}}}
 			<div class="float_surrounder lined_up_boxes">
 				{$GET,boxes}
 			</div>
@@ -169,5 +169,5 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 <!--DO_NOT_REMOVE_THIS_COMMENT--></div>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__hooks__modules__admin_import__wowbb()
 {
@@ -118,7 +120,7 @@ class Hook_wowbb
         $config_remapping = array(
             'ACTIVATION_EMAIL' => 'require_new_member_validation',
             'BOARD_ON' => '!site_closed',
-            //'MANA'=>'is_on_points',
+            //'MANA' => 'is_on_points',
             'BOARD_NAME' => 'site_name',
             'SESSION_LENGTH' => 'session_expiry_time',
             'POSTS_PER_PAGE' => 'forum_posts_per_page',
@@ -913,7 +915,7 @@ class Hook_wowbb
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
         require($file_base . '/config.php');
-        $filter = constant('BAD_WORD_FILTER');
+        $filter = constant('BAD_WORDFILTER');
 
         if ($filter == 'Array') {
             return;

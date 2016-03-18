@@ -34,7 +34,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input accesskey="u" class="buttons__save button_screen" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
+				<input accesskey="u" class="button_screen buttons__save" type="submit" value="{!SAVE}" onclick="if (check_menu()) { disable_button_just_clicked(this); return true; } else return false;" />
 			</p>
 		</div>
 
@@ -50,17 +50,21 @@
 					<!-- List put in here -->
 				</div>
 				<script>// <![CDATA[
-					var current_selection='';
-					var sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					add_event_listener_abstract(window,'load',function() {
+						window.current_selection='';
+						window.sitemap=new tree_list('tree_list','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1',null,'',false,null,false,true);
+					});
 				//]]></script>
 
 				<p class="associated_details">
 					{!CLICK_ENTRY_POINT_TO_USE}
 				</p>
 
-				<ul class="actions_list" role="navigation">
-					<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
-				</ul>
+				<nav>
+					<ul class="actions_list">
+						<li><a href="#" onclick="return menu_editor_add_new_page();">{!SPECIFY_NEW_PAGE}</a></li>
+					</ul>
+				</nav>
 			</div>
 
 			<div class="menu_editor_lh_side">
@@ -100,7 +104,7 @@
 					<input type="hidden" name="confirm" value="1" />
 					<input type="hidden" name="delete_confirm" value="1" />
 
-					<input class="menu___generic_admin__delete button_screen_item" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
+					<input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!DELETE}" onclick="var form=this.form; window.fauxmodal_confirm('{!CONFIRM_DELETE;,{MENU_NAME*}}',function(answer) { if (answer) form.submit(); }); return false;" />
 				</p>
 			</form>
 		</div>

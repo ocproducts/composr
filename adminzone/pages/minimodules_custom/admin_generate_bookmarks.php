@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    browser_bookmarks
+ */
 
 /*
 Implementation notes...
@@ -49,7 +55,7 @@ $root = retrieve_sitemap_node(
     /*$valid_node_types=*/array('root', 'zone', 'page_grouping', 'page', 'comcode_page'),
     /*$child_cutoff=*/null,
     /*$max_recurse_depth=*/null,
-    /*$options=*/SITEMAP_GEN_NONE,
+    /*$options=*/SITEMAP_GEN_CHECK_PERMS,
     /*$zone=*/'_SEARCH'
 );
 

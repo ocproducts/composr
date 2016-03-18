@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_search_cns_own_pt
+class Hook_search_cns_own_pt extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.

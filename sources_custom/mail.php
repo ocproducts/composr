@@ -1,6 +1,17 @@
-<?php
+<?php /*
 
-/* Requires PHP5 */
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    better_mail
+ */
 
 /**
  * Attempt to send an e-mail to the specified recipient. The mail will be forwarding to the CC address specified in the options (if there is one, and if not specified not to cc).
@@ -73,9 +84,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
         }
 
-        $through_queue =
-            (!$bypass_queue) &&
-            ((get_option('mail_queue_debug') === '1') || ((get_option('mail_queue') === '1') && (cron_installed())));
+        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
         if (!is_null($attachments)) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
@@ -281,7 +290,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
             }
             if ($myfile === null) {
-                $myfile = cms_tempnam('email_attachment');
+                $myfile = cms_tempnam();
                 http_download_file($img, null, false, false, 'Composr', null, null, null, null, null, $myfile);
                 if (filesize($myfile) == 0) {
                     continue;
@@ -321,7 +330,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'temp' => false,
                 );
             } else {
-                $myfile = cms_tempnam('email_attachment');
+                $myfile = cms_tempnam();
                 http_download_file($path, null, false, false, 'Composr', null, null, null, null, null, $myfile);
                 if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
                     $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];

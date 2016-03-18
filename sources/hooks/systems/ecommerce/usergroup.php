@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -212,7 +212,8 @@ class Hook_ecommerce_usergroup
                 $sub['s_cost'],
                 'handle_usergroup_subscription',
                 array('length' => $sub['s_length'], 'length_units' => $sub['s_length_units']),
-                $item_name
+                $item_name,
+                get_option('currency'),
             );
         }
 
@@ -237,7 +238,7 @@ class Hook_ecommerce_usergroup
         $db = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'];
         $sub = $db->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $sub)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP')));
         }
 
         $ret = get_translated_tempcode('f_usergroup_subs', $sub[0], 's_description', $db);

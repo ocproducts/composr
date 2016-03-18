@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -18,11 +18,6 @@
  */
 class blocks_test_set extends cms_test_case
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testBlocksRender()
     {
         require_code('zones2');
@@ -35,10 +30,5 @@ class blocks_test_set extends cms_test_case
             $test = do_block($block, array());
             $this->assertTrue(is_object($test));
         }
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

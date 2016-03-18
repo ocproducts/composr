@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,7 +34,7 @@ class Hook_realtime_rain_actionlog
     {
         $drops = array();
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT ip,the_type,member_id,date_and_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'adminlogs WHERE date_and_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
+        $rows = $GLOBALS['SITE_DB']->query('SELECT ip,the_type,member_id,date_and_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'actionlogs WHERE date_and_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
 
         if (has_actual_page_access(get_member(), 'admin_actionlog')) {
             require_all_lang();

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,14 +50,8 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    static $mue = null;
-    if ($mue === null) {
-        $mue = function_exists('memory_get_usage');
-    }
-    if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-        if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-            $before = memory_get_usage();
-        }
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+        $before = memory_get_usage();
     }
 
     $worked = false;
@@ -162,7 +156,7 @@ function require_code($codename, $light_exit = false)
                         include($path_orig);
                     }
                 } else {
-                    //static $log_file=NULL;if ($log_file===NULL) $log_file=fopen(get_file_base().'/log.'.strval(time()).'.txt','wb');fwrite($log_file,$path_orig."\n");      Good for debugging errors in eval'd code
+                    //static $log_file = null; if ($log_file === null) $log_file = fopen(get_file_base() . '/log.' . strval(time()) . '.txt', 'wb'); fwrite($log_file, $path_orig . "\n");      Good for debugging errors in eval'd code
                     eval($orig); // Load up modified original
 
                 }
@@ -225,11 +219,9 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-            if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                flush();
-            }
+        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+            print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+            flush();
         }
 
         if (!$done_init) {
@@ -268,11 +260,9 @@ function require_code($codename, $light_exit = false)
         }
 
         if ($worked) {
-            if (($mue) && (isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                if (function_exists('memory_get_usage')) { // Repeated, for code quality checker; done previously, for optimisation
-                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                    flush();
-                }
+            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
+                flush();
             }
 
             $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
@@ -293,6 +283,9 @@ function require_code($codename, $light_exit = false)
     if (!function_exists('do_lang')) {
         if ($codename == 'critical_errors') {
             exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The Composr critical error message file, sources/critical_errors.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
+        }
+        if ($php_errormsg != '') {
+            $codename .= '... "' . $php_errormsg . '"';
         }
         critical_error('MISSING_SOURCE', $codename);
     }
@@ -345,7 +338,7 @@ function tacit_https()
  * Make an object of the given class
  *
  * @param  string $class The class name
- * @param  boolean $failure_ok Whether to return NULL if there is no such class
+ * @param  boolean $failure_ok Whether to return null if there is no such class
  * @return ?object The object (null: no such class)
  */
 function object_factory($class, $failure_ok = false)
@@ -367,7 +360,19 @@ function object_factory($class, $failure_ok = false)
  */
 function php_function_allowed($function)
 {
-    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    static $cache = array();
+    if (isset($cache[$function])) {
+        return $cache[$function];
+    }
+
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            $cache[$function] = false;
+            return false;
+        }
+    }
+    $cache[$function] = (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+    return $cache[$function];
 }
 
 /**
@@ -459,7 +464,7 @@ function filter_naughty_harsh($in, $preg = false)
         return $in;
     }
     if (preg_match('#^[\w\-]*/#', $in) != 0) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath an SEO URL, should not really happen
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath a URL Scheme short URL, should not really happen
     }
 
     if ($preg) {
@@ -473,24 +478,30 @@ function filter_naughty_harsh($in, $preg = false)
  * Include some PHP code, compiling to HHVM's hack, for type strictness (uses Composr phpdoc comments).
  *
  * @param  PATH $path Include path
- * @return ?mixed Code return code (null: actual NULL)
+ * @return ?mixed Code return code (null: actual null)
  */
 function hhvm_include($path)
 {
     return include($path); // Disable this line to enable the fancy Hack support. We don't maintain this 100%, but it is a great performance option.
 
-    /*//if (!is_file($path.'.hh'))  // Leave this commented when debugging
+    /*//if (!is_file($path . '.hh'))  // Leave this commented when debugging
     {
-        if ($path==get_file_base().'/sources/php.php') return include($path);
-        if ($path==get_file_base().'/sources/type_sanitisation.php') return include($path);
-        if (strpos($path,'_custom')!==false) return include($path);
+        if ($path == get_file_base() . '/sources/php.php') {
+            return include($path);
+        }
+        if ($path == get_file_base() . '/sources/type_sanitisation.php') {
+            return include($path);
+        }
+        if (strpos($path, '_custom') !== false) {
+            return include($path);
+        }
 
         require_code('php');
-        $path=substr($path,strlen(get_file_base())+1);
-        $new_code=convert_from_php_to_hhvm_hack($path);
-        file_put_contents($path.'.hh',$new_code);
+        $path = substr($path, strlen(get_file_base()) + 1);
+        $new_code = convert_from_php_to_hhvm_hack($path);
+        file_put_contents($path . '.hh', $new_code);
     }
-    return include($path.'.hh');*/
+    return include($path . '.hh');*/
 }
 
 // Useful for basic profiling
@@ -520,6 +531,12 @@ if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
 }
+if (!defined('E_DEPRECATED')) { // LEGACY
+    define('E_DEPRECATED', 0);
+}
+if (!defined('ENT_SUBSTITUTE')) { // LEGACY
+    define('ENT_SUBSTITUTE', 0);
+}
 safe_ini_set('suhosin.executor.disable_emodifier', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.multiheader', '1'); // Extra security if suhosin is available
 safe_ini_set('suhosin.executor.disable_eval', '0');
@@ -531,7 +548,7 @@ if (function_exists('set_magic_quotes_runtime')) {
     @set_magic_quotes_runtime(0); // @'d because it's deprecated and PHP 5.3 may give an error
 }
 safe_ini_set('html_errors', '1');
-safe_ini_set('docref_root', 'http://www.php.net/manual/en/');
+safe_ini_set('docref_root', 'http://php.net/manual/en/');
 safe_ini_set('docref_ext', '.php');
 
 // Get ready for some global variables
@@ -576,6 +593,18 @@ global $SITE_INFO;
  */
 $SITE_INFO = array();
 @include($FILE_BASE . '/_config.php');
+if (count($SITE_INFO) == 0) {
+    // LEGACY
+    if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
+        @rename($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
+        if (is_file($FILE_BASE . '/_config.php')) {
+            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')));
+        } else {
+            exit('Error, cannot rename info.php to _config.php: check the Composr upgrade instructions');
+        }
+        @include($FILE_BASE . '/_config.php');
+    }
+}
 if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
         critical_error('INFO.PHP');

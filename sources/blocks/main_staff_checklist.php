@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ class Block_main_staff_checklist
         $info['version'] = 4;
         $info['locked'] = false;
         $info['parameters'] = array();
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
 
         return $info;
     }
@@ -65,13 +65,13 @@ class Block_main_staff_checklist
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
-            $GLOBALS['SITE_DB']->create_table('customtasks', array(
+            $GLOBALS['SITE_DB']->create_table('staff_checklist_cus_tasks', array(
                 'id' => '*AUTO',
-                'tasktitle' => 'SHORT_TEXT',
-                'datetimeadded' => 'TIME',
-                'recurinterval' => 'INTEGER',
-                'recurevery' => 'ID_TEXT',
-                'taskisdone' => '?TIME'
+                'task_title' => 'LONG_TEXT',
+                'add_date' => 'TIME',
+                'recur_interval' => 'INTEGER',
+                'recur_every' => 'ID_TEXT',
+                'task_is_done' => '?TIME'
             ));
 
             require_lang('staff_checklist');
@@ -82,21 +82,21 @@ class Block_main_staff_checklist
                 do_lang('CHECKLIST_INITIAL_TASK_THEME'),
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
-                '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
+                '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_P3P') . '"]http://www.p3pwiz.com/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]http://www.google.com/addurl/[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]',
-                '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://www.compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
-                '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'helping_out'), 'site') . '[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/toolbox/submit-site-url[/url]',
+                '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
+                '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'contributions'), 'site') . '[/url]',
             );
             foreach ($tasks as $task) {
-                $GLOBALS['SITE_DB']->query_insert('customtasks', array(
-                    'tasktitle' => $task,
-                    'datetimeadded' => time(),
-                    'recurinterval' => 0,
-                    'recurevery' => '',
-                    'taskisdone' => null,
+                $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array(
+                    'task_title' => $task,
+                    'add_date' => time(),
+                    'recur_interval' => 0,
+                    'recur_every' => '',
+                    'task_is_done' => null,
                 ));
             }
         }
@@ -107,7 +107,7 @@ class Block_main_staff_checklist
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('customtasks');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
     }
 
     /**
@@ -120,41 +120,43 @@ class Block_main_staff_checklist
     {
         require_javascript('ajax');
 
+        require_lang('dates');
+
         // Handle custom tasks
         $new_task = post_param_string('new_task', null);
-        $recurint = post_param_integer('recur', 0);
-        $recurevery = post_param_string('recurevery', null);
-        if ((!is_null($new_task)) && (!is_null($recurint)) && (!is_null($recurevery))) {
-            $GLOBALS['SITE_DB']->query_insert('customtasks', array('tasktitle' => $new_task, 'datetimeadded' => time(), 'recurinterval' => $recurint, 'recurevery' => $recurevery, 'taskisdone' => null));
+        $recur_interval = post_param_integer('recur_interval', 0);
+        $recur_every = post_param_string('recur_every', null);
+        if ((!is_null($new_task)) && (!is_null($recur_interval)) && (!is_null($recur_every))) {
+            $GLOBALS['SITE_DB']->query_insert('staff_checklist_cus_tasks', array('task_title' => $new_task, 'add_date' => time(), 'recur_interval' => $recur_interval, 'recur_every' => $recur_every, 'task_is_done' => null));
             decache('main_staff_checklist');
         }
-        $custasks = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('customtasks', array('*'));
+        $custom_tasks = new Tempcode();
+        $rows = $GLOBALS['SITE_DB']->query_select('staff_checklist_cus_tasks', array('*'));
         foreach ($rows as $r) {
-            $recurevery = '';
-            switch ($r['recurevery']) {
+            $recur_every = '';
+            switch ($r['recur_every']) {
                 case 'mins':
-                    $recurevery = do_lang('_MINUTES');
+                    $recur_every = do_lang('DPLU_MINUTES');
                     break;
                 case 'hours':
-                    $recurevery = do_lang('_HOURS');
+                    $recur_every = do_lang('DPLU_HOURS');
                     break;
                 case 'days':
-                    $recurevery = do_lang('_DAYS');
+                    $recur_every = do_lang('DPLU_DAYS');
                     break;
                 case 'months':
-                    $recurevery = do_lang('_MONTHS');
+                    $recur_every = do_lang('DPLU_MONTHS');
                     break;
             }
-            $custasks->attach(do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
+            $custom_tasks->attach(do_template('BLOCK_MAIN_STAFF_CHECKLIST_CUSTOM_TASK', array(
                 '_GUID' => 'fa747347ad7b9eb1a7f3f54867154db4',
-                'TASK_TITLE' => comcode_to_tempcode($r['tasktitle']),
-                'ADD_DATE' => display_time_period($r['datetimeadded']),
-                'RECUR_INTERVAL' => ($r['recurinterval'] == 0) ? '' : integer_format($r['recurinterval']),
-                'RECUR_EVERY' => $recurevery,
-                'TASK_DONE' => ((!is_null($r['taskisdone'])) && (($r['recurinterval'] == 0) || (($r['recurevery'] != 'mins') || (time() < $r['taskisdone'] + 60 * $r['recurinterval'])) && (($r['recurevery'] != 'hours') || (time() < $r['taskisdone'] + 60 * 60 * $r['recurinterval'])) && (($r['recurevery'] != 'days') || (time() < $r['taskisdone'] + 24 * 60 * 60 * $r['recurinterval'])) && (($r['recurevery'] != 'months') || (time() < $r['taskisdone'] + 31 * 24 * 60 * 60 * $r['recurinterval'])))) ? 'checklist1' : 'not_completed',
+                'TASK_TITLE' => comcode_to_tempcode($r['task_title']),
+                'ADD_DATE' => display_time_period($r['add_date']),
+                'RECUR_INTERVAL' => ($r['recur_interval'] == 0) ? '' : integer_format($r['recur_interval']),
+                'RECUR_EVERY' => $recur_every,
+                'TASK_DONE' => ((!is_null($r['task_is_done'])) && (($r['recur_interval'] == 0) || (($r['recur_every'] != 'mins') || (time() < $r['task_is_done'] + 60 * $r['recur_interval'])) && (($r['recur_every'] != 'hours') || (time() < $r['task_is_done'] + 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'days') || (time() < $r['task_is_done'] + 24 * 60 * 60 * $r['recur_interval'])) && (($r['recur_every'] != 'months') || (time() < $r['task_is_done'] + 31 * 24 * 60 * 60 * $r['recur_interval'])))) ? 'checklist1' : 'not_completed',
                 'ID' => strval($r['id']),
-                'ADD_TIME' => do_lang_tempcode('DAYS_AGO', escape_html(integer_format(intval(round(floatval(time() - $r['datetimeadded']) / 60.0 / 60.0 / 24.0))))),
+                'ADD_TIME' => do_lang_tempcode('DAYS_AGO', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0))))),
             )));
         }
 
@@ -205,14 +207,14 @@ class Block_main_staff_checklist
             $out_dates->attach($item[0]);
         }
 
-        return do_template('BLOCK_MAIN_STAFF_CHECKLIST', array('_GUID' => 'aefbca8252dc1d6edc44fc6d1e78b3ec', 'URL' => get_self_url(), 'DATES' => $out_dates, 'NO_TIMES' => $out_no_times, 'TODO_COUNTS' => $out_todo_counts, 'CUSTOM_TASKS' => $custasks));
+        return do_template('BLOCK_MAIN_STAFF_CHECKLIST', array('_GUID' => 'aefbca8252dc1d6edc44fc6d1e78b3ec', 'URL' => get_self_url(), 'DATES' => $out_dates, 'NO_TIMES' => $out_no_times, 'TODO_COUNTS' => $out_todo_counts, 'CUSTOM_TASKS' => $custom_tasks));
     }
 }
 
 /**
  * Work out when an action should happen, and last happened.
  *
- * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is NULL then the number of seconds until it happens (null: won't happen)
+ * @param  ?integer $seconds_ago The number of seconds ago since it last happened (null: never happened) OR If $recur_hours is null then the number of seconds until it happens (null: won't happen)
  * @param  ?integer $recur_hours It should be done every this many hours (null: never happened)
  * @return array A pair: Tempcode to display, and the number of seconds to go until the action should happen
  */

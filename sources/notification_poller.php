@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__notification_poller()
 {
@@ -278,7 +280,7 @@ function web_notification_to_xml($row)
                                                               'CODE_CATEGORY' => $row['d_code_category'],
     ));
 
-    //sound="'.(($row['d_priority']<3)?'on':'off').'"
+    //sound="' . (($row['d_priority'] < 3) ? 'on' : 'off') . '"
     return '
         <web_notification
             id="' . strval($row['id']) . '"
@@ -331,7 +333,7 @@ function get_pts($max = null, $start = 0)
 
     $out = new Tempcode();
     foreach ($rows as $i => $topic) {
-        $topic_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'findpost'), get_module_zone('topicview'));
+        $topic_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['id']), get_module_zone('topicview'));
         $topic_url->attach('#post_' . strval($topic['id']));
         $title = $topic['t_cache_first_title'];
         $date = get_timezoned_date($topic['t_cache_last_time'], true);
@@ -344,7 +346,7 @@ function get_pts($max = null, $start = 0)
         $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
         $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
 
-        $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
+        $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 
         $out->attach(do_template('CNS_PRIVATE_TOPIC_LINK', array(
             '_GUID' => '6a36e785b05d10f53e7ee76acdfb9f80',
@@ -393,15 +395,17 @@ function pt_to_xml($row)
     $just_post_row = db_map_restrict($row, array('id', 'p_post'));
     $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['SITE_DB']);
 
-    $rendered = do_template('NOTIFICATION_PT_DESKTOP', array('_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7', 'ID' => strval($row['p_id']),
-                                                             'SUBJECT' => $row['t_cache_first_title'],
-                                                             'MESSAGE' => $_message,
-                                                             'FROM_USERNAME' => $username,
-                                                             'FROM_MEMBER_ID' => strval($member_id),
-                                                             'URL' => $url,
-                                                             'FROM_AVATAR_URL' => $avatar_url,
-                                                             'DATE_TIMESTAMP' => strval($row['p_time']),
-                                                             'DATE_WRITTEN_TIME' => get_timezoned_time($row['p_time']),
+    $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(
+        '_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7',
+        'ID' => strval($row['p_id']),
+        'SUBJECT' => $row['t_cache_first_title'],
+        'MESSAGE' => $_message,
+        'FROM_USERNAME' => $username,
+        'FROM_MEMBER_ID' => strval($member_id),
+        'URL' => $url,
+        'FROM_AVATAR_URL' => $avatar_url,
+        'DATE_TIMESTAMP' => strval($row['p_time']),
+        'DATE_WRITTEN_TIME' => get_timezoned_time($row['p_time']),
     ));
 
     return '

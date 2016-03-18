@@ -25,10 +25,12 @@
 
 {ENTRIES}
 
-<p class="vertical_alignment">
-	<img alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
-	<span>{!HOVER_FOR_FULL}</span>
-</p>
+{+START,IF,{$IN_STR,{ENTRIES},<img}}
+	<p class="vertical_alignment">
+		<img alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+		<span>{!HOVER_FOR_FULL}</span>
+	</p>
+{+END}
 
 {$REVIEW_STATUS,catalogue_category,{ID}}
 
@@ -55,4 +57,4 @@
 	4_ICON=menu/cms/catalogues/edit_this_catalogue
 {+END}
 
-{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}

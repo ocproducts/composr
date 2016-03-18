@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_content_meta_aware_catalogue_category
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'catalogues:CATALOGUE_CATEGORY',
+            'content_type_universal_label' => 'Catalogue category',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'catalogue_categories',
@@ -55,6 +56,8 @@ class Hook_content_meta_aware_catalogue_category
             'title_field_dereference' => true,
             'description_field' => 'cc_description',
             'thumb_field' => 'rep_image',
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:catalogues:category:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_catalogues:_edit_category:_WILD',
@@ -65,7 +68,9 @@ class Hook_content_meta_aware_catalogue_category
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => 'cc_order',
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => 'cc_add_date',
             'edit_time_field' => null,
             'date_field' => 'cc_add_date',
@@ -75,9 +80,14 @@ class Hook_content_meta_aware_catalogue_category
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // NULL if has no permissions
+            'permissions_type_code' => (get_value('disable_cat_cat_perms') === '1') ? null : 'catalogues_category', // null if has no permissions
 
             'search_hook' => 'catalogue_categories',
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'catalogue_category',
 
             'addon_name' => 'catalogues',
 
@@ -87,7 +97,11 @@ class Hook_content_meta_aware_catalogue_category
             'commandr_filesystem_hook' => 'catalogues',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_CATALOGUE_CATEGORY',
         );

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -185,7 +185,7 @@ function content_review_set($content_type, $content_id, $old_content_id = null)
             $review_freq = $review_freq_years * 60 * 60 * 24 * 365;
         }
 
-        $next_review_time = get_input_date('next_review_time');
+        $next_review_time = post_param_date('next_review_time');
 
         $auto_action = post_param_string('auto_action', 'leave');
 

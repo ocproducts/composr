@@ -6,13 +6,13 @@
 	</div></div>
 
 	{+START,IF_PASSED,BREADCRUMBS}
-		<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p>
+		<nav class="breadcrumbs" itemprop="breadcrumb"><p>
 			{!LOCATED_IN,{BREADCRUMBS}}
 		</p></nav>
 
 		{+START,IF_PASSED,URL}
 			<p class="shunted_button">
-				<a class="buttons__more button_screen_item" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
+				<a class="button_screen_item buttons__more" href="{URL*}" title="{!FORUM_POST} #{ID*}"><span>{!VIEW}</span></a>
 			</p>
 		{+END}
 	{+END}

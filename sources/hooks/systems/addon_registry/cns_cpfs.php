@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_cns_cpfs
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -101,7 +102,6 @@ class Hook_addon_registry_cns_cpfs
             'themes/default/images/icons/48x48/menu/adminzone/tools/users/custom_profile_fields.png',
             'sources/hooks/systems/resource_meta_aware/cpf.php',
             'adminzone/pages/modules/admin_cns_customprofilefields.php',
-            'themes/default/templates/CNS_CPF_STATS_LINE.tpl',
             'themes/default/templates/CNS_CPF_STATS_SCREEN.tpl',
             'uploads/cns_cpf_upload/index.html',
             'uploads/cns_cpf_upload/.htaccess',
@@ -110,6 +110,7 @@ class Hook_addon_registry_cns_cpfs
             'sources/hooks/systems/profiles_tabs_edit/privacy.php',
             'sources/hooks/systems/addon_registry/cns_cpfs.php',
             'sources/hooks/systems/commandr_fs/cpfs.php',
+            'sources/hooks/systems/commandr_fs_extended_member/cpf_perms.php',
         );
     }
 
@@ -122,7 +123,6 @@ class Hook_addon_registry_cns_cpfs
     {
         return array(
             'templates/CNS_CPF_PERMISSIONS_TAB.tpl' => 'cns_cpf_permissions_tab',
-            'templates/CNS_CPF_STATS_LINE.tpl' => 'administrative__cns_cpf_stats_screen',
             'templates/CNS_CPF_STATS_SCREEN.tpl' => 'administrative__cns_cpf_stats_screen'
         );
     }
@@ -152,12 +152,12 @@ class Hook_addon_registry_cns_cpfs
      */
     public function tpl_preview__administrative__cns_cpf_stats_screen()
     {
-        $lines = new Tempcode();
+        $lines = array();
         foreach (placeholder_array() as $value) {
-            $lines->attach(do_lorem_template('CNS_CPF_STATS_LINE', array(
+            $lines[] = array(
                 'CNT' => placeholder_number(),
                 'VAL' => lorem_phrase(),
-            )));
+            );
         }
 
         return array(

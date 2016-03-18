@@ -1,6 +1,6 @@
 <div id="comments_wrapper" class="comments_wrapper" role="complementary">
 	{+START,SET,REVIEWS_TITLE}
-		<span class="field_title">{!_REVIEWS,{$META_DATA*,numcomments}}:</span>
+		<span class="field_title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 
 		{$SET,rating_loop,0}
 		{+START,LOOP,REVIEW_RATING_CRITERIA}
@@ -50,7 +50,7 @@
 						<option{+START,IF,{$EQ,{SORT},oldest}} selected="selected"{+END} value="oldest">{!OLDEST_FIRST}</option>
 						<option{+START,IF,{$EQ,{SORT},average_rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
 						<option{+START,IF,{$EQ,{SORT},compound_rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
-					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="buttons__sort button_micro" />{+END}
+					</select>{+START,IF,{$NOT,{$JS_ON}}}<input type="submit" value="{!SORT}" class="button_micro buttons__sort" />{+END}
 				</form>
 			</div>
 
@@ -74,7 +74,7 @@
 			{+END}
 
 			<div class="comment_wrapper">
-				<meta itemprop="interactionCount" content="UserComments:{$META_DATA*,numcomments}" />
+				<meta itemprop="interactionCount" content="UserComments:{$METADATA*,numcomments}" />
 
 				{COMMENTS}
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -117,7 +117,7 @@ class Block_side_forum_news
             $max_rows = 0;
             $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', false, $date_key);
 
-            $out = new Tempcode();
+            $news = array();
             if (!is_null($topics)) {
                 sort_maps_by($topics, $date_key);
                 $topics = array_reverse($topics, false);
@@ -127,8 +127,7 @@ class Block_side_forum_news
                     $title = $topic['title'];
                     $date = get_timezoned_date($topic[$date_key], false);
 
-                    $out->attach(do_template('BLOCK_SIDE_FORUM_NEWS_SUMMARY', array(
-                        '_GUID' => '4b7f4ce27cf683710fc9958e9606291c',
+                    $news[] = array(
                         'REPLIES' => strval($topic['num']),
                         'FIRSTTIME' => strval($topic['firsttime']),
                         'LASTTIME' => strval($topic['lasttime']),
@@ -141,16 +140,15 @@ class Block_side_forum_news
                         'DATE' => $date,
                         'FULL_URL' => $topic_url,
                         'NEWS_TITLE' => escape_html($title),
-                    )));
+                    );
                 }
             }
 
             return do_template('BLOCK_SIDE_FORUM_NEWS', array(
                 '_GUID' => '174fa5ce0d35d9b49dca6347c66494a5',
-                'FORUM_NAME' => array_key_exists('forum',
-                    $map) ? $map['forum'] : do_lang('NEWS'),
+                'FORUM_NAME' => array_key_exists('forum', $map) ? $map['forum'] : do_lang('NEWS'),
                 'TITLE' => $_title,
-                'CONTENT' => $out,
+                'NEWS' => $news,
                 'SUBMIT_URL' => $submit_url,
                 'ARCHIVE_URL' => is_null($archive_url) ? '' : $archive_url,
             ));

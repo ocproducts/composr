@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_twitter_feed_integration_block
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -85,7 +86,12 @@ class Hook_addon_registry_twitter_feed_integration_block
      */
     public function get_description()
     {
-        return 'Integrate your Twitter feed into your web site, via a block. Full documentation at: http://compo.sr/forum/topicview/browse/addons/twitter-feed_4.htm';
+        return 'Integrate your Twitter feed into your web site, via a block.
+
+First set up an app on Twitter, then use Comcode like:
+[code="Comcode"]
+[block consumer_key="xxx" consumer_secret="xxx" access_token="xxx" access_token_secret="xxx" screen_name="yourname"]twitter_feed[/block]
+[/code]';
     }
 
     /**

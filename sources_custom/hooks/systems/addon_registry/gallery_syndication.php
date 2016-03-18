@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_gallery_syndication
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -146,7 +147,6 @@ class Hook_addon_registry_gallery_syndication
             'sources_custom/gallery_syndication.php',
             'sources_custom/hooks/modules/video_syndication/vimeo.php',
             'sources_custom/hooks/modules/video_syndication/youtube.php',
-            'sources_custom/hooks/modules/video_syndication/index.html',
             'sources_custom/hooks/systems/cron/gallery_syndication.php',
             'sources_custom/hooks/systems/page_groupings/gallery_syndication.php',
             'sources_custom/oauth.php',

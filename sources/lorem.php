@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__lorem()
 {
@@ -255,8 +257,6 @@ function placeholder_form_with_field($field_name)
     require_code('form_templates');
     $hidden = form_input_hidden($field_name, '0');
 
-    //$field->attach(form_input_line_auto_load('test','test.','test','',false,'news'));
-
     $form = do_lorem_template('FORM', array('TABINDEX' => placeholder_number(), 'HIDDEN' => $hidden, 'TEXT' => $text, 'FIELDS' => placeholder_fields(), 'URL' => placeholder_url(), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => 'proceed'));
 
     return $form;
@@ -410,23 +410,13 @@ function placeholder_image()
 }
 
 /**
- * Get suitable placeholder date.
+ * Get time
  *
  * @return string Place holder text.
  */
 function placeholder_date()
 {
-    return get_timezoned_date(12345 - 60 * 60 * 24 * 200);
-}
-
-/**
- * Get time
- *
- * @return string Place holder text.
- */
-function placeholder_time()
-{
-    return get_timezoned_date(12345);
+    return get_timezoned_date(123456789);
 }
 
 /**
@@ -436,7 +426,7 @@ function placeholder_time()
  */
 function placeholder_date_raw()
 {
-    return strval(12345 - 60 * 60 * 24 * 200);
+    return strval(123456789);
 }
 
 /**
@@ -548,7 +538,7 @@ function lorem_globalise($middle, $message = null, $type = '', $include_header_a
 
     global $LOREM_AVOID_GLOBALISE;
 
-    if (($LOREM_AVOID_GLOBALISE) || is_full_screen_template(null, $middle)) {
+    if (($LOREM_AVOID_GLOBALISE) || is_full_screen_template(null, $middle) || !$include_header_and_footer) {
         return $middle;
     }
 
@@ -723,7 +713,7 @@ function placeholder_pagination()
     ));
 
     return do_lorem_template('PAGINATION_WRAP', array(
-        'TEXT_ID' => lorem_phrase(),
+        'TEXT_ID' => placeholder_random_id(),
         'PER_PAGE' => $per_page,
         'PREVIOUS' => $previous,
         'CONTINUES_LEFT' => $continues,
@@ -948,16 +938,14 @@ function get_text_templates()
  */
 function is_plain_text_template($temp_name)
 {
-    return (
-    in_array($temp_name, get_text_templates())
-    );
+    return in_array($temp_name, get_text_templates());
 }
 
 /**
  * Checks if the template is a full screen template
  *
- * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
- * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-NULL)
+ * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-null)
+ * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-null)
  * @return boolean Whether it is
  */
 function is_full_screen_template($temp_name = null, $tempcode = null)

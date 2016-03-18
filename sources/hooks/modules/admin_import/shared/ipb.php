@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__hooks__modules__admin_import__shared__ipb()
 {
@@ -334,7 +336,7 @@ class Hook_ipb_base
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
 
-                    $custom_fields[cns_make_boiler_custom_field('SELF_DESCRIPTION')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
+                    $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
                     $notes = $row2['notes'];
 
                     if (either_param_string('importer') == 'ipb2') {
@@ -557,7 +559,7 @@ class Hook_ipb_base
 
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']), true);
                 if (is_null($forum_id)) {
-                    //              import_id_remap_put('topic',strval($row['tid']),-1);  Want to allow coming back if accidently a forum was missed
+                    //import_id_remap_put('topic', strval($row['tid']), -1);  Want to allow coming back if accidently a forum was missed
                     continue;
                 }
 
@@ -661,7 +663,7 @@ class Hook_ipb_base
                 $title = '';
                 if ($row['new_topic'] == 1) {
                     $topics = $db->query('SELECT * FROM ' . $table_prefix . 'topics WHERE tid=' . strval($row['topic_id']));
-                    $title = strip_tags(@html_entity_decode($topics[0]['title'], ENT_QUOTES, get_charset()));
+                    $title = strip_html($topics[0]['title']);
                 } elseif (!is_null($row['post_title'])) {
                     $title = @html_entity_decode($row['post_title'], ENT_QUOTES, get_charset());
                 }

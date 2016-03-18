@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,5 +28,6 @@ class lang_ini_size_test_set extends cms_test_case
                 $this->assertTrue(substr_count($contents, "\n") < 980, $f . ' is too big'); // default max_input_vars=1000
             }
         }
+        closedir($dh);
     }
 }

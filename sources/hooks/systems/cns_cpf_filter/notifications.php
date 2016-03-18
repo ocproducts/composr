@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,8 +30,6 @@ class Hook_cns_cpf_filter_notifications
      */
     public function to_enable()
     {
-        $cpf = array(/*'smart_topic_notification' => true */); // Actually, don't make this editable
-
-        return $cpf;
+        return array('smart_topic_notification' => true);
     }
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__spelling()
 {
@@ -210,7 +212,9 @@ function add_spellchecker_words($words)
  * Initialise the spellcheck engine.
  *
  * @param ?ID_TEXT $lang Language to check in (null: current language)
- * @return mixed Spellchecker
+ * @return ?mixed Spellchecker (null: error)
+ *
+ * @ignore
  */
 function _spellcheck_initialise($lang = null)
 {
@@ -230,15 +234,24 @@ function _spellcheck_initialise($lang = null)
 
         $pspell_config = @pspell_config_create($lang, $spelling, '', $charset);
         if ($pspell_config === false) { // Fallback
-            $pspell_config = pspell_config_create('en', $spelling, '', $charset);
+            $pspell_config = @pspell_config_create('en', $spelling, '', $charset);
+            if ($pspell_config === false) {
+                return null;
+            }
         }
         pspell_config_personal($pspell_config, $p_dict_path . '/' . $lang . '.pws');
         $spell_link = @pspell_new_config($pspell_config);
 
-        if (($spell_link === false) && ($lang != 'en')) { // Fallback: Might be that we had a late fail on initialising that language
-            $pspell_config = pspell_config_create('en', $spelling, '', $charset);
+        if ($spell_link === false) { // Fallback: Might be that we had a late fail on initialising that language
+            $pspell_config = @pspell_config_create('en', $spelling, '', $charset);
+            if ($pspell_config === false) {
+                return null;
+            }
             pspell_config_personal($pspell_config, $p_dict_path . '/' . $lang . '.pws');
-            $spell_link = pspell_new_config($pspell_config);
+            $spell_link = @pspell_new_config($pspell_config);
+            if ($spell_link === false) {
+                return null;
+            }
         }
     } else { // enchant
         $broker = enchant_broker_init();

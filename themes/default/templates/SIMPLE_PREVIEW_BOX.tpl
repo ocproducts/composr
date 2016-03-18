@@ -23,26 +23,26 @@
 
 	{+START,IF_PASSED,ENTRY_DETAILS}
 		<p class="associated_details">
-			{$,Displays summary of gallery contents}
+			{$,Displays summary of category contents}
 			({ENTRY_DETAILS})
 		</p>
 	{+END}
 	{+START,IF_PASSED,ENTRY_DETAILS_PREBRACKETED}
 		<p class="associated_details">
-			{$,Displays summary of gallery contents}
+			{$,Displays summary of category contents}
 			{ENTRY_DETAILS}
 		</p>
 	{+END}
 
 	{+START,IF_PASSED,BREADCRUMBS}{+START,IF_NON_EMPTY,{BREADCRUMBS}}
-		<nav class="breadcrumbs" itemprop="breadcrumb" role="navigation"><p>
+		<nav class="breadcrumbs" itemprop="breadcrumb"><p>
 			{!LOCATED_IN,{BREADCRUMBS}}
 		</p></nav>
 	{+END}{+END}
 
 	{+START,IF_PASSED,URL}
 		<p class="shunted_button">
-			<a class="buttons__more button_screen_item" href="{URL*}"><span>{!VIEW}</span></a>
+			<a class="button_screen_item buttons__more" href="{URL*}"><span>{!VIEW}</span></a>
 		</p>
 	{+END}
 </div></section>

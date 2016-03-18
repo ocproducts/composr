@@ -67,7 +67,7 @@
 
 <div style="text-align: left; font-size: 1.2em">
 	<p>
-		<?php echo sprintf(lang_get('my_view_welcome_message'), $cms_sc_product_name, $cms_sc_business_name_possesive, $cms_sc_business_name, $cms_sc_community_doc_url);?>
+		<?php echo sprintf(lang_get('my_view_welcome_message'), $cms_sc_product_name, $cms_sc_business_name_possesive, $cms_sc_business_name, $cms_sc_report_guidance_url);?>
 	</p>
 </div>
 

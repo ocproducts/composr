@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,15 +30,29 @@ class Hook_check_mysql_version
      */
     public function run()
     {
+        $minimum_version = '5.5.3'; // also maintain in tut_webhosting.txt
+        // ^ Why? We need this for proper Unicode support: https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+
+        // If you really need to fiddle it and don't care about emoji, add this to _config.php while installing (before step 5 runs):   $SITE_INFO['database_charset'] = 'utf8';
+
         $warning = array();
-        if (function_exists('mysqli_get_client_version')) {
-            $x = float_to_raw_string(floatval(mysqli_get_client_version()) / 10000.0);
-            if (version_compare($x, '4.1.0', '<')) {
-                $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');
-            }
-        } elseif (function_exists('mysql_get_client_info')) {
-            if (version_compare(mysql_get_client_info(), '4.1.0', '<')) {
-                $warning[] = do_lang_tempcode('MYSQL_TOO_OLD');
+        if (isset($GLOBALS['SITE_DB']->connection_read[0])) {
+            if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
+                $__version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
+                if ($__version !== false) {
+                    $_version = strval($__version);
+                    $version = strval(intval(substr($_version, 0, strlen($_version) - 4))) . '.' . strval(intval(substr($_version, -4, 2))) . '.' . strval(intval(substr($_version, -2, 2)));
+                    if (version_compare($version, $minimum_version, '<')) {
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
+                    }
+                }
+            } elseif (function_exists('mysql_get_server_info') && get_db_type() == 'mysql') {
+                $version = @mysql_get_server_info($GLOBALS['SITE_DB']->connection_read[0]);
+                if ($version !== false) {
+                    if (version_compare($version, $minimum_version, '<')) {
+                        $warning[] = do_lang_tempcode('MYSQL_TOO_OLD', escape_html($minimum_version), escape_html($version));
+                    }
+                }
             }
         }
         return $warning;

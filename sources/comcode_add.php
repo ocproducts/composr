@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,6 +28,8 @@ The default tags need to have a great UI out of the box: we need a great base ex
  * Get some metadata of what Comcode tags we have.
  *
  * @return array A pair: core tags (map to tag parameters), custom tags (map to Custom Comcode row).
+ *
+ * @ignore
  */
 function _get_details_comcode_tags()
 {
@@ -51,7 +53,7 @@ function _get_details_comcode_tags()
         'center' => array(),
         'right' => array(),
         'abbr' => array('param'),
-        'box' => array('float', 'width', 'type', 'options', 'param'),
+        'box' => array('param', 'float', 'width', 'type', 'class', 'options', 'meta', 'links'),
         'quote' => array('param', 'saidless', 'cite'),
         'cite' => array(),
         'samp' => array(),
@@ -85,7 +87,6 @@ function _get_details_comcode_tags()
         'carousel' => array('param'),
         'hide' => array('param'),
         'tooltip' => array('param'),
-        'currency' => array('param', 'bracket'),
         'if_in_group' => array('param', 'type'),
         'flash' => array('param'),
         'media' => array('description', 'thumb_url', 'width', 'height', 'framed', 'wysiwyg_editable', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
@@ -95,13 +96,18 @@ function _get_details_comcode_tags()
         'url' => array('param', 'title', 'target', 'rel'),
         'email' => array('param', 'title', 'subject', 'body'),
         'reference' => array('type', 'param'),
-        'page' => array('param'),
+        'page' => array('param', 'external'),
         'snapback' => array('param', 'forum'),
         'post' => array('param', 'forum'),
         'topic' => array('param', 'forum'),
         'attachment' => array('description', 'thumb_url', 'width', 'height', 'framed', 'type', 'thumb', 'length', 'filename', 'mime_type', 'filesize', 'click_url', 'float'),
-        //'attachment_safe'=>array('description','filename','type','width','height','float','thumb_url'),   Merged into attachment in UI
+        //'attachment_safe' => array('description', 'filename', 'type', 'width', 'height', 'float', 'thumb_url'),   Merged into attachment in UI
     );
+
+    if (addon_installed('ecommerce')) {
+        $tag_list['currency'] = array('param', 'bracket');
+    }
+
     ksort($tag_list);
 
     /* // Helps find missing tags
@@ -175,6 +181,8 @@ function _get_details_comcode_tags()
  *
  * @param  ?string $group Group Name (null: return a specific group)
  * @return array Returns each Group name as key, values as its tags
+ *
+ * @ignore
  */
 function _get_group_tags($group = null)
 {
@@ -225,6 +233,8 @@ function _get_group_tags($group = null)
  * Get the non-WYSIWYG tags (ones the WYSIWYG cannot do itself, so are needed even if it is on)
  *
  * @return array List of non-WYSIWYG tags
+ *
+ * @ignore
  */
 function _get_non_wysiwyg_tags()
 {
@@ -273,6 +283,8 @@ function _get_non_wysiwyg_tags()
         'post',
         'topic',
         'attachment',
+
+        'box', // Has extra parameters that the WYSIWYG button can't inject
     );
 
     return $ret;
@@ -288,14 +300,25 @@ function comcode_helper_script()
 
     require_code('comcode_compiler');
 
-    if ($type == 'step1') {
-        $content = comcode_helper_script_step1();
-    } elseif ($type == 'step2') {
-        $content = comcode_helper_script_step2();
-    } elseif ($type == 'step3') {
-        $content = comcode_helper_script_step3();
-    } else {
-        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    switch ($type) {
+        case 'replace':
+            $content = comcode_helper_script_replace();
+            break;
+
+        case 'step1':
+            $content = comcode_helper_script_step1();
+            break;
+
+        case 'step2':
+            $content = comcode_helper_script_step2();
+            break;
+
+        case 'step3':
+            $content = comcode_helper_script_step3();
+            break;
+
+        default:
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'c1f229be68a1137c5b418b0d5d8a7ccf', 'TITLE' => do_lang_tempcode('COMCODE_HELPER'), 'POPUP' => true, 'CONTENT' => $content));
@@ -309,13 +332,93 @@ function comcode_helper_script()
  *
  * @return Tempcode The step UI.
  */
+function comcode_helper_script_replace()
+{
+    $title = get_screen_title('COMCODE_HELPER');
+
+    $tag = get_param_string('tag');
+
+    $keep = symbol_tempcode('KEEP');
+
+    $action = post_param_string('action', '');
+    if ($action != '') {
+        switch ($action) {
+            case 'add':
+                $url = find_script('comcode_helper') . '?type=step1&field_name=' . get_param_string('field_name') . $keep->evaluate();
+                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                exit();
+
+            case 'edit':
+                $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
+                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                exit();
+
+            case 'delete':
+                require_javascript('posting');
+                require_javascript('editing');
+
+                $field_name = filter_naughty_harsh(get_param_string('field_name'));
+                $title = get_screen_title('_COMCODE_HELPER', true, array(escape_html($tag)));
+
+                require_css('widget_plupload');
+
+                return do_template('BLOCK_HELPER_DONE', array(
+                    '_GUID' => 'd5d5888d89b764f81769823ac71d0828',
+                    'TITLE' => $title,
+                    'FIELD_NAME' => $field_name,
+                    'TAG_CONTENTS' => post_param_string('tag_contents', ''),
+                    'SAVE_TO_ID' => get_param_string('save_to_id', ''),
+                    'DELETE' => true,
+                    'BLOCK' => $tag,
+                    'COMCODE' => '',
+                    'COMCODE_SEMIHTML' => '',
+                ));
+        }
+    }
+
+    require_code('form_templates');
+
+    $fields = new Tempcode();
+    $radios = new Tempcode();
+    $radios->attach(form_input_radio_entry('action', 'add', false, do_lang_tempcode('COMCODE_TAG_MODIFIER_ADD', escape_html($tag))));
+    $radios->attach(form_input_radio_entry('action', 'edit', true, do_lang_tempcode('COMCODE_TAG_MODIFIER_EDIT', escape_html($tag))));
+    $radios->attach(form_input_radio_entry('action', 'delete', false, do_lang_tempcode('COMCODE_TAG_MODIFIER_DELETE', escape_html($tag))));
+    $fields->attach(form_input_radio(do_lang_tempcode('ACTION'), '', 'action', $radios, true));
+
+    $post_url = get_self_url();
+
+    $text = do_lang_tempcode('COMCODE_TAG_MODIFIER_CHOICE_TEXT');
+
+    $submit_name = do_lang_tempcode('PROCEED');
+
+    return do_template('FORM_SCREEN', array(
+        '_GUID' => '370058349d048a8be6570bba97c81fa2',
+        'TITLE' => $title,
+        'JAVASCRIPT' => '',
+        'TARGET' => '_self',
+        'SKIP_WEBSTANDARDS' => true,
+        'FIELDS' => $fields,
+        'URL' => $post_url,
+        'TEXT' => $text,
+        'SUBMIT_ICON' => 'buttons__proceed',
+        'SUBMIT_NAME' => $submit_name,
+        'HIDDEN' => '',
+        'THEME' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+    ));
+}
+
+/**
+ * Render a step of the Comcode tag helper dialog.
+ *
+ * @return Tempcode The step UI.
+ */
 function comcode_helper_script_step1()
 {
     global $DANGEROUS_TAGS;
 
     list($tag_list, $custom_tag_list) = _get_details_comcode_tags();
 
-    $title = get_screen_title('COMCODE_TAG');
+    $title = get_screen_title('COMCODE_TAGS');
     $keep = symbol_tempcode('KEEP');
     $comcode_groups = '';
     $groups = _get_group_tags();
@@ -340,7 +443,7 @@ function comcode_helper_script_step1()
             if ($custom) {
                 $description = make_string_tempcode(escape_html(is_integer($custom_tag_list[$tag]['tag_description']) ? get_translated_text($custom_tag_list[$tag]['tag_description']) : $custom_tag_list[$tag]['tag_description']));
             } else {
-                $description = do_lang_tempcode('COMCODE_TAG_' . $tag);
+                $description = do_lang_tempcode('COMCODE_TAG_' . $tag . '_DESCRIPTION');
             }
 
             $url = find_script('comcode_helper') . '?type=step2&tag=' . urlencode($tag) . '&field_name=' . get_param_string('field_name') . $keep->evaluate();
@@ -408,7 +511,7 @@ function comcode_helper_script_step2()
     if (isset($custom_tag_list[$tag]['tag_description'])) {
         $tag_description = protect_from_escaping($custom_tag_list[$tag]['tag_description']);
     } else {
-        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag));
+        $tag_description = protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_DESCRIPTION'));
     }
     $has_full_tag_description = false;
 
@@ -427,7 +530,7 @@ function comcode_helper_script_step2()
                     $is_advanced = (strpos($descriptiont, do_lang('BLOCK_IND_ADVANCED')) !== false);
                     $descriptiont = trim(str_replace(do_lang('BLOCK_IND_ADVANCED'), '', $descriptiont));
 
-                    $default = array_key_exists($param, $defaults) ? $defaults[$param] : get_param_string('default_' . $param, '');
+                    $default = get_param_string('default_' . $param, array_key_exists($param, $defaults) ? $defaults[$param] : '');
                     if ((!array_key_exists($param, $defaults)) && ($default == '')) {
                         $matches = array();
                         if (preg_match('#' . do_lang('BLOCK_IND_DEFAULT') . ': ["\']([^"]*)["\']#Ui', $descriptiont, $matches) != 0) {
@@ -498,8 +601,11 @@ function comcode_helper_script_step2()
         $params = ($_params['tag_parameters'] == '') ? array() : explode(',', $_params['tag_parameters']);
         foreach ($params as $param) {
             $description = new Tempcode();
-            $fields->attach(form_input_line(preg_replace('#=.*$#', '', titleify($param)), protect_from_escaping($description), preg_replace('#=.*$#', '', $param), preg_replace('#^.*=#U', '', $param), false));
+            $name = preg_replace('#=.*$#', '', $param);
+            $default = (strpos($param, '=') === false) ? '' : preg_replace('#^.*=#U', '', $param);
+            $fields->attach(form_input_line(titleify($name), protect_from_escaping($description), $name, $default, false));
         }
+
         $tag_description = new Tempcode();
         $tag_description->attach(escape_html(is_integer($_params['tag_description']) ? get_translated_text($_params['tag_description']) : $_params['tag_description']));
         $tag_description->attach(paragraph(escape_html(is_integer($_params['tag_example']) ? get_translated_text($_params['tag_example']) : $_params['tag_example'])));
@@ -522,7 +628,7 @@ function comcode_helper_script_step2()
                 ocp_mark_as_escaped($descriptiont);
             }
 
-            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_FIELD_TITLE', null, null, null, null, false);
+            $field_title = do_lang('COMCODE_TAG_' . $tag . '_EMBED_TITLE', null, null, null, null, false);
             if (is_null($field_title)) {
                 $field_title = do_lang('TAG_CONTENTS');
             }
@@ -608,6 +714,8 @@ function comcode_helper_script_step2()
  *
  * @param  ID_TEXT $tag Tag being read.
  * @return boolean Whether it has required contents.
+ *
+ * @ignore
  */
 function _find_comcode_tag_embed_required($tag)
 {
@@ -634,6 +742,8 @@ function _find_comcode_tag_embed_required($tag)
  * @param  string $javascript JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, &$done_tag_contents, $defaults, $params, &$javascript, $preview)
 {
@@ -764,6 +874,8 @@ function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields,
  * @param  Tempcode $hidden Hidden fields.
  * @param  string $default Default parameter value.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $param, $parameter_name, $descriptiont, &$fields, &$fields_advanced, $hidden, $default)
 {
@@ -817,10 +929,12 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
  * @param  ID_TEXT $actual_tag Actual tag being read.
  * @param  ID_TEXT $param Parameter name.
  * @return string Title.
+ *
+ * @ignore
  */
 function _get_comcode_tag_param_name($actual_tag, $param)
 {
-    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_NAME_OF_PARAM_' . $param, null, null, null, null, false);
+    $parameter_name = do_lang('COMCODE_TAG_' . $actual_tag . '_PARAM_' . $param . '_TITLE', null, null, null, null, false);
     if (is_null($parameter_name)) {
         $parameter_name = titleify($param);
     }
@@ -836,6 +950,8 @@ function _get_comcode_tag_param_name($actual_tag, $param)
  * @param  Tempcode $fields_advanced Advanced UI fields.
  * @param  Tempcode $hidden Hidden fields.
  * @param  array $defaults Default parameter values.
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $defaults)
 {
@@ -859,13 +975,15 @@ function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields
  * @param  string $javascript JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
+ *
+ * @ignore
  */
 function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, $default_embed, &$javascript, &$preview)
 {
     global $TEXTUAL_TAGS;
 
     if ($tag == 'random') {
-        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_FIELD_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
+        $fields_advanced->attach(form_input_integer(do_lang_tempcode('COMCODE_TAG_random_EMBED_TITLE'), do_lang_tempcode('COMCODE_TAG_random_EMBED'), 'tag_contents', ($default_embed == '') ? null : intval($default_embed), false));
     } elseif (($tag == 'media') && (addon_installed('filedump'))) {
         $set_name = 'file';
         $required = true;
@@ -904,9 +1022,12 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
 page=URL
 page=URL';
         }
-        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED');
+        $descriptiont = do_lang('COMCODE_TAG_' . $tag . '_EMBED', null, null, null, null, false);
+        if (is_null($descriptiont)) {
+            $descriptiont = '';
+        }
         $descriptiont = trim(str_replace(do_lang('BLOCK_IND_SUPPORTS_COMCODE'), '', $descriptiont));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping(do_lang('COMCODE_TAG_' . $tag . '_EMBED')), 'tag_contents', $default_embed, true, null, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('TAG_CONTENTS'), protect_from_escaping($descriptiont), 'tag_contents', $default_embed, true, null, true));
     } else {
         return false;
     }
@@ -924,7 +1045,7 @@ function comcode_helper_script_step3()
     require_javascript('posting');
     require_javascript('editing');
 
-    $field_name = get_param_string('field_name');
+    $field_name = filter_naughty_harsh(get_param_string('field_name'));
     $tag = post_param_string('tag');
     $title = get_screen_title('_COMCODE_HELPER', true, array(escape_html($tag)));
 
@@ -958,6 +1079,8 @@ function comcode_helper_script_step3()
  *
  * @param  ID_TEXT $tag Tag being read.
  * @return string The full Comcode for that tag.
+ *
+ * @ignore
  */
 function _get_preview_environment_comcode($tag)
 {

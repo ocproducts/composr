@@ -1,6 +1,8 @@
 {TITLE}
 
 <form title="{!PRIMARY_PAGE_FORM}" onkeypress="if (enter_pressed(event)) { add_test(); return false; }" method="post" onsubmit="return check_form(this);" action="{URL*}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div>
 		<h2>{!SETTINGS}</h2>
 
@@ -39,7 +41,7 @@
 		<h2>{!PROCEED}</h2>
 
 		<p class="proceed_button">
-			<input accesskey="u" class="buttons__save button_screen" type="submit" value="{SUBMIT_NAME*}" />
+			<input accesskey="u" class="button_screen buttons__save" type="submit" value="{SUBMIT_NAME*}" />
 		</p>
 	</div>
 </form>

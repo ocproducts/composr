@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -109,7 +109,6 @@ class Hook_fields_posting_field
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 
-        require_lang('javascript');
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('ajax');
@@ -156,7 +155,7 @@ class Hook_fields_posting_field
 
         $ret = new Tempcode();
 
-        $ret->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => $_cf_name)));
+        $ret->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2201f130af229cbadd92bb1b377739f5', 'TITLE' => $_cf_name)));
 
         $ret->attach(do_template('POSTING_FIELD', array(
             '_GUID' => 'b6c65227a28e0650154393033e005f67',
@@ -188,7 +187,7 @@ class Hook_fields_posting_field
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
-     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return NULL if we would need to do so)
+     * @param  ?string $upload_dir Where the files will be uploaded to (null: do not store an upload, return null if we would need to do so)
      * @param  ?array $old_value Former value of field (null: none)
      * @return ?string The value (null: could not process)
      */

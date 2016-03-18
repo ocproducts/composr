@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -16,10 +16,10 @@
 /**
  * Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.
  *
- * @param  string $a_language_string_code Language string code
- * @param  string $a_label_1 Label 1 (given as a parameter to the language string code)
- * @param  string $a_label_2 Label 2 (given as a parameter to the language string code)
- * @param  string $a_label_3 Label 3 (given as a parameter to the language string code)
+ * @param  string $a_language_string_code Language string ID
+ * @param  string $a_label_1 Label 1 (given as a parameter to the language string ID)
+ * @param  string $a_label_2 Label 2 (given as a parameter to the language string ID)
+ * @param  string $a_label_3 Label 3 (given as a parameter to the language string ID)
  * @param  string $a_page_link_1 Page-link 1
  * @param  string $a_page_link_2 Page-link 2
  * @param  string $a_page_link_3 Page-link 3
@@ -97,7 +97,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
         $username = $GLOBALS['FORUM_DRIVER']->get_username($a_member_id);
         $displayname = $GLOBALS['FORUM_DRIVER']->get_username($a_member_id, true);
         $subject = do_lang('ACTIVITY_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $username, strip_html($message->evaluate()));
-        $mail = do_lang('ACTIVITY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array('[semihtml]' . $message->evaluate() . '[/semihtml]', $displayname));
+        $mail = do_notification_lang('ACTIVITY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array('[semihtml]' . $message->evaluate() . '[/semihtml]', $displayname));
         dispatch_notification('activity', strval($a_member_id), $subject, $mail);
     }
 
@@ -121,12 +121,12 @@ function activities_ajax_submit_handler()
     $guest_id = intval($GLOBALS['FORUM_DRIVER']->get_guest_id());
 
     if (!is_guest(get_member())) {
-        $map['STATUS'] = trim(either_param_string('status', ''));
+        $map['STATUS'] = trim(post_param_string('status', ''));
 
         if ((post_param_string('zone', '') != '') && ($map['STATUS'] != '') && ($map['STATUS'] != do_lang('activities:TYPE_HERE'))) {
             comcode_to_tempcode($map['STATUS'], $guest_id, false, null);
 
-            $map['PRIVACY'] = either_param_string('privacy', 'private');
+            $map['PRIVACY'] = post_param_string('privacy', 'private');
 
             if (strlen(strip_tags($map['STATUS'])) < strlen($map['STATUS'])) {
                 $help_zone = get_comcode_zone('userguide_comcode', false);

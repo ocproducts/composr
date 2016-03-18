@@ -7,8 +7,10 @@
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
 	</div></div>
 
-	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
+	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on" target="_top">
 		<div>
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			{PASSION}
 
 			<div class="float_surrounder">
@@ -69,7 +71,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input class="menu__site_meta__user_actions__login button_screen" type="submit" value="{!_LOGIN}" />
+				<input class="button_screen menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 			</p>
 		</div>
 	</form>

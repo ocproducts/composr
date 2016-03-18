@@ -5,9 +5,9 @@
 
 		{COMCODE}
 
-		<span class="field_name">
-			<label for="{NAME*}">{PRETTY_NAME*}</label>
-		</span>
+		<p class="field_name lonely_label">
+			<label for="{NAME*}">{PRETTY_NAME*}:</label>
+		</p>
 
 		<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
 

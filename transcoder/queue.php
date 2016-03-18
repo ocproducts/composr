@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    transcoder
+ */
 
 /*EXTRA FUNCTIONS: shell_exec|gethostname|escapeshellarg|escapeshellcmd|transcode|tr_get_mime_type*/
 
@@ -138,17 +151,15 @@ function transcode($path)
             $output_path = str_replace('/queue/', '/done/', $output_path);
 
             /* mencoder too buggy
-            if ($file_type=='m4v')
+            if ($file_type == 'm4v') {
+                $shell_command = '"' . $mencoder_path . 'mencoder" ' . escapeshellarg($file_path) . ' -noskip -of lavf -ofps 24000/1001 -ni -o ' . escapeshellarg($output_path) . ' -ovc x264 -oac mp3lame -x264encopts bitrate=' . escapeshellcmd($video_bitrate) . ' -lameopts abr:br=' . escapeshellcmd($audio_bitrate) . ' -vf scale=' . escapeshellcmd($video_width_setting . ':' . $video_height_setting) . ' -srate 22050 -af lavcresample=22050';
+                echo '[' . date('d/m/Y h:i:s') . '] DOING SHELL COMMAND: ' . $shell_command . "\n";
+                shell_exec($shell_command . ' 2>&1 >> log.txt');
+            } else // flv
             {
-                    $shell_command='"'.$mencoder_path.'mencoder" '.escapeshellarg($file_path).' -noskip -of lavf -ofps 24000/1001 -ni -o '.escapeshellarg($output_path).' -ovc x264 -oac mp3lame -x264encopts bitrate='.escapeshellcmd($video_bitrate).' -lameopts abr:br='.escapeshellcmd($audio_bitrate).' -vf scale='.escapeshellcmd($video_width_setting.':'.$video_height_setting).' -srate 22050 -af lavcresample=22050';
-                    echo '['.date('d/m/Y h:i:s').'] DOING SHELL COMMAND: '.$shell_command."\n";
-                    shell_exec($shell_command.' 2>&1 >> log.txt');
-            }
-            else // flv
-            {
-                    $shell_command='"'.$mencoder_path.'mencoder" '.escapeshellarg($file_path).' -noskip -of lavf -ofps 24000/1001 -ni -o '.escapeshellarg($output_path).' -ovc lavc -oac mp3lame -lavcopts vcodec=flv:vbitrate='.escapeshellcmd($video_bitrate).':autoaspect:acodec=libmp3lame -lameopts abr:br='.escapeshellcmd($audio_bitrate).' -vf scale='.escapeshellcmd($video_width_setting.':'.$video_height_setting).' -srate 22050 -af lavcresample=22050';
-                    echo '['.date('d/m/Y h:i:s').'] DOING SHELL COMMAND: '.$shell_command."\n";
-                    shell_exec($shell_command.' 2>&1 >> log.txt');
+                $shell_command = '"' . $mencoder_path . 'mencoder" ' . escapeshellarg($file_path) . ' -noskip -of lavf -ofps 24000/1001 -ni -o ' . escapeshellarg($output_path) . ' -ovc lavc -oac mp3lame -lavcopts vcodec=flv:vbitrate=' . escapeshellcmd($video_bitrate) . ':autoaspect:acodec=libmp3lame -lameopts abr:br=' . escapeshellcmd($audio_bitrate) . ' -vf scale=' . escapeshellcmd($video_width_setting . ':' . $video_height_setting) . ' -srate 22050 -af lavcresample=22050';
+                echo '[' . date('d/m/Y h:i:s') . '] DOING SHELL COMMAND: ' . $shell_command . "\n";
+                shell_exec($shell_command . ' 2>&1 >> log.txt');
             }
             */
 

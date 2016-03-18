@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -64,7 +64,7 @@ class Hook_main_custom_gfx_rollover_button
             return $url_2;
         }
 
-        $comb_id = 'rollover_' . uniqid('', true);
+        $comb_id = 'rollover_' . uniqid('', false);
 
         $ret = '<img id="' . php_addslashes($comb_id) . '" class="gfx_text_overlay" alt="' . str_replace("\n", ' ', escape_html($map['data'])) . '" src="' . escape_html($url_1) . '" />';
         $ret .= trim('

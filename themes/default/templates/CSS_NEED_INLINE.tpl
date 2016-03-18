@@ -1,4 +1,4 @@
-<style id="style_for_no_cache">/*<![CDATA[*/
+<style class="style_for_no_cache">/*<![CDATA[*/
 {CODE/}
 /*]]>*/</style>
 

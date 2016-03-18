@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,7 +19,7 @@
  */
 
 /*
-Resource-fs serves the 'var' parts of Commandr-fs. It binds Commandr-fs to a property/XML-based content model.
+Resource-fs serves the 'var' parts of Commandr-fs. It binds Commandr-fs to a property/JSON-based content model.
 
 A programmer can also directly talk to Resource-fs to do abstracted CRUD operations on just about any kind of Composr resource.
 i.e. Perform generalised operations on resource types without needing to know their individual APIs.
@@ -27,23 +27,44 @@ i.e. Perform generalised operations on resource types without needing to know th
 The user knows all of Commandr-fs as "The Composr Repository".
 */
 
+/*
+In Composr we have cms_merge and we have Resource-fs.
+
+Resource-fs is intended for staging site functionality and backups, mainly.
+cms_merge is intended to merge disparate sites in a more complete way.
+
+There is overlap, but intentionally each approach is optimised in a different way.
+*/
+
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__resource_fs()
 {
     require_code('commandr');
+    require_code('database_relations');
+    require_code('resource_fs_base_class');
+    require_code('json');
+    require_code('content');
 
-    define('RESOURCEFS_DEFAULT_EXTENSION', 'cms');
+    define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
+
+    define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    $RESOURCEFS_LOGGER = null;
-    $RESOURCEFS_LOGGER_LEVEL = 'notice';
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    $RESOURCE_FS_LOGGER = null;
+    $RESOURCE_FS_LOGGER_LEVEL = 'notice';
 
-    global $RESOURCEFS_ADD_ONLY;
-    $RESOURCEFS_ADD_ONLY = false;
+    global $RESOURCE_FS_ADD_ONLY;
+    $RESOURCE_FS_ADD_ONLY = false;
+
+    define('TABLE_REPLACE_MODE_NONE', 0);
+    define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
+    define('TABLE_REPLACE_MODE_SEVERE', 2);
 }
 
 /**
@@ -52,14 +73,14 @@ function init__resource_fs()
  * @param  string $level The minimum logging level
  * @set inform notice warn
  */
-function resourcefs_logging__start($level = 'notice')
+function resource_fs_logging__start($level = 'notice')
 {
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    if ($RESOURCEFS_LOGGER !== null) {
-        fclose($RESOURCEFS_LOGGER);
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    if ($RESOURCE_FS_LOGGER !== null) {
+        fclose($RESOURCE_FS_LOGGER);
     }
-    $RESOURCEFS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resourcefs.log', 'at');
-    $RESOURCEFS_LOGGER_LEVEL = $level;
+    $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'at');
+    $RESOURCE_FS_LOGGER_LEVEL = $level;
 }
 
 /**
@@ -69,22 +90,22 @@ function resourcefs_logging__start($level = 'notice')
  * @param  ID_TEXT $type The template to use
  * @set    inform notice warn
  */
-function resourcefs_logging($message, $type = 'warn')
+function resource_fs_logging($message, $type = 'warn')
 {
-    global $RESOURCEFS_LOGGER, $RESOURCEFS_LOGGER_LEVEL;
-    if (!is_null($RESOURCEFS_LOGGER)) {
-        if (($type == 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'inform')) {
+    global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
+    if (!is_null($RESOURCE_FS_LOGGER)) {
+        if (($type == 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform')) {
             return;
         }
-        if (($type == 'notice') && ($RESOURCEFS_LOGGER_LEVEL != 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'notice')) {
+        if (($type == 'notice') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'notice')) {
             return;
         }
-        if (($type == 'warn') && ($RESOURCEFS_LOGGER_LEVEL != 'inform') && ($RESOURCEFS_LOGGER_LEVEL != 'notice') && ($RESOURCEFS_LOGGER_LEVEL != 'warn')) {
+        if (($type == 'warn') && ($RESOURCE_FS_LOGGER_LEVEL != 'inform') && ($RESOURCE_FS_LOGGER_LEVEL != 'notice') && ($RESOURCE_FS_LOGGER_LEVEL != 'warn')) {
             return;
         }
 
         $message = date('d/m/Y H:i:s') . ': ' . $type . ': ' . $message . "\n";
-        fwrite($RESOURCEFS_LOGGER, $message);
+        fwrite($RESOURCE_FS_LOGGER, $message);
         if (running_script('execute_temp')) {
             print($message);
         }
@@ -94,15 +115,36 @@ function resourcefs_logging($message, $type = 'warn')
 /**
  * Disengage logging.
  */
-function resourcefs_logging__end()
+function resource_fs_logging__end()
 {
-    global $RESOURCEFS_LOGGER;
-    if ($RESOURCEFS_LOGGER !== null) {
-        fclose($RESOURCEFS_LOGGER);
+    global $RESOURCE_FS_LOGGER;
+    if ($RESOURCE_FS_LOGGER !== null) {
+        fclose($RESOURCE_FS_LOGGER);
     }
-    $RESOURCEFS_LOGGER = null;
-    sync_file(get_custom_file_base() . '/data_custom/resourcefs.log');
-    fix_permissions(get_custom_file_base() . '/data_custom/resourcefs.log');
+    $RESOURCE_FS_LOGGER = null;
+    sync_file(get_custom_file_base() . '/data_custom/resource_fs.log');
+    fix_permissions(get_custom_file_base() . '/data_custom/resource_fs.log');
+}
+
+/**
+ * Get a Resource-fs record.
+ *
+ * @param  ID_TEXT $resource_type The resource type
+ * @param  ID_TEXT $resource_id The resource ID
+ * @return ?array A pair: the JSON data, the path (null: could not find)
+ */
+function get_resource_fs_record($resource_type, $resource_id)
+{
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+
+    $resource_fs_path = find_commandr_fs_filename_via_id($resource_type, $resource_id, true);
+    if (is_null($resource_fs_path)) {
+        return null;
+    }
+
+    $resource_fs_data = $resource_fs_ob->resource_load($resource_type, basename($resource_fs_path), dirname($resource_fs_path));
+
+    return array(json_encode($resource_fs_data), $resource_fs_path);
 }
 
 /**
@@ -111,15 +153,9 @@ function resourcefs_logging__end()
  * @param  ID_TEXT $resource_type The resource type
  * @return ?object The object (null: could not get one)
  */
-function get_resource_commandrfs_object($resource_type)
+function get_resource_commandr_fs_object($resource_type)
 {
-    require_code('content');
-    $object = get_content_object($resource_type);
-    if (is_null($object)) {
-        return null;
-    }
-    $info = $object->info();
-    $fs_hook = $info['commandr_filesystem_hook'];
+    $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
     if (is_null($fs_hook)) {
         return null;
     }
@@ -135,7 +171,7 @@ function get_resource_commandrfs_object($resource_type)
 /*
 ADDRESSING SPACE POPULATION AND LOOKUP CAN HAPPEN OUTSIDE RESOURCE-FS OBJECTS;
 THIS INCLUDES FILENAME STUFF, ALTHOUGH DELEGATED INTERNALLY TO THE RESOURCE-FS OBJECT WHICH HANDLES THE ACTUAL NAMING RULES;
-ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via the get_resource_commandrfs_object function)
+ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via the get_resource_commandr_fs_object function)
 */
 
 /**
@@ -148,10 +184,10 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  * @param  ?ID_TEXT $new_guid GUID to forcibly assign (null: don't force)
  * @param  boolean $definitely_new If we know this is new, i.e. has no existing moniker
  */
-function generate_resourcefs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
+function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
     if (!is_null($label)) {
-        $label = substr($label, 0, 255);
+        $label = cms_mb_substr($label, 0, 255);
     }
 
     static $cache = array();
@@ -161,16 +197,14 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
         }
     }
 
-    require_code('content');
     $resource_object = get_content_object($resource_type);
-    if (is_null($resource_type)) {
+    if (is_null($resource_object)) {
         fatal_exit('Cannot load content object for ' . $resource_type);
     }
     $resource_info = $resource_object->info();
-    $resourcefs_hook = $resource_info['commandr_filesystem_hook'];
+    $resource_fs_hook = $resource_info['commandr_filesystem_hook'];
 
     if (is_null($label)) {
-        require_code('content');
         list($label) = content_get_details($resource_type, $resource_id, true);
         if (is_null($label)) {
             return array(null, null);
@@ -210,7 +244,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
             }
         }
 
-        $where = array('resource_resourcefs_hook' => $resourcefs_hook, 'resource_moniker' => $moniker);
+        $where = array('resource_resource_fs_hook' => $resource_fs_hook, 'resource_moniker' => $moniker);
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('alternative_ids', 'resource_id', $where);
         $ok = (is_null($test)) && ($moniker != '_folder'/*reserved*/);
         if (!$ok) { // Oh dear, will pass to next iteration, but trying a new moniker
@@ -228,7 +262,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
             'resource_moniker' => $moniker,
             'resource_label' => $label,
             'resource_guid' => $guid,
-            'resource_resourcefs_hook' => $resourcefs_hook,
+            'resource_resource_fs_hook' => $resource_fs_hook,
         ));
     }
 
@@ -243,7 +277,7 @@ function generate_resourcefs_moniker($resource_type, $resource_id, $label = null
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  */
-function expunge_resourcefs_moniker($resource_type, $resource_id)
+function expunge_resource_fs_moniker($resource_type, $resource_id)
 {
     $GLOBALS['SITE_DB']->query_delete('alternative_ids', array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
 }
@@ -257,7 +291,7 @@ function expunge_resourcefs_moniker($resource_type, $resource_id)
  */
 function find_guid_via_id($resource_type, $resource_id)
 {
-    list(, $guid) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list(, $guid) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $guid;
 }
 
@@ -269,13 +303,16 @@ function find_guid_via_id($resource_type, $resource_id)
  * @param  boolean $include_subpath Whether to include the subpath
  * @return ?ID_TEXT The filename (null: no match)
  */
-function find_commandrfs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
+function find_commandr_fs_filename_via_id($resource_type, $resource_id, $include_subpath = false)
 {
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $filename = $resourcefs_ob->convert_id_to_filename($resource_type, $resource_id);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($resource_fs_ob)) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+    $filename = $resource_fs_ob->convert_id_to_filename($resource_type, $resource_id);
     if (!is_null($filename)) {
         if ($include_subpath) {
-            $subpath = $resourcefs_ob->search($resource_type, $resource_id, true);
+            $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
             if (is_null($subpath)) {
                 return null;
             }
@@ -296,7 +333,7 @@ function find_commandrfs_filename_via_id($resource_type, $resource_id, $include_
  */
 function find_moniker_via_id($resource_type, $resource_id)
 {
-    list($moniker) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list($moniker) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $moniker;
 }
 
@@ -309,7 +346,7 @@ function find_moniker_via_id($resource_type, $resource_id)
  */
 function find_label_via_id($resource_type, $resource_id)
 {
-    list(, , $label) = generate_resourcefs_moniker($resource_type, $resource_id);
+    list(, , $label) = generate_resource_fs_moniker($resource_type, $resource_id);
     return $label;
 }
 
@@ -347,15 +384,15 @@ function find_id_via_moniker($resource_type, $resource_moniker)
  */
 function find_id_via_label($resource_type, $_resource_label, $subpath = null)
 {
-    $resource_label = substr($_resource_label, 0, 255);
+    $resource_label = cms_mb_substr($_resource_label, 0, 255);
 
     static $cache = array();
     if (isset($cache[$resource_type][$resource_label][$subpath])) {
         return $cache[$resource_type][$resource_label][$subpath];
     }
 
-    $commandrfs_ob = get_resource_commandrfs_object($resource_type);
-    if (is_null($commandrfs_ob)) {
+    $commandr_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($commandr_fs_ob)) {
         fatal_exit('Cannot load resource-fs object for ' . $resource_type);
     }
 
@@ -365,16 +402,16 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
     ));
     $resource_ids = collapse_1d_complexity('resource_id', $ids);
     foreach ($resource_ids as $resource_id) {
-        if (_check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)) {
+        if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
             $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
     }
 
     // No valid match, do a direct DB search without the benefit of the alternative_ids table
-    $ids = $commandrfs_ob->find_resource_by_label($resource_type, $_resource_label);
+    $ids = $commandr_fs_ob->find_resource_by_label($resource_type, $_resource_label);
     foreach ($ids as $resource_id) {
-        if (_check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)) {
+        if (_check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)) {
             $cache[$resource_type][$resource_label][$subpath] = $resource_id;
             return $resource_id;
         }
@@ -387,18 +424,20 @@ function find_id_via_label($resource_type, $_resource_label, $subpath = null)
 /**
  * Find if a resource matches search parameters.
  *
- * @param  object $commandrfs_ob Commandr-fs/Resource-fs object
+ * @param  object $commandr_fs_ob Commandr-fs/Resource-fs object
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  * @param  ?string $subpath The subpath (null: don't care). It may end in "/*" if you want to look for a match under a certain directory
  * @return boolean Whether it matches
+ *
+ * @ignore
  */
-function _check_id_match($commandrfs_ob, $resource_type, $resource_id, $subpath)
+function _check_id_match($commandr_fs_ob, $resource_type, $resource_id, $subpath)
 {
     if ($subpath === null) {
         return true;
     } else {
-        $this_subpath = $commandrfs_ob->search($resource_type, $resource_id, true);
+        $this_subpath = $commandr_fs_ob->search($resource_type, $resource_id, true);
         if (substr($subpath, -2) == '/*') {
             if (substr($this_subpath . '/', 0, strlen($subpath) - 1) == substr($subpath, 0, strlen($subpath) - 1)) {
                 return true;
@@ -459,10 +498,10 @@ function find_ids_via_guids($guids)
  * @param  ID_TEXT $filename The filename
  * @return ?ID_TEXT The ID (null: no match)
  */
-function find_id_via_commandrfs_filename($resource_type, $filename)
+function find_id_via_commandr_fs_filename($resource_type, $filename)
 {
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $test = $resourcefs_ob->convert_filename_to_id($filename, $resource_type);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    $test = $resource_fs_ob->convert_filename_to_id($filename, $resource_type);
     if (is_null($test)) {
         return null;
     }
@@ -470,19 +509,479 @@ function find_id_via_commandrfs_filename($resource_type, $filename)
     return $resource_id;
 }
 
+/*
+TABLE LEVEL
+*/
+
+/**
+ * Transfer a table's contents to JSON format.
+ *
+ * @param  string $table Table name
+ * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
+ * @param  ?array $where_map Extra WHERE constraints (null: none)
+ * @return string JSON data
+ */
+function table_to_json($table, $fields_to_skip = null, $where_map = null)
+{
+    return json_encode(table_to_portable_rows($table, $fields_to_skip, $where_map));
+}
+
+/**
+ * Transfer a table's contents to portable rows.
+ *
+ * @param  string $table Table name
+ * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
+ * @param  ?array $where_map Extra WHERE constraints (null: none)
+ * @param  ?object $connection Database connection to look up from (null: work out from table name)
+ * @return array Portable rows
+ */
+function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $connection = null)
+{
+    if (is_null($where_map)) {
+        $where_map = array();
+    }
+
+    if (is_null($connection)) {
+        $connection = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    }
+
+    $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
+
+    $rows = $connection->query_select($table, array('*'), $where_map);
+
+    $relation_map = get_relation_map_for_table($table);
+
+    if (is_null($fields_to_skip)) {
+        $fields_to_skip = array();
+    }
+    $fields_to_skip = array_merge($fields_to_skip, array_keys($where_map));
+
+    foreach ($rows as &$row) {
+        foreach ($fields_to_skip as $field_to_skip) {
+            unset($row[$field_to_skip]);
+        }
+
+        $row = table_row_to_portable_row($row, $db_fields, $relation_map, $connection);
+    }
+
+    return $rows;
+}
+
+/**
+ * Transfer JSON format to a table.
+ *
+ * @param  string $table Table name
+ * @param  mixed $json JSON data OR rows that are already decoded
+ * @param  ?array $extra_field_data Extra data to add to each row (null: none)
+ * @param  integer $replace_mode Whether to fully replace the current table contents
+ * @return boolean Success status
+ */
+function table_from_json($table, $json, $extra_field_data, $replace_mode)
+{
+    $rows = @json_decode($json, true);
+
+    return table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode);
+}
+
+/**
+ * Transfer portable rows to a table.
+ *
+ * @param  string $table Table name
+ * @param  array $rows Portable rows
+ * @param  ?array $extra_field_data Extra data to add to each row (null: none)
+ * @param  integer $replace_mode Whether to fully replace the current table contents
+ * @param  ?object $connection Database connection to look up from (null: work out from table name)
+ * @return boolean Success status
+ */
+function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $connection = null)
+{
+    if (is_null($connection)) {
+        $connection = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    }
+
+    $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
+
+    $lang_fields = array();
+    $upload_fields = array();
+    foreach ($db_fields as $db_field_name => $db_field_type) {
+        $db_field_type = trim($db_field_type, '*?');
+
+        if (strpos($db_field_type, '_TRANS') !== false) {
+            $lang_fields[] = $db_field_name;
+        }
+        elseif ($db_field_type == 'URLPATH') {
+            $upload_fields[] = $db_field_name;
+        }
+    }
+
+    if ($replace_mode != TABLE_REPLACE_MODE_NONE) {
+        if ($replace_mode == TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA) {
+            $delete_where = $extra_field_data;
+        }
+        elseif ($replace_mode == TABLE_REPLACE_MODE_SEVERE) {
+            $delete_where = null;
+        }
+
+        if (count($lang_fields) != 0 || count($upload_fields) != 0) {
+            $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), $delete_where);
+
+            foreach ($old_rows as $old_row) {
+                // Cleanup old language fields
+                foreach ($lang_fields as $lang_field) {
+                    delete_lang($old_row[$lang_field], $connection);
+                }
+
+                // Cleanup old files
+                foreach ($upload_fields as $upload_field) {
+                    @unlink(get_custom_file_base() . '/' . $old_row[$upload_field]);
+                    sync_file(get_custom_file_base() . '/' . $old_row[$upload_field]);
+                }
+            }
+        }
+
+        // Delete old rows
+        $connection->query_delete($table, $delete_where);
+    } else {
+        // For a poor-mans REPLACE INTO (which is a MySQL extension)
+        $keys = array();
+        foreach ($db_fields as $db_field) {
+            if (substr($db_field['m_type'], 0, 1) == '*') {
+                $keys[$db_field['m_name']] = true;
+            }
+        }
+    }
+
+    if ($rows === false) {
+        return false;
+    }
+
+    $relation_map = get_relation_map_for_table($table);
+
+    foreach ($rows as $row) {
+        if (!is_null($extra_field_data)) {
+            $row += $extra_field_data;
+        }
+
+        $row = table_row_from_portable_row($row, $db_fields, $relation_map, $connection);
+
+        if ($replace_mode == TABLE_REPLACE_MODE_NONE) {
+            if (count($lang_fields) != 0 || count($upload_fields) != 0) {
+                $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), array_intersect_key($row, $keys));
+
+                foreach ($old_rows as $old_row) {
+                    // Cleanup old language fields
+                    foreach ($lang_fields as $lang_field) {
+                        delete_lang($old_row[$lang_field], $connection);
+                    }
+
+                    // Cleanup old files
+                    foreach ($upload_fields as $upload_field) {
+                        @unlink(get_custom_file_base() . '/' . $old_row[$upload_field]);
+                        sync_file(get_custom_file_base() . '/' . $old_row[$upload_field]);
+                    }
+                }
+            }
+
+            // Delete old row with same key
+            $connection->query_delete($table, array_intersect_key($row, $keys));
+        }
+
+        $connection->query_insert($table, $row);
+    }
+
+    return true;
+}
+
+/*
+ROW LEVEL
+*/
+
+/**
+ * Make a table row a portable row.
+ *
+ * @param  array $row Table row
+ * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
+ * @param  array $relation_map Relation map
+ * @param  ?object $connection Database connection to look up from (null: main site DB)
+ * @return array Portable row
+ */
+function table_row_to_portable_row($row, $db_fields, $relation_map, $connection = null)
+{
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
+    foreach ($db_fields as $db_field_name => $db_field_type) {
+        if (!isset($row[$db_field_name])) {
+            continue;
+        }
+
+        $db_field_type = trim($db_field_type, '*?');
+
+        if (strpos($db_field_type, '_TRANS') !== false) {
+            $row[$db_field_name] = remap_trans_as_portable($row, $db_field_name, $connection);
+        }
+
+        elseif ($db_field_type == 'MEMBER') {
+            $row[$db_field_name] = remap_resource_id_as_portable('member', $row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'GROUP') {
+            $row[$db_field_name] = remap_resource_id_as_portable('group', $row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'TIME') {
+            $row[$db_field_name] = remap_time_as_portable($row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'URLPATH') {
+            $row[$db_field_name] = remap_urlpath_as_portable($row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
+            $row[$db_field_name] = remap_resource_id_as_portable('topic', $row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
+            $row[$db_field_name] = remap_resource_id_as_portable('post', $row[$db_field_name]);
+        }
+
+        elseif (isset($relation_map[$db_field_name])) {
+            $row[$db_field_name] = remap_foreign_key_as_portable($relation_map[$db_field_name], $row[$db_field_name]);
+        }
+    }
+
+    return $row;
+}
+
+/**
+ * Make a portable row a table row.
+ *
+ * @param  array $row Portable row
+ * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
+ * @param  array $relation_map Relation map
+ * @param  ?object $connection Database connection to look up from (null: main site DB)
+ * @return array Table row
+ */
+function table_row_from_portable_row($row, $db_fields, $relation_map, $connection = null)
+{
+    if (is_null($connection)) {
+        $connection = $GLOBALS['SITE_DB'];
+    }
+
+    foreach ($db_fields as $db_field_name => $db_field_type) {
+        if (!isset($row[$db_field_name])) {
+            continue;
+        }
+
+        $db_field_type = trim($db_field_type, '*?');
+
+        if (strpos($db_field_type, '_TRANS') !== false) {
+            $row += remap_portable_as_trans($row[$db_field_name], $db_field_name, $connection);
+        }
+
+        elseif ($db_field_type == 'MEMBER') {
+            $row[$db_field_name] = remap_portable_as_resource_id('member', $row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'GROUP') {
+            $row[$db_field_name] = remap_portable_as_resource_id('group', $row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'TIME') {
+            $row[$db_field_name] = remap_portable_as_time($row[$db_field_name]);
+        }
+
+        elseif ($db_field_type == 'URLPATH') {
+            $row[$db_field_name] = remap_portable_as_urlpath($row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_topics', 'id'))) {
+            $row[$db_field_name] = remap_portable_as_resource_id('topic', $row[$db_field_name]);
+        }
+
+        elseif ((isset($relation_map[$db_field_name])) && (get_forum_type() == 'cns') && ($relation_map[$db_field_name] == array('f_posts', 'id'))) {
+            $row[$db_field_name] = remap_portable_as_resource_id('post', $row[$db_field_name]);
+        }
+
+        elseif (isset($relation_map[$db_field_name])) {
+            $row[$db_field_name] = remap_portable_as_foreign_key($relation_map[$db_field_name], $row[$db_field_name]);
+        }
+    }
+
+    return $row;
+}
+
+/*
+FIELD LEVEL
+*/
+
+/**
+ * Convert a timestamp to something portable (well, actually just make it nicer).
+ *
+ * @param  ?TIME $timestamp The timestamp (null: not set)
+ * @return ?string Portable details (null: not set)
+ */
+function remap_time_as_portable($timestamp)
+{
+    if (is_null($timestamp)) {
+        return null;
+    }
+
+    return date('Y-m-d H:i:s', $timestamp);
+}
+
+/**
+ * Convert a portable timestamp to a real timestamp.
+ *
+ * @param  ?string $portable_data Portable details (null: not set)
+ * @return ?integer The timestamp (null: not set)
+ */
+function remap_portable_as_time($portable_data)
+{
+    if (is_null($portable_data)) {
+        return null;
+    }
+
+    return strtotime($portable_data);
+}
+
+/**
+ * Convert a URL (external or internal) to something portable.
+ *
+ * @param  ?URLPATH $urlpath The URL (null: not set)
+ * @return ?mixed Portable details (null: not set)
+ */
+function remap_urlpath_as_portable($urlpath)
+{
+    if (is_null($urlpath)) {
+        return null;
+    }
+
+    if ($urlpath == '' || strpos($urlpath, ':') !== false || get_param_integer('raw_urls', 0) == 1) {
+        return $urlpath;
+    }
+
+    $place = get_custom_file_base() . '/' . $urlpath;
+    if (!file_exists($place)) {
+        return $urlpath;
+    }
+
+    return array($urlpath, base64_encode(file_get_contents($place)));
+}
+
+/**
+ * Convert a portable URL to a real URL.
+ *
+ * @param  ?string $portable_data Portable details (null: not set)
+ * @param  boolean $ignore_conflicts Whether to ignore conflicts with existing files (=edit op, basically)
+ * @return ?string The URL (null: not set)
+ */
+function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
+{
+    if (!is_array($portable_data)) {
+        return $portable_data;
+    }
+
+    $binary = base64_decode($portable_data[1]);
+
+    $urlpath = $portable_data[0];
+
+    $place = get_custom_file_base() . '/' . $urlpath;
+
+    if ($ignore_conflicts) {
+        // Hunt with sensible names until we don't get a conflict
+        $i = 2;
+        while (file_exists($place)) {
+            $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
+            $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
+            $urlpath = dirname($urlpath) . '/' . urlencode($filename);
+            $i++;
+        }
+    }
+
+    file_put_contents($place, $binary);
+    fix_permissions($place);
+    sync_file($place);
+
+    return $urlpath;
+}
+
+/**
+ * Convert a foreign key to something portable.
+ *
+ * @param  array $_table_referenced The table the key is to
+ * @param  ?mixed $id The key (null: not set)
+ * @return ?array Portable ID details (null: not set)
+ */
+function remap_foreign_key_as_portable($_table_referenced, $id)
+{
+    if (is_null($id)) {
+        return null;
+    }
+
+    list($table_referenced, $field_referenced/*not actually used, we assume it's the primary key*/) = $_table_referenced;
+
+    $commandr_filesystem_hook = convert_composr_type_codes('table', $table_referenced, 'commandr_filesystem_hook');
+
+    if (is_null($commandr_filesystem_hook)) {
+        return $id; // No special Resource-fs to tie to, so we'll leave it alone
+    }
+
+    $resource_type = convert_composr_type_codes('table', $table_referenced, 'content_type');
+
+    if (empty($resource_type)) {
+        return $id;
+    }
+
+    return remap_resource_id_as_portable($resource_type, $id);
+}
+
+/**
+ * Convert a portable foreign key to a real foreign key.
+ *
+ * @param  array $_table_referenced The table the key is to
+ * @param  ?mixed $portable_data Portable ID details (null: not set)
+ * @return ?mixed The key (null: not set)
+ */
+function remap_portable_as_foreign_key($_table_referenced, $portable_data)
+{
+    if (!is_array($portable_data)) {
+        return $portable_data;
+    }
+
+    list($table_referenced, $field_referenced/*not actually used, we assume it's the primary key*/) = $_table_referenced;
+
+    $resource_type = convert_composr_type_codes('table', $table_referenced, 'content_type');
+
+    if (empty($resource_type)) {
+        return $portable_data['id'];
+    }
+
+    return remap_portable_as_resource_id($resource_type, $portable_data);
+}
+
 /**
  * Convert a local ID to something portable.
  *
  * @param  ID_TEXT $resource_type The resource type
- * @param  ID_TEXT $resource_id The resource ID
- * @return array Portable ID details
+ * @param  ?mixed $resource_id The resource ID (null: not set)
+ * @return ?array Portable ID details (null: not set)
  */
 function remap_resource_id_as_portable($resource_type, $resource_id)
 {
-    list($moniker, $guid, $label) = generate_resourcefs_moniker($resource_type, $resource_id);
+    if (is_null($resource_id)) {
+        return null;
+    }
 
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $subpath = $resourcefs_ob->search($resource_type, $resource_id, true);
+    if (is_integer($resource_id)) {
+        $resource_id = strval($resource_id);
+    }
+
+    list($moniker, $guid, $label) = generate_resource_fs_moniker($resource_type, $resource_id);
+
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
     if (is_null($subpath)) {
         $subpath = '';
     }
@@ -491,7 +990,7 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
         'guid' => $guid,
         'label' => $label,
         'subpath' => $subpath,
-        //'moniker'=>$moniker,   Given more effectively with label
+        //'moniker' => $moniker,   Given more effectively with label
         'id' => $resource_id // Not used, but useful to have anyway for debugging/manual-reflection
     );
 }
@@ -500,1943 +999,77 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
  * Convert a portable ID to something local.
  *
  * @param  ID_TEXT $resource_type The resource type
- * @param  array $portable Portable ID details
- * @return ID_TEXT The resource ID
+ * @param  ?mixed $portable_data Portable ID details (null: not set)
+ * @return ?mixed The resource ID (null: not set)
  */
-function remap_portable_as_resource_id($resource_type, $portable)
+function remap_portable_as_resource_id($resource_type, $portable_data)
 {
-    //$resource_id=$portable['id']; Would not be portable between sites
+    if (!is_array($portable_data)) {
+        return $portable_data;
+    }
+
+    //$resource_id = $portable_data['id']; Would not be portable between sites
 
     // Ideally, find via GUID
-    $resource_id = array_key_exists('guid', $portable) ? find_id_via_guid($portable['guid']) : null;
+    $resource_id = array_key_exists('guid', $portable_data) ? find_id_via_guid($portable_data['guid']) : null;
     if (!is_null($resource_id)) {
         return $resource_id;
     }
 
     // Otherwise, use the label
-    $resourcefs_ob = get_resource_commandrfs_object($resource_type);
-    $subpath = array_key_exists('subpath', $portable) ? $portable['subpath'] : '';
-    $resource_id = $resourcefs_ob->convert_label_to_id($portable['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable) ? $portable['guid'] : null);
+    $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    $subpath = array_key_exists('subpath', $portable_data) ? $portable_data['subpath'] : '';
+    $resource_id = $resource_fs_ob->convert_label_to_id($portable_data['label'], $subpath, $resource_type, false, array_key_exists('guid', $portable_data) ? $portable_data['guid'] : null);
 
     return $resource_id;
 }
 
 /**
- * Resource-fs base class.
+ * Find all translated strings for a language string ID. This is used as an intermediate step in creating multi-language portings.
  *
- * @package    commandr
+ * @param  array $db_row Database row
+ * @param  string $field Database field
+ * @param  object $connection Database connection to look up from
+ * @return array Portable data
  */
-class Resource_fs_base
+function remap_trans_as_portable($db_row, $field, $connection)
 {
-    /*
-    FINDING INFORMATION ABOUT HOOK STRUCTURE
-    */
-
-    public $folder_resource_type = null;
-    public $file_resource_type = null;
-    public $_cma_object = array();
-
-    /**
-     * Get the file resource info for this Commandr-fs resource hook.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @return object The object
-     */
-    protected function _get_cma_info($resource_type)
-    {
-        if (!array_key_exists($resource_type, $this->_cma_object)) {
-            require_code('content');
-            $this->_cma_object[$resource_type] = get_content_object($resource_type);
-        }
-        return $this->_cma_object[$resource_type]->info();
-    }
-
-    /**
-     * Find whether a resource type is of a folder-type.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @return boolean Whether it is
-     */
-    public function is_folder_type($resource_type)
-    {
-        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (is_null($this->folder_resource_type) ? array() : array($this->folder_resource_type));
-        return in_array($resource_type, $folder_types);
-    }
-
-    /**
-     * Find whether a resource type is of a file-type.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @return boolean Whether it is
-     */
-    public function is_file_type($resource_type)
-    {
-        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (is_null($this->file_resource_type) ? array() : array($this->file_resource_type));
-        return in_array($resource_type, $file_types);
-    }
-
-    /*
-    HOOKS MAY OVERRIDE THESE AS REQUIRED, TO ENCODE IMPLEMENTATION COMPLEXITIES
-    */
-
-    /**
-     * Whether the filesystem hook is active.
-     *
-     * @return boolean Whether it is
-     */
-    protected function _is_active()
-    {
-        return true;
-    }
-
-    /**
-     * Whether the filesystem hook can handle a particular file type.
-     *
-     * @param  string $filetype The file type (no file extension)
-     * @return array List of our resource types that can
-     */
-    public function can_accept_filetype($filetype)
-    {
-        if ($filetype != RESOURCEFS_DEFAULT_EXTENSION) {
-            return array();
-        }
-
-        $ret = array();
-        if (!is_null($this->folder_resource_type)) {
-            $ret = array_merge($ret, is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type));
-        }
-        if (!is_null($this->folder_resource_type)) {
-            $ret = array_merge($ret, is_array($this->file_resource_type) ? $this->file_resource_type : array($this->file_resource_type));
-        }
-        return $ret;
-    }
-
-    /**
-     * Find whether a kind of resource handled by this hook (folder or file) can be under a particular kind of folder.
-     *
-     * @param  ?ID_TEXT $above Folder resource type (null: root)
-     * @param  ID_TEXT $under Resource type (may be file or folder)
-     * @return ?array A map: The parent referencing field, the table it is in, and the ID field of that table (null: cannot be under)
-     */
-    protected function _has_parent_child_relationship($above, $under)
-    {
-        $sub_info = $this->_get_cma_info($under);
-
-        $is_file = $this->is_file_type($under);
-
-        if ($is_file) {
-            // If no folder types, files are top level
-            if ((is_null($this->folder_resource_type)) && (is_null($above))) {
-                return array(
-                    'cat_field' => null,
-                    'linker_table' => null,
-                    'id_field' => $sub_info['id_field'],
-                    'id_field_linker' => $sub_info['id_field'],
-                    'cat_field_numeric' => null,
-                );
-            }
-
-            // If there are folder types, files can not be top level
-            if ((!is_null($this->folder_resource_type)) && (is_null($above))) {
-                return null;
-            }
-        }
-
-        if (array_key_exists('parent_category_field__resource_fs', $sub_info)) {
-            $sub_info['parent_category_field'] = $sub_info['parent_category_field__resource_fs'];
-        }
-        if (!$is_file) {
-            if ((is_null($sub_info['parent_category_field'])) && (!is_null($sub_info['parent_spec__field_name']))) { // Some fiddling, as we are smart enough to detect need for linker table
-                $sub_info['parent_category_field'] = $sub_info['parent_spec__parent_name'];
-            }
-        }
-
-        // If there is no category for $under, then it can only be top-level
-        if ((!array_key_exists('parent_category_field', $sub_info)) || (is_null($sub_info['parent_category_field']))) {
-            if (!is_null($above)) {
-                return null;
-            }
-        }
-
-        $folder_info = is_null($above) ? $sub_info : $this->_get_cma_info($above);
-        return array(
-            'cat_field' => $sub_info['parent_category_field'],
-            'linker_table' => $is_file ? null : $sub_info['parent_spec__table_name'],
-            'id_field' => $sub_info['id_field'],
-            'id_field_linker' => $is_file ? null : $sub_info['parent_spec__field_name'],
-            'cat_field_numeric' => $folder_info['id_field_numeric'],
-        );
-    }
-
-    /**
-     * Load function for resource-fs (for files). Finds the data for some resource from a resource-fs file.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return ~string Resource data (false: error)
-     */
-    public function file_load__flat($filename, $path)
-    {
-        if (array() == $this->can_accept_filetype(get_file_extension($filename))) {
-            return false;
-        }
-        return $this->file_load_xml($filename, $path); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
-    }
-
-    /**
-     * Load function for resource-fs (for folders). Finds the data for some resource from a resource-fs folder.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return ~string Resource data (false: error)
-     */
-    public function folder_load__flat($filename, $path)
-    {
-        $ext = get_file_extension($filename);
-        if ($ext != '') {
-            if (array() == $this->can_accept_filetype($ext)) {
-                return false;
-            }
-        }
-        return $this->folder_load_xml($filename, $path); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
-    }
-
-    /**
-     * Save function for resource-fs (for files). Parses the data for some resource to a resource-fs file.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  string $data Resource data
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function file_save__flat($filename, $path, $data)
-    {
-        // Files other stuff makes, we don't want auto-created junk files creating composr content
-        $all_disallowed = array(
-            '__macosx',
-            'thumbs.db:encryptable',
-            'thumbs.db',
-            '.ds_store',
-        );
-        foreach ($all_disallowed as $disallowed) {
-            if (strtolower($filename) == $disallowed) {
-                return false;
-            }
-        }
-        if (substr($filename, 0, 1) == '.') {
-            return false;
-        }
-
-        if (array() == $this->can_accept_filetype(get_file_extension($filename))) {
-            return false;
-        }
-        return $this->file_save_xml($filename, $path, $data); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
-    }
-
-    /**
-     * Save function for resource-fs (for folders). Parses the data for some resource to a resource-fs folder.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  string $data Resource data
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function folder_save__flat($filename, $path, $data)
-    {
-        $ext = get_file_extension($filename);
-        if ($ext != '') {
-            if (array() == $this->can_accept_filetype($ext)) {
-                return false;
-            }
-        }
-        return $this->folder_save_xml($filename, $path, $data); // By default, only defer to the inbuilt Composr XML implementation (hooks may override this with support for other kinds of interchange file formats)
-    }
-
-    /**
-     * Reinterpret the input of a file, into a way we can understand it to add/edit. Hooks may override this with special import code.
-     *
-     * @param  LONG_TEXT $filename Filename OR Resource label
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  array $properties Properties
-     * @return array A pair: the resource label, Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     */
-    protected function _file_magic_filter($filename, $path, $properties)
-    {
-        $label = basename($filename, '.' . RESOURCEFS_DEFAULT_EXTENSION); // Default implementation is simply to assume the stub of the filename (or may be a raw label already, with no file type) is the resource label
-        if (array_key_exists('label', $properties)) {
-            $label = $properties['label']; // ...unless the label was explicitly given
-        }
-        return array($properties, $label); // Leave properties alone
-    }
-
-    /**
-     * Reinterpret the input of a folder, into a way we can understand it to add/edit. Hooks may override this with special import code.
-     *
-     * @param  LONG_TEXT $filename Filename OR Resource label
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  array $properties Properties
-     * @return array A pair: the resource label, Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     */
-    protected function _folder_magic_filter($filename, $path, $properties)
-    {
-        return array($properties, $filename); // Default implementation is simply to assume the filename is the resource label, and leave properties alone
-    }
-
-    /**
-     * Get the filename for a resource ID. Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @param  ID_TEXT $resource_id The resource ID
-     * @return ?ID_TEXT The filename (null: could not find)
-     */
-    public function file_convert_id_to_filename($resource_type, $resource_id)
-    {
-        $moniker = find_moniker_via_id($resource_type, $resource_id);
-        if (is_null($moniker)) {
-            return null;
-        }
-        return $moniker . '.' . RESOURCEFS_DEFAULT_EXTENSION;
-    }
-
-    /**
-     * Get the filename for a resource ID. Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @param  ID_TEXT $resource_id The resource ID
-     * @return ?ID_TEXT The filename (null: could not find)
-     */
-    public function folder_convert_id_to_filename($resource_type, $resource_id)
-    {
-        return find_moniker_via_id($resource_type, $resource_id);
-    }
-
-    /**
-     * Get the resource ID for a filename (of file). Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $filename The filename, or filepath
-     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-NULL from overridden functions within hooks that are calling this as a helper function)
-     * @return ?array A pair: The resource type, the resource ID (null: could not find)
-     */
-    public function file_convert_filename_to_id($filename, $resource_type = null)
-    {
-        if (is_null($resource_type)) {
-            $resource_type = $this->file_resource_type;
-        }
-
-        $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
-
-        $moniker = basename($filename, '.' . RESOURCEFS_DEFAULT_EXTENSION); // Remove file extension from filename
-        $resource_id = find_id_via_moniker($resource_type, $moniker);
-        return array($resource_type, $resource_id);
-    }
-
-    /**
-     * Get the resource ID for a filename (of folder). Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $filename The filename, or filepath
-     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-NULL from overridden functions within hooks that are calling this as a helper function)
-     * @return array A pair: The resource type, the resource ID
-     */
-    public function folder_convert_filename_to_id($filename, $resource_type = null)
-    {
-        if (is_null($resource_type)) {
-            $resource_type = $this->folder_resource_type;
-        }
-
-        $moniker = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
-
-        $resource_id = find_id_via_moniker($resource_type, $moniker);
-        return array($resource_type, $resource_id);
-    }
-
-    /*
-    JUGGLING PROPERTIES
-    */
-
-    /**
-     * Find a default property, defaulting to blank.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @return ?string The value (null: NULL value)
-     */
-    protected function _default_property_str($properties, $property)
-    {
-        $ret = array_key_exists($property, $properties) ? $properties[$property] : '';
-        if (is_integer($ret)) {
-            $ret = get_translated_text($ret);
-        }
-        return $ret;
-    }
-
-    /**
-     * Find a default property, defaulting to NULL.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @return ?string The value (null: NULL value)
-     */
-    protected function _default_property_str_null($properties, $property)
-    {
-        $ret = array_key_exists($property, $properties) ? $properties[$property] : null;
-        if (is_integer($ret)) {
-            $ret = get_translated_text($ret);
-        }
-        return $ret;
-    }
-
-    /**
-     * Find an integer default property, defaulting to NULL.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @return ?integer The value (null: NULL value)
-     */
-    protected function _default_property_int($properties, $property)
-    {
-        if (!array_key_exists($property, $properties)) {
-            return 0;
-        }
-        if (is_null($properties[$property])) {
-            return 0;
-        }
-        if (is_integer($properties[$property])) {
-            return $properties[$property];
-        }
-        return intval($properties[$property]);
-    }
-
-    /**
-     * Convert a category to an integer, defaulting to NULL if it is blank.
-     *
-     * @param  ?ID_TEXT $category The category value (blank: root) (null: root)
-     * @return ?integer The category (null: root)
-     */
-    protected function _integer_category($category)
-    {
-        if (is_null($category)) {
-            return null;
-        }
-        return ($category == '') ? null : intval($category);
-    }
-
-    /**
-     * Find a default property, defaulting to blank.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @return ?integer The value (null: NULL value)
-     */
-    protected function _default_property_int_null($properties, $property)
-    {
-        if (!array_key_exists($property, $properties)) {
-            return null;
-        }
-        if (is_null($properties[$property])) {
-            return null;
-        }
-        if (is_integer($properties[$property])) {
-            return $properties[$property];
-        }
-        return intval($properties[$property]);
-    }
-
-    /**
-     * Find a default property, defaulting to the average of what is there already, or the given default if really necessary.
-     *
-     * @param  array $properties The properties
-     * @param  ID_TEXT $property The property
-     * @param  ID_TEXT $table The table to average within
-     * @param  integer $default The last-resort default
-     * @param  ?ID_TEXT $db_property The database property (null: same as $property)
-     * @return integer The value
-     */
-    protected function _default_property_int_modeavg($properties, $property, $table, $default, $db_property = null)
-    {
-        if (is_null($db_property)) {
-            $db_property = $property;
-        }
-
-        if (array_key_exists($property, $properties)) {
-            if (is_integer($properties[$property])) {
-                return $properties[$property];
-            }
-            return intval($properties[$property]);
-        }
-
-        static $cache = array();
-        if (isset($cache[$property][$table][$default][$db_property])) {
-            return $cache[$property][$table][$default][$db_property];
-        }
-
-        $db = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
-        $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
-        $ret = $default;
-        if (!is_null($val)) {
-            $ret = $val;
-        }
-
-        $cache[$property][$table][$default][$db_property] = $ret;
-
-        return $ret;
-    }
-
-    /**
-     * Turn a label into a name.
-     *
-     * @param  LONG_TEXT $label The label
-     * @return ID_TEXT The name
-     */
-    protected function _create_name_from_label($label)
-    {
-        $name = strtolower($label);
-        $name = preg_replace('#[^\w\d\.\-]#', '_', $name);
-        $name = preg_replace('#\_+\$#', '', $name);
-        if ($name == '') {
-            $name = 'unnamed';
-        }
-        require_code('urls2');
-        $max_moniker_length = intval(get_option('max_moniker_length'));
-        return substr($name, 0, $max_moniker_length);
-    }
-
-    /**
-     * Helper function: detect if a resource did not save all the properties it was given.
-     *
-     * @param  ?ID_TEXT $resource_type The resource type (null: unknown)
-     * @param  ~ID_TEXT                 $resource_id The resource ID (false: was not added/edited)
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  array $properties Properties
-     */
-    protected function _log_if_save_matchup($resource_type, $resource_id, $path, $properties)
-    {
-        if ($resource_type === null) {
-            return; // Too difficult to check, don't bother; only expert coding would lead to this scenario anyway
-        }
-        if ($resource_id === false) {
-            return;
-        }
-
-        global $RESOURCEFS_LOGGER;
-        if ($RESOURCEFS_LOGGER === null) {
-            return; // Too much unnecessarily work if the logger is not on
-        }
-
-        $ok = true;
-
-        static $similar_ok_before = array();
-        if ((isset($similar_ok_before[$resource_type][$path])) && ($similar_ok_before[$resource_type][$path] > 10)) {
-            return;
-        }
-
-        $found_filename = $this->convert_id_to_filename($resource_type, $resource_id);
-        $found_path = $this->search($resource_type, $resource_id, true);
-        if ($found_path !== $path) {
-            resourcefs_logging('Path mismatch for what was saved (actual ' . $found_path . ' vs intended ' . $path . ')', 'warn');
-            $ok = false;
-        }
-
-        $actual_properties = $this->resource_load($resource_type, $found_filename, $found_path);
-        foreach (array_keys($properties) as $p) {
-            if (array_key_exists($p, $actual_properties)) {
-                if (str_replace(do_lang('NA'), '', @strval($actual_properties[$p])) != str_replace(do_lang('NA'), '', @strval($properties[$p]))) {
-                    resourcefs_logging('Property (' . $p . ') value mismatch for ' . $found_filename . ' (actual ' . str_replace(do_lang('NA'), '', @strval($actual_properties[$p])) . ' vs intended ' . str_replace(do_lang('NA'), '', @strval($properties[$p])) . ').', 'warn');
-                    $ok = false;
-                }
-            } else {
-                resourcefs_logging('Property (' . $p . ') not applicable for ' . $found_filename . '.', 'warn');
-                $ok = false;
-            }
-        }
-
-        if ($ok) {
-            if (!isset($similar_ok_before[$resource_type][$path])) {
-                $similar_ok_before[$resource_type][$path] = 0;
-            }
-            $similar_ok_before[$resource_type][$path]++;
-        }
-    }
-
-    /*
-    ABSTRACT/AGNOSTIC RESOURCE-FS API FOR INTERNAL COMPOSR USE
-    */
-
-    /**
-     * Find the foldername/subpath to a resource.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @param  ID_TEXT $resource_id The resource ID
-     * @param  boolean $full_subpath Whether to include the full subpath
-     * @return ?string The foldername/subpath (null: not found)
-     */
-    public function search($resource_type, $resource_id, $full_subpath = false)
-    {
-        // Find resource
-        require_code('content');
-        list(, , $cma_info, $content_row) = content_get_details($resource_type, $resource_id, true);
-        if (is_null($content_row)) {
-            return null;
-        }
-
-        // Okay, exists, but what if no categories for this?
-        if (is_null($this->folder_resource_type)) {
-            return '';
-        }
-
-        // For each folder type, see if we can find a position for this resource
-        $cat_resource_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type);
-        $cat_resource_types = array_reverse($cat_resource_types); // Need to look from deepest outward, i.e. maximum specificity first
-        $cat_resource_types[] = null;
-        foreach ($cat_resource_types as $cat_resource_type) {
-            $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
-                continue;
-            }
-
-            if (is_null($cat_resource_type)) {
-                return ''; // Exists in root
-            }
-
-            // Do we need to load up a linker table for getting the category?
-            if ((!is_null($relationship['linker_table'])) && ($cma_info['table'] != $relationship['linker_table'])) {
-                $where = array($relationship['id_field_linker'] => $content_row[$cma_info['id_field']]);
-                $categories = $cma_info['connection']->query_select($relationship['linker_table'], array($relationship['cat_field']), $where);
-            } else {
-                $categories = array($content_row);
-            }
-
-            foreach ($categories as $category) {
-                // Find category
-                $_category_id = $category[$relationship['cat_field']];
-                $category_id = is_string($_category_id) ? $_category_id : (is_null($_category_id) ? '' : strval($_category_id));
-
-                // Convert category to path
-                $subpath = $this->folder_convert_id_to_filename($cat_resource_type, $category_id);
-                if (is_null($subpath)) {
-                    continue; // Weird, some kind of broken category. We'll have to say we cannot find, as it won't be linked into the folder tree.
-                }
-
-                // Full subpath requested?
-                if ($full_subpath) {
-                    $above_subpath = $this->search($cat_resource_type, $category_id, $full_subpath);
-                    if ($above_subpath != '') {
-                        $subpath = $above_subpath . '/' . $subpath;
-                    }
-                }
-
-                return $subpath;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Convert a label to a filename, possibly with auto-creating if needed. This is useful for the Composr-side resource-agnostic API.
-     *
-     * @param  LONG_TEXT $label Resource label
-     * @param  string $subpath The path (blank: root / not applicable). It may end in "/*" if you want to look for a match under a certain directory
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  boolean $must_already_exist Whether the content must already exist
-     * @param  ?ID_TEXT $use_guid_for_new GUID to auto-create with (null: either not auto-creating, or not specifying the GUID if we are)
-     * @return ?ID_TEXT The filename (null: not found)
-     */
-    public function convert_label_to_filename($label, $subpath, $resource_type, $must_already_exist = false, $use_guid_for_new = null)
-    {
-        $label = substr($label, 0, 255);
-        $resource_id = $this->convert_label_to_id($label, $subpath, $resource_type, $must_already_exist, $use_guid_for_new);
-        if (is_null($resource_id)) {
-            return null;
-        }
-        return find_commandrfs_filename_via_id($resource_type, $resource_id);
-    }
-
-    /**
-     * Convert a label to an ID, possibly with auto-creating if needed. This is useful for the Composr-side resource-agnostic API.
-     *
-     * @param  SHORT_TEXT $_label Resource label
-     * @param  string $subpath The path (blank: root / not applicable). It may end in "/*" if you want to look for a match under a certain directory
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  boolean $must_already_exist Whether the content must already exist
-     * @param  ?ID_TEXT $use_guid_for_new GUID to auto-create with (null: either not auto-creating, or not specifying the GUID if we are)
-     * @return ?ID_TEXT The ID (null: not found)
-     */
-    public function convert_label_to_id($_label, $subpath, $resource_type, $must_already_exist = false, $use_guid_for_new = null)
-    {
-        $label = substr($_label, 0, 255);
-
-        $resource_id = find_id_via_label($resource_type, $label, $subpath);
-        if (is_null($resource_id)) {
-            if (!$must_already_exist) {
-                // Not found, create...
-                resourcefs_logging('Auto-creating an unmatched ' . $resource_type . ' label reference, "' . $_label . '", under "' . $subpath . '"', 'notice');
-
-                // Create subpath
-                if ($subpath != '') {
-                    if (substr($subpath, -2) == '/*') {
-                        $subpath = substr($subpath, 0, strlen($subpath) - 2);
-                    }
-
-                    $subpath_bits = explode('/', $subpath);
-                    $subpath_above = '';
-                    foreach ($subpath_bits as $i => $subpath_bit) {
-                        if (is_array($this->folder_resource_type)) {
-                            $folder_resource_type = $this->folder_resource_type[array_key_exists($i, $this->folder_resource_type) ? $i : (count($this->folder_resource_type) - 1)];
-                        } else {
-                            $folder_resource_type = $this->folder_resource_type;
-                        }
-
-                        list(, $subpath_id) = $this->folder_convert_filename_to_id($subpath_bit);
-                        if (is_null($subpath_id)) { // Missing, find via moniker that doesn't match a label due to prefixing
-                            if (preg_match('#^[A-Z]+-#', $subpath_bit) != 0) {
-                                $_subpath_bit = preg_replace('#^[A-Z]+-#', '', $subpath_bit);
-                                $detected_resource_type = strtolower(preg_replace('#-.*$#', '', $subpath_bit));
-                                $subpath_id = find_id_via_label($detected_resource_type, $_subpath_bit, $subpath_above);
-                            }
-                        }
-                        if (is_null($subpath_id)) { // Missing, find via monikerised label
-                            $_subpath_bit = $this->_create_name_from_label($subpath_bit);
-                            list(, $subpath_id) = $this->folder_convert_filename_to_id($_subpath_bit);
-                        }
-                        if (is_null($subpath_id)) { // Missing, find via label
-                            $subpath_id = find_id_via_label($folder_resource_type, $subpath_bit, $subpath_above);
-                        }
-                        if (is_null($subpath_id)) { // Still missing, create folder
-                            $subpath_id = $this->folder_add($subpath_bit, $subpath_above, array());
-                        }
-
-                        if ($subpath_above != '') {
-                            $subpath_above .= '/';
-                        }
-                        $subpath_above .= $this->folder_convert_id_to_filename($folder_resource_type, $subpath_id);
-                    }
-                }
-
-                // Create main resource
-                $resource_id = $this->resource_add($resource_type, $_label, $subpath, array());
-                if ($resource_id === false) {
-                    return null;
-                }
-                if (!is_null($use_guid_for_new)) {
-                    generate_resourcefs_moniker($resource_type, $resource_id, $label, $use_guid_for_new);
-                }
-            }
-        }
-        return $resource_id;
-    }
-
-    /**
-     * Get the filename for a resource ID (of file or folder). Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @param  ID_TEXT $resource_id The resource ID
-     * @return ?ID_TEXT The filename (null: not found)
-     */
-    public function convert_id_to_filename($resource_type, $resource_id)
-    {
-        if ($this->is_file_type($resource_type)) {
-            return $this->file_convert_id_to_filename($resource_type, $resource_id);
-        }
-        if ($this->is_folder_type($resource_type)) {
-            return $this->folder_convert_id_to_filename($resource_type, $resource_id);
-        }
-        return null;
-    }
-
-    /**
-     * Get the resource ID for a filename (of file or folder). Note that filenames are unique across all folders in a filesystem.
-     *
-     * @param  ID_TEXT $filename The filename, or filepath
-     * @param  ID_TEXT $resource_type The resource type
-     * @return ?array A pair: The resource type, the resource ID (null: could not find)
-     */
-    public function convert_filename_to_id($filename, $resource_type)
-    {
-        if ($this->is_file_type($resource_type)) {
-            return $this->file_convert_filename_to_id($filename, $resource_type);
-        }
-        if ($this->is_folder_type($resource_type)) {
-            return $this->folder_convert_filename_to_id($filename, $resource_type);
-        }
-        return null;
-    }
-
-    /**
-     * Save function for resource-fs. Parses the data for some resource to a resource-fs XML file. Wraps file_save/folder_save.
-     *
-     * @param  ID_TEXT $resource_type The resource type
-     * @param  ID_TEXT $label Filename OR Resource label
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  ?array $properties Properties (null: none)
-     * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
-     * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function resource_save($resource_type, $label, $path, $properties = null, $search_label_as = null, $search_path = null)
-    {
-        if (is_null($properties)) {
-            $properties = array();
-        }
-
-        if ($this->is_folder_type($resource_type)) {
-            $resource_id = $this->folder_save($label, $path, $properties, $search_label_as, $search_path);
+    if (!multi_lang_content()) {
+        if (isset($db_row[$field . '__source_user'])) {
+            return array($db_row[$field], $db_row[$field . '__source_user']);
         } else {
-            $resource_id = $this->file_save($label, $path, $properties, $search_label_as, $search_path);
+            return $db_row[$field];
         }
-        return $resource_id;
     }
 
-    /**
-     * Adds some resource with the given label and properties. Wraps file_add/folder_add.
-     *
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  LONG_TEXT $label Filename OR Resource label
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  ?array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields) (null: none)
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function resource_add($resource_type, $label, $path, $properties = null)
-    {
-        if (is_null($properties)) {
-            $properties = array();
-        }
+    return table_to_portable_rows('translate', array('id', 'text_parsed'), array('id' => $db_row[$field]), $connection);
+}
 
-        if ($this->is_folder_type($resource_type)) {
-            $resource_id = $this->folder_add($label, $path, $properties, $resource_type);
-            $this->_log_if_save_matchup($resource_type, $resource_id, $path, $properties);
+/**
+ * Find all translated strings for a language string ID. This is used as an intermediate step in creating multi-language portings.
+ *
+ * @param  array $portable_data Portable data
+ * @param  string $field Database field
+ * @param  object $connection Database connection to look up from
+ * @return array Extra database row data
+ */
+function remap_portable_as_trans($portable_data, $field, $connection)
+{
+    if (!multi_lang_content()) {
+        if (is_array($portable_data)) {
+            return array($field => $portable_data[0], $field . '__source_user' => $portable_data[1]);
         } else {
-            $resource_id = $this->file_add($label, $path, $properties, $resource_type);
-            $this->_log_if_save_matchup($resource_type, $resource_id, $path, $properties);
-        }
-        return $resource_id;
-    }
-
-    /**
-     * Finds the properties for some resource. Wraps file_load/folder_load.
-     *
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  SHORT_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return ~array Details of the resource (false: error)
-     */
-    public function resource_load($resource_type, $filename, $path)
-    {
-        if ($this->is_folder_type($resource_type)) {
-            $properties = $this->folder_load($filename, $path);
-        } else {
-            $properties = $this->file_load($filename, $path);
-        }
-        return $properties;
-    }
-
-    /**
-     * Edits the resource to the given properties. Wraps file_edit/folder_edit.
-     *
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  ID_TEXT $filename The filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
-     * @param  boolean $explicit_move Whether we are definitely moving (as opposed to possible having it in multiple positions)
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function resource_edit($resource_type, $filename, $path, $properties, $explicit_move = false)
-    {
-        if ($this->is_folder_type($resource_type)) {
-            $resource_id = $this->folder_edit($filename, $path, $properties, $explicit_move);
-            $this->_log_if_save_matchup($resource_type, $resource_id, $path, $properties);
-        } else {
-            $resource_id = $this->file_edit($filename, $path, $properties, $explicit_move);
-            $this->_log_if_save_matchup($resource_type, $resource_id, $path, $properties);
-        }
-        return $resource_id;
-    }
-
-    /**
-     * Deletes the resource. Wraps file_delete/folder_delete.
-     *
-     * @param  ID_TEXT $resource_type Resource type
-     * @param  ID_TEXT $filename The filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return boolean Success status
-     */
-    public function resource_delete($resource_type, $filename, $path)
-    {
-        if ($this->is_folder_type($resource_type)) {
-            resourcefs_logging('Deleted the ' . $path . '/' . $filename . ' folder as requested', 'notice');
-
-            $status = $this->folder_delete($filename, $path);
-        } else {
-            resourcefs_logging('Deleted the ' . $path . '/' . $filename . ' file as requested', 'notice');
-
-            $status = $this->file_delete($filename, $path);
-        }
-        return $status;
-    }
-
-    /**
-     * Reset resource privileges on the resource for all usergroups.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     */
-    public function reset_resource_access($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        switch ($resource_type) {
-            case 'comcode_page':
-                list($zone_name, $page_name) = explode(':', $category);
-                $cma_info['connection']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
-                $cma_info['connection']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
-                break;
-
-            case 'zone':
-                $cma_info['connection']->query_delete('group_zone_access', array('zone_name' => $category));
-                $cma_info['connection']->query_delete('member_zone_access', array('zone_name' => $category));
-                break;
-
-            default:
-                $cma_info['connection']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
-                $cma_info['connection']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category));
-                break;
+            return array($field => $portable_data);
         }
     }
 
-    /**
-     * Set resource view access on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $groups A mapping from group ID to view access
-     */
-    public function set_resource_access($filename, $groups)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
+    $connection->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, null, true);
+    $id = $connection->query_select_value('translate', 'MAX(id)');
+    $id = ($id === null) ? null : ($id + 1);
 
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+    table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $connection);
 
-        // Cleanup
-        foreach (array_keys($groups) as $group_id) {
-            switch ($resource_type) {
-                case 'comcode_page':
-                    list($zone_name, $page_name) = explode(':', $category);
-                    $cma_info['connection']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id));
-                    break;
+    $connection->query('UNLOCK TABLES', null, null, true);
 
-                case 'zone':
-                    $cma_info['connection']->query_delete('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id));
-                    break;
-
-                default:
-                    $cma_info['connection']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
-                    break;
-            }
-        }
-
-        // Insert
-        foreach ($groups as $group_id => $value) {
-            if (in_array($group_id, $admin_groups)) {
-                continue;
-            }
-
-            if (($value == '1') || ($value == 'true')) {
-                switch ($resource_type) {
-                    case 'comcode_page':
-                        list($zone_name, $page_name) = explode(':', $category);
-                        $cma_info['connection']->query_insert('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id), false, true); // Race/corruption condition
-                        break;
-
-                    case 'zone':
-                        $cma_info['connection']->query_insert('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
-                        break;
-
-                    default:
-                        $cma_info['connection']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
-                        break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Get resource view access on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @return array A mapping from group ID to view access
-     */
-    public function get_resource_access($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-        $ret = array();
-        foreach (array_keys($groups) as $group_id) {
-            $ret[$group_id] = '0';
-        }
-        foreach ($admin_groups as $group_id) {
-            $ret[$group_id] = '1';
-        }
-        switch ($resource_type) {
-            case 'comcode_page':
-                list($zone_name, $page_name) = explode(':', $category);
-                $groups = $cma_info['connection']->query_select('group_zone_access', array('group_id'), array('zone_name' => $zone_name, 'page_name' => $page_name));
-                break;
-
-            case 'zone':
-                $groups = $cma_info['connection']->query_select('group_page_access', array('group_id'), array('page_name' => $category));
-                break;
-
-            default:
-                $groups = $cma_info['connection']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
-                break;
-        }
-        foreach ($groups as $group) {
-            $ret[$group['group_id']] = '1';
-        }
-        return $ret;
-    }
-
-    /**
-     * Set resource view access on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $members A mapping from member ID to view access
-     */
-    public function set_resource_access__members($filename, $members)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        // Cleanup
-        foreach (array_keys($members) as $member_id) {
-            switch ($resource_type) {
-                case 'comcode_page':
-                    list($zone_name, $page_name) = explode(':', $category);
-                    $cma_info['connection']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null));
-                    break;
-
-                case 'zone':
-                    $cma_info['connection']->query_delete('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null));
-                    break;
-
-                default:
-                    $cma_info['connection']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null));
-                    break;
-            }
-        }
-
-        // Insert
-        foreach ($members as $member_id => $value) {
-            if (($value == '1') || ($value == 'true')) {
-                switch ($resource_type) {
-                    case 'comcode_page':
-                        list($zone_name, $page_name) = explode(':', $category);
-                        $cma_info['connection']->query_insert('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
-                        break;
-
-                    case 'zone':
-                        $cma_info['connection']->query_insert('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
-                        break;
-
-                    default:
-                        $cma_info['connection']->query_insert('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
-                        break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Get resource view access on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @return array A mapping from member ID to view access
-     */
-    public function get_resource_access__members($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        switch ($resource_type) {
-            case 'comcode_page':
-                list($zone_name, $page_name) = explode(':', $category);
-                $members = $cma_info['connection']->query_select('member_page_access', array('member_id'), array('zone_name' => $zone_name, 'page_name' => $page_name, 'active_until' => null));
-                break;
-
-            case 'zone':
-                $members = $cma_info['connection']->query_select('member_zone_access', array('member_id'), array('zone_name' => $category, 'active_until' => null));
-                break;
-
-            default:
-                $members = $cma_info['connection']->query_select('member_category_access', array('member_id'), array('module_the_name' => $module, 'category_name' => $category, 'active_until' => null));
-                break;
-        }
-        $ret = array();
-        foreach ($members as $member) {
-            $ret[$member['member_id']] = '1';
-        }
-        return $ret;
-    }
-
-    /**
-     * Reset resource privileges on the resource for all usergroups.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     */
-    public function reset_resource_privileges($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return; // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return; // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $cma_info['connection']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category));
-        $cma_info['connection']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category));
-    }
-
-    /**
-     * Work out what a privilege preset means for a kind of resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @return ?array A mapping from privilege to minimum preset level required for privilege activation (null: unworkable)
-     */
-    protected function _compute_privilege_preset_scheme($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return null; // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return null; // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $page = $cma_info['cms_page'];
-        require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
-        if (is_null($_overridables[0])) {
-            $overridables = array();
-        } else {
-            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
-        }
-
-        // Work out what privileges we need to work with
-        $privileges_scheme = array();
-        foreach ($overridables as $override => $cat_support) {
-            $usual_suspects = array('bypass_validation_.*range_content', 'edit_.*range_content', 'edit_own_.*range_content', 'delete_.*range_content', 'delete_own_.*range_content', 'submit_.*range_content');
-            $access = array(2, 3, 2, 3, 2, 1); // The minimum access level that turns on each of the above permissions   NB: Also defined in permissions.js, so keep that in-sync
-            foreach ($usual_suspects as $i => $privilege) {
-                if (preg_match('#' . $privilege . '#', $override) != 0) {
-                    $min_level = $access[$i];
-                    $privileges_scheme[$override] = $min_level;
-                }
-            }
-        }
-
-        return $privileges_scheme;
-    }
-
-    /**
-     * Set resource privileges from a preset on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $group_presets A mapping from group ID to preset value. Preset values are 0 (read only) to 3 (moderation)
-     */
-    public function set_resource_privileges_from_preset($filename, $group_presets)
-    {
-        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename);
-        if (is_null($privileges_scheme)) {
-            return;
-        }
-
-        // Set the privileges
-        $group_settings = array();
-        foreach ($group_presets as $group_id => $level) {
-            $group_settings[$group_id] = array();
-            foreach ($privileges_scheme as $privilege => $min_level) {
-                $setting = ($level < $min_level) ? '0' : '1';
-                $group_settings[$group_id][$privilege] = $setting;
-            }
-        }
-        $this->set_resource_privileges($filename, $group_settings);
-    }
-
-    /**
-     * Set resource privileges on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $group_settings A map between group ID, and a map of privilege to setting
-     */
-    public function set_resource_privileges($filename, $group_settings)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return; // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return; // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-
-        // Insert
-        foreach ($group_settings as $group_id => $value) {
-            if (in_array($group_id, $admin_groups)) {
-                continue;
-            }
-
-            foreach ($value as $privilege => $setting) {
-                if ($setting != '') {
-                    $cma_info['connection']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => ''));
-                    $cma_info['connection']->query_insert('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting)), false, true); // Race/corruption condition
-                }
-            }
-        }
-    }
-
-    /**
-     * Get the resource privileges for the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @return array A map between group ID, and a map of privilege to setting
-     */
-    public function get_resource_privileges($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return array(); // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return array(); // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $page = $cma_info['cms_page'];
-        require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
-        if (is_null($_overridables[0])) {
-            $overridables = array();
-        } else {
-            $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
-        }
-
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
-        $ret = array();
-        foreach (array_keys($groups) as $group_id) {
-            $ret[$group_id] = array();
-            foreach ($overridables as $override => $cat_support) {
-                if ($cat_support) {
-                    if (in_array($group_id, $admin_groups)) {
-                        $ret[$group_id][$override] = '1';
-                    } else {
-                        $ret[$group_id][$override] = '1';
-                    }
-                }
-            }
-        }
-        $groups = $cma_info['connection']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
-        foreach ($groups as $group) {
-            $ret[$group['group_id']][$group['privilege']] = strval($group['the_value']);
-        }
-        return $ret;
-    }
-
-    /**
-     * Set resource privileges from a preset so that a member has custom privileges on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $member_presets A mapping from member ID to preset value. Preset values are 0 (read only) to 3 (moderation)
-     */
-    public function set_resource_privileges_from_preset__members($filename, $member_presets)
-    {
-        $privileges_scheme = $this->_compute_privilege_preset_scheme($filename);
-        if (is_null($privileges_scheme)) {
-            return;
-        }
-
-        // Set the privileges
-        $member_settings = array();
-        foreach ($member_presets as $member_id => $level) {
-            $member_settings[$member_id] = array();
-            foreach ($privileges_scheme as $privilege => $min_level) {
-                $setting = ($level < $min_level) ? '0' : '1';
-                $member_settings[$member_id][$privilege] = $setting;
-            }
-        }
-        $this->set_resource_privileges__members($filename, $member_settings);
-    }
-
-    /**
-     * Set a resource privilege so that a member has a custom privilege on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @param  array $member_settings A map between member ID, and a map of privilege to setting
-     */
-    public function set_resource_privileges__members($filename, $member_settings)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return; // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return; // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        foreach ($member_settings as $member_id => $value) {
-            foreach ($value as $privilege => $setting) {
-                if ($setting != '') {
-                    $cma_info['connection']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => ''));
-                    $cma_info['connection']->query_insert('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting), 'active_until' => null), false, true); // Race/corruption condition
-                }
-            }
-        }
-    }
-
-    /**
-     * Get the resource privileges for all members that have custom privileges on the resource.
-     *
-     * @param  ID_TEXT $filename Resource filename (assumed to be of a folder type)
-     * @return array A map between member ID, and a map of privilege to setting
-     */
-    public function get_resource_privileges__members($filename)
-    {
-        list($resource_type, $category) = $this->folder_convert_filename_to_id($filename);
-        if ($resource_type == 'zone') {
-            return array(); // Can not be done
-        }
-        if ($resource_type == 'comcode_page') {
-            return array(); // Can not be done
-        }
-        $cma_info = $this->_get_cma_info($resource_type);
-        $module = $cma_info['permissions_type_code'];
-
-        $members = $cma_info['connection']->query_select('member_privileges', array('member_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'active_until' => null));
-        $ret = array();
-        foreach ($members as $member) {
-            $ret[$member['member_id']][$member['privilege']] = strval($member['the_value']);
-        }
-        return $ret;
-    }
-
-    /*
-    HELPERS FOR THE ADDRESSING PORTABILITY
-    */
-
-    /**
-     * Find all translated strings for a language ID. This is used as an intermediate step in creating multi-language serialisations.
-     *
-     * @param  AUTO_LINK $lang_id Language ID
-     * @param  object $db Database connection to look up from
-     * @return array A map of language to the text in that language
-     */
-    protected function _get_translated_text($lang_id, $db)
-    {
-        $strings = $db->query_select('translate', array('language', 'text_original'), array('id' => $lang_id));
-        return collapse_2d_complexity('language', 'text_original', $strings);
-    }
-
-    /*
-    XML FILE HANDLING: OUR DEFAULT PROPERTY LIST SERIALISATION/DESERIALISATION
-    */
-
-    /**
-     * Load function for resource-fs (for files). Finds the data for some resource from a resource-fs XML file.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return ~string Resource data (false: error)
-     */
-    public function file_load_xml($filename, $path)
-    {
-        $properties = $this->file_load($filename, $path);
-        if ($properties === false) {
-            return false;
-        }
-        return serialize($properties); // TODO: Should be XML serialisation, #1160 on tracker
-    }
-
-    /**
-     * Load function for resource-fs (for folders). Finds the data for some resource from a resource-fs XML folder.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @return ~string Resource data (false: error)
-     */
-    public function folder_load_xml($filename, $path)
-    {
-        $properties = $this->folder_load($filename, $path);
-        if ($properties === false) {
-            return false;
-        }
-        return serialize($properties); // TODO: Should be XML serialisation, #1160 on tracker
-    }
-
-    /**
-     * Save function for resource-fs (for files). Parses the data for some resource to a resource-fs XML file.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  string $data Resource data
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function file_save_xml($filename, $path, $data)
-    {
-        $properties = ($data == '') ? array() : @unserialize($data); // TODO: Should be XML parsing, #1160 on tracker
-        if ($properties === false) {
-            return false;
-        }
-        return $this->file_save($filename, $path, $properties);
-    }
-
-    /**
-     * Save function for resource-fs (for files).
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path to save at (blank: root / not applicable)
-     * @param  array $properties Properties
-     * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
-     * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function file_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
-    {
-        if (is_null($search_path)) {
-            $search_path = $path;
-        }
-
-        $label = $filename;
-        if ($search_label_as !== null) {
-            $filename = $this->convert_label_to_filename($label, $search_path, $search_label_as, true);
-        }
-
-        if (($GLOBALS['RESOURCEFS_ADD_ONLY']) && ($filename !== null)) {
-            $resource_id = $this->file_convert_filename_to_id($filename);
-            if ($resource_id !== null) {
-                return $resource_id;
-            }
-        }
-
-        $existing = mixed();
-        $existing = ($filename === null) ? false : $this->file_load($filename, $search_path); // NB: Even if it has a wildcard path, it should be acceptable to file_load, as the path is not used for search, only for identifying resource type
-        if ($existing === false) {
-            resourcefs_logging('Added a new ' . $path . '/' . $label . ' file record (i.e. not an edit)', 'inform');
-
-            $resource_id = $this->file_add($label, $path, $properties, $search_label_as);
-            $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
-            return $resource_id;
-        }
-
-        $resource_id = $this->file_edit($filename, $path, $properties + $existing);
-        $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
-        return $resource_id;
-    }
-
-    /**
-     * Save function for resource-fs (for folders). Parses the data for some resource to a resource-fs XML folder.
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  string $data Resource data
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function folder_save_xml($filename, $path, $data)
-    {
-        $properties = @unserialize($data); // TODO: Should be XML parsing, #1160 on tracker
-        if ($properties === false) {
-            return false;
-        }
-        return $this->folder_save($filename, $path, $properties);
-    }
-
-    /**
-     * Save function for resource-fs (for folders).
-     *
-     * @param  ID_TEXT $filename Filename
-     * @param  string $path The path (blank: root / not applicable)
-     * @param  array $properties Properties
-     * @param  ?ID_TEXT $search_label_as Whether to look for existing records using $filename as a label and this resource type (null: $filename is a strict file name)
-     * @param  ?ID_TEXT $search_path Search path (null: the same as the path saving at)
-     * @return ~ID_TEXT The resource ID (false: error, could not create via these properties / here)
-     */
-    public function folder_save($filename, $path, $properties, $search_label_as = null, $search_path = null)
-    {
-        if (is_null($search_path)) {
-            $search_path = $path;
-        }
-
-        $label = $filename;
-        if ($search_label_as !== null) {
-            $filename = $this->convert_label_to_filename($label, $search_path, $search_label_as, true);
-        }
-
-        if (($GLOBALS['RESOURCEFS_ADD_ONLY']) && ($filename !== null)) {
-            $resource_id = $this->folder_convert_filename_to_id($filename);
-            if ($resource_id !== null) {
-                return $resource_id;
-            }
-        }
-
-        $existing = mixed();
-        $existing = ($filename === null) ? false : $this->folder_load($filename, $search_path); // NB: Even if it has a wildcard path, it should be acceptable to file_load, as the path is not used for search, only for identifying resource type
-        if ($existing === false) {
-            resourcefs_logging('Added a new ' . $path . '/' . $label . ' folder record (i.e. not an edit)', 'inform');
-
-            $resource_id = $this->folder_add($label, $path, $properties, $search_label_as);
-            $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
-            return $resource_id;
-        }
-
-        $resource_id = $this->folder_edit($filename, $path, $properties + $existing);
-        $this->_log_if_save_matchup($search_label_as, $resource_id, $path, $properties);
-        return $resource_id;
-    }
-
-    /*
-    CUSTOM FIELDS BINDING
-    */
-
-    /**
-     * Find details of custom properties.
-     *
-     * @param  ID_TEXT $type The resource type
-     * @return array Details of properties
-     */
-    protected function _custom_fields_enumerate_properties($type)
-    {
-        static $cache = array();
-        if (array_key_exists($type, $cache)) {
-            return $cache[$type];
-        }
-
-        require_code('fields');
-        if (!has_tied_catalogue($type)) {
-            return array();
-        }
-
-        $props = array();
-
-        $fields = get_catalogue_fields('_' . $type);
-        foreach ($fields as $field_bits) {
-            $cf_name = get_translated_text($field_bits['cf_name']);
-            $fixed_id = 'custom__' . fix_id($cf_name);
-            if (!array_key_exists($fixed_id, $props)) {
-                $key = $fixed_id;
-            } else {
-                $key = 'custom__field_' . strval($field_bits['id']);
-            }
-
-            require_code('fields');
-            $ob = get_fields_hook($field_bits['cf_type']);
-            list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $field_bits['cf_type'], 'cf_default' => ''));
-            $_type = 'SHORT_TEXT';
-            switch ($storage_type) {
-                case 'short_trans':
-                    $_type = 'SHORT_TRANS';
-                    break;
-                case 'long_trans':
-                    $_type = 'LONG_TRANS';
-                    break;
-                case 'long':
-                    $_type = 'LONG_TEXT';
-                    break;
-                case 'integer':
-                    $_type = 'INTEGER';
-                    break;
-                case 'float':
-                    $_type = 'REAL';
-                    break;
-            }
-            $props[$key] = $_type;
-        }
-
-        $cache[$type] = $props;
-
-        return $props;
-    }
-
-    /**
-     * Load custom properties.
-     *
-     * @param  ID_TEXT $type The resource type
-     * @param  ID_TEXT $id The content ID
-     * @return array Loaded properties
-     */
-    protected function _custom_fields_load($type, $id)
-    {
-        require_code('fields');
-        if (!has_tied_catalogue($type)) {
-            return array();
-        }
-
-        $properties = array();
-
-        require_code('catalogues');
-
-        $catalogue_entry_id = get_bound_content_entry($type, $id);
-        if (!is_null($catalogue_entry_id)) {
-            $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
-        } else {
-            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order');
-        }
-
-        $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
-        foreach ($special_fields as $i => $field) {
-            $default = $field['cf_default'];
-            if (array_key_exists('effective_value_pure', $field)) {
-                $default = $field['effective_value_pure'];
-            } elseif (array_key_exists('effective_value', $field)) {
-                $default = $field['effective_value'];
-            }
-
-            $prop_name = $prop_names[$i];
-            $properties[$prop_name] = $default;
-        }
-
-        return $properties;
-    }
-
-    /**
-     * Save custom properties.
-     *
-     * @param  ID_TEXT $type The resource type
-     * @param  ID_TEXT $id The content ID
-     * @param  array $properties Properties to save
-     */
-    protected function _custom_fields_save($type, $id, $properties)
-    {
-        require_code('fields');
-        if (!has_tied_catalogue($type)) {
-            return;
-        }
-
-        $existing = get_bound_content_entry($type, $id);
-
-        require_code('catalogues');
-
-        // Get field values
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order');
-        $map = array();
-        require_code('fields');
-        $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
-        foreach ($fields as $i => $field) {
-            $prop_name = $prop_names[$i];
-            if (!array_key_exists($prop_name, $properties)) {
-                $properties[$prop_name] = '';
-            }
-            $map[$field['id']] = $properties[$prop_name];
-        }
-
-        $first_cat = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $type));
-
-        require_code('catalogues2');
-
-        if (!is_null($existing)) {
-            actual_edit_catalogue_entry($existing, $first_cat, 1, '', 0, 0, 0, $map);
-        } else {
-            $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, $map);
-
-            $GLOBALS['SITE_DB']->query_insert('catalogue_entry_linkage', array(
-                'catalogue_entry_id' => $catalogue_entry_id,
-                'content_type' => $type,
-                'content_id' => $id,
-            ));
-        }
-    }
-
-    /*
-    COMMANDR-FS BINDING
-    */
-
-    /**
-     * Standard commandr_fs listing function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~array The final directory listing (false: failure)
-     */
-    public function listing($meta_dir, $meta_root_node, &$commandr_fs)
-    {
-        if (!$this->_is_active()) {
-            return false;
-        }
-
-        $listing = array();
-
-        $folder_types = is_array($this->folder_resource_type) ? $this->folder_resource_type : (is_null($this->folder_resource_type) ? array() : array($this->folder_resource_type));
-        $file_types = is_array($this->file_resource_type) ? $this->file_resource_type : (is_null($this->file_resource_type) ? array() : array($this->file_resource_type));
-
-        // Find where we're at
-        $cat_id = '';
-        $cat_resource_type = mixed();
-        if (count($meta_dir) != 0) {
-            if (is_null($this->folder_resource_type)) {
-                return false; // Should not be possible
-            }
-
-            list($cat_resource_type, $cat_id) = $this->folder_convert_filename_to_id(implode('/', $meta_dir));
-        }
-
-        // Find folders
-        foreach ($folder_types as $resource_type) {
-            $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
-                continue;
-            }
-
-            $_cat_id = ($relationship['cat_field_numeric'] ? (($cat_id == '') ? null : intval($cat_id)) : $cat_id);
-
-            $folder_info = $this->_get_cma_info($resource_type);
-
-            $select = array('main.*');
-            $table = $folder_info['table'] . ' main';
-            if ((!is_null($relationship['linker_table'])) && ($relationship['linker_table'] != $folder_info['table'])) {
-                if ((!is_null($_cat_id)) && ($_cat_id !== '')) {
-                    $table = $folder_info['table'] . ' main JOIN ' . $folder_info['connection']->get_table_prefix() . $relationship['linker_table'] . ' cats ON cats.' . $relationship['id_field_linker'] . '=main.' . $relationship['id_field'];
-                }
-            }
-            if (!is_null($folder_info['add_time_field'])) {
-                $select[] = 'main.' . $folder_info['add_time_field'];
-            }
-            if (!is_null($folder_info['edit_time_field'])) {
-                $select[] = 'main.' . $folder_info['edit_time_field'];
-            }
-            if (!is_array($folder_info['id_field'])) {
-                $select[] = 'main.' . $folder_info['id_field'];
-            }
-            $extra = '';
-            if (can_arbitrary_groupby()) {
-                $extra .= 'GROUP BY main.' . $relationship['id_field'] . ' '; // In case it's not a real category table, just an implied one by self-categorisation of entries
-            }
-            $extra .= 'ORDER BY main.' . $relationship['id_field'];
-            if (is_null($relationship['cat_field'])) {
-                $where = array();
-            } else {
-                if (((is_null($_cat_id)) || ($_cat_id === '')) && ($relationship['linker_table'] != $folder_info['table'])) {
-                    $where = array($relationship['id_field'] => ($folder_info['id_field_numeric'] ? db_get_first_id() : '')); // Don't go through the linker table for the root category
-                } else {
-                    $where = array($relationship['cat_field'] => $_cat_id);
-                }
-            }
-            $child_folders = $folder_info['connection']->query_select($table, $select, $where, $extra, 10000/*Reasonable limit*/);
-            foreach ($child_folders as $folder) {
-                $str_id = extract_content_str_id_from_data($folder, $folder_info);
-                $filename = $this->folder_convert_id_to_filename($resource_type, $str_id);
-
-                $filetime = mixed();
-                if (method_exists($this, '_get_folder_edit_date')) {
-                    $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
-                }
-                if (is_null($filetime)) {
-                    if (!is_null($folder_info['edit_time_field'])) {
-                        $filetime = $folder[$folder_info['edit_time_field']];
-                    }
-                    if (is_null($filetime)) {
-                        if (!is_null($folder_info['add_time_field'])) {
-                            $filetime = $folder[$folder_info['add_time_field']];
-                        }
-                    }
-                }
-
-                $listing[] = array(
-                    $filename,
-                    COMMANDRFS_DIR,
-                    null/*don't calculate a filesize*/,
-                    $filetime,
-                );
-            }
-        }
-
-        // Find files
-        foreach ($file_types as $resource_type) {
-            $relationship = $this->_has_parent_child_relationship($cat_resource_type, $resource_type);
-            if (is_null($relationship)) {
-                continue;
-            }
-
-            $file_info = $this->_get_cma_info($resource_type);
-            $where = array();
-            if (!is_null($this->folder_resource_type)) {
-                $_cat_id = ($relationship['cat_field_numeric'] ? (($cat_id == '') ? null : intval($cat_id)) : $cat_id);
-                $where[$relationship['cat_field']] = $_cat_id;
-            }
-
-            $select = array();
-            append_content_select_for_id($select, $file_info);
-            if (!is_null($file_info['add_time_field'])) {
-                $select[] = $file_info['add_time_field'];
-            }
-            if (!is_null($file_info['edit_time_field'])) {
-                $select[] = $file_info['edit_time_field'];
-            }
-            if (!is_array($file_info['id_field'])) {
-                $select[] = $file_info['id_field'];
-            }
-            $files = $file_info['connection']->query_select($file_info['table'], $select, $where, '', 10000/*Reasonable limit*/);
-            foreach ($files as $file) {
-                $str_id = extract_content_str_id_from_data($file, $file_info);
-                $filename = $this->file_convert_id_to_filename($resource_type, $str_id);
-
-                $filetime = mixed();
-                if (method_exists($this, '_get_file_edit_date')) {
-                    $filetime = $this->_get_file_edit_date($file, end($meta_dir));
-                }
-                if (is_null($filetime)) {
-                    if (!is_null($file_info['edit_time_field'])) {
-                        $filetime = $file[$file_info['edit_time_field']];
-                    }
-                    if (is_null($filetime)) {
-                        if (!is_null($file_info['add_time_field'])) {
-                            $filetime = $file[$file_info['add_time_field']];
-                        }
-                    }
-                }
-
-                $listing[] = array(
-                    $filename,
-                    COMMANDRFS_FILE,
-                    null/*don't calculate a filesize*/,
-                    $filetime,
-                );
-            }
-        }
-
-        if ($cat_id != '') { // File for editing the folder's own properties
-            list($cat_resource_type, $cat_id) = $this->folder_convert_filename_to_id(implode('/', $meta_dir));
-            require_code('content');
-            $folder_info = $this->_get_cma_info($cat_resource_type);
-            $folder = content_get_row($cat_id, $folder_info);
-
-            $filetime = mixed();
-            if (method_exists($this, '_get_file_edit_date')) {
-                $filetime = $this->_get_folder_edit_date($folder, end($meta_dir));
-            }
-            if (is_null($filetime)) {
-                if (!is_null($folder_info['edit_time_field'])) {
-                    $filetime = $folder[$folder_info['edit_time_field']];
-                }
-                if (is_null($filetime)) {
-                    if (!is_null($folder_info['add_time_field'])) {
-                        $filetime = $folder[$folder_info['add_time_field']];
-                    }
-                }
-            }
-
-            $listing[] = array(
-                '_folder.' . RESOURCEFS_DEFAULT_EXTENSION,
-                COMMANDRFS_FILE,
-                null/*don't calculate a filesize*/,
-                $filetime,
-            );
-        }
-
-        return $listing;
-    }
-
-    /**
-     * Standard commandr_fs directory creation function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  string $new_dir_name The new directory name
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return boolean Success?
-     */
-    public function make_directory($meta_dir, $meta_root_node, $new_dir_name, &$commandr_fs)
-    {
-        if (is_null($this->folder_resource_type)) {
-            return false;
-        }
-        return $this->folder_add($new_dir_name, implode('/', $meta_dir), array());
-    }
-
-    /**
-     * Standard commandr_fs directory removal function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  string $dir_name The directory name
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return boolean Success?
-     */
-    public function remove_directory($meta_dir, $meta_root_node, $dir_name, &$commandr_fs)
-    {
-        if (is_null($this->folder_resource_type)) {
-            return false;
-        }
-        return $this->folder_delete($dir_name, implode('/', $meta_dir));
-    }
-
-    /**
-     * Standard commandr_fs file reading function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  string $file_name The file name
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return ~string The file contents (false: failure)
-     */
-    public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
-    {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
-            return $this->folder_load__flat(array_pop($meta_dir), implode('/', $meta_dir));
-        }
-        return $this->file_load__flat($file_name, implode('/', $meta_dir));
-    }
-
-    /**
-     * Standard commandr_fs file writing function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  string $file_name The file name
-     * @param  string $contents The new file contents
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return boolean Success?
-     */
-    public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
-    {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
-            return $this->folder_save__flat(array_pop($meta_dir), implode('/', $meta_dir), $contents) !== false;
-        }
-        return $this->file_save__flat($file_name, implode('/', $meta_dir), $contents) !== false;
-    }
-
-    /**
-     * Standard commandr_fs file removal function for Commandr-fs hooks.
-     *
-     * @param  array $meta_dir The current meta-directory path
-     * @param  string $meta_root_node The root node of the current meta-directory
-     * @param  string $file_name The file name
-     * @param  object $commandr_fs A reference to the Commandr filesystem object
-     * @return boolean Success?
-     */
-    public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
-    {
-        if ($file_name == '_folder.' . RESOURCEFS_DEFAULT_EXTENSION) {
-            return true; // Fake success, as needs to do so when deleting folder contents
-        }
-        return $this->file_delete($file_name, implode('/', $meta_dir));
-    }
+    return array($field => $id);
 }

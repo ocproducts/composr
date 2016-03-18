@@ -10,7 +10,7 @@
 	{WARNING_DETAILS}
 
 	<div class="float_surrounder">
-		<div class="download_meta_data">
+		<div class="download_metadata">
 			<div class="download_now_wrapper">
 				<div class="box box___download_screen">
 					{+START,IF_PASSED,LICENCE_HYPERLINK}
@@ -19,8 +19,8 @@
 					</p>
 
 					<div class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!_I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!_I_AGREE}</a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!I_AGREE}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!I_AGREE}</a>
 					</div>
 
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
@@ -52,7 +52,7 @@
 
 					<tbody>
 						<tr>
-							<th class="de_th meta_data_title">{!ADDED}</th>
+							<th class="de_th metadata_title">{!ADDED}</th>
 							<td>
 								<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{DATE_RAW}}" itemprop="datePublished">{DATE*}</time>
 							</td>
@@ -60,12 +60,12 @@
 
 						<tr>
 							{+START,IF_NON_EMPTY,{AUTHOR_URL}}
-								<th class="de_th meta_data_title">{!BY}</th>
+								<th class="de_th metadata_title">{!BY}</th>
 								<td><a rel="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a></td>
 							{+END}
 
 							{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}
-								<th class="de_th meta_data_title">{!BY}</th>
+								<th class="de_th metadata_title">{!BY}</th>
 								<td>
 									<a rel="author" href="{$MEMBER_PROFILE_URL*,{SUBMITTER}}">{$USERNAME*,{SUBMITTER},1}</a>
 									{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
@@ -75,7 +75,7 @@
 
 						{+START,IF_NON_EMPTY,{EDIT_DATE}}
 							<tr>
-								<th class="de_th meta_data_title">{!EDITED}</th>
+								<th class="de_th metadata_title">{!EDITED}</th>
 								<td>
 									<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{EDIT_DATE_RAW}}">{EDIT_DATE*}</time>
 								</td>
@@ -84,13 +84,13 @@
 
 						{+START,IF,{$INLINE_STATS}}
 							<tr>
-								<th class="de_th meta_data_title">{!COUNT_VIEWS}</th>
+								<th class="de_th metadata_title">{!COUNT_VIEWS}</th>
 								<td>{VIEWS*}</td>
 							</tr>
 						{+END}
 
 						<tr>
-							<th class="de_th meta_data_title">{!COUNT_DOWNLOADS}</th>
+							<th class="de_th metadata_title">{!COUNT_DOWNLOADS}</th>
 							<td>
 								<meta itemprop="interactionCount" content="UserDownloads:{$PREG_REPLACE*,[^\d],,{NUM_DOWNLOADS}}"/>
 								{NUM_DOWNLOADS*}

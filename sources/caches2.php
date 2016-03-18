@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,7 @@
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
  * @param  ?MEMBER $member Member to only decache for (null: no limit)
+ * @ignore
  */
 function _decache($cached_for, $identifier = null, $member = null)
 {
@@ -31,7 +32,7 @@ function _decache($cached_for, $identifier = null, $member = null)
         $cached_for = array($cached_for);
     }
 
-    $cached_for_sz = serialize($cached_for);
+    $cached_for_sz = serialize(array($cached_for, $identifier, $member));
 
     static $done_already = array();
     if ($identifier === null) {
@@ -72,7 +73,18 @@ function _decache($cached_for, $identifier = null, $member = null)
         }
     }
 
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'cache WHERE ' . $where, null, null, false, true);
+    $sql = 'DELETE FROM ' . get_table_prefix() . 'cache WHERE ' . $where;
+
+    $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+
+    $hooks = find_all_hooks('systems', 'decache');
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/decache/' . filter_naughty($hook));
+        $ob = object_factory('Hook_decache_' . filter_naughty($hook), true);
+        if (!is_null($ob)) {
+            $ob->decache($cached_for, $identifier);
+        }
+    }
 
     if ($identifier === null) {
         $done_already[$cached_for_sz] = true;

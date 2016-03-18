@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -53,6 +53,10 @@ function i_follow_u($user_id)
         return false;
     }
 
+    if (!addon_installed('chat')) {
+        return false;
+    }
+
     $result = $GLOBALS['FORUM_DB']->query_select_value_if_there('chat_friends', 'member_likes', array('member_likes' => $logged_in_user_id, 'member_liked' => $user_id));
     return !is_null($result);
 }
@@ -67,6 +71,10 @@ function u_follow_me($user_id)
 {
     $logged_in_user_id = get_member();
     if ($logged_in_user_id == $user_id) {
+        return false;
+    }
+
+    if (!addon_installed('chat')) {
         return false;
     }
 

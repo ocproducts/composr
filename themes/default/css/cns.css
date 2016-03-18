@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 /*
@@ -169,6 +169,7 @@ div.cns_table_footer>div>div {
 .cns_buttons_screen {
 	white-space: nowrap;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		text-align: right;
 		float: {!en_right};
 		margin: 1.5em 0 1.5em 1em !important;
 	/*{+END}*/
@@ -412,6 +413,9 @@ div.cns_table_footer>div>div {
 .cns_topic_post_area img {
 	max-width: 100%;
 }
+.cns_topic_post_area #map_canvas img { /*some exceptions may need defining for the above*/
+	max-width: none;
+}
 
 .cns_topic_post_area>h2, .cns_topic_post_area>h3 {
 	margin-top: 0;
@@ -491,6 +495,23 @@ hr.cns_sig_barrier {
 	margin-top: 4em;
 }
 
+.comments_wrapper .boxless_space .box + .box___post_map:before {
+	border-top: 0 !important;
+}
+
+.box___post_map ul {
+	padding-left: 1em;
+}
+
+.box___post_map li {
+	list-style: none;
+	margin-bottom: 0.5em;
+}
+
+.cns_post_map_item_unread {
+	font-weight: bold;
+}
+
 /*
 =========================
 =======Forum View========
@@ -565,6 +586,11 @@ hr.cns_sig_barrier {
 
 .cns_forum_in_category_forum .associated_link {
 	text-decoration: none;
+}
+
+.cns_forum_in_category_forum .horizontal_meta_details img {
+	position: relative;
+	top: 2px;
 }
 
 .cns_forum_new_post_indicator {
@@ -690,6 +716,9 @@ hr.cns_sig_barrier {
 		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
 	/*{+END}*/
 }
+.cns_whisper_choose_box .box {
+	margin-top: 0;
+}
 .cns_whisper_choose_box.right {
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		padding: 4em 4em 4em 2em;
@@ -767,8 +796,7 @@ hr.cns_sig_barrier {
 	.box___block_main_bottom_bar,
 	.box__members_viewing,
 	.cns_buttons_screen,
-	.cns_topic_marker,
-	.cns_member_signature .comcode_hide {
+	.cns_topic_marker {
 		display: none;
 	}
 }
@@ -782,14 +810,17 @@ hr.cns_sig_barrier {
 .buttons__forum {
 	background-image: url('{$IMG,icons/24x24/buttons/forum}') !important;
 }
-.buttons__history {
-	background-image: url('{$IMG,icons/24x24/buttons/history}') !important;
-}
 .buttons__mark_read_forum {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_read_forum}') !important;
+	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;
+}
+.buttons__mark_read_topic {
+	background-image: url('{$IMG,icons/24x24/buttons/mark_read}') !important;
+}
+.buttons__mark_unread_forum {
+	background-image: url('{$IMG,icons/24x24/buttons/mark_unread}') !important;
 }
 .buttons__mark_unread_topic {
-	background-image: url('{$IMG,icons/24x24/buttons/mark_unread_topic}') !important;
+	background-image: url('{$IMG,icons/24x24/buttons/mark_unread}') !important;
 }
 .buttons__new_post_full {
 	background-image: url('{$IMG,icons/24x24/buttons/new_post_full}') !important;
@@ -826,14 +857,20 @@ hr.cns_sig_barrier {
 	.buttons__forum {
 		background-image: url('{$IMG,icons/48x48/buttons/forum}') !important;
 	}
-	.buttons__history {
-		background-image: url('{$IMG,icons/48x48/buttons/history}') !important;
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 	}
 	.buttons__mark_read_forum {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_read_forum}') !important;
+		background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
+	}
+	.buttons__mark_read_topic {
+		background-image: url('{$IMG,icons/48x48/buttons/mark_read}') !important;
+	}
+	.buttons__mark_unread_forum {
+		background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
 	}
 	.buttons__mark_unread_topic {
-		background-image: url('{$IMG,icons/48x48/buttons/mark_unread_topic}') !important;
+		background-image: url('{$IMG,icons/48x48/buttons/mark_unread}') !important;
 	}
 	.buttons__new_post_full {
 		background-image: url('{$IMG,icons/48x48/buttons/new_post_full}') !important;
@@ -866,3 +903,23 @@ hr.cns_sig_barrier {
 		background-image: url('{$IMG,icons/48x48/buttons/threaded}') !important;
 	}
 }
+
+{+START,IF,{$MOBILE}}
+	/* Modifications to make the top "Mark read" button appear in mobile mode */
+	.cns_topic_buttons.non_accessibility_redundancy,
+	.cns_forum_buttons.non_accessibility_redundancy {
+		display: block;
+	}
+
+	.cns_forum_buttons .cns_screen_buttons input,
+	.cns_topic_buttons .cns_screen_buttons input,
+	.cns_forum_buttons .cns_screen_buttons a,
+	.cns_topic_buttons .cns_screen_buttons a {
+		display: none;
+	}
+
+	.cns_forum_buttons .cns_screen_buttons input[alt="{!MARK_READ}"],
+	.cns_topic_buttons .cns_screen_buttons input[alt="{!MARK_READ}"] {
+		display: inline-block;
+	}
+{+END}

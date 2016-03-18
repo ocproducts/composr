@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -105,7 +105,7 @@ class Hook_stats_forum
             if ($bits->is_empty_shell()) {
                 return new Tempcode();
             }
-            $forums = do_template('BLOCK_SIDE_STATS_SECTION', array('_GUID' => '52cd616760efe17adcec4b97e1305301', 'SECTION' => do_lang_tempcode('FORUM_SLASH_COMMUNITY'), 'CONTENT' => $bits));
+            $forums = do_template('BLOCK_SIDE_STATS_SECTION', array('_GUID' => '52cd616760efe17adcec4b97e1305301', 'SECTION' => do_lang_tempcode('COMMUNITY'), 'CONTENT' => $bits));
         } else {
             $forums = new Tempcode();
         }

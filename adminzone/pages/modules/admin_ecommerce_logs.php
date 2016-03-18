@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,7 @@ class Module_admin_ecommerce_logs
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -75,7 +75,7 @@ class Module_admin_ecommerce_logs
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -175,7 +175,7 @@ class Module_admin_ecommerce_logs
         if ($type == 'profit_loss') {
             return $this->profit_loss();
         }
-        //if ($type=='balance_sheet') return $this->balance_sheet();
+        //if ($type == 'balance_sheet') return $this->balance_sheet();
         if ($type == 'trigger') {
             return $this->trigger();
         }
@@ -303,7 +303,7 @@ class Module_admin_ecommerce_logs
 
         $results_table = results_table(do_lang('TRANSACTIONS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*,'start'=>$start,'max'=>$max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start' => $start, 'max' => $max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
         $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
@@ -341,8 +341,10 @@ class Module_admin_ecommerce_logs
                 $label = $details[4];
                 $label .= ' (' . escape_html($type_code);
 
+                $currency = isset($details[5]) ? $details[5] : get_option('currency');
+
                 if ($details[1] !== null) {
-                    $label .= ', ' . ecommerce_get_currency_symbol() . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1]);
+                    $label .= ', ' . escape_html(is_float($details[1]) ? float_to_raw_string($details[1], 2) : $details[1] . ' (' . $currency . ')');
                 }
                 $label .= ')';
                 $list->attach(form_input_list_entry($type_code, do_lang('CUSTOM_PRODUCT_' . $type_code, null, null, null, null, false) === get_param_string('type_code', null), protect_from_escaping($label)));
@@ -401,7 +403,7 @@ class Module_admin_ecommerce_logs
 
         $products = $product_ob->get_products();
         if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
-            $fields->attach(form_input_date(do_lang_tempcode('CUSTOM_EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
+            $fields->attach(form_input_date(do_lang_tempcode('EXPIRY_DATE'), do_lang_tempcode('DESCRIPTION_CUSTOM_EXPIRY_DATE'), 'cexpiry', false, false, false));
         }
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f4e52dff9353fb767afbe0be9808591c', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
@@ -427,21 +429,24 @@ class Module_admin_ecommerce_logs
         $purchase_id = post_param_string('purchase_id', '');
         $memo = post_param_string('memo');
         $mc_gross = post_param_string('amount', '');
-        $custom_expiry = get_input_date('cexpiry');
+        $custom_expiry = post_param_date('cexpiry');
+        $mc_currency = get_option('currency');
 
         $object = find_product($type_code);
         $products = $object->get_products(true);
         if ($mc_gross == '') {
             $mc_gross = $products[$type_code][1];
+            if (isset($products[$type_code][5])) {
+                $mc_currency = $products[$type_code][5];
+            }
         }
         $payment_status = 'Completed';
         $reason_code = '';
         $pending_reason = '';
-        $mc_currency = get_option('currency');
         $txn_id = 'manual-' . substr(uniqid('', true), 0, 10);
         $parent_txn_id = '';
 
-        $_type_code = $products[$type_code][4];
+        $item_name = $products[$type_code][4];
 
         if ($products[$type_code][0] == PRODUCT_SUBSCRIPTION) {
             if (($purchase_id == '') || (post_param_string('username', '') != '')) {
@@ -645,7 +650,7 @@ class Module_admin_ecommerce_logs
      */
     public function cash_flow()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -664,7 +669,7 @@ class Module_admin_ecommerce_logs
      */
     public function profit_loss()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }

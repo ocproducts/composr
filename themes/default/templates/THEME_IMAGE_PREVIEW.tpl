@@ -2,7 +2,7 @@
 	<h2>{!CURRENT}</h2>
 
 	<div class="float_surrounder">
-		<img class="theme_image_preview" src="{URL*}" alt="{!THEME_IMAGE}" />
+		<img class="{$?,{$GT,{WIDTH},300},theme_image_preview_wide,theme_image_preview}" src="{URL*}" alt="{!THEME_IMAGE}" />
 
 		<p>{!THEME_IMAGE_CURRENTLY_LIKE,{WIDTH*},{HEIGHT*}}</p>
 

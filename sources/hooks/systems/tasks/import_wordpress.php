@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -54,8 +54,6 @@ class Hook_task_import_wordpress
         }
 
         $cat_id = array();
-
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
 
         $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('nc_owner' => null));
         $NEWS_CATS = list_to_map('id', $NEWS_CATS);
@@ -152,9 +150,8 @@ class Hook_task_import_wordpress
                                 }
                                 if (is_null($cat_id)) { // Could not find existing category, create new
                                     $cat_id = add_news_category($category, 'newscats/community', $category);
-                                    foreach (array_keys($groups) as $group_id) {
-                                        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                                    }
+                                    require_code('permissions2');
+                                    set_global_category_access('news', $cat_id);
                                     // Need to reload now
                                     $NEWS_CATS = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'));
                                     $NEWS_CATS = list_to_map('id', $NEWS_CATS);
@@ -216,7 +213,7 @@ class Hook_task_import_wordpress
 
                         // Track import IDs
                         $imported_news[] = array(
-                            //'full_url'=>'', We don't know this for a database import
+                            //'full_url' => '', We don't know this for a database import
                             'import_id' => $id,
                             'import__news' => $news,
                             'import__news_article' => $news_article,
@@ -233,7 +230,7 @@ class Hook_task_import_wordpress
                         $zone = 'site';
                         $lang = fallback_lang();
                         $file = preg_replace('#[^\w\-]#', '_', $post['post_name']); // Filter non alphanumeric charactors
-                        $fullpath = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
+                        $full_path = zone_black_magic_filterer(get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . $lang . '/' . $file . '.txt');
 
                         // Content
                         $_content = "[title]" . comcode_escape($post['post_title']) . "[/title]\n\n";
@@ -271,19 +268,19 @@ class Hook_task_import_wordpress
                         ));
 
                         // Save to disk
-                        if (!file_exists(dirname($fullpath))) {
+                        if (!file_exists(dirname($full_path))) {
                             require_code('files2');
-                            make_missing_directory(dirname($fullpath));
+                            make_missing_directory(dirname($full_path));
                         }
-                        $myfile = @fopen($fullpath, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                        $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt');
                         if ($myfile === false) {
-                            intelligent_write_error($fullpath);
+                            intelligent_write_error($full_path);
                         }
                         if (fwrite($myfile, $_content) < strlen($_content)) {
                             return array(null, do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
                         fclose($myfile);
-                        sync_file($fullpath);
+                        sync_file($full_path);
 
                         // Meta
                         if (array_key_exists('category', $post)) {
@@ -300,7 +297,7 @@ class Hook_task_import_wordpress
                             'contents' => $_content,
                             'zone' => $zone,
                             'page' => $file,
-                            'path' => $fullpath,
+                            'path' => $full_path,
                             'parent_page' => $parent_page,
                             'id' => $post['post_id'],
                         );

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ class Module_admin_ip_ban
         $info['hack_version'] = null;
         $info['version'] = 5;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -83,7 +83,7 @@ class Module_admin_ip_ban
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -97,7 +97,7 @@ class Module_admin_ip_ban
     public $test;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -229,13 +229,28 @@ class Module_admin_ip_ban
             }
         }
 
+        $unbannable = '';
+        $rows = $GLOBALS['SITE_DB']->query_select('unbannable_ip', array('ip', 'note'));
+        foreach ($rows as $row) {
+            $unbannable .= $row['ip'] . ' ' . $row['note'] . "\n";
+        }
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
 
         require_code('form_templates');
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
-        return do_template('IP_BAN_SCREEN', array('_GUID' => '963d24852ba87e9aa84e588862bcfecb', 'PING_URL' => $ping_url, 'WARNING_DETAILS' => $warning_details, 'TITLE' => $this->title, 'LOCKED_BANS' => $locked_bans, 'BANS' => $bans, 'URL' => $post_url));
+        return do_template('IP_BAN_SCREEN', array(
+            '_GUID' => '963d24852ba87e9aa84e588862bcfecb',
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TITLE' => $this->title,
+            'BANS' => $bans,
+            'LOCKED_BANS' => $locked_bans,
+            'UNBANNABLE' => $unbannable,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -272,9 +287,43 @@ class Module_admin_ip_ban
                     } elseif ($ip == cms_srv('SERVER_ADDR')) {
                         attach_message(do_lang_tempcode('WONT_BAN_SERVER', $ip), 'warn');
                     } else {
-                        ban_ip($ip, trim($matches[5]));
+                        ban_ip($ip, isset($matches[2]) ? trim($matches[2]) : '');
                         $old_bans[] = $ip;
                     }
+                }
+            }
+        }
+
+        $rows = $GLOBALS['SITE_DB']->query_select('unbannable_ip', array('ip'));
+        $unbannable_already = collapse_1d_complexity('ip', $rows);
+        $unbannable = post_param_string('unbannable');
+        foreach ($unbannable_already as $ip) {
+            if (preg_match('#^' . preg_quote($ip, '#') . '(\s|$)#m', $unbannable) == 0) {
+                $GLOBALS['SITE_DB']->query_delete('unbannable_ip', array('ip' => $ip), '', 1);
+                log_it('MADE_IP_BANNABLE', $ip);
+            }
+        }
+        $_unbannable = explode("\n", $unbannable);
+        foreach ($_unbannable as $str)
+        {
+            if (trim($str) == '') {
+                continue;
+            }
+            preg_match('#^([^\s]+)(.*)$#', $str, $matches);
+            $ip = $matches[1];
+            if (preg_match('#^[a-f0-9\.]+$#U', $ip) == 0)
+            {
+                attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID_MAKE_UNBANNABLE', $str), 'warn');
+            } else
+            {
+                if (!in_array($ip, $unbannable_already))
+                {
+                    $GLOBALS['SITE_DB']->query_insert('unbannable_ip', array(
+                        'ip' => $ip,
+                        'note' => isset($matches[2]) ? $matches[2] : '',
+                    ));
+                    log_it('MADE_IP_UNBANNABLE', $matches[1]);
+                    $unbannable_already[] = $ip;
                 }
             }
         }

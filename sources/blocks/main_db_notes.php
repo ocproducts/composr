@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -68,10 +68,7 @@ class Block_main_db_notes
 
         $post_url = get_self_url();
 
-        $map_comcode = '';
-        foreach ($map as $key => $val) {
-            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
-        }
+        $map_comcode = get_block_ajax_submit_map($map);
         return do_template('BLOCK_MAIN_NOTES', array(
             '_GUID' => '2a9e1c512b66600583735552b56e0911',
             'TITLE' => $title,

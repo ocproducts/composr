@@ -21,14 +21,16 @@
 
 <div class="float_surrounder">
 	<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		{HIDDEN}
 
 		<p class="proceed_button">
 			{+START,IF,{$JS_ON}}
-				<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+				<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 			{+END}
 
-			<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+			<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 </div>

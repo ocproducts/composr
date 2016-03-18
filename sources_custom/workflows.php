@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -100,7 +100,7 @@ function get_all_workflows()
 /**
  * Get the system's default workflow. If there is only one workflow this
  * will return it, otherwise (multiple with no default specified, or no
- * workflows at all) it will give NULL.
+ * workflows at all) it will give null.
  *
  * @return ?AUTO_LINK The ID of the default workflow. (null: if none set)
  */
@@ -150,7 +150,7 @@ function get_submitter_of_workflow_content($content_id)
     $submitter = $GLOBALS['SITE_DB']->query_select('workflow_content', array('original_submitter'), array('id' => $content_id));
     if ($submitter == array()) {
         // Exit if we can't find the given resource
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'workflow_content->' . strval($content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('workflow_content->' . strval($content_id))));
     }
     // Now extract the submitter (if there is one)
     return $submitter[0]['original_submitter'];
@@ -188,7 +188,7 @@ function get_workflow_form($workflow_content_id)
     // Check if this is a valid piece of content for a workflow
     $rows = $GLOBALS['SITE_DB']->query_select('workflow_content', array('*'), array('id' => $workflow_content_id), '', 1);
     if (count($rows) == 0) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', strval($workflow_content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($workflow_content_id)), do_lang_tempcode('WORKFLOW')));
     }
 
     $row = $rows[0];
@@ -201,7 +201,7 @@ function get_workflow_form($workflow_content_id)
     // Make sure there are some points to approve
     $approval_points = get_all_approval_points($relevant_workflow);
     if ($approval_points == array()) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', strval($workflow_content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($workflow_content_id)), do_lang_tempcode('WORKFLOW')));
     }
 
     /////////////////////////
@@ -279,7 +279,7 @@ function get_workflow_form($workflow_content_id)
                 // Set the default value. We want groups allowed to approve the
                 // next+1 point ticked (assuming we're approving the next one)
                 // For simplicity, let's keep these unticked for now.
-                //if (in_array($allowed_group['usergroup'],$groups_shown))
+                //if (in_array($allowed_group['usergroup'], $groups_shown))
                 //{
                 $send_next[$allowed_group][] = false;
                 //}
@@ -426,7 +426,7 @@ function get_workflow_form($workflow_content_id)
     }
 
     // Attach the title to the form first, along with usage info
-    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
+    $workflow_fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'f0a8a4aabdd2f42bf7612f88b52b32b6', 'TITLE' => null, 'HELP' => do_lang_tempcode('WORKFLOW_USAGE'))));
 
     // Show the current status next
     $workflow_fields->attach(form_input_various_ticks($existing_status, '', null, do_lang_tempcode('CURRENT_APPROVAL_STATUS'), false));
@@ -619,7 +619,7 @@ function workflow_update_handler()
     // Grab lookup data from the workflows database
     $content_details = $GLOBALS['SITE_DB']->query_select('workflow_content', array('content_type', 'content_id'), array('id' => $content_id), '', 1);
     if ($content_details == array()) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'workflow_content->' . strval($content_id)));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('workflow_content->' . strval($content_id))));
     }
 
     // Now use it to find this content's validation field...
@@ -646,7 +646,7 @@ function workflow_update_handler()
     if ($content_is_validated == array()) {
         $content_id = $content_details[0]['content_id'];
         $validated_field = $content_id->content_validated_field;
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', $content_table . '->' . $content_field . '->' . $validated_field));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($content_table . '->' . $content_field . '->' . $validated_field)));
     }
 
     // In order for content to go live all points must be approved
@@ -683,11 +683,11 @@ function workflow_update_handler()
     }
     $subject = do_lang('APPROVAL_EMAIL_SUBJECT',/*TODO: Should pass title in, for unique email subject line*/
         null, null, null, get_site_default_lang());
-    $body = do_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
+    $body = do_notification_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
     dispatch_notification('workflow_step', strval($workflow_id), $subject, $body, $send_to_members);
 
     // Finally return a success message
-    $return_url = strip_tags(post_param_string('return_url'));
+    $return_url = post_param_string('return_url');
     return redirect_screen(new Tempcode(), $return_url, $success_message);
 }
 
@@ -792,7 +792,7 @@ function get_all_approval_points($workflow_id)
 function get_usergroups_for_approval_point($approval_id)
 {
     if (is_null($approval_id)) {
-        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'NULL approval'));
+        warn_exit(do_lang_tempcode('_MISSING_RESOURCE', 'null approval'));
     }
     $groups = $GLOBALS['SITE_DB']->query_select('workflow_permissions', array('usergroup'), array('workflow_approval_point_id' => $approval_id));
     $raw_names = array();

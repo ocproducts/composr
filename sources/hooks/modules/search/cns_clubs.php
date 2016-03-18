@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -174,6 +174,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
             'TITLE' => $title,
             'SUMMARY' => $summary,
             'URL' => $url,
+            'RESOURCE_TYPE' => 'group',
         ));
     }
 }

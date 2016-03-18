@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,7 +39,7 @@ class Hook_sitemap_topic extends Hook_sitemap_content
      */
     public function get_privilege_page($page_link)
     {
-        return 'topics';
+        return null;
     }
 
     /**

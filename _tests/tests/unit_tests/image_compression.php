@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -51,7 +51,7 @@ class image_compression_test_set extends cms_test_case
 {
     public function testImageCompression()
     {
-        // This test is not great, as some files just don't compress well. But it does pick up Photoshops terrible lack of compression and storage of meta data
+        // This test is not great, as some files just don't compress well. But it does pick up Photoshops terrible lack of compression and storage of metadata
 
         require_code('images');
 

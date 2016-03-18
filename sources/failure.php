@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__failure()
 {
@@ -38,7 +40,11 @@ function init__failure()
      * @global boolean $WANT_TEXT_ERRORS
      */
     global $WANT_TEXT_ERRORS;
-    $WANT_TEXT_ERRORS = false;
+    $cli = false;
+    if (function_exists('php_sapi_name')) {
+        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    }
+    $WANT_TEXT_ERRORS = $cli;
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
@@ -50,7 +56,7 @@ function init__failure()
 function suggest_fatalistic()
 {
     if ((may_see_stack_dumps()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
-        if (count($_POST) == 0) {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
         } elseif (count($_FILES) == 0) {
@@ -117,12 +123,13 @@ function zip_error($errno, $mzip = false)
  * @param  ?string $ret The value of the parameter deemed invalid (null: we known we can't recover)
  * @param  boolean $posted Whether the parameter is a POST parameter
  * @return string Fixed parameter (usually the function won't return [instead will give an error], but in special cases, it can filter an invalid return)
+ * @ignore
  */
 function _param_invalid($name, $ret, $posted)
 {
     // Invalid params can happen for many reasons:
     //  [/url] getting onto the end of URLs by bad URL extractors getting URLs out of Comcode
-    //  Spiders trying to ascend directory trees, and forcing index.php into the integer position of short URLs
+    //  Spiders trying to ascend directory trees, and forcing index.php into the integer position of URL Schemes
     //  Spiders that don't understand entity decoding
     //  People copying and pasting text shown after URLs as part of the URL itself
     //  New line characters getting pasted in (weird, but it's happened-- think might be some kind of screen reader browser)
@@ -148,8 +155,7 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
-    require_lang('javascript');
-    warn_exit(do_lang_tempcode('NOT_INTEGER'));
+    warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
     return '';
 }
 
@@ -177,7 +183,7 @@ function improperly_filled_in($name, $posted, $array)
     if ((!isset($array[$name])) && (($name == 'id') || ($name == 'type')) && (!headers_sent())) {
         set_http_status_code('404');
     }
-    warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html($name)));
+    warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__' . $name, $name))));
 }
 
 /**
@@ -209,6 +215,7 @@ function improperly_filled_in_post($name)
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
  * @param  integer $syslog_type The syslog type (used by GAE logging)
+ * @ignore
  */
 function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type)
 {
@@ -246,7 +253,9 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog($syslog_type, $php_error_label);
         }
-        @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+        if (php_function_allowed('error_log')) {
+            @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
+        }
     }
 
     if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) { // Don't display - die as normal
@@ -276,6 +285,8 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
  * @param  boolean $provide_back Whether to provide a back button
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
  * @return Tempcode The warn page
+ *
+ * @ignore
  */
 function _warn_screen($title, $text, $provide_back = true, $support_match_key_messages = false)
 {
@@ -286,7 +297,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
 
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
-    if ($text_eval == do_lang('MISSING_RESOURCE')) {
+    if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
         set_http_status_code('404');
         if (cms_srv('HTTP_REFERER') != '') {
             relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
@@ -305,6 +316,8 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
  *
  * @param  string $text The error message
  * @return string Sanitised error message
+ *
+ * @ignore
  */
 function _sanitise_error_msg($text)
 {
@@ -319,6 +332,7 @@ function _sanitise_error_msg($text)
  * @param  ID_TEXT $template Name of the terminal page template
  * @param  boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _generic_exit($text, $template, $support_match_key_messages = false)
 {
@@ -342,7 +356,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         require_code('notifications');
         require_lang('tasks');
         $n_subject = do_lang('_TASK_FAILED_SUBJECT');
-        $n_message = do_lang('TASK_FAILED_BODY', '[semihtml]' . $text_eval . '[/semihtml]');
+        $n_message = do_notification_lang('TASK_FAILED_BODY', '[semihtml]' . $text_eval . '[/semihtml]');
         dispatch_notification('task_completed', null, $n_subject, $n_message, array(get_member()), A_FROM_SYSTEM_PRIVILEGED, 2);
     }
 
@@ -359,7 +373,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
-        exit(is_object($text) ? strip_html($text->evaluate()) : $text);
+        debug_print_backtrace();
+        exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
     if ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr'))) {
@@ -369,14 +384,14 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
 
-    //$x=@ob_get_contents(); @ob_end_clean(); //if (is_string($x)) @print($x);      Disabled as causes weird crashes
+    //$x = @ob_get_contents(); @ob_end_clean(); //if (is_string($x)) @print($x);      Disabled as causes weird crashes
 
     if ($GLOBALS['HTTP_STATUS_CODE'] == '200') {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
             if (!headers_sent()) {
                 set_http_status_code('400');
             }
-        } elseif (($text_eval == do_lang('MISSING_RESOURCE')) || ($text_eval == do_lang('MEMBER_NO_EXIST'))) {
+        } elseif ((strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) || ($text_eval == do_lang('MEMBER_NO_EXIST'))) {
             if (!headers_sent()) {
                 set_http_status_code('404');
             }
@@ -408,7 +423,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         require_code('site');
     }
 
-    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml')) {
+    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
         $restrict_answer = cns_get_best_group_property($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()), 'flood_control_submit_secs');
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -433,6 +448,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
  *
  * @param  IP $ip IP address
  * @return IP Normalised address
+ *
+ * @ignore
  */
 function _inet_pton($ip)
 {
@@ -496,19 +513,16 @@ function ip_cidr_check($ip, $cidr)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
  * @param  boolean $instant_ban Whether a ban should be immediate
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(4);
-    }
-
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -565,20 +579,20 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $count = 0;
     }
     $new_row = array(
-        'user_agent' => fix_bad_unicode(substr(get_browser_string(), 0, 255)),
-        'referer' => fix_bad_unicode(substr(cms_srv('HTTP_REFERER'), 0, 255)),
-        'user_os' => fix_bad_unicode(substr(get_os_string(), 0, 255)),
+        'user_agent' => cms_mb_substr(get_browser_string(), 0, 255),
+        'referer' => cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255),
+        'user_os' => cms_mb_substr(get_os_string(), 0, 255),
         'reason' => $reason,
-        'reason_param_a' => fix_bad_unicode(substr($reason_param_a, 0, 255)),
-        'reason_param_b' => fix_bad_unicode(substr($reason_param_b, 0, 255)),
-        'url' => fix_bad_unicode(substr($url, 0, 255)),
-        'data_post' => fix_bad_unicode($post),
+        'reason_param_a' => cms_mb_substr($reason_param_a, 0, 255),
+        'reason_param_b' => cms_mb_substr($reason_param_b, 0, 255),
+        'url' => cms_mb_substr($url, 0, 255),
+        'data_post' => $post,
         'member_id' => $id,
         'date_and_time' => time(),
         'ip' => $ip,
     );
     $ip_ban_todo = null;
-    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0')) {
+    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip))))) {
         // Test we're not banning a good bot
         $se_ip_lists = array(
             // NB: We're using Coral Cache (nyud.net)
@@ -625,7 +639,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
         }
         $dns = @gethostbyaddr($alt_ip ? $ip2 : $ip);
-        if ((preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) != 0) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
+        if ((php_function_allowed('gethostbyname')) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
             foreach ($se_domain_names as $domain_name) {
                 if (substr($dns, -strlen($domain_name) - 1) == '.' . $domain_name) {
@@ -666,11 +680,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     }
 
     if (function_exists('do_lang')) {
+        require_code('notifications');
+
         $reason_full = do_lang($reason, $reason_param_a, $reason_param_b, null, get_site_default_lang());
         $_stack_trace = get_html_trace();
         $stack_trace = str_replace('html', '&#104;tml', $_stack_trace->evaluate());
         $time = get_timezoned_date(time(), true, true, true);
-        $message = do_template(
+        $message = do_notification_template(
             'HACK_ATTEMPT_MAIL',
             array(
                 '_GUID' => '6253b3c42c5e6c70d20afa9d1f5b40bd',
@@ -693,8 +709,6 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             '.txt',
             'text'
         );
-
-        require_code('notifications');
 
         if (($reason != 'CAPTCHAFAIL_HACK') && ($reason != 'LAME_SPAM_HACK')) {
             $subject = do_lang('HACK_ATTACK_SUBJECT', $ip, null, null, get_site_default_lang());
@@ -860,7 +874,8 @@ function get_webservice_result($error_message)
         $brand = 'Composr';
     }
 
-    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . float_to_raw_string(cms_version_number()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
+    require_code('version2');
+    $result = http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/errorservice.php?version=' . rawurlencode(get_version_dotted()) . '&error_message=' . rawurlencode($error_message) . '&product=' . rawurlencode($brand), null, false);
     if ($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'] != 'text/plain') {
         return null;
     }
@@ -881,6 +896,7 @@ function get_webservice_result($error_message)
  * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $return Whether to return
  * @return mixed Never returns (i.e. exits)
+ * @ignore
  */
 function _fatal_exit($text, $return = false)
 {
@@ -908,6 +924,7 @@ function _fatal_exit($text, $return = false)
         header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
+        debug_print_backtrace();
         exit(is_object($text) ? strip_html($text->evaluate()) : $text);
     }
 
@@ -948,10 +965,11 @@ function _fatal_exit($text, $return = false)
         }
     }
 
-    if (may_see_stack_dumps()) {
+    $may_see_trace = may_see_stack_dumps();
+    if ($may_see_trace) {
         $trace = get_html_trace();
     } else {
-        $trace = paragraph(do_lang_tempcode('STACK_TRACE_DENIED_ERROR_NOTIFICATION'), 'yrthrty4ttewdf');
+        $trace = new Tempcode();
     }
 
     $title = get_screen_title('ERROR_OCCURRED');
@@ -962,17 +980,20 @@ function _fatal_exit($text, $return = false)
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog(LOG_ERR, $php_error_label);
         }
-        @error_log('Composr: ' . $php_error_label, 0);
+        if (php_function_allowed('error_log')) {
+            @error_log('Composr: ' . $php_error_label, 0);
+        }
     }
 
-    $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace));
+    $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => $may_see_trace));
     $echo = globalise($error_tpl, null, '', true);
     $echo->evaluate_echo(null, true);
 
     if (get_param_integer('keep_fatalistic', 0) == 0) {
-        $trace = get_html_trace();
-        $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '1cb286dd9fc75950c2cd41ca9607e0cf', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace));
-        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $error_tpl->evaluate() . '[/html]');
+        if (!may_see_stack_dumps()) {
+            $trace = get_html_trace();
+        }
+        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $trace->evaluate() . '[/html]');
     }
 
     if (!$return) {
@@ -991,13 +1012,13 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 {
     // Make sure we don't send too many error emails
     if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && (!is_null($GLOBALS['SITE_DB']))) {
-        $num = intval(get_value('num_error_mails_' . date('Y-m-d'))) + 1;
+        $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
-        set_value('num_error_mails_' . date('Y-m-d'), strval($num));
+        set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
 
     if (!function_exists('require_lang')) {
@@ -1007,12 +1028,12 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('urls');
     require_code('tempcode');
 
-    $error_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true));
+    $error_url = get_self_url_easy();
 
     require_code('notifications');
     require_code('comcode');
-    $mail = do_lang('ERROR_MAIL', comcode_escape($error_url), str_replace(array('[html', '[/html'), array('&#91;html', '&#91;/html'), $text), null, get_site_default_lang());
-    dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
+    $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
+    dispatch_notification($notification_type, null, do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), $ocproducts ? '?' : get_ip_address(), null, get_site_default_lang()), $mail, null, A_FROM_SYSTEM_PRIVILEGED);
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
@@ -1020,7 +1041,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
         (strpos($text, 'Search: Operations error') === false) && // LDAP error, misconfiguration
-        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free web hosts
+        (strpos($text, 'Can\'t contact LDAP server') === false) && // LDAP error, network issue
+        (strpos($text, 'Unknown: failed to open stream') === false) && // Comes up on some free webhosts
+        (strpos($text, 'failed with: Connection refused') === false) && // Memcache error
         (strpos($text, 'data/commandr.php') === false) &&
         (strpos($text, '.less problem') === false) &&
         (strpos($text, '/mini') === false) &&
@@ -1039,7 +1062,9 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
+        (strpos($text, 'The SELECT would examine more than MAX_JOIN_SIZE rows') === false) &&
         (strpos($text, 'Unable to save result set') === false) &&
+        (strpos($text, 'MySQL client ran out of memory') === false) &&
         (strpos($text, '.MAI') === false) && // MariaDB
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
@@ -1050,12 +1075,14 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'Incorrect string value') === false) &&
         (strpos($text, 'Can\'t create/write to file') === false) &&  // MySQL
         (strpos($text, 'Error writing file') === false) && // E.g. cannot PHP create a temporary file
+        (strpos($text, 'possibly out of free disk space') === false) && 
         (strpos($text, 'Illegal mix of collations') === false) &&
         (strpos($text, 'marked as crashed and should be repaired') === false) &&
         (strpos($text, 'connect to') === false) &&
         (strpos($text, 'Access denied for') === false) &&
         (strpos($text, 'Unknown database') === false) &&
         (strpos($text, 'headers already sent') === false) &&
+        (strpos($text, 'Broken pipe') === false) &&
         (preg_match('#php\.net.*SSL3_GET_SERVER_CERTIFICATE:certificate #', $text) == 0) && // Missing certificates on server
         (preg_match('#Maximum execution time of \d+ seconds#', $text) == 0) &&
         (preg_match('#Out of memory \(allocated (1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24)\d{6}\)#', $text) == 0) &&
@@ -1067,12 +1094,12 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'File(/tmp/) is not within the allowed path') === false)
     ) {
         require_code('mail');
-        mail_wrap(do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()) . ' ' . cms_version_pretty(), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array('errors_final' . strval(cms_version()) . '@compo.sr'), '', '', '', 3, null, true, null, true);
     }
     if (($ocproducts) && (!is_null(get_value('agency_email_address')))) {
         require_code('mail');
         $agency_email_address = get_value('agency_email_address');
-        mail_wrap(do_lang('ERROR_OCCURRED_SUBJECT', get_page_name(), null, null, get_site_default_lang()) . ' ' . cms_version_pretty(), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
+        mail_wrap(cms_version_pretty() . ': ' . do_lang('ERROR_OCCURRED_SUBJECT', get_page_or_script_name(), null, null, get_site_default_lang()), $mail, array($agency_email_address), '', '', '', 3, null, true, null, true);
     }
 }
 
@@ -1102,7 +1129,7 @@ function may_see_stack_dumps()
         return true;
     }
 
-    return (get_domain() == 'localhost') || (has_privilege(get_member(), 'see_stack_dump'));
+    return ($GLOBALS['DEV_MODE']) || (has_privilege(get_member(), 'see_stack_dump'));
 }
 
 /**
@@ -1182,7 +1209,7 @@ function put_value_in_stack_trace($value)
     } catch (Exception $e) { // Can happen for SimpleXMLElement or PDO
         $_value = '...';
     }
-    return $_value;
+    return escape_html($_value);
 }
 
 /**
@@ -1194,10 +1221,10 @@ function get_html_trace()
 {
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
-    $trace = new Tempcode();
+    $trace = array();
     foreach ($_trace as $i => $stage) {
-        $traces = new Tempcode();
-        //if (in_array($stage['function'],array('get_html_trace','composr_error_handler','fatal_exit'))) continue;  Hinders more than helps
+        $traces = array();
+        //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;  Hinders more than helps
         $file = '';
         $line = '';
         $__value = mixed();
@@ -1226,13 +1253,13 @@ function get_html_trace()
                 $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
-            $traces->attach(do_template('STACK_TRACE_LINE', array('_GUID' => '40752b5212f56534ebe7970baa638e5a', 'LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value)));
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
-        $trace->attach(do_template('STACK_TRACE_WRAP', array('_GUID' => 'beb78896baefd0f623c1c480840dace1', 'TRACES' => $traces)));
+        $trace[] = array('TRACES' => $traces);
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    return do_template('STACK_TRACE_HYPER_WRAP', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'CONTENT' => $trace));
+    return do_template('STACK_TRACE', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'TRACE' => $trace));
 }
 
 /**
@@ -1242,6 +1269,7 @@ function get_html_trace()
  * @param  boolean $only_if_zone Only if it is a zone-level match-key
  * @param  boolean $only_text_match Whether to only consider text matches, not match-key matches
  * @return ?Tempcode The message (null: no change)
+ * @ignore
  */
 function _look_for_match_key_message($natural_text, $only_if_zone = false, $only_text_match = false)
 {
@@ -1312,6 +1340,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
  * @param  ID_TEXT $class The class of error (e.g. PRIVILEGE)
  * @param  string $param The parameter given to the error message
  * @param  boolean $force_login Force the user to login (even if perhaps they are logged in already)
+ * @ignore
  */
 function _access_denied($class, $param, $force_login)
 {
@@ -1374,7 +1403,7 @@ function _access_denied($class, $param, $force_login)
 
         @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
-        $redirect = get_self_url(true, true, array('page' => get_param_string('page', ''))); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        $redirect = get_self_url(true, true, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;
         $_GET['page'] = 'login';
         $_GET['type'] = 'browse';

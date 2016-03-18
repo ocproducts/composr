@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -13,7 +13,7 @@
  * @package    code_editor
  */
 
-/*EXTRA FUNCTIONS: tempnam*/
+/*EXTRA FUNCTIONS: tempnam|ftp_.*|posix_getuid*/
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
@@ -215,7 +215,7 @@ END;
     </p>
     <hr />
     <ul class="actions_list" role="navigation">
-        <li><a title="ocProducts programming tutorial (this link will open in a new window)" target="_blank" href="http://compo.sr/docs/tut_programming.htm">Read the ocProducts programming tutorial</a></li>
+        <li><a title="ocProducts programming tutorial (this link will open in a new window)" target="_blank" href="http://compo.sr/docs/tut-programming.htm">Read the ocProducts programming tutorial</a></li>
 END;
     if (array_key_exists('base_url', $SITE_INFO)) {
         $_base_url = code_editor_escape_html($SITE_INFO['base_url']);
@@ -229,7 +229,7 @@ END;
 }
 
 /**
- * Search inside a directory for editable files, whilst favouring the overridden versions.
+ * Search inside a directory for editable files, while favouring the overridden versions.
  *
  * @param  SHORT_TEXT $dir The directory path to search.
  * @return array A list of the HTML elements for the list box selection.
@@ -569,7 +569,7 @@ END;
                         fclose($myfile);
                     }
                 } else { // Via FTP
-                    $path2 = ce_cms_tempnam('cmsce');
+                    $path2 = ce_cms_tempnam();
 
                     $h = fopen($path2, 'wt');
                     fwrite($h, $hash);
@@ -708,7 +708,7 @@ function ce_check_master_password($password_given)
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
  */
-function ce_cms_tempnam($prefix)
+function ce_cms_tempnam($prefix = '')
 {
     global $FILE_BASE;
     $problem_saving = ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((function_exists('get_option')) && (get_option('force_local_temp_dir') == '1')) || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0)));

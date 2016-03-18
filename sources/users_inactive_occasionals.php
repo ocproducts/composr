@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,8 @@
  *
  * @param  URLPATH $url The URL to enforce results in session persistence for the user
  * @return URLPATH The fixed URL
+ *
+ * @ignore
  */
 function _enforce_sessioned_url($url)
 {
@@ -112,9 +114,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'cache_username' => $username,
             'the_title' => '',
             'the_zone' => get_zone_name(),
-            'the_page' => substr(get_page_name(), 0, 80),
-            'the_type' => substr(get_param_string('type', '', true), 0, 80),
-            'the_id' => substr(either_param_string('id', ''), 0, 80),
+            'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+            'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+            'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
         );
         if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) { // Better to have no session than a 5+ second loading page
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row, false, true);
@@ -133,8 +135,8 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
             'the_title' => '',
             'the_zone' => get_zone_name(),
             'the_page' => get_page_name(),
-            'the_type' => substr(either_param_string('type', ''), 0, 80),
-            'the_id' => substr(either_param_string('id', ''), 0, 80),
+            'the_type' => cms_mb_substr(get_param_string('type', ''), 0, 80),
+            'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
             'last_activity' => time(),
             'ip' => get_ip_address(3),
             'session_confirmed' => $session_confirmed,
@@ -193,6 +195,9 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
  */
 function set_session_id($id, $guest_session = false)  // NB: Guests sessions can persist because they are more benign
 {
+    global $DID_CHANGE_SESSION_ID;
+    $DID_CHANGE_SESSION_ID = true;
+
     // If checking safe mode, can really get in a spin. Don't let it set a session cookie till we've completed startup properly.
     global $CHECKING_SAFEMODE;
     if (($CHECKING_SAFEMODE) && ($id == '')) {
@@ -201,9 +206,8 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
 
     // Save cookie
     $timeout = $guest_session ? (time() + intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time'))))) : null;
-    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies',0)==0))      Useful for testing non-cookie support, but annoying if left on
-    {
-        $test=false;
+    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {     Useful for testing non-cookie support, but annoying if left on
+        $test = false;
     } else {*/
     $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
     if (is_null($test)) {
@@ -276,11 +280,13 @@ function try_su_login($member)
             if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member))) { // All hands to the guns
                 global $USER_THEME_CACHE;
                 $USER_THEME_CACHE = 'default';
-                critical_error('MEMBER_BANNED');
+                critical_error('YOU_ARE_BANNED');
             }
         }
-        $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-        $GLOBALS['IS_ACTUALLY'] = $member;
+        if (get_param_integer('keep_su_strict', 0) == 0) {
+            $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
+            $GLOBALS['IS_ACTUALLY'] = $member;
+        }
 
         if ((get_forum_type() == 'cns') && (get_param_integer('keep_su_online', 0) == 1)) {
             require_code('crypt');
@@ -294,9 +300,9 @@ function try_su_login($member)
                 'cache_username' => $GLOBALS['FORUM_DRIVER']->get_username($member),
                 'the_title' => '',
                 'the_zone' => get_zone_name(),
-                'the_page' => substr(get_page_name(), 0, 80),
-                'the_type' => substr(get_param_string('type', '', true), 0, 80),
-                'the_id' => substr(either_param_string('id', ''), 0, 80),
+                'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+                'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+                'the_id' => cms_mb_substr(get_param_string('id', ''), 0, 80),
             );
             $GLOBALS['SITE_DB']->query_insert('sessions', $new_session_row);
             global $FLOOD_CONTROL_ONCE;
@@ -333,12 +339,12 @@ function try_httpauth_login()
             }
 
             @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
-            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();
             exit();
         } else {
-            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_option('windows_auth_is_enabled') != '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
+            $member = cns_member_external_linker($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
         }
     }
 

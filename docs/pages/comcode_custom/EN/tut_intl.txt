@@ -17,8 +17,8 @@ Composr has great support for [concept]internationalisation[/concept], including
 [title="2"]Time-zones[/title]
 
 In Composr, time-zones can be adjusted in two ways:
- - adjusting the site time-zone (this is a site configuration option). This sets the default, and typically will be where your organisation is mainly centered around.
- - adjusting member time-zones in their account settings ([concept]Conversr[/concept] only). This lets individual members set their own time-zones.
+1) adjusting the site time-zone (this is a site configuration option). This sets the default, and typically will be where your organisation is mainly centred around.
+2) adjusting member time-zones in their account settings ([concept]Conversr[/concept] only). This lets individual members set their own time-zones.
 
 You can also have guest time-zones auto-detected (a configuration option). This is a good idea if your visitors are geographically-distributed.
 
@@ -30,68 +30,111 @@ A Composr website automatically customises the user interface based upon the lan
 
 The core development team really want Composr to be widely used by people in any language, but does not get involved in maintaining or developing individual translations (other than the standard English) due to a lack of language-specific knowledge and resources. Instead we maintain documentation and architecture, to empower contributors and help automate delivery, and we grant necessary access to translators.
 
-If you have any feedback on how translation can be easier then please report it in the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url]. An example bit of feedback to report might be if the exact grammatical context of an English language string is not clear (i.e. ambiguous), and you want us to add a description for that string. Another example is if a string is formulated in such a way that it is impossible for you to translate with grammatical correctness.
+If you have any feedback on how translation can be easier then please report it in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page]. An example bit of feedback to report might be if the exact grammatical context of an English language string is not clear (i.e. ambiguous), and you want us to add a description for that string. Another example is if a string is formulated in such a way that it is impossible for you to translate with grammatical correctness.
 
 Internationalisation can be difficult and time consuming if someone has not already worked on a translation for your language. We therefore recommend that you try to plan ahead and bring together a team from your country to make translations go faster.
 
 On the other hand, if the translation was substantially completed already it might be as simple as installing it from the Composr addon directory.
 
-Not all language files need to be translated, and language files do not have to be complete, as if a string cannot be found and the fall-back language (English) isn't being used, Composr will look in the English language pack using the fall-back mechanism. This may hurt your sense for 'completeness', but practically speaking most sites don't expose most strings, and some are only ever seen in rare circumstances or by website staff.
+[box="Tip"]
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/tip.png[/media]
+Not all language files need to be translated, and language files do not have to be complete, as if a string cannot be found and the fall-back language (English) isn't being used, Composr will look in the English language pack using the fall-back mechanism.
 
-[title="3"]Language file format (technical overview)[/title]
+This may hurt your sense for 'completeness', but practically speaking most sites don't expose most strings, and some are only ever seen in rare circumstances or by website staff.
+[/box]
 
-This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as an interface in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
+[title="3"]Language files[/title]
 
-Composr language packs are made up of [tt].ini[/tt] files (the language files), containing mappings between special codes (based on the English) and the actual string as displayed. For example, a common string in the 'global' language file (the one containing common strings used throughout the portal), is coded as:
-[code]PROCEED=Proceed[/code]
+[title="4"]Language file format (technical overview)[/title]
+
+This section will describe the format used to store [concept]language string[/concept]s in Composr. In theory, learning this is not necessary, as a module in the Admin Zone is provided that works with this behind-the-scenes; however it is useful to know, especially if you are wishing to work through the language files in a text editor.
+
+Composr language packs are made up of [tt].ini[/tt] files (the language files), containing mappings between special codes (based on the English) and the actual string as displayed. For example, a common string in the [tt]global[/tt] language file (the one containing common strings used throughout the portal), is coded as:
+[code="INI"]
+PROCEED=Proceed
+[/code]
 Composr is developed in (British) English, and this is technically known as the 'fall-back language', because English always has a complete set of language files and strings.
 
 The [tt].ini[/tt] files for any translation are stored together in a directory that is named with the standard ISO two-letter code to denote that language; for example, English is 'EN'. A list of these codes is in [tt]lang/langs.ini[/tt]. We use upper-case for the names; often other software uses lower-case, but it varies.
 
-All bundled languages packs are located in the 'lang' directory of Composr. There is also a 'lang_custom' directory which contains files from custom language packs, or language files that 'override' those available in the 'lang' directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a 'lang_custom' one.
+All bundled languages packs are located in the [tt]lang[/tt] directory of Composr. There is also a [tt]lang_custom[/tt] directory which contains files from custom language packs, or language files that 'override' those available in the [tt]lang[/tt] directory. Whenever language files are edited in the Admin Zone, changes to the original file are automatically overridden to a [tt]lang_custom[/tt] one.
 
-[title="3"]Special strings[/title]
+[title="4"]Special strings[/title]
 
 Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack.
 
 [html]
-<table class="columned_table results_table wide_table">
-   <tr>
-      <th>String codename</th>
-      <th>Purpose</th>
-   </tr>
-   <tr>
-      <td>charset</td>
-      <td>The character set needed for the language (standard code for an ASCII character set). Most people leave this as 'utf-8' (Unicode, works with any characters), although regional character sets are supported also.</td>
-   </tr>
-   <tr>
-      <td>locale</td>
-      <td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command.</td>
-   </tr>
-   <tr>
-      <td>dir</td>
-      <td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
-   </tr>
-   <tr>
-      <td>en_right</td>
-      <td>Sometimes templates have to apply CSS properties values of 'left' or 'right', according to the text direction. For a rtl language, this becomes 'left' instead of 'right'. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
-   </tr>
-   <tr>
-      <td>en_left</td>
-      <td>As above, but opposite.</td>
-   </tr>
-   <tr>
-      <td>date_* / time_* / calendar_*</td>
-      <td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://uk.php.net/manual/en/function.date.php[/url], [url="2"]http://uk2.php.net/manual/en/function.strftime.php[/url][html]). If there are no '%' signs it's "date", if there are % signs it's "strftime".</td>
-   </tr>
-   <tr>
-      <td>dont_escape_trick</td>
-      <td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
-   </tr>
+<table class="columned_table results_table wide_table autosized_table">
+	<thead>
+		<tr>
+			<th>String codename</th>
+			<th>Purpose</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr class="zebra_0">
+			<th>charset</th>
+			<td>The character set needed for the language (standard code for an ASCII character set). Most people leave this as 'utf-8' (Unicode, works with any characters), although regional character sets are supported also.</td>
+		</tr>
+		<tr class="zebra_1">
+			<th>locale</th>
+			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command.</td>
+		</tr>
+		<tr class="zebra_0">
+			<th>dir</th>
+			<td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
+		</tr>
+		<tr class="zebra_1">
+			<th>en_right</th>
+			<td>Sometimes templates have to apply CSS properties values of <kbd>left</kbd> or <kbd>right</kbd>, according to the text direction. For a rtl language, this becomes <kbd>left</kbd> instead of <kbd>right</kbd>. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
+		</tr>
+		<tr class="zebra_0">
+			<th>en_left</th>
+			<td>As above, but opposite.</td>
+		</tr>
+		<tr class="zebra_1">
+			<th>date_* / time_* / calendar_*</th>
+			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no <kbd>%</kbd> signs it's <kbd>date</kbd>, if there are <kbd>%</kbd> signs it's <kbd>strftime</kbd>.</td>
+		</tr>
+		<tr class="zebra_0">
+			<th>dont_escape_trick</th>
+			<td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
+		</tr>
+	</tbody>
 </table>
 [/html]
 
-[title="3"]Code within strings[/title]
+[title="4"]Config options[/title]
+
+Config options are defined in Composr by a config option name and a config option description. For example:
+[code="INI"]
+UNZIP_CMD=Unzip command
+CONFIG_OPTION_unzip_cmd=The command executed in order to unzip files. This depends on InfoZip being on your system; you may require a full path to the unzip command here.
+[/code]
+Usually the naming follows the pattern of [tt]X[/tt] for the config option name and [tt]CONFIG_OPTION_x[/tt] for the config option description. It only deviates from this pattern when we are reusing some pre-existing language string for the config option name.
+
+[title="4"]"The software"[/title]
+
+You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
+
+The EN language pack automatically replaces this with the configured brand name.
+
+[title="4"]Phrase variants[/title]
+
+We sometimes have multiple versions of strings, using underscores to differentiate them (e.g. [tt]FOO[/tt] vs [tt]_FOO[/tt]).
+
+There is no consistent meaning to what an underscore might mean (there is too much variety in phrasing in general to be very consistent), but when there's ambiguity we try and write descriptions for the language strings involved.
+
+Never-the-less, here are some examples of what an underscore might mean differentiating between:
+ - noun and verb forms
+ - singular and plural forms
+ - short and long forms
+ - standalone words vs words that build in variables to give a combined state label (e.g. "post date" vs "posted: {1}")
+ - words to use mid-sentence, vs to use on their own
+ - slightly different contexts (for example, talking about similar but not identical things)
+
+[title="4"]Code within strings[/title]
 
 In many cases there will be some coding symbols embedded within a specific language string. These coding symbols will be written in English (like almost all programming languages are), but shouldn't themselves be translated.
 
@@ -110,37 +153,17 @@ Here's how the above sample cases would be translated:
 2) This is similar to above, but uses our pluralisation feature ([tt]{2}[/tt] would be a number in this case). Translation in French may look like [tt]Il existe {2} {2|pomme|pommes}[/tt].
 3) There is an HTML tag which must be left alone. Translation in French may look like [tt]Un <strong>bon</strong> jour[/tt].
 4) This is largely Comcode which must be left alone. Translation in French may look like [tt][block="quelque chose"]menu[/block][/tt].
-5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu à utiliser (du type à crochets: 'blocks/main_custom_gfx')[/tt].
+5) This is partly referring to a Composr directory. Translation in French may look like [tt]Le moteur de rendu &#xE0; utiliser (du type &#xE0; crochets: 'blocks/main_custom_gfx')[/tt].
 6) This contains an HTML entity (a smart-quotes apostrophe character). Translation in French may look like [tt]Le plan de Christopher[/tt]. In this case we didn't keep the entity because the translation didn't warrant it. The purpose of this example is to show that "apos" is not some English text to translate directly, it is HTML, which would be the same in any language, but may or may not persist depending on your translation target.
 7) Again this one contains HTML entities. Translation in French may look like [tt]{1} dirige le &lsquo;{2}&rsquo; groupe d'utilisateurs[/tt].
-8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the '[tt]{$SITE_NAME}[/tt]' intact. Translation in French may look like [tt]WelBienvenue à {$SITE_NAME}[/tt].
-
-[title="3"]The language editor (i.e. how to change strings locally)[/title]
-
-[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/intl_trans_screen.png[/media]
-[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/intl_trans_choose.png[/media]
-{!lang:DOC_TRANSLATE}
-
-You can reach the language editor from Admin Zone > Style > Translate/re-phrase the software.
-
-[b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
-
-[title="4"]Contextual translation[/title]
-
-Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
-1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
-2) Choose "Translate/Re-Phrase the software" from this menu and the language you want to translate to.
-
-This will take you to the page which displays the language strings which are used on the current page.
-
-Note that some of the strings will be re-used across different pages. Changing them on one page will affect any other page that uses them, so some care is needed. For example the word "Members" may appear on several pages. The up-side is that once it has been translated once it should not need translating on further pages.
+8) This contains some Tempcode. You would only translate the words 'Welcome back' and leave the [tt]{$SITE_NAME}[/tt] intact. Translation in French may look like [tt]WelBienvenue &#xE0; {$SITE_NAME}[/tt].
 
 [title="3"]Character sets[/title]
 
 There are three systems that are in common usage to allow diverse characters to be displayed in a document:
- - Unicode
- - Character sets
- - HTML entities
+1) Unicode
+2) Character sets
+3) HTML entities
 
 Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly mbstring and iconv), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP mbstring extension, and the vast majority of hosts do.
 
@@ -148,11 +171,37 @@ The British English pack can be used in both Unicode and Character set mode, so 
 
 [title="4"]Advanced explanation of character encodings[/title]
 
-To understand character sets, you need to understand how strings (or text files) are composed. Each character (a symbol, represented by a 'glyph' on the screen) is essentially represented a number, 0-255 (a byte); 0-127 are usually standard, and specified using the '7-bit ASCII code': the 128-255 range is essentially free, and what the numbers map to depends on the 'character set' used. As different languages use different characters (for example, accented characters, or a whole different alphabet, or even a pictographical language), different languages use different character sets.
+To understand character sets, you need to understand how strings (or text files) are composed. Each character (a symbol, represented by a 'glyph' on the screen) is essentially represented a number, 0-255 (a byte); 0-127 are usually standard, and specified using the '7-bit ASCII code': the 128-255 range is essentially free, and what the numbers map to depends on the 'character set' used. As different languages use different characters (for example, accented characters, or a whole different alphabet, or even a pictographic language), different languages use different character sets.
 
 A file that uses 'high' characters will look different when viewed in editors set to different character sets. In order to put in text in the appropriate character set, and to view it, your editor must be set to it; this is to be expected to be by default if you are translating to your native language.
 
 utf-8 works on the principle that characters may use more than one byte. The ASCII characters all fit within one byte, but extended characters use 2 or more bytes. Normal ASCII text is therefore the same in both Unicode and a character set, but extended characters are represented very differently.
+
+[title="3"]The language editor (i.e. how to change strings locally)[/title]
+
+[surround]
+[media width="150" description="Using the language editor to translate language strings" float="right"]data_custom/images/docs/tut_intl/intl_trans_screen.png[/media]
+[media width="150" description="Choosing a language and language file to edit in the language editor" float="right"]data_custom/images/docs/tut_intl/intl_trans_choose.png[/media]
+{!lang:DOC_TRANSLATE}
+
+You can reach the language editor from Admin Zone > Style > Translate/re-phrase Composr.
+
+[b]We recommend doing translations via Transifex instead[/b]. See the "Collaborative translations on Transifex" section.
+[/surround]
+
+[title="3"]Contextual translation[/title]
+
+Many users like to translate stuff just on the public part of their own website. There is an option to change the language strings that you see on a page from the page footer which really helps you speed translation up. Specifically:
+1) In the footer there is a drop down menu which is only visible to Admins. This is titled "Select page rendering tool" as standard, although it may not be visible on custom themes or could have been translated. If you are not using the default Composr theme then you can enable the default theme temporarily by adding [tt]&keep_theme=default[/tt] to the end of the website address (actually it's [tt]?keep_theme=default[/tt] if there's no [tt]?[/tt] already in the URL you're at).
+2) Choose "Translate/Re-Phrase Composr" from this menu and the language you want to translate to.
+
+This will take you to the page which displays the language strings which are used on the current page.
+
+Note that some of the strings will be re-used across different pages. Changing them on one page will affect any other page that uses them, so some care is needed. For example the word "Members" may appear on several pages. The up-side is that once it has been translated once it should not need translating on further pages.
+
+[title="3"]Searching for language strings[/title]
+
+If you want to find where a language string is defined then you can put it into the Admin Zone search between quotes.
 
 [title="3"]Collaborative translations on Transifex[/title]
 
@@ -170,21 +219,21 @@ The process is as follows:
 4) Choose the version of Composr you have installed (if you're not sure, it will say on the front page of the Admin Zone). Transifex calls this the 'project'.
 5) Choose your language.
 6) Click "Join team"
-7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url] so we know who you are)
+7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] so we know who you are)
 8) Start translating individual resources (language files)
 
 The strings are split across about 100 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons are marked normal priorities. Most users will want to ignore the non-bundled addons files. Don't feel compelled to do it all for 'completeness'.
 
 Notes about specific language strings are automatically made available within Transifex.
 
-To coordinate with other translators use the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url]. We suggest you have one main topic per language, and keep editing the first post of that topic to provide basic details such as policies, translator names, and translation status.
+To coordinate with other translators use the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page]. We suggest you have one main topic per language, and keep editing the first post of that topic to provide basic details such as policies, translator names, and translation status.
 Please try and respect the translators who have worked before you, and negotiate to a common translation standard. For example, you may need to agree on the use of formal/informal grammar within the translation to ensure everything is consistent. If you have suggestions, or are the first major translator, make them known on the forum. We have team approval turned on, i.e. you have to apply to join the translation team. The only reason for this is so that we can protect existing translators from problems caused by newbies diving right in. Generally we expect to approve all requests, unless there's already a strong language maintainer making quick progress on that language and not wanting to share the task.
 
-Transifex is not being used for things other than language strings (within language files), such as theme images, and page templates. However for the great majority of sites, translating the language strings is enough. If you want to distribute translations for page templates etc, you can do so in the [url="http://compo.sr/forum/forumview/browse/internationalisation.htm"]Internationalisation forum[/url].
+Transifex is not being used for things other than language strings (within language files), such as theme images, and page templates. However for the great majority of sites, translating the language strings is enough. If you want to distribute translations for page templates etc, you can do so in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page].
 
 [title="3"]Speeding up translation[/title]
 
-There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which strings are only used on administrative screens (i.e. skippable) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
+There is a non-bundled addon called [tt]meta_toolkit[/tt] that has a [tt]string_scan[/tt] module that can tell you which strings are only used on administrative screens (i.e. skippable if only doing a public translation) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
 
 [title="3"]Downloading translations from Transifex[/title]
 
@@ -196,14 +245,13 @@ There is a non-bundled addon called [tt]lang_tools[/tt] that can tell you which 
 
 [title="3"]Criticising language packs[/title]
 
-[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/intl_crit_choose.png[/media]
+[surround]
+[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/tut_intl/intl_crit_choose.png[/media]
+[media width="150" description="Choosing a language to criticise the translation of" float="right"]data_custom/images/docs/tut_intl/intl_crit_screen.png[/media]
 {!lang:DOC_CRITICISE_LANGUAGE_PACK}
 
 It is generally better to look at outstanding translation tasks via Transifex. We update the source strings on there with each Composr patch release.
-
-[title="3"]Non-ISO languages[/title]
-
-By default Composr supplies language codes and their names, based on the ISO 639 standards. You can add new codes by overriding the [tt]lang/langs.ini[/tt] file to [tt]lang_custom/langs.ini[/tt] if you like. When you add a new language pack in Composr you are limited to either choosing an existing code or typing a new one of 1-4 characters -- the 1-4 character code would be mapped to a nice name via [tt]langs.ini[/tt], or if no mapping exists, it would be shown as-is.
+[/surround]
 
 [title="3"]Right-to-left languages[/title]
 
@@ -215,25 +263,25 @@ However there are two issues where some extra consideration is needed.
 
 Because Comcode is written in English, and punctuation symbols are considered right-to-left punctuation when "automatic bi-directional detection" is enabled, there is a conflict between the desire to type Comcode in English and the desire to type normal right-to-left script.
 The following is in our CSS, but commented out:
-[codebox]
+[code="CSS"]
 input[type="text"],textarea { /* So Comcode can be typed */
 	unicode-bidi: bidi-override;
 	direction: ltr;
 }
-[/codebox]
+[/code]
 Uncommenting this makes text input areas work in left-to-right. You can choose to enable it, to make Comcode easier to type, but it will make right-to-left languages harder to type and understand.
 
 [title="4"]Theme layout[/title]
 
 We have tried to make our default theme support right-to-left nicely, but unfortunately there are many cases where we could not elegantly do it because we are setting things on a pixel-way instead of a left/right-way. For example, you may see list bullets displaying on the wrong side of a list element. It is caused by CSS like:
-[code]
+[code="CSS"]
 ul.compact_list li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
 [/code]
 which would need changing to:
-[code]
+[code="CSS"]
 ul.compact_list li {
 	margin: 0 17px 0 0;
 	padding: 0;
@@ -286,7 +334,7 @@ We have the PSD files (requires Adobe Photoshop or compatible software) for many
 [title="4"]WYSIWYG editor[/title]
 
 Composr uses a third-party WYSIWYG editor &ndash; CKEditor.
-It has it's own translations which should automatically be linked to your own by the standard ISO language name.
+It has its own translations which should automatically be linked to your own by the standard ISO language name.
 
 [title="4"]Template/CSS editor[/title]
 
@@ -302,12 +350,13 @@ This generally does not matter a lot (because anything that you ask to store wil
 
 Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this is an issue. It should work automatically, but you should still have a basic understanding of how collations work.
 
-[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/intl_phpmyadmin_settings.png[/media]
-When Composr 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
+[media width="150" description="phpMyAdmin exports" float="right"]data_custom/images/docs/tut_intl/intl_phpmyadmin_settings.png[/media]
+[staff_note]LEGACY[/staff_note]When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-1) by default, because this is what the default English language pack uses. MySQL doesn't make it easy to convert the character set of the database, so the best way to do it is to export to an SQL dump, edit the dump in a text editor, and reimport into a new database:
  - Use phpMyAdmin to export all the tables to a [tt].sql[/tt] file on your computer; if it asks what character set to make the file, choose UTF-8
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
  - Do whatever you would normally do to backup your database; that will usually mean keeping a copy of the above file (but ensure it is complete before relying on it, sometimes SQL dumps don't download correctly)
- - Use a text editor to replace all instances of [tt]latin1[/tt] with [tt]utf8[/tt] in the file (note that it is [tt]utf8[/tt] [i]not[/i] [tt]utf-8[/tt] -- MySQL doesn't want hyphens in its codenames)
+ - Use a text editor to replace all instances of [tt]latin1[/tt] with [tt]utf8mb4[/tt] in the file (note that it is [tt]utf8mb4[/tt] [i]not[/i] [tt]utf-8[/tt] -- MySQL doesn't want hyphens in its codenames, and we have to use the mb4 variant for full unicode support)
+ - Specifically for the creation SQL for the [tt]addons[/tt]/[tt]f_emoticons[/tt]/[tt]f_saved_warnings[/tt]/[tt]group_privileges[/tt]/[tt]member_privileges[/tt]/[tt]newsletter_subscribe[/tt]/[tt]theme_images[/tt]/[tt]tickets[/tt]/[tt]url_id_monikers[/tt]/[tt]url_title_cache[/tt] tables, replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]
  - Save the edited file
  - Use phpMyAdmin to drop all tables in your database
  - Use phpMyAdmin to import the edited file
@@ -319,12 +368,19 @@ This is known to happen with Russian characters. The solution is to upload [tt]C
 
 [i]This issue is less relevant as it once was, as modern web browsers can render vertical text directly.[/i]
 
+[title="2"]Exporting language packs[/title]
+
+[surround]
+[media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/tut_intl/intl_pack.png[/media]
+If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. However for languages that have very high-quality release-ready translations an addon is a good thing to provide users.
+[/surround]
+
 [concepts
- 1_key="language string"   1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
- 2_key="character set"     2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
- 3_key="Unicode"           3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
- 4_key="Transifex"         4_value="The translation platform we use to translate Composr"
- 5_key="Collation"         5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
+ 1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"
+ 2_key="Character set"         2_value="A set of characters that the one-byte-per-character representation system ties to; used to allow more than 255 characters to be represented on computers so that they may show many different language scripts"
+ 3_key="Unicode"               3_value="An encoding scheme for multi-byte characters, supporting multiple languages together without any need for special character sets."
+ 4_key="Transifex"             4_value="The translation platform we use to translate Composr"
+ 5_key="Collation"             5_value="A character scheme within the database, used for interpreting the basic grammatical construct of text, as well as the character set"
  6_key="Internationalisation"  6_value="The process of making software work well in different international settings. It includes multiple aspects, such as time-zones, date formats, and language translations."
 ]Concepts[/concepts]
 
@@ -332,5 +388,6 @@ This is known to happen with Russian characters. The solution is to upload [tt]C
 
  - [page="_SEARCH:tut_intl_users"]Changing the site language[/page]
  - [page="_SEARCH:tut_intl_content"]Translating Composr content[/page]
+ - [page="_SEARCH:tut_intl_code_philosophy"]Translations code philosophy[/page]
 
-{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to translate Composr into different languages, and how to configure your date/time settings.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,language_block,core_language_editing,Internationalisation,Contributing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to translate Composr into different languages, and how to configure your date/time settings.}[block]main_tutorial_rating[/block]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Module_iotds
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -48,7 +48,9 @@ class Module_iotds
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'iotds'));
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/iotds_addon', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/iotds_addon', true);
+        }
     }
 
     /**
@@ -97,7 +99,7 @@ class Module_iotds
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -113,7 +115,7 @@ class Module_iotds
     public $url;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -140,7 +142,7 @@ class Module_iotds
             // Fetch details
             $rows = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen($this->title, do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen($this->title, do_lang_tempcode('MISSING_RESOURCE', 'iotd'));
             }
             $myrow = $rows[0];
             $url = $myrow['url'];
@@ -148,18 +150,10 @@ class Module_iotds
                 $url = get_custom_base_url() . '/' . $url;
             }
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['add_date']),
-                'creator' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'publisher' => '', // blank means same as creator
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'Poll',
-                'title' => get_translated_text($myrow['i_title']),
                 'identifier' => '_SEARCH:iotds:view:' . strval($id),
-                'description' => '',
-                'image' => $url,
-            ));
+            ), $myrow, 'iotd', strval($id));
 
             $this->title = get_screen_title('IOTD');
 
@@ -202,7 +196,7 @@ class Module_iotds
      */
     public function iotd_browse()
     {
-        $content = do_block('main_multi_content', array('param' => 'iotd', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'recent', 'max' => '10', 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'block_id' => 'module'));
+        $content = do_block('main_multi_content', array('param' => 'iotd', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'recent', 'max' => '10', 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'block_id' => 'module', 'guid' => 'module'));
 
         return do_template('PAGINATION_SCREEN', array('_GUID' => 'd8a493c2b007d98074f104ea433c8091', 'TITLE' => $this->title, 'CONTENT' => $content));
     }

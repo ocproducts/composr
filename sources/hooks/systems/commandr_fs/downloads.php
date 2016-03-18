@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     public $file_resource_type = 'download';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -47,7 +47,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -57,7 +57,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'download':
-                $_ret = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('name') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('name') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -65,7 +65,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
                 return $ret;
 
             case 'download_category':
-                $_ret = $GLOBALS['SITE_DB']->query_select('download_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('category') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('download_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('category') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -76,36 +76,19 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'rep_image' => 'URLPATH',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'add_date' => 'TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_DOWNLOAD_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_DOWNLOAD_CATEGORY') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_DOWNLOAD_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_DOWNLOAD_CATEGORY') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -119,23 +102,29 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             $category = strval(db_get_first_id());
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('downloads2');
 
         $parent_id = $this->_integer_category($category);
+        if (is_null($parent_id)) {
+            $parent_id = db_get_first_id();
+        }
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $id = add_download_category($label, $parent_id, $description, $notes, $rep_image, null, $add_time, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -153,19 +142,21 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_category', strval($row['id']));
 
-        return array(
-            'label' => $row['category'],
-            'description' => $row['description'],
+        $properties = array(
+            'label' => get_translated_text($row['category']),
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
-            'rep_image' => $row['rep_image'],
+            'rep_image' => remap_urlpath_as_portable($row['rep_image']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'add_date' => $row['add_date'],
+            'add_date' => remap_time_as_portable($row['add_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -176,6 +167,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('downloads2');
 
@@ -183,18 +175,20 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         $parent_id = $this->_integer_category($category);
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         edit_download_category(intval($resource_id), $label, $parent_id, $description, $notes, $rep_image, $meta_keywords, $meta_description, $add_time);
 
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -211,53 +205,19 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'url' => 'URLPATH',
-            'description' => 'LONG_TRANS',
-            'author' => 'author',
-            'additional_details' => 'LONG_TRANS',
-            'out_mode_id' => '?download',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'original_filename' => 'SHORT_TEXT',
-            'file_size' => 'INTEGER',
-            'cost' => 'INTEGER',
-            'submitter_gets_points' => 'BINARY',
-            'licence' => 'download_licence',
-            'num_downloads' => 'INTEGER',
-            'views' => 'INTEGER',
-            'default_pic' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_DOWNLOAD') . ' OR ' . db_string_equal_to('the_type', 'EDIT_DOWNLOAD') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_DOWNLOAD') . ' OR ' . db_string_equal_to('the_type', 'EDIT_DOWNLOAD') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -267,7 +227,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -276,7 +236,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         require_code('downloads2');
 
         $category_id = $this->_integer_category($category);
-        $url = $this->_default_property_str($properties, 'url');
+        $url = $this->_default_property_urlpath($properties, 'url');
         $description = $this->_default_property_str($properties, 'description');
         $author = $this->_default_property_str($properties, 'author');
         $additional_details = $this->_default_property_str($properties, 'additional_details');
@@ -299,12 +259,12 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
-        $licence = $this->_default_property_int_null($properties, 'licence'); // TODO, #1160 on tracker
-        $add_date = $this->_default_property_int_null($properties, 'add_date');
+        $licence = $this->_default_property_int_null($properties, 'licence');
+        $add_date = $this->_default_property_time($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $default_pic = $this->_default_property_int($properties, 'default_pic');
@@ -312,11 +272,14 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             $default_pic = 1;
         }
         $id = add_download($category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $add_date, $num_downloads, $views, $submitter, $edit_date, null, $meta_keywords, $meta_description, $default_pic);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -334,10 +297,10 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('downloads_download', strval($row['id']));
 
-        return array(
-            'label' => $row['name'],
-            'url' => $row['url'],
-            'description' => $row['description'],
+        $properties = array(
+            'label' => get_translated_text($row['name']),
+            'url' => remap_urlpath_as_portable($row['url']),
+            'description' => get_translated_text($row['description']),
             'author' => $row['author'],
             'additional_details' => $row['additional_details'],
             'out_mode_id' => $row['out_mode_id'],
@@ -355,14 +318,16 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
             'views' => $row['download_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -373,7 +338,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -383,7 +348,7 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $category_id = $this->_integer_category($category);
-        $url = $this->_default_property_str($properties, 'url');
+        $url = $this->_default_property_urlpath($properties, 'url', true);
         $description = $this->_default_property_str($properties, 'description');
         $author = $this->_default_property_str($properties, 'author');
         $additional_details = $this->_default_property_str($properties, 'additional_details');
@@ -406,12 +371,12 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
         }
         $cost = $this->_default_property_int($properties, 'cost');
         $submitter_gets_points = $this->_default_property_int($properties, 'submitter_gets_points');
-        $licence = $this->_default_property_int_null($properties, 'licence'); // TODO, #1160 on tracker
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $licence = $this->_default_property_int_null($properties, 'licence');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $num_downloads = $this->_default_property_int($properties, 'num_downloads');
         $views = $this->_default_property_int($properties, 'views');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $default_pic = $this->_default_property_int($properties, 'default_pic');
@@ -421,11 +386,13 @@ class Hook_commandr_fs_downloads extends Resource_fs_base
 
         edit_download(intval($resource_id), $category_id, $label, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $num_downloads, true);
 
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

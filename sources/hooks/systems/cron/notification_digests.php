@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,6 +28,10 @@ class Hook_cron_notification_digests
      */
     public function run()
     {
+        if (!defined('MAXIMUM_DIGEST_LENGTH')) {
+            define('MAXIMUM_DIGEST_LENGTH', 1024 * 100); // 100KB
+        }
+
         require_code('notifications');
         foreach (array(
                      A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
@@ -64,7 +68,13 @@ class Hook_cron_notification_digests
                                 if ($_message != '') {
                                     $_message .= "\n";
                                 }
-                                $_message .= do_lang('DIGEST_EMAIL_INDIVIDUAL_MESSAGE_WRAP', comcode_escape($message['d_subject']), get_translated_text($message['d_message']), array(comcode_escape(get_site_name()), get_timezoned_date($message['d_date_and_time'])));
+                                if (strlen($_message) + strlen($message['d_message']) < MAXIMUM_DIGEST_LENGTH)
+                                {
+                                    $_message .= do_lang('DIGEST_EMAIL_INDIVIDUAL_MESSAGE_WRAP', comcode_escape($message['d_subject']), get_translated_text($message['d_message']), array(comcode_escape(get_site_name()), get_timezoned_date($message['d_date_and_time'])));
+                                } else
+                                {
+                                    $_message .= do_lang('DIGEST_ITEM_OMITTED', comcode_escape($message['d_subject']), get_timezoned_date($message['d_date_and_time']), array(comcode_escape(get_site_name())));
+                                }
                             }
                             delete_lang($message['d_message']);
                         }

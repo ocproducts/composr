@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -78,10 +78,8 @@ function get_staff_actions_list()
         'spacer_4' => do_lang_tempcode('DEVELOPMENT_VIEWS'),
         'query' => do_lang_tempcode('VIEW_PAGE_QUERIES'),
         'ide_linkage' => do_lang_tempcode('IDE_LINKAGE'),
+        'memory' => do_lang_tempcode('_MEMORY_USAGE'),
     );
-    if (function_exists('memory_get_usage')) {
-        $list['memory'] = do_lang_tempcode('_MEMORY_USAGE');
-    }
     $special_page_type = get_param_string('special_page_type', 'view');
     $staff_actions = '';
     $started_opt_group = false;
@@ -91,12 +89,12 @@ function get_staff_actions_list()
             if ($started_opt_group) {
                 $staff_actions .= '</optgroup>';
             }
-            $staff_actions .= '<optgroup label="' . (isset($text->codename)/*faster than is_object*/ ? $text->evaluate() : escape_html($text)) . '">';
+            $staff_actions .= '<optgroup id="' . escape_html($name) . '" label="' . (isset($text->codename)/*faster than is_object*/ ? $text->evaluate() : escape_html($text)) . '">';
             $started_opt_group = true;
             continue;
         }
         $staff_actions .= '<option' . (($staff_actions == '') ? ' disabled="disabled" class="label"' : '') . ' ' . (($name == $special_page_type) ? 'selected="selected" ' : '') . 'value="' . escape_html($name) . '">' . (isset($text->codename/*faster than is_object*/) ? $text->evaluate() : escape_html($text)) . '</option>'; // XHTMLXHTML
-        //$staff_actions.=static_evaluate_tempcode(form_input_list_entry($name,($name==$special_page_type),$text,false,$disabled)); Disabled 'proper' way for performance reasons
+        //$staff_actions .= static_evaluate_tempcode(form_input_list_entry($name, ($name == $special_page_type), $text, false, $disabled)); Disabled 'proper' way for performance reasons
     }
     if ($started_opt_group) {
         $staff_actions .= '</optgroup>';
@@ -118,7 +116,7 @@ function get_page_warning_details($zone, $codename, $edit_url)
     if ((!has_privilege(get_member(), 'jump_to_unvalidated')) && (addon_installed('unvalidated'))) {
         access_denied('PRIVILEGE', 'jump_to_unvalidated');
     }
-    $uv_warning = do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? '_UNVALIDATED_TEXT_NON_DIRECT' : '_UNVALIDATED_TEXT', do_lang('PAGE')); // Wear sun cream
+    $uv_warning = do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'comcode_page'); // Wear sun cream
     if (!$edit_url->is_empty()) {
         $menu_links = $GLOBALS['SITE_DB']->query('SELECT DISTINCT i_menu FROM ' . get_table_prefix() . 'menu_items WHERE ' . db_string_equal_to('i_url', $zone . ':' . $codename) . ' OR ' . db_string_equal_to('i_url', '_SEARCH:' . $codename));
         if (count($menu_links) != 0) {
@@ -130,7 +128,7 @@ function get_page_warning_details($zone, $codename, $edit_url)
                 $menu_edit_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_link['i_menu']), get_module_zone('admin_menus'));
                 $menu_items_linking->attach(hyperlink($menu_edit_url, $menu_link['i_menu'], false, true));
             }
-            $uv_warning = do_lang_tempcode('UNVALIDATED_TEXT_STAFF', $menu_items_linking);
+            $uv_warning = do_lang_tempcode('UNVALIDATED_TEXT_STAFF', $menu_items_linking, 'comcode_page');
         }
     }
     $warning_details->attach(do_template('WARNING_BOX', array('_GUID' => 'ee79289f87986bcb916a5f1810a25330', 'WARNING' => $uv_warning)));
@@ -157,12 +155,6 @@ function assign_refresh($url, $multiplier = 0.0)
     }
     if ((strpos($url, "\n") !== false) || (strpos($url, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
-    }
-
-    // No redirects for view-modes
-    $special_page_type = get_param_string('special_page_type', 'view');
-    if ($special_page_type != 'view') {
-        return;
     }
 
     $must_show_message = ($multiplier != 0.0);
@@ -275,7 +267,7 @@ function page_not_found($codename, $zone)
 
     set_http_status_code('404');
 
-    // Maybe problem with SEO URLs
+    // Maybe problem with URL Schemes
     $url_scheme = get_option('url_scheme');
     if ((get_zone_name() == '') && ((($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE'))) && (has_zone_access(get_member(), 'adminzone'))) {
         $self_url = get_self_url_easy();
@@ -297,8 +289,8 @@ function page_not_found($codename, $zone)
 
         $from = str_replace('cms_', '', str_replace('admin_', '', $possibility));
         $to = str_replace('cms_', '', str_replace('admin_', '', $codename));
-        //$dist=levenshtein($from,$to);  If we use this, change > to < also
-        //$threshold=4;
+        //$dist = levenshtein($from, $to);  If we use this, change > to < also
+        //$threshold = 4;
         $dist = 0.0;
         similar_text($from, $to, $dist);
         $threshold = 75.0;
@@ -315,7 +307,7 @@ function page_not_found($codename, $zone)
     require_code('global4');
     if ((cms_srv('HTTP_REFERER') != '') && (!handle_has_checked_recently('request-' . $zone . ':' . $codename))) {
         require_code('failure');
-        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename) . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
+        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename, do_lang('PAGE')) . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
     }
 
     $title = get_screen_title('ERROR_OCCURRED');
@@ -338,6 +330,8 @@ function page_not_found($codename, $zone)
  * @param  array $new_comcode_page_row New row for database, used if necessary (holds submitter etc)
  * @param  boolean $being_included Whether the page is being included from another
  * @return array A tuple: The page HTML (as Tempcode), New Comcode page row, Title, Raw Comcode
+ *
+ * @ignore
  */
 function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $comcode_page_row, $new_comcode_page_row, $being_included = false)
 {
@@ -350,6 +344,10 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $tmp = fopen($file_base . '/' . $string, 'rb');
     @flock($tmp, LOCK_SH);
     $comcode = file_get_contents($file_base . '/' . $string);
+    if (strpos($string, '_custom/') === false) {
+        global $LANG_FILTER_OB;
+        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+    }
     apply_comcode_page_substitutions($comcode);
     $comcode = fix_bad_unicode($comcode);
     @flock($tmp, LOCK_UN);
@@ -485,6 +483,8 @@ function apply_comcode_page_substitutions(&$comcode)
  * @param  array $new_comcode_page_row New row for database, used if nesessary (holds submitter etc)
  * @param  boolean $being_included Whether the page is being included from another
  * @return array A tuple: The page HTML (as Tempcode), New Comcode page row, Title, Raw Comcode
+ *
+ * @ignore
  */
 function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $new_comcode_page_row, $being_included = false)
 {
@@ -503,6 +503,10 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
     $_comcode_page_row = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $codename), '', 1);
 
     $comcode = file_get_contents($file_base . '/' . $string);
+    if (strpos($string, '_custom/') === false) {
+        global $LANG_FILTER_OB;
+        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+    }
     apply_comcode_page_substitutions($comcode);
 
     global $LAX_COMCODE;

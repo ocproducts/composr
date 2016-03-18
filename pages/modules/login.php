@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,7 +35,8 @@ class Module_login
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -56,13 +57,18 @@ class Module_login
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['SITE_DB']->create_table('failedlogins', array(
-            'id' => '*AUTO',
-            'failed_account' => 'ID_TEXT',
-            'date_and_time' => 'TIME',
-            'ip' => 'IP'
-        ));
-        $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        if (is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->create_table('failedlogins', array(
+                'id' => '*AUTO',
+                'failed_account' => 'ID_TEXT',
+                'date_and_time' => 'TIME',
+                'ip' => 'IP'
+            ));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('failedlogins', 'failedlogins_by_ip', array('ip'));
+        }
     }
 
     /**
@@ -71,7 +77,7 @@ class Module_login
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -83,12 +89,12 @@ class Module_login
         }
         $ret = array(
             'browse' => array('_LOGIN', 'menu/site_meta/user_actions/login'),
-            //'logout'=>array('LOGOUT','menu/site_meta/user_actions/logout'), Don't show an immediate action, don't want accidental preloading
-            //'concede'=>array('CONCEDED_MODE','menu/site_meta/user_actions/concede'), Don't show an immediate action, don't want accidental preloading
+            //'logout' => array('LOGOUT', 'menu/site_meta/user_actions/logout'), Don't show an immediate action, don't want accidental preloading
+            //'concede' => array('CONCEDED_MODE', 'menu/site_meta/user_actions/concede'), Don't show an immediate action, don't want accidental preloading
         );
         /*
-        if (get_option('is_on_invisibility')=='1')
-            $ret['invisible']=array('INVISIBLE','menu/site_meta/user_actions/invisible'); Don't show an immediate action, don't want accidental preloading
+        if (get_option('is_on_invisibility') == '1')
+            $ret['invisible'] = array('INVISIBLE', 'menu/site_meta/user_actions/invisible'); Don't show an immediate action, don't want accidental preloading
         */
         return $ret;
     }
@@ -97,15 +103,18 @@ class Module_login
     public $visible_now;
     public $username;
     public $feedback;
+    public $fields_to_not_relay;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run()
     {
         $type = get_param_string('type', 'browse');
+
+        $this->fields_to_not_relay = array('login_username', 'password', 'remember', 'login_invisible', 'redirect', 'session_id');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('_LOGIN');
@@ -218,7 +227,7 @@ class Module_login
 
         // POST field relaying
         if (count($_FILES) == 0) { // Only if we don't have _FILES (which could never be relayed)
-            $passion->attach(build_keep_post_fields(array('redirect')));
+            $passion->attach(build_keep_post_fields($this->fields_to_not_relay));
             $redirect_passon = post_param_string('redirect', null);
             if (!is_null($redirect_passon)) {
                 $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
@@ -269,7 +278,7 @@ class Module_login
                 $post = new Tempcode();
                 $refresh = new Tempcode();
             } else {
-                $post = build_keep_post_fields(array('login_username', 'password', 'remember', 'login_invisible', 'redirect'));
+                $post = build_keep_post_fields($this->fields_to_not_relay);
                 $redirect_passon = post_param_string('redirect_passon', null); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
                 if (!is_null($redirect_passon)) {
                     $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
@@ -278,7 +287,7 @@ class Module_login
             }
             decache('side_users_online');
 
-            return do_template('LOGIN_REDIRECT_SCREEN', array('_GUID' => '82e056de9150bbed185120eac3571f40', 'REFRESH' => $refresh, 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('_LOGIN_TEXT'), 'URL' => $url, 'POST' => $post));
+            return do_template('REDIRECT_POST_METHOD_SCREEN', array('_GUID' => '82e056de9150bbed185120eac3571f40', 'REFRESH' => $refresh, 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('_LOGIN_TEXT'), 'URL' => $url, 'POST' => $post));
         } else {
             $text = $feedback['error'];
 

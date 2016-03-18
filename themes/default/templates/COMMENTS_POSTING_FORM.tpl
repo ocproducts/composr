@@ -1,3 +1,22 @@
+{+START,SET,CAPTCHA}
+	{+START,IF_PASSED,USE_CAPTCHA}
+		{+START,IF,{USE_CAPTCHA}}
+			<div class="comments_captcha">
+				<div class="box box___comments_posting_form__captcha"><div class="box_inner">
+					<p><label for="captcha">{!DESCRIPTION_CAPTCHA_2,<a target="_blank" title="{!AUDIO_VERSION} {!LINK_NEW_WINDOW}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}">{!AUDIO_VERSION}</a>}</label></p>
+					{+START,IF,{$CONFIG_OPTION,css_captcha}}
+						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
+					{+END}
+					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
+						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}" />
+					{+END}
+					<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
+				</div></div>
+			</div>
+		{+END}
+	{+END}
+{+END}
+
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
 <form role="form" title="{TITLE*}" class="comments_form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data">
 	{$INSERT_SPAMMER_BLACKHOLE}
@@ -60,7 +79,7 @@
 						{+START,IF,{$GET,GET_TITLE}}
 							<tr>
 								<th class="de_th vertical_alignment">
-									<label for="title">{!POST_TITLE}:</label>
+									<label for="title">{!SUBJECT}:</label>
 								</th>
 
 								<td>
@@ -193,7 +212,7 @@
 
 							<td>
 								<div class="constrain_field">
-									<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.style.color='black';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}" name="post" id="post">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
+									<textarea{+START,IF,{$NOT,{$MOBILE}}} onkeyup="manage_scroll_height(this);"{+END} accesskey="x" class="wide_field" onfocus="if ((this.value.replace(/\s/g,'')=='{POST_WARNING;^*}'.replace(/\s/g,'') &amp;&amp; '{POST_WARNING;^*}'!='') || (typeof this.strip_on_focus!='undefined' &amp;&amp; this.value==this.strip_on_focus)) this.value=''; this.className='field_input_filled';" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}" name="post" id="post">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
 								</div>
 
 								<div id="error_post" style="display: none" class="input_error_here"></div>
@@ -207,6 +226,10 @@
 										{ATTACHMENTS}
 									</div>
 								{+END}
+
+								{+START,IF,{$MOBILE}}
+									{$GET,CAPTCHA}
+								{+END}
 							</td>
 						</tr>
 
@@ -215,34 +238,29 @@
 				</table></div>
 
 				<div class="comments_posting_form_end">
-					{+START,IF_PASSED,USE_CAPTCHA}
-						{+START,IF,{USE_CAPTCHA}}
-							<div class="comments_captcha">
-								<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-									<p><label for="captcha">{!DESCRIPTION_CAPTCHA_2,<a target="_blank" title="{!AUDIO_VERSION} {!LINK_NEW_WINDOW}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}">{!AUDIO_VERSION}</a>}</label></p>
-									{+START,IF,{$CONFIG_OPTION,css_captcha}}
-										<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
-									{+END}
-									{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-										<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}" />
-									{+END}
-									<input maxlength="6" size="6" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
-								</div></div>
-							</div>
-						{+END}
+					{+START,IF,{$NOT,{$MOBILE}}}
+						{$GET,CAPTCHA}
 					{+END}
 
 					<div class="proceed_button buttons_group">
-						{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
-							<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
-						{+END}{+END}{+END}
+						{+START,IF,{$NOT,{$MOBILE}}}
+							{+START,IF,{$JS_ON}}{+START,IF,{$CONFIG_OPTION,enable_previews}}{+START,IF,{$NOT,{$VALUE_OPTION,xhtml_strict}}}
+								<input onclick="if (typeof this.form=='undefined') var form=window.form_submitting; else var form=this.form; if (do_form_preview(event,form,maintain_theme_in_link('{$PREVIEW_URL;*}{$KEEP;*}'))) form.submit();" id="preview_button" accesskey="p" tabindex="250" class="tabs__preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
+							{+END}{+END}{+END}
+						{+END}
+
 						{+START,IF_PASSED,MORE_URL}
 							{+START,IF,{$JS_ON}}
 								<input tabindex="6" accesskey="y" onclick="move_to_full_editor(this,'{MORE_URL;*}');" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
 							{+END}
 						{+END}
+
+						{+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
+							<input tabindex="7" id="attachment_upload_button" class="buttons__thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
+						{+END}
+
 						{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="7" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+						<input onclick="handle_comments_posting_form_submit(this,event);" tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}"{+START,IF,{$JS_ON}} type="button"{+END}{+START,IF,{$NOT,{$JS_ON}}} type="submit"{+END} value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 					</div>
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,29 @@
  * @copyright  ocProducts Ltd
  * @package    news
  */
+
+/**
+ * Find a news category image from a string that may have multiple interpretations.
+ *
+ * @param  string $nc_img URL / theme image code / blank
+ * @return URLPATH URL (or blank)
+ */
+function get_news_category_image_url($nc_img)
+{
+    require_code('images');
+
+    if ($nc_img == '') {
+        $image = '';
+    } elseif (is_image($nc_img)) {
+        $image = $nc_img;
+    } else {
+        $image = find_theme_image($nc_img, true);
+        if (is_null($image)) {
+            $image = '';
+        }
+    }
+    return $image;
+}
 
 /**
  * Show a news entry box.
@@ -62,9 +85,9 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         if (url_is_local($img_raw)) {
             $img_raw = get_custom_base_url() . '/' . $img_raw;
         }
-        $img = do_image_thumb($img_raw, $category, false);
+        $img = $img_raw;
     } else {
-        $img_raw = find_theme_image($news_cat_row['nc_img']);
+        $img_raw = get_news_category_image_url($news_cat_row['nc_img']);
         if (is_null($img_raw)) {
             $img_raw = '';
         }
@@ -144,12 +167,12 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
     $_title = get_translated_text($row['nc_title']);
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('NEWS_CATEGORY'), $_title) : $_title;
 
-    // Meta-data
+    // Metadata
     $num_entries = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('validated' => 1));
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
 
     // Image
-    $img = ($row['nc_img'] == '') ? '' : find_theme_image($row['nc_img']);
+    $img = get_news_category_image_url($row['nc_img']);
     if ($blogs === 1) {
         $_img = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($row['nc_owner']);
         if ($_img != '') {
@@ -178,6 +201,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'title',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_news:__edit_category:' . strval($row['id']),
+        'RESOURCE_TYPE' => 'news_category',
     ));
 }
 
@@ -207,13 +231,17 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         $where = 'WHERE 1=1';
     }
     if (!is_null($updated_since)) {
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('news', 'n', $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            list($extra_join, $extra_where) = get_privacy_where_clause('news', 'n', $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
-        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $privacy_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $privacy_where . ')';
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('news', 'n.id');
+        }
+        $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $extra_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $extra_where . ')';
     }
     $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
     if ($count > 500) { // Uh oh, loads, need to limit things more
@@ -243,6 +271,8 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
     $categories = new Tempcode();
     $add_cat = true;
 
+    $may_blog = has_privilege(get_member(), 'have_personal_category', 'cms_news');
+
     foreach ($_cats as $cat) {
         if ($cat['nc_owner'] == get_member()) {
             $add_cat = false;
@@ -251,16 +281,24 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         if (!has_category_access(get_member(), 'news', strval($cat['n_id']))) {
             continue;
         }
-        if (($addable_filter) && (!has_submit_permission('high', get_member(), get_ip_address(), 'cms_news', array('news', $cat['n_id'])))) {
-            continue;
+        if ($addable_filter) {
+            if ($cat['nc_owner'] !== get_member()) {
+                if (!has_submit_permission('high', get_member(), get_ip_address(), 'cms_news', array('news', $cat['id']))) {
+                    continue;
+                }
+            } else {
+                if (!$may_blog) {
+                    continue;
+                }
+            }
         }
 
         if (is_null($cat['nc_owner'])) {
             $li = form_input_list_entry(strval($cat['n_id']), ($it != array(null)) && in_array($cat['n_id'], $it), $cat['nice_title'] . ' (#' . strval($cat['n_id']) . ')');
             $categories->attach($li);
         } else {
-            if ((((!is_null($cat['nc_owner'])) && (has_privilege(get_member(), 'can_submit_to_others_categories'))) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
-                $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY',$GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'],true))*/ . ' (#' . strval($cat['n_id']) . ')'));
+            if ((((!is_null($cat['nc_owner'])) && ($may_blog)) || (($cat['nc_owner'] == get_member()) && (!is_guest()))) || ($show_all_personal_categories)) {
+                $categories->attach(form_input_list_entry(strval($cat['n_id']), (($cat['nc_owner'] == get_member()) && ((!$prefer_not_blog_selected) && (in_array(null, $it)))) || (in_array($cat['n_id'], $it)), $cat['nice_title']/*Performance do_lang('MEMBER_CATEGORY', $GLOBALS['FORUM_DRIVER']->get_username($cat['nc_owner'], true))*/ . ' (#' . strval($cat['n_id']) . ')'));
             }
         }
     }

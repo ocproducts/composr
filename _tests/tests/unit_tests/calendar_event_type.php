@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,7 +23,9 @@ class calendar_event_type_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('calendar2');
+
         $this->eventtype_id = add_event_type('test_event_type', 'calendar/testtype', '');
         $this->assertTrue('test_event_type' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('calendar_types', 't_title', array('id' => $this->eventtype_id))));
     }
@@ -37,6 +39,7 @@ class calendar_event_type_test_set extends cms_test_case
     public function tearDown()
     {
         delete_event_type($this->eventtype_id);
+
         parent::tearDown();
     }
 }

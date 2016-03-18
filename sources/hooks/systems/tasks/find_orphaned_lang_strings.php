@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,11 +34,11 @@ class Hook_task_find_orphaned_lang_strings
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
-        // When a lang string isn't there
+        // When a language string isn't there
         $missing_lang_strings = array();
-        // When a lang string isn't used
+        // When a language string isn't used
         $orphaned_lang_strings = array();
-        // When a lang string is used more than once
+        // When a language string is used more than once
         $fused_lang_strings = array();
 
         $_all_ids = $GLOBALS['SITE_DB']->query_select('translate', array('DISTINCT id'));

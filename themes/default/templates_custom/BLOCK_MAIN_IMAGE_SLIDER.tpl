@@ -5,7 +5,7 @@
 		$('#skitter_{$GET;/,rand}').skitter({
 			auto_play: true,
 			controls: true,
-			dots: true, 
+			dots: true,
 			enable_navigation_keys: true,
 			interval: {MILL%},
 			numbers_align: 'center',

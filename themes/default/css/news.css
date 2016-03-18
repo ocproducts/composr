@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .box___block_side_news_archive .box_inner>.compact_list, .box___block_side_news_archive .box_inner>.compact_list>li {
@@ -126,16 +126,4 @@
 .box___block_main_image_fader_news .pagination {
 	bottom: 0;
 	position: absolute;
-}
-
-/*
-=========================
-=======Print rules=======
-=========================
-*/
-
-@media print {
-	#news_archive_link {
-		display: none;
-	}
 }

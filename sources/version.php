@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,7 +19,7 @@
  */
 
 /*
-The version numbers here are not for interchange. sources/version2.php provides a way to turn these into the 'dotted' interchange format that the Composr platform recognises progmatically.
+The version numbers here are not for interchange. sources/version2.php provides a way to turn these into the 'dotted' interchange format that the Composr platform recognises programatically.
 */
 
 /**
@@ -29,7 +29,7 @@ The version numbers here are not for interchange. sources/version2.php provides 
  */
 function cms_version_minor()
 {
-    return 'alpha1';
+    return 'beta4';
 }
 
 /**

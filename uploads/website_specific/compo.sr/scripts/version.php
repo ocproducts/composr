@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -11,7 +11,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
 // Find Composr base directory, and chdir into it
@@ -37,7 +37,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-require_lang('composrcom');
+require_lang('composr_homesite');
 
 header('Content-type: text/plain; charset=' . get_charset());
 if (get_param_integer('html', 0) == 1) {
@@ -50,7 +50,9 @@ require_code('version2');
 $dotted = get_version_dotted__from_anything(get_param_string('version'));
 list($intended, $qualifier, $qualifier_number, $long_version) = get_version_components__from_dotted($dotted);
 $version_pretty = get_version_pretty__from_dotted($dotted);
-if (!is_null($qualifier)) {
+if (is_null($qualifier)) {
+    $long_version_with_qualifier = $long_version;
+} else {
     $long_version_with_qualifier = $long_version . ' ' . $qualifier . $qualifier_number;
 }
 
@@ -60,8 +62,8 @@ VARIABLE KEY:
 version: complete minimal version string intended for humans
 long_version: maximal dotted version number
 intended: minimal dotted version number
-qualifier: NULL or alpha or beta or RC
-qualifier_number: NULL or integer
+qualifier: null or alpha or beta or RC
+qualifier_number: null or integer
 */
 
 // Find our version
@@ -151,21 +153,24 @@ $higher_versions = array(null, null, null);
 global $DOWNLOAD_ROWS;
 for ($i = 0; $i < 3; $i++) { // Loop over each release level
     $found = null;
-    $looking_for = 'Composr Version ' . $stub; // Starts with blank stub, which will match highest version. Subsequent iterations bind to the version numbers and find boundewd maximum highest version under that version prefix.
+    $_stub = preg_replace('#(\.0)+$#', '', $stub);
+    $looking_for = 'Composr Version ' . $_stub; // Starts with blank stub, which will match highest version. Subsequent iterations bind to the version numbers and find boundewd maximum highest version under that version prefix.
 
     foreach (array_reverse($DOWNLOAD_ROWS) as $row) { // Iterate, newest to oldest
         // If it's on the release level being inspected, and we're either on a qualifier (alpha/beta/RC) already, or this isn't having a qualifier (i.e. we don't want to suggest someone go to a bleeding-edge version)
         if ((substr($row['nice_title'], 0, strlen($looking_for)) == $looking_for) && ((!is_null($qualifier)) || ((strpos($row['nice_title'], 'RC') === false) && (strpos($row['nice_title'], 'beta') === false) && (strpos($row['nice_title'], 'alpha') === false)))) {
             // $this_version will hold the version we're currently looking at, comparing to the version the user has
             // Lots of work to split up version numbering
-            $this_version = preg_replace('# \(.*#', '', substr($row['nice_title'], strlen($looking_for) - strlen($stub)));
+            $this_version = preg_replace('# \(.*#', '', substr($row['nice_title'], strlen($looking_for) - strlen($_stub)));
             $this_bits = explode('.', preg_replace('# .*$#', '', $this_version));
             $this_qualifier = (strpos($this_version, ' ') === false) ? mixed() : preg_replace('#^.* #', '', $this_version); // Extract qualifier from $this_version, which btw is a "pretty version" format version number
             $different = false; // Used to ensure the version really is different to the one we're on
-            for ($j = 0; $j <= $i; $j++) {
+            for ($j = 0; $j < 3; $j++) {
                 if (!array_key_exists($j, $this_bits)) {
                     $this_bits[$j] = '0';
                 }
+            }
+            for ($j = 0; $j <= $i; $j++) {
                 if (!is_numeric($this_bits[$j])) {
                     break;
                 }
@@ -173,24 +178,19 @@ for ($i = 0; $i < 3; $i++) { // Loop over each release level
                     $different = true;
                 }
             }
-            for (; $j < 3; $j++) {
-                if (!array_key_exists($j, $this_bits)) {
-                    $this_bits[$j] = '0';
-                }
-            }
             if (!is_null($this_qualifier)) {
-                if ($this_qualifier !== ($qualifier . strval($qualifier_number))) {
+                if ($this_qualifier !== ($qualifier . strval($qualifier_number)) && $i == 2) {
                     $different = true;
                 }
             } elseif (!is_null($qualifier)) {
                 $different = true;
             }
 
-            $news_row = find_version($this_version);
+            $news_row = find_version(preg_replace('#(\.0)+$#', '', $this_version));
 
             // If different and better version
-            $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . $this_qualifier));
-            $assembled = implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . $qualifier_number));
+            $this_assembled = implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . preg_replace('#(\d+)#', '.$1', $this_qualifier)));
+            $assembled = implode('.', $bits) . (is_null($qualifier) ? '' : ('.' . $qualifier . '.' . $qualifier_number));
             if ((version_compare($this_assembled, $assembled) >= 0) && ($different) && (!is_null($news_row))) {
                 if (get_param_integer('test', 0) == 1) {
                     @var_dump(implode('.', $this_bits) . (is_null($this_qualifier) ? '' : ('.' . $this_qualifier)));
@@ -257,21 +257,21 @@ if (!is_null($our_version)) {
     echo '<p>' . do_lang('CMS_NON_EXISTANT_VERSION') . '</p>';
 }
 /*if (false) { // Info isn't actually helpful, as the download_description above contains it also
-	echo '<h3>Next version</h3>';
-	// Next version
-	if (!is_null($next_upgrade_version)) {
-		// NB: $has_jump should always be true in this branch, unless there are holes in the version DB
-		echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version '.escape_html($next_upgrade_version['version']).' (this link will open in a new window)" href="'.escape_html(static_evaluate_tempcode(build_url(array('page'=>'news','type'=>'view','id'=>$next_upgrade_version['news_id'],'wide_high'=>1),'site'))).'">version '.escape_html($next_upgrade_version['version']).'</a>, but read on for the latest recommended upgrade paths.</p>';
-	} elseif ((!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	} else {
-		echo '<p>Sorry, details of the next version is not in our database.</p>';
-	}
+    echo '<h3>Next version</h3>';
+    // Next version
+    if (!is_null($next_upgrade_version)) {
+        // NB: $has_jump should always be true in this branch, unless there are holes in the version DB
+        echo '<p>You are running an outdated version. The closest version is <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="Version ' . escape_html($next_upgrade_version['version']) . ' (this link will open in a new window)" href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $next_upgrade_version['news_id'], 'wide_high' => 1), 'site'))) . '">version ' . escape_html($next_upgrade_version['version']) . '</a>, but read on for the latest recommended upgrade paths.</p>';
+    } elseif ((!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    } else {
+        echo '<p>Sorry, details of the next version is not in our database.</p>';
+    }
 } else
 {
-	if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
-		echo '<p>You are running the latest version.</p>';
-	}
+    if ((is_null($next_upgrade_version)) && (!is_null($our_version)) && (!$has_jump)) {
+        echo '<p>You are running the latest version.</p>';
+    }
 }*/
 // Latest versions
 if ($has_jump) {
@@ -280,7 +280,7 @@ if ($has_jump) {
     $upgrade_type = array('major upgrade, may break compatibility of customisations', 'feature upgrade', 'easy patch upgrade');
     for ($i = 0; $i <= 2; $i++) {
         if (!is_null($higher_versions[$i])) {
-            $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2');
+            $discontinued = array('1', '2', '2.1', '2.5', '2.6', '3', '3.1', '3.2', '4', '5', '6', '7');
             $note = '';
             foreach ($discontinued as $d) {
                 if ((strlen($d) == 1) && ($higher_versions[$i]['version'] != $d)) {
@@ -304,7 +304,7 @@ if ($has_jump) {
 
             // Output upgrader link
             $out = '';
-            $upgrade_script = (($bits[0] >= 4) ? 'upgrader.php' : 'force_upgrade.php');
+            $upgrade_script = 'upgrader.php';
             if (isset($found['news_id'])) {
                 $upgrade_script .= '?news_id=' . strval($higher_versions[$i]['news_id']);
             }
@@ -358,16 +358,10 @@ function find_version($version_pretty)
     load_news_rows();
 
     foreach ($NEWS_ROWS as $news_row) {
-        if ($news_row['nice_title'] == $version_pretty . ' released') {
-            return $news_row;
-        }
         if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released') {
             return $news_row;
         }
-        if ($news_row['nice_title'] == $version_pretty . ' released!') {
-            return $news_row;
-        }
-        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') {
+        if ($news_row['nice_title'] == 'Composr ' . $version_pretty . ' released!') { // Major releases have exclamation marks
             return $news_row;
         }
     }
@@ -405,7 +399,7 @@ function load_news_rows()
                 array('id' => 7, 'nice_title' => 'Composr 4 released', 'add_date' => time() - 60 * 60 * 1),
             );
         } else {
-            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('n.*', 'date_and_time AS add_date'), array('validated' => 1, 'news_category' => 29), 'ORDER BY add_date');
+            $NEWS_ROWS = $GLOBALS['SITE_DB']->query_select('news', array('*', 'date_and_time AS add_date'), array('validated' => 1), 'ORDER BY add_date');
             foreach ($NEWS_ROWS as $i => $row) {
                 $NEWS_ROWS[$i]['nice_title'] = get_translated_text($row['title']);
             }

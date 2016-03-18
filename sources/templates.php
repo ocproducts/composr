@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__templates()
 {
@@ -42,9 +44,10 @@ function init__templates()
  * @param  string $meta '|' separated list of meta information (key|value|key|value|...)
  * @param  string $links '|' separated list of link information (linkhtml|...)
  * @param  string $top_links Link to be added to the header of the box
+ * @param  string $class CSS class to use
  * @return Tempcode The contents, put inside a standard box, according to the other parameters
  */
-function put_in_standard_box($content, $title = '', $type = 'default', $width = '', $options = '', $meta = '', $links = '', $top_links = '')
+function put_in_standard_box($content, $title = '', $type = 'default', $width = '', $options = '', $meta = '', $links = '', $top_links = '', $class = '')
 {
     if ($type == '') {
         $type = 'default';
@@ -78,7 +81,11 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
         $width = strval(intval($width)) . 'px';
     }
 
-    return do_template('STANDARDBOX_' . filter_naughty($type), array('WIDTH' => $width, 'CONTENT' => $content, 'LINKS' => $_links, 'META' => $_meta, 'OPTIONS' => $_options, 'TITLE' => $title, 'TOP_LINKS' => $top_links), null, true);
+    if ($class == '') {
+        $class = null;
+    }
+
+    return do_template('STANDARDBOX_' . filter_naughty($type), array('WIDTH' => $width, 'CONTENT' => $content, 'LINKS' => $_links, 'META' => $_meta, 'OPTIONS' => $_options, 'TITLE' => $title, 'TOP_LINKS' => $top_links, 'CLASS' => $class), null, true);
 }
 
 /**
@@ -86,15 +93,15 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
  *
  * @sets_output_state
  *
- * @param  mixed $title The title to use (usually, a language string code, see below)
- * @param  boolean $dereference_lang Whether the given title is actually a language string code, and hence gets dereferenced
+ * @param  mixed $title The title to use (usually, a language string ID, see below)
+ * @param  boolean $dereference_lang Whether the given title is actually a language string ID, and hence gets dereferenced
  * @param  ?array $params Parameters sent to the language string (null: none)
  * @param  ?Tempcode $user_online_title Separate title to put into the 'currently viewing' data (null: use $title)
  * @param  ?array $awards Awards to say this has won (null: none)
- * @param  boolean $save_as_meta_data Whether to use this as meta-data for the screen
+ * @param  boolean $save_as_metadata Whether to use this as metadata for the screen
  * @return Tempcode The title Tempcode
  */
-function get_screen_title($title, $dereference_lang = true, $params = null, $user_online_title = null, $awards = null, $save_as_meta_data = true)
+function get_screen_title($title, $dereference_lang = true, $params = null, $user_online_title = null, $awards = null, $save_as_metadata = true)
 {
     global $TITLE_CALLED;
     $TITLE_CALLED = true;
@@ -133,11 +140,11 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
                 );
             } else {
                 $change_map += array(
-                    'the_title' => is_null($user_online_title) ? substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
+                    'the_title' => is_null($user_online_title) ? cms_mb_substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
                     'the_zone' => get_zone_name(),
-                    'the_page' => substr(get_page_name(), 0, 80),
-                    'the_type' => substr(get_param_string('type', '', true), 0, 80),
-                    'the_id' => substr(get_param_string('id', '', true), 0, 80),
+                    'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+                    'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
+                    'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
                 );
             }
             $session_id = get_session_id();
@@ -148,7 +155,7 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
         }
     }
 
-    if ($save_as_meta_data) {
+    if ($save_as_metadata) {
         global $DISPLAYED_TITLE;
         $DISPLAYED_TITLE = $_title;
     }
@@ -298,8 +305,10 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
     }
 
     /* Causes a small performance hit and very unlikely to be needed
-    if (function_exists('filter_form_field_default')) // Don't include just for this (may not be used on a full input form), preserve memory
-        $selected=(filter_form_field_default($value,$selected?'1':'')=='1');*/
+    if (function_exists('filter_form_field_default')) { // Don't include just for this (may not be used on a full input form), preserve memory
+        $selected = (filter_form_field_default($value, $selected ? '1' : '') == '1');
+    }
+    */
 
     return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('_GUID' => 'dd76a2685d0fba5f819ef160b0816d03', 'SELECTED' => $selected, 'DISABLED' => $disabled, 'CLASS' => $red ? 'criticalfield' : '', 'NAME' => is_integer($value) ? strval($value) : $value, 'TEXT' => $text));
 }

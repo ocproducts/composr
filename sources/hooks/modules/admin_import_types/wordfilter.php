@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_admin_import_types_wordfilter
     public function run()
     {
         return array(
-            'wordfilter' => 'WORD_FILTER',
+            'wordfilter' => 'WORDFILTER',
         );
     }
 }

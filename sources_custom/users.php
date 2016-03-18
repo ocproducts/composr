@@ -1,8 +1,22 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ * @package    openid
+ */
 
 function init__users()
 {
-    //if (addon_installed('Facebook Support',true))
+    //if (addon_installed('Facebook Support', true))
     if (is_file(get_file_base() . '/sources/facebook_connect.php')) {
         require_code('facebook_connect');
     }

@@ -31,7 +31,7 @@
 			</label>:
 
 			<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
-			<input size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
+			<input maxlength="255" size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
 		</p>
 
 		<p>
@@ -40,7 +40,7 @@
 
 			<label class="points_anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
 
-			<input id="give_points_submit" class="buttons__points button_screen_item" type="submit" value="{!GIVE_POINTS}" />
+			<input id="give_points_submit" class="button_screen_item buttons__points" type="submit" value="{!GIVE_POINTS}" />
 		</p>
 	</form>
 {+END}
@@ -71,14 +71,14 @@
 
 				<p>
 					<label class="accessibility_hidden" for="give_reason">{!REASON}</label>
-					<input size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
+					<input maxlength="255" size="26" id="give_reason" class="input_line_required field_input_non_filled" value="{!REASON}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="reason" />
 				</p>
 
 				<p>
 					<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
 					<input maxlength="8" onkeydown="if (!key_pressed(event,[null,'-','0','1','2','3','4','5','6','7','8','9','.'])) return false; return null;" size="7" id="give_amount" class="input_integer_required field_input_non_filled" value="{!AMOUNT}" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" type="text" name="amount" />
 
-					<input id="give_points_submit" class="buttons__points button_micro" type="submit" value="{!PROCEED_GO}" />
+					<input id="give_points_submit" class="button_micro buttons__points" type="submit" value="{!PROCEED_SHORT}" />
 				</p>
 			</div>
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -11,55 +11,60 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
-/* Returns triple: PATH or NULL if critical error, NULL or error string if error */
-function make_upgrade_get_path($from_version, $to_version)
+/* Returns triple: PATH or null if critical error, null or error string if error */
+function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
 {
     $err = null;
 
-    if (str_replace('.', '', $from_version) == '') {
+    require_code('version2');
+
+    $from_version_pretty = get_version_pretty__from_dotted($from_version_dotted);
+    $to_version_pretty = get_version_pretty__from_dotted($to_version_dotted);
+
+    if (str_replace('.', '', $from_version_dotted) == '') {
         $err = 'Source version not entered correctly.';
         return array(null, $err);
     }
 
-    if ($from_version == '..') {
+    if ($from_version_dotted == '..') {
         warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
     }
-    if ($to_version == '..') {
+    if ($to_version_dotted == '..') {
         warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
     }
 
-    if ($from_version == $to_version) {
+    if ($from_version_dotted == $to_version_dotted) {
         $err = 'Put in the version number you are upgrading <strong>from</strong>, not to. Then a specialised upgrade file will be generated for you.';
         return array(null, $err);
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     require_code('tar');
     require_code('m_zip');
 
     // Find out path/filenames for the upgrade file we're making
-    $filename = $from_version . '-' . $to_version . '.cms';
+    $filename = $from_version_dotted . '-' . $to_version_dotted . '.cms';
     $tar_path = dirname(__FILE__) . '/tars/' . $filename;
     $wip_path = dirname(__FILE__) . '/tar_build/' . $filename;
 
     // Find out paths for the directories holding untarred full manual installers
-    $old_base_path = dirname(__FILE__) . '/full/' . $from_version;
-    $new_base_path = dirname(__FILE__) . '/full/' . $to_version;
+    $old_base_path = dirname(__FILE__) . '/full/' . $from_version_dotted;
+    $new_base_path = dirname(__FILE__) . '/full/' . $to_version_dotted;
 
     // Find corresponding download rows
-    $old_download_row = ($from_version == '') ? null : find_download($from_version);
+    $old_download_row = ($from_version_dotted == '') ? null : find_download($from_version_pretty);
     if (is_null($old_download_row)) {
-        $err = escape_html('Version ' . $from_version . ' is not recognised');
+        $err = escape_html('Version ' . $from_version_pretty . ' is not recognised');
         return array(null, $err);
     }
-    $new_download_row = find_download($to_version);
+    $new_download_row = find_download($to_version_pretty);
     if (is_null($new_download_row)) {
-        return array(null, escape_html('Could not find version ' . $to_version . ' in the download database'));
+        return array(null, escape_html('Could not find version ' . $to_version_pretty . ' in the download database'));
     }
     $mtime = $new_download_row['add_date'];
     if (!is_null($new_download_row['edit_date'])) {
@@ -201,7 +206,7 @@ function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir 
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir($new_base_path . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
             continue;
         }
 

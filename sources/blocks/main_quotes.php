@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -74,7 +74,7 @@ class Block_main_quotes
 
         $place = _find_text_file_path($file, '');
         if ($place == '') {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file), escape_html(do_lang('FILE'))));
         }
 
         if (!file_exists($place)) {

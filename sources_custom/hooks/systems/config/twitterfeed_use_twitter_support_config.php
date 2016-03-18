@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_config_twitterfeed_use_twitter_support_config
         return array(
             'human_name' => 'USE_TWITTER_SUPPORT_CONFIG',
             'type' => 'tick',
-            'category' => 'BLOCKS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'TWITTER_FEED_INTEGRATION',
             'explanation' => 'CONFIG_OPTION_twitterfeed_use_twitter_support_config',
             'shared_hosting_restricted' => '0',

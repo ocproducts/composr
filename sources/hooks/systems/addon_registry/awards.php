@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_awards
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -152,8 +153,8 @@ class Hook_addon_registry_awards
                 'AWARDEE_PROFILE_URL' => placeholder_url(),
                 'AWARDEE' => lorem_phrase(),
                 'AWARDEE_USERNAME' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase_html(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
@@ -175,8 +176,8 @@ class Hook_addon_registry_awards
                 'AWARDEE_PROFILE_URL' => placeholder_url(),
                 'AWARDEE' => lorem_phrase(),
                 'AWARDEE_USERNAME' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date_raw(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase(),
             )), null, '', true)
         );

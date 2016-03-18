@@ -23,12 +23,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					{+START,LOOP,GRIDDATA}
+					{+START,LOOP,GRID_DATA}
 						<tr>
-							<td>{SITETITLE*}</td>
-							<td>{GRANK*}/10</td>
-							<td>{ALEXAR`}</td>
-							<td>{ALEXAT`}</td>
+							<td>{SITE_NAME*}</td>
+							<td>{GOOGLE_RANKING*}/10</td>
+							<td>{ALEXA_RANKING`}</td>
+							<td>{ALEXA_TRAFFIC`}</td>
 							<td><a class="suggested_link" href="http://web.archive.org/web/*/{URL*}">{!VIEW}</a></td>
 							<td><a class="suggested_link" href="{URL*}">{!VIEW}</a></td>
 						</tr>
@@ -37,13 +37,15 @@
 			</table></div>
 
 			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list{$GET,RAND}_form">
+				{$INSERT_SPAMMER_BLACKHOLE}
+
 				<div class="constrain_field">
 					<label for="website_monitoring_list_edit" class="accessibility_hidden">{!EDIT}</label>
-					<textarea class="wide_field" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITEURLS}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
+					<textarea class="wide_field" id="website_monitoring_list_edit" name="website_monitoring_list_edit" rows="10" cols="90">{+START,LOOP,SITES_BEING_WATCHED}{_loop_key*}={_loop_var*}&#10;&#10;{+END}</textarea>
 				</div>
 
 				<div class="buttons_group">
-					<input onclick="disable_button_just_clicked(this);{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="buttons__save button_screen_item" type="submit" value="{!SAVE}" />
+					<input onclick="disable_button_just_clicked(this);{+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}} return ajax_form_submit__admin__headless(event,this.form,'{BLOCK_NAME;~*}','{MAP;~*}');{+END}" class="button_screen_item buttons__save" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
 

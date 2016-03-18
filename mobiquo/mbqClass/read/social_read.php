@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,6 +30,10 @@ class CMSSocialRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
+            return array();
+        }
+
+        if (!addon_installed('chat')) {
             return array();
         }
 
@@ -73,6 +77,10 @@ class CMSSocialRead
             return array();
         }
 
+        if (!addon_installed('chat')) {
+            return array();
+        }
+
         $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_likes'), array('member_liked' => get_member()));
         $followers = array();
         foreach ($rows as $row) {
@@ -112,7 +120,7 @@ class CMSSocialRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
-            return array();
+            return array(0, array());
         }
 
         $where = array(
@@ -194,15 +202,15 @@ class CMSSocialRead
             switch ($row['a_language_string_code']) {
                 case 'cns:ACTIVITY_ADD_TOPIC':
                     $content_type = 'thread';
-                    $content_id = preg_replace('#^.*:topicview:misc:(\d+).*$#', '$1', $row['a_pagelink_1']);
+                    $content_id = preg_replace('#^.*:topicview:browse:(\d+).*$#', '$1', $row['a_pagelink_1']);
                     break;
                 case 'cns:ACTIVITY_ADD_POST_IN':
                     $content_type = 'post';
-                    $content_id = preg_replace('#^.*:topicview:misc:(\d+)\#post_(\d+).*$#', '$2', $row['a_pagelink_1']);
+                    $content_id = preg_replace('#^.*:topicview:browse:(\d+)\#post_(\d+).*$#', '$2', $row['a_pagelink_1']);
                     break;
                 /*case 'ACTIVITY_LIKES':	No likes actually
-                    $content_type='like';
-                    $content_id=preg_replace('#:topicview:findpost:(\d+)#','$1',$row['a_pagelink_1']);
+                    $content_type = 'like';
+                    $content_id = preg_replace('#:topicview:findpost:(\d+)#', '$1', $row['a_pagelink_1']);
                     break;*/
             }
 

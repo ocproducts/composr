@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_activity_feed
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -151,7 +152,6 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'themes/default/images_custom/icons/24x24/tabs/member_account/activity.png',
             'themes/default/images_custom/icons/48x48/tabs/member_account/activity.png',
             'sources_custom/hooks/systems/addon_registry/activity_feed.php',
-            'sources_custom/hooks/systems/activities/.htaccess',
             'sources_custom/hooks/systems/notifications/activity.php',
             'sources_custom/hooks/systems/rss/activities.php',
             'data_custom/activities_updater.php',
@@ -164,21 +164,19 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
             'sources_custom/activities_submission.php',
             'sources_custom/hooks/systems/activities/activities.php',
             'themes/default/javascript_custom/base64.js',
-            'themes/default/javascript_custom/activities_state.tpl',
+            'themes/default/javascript_custom/activities_state.js',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES_STATE.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_ACTIVITIES_XML.tpl',
-            'themes/default/javascript_custom/activities.tpl',
+            'themes/default/javascript_custom/activities.js',
             'themes/default/templates_custom/ACTIVITY.tpl',
             'themes/default/templates_custom/CNS_MEMBER_PROFILE_ACTIVITIES.tpl',
             'themes/default/images_custom/stop12.png',
             'themes/default/images_custom/stop12_hover.png',
             'themes/default/css_custom/activities.css',
-            'sources_custom/hooks/systems/syndication/index.html',
             'sources_custom/hooks/systems/profiles_tabs/activities.php',
-            'sources_custom/hooks/systems/profiles_tabs/.htaccess',
-            'sources_custom/hooks/systems/profiles_tabs/index.html',
             'sources_custom/hooks/systems/profiles_tabs/posts.php',
+            'sources_custom/hooks/systems/config/syndicate_site_activity_default.php',
             'uploads/addon_avatar_normalise/index.html',
             'uploads/addon_icon_normalise/index.html',
             'sources_custom/activities.php',

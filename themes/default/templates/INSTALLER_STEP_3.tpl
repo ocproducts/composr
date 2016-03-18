@@ -68,7 +68,7 @@
 							<th class="form_table_field_name">{!FORUM_PATH}</th>
 							<td class="form_table_field_input">
 								<div class="accessibility_hidden"><label for="board_path">{!_FORUM_PATH}</label></div>
-								<div class="constrain_field"><input class="wide_field" type="text" size="60" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
+								<div class="constrain_field"><input class="wide_field" type="text" size="{$?,{$MOBILE},30,60}" id="board_path" name="board_path" value="{FORUM_PATH_DEFAULT*}" /></div>
 							</td>
 						</tr>
 					</tbody>
@@ -116,7 +116,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+		<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>
 

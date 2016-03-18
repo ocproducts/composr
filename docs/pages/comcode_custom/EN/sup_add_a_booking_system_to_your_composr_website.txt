@@ -1,0 +1,104 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Add a Booking System to your Composr Website[/title]
+
+[media width="150" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/7715a43ddb7bd1c95b077716d974f0df.jpg[/media]
+The versatility of the Composr system and its core features mean it can and will be used in a wide range of cases. Its unrivalled set of core features aimed at communities makes it the perfect system to underpin a community based site around a venue for example. To help build on top of the core features there is also a Bookings addon which allows you to add booking functionality to your website.
+
+The addon is suitable for some cases, but not all, as there is still some functionality to be added. As with all Open Source software, addons and features develop over time as users need specific elements which are then added to the software for everyone to use. If the booking addon doesn't do a specific task you require, it's an opportunity to help contribute to the project for the good of everyone.
+
+[title="2"]Installing the booking addon[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Addons icon
+[*] Scroll down and choose "Import non-bundled addon(s)"
+[*] Click Download and choose the Development category
+[*] Choose Bookings
+[*] Scroll down and click the "Import non-bundled addon(s)" button
+[*] Check over the list of files and click Proceed if you are happy they won't break any custom changes you have made
+[/list]
+
+[title="2"]Configuring the Bookings addon in Composr[/title]
+
+Navigate to the Content section and Choose Bookings from the menu where you have 4 pairs of options and a link to the Calendar. These four pairs of options are:
+[list]
+[*] [b]Add or edit a bookable date region[/b] -- This is where you will set and edit which dates can be booked as well as what can be booked and how much it costs.
+[*] [b]Add or edit a bookable supplement[/b] -- This is where you can add specific supplements for a booking type. This might be a peak time of the day for example, if you have 1 hour slots and want to add the standard price for each slot as $10 per slot but the slots 5pm-6pm and 6pm-7pm should be $15 you can set a $5 for those 2 categories without needing to add spare bookable regions.[list]
+[*] You can also use this for discounts if you set the supplement as a minus for example if you offer OAP tickets or have a low traffic time of the day which should be cheaper.[/list]
+[*] [b]Add or edit bookable blackout region[/b] -- Add a set of dates you want to block from being booked. For example if your date region runs the whole of summer but you have 2 days where you are closed you can just add a blackout date region for the 2 days.
+[*] [b]Add or edit a booking[/b] -- Here you can manually add or edit a booking to your system.
+[/list]
+
+[title="2"]Displaying the booking addon on your page[/title]
+
+[media width="150" float="right" description="Making a booking"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/6eca0eda959b9f31460837642db0c1a0.jpg[/media]
+To make use of the booking addon you will need to link your site visitors to it. Depending on your options, the URL of the booking addon will be something like:
+[list]
+[*] [tt]http://yourbaseurl/site/index.php?page=booking[/tt]
+[*] [tt]http://yourbaseurl/index.php?page=booking[/tt]
+[*] [tt]http://yourbaseurl/site/pg/booking[/tt]
+[*] [tt]http://yourbaseurl/pg/booking[/tt]
+[/list]
+
+If you want to set a link to this via a menu item or Comcode page-link, you can use the [tt]site:booking[/tt] page-link.
+
+Your site visitors should now be able to use the booking addon.
+
+[title="2"]A detailed look at the booking forms[/title]
+
+Next I want to take a detailed look at all of the associated forms and make sure they were clear to anyone who would like to use this addon.
+
+There are effectively 4 different types of forms within the booking module which are:
+[list]
+[*] Add/edit bookable
+[*] Add/edit bookable supplements
+[*] Add/edit bookable blackout
+[*] Add/edit booking
+[/list]
+
+[title="3"]Adding and editing bookables form[/title]
+
+[media width="150" description="Add bookable form" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/1fc0bd5af2a80d643b83038ccf3d6b9e.jpg[/media]
+The Add bookable form is where you will need to start as this form is where you will specify what it is your site visitors can book. For example a hotel might have bookables set as Room 1, Room 2, Room 3, etc. a venue might have time slots so the bookables might be 09:00-10:00, 10:00-11:00, 12:00-13:00, etc.
+
+The first box is the title of the bookable. For a hotel this might be things like summer season or might be set by Month. The second box is a description of the bookable. It is important to fill in this box so it's easy to remember if you come back to edit the region in the future or if someone else might be editing the bookable region and will need to understand what it is.
+
+The next box is the standard price for all the bookable elements within this specific bookable. The category is so that the bookables can be grouped together which might be something like Twin rooms or Double rooms.
+
+Next you can choose whether a customer can leave notes on the booking such as special requests like late checkout. You can also force customers to pick a date range, from and to rather than a specific date. Depending on what you are allowing people to book will determine whether you want this selected or not.
+
+The codes section is the elements you want people to be able to book for example Room 1, Room 2, Room 3. These should each be on their own line within the box and everything you add here will be added as an option to book.
+
+The next two options are the date ranges the bookable will be active to and from and which dates you want customers to be able to book. The Sort order is the order these elements will appear compared to other elements you have added or will add later with the lower number being first.
+
+The last option is whether this bookable region is enabled. For most cases it will be turned on but where you are setting up a lot of different bookables at once you may wish to disable it until they are all completed.
+
+[title="3"]Add bookable supplement[/title]
+
+[media width="150" description="Bookable supplement form" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/91d9280c5d87c647740c05aa31679cf7.jpg[/media]
+Bookable supplements are the ability to add a supplement for the bookables you have set up for example a late checkout or pre book an evening meal in a hotel.
+
+You must have set up the bookable regions before completing this step. Give the supplement a name so you will understand what the supplement is for at a later date. The next box is the price for the supplement.
+
+The next 3 options are three select boxes which allow you to:
+[list]
+[*] Choose between the supplement being for the period or a one off payment
+[*] Whether a customer can choose more than one supplement or whether they can only choose one from the list
+[*] Whether a customer can leave notes against the supplement
+[/list]
+The sort order is the order the supplement will appear in the list of supplements. Next choose the bookable the supplements appear to. You can select multiple by holding the CTRL button as you click them.
+
+[title="3"]Add a bookable black out[/title]
+
+A bookable blackout is a date range where one of your bookables cannot be booked. For example a venue might have specific dates where it is closed and rather than set up multiple bookable regions it may be easier just to set blackout regions.
+
+The form for the bookable blackouts is 4 simple options. The first 2 are the first and last date for the blackout region. The third option is a text field giving you a chance to give an explanation why the dates are not bookable. The last option is which bookable regions the blackout applies to.
+
+[media width="150" description="Add a booking" float="right"]data_custom/images/docs/sup_add_a_booking_system_to_your_composr_website/a53352de44dfaeee69fb8a1a8fbbf099.jpg[/media]
+[title="2"]Add or Edit a booking[/title]
+
+You can manually add or edit a booking to allow you to use the system as a central room management tool for example. You will need to choose which bookable region you want to add a booking for and then fill in the very straight forward form with the customers details, when they want to book from and to and any notes for the booking.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,eCommerce,Addon,novice}{$SET,tutorial_add_date,Feb 2014}{$SET,tutorial_summary,There is a Bookings addon which allows you to add booking functionality to your website. This tutorial explains some of its functionality.}[block]main_tutorial_rating[/block]

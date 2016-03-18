@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -42,7 +42,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/_config.php');
 
-if (function_exists('php_sapi_name')) {
+if (php_function_allowed('php_sapi_name')) {
     if (php_sapi_name() != 'cli') {
         header('Content-type: text/plain');
     }
@@ -98,7 +98,7 @@ function handle_failover_auto_switching($iteration = 0)
             $time_between_retries = 5;
 
             $full_url = $SITE_INFO['base_url'] . '/' . $url;
-            $full_url .= ((strpos($full_url, '?') === false) ? '?' : '&') . 'keep_failover=0';
+            extend_url($full_url, 'keep_failover=0');
 
             do {
                 $time_before = microtime(true);
@@ -305,10 +305,10 @@ function set_failover_mode($new_mode)
                 );
                 $regexp = '(' . str_replace(' ', '\ ', implode('|', $browsers)) . ')';
 
-                //$new_code.='RewriteMap failover_mode txt:'.$FILE_BASE.'/data_custom/failover_rewritemap.txt'."\n";	Has to be defined in main Apache config
+                //$new_code .= 'RewriteMap failover_mode txt:' . $FILE_BASE . '/data_custom/failover_rewritemap.txt' . "\n";	Has to be defined in main Apache config
                 $new_code .= 'RewriteCond %{QUERY_STRING} !keep_failover [NC]' . "\n";
                 $new_code .= 'RewriteRule ^(.*) ${failover_mode:\$1} [L,QSA]' . "\n";
-                //$new_code.='RewriteMap failover_mode__mobile txt:'.$FILE_BASE.'/data_custom/failover_rewritemap__mobile.txt'."\n";
+                //$new_code .= 'RewriteMap failover_mode__mobile txt:' . $FILE_BASE . '/data_custom/failover_rewritemap__mobile.txt' . "\n";
                 $new_code .= 'RewriteCond %{QUERY_STRING} !keep_failover [NC]' . "\n";
                 $new_code .= 'RewriteCond %{HTTP_USER_AGENT} ' . $regexp . "\n";
                 $new_code .= 'RewriteRule ^(.*) ${failover_mode__mobile:\$1} [L,QSA]' . "\n";

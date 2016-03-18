@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_fields
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -102,6 +103,7 @@ class Hook_addon_registry_core_fields
             'sources/fields.php',
             'sources/hooks/systems/addon_registry/core_fields.php',
             'sources/hooks/systems/fields/.htaccess',
+            'sources_custom/hooks/systems/fields/.htaccess',
             'sources/hooks/systems/fields/video.php',
             'sources/hooks/systems/fields/video_multi.php',
             'sources/hooks/systems/fields/content_link_multi.php',
@@ -115,6 +117,7 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/float.php',
             'sources/hooks/systems/fields/guid.php',
             'sources/hooks/systems/fields/index.html',
+            'sources_custom/hooks/systems/fields/index.html',
             'sources/hooks/systems/fields/integer.php',
             'sources/hooks/systems/fields/isbn.php',
             'sources/hooks/systems/fields/list.php',

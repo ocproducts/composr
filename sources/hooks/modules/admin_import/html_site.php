@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -209,7 +209,7 @@ class Hook_html_site
                     $best_av_ratios = mixed();
                     $ratios = array();
                     while ($last_pos !== false) {
-                        //@print('!'.(strlen($reference_file)-$last_pos).' '.$lv.' '.$ratio.'<br />'."\n");flush();if (@$dd++==180) @exit('fini'); // Useful for debugging
+                        //@print('!' . (strlen($reference_file) - $last_pos) . ' ' . $lv . ' ' . $ratio . '<br />' . "\n");flush();if (@$dd++ == 180) @exit('fini'); // Useful for debugging
                         if ($template_wanted == 'HEADER') {
                             $next_pos = strpos($reference_file, '<', $last_pos);
                         } else {
@@ -573,14 +573,13 @@ class Hook_html_site
                         @unlink($target);
                         @copy($file_base . '/' . $decoded_url, $target);
 
-                        /*if (substr($decoded_url,-4)=='.css') Not needed, as relative paths maintained
-                                        {
-                                                        $css_file=file_get_contents($target);
-                                                        $css_file=preg_replace('#(url\([\'"]?)(\.*'.'/)?#','${1}{$BASE_URL;}/uploads/website_specific/',$css_file);
-                                                        $my_css_file=fopen($target,GOOGLE_APPENGINE?'wb':'wt');
-                                                        fwrite($my_css_file,$css_file);
-                                                        fclose($my_css_file);
-                                        }*/
+                        /*if (substr($decoded_url, -4) == '.css') { Not needed, as relative paths maintained
+                            $css_file = file_get_contents($target);
+                            $css_file = preg_replace('#(url\([\'"]?)(\.*' . '/)?#', '${1}{$BASE_URL;}/uploads/website_specific/', $css_file);
+                            $my_css_file = fopen($target, GOOGLE_APPENGINE ? 'wb' : 'wt');
+                            fwrite($my_css_file, $css_file);
+                            fclose($my_css_file);
+                        }*/
 
                         fix_permissions($target);
                         sync_file($target);
@@ -601,7 +600,7 @@ class Hook_html_site
      * @param  string $to_strip What we are stripping.
      * @param  string $subject What we are stripping from.
      * @param  boolean $backwards Whether we are removing from the end.
-     * @param  integer $i The position to start at (if $backwards=true, then this is relative to the end).
+     * @param  integer $i The position to start at (if $backwards == true, then this is relative to the end).
      * @return string The altered string.
      */
     public function levenshtein_strip_search($to_strip, $subject, $backwards, $i)
@@ -632,7 +631,7 @@ class Hook_html_site
                 }
             }
             $lev = null;
-            //$lev=fake_levenshtein($backwards?substr($subject,-$i):substr($subject,0,$i),$to_strip);    For efficiency the next loop has a more intelligent searching algorithm, to narrow down on the peak
+            //$lev = fake_levenshtein($backwards ? substr($subject, -$i) : substr($subject, 0, $i), $to_strip);    For efficiency the next loop has a more intelligent searching algorithm, to narrow down on the peak
             $positions[] = array($i, $lev);
         }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -51,6 +51,6 @@ class Hook_config_captcha_single_guess
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

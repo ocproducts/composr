@@ -1,7 +1,22 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    nested_cpf_csv_lists
+ */
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__nested_csv()
 {
@@ -15,20 +30,24 @@ function init__nested_csv()
  */
 function get_nested_csv_structure()
 {
-    require_code('cns_members');
-    require_code('cns_groups');
+    if (get_forum_type() == 'cns') {
+        require_code('cns_members');
+        require_code('cns_groups');
 
-    $_custom_fields = cns_get_all_custom_fields_match(
-        cns_get_all_default_groups(true),
-        null, // public view
-        null, // owner view
-        null, // owner set
-        null,
-        null,
-        null,
-        0,
-        null // show on join form
-    );
+        $_custom_fields = cns_get_all_custom_fields_match(
+            cns_get_all_default_groups(true),
+            null, // public view
+            null, // owner view
+            null, // owner set
+            null,
+            null,
+            null,
+            0,
+            null // show on join form
+        );
+    } else {
+        $_custom_fields = array();
+    }
 
     static $csv_structure = array();
     if ($csv_structure !== array()) {

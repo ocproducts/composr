@@ -16,13 +16,13 @@ function load_commandr()
 		var tmp_element=document.createElement('img');
 		tmp_element.src='{$IMG;,loading}'.replace(/^https?:/,window.location.protocol);
 		tmp_element.style.position='absolute';
-		tmp_element.style.left=find_pos_x(img)+'px';
-		tmp_element.style.top=find_pos_y(img)+'px';
+		tmp_element.style.left=(find_pos_x(img)+2)+'px';
+		tmp_element.style.top=(find_pos_y(img)+1)+'px';
 		tmp_element.id='commandr_img_loader';
 		img.parentNode.appendChild(tmp_element);
 
-		require_javascript('ajax');
-		require_javascript('commandr','commandr');
+		require_javascript('ajax',window.do_ajax_request);
+		require_javascript('commandr',window.commandr_handle_history);
 		require_css('commandr');
 		window.setTimeout(load_commandr,200);
 		return false;

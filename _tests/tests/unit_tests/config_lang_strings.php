@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,11 +19,6 @@
 class config_lang_strings_test_set extends cms_test_case
 {
     public $id;
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
 
     public function testStrings()
     {
@@ -48,10 +43,5 @@ class config_lang_strings_test_set extends cms_test_case
             $test = do_lang($option['human_name'], null, null, null, null, false);
             $this->assertFalse(is_null($test), 'Error on: ' . $option['human_name']);
         }
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

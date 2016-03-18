@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -150,7 +150,7 @@ function do_access($given_password)
 
         'base_url' => 'A critical option, that defines the URL of the site (no trailing slash). You can blank this out for auto-detection, but only do this during development -- if you do it live and somehow multiple domains can get to your site, random errors will occur due to caching problems.',
         'domain' => 'The domain that e-mail addresses are registered on. This applies only to the Point Store and may be ignored by most.',
-        'default_lang' => 'The default language used on the site (language code form, of subdirectory under lang/).',
+        'default_lang' => 'The default language used on the site (language codename form, of subdirectory under lang/).',
         'block_mod_rewrite' => 'Whether to block the short-URL (mod_rewrite) option. Set this to 1 if you turned on short-URLs and find your site no longer works.',
         'on_msn' => 'Whether this is a site on an Conversr multi-site-network (enable for to trigger URLs to avatars and photos to be absolute).',
 
@@ -170,6 +170,7 @@ function do_access($given_password)
         'db_forums_password' => '<em>Database:</em> The password for the forum database username.',
         'use_persistent' => '<em>Database:</em> Whether to use persistent database connections (most shared webhosts do not like these to be used).',
         'database_charset' => '<em>Database:</em> The MySQL character set for the connection. Usually you can just leave this blank, but if MySQL\'s character set for your database has been overridden away from the server-default then you will need to set this to be equal to that same character set.',
+        'skip_fulltext_sqlserver' => '<em>Database:</em> Set to \'1\' if you are using Microsoft SQL Server and want to disable full-text search support.',
 
         'user_cookie' => '<em>Cookies:</em> The name of the cookie used to hold usernames/ids for each user. Dependant on the forum system involved, and may use a special serialisation notation involving a colon (there is no special notation for Conversr).',
         'pass_cookie' => '<em>Cookies:</em> The name of the cookie used to hold passwords for each user.',
@@ -209,6 +210,8 @@ function do_access($given_password)
         'safe_mode' => '<em>Development:</em> Whether Composr is to be forced into Safe Mode, meaning no custom files will load and most caching will be disabled.',
         'no_email_output' => '<em>Development:</em> Whether emails should never be sent.',
         'email_to' => '<em>Development:</em> If you have set up a customised critical error screen, and a background e-mailing process, this defines where error e-mails will be sent.',
+        'no_ssl' => '<em>Development:</em> Disable SSL (useful for conditionally disabling on development sites without SSL, when running a database with SSL configured)',
+        'nodejs_binary_path' => '<em>Development:</em> Provide the path to your installed Node.js binary to use it for compiling .less stylesheets. You will also need to run `npm install less` in your Composr directory to install the NPM module.',
 
         'failover_mode' => '<em>Failover:</em> The failover mode. Either \'off\' or \'on\' or \'auto_off\' or \'auto_on\'. Usually it will be left to \'off\', meaning there is no active failover mode. The next most common setting will be \'auto_off\', which means the failover_script.php script is allowed to set it to \'auto_on\' if it detects the site is failing (and back to \'auto_off\' again when things are okay again). Setting it to \'on\' is manually declaring the site has failed and you want to keep it in failover mode.',
         'failover_apache_rewritemap_file' => '<em>Failover:</em> Set to \'1\' to maintain an Apache RewriteMap file that maps disk cache files to URLs directly. This is a very advanced option and needs server-level Apache configuration by a programmer. You can also set to \'-\' which is like \'1\' except mobile hits are not differentiated from desktop hits.',
@@ -221,7 +224,7 @@ function do_access($given_password)
         'failover_message_place_after' => '<em>Failover:</em> failover_message will be placed after this HTML marker.',
         'failover_message_place_before' => '<em>Failover:</em> failover_message will be placed before this HTML marker. May be specified in addition to failover_message_place_after, so that two messages show.',
 
-        'rate_limiting' => '<em>Rate limiting:</em> Whether to enable rate limiting for IPs. Set to \'1\' to enable it. It is not enabled by default. The data_custom/rate_limiter.php file must exist and be writeable (on a suExec-style server the file will auto-create). IP addresses passed to PHP must be accurate.',
+        'rate_limiting' => '<em>Rate limiting:</em> Whether to enable rate limiting for IPs. Set to \'1\' to enable it. It is not enabled by default. The data_custom/rate_limiter.php file must exist and be writeable (on a suExec-style server the file will auto-create, otherwise just make it as an empty file). IP addresses passed to PHP must be accurate.',
         'rate_limit_time_window' => '<em>Rate limiting:</em> The number of seconds hits are counted across. Defaults to \'10\'.',
         'rate_limit_hits_per_window' => '<em>Rate limiting:</em> The number of hits per IP going back as far as the time window. Defaults to \'5\'.',
 
@@ -417,13 +420,13 @@ function do_set()
         if (is_array($val)) {
             foreach ($val as $val2) {
                 $_val = str_replace('\\', '\\\\', $val2);
-                if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'][]=\'' . $_val . "';\n") === false) {
+                if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'][] = \'' . $_val . "';\n") === false) {
                     echo '<strong>Could not save to file. Out of disk space?<strong>';
                 }
             }
         } else {
             $_val = str_replace('\\', '\\\\', $val);
-            if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n") === false) {
+            if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n") === false) {
                 echo '<strong>Could not save to file. Out of disk space?<strong>';
             }
         }

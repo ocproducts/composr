@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -150,8 +150,8 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             'url' => null,
             'extra_meta' => array(
                 'description' => null,
-                'image' => null,
-                'image_2x' => null,
+                'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/adminzone/setup/config/config') : null,
+                'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/adminzone/setup/config/config') : null,
                 'add_date' => null,
                 'edit_date' => null,
                 'submitter' => null,
@@ -165,6 +165,7 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
             ),
             'permissions' => array(),
             'has_possible_children' => false,
+            'children' => null,
 
             // These are likely to be changed in individual hooks
             'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,

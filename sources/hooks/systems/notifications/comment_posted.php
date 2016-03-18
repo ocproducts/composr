@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -104,7 +104,7 @@ class Hook_notification_comment_posted extends Hook_Notification
      */
     public function get_default_auto_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**

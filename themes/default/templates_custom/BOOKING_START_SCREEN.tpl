@@ -61,10 +61,10 @@
 			<p class="associated_details">{!ALL_DATES_IN,{$TIMEZONE*}}</p>
 
 			{+START,LOOP,CATEGORIES}
-				<h2>{CATEGORY_TITLE}</h2>
+				<h2>{CATEGORY_TITLE*}</h2>
 
 				<div class="wide_table_wrap">
-					<table class="wide_table results_table spaced_table">
+					<table class="wide_table results_table columned_table spaced_table">
 						<thead>
 							<tr>
 								<th>{!ITEM}</th>
@@ -147,7 +147,7 @@
 									{+END}
 
 									<td class="vertical_alignment">
-										{$CURRENCY_SYMBOL} {$PREG_REPLACE*,\.00$,,{BOOKABLE_PRICE}}
+										{$CURRENCY_SYMBOL}{$PREG_REPLACE*,\.00$,,{BOOKABLE_PRICE}}
 										(<a title="{!CURRENCY_CONVERT} {!LINK_NEW_WINDOW}" target="_blank" href="http://coinmill.com/SOS_calculator.html#{$CONFIG_OPTION,currency}={BOOKABLE_PRICE_RAW*}">{!CURRENCY_CONVERT}</a>)
 										{$,{$COMCODE,[currency bracket="1"]{BOOKABLE_PRICE_RAW}[/currency]}}
 										<span class="associated_details">{!BOOKING_PER}</span>
@@ -161,7 +161,7 @@
 		</div>
 
 		<p class="proceed_button">
-			<input class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+			<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</form>
 {+END}

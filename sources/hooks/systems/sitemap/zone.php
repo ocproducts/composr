@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -151,8 +151,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 'description' => null,
                 'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
                 'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
-                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filectime($path) : null,
-                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0) ? filemtime($path) : null,
+                'add_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filectime($path) : null,
+                'edit_date' => (($meta_gather & SITEMAP_GATHER_TIMES) != 0 && file_exists($path)) ? filemtime($path) : null,
                 'submitter' => null,
                 'views' => null,
                 'rating' => null,
@@ -213,8 +213,12 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 }
                 $struct['permissions'] = array_merge($struct['permissions'], $child_node['permissions']);
 
-                if ($child_node['children'] !== null) {
-                    $children = array_merge($children, $child_node['children']);
+                if (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) {
+                    if ($child_node['children'] !== null) {
+                        $children = array_merge($children, $child_node['children']);
+                    }
+                } else {
+                    $children[] = $child_node;
                 }
             }
         }
@@ -225,25 +229,26 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
         // What page groupings may apply in what zones? (in display order)
         $applicable_page_groupings = array();
-        switch ($zone) {
-            case 'adminzone':
-                $applicable_page_groupings = array(
-                    'audit',
-                    'security',
-                    'structure',
-                    'style',
-                    'setup',
-                    'tools',
-                );
-                break;
+        if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) {
+            switch ($zone) {
+                case 'adminzone':
+                    $applicable_page_groupings = array(
+                        'audit',
+                        'security',
+                        'structure',
+                        'style',
+                        'setup',
+                        'tools',
+                    );
+                    break;
 
-            case '':
-                if (get_option('collapse_user_zones') == '0') {
-                    $applicable_page_groupings = array(); // else flow on...
-                }
+                case '':
+                    if (get_option('collapse_user_zones') == '0') {
+                        $applicable_page_groupings = array();
+                        break;
+                    } // else flow on...
 
-            case 'site':
-                if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0) {
+                case 'site':
                     $applicable_page_groupings = array(
                         'pages',
                         'rich_content',
@@ -257,14 +262,14 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     $applicable_page_groupings = array_merge($applicable_page_groupings, array(
                         'site_meta',
                     ));
-                }
-                break;
+                    break;
 
-            case 'cms':
-                $applicable_page_groupings = array(
-                    'cms',
-                );
-                break;
+                case 'cms':
+                    $applicable_page_groupings = array(
+                        'cms',
+                    );
+                    break;
+            }
         }
 
         $call_struct = true;
@@ -286,8 +291,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             foreach ($links as $link) {
                 list($page_grouping) = $link;
 
-                if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
-                    if ((is_array($link)) && (is_string($link[2][2]))) {
+                if ((is_array($link)) && (is_string($link[2][2]))) {
+                    if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
                         $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                     }
                 }
@@ -297,6 +302,8 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     $page_groupings[$page_grouping][] = $link;
                 }
             }
+            $pages_found[':' . get_zone_default_page('')] = true;
+            $pages_found[$zone . ':' . $zone_default_page] = true;
 
             // Any left-behind pages?
             // NB: Code largely repeated in page_grouping.php
@@ -314,7 +321,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         $pages[$page] = $page_type;
                     }
 
-                    if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
+                    if ((!isset($pages_found[$_zone . ':' . $page])) && ($page != 'recommend_help'/*Special case*/) && ((strpos($page_type, 'comcode') === false/*not a Comcode page*/) || (isset($root_comcode_pages[$_zone . ':' . $page])))) {
                         if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
                             continue;
                         }
@@ -324,7 +331,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             }
 
             // Do page-groupings
-            if (count($page_groupings) != 1) {
+            if (count($page_groupings) != 1) { // 0 or more than 1 page groupings
                 $page_grouping_sitemap_xml_ob = $this->_get_sitemap_object('page_grouping');
 
                 foreach ($page_groupings as $page_grouping => $page_grouping_pages) {
@@ -396,11 +403,11 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                             if (preg_match('#^redirect:#', $page_type) != 0) {
                                 if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
                                     list(, $redir_zone, $redir_page) = explode(':', $page_type);
-                                    $struct['title'] = make_string_tempcode(html_entity_decode(strip_tags(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))), ENT_QUOTES) . ': ' . (is_string($page) ? $page : strval($page)));
+                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
                                 }
                             }
 
-                            if ($_zone == 'site' || $_zone == 'adminzone') {
+                            if (($_zone == 'site' || $_zone == 'adminzone') && (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) != 0)) {
                                 $child_node['is_unexpected_orphan'] = true; // This should never be set, it indicates a page not in a page grouping
                             }
 
@@ -408,7 +415,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                         }
                     }
                 }
-            } elseif (count($page_groupings) == 1) {
+            } else { // 1 page group exactly
                 // Show contents of group directly...
 
                 $comcode_page_sitemap_ob = $this->_get_sitemap_object('comcode_page');

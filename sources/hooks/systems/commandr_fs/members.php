@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,7 +24,7 @@
 class Hook_commandr_fs_members
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -47,7 +47,7 @@ class Hook_commandr_fs_members
 
             $users = $GLOBALS['SITE_DB']->query_select('f_members', array('id', 'm_username', 'm_join_time'));
             foreach ($users as $user) {
-                $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
+                $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($user['id'])) . ' AND  (' . db_string_equal_to('the_type', 'EDIT_EDIT_MEMBER_PROFILE') . ')';
                 $modification_time = $GLOBALS['SITE_DB']->query_value_if_there($query);
                 if (is_null($modification_time)) {
                     $modification_time = $user['m_join_time'];
@@ -55,7 +55,7 @@ class Hook_commandr_fs_members
 
                 $listing[] = array(
                     $user['m_username'],
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $modification_time,
                 );
@@ -99,14 +99,14 @@ class Hook_commandr_fs_members
             foreach ($props as $prop) {
                 $listing[] = array(
                     $prop,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     strlen($member_data['m_' . $prop]),
                     $member_data['m_join_time'],
                 );
             }
             $listing[] = array(
                 'groups',
-                COMMANDRFS_DIR,
+                COMMANDR_FS_DIR,
                 null/*don't calculate a filesize*/,
                 $member_data['m_join_time'],
             );
@@ -124,7 +124,7 @@ class Hook_commandr_fs_members
                 $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)), $GLOBALS['FORUM_DB']);
                 $listing[] = array(
                     $cpf_name,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     strlen($cpf_value),
                     $member_data['m_join_time'],
                 );
@@ -141,7 +141,7 @@ class Hook_commandr_fs_members
                 if (array_key_exists($group, $group_names)) {
                     $listing[] = array(
                         $group_names[$group],
-                        COMMANDRFS_FILE,
+                        COMMANDR_FS_FILE,
                         0,
                         null,
                     );
@@ -155,7 +155,7 @@ class Hook_commandr_fs_members
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -182,7 +182,7 @@ class Hook_commandr_fs_members
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -209,7 +209,7 @@ class Hook_commandr_fs_members
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -286,7 +286,7 @@ class Hook_commandr_fs_members
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -360,7 +360,7 @@ class Hook_commandr_fs_members
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Module_catalogues
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 8;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -66,7 +66,9 @@ class Module_catalogues
         $GLOBALS['SITE_DB']->query_delete('trackbacks', array('trackback_for_type' => 'catalogues'));
 
         require_code('files');
-        deldir_contents(get_custom_file_base() . '/uploads/catalogues', true);
+        if (!$GLOBALS['DEV_MODE']) {
+            deldir_contents(get_custom_file_base() . '/uploads/catalogues', true);
+        }
 
         delete_privilege('high_catalogue_entry_timeout');
 
@@ -113,6 +115,7 @@ class Module_catalogues
                 'cc_move_target' => '?AUTO_LINK',
                 'cc_move_days_lower' => 'INTEGER',
                 'cc_move_days_higher' => 'INTEGER',
+                'cc_order' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'catstoclean', array('cc_move_target'));
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cataloguefind', array('c_name'));
@@ -239,10 +242,10 @@ class Module_catalogues
             // Add the default catalogues
             // ==========================
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+            require_code('permissions2');
 
             // Projects
-            actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('projects', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('NAME', 'DESCRIPTION_NAME', 'short_trans', 1, 1, ''),
                 array('MAINTAINER', 'DESCRIPTION_MAINTAINER', 'member', 0, 1, '!'),
@@ -253,14 +256,11 @@ class Module_catalogues
                 actual_add_catalogue_field('projects', lang_code_to_default_content('cf_name', $field[0], false, 3), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, $field[5], $field[4]);
             }
             $cat_id = actual_add_catalogue_category('projects', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), '', null, '');
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'projects', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'projects');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // Links
             actual_add_catalogue('links', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_LINKS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_LINKS_DESCRIPTION', true, 3), C_DT_TABULAR, 1, '', 0);
-            $links_category = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'links'));
             $fields = array(
                 // Name, Description, Type, Defines order, Required, Put in category
                 array('TITLE', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1),
@@ -270,13 +270,12 @@ class Module_catalogues
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field('links', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, '', $field[4], $field[5]);
             }
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($links_category), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'links', 'group_id' => $group_id));
-            }
+            $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'links'));
+            set_global_category_access('catalogues_catalogue', 'links');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // FAQs
-            actual_add_catalogue('faqs', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_FAQS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 0);
+            actual_add_catalogue('faqs', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), '', C_DT_FIELDMAPS, 0, '', 0);
             $fields = array(
                 array('QUESTION', 'DESCRIPTON_QUESTION', 'short_trans', 0, 1, 1, ''),
                 array('ANSWER', '_DESCRIPTION_ANSWER', 'long_trans', 0, 1, 1, ''),
@@ -286,36 +285,33 @@ class Module_catalogues
                 actual_add_catalogue_field('faqs', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], $field[5], 1, '', $field[4], 1, $field[6]);
             }
             $cat_id = actual_add_catalogue_category('faqs', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_FAQS_DESCRIPTION', true, 3), '', null, '');
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'faqs', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'faqs');
+            set_global_category_access('catalogues_category', $cat_id);
 
             // Contacts
-            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_CONTACTS_DESCRIPTION', true, 3), C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('CONTACT_FIRST_NAME', '', 'short_text', 0, 1),
                 array('CONTACT_LAST_NAME', '', 'short_text', 1, 1),
-                array('EMAIL_ADDRESS', '', 'short_text', 0, 1),
-                array('CONTACT_COMPANY', '', 'short_text', 0, 1),
-                array('CONTACT_HOMEADDRESS', '', 'short_text', 0, 1),
-                array('CONTACT_CITY', '', 'short_text', 0, 1),
-                array('CONTACT_HOMEPHONE', '', 'short_text', 0, 1),
-                array('CONTACT_WORKPHONE', '', 'short_text', 0, 1),
-                array('CONTACT_HOMEPAGE', '', 'short_text', 0, 1),
-                array('CONTACT_IM', '', 'short_text', 0, 1),
-                array('CONTACT_EVENTS', '', 'long_text', 0, 1),
-                array('CONTACT_NOTES', '', 'long_text', 0, 1),
-                array('CONTACT_PHOTO', '', 'picture', 0, 1)
+                array('EMAIL_ADDRESS', '', 'short_text', 0, 0),
+                array('CONTACT_COMPANY', '', 'short_text', 0, 0),
+                array('CONTACT_HOMEADDRESS', '', 'short_text', 0, 0),
+                array('CONTACT_CITY', '', 'short_text', 0, 0),
+                array('CONTACT_HOMEPHONE', '', 'short_text', 0, 0),
+                array('CONTACT_WORKPHONE', '', 'short_text', 0, 0),
+                array('CONTACT_HOMEPAGE', '', 'short_text', 0, 0),
+                array('CONTACT_IM', '', 'short_text', 0, 0),
+                array('CONTACT_NOTES', '', 'long_text', 0, 0),
+                array('CONTACT_PHOTO', '', 'picture', 0, 0)
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field('contacts', lang_code_to_default_content('cf_name', $field[0], false, 3), insert_lang('cf_description', '', 2), $field[2], $i, $field[3], 1, 1, '', $field[4]);
             }
             actual_add_catalogue_category('contacts', lang_code_to_default_content('cc_title', 'CONTACTS', false, 2), '', '', null, '');
 
+            // Products
             actual_add_catalogue('products', lang_code_to_default_content('c_title', 'DEFAULT_CATALOGUE_PRODUCTS_TITLE', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_PRODUCTS_DESCRIPTION', false, 2), C_DT_GRID, 1, '', 0, 1);
             $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'products'));
-
             $fields = array(
                 //     Name  Description  Type  Defines order  Required  Visible  Searchable
                 array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1),
@@ -329,7 +325,6 @@ class Module_catalogues
                 array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
                 array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
             );
-
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field('products', // $c_name
                     lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
@@ -345,17 +340,14 @@ class Module_catalogues
                     array_key_exists(5, $field) ? $field[5] : 0 // $put_in_search
                 );
             }
-
-            foreach (array_keys($groups) as $group_id) {
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_category', 'category_name' => strval($cat_id), 'group_id' => $group_id));
-                $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'catalogues_catalogue', 'category_name' => 'products', 'group_id' => $group_id));
-            }
+            set_global_category_access('catalogues_catalogue', 'products');
+            set_global_category_access('catalogues_category', $cat_id);
 
             add_privilege('CATALOGUES', 'high_catalogue_entry_timeout', false);
 
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', '#lcv_value', array('cv_value'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', '#scv_value', array('cv_value'), 'id');
-            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long','ilcv_value',array('cv_value'),'id');  Not allowed, LONG_TEXT can not be in key. People shouldn't order by this anyway
+            //$GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'ilcv_value', array('cv_value'), 'id');  Not allowed, LONG_TEXT can not be in key. People shouldn't order by this anyway
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'iscv_value', array('cv_value'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_long', 'lcf_id', array('cf_id'), 'id');
             $GLOBALS['SITE_DB']->create_index('catalogue_efv_short', 'scf_id', array('cf_id'), 'id');
@@ -382,8 +374,8 @@ class Module_catalogues
             rebuild_catalogue_cat_treecache();
 
             // Move floats and integers into their own new tables
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $sql_integer = db_string_equal_to('cf_type', 'integer') . ' OR ' . db_string_equal_to('cf_type', 'member') . ' OR ' . db_string_equal_to('cf_type', 'tick');
             $sql_float = db_string_equal_to('cf_type', 'float');
@@ -428,6 +420,9 @@ class Module_catalogues
 
             $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_default_review_freq', '?INTEGER', null);
 
+            require_code('content2');
+            $GLOBALS['SITE_DB']->add_table_field('catalogue_categories', 'cc_order', 'INTEGER', ORDER_AUTOMATED_CRITERIA);
+
             $GLOBALS['SITE_DB']->add_table_field('catalogue_fields', 'cf_options', 'SHORT_TEXT');
 
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
@@ -438,6 +433,10 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
         }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
+        }
     }
 
     /**
@@ -446,7 +445,7 @@ class Module_catalogues
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -477,7 +476,7 @@ class Module_catalogues
     public $is_ecommerce;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -527,18 +526,10 @@ class Module_catalogues
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . (($catalogue['c_ecommerce'] == 1) ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
             breadcrumb_set_self(get_translated_text($catalogue['c_title']));
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $catalogue['c_add_date']),
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Catalogue',
-                'title' => comcode_escape(get_translated_text($catalogue['c_title'])),
                 'identifier' => '_SEARCH:catalogues:index:' . $catalogue_name,
-                'description' => $description_2,
-                //'category'=>???,
-            ));
+            ), $catalogue, 'catalogue', $catalogue_name);
 
             $this->catalogue_name = $catalogue_name;
             $this->catalogue = $catalogue;
@@ -562,7 +553,7 @@ class Module_catalogues
             // Get category
             $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $categories)) {
-                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
             }
             $category = $categories[0];
 
@@ -594,7 +585,7 @@ class Module_catalogues
             }
             $this->title = get_screen_title($title_to_use, false, null, null, $awards);
 
-            // Meta data
+            // Metadata
             if (is_object($title_to_use_2)) {
                 $title_to_use_2 = $title_to_use_2->evaluate();
             }
@@ -604,45 +595,31 @@ class Module_catalogues
             $is_ecommerce = is_ecommerce_catalogue($catalogue_name, $catalogue);
 
             // Breadcrumbs
+            $breadcrumbs = array();
+            if (is_null($root)) {
+                $breadcrumbs = array_merge($breadcrumbs, array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
+            }
             if ($catalogue['c_is_tree'] == 1) {
-                $breadcrumbs = catalogue_category_breadcrumbs($id, $root, true, true);
+                $breadcrumbs = array_merge($breadcrumbs, catalogue_category_breadcrumbs($id, $root, true, true));
                 if ((has_privilege(get_member(), 'open_virtual_roots')) && ($id != $root)) {
                     $page_link = build_page_link(array('page' => '_SELF', 'type' => 'category', 'id' => $id, 'keep_catalogue_' . $catalogue_name . '_root' => $id), '_SELF');
                     $breadcrumbs[] = array($page_link, $_title, do_lang_tempcode('VIRTUAL_ROOT'));
                 } else {
                     $breadcrumbs[] = array('', $_title);
                 }
-                breadcrumb_set_parents($breadcrumbs);
             } else {
-                $breadcrumbs = array();
                 $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
                 $catalogue_title = get_translated_text($catalogue['c_title']);
                 $breadcrumbs[] = array($page_link, $catalogue_title);
                 $breadcrumbs[] = array('', $_title);
-                breadcrumb_set_parents($breadcrumbs);
             }
-            if (is_null($root)) {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse' . ($is_ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'))));
-            }
+            breadcrumb_set_parents($breadcrumbs);
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $category['cc_add_date']),
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
                 'type' => get_translated_text($catalogue['c_title']) . ' category',
-                'title' => comcode_escape($_title),
                 'identifier' => '_SEARCH:catalogues:category:' . strval($id),
-                'description' => get_translated_text($category['cc_description']),
-                //'category'=>???,
-            ));
-            $rep_image_str = $category['rep_image'];
-            if ($rep_image_str != '') {
-                set_extra_request_metadata(array(
-                    'image' => (url_is_local($rep_image_str) ? (get_custom_base_url() . '/') : '') . $rep_image_str,
-                ));
-            }
+            ), $category, 'catalogue_category', strval($id));
 
             $this->category = $category;
             $this->catalogue_name = $catalogue_name;
@@ -671,7 +648,7 @@ class Module_catalogues
 
             $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $categories)) {
-                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_category'));
             }
             $category = $categories[0];
 
@@ -801,13 +778,12 @@ class Module_catalogues
         if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
-        $rows_subcategories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cc_add_date');
-        foreach ($rows_subcategories as $i => $subcategory) { // Dereference language
-            $rows_subcategories[$i]['cc_title_lookup'] = get_translated_text($subcategory['cc_title']);
-        }
-        if (get_value('cc_sort_date__' . $catalogue_name) !== '1') {
-            sort_maps_by($rows_subcategories, 'cc_title_lookup');
-        }
+        $rows_subcategories = $GLOBALS['SITE_DB']->query_select(
+            'catalogue_categories',
+            array('*'),
+            array('c_name' => $catalogue_name),
+            'ORDER BY cc_order,' . ((get_value('cc_sort_date__' . $catalogue_name) === '1') ? 'cc_add_date' : $GLOBALS['SITE_DB']->translate_field_ref('cc_title'))
+        );
 
         // Render categories
         // Not done via main_multi_content block due to need for custom query
@@ -836,6 +812,7 @@ class Module_catalogues
             'CATALOGUE' => $catalogue_name, // Not an official PAGINATION_SCREEN parameter, but could be useful
             'CONTENT' => $content,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
             'EDIT_URL' => $edit_url,
             'EDIT_LABEL' => do_lang_tempcode('EDIT_CATALOGUE'),
         ));
@@ -944,6 +921,7 @@ class Module_catalogues
                 'CATALOGUE' => $catalogue_name,
                 'ADD_ENTRY_URL' => $add_link,
                 'ADD_CAT_URL' => $add_cat_url,
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => $edit_cat_url,
                 'EDIT_CATALOGUE_URL' => $edit_catalogue_url,
                 'ENTRIES' => $category_buildup,
@@ -1040,11 +1018,11 @@ class Module_catalogues
         } else {
             $cc_sort = 'title';
         }
-        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0'));
+        $subcategories = do_block('main_multi_content', array('param' => 'catalogue_category', 'select' => strval($id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => $cc_sort, 'max' => get_option('catalogue_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'render_if_empty' => '0', 'guid' => 'module'));
         if (get_option('catalogues_subcat_narrowin') == '1') {
             $cat_select = strval($id) . '*';
         } else {
-            $cat_select = strval($id);
+            $cat_select = strval($id) . '#';
         }
         $filter = either_param_string('active_filter', '');
         $entries = do_block('main_cc_embed', array('param' => $cat_select, 'zone' => '_SELF', 'max' => get_option('catalogue_entries_per_page'), 'pagination' => '1', 'sorting' => '1', 'filter' => $filter, 'block_id' => 'module'));
@@ -1060,6 +1038,7 @@ class Module_catalogues
             'CATALOGUE' => $catalogue_name,
             'ADD_ENTRY_URL' => $add_link,
             'ADD_CAT_URL' => $add_cat_url,
+            'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
             'EDIT_CAT_URL' => $edit_cat_url,
             'EDIT_CATALOGUE_URL' => $edit_catalogue_url,
             'ENTRIES' => $entries,

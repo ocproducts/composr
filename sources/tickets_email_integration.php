@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -176,7 +176,13 @@ function ticket_incoming_scan()
         }
         imap_close($resource);
     } else {
-        warn_exit(do_lang_tempcode('IMAP_ERROR', imap_last_error()));
+        $error = imap_last_error();
+        imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
+
+        $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+        if (!$cli && get_param_integer('no_fatal_cron_errors', 0) != 1) {
+            warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
+        }
     }
 }
 
@@ -316,6 +322,8 @@ function is_non_human_email($subject, $body, $full_header)
  *
  * @param  array $matches preg Matches
  * @return string The result
+ *
+ * @ignore
  */
 function _convert_text_quote_to_comcode($matches)
 {
@@ -327,6 +335,8 @@ function _convert_text_quote_to_comcode($matches)
  *
  * @param  object $structure Structure
  * @return string Mime type
+ *
+ * @ignore
  */
 function _imap_get_mime_type($structure)
 {
@@ -339,7 +349,7 @@ function _imap_get_mime_type($structure)
 
 /**
  * Find a message part of an e-mail that matches a mime-type.
- * Taken from http://www.php.net/manual/en/function.imap-fetchbody.php
+ * Taken from http://php.net/manual/en/function.imap-fetchbody.php
  *
  * @param  resource $stream IMAP connection object
  * @param  integer $msg_number Message number
@@ -349,6 +359,7 @@ function _imap_get_mime_type($structure)
  * @param  ?object $structure IMAP message structure (null: look up)
  * @param  string $part_number Message part number (blank: root)
  * @return ?string The message part (null: could not find one)
+ * @ignore
  */
 function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attachment_size_total, $structure = null, $part_number = '')
 {
@@ -559,6 +570,8 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     // Mark that this was e-mailed in
     $body .= "\n\n" . do_lang('TICKET_EMAILED_IN');
 
+    $GLOBALS['LAX_COMCODE'] = true;
+
     // Post
     if (is_null($existing_ticket)) {
         $new_ticket_id = strval($member_id) . '_' . uniqid('', false);
@@ -604,7 +617,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $_ticket_type_id = 1; // These will be returned by reference
         $posts = get_ticket_posts($existing_ticket, $_forum, $_topic_id, $_ticket_type_id);
         if (!is_array($posts)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
         }
         $__title = do_lang('UNKNOWN');
         foreach ($posts as $ticket_post) {
@@ -615,6 +628,6 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         }
 
         // Send email (to staff & to confirm receipt to $member_id)
-        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, -1, $member_id, true);
+        send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
     }
 }

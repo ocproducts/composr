@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__templates_pagination()
 {
@@ -265,6 +267,8 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
  * @param  array $post_array Map of POST array segments (relayed as GET) to use
  * @param  ID_TEXT $hash Hash component to URL
  * @return mixed The URL
+ *
+ * @ignore
  */
 function _build_pagination_cat_url($url_array, $post_array, $hash)
 {

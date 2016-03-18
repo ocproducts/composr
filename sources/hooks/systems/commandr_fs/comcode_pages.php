@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public $file_resource_type = 'comcode_page';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -38,7 +38,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'comcode_page':
-                return $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)');
+                return $GLOBALS['SITE_DB']->query_select_value('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON p.the_zone=z.zone_name', 'COUNT(*)'); // Extra joining just because things are liable to accidentally become inconsistent for zones&pages (due to their partial on-disk nature)
 
             case 'zone':
                 return $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
@@ -47,7 +47,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -65,7 +65,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
                     $where = array('the_page' => $page);
                 }
 
-                $_ret = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), $where);
+                $_ret = $GLOBALS['SITE_DB']->query_select('comcode_pages p JOIN ' . get_table_prefix() . 'zones z ON p.the_zone=z.zone_name', array('the_zone', 'the_page'), $where);
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = $r['the_zone'] . ':' . $r['the_page'];
@@ -80,35 +80,19 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'human_title' => 'SHORT_TRANS',
-            'default_page' => 'ID_TEXT',
-            'header_text' => 'SHORT_TRANS',
-            'theme' => 'ID_TEXT',
-            'require_session' => 'BINARY',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['zone_name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_ZONE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_ZONE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['zone_name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_ZONE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_ZONE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -121,7 +105,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('zones2');
 
@@ -135,17 +119,29 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');
+        if ($theme == '') {
+            $theme = '-1';
+        }
         $require_session = $this->_default_property_int($properties, 'require_session');
 
         $zone = $this->_create_name_from_label($label);
 
         $zone = actual_add_zone($zone, $human_title, $default_page, $header_text, $theme, $require_session, true);
 
+        if (isset($properties['group_access'])) {
+            table_from_portable_rows('group_zone_access', $properties['group_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+        if (isset($properties['member_access'])) {
+            table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->_resource_save_extend($this->folder_resource_type, $zone, $filename, $label, $properties);
+
         return $zone;
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -161,18 +157,22 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['zone_name'],
             'human_title' => $row['zone_title'],
             'default_page' => $row['zone_default_page'],
             'header_text' => $row['zone_header_text'],
             'theme' => $row['zone_theme'],
             'require_session' => $row['zone_require_session'],
+            'group_access' => table_to_portable_rows('group_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
+            'member_access' => table_to_portable_rows('member_zone_access', /*skip*/array(), array('zone_name' => $resource_id)),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -182,6 +182,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('zones3');
 
@@ -196,16 +197,28 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');
+        if ($theme == '') {
+            $theme = '-1';
+        }
         $require_session = $this->_default_property_int($properties, 'require_session');
         $zone = $this->_create_name_from_label($label);
 
         $zone = actual_edit_zone($resource_id, $human_title, $default_page, $header_text, $theme, $require_session, $zone, true, true);
 
-        return $resource_id;
+        if (isset($properties['group_access'])) {
+            table_from_portable_rows('group_zone_access', $properties['group_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+        if (isset($properties['member_access'])) {
+            table_from_portable_rows('member_zone_access', $properties['member_access'], array('zone_name' => $zone), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
+
+        return $zone;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -223,40 +236,19 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'text' => 'LONG_TRANS',
-            'parent_page' => 'comcode_page',
-            'order' => 'INTEGER',
-            'validated' => 'BINARY',
-            'show_as_edit' => 'BINARY',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['the_page']) . ' AND  ' . db_string_equal_to('param_b', $row['the_zone']) . ' AND  (' . db_string_equal_to('the_type', 'COMCODE_PAGE_EDIT') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['the_page']) . ' AND  ' . db_string_equal_to('param_b', $row['the_zone']) . ' AND  (' . db_string_equal_to('the_type', 'COMCODE_PAGE_EDIT') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -266,7 +258,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -287,13 +279,10 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        if (is_null($add_time)) {
-            $add_time = time();
-        }
+        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         if (is_null($submitter)) {
             $submitter = get_member();
         }
@@ -304,18 +293,20 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
 
         $test = _request_page($page, $zone, null, null, true);
         if ($test !== false) {
-            $page .= '_' . uniqid('', true); // Uniqify
+            $page .= '_' . uniqid('', false); // Uniqify
         }
 
         require_code('zones3');
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, null, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
 
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $filename, $label, $properties);
+
         return $zone . ':' . $page;
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -340,15 +331,19 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         require_code('site');
         foreach (array_keys(find_all_langs()) as $lang) {
             $result = _request_page($row['the_page'], $row['the_zone'], 'comcode_custom', $lang, true);
-            list(, , , $_lang, $full_path) = $result;
+            list(, , , $_lang, $_full_path) = $result;
             if ($lang == $_lang) {
+                $full_path = get_custom_file_base() . '/' . $_full_path;
+                if (is_file($full_path)) {
+                    $full_path = get_file_base() . '/' . $_full_path;
+                }
                 $text[$lang] = file_get_contents($full_path);
             }
         }
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('comcode_page', $row['the_zone'] . ':' . $row['the_page']);
 
-        return array(
+        $properties = array(
             'label' => $row['the_zone'] . ':' . $row['the_page'],
             'text' => $text,
             'parent_page' => $row['p_parent_page'],
@@ -357,14 +352,16 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
             'show_as_edit' => $row['p_show_as_edit'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['p_submitter'],
-            'add_date' => $row['p_add_date'],
-            'edit_date' => $row['p_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['p_submitter']),
+            'add_date' => remap_time_as_portable($row['p_add_date']),
+            'edit_date' => remap_time_as_portable($row['p_edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -375,7 +372,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
     {
         list($resource_type, $old_page) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -397,13 +394,10 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         if (is_null($validated)) {
             $validated = 1;
         }
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        if (is_null($add_time)) {
-            $add_time = time();
-        }
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
         $show_as_edit = $this->_default_property_int($properties, 'show_as_edit');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         if (is_null($submitter)) {
             $submitter = get_member();
         }
@@ -415,7 +409,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         if ($page != $old_page) {
             $test = _request_page($page, $zone, null, null, true);
             if ($test !== false) {
-                $page .= '_' . uniqid('', true); // Uniqify
+                $page .= '_' . uniqid('', false); // Uniqify
             }
         }
 
@@ -423,11 +417,13 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         $full_path = save_comcode_page($zone, $page, $lang, $text, $validated, $parent_page, $order, $add_time, $edit_time, $show_as_edit, $submitter, $old_page, $meta_keywords, $meta_description);
         $page = basename($full_path, '.txt');
 
+        $this->_resource_save_extend($this->file_resource_type, $zone . ':' . $page, $filename, $label, $properties);
+
         return $zone . ':' . $page;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

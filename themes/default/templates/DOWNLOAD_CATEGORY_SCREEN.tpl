@@ -21,23 +21,23 @@
 
 {+START,IF_NON_EMPTY,{DOWNLOADS}}
 	{DOWNLOADS}
-
-	<div class="box category_sorter inline_block"><div class="box_inner">
-		{$SET,show_sort_button,1}
-		{SORTING}
-	</div></div>
 {+END}
+
+<div class="right">
+	{+START,INCLUDE,NOTIFICATION_BUTTONS}
+		NOTIFICATIONS_TYPE=download
+		NOTIFICATIONS_ID={ID}
+	{+END}
+</div>
+
+<div class="box category_sorter inline_block"><div class="box_inner">
+	{$SET,show_sort_button,1}
+	{SORTING}
+</div></div>
 
 {+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
 
 {$REVIEW_STATUS,download_category,{ID}}
-
-{+START,INCLUDE,NOTIFICATION_BUTTONS}
-	NOTIFICATIONS_TYPE=download
-	NOTIFICATIONS_ID={ID}
-	BREAK=1
-	RIGHT=1
-{+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 {+START,INCLUDE,STAFF_ACTIONS}
@@ -56,7 +56,7 @@
 	3_ICON=menu/_generic_admin/edit_this_category
 {+END}
 
-{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 
 {+START,IF_NON_EMPTY,{SUBCATEGORIES}}{+START,IF,{$EQ,{ID},1}}
 	<hr class="spaced_rule" />

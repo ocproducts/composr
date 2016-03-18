@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_admin_setupwizard_installprofiles_community
     public function info()
     {
         return array(
-            'title' => do_lang('FORUM_SLASH_COMMUNITY'),
+            'title' => do_lang('COMMUNITY'),
         );
     }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,7 +24,7 @@
 class Mx_login extends Module_login
 {
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -43,7 +43,7 @@ class Mx_login extends Module_login
      */
     public function run()
     {
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'GET') {
+        if (cms_srv('REQUEST_METHOD') == 'GET') {
             $redirect_url = get_value('external_login_url', null, true);
             if (!empty($redirect_url)) {
                 header('Location: ' . $redirect_url);

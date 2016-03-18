@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__points()
 {
@@ -198,6 +200,9 @@ function get_gift_points_used($member)
 {
     $actual_used = intval($GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'SUM(amount)', array('gift_from' => $member))); // Most reliable way
     $_used = point_info($member);
+    if (!isset($_used['gift_points_used'])) { // Some kind of DB error
+        return $actual_used;
+    }
     $claimed_used = $_used['gift_points_used'];
     return ($claimed_used < 0) ? $claimed_used : $actual_used; // Still allows $claimed_used to be fiddled to negative give members extra gift points
 }

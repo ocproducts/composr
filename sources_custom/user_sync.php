@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,8 +44,8 @@ function user_sync__inbound($since = null)
 {
     global $USER_SYNC_IMPORT_LIMIT, $DO_USER_SYNC_OFFSET, $DO_USER_SYNC, $DO_USER_ONLY_ID, $PROGRESS_UPDATE_GAP;
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     require_code('cns_members');
@@ -66,7 +66,7 @@ function user_sync__inbound($since = null)
 
     @ignore_user_abort(false);
 
-    resourcefs_logging__start('inform');
+    resource_fs_logging__start('inform');
 
     // Load import scheme
     require_code('user_sync__customise');
@@ -129,13 +129,13 @@ function user_sync__inbound($since = null)
         // Handle each user
         while (($user = $sth->fetch(PDO::FETCH_ASSOC)) !== false) {
             if (($USER_SYNC_IMPORT_LIMIT !== null) && ($i2 - $DO_USER_SYNC_OFFSET >= $USER_SYNC_IMPORT_LIMIT)) {
-                resourcefs_logging('Partial, got to ' . strval($i2) . ' members', 'inform');
+                resource_fs_logging('Partial, got to ' . strval($i2) . ' members', 'inform');
                 break;
             }
             $i2++;
 
             if ($i != 0 && $i % $PROGRESS_UPDATE_GAP == 0) {
-                resourcefs_logging('Progress update: imported ' . strval($i) . ' members', 'inform');
+                resource_fs_logging('Progress update: imported ' . strval($i) . ' members', 'inform');
             }
 
             // Work out username
@@ -146,9 +146,9 @@ function user_sync__inbound($since = null)
                 }
                 $username .= is_integer($user[$username_field]) ? strval($user[$username_field]) : $user[$username_field];
             }
-            //cns_check_name_valid($username,NULL,NULL,true); // Not really needed
+            //cns_check_name_valid($username, null, null, true); // Not really needed
             if ($username == '') {
-                resourcefs_logging('Blank username cannot be imported.', 'warn');
+                resource_fs_logging('Blank username cannot be imported.', 'warn');
                 continue;
             }
 
@@ -219,7 +219,7 @@ function user_sync__inbound($since = null)
                     $cpf_value = is_string($value) ? $value : strval($value);
                     $cpf_values[$cpf_id] = $cpf_value;
                 } else {
-                    resourcefs_logging('Could not bind ' . $key . ' to CPF.', 'warn');
+                    resource_fs_logging('Could not bind ' . $key . ' to CPF.', 'warn');
                 }
             }
 
@@ -246,10 +246,11 @@ function user_sync__inbound($since = null)
                 $highlighted_name = 0;
                 $pt_allow = '*';
                 $pt_rules_text = '';
+                $auto_mark_read = null;
 
                 $check_correctness = false;
 
-                $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $cpf_values, $timezone, $primary_group, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $check_correctness, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until);
+                $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $cpf_values, $timezone, $primary_group, $validated, $join_time, $last_visit_time, $theme, $avatar_url, $signature, $is_perm_banned, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $ip_address, $validated_email_confirm_code, $check_correctness, $password_compatibility_scheme, $salt, $last_submit_time, null, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read);
             } else {
                 // Delete?
                 if (function_exists('user_sync__handle_deletion')) {
@@ -280,10 +281,11 @@ function user_sync__inbound($since = null)
                 $highlighted_name = null;
                 $pt_allow = null;
                 $pt_rules_text = null;
+                $auto_mark_read = null;
 
                 $skip_checks = true;
 
-                cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $cpf_values, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, $skip_checks);
+                cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $cpf_values, $theme, $reveal_age, $views_signatures, $auto_monitor_contrib_content, $language, $allow_emails, $allow_emails_from_staff, $validated, $username, $password, $highlighted_name, $pt_allow, $pt_rules_text, $on_probation_until, $auto_mark_read, $join_time, $avatar_url, $signature, $is_perm_banned, $photo_url, $photo_thumb_url, $salt, $password_compatibility_scheme, $skip_checks);
 
                 require_code('cns_groups_action2');
                 $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);
@@ -303,14 +305,14 @@ function user_sync__inbound($since = null)
         }
         $time_end = time();
         if ($user === false) {
-            resourcefs_logging('Imported ' . strval($i - $DO_USER_SYNC_OFFSET) . ' members in ' . strval($time_end - $time_start) . ' seconds', 'notice');
+            resource_fs_logging('Imported ' . strval($i - $DO_USER_SYNC_OFFSET) . ' members in ' . strval($time_end - $time_start) . ' seconds', 'notice');
         }
     }
 
     // Customised end code
     get_user_sync__finish($dbh, $since);
 
-    resourcefs_logging__end();
+    resource_fs_logging__end();
 }
 
 function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, $dbh, $member_id)
@@ -330,7 +332,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
                 $remap_scheme[1] = $field_name; // Identity map, by default
             }
             if (!array_key_exists($remap_scheme[1], $remote_data)) { // Not found!
-                resourcefs_logging('Requested to import missing remote field, ' . $remap_scheme[1] . '.', 'warn');
+                resource_fs_logging('Requested to import missing remote field, ' . $remap_scheme[1] . '.', 'warn');
                 return user_sync_get_field_default($field_name);
             }
             $remote_value = $remote_data[$remap_scheme[1]];
@@ -345,7 +347,7 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
             break;
 
         default: // ???
-            resourcefs_logging('Unknown lookup type (' . $remap_scheme[0] . ').', 'warn');
+            resource_fs_logging('Unknown lookup type (' . $remap_scheme[0] . ').', 'warn');
             return user_sync_get_field_default($field_name);
     }
 
@@ -369,8 +371,8 @@ function user_sync_handle_field_remap($field_name, $remap_scheme, $remote_data, 
                     if (is_numeric($_data)) {
                         $data[$i] = intval($_data);
                     } else { // By name
-                        $resourcefs_ob = get_resource_commandrfs_object('group');
-                        $data[$i] = intval($resourcefs_ob->convert_label_to_id($_data, '', 'group')); // Will be created if it doesn't already exist
+                        $resource_fs_ob = get_resource_commandr_fs_object('group');
+                        $data[$i] = intval($resource_fs_ob->convert_label_to_id($_data, '', 'group')); // Will be created if it doesn't already exist
                     }
                 }
             }
@@ -459,7 +461,7 @@ function user_sync_get_field_default($field_name)
         case 'groups':
             return array();
     }
-    resourcefs_logging('Requested to import unknown field. ' . $field_name . '.', 'warn');
+    resource_fs_logging('Requested to import unknown field. ' . $field_name . '.', 'warn');
     return null; // Should not get here
 }
 
@@ -618,16 +620,16 @@ UTILITY FUNCTIONS
 
 function user_sync_find_native_fields()
 {
-    /*$native_fields=array();    Actually we don't support importing them all, as our code has to choose defaults
-    $db_meta=$GLOBALS['SITE_DB']->query_select('db_meta',array('m_name'),array('m_table'=>'f_members'));
-    foreach ($db_meta as $_db_meta)
-    {
-        if (substr($_db_meta['m_name'],0,2)=='m_')
-        {
-            $native_fields[]=substr($_db_meta['m_name'],2);
+    /* Actually we don't support importing them all, as our code has to choose defaults
+    $native_fields = array();
+    $db_meta = $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name'), array('m_table' => 'f_members'));
+    foreach ($db_meta as $_db_meta) {
+        if (substr($_db_meta['m_name'], 0, 2) == 'm_') {
+            $native_fields[] = substr($_db_meta['m_name'], 2);
         }
     }
-    return $native_fields;*/
+    return $native_fields;
+    */
 
     return array(
         'pass_hash_salted',

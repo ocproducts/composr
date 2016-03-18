@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -527,11 +527,6 @@ class calendar_event_test_set extends cms_test_case
     public function testDeleteCalendarEvent()
     {
         delete_calendar_event($this->event_id);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }
 

@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    addon_publish
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -25,8 +31,8 @@ require_code('addons2');
 require_code('version');
 require_code('version2');
 
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 
 $only = get_param_string('only', null);
@@ -49,7 +55,7 @@ foreach ($addons as $name => $place) {
     $addon_info = read_addon_info($name);
 
     // Archive it off to exports/addons
-    $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . $addon_info['version'] . '.tar';
+    $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
 
     $new_addon_files = array();
     foreach ($addon_info['files'] as $_file) {

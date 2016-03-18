@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,10 +26,10 @@ class Hook_config_jestr_avatar_switch_shown_for
     public function get_details()
     {
         return array(
-            'human_name' => 'OCJESTER_AVATAR_SWITCH_SHOWN_FOR',
+            'human_name' => 'JESTER_AVATAR_SWITCH_SHOWN_FOR',
             'type' => 'line',
             'category' => 'FEATURE',
-            'group' => 'OCJESTER_TITLE',
+            'group' => 'JESTER_TITLE',
             'explanation' => 'CONFIG_OPTION_jestr_avatar_switch_shown_for',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

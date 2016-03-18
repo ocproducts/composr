@@ -8,7 +8,7 @@
 	main_window.set_textbox(post,'{NEW_POST_VALUE;^/}','{NEW_POST_VALUE_HTML;^/}');
 
 	// Remove attachment uploads
-	var inputs=post.form.elements,btn;
+	var inputs=post.form.elements,upload_button;
 	var i,done_one=false;
 	for (i=0;i<inputs.length;i++)
 	{
@@ -37,7 +37,8 @@
 					inputs[i].plupload_object.setButtonDisabled(false);
 				} else
 				{
-					main_window.document.getElementById('uploadButton_'+inputs[i].name).disabled=true;
+					upload_button=main_window.document.getElementById('uploadButton_'+inputs[i].name);
+					if (upload_button) upload_button.disabled=true;
 				}
 				inputs[i].value='-1';
 			} else

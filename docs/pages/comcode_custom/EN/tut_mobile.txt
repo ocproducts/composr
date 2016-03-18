@@ -1,10 +1,14 @@
-[title sub="Written by Salman Abbas (ocProducts), Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Mobile design[/title]
 
+[media width="150" description="Mobile mode for the forum. This site is the out-of-the-box default, the panels are shown underneath the main page. On real sites you'll likely want to turn these off on mobile mode and move them to their own pages." float="right"]data_custom/images/docs/tut_mobile/mobile.png[/media]
+[media width="150" description="Showing the default menu type in mobile mode" float="right"]data_custom/images/docs/tut_mobile/mobile_menu.png[/media]
 Composr has great support for mobile. You can design for mobile in two ways:
- - Mobile mode
- - Responsive Design
+1) Mobile mode
+2) Responsive Design
 
 This tutorial explains which you might choose, and provides some guidance.
+
+There is also an API for making native mobile apps for Composr called [page="_SEARCH:tut_mobile_sdk"]Composr Mobile SDK[/page].
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -12,7 +16,7 @@ This tutorial explains which you might choose, and provides some guidance.
 
 Responsive design allows page layout to adapt to different browser sizes (i.e. different screen sizes, particularly between desktops, tablets, and smartphones). It is fun to test on a desktop machine -- on a responsive site you can resize your browser window and see major changes to how a page looks. Adaptability was always a consideration to some extent in web design, but responsive design takes it to a totally different level. Responsive design is based around "media queries", whereby the CSS author defines the browser width thresholds where different style rules will apply and the different rules for each. As a standard CSS technology there is nothing special Composr has to support to allow you to use it -- you can use it right away as long as you are comfortable writing CSS (which you need to be anyway if you are doing a major themeing effort).
 
-Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
+Mobile mode on the other hand works via serving different HTML based on whether the viewer is on a desktop/tablet machine compared to a smartphone. Composr supports QVGA mobile resolution for all frontend screens in mobile mode. The choice between mobile and desktop mode is made by automatic analysis of the browser "user agent". The default theme also has a link in the footer to change what was autodetected.
 
 [title="2"]Which is better?[/title]
 
@@ -21,11 +25,11 @@ There is an engineering decision to be made for any site to decide what is best 
 The default theme uses a small amount of responsive design so that pages look good on both tablets and desktops.
 Otherwise, mobile mode is the way mobile pages are served in the default theme. This however is only our default: we do it like that for practical reasons, as most users aren't in a position to put a lot of thought into maintaining quality responsive design CSS (it's a bit too complex for the average webmaster).
 
-Ultimately the control and decision is in your hands. 
+Ultimately the control and decision is in your hands.
 
 Pros of responsive design:
  - Optimise against a wider range of devices, including different sizes of tablet and phone
- - Show something mindblowing for desktop users with huge browser windows
+ - Show something mind-blowing for desktop users with huge browser windows
  - No complexity of there being a mode choice in the system
 
 Pros of mobile mode:
@@ -38,10 +42,33 @@ Pros of mobile mode:
 If sites are relatively simple, giving content without a lot of features, and a good amount of design time is being put into the theme, we would recommend a responsive design. Also, magazine-style sites work really well as responsive designs.
 If sites have a lot of features through which interaction might happen, and you don't have a lot of time/experience for themeing and optimising it all, the mobile mode is a more efficient way of building out your site.
 
+[title="2"]Configuring mobile mode[/title]
+
+You can choose to enable mobile mode only on a per-page basis if your content/layout isn't fully compatible (most complex fixed width designs would have problems if a lot of attention is not given). Devices like iPhones automatically go into mobile mode, so you don't want it to load up mobile display settings and overlay them on content that doesn't work, as it can make a big mess.
+To activate the feature you need to put this in your [tt]themes/<themename>/theme.ini[/tt] file:
+[code="INI"]
+mobile_pages=forumview,topicview,topics,vforums
+[/code]
+This particular example enables mobile support just on the forum pages.
+
+On devices like iPhones or Android, desktop mode still works, it just uses zoom like any website not optimised for mobile would. Mobile mode is much nicer of course.
+
+[title="3"]Advanced[/title]
+
+You can also use regular expressions. If the expression passes, then mobile mode will be used. For example:
+[code="INI"]
+mobile_pages=#:(?!.*(foo|bar)).*$#
+[/code]
+This will make all pages use mobile-mode except 'foo' and 'bar' in any zone.
+It's a complex example. It's not front-bound (no [tt]^[/tt] at the start) hence why any zone works.
+The black-listed pages are specified within a single "negative forward assertion".
+
+Any regular expression will work, this is just an example. Composr recognises a regular expression by the surrounding [tt]#[/tt] symbols.
+
 [title="2"]Mobile mode themeing[/title]
 
 You can use the Tempcode [tt]{$MOBILE}[/tt] symbol to make changes based on what mode things are running in:
-[code]
+[code="Tempcode"]
 {+START,IF,{$MOBILE}}
 This shows to mobile devices.
 {+END}
@@ -56,7 +83,144 @@ If you do not want certain pages to use mobile mode at all then you can edit the
 
 [title="2"]Using responsive design techniques[/title]
 
-TODO
+Responsive design is straight-forward to implement for anyone familar with CSS. Rules are coded into the CSS under media queries such as:
+[code="CSS"]
+@media screen and (max-width:999px) {
+	* {
+		color: red !important;
+	}
+}
+[/code]
+This is a silly example that applies red text if the browser window is less than 1000 pixels wide.
+
+In practice you add rules targeting particular display widths to rearrange content appropriate to the particular viewport size.
+
+Responsive design is quite easy to test: you just resize the browser window up and down and see things immediately change.
+
+Typically responsive design will be done to target for:
+ - Smartphones (320px)
+ - Small tablets (640px)
+ - Large tablets (768px)
+ - Regular desktop windows, i.e. non-full-screen (990px, leaves 34px for scrollbars)
+ - Very large desktop windows (1200px or more)
+
+It is generally wise to start making things look good on smartphones, then tune things for the larger viewports. This is because:
+1) Smartphones are the most common device for casual browsing
+2) It is a better situation to have something blown up to a larger size (actually users often like this) then it is to have it not fitting on a mobile screen
+
+Composr's default theme supplies high-resolution icons for hi-dpi ("retina") displays using CSS media queries and [tt]srcset[/tt] in the HTML.
+This means evn if a design is blown up, the user will still benefit from higher fidelity graphics than the adjusted viewport may otherwise suggest.
+In fact, the very basis for hi-dpi displays is to operate like this -- the extra resolution is used for fidelity, not for cramming more in.
+When designs are blown up then the pixels referred to in CSS are not real pixels, they are proportional to the viewport that has been designed.
+
+[title="2"]Pixel resolution and viewports[/title]
+
+[title="3"]Some background[/title]
+
+Through the early web, computers got better resolutions over time while screen size didn't change all that much. In other words, a higher dpi (dots/pixels per inch).
+Later, the trend changed, and we got larger and larger screens instead.
+
+The problem with this was that a physical width never corresponded to the width in pixels, and web designers of course work in pixels. So, the larger the resolution, the smaller the text / design elements, which of course is not great for people with eye-sight issues.
+
+When iDevices, and later, Android devices (together, "mobile devices") came out, a fundamental but misunderstood change happened. We got the concept of "device pixels" which are distinguished from what I will call "rendering pixels".
+
+The best way to think of this is probably that web pages now always have a zoom level, and you pan them. It's very different from having a scrollbar or a resized window, which would be the case on a desktop screen.
+
+For both mobile devices and desktops, you have a webpage which is rendered on a "canvas", and then you may have scroll bars (on a desktop) or panning (on a mobile device) to make up whatever difference between the size of the canvas and the size of the user's viewport.
+
+If a mobile device is zoomed out, you may not get the full fidelity of the design on the actual screen (i.e. there's some loss due to down-scaling). If a mobile device is zoomed in, it can actually be scaled up beyond the actual fidelity. This is also true when zooming in/out on desktops, but users do this less frequently than they do on mobile due to the lack of need and lack of easy pinch gesture.
+
+The important thing to take away from the above is that scaling is happening almost all the time on mobile, so the pixels things are displayed at don't reflect the actual pixels specified within the web design.
+
+The scenario was extended further when "retina" devices came out. Even though we were doubling the number of pixels across and down (so quadrupling), the perceived display size of sites would be desired to remain the same. We're not going to quadruple the amount we display on the screen and make everything physically tiny, yet we still have to cater for users without the retina screens, and yet we want benefit from our better screens. Retina solves this by composing onto a canvas of the full retina resolution with all the measurements scaled up 2x to correspond to this -- and higher resolution assets (icons etc) on the page retain the full fidelity that this larger canvas can support. This really hits home the fact that the "pixels" a web designer works with are virtual rather than physical units (i.e. the physical pixels are smaller), and the browser will be smart enough to use whatever fidelity it can between the source material (high resolution images, anti-aliased text, etc) and whatever resolution the screen can take.
+
+[title="3"]How the viewport is specified[/title]
+
+On a desktop, the designer does not specify the viewport. The user does via the size of their browser window.
+
+On a mobile device, the designer can specify the viewport via the [tt]viewport[/tt] meta tag.
+This tag specifies a number of constraints, but the main one is the 'width' in rendering pixels that the physical screen is mapped to. If you want to compare this to a desktop, it is like the size of the window that the mobile device's full physical screen width has mapped onto it, with zooming used to achieve that mapping.
+
+You can either set a viewport width in pixels, or set it to 'device-width' if you want the zoom factor to essentially be 1.0 (i.e. not zoomed). Setting it to 'device-width' is very much like setting a fluid website design rather than a 'fixed-width' website design. You are asking the mobile device to flow content to fit onto it, making maximum use of its resolution for [i]fitting stuff on[/i].
+
+[title="3"]What Composr does[/title]
+
+This is the code Composr now uses in [tt]HTML_HEAD.tpl[/tt]:
+[code="Tempcode"]
+{$,iPhone/Android/etc should know they have an optimised design heading to them}
+{+START,IF,{$MOBILE}}
+	{+START,IF,{$NOT,{$_GET,overlay}}}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{+END}
+	{+START,IF,{$_GET,overlay}}
+		<meta name="viewport" content="width=285, user-scalable=yes" />
+	{+END}
+{+END}
+{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$CONFIG_OPTION,fixed_width}}
+		<meta name="viewport" content="width=982, user-scalable=yes" />
+	{+END}
+	{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}
+		<meta name="viewport" content="width=device-width, user-scalable=yes" />
+	{+END}
+{+END}
+[/code]
+
+In Composr, mobile mode is used for smartphones. Tablets do not use mobile mobile. I realise in my explanations so far I have referred to tablets as mobile devices, but you'll need to put that aside now ;-). They are mobile devices in the sense they have a touch screen and a panned viewport, but not in the sense of Composr reducing down it's layout via it's mobile mode. As you can see, we define separately for mobile mode (again, smartphones) and non-mobile mode (essentially this means tablets, as desktops won't use the viewport setting).
+
+I'm going to simplify things down a bit for my explanation, removing the stuff in our code about overlays. It's not worth the added confusion.
+
+[code="Tempcode"]
+{$,iPhone/Android/etc should know they have an optimised design heading to them}
+{+START,IF,{$MOBILE}}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{+END}
+{+START,IF,{$NOT,{$MOBILE}}}
+	{+START,IF,{$CONFIG_OPTION,fixed_width}}
+		<meta name="viewport" content="width=982, user-scalable=yes" />
+	{+END}
+	{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}
+		<meta name="viewport" content="width=device-width, user-scalable=yes" />
+	{+END}
+{+END}
+[/code]
+
+You can see mobile mode is fitted to the device-width. This is to make optimum use of the screen for fitting stuff on, which is arguably the best thing for a device of such limited size. If you are going to spend time making a very mobile-optimised site, you'd probably change this to a width in pixels that you'd designed for, and smile knowing that it was prettier for retina users (higher fidelity mapped onto the width, not scaling your images down so much, and seeing smoother anti-aliased fonts) but discernible without zooming for all smartphone users who have a certain base device resolution.
+
+You can see that tablets have different settings depending on whether Composr is set to fixed-width or not. If Composr is set to fixed-width, it matches the viewport to the default fixed width our CSS declares (982 pixels). Otherwise, it uses device-width in a similar way to smartphones.
+
+[title="3"]An example: fixed width mobile designs[/title]
+
+Let's say your base smartphone will be the resolution of the original iPhone, i.e. a width of 320 pixels.
+(The retina iPhones have upwards from 640 pixels)
+
+You therefore would optimise your design for 320 pixels, but have source imagery of higher resolution in your actual assets.
+
+You'd specify your smartphone viewport as 320 pixels, rather than using the device-width (which Composr is using by default, as discussed earlier).
+
+On an old iPhone, this would be a direct correspondence with the device resolution. i.e. no scaling.
+
+On a retina iPhone, it would be scaled 2x, although the user would not have any idea about that because they don't see things as bigger/smaller because of the correspondingly higher display density. Your high-resolution assets and font anti-aliasing would make it look great, you'd get the 2x fidelity the device could handle: more than 320 individual pixels per row would render in terms of what would be happening on the actual device. From the point of view of your CSS though, the canvas would be 320px across, and assuming the user hadn't zoomed in further, so would the viewport. It's confusing, clever, and really important to understand.
+
+[title="3"]A scenario: fluid mobile designs[/title]
+
+If you want to fit as much onto the screen as possible, rather than going for the fixed width but variable fidelity, then you may still want to do some trickery.
+
+For example, you may want a logo to stretch right across the screen, yet have the rest of the design be fluid.
+
+For this kind of thing you would use CSS, e.g. "width: 100%" on the image.
+
+[title="3"]initial-scale[/title]
+
+If you set the viewport in pixels and set it to be more than the user's device actually has, the user's device will probably initialise so they need to pan across to see everything in the viewport. If you set it to [tt]initial-scale=1.0[/tt] then a lower-resolution device will fit everything without panning which usually is a better experience assuming that you have made a reasonable effort to optimise your mobile layout (if you have a small font size or detailed images, it may not be possible to fully make out unless the user zooms).
+
+The naming of [tt]initial-scale[/tt] is a bit confusing. Think of it in terms of the user's understanding of the zoom level, rather than the designer's. If it is 1.0 then from the user's point of view, they start fully zoomed out; that usually does not mean the devices physical width is going to correspond with the width of your viewport, so in reality scaling/zooming is still going on. You're best of "forgetting" what the physical width of the device is from the point of view of defining CSS widths/viewports, and think of the physical width only when considering discernability.
+
+You can also set viewport setting to specify whether the user is allowed to manually zoom or not, and what the constraints on that should be.
+
+[title="3"]Debugging[/title]
+
+Google Chrome has excellent developer tools for simulating different mobile devices.
 
 [title="2"]General advice for designing on mobile[/title]
 
@@ -78,6 +242,11 @@ Here are some things to bear in mind:
 
 There is an official Composr addon (non-bundled) for implementing Tapatalk support for Composr. Tapatalk is a third party forum app for smartphones that can connect to your own forum, providing a high-quality experience to users.
 
+[title="2"]Smart app banners[/title]
+
+If you have an iPhone app too, you can promote that up using [url="smart app banners"]https://developer.apple.com/library/prerelease/ios/documentation/AppleApplications/Reference/SafariWebContent/PromotingAppswithAppBanners/PromotingAppswithAppBanners.html[/url].
+It's not specifically a Composr feature, but can be enabled via putting the appropriate tag into your [tt]HTML_HEAD.tpl[/tt] template.
+
 [concepts
  1_key="Responsive design"   1_value="A powerful technique to allow web page layout to reflow for devices of different sizes."
 ]Concepts[/concepts]
@@ -86,5 +255,6 @@ There is an official Composr addon (non-bundled) for implementing Tapatalk suppo
 
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
+ - [page="_SEARCH:tut_mobile_sdk"]Mobile apps via Composr Mobile SDK[/page]
 
-{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Mobile,Design & Themeing,CSS,core_themeing,cns_tapatalk,regular,pinned}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,This tutorial explains both Composr's mobile mode and responsive design techniques.}[block]main_tutorial_rating[/block]

@@ -1,4 +1,4 @@
-[title="1"]Leave feedback[/title]
+[title]Leave feedback[/title]
 
 You can leave us private feedback here. We don't normally reply directly to feedback -- but we do read it all.
 

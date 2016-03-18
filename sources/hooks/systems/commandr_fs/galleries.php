@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     public $file_resource_type = array('image', 'video');
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -48,7 +48,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -59,7 +59,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         switch ($resource_type) {
             case 'image':
             case 'video':
-                $_ret = $GLOBALS['SITE_DB']->query_select($resource_type . 's', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select($resource_type . 's', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -74,48 +74,19 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'name' => 'ID_TEXT',
-            'description' => 'LONG_TRANS',
-            'notes' => 'LONG_TEXT',
-            'accept_images' => 'BINARY',
-            'accept_videos' => 'BINARY',
-            'is_member_synched' => 'BINARY',
-            'flow_mode_interface' => 'BINARY',
-            'rep_image' => 'URLPATH',
-            'watermark_top_left' => 'URLPATH',
-            'watermark_top_right' => 'URLPATH',
-            'watermark_bottom_left' => 'URLPATH',
-            'watermark_bottom_right' => 'URLPATH',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'add_date' => 'TIME',
-            'owner' => 'member',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_GALLERY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_GALLERY') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_GALLERY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_GALLERY') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -129,7 +100,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             $category = 'root';
         }/*return false;*/ // Can't create more than one root
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('galleries2');
 
@@ -144,23 +115,26 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
         $flow_mode_interface = $this->_default_property_int($properties, 'flow_mode_interface');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $watermark_top_left = $this->_default_property_str($properties, 'watermark_top_left');
-        $watermark_top_right = $this->_default_property_str($properties, 'watermark_top_right');
-        $watermark_bottom_left = $this->_default_property_str($properties, 'watermark_bottom_left');
-        $watermark_bottom_right = $this->_default_property_str($properties, 'watermark_bottom_right');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image');
+        $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left');
+        $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right');
+        $watermark_bottom_left = $this->_default_property_urlpath($properties, 'watermark_bottom_left');
+        $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right');
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'galleries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'galleries', 1);
-        $add_date = $this->_default_property_int_null($properties, 'add_date');
-        $g_owner = $this->_default_property_int_null($properties, 'owner');
+        $add_date = $this->_default_property_time($properties, 'add_date');
+        $g_owner = $this->_default_property_member_null($properties, 'owner');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
         $name = add_gallery($name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $allow_rating, $allow_comments, false, $add_date, $g_owner, $meta_keywords, $meta_description, true);
+
+        $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
+
         return $name;
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -178,31 +152,33 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
-        return array(
-            'label' => $row['fullname'],
+        $properties = array(
+            'label' => get_translated_text($row['fullname']),
             'name' => $row['name'],
-            'description' => $row['description'],
+            'description' => get_translated_text($row['description']),
             'notes' => $row['notes'],
             'accept_images' => $row['accept_images'],
             'accept_videos' => $row['accept_videos'],
             'is_member_synched' => $row['is_member_synched'],
             'flow_mode_interface' => $row['flow_mode_interface'],
-            'rep_image' => $row['rep_image'],
-            'watermark_top_left' => $row['watermark_top_left'],
-            'watermark_top_right' => $row['watermark_top_right'],
-            'watermark_bottom_left' => $row['watermark_bottom_left'],
-            'watermark_bottom_right' => $row['watermark_bottom_right'],
+            'rep_image' => remap_urlpath_as_portable($row['rep_image']),
+            'watermark_top_left' => remap_urlpath_as_portable($row['watermark_top_left']),
+            'watermark_top_right' => remap_urlpath_as_portable($row['watermark_top_right']),
+            'watermark_bottom_left' => remap_urlpath_as_portable($row['watermark_bottom_left']),
+            'watermark_bottom_right' => remap_urlpath_as_portable($row['watermark_bottom_right']),
             'allow_rating' => $row['allow_rating'],
             'allow_comments' => $row['allow_comments'],
-            'add_date' => $row['add_date'],
-            'owner' => $row['g_owner'],
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'owner' => remap_resource_id_as_portable('member', $row['g_owner']),
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -213,6 +189,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('galleries2');
 
@@ -228,25 +205,27 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         $accept_videos = $this->_default_property_int_modeavg($properties, 'accept_videos', 'galleries', 1);
         $is_member_synched = $this->_default_property_int($properties, 'is_member_synched');
         $flow_mode_interface = $this->_default_property_int($properties, 'flow_mode_interface');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
-        $watermark_top_left = $this->_default_property_str($properties, 'watermark_top_left');
-        $watermark_top_right = $this->_default_property_str($properties, 'watermark_top_right');
-        $watermark_bottom_left = $this->_default_property_str($properties, 'watermark_bottom_left');
-        $watermark_bottom_right = $this->_default_property_str($properties, 'watermark_bottom_right');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', true);
+        $watermark_top_left = $this->_default_property_urlpath($properties, 'watermark_top_left', true);
+        $watermark_top_right = $this->_default_property_urlpath($properties, 'watermark_top_right', true);
+        $watermark_bottom_left = $this->_default_property_urlpath($properties, 'watermark_bottom_left', true);
+        $watermark_bottom_right = $this->_default_property_urlpath($properties, 'watermark_bottom_right', true);
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'galleries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'galleries', 1);
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $g_owner = $this->_default_property_int_null($properties, 'owner');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $g_owner = $this->_default_property_member_null($properties, 'owner');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
         $name = edit_gallery($resource_id, $name, $label, $description, $notes, $parent_id, $accept_images, $accept_videos, $is_member_synched, $flow_mode_interface, $rep_image, $watermark_top_left, $watermark_top_right, $watermark_bottom_left, $watermark_bottom_right, $meta_keywords, $meta_description, $allow_rating, $allow_comments, $g_owner, $add_time, true, true);
 
-        return $resource_id;
+        $this->_resource_save_extend($this->folder_resource_type, $name, $filename, $label, $properties);
+
+        return $name;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -260,34 +239,6 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
         delete_gallery($resource_id);
 
         return true;
-    }
-
-    /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'url' => 'URLPATH',
-            'thumb_url' => 'URLPATH',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'video_length' => 'INTEGER',
-            'video_width' => 'INTEGER',
-            'video_height' => 'INTEGER',
-            'views' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
     }
 
     /**
@@ -322,7 +273,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -333,7 +284,6 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     public function file_add($filename, $path, $properties, $force_type = null)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -341,23 +291,28 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         require_code('galleries2');
 
+        $is_image = (((empty($properties['url'])) || (is_image($properties['url']))) && (empty($properties['video_length'])) || ($force_type === 'image')) && ($force_type !== 'video');
+
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $is_image ? 'image' : 'video');
+
         $description = $this->_default_property_str($properties, 'description');
-        $url = $this->_default_property_str($properties, 'url');
-        $thumb_url = $this->_default_property_str($properties, 'thumb_url');
+        $url = $this->_default_property_urlpath($properties, 'url');
+        $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url');
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $add_date = $this->_default_property_int_null($properties, 'add_date');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_date = $this->_default_property_time($properties, 'add_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         require_code('images');
-        if ((((is_image($url)) || ($url == '')) && ((!array_key_exists('video_length', $properties)) || ($properties['video_length'] == '')) || ($force_type === 'image')) && ($force_type !== 'video')) {
+        if ($is_image) {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'images', 1);
             $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'images', 1);
@@ -367,7 +322,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 return false;
             }
 
-            $id = add_image($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description);
+            $id = add_image($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
+
+            $this->_resource_save_extend('image', strval($id), $filename, $label, $properties);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -388,14 +345,16 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 $video_height = 576;
             }
 
-            $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description);
+            $id = add_video($label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $submitter, $add_date, $edit_date, $views, null, $meta_keywords, $meta_description, $regions);
+
+            $this->_resource_save_extend('video', strval($id), $filename, $label, $properties);
         }
 
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -413,11 +372,11 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for($resource_type, strval($row['id']));
 
-        $ret = array(
-            'label' => $row['title'],
-            'description' => $row['description'],
-            'url' => $row['url'],
-            'thumb_url' => $row['thumb_url'],
+        $properties = array(
+            'label' => get_translated_text($row['title']),
+            'description' => get_translated_text($row['description']),
+            'url' => remap_urlpath_as_portable($row['url']),
+            'thumb_url' => remap_urlpath_as_portable($row['thumb_url']),
             'validated' => $row['validated'],
             'allow_rating' => $row['allow_rating'],
             'allow_comments' => $row['allow_comments'],
@@ -425,27 +384,31 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
             'notes' => $row['notes'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_date'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_date']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => $resource_type, 'content_id' => strval($row['id'])))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+
         if ($resource_type == 'video') {
-            $ret += array(
+            $properties += array(
                 'views' => $row['video_views'],
                 'video_length' => $row['video_length'],
                 'video_width' => $row['video_width'],
                 'video_height' => $row['video_height'],
             );
         } else {
-            $ret += array(
+            $properties += array(
                 'views' => $row['image_views'],
             );
         }
-        return $ret;
+
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -456,7 +419,8 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -466,19 +430,20 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         $label = $this->_default_property_str($properties, 'label');
         $description = $this->_default_property_str($properties, 'description');
-        $url = $this->_default_property_str($properties, 'url');
-        $thumb_url = $this->_default_property_str($properties, 'thumb_url');
+        $url = $this->_default_property_urlpath($properties, 'url', true);
+        $thumb_url = $this->_default_property_urlpath($properties, 'thumb_url', true);
         $validated = $this->_default_property_int_null($properties, 'validated');
         if (is_null($validated)) {
             $validated = 1;
         }
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
         if ($resource_type == 'image') {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'images', 1);
@@ -490,7 +455,9 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 return false;
             }
 
-            edit_image(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, true);
+            edit_image(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+            $this->_resource_save_extend('image', $resource_id, $filename, $label, $properties);
         } else {
             $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'videos', 1);
             $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'videos', 1);
@@ -511,14 +478,16 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
                 $video_height = 576;
             }
 
-            edit_video(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, true);
+            edit_video(intval($resource_id), $label, $category, $description, $url, $thumb_url, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $video_length, $video_width, $video_height, $meta_keywords, $meta_description, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+            $this->_resource_save_extend('video', $resource_id, $filename, $label, $properties);
         }
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

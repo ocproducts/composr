@@ -1,8 +1,8 @@
-[title="1"]Competitor Comparison[/title]
+[title]Competitor Comparison[/title]
 
 {| wide
 
-! 
+!
 ! Foo
 ! Bar
 ! {$SITE_NAME}

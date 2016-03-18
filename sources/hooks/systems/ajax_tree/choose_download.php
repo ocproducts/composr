@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,17 +39,17 @@ class Hook_choose_download
             if (substr($id, 0, 8) == 'Version ') {
                 $id_float = floatval(substr($id, 8));
                 do {
-                    $str = 'Version ' . float_to_raw_string($id_float, 1);
+                    $str = 'Version ' . float_to_raw_string($id_float, 1, true);
                     $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => 3, $GLOBALS['SITE_DB']->translate_field_ref('category') => $str));
                     if (is_null($_id)) {
                         $id_float -= 0.1;
                     }
-                } while ((is_null($_id)) && ($id_float != 0.0));
+                } while ((is_null($_id)) && ($id_float > 0.0));
             } else {
                 $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('category') => $id));
             }
             if (is_null($_id)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
             }
             $id = strval($_id);
         }
@@ -71,7 +71,7 @@ class Hook_choose_download
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(serialize($options)) . '</options>';
 
         foreach ($tree as $t) {
             $_id = $t['id'];

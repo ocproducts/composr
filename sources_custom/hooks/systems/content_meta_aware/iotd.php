@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -27,9 +27,10 @@ class Hook_content_meta_aware_iotd
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'iotds:IOTD',
+            'content_type_universal_label' => 'Image of the day',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'iotd',
@@ -51,6 +52,8 @@ class Hook_content_meta_aware_iotd
             'title_field_supports_comcode' => true,
             'description_field' => 'caption',
             'thumb_field' => 'thumb_url',
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:iotds:view:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_iotds:_edit:_WILD',
@@ -61,7 +64,9 @@ class Hook_content_meta_aware_iotd
             'support_url_monikers' => true,
 
             'views_field' => 'iotd_views',
+            'order_field' => null,
             'submitter_field' => 'submitter',
+            'author_field' => null,
             'add_time_field' => 'add_date',
             'edit_time_field' => 'edit_date',
             'date_field' => 'date_and_time', // add_date is the technical add date, but date_and_time is when it went live
@@ -71,9 +76,14 @@ class Hook_content_meta_aware_iotd
 
             'feedback_type_code' => 'iotds',
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => 'iotd',
+            'rss_hook' => 'iotds',
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => 'iotd_chosen',
+            'sitemap_hook' => 'iotd',
 
             'addon_name' => 'iotds',
 
@@ -83,7 +93,11 @@ class Hook_content_meta_aware_iotd
             'commandr_filesystem_hook' => 'iotds',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'iotds',
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_IOTD',
         );

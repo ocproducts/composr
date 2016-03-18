@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -167,9 +167,6 @@ function get_false_permissions()
         array('STAFF_ACTIONS', 'see_stack_dump'),
         array('STAFF_ACTIONS', 'view_profiling_modes'),
         array('STAFF_ACTIONS', 'access_overrun_site'),
-        array('STAFF_ACTIONS', 'view_content_history'),
-        array('STAFF_ACTIONS', 'restore_content_history'),
-        array('STAFF_ACTIONS', 'delete_content_history'),
         array('SUBMISSION', 'bypass_validation_highrange_content'),
         array('SUBMISSION', 'bypass_validation_midrange_content'),
         array('SUBMISSION', 'edit_highrange_content'),
@@ -206,15 +203,15 @@ function get_false_permissions()
         array('SUBMISSION', 'exceed_filesize_limit'),
         array('SUBMISSION', 'draw_to_server'),
         array('GENERAL_SETTINGS', 'open_virtual_roots'),
-        array('GENERAL_SETTINGS', 'view_revision_history'),
         array('GENERAL_SETTINGS', 'sees_javascript_error_alerts'),
         array('GENERAL_SETTINGS', 'see_software_docs'),
         array('GENERAL_SETTINGS', 'see_unvalidated'),
         array('GENERAL_SETTINGS', 'may_enable_staff_notifications'),
         array('GENERAL_SETTINGS', 'bypass_flood_control'),
         array('GENERAL_SETTINGS', 'remove_page_split'),
-        array('GENERAL_SETTINGS', 'bypass_word_filter'),
+        array('GENERAL_SETTINGS', 'bypass_wordfilter'),
         array('SUBMISSION', 'perform_keyword_check'),
+        array('SUBMISSION', 'have_personal_category'),
     );
 }
 
@@ -232,7 +229,6 @@ function get_true_permissions()
         array('SUBMISSION', 'submit_lowrange_content'),
         array('SUBMISSION', 'bypass_validation_lowrange_content'),
         array('SUBMISSION', 'set_own_author_profile'),
-        array('SUBMISSION', 'have_personal_category'),
         array('_FEEDBACK', 'rate'),
         array('_FEEDBACK', 'comment'),
         array('VOTE', 'vote_in_polls'),
@@ -247,7 +243,7 @@ function get_true_permissions()
  * @param  ID_TEXT $name The name of the option
  * @return boolean Whether it exists
  */
-function permission_exists($name)
+function privilege_exists($name)
 {
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('privilege_list', 'the_name', array('the_name' => $name));
     return !is_null($test);
@@ -337,6 +333,10 @@ function delete_privilege($name)
  */
 function delete_attachments($type, $connection = null)
 {
+    if (get_option('attachment_cleanup') == '0') {
+        return;
+    }
+
     if (is_null($connection)) {
         $connection = $GLOBALS['SITE_DB'];
     }
@@ -359,7 +359,7 @@ function delete_attachments($type, $connection = null)
 }
 
 /**
- * Deletes all language codes linked to by the specified table and attribute identifiers, if they exist.
+ * Deletes all language strings linked to by the specified table and attribute identifiers, if they exist.
  *
  * @param  ID_TEXT $table The table
  * @param  array $attrs The attributes

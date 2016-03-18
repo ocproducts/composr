@@ -27,11 +27,13 @@
 <hr class="spaced_rule" />
 
 <form title="{!SAVE}" action="{URL*}" method="post" target="_self">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div id="edit_field_store" style="display: none">
 	</div>
 
 	<p class="proceed_button vertical_alignment">
-		<input class="buttons__save button_screen" type="button" value="{!SAVE}" onclick="fetch_more_fields(); this.form.submit();" /> <span class="associated_details">{!ZE_CLICK_TO_EDIT}</span>
+		<input class="button_screen buttons__save" type="button" value="{!SAVE}" onclick="fetch_more_fields(); this.form.submit();" /> <span class="associated_details">{!ZE_CLICK_TO_EDIT}</span>
 	</p>
 </form>
 

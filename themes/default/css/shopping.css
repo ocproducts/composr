@@ -1,9 +1,13 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 /* Cart screen */
+
+table.cart_table {
+	width: 100%;
+}
 
 table.cart_table td {
 	vertical-align: middle;

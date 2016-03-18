@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,7 +45,7 @@ class Hook_commandr_command_write
                 return array('', '', '', do_lang('MISSING_PARAM', '2', 'write'));
             }
 
-            //NOTE: Lack of existence-checking for the file, since this command can create files.
+            // NOTE: Lack of existence-checking for the file, since this command can create files.
             $success = $commandr_fs->write_file($parameters[0], $parameters[1]);
             if ($success) {
                 return array('', '', do_lang('SUCCESS'), '');

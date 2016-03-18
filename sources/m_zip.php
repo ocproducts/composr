@@ -24,6 +24,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__m_zip()
 {
@@ -74,8 +76,8 @@ function init__m_zip()
         {
             global $M_ZIP_DIR_HANDLES, $M_ZIP_DIR_OPEN_PATHS;
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(200);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(200);
             }
 
             list($usec, $sec) = explode(' ', microtime(false));
@@ -105,7 +107,7 @@ function init__m_zip()
 
             $res = -1; // any nonzero value
             $unused_array_result = array();
-            if (strpos(@ini_get('disable_functions'), 'shell_exec') !== false) {
+            if (!php_function_allowed('shell_exec')) {
                 attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE'), 'warn');
 
                 return constant('ZIPARCHIVE::ER_INTERNAL');
@@ -252,10 +254,11 @@ function init__m_zip()
          * @param  PATH $base_path The base path (path to make relative to)
          * @param  PATH $path The path to make relative
          * @return PATH The relative path
+         * @ignore
          */
         function _m_zip_RelPath($base_path, $path)
         {
-            //echo("BasePath:$base_path,Path;$path");
+            //echo("BasePath:$base_path, Path;$path");
             if ($path == $base_path) {
                 return '';
             }
@@ -345,7 +348,7 @@ function init__m_zip()
 
             // UNCOMMENT THIS TO SPEEDUP. WILL REQUIRE MORE RAM AND FAIL FOR BIG-BIG FILES
 
-            //if (/*$zip_entry_file_size==0 ||*/ $zip_entry_file_size==filesize($TheFile)) return implode('',file($TheFile));
+            //if (/*$zip_entry_file_size == 0 ||*/ $zip_entry_file_size == filesize($TheFile)) return implode('', file($TheFile));
 
             $FH = $M_ZIP_FILE_HANDLES[$zip_entry[0]];
             if ($FH) {
@@ -366,13 +369,13 @@ function init__m_zip()
 
         /**
          * Delete a directory of files.
-         * From "User Contributed Notes" at http://it.php.net/manual/en/function.rmdir.php. Thanks flexer at cutephp dot com
+         * From "User Contributed Notes" at http://php.net/manual/en/function.rmdir.php. Thanks flexer at cutephp dot com
          *
          * @param  PATH $a_dir The path to the directory
          */
         function m_deldir($a_dir)
         {
-            // echo('<p>Deleting:'.$a_dir);
+            // echo('<p>Deleting:' . $a_dir);
             // return; // uncomment to skip deletion (leave things)
 
             // added support for trailing slash
@@ -398,7 +401,9 @@ function init__m_zip()
                 // uncomment this if you want to delete files (use m_deldir on anything)
                 // unlink($a_dir);
                 // comment this if you want to skip warning
-                error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                if (php_function_allowed('error_log')) {
+                    error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                }
             }
         }
     }

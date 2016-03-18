@@ -25,8 +25,8 @@ class Block_youtube_channel
         $info['hack_version'] = null;
         $info['version'] = 11;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
-        $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'orderby', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
+        $info['update_require_upgrade'] = true;
+        $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
         return $info;
     }
 
@@ -72,7 +72,6 @@ class Block_youtube_channel
         $channel_templatestyle = 'BLOCK_YOUTUBE_CHANNEL_STYLE' . $channel_tempstyle;
         $channel_startvideo = array_key_exists('start_video', $map) ? $map['start_video'] : '1';
         $channel_maxvideos = array_key_exists('max_videos', $map) ? $map['max_videos'] : '25';
-        $channel_orderby = array_key_exists('orderby', $map) ? $map['orderby'] : '1';
         $channel_showplayer = array_key_exists('show_player', $map) ? $map['show_player'] : '1';
         $channel_embedallowed = array_key_exists('embed_allowed', $map) ? $map['embed_allowed'] : '1';
         $channel_playeralign = strtolower(array_key_exists('player_align', $map) ? $map['player_align'] : 'center');
@@ -112,10 +111,6 @@ class Block_youtube_channel
         }
         if ($channel_startvideo < 1 || $channel_startvideo > 50) {
             $channel_startvideo = 1;
-        }
-        //channel_orderby is left in for backward compatibility, but this is not available for the playlistItems.list API call in the new YouTube API v3
-        if ($channel_orderby < 1 || $channel_orderby > 3) {
-            $channel_orderby = 1;
         }
         if ($channel_showplayer < 0 || $channel_showplayer + $channel_maxvideos > 50) {
             $channel_showplayer = 50;
@@ -184,14 +179,12 @@ class Block_youtube_channel
         // If we get playlist data, parse out the meta information for each video and pass it to the style template. Else, send an error to template.
         if (isset($playlist_items->items) && $channel_startvideo <= $total_playlist_items) {
             foreach ($playlist_items->items as $entry) {
-
                 // Basic meta information for the video from 'playlistItems' YouTube API v3 call
                 //get private/public status of video
                 $is_public = $entry->status->privacyStatus;
 
                 // We will omit non-public videos and all videos before the start_video block parameter setting.
                 if (($is_public == 'public') && ($i >= $channel_startvideo) && ($i <= $channel_maxvideos)) {
-
                     //get video title
                     $title = (isset($entry->snippet->title) ? $entry->snippet->title : '');
 
@@ -228,19 +221,31 @@ class Block_youtube_channel
                         continue;
                     }
                     //get video view count
-                    $views = $video_metadata->items[0]->statistics->viewCount;
+                    $views = 0;
+                    if (isset($video_metadata->items[0]->statistics->viewCount)) {
+                        $views = $video_metadata->items[0]->statistics->viewCount;
+                    }
 
                     //used to find out if video can be embedded
                     $embeddable = $video_metadata->items[0]->status->embeddable;
 
                     //get video favorite count
-                    $favoritecount = $video_metadata->items[0]->statistics->favoriteCount;
+                    $favoritecount = 0;
+                    if (isset($video_metadata->items[0]->statistics->favoriteCount)) {
+                        $favoritecount = $video_metadata->items[0]->statistics->favoriteCount;
+                    }
 
                     //get video likes count
-                    $likes = $video_metadata->items[0]->statistics->likeCount;
+                    $likes = 0;
+                    if (isset($video_metadata->items[0]->statistics->likeCount)) {
+                        $likes = $video_metadata->items[0]->statistics->likeCount;
+                    }
 
                     //get video dislikes count
-                    $dislikes = $video_metadata->items[0]->statistics->dislikeCount;
+                    $dislikes = 0;
+                    if (isset($video_metadata->items[0]->statistics->dislikeCount)) {
+                        $dislikes = $video_metadata->items[0]->statistics->dislikeCount;
+                    }
 
                     //generate total number of likes and dislikes
                     $ratingstotal = $likes + $dislikes;
@@ -374,7 +379,7 @@ class Block_youtube_channel
                     //  5 => low res, last frame - "2"
                     //  6 => default image, standard res 640x480 - "sddefault"
                     //  7 => middle of vid, max res - 1280x720 - "maxresdefault"
-                    //set base url for thumbnails to use for thumbnails that are no longer returned by API call
+                    //set base URL for thumbnails to use for thumbnails that are no longer returned by API call
                     $base_thumb_url = dirname($thumbnails->default->url) . '/';
                     // Pre-define thumbimg array first, then set elements and ignore errors for thumbnails that don't exist
                     $thumbimg = array(array('url' => '', 'width' => '120', 'height' => '90'),
@@ -522,7 +527,6 @@ function block_youtube_channel__cache_on($map)
 {
     return array(array_key_exists('max_videos', $map) ? intval($map['max_videos']) : 25,
                  array_key_exists('start_video', $map) ? intval($map['start_video']) : 1,
-                 array_key_exists('orderby', $map) ? intval($map['orderby']) : 1,
                  array_key_exists('embed_player', $map) ? intval($map['embed_player']) : 1,
                  array_key_exists('show_player', $map) ? intval($map['show_player']) : 1,
                  array_key_exists('style', $map) ? intval($map['style']) : 1,

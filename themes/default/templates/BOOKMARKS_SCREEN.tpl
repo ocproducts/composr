@@ -12,6 +12,8 @@
 		<h2>{CAPTION*}</h2>
 
 		<form title="{CAPTION*}" onsubmit="if (check_field_for_blankness(this.elements['caption'],event) &amp;&amp; check_field_for_blankness(this.elements['page_link'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{$PAGE_LINK*,_SELF:_SELF:_edit:{ID}}" method="post">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			<div class="wide_table_wrap"><table class="map_table wide_table results_table autosized_table">
 				<tbody>
 					<tr>
@@ -24,10 +26,10 @@
 						</td>
 					</tr>
 					<tr>
-						<th>{!BOOKMARK_FOLDER}</th>
+						<th>{!FOLDER}</th>
 						<td>
 							<div class="constrain_field">
-								<div class="accessibility_hidden"><label for="folder_{ID*}">{!BOOKMARK_FOLDER}</label></div>
+								<div class="accessibility_hidden"><label for="folder_{ID*}">{!FOLDER}</label></div>
 								<input maxlength="80" size="{$?,{$MOBILE},30,50}" disabled="disabled" type="text" id="folder_{ID*}" name="folder" value="{FOLDER*}" />
 							</div>
 						</td>
@@ -45,8 +47,8 @@
 					<tr>
 						<th>{!ACTIONS}</th>
 						<td class="vertical_alignment">
-							 <input class="buttons__edit button_screen_item" type="submit" value="{!EDIT}" />
-							 <input class="menu___generic_admin__delete button_screen_item" type="submit" name="delete" value="{!DELETE}" />
+							 <input class="button_screen_item buttons__edit" type="submit" value="{!EDIT}" />
+							 <input class="button_screen_item menu___generic_admin__delete" type="submit" name="delete" value="{!DELETE}" />
 
 							 <label class="horiz_field_sep vertical_alignment" for="bookmark_{ID*}">{!CHOOSE}:</label> <input onclick="handle_bookmark_selection(this,'{ID;*}',event);" type="checkbox" id="bookmark_{ID*}" name="bookmark_{ID*}" value="1" />
 						</td>
@@ -70,3 +72,11 @@
 	</div>
 {+END}
 
+{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
+{+START,INCLUDE,STAFF_ACTIONS}
+	1_URL={$PAGE_LINK*,_SELF:_SELF:add}
+	1_TITLE={!ADD_BOOKMARK}
+	1_REL=add
+	1_NOREDIRECT=1
+	1_ICON=menu/_generic_admin/add_one
+{+END}

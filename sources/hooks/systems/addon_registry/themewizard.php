@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_themewizard
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -105,8 +106,10 @@ class Hook_addon_registry_themewizard
             'sources/hooks/systems/commandr_commands/themewizard_find_color.php',
             'sources/hooks/systems/commandr_commands/themewizard_compute_equation.php',
             'sources/hooks/modules/admin_themewizard/.htaccess',
+            'sources_custom/hooks/modules/admin_themewizard/.htaccess',
             'sources/hooks/systems/snippets/themewizard_equation.php',
             'sources/hooks/modules/admin_themewizard/index.html',
+            'sources_custom/hooks/modules/admin_themewizard/index.html',
             'sources/hooks/systems/addon_registry/themewizard.php',
             'sources/themewizard.php',
             'adminzone/pages/modules/admin_themewizard.php',

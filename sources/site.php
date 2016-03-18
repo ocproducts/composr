@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__site()
 {
@@ -40,7 +42,7 @@ function init__site()
     if (function_exists('get_value')) {
         $is_non_canonical = false;
         $canonical_keep_params = explode(',', is_null(get_value('canonical_keep_params')) ? 'keep_devtest' : get_value('canonical_keep_params'));
-        foreach (array_merge(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
+        foreach (array_intersect(array_keys($_GET), array('keep_session'/*may be inserted later*/)) as $key) {
             if ((is_string($key)) && (substr($key, 0, 5) == 'keep_') && (!@in_array($key, $canonical_keep_params))) {
                 $NON_CANONICAL_PARAMS[] = $key;
                 $is_non_canonical = true;
@@ -54,7 +56,8 @@ function init__site()
                 }
             }
             set_http_status_code('301');
-            header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for short URLs - not possible, so should give 404's to avoid indexing
+            header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            require_code('urls');
             header('Location: ' . get_self_url(true, false, $non_canonical));
             exit();
         }
@@ -79,9 +82,9 @@ function init__site()
 
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
-            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (count($_POST) == 0) && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
+            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
                 set_http_status_code('301');
-                header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for short URLs - not possible, so should give 404's to avoid indexing
+                header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . get_self_url(true));
                 exit();
             }
@@ -89,21 +92,21 @@ function init__site()
     }
 
     // Search engine having session in URL, we don't like this
-    if ((get_bot_type() !== null) && (count($_POST) == 0) && (get_param_string('keep_session', null) !== null)) {
+    if ((get_bot_type() !== null) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_string('keep_session', null) !== null)) {
         set_http_status_code('301');
         header('Location: ' . get_self_url(true, false, array('keep_session' => null, 'keep_print' => null)));
         exit();
     }
 
     // Detect bad access domain
-    if (!running_script('webdav')/*we may want to allow WebDAV to run on a different domain*/) {
+    if (running_script('index')) {
         global $SITE_INFO;
         $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
         if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (!$GLOBALS['EXTERNAL_CALL'])) {
             $parsed_base_url = parse_url(get_base_url());
 
             if ((array_key_exists('host', $parsed_base_url)) && (strtolower($parsed_base_url['host']) != strtolower($access_host))) {
-                if (!array_key_exists('ZONE_MAPPING_' . get_zone_name(), $SITE_INFO)) {
+                if (empty($SITE_INFO['ZONE_MAPPING_' . get_zone_name()])) {
                     if ((!is_null($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
@@ -121,13 +124,15 @@ function init__site()
 
     // Bulk advance loading
     global $SMART_CACHE;
-    $_comcode_pages_needed = $SMART_CACHE->get('comcode_pages_needed');
-    if ($_comcode_pages_needed !== null) {
-        $comcode_pages_needed = array();
-        foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
-            $comcode_pages_needed[] = unserialize($_comcode_page_needed);
+    if (isset($SMART_CACHE)) {
+        $_comcode_pages_needed = $SMART_CACHE->get('comcode_pages_needed');
+        if ($_comcode_pages_needed !== null) {
+            $comcode_pages_needed = array();
+            foreach ($_comcode_pages_needed as $_comcode_page_needed => $_) {
+                $comcode_pages_needed[] = unserialize($_comcode_page_needed);
+            }
+            _load_comcodes_page_from_cache($comcode_pages_needed);
         }
-        _load_comcodes_page_from_cache($comcode_pages_needed);
     }
 }
 
@@ -210,6 +215,9 @@ function load_zone_data()
                     $zone_default_page = 'start';
                     if ($real_zone == 'forum') { // A bit of an architectural fudge, but people get confused why it doesn't come back the same
                         $zone_default_page = 'forumview';
+                    }
+                    if ($real_zone == 'docs') {
+                        $zone_default_page = 'tutorials';
                     }
                     $map = array(
                         'zone_name' => $real_zone,
@@ -446,7 +454,7 @@ function breadcrumbs($show_self = true)
     // Substitutions
     if ((addon_installed('breadcrumbs')) && (function_exists('xml_parser_create'))) {
         require_code('breadcrumbs');
-        $BREADCRUMB_SET_PARENTS[] = array(url_to_page_link(get_self_url(true)), 'TERM');
+        $BREADCRUMB_SET_PARENTS[] = array(null, $GLOBALS['BREADCRUMB_SET_SELF']);
         $BREADCRUMB_SET_PARENTS = load_breadcrumb_substitutions($BREADCRUMB_SET_PARENTS);
         array_pop($BREADCRUMB_SET_PARENTS);
     }
@@ -491,7 +499,7 @@ function breadcrumbs_get_default_stub($link_to_self_entrypoint = true)
                     $stub->attach(do_template('BREADCRUMB_SEPARATOR'));
                 }
 
-                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+                $stub->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => '769236ef4f20a0a05cee6d7a335eaf9f', 'LABEL' => $label)));
             }
         }
     }
@@ -522,14 +530,14 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
         }
 
         if ($entry_point == '') {
-            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('LABEL' => $label)));
+            $out->attach(do_template('BREADCRUMB_LONE_WRAP', array('_GUID' => 'fcf371ee4a071ebdd170dc16a55f36dd', 'LABEL' => $label)));
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
             list($zone, $attributes, $hash) = page_link_decode($entry_point);
             $url = build_url($attributes, $zone, null, false, false, $hash);
 
-            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
+            $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
     }
 
@@ -705,7 +713,8 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                 if (($ob_info['view_page_link_pattern'] == $looking_for) && ($ob_info['support_url_monikers'])) {
                     if (is_numeric($url_id)) { // Lookup and redirect to moniker
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
-                        if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (count($_POST) == 0)) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
+                        if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
+                            set_http_status_code('301');
                             header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
@@ -727,9 +736,10 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         $_GET['id'] = $monikers[0]['m_resource_id']; // We need to know the ID number rather than the moniker
 
                         $deprecated = $monikers[0]['m_deprecated'] == 1;
-                        if (($deprecated) && (count($_POST) == 0) && (get_param_integer('keep_failover', null) !== 0)) {
+                        if (($deprecated) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
+                                set_http_status_code('301');
                                 header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
@@ -790,6 +800,9 @@ function do_site()
      * @global ?array $SHOW_EDIT_LINKS
      */
     $SHOW_EDIT_LINKS = ($show_edit_links == 1) || ($special_page_type == 'show_edit_links');
+    if ($SHOW_EDIT_LINKS) {
+        require_css('themes_editor');
+    }
     if (($special_page_type != 'view') && ($special_page_type != 'show_markers')) {
         require_code('view_modes');
         initialise_special_page_types($special_page_type);
@@ -811,13 +824,31 @@ function do_site()
         } else {
             $_done_sw_once = get_value('setupwizard_completed');
             $done_sw_once = !is_null($_done_sw_once);
-            if ((!$done_sw_once) && (get_param_string('page', '') != 'admin_setupwizard') && (has_actual_page_access(get_member(), 'admin_setupwizard'))) {
+            if ((!$done_sw_once) && (get_page_name() != 'admin_setupwizard') && (has_actual_page_access(get_member(), 'admin_setupwizard'))) {
                 require_lang('config');
                 $setupwizard_url = build_url(array('page' => 'admin_setupwizard'), get_module_zone('admin_setupwizard'));
                 $cancel_sw_url = get_self_url(false, true, array('cancel_sw_warn' => 1));
                 attach_message(do_lang_tempcode('SETUPWIZARD_NOT_RUN', escape_html($setupwizard_url->evaluate()), escape_html($cancel_sw_url->evaluate())), 'notice');
             }
         }
+    }
+
+    // Warning if dev-mode is on
+    if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_hide_dev_mode_message', 0) == 0)) {
+        static $done_message = false;
+        if (!$done_message) {
+            attach_message(do_lang_tempcode('DEV_MODE_ON'), 'notice');
+            $done_message = true;
+        }
+    }
+
+    // Web Standards mode?
+    $webstandards_check = get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0));
+    $show_edit_links = get_param_integer('show_edit_links', 0);
+    $webstandards_mode = (
+        (($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($webstandards_check == 1) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)))); // Not a permission - a matter of performance
+    if ($webstandards_mode) {
+        $GLOBALS['OUTPUT_STREAMING'] = false;
     }
 
     // Output streaming?
@@ -834,18 +865,17 @@ function do_site()
     }
     $out->singular_bind('MIDDLE', $middle);
 
-    // Validation
-    $no_webstandards_check = get_param_integer('keep_no_webstandards_check', get_param_integer('no_webstandards_check', 0));
-    $show_edit_links = get_param_integer('show_edit_links', 0);
-    if ((($GLOBALS['IS_ACTUALLY_ADMIN']) || ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()))) && (($special_page_type == 'code') || (($no_webstandards_check == 0) && (get_option('webstandards') == '1'))) && ($GLOBALS['REFRESH_URL'][0] == '') && ($show_edit_links == 0)) { // Not a permission - a matter of performance
+    // Web Standards mode
+    if ($webstandards_mode) {
         require_code('view_modes');
         $out_evaluated = $out->evaluate(null);
         check_xhtml_webstandards($out_evaluated, ($special_page_type == 'code' && (get_param_integer('preview_mode', null) === null)), get_param_integer('preview_mode', 0));
     }
 
     // Caching for spiders
-    if (running_script('index')) {
-        save_static_caching($out);
+    if ($GLOBALS['STATIC_CACHE_ENABLED']) {
+        $out2 = clone $out; // This is needed to stop things messing up during output streaming
+        save_static_caching($out2);
     }
 
     // Something to do now rather than output normal screen?
@@ -872,6 +902,7 @@ function do_site()
         if ($out_evaluated !== null) {
             echo $out_evaluated;
         } else {
+            $middle->handle_symbol_preprocessing();
             $GLOBALS['FINISHING_OUTPUT'] = true;
             /*if (get_option('gzip_output')=='1')  Does not work well
                     ob_start('_compress_html_output');*/
@@ -890,8 +921,7 @@ function do_site()
         require_code('notifications');
         $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
-        $mail = do_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
-
+        $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
         dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
 
         // Track very basic details of what sites use Composr. You can remove if you like.
@@ -911,13 +941,13 @@ function do_site()
             set_value('last_space_check', strval(time()));
         }
 
-        if (function_exists('disk_free_space')) {
+        if (php_function_allowed('disk_free_space')) {
             $low_space_check = intval(get_option('low_space_check')) * 1024 * 1024;
             $disk_space = @disk_free_space(get_file_base());
             if ((is_integer($disk_space)) && ($disk_space < $low_space_check)) {
                 require_code('notifications');
                 $subject = do_lang('LOW_DISK_SPACE_SUBJECT', null, null, null, get_site_default_lang());
-                $message = do_lang('LOW_DISK_SPACE_MAIL', strval(intval(round($disk_space / 1024 / 1024))), null, null, get_site_default_lang());
+                $message = do_notification_lang('LOW_DISK_SPACE_MAIL', strval(intval(round($disk_space / 1024 / 1024))), null, null, get_site_default_lang());
                 dispatch_notification('low_disk_space', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
             }
         }
@@ -933,7 +963,7 @@ function do_site()
 function save_static_caching($out, $mime_type = 'text/html')
 {
     global $SITE_INFO;
-    if ((count($_POST) == 0) && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+    if ((cms_srv('REQUEST_METHOD') != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
         $bot_type = get_bot_type();
         $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
         $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
@@ -1025,7 +1055,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
 {
     if (!is_dir(get_custom_file_base() . '/caches/guest_pages/')) {
         if (@mkdir(get_custom_file_base() . '/caches/guest_pages/', 0777)) {
-            fix_permissions(get_custom_file_base() . '/caches/guest_pages/', 0777);
+            fix_permissions(get_custom_file_base() . '/caches/guest_pages/');
             sync_file(get_custom_file_base() . '/caches/guest_pages/');
         } else {
             intelligent_write_error($fast_cache_path);
@@ -1055,7 +1085,7 @@ function write_static_cache_file($fast_cache_path, $out_evaluated, $support_gzip
  * Take the specified parameters, and try to find the corresponding page, then execute a function to load the page (load_html_page/load_comcode_page).
  *
  * @param  ID_TEXT $codename The codename of the page to load
- * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return NULL
+ * @param  boolean $required Whether it is required for this page to exist (shows an error if it doesn't) -- otherwise, it will just return null
  * @param  ?ID_TEXT $zone The zone the page is being loaded in (null: as shown by access URL)
  * @param  ?ID_TEXT $page_type The type of page - for if you know it (null: don't know it)
  * @param  boolean $being_included Whether the page is being included from another
@@ -1081,7 +1111,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     $REQUEST_PAGE_NEST_LEVEL++;
     if ($REQUEST_PAGE_NEST_LEVEL > 20) {
         $REQUEST_PAGE_NEST_LEVEL = 0;
-        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', $codename), 'warn');
+        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn');
         return null;
     }
 
@@ -1242,6 +1272,7 @@ function _request_page($codename, $zone, $page_type = null, $lang = null, $no_re
  * @param  ?LANGUAGE_NAME $lang Language name (null: users language)
  * @param  boolean $no_redirect_check Whether to not check for redirects (normally you would)
  * @return ~array A list of details (false: page not found)
+ * @ignore
  */
 function __request_page($codename, $zone, $page_type = null, $lang = null, $no_redirect_check = false)
 {
@@ -1458,9 +1489,15 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
  * @param  ID_TEXT $zone The zone the page is being loaded in
  * @param  boolean $wildcard_mode Whether to also search in wildcard mode
  * @return ~array A list of details (false: page not found)
+ * @ignore
  */
 function _request_page__redirects($codename, $zone, $wildcard_mode = false)
 {
+    static $internal_cache = array();
+    if (isset($internal_cache[$codename][$zone][$wildcard_mode])) {
+        return $internal_cache[$codename][$zone][$wildcard_mode];
+    }
+
     global $REDIRECT_CACHE;
     if ($REDIRECT_CACHE === null) {
         load_redirect_cache();
@@ -1482,9 +1519,14 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
         $query .= ' ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this
         $redirect = $GLOBALS['SITE_DB']->query($query, 1, null, false, true);
     }
+
     if (isset($redirect[0])) {
-        return array('REDIRECT', $redirect[0]);
+        $ret = array('REDIRECT', $redirect[0]);
+        $internal_cache[$codename][$zone][$wildcard_mode] = $ret;
+        return $ret;
     }
+
+    $internal_cache[$codename][$zone][$wildcard_mode] = false;
     return false;
 }
 
@@ -1512,6 +1554,8 @@ function load_comcode_page_from_cache($codename, $zone, $theme)
  *
  * @param  array $pages Details of pages to load
  * @return array Database rows
+ *
+ * @ignore
  */
 function _load_comcodes_page_from_cache($pages)
 {
@@ -1581,7 +1625,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
             ($codename[0] == '_') ||
             ($zone . ':' . $codename == ':404') ||
 
-            // Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
+            // FUDGE. Sculpt what comes up in Google a bit. We don't want really meta contextual help muddying search results
             ($codename == 'rules') ||
             ($zone . ':' . $codename == ':recommend_help') ||
             ($zone . ':' . $codename == ':popup_blockers') ||
@@ -1715,7 +1759,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     if ((!$is_panel) && (!$being_included)) {
         if (($title_to_use !== null) && ($title_to_use != '')) {
             get_screen_title($title_to_use, false); // Little hack - this will force DISPLAYED_TITLE to get set.
-            $filtered_title_to_use = @html_entity_decode(strip_tags($title_to_use), ENT_QUOTES, get_charset());
+            $filtered_title_to_use = strip_html($title_to_use);
         }
         seo_meta_load_for('comcode_page', $zone . ':' . $codename, $filtered_title_to_use);
     }
@@ -1738,12 +1782,12 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $add_child_url = new Tempcode();
     if (has_add_comcode_page_permission($zone)) {
         if (strpos($raw_comcode, 'main_comcode_page_children') !== false) {
-            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow ,'lang'=>user_lang()*//*,'redirect'=>$redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
+            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => $redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
         }
     }
 
     $warning_details = new Tempcode();
-    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0)) {
+    if (($comcode_page_row['p_validated'] !== null) && ($comcode_page_row['p_validated'] == 0) && (!$being_included)) {
         require_code('site2');
         $warning_details = get_page_warning_details($zone, $codename, $edit_url);
     }
@@ -1756,16 +1800,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         breadcrumb_set_parents($comcode_breadcrumbs);
 
         set_extra_request_metadata(array(
-            'created' => date('Y-m-d', $comcode_page_row['p_add_date']),
-            'creator' => (is_guest($comcode_page_row['p_submitter'])) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($comcode_page_row['p_submitter']),
-            'publisher' => '', // blank means same as creator
-            'modified' => ($comcode_page_row['p_edit_date'] === null) ? '' : date('Y-m-d', $comcode_page_row['p_edit_date']),
-            'type' => 'Comcode page',
-            'title' => '[semihtml]' . $title_to_use . '[/semihtml]',
+            'title' => ($title_to_use == '') ? null : ('[semihtml]' . $title_to_use . '[/semihtml]'),
             'identifier' => $zone . ':' . $codename,
-            'description' => '',
-            //'category'=>???,
-        ));
+        ), $comcode_page_row, 'comcode_page', $zone . ':' . $codename);
     }
 
     if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
@@ -1860,6 +1897,9 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             if ($_title === null) {
                 $_title = $the_page;
             }
+            if ($GLOBALS['XSS_DETECT']) {
+                ocp_mark_as_escaped($_title);
+            }
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }
     }
@@ -1878,7 +1918,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
 
     // Cut off broken recursion
     if ($PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] == $the_page) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($the_page), 'comcode_page'));
     }
 
     // Our point in the chain
@@ -1928,9 +1968,9 @@ function log_stats($string, $pg_time)
     $session_id = get_session_id();
     $member = get_member();
     $time = time();
-    $referer = substr(cms_srv('HTTP_REFERER'), 0, 255);
-    $browser = substr(get_browser_string(), 0, 255);
-    $os = substr(get_os_string(), 0, 255);
+    $referer = cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255);
+    $browser = cms_mb_substr(get_browser_string(), 0, 255);
+    $os = cms_mb_substr(get_os_string(), 0, 255);
     if ($os === null) {
         $os = '';
     }
@@ -1975,5 +2015,5 @@ function log_stats($string, $pg_time)
  */
 /*f unction _compress_html_output($data)
 {
-    return preg_replace(array('#>[ \t]+#', '#[ \t]+<#', '#\n[ \t]+\n#', '#\n+#'), array('> ', ' <', "\n", "\n"), $data);
+    return preg_replace(array('#>[ \t]+#', '#[ \t]+<#', '#\n[ \t]+\r?\n#', '#\n+#'), array('> ', ' <', "\n", "\n"), $data);
 }*/

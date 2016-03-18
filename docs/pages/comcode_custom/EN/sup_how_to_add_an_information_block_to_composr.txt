@@ -1,0 +1,24 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: How to Add an Information Block to Composr[/title]
+
+[media width="150" description="Editing a Comcode page with some blocks" float="right"]data_custom/images/docs/sup_how_to_add_an_information_block_to_composr/58183b68fe9a655790e70957d15ea6b1.png[/media]
+Composr websites, like most websites are made up of information. Composr achieves this through displaying a range of content blocks. Each information block can be customised to tweak which information appears within it.
+
+On a newly setup website the side panels may include some popular blocks which will vary if you choose a different type of installation. For example, on a blog installation the right column might include a list of popular pages, a list of categories, a newsletter subscribe block, a user log in block and a search block.
+
+To add a new block first you need to be logged in and then scroll down the page to the bottom of the zone you want to edit. At the bottom of the panel there will be a link to edit the zone. You will then arrive at the zone editor page. From here you can edit the main block of the page or either the left or right panels.
+
+If your panels are empty you won't find the zone editor link. So you can go to Admin Zone > Structure > Block/panel layout (Zone Editor), instead.
+
+At the top of the panel you can view the panel details and set up redirects to other panels used elsewhere, to save you having to edit multiple identical panels. The third option is a preview button so you can see what the panel looks like with the correct information displayed. The middle option is an edit button. On this screen you can edit or delete the existing blocks or add new ones. As you hover over existing blocks the screen should pop up a preview of each block.
+
+[media width="150" description="Editing a block's options" float="right"]data_custom/images/docs/sup_how_to_add_an_information_block_to_composr/0ce404d5e2079e2ec6fac2970e08efdd.png[/media]
+[media width="150" description="Composr Block construction assistant" float="right"]data_custom/images/docs/sup_how_to_add_an_information_block_to_composr/28d1ece9280799406a628918ff09b893.png[/media]
+In the bottom right of the WYSIWYG editor there is a red square icon which is the Block construction assistant button. This is the easiest way to add a new block to your panels or a page. Once you click this icon you will be taken to the Block construction assistant overlay.
+
+The Block construction assistant allows you to add any type of Composr block within the software. There are sometimes different blocks for side panels and main pages, with the side blocks displaying the information in a more compact that is more suited to a panel. You can still actually put a side block on a main page or a main block on a side panel; however, it may look a little strange in some cases. Once you choose the block you want to add, you can choose which options you want to customise.
+
+For example on the screenshot I have chosen to add a countdown block. Every Composr website is different and each website will need a different choice of information blocks on it. It is impossible to go through all of them on this tutorial and I recommend taking a look at the huge range of choices you can include on your website.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Content,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,Composr websites, like most websites are made up of information. Composr achieves this through displaying a range of content blocks.}[block]main_tutorial_rating[/block]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ function get_num_unread_private_topics($box_type = null)
     $sql .= ' AND (t_pt_from<>' . strval(get_member()) . ' OR ' . db_string_not_equal_to('t_pt_from_category', do_lang('TRASH')) . ')';
     $sql .= ' AND (t_pt_to<>' . strval(get_member()) . ' OR ' . db_string_not_equal_to('t_pt_to_category', do_lang('TRASH')) . ')';
     $sql .= ' AND (l_time IS NULL OR l_time<t_cache_last_time)'; // Cannot get join match OR gets one and it is behind of last post
-    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))); // Within tracking range
+    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))); // Within tracking range
 
     return $GLOBALS['FORUM_DB']->query_value_if_there($sql);
 }

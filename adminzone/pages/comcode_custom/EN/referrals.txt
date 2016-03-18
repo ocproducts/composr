@@ -1,4 +1,4 @@
-[title="1"]Edit referral settings[/title]
+[title]Edit referral settings[/title]
 
 Define whatever "level_X" settings you want, to define your prize scheme.
 

@@ -29,7 +29,7 @@
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="inline">
-					<input class="buttons__no button_screen" type="submit" value="{!NO}" />
+					<input class="button_screen buttons__no" type="submit" value="{!NO}" />
 				</div>
 			</form>
 
@@ -38,7 +38,7 @@
 
 				<div class="inline">
 					{KEEP}
-					<input accesskey="u" onclick="disable_button_just_clicked(this);" class="buttons__yes button_screen" type="submit" value="{!YES}" />
+					<input accesskey="u" onclick="disable_button_just_clicked(this);" class="button_screen buttons__yes" type="submit" value="{!YES}" />
 				</div>
 			</form>
 		</div>

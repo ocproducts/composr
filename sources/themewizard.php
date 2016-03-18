@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__themewizard()
 {
@@ -50,6 +52,8 @@ function init__themewizard()
         $THEME_WIZARD_IMAGES = array_merge($THEME_WIZARD_IMAGES, $a);
         $THEME_WIZARD_IMAGES_NO_WILD = array_merge($THEME_WIZARD_IMAGES_NO_WILD, $b);
     }
+
+    require_code('images');
 }
 
 /**
@@ -77,6 +81,13 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
     $ini_path = get_file_base() . '/themes/default/theme.ini';
     $autodetect_background_images = $guess_images_if_needed && (!isset($map['theme_wizard_images']));
     $map += better_parse_ini_file($ini_path); // NB: Does not take precedence
+
+    if (!isset($map['theme_wizard_images'])) {
+        $map['theme_wizard_images'] = '';
+    }
+    if (!isset($map['theme_wizard_images_no_wild'])) {
+        $map['theme_wizard_images_no_wild'] = '';
+    }
 
     if ($autodetect_background_images) {
         $dh = opendir(get_file_base() . '/themes/' . filter_naughty($theme) . (($theme == 'default') ? '/css/' : '/css_custom/'));
@@ -414,7 +425,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
 /**
  * Make a theme. Note that this will trigger the AFM.
  *
- * @param  string $themename Name of the theme.
+ * @param  string $theme_name Name of the theme.
  * @param  ID_TEXT $source_theme The theme it's being generated from
  * @param  ID_TEXT $algorithm The algorithm to use
  * @set equations hsv
@@ -423,22 +434,22 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
  * @param  ?boolean $dark Whether it will be a dark theme (null: autodetect).
  * @param  boolean $inherit_css Whether to inherit the CSS, for easier theme upgrading.
  */
-function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = false, $inherit_css = false)
+function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark = false, $inherit_css = false)
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
-    if (file_exists(get_custom_file_base() . '/themes/' . $themename)) {
+    if (file_exists(get_custom_file_base() . '/themes/' . $theme_name)) {
         require_code('abstract_file_manager');
         force_have_afm_details();
         $extending_existing = true;
     } else {
         if ($source_theme == 'default') {
-            actual_add_theme($themename);
+            actual_add_theme($theme_name);
         } else {
             require_code('themes3');
-            actual_copy_theme($source_theme, $themename);
+            actual_copy_theme($source_theme, $theme_name);
         }
         $extending_existing = false;
     }
@@ -462,7 +473,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
             }
 
             if ($extending_existing) {
-                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $themename)));
+                $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme_name)));
             } else {
                 $temp_all_ids = array();
             }
@@ -471,7 +482,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
 
             foreach ($full_img_set as $image_code) {
                 if (!in_array($image_code, $THEME_WIZARD_IMAGES_NO_WILD)) {
-                    if (($extending_existing) && (array_key_exists($image_code, $temp_all_ids)) && (strpos($temp_all_ids[$image_code], $themename . '/images_custom/') !== false) && ((!url_is_local($temp_all_ids[$image_code])) || (file_exists(get_custom_file_base() . '/' . $temp_all_ids[$image_code])))) {
+                    if (($extending_existing) && (array_key_exists($image_code, $temp_all_ids)) && (strpos($temp_all_ids[$image_code], $theme_name . '/images_custom/') !== false) && ((!url_is_local($temp_all_ids[$image_code])) || (file_exists(get_custom_file_base() . '/' . $temp_all_ids[$image_code])))) {
                         continue;
                     }
 
@@ -486,9 +497,9 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
                         }
 
                         if (strpos($orig_path, '/' . fallback_lang() . '/') !== false) {
-                            $composite = 'themes/' . filter_naughty($themename) . '/images/' . $lang . '/';
+                            $composite = 'themes/' . filter_naughty($theme_name) . '/images/' . $lang . '/';
                         } else {
-                            $composite = 'themes/' . filter_naughty($themename) . '/images/';
+                            $composite = 'themes/' . filter_naughty($theme_name) . '/images/';
                         }
                         $saveat = get_custom_file_base() . '/' . $composite . $image_code . '.png';
                         $saveat_url = $composite . $image_code . '.png';
@@ -515,10 +526,10 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
                                 sync_file($saveat);
                                 require_code('images_png');
                                 png_compress($saveat);
-                                actual_edit_theme_image($image_code, $themename, $lang, $image_code, $saveat_url, true);
+                                actual_edit_theme_image($image_code, $theme_name, $lang, $image_code, $saveat_url, true);
                             }
                         } else { // Still need to do the edit, as currently it'll have been mapped to the default theme when this theme was added
-                            actual_edit_theme_image($image_code, $themename, $lang, $image_code, $saveat_url, true);
+                            actual_edit_theme_image($image_code, $theme_name, $lang, $image_code, $saveat_url, true);
                         }
                     }
                 }
@@ -529,7 +540,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
         $dh = opendir(get_file_base() . '/themes/' . filter_naughty($source_theme) . (($source_theme == 'default') ? '/css/' : '/css_custom/'));
         while (($sheet = readdir($dh)) !== false) {
             if (substr($sheet, -4) == '.css') {
-                $saveat = get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/css_custom/' . $sheet;
+                $saveat = get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet;
                 if ((!file_exists($saveat)) || ($source_theme != 'default') || ($algorithm == 'hsv')) {
                     if ($inherit_css) {
                         $output = '{+START,CSS_INHERIT,' . basename($sheet, '.css') . ',' . filter_naughty($source_theme) . ',' . $seed . ',' . ($dark ? '1' : '0') . ',' . $algorithm . '}{+END}';
@@ -544,7 +555,7 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
                         $changed_from_default_theme = true;
                     }
                     if ($changed_from_default_theme) {
-                        $fp = @fopen($saveat, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($themename) . '/css_custom/' . $sheet);
+                        $fp = @fopen($saveat, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
                         if (fwrite($fp, $output) < strlen($output)) {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                         }
@@ -569,18 +580,10 @@ function make_theme($themename, $source_theme, $algorithm, $seed, $use, $dark = 
 
     // Use it, if requested
     if ($use) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($themename) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme_name) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
 
-        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'theme', 'category_name' => $themename));
-        foreach (array_keys($groups) as $group_id) {
-            if (in_array($group_id, $admin_groups)) {
-                continue;
-            }
-
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'theme', 'category_name' => $themename, 'group_id' => $group_id));
-        }
+        require_code('permissions2');
+        set_global_category_access('theme', $theme_name);
 
         erase_persistent_cache();
     }
@@ -630,11 +633,18 @@ function themewizard_script()
             header('Location: ' . find_theme_image($show));
             exit();
         }
+
         header('Content-type: image/png');
         require_code('images_png');
-        _png_compress($image);
-        imagepng($image);
+        $saveat = cms_tempnam();
+        @imagepng($image, $saveat, 9) or intelligent_write_error($saveat);
         imagedestroy($image);
+        fix_permissions($saveat);
+        sync_file($saveat);
+        require_code('images_png');
+        png_compress($saveat);
+        readfile($saveat);
+        @unlink($saveat);
     }
 }
 
@@ -922,6 +932,8 @@ function parse_css_colour_expression($textual)
  *
  * @param  array $tokens Tokens.
  * @return ?array Expression tree (null: error).
+ *
+ * @ignore
  */
 function _parse_css_colour_expression($tokens)
 {
@@ -1368,6 +1380,27 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             $_image = @imagecreatefromjpeg($path);
         } else {
             $_image = @imagecreatefrompng($path);
+
+            // GD may have a bug with not loading up non-alpha transparency properly
+            if (function_exists('imageistruecolor')) {
+                if (function_exists('imagecreatetruecolor')) {
+                    if (php_function_allowed('shell_exec')) {
+                        if (php_function_allowed('escapeshellarg')) {
+                            if (!imageistruecolor($_image)) {
+                                $imagemagick = find_imagemagick();
+                                if (!is_null($imagemagick)) {
+                                    $tempnam = cms_tempnam();
+                                    shell_exec($imagemagick . ' -depth 32 ' . escapeshellarg($path) . ' PNG32:' . $tempnam);
+                                    if (is_file($tempnam)) {
+                                        $_image = @imagecreatefrompng($tempnam);
+                                        @unlink($tempnam);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         if ($_image === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)));
@@ -1375,17 +1408,18 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     } else {
         $_image = $path;
     }
+
     $width = imagesx($_image);
     $height = imagesy($_image);
     if (function_exists('imageistruecolor')) {
         if (function_exists('imagecreatetruecolor')) {
+            $trans_colour = imagecolortransparent($_image); // Even a truecolor one can have a transparency currency, if 24 bit
+
             if (!imageistruecolor($_image)) {
-                $trans_colour = imagecolortransparent($_image);
                 $image = imagecreatetruecolor($width, $height);
                 imagecopy($image, $_image, 0, 0, 0, 0, $width, $height);
             } else {
                 $image = $_image;
-                $trans_colour = null;
             }
         } else {
             $image = $_image;
@@ -1394,6 +1428,9 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
     } else {
         $image = $_image;
         $trans_colour = imagecolortransparent($_image);
+    }
+    if ($trans_colour === -1 || $trans_colour === false) {
+        $trans_colour = null;
     }
     imagealphablending($image, false);
     imagesavealpha($image, true);
@@ -1496,9 +1533,9 @@ function generate_gradient($top, $bottom)
  */
 function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour_b1_orig, $colour_b1_new, $colour_b2_orig = null, $colour_b2_new = null, $gradient_direction = 'vertical', $pixel_x_start_array = null, $gradient_offset = 0, $end_array = false)
 {
-    /*$colour_a_new=$colour_a_orig;  For testing: a null conversion
-    $colour_b1_new=$colour_b1_orig;
-    $colour_b2_new=$colour_b2_orig;*/
+    /*$colour_a_new = $colour_a_orig;  For testing: a null conversion
+    $colour_b1_new = $colour_b1_orig;
+    $colour_b2_new = $colour_b2_orig;*/
 
     $colour_a_orig = str_replace('#', '', $colour_a_orig);
     $colour_b1_orig = str_replace('#', '', $colour_b1_orig);

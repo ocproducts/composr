@@ -1,6 +1,6 @@
 <div class="search_option float_surrounder">
 	{+START,IF_NON_PASSED_OR_FALSE,HAS_RANGE}
-		<label for="sd_{NAME*}">{DISPLAY*}:</label>
+		<label for="{NAME*}">{DISPLAY*}:</label>
 
 		{+START,INCLUDE,FORM_SCREEN_INPUT_TIME}
 			NAME={NAME}

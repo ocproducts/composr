@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -109,6 +109,11 @@ class Block_main_image_fader_news
             $q_filter .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $q_filter .= sql_region_filter('news', 'r.id');
+        }
+
         $query = 'SELECT r.* FROM ' . get_table_prefix() . 'news r' . $join . ' WHERE ' . $select_sql . $q_filter . ' AND validated=1 ORDER BY date_and_time DESC';
         $all_rows = $GLOBALS['SITE_DB']->query($query, 100/*reasonable amount*/);
         $news = array();
@@ -125,7 +130,7 @@ class Block_main_image_fader_news
                 if (preg_match('#["\'\]](http:[^\'"\[\]]+\.(jpeg|jpg|gif|png))["\'\[]#i', $article, $matches) != 0) {
                     $image_url = $matches[1];
                 } else {
-                    continue; // Invalid: no image
+                    $image_url = find_theme_image('no_image');
                 }
             }
             if (url_is_local($image_url)) {

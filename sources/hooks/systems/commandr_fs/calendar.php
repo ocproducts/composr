@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     public $file_resource_type = 'event';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -47,7 +47,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -57,7 +57,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'event':
-                $_ret = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('e_title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('e_title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -65,7 +65,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
                 return $ret;
 
             case 'calendar_type':
-                $_ret = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('t_title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('calendar_types', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('t_title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -76,32 +76,19 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties()
-    {
-        return array(
-            'logo' => 'URLPATH',
-            'external_feed' => 'URLPATH',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_EVENT_TYPE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_EVENT_TYPE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_EVENT_TYPE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_EVENT_TYPE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -114,18 +101,22 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             return false; // Only one depth allowed for this resource type
         }
 
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('calendar2');
 
         $logo = $this->_default_property_str($properties, 'logo');
         $external_feed = $this->_default_property_str($properties, 'external_feed');
+
         $id = add_event_type($label, $logo, $external_feed);
+
+        $this->_resource_save_extend($this->folder_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -141,15 +132,17 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
+        $properties = array(
             'label' => $row['t_title'],
             'logo' => $row['t_logo'],
             'external_feed' => $row['t_external_feed'],
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -159,6 +152,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     public function folder_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->folder_convert_filename_to_id($filename);
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $this->folder_resource_type);
 
         require_code('calendar2');
 
@@ -168,11 +162,13 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
 
         edit_event_type(intval($resource_id), $label, $logo, $external_feed);
 
+        $this->_resource_save_extend($this->folder_resource_type, $resource_id, $filename, $label, $properties);
+
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -189,61 +185,19 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'start_year' => 'INTEGER',
-            'start_month' => 'SHORT_INTEGER',
-            'start_day' => 'SHORT_INTEGER',
-            'start_monthly_spec_type' => 'ID_TEXT',
-            'start_hour' => '?SHORT_INTEGER',
-            'start_minute' => '?SHORT_INTEGER',
-            'end_year' => '?INTEGER',
-            'end_month' => '?SHORT_INTEGER',
-            'end_day' => '?SHORT_INTEGER',
-            'end_monthly_spec_type' => 'ID_TEXT',
-            'end_hour' => '?SHORT_INTEGER',
-            'end_minute' => '?SHORT_INTEGER',
-            'timezone' => 'ID_TEXT',
-            'do_timezone_conv' => 'BINARY',
-            'recurrence' => 'SHORT_TEXT',
-            'recurrences' => '?INTEGER',
-            'seg_recurrences' => 'BINARY',
-            'priority' => 'SHORT_INTEGER',
-            'validated' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'member_calendar' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CALENDAR_EVENT') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CALENDAR_EVENT') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CALENDAR_EVENT') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CALENDAR_EVENT') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -253,7 +207,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -307,20 +261,28 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'calendar_events', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $member_calendar = $this->_default_property_member_null($properties, 'member_calendar');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time_null($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
-        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $views, $add_time, $edit_time, null, $meta_keywords, $meta_description);
+        $id = add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $submitter, $views, $add_time, $edit_time, null, $meta_keywords, $meta_description, $regions);
+
+        if (isset($properties['reminders'])) {
+            table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => $id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -338,7 +300,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('events', strval($row['id']));
 
-        return array(
+        $properties = array(
             'label' => $row['e_title'],
             'description' => $row['e_content'],
             'start_year' => $row['e_start_year'],
@@ -367,15 +329,19 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
             'views' => $row['e_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['e_submitter'],
-            'member_calendar' => $row['e_member_calendar'],
-            'add_date' => $row['e_add_date'],
-            'edit_date' => $row['e_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['e_submitter']),
+            'member_calendar' => remap_resource_id_as_portable('member', $row['e_member_calendar']),
+            'add_date' => remap_time_as_portable($row['e_add_date']),
+            'edit_date' => remap_time_as_portable($row['e_edit_date']),
+            'regions' => collapse_1d_complexity('region', $GLOBALS['SITE_DB']->query_select('content_regions', array('region'), array('content_type' => 'event', 'content_id' => strval($row['id'])))),
+            'reminders' => table_to_portable_rows('calendar_reminders', /*skip*/array('id'), array('e_id' => intval($resource_id))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -386,7 +352,7 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if (is_null($category)) {
             return false; // Folder not found
@@ -441,21 +407,28 @@ class Hook_commandr_fs_calendar extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'calendar_events', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'calendar_events', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $member_calendar = $this->_default_property_int_null($properties, 'member_calendar');
+        $member_calendar = $this->_default_property_member_null($properties, 'member_calendar');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
+        $regions = empty($properties['regions']) ? array() : $properties['regions'];
 
-        edit_calendar_event(intval($resource_id), $type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
+        edit_calendar_event(intval($resource_id), $type, $recurrence, $recurrences, $seg_recurrences, $label, $content, $priority, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $timezone, $do_timezone_conv, $member_calendar, $meta_keywords, $meta_description, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, $regions, true);
+
+        if (isset($properties['reminders'])) {
+            table_from_portable_rows('calendar_reminders', $properties['reminders'], array('e_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

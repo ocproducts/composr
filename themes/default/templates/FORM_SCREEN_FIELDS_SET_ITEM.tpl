@@ -12,7 +12,7 @@
 		{INPUT}
 
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-			<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_HTML*,{PRETTY_NAME}}" />
+			<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_HTML,{PRETTY_NAME*}}" />
 		{+END}
 		{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 

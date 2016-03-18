@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Hook_profiles_tabs_edit_avatar
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -75,7 +75,7 @@ class Hook_profiles_tabs_edit_avatar
                 } else { // Upload
                     // We have chosen an upload. Note that we will not be looking at alt_url at this point, even though it is specified below for canonical reasons
                     $urls = get_url('avatar_alt_url', 'avatar_file', file_exists(get_custom_file_base() . '/uploads/avatars') ? 'uploads/avatars' : 'uploads/cns_avatars', 0, CMS_UPLOAD_IMAGE, false, '', '', false, true);
-                    if (((get_base_url() != get_forum_base_url()) || ((array_key_exists('on_msn', $GLOBALS['SITE_INFO'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[0] != '') && (url_is_local($urls[0]))) {
+                    if (((get_base_url() != get_forum_base_url()) || ((!empty($GLOBALS['SITE_INFO']['on_msn'])) && ($GLOBALS['SITE_INFO']['on_msn'] == '1'))) && ($urls[0] != '') && (url_is_local($urls[0]))) {
                         $urls[0] = get_custom_base_url() . '/' . $urls[0];
                     }
                 }

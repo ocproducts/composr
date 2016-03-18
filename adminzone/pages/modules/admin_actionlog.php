@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_actionlog
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -59,7 +59,7 @@ class Module_admin_actionlog
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -145,8 +145,8 @@ class Module_admin_actionlog
                 }
             }
         }
-        if ($GLOBALS['SITE_DB']->query_select_value('adminlogs', 'COUNT(DISTINCT member_id)') < 5000) {
-            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('adminlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
+        if ($GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT member_id)') < 5000) {
+            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
             foreach ($_staff as $staff) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id']);
                 if (is_null($username)) {
@@ -170,7 +170,7 @@ class Module_admin_actionlog
         // Possible selections for action type filter
         $_action_type_list = array();
         $rows1 = (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('DISTINCT l_the_type')) : array();
-        $rows2 = $GLOBALS['SITE_DB']->query_select('adminlogs', array('DISTINCT the_type'));
+        $rows2 = $GLOBALS['SITE_DB']->query_select('actionlogs', array('DISTINCT the_type'));
         foreach ($rows1 as $row) {
             $lang = do_lang($row['l_the_type'], null, null, null, null, false);
             if (!is_null($lang)) {
@@ -224,7 +224,7 @@ class Module_admin_actionlog
         require_code('templates_results_table');
         $field_titles = array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('ACTION'), do_lang_tempcode('PARAMETER_A'), do_lang_tempcode('PARAMETER_B'));
         if (addon_installed('securitylogging')) {
-            $field_titles[] = do_lang_tempcode('_BANNED');
+            $field_titles[] = do_lang_tempcode('BANNED');
         }
         $fields_title = results_field_title($field_titles, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -301,8 +301,8 @@ class Module_admin_actionlog
         }
 
         // Fetch
-        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'adminlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
-        $max_rows += $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . $where, false, true);
+        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
+        $max_rows += $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where, false, true);
         $rows = array_merge($rows1, $rows2);
 
         // Render...
@@ -404,7 +404,7 @@ class Module_admin_actionlog
         if ($mode == 'cns') {
             $rows = $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_reason AS reason', 'id', 'l_by AS member_id', 'l_date_and_time AS date_and_time', 'l_the_type AS the_type', 'l_param_a AS param_a', 'l_param_b AS param_b'), array('id' => $id), '', 1);
         } else {
-            $rows = $GLOBALS['SITE_DB']->query_select('adminlogs', array('id', 'member_id', 'date_and_time', 'the_type', 'param_a', 'param_b', 'ip'), array('id' => $id), '', 1);
+            $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('id', 'member_id', 'date_and_time', 'the_type', 'param_a', 'param_b', 'ip'), array('id' => $id), '', 1);
         }
 
         if (!array_key_exists(0, $rows)) {
@@ -416,10 +416,12 @@ class Module_admin_actionlog
         if (is_null($username)) {
             $username = do_lang('UNKNOWN');
         }
+
         $type_str = do_lang($row['the_type'], $row['param_a'], $row['param_b'], null, null, false);
         if (is_null($type_str)) {
             $type_str = $row['the_type'];
         }
+
         $fields = array(
             'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], false, '', false),
             'DATE_TIME' => get_timezoned_date($row['date_and_time']),
@@ -427,18 +429,24 @@ class Module_admin_actionlog
             'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],
             'PARAMETER_B' => is_null($row['param_b']) ? '' : $row['param_b'],
         );
+
         if (array_key_exists('ip', $row)) {
             $fields['IP_ADDRESS'] = escape_html($row['ip']);
         }
+
         if (array_key_exists('reason', $row)) {
             $fields['REASON'] = escape_html($row['reason']);
         }
+
         if (addon_installed('securitylogging')) {
             if (array_key_exists('ip', $row)) {
                 $banned_test_1 = ip_banned($row['ip'], true);
                 $fields['IP_BANNED'] = (!$banned_test_1) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
                 if ($row['ip'] != get_ip_address()) {
                     $fields['IP_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => 'eff2890f2193ece32df8ec8ee48b252d', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $row['ip'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+                }
+
+                if ($row['ip'] != get_ip_address()) {
                     if (get_option('stopforumspam_api_key') . get_option('tornevall_api_username') != '') {
                         $fields['SYNDICATE_TO_STOPFORUMSPAM'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
                             '_GUID' => '7d10045c6b3b48f256e2f8eb5535809c',
@@ -448,20 +456,82 @@ class Module_admin_actionlog
                     }
                 }
             }
-            $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $row['member_id']));
-            $fields['SUBMITTER_BANNED'] = is_null($banned_test_2) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
+
             if ((!is_guest($row['member_id'])) && ($row['member_id'] != get_member())) {
                 $fields['SUBMITTER_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => 'f79fb00ef35d89381371a67bc9c4d69b', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+            } else {
+                $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $row['member_id']));
+                $fields['SUBMITTER_BANNED'] = is_null($banned_test_2) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
             }
-            $banned_test_3 = $GLOBALS['FORUM_DRIVER']->is_banned($row['member_id']);
-            $fields['MEMBER_BANNED'] = $banned_test_3 ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
+
             if (((get_forum_type() == 'cns') && (!is_guest($row['member_id']))) && ($row['member_id'] != get_member())) {
                 $fields['MEMBER_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => '6b192ecfad1afc67bb8c2f1e744cc3b1', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_member_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+            } else {
+                $banned_test_3 = $GLOBALS['FORUM_DRIVER']->is_banned($row['member_id']);
+                $fields['MEMBER_BANNED'] = $banned_test_3 ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             }
         }
         $fields['INVESTIGATE_USER'] = hyperlink(build_url(array('page' => 'admin_lookup', 'id' => (array_key_exists('ip', $row)) ? $row['ip'] : $row['member_id']), '_SELF'), do_lang_tempcode('PROCEED'), false, false);
 
+        // Is there a revision here?
+        require_code('revisions_engine_database');
+        $revision_engine = new RevisionEngineDatabase($mode == 'cns');
+        $revision = $revision_engine->find_revision_for_log($id);
+        if (is_null($revision)) {
+            require_code('revisions_engine_files');
+            $revision_engine = new RevisionEngineFiles();
+            $revision = $revision_engine->find_revision_for_log($id);
+        }
+        if (!is_null($revision)) {
+            if (isset($revision['r_resource_type']) && isset($revision['r_resource_id'])) {
+                require_code('content');
+                list($content_title, , , , $content_url) = content_get_details($revision['r_resource_type'], $revision['r_resource_id']);
+                if (empty($content_title)) {
+                    $content_title = $revision['r_original_title'];
+                }
+                if (!is_null($content_url)) {
+                    $fields['VIEW'] = hyperlink($content_url, $content_title, false, true);
+                }
+            }
+
+            if (isset($revision['r_original_content_owner'])) {
+                $fields['CONTENT_OWNER'] = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['r_original_content_owner']);
+            }
+
+            if (isset($revision['r_original_content_timestamp'])) {
+                $fields['CONTENT_DATE_AND_TIME'] = get_timezoned_date($revision['r_original_content_timestamp']);
+            }
+
+            if (isset($revision['r_original_title'])) {
+                if ($revision['r_original_title'] != '') {
+                    $fields['TITLE_PRIOR_TO_REVISION'] = $revision['r_original_title'];
+                }
+            }
+
+            $fields['TEXT_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('_GUID' => '8141337923279a8a12646d0e29230f60', 'CONTENT' => $revision['r_original_text']));
+
+            if (isset($revision['r_original_resource_fs_path'])) {
+                $fields['RESOURCE_FS_PATH_PRIOR_TO_REVISION'] = $revision['r_original_resource_fs_path'];
+            }
+
+            if (isset($revision['r_original_resource_fs_record']) && strlen($revision['r_original_resource_fs_record']) < 1024 * 50/*50kb reasonable limit*/) {
+                $fields['RESOURCE_FS_RECORD_PRIOR_TO_REVISION'] = do_template('WITH_WHITESPACE', array('_GUID' => '985c7727f882d0899f18dcdf6323b00c', 'CONTENT' => $revision['r_original_resource_fs_record']));
+            }
+
+            if (has_privilege(get_member(), 'delete_revisions')) {
+                $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
+                $delete = hyperlink($delete_url, do_lang_tempcode('DELETE'), false, false, do_lang_tempcode('DELETE_REVISION'), null, new Tempcode());
+                $fields['DELETE_REVISION'] = $delete;
+            }
+
+            /*if (has_privilege(get_member(), 'undo_revisions')) {
+                $undo_url = build_url(array('page' => 'admin_revisions', 'type' => 'undo', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
+                $delete = hyperlink($delete_url, do_lang_tempcode('UNDO'), false, false, do_lang_tempcode('UNDO_REVISION'), null, new Tempcode());
+                $fields['UNDO_REVISION'] = $delete;
+            }*/
+        }
+
         require_code('templates_map_table');
-        return map_table($this->title, $fields);
+        return map_table_screen($this->title, $fields);
     }
 }

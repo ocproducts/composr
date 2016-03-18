@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_forumview
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -84,7 +84,7 @@ class Module_forumview
     public $of_member_id;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -101,24 +101,15 @@ class Module_forumview
 
             $_forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $id), '', 1, null, false);
             if (!array_key_exists(0, $_forum_info)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
             }
             $forum_info = $_forum_info[0];
 
             $description_text = get_translated_text($forum_info['f_description'], $GLOBALS['FORUM_DB']);
 
             set_extra_request_metadata(array(
-                'created' => '',
-                'creator' => '',
-                'publisher' => '', // blank means same as creator
-                'modified' => '',
-                'type' => 'Forum',
-                'title' => comcode_escape($forum_info['f_name']),
                 'identifier' => '_SEARCH:forumview:browse:' . strval($id),
-                'description' => $description_text,
-                'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category'=>???,
-            ));
+            ), $forum_info, 'forum', strval($id));
 
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
@@ -139,15 +130,15 @@ class Module_forumview
 
             set_short_title($forum_name);
 
+            $this->id = $id;
+            $this->forum_info = $forum_info;
+
             set_feed_url('?mode=cns_forumview&select=' . strval($id));
 
             require_code('cns_forums');
             $breadcrumbs = cns_forum_breadcrumbs($id, $forum_name, $forum_info['f_parent_forum']);
             breadcrumb_set_parents($breadcrumbs);
             $this->breadcrumbs = breadcrumb_segments_to_tempcode($breadcrumbs);
-
-            $this->id = $id;
-            $this->forum_info = $forum_info;
         }
 
         if ($type == 'pt') {

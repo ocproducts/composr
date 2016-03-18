@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__files2()
 {
@@ -83,6 +85,10 @@ function cache_and_carry($func, $args)
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
+    if (!file_exists(dirname($path))) {
+        mkdir(dirname($path), 0777);
+        fix_permissions(dirname($path));
+    }
     if (is_file($path)) {
         $ret = @unserialize(file_get_contents($path));
     } else {
@@ -105,7 +111,7 @@ function make_missing_directory($dir)
     if (@mkdir($dir, 0777, true) === false) {
         warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)));
     }
-    fix_permissions($dir, 0777);
+    fix_permissions($dir);
     sync_file($dir);
 }
 
@@ -113,10 +119,15 @@ function make_missing_directory($dir)
  * Discern the cause of a file-write error, and show an appropriate error message.
  *
  * @param PATH $path File path that could not be written (full path, not relative)
+ * @ignore
  */
 function _intelligent_write_error($path)
 {
     if (file_exists($path)) {
+        if (filesize($path) == 0) {
+            return; // Probably was OR'd where 0 casted to false
+        }
+
         warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
     } elseif (file_exists(dirname($path))) {
         if (strpos($path, '/templates_cached/') !== false) {
@@ -133,6 +144,8 @@ function _intelligent_write_error($path)
  *
  * @param  PATH $path File path that could not be written
  * @return Tempcode Message
+ *
+ * @ignore
  */
 function _intelligent_write_error_inline($path)
 {
@@ -152,6 +165,10 @@ function _intelligent_write_error_inline($path)
 function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
+    if (!file_exists($local_path)) {
+        mkdir($local_path, 0777);
+        fix_permissions($local_path);
+    }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
     } else {
@@ -167,11 +184,13 @@ function cms_get_temp_dir()
  *
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
+ *
+ * @ignore
  */
-function _cms_tempnam($prefix)
+function _cms_tempnam($prefix = '')
 {
     list($tmp_path, $problem_saving, $server_path, $local_path) = cms_get_temp_dir();
-    if ((function_exists('tempnam')) && (strpos(@ini_get('disable_functions'), 'tempnam') === false)) {
+    if (php_function_allowed('tempnam')) {
         // Create a real temporary file
         $tempnam = tempnam($tmp_path, 'tmpfile__' . $prefix);
         if ((($tempnam === false) || ($tempnam == ''/*Should not be blank, but seen in the wild*/)) && (!$problem_saving)) {
@@ -192,6 +211,7 @@ function _cms_tempnam($prefix)
  * Provides a hook for file synchronisation between mirrored servers. Called after any file creation, deletion or edit.
  *
  * @param  PATH $filename File/directory name to sync on (full path)
+ * @ignore
  */
 function _sync_file($filename)
 {
@@ -230,6 +250,7 @@ function _sync_file($filename)
  *
  * @param  PATH $old File/directory name to move from (may be full or relative path)
  * @param  PATH $new File/directory name to move to (may be full or relative path)
+ * @ignore
  */
 function _sync_file_move($old, $new)
 {
@@ -254,6 +275,8 @@ function _sync_file_move($old, $new)
  * @param  PATH $dir The pathname to the directory to delete
  * @param  boolean $default_preserve Whether to preserve files there by default
  * @param  boolean $just_files Whether to just delete files
+ *
+ * @ignore
  */
 function _deldir_contents($dir, $default_preserve = false, $just_files = false)
 {
@@ -276,13 +299,13 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
                 if (!$just_files) {
                     $test = @rmdir($dir . '/' . $entryname);
                     if (($test === false) && (!$just_files/*tolerate weird locked dirs if we only need to delete files anyways*/)) {
-                        warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)));
+                        attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                     }
                 }
             } elseif (($entryname != '.') && ($entryname != '..')) {
                 $test = @unlink($dir . '/' . $entryname);
                 if ($test === false) {
-                    intelligent_write_error($dir . '/' . $entryname);
+                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
                 }
             }
             sync_file($dir . '/' . $entryname);
@@ -299,9 +322,11 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
  * @param  boolean $headers Whether to output CSV headers
  * @param  boolean $output_and_exit Whether to output/exit when we're done instead of return
  * @param  ?PATH $outfile_path File to spool into (null: none)
- * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not NULL, this will be blank)
+ * @param  ?mixed $callback Callback for dynamic row insertion (null: none). Only implemented for the excel_support addon. Is passed: row just done, next row (or null), returns rows to insert
+ * @param  ?array $metadata List of maps, each map representing metadata of a row; supports 'url' (null: none)
+ * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not null, this will be blank)
  */
-function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null)
+function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = null)
 {
     if ($headers) {
         header('Content-Type: text/csv; charset=' . get_charset());
@@ -365,6 +390,68 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         exit($out);
     }
     return $out;
+}
+
+/**
+ * Delete a column from a CSV file.
+ *
+ * @param  PATH $in_path Path to the CSV file
+ * @param  string $column_name Column name
+ */
+function delete_csv_column($in_path, $column_name)
+{
+    if (!is_writable_wrap($in_path)) {
+        fatal_exit(do_lang_tempcode('WRITE_ERROR', $in_path));
+    }
+
+    // Find which field index this named column is
+    $in_file = fopen($in_path, 'rb');
+    $header_row = fgetcsv($in_file);
+    $column_i = null;
+    foreach ($header_row as $i => $h) {
+        if ($h == $column_name) {
+            $column_i = $i;
+            break;
+        }
+    }
+    if (is_null($column_i)) {
+        return;
+    }
+
+    // Rewrite out to a temp file
+    $tmp_path = cms_tempnam();
+    $tmp_file = fopen($tmp_path, 'wb');
+
+    // Write out header
+    unset($header_row[$i]);
+    foreach ($header_row as $i => $h) {
+        if ($i != 0) {
+            fwrite($tmp_file, ',');
+        }
+        fwrite($tmp_file, str_replace('"', '""', $h));
+    }
+    fwrite($tmp_file, "\n");
+
+    // Write out each row
+    while (($row = fgetcsv($in_file)) !== false) {
+        unset($row[$column_i]);
+
+        foreach ($row as $i => $c) {
+            if ($i != 0) {
+                fwrite($tmp_file, ',');
+            }
+            fwrite($tmp_file, '"' . str_replace('"', '""', $c) . '"');
+        }
+        fwrite($tmp_file, "\n");
+    }
+
+    // Clean up; put temp file back over main file
+    fclose($in_file);
+    fclose($tmp_file);
+    @unlink($in_path);
+    rename($tmp_path, $in_path);
+    sync_file($in_path);
+    fix_permissions($in_path);
 }
 
 /**
@@ -439,7 +526,10 @@ function get_directory_contents($path, $rel_path = '', $special_too = false, $re
 
     require_code('files');
 
-    $d = opendir($path);
+    $d = @opendir($path);
+    if ($d === false) {
+        return array();
+    }
     while (($file = readdir($d)) !== false) {
         if (!$special_too) {
             if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, IGNORE_ACCESS_CONTROLLERS)) {
@@ -682,7 +772,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
 function check_shared_bandwidth_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_bandwidth_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_bandwidth_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_registered'];
         $total_bandwidth = intval(get_value('download_bandwidth'));
@@ -690,9 +780,9 @@ function check_shared_bandwidth_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_bandwidth_complementary', $SITE_INFO)) {
-        // $timestamp_start=$SITE_INFO['custom_user_'].current_share_user(); Actually we'll do by views
-        // $days_till_now=(time()-$timestamp_start)/(24*60*60);
+    if (!empty($SITE_INFO['throttle_bandwidth_complementary'])) {
+        // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
+        // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_bandwidth_complementary'] + $SITE_INFO['throttle_bandwidth_views_per_meg'] * $views_till_now;
         $total_bandwidth = intval(get_value('download_bandwidth'));
@@ -710,7 +800,7 @@ function check_shared_bandwidth_usage($extra)
 function check_shared_space_usage($extra)
 {
     global $SITE_INFO;
-    if (array_key_exists('throttle_space_registered', $SITE_INFO)) {
+    if (!empty($SITE_INFO['throttle_space_registered'])) {
         $views_till_now = intval(get_value('page_views'));
         $bandwidth_allowed = $SITE_INFO['throttle_space_registered'];
         $total_space = get_directory_size(get_custom_file_base() . '/uploads');
@@ -718,9 +808,9 @@ function check_shared_space_usage($extra)
             return;
         }
     }
-    if (array_key_exists('throttle_space_complementary', $SITE_INFO)) {
-        // $timestamp_start=$SITE_INFO['custom_user_'].current_share_user(); Actually we'll do by views
-        // $days_till_now=(time()-$timestamp_start)/(24*60*60);
+    if (!empty($SITE_INFO['throttle_space_complementary'])) {
+        // $timestamp_start = $SITE_INFO['custom_user_'] . current_share_user(); Actually we'll do by views
+        // $days_till_now = (time() - $timestamp_start) / (24 * 60 * 60);
         $views_till_now = intval(get_value('page_views'));
         $space_allowed = $SITE_INFO['throttle_space_complementary'] + $SITE_INFO['throttle_space_views_per_meg'] * $views_till_now;
         $total_space = get_directory_size(get_custom_file_base() . '/uploads');
@@ -731,15 +821,15 @@ function check_shared_space_usage($extra)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none). If $raw_post is set, it should be array($data)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -754,6 +844,7 @@ function check_shared_space_usage($extra)
  * @param  ?string $http_verb HTTP verb (null: auto-decide based on other parameters)
  * @param  string $raw_content_type The content type to use if a raw HTTP post
  * @return ?string The data downloaded (null: error)
+ * @ignore
  */
 function _http_download_file($url, $byte_limit = null, $trigger_error = true, $no_redirect = false, $ua = 'Composr', $post_params = null, $cookies = null, $accept = null, $accept_charset = null, $accept_language = null, $write_to_file = null, $referer = null, $auth = null, $timeout = 6.0, $raw_post = false, $files = null, $extra_headers = null, $http_verb = null, $raw_content_type = 'application/xml')
 {
@@ -791,7 +882,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if ($DOWNLOAD_LEVEL == 8) {
         return '';
-    }//critical_error('FILE_DOS',$url);
+    }//critical_error('FILE_DOS', $url);
 
     // Work out what we'll be doing
     $url_parts = @parse_url($url);
@@ -804,6 +895,26 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $DOWNLOAD_LEVEL--;
         $HTTP_MESSAGE = 'malconstructed-URL';
         return null;
+    }
+    if (!array_key_exists('host', $url_parts)) {
+        $url_parts['host'] = '127.0.0.1';
+    }
+    $connect_to = $url_parts['host'];
+    $base_url_parsed = parse_url(get_base_url());
+    if (!array_key_exists('host', $base_url_parsed)) {
+        $base_url_parsed['host'] = '127.0.0.1';
+    }
+    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1');
+    if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
+        $connect_to = cms_srv('LOCAL_ADDR');
+        if ($connect_to == '') {
+            $connect_to = cms_srv('SERVER_ADDR');
+        }
+        if ($connect_to == '') {
+            $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
+        }
+    } elseif (php_function_allowed('gethostbyname')) {
+        $connect_to = @gethostbyname($connect_to); // for DNS caching
     }
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
@@ -822,7 +933,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $file_base = preg_replace('#' . preg_quote(urldecode($parsed_base_url['path'])) . '$#', '', $file_base);
             $file_path = $file_base . urldecode($parsed['path']);
 
-            if ((function_exists('shell_exec')) && (function_exists('escapeshellcmd')) && (substr($file_path, -4) == '.php') && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+            if ((php_function_allowed('escapeshellcmd')) && (php_function_allowed('shell_exec')) && (substr($file_path, -4) == '.php')) {
                 $cmd = 'DOCUMENT_ROOT=' . escapeshellarg_wrap(dirname(get_file_base())) . ' PATH_TRANSLATED=' . escapeshellarg_wrap($file_path) . ' SCRIPT_NAME=' . escapeshellarg_wrap($file_path) . ' HTTP_USER_AGENT=' . escapeshellarg_wrap($ua) . ' QUERY_STRING=' . escapeshellarg_wrap($parsed['query']) . ' HTTP_HOST=' . escapeshellarg_wrap($parsed['host']) . ' ' . escapeshellcmd(find_php_path(true)) . ' ' . escapeshellarg_wrap($file_path);
                 $contents = shell_exec($cmd);
                 $split_pos = strpos($contents, "\r\n\r\n");
@@ -845,7 +956,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $HTTP_DOWNLOAD_SIZE = filesize($file_path);
                 $HTTP_DOWNLOAD_MTIME = filemtime($file_path);
                 $HTTP_MESSAGE = '200';
-                $HTTP_FILENAME = null;
+                $HTTP_FILENAME = basename($file_path);
             }
 
             if (!is_null($byte_limit)) {
@@ -862,6 +973,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
 
     $use_curl = (($url_parts['scheme'] != 'http') || ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) && (function_exists('curl_version'));
+    if ((function_exists('get_value')) && (get_value('prefer_curl') === '0')) {
+        $use_curl = false;
+    }
 
     $raw_payload = '';
     $put = mixed();
@@ -876,13 +990,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $_postdetails_params = $post_params[0];
         } else {
             $_postdetails_params = '';//$url_parts['scheme'].'://'.$url_parts['host'].$url2.'?';
-            $first = true;
             if (array_keys($post_params) == array('_')) {
                 $_postdetails_params = $post_params['_'];
             } else {
-                foreach ($post_params as $param_key => $param_value) {
-                    $_postdetails_params .= (!$first) ? ('&' . $param_key . '=' . rawurlencode($param_value)) : ($param_key . '=' . rawurlencode($param_value));
-                    $first = false;
+                if (count($post_params) > 0) {
+                    $_postdetails_params .= '&' . http_build_query($post_params);
                 }
             }
         }
@@ -911,7 +1023,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $put_path = current($files);
                     $put = fopen($put_path, 'rb');
                 } else { // No, we need to spool out HTTP blah to make a new file to PUT
-                    $put_path = cms_tempnam('temp_put');
+                    $put_path = cms_tempnam();
                     $put = fopen($put_path, 'wb');
                 }
             }
@@ -1037,7 +1149,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            $ch = curl_init($url);
+                                            if ($do_ip_forwarding) {
+                                                $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
+                                            } else {
+                                                $_url = $url;
+                                            }
+                                            $ch = curl_init($_url);
                                             $curl_headers = array();
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
@@ -1048,9 +1165,16 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
-                                            //curl_setopt($ch,CURLOPT_SSLVERSION,6);
-                                            curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
-                                            //if (!$no_redirect) @curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
+                                            if (defined('CURL_SSLVERSION_TLSv1')) {
+                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+                                            } else {
+                                                curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                            }
+                                            if ($do_ip_forwarding) {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                            }
+                                            //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_USERAGENT, $ua);
@@ -1090,6 +1214,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
                                             }
+                                            $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
                                                     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
@@ -1104,7 +1229,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if (!is_null($referer)) {
                                                 curl_setopt($ch, CURLOPT_REFERER, $referer);
                                             }
-                                            $proxy = get_option('proxy');
+                                            $proxy = function_exists('get_option') ? get_option('proxy') : '';
                                             if (($proxy != '') && ($url_parts['host'] != 'localhost') && ($url_parts['host'] != '127.0.0.1')) {
                                                 $port = get_option('proxy_port');
                                                 curl_setopt($ch, CURLOPT_PROXY, $proxy . ':' . $port);
@@ -1118,10 +1243,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
                                             }
                                             $line = curl_exec($ch);
-                                            /*if ((count($curl_headers)!=0) && ((!is_null($files)))) // Useful for debugging
-                                                {
-                                                        var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
-                                                }*/
+                                            /*if ((count($curl_headers)!=0) && ((!is_null($files)))) { // Useful for debugging
+                                                var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
+                                            }*/
                                             if ($line === false) {
                                                 $error = curl_error($ch);
                                                 curl_close($ch);
@@ -1171,7 +1295,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                     if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
                                                         if (is_null($HTTP_FILENAME)) {
-                                                            $HTTP_FILENAME = basename($matches[1]);
+                                                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                                                         }
 
                                                         if (strpos($matches[1], '://') === false) {
@@ -1257,23 +1381,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $errno = 0;
     $errstr = '';
-    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
-        if (!array_key_exists('host', $url_parts)) {
-            $url_parts['host'] = '127.0.0.1';
-        }
-        $connect_to = $url_parts['host'];
-        $base_url_parsed = parse_url(get_base_url());
-        if (!array_key_exists('host', $base_url_parsed)) {
-            $base_url_parsed['host'] = '127.0.0.1';
-        }
-        if (($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1')) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
-            $connect_to = cms_srv('LOCAL_ADDR');
-            if ($connect_to == '') {
-                $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
-            }
-        } elseif (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
-            $connect_to = gethostbyname($connect_to); // for DNS caching
-        }
+    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {
             $proxy = null;
@@ -1321,7 +1429,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;
         $out .= $raw_payload;
-        $out .= "\r\n" . 'Connection: Close'; // Not a standard header, comes in a separate header set
+        $out .= 'Connection: Close' . "\r\n\r\n";
         @fwrite($mysock, $out);
         if ($put !== null) {
             rewind($put);
@@ -1342,7 +1450,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $buffer_unprocessed = '';
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
             $line = @fread($mysock, (($chunked) && (strlen($buffer_unprocessed) > 10)) ? 10 : 1024);
-
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;
@@ -1410,7 +1517,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     _read_in_headers($line);
                     if (preg_match("#^Refresh: (\d*);(.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1436,7 +1543,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                     if (preg_match("#^Location: (.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1537,6 +1644,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     }
                                 }
                                 return null;
+                            case '405':
+                                if ($byte_limit == 0 && !$no_redirect && empty($post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
+                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                    $DOWNLOAD_LEVEL--;
+                                    if ($put !== null) {
+                                        fclose($put);
+                                        if (!$put_no_delete) {
+                                            @unlink($put_path);
+                                        }
+                                    }
+                                    return _detect_character_encoding($text);
+                                }
                             default:
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url)));
@@ -1625,7 +1744,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
-        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && (is_null($post_params)) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
+        if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
             $timeout_before = @ini_get('default_socket_timeout');
@@ -1647,7 +1766,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     'ciphers' => 'TLSv1',
                 )
             );
-            $proxy = get_option('proxy');
+            $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
                 $port = get_option('proxy_port');
                 $proxy_user = get_option('proxy_user');
@@ -1678,11 +1797,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $read_file = false;
                 }
             }
-            if ((!is_null($byte_limit)) && ($read_file !== false)) {
+            if ((!is_null($byte_limit)) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
                 $read_file = substr($read_file, 0, $byte_limit);
             }
             safe_ini_set('allow_url_fopen', '0');
             safe_ini_set('default_socket_timeout', $timeout_before);
+            foreach ($http_response_header as $header) {
+                _read_in_headers($header . "\r\n");
+            }
             if ($read_file !== false) {
                 $DOWNLOAD_LEVEL--;
                 if ($put !== null) {
@@ -1695,7 +1817,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
         }
 
-        $errstr = $php_errormsg;
+        $errstr = @strval($php_errormsg);
         if ($trigger_error) {
             if ($errstr == '') {
                 $errstr = strval($errno);
@@ -1706,7 +1828,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }
         $DOWNLOAD_LEVEL--;
-        $HTTP_MESSAGE = 'could not connect to host (' . $errstr . ')';
+        $HTTP_MESSAGE = 'could not connect to host'; // Could append  (' . $errstr . ') but only when debugging because we use this string like a constant in some places
         if ($put !== null) {
             fclose($put);
             if (!$put_no_delete) {
@@ -1721,6 +1843,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  * Read in any HTTP headers from an HTTP line, that we probe for.
  *
  * @param  string $line The line
+ *
+ * @ignore
  */
 function _read_in_headers($line)
 {
@@ -1786,6 +1910,10 @@ function get_webpage_meta_details($url)
         't_json_discovery' => '',
         't_xml_discovery' => '',
     );
+
+    if (url_is_local($url)) {
+        $url = get_custom_base_url() . '/' . $url;
+    }
 
     if (!looks_like_url($url)) {
         return $meta_details;
@@ -1873,6 +2001,8 @@ function get_webpage_meta_details($url)
         }
 
         $GLOBALS['SITE_DB']->query_insert('url_title_cache', $meta_details, false, true); // 'true' to stop race conditions
+    } else {
+        $meta_details['t_mime_type'] = $result[1];
     }
 
     $cache[$url] = $meta_details;
@@ -1885,6 +2015,8 @@ function get_webpage_meta_details($url)
  *
  * @param  string $out The HTTP stream we will look through
  * @return string Same as $out
+ *
+ * @ignore
  */
 function _detect_character_encoding($out)
 {

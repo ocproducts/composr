@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    banners
+ * @package    charity_banners
  */
 
 /**
@@ -26,7 +26,7 @@
  * @param  integer $importance_modulus The banners "importance modulus"
  * @range  1 max
  * @param  LONG_TEXT $notes Any notes associated with the banner
- * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=default)
+ * @param  SHORT_INTEGER $the_type The type of banner (0=permanent, 1=campaign, 2=fallback)
  * @set    0 1 2
  * @param  ?TIME $expiry_date The banner expiry date (null: never)
  * @param  ?MEMBER $submitter The banners submitter (null: current member)
@@ -85,7 +85,7 @@ function add_banner_quiet($name, $imgurl, $title_text, $caption, $campaign_remai
 
         if (function_exists('decache')) {
             decache('main_banner_wave');
-            decache('main_topsites');
+            decache('main_top_sites');
         }
 
         log_it('ADD_BANNER', $name, $caption);

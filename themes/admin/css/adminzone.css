@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 /* Style overrides (NB: it is reasonable to assume global.css ran before this, so precedence here is automatic) */
@@ -135,6 +135,23 @@ footer .global_minilinks {
 
 .adminzone_search input {
 	vertical-align: middle;
+}
+
+/*
+=========================
+========Revisions========
+=========================
+*/
+
+.revisions_filter_item {
+	width: 15%;
+	margin: 0 5% 0.5em 0;
+	float: left;
+}
+
+.revisions_filter_item_button {
+	margin: 0.75em 0.5em 0 0;
+	float: right;
 }
 
 /*

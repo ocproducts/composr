@@ -16,14 +16,14 @@
 	</td>
 	<td>
 		{+START,IF,{$NOT,{BRIBABLE}}}
-			<span class="ocw_fadedttext">{!W_BRIBABLE}: {!NO}</span>
+			<span class="buildr_fadedttext">{!W_BRIBABLE}: {!NO}</span>
 		{+END}
 		{+START,IF,{BRIBABLE}}
 			{!W_BRIBABLE}: {!YES}
 		{+END}
 		<br />
 		{+START,IF,{$NOT,{HEALTHY}}}
-			<span class="ocw_fadedttext">{!W_HEALTHY}: {!NO}</span>
+			<span class="buildr_fadedttext">{!W_HEALTHY}: {!NO}</span>
 		{+END}
 		{+START,IF,{HEALTHY}}
 			{!W_HEALTHY}: {!YES}

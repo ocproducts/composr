@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -75,7 +75,7 @@ class Block_main_awards
 
         $_award_type_row = $GLOBALS['SITE_DB']->query_select('award_types', array('*'), array('id' => $award), '', 1);
         if (!array_key_exists(0, $_award_type_row)) {
-            return do_lang_tempcode('MISSING_RESOURCE');
+            return do_lang_tempcode('MISSING_RESOURCE', 'award_type');
         }
         $award_type_row = $_award_type_row[0];
         $award_title = get_translated_text($award_type_row['a_title']);
@@ -106,12 +106,7 @@ class Block_main_awards
             $submit_url = '';
         }
         if ($submit_url != '') {
-            if (strpos($submit_url, '?') === false) {
-                $submit_url .= '?';
-            } else {
-                $submit_url .= '&';
-            }
-            $submit_url .= 'award=' . strval($award);
+            extend_url($submit_url, 'award=' . strval($award));
         }
 
         require_code('content');

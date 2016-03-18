@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,14 +31,22 @@ class Hook_content_meta_aware_forum
      */
     public function info($zone = null)
     {
-        if (get_forum_type() != 'cns') {
+        if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }
 
+        if (is_null($zone)) {
+            $zone = get_module_zone('forumview');
+            if (is_null($zone)) {
+                return null;
+            }
+        }
+
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM',
+            'content_type_universal_label' => 'Forum',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_forums',
@@ -59,17 +67,21 @@ class Hook_content_meta_aware_forum
             'title_field_dereference' => false,
             'description_field' => 'f_description',
             'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forums:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'add_url' => '',
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('forumview')) . ':forumview',
+            'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => 'f_position',
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -79,9 +91,14 @@ class Hook_content_meta_aware_forum
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'forums', // NULL if has no permissions
+            'permissions_type_code' => 'forums', // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'forum',
 
             'addon_name' => 'cns_forum',
 
@@ -91,7 +108,11 @@ class Hook_content_meta_aware_forum
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_FORUM',
         );

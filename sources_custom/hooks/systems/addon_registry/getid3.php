@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_getid3
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -144,6 +145,12 @@ class Hook_addon_registry_getid3
             'sources_custom/getid3/extension.cache.mysql.php',
             'sources_custom/getid3/getid3.lib.php',
             'sources_custom/getid3/getid3.php',
+            'sources_custom/getid3/module.misc.doc.php',
+            'sources_custom/getid3/module.misc.exe.php',
+            'sources_custom/getid3/module.misc.iso.php',
+            'sources_custom/getid3/module.misc.msoffice.php',
+            'sources_custom/getid3/module.misc.par2.php',
+            'sources_custom/getid3/module.misc.pdf.php',
             'sources_custom/getid3/module.archive.gzip.php',
             'sources_custom/getid3/module.archive.rar.php',
             'sources_custom/getid3/module.archive.szip.php',
@@ -189,12 +196,6 @@ class Hook_addon_registry_getid3
             'sources_custom/getid3/module.graphic.png.php',
             'sources_custom/getid3/module.graphic.svg.php',
             'sources_custom/getid3/module.graphic.tiff.php',
-            'sources_custom/getid3/module.browse.doc.php',
-            'sources_custom/getid3/module.browse.exe.php',
-            'sources_custom/getid3/module.browse.iso.php',
-            'sources_custom/getid3/module.browse.msoffice.php',
-            'sources_custom/getid3/module.browse.par2.php',
-            'sources_custom/getid3/module.browse.pdf.php',
             'sources_custom/getid3/module.tag.apetag.php',
             'sources_custom/getid3/module.tag.id3v1.php',
             'sources_custom/getid3/module.tag.id3v2.php',

@@ -7,6 +7,8 @@
 <p>{!TEMPCODE_TESTER_HELP}</p>
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="#">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<h2><label for="tempcode">Tempcode</label></h2>
 	<div class="constrain_field">
 		<textarea id="tempcode" name="tempcode" cols="70" rows="17" class="wide_field textarea_scroll"></textarea>
@@ -25,7 +27,7 @@
 	{+END}
 
 	<p class="proceed_button">
-		<input onclick="return do_tempcode_tester_preview(this.form);" accesskey="p" class="tabs__preview button_screen" type="submit" value="{!PREVIEW}" />
+		<input onclick="return do_tempcode_tester_preview(this.form);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
 	</p>
 </form>
 

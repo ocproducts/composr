@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,6 +31,7 @@
  * @param  array $db_fields Database field data
  * @param  string $table_join_code What MySQL will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
+ * @ignore
  */
 function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select, $filter_key, $field_val, $db_fields, $table_join_code)
 {
@@ -182,14 +183,17 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
             }
         }
     }
+
     $ip_address = null;
     if (isset($poster_details['ip_address'])) {
         $ip_address = $poster_details['ip_address'];
     }
+
     $num_warnings = null;
     if ((isset($poster_details['poster_num_warnings'])) && (addon_installed('cns_warnings'))) {
         $num_warnings = integer_format($poster_details['poster_num_warnings']);
     }
+
     $galleries = null;
     if ((addon_installed('galleries')) && (get_option('show_gallery_counts') == '1')) {
         $gallery_cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member_' . strval($member_id) . '_%') . '\'');
@@ -199,24 +203,29 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
             $galleries = integer_format($gallery_cnt);
         }
     }
+
     $dob = null;
     $age = null;
     $day = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
-    if (($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) && ($day !== null)) {
-        $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
-        $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
-        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-            $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
-        } else {
-            $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
-        }
+    $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
+    $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
+    if (($day !== null) && ($month !== null) && ($year !== null)) {
+        if ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
+            if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+                $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+            } else {
+                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
+            }
 
-        $age = intval(date('Y')) - $year;
-        if ($month > intval(date('m'))) {
-            $age--;
-        }
-        if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
-            $age--;
+            $age = intval(date('Y')) - $year;
+            if ($month > intval(date('m'))) {
+                $age--;
+            }
+            if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
+                $age--;
+            }
+        } else {
+            $dob = strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
         }
     }
 

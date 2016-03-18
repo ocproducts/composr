@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Block_side_stats
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 3;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array();
         return $info;
@@ -90,7 +90,7 @@ class Block_side_stats
                     'VALUE' => integer_format($on_forum),
                 )));
             }
-            $title = do_lang_tempcode('SECTION_USERS');
+            $title = do_lang_tempcode('USERS_ONLINE');
         } else {
             if (get_option('activity_show_stats_count_users_online') == '1') {
                 $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
@@ -143,7 +143,7 @@ class Block_side_stats
         }
         foreach (array_keys($_hooks) as $hook) {
             require_code('hooks/blocks/side_stats/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_stats_' . filter_naughty_harsh($hook), true);
+            $object = object_factory('Hook_' . filter_naughty_harsh($hook), true);
             if (is_null($object)) {
                 continue;
             }

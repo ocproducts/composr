@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    user_mappr
  */
 
 // Find Composr base directory, and chdir into it
@@ -74,5 +74,8 @@ function set_coordinates()
         return;
     }
 
-    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array('field_' . $latitude_cpf_id => strval($coords[0]), 'field_' . $longitude_cpf_id => strval($coords[1])), array('mf_member_id' => $member_id));
+    $GLOBALS['FORUM_DB']->query_update('f_member_custom_fields', array(
+        'field_' . strval($latitude_cpf_id) => $coords[0],
+        'field_' . strval($longitude_cpf_id) => $coords[1],
+    ), array('mf_member_id' => $member_id));
 }

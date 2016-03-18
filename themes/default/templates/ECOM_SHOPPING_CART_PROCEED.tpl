@@ -15,4 +15,4 @@
 	<div class="cart_proceed_button">
 		{PAYMENT_FORM}
 	</div>
-{+END}	
+{+END}

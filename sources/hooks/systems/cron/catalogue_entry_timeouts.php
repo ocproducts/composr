@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,8 +40,8 @@ class Hook_cron_catalogue_entry_timeouts
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $catalogue_categories = $GLOBALS['SITE_DB']->query('SELECT id,cc_move_target,cc_move_days_lower,cc_move_days_higher FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_categories WHERE cc_move_target IS NOT NULL');

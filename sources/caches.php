@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__caches()
 {
@@ -38,13 +40,13 @@ function init__caches()
     define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
 
     global $PERSISTENT_CACHE, $SITE_INFO;
-    /** The persistent cache access object (NULL if there is no persistent cache).
+    /** The persistent cache access object (null if there is no persistent cache).
      *
      * @global ?object $PERSISTENT_CACHE
      */
     $PERSISTENT_CACHE = null;
 
-    $use_persistent_cache = ((array_key_exists('use_persistent_cache', $SITE_INFO)) && ($SITE_INFO['use_persistent_cache'] != '') && ($SITE_INFO['use_persistent_cache'] != '0'));// Default to off because badly configured caches can result in lots of very slow misses and lots of lost sessions || ((!array_key_exists('use_persistent_cache',$SITE_INFO)) && ((function_exists('xcache_get')) || (function_exists('wincache_ucache_get')) || (function_exists('apc_fetch')) || (function_exists('eaccelerator_get')) || (function_exists('mmcache_get'))));
+    $use_persistent_cache = ((!empty($SITE_INFO['use_persistent_cache'])) && ($SITE_INFO['use_persistent_cache'] == '1')); // Default to off because badly configured caches can result in lots of very slow misses
     if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');
@@ -77,7 +79,7 @@ function init__caches()
     global $SMART_CACHE, $RELATIVE_PATH;
     if (running_script('index') || running_script('iframe')) {
         $zone = $RELATIVE_PATH;
-        $page = get_page_name();
+        $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
         $screen = get_param_string('type', 'browse');
         $bucket_name = $zone . ':' . $page . ':' . $screen;
         if ($page != 'topicview' && $screen == 'browse') {
@@ -89,14 +91,19 @@ function init__caches()
     $SMART_CACHE = new Self_learning_cache($bucket_name);
 
     // Some loading from the smart cache
-    global $JAVASCRIPT, $CSSS;
+    global $CSS_OUTPUT_STARTED_LIST, $JS_OUTPUT_STARTED_LIST;
+    $CSS_OUTPUT_STARTED_LIST = array();
+    $JS_OUTPUT_STARTED_LIST = array();
+    global $JAVASCRIPT, $JS_OUTPUT_STARTED_LIST, $CSSS, $CSS_OUTPUT_STARTED_LIST;
     $test = $SMART_CACHE->get('JAVASCRIPT');
     if ($test !== null) {
         $JAVASCRIPT += $test;
+        $JS_OUTPUT_STARTED_LIST += $test;
     }
     $test = $SMART_CACHE->get('CSSS');
     if ($test !== null) {
         $CSSS += $test;
+        $CSS_OUTPUT_STARTED_LIST += $test;
     }
 }
 
@@ -137,7 +144,12 @@ class Self_learning_cache
     public function __construct($bucket_name)
     {
         $this->bucket_name = $bucket_name;
-        $this->path = get_custom_file_base() . '/caches/self_learning/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
+        $dir = get_custom_file_base() . '/caches/self_learning';
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777);
+            fix_permissions($dir);
+        }
+        $this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
         $this->load();
     }
 
@@ -279,8 +291,20 @@ class Self_learning_cache
                 register_shutdown_function(array($this, '_page_cache_resave'));
             }
             $this->pending_save = true;
+            return;
         }
 
+        $this->_page_cache_resave();
+    }
+
+    /**
+     * Actually save the cache.
+     * Has to be public for register_shutdown_function.
+     *
+     * @ignore
+     */
+    public function _page_cache_resave()
+    {
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             persistent_cache_set(array('SELF_LEARNING_CACHE', $this->bucket_name), $this->data);
             return;
@@ -290,7 +314,7 @@ class Self_learning_cache
             $contents = serialize($this->data);
 
             if (file_put_contents($this->path, $contents, LOCK_EX) < strlen($contents)) {
-                unlink($this->path);
+                @unlink($this->path);
                 fix_permissions($this->path);
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
@@ -331,7 +355,7 @@ class Self_learning_cache
         if ($dh !== false) {
             while (($f = readdir($dh)) !== false) {
                 if (substr($f, -4) == '.gcd') {
-                    unlink(get_custom_file_base() . '/caches/self_learning/' . $f);
+                    @unlink(get_custom_file_base() . '/caches/self_learning/' . $f);
                 }
             }
             closedir($dh);
@@ -349,12 +373,12 @@ class Self_learning_cache
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {
     global $PERSISTENT_CACHE;
-    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0,3) == 1)) return NULL;  Annoying when doing performance tests, but you can enable to test persistent cache more
+    //if (($GLOBALS['DEV_MODE']) && (mt_rand(0, 3) == 1)) return null;  Annoying when doing performance tests, but you can enable to test persistent cache more
     if ($PERSISTENT_CACHE === null) {
         return null;
     }
@@ -450,7 +474,7 @@ function erase_persistent_cache()
         $d = opendir($path);
         while (($e = readdir($d)) !== false) {
             if (substr($e, -4) == '.gcd') {
-                // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+                // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
                 @unlink(get_custom_file_base() . '/caches/persistent/' . $e);
             }
         }
@@ -464,7 +488,7 @@ function erase_persistent_cache()
     $d = opendir($path);
     while (($e = readdir($d)) !== false) {
         if (substr($e, -4) == '.htm') {
-            // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+            // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
             @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
         }
     }
@@ -492,12 +516,13 @@ function has_caching_for($type)
         return false;
     }
 
-    return
-        ((get_option('is_on_' . $type . '_cache') == '1') || (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1)) &&
-        (strpos(get_param_string('special_page_type', ''), 't') === false) &&
-        (get_param_integer('keep_cache', null) !== 0) &&
-        (get_param_integer('cache_' . $type . 's', null) !== 0) &&
-        (get_param_integer('cache', null) !== 0);
+    $setting = (get_option('is_on_' . $type . '_cache') == '1');
+
+    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
+
+    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0) && (get_param_integer('cache', null) !== 0);
+
+    return ($setting || $positive) && (strpos(get_param_string('special_page_type', ''), 't') === false) && $not_negative;
 }
 
 /**
@@ -564,8 +589,8 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
         $SMART_CACHE->get('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
     }
 
-    $ret = _get_cache_entries(array($det));
-    return $ret[0];
+    $rets = _get_cache_entries(array($det));
+    return $rets[0];
 }
 
 /**
@@ -573,6 +598,8 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
  *
  * @param  array $dets An array of tuples of parameters (as per get_cache_entry, almost)
  * @return array Array of results
+ *
+ * @ignore
  */
 function _get_cache_entries($dets)
 {
@@ -734,6 +761,5 @@ function _get_cache_entries($dets)
         $cache[$sz] = $ret;
         $rets[] = $ret;
     }
-
     return $rets;
 }

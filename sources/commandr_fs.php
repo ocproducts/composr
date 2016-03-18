@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,11 +20,13 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__commandr_fs()
 {
-    define('COMMANDRFS_FILE', 0);
-    define('COMMANDRFS_DIR', 1);
+    define('COMMANDR_FS_FILE', 0);
+    define('COMMANDR_FS_DIR', 1);
 }
 
 /**
@@ -51,23 +53,23 @@ class Commandr_fs
             $this->pwd=array('blah2','foo3','bar');
 
         The virtual filesystem is a nested directory structure, where terminals mapping to strings represent Commandr-fs hooks
-            $this->commandr_fs=array(
-                    'blah'=>array(),
-        *** 'blah2'=>array(
-                            'foo'=>array(),
-                            'foo2'=>array(),
-        ***    'foo3'=>array(
-        ***       'bar'=>'members', // 'members' hook is tied into 'bar', rather than an explicit array
-                                        'bar2'=>array(),
-                            ),
-                            'foo4'=>array(),
+            $this->commandr_fs = array(
+                'blah' => array(),
+            *** 'blah2' => array(
+                    'foo' => array(),
+                    'foo2' => array(),
+                *** 'foo3' => array(
+                    *** 'bar' => 'members', // 'members' hook is tied into 'bar', rather than an explicit array
+                        'bar2' => array(),
                     ),
-                    'blah3'=>array(),
+                    'foo4' => array(),
+                    ),
+                'blah3' => array(),
             );
         */
 
         // Build up the filesystem structure
-        $commandrfs_hooks = find_all_hooks('systems', 'commandr_fs');
+        $commandr_fs_hooks = find_all_hooks('systems', 'commandr_fs');
         $this->commandr_fs = array();
         $cma_hooks = find_all_hooks('systems', 'content_meta_aware') + find_all_hooks('systems', 'resource_meta_aware');
         require_code('content');
@@ -77,11 +79,11 @@ class Commandr_fs
             $cma_info = $cma_ob->info();
             $commandr_fs_hook = $cma_info['commandr_filesystem_hook'];
             if (!is_null($commandr_fs_hook)) {
-                unset($commandrfs_hooks[$commandr_fs_hook]); // It's under 'var', don't put elsewhere
+                unset($commandr_fs_hooks[$commandr_fs_hook]); // It's under 'var', don't put elsewhere
                 $var[$commandr_fs_hook] = $commandr_fs_hook;
             }
         }
-        foreach (array_keys($commandrfs_hooks) as $hook) { // Other filesystems go directly under the root (not 'root', which is different)
+        foreach (array_keys($commandr_fs_hooks) as $hook) { // Other filesystems go directly under the root (not 'root', which is different)
             $this->commandr_fs[$hook] = $hook;
         }
         $this->commandr_fs['var'] = $var;
@@ -275,7 +277,7 @@ class Commandr_fs
 
         foreach ($contents as $entry) {
             if ($entry[0] == $filename) {
-                return $entry[1] == COMMANDRFS_DIR;
+                return $entry[1] == COMMANDR_FS_DIR;
             }
         }
 
@@ -299,7 +301,7 @@ class Commandr_fs
 
         foreach ($contents as $entry) {
             if ($entry[0] == $filename) {
-                return $entry[1] == COMMANDRFS_FILE;
+                return $entry[1] == COMMANDR_FS_FILE;
             }
         }
 
@@ -360,7 +362,7 @@ class Commandr_fs
         foreach ($_inspected_dir as $dir_name => $contents) {
             $inspected_dir[$dir_name/*only here for hard-coded dirs*/] = array(
                 $dir_name,
-                COMMANDRFS_DIR,
+                COMMANDR_FS_DIR,
                 null,
                 null,
                 $contents, // This is only here for hard-coded dirs; it will either be a string (i.e. hook name) or an array (more hard-coded depth to go)
@@ -425,10 +427,10 @@ class Commandr_fs
         $files = array();
 
         foreach ($current_dir_contents as $entry) {
-            if ($entry[1] == COMMANDRFS_DIR) {
+            if ($entry[1] == COMMANDR_FS_DIR) {
                 // Directory
                 $directories[$entry[0]] = $entry;
-            } elseif ($entry[1] == COMMANDRFS_FILE) {
+            } elseif ($entry[1] == COMMANDR_FS_FILE) {
                 // File
                 $files[$entry[0]] = $entry;
             }
@@ -567,10 +569,10 @@ class Commandr_fs
             // Remove contents
             foreach ($listing as $value) {
                 switch ($value[1]) {
-                    case COMMANDRFS_FILE:
+                    case COMMANDR_FS_FILE:
                         $object->remove_file($directory, $meta_root_node, $value[0], $this);
                         break;
-                    case COMMANDRFS_DIR:
+                    case COMMANDR_FS_DIR:
                         $this->remove_directory(array_merge($directory, array($value[0]))); // Recurse
                         break;
                 }
@@ -610,10 +612,10 @@ class Commandr_fs
             $_destination = $destination;
             $_destination[] = $dir_name;
 
-            if ($entry[1] == COMMANDRFS_DIR) {
+            if ($entry[1] == COMMANDR_FS_DIR) {
                 $_to_copy_path[] = $entry[0];
                 $success = ($success) ? $this->copy_directory($_to_copy_path, $_destination) : false;
-            } elseif ($entry[1] == COMMANDRFS_FILE) {
+            } elseif ($entry[1] == COMMANDR_FS_FILE) {
                 $_to_copy_path[] = $entry[0];
                 $success = ($success) ? $this->copy_file($_to_copy_path, $_destination) : false;
             }
@@ -699,7 +701,7 @@ class Commandr_fs
 
         if ($destination_meta_root_node == $to_move_meta_root_node_type) {
             if (method_exists($to_move_object, 'file_save')) { // Resource-fs wants a better renaming technique
-                $new_label = basename(array_pop($destination_meta_dir), '.' . RESOURCEFS_DEFAULT_EXTENSION);
+                $new_label = basename(array_pop($destination_meta_dir), '.' . RESOURCE_FS_DEFAULT_EXTENSION);
                 return $to_move_object->file_save(array_pop($to_move_meta_dir), implode('/', $destination_meta_dir), array('label' => $new_label));
             }
         }

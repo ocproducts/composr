@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -81,7 +81,7 @@ class CMSTopicRead
      */
     public function get_topics($mode, $forum_id, $start, $max)
     {
-        if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+        if (!has_category_access(get_member(), 'forums', strval(($forum_id == 0) ? db_get_first_id() : $forum_id))) {
             access_denied('I_ERROR');
         }
 
@@ -126,7 +126,7 @@ class CMSTopicRead
                 return array(
                     0,
                     array(),
-                    do_lang('MISSING_RESOURCE'),
+                    do_lang('MISSING_RESOURCE', 'forum'),
                     0,
                     0,
                     array(
@@ -250,7 +250,7 @@ class CMSTopicRead
             $subquery .= 'l_topic_id=t.id AND ';
             $subquery .= 'l_time>=t_cache_last_time';
 
-            array_push($conditions, 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' AND NOT EXISTS (' . $subquery . ')');
+            array_push($conditions, 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' AND NOT EXISTS (' . $subquery . ')');
         }
 
         // Only participated ones?

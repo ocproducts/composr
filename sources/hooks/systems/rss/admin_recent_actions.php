@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -42,7 +42,7 @@ class Hook_rss_admin_recent_actions
 
         $filters = selectcode_to_sqlfragment($_filters, 'member_id', 'f_members', null, 'member_id', 'id');
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'adminlogs WHERE date_and_time>' . strval($cutoff) . ' AND ' . $filters . ' ORDER BY date_and_time DESC', $max);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'actionlogs WHERE date_and_time>' . strval($cutoff) . ' AND ' . $filters . ' ORDER BY date_and_time DESC', $max);
 
         require_all_lang();
 
@@ -70,7 +70,7 @@ class Hook_rss_admin_recent_actions
             $category = $type;
             $category_raw = $type;
 
-            $view_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'mode' => 'cms', 'id' => $row['id']), 'adminzone');
+            $view_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $row['id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
 
             if ($prefix == 'RSS_') {
                 $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => 'c237ee93e6ff879b09eb93048a1f539b', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');

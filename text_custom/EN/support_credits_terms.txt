@@ -1,4 +1,14 @@
-The support ticket system was designed for users who are able to budget for professional web services. By purchasing you acknowledge that you have evaluated this commercial service suitable and priced for your needs. More information about how our services are designed is available from the following URL: http://compo.sr/forum/topicview/browse/10111.htm
+Intended audience
+-----------------
+
+ocProducts is a highly-ethical organisation and we do not want to miss-sell our services to the wrong audience. We are particularly aware that our activities cross through every diverse sector of society, and we therefore have different provisions for different audiences.
+
+The support ticket system was designed for users who are able to budget for professional web services, which usually is on a B2B basis. It is not designed for consumers on very limited budgets because the support fees do need to be able to pay for the upkeep of a company of professionals with world-class skills, as well as to subsidise Composr development and all associated sundry costs. If you are developing a personal site, or a non-profit site without a budget, you will most likely want to use some form of user to user support (such as the forum, or IRC room) or learn programming yourself.
+
+More information is in our "How to approach complex projects" tutorial (http://compo.sr/docs/sup-complex-projects.htm).
+
+Conditions
+----------
 
 Please read through the following terms and conditions carefully. These terms apply to all our paid online support ticket services. By making this purchase you are agreeing to these binding terms and conditions. This is an agreement between you (the customer) and ocProducts Ltd or partners of ocProducts (ocProducts).
 
@@ -16,13 +26,15 @@ If a customer asks for work to be stopped part way through it being carried out 
 
 A stated minimum credit cost may apply to work done. This cost is per action, not per ticket. This cost reflects the organisational cost required in operating the support ticket system, and our need to be able to schedule our staff and partner working day into blocks.
 
-ocProducts may provide a number of different service levels, with different hourly unit costs depending on the service level. Service level response times are set based on when work begins, not when it concludes. If ocProducts are not able to start providing a requested service level then ocProducts will discount the credit cost to the closest matching lower service level. 
+ocProducts may provide a number of different service levels, with different hourly unit costs depending on the service level. Service level response times are set based on when work begins, not when it concludes. If ocProducts are not able to start providing a requested service level then ocProducts will discount the credit cost to the closest matching lower service level.
 
-ocProducts provides no guarantees that service levels, operating procedures, staffing, or credit costs, will not change, other than that the budget-level time-value of each credit will not decrease for credits already purchased.
+ocProducts provides no guarantees that service levels, operating procedures, staffing, or credit costs, will not change, other than that the back-burner-level time-value of each credit will not decrease for credits already purchased.
 
 ocProducts reserves the right to expire (without refund) purchased credits that are not used within two years of their purchase date, at their discretion.
 
-ocProducts reserves the right to limit the proportion of budget priority tasks per customer to 50% of requested work.
+ocProducts reserves the right to limit the proportion of back-burner priority tasks per customer to 50% of requested work.
+
+ocProducts reserves the right to decline to work on particular kinds of website for any reason. For example, we may decline to work on websites with pornographic or extreme content. In such a situation a refund would be provided to the customer.
 
 Service level response times are based on working hours, unless otherwise stated. ocProducts reserves the right to change working hours, or to operate different working hours for different services, service levels, or regions. Working hours at the time of writing these conditions are Mon-Fri 9:30am-5:30pm UK time (GMT/BST), but may be different at the time of reading.
 

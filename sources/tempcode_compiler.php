@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -18,10 +18,12 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem*/
+/*EXTRA FUNCTIONS: ILess_Autoloader|ILess_Parser|ILess_Cache_FileSystem|less_proxy_compile|proc_.*|escapeshellarg|stream_get_contents*/
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__tempcode_compiler()
 {
@@ -35,7 +37,7 @@ function init__tempcode_compiler()
     global $DIRECTIVES_NEEDING_VARS;
     $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true, 'SET_NOPREEVAL' => true);
 
-    // Work out what symbols may be compiled out
+    // Work out what symbols may be compiled out (look at patterns at top of caches3.php if changing this)
     global $COMPILABLE_SYMBOLS;
     $_compilable_symbols = array(
         'LANG',
@@ -48,9 +50,7 @@ function init__tempcode_compiler()
         'CONFIG_OPTION',
         'VALUE_OPTION',
         'COPYRIGHT',
-        'BASE_URL',
         'BASE_URL_NOHTTP',
-        'CUSTOM_BASE_URL',
         'CUSTOM_BASE_URL_NOHTTP',
         'BRAND_NAME',
         'BRAND_BASE_URL',
@@ -72,9 +72,6 @@ function init__tempcode_compiler()
         'SSW',
         'MAILTO',
     );
-    if (function_exists('get_option') && get_option('enable_https', true) != '1') {
-        $_compilable_symbols[] = 'BASE_URL';
-    }
     global $SITE_INFO;
     if ((isset($SITE_INFO['no_keep_params'])) && ($SITE_INFO['no_keep_params'] == '1')) {
         $_compilable_symbols[] = 'KEEP';
@@ -83,6 +80,8 @@ function init__tempcode_compiler()
     }
     if (!addon_installed('ssl')) {
         $_compilable_symbols[] = 'IMG';
+        $_compilable_symbols[] = 'BASE_URL';
+        $_compilable_symbols[] = 'CUSTOM_BASE_URL';
     }
     if ((function_exists('get_option')) && (get_option('detect_javascript') == '0')) {
         $_compilable_symbols[] = 'JS_ON';
@@ -99,6 +98,8 @@ function init__tempcode_compiler()
  * @param  array $bits Compiler tokens
  * @param  integer $i How far we are through the token list
  * @return integer The sum length of tokens passed
+ *
+ * @ignore
  */
 function _length_so_far($bits, $i)
 {
@@ -248,7 +249,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 }
 
                 // Handle the level we just closed
-                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in lang strings does not get considered an escape
+                $_escaped = str_split(preg_replace('#[^:\.`%\*=\;\#\-~\^\|\'&/@+]:?#', '', $_first_param)); // :? is so that the ":" in language string IDs does not get considered an escape
                 $escaped = array();
                 foreach ($_escaped as $e) {
                     switch ($e) {
@@ -460,7 +461,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if ($escaped == array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
-                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':NULL';
+                            $temp = 'otp(isset($bound_' . php_addslashes($parameter) . ')?$bound_' . php_addslashes($parameter) . ':null';
                             if ((!function_exists('get_value')) || (get_value('shortened_tempcode') !== '1')) {
                                 $temp .= ',"' . php_addslashes($parameter . '/' . $template_name) . '"';
                             }
@@ -477,7 +478,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $s_escaped .= strval($esc);
                                 }
                                 if (($s_escaped == strval(ENTITY_ESCAPED)) && (!$GLOBALS['XSS_DETECT'])) {
-                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES,get_charset()):' . $temp . ')';
+                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
                                 } else {
                                     if ($s_escaped == strval(ENTITY_ESCAPED)) {
                                         $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?apply_tempcode_escaping_inline(array(' . $s_escaped . '),' . $temp . '):' . $temp . ')';
@@ -707,14 +708,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $found = find_template_place($eval, '', $theme, '.tpl', 'templates', $template_name == $eval);
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {
-                                        $fullpath = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
-                                        if (!is_file($fullpath)) {
-                                            $fullpath = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        $full_path = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
+                                        if (!is_file($full_path)) {
+                                            $full_path = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
                                         }
-                                        if (is_file($fullpath)) {
-                                            $tmp = fopen($fullpath, 'rb');
+                                        if (is_file($full_path)) {
+                                            $tmp = fopen($full_path, 'rb');
                                             @flock($tmp, LOCK_SH);
-                                            $filecontents = file_get_contents($fullpath);
+                                            $filecontents = file_get_contents($full_path);
                                             @flock($tmp, LOCK_UN);
                                             fclose($tmp);
                                         } else {
@@ -828,6 +829,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  * @param  string $suffix File type suffix of template file (e.g. .tpl)
  * @param  ?ID_TEXT $theme_orig The theme to cache in (null: main theme)
  * @return Tempcode The compiled Tempcode
+ *
+ * @ignore
  */
 function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $theme_orig = null)
 {
@@ -840,7 +843,10 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         $base_dir = get_file_base() . '/themes/';
     }
 
-    global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE;
+    global $CACHE_TEMPLATES, $FILE_ARRAY, $IS_TEMPLATE_PREVIEW_OP_CACHE, $SITE_INFO;
+    if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
+        fill_template_preview_op_cache();
+    }
 
     //$final_css_path = null;
 
@@ -858,32 +864,67 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     // LESS support
     if ((addon_installed('less')) && ($suffix == '.less')) {
         // Up our resources
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(300);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
         }
         disable_php_memory_limit();
 
         // Stop parallel compilation of the same file by a little hack; without this it could knock out a server
         /*$final_css_path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.css';		Actually this is architectually messy, just let it happen - it's not as slow as it was
         if ((is_file($final_css_path)) && (file_get_contents($final_css_path) == 'GENERATING')) {
-            header('Content-type: text/plain');
+            header('Content-type: text/plain; charset=' . get_charset());
             exit('We are doing a code update. Please refresh in around 2 minutes.');
         }
         file_put_contents($final_css_path, 'GENERATING');*/
 
-        // Heavy-weight, newer (iLess)
-        require_code('ILess/Autoloader');
-        ILess_Autoloader::register();
-        $less = new ILess_Parser(array(
-            'import_dirs' => array(dirname($_path)),
-        ), new ILess_Cache_FileSystem(array(
-            'cache_dir' => get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang,
-        )));
-        try {
-            $less->parseString($template_contents);
-            $template_contents = $less->getCSS();
-        } catch (Exception $ex) {
-            fatal_exit('.less problem: ' . $ex->getMessage());
+        if (!empty($SITE_INFO['nodejs_binary_path'])) {
+            $less_path = get_custom_file_base() . '/node_modules/less/bin/lessc';
+
+            if (!file_exists($less_path)) {
+                fatal_exit('Unable to find the less NPM module. Please `cd` to your Composr directory and run `npm install less` to install it.');
+            }
+
+            $cmd = sprintf('%s %s --no-color %s', $SITE_INFO['nodejs_binary_path'], escapeshellarg($less_path), escapeshellarg($_path));
+            $descriptorspec = array(
+                0 => array('pipe', 'r'), // stdin
+                1 => array('pipe', 'w'), // stdout
+                2 => array('pipe', 'w'), // stderr
+            );
+            $pipes = array();
+            $process = proc_open($cmd, $descriptorspec, $pipes);
+
+            if ($process === false) {
+                fatal_exit('Unable to execute the Node.js binary, please make sure it exists and proper permissions are set.');
+            }
+
+            $stdout = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+
+            $stderr = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+
+            $return_code = proc_close($process);
+
+            if ($return_code !== 0) {
+                fatal_exit('.less problem: ' . $stderr);
+            }
+
+            $template_contents = $stdout;
+        } else {
+            // Heavy-weight, newer (iLess)
+            require_code('ILess/Autoloader');
+            ILess_Autoloader::register();
+            $less = new ILess_Parser(array(
+                'import_dirs' => array(dirname($_path)),
+            ), new ILess_Cache_FileSystem(array(
+                'cache_dir' => get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang,
+            )));
+            try {
+                $less->parseString($template_contents);
+                $template_contents = $less->getCSS();
+            } catch (Exception $ex) {
+                fatal_exit('.less problem: ' . $ex->getMessage());
+            }
         }
     }
 
@@ -963,7 +1004,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
  *
  * @param  string $text The template text
  * @param  integer $symbol_pos The position we are looking at in the text
- * @param  boolean $inside_directive Whether this text is infact a directive, about to be put in the context of a wider template
+ * @param  boolean $inside_directive Whether this text is in fact a directive, about to be put in the context of a wider template
  * @param  ID_TEXT $codename The codename of the template (e.g. foo)
  * @param  ?ID_TEXT $theme The theme it is for (null: current theme)
  * @param  ?ID_TEXT $lang The language it is for (null: current language)

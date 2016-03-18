@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,8 @@ This file provides some detection of possible security vulnerabilities at develo
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database_security_filter()
 {
@@ -39,6 +41,10 @@ function init__database_security_filter()
  */
 function is_simple_query($query)
 {
+    if (strpos($query, get_table_prefix()) === false) {
+        return false;
+    }
+
     $complex_keywords = array('ORDER' => true, 'GROUP' => true, 'AS' => true, 'OR' => true, 'NOT' => true, 'LIKE' => true, 'IN' => true, 'BETWEEN' => true, 'UNION' => true, 'HAVING' => true);
     $complex_operators = array('<', '>', '!', '+', '-', '/', '*');
     $query = _trim_quoted_substrings($query);
@@ -125,6 +131,8 @@ function has_escaped_dynamic_sql($query)
  * @param  string $string The query
  * @param  boolean $recurse Whether to recurse (for double escaping)
  * @return array List of substrings
+ *
+ * @ignore
  */
 function _get_quoted_substrings($string, $recurse = false)
 {
@@ -167,6 +175,8 @@ function _get_quoted_substrings($string, $recurse = false)
  *
  * @param  string $string Input string
  * @return string Simplified substring
+ *
+ * @ignore
  */
 function _trim_quoted_substrings($string)
 {

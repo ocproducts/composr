@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -57,7 +57,7 @@ class Persistent_caching_filecache
      *
      * @param  string $key Key
      * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
-     * @return ?mixed The data (null: not found / NULL entry)
+     * @return ?mixed The data (null: not found / null entry)
      */
     public function get($key, $min_cache_date = null)
     {
@@ -153,7 +153,7 @@ class Persistent_caching_filecache
             $this->set('PERSISTENT_CACHE_OBJECTS', $objects_list);
         }
 
-        // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+        // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
         @unlink(get_custom_file_base() . '/caches/persistent/' . md5($key) . '.gcd');
     }
 
@@ -169,7 +169,7 @@ class Persistent_caching_filecache
         $d = opendir(get_custom_file_base() . '/caches/persistent');
         while (($e = readdir($d)) !== false) {
             if (substr($e, -4) == '.gcd') {
-                // Ideally we'd lock whilst we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors whilst we're clearing the cache. Fortunately this is a rare op to perform.
+                // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
                 @unlink(get_custom_file_base() . '/caches/persistent/' . $e);
             }
         }

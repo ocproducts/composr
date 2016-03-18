@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_facebook_support
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -148,7 +149,6 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'themes/default/images_custom/icons/24x24/menu/facebook.png',
             'themes/default/images_custom/icons/48x48/menu/facebook.png',
             'sources_custom/hooks/systems/addon_registry/facebook_support.php',
-            'sources_custom/hooks/systems/login_providers/.htaccess',
             'sources_custom/hooks/systems/startup/facebook.php',
             'sources_custom/facebook/index.html',
             'sources_custom/facebook/jsonwrapper/JSON/index.html',
@@ -179,10 +179,8 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'themes/default/templates_custom/BLOCK_TOP_LOGIN.tpl',
             'sources_custom/users_active_actions.php',
             'sources_custom/hooks/systems/syndication/facebook.php',
-            'sources_custom/hooks/systems/syndication/.htaccess',
             'sources_custom/hooks/systems/page_groupings/facebook.php',
             'sources_custom/hooks/systems/login_providers/facebook.php',
-            'sources_custom/hooks/systems/login_providers/index.html',
             'adminzone/pages/minimodules_custom/facebook_oauth.php',
             'sources_custom/facebook/facebook.php',
             'sources_custom/facebook/jsonwrapper/JSON/JSON.php',
@@ -200,6 +198,7 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'sources_custom/hooks/systems/config/facebook_sync_email.php',
             'sources_custom/hooks/systems/config/facebook_sync_username.php',
             'sources_custom/cns_field_editability.php',
+            'sources_custom/facebook/.htaccess',
         );
     }
 }

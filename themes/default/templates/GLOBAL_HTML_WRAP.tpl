@@ -21,7 +21,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 				{$,The banner}
 				{+START,IF,{$NOT,{$MOBILE}}}
-					{$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
+					{$SET-,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner twice}
 					{+START,IF_NON_EMPTY,{$GET,BANNER}}
 						<div class="global_banner">{$GET,BANNER}</div>
 					{+END}
@@ -93,7 +93,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<article class="global_middle" role="main">
 					{$,Breadcrumbs}
 					{+START,IF,{$IN_STR,{$BREADCRUMBS},<a}}{+START,IF,{$SHOW_HEADER}}
-						<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" role="navigation">
+						<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb">
 							<img width="20" height="20" class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 							{$BREADCRUMBS}
 						</nav>
@@ -129,7 +129,9 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 			{+START,INCLUDE,GLOBAL_HTML_WRAP_mobile}{+END}
 		{+END}
 
-		{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+START,IF,{$SHOW_FOOTER}}
+			{+START,IF,{$EQ,{$CONFIG_OPTION,sitewide_im,1},1}}{$CHAT_IM}{+END}
+		{+END}
 
 		{$,Late messages happen if something went wrong during outputting everything (i.e. too late in the process to show the error in the normal place)}
 		{+START,IF_NON_EMPTY,{$LATE_MESSAGES}}
@@ -145,7 +147,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 				<div class="global_footer_left">
 					{+START,SET,FOOTER_BUTTONS}
 						{+START,IF,{$CONFIG_OPTION,bottom_show_top_button}}
-							<li><a accesskey="g" href="#">{$?,{$MOBILE},{!_BACK_TO_TOP},<img width="24" height="24" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" />}</a></li>
+							<li><a rel="back_to_top" accesskey="g" href="#">{$?,{$MOBILE},{!_BACK_TO_TOP},<img width="24" height="24" title="{!BACK_TO_TOP}" alt="{!BACK_TO_TOP}" src="{$IMG*,icons/24x24/tool_buttons/top}" srcset="{$IMG*,icons/48x48/tool_buttons/top} 2x" />}</a></li>
 						{+END}
 						{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$ADDON_INSTALLED,realtime_rain}}{+START,IF,{$CONFIG_OPTION,bottom_show_realtime_rain_button}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_realtime_rain}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_realtime_rain}}
 							<li><a id="realtime_rain_button" onclick="if (typeof window.load_realtime_rain!='undefined') return load_realtime_rain(); else return false;" href="{$PAGE_LINK*,adminzone:admin_realtime_rain}">{$?,{$MOBILE},{!realtime_rain:REALTIME_RAIN},<img width="24" height="24" id="realtime_rain_img" title="{!realtime_rain:REALTIME_RAIN}" alt="{!realtime_rain:REALTIME_RAIN}" src="{$IMG*,icons/24x24/tool_buttons/realtime_rain_on}" srcset="{$IMG*,icons/48x48/tool_buttons/realtime_rain_on} 2x" />}</a></li>
@@ -171,25 +173,25 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<div class="accessibility_hidden"><label for="su">{!SU}</label></div>
-								<input onkeypress="if (enter_pressed(event)) this.form.submit();" accesskey="w" size="10" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" type="text" value="{$USERNAME;*}" id="su" name="keep_su" /><input onclick="disable_button_just_clicked(this);" class="menu__site_meta__user_actions__login button_micro" type="submit" value="{!SU}" />
+								<input onkeypress="if (enter_pressed(event)) this.form.submit();" accesskey="w" size="10" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" class="field_input_non_filled" type="text" value="{$USERNAME;*}" id="su" name="keep_su" /><input onclick="disable_button_just_clicked(this);" class="button_micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
 							</div>
 						</form>
 					{+END}
 
 					{+START,IF,{$NOT,{$MOBILE}}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
 						<form onsubmit="return staff_actions_select(this);" title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank">
-							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,special_page_type=<null>,keep_cache=<null>}}
+							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_no_xhtml=1,special_page_type=<null>,keep_cache=<null>,wide_high=1}}
 
 							<div class="inline">
 								<p class="accessibility_hidden"><label for="special_page_type">{!SCREEN_DEV_TOOLS}</label></p>
-								<select id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="buttons__proceed button_micro" type="submit" value="{!PROCEED_SHORT}" />
+								<select onchange="staff_actions_change(this);" id="special_page_type" name="special_page_type">{$STAFF_ACTIONS}</select><input class="button_micro buttons__proceed" type="submit" value="{!PROCEED_SHORT}" />
 							</div>
 						</form>
 					{+END}{+END}{+END}
 				</div>
 
 				<div class="global_footer_right">
-					<nav class="global_minilinks" role="navigation">
+					<nav class="global_minilinks">
 						<ul class="{+START,IF,{$NOT,{$MOBILE,1}}}horizontal_links {+END}footer_links">
 							{+START,IF,{$MOBILE}}
 								{$GET,FOOTER_BUTTONS}
@@ -228,7 +230,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						</ul>
 
 						{+START,IF,{$AND,{$NOT,{$_GET,keep_has_js}},{$JS_ON}}}
-							<noscript><a href="{$SELF_URL*,1,0,1}&amp;keep_has_js=0">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
+							<noscript><a href="{$EXTEND_URL*,{$SELF_URL,1,0,1},keep_has_js=0}">{!MARK_JAVASCRIPT_DISABLED}</a></noscript>
 						{+END}
 					</nav>
 

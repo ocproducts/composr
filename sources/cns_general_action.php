@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -43,7 +43,7 @@ function cns_make_post_template($title, $text, $forum_multi_code, $use_default_f
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('post_template', strval($id), null, null, true);
+        generate_resource_fs_moniker('post_template', strval($id), null, null, true);
     }
 
     return $id;
@@ -63,6 +63,7 @@ function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_to
 {
     $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_emoticons', 'e_code', array('e_code' => $code));
     if (!is_null($test)) {
+        require_lang('cns');
         warn_exit(do_lang_tempcode('CONFLICTING_EMOTICON_CODE', escape_html($test)));
     }
 
@@ -73,6 +74,11 @@ function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_to
         'e_use_topics' => $use_topics,
         'e_is_special' => $is_special
     ));
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resource_fs_moniker('emoticon', $code, null, null, true);
+    }
 
     log_it('ADD_EMOTICON', $code, $theme_img_code);
 }
@@ -105,6 +111,13 @@ function cns_make_welcome_email($name, $subject, $text, $send_time, $newsletter 
     $map += insert_lang('w_subject', $subject, 2);
     $map += insert_lang('w_text', $text, 2);
     $id = $GLOBALS['SITE_DB']->query_insert('f_welcome_emails', $map, true);
+
+    if ((addon_installed('commandr')) && (!running_script('install'))) {
+        require_code('resource_fs');
+        generate_resource_fs_moniker('welcome_email', strval($id), null, null, true);
+    }
+
     log_it('ADD_WELCOME_EMAIL', strval($id), $subject);
+
     return $id;
 }

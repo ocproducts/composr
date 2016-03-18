@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_forum_blocks
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -101,9 +102,7 @@ class Hook_addon_registry_forum_blocks
         return array(
             'themes/default/templates/BLOCK_MAIN_FORUM_NEWS.tpl',
             'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS.tpl',
-            'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS_TOPIC.tpl',
             'themes/default/templates/BLOCK_SIDE_FORUM_NEWS.tpl',
-            'themes/default/templates/BLOCK_SIDE_FORUM_NEWS_SUMMARY.tpl',
             'sources/blocks/bottom_forum_news.php',
             'sources/blocks/main_forum_news.php',
             'sources/blocks/main_forum_topics.php',
@@ -121,9 +120,7 @@ class Hook_addon_registry_forum_blocks
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_MAIN_FORUM_TOPICS_TOPIC.tpl' => 'block_main_forum_topics',
             'templates/BLOCK_MAIN_FORUM_TOPICS.tpl' => 'block_main_forum_topics',
-            'templates/BLOCK_SIDE_FORUM_NEWS_SUMMARY.tpl' => 'block_side_forum_news',
             'templates/BLOCK_SIDE_FORUM_NEWS.tpl' => 'block_side_forum_news',
             'templates/BLOCK_MAIN_FORUM_NEWS.tpl' => 'block_main_forum_news'
         );
@@ -139,28 +136,26 @@ class Hook_addon_registry_forum_blocks
     public function tpl_preview__block_main_forum_topics()
     {
         require_lang('cns');
-        //Create the 'BLOCK_MAIN_FORUM_TOPICS_TOPIC' template value
-        $out = new Tempcode();
+        $topics = array();
         foreach (placeholder_array() as $k => $v) {
-            $out->attach(do_lorem_template('BLOCK_MAIN_FORUM_TOPICS_TOPIC', array(
+            $topics[] = array(
                 'POST' => lorem_paragraph(),
                 'FORUM_ID' => null,
                 'FORUM_NAME' => lorem_word(),
                 'TOPIC_URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'USERNAME' => lorem_word(),
                 'MEMBER_ID' => null,
                 'NUM_POSTS' => placeholder_number(),
-            )));
+            );
         }
 
-        //Create the 'BLOCK_MAIN_FORUM_TOPICS' with 'BLOCK_MAIN_FORUM_TOPICS_TOPIC' as sub-template.
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_FORUM_TOPICS', array(
                 'TITLE' => lorem_word(),
-                'CONTENT' => $out,
+                'TOPICS' => $topics,
                 'FORUM_NAME' => lorem_word_html(),
                 'SUBMIT_URL' => placeholder_url(),
             )), null, '', true)
@@ -178,31 +173,30 @@ class Hook_addon_registry_forum_blocks
     {
         require_lang('news');
         require_lang('cns');
-        //Create the 'BLOCK_SIDE_FORUM_NEWS_SUMMARY' template value
-        $out = new Tempcode();
+
+        $news = array();
         foreach (placeholder_array() as $k => $v) {
-            $out->attach(do_lorem_template('BLOCK_SIDE_FORUM_NEWS_SUMMARY', array(
+            $news[] = array(
                 'REPLIES' => lorem_word(),
                 'FIRSTTIME' => lorem_word(),
                 'LASTTIME' => lorem_word(),
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
                 '_DATE' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => escape_html(lorem_word()),
-            )));
+            );
         }
 
-        //Create the 'BLOCK_SIDE_FORUM_NEWS' with 'BLOCK_SIDE_FORUM_NEWS_SUMMARY' as sub-template.
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_FORUM_NEWS', array(
                 'FORUM_NAME' => lorem_word_html(),
                 'TITLE' => lorem_phrase(),
-                'CONTENT' => $out,
+                'NEWS' => $news,
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
             )), null, '', true)
@@ -230,12 +224,12 @@ class Hook_addon_registry_forum_blocks
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
-                'ID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
+                'ID' => placeholder_random_id(),
                 'FULL_URL' => placeholder_url(),
                 'SUBMITTER' => placeholder_id(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'NEWS_TITLE' => lorem_word(),
                 'NEWS_TITLE_PLAIN' => lorem_word(),

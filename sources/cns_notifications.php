@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__cns_notifications()
 {
@@ -45,6 +47,10 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
         return $PRIVATE_POST_ROWS_CACHE[$cache_key];
     }
 
+    if (!addon_installed('cns_forum')) {
+        return array();
+    }
+
     $member_id = get_member();
 
     $query = '';
@@ -52,7 +58,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $unread_clause = '';
     if ($unread) {
         $unread_clause = '
-            t_cache_last_time > ' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' AND
+            t_cache_last_time > ' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' AND
             (l_time IS NULL OR l_time < p.p_time) AND
         ';
     }
@@ -232,8 +238,8 @@ function generate_notifications($member_id)
             }
             $profile_link = is_guest($by_id) ? new Tempcode() : $GLOBALS['CNS_DRIVER']->member_profile_url($by_id, false, true);
             $redirect = get_self_url(true, true);
-            $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'redirect' => $redirect), get_module_zone('topics'));
-            $ignore_url_2 = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'redirect' => $redirect, 'ajax' => 1), get_module_zone('topics'));
+            $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'timestamp' => time(), 'redirect' => $redirect), get_module_zone('topics'));
+            $ignore_url_2 = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'timestamp' => time(), 'redirect' => $redirect, 'ajax' => 1), get_module_zone('topics'));
             require_javascript('ajax');
             $notifications->attach(do_template('CNS_NOTIFICATION', array(
                 '_GUID' => '3b224ea3f4da2f8f869a505b9756970a',

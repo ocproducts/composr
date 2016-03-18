@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,7 +33,7 @@ class Hook_page_groupings_themewizard
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            //array('style','menu/adminzone/style/themes/themewizard',array('admin_themewizard',array('type'=>'browse'),get_module_zone('admin_themewizard')),do_lang_tempcode('themes:THEMEWIZARD'),'themes:DOC_THEMEWIZARD'),
+            //array('style', 'menu/adminzone/style/themes/themewizard', array('admin_themewizard', array('type' => 'browse'), get_module_zone('admin_themewizard')), do_lang_tempcode('themes:THEMEWIZARD'), 'themes:DOC_THEMEWIZARD'),
             array('style', 'menu/adminzone/style/themes/logowizard', array('admin_themewizard', array('type' => 'make_logo'), get_module_zone('admin_themewizard')), do_lang_tempcode('themes:LOGOWIZARD'), 'themes:DOC_LOGOWIZARD'),
         );
     }

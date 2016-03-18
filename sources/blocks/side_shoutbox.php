@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -49,7 +49,7 @@ class Block_side_shoutbox
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = '((get_value(\'no_frames\')===\'1\') && (count($_POST)!=0))?null:array(array_key_exists(\'max\',$map)?intval($map[\'max\']):5,array_key_exists(\'param\',$map)?intval($map[\'param\']):NULL)';
+        $info['cache_on'] = '((get_value(\'no_frames\')===\'1\') && (count($_POST)!=0))?null:array(array_key_exists(\'max\',$map)?intval($map[\'max\']):5,array_key_exists(\'param\',$map)?intval($map[\'param\']):null)';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
         return $info;
@@ -71,7 +71,7 @@ class Block_side_shoutbox
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
         if (is_null($room_id)) {
-            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*,'room_language'=>user_lang()*/));
+            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
             if (is_null($room_id)) {
                 return new Tempcode();
             }
@@ -108,7 +108,7 @@ class Block_side_shoutbox
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red_alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '', 'red_alert');
         }
 
         // Did a message get sent last time?
@@ -148,6 +148,7 @@ class Block_side_shoutbox
 
         return do_template('BLOCK_SIDE_SHOUTBOX', array(
             '_GUID' => 'dd737145479155961a1252162a43d4ef',
+            'LAST_MESSAGE_ID' => strval($last_message_id),
             'MESSAGES' => $tpl,
             'URL' => $url,
             'CHATROOM_ID' => strval($room_id),

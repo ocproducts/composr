@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -64,7 +64,7 @@ class Hook_whatsnew_comcode_pages
         foreach ($_rows as $row) {
             $rows[$row['the_zone'] . ':' . $row['the_page']] = $row;
         }
-        $_rows2 = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_description'), array('meta_for_type' => 'comcode_page'));
+        $_rows2 = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_description', 'meta_for_id'), array('meta_for_type' => 'comcode_page'));
         $rows2 = array();
         foreach ($_rows2 as $row) {
             $rows2[$row['meta_for_id']] = $row;

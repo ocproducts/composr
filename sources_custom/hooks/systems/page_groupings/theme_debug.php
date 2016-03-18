@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_page_groupings_theme_debug
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('style', 'menu/_generic_admin/tool', array('theme_debug', array(), get_page_zone('theme_debug')), make_string_tempcode('Theme testing / fixup tools')),
+            array('site_meta', 'menu/_generic_admin/tool', array('theme_debug', array(), get_page_zone('theme_debug')), make_string_tempcode('Theme testing / fixup tools')),
             array('style', 'menu/_generic_admin/tool', array('fix_partial_themewizard_css', array(), get_page_zone('fix_partial_themewizard_css')), make_string_tempcode('Fixup themewizard themes')),
             array('style', 'menu/_generic_admin/tool', array('css_check', array(), get_page_zone('css_check')), make_string_tempcode('Look for unused CSS')),
         );

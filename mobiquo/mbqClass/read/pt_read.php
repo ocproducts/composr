@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,7 @@ class CMSPtRead
 
         $topics = array();
         foreach ($_topics as $topic) {
-            $extra = ' AND p_time>COALESCE((SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . '),0) AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days')));
+            $extra = ' AND p_time>COALESCE((SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . '),0) AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days')));
             $unread_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic['topic_id']), $extra);
 
             $participants = get_topic_participants($topic['topic_id'], null, $topic);
@@ -106,7 +106,7 @@ class CMSPtRead
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $topic_details = $GLOBALS['FORUM_DB']->query_select('f_topics t JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id', array('*', 't.id AS topic_id', 'p.id AS post_id'), array('t.id' => $topic_id), '', 1);
         if (!isset($topic_details[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
 
         if (!has_topic_access($topic_id, null, $topic_details[0])) {
@@ -120,7 +120,7 @@ class CMSPtRead
         $_posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS post_id,t.id AS topic_id' . $sql, $max, $start);
         $total_post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $sql);
 
-        $extra = ' AND p_time>GREATEST(' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ',COALESCE(0,(SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . ')))';
+        $extra = ' AND p_time>GREATEST(' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ',COALESCE(0,(SELECT l_time FROM ' . $table_prefix . 'f_read_logs l WHERE l_topic_id=p.p_topic_id AND l_member_id=' . strval(get_member()) . ')))';
         $unread_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic_id), $extra);
 
         $topic_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $topic_id));
@@ -129,7 +129,7 @@ class CMSPtRead
         foreach ($_posts as $post) {
             $content = prepare_post_for_tapatalk($post, $return_html);
 
-            $attachments = get_post_attachments($post['post_id']);
+            $attachments = get_post_attachments($post['post_id'], null, true, $content);
 
             $is_unread = (is_null($topic_read_time)) || ($post['p_time'] > $topic_read_time);
 

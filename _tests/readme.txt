@@ -12,7 +12,7 @@ Make sure html_dump and anything in it has 777 permissions (full write permissio
 Running
 -------
 
-Simple call up http://yourbaseurl/_tests/index.php
+Simply call up http://yourbaseurl/_tests/index.php
 
 From there you can choose to run tests that have been written.
 

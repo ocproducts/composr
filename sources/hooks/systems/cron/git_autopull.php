@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_cron_git_autopull
      */
     public function run()
     {
-        if (get_value('git_autopull') == '0') {
+        if (get_value('git_autopull') !== '1') {
             return;
         }
 

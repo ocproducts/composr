@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,7 +24,7 @@
 class Hook_commandr_fs_raw
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -45,7 +45,7 @@ class Hook_commandr_fs_raw
                 if (($file != '.') && ($file != '..') && ($file != '.git')) {
                     $listing[] = array(
                         $file,
-                        is_dir($path . '/' . $file) ? COMMANDRFS_DIR : COMMANDRFS_FILE,
+                        is_dir($path . '/' . $file) ? COMMANDR_FS_DIR : COMMANDR_FS_FILE,
                         is_dir($path . '/' . $file) ? null : filesize($path . '/' . $file),
                         filemtime($path . '/' . $file),
                     );
@@ -58,7 +58,7 @@ class Hook_commandr_fs_raw
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -76,7 +76,7 @@ class Hook_commandr_fs_raw
 
         if ((is_dir($path)) && (!file_exists($path . '/' . $new_dir_name)) && (is_writable_wrap($path))) {
             $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $new_dir_name)));
-            fix_permissions($path . '/' . $new_dir_name, 0777);
+            fix_permissions($path . '/' . $new_dir_name);
             sync_file($path . '/' . $new_dir_name);
             return $ret;
         } else {
@@ -85,7 +85,7 @@ class Hook_commandr_fs_raw
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -113,7 +113,7 @@ class Hook_commandr_fs_raw
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -139,7 +139,7 @@ class Hook_commandr_fs_raw
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -163,7 +163,7 @@ class Hook_commandr_fs_raw
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -188,7 +188,7 @@ class Hook_commandr_fs_raw
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
             fix_permissions($path . '/' . $file_name);
-            sync_file($path . $file_name);
+            sync_file($path . '/' . $file_name);
             return $output;
         } else {
             return false; // File doesn't exist

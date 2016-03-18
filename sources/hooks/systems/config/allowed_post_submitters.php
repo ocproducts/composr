@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,6 +38,7 @@ class Hook_config_allowed_post_submitters
             'explanation' => 'CONFIG_OPTION_allowed_post_submitters',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order' => 0,
 
             'addon' => 'core_configuration',
         );
@@ -50,6 +51,6 @@ class Hook_config_allowed_post_submitters
      */
     public function get_default()
     {
-        return 'translate.googleusercontent.com';
+        return "translate.googleusercontent.com\npaypal.com\nsandbox.paypal.com\nselect.worldpay.com\nselect-test.worldpay.com";
     }
 }

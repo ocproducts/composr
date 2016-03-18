@@ -1,0 +1,63 @@
+[title sub="Written by Chris Graham"]Composr Supplementary: Project Management[/title]
+
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_project_management/roles.png[/media]
+This tutorial is written primarily to explain to web design companies how to properly set up the ongoing management of a project at the negotiation stage. Most problems in managing a project are unwittingly set up before the project even started. However it will also be interesting for clients to see what kind of problems could come up on projects if they don't make sure that everything is fully thought through at the start.
+
+Problems on web projects almost always stem from price and schedule squeezes which can be made worse by a general rush to get development started quickly. The rush to start can come from both the client and the web designer, due to natural pressures each party is under:
+[list]
+[*] the client will naturally have commercial pressures that dictate meeting a particular implementation schedule (such as "time to market").[/*]
+[*] the web designer will naturally want to get a contract signed as quickly as possible to secure the work (otherwise days of planning could lead to nothing, and the web designer doesn't get paid for their time helping the client).[/*]
+[/list]
+
+So my first piece of advice to clients is to not come in from an angle of trying to push quite a few companies at once trying to get the best deal. It is better to look at a few companies, then pick the one you think is the best fit (in terms of skills, location, pricing structure, cultural compatibility, etc). If a web designer knows the client is giving them serious consideration, and has decent funding available, they will feel reasonably secure and as a result they will feel able to spend a much longer amount of the time with the client in advance on assured good faith. As a result, both parties will be able to better manage the project from the start.
+
+Working out exactly how long the project will take without actually doing it is going to have a very high margin of error. Things often take longer than expected. For example, one common situation on web projects is working around unexpected or random problems on old Microsoft web browsers literally adding 25% to the development time (but unpredictably so). Generally, working around bugs or hidden deficiencies in necessary infrastructure is impossible to properly plan for and can really throw a spanner in the works. People often don't realise that because technology has developed really quickly, the ducks are secretly paddling very hard under the water. Regardless of the state of technology, programming is much more of a process of invention than other engineering practices, and you never know what this process will find out.
+
+Non-trivial new requirements invariably come up during development (for example, if the client forgot to mention something, the world changes, or a lesson is learnt), and at minimum they will have to be charged for, at worst they can require going and redoing other things already done. Scope and detail can easily be miscommunicated, leading to a dramatic change in the amount of time and cost and threatening keeping control of the project. A web developer likely has other commitments beyond a single client, so scheduling can become very problematic.
+
+Almost all clients will want a fixed-price quote on their project because it is just common sense to not want to go ahead without knowing how much something is going to cost. However, as you can see from all this, running a fixed-price project is a serious challenge. The web design company has to use their experience to make an estimate as accurately as possible, as they will be underwriting the serious risk if things take longer than expected, but they usually also will be under some pressure to be very competitive (especially in down economies). Add to this that most clients seriously underestimate implementation costs, and it shows what a difficult position companies have to be able to work from.
+
+[media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_project_management/image.jpg[/media]
+Here are just a few examples of how control of a project could be lost:
+[list]
+[*] The client might ask for a website where they can upload videos, but it transpires later that they do not know anything about video encoding. A good web design company that was not under too much pressure would hopefully identify the problem in advance and build it into the project specification. If it was not identified in advance then one of the following would need to happen:[list]
+[*] transcoding could be implemented on the website's server. This needs a dedicated server, configuration of FFMPEG, setting up of a transcoding queue system, and some client training on issues of uploading large file sizes and transcoding time. This could knock the project up by $1000.[/*]
+[*] or, the web designer could train the client in video encoding. This could knock the project up by $600 (video encoding is pretty hard to explain, and usually there's quite a few hours of back-and-forth before things work just right)[/*]
+[*] or, the web designer could say "well, you never specified that you need to be able to upload [i]any[/i] kind of video" which is kind of fair enough but not likely to result in a happy client. This is a tricky one, because really clients should specify their requirements when they are buying something, or when they're not sure they should ideally fund a very thorough project specification (perhaps by a third-party consultant) -- pressures make this unlikely to ever happen though, and at the end of the day, the web design company's job is to try and do the very best for their client given that client's own circumstances and needs.[/*]
+[/list][/*]
+[*] It's not unusual for misunderstandings of what is "standard". For example, if a site sends alerts to users, a client might [i]assume[/i] they will get some kind of inbox system on the site itself, with "new message" icons in the website header, on the basis that they've seen it on Facebook. The truth is that the majority of websites (statistically) just send e-mails. As the client doesn't know enough of what is normal, and the web designer isn't a mind-reader or able to get the client to agree to pay for weeks of additional paid prep work prior to receiving a quote, it presents a sticky situation.[/*]
+[*] It is very common to make a website based on an existing platform, such as Composr or [url="http://www.magentocommerce.com/"]Magento[/url]. This saves a huge amount of money, but the client may think that they can request any aspect to be customised. In the case of Composr we regularly deploy sites with dozens of screens of functionality on a budget of perhaps $8,000 instead of $80,000 for a from-scratch system, but it does mean that not everything is going to be custom. For example, a client might assume they are going to get design control over the signup form, which can present a problem if it was not costed for customisation.[/*]
+[/list]
+
+So how to solve all this? Here are a few pointers on how to manage a project:
+[list]
+[*] There needs to be a proper specification of what is covered. This doesn't need to be very detailed, but it needs to touch on the important points. You might call this a "scope agreement" rather than a specification if it is not very detailed.[/*]
+[*] It would also be a good idea to say explicitly in writing what is not covered.[/*]
+[*] The client should be educated on the pitfalls through thorough written advice from the web design company.[/*]
+[*] Ideally when a price is being worked out, the web company should try and trip the client up by asking if something yet-unmentioned is needed. If the answer is "yes", then the client needs to be told to go back and seriously consider what else they may have missed. The reason for this step is that it is very easy for a client to just "ok" their way through anything without really thinking, trusting that the web design company will do a "good job". Of course, these pitfalls often happen when there are non-communicated issues that the client has not properly considered, so even if the web designer is really good, things could still go very wrong. From the point of view of the web design company, it should be better to scare off a naïve client who has not thought through their requirements, than to have a project spin out of control. It is very bad for a company to have a dissatisfied client who cannot afford what they expected and asks for a lot of freebies and threatens legal action if they don't get them.[/*]
+[*] There must be a proper contract that explains that the scope is fixed according to the specification, and that the client must be responsible for ensuring that their requirements are clear and not presented in an ambiguous or assumption-loaded way. The standard contract document that we use at ocProducts is written in very accessible language and goes into a lot of detail in a way similar to this tutorial. We also have a number of declarations on our contract that clients must individual check and sign, to ensure they really have considered relevant issues.[/*]
+[*] [media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_project_management/image2.jpg[/media]The client should hold a contingency budget. I would go as far as saying they should ideally have a 100% contingency budget to cover things they may have forgotten, and then to fund possible ongoing work after site launch (multi-variate testing work, SEO, and so on). If there is no contingency budget the web design company as a minimum should look where the project is being funded from  --  if the client is funding it using credit cards or they are hoping to pay for the final launch costs through some kind of uncertain grant, the web design company should run a mile (it happens...).[/*]
+[/list]
+
+Here is one unrelated but important bit of advice for web design companies:
+[list]
+[*] A client may delay a project for many reasons. For example, they may have internal issues holding up delivery of final copy for the website. It is very important that the contract explains that if the project is more or less developed but finalisation is delayed by the client, the client must pay the remainder according to a particular pre-agreed schedule. This situation can come up a lot, and cripple a web design companies cash flow if not considered.[/*]
+[/list]
+
+Now, taking all the above -- you may simply decide to do an agile project instead, with an ongoing monthly budget paid by the client, in return for regular work towards the (constantly changing) goals. Agile work is typically done starting with a [page="_SEARCH:sup_minimum_viable_products"]minimum viable product[/page], and with "sprints" of adding in new requirements. Frankly, given the great complexity of modern projects and the need for ongoing development to keep up with the times, agile is very preferable -- but many clients may have issues with it (such as only having very tight fixed budgets) so you may not have a choice but to go with a fixed contract/specification.
+
+I hope this tutorial gave some insight into how to manage a project, and was useful both for clients and suppliers.
+
+[title="2"]See also[/title]
+
+ - https://balsamiq.com/products/mockups/
+ - http://www.hobo-web.co.uk/website-design-tips/
+ - https://www.boxuk.com/insight/blog-posts/the-ultimate-website-launch-checklist
+ - [page="_SEARCH:sup_pricing"]Project pricing[/page]
+ - [page="_SEARCH:sup_choosing_a_developer"]Choosing a software company for your project[/page]
+ - [page="_SEARCH:sup_developer_relationships"]Maintaining a good agency relationship[/page]
+ - [page="_SEARCH:sup_minimum_viable_products"]Minimum Viable Products[/page]
+ - [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page]
+ - [page="_SEARCH:sup_running_agency"]Guide to running a web agency[/page]
+
+{$SET,tutorial_tags,Business Development,Opinion,Advice & Guidance,novice}{$SET,tutorial_add_date,Jul 2011}{$SET,tutorial_summary,Advice for managing projects correctly from the start, for both agencies and clients.}[block]main_tutorial_rating[/block]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_menus
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -312,6 +313,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -335,6 +337,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -369,7 +372,7 @@ class Hook_addon_registry_core_menus
                         'TITLE' => lorem_phrase(),
                         'TYPE' => 'mobile',
                     )
-                ), null, '', true),
+                ), null, '', false),
         );
     }
 
@@ -395,6 +398,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -418,6 +422,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -478,6 +483,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -507,6 +513,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -553,6 +560,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -576,6 +584,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -636,6 +645,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -659,6 +669,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -719,6 +730,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -742,6 +754,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => $child,
+                'NUM_CHILDREN' => '1',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => true,
@@ -802,6 +815,7 @@ class Hook_addon_registry_core_menus
                 'NEW_WINDOW' => false,
                 'TOOLTIP' => lorem_phrase(),
                 'CHILDREN' => '',
+                'NUM_CHILDREN' => '0',
                 'DISPLAY' => 'block',
                 'MENU' => lorem_word_2(),
                 'TOP_LEVEL' => false,
@@ -832,6 +846,7 @@ class Hook_addon_registry_core_menus
                     'NEW_WINDOW' => false,
                     'TOOLTIP' => lorem_phrase(),
                     'CHILDREN' => $child,
+                    'NUM_CHILDREN' => '1',
                     'DISPLAY' => 'block',
                     'MENU' => lorem_word_2(),
                     'TOP_LEVEL' => true,

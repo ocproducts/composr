@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -126,7 +126,7 @@ class Block_main_members
         } else {
             $filters_row_a = 'm_username=' . php_addslashes(do_lang('USERNAME'));
             if ($usergroup == '') {
-                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('GROUP'));
+                $filters_row_a .= ',usergroup=' . php_addslashes(do_lang('USERGROUP'));
             }
             $filters_row_b = '';
             $cpfs = cns_get_all_custom_fields_match(cns_get_all_default_groups(), 1, 1, null, null, 1, null);
@@ -190,7 +190,7 @@ class Block_main_members
                 } else {
                     $group_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $_usergroup));
                     if (is_null($group_id)) {
-                        return paragraph(do_lang_tempcode('MISSING_RESOURCE'), 'red_alert');
+                        return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
                     }
                 }
                 if ($has_exists) {
@@ -323,8 +323,7 @@ class Block_main_members
 
         /*if (count($rows)==0)   We let our template control no-result output
         {
-            return do_template('BLOCK_NO_ENTRIES', array(
-                'HIGH' => false,
+            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8', 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('RECENT', make_string_tempcode(integer_format($max)), do_lang_tempcode('MEMBERS')),
                 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                 'ADD_NAME' => '',
@@ -417,13 +416,12 @@ class Block_main_members
             if (get_option('use_joindate') == '1') {
                 $_fields_title[] = do_lang_tempcode('JOIN_DATE');
             }
-            $fields_title = results_field_title($_fields_title, $sortables, 'md_sort', $sortable . ' ' . $sort_order);
+            $fields_title = results_field_title($_fields_title, $sortables, $block_id . '_sort', $sortable . ' ' . $sort_order);
             require_code('cns_members2');
             foreach ($rows as $row) {
                 $_entry = array();
 
-                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array(
-                    'ID' => strval($row['id']),
+                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array('_GUID' => '868074cc21dcdf4427e93ce78e8f5637', 'ID' => strval($row['id']),
                     'USERNAME' => $row['m_username'],
                     'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, true),
                     'AVATAR_URL' => addon_installed('cns_member_avatars') ? $row['m_avatar_url'] : $row['m_photo_thumb_url'],

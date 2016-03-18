@@ -14,7 +14,7 @@
 	<input type="hidden" name="signature" value="{DIGEST*}" />
 
 	<div class="purchase_button">
-		<input onclick="disable_button_just_clicked(this);" class="menu__rich_content__ecommerce__purchase button_screen" type="submit" value="{!MAKE_PAYMENT}" />
+		<input onclick="disable_button_just_clicked(this);" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,14 +50,13 @@ class Hook_task_import_filesystem_downloads
 
         /*  Needless because it's relative to Composr directory anyway
         // Failsafe check
-        if ((file_exists($base_path.'/dev')) && (file_exists($base_path.'/etc')) && (file_exists($base_path.'/sbin')))
-        {
-            return array(NULL,do_lang_tempcode('POINTS_TO_ROOT_SCARY',$server_path));
+        if ((file_exists($base_path . '/dev')) && (file_exists($base_path . '/etc')) && (file_exists($base_path . '/sbin'))) {
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $server_path));
         }
-        if ((file_exists($base_path.'/Program files')) && ((file_exists($base_path.'/Users')) || (file_exists($base_path.'/Documents and settings'))) && (file_exists($base_path.'/Windows')))
-        {
-            return array(NULL,do_lang_tempcode('POINTS_TO_ROOT_SCARY',$server_path));
-        }*/
+        if ((file_exists($base_path . '/Program files')) && ((file_exists($base_path . '/Users')) || (file_exists($base_path . '/Documents and settings'))) && (file_exists($base_path . '/Windows'))) {
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $server_path));
+        }
+        */
 
         // Actually start the scanning
         $num_added = $this->filesystem_recursive_downloads_scan($base_path, $base_url, $destination, $subfolders);
@@ -79,8 +78,6 @@ class Hook_task_import_filesystem_downloads
     {
         $num_added = 0;
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
         require_code('files');
 
         $dh = @opendir($server_path);
@@ -98,9 +95,8 @@ class Hook_task_import_filesystem_downloads
                             if (is_null($category_id)) {
                                 // Add the directory
                                 $category_id = add_download_category(titleify($entry), $dest_cat, '', '', '');
-                                foreach (array_keys($groups) as $group_id) {
-                                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id), 'group_id' => $group_id));
-                                }
+                                require_code('permissions2');
+                                set_global_category_access('downloads', $category_id);
                             }
                             // Call this function again to recurse it
                             $num_added += $this->filesystem_recursive_downloads_scan($full_path, $full_url, $category_id, true);

@@ -1,0 +1,3 @@
+[title]{!banners:TOP_SITES}[/title]
+
+[block="top_sites_standard"]main_top_sites[/block]

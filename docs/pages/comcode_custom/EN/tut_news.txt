@@ -8,67 +8,87 @@ The news system can be used for website news, press releases, community news, bl
 
 [title="2"]Adding news[/title]
 
-[media width="150" description="An add link is presented on the news block" float="left"]data_custom/images/docs/news_link.png[/media]
-[media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/news_add_page.png[/media]
+[media width="150" description="The screen that you add news from" float="right"]data_custom/images/docs/tut_news/news_add_page.png[/media]
+[media width="150" description="An add link is presented on the news block" float="right"]data_custom/images/docs/tut_news/news_link.png[/media]
 When you first install your website, you may notice that there are no news posts. Adding more news posts is very simple.
 
 From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.
 
-This screen is a standard form in Composr, and the red fields indicate required fields.
+You can manage news from Content Management > News. You'll find an add icon under here.
 
+The add icon brings up the add screen, which is a standard form in Composr. It contains these fields:
  - [b]Title[/b]: this is the title (headline) that your news post will have
- - [b]Main category[/b]: This is the primary category that your news announcement will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
+ - [b]Main category[/b]: This is the primary category that your news post will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
  - [b]Secondary category[/b]: In this space, you may choose additional categories for this post to be listed in. (hold ctrl to select more than one)
  - [b]Source[/b]: the primary source/author of this source. It may be you
- - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news announcement on a scale of 1/10
- - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news announcement
- - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this announcement
+ - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news
+ - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news post
+ - [b]Allow trackbacks[/b]: With this option ticked, your members will have to ability to [[trackback]] this post
  - [b]Notes[/b]: This is additional information that the staff will be able to see when they are validating this post
- - [b]Validated[/b]: Tick this and this announcement will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
- - [b]News article[/b]: In this space, you can write your news announcement in detail, with options to include formatting and/or emoticons
- - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news announcement. If your announcement is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
+ - [b]Validated[/b]: Tick this and this post will be visible and posted after you click 'add news'. If you leave this unticked, it will remain in a validation queue until it is either validated or deleted by the staff
+ - [b]News article[/b]: In this space, you can write your news post in detail, with options to include formatting and/or emoticons
+ - [b]News summary[/b]: this is a brief summary (1 or 2 paragraphs) of your news post. If your post is less than 2 paragraphs or so, you may choose to not write a summary at all (in which case Composr is smart enough to use the actual article in place of a summary)
  - [b]Attachments[/b]: At the bottom of the page, you have the ability to add as many attachments to this post from your computer as you like
 
-After being validated by the staff, your news announcement will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
+After being validated by the staff, your news post will be visible on the front page unless you choose to schedule for it to be only made visible on a certain date and time. If you chose for it to be in the 'personal category of myname', then it will also be available by clicking the 'Blog' link in your profile.
 
-[title="2"]More detail[/title]
+[title="2"]Editing and deleting news[/title]
 
-[title="3"]Permissions[/title]
+You can easily edit a news post from Content Management > News > Edit news.
+Or, from the edit link shown underneath when viewing it.
+
+You can delete a news post from the bottom of its edit form.
+
+[title="2"]Adding, editing and deleting news categories[/title]
+
+[surround]
+[media width="150" description="Adding a category" float="right"]data_custom/images/docs/tut_news/news_add_category.png[/media]
+News categories are very easy to manage from Content Management > News.
+
+For example, lets say you want a "Political news" category...
+1) Go to Content Management > News > Add news category
+2) Fill in the Title as "Political news"
+3) Choose or upload an Image
+4) Click the "Add news category" button
+
+Now the category is added you will find it listed as a category option when adding news.
+
+If you wish to edit the category you can go to:
+Content Management > News > Add news category
+and choose the category to edit.
+You can delete a news category from the bottom of its edit form.
+[/surround][title="2"]Viewing news[/title]
+
+[surround]
+[media width="150" description="Viewing a [tt]main_news[/tt] block" float="right"]data_custom/images/docs/tut_news/block_view.png[/media]
+[media width="150" description="Adding a [tt]main_news[/tt] block" float="right"]data_custom/images/docs/tut_news/block_add.png[/media]
+[media width="150" description="Viewing news" float="right"]data_custom/images/docs/tut_news/news_view.png[/media]
+News can be accessed via the [tt]news[/tt] module
+([tt]site:news[/tt] page-link, Content > News on the default menus).
+
+[title="3"]The [tt]main_news[/tt] block[/title]
+
+Typically sites will also make it available via placement of the [tt]main_news[/tt] block on the front page.
+
+Placement of blocks is explained in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page].
+
+The block shows a combination of summary posts (newer posts) and archive lines (older posts).
+The block shows as far back as the "Days back to display" parameter if possible:
+ - If there is news going from that far back then the "Multipler" parameter defines the proportions of those shows as summary posts compared to archive lines.
+ - Otherwise a static quantity of news will show, using the "Fallback Full" and "Fallback Archive" parameters.
+If you want to force static quantities you should therefore set the "Days back to display" parameter to [tt]0[/tt].
+
+When placing a block it is possible to filter it to particulary category(s) using the "Select" parameter. Leaving the parameter blank will mean all news will show. In the simplest case you would just select one of more news categories to display from, which the block construction assistant makes very easy for you. If you want to write your own arbitrary [page="_SEARCH:tut_selectcode"]Selectcode[/page] then you need to write the block Comcode manually.
+
+It is also possible to determine whether only blog posts should show, just regular news posts, or both.
+
+If you set the "Show In Full" parameter then news will be showed fully inline (rather than summaries), so that users don't need to click to view each article.
+
+There are many more advanced block options, but we won't explain them here. Each is documented within the block construction assistant.
+
+[/surround][title="2"]Permissions[/title]
 
 News entries may be in multiple news categories, but a user needs access to the primary news category to be able to read the news.
-
-[title="3"]Scheduled news / Manual date selection[/title]
-
-See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the scheduler.
-
-You will see an advance scheduling option once the scheduler is enabled (requires the Composr 'calendar' addon to be installed also).
-
-Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
-
-[title="3"]Enabling member blogs[/title]
-
-Blog posts are just news posts that exist in a category that is owned by a member. A member's blog is displayed in a tab on their member profile (Conversr-only). Depending on how you set up your news block on your main site, they may or may not display in it.
-
-There is a dedicated blog posting module in the Content Management zone. It is a stripped down version of the main news posting module, designed to make blog posting simpler.
-
-Permissions required for blogs are:
- - Permission to access the [tt]cms[/tt] zone [set in Admin Zone > Security > Permission tree editor]
- - Permissions to access the [tt]cms:cms_blogs[/tt] page (it's on by default) [set in Admin Zone > Security > Permission tree editor]
- - The 'have personal categories permission' [set in Admin Zone > Security > Global privileges]
- - The 'add mid-level content permission' [set in Admin Zone > Security > Privileges, or in the permission tree editor if you want to set it just to apply for [tt]cms:cms_blogs[/tt]]
-
-[title="3"]Advanced: Pinging[/title]
-
-'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in the Configuration, under the 'Feature options' category). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
-
-A default service of [tt]http://pingomatic.com/ping/?title={title}&blogurl={url}&rssurl={rss}[/tt] is configured for you. This particular service is a ping relay service which takes your ping and relays it off to many other ping services for you. Most users therefore won't have a reason to add any additional ping services.
-
-The ping descriptors are just normal URLs, except you can put these three little placeholders in them which Composr will use to insert the specifics of any article being pinned:
- - {title} (which will become the title of the article)
- - {url} (which will become the URL of the article)
- - {rss} (which will become the URL to your news RSS feed)
-
-Pinging will only happen for news categories which may be accessed by guests.
 
 [title="2"]Alternative strategies[/title]
 
@@ -82,6 +102,7 @@ You may wish to use an 'Announcements' forum to make your news. If you wish to d
 
 [title="2"]Import from blogging systems[/title]
 
+[media width="150" description="Importing news" float="right"]data_custom/images/docs/tut_news/news_import.png[/media]
 You can import from any system that can export RSS files. We have extended support for the extra data that Wordpress and Blogger put into their exported RSS files.
 
 [title="3"]Wordpress import[/title]
@@ -106,7 +127,7 @@ Note that we can not import:
  - links
  - the main menu
  - choice and layout of widgets
- - short-codes (except for 'caption' which is the main one)
+ - short-codes (except for [tt]caption[/tt] which is the main one)
  - [i]anything relating solely to particular Wordpress addons[/i], e.g. Buddypress
 
 We load everything into memory at once, which isn't ideal, but simplifies the code a lot. It's safe because import is a one-off event and a blog wouldn't normally use gigabytes of data.
@@ -118,7 +139,7 @@ Categories and Tags are both imported from the same set of terms. You may wish t
 [title="2"]Representative images[/title]
 
 News categories may have a representative image for the category. By default news in that category (by primary category) will use that image.
-News may also have a manual representative image uploaded, or have a manual selection from any theme image under the 'newscats' theme image directory. These options are under 'Advanced' on the news add/edit form.
+News may also have a manual representative image uploaded, or have a manual selection from any theme image under the [tt]newscats[/tt] theme image directory. These options are under 'Advanced' on the news add/edit form.
 
 By default Composr will automatically size down uploaded images to the configured thumbnail size. This may be turned off via a hidden option, if an advanced themer is doing dynamic thumbnail generation and doesn't want things down-sized in advance. This hidden option is documented in the Code Book and named [tt]resize_rep_images[/tt].
 

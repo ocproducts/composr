@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,15 +46,18 @@ class Module_admin_themewizard
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        $ret = array(
-            'browse' => array('THEMEWIZARD', 'menu/adminzone/style/themes/themewizard'),
-            'make_logo' => array('LOGOWIZARD', 'menu/adminzone/style/themes/logowizard'),
-        );
+        $ret = array();
+
+        if (!$be_deferential && !$support_crosslinks) {
+            $ret['browse'] = array('THEMEWIZARD', 'menu/adminzone/style/themes/themewizard');
+        }
+
+        $ret['make_logo'] = array('LOGOWIZARD', 'menu/adminzone/style/themes/logowizard');
 
         return $ret;
     }
@@ -62,7 +65,7 @@ class Module_admin_themewizard
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -81,6 +84,8 @@ class Module_admin_themewizard
         }
 
         if ($type == 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:adminzone:browse', do_lang_tempcode('MANAGE_THEMES'))));
+
             breadcrumb_set_self(do_lang_tempcode('THEMEWIZARD'));
 
             $this->title = get_screen_title('_THEMEWIZARD', true, array(escape_html(integer_format(1)), escape_html(integer_format(4))));
@@ -326,8 +331,9 @@ class Module_admin_themewizard
         $dark = post_param_integer('dark');
         $inherit_css = post_param_integer('inherit_css');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        send_http_output_ping();
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         require_code('type_sanitisation');

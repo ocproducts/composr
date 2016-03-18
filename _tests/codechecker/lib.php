@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -126,7 +126,7 @@ function find_all_hooks($type, $entry)
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
-            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) !=0 ) Let's trust - performance*/) {
                 $out[$basename] = 'sources';
             }
         }
@@ -137,7 +137,7 @@ function find_all_hooks($type, $entry)
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
-            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                 $out[$basename] = 'sources_custom';
             }
         }
@@ -168,13 +168,13 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
 
             $bitmask = IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_BUNDLED_VOLATILE;
             if ($no_custom) {
-                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
+                $bitmask = $bitmask | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_NONBUNDLED_SCATTERED;
             }
             $stripped_path = preg_replace('#^' . preg_quote($COMPOSR_PATH . '/', '#') . '#', '', $dir . '/') . $file;
             if ($stripped_path == 'exports') {
                 continue; // Would be covered by IGNORE_NONBUNDLED_SCATTERED, but we don't always have that
             }
-            if ((should_ignore_file($stripped_path, $bitmask, 0)) && (substr($stripped_path, 0, 8) != 'mobiquo/'/*We do not want to skip this even though it\'s a non-bundled addon*/)) {
+            if ((should_ignore_file($stripped_path, $bitmask, 0)) && (substr($stripped_path, 0, 8))) {
                 continue;
             }
 
@@ -214,6 +214,7 @@ function die_error($system, $pos, $line, $message)
 function warn_error($system, $pos, $line, $message)
 {
     global $FILENAME;
+    @touch(get_file_base() . '/' . $FILENAME); // So CQC can sort by mtime and find it easily
     echo 'WARNING "' . $FILENAME . '" ' . $line . ' ' . $pos . ' ' . 'PHP: ' . $message . cnl();
 }
 
@@ -279,9 +280,9 @@ function log_warning($warning, $i = -1, $absolute = false)
     list($pos, $line, $full_line) = pos_to_line_details($i, $absolute);
 
     echo 'WARNING "' . $FILENAME . '" ' . $line . ' ' . $pos . ' ' . 'PHP: ' . $warning . cnl();
-// if (!isset($MYFILE_WARNINGS)) $MYFILE_WARNINGS=fopen('warnings_'.$START_TIME.'.log','at');
-// fwrite($MYFILE_WARNINGS,$FILENAME.': '.$warning.' (at line '.$line.', position '.$pos.')  ['.$full_line.']'."\n");
-    //fclose($MYFILE_WARNINGS);
+// if (!isset($MYFILE_WARNINGS)) $MYFILE_WARNINGS = fopen('warnings_' . $START_TIME . '.log', 'at');
+// fwrite($MYFILE_WARNINGS, $FILENAME . ': ' . $warning . ' (at line ' . $line . ', position ' . $pos . ')  [' . $full_line . ']' . "\n");
+// fclose($MYFILE_WARNINGS);
 }
 
 function log_special($type, $value)
@@ -319,7 +320,7 @@ function do_lang_tempcode($x, $a = null, $b = null, $c = null)
 {
     global $PARSED;
     if (!isset($PARSED)) {
-        $temp = file_get_contents(dirname(__FILE__) . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/webstandards.ini');
+        $temp = file_get_contents(dirname(__FILE__) . '/../../lang_custom/EN/phpdoc.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/webstandards.ini') . file_get_contents(dirname(__FILE__) . '/../../lang/EN/global.ini');
         $temp_2 = explode("\n", $temp);
         $PARSED = array();
         foreach ($temp_2 as $p) {
@@ -344,6 +345,16 @@ function do_lang_tempcode($x, $a = null, $b = null, $c = null)
 function escape_html($in)
 {
     return $in;
+}
+
+function php_function_allowed($function)
+{
+    return true;
+}
+
+function integer_format($num)
+{
+    return number_format($num);
 }
 
 function attach_message($message, $message_type)

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_openid
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -65,7 +66,9 @@ class Hook_addon_registry_openid
      */
     public function get_copyright_attribution()
     {
-        return array();
+        return array(
+            'Mewp',
+        );
     }
 
     /**
@@ -75,7 +78,7 @@ class Hook_addon_registry_openid
      */
     public function get_licence()
     {
-        return 'Licensed on the same terms as Composr';
+        return 'MIT';
     }
 
     /**
@@ -136,7 +139,6 @@ This is based on the work of Martin Conte Mac Donell (OpenID-realselector) and M
         return array(
             'sources_custom/hooks/systems/addon_registry/openid.php',
             'sources_custom/hooks/systems/login_providers/openid.php',
-            'sources_custom/hooks/systems/login_providers/index.html',
             'sources_custom/miniblocks/openid.php',
             'sources_custom/openid.php',
             'sources_custom/users.php',

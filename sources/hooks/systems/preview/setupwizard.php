@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_setupwizard
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'admin_setupwizard') && (get_param_string('type', '') == 'step8');
+        $applies = (get_page_name() == 'admin_setupwizard') && (get_param_string('type', '') == 'step8');
         return array($applies, null, false);
     }
 

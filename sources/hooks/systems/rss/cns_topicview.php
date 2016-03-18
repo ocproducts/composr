@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -56,7 +56,7 @@ class Hook_rss_cns_topicview
         }
 
         $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_time>' . strval($cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND p_validated=1 ' : '') . ' AND ' . $filters . ' ORDER BY p_time DESC,id DESC', $max, null, false, true);
-        $categories = list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT id,t_cache_first_title FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_last_time>' . strval($cutoff), $max));
+        $categories = list_to_map('id', $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_cache_last_time>' . strval($cutoff), $max));
 
         $content = new Tempcode();
         foreach ($rows as $row) {
@@ -84,7 +84,7 @@ class Hook_rss_cns_topicview
                 $view_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $row['id']), get_module_zone('forumview'), null, false, false, true);
 
                 if ($prefix == 'RSS_') {
-                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => 'ed06bc8f174a5427e1789820666fdd81', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_topic_id'])));
+                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => 'ed06bc8f174a5427e1789820666fdd81', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_topic_id'])), null, false, null, '.xml', 'xml');
                 } else {
                     $if_comments = new Tempcode();
                 }

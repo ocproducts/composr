@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_cns_post
      */
     public function applies()
     {
-        $applies = ((get_param_string('page', '') == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_param_string('page', '') == 'topicview');
+        $applies = ((get_page_name() == 'topics') && (in_array(get_param_string('type'), array('birthday', 'edit_post', 'new_post', 'edit_topic', 'new_pt', 'new_topic', 'multimod')))) || (get_page_name() == 'topicview');
         return array($applies, 'cns_post', true);
     }
 
@@ -48,7 +48,7 @@ class Hook_preview_cns_post
         require_code('cns_posts_action');
         require_code('cns_posts_action2');
         cns_check_post($original_comcode, post_param_integer('topic_id', null), get_member());
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         if ($posting_ref_id < 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -91,7 +91,7 @@ class Hook_preview_cns_post
         if (strlen($post_title) > 120) {
             warn_exit(do_lang_tempcode('TITLE_TOO_LONG'));
         }
-        $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_param_string('page', '') == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();
+        $unvalidated = ((post_param_integer('validated', 0) == 0) && (get_page_name() == 'topics')) ? do_lang_tempcode('UNVALIDATED') : new Tempcode();
         $emphasis = new Tempcode();
         $intended_solely_for = post_param_string('intended_solely_for', null);
         if ($intended_solely_for == '') {
@@ -106,7 +106,9 @@ class Hook_preview_cns_post
         $class = $is_emphasised ? 'cns_post_emphasis' : (!is_null($intended_solely_for) ? 'cns_post_personal' : '');
 
         // Member details
-        $signature = get_translated_tempcode('f_members', $GLOBALS['FORUM_DRIVER']->get_member_row($post_owner), 'm_signature', $GLOBALS['FORUM_DB']);
+        $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($post_owner);
+        $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+        $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
         $_postdetails_avatar = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post_owner);
         if ($_postdetails_avatar != '') {
             $post_avatar = do_template('CNS_TOPIC_POST_AVATAR', array('_GUID' => '2683c09eabd7a9f1fdc57a20117483ef', 'AVATAR' => $_postdetails_avatar));
@@ -131,7 +133,7 @@ class Hook_preview_cns_post
             $poster_details = new Tempcode();
             $custom_fields = do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => '9cbbc5913d8164970f19c38a210fda95', 'NAME' => do_lang_tempcode('IP_ADDRESS'), 'VALUE' => (get_ip_address())));
             $poster_details = do_template('CNS_GUEST_DETAILS', array('_GUID' => '2db48e17db9f060c04386843f2d0f105', 'CUSTOM_FIELDS' => $custom_fields));
-            $poster_username = post_param_string('poster_name_if_guest', do_lang('GUEST'));
+            $poster_username = cns_get_safe_specified_poster_name();
             $ip_link = ((has_actual_page_access(get_member(), 'admin_lookup')) && (addon_installed('securitylogging'))) ? build_url(array('page' => 'admin_lookup', 'param' => get_ip_address()), get_module_zone('admin_lookup')) : new Tempcode();
             $poster = do_template('CNS_POSTER_GUEST', array('_GUID' => '9c0ba6198663de96facc7399a08e8281', 'LOOKUP_IP_URL' => $ip_link, 'POSTER_DETAILS' => $poster_details, 'POSTER_USERNAME' => $poster_username));
         }

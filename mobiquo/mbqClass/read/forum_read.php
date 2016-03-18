@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,6 +32,10 @@ class CMSForumRead
     public function forum_recursive_load($forum_id, $full_tree, $return_description, $order_sub_alpha = null, $all_groupings = null, $recursion_depth = 0)
     {
         cms_verify_parameters_phpdoc();
+
+        if (!has_category_access(get_member(), 'forums', strval($forum_id))) {
+            access_denied('I_ERROR');
+        }
 
         if (is_null($order_sub_alpha)) {
             $order_sub_alpha = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_order_sub_alpha', array('id' => $forum_id)) == 1);
@@ -189,7 +193,7 @@ class CMSForumRead
         if ($order_sub_alpha) {
             $query .= ' ORDER BY f_name';
         } else {
-            $query .= ' ORDER BY f_position,id';
+            $query .= ' ORDER BY f_position,f_name';
         }
         return (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($query);
     }

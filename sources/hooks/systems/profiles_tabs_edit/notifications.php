@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Hook_profiles_tabs_edit_notifications
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -50,7 +50,7 @@ class Hook_profiles_tabs_edit_notifications
 
         $order = 100;
 
-        if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+        if (cms_srv('REQUEST_METHOD') == 'POST') {
             $auto_monitor_contrib_content = post_param_integer('auto_monitor_contrib_content', 0);
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_auto_monitor_contrib_content' => $auto_monitor_contrib_content), array('id' => $member_id_of), '', 1);
 
@@ -62,7 +62,7 @@ class Hook_profiles_tabs_edit_notifications
             unset($GLOBALS['MEMBER_CACHE_FIELD_MAPPINGS'][$member_id_of]);
         }
 
-        if (($leave_to_ajax_if_possible) && (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST')) {
+        if (($leave_to_ajax_if_possible) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             return null;
         }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_polls
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -61,7 +62,7 @@ class Hook_addon_registry_polls
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_featured',
+            'tut_feedback',
         );
     }
 
@@ -202,7 +203,7 @@ class Hook_addon_registry_polls
                 'AUTHOR' => lorem_word(),
                 'ID' => placeholder_id(),
                 'NEWS' => lorem_paragraph(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
             ), null, false, null, '.xml', 'xml'), null, '', true)
         );
     }
@@ -351,7 +352,7 @@ class Hook_addon_registry_polls
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'EXCERPT' => lorem_paragraph(),
-                'NAME' => lorem_phrase(),
+                'NAME' => placeholder_id(),
             )));
         }
         $trackback_details = do_lorem_template('TRACKBACK_WRAPPER', array(
@@ -381,7 +382,7 @@ class Hook_addon_registry_polls
                 'DATE_RAW' => placeholder_date_raw(),
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'ADD_DATE' => placeholder_date(),
                 'EDIT_DATE' => placeholder_date(),
                 'VIEWS' => placeholder_number(),

@@ -33,7 +33,7 @@
 		{!NOT_SHOWING_OLD_IOTDS_YET}
 	</p>
 	<p>
-		<a class="buttons__all2 button_screen" href="{USED_URL*}#used"><span>{!SHOW_OLD_TOO}</span></a>
+		<a class="button_screen buttons__all2" href="{USED_URL*}#used"><span>{!SHOW_OLD_TOO}</span></a>
 	</p>
 {+END}
 

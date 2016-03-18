@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,7 +35,7 @@ class Module_admin_staff
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['version'] = 3;
         $info['locked'] = true;
         return $info;
@@ -68,7 +68,7 @@ class Module_admin_staff
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -81,7 +81,7 @@ class Module_admin_staff
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -151,9 +151,9 @@ class Module_admin_staff
             $id = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($row_staff);
             $role = get_cms_cpf('role', $id);
-            $fullname = get_cms_cpf('fullname', $id);
 
-            $fields = form_input_line(do_lang_tempcode('REALNAME'), '', 'fullname_' . strval($id), $fullname, false);
+            $fields = new Tempcode();
+
             $fields->attach(form_input_line(do_lang_tempcode('ROLE'), do_lang_tempcode('DESCRIPTION_ROLE'), 'role_' . strval($id), $role, false));
 
             if (get_option('is_on_staff_filter') == '1') {
@@ -192,9 +192,9 @@ class Module_admin_staff
                 continue;
             }
             if (substr($key, 0, 6) == 'staff_') {
-                $id = intval($val); // e.g. $key=staff_2, $val=2  - so could also say $id=intval(substr($key,6));
+                $id = intval($val); // e.g. $key = staff_2, $val = 2  - so could also say $id = intval(substr($key, 6));
 
-                $this->_staff_edit($id, post_param_string('role_' . strval($id)), post_param_string('fullname_' . strval($id)));
+                $this->_staff_edit($id, post_param_string('role_' . strval($id)));
 
                 if ((post_param_integer('remove_' . strval($id), 0) == 1) && (get_option('is_on_staff_filter') == '1')) {
                     $this->_staff_remove($id);
@@ -214,12 +214,10 @@ class Module_admin_staff
      *
      * @param  MEMBER $id The member ID of the staff being edited
      * @param  SHORT_TEXT $role The role of the staff member
-     * @param  SHORT_TEXT $fullname The full-name of the staff member
      */
-    public function _staff_edit($id, $role, $fullname)
+    public function _staff_edit($id, $role)
     {
         $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'role', $role);
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($id, 'fullname', $fullname);
 
         log_it('EDIT_STAFF', strval($id));
     }

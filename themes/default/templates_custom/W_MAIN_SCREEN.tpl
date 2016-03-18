@@ -6,7 +6,7 @@
 	<section class="box box__realm_main"><div class="box_inner">
 		<h3>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h3>
 
-		<div class="ocw_navigation">
+		<div class="buildr_navigation">
 			<p class="accessibility_hidden">
 				{!W_MOVEMENT_TABLE}
 			</p>
@@ -33,7 +33,7 @@
 									</div>
 								{+END}
 								{+START,IF,{$NOT,{HAS_UP_ROOM}}}
-									<div class="ocw_fadedtext">
+									<div class="buildr_fadedtext">
 										&uarr;<br />
 										<em>{!W_NO_ROOM}</em>
 									</div>
@@ -52,7 +52,7 @@
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
-								<div style="text-align: right" class="ocw_fadedtext">
+								<div style="text-align: right" class="buildr_fadedtext">
 									&larr;&nbsp;<em>{!W_NO_ROOM}</em>
 								</div>
 							{+END}
@@ -67,7 +67,7 @@
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
-								<div style="text-align: left" class="ocw_fadedtext">
+								<div style="text-align: left" class="buildr_fadedtext">
 									&nbsp;<em>{!W_NO_ROOM}</em>&nbsp;&rarr;
 								</div>
 							{+END}
@@ -82,15 +82,15 @@
 								{+START,IF,{HAS_DOWN_ROOM}}
 								<div>
 									<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM}" /></form><br />
-									<div class="ocw_arrow">
+									<div class="buildr_arrow">
 										&darr;
 									</div>
 								</div>
 								{+END}
 								{+START,IF,{$NOT,{HAS_DOWN_ROOM}}}
-								<div class="ocw_fadedtext">
+								<div class="buildr_fadedtext">
 									<em>{!W_NO_ROOM}</em><br />
-									<div class="ocw_arrow">
+									<div class="buildr_arrow">
 										&darr;
 									</div>
 								</div>
@@ -105,7 +105,7 @@
 			</table>
 		</div>
 
-		<div class="ocw_room_info">
+		<div class="buildr_room_info">
 			<p>
 				<em>{ROOM_TEXT}</em>
 			</p>
@@ -128,8 +128,8 @@
 	<h3>{!W_ROOM_INFORMATION}</h3>
 
 	<div class="float_surrounder">
-		<div class="ocw_room_chat results_table">
-			<div class="ocw_posttop">{!MESSAGES}</div>
+		<div class="buildr_room_chat results_table">
+			<div class="buildr_posttop">{!MESSAGES}</div>
 			<div>
 				<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
 			</div>
@@ -140,16 +140,16 @@
 					<option value="0">
 						{!W_EVERYONE}
 					</option>
-				</select> <input class="buttons__send button_screen_item" type="submit" value="{!SEND_MESSAGE}" /></div>
+				</select> <input class="button_screen_item buttons__send" type="submit" value="{!SEND_MESSAGE}" /></div>
 			</form>
 		</div>
 
-		<div class="ocw_in_room">
+		<div class="buildr_in_room">
 			<div class="wide_table_wrap">
 				<table class="columned_table wide_table results_table autosized_table">
 					<thead>
 						<tr>
-							<th colspan="3" class="ocw_posttop">
+							<th colspan="3" class="buildr_posttop">
 								{!W_MEMBERS_IN_ROOM}
 							</th>
 						</tr>
@@ -176,10 +176,10 @@
 			{+START,IF_NON_EMPTY,{ITEMS}}
 				<br />
 
-				<table class="columned_table ocw_centered_contents wide_table results_table">
+				<table class="columned_table buildr_centered_contents wide_table results_table">
 					<thead>
 						<tr>
-							<th colspan="2" class="ocw_posttop">
+							<th colspan="2" class="buildr_posttop">
 								{!W_ITEMS_IN_ROOM}
 							</th>
 						</tr>
@@ -199,10 +199,10 @@
 			{+START,IF_NON_EMPTY,{ITEMS_SALE}}
 				<br />
 
-				<table class="columned_table ocw_centered_contents wide_table results_table">
+				<table class="columned_table buildr_centered_contents wide_table results_table">
 					<thead>
 						<tr>
-							<th colspan="3" class="ocw_posttop">
+							<th colspan="3" class="buildr_posttop">
 								{!W_ITEMS_FOR_SALE_IN_ROOM}
 							</th>
 						</tr>
@@ -227,29 +227,29 @@
 
 <br />
 
-<div class="ocw_centered_contents">
+<div class="buildr_centered_contents">
 	<section class="box"><div class="box_inner">
 		<h3>{!W_TOOLS}</h3>
 
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a title="{!W_INVENTORY} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:_SELF:inventory}"><img alt="{!W_INVENTORY}" src="{$IMG*,buildr/inventory}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:inventory}">{!W_INVENTORY}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a title="{!W_MAP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,map}{$KEEP*,1,1}"><img alt="{!W_MAP}" src="{$IMG*,buildr/map}" /></a><br /><a href="{$FIND_SCRIPT*,map}{$KEEP*,1,1}">{!W_MAP}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a href="{$PAGE_LINK*,_SELF:_SELF:realms}"><img alt="{!W_REALMS}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:realms}">{!W_REALMS}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a href="{$PAGE_LINK*,_SELF:_SELF}"><img alt="{!W_REFRESH}" src="{$IMG*,buildr/refresh}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF}">{!W_REFRESH}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=emergency}"><img alt="{!W_TELEPORT}" src="{$IMG*,buildr/emergencyteleport}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:emergency}">{!W_TELEPORT}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a title="{!RULES} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:rules}"><img alt="{!RULES}" src="{$IMG*,buildr/rules}" /></a><br /><a href="{$PAGE_LINK*,_SELF:rules}">{!RULES}</a>
 		</div>
-		<div class="ocw_icon" style="width: 14%;">
+		<div class="buildr_icon" style="width: 14%;">
 			<a title="{!HELP} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SELF:docs}"><img alt="{!HELP}" src="{$IMG*,buildr/help}" /></a><br /><a href="{$PAGE_LINK*,_SELF:docs}">{!HELP}</a>
 		</div>
 	</div></section>
@@ -271,7 +271,7 @@
 					<col style="width: 20%" />
 					<col style="width: 20%" />
 				</colgroup>
-				<tr class="ocw_posttop">
+				<tr class="buildr_posttop">
 					<th>
 						{!ACTION}
 					</th>
@@ -316,7 +316,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="drop" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -347,7 +347,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="give" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -378,7 +378,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="btype" value="pickpocket" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -409,7 +409,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="use" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -440,7 +440,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="btype" value="delete-message-by-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -472,7 +472,7 @@
 						</td>
 						<td>
 							<input type="hidden" name="type" value="findperson" />
-							<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+							<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 						</td>
 					</tr>
 				</table>
@@ -511,7 +511,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="teleport-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -542,7 +542,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="imprison-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -573,7 +573,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="hurt-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -604,7 +604,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="dehurt-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -635,7 +635,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="ban-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -666,7 +666,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="unban-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -697,7 +697,7 @@
 							</td>
 							<td>
 								<input type="hidden" name="type" value="take-from-person" />
-								<input class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+								<input class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 							</td>
 						</tr>
 					</table>
@@ -717,21 +717,21 @@
 
 			<div class="toggleable_tray" style="{$JS_ON,{HIDE_ADDITIONS*},}"{+START,IF,{HIDE_ADDITIONS}} aria-expanded="false"{+END}>
 				<div class="float_surrounder">
-					<div class="ocw_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}"><img alt="{!W_ADD_REALM}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addrealm}">{!W_ADD_REALM}</a>
 					</div>
-					<div class="ocw_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:addroom}"><img alt="{!W_ADD_ADJOINING_ROOM}" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addroom}">{!W_ADD_ADJOINING_ROOM}</a>
 					</div>
 					{+START,IF,{MAY_ADD_PORTAL}}
-					<div class="ocw_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:addportal}"><img alt="{!W_ADD_PORTAL}" src="{$IMG*,buildr/addportal}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addportal}">{!W_ADD_PORTAL}</a>
 					</div>
 					{+END}
-					<div class="ocw_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:additem}"><img alt="{!W_ADD_ITEM}" src="{$IMG*,buildr/additem}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additem}">{!W_ADD_ITEM}</a>
 					</div>
-					<div class="ocw_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+					<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 						<a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}"><img alt="{!W_ADD_ITEM_COPY}" src="{$IMG*,buildr/additemcopy}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additemcopy}">{!W_ADD_ITEM_COPY}</a>
 					</div>
 				</div>
@@ -752,14 +752,14 @@
 				<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}"><div>
 					{$INSERT_SPAMMER_BLACKHOLE}
 
-					<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" /> <input class="buttons__edit button_screen_item" type="submit" value="{!W_EDIT_ITEM}" onclick="form.elements['type']='edititem';" /> <input class="menu___generic_admin__delete button_screen_item" type="submit" value="{!W_DELETE_ITEM}" onclick="form.elements['type']='confirm';" />
+					<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" /> <input class="button_screen_item buttons__edit" type="submit" value="{!W_EDIT_ITEM}" onclick="form.elements['type']='edititem';" /> <input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" onclick="form.elements['type']='confirm';" />
 				</div></form>
 
 				{+START,IF,{IS_STAFF}}
 					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}"><div>
 						{$INSERT_SPAMMER_BLACKHOLE}
 
-						<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="menu___generic_admin__merge button_screen_item" type="submit" value="{!W_MERGE_ITEMS}" />
+						<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button_screen_item menu___generic_admin__merge" type="submit" value="{!W_MERGE_ITEMS}" />
 					</div></form>
 				{+END}
 			{+END}
@@ -768,18 +768,18 @@
 				<br />
 				<div class="float_surrounder">
 					{+START,IF,{IS_ROOM_OWNER}}
-						<div class="ocw_icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
+						<div class="buildr_icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:editroom}"><img alt="{!W_EDIT_ROOM}" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editroom}">{!W_EDIT_ROOM}</a>
 						</div>
-						<div class="ocw_icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
+						<div class="buildr_icon" style="width: {$?,{IS_REALM_OWNER},25%,50%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleteroom}"><img alt="{!W_DELETE_ROOM}" src="{$IMG*,buildr/delroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleteroom}">{!W_DELETE_ROOM}</a>
 						</div>
 					{+END}
 					{+START,IF,{IS_REALM_OWNER}}
-						<div class="ocw_icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
+						<div class="buildr_icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}"><img alt="{!W_EDIT_REALM}" src="{$IMG*,buildr/realms}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:editrealm}">{!W_EDIT_REALM}</a>
 						</div>
-						<div class="ocw_icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
+						<div class="buildr_icon" style="width: {$?,{IS_ROOM_OWNER},25%,50%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:confirm:btype=deleterealm}"><img alt="{!W_DELETE_REALM}" src="{$IMG*,buildr/delrealm}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:deleterealm}">{!W_DELETE_REALM}</a>
 						</div>
 					{+END}

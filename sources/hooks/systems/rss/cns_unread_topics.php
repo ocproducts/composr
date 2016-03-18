@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Hook_rss_cns_unread_topics
             return null;
         }
 
-        $condition = 'l_time<t_cache_last_time OR (l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ')';
+        $condition = 'l_time<t_cache_last_time OR (l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ')';
         $query = 'SELECT *,top.id AS t_id';
         if (multi_lang_content()) {
             $query .= ',t_cache_first_post AS p_post';
@@ -57,7 +57,9 @@ class Hook_rss_cns_unread_topics
         if (!multi_lang_content()) {
             $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
         }
-        $query .= ' WHERE (' . $condition . ') AND t_forum_id IS NOT NULL ' . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND t_validated=1 ' : '') . ' ORDER BY t_cache_last_time DESC';
+        $query .= ' WHERE (' . $condition . ') AND t_forum_id IS NOT NULL ' . ((!has_privilege(get_member(), 'see_unvalidated')) ? ' AND t_validated=1 ' : '');
+        $query .= ' AND t_cache_last_time>' . strval($cutoff);
+        $query .= ' ORDER BY t_cache_last_time DESC';
         if (multi_lang_content()) {
             $rows = $GLOBALS['FORUM_DB']->query($query, $max, null, false, false, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
         } else {
@@ -89,7 +91,7 @@ class Hook_rss_cns_unread_topics
                 $view_url = build_url(array('page' => 'topicview', 'id' => $row['t_id']), get_module_zone('topicview'));
 
                 if ($prefix == 'RSS_') {
-                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => strval($row['t_id'])));
+                    $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '517e4d1be810446bda57d8632dadb4d6', 'COMMENT_URL' => $view_url, 'ID' => strval($row['t_id'])), null, false, null, '.xml', 'xml');
                 } else {
                     $if_comments = new Tempcode();
                 }

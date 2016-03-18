@@ -39,10 +39,10 @@
 		2_REL=edit
 		2_ICON=menu/_generic_admin/edit_this
 	{+END}
-	{+START,IF_PASSED,ADD_CAT_URL}
+	{+START,IF_PASSED,ADD_CAT_URL}{+START,IF_PASSED,ADD_CAT_TITLE}
 		3_URL={ADD_CAT_URL*}
-		3_TITLE={!ADD_CATEGORY}
+		3_TITLE={ADD_CAT_TITLE*}
 		3_REL=add
 		3_ICON=menu/_generic_admin/add_one_category
-	{+END}
+	{+END}{+END}
 {+END}

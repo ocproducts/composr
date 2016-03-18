@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,17 +23,6 @@
  */
 class Hook_notification_task_completed extends Hook_Notification
 {
-    /**
-     * Find a bitmask of settings (email, SMS, etc) a notification code supports for listening on.
-     *
-     * @param  ID_TEXT $notification_code Notification code
-     * @return integer Allowed settings
-     */
-    public function allowed_settings($notification_code)
-    {
-        return A_INSTANT_EMAIL;
-    }
-
     /**
      * Get a list of all the notification codes this hook can handle.
      * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)

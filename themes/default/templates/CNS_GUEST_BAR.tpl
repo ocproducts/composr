@@ -9,6 +9,8 @@
 		<div class="cns_information_bar float_surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
 				<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="autocomplete inline">
+					{$INSERT_SPAMMER_BLACKHOLE}
+
 					<div>
 						<div class="accessibility_hidden"><label for="member_bar_login_username">{!USERNAME}{+START,IF,{$AND,{$CNS},{$CONFIG_OPTION,one_per_email_address}}} / {!EMAIL_ADDRESS}{+END}</label></div>
 						<div class="accessibility_hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
@@ -17,7 +19,7 @@
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
 							<label for="remember">{!REMEMBER_ME}:</label> <input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) t.checked=false; });  }"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
-						<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />
+						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 
 						<ul class="horizontal_links associated_links_block_group horiz_field_sep">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>
@@ -32,9 +34,9 @@
 				</div>
 			{+END}{+END}
 
-			<nav class="cns_guest_column cns_member_column_d" role="navigation">
+			<nav class="cns_guest_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
-				<ul role="navigation" class="actions_list">
+				<ul class="actions_list">
 					<li><a onclick="return open_link_as_overlay(this);" href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
 					<li><a onclick="return open_link_as_overlay(this);" href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
 				</ul>

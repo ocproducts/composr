@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,11 +21,15 @@ class Hook_addon_registry_iotds
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
-        return array();
+        return array(
+            'iotds_addon',
+            'iotds_addon_thumbs',
+        );
     }
 
     /**
@@ -152,21 +156,17 @@ class Hook_addon_registry_iotds
             'sources_custom/hooks/systems/trackback/iotds.php',
             'sources_custom/iotds.php',
             'sources_custom/hooks/systems/preview/iotd.php',
-            'sources_custom/hooks/systems/sitemap/.htaccess',
-            'sources_custom/hooks/systems/sitemap/index.html',
             'sources_custom/hooks/systems/sitemap/iotd.php',
             'themes/default/templates_custom/IOTD_BOX.tpl',
             'themes/default/templates_custom/IOTD_ENTRY_SCREEN.tpl',
             'themes/default/templates_custom/BLOCK_MAIN_IOTD.tpl',
             'themes/default/templates_custom/IOTD_ADMIN_CHOOSE_SCREEN.tpl',
             'themes/default/css_custom/iotds.css',
-            'uploads/iotds_addon/index.html',
-            'uploads/iotds_thumbs_addon/index.html',
             'cms/pages/modules_custom/cms_iotds.php',
             'lang_custom/EN/iotds.ini',
             'site/pages/modules_custom/iotds.php',
-            'uploads/iotds_addon/.htaccess',
-            'uploads/iotds_thumbs_addon/.htaccess',
+            'uploads/iotds_addon/index.html',
+            'uploads/iotds_addon_thumbs/index.html',
         );
     }
 
@@ -200,7 +200,7 @@ class Hook_addon_registry_iotds
             'IMAGE_URL' => placeholder_image_url(),
             'VIEWS' => placeholder_number(),
             'THUMB' => placeholder_image(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'VIEW_URL' => placeholder_url(),
             'ID' => placeholder_id(),
@@ -268,7 +268,7 @@ class Hook_addon_registry_iotds
             'ID' => placeholder_id(),
             'VIEWS' => placeholder_number(),
             'THUMB' => placeholder_image(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'URL' => placeholder_url(),
             'CAPTION' => lorem_phrase(),
@@ -304,7 +304,7 @@ class Hook_addon_registry_iotds
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'EXCERPT' => lorem_paragraph(),
-                'NAME' => lorem_phrase(),
+                'NAME' => placeholder_id(),
             )));
         }
         $trackback_details = do_lorem_template('TRACKBACK_WRAPPER', array(
@@ -365,9 +365,9 @@ class Hook_addon_registry_iotds
                 'DATE_RAW' => placeholder_date_raw(),
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
-                'ADD_DATE' => placeholder_time(),
-                'EDIT_DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
+                'ADD_DATE' => placeholder_date(),
+                'EDIT_DATE' => placeholder_date(),
                 'VIEWS' => placeholder_number(),
                 'TRACKBACK_DETAILS' => $trackback_details,
                 'RATING_DETAILS' => $rating_details,

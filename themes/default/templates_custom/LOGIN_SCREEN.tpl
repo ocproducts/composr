@@ -3,17 +3,17 @@
 {$SET,login_screen,1}
 
 <div class="login_page">
-	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}
+	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}
 		{+START,IF_EMPTY,{$FB_CONNECT_UID}}
 			<h2>{!facebook:LOGIN_FACEBOOK_HEADER}</h2>
 
 			<p>{!facebook:LOGIN_USING_FACEBOOK}</p>
 
-			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email,user_birthday{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions{+END}"></div>
+			<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="email{$,Asking for this stuff is now a big hassle as it needs a screencast(s) making: user_birthday,user_about_me,user_hometown,user_location,user_website}{+START,IF,{$CONFIG_OPTION,facebook_auto_syndicate}},publish_actions,publish_pages{+END}"></div>
 		{+END}
 
 		<h2>{!facebook:LOGIN_NATIVE_HEADER,{$SITE_NAME*}}</h2>
-	{+END}
+	{+END}{+END}
 
 	<div class="box box___login_screen"><div class="box_inner">
 		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
@@ -21,6 +21,8 @@
 
 	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on">
 		<div>
+			{$INSERT_SPAMMER_BLACKHOLE}
+
 			{PASSION}
 
 			<div class="float_surrounder">
@@ -81,7 +83,7 @@
 			</div>
 
 			<p class="proceed_button">
-				<input class="menu__site_meta__user_actions__login button_screen" type="submit" value="{!_LOGIN}" />
+				<input class="button_screen menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 			</p>
 		</div>
 	</form>

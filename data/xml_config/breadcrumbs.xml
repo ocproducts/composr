@@ -10,11 +10,11 @@
 	<substitution match_key=":_WILD_NOT_START">
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="site:_WILD_NOT_START:browse">
+	<substitution match_key="site:_WILD_NOT_START:browse" skip_if_single_public_zone="true">
 		<link label="{!HOME}">:</link>
 		<link label="{!SITE}">site:</link>
 	</substitution>
-	<substitution match_key="site:_WILD_NOT_START">
+	<substitution match_key="site:_WILD_NOT_START" skip_if_single_public_zone="true">
 		<link label="{!HOME}">:</link>
 		<link label="{!SITE}">site:</link>
 	</substitution>
@@ -55,6 +55,9 @@
 	<substitution match_key="_WILD:catalogues:index">
 		<link label="{!HOME}">:</link>
 	</substitution>
+	<substitution match_key="_WILD:catalogues:atoz">
+		<link label="{!HOME}">:</link>
+	</substitution>
 
 	<!-- Examples follow... -->
 
@@ -67,6 +70,11 @@
 	<!--<substitution label="Our page" match_key="site:page_for_distorted_gallery">
 		<link label="Home">:start</link>
 	</substitution>-->
+
+	<!-- Changing just the label of a node, preserving the rest of the chain -->
+	<!--<substitution match_key="site:news:view:1" label="foo">
+		<link />
+	</substitution>-->
 </breadcrumbs>
 
-<!-- Note PHP regular expressions are allowed -->
+<!-- Note PHP regular expressions are not allowed but _WILD is for any component -->

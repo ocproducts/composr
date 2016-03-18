@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -184,8 +184,8 @@ function add_attachments_from_comcode($comcode, $attachment_ids)
     $comcode = str_replace(array_keys($emoticon_map), array_values($emoticon_map), $comcode);
 
     // Wordfilter
-    require_code('word_filter');
-    $comcode = check_word_filter($comcode);
+    require_code('wordfilter');
+    $comcode = check_wordfilter($comcode);
 
     // Map BBCode that we do not support, to Comcode
     $comcode = str_ireplace(array('[spoiler', '[/spoiler'), array('[hide', '[/hide'), $comcode);
@@ -264,7 +264,7 @@ function tapatalk_strip_comcode($data)
     $data = strtr($data, array_flip($shortcuts));
 
     // Emoticons
-    // HACKHACK: Disable emoticons Tapatalk actually has inbuilt. Tapatalk will sub in those that it supports
+    // FUDGE: Disable emoticons Tapatalk actually has inbuilt. Tapatalk will sub in those that it supports
     $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
     $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
     foreach ($emoticon_map as $tapatalk_code => $composr_code) {

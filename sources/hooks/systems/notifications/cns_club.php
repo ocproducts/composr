@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,7 +44,7 @@ class Hook_notification_cns_club extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['cns_club'] = array(do_lang('GROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_club'));
+        $list['cns_club'] = array(do_lang('USERGROUPS'), do_lang('cns:NOTIFICATION_TYPE_cns_club'));
         return $list;
     }
 

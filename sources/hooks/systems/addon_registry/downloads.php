@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_downloads
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -278,7 +279,6 @@ class Hook_addon_registry_downloads
             'DATE_RAW' => placeholder_date_raw(),
             'DATE' => placeholder_date(),
             'EDIT_DATE_RAW' => '',
-            'SIZE' => placeholder_number(),
             'URL' => placeholder_url(),
             'NAME' => lorem_phrase(),
             'BREADCRUMBS' => placeholder_breadcrumbs(),
@@ -296,6 +296,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_paragraph_html(),
                 'SUBCATEGORIES' => $subcategories,
@@ -330,7 +331,6 @@ class Hook_addon_registry_downloads
                 'DATE_RAW' => placeholder_date_raw(),
                 'DATE' => placeholder_date(),
                 'EDIT_DATE_RAW' => '',
-                'SIZE' => placeholder_number(),
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
                 'BREADCRUMBS' => placeholder_breadcrumbs(),
@@ -351,6 +351,7 @@ class Hook_addon_registry_downloads
                 'TITLE' => lorem_title(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'SUB_CATEGORIES' => $subcats,
             )), null, '', true)
@@ -394,10 +395,10 @@ class Hook_addon_registry_downloads
                 'LICENCE_TITLE' => lorem_phrase(),
                 'LICENCE_HYPERLINK' => placeholder_link(),
                 'SUBMITTER' => placeholder_id(),
-                'EDIT_DATE' => placeholder_time(),
+                'EDIT_DATE' => placeholder_date(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'DATE_RAW' => placeholder_date_raw(),
                 'NUM_DOWNLOADS' => placeholder_number(),
                 'TITLE' => lorem_title(),

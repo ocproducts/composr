@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * CRUD module (Create/Update/Delete), for operations on content types.
+ *
+ * @package        core
  */
 abstract class Standard_crud_module
 {
@@ -73,7 +75,7 @@ abstract class Standard_crud_module
     public $second_stage_preview = false;
     public $add_submit_name = null;
     public $edit_submit_name = null;
-    public $do_preview = true; // true or NULL (NULL means false here)
+    public $do_preview = true; // true or null (null means false here)
     public $add_one_label = null;
     public $add_one_cat_label = null;
     public $edit_this_label = null;
@@ -132,7 +134,7 @@ abstract class Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -163,10 +165,10 @@ abstract class Standard_crud_module
     public $success_message_str;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -366,7 +368,7 @@ abstract class Standard_crud_module
                 $this->title = get_screen_title('MASS_DELETE');
             }
 
-            if ((method_exists($this, 'browse')) && ($type != 'browse')) {
+            if ((((method_exists($this, 'browse')) && ($type != 'browse')) || ((isset($this->is_chained_with_parent_browse)) && ($this->is_chained_with_parent_browse)))) {
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
                     breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode(is_null($this->menu_label) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE'))));
                 } else {
@@ -417,7 +419,7 @@ abstract class Standard_crud_module
         }
         $type = get_param_string('type', $this->default_type);
 
-        // Meta data etc
+        // Metadata etc
         require_code('content2');
         if (addon_installed('content_reviews')) {
             require_code('content_reviews2');
@@ -1023,7 +1025,7 @@ abstract class Standard_crud_module
                     send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                 }
 
-                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
             }
             $submitter = get_member();
             if (method_exists($this, 'get_submitter')) {
@@ -1083,7 +1085,7 @@ abstract class Standard_crud_module
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
             $orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
-        } else {
+        } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
             $orderer = 'r.' . $orderer;
         }
         if ($force_site_db) {
@@ -1212,7 +1214,7 @@ abstract class Standard_crud_module
                 'TEXT' => $text,
                 'TABLE' => $table,
                 'SUBMIT_ICON' => 'buttons__sort',
-                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('ORDER') : null,
+                'SUBMIT_NAME' => $has_ordering ? do_lang_tempcode('SORT') : null,
                 'POST_URL' => get_self_url(),
                 'JAVASCRIPT' => $this->javascript_for_choose,
             ));
@@ -1236,7 +1238,7 @@ abstract class Standard_crud_module
             if ($entries->is_empty()) {
                 inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
             }
-            $fields = form_input_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
+            $fields = form_input_huge_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
         }
 
         $post_url = build_url($map, '_SELF', null, false, true);
@@ -1432,7 +1434,7 @@ abstract class Standard_crud_module
             // Existing fields
             $field_count = 0;
             $c_name = get_param_string('id', false, true);
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order');
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             $fields_existing = new Tempcode();
             foreach ($rows as $i => $myrow) {
                 $name = get_translated_text($myrow['cf_name']);
@@ -1536,20 +1538,10 @@ abstract class Standard_crud_module
             if ((!is_null($date_and_time)) && (addon_installed('points'))) {
                 $reverse = post_param_integer('reverse_point_transaction', 0);
                 if ($reverse == 1) {
-                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('*'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
+                    $points_test = $GLOBALS['SITE_DB']->query_select('gifts', array('id'), array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
                     if (array_key_exists(0, $points_test)) {
-                        $amount = $points_test[0]['amount'];
-                        $sender_id = $points_test[0]['gift_from'];
-                        $recipient_id = $points_test[0]['gift_to'];
-                        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $points_test[0]['id']), '', 1);
-                        if (!is_guest($sender_id)) {
-                            $_sender_gift_points_used = point_info($sender_id);
-                            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-                            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-                        }
-                        require_code('points');
-                        $temp_points = point_info($recipient_id);
-                        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+                        require_code('points2');
+                        reverse_point_gift_transaction($points_test[0]['id']);
                     }
                 }
             }
@@ -1576,11 +1568,12 @@ abstract class Standard_crud_module
                 delete_form_custom_fields($this->content_type, $id);
             }
 
-            /*if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect',NULL)))))    No - resource is gone now, and redirect would almost certainly try to take us back there
-            {
-                    $url=(($this->redirect_type=='!') || (is_null($this->redirect_type)))?get_param_string('redirect'):build_url(array('page'=>'_SELF','type'=>$this->redirect_type),'_SELF');
-                    return redirect_screen($this->title,$url,do_lang_tempcode($this->success_message_str));
-            }*/
+            /*    No - resource is gone now, and redirect would almost certainly try to take us back there
+            if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
+                $url = (($this->redirect_type == '!') || (is_null($this->redirect_type))) ? get_param_string('redirect') : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
+                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
+            }
+            */
 
             if ((!is_null($this->redirect_type)) || ((!is_null(get_param_string('redirect', null))))) {
                 $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect')));
@@ -1644,14 +1637,14 @@ abstract class Standard_crud_module
             }
 
             if ($this->user_facing) {
-                if (($this->check_validation) && (post_param_integer('validated', 0) == 0)) {
+                if (($this->check_validation) && (post_param_integer('validated', 0) == 0) && (post_param_integer('tick_on_form__validated', null) === null)) {
                     require_code('submit');
                     if (($this->send_validation_request) && (addon_installed('unvalidated'))) {
                         $edit_url = build_url(array('page' => '_SELF', 'type' => $this->get_screen_type_for('_edit', $this->type_code), 'id' => $id, 'validated' => 1), '_SELF', null, false, false, true);
                         send_validation_request($this->doing, $this->table, $this->non_integer_id, $id, $edit_url);
                     }
 
-                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED')));
+                    $description->attach(paragraph(do_lang_tempcode('SUBMIT_UNVALIDATED', $this->content_type)));
                 }
             }
         }

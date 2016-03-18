@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -51,10 +51,5 @@ class wiki_test_set extends cms_test_case
     {
         // Delete Wiki+ page
         wiki_delete_page($this->id);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

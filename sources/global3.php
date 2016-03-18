@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,8 @@ global3.php contains further support functions, which are shared between the ins
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__global3()
 {
@@ -57,13 +59,13 @@ function init__global3()
     global $MSN_DB;
     $MSN_DB = null;
 
-    // This is like NULL, but is a higher-precedence NULL that can also survive string layers (such as HTML forms). It should only be used when:
-    //  - 'NULL' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
+    // This is like null, but is a higher-precedence null that can also survive string layers (such as HTML forms). It should only be used when:
+    //  - 'null' or '' or '-1' aren't appropriate (although '-1' is only appropriate when dealing with numbers held in strings, really).
     //  - OR, as the standard "ignore this field" indicator for query_update (so that "fractional edits" can happen without requiring a secondary API set or a messed up primary API)
     if (!defined('STRING_MAGIC_NULL')) {
         define('STRING_MAGIC_NULL', '!--:)abcUNLIKELY');
     }
-    // This is similar, but for integers. As before, it should only be used when NULL and -1 aren't appropiate OR as the "ignore this field" indicator.
+    // This is similar, but for integers. As before, it should only be used when null and -1 aren't appropiate OR as the "ignore this field" indicator.
     if (!defined('INTEGER_MAGIC_NULL')) {
         define('INTEGER_MAGIC_NULL', 1634817353); // VERY unlikely to occur, but is both a 32bit unsigned and a 32 bit signed number
     }
@@ -85,7 +87,7 @@ function init__global3()
     global $OUTPUT_STATE_VARS;
     $OUTPUT_STATE_VARS = array(
         'HTTP_STATUS_CODE',
-        'META_DATA',
+        'METADATA',
         'ATTACHED_MESSAGES',
         'ATTACHED_MESSAGES_RAW',
         'LATE_ATTACHED_MESSAGES',
@@ -108,7 +110,10 @@ function init__global3()
         'HELPER_PANEL_TUTORIAL',
         'JAVASCRIPT',
         'JAVASCRIPTS',
+        'JS_OUTPUT_STARTED',
+        'JAVASCRIPT_BOTTOM',
         'CSSS',
+        'CSS_OUTPUT_STARTED',
         'CYCLES',
         'TEMPCODE_SETGET',
     );
@@ -120,21 +125,22 @@ function init__global3()
     // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
     define('A_NA', 0x0); // Not applicable          (0 in decimal)
     //
-    define('A_INSTANT_EMAIL', 0x2); //              (2 in decimal)
-    define('A_DAILY_EMAIL_DIGEST', 0x4); //            (4 in decimal)
-    define('A_WEEKLY_EMAIL_DIGEST', 0x8); //        (8 in decimal)
-    define('A_MONTHLY_EMAIL_DIGEST', 0x10); //         (16 in decimal)
-    define('A_INSTANT_SMS', 0x20); //                  (32 in decimal)
-    define('A_INSTANT_PT', 0x40); // Private topic  (64 in decimal)
-    define('A_WEB_NOTIFICATION', 0x80); // Desktop notification if site is open, and always shows on notification dropdown  (128 in decimal)
+    define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
+    define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
+    define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
+    define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
+    define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
+    define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
+    define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
     // And...
     define('A__ALL', 0xFFFFFF);
     // And...
     define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
     define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
 
-    global $ESCAPE_HTML_OUTPUT; // Used to track what is already escaped in kid-gloves modes
+    global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
+    $KNOWN_TRUE_HTML = array();
 }
 
 /**
@@ -169,7 +175,7 @@ function is_suexec_like()
 
     static $answer = null;
     if ($answer === null) {
-        $answer = (((function_exists('posix_getuid')) && (strpos(@ini_get('disable_functions'), 'posix_getuid') === false) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
+        $answer = (((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (is_integer(@posix_getuid())) && (@posix_getuid() == @fileowner(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))))
                    || (is_writable_wrap(get_file_base() . '/' . (running_script('install') ? 'install.php' : 'index.php'))));
     }
     return $answer;
@@ -179,10 +185,14 @@ function is_suexec_like()
  * Ensure that the specified file/folder is writeable for the FTP user (so that it can be deleted by the system), and should be called whenever a file is uploaded/created, or a folder is made. We call this function assuming we are giving world permissions.
  *
  * @param  PATH $path The full pathname to the file/directory
- * @param  integer $perms The permissions to make (not the permissions are reduced if the function finds that the file is owned by the web user [doesn't need world permissions then])
+ * @param  ?integer $perms The permissions to make (not the permissions are reduced if the function finds that the file is owned by the web user [doesn't need world permissions then]) (null: default for file/dir)
  */
-function fix_permissions($path, $perms = 0666)
+function fix_permissions($path, $perms = null)
 {
+    if (is_null($perms)) {
+        $perms = is_dir($path) ? 0777 : 0666;
+    }
+
     // If the file user is different to the FTP user, we need to make it world writeable
     if ((!is_suexec_like()) || (cms_srv('REQUEST_METHOD') == '')) {
         @chmod($path, $perms);
@@ -207,15 +217,15 @@ function fix_permissions($path, $perms = 0666)
 }
 
 /**
- * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning NULL, on error.
+ * Return the file in the URL by downloading it over HTTP. If a byte limit is given, it will only download that many bytes. It outputs warnings, returning null, on error.
  *
  * @param  URLPATH $url The URL to download
  * @param  ?integer $byte_limit The number of bytes to download. This is not a guarantee, it is a minimum (null: all bytes)
  * @range  1 max
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
- * @param  boolean $no_redirect Whether to block redirects (returns NULL when found)
+ * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is NULL, a GET request is used (null: none)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)
@@ -247,6 +257,8 @@ function http_download_file($url, $byte_limit = null, $trigger_error = true, $no
  *
  * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
  * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ *
+ * @ignore
  */
 function _load_blank_output_state($just_tempcode = false, $true_blank = false)
 {
@@ -258,8 +270,8 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
         global $HTTP_STATUS_CODE;
         $HTTP_STATUS_CODE = '200';
 
-        global $META_DATA;
-        $META_DATA = array();
+        global $METADATA;
+        $METADATA = array();
 
         global $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW, $LATE_ATTACHED_MESSAGES;
         $ATTACHED_MESSAGES = null;
@@ -373,7 +385,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
         $keep = array();
     }
 
-    $mergeable_arrays = array('META_DATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
+    $mergeable_arrays = array('METADATA' => true, 'JAVASCRIPTS' => true, 'CSSS' => true, 'TEMPCODE_SETGET' => true, 'CYCLES' => true);
     $mergeable_tempcode = array('EXTRA_HEAD' => true, 'EXTRA_FOOT' => true, 'JAVASCRIPT' => true);
 
     $old_state = array_pop($OUTPUT_STATE_STACK);
@@ -385,7 +397,7 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
                 $merge_array = (($merge_current) && (is_array($val)) && (array_key_exists($var, $mergeable_arrays)));
                 $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (array_key_exists($var, $mergeable_tempcode)));
                 $mergeable = $merge_array || $merge_tempcode;
-                if ((!in_array($var, $keep)) || ($mergeable)) {
+                if (($keep === array()) || (!in_array($var, $keep)) || ($mergeable)) {
                     if ($merge_array) {
                         if ($GLOBALS[$var] === null) {
                             $GLOBALS[$var] = array();
@@ -413,9 +425,10 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
  * @param  string $type The type of special message
  * @set    inform warn ""
  * @param  boolean $include_header_and_footer Whether to include the header/footer/panels
+ * @param  boolean $show_border Whether to include a full screen rendering layout (will be overridable by 'show_border' GET parameter if present or if main page view)
  * @return Tempcode Standalone page
  */
-function globalise($middle, $message = null, $type = '', $include_header_and_footer = false)
+function globalise($middle, $message = null, $type = '', $include_header_and_footer = false, $show_border = false)
 {
     if (!$include_header_and_footer) { // FUDGE
         $old = mixed();
@@ -432,7 +445,8 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
 
     restore_output_state(true); // Here we reset some Tempcode environmental stuff, because template compilation or preprocessing may have dirtied things
 
-    if ((get_param_integer('show_border', 0) == 0) && !running_script('download_gateway') && !running_script('dload') && !running_script('attachment') && !running_script('index') && !running_script('approve_ip')) {
+    $show_border = (get_param_integer('show_border', $show_border ? 1 : 0) == 1);
+    if (!$show_border && !running_script('index')) {
         $global = do_template('STANDALONE_HTML_WRAP', array(
             '_GUID' => 'fe818a6fb0870f0b211e8e52adb23f26',
             'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -453,8 +467,7 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         if (headers_sent()) {
-            $global = do_template('STANDALONE_HTML_WRAP', array(
-                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+            $global = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd579b62182a0f815e0ead1daa5904793', 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
                 'FRAME' => false,
                 'TARGET' => '_self',
                 'CONTENT' => $middle,
@@ -497,16 +510,159 @@ function attach_to_screen_footer($data)
 }
 
 /**
- * Add some meta-data for the request.
+ * Add some metadata for the request.
  *
  * @sets_output_state
  *
- * @param  array $meta_data Extra meta-data
+ * @param  array $metadata Extra metadata
+ * @param  ?array $row Content row to automatically grab data from, if we also have $content_type (null: unknown)
+ * @param  ?ID_TEXT $content_type Content type (null: unknown)
+ * @param  ?ID_TEXT $content_id Content ID (null: unknown)
  */
-function set_extra_request_metadata($meta_data)
+function set_extra_request_metadata($metadata, $row = null, $content_type = null, $content_id = null)
 {
-    global $META_DATA;
-    $META_DATA += $meta_data;
+    global $METADATA;
+    $METADATA += $metadata;
+
+    if ($content_type !== null) {
+        require_code('content');
+        $cma_ob = get_content_object($content_type);
+        if ($cma_ob !== null) {
+            $cma_info = $cma_ob->info();
+            if ($cma_ob === null) {
+                $content_type = null;
+            }
+        } else {
+            $content_type = null;
+        }
+    }
+
+    if ($row !== null && $content_type !== null) {
+        // Add in generic data...
+
+        $cma_mappings = array(
+            'created' => 'add_time_field',
+            'creator' => isset($cma_info['author_field']) ? 'author_field' : 'submitter_field',
+            'publisher' => 'submitter_field',
+            'modified' => 'edit_time_field',
+            'title' => 'title_field',
+            'description' => 'description_field',
+            'views' => 'views_field',
+            'validated' => 'validated_field',
+            'type' => 'content_type_universal_label',
+        );
+
+        foreach ($cma_mappings as $meta_type => $cma_field) {
+            if (!isset($METADATA[$meta_type])) {
+                if ($cma_field == 'content_type_universal_label' || isset($row[$cma_info[$cma_field]])) {
+                    switch ($meta_type) {
+                        case 'type':
+                            $val_raw = $cma_info[$cma_field];
+                            $val = $val_raw;
+                            break;
+
+                        case 'created':
+                        case 'modified':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = date('Y-m-d', $row[$cma_info[$cma_field]]);
+                            break;
+
+                        case 'publisher':
+                        case 'creator':
+                            if ($cma_field == 'author_field') {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                                $val = $val_raw;
+                            } else {
+                                $val_raw = strval($row[$cma_info[$cma_field]]);
+                                $val = $GLOBALS['FORUM_DRIVER']->get_username($row[$cma_info[$cma_field]]);
+                            }
+                            break;
+
+                        case 'title':
+                            if ($cma_info['title_field_dereference']) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
+                            if ((!isset($cma_info['title_field_supports_comcode'])) || (!$cma_info['title_field_supports_comcode'])) {
+                                $val = comcode_escape($val_raw);
+                            } else {
+                                $val = $val_raw;
+                            }
+                            break;
+
+                        case 'description':
+                            if (is_integer($row[$cma_info[$cma_field]])) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
+                            $val = $val_raw;
+                            break;
+
+                        case 'views':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = $val_raw;
+                            break;
+
+                        case 'validated':
+                            $val_raw = strval($row[$cma_info[$cma_field]]);
+                            $val = $val_raw;
+                            break;
+
+                        default:
+                            $val_raw = $row[$cma_info[$cma_field]];
+                            $val = $val_raw;
+                            break;
+                    }
+
+                    if ($val !== null) {
+                        $METADATA[$meta_type] = $val;
+                        $METADATA[$meta_type . '_RAW'] = $val_raw;
+                    }
+                }
+            }
+        }
+
+        // Add in image...
+
+        $image_url = '';
+        if ($cma_info['thumb_field'] !== null) {
+            if ((strpos($cma_info['thumb_field'], 'CALL:') !== false) && ($content_id !== null)) {
+                $image_url = call_user_func(trim(substr($cma_info['thumb_field'], 5)), array('id' => $content_id), false);
+            } else {
+                $image_url = $row[$cma_info['thumb_field']];
+            }
+            if ($image_url != '') {
+                if ($cma_info['thumb_field_is_theme_image']) {
+                    $image_url = find_theme_image($image_url, true);
+                } else {
+                    if (url_is_local($image_url)) {
+                        $image_url = get_custom_base_url() . '/' . $image_url;
+                    }
+                }
+            }
+        }
+        if ((empty($image_url)) && ($cma_info['alternate_icon_theme_image'] != '')) {
+            $METADATA['image'] = find_theme_image($cma_info['alternate_icon_theme_image'], true);
+        }
+        if (!empty($image_url)) {
+            $METADATA['image'] = $image_url;
+        }
+
+        // Add all $cma_info
+        $METADATA += $cma_info;
+        unset($METADATA['connection']);
+        $METADATA['content_type_label_trans'] = do_lang($cma_info['content_type_label']);
+    }
+
+    if ($content_type !== null) {
+        $METADATA['content_type'] = $content_type;
+    }
+
+    if ($content_id !== null) {
+        $METADATA['content_id'] = $content_id;
+    }
 }
 
 /**
@@ -606,8 +762,8 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
                 if ((substr($possible_theme, 0, 1) != '.') && ($possible_theme != 'default') && ($possible_theme != $theme) && ($possible_theme != 'map.ini') && ($possible_theme != 'index.html')) {
-                    $fullpath = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
-                    if (is_file($fullpath)) {
+                    $full_path = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
+                    if (is_file($full_path)) {
                         $place = array($possible_theme, '/' . $directory . '_custom/', $suffix);
                         break;
                     }
@@ -616,7 +772,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             closedir($dh);
         }
     } else {
-        $place = array('default', '/' . $directory . '/');
+        $place = array('default', '/' . $directory . '/', $suffix);
     }
 
     $tp_cache[$sz] = $place;
@@ -710,7 +866,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
  */
 function cms_mb_strlen($in, $force = false)
 {
-    if (!$force && strtolower(get_charset()) != 'utf-8') {
+    if (!$force && get_charset() != 'utf-8') {
         return strlen($in);
     }
     if (function_exists('mb_strlen')) {
@@ -737,7 +893,7 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
         $amount = cms_mb_strlen($in, $force) - $from;
     }
 
-    if ((!$force) && (strtolower(get_charset()) != 'utf-8')) {
+    if ((!$force) && (get_charset() != 'utf-8')) {
         return substr($in, $from, $amount);
     }
 
@@ -770,7 +926,7 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
  */
 function cms_mb_ucwords($in)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return ucwords($in);
     }
 
@@ -789,7 +945,7 @@ function cms_mb_ucwords($in)
  */
 function cms_mb_strtolower($in)
 {
-    if (strtolower(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtolower($in);
     }
 
@@ -854,10 +1010,10 @@ function is_writable_wrap($path)
 
     if (is_dir($path)) {
         /*if (false) { // ideal, but too dangerous as sometimes you can write files but not delete again
-            $test=@fopen($path.'/cms.delete.me',GOOGLE_APPENGINE?'wb':'wt');
-            if ($test!==false) {
+            $test = @fopen($path . '/cms.delete.me', GOOGLE_APPENGINE ? 'wb' : 'wt');
+            if ($test !== false) {
                 fclose($test);
-                unlink($path.'/cms.delete.me');
+                unlink($path . '/cms.delete.me');
                 return true;
             }
             return false;
@@ -986,7 +1142,7 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
  */
 function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 {
-    $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+    $locale = localeconv();
     if ($locale['thousands_sep'] == '') {
         $locale['thousands_sep'] = ',';
     }
@@ -1002,7 +1158,7 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
             $str = rtrim($str, '.');
         }
     }
-    if ($only_needed_decs) {
+    if ($only_needed_decs && $decs_wanted != 0) {
         $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
     }
     return $str;
@@ -1018,7 +1174,7 @@ function integer_format($val)
 {
     static $locale = null;
     if ($locale === null) {
-        $locale = function_exists('localeconv') ? localeconv() : array('decimal_point' => '.', 'thousands_sep' => ',');
+        $locale = localeconv();
         if ($locale['thousands_sep'] == '') {
             $locale['thousands_sep'] = ',';
         }
@@ -1045,6 +1201,7 @@ function sort_maps_by__strlen($rows, $sort_key)
  * @param  string $a The first string to compare
  * @param  string $b The second string to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _strlen_sort($a, $b)
 {
@@ -1065,16 +1222,30 @@ function _strlen_sort($a, $b)
 }
 
 /**
- * Sort a list of maps by a particular key ID in the maps.
+ * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices, but does preserve associative key indices.
  *
  * @param  array $rows List of maps to sort
  * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it).
+ * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
  */
-function sort_maps_by(&$rows, $sort_keys)
+function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
 {
+    if ($rows == array()) {
+        return;
+    }
+
     global $M_SORT_KEY;
     $M_SORT_KEY = $sort_keys;
-    merge_sort($rows, '_multi_sort');
+    if ($preserve_order_if_possible) {
+        merge_sort($rows, '_multi_sort');
+    } else {
+        $first_key = key($rows);
+        if (is_integer($first_key)) {
+            usort($rows, '_multi_sort');
+        } else {
+            uasort($rows, '_multi_sort');
+        }
+    }
 }
 
 /**
@@ -1164,6 +1335,7 @@ function merge_sort(&$array, $cmp_function = 'strcmp')
  * @param  array $a The first to compare
  * @param  array $b The second to compare
  * @return integer The comparison result (0 for equal, -1 for less, 1 for more)
+ * @ignore
  */
 function _multi_sort($a, $b)
 {
@@ -1239,7 +1411,7 @@ function cns_require_all_forum_stuff()
  * @param  string $prefix The prefix of the temporary file name.
  * @return ~string The name of the temporary file (false: error).
  */
-function cms_tempnam($prefix)
+function cms_tempnam($prefix = 'cms')
 {
     require_code('files2');
     return _cms_tempnam($prefix);
@@ -1337,6 +1509,10 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
+        if (!running_script('index') && !running_script('iframe')) {
+            return false;
+        }
+
         $current_zone_name = get_zone_name();
     }
     if ($current_page_name === null) {
@@ -1374,11 +1550,21 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 } else {
                     $default = '';
                 }
-                if (
-                    (count($subparts) != 2) ||
-                    (($current_params !== null) && ((isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : $default) != $subparts[1])) ||
-                    (($current_params === null) && (call_user_func_array($req_func, array($subparts[0], $default)) != $subparts[1]))
-                ) {
+                if (count($subparts) != 2) {
+                    $bad = true;
+                    continue;
+                }
+                $env_val = ($current_params === null) ? call_user_func_array($req_func, array($subparts[0], null)) : (isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : null);
+                if ($subparts[1] == '_WILD') {
+                    if ($env_val !== null) {
+                        $subparts[1] = $env_val;
+                    } // null won't match to a wildcard
+                } else {
+                    if ($env_val === null) {
+                        $env_val = $default;
+                    }
+                }
+                if ($env_val !== $subparts[1]) {
                     $bad = true;
                     continue;
                 }
@@ -1392,7 +1578,22 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
 }
 
 /**
- * Get the name of the current page
+ * Get the name of the page in the URL or active script.
+ *
+ * @return ID_TEXT The current page/script name
+ */
+function get_page_or_script_name()
+{
+    if (running_script('index') || running_script('iframe')) {
+        return get_page_name();
+    }
+    return current_script();
+}
+
+/**
+ * Get the name of the page in the URL (by convention: the current page).
+ * This works on the basis of the 'page' parameter and does not require index.php be the active script.
+ * It will do dash to underscore substitution as required.
  *
  * @return ID_TEXT The current page name
  */
@@ -1407,7 +1608,7 @@ function get_page_name()
         return 'unknown';
     }
     $GETTING_PAGE_NAME = true;
-    $page = get_param_string('page', '');
+    $page = get_param_string('page', '', true);
     if (strlen($page) > 80) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -1423,6 +1624,7 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
+    $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
@@ -1431,7 +1633,35 @@ function get_page_name()
 }
 
 /**
- * Take a list of maps, and make one of the values of each array the index of a map to the map
+ * Fix a page name that may have been given dashes for SEO reasons.
+ *
+ * @param  string $zone Zone.
+ * @param  string $page Page.
+ * @return string The fixed page name.
+ */
+function fix_page_name_dashing($zone, $page)
+{
+    // Fix page-name dashes if needed
+    if (strpos($page, '-') !== false) {
+        require_code('site');
+        $test = _request_page($page, $zone);
+        if ($test === false) {
+            $_page = str_replace('-', '_', $page);
+            $test = _request_page($_page, $zone);
+            if ($test !== false) {
+                $page = $_page;
+            }
+        }
+    }
+    return $page;
+}
+
+/**
+ * Take a list of maps, and make one of the values of each array the index of a map to the map.
+ *
+ * list_to_map is very useful for handling query results.
+ * Let's imagine you get the result of SELECT id,title FROM sometable.
+ * list_to_map turns the array of rows into a map between the id key and each row.
  *
  * @param  string $map_value The key key of our maps that reside in our map
  * @param  array $list The list of maps
@@ -1477,7 +1707,7 @@ function collapse_2d_complexity($key, $value, $list)
 /**
  * Take a list of maps of just one element, and make it into a single map
  *
- * @param  string $key The key of our maps that reside in our map
+ * @param  ?string $key The key of our maps that reside in our map (null: first key)
  * @param  array $list The map of maps
  * @return array The collapsed map
  */
@@ -1485,7 +1715,11 @@ function collapse_1d_complexity($key, $list)
 {
     $new_array = array();
     foreach ($list as $map) {
-        $new_array[] = $map[$key];
+        if ($key === null) {
+            $new_array[] = array_shift($map);
+        } else {
+            $new_array[] = $map[$key];
+        }
     }
 
     return $new_array;
@@ -1578,7 +1812,7 @@ function is_valid_ip($ip)
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
  * @set    1 2 3 4
- * @param  ?IP $ip IP address to use, normally left NULL (null: current user's)
+ * @param  ?IP $ip IP address to use, normally left null (null: current user's)
  * @return IP The users IP address (blank: could not find a valid one)
  */
 function get_ip_address($amount = 4, $ip = null)
@@ -1592,15 +1826,20 @@ function get_ip_address($amount = 4, $ip = null)
     }
 
     if ($ip === null) {
-        /*$fw=cms_srv('HTTP_X_FORWARDED_FOR');  Presents too many security and maintenance problems. Can easily be faked, or changed.
-        if (cms_srv('HTTP_CLIENT_IP')!='') $fw=cms_srv('HTTP_CLIENT_IP');
-        if (($fw!='') && ($fw!='127.0.0.1') && (substr($fw,0,8)!='192.168.') && (substr($fw,0,3)!='10.') && (is_valid_ip($fw)) && ($fw!=cms_srv('SERVER_ADDR'))) $ip=$fw;
-        else */
+        /* Presents too many security and maintenance problems. Can easily be faked, or changed.
+        $fw = cms_srv('HTTP_X_FORWARDED_FOR');
+        if (cms_srv('HTTP_CLIENT_IP') != '') {
+            $fw = cms_srv('HTTP_CLIENT_IP');
+        }
+        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != cms_srv('SERVER_ADDR'))) {
+            $ip = $fw;
+        } else
+        */
         $ip = cms_srv('REMOTE_ADDR');
     }
 
     global $SITE_INFO;
-    if (($amount == 3) && (array_key_exists('full_ips', $SITE_INFO)) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
+    if (($amount == 3) && (!empty($SITE_INFO['full_ips'])) && ($SITE_INFO['full_ips'] == '1')) { // Extra configurable security
         $amount = 4;
     }
 
@@ -1794,7 +2033,7 @@ function compare_ip_address_ip6($wild, $full_parts)
  *
  * @param  string $ip The IP address to check for banning (potentially encoded with *'s)
  * @param  boolean $force_db Force check via database
- * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return NULL, showing we need to do an external check). Only works with $force_db.
+ * @param  boolean $handle_uncertainties Handle uncertainities (used for the external bans - if true, we may return null, showing we need to do an external check). Only works with $force_db.
  * @return ?boolean Whether the IP address is banned (null: unknown)
  */
 function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
@@ -1836,7 +2075,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
         if ($ip_bans === null) {
             $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), null, '', null, null, true);
-            if (!is_array($ip_bans)) {
+            if (!is_array($ip_bans)) { // LEGACY
                 $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), null, '', null, null, true);
             }
             if ($ip_bans !== null) {
@@ -1868,7 +2107,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
-                    if (preg_match('#(\s|,|^)gethostbyname(\s|$|,)#i', @ini_get('disable_functions')) == 0) {
+                    if (!php_function_allowed('gethostbyname')) {
                         $self_ip = gethostbyname($self_host);
                     } else {
                         $self_ip = '';
@@ -1912,14 +2151,15 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
 /**
  * Log an action
  *
- * @param  ID_TEXT $type The type of activity just carried out (a lang string)
- * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. id) (null: none)
+ * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
+ * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. D) (null: none)
  * @param  ?SHORT_TEXT $b A secondary (perhaps, human readable) parameter of the activity (e.g. caption) (null: none)
+ * @return ?AUTO_LINK Log ID (null: did not save a log)
  */
 function log_it($type, $a = null, $b = null)
 {
     require_code('global4');
-    _log_it($type, $a, $b);
+    return _log_it($type, $a, $b);
 }
 
 /**
@@ -1932,7 +2172,7 @@ function php_addslashes($in)
 {
     global $PHP_REP_FROM, $PHP_REP_TO;
     return str_replace($PHP_REP_FROM, $PHP_REP_TO, $in);
-    //return str_replace("\n",'\n',str_replace('$','\$',str_replace('\\\'','\'',addslashes($in))));
+    //return str_replace("\n", '\n', str_replace('$', '\$', str_replace('\\\'', '\'', addslashes($in))));
 }
 
 /**
@@ -2082,15 +2322,13 @@ function get_num_users_peak()
  */
 function escape_html($string)
 {
-    //   if ($string==='') return $string; // Optimisation, but doesn't work well
+    //if ($string === '') return $string; // Optimisation, but doesn't work well
     if (isset($string->codename)/*faster than is_object*/) {
         return $string;
     }
 
-    /*if ($GLOBALS['XSS_DETECT'])   Useful for debugging
-    {
-        if (ocp_is_escaped($string))
-        {
+    /*if ($GLOBALS['XSS_DETECT']) {  Useful for debugging
+        if (ocp_is_escaped($string)) {
             @var_dump(debug_backtrace());
             @exit('String double-escaped');
         }
@@ -2098,9 +2336,9 @@ function escape_html($string)
 
     global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = htmlspecialchars($string, ENT_QUOTES, get_charset());
+    $ret = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
 
-    if (!$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
+    if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
     }
 
@@ -2115,10 +2353,11 @@ function escape_html($string)
  * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+)
  *
  * @param  string $code The property code
- * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot
+ * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes
+ * @param  ?string $comcode Comcode that might be WYSIWYG edited; used to determine whether WYSIWYG may load when we'd prefer it to not do so (null: none)
  * @return boolean Whether there is a match
  */
-function browser_matches($code)
+function browser_matches($code, $comcode = null)
 {
     global $BROWSER_MATCHES_CACHE;
     if (isset($BROWSER_MATCHES_CACHE[$code])) {
@@ -2137,6 +2376,9 @@ function browser_matches($code)
     $is_ie9_plus = $is_ie && !$is_ie8;
 
     switch ($code) {
+        case 'simplified_attachments_ui':
+            $BROWSER_MATCHES_CACHE[$code] = !$is_ie8 && !$is_ie9 && get_option('simplified_attachments_ui') == '1' && get_option('complex_uploader') == '1' && has_js();
+            return $BROWSER_MATCHES_CACHE[$code];
         case 'itunes':
             $BROWSER_MATCHES_CACHE[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);
             return $BROWSER_MATCHES_CACHE[$code];
@@ -2150,7 +2392,7 @@ function browser_matches($code)
             $BROWSER_MATCHES_CACHE[$code] = strpos($browser, 'iphone') !== false || strpos($browser, 'ipad') !== false;
             return $BROWSER_MATCHES_CACHE[$code];
         case 'wysiwyg':
-            if ((get_option('wysiwyg') == '0') || (is_mobile())) {
+            if ((get_option('wysiwyg') == '0') || ((is_mobile()) && ((is_null($comcode)) || (strpos($comcode, 'html]') === false)))) {
                 $BROWSER_MATCHES_CACHE[$code] = false;
                 return false;
             }
@@ -2224,8 +2466,10 @@ function is_mobile($user_agent = null, $truth = false)
     }
 
     if ((!function_exists('get_option')) || (get_option('mobile_support') == '0')) {
-        $IS_MOBILE_CACHE = false;
-        $IS_MOBILE_TRUTH_CACHE = false;
+        if (function_exists('get_option')) {
+            $IS_MOBILE_CACHE = false;
+            $IS_MOBILE_TRUTH_CACHE = false;
+        }
         return false;
     }
 
@@ -2239,9 +2483,18 @@ function is_mobile($user_agent = null, $truth = false)
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
-            if ((!empty($details['mobile_pages'])) && (preg_match('#(^|,)\s*' . preg_quote(get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0) && (preg_match('#(^|,)\s*' . preg_quote(get_zone_name() . ':' . get_page_name(), '#') . '\s*(,|$)#', $details['mobile_pages']) == 0)) {
-                $IS_MOBILE_CACHE = false;
-                return false;
+            if (!empty($details['mobile_pages'])) {
+                if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
+                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                } else {
+                    if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
+                        $IS_MOBILE_CACHE = false;
+                        return false;
+                    }
+                }
             }
         }
     }
@@ -2249,11 +2502,15 @@ function is_mobile($user_agent = null, $truth = false)
     if (!$user_agent_given) {
         $val = get_param_integer('keep_mobile', null);
         if ($val !== null) {
+            $result = ($val == 1);
             if (isset($GLOBALS['FORUM_DRIVER'])) {
-                $IS_MOBILE_CACHE = ($val == 1);
+                if ($truth) {
+                    $IS_MOBILE_TRUTH_CACHE = $result;
+                } else {
+                    $IS_MOBILE_CACHE = $result;
+                }
             }
-            $IS_MOBILE_TRUTH_CACHE = $IS_MOBILE_CACHE;
-            return $IS_MOBILE_CACHE;
+            return $result;
         }
     }
 
@@ -2302,15 +2559,18 @@ function is_mobile($user_agent = null, $truth = false)
     $result = (preg_match('/(' . implode('|', $browsers) . ')/i', $user_agent) != 0) && (preg_match('/(' . implode('|', $exceptions) . ')/i', $user_agent) == 0);
     if (!$user_agent_given) {
         if (isset($GLOBALS['FORUM_DRIVER'])) {
-            $IS_MOBILE_CACHE = $result;
-            $IS_MOBILE_CACHE_TRUTH_CACHE = $IS_MOBILE_CACHE;
+            if ($truth) {
+                $IS_MOBILE_TRUTH_CACHE = $result;
+            } else {
+                $IS_MOBILE_CACHE = $result;
+            }
         }
     }
     return $result;
 }
 
 /**
- * Get the name of a webcrawler bot, or NULL if no bot detected
+ * Get the name of a webcrawler bot, or null if no bot detected
  *
  * @return ?string Webcrawling bot name (null: not a bot)
  */
@@ -2393,9 +2653,9 @@ function has_cookies() // Will fail on users first visit, but then will catch on
         return $HAS_COOKIES_CACHE;
     }
 
-    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies',0)==0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
+    /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0) && (!running_script('commandr')))   We know this works by now, was tested for years. Causes annoyance when developing
     {
-        $_COOKIE=array();
+        $_COOKIE = array();
         return false;
     }*/
 
@@ -2468,12 +2728,12 @@ function wordfilter_text($text)
         return $text;
     }
 
-    require_code('word_filter');
-    return check_word_filter($text, null, true);
+    require_code('wordfilter');
+    return check_wordfilter($text, null, true);
 }
 
 /**
- * Assign this to explicitly declare that a variable may be of mixed type, and initialise to NULL.
+ * Assign this to explicitly declare that a variable may be of mixed type, and initialise to null.
  *
  * @return ?mixed Of mixed type (null: default)
  */
@@ -2632,7 +2892,7 @@ function get_zone_default_page($zone_name)
                 }
             }
             if ($_zone_default_page === null) {
-                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name'=>$zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
+                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
             $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = 'start';
             $ZONE_DEFAULT_PAGES_CACHE['collaboration'] = 'start'; // Set this in case collaboration zone removed but still referenced. Performance tweak!
@@ -2677,6 +2937,7 @@ function titleify($boring)
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('Cpfs', 'CPFs', $ret);
+    $ret = str_replace('Emails', 'E-mails', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);
 
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($boring)) {
@@ -2768,8 +3029,8 @@ function strip_html($in)
     }
 
     $search = array(
-        '#<script[^>]*?' . '>.*?</script>#si',    // Strip out JavaScript
-        '#<style[^>]*?' . '>.*?</style>#siU',        // Strip style tags properly
+        '#<script[^>]*?' . '>.*?</script>#si',  // Strip out JavaScript
+        '#<style[^>]*?' . '>.*?</style>#siU',   // Strip style tags properly
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $in = preg_replace($search, '', $in);
@@ -2795,12 +3056,16 @@ function get_brand_base_url()
 /**
  * Get a URL to a Composr tutorial.
  *
- * @param  ID_TEXT $tutorial Name of a tutorial
+ * @param  ?ID_TEXT $tutorial Name of a tutorial (null: don't include the page part)
  * @return URLPATH URL to a tutorial
  */
 function get_tutorial_url($tutorial)
 {
-    return get_brand_page_url(array('page' => $tutorial), 'docs' . strval(cms_version()));
+    $ret = get_brand_page_url(array('page' => is_null($tutorial) ? 'abcdef' : $tutorial), 'docs' . strval(cms_version()));
+    if (is_null($tutorial)) {
+        $ret = str_replace('abcdef.htm', '', $ret);
+    }
+    return $ret;
 }
 
 /**
@@ -2812,8 +3077,8 @@ function get_tutorial_url($tutorial)
  */
 function get_brand_page_url($params, $zone)
 {
-    //$value=get_brand_base_url().'/'.$zone.'/'.urlencode($params['page']).'.htm';  Actually it is better to assume the brand site uses a Composr URL scheme like this site...
-    return str_replace(get_base_url(), get_brand_base_url(), static_evaluate_tempcode(build_url($params, $zone, null, false, false, true)));
+    // Assumes brand site supports .htm URLs, which it should
+    return get_brand_base_url() . '/' . $zone . (($zone == '') ? '' : '/') . urlencode(str_replace('_', '-', $params['page'])) . '.htm';
 }
 
 /**
@@ -2897,7 +3162,7 @@ function get_mass_import_mode()
  */
 function escapeshellarg_wrap($arg)
 {
-    if ((function_exists('escapeshellarg')) && (strpos(@ini_get('disable_functions'), 'escapeshellarg') === false)) {
+    if (php_function_allowed('escapeshellarg')) {
         return escapeshellarg($arg);
     }
     return "'" . addslashes(str_replace(array(chr(0), "'"), array('', "'\"'\"'"), $arg)) . "'";
@@ -3023,4 +3288,13 @@ function cms_profile_end_for($identifier, $specifics = null)
 {
     require_code('profiler');
     _cms_profile_end_for($identifier, $specifics);
+}
+
+/**
+ * Put out some benign HTTP output.
+ * FastCGI seems to have a weird issue with 'slowish spiky process not continuing with output' - this works around it. Not ideal as would break headers in any subsequent code.
+ */
+function send_http_output_ping()
+{
+    echo ' ';
 }

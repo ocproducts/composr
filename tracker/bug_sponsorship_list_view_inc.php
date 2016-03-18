@@ -99,7 +99,6 @@
 		} else {
 			$alternate_currencies_links .= '<a href="http://www.xe.com/ucc/convert/?Amount='.strval($cash_needed).'&amp;From='.$cms_sc_main_currency.'&amp;To='.strtoupper($cms_sc_alternate_currencies).'" target="_blank">&nbsp;'.strtoupper($cms_sc_alternate_currencies).' etc</a>';
 		}
-	
 	} else {
 		switch ($cms_sc_main_currency){
 			case 'EUR':
@@ -122,24 +121,34 @@
 	}
 
 	if ( $t_can_sponsor ) {
-
-		$result=db_query_bound('SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f LEFT JOIN '.$cms_sc_db_prefix.'translate t ON f.cf_name=t.id WHERE text_original=\''.$cms_sc_custom_profile_field.'\'',array());
-		$field_num = db_fetch_array( $result );
-		$result=db_query_bound('SELECT field_'.strval($field_num['id']).' AS result FROM '.$cms_sc_db_prefix.'f_member_custom_fields WHERE mf_member_id='.auth_get_current_user_id(),array());
-		$num_credits = db_fetch_array( $result );
+		// Find member's credits
+		if ($cms_sc_multi_lang_content)
+		{
+			$sql='SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f JOIN '.$cms_sc_db_prefix.'translate t ON t.id=f.cf_name WHERE text_original=\''.$cms_sc_custom_profile_field.'\'';
+		} else
+		{
+			$sql='SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f WHERE f.cf_name=\''.$cms_sc_custom_profile_field.'\'';
+		}
+		$result=db_query_bound($sql,array());
+		$field_num=db_fetch_array($result);
+		$sql='SELECT field_'.strval($field_num['id']).' AS result FROM '.$cms_sc_db_prefix.'f_member_custom_fields WHERE mf_member_id='.auth_get_current_user_id();
+		$result=db_query_bound($sql,array());
+		$num_credits=db_fetch_array($result);
 		$credits_available=isset($num_credits['result'])?$num_credits['result']:0;
 		if ($credits_available=='') $credits_available=0;
 
+		// Find how much the user can sponsor
 		$result=db_query_bound('SELECT SUM(amount) AS result FROM mantis_sponsorship_table s JOIN mantis_bug_table b ON s.bug_id=b.id WHERE status<80 AND user_id='.auth_get_current_user_id(),array());
-		$amount_sponsored = db_fetch_array( $result );
+		$amount_sponsored=db_fetch_array($result);
 		$total_user_sponsored=isset($amount_sponsored['result'])?$amount_sponsored['result']:0;
 		if ($total_user_sponsored=='') $total_user_sponsored=0;
 		$credits_available_real=$credits_available;
 		$credits_sponsored=intval(round($total_user_sponsored/$f_price_per));
 		$credits_available-=$credits_sponsored;
 
+		// find the sponsorship so far
 		$result=db_query_bound('SELECT SUM(amount) AS result FROM mantis_sponsorship_table WHERE bug_id='.$f_bug_id,array());
-		$amount_sponsored = db_fetch_array( $result );
+		$amount_sponsored=db_fetch_array($result);
 		$t_total_sponsorship=isset($amount_sponsored['result'])?$amount_sponsored['result']:0;
 		if ($t_total_sponsorship=='') $t_total_sponsorship=0;
 
@@ -153,7 +162,7 @@
 				?>
 				<p><?php echo sprintf(lang_get('cms_sponsor_first_message'), number_format($f_hours), number_format($f_hours_by_credits), $cash_needed_string, $alternate_currencies_links, $cms_sc_business_name, $cms_sc_product_name);?></p>
 				<?php } ?>
-				<p><?php echo sprintf(lang_get('cms_sponsor_second_message'), $cms_sc_product_name); ?></p>
+				<p><?php echo sprintf(lang_get('cms_sponsor_second_message'), $cms_sc_site_url . '/contact/sponsor.htm'); ?></p>
 
 				<?php echo form_security_field( 'bug_set_sponsorship' ) ?>
 				<input type="hidden" name="bug_id" value="<?php echo $f_bug_id ?>" size="4" />
@@ -211,21 +220,31 @@
 					if ( access_has_bug_level( config_get( 'handle_sponsored_bugs_threshold' ), $f_bug_id ) ) {
 						echo ' ' . get_enum_element( 'sponsorship', $t_sponsorship->paid );
 					}
-					
-					$result=db_query_bound('SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f LEFT JOIN '.$cms_sc_db_prefix.'translate t ON f.cf_name=t.id WHERE text_original=\''.$cms_sc_custom_profile_field.'\'',array());
-					$field_num = db_fetch_array( $result );
-					$result=db_query_bound('SELECT field_'.strval($field_num['id']).' AS result FROM '.$cms_sc_db_prefix.'f_member_custom_fields WHERE mf_member_id='.$t_sponsorship->user_id,array());
-					$num_credits = db_fetch_array( $result );
-					if ($num_credits['result']*$cms_sc_price_per_credit >=$t_sponsorship->amount)
+					// Find how many credits they currently have
+					if ($cms_sc_multi_lang_content)
+					{
+						$sql='SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f JOIN '.$cms_sc_db_prefix.'translate t ON t.id=f.cf_name WHERE text_original=\''.$cms_sc_custom_profile_field.'\'';
+					} else
+					{
+						$sql='SELECT f.id FROM '.$cms_sc_db_prefix.'f_custom_fields f WHERE f.cf_name=\''.$cms_sc_custom_profile_field.'\'';
+					}
+					$result=db_query_bound($sql,array());
+					$field_num=db_fetch_array($result);
+					$sql='SELECT field_'.strval($field_num['id']).' AS result FROM '.$cms_sc_db_prefix.'f_member_custom_fields WHERE mf_member_id='.$t_sponsorship->user_id;
+					$result=db_query_bound($sql,array());
+					$num_credits=db_fetch_array($result);
+
+					// Enough or not?
+					if ($num_credits['result']*$cms_sc_price_per_credit>=$t_sponsorship->amount)
 					{
 						echo lang_get('backed_by_existing_support_credits');
-						$t_total_sponsorship_confirmed += $t_sponsorship->amount;
+						$t_total_sponsorship_confirmed+=$t_sponsorship->amount;
 					} else
 					{
 						echo lang_get('not_backed_by_existing_support_credits');
 						if ($t_sponsorship->user_id==auth_get_current_user_id())
 						{
-							echo sprintf(lang_get( 'buy_some' ), $cms_sc_commercial_support_url);
+							echo sprintf(lang_get('buy_some'),$cms_sc_commercial_support_url);
 						}
 					}
 				}

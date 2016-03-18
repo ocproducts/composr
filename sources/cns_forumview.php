@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -56,8 +56,8 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
         if ((array_key_exists('question', $details)) && (is_null(get_bot_type()))) {
             // Was there a question answering attempt?
-            $answer = post_param_string('answer', '-1#');
-            if ($answer != '-1#') {
+            $answer = post_param_string('answer', null);
+            if ($answer !== null) {
                 if (strtolower(trim($answer)) == strtolower(trim($details['answer']))) { // They got it right
                     if (!is_guest()) {
                         $GLOBALS['FORUM_DB']->query_insert('f_forum_intro_member', array('i_forum_id' => $id, 'i_member_id' => get_member()));
@@ -108,7 +108,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                             $poster = do_lang_tempcode('NA_EM');
                         }
 
-                        $topic_url = build_url(array('page' => 'topicview', 'id' => $subforum['last_topic_id'], 'type' => 'first_unread'), get_module_zone('topicview'));
+                        $topic_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $subforum['last_topic_id']), get_module_zone('topicview'));
                         $topic_url->attach('#first_unread');
 
                         $latest = do_template('CNS_FORUM_LATEST', array(
@@ -130,6 +130,9 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                     // Work out where the subforum URL is
                     if (($subforum['redirection'] != '') && (!is_numeric($subforum['redirection']))) {
                         $subforum_url = $subforum['redirection'];
+                        if (url_is_local($subforum_url)) {
+                            $subforum_url = get_base_url() . '/' . $subforum_url;
+                        }
 
                         $subforum_num_posts = do_lang_tempcode('NA_EM');
                         $subforum_num_topics = do_lang_tempcode('NA_EM');
@@ -303,8 +306,8 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     }
     if ($type == 'pt') {
         //There has been debate in the past whether to have a link from PTs to the forum or not! Currently using the Social menu is considered canon - templating could add a button in though.
-        //$archive_url=$GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(),true);
-        //$button_array[]=array('immediate'=>false,'title'=>do_lang_tempcode('ROOT_FORUM'),'url'=>$archive_url,'img'=>'buttons__forum');
+        //$archive_url = $GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(), true);
+        //$button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons__forum');
     }
     if (array_key_exists('may_post_topic', $details)) {
         if ($type == 'pt') {
@@ -413,13 +416,6 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
         $topic['first_post'] = new Tempcode();
     }
 
-    // Pre-load it, so meta-data isn't altered later
-    $bak = $GLOBALS['META_DATA'];
-    $topic_row_tedit = array('id' => $topic_row['id'], 't_cache_first_post' => $topic_row['t_cache_first_post'], 't_cache_first_post__text_parsed' => multi_lang_content() ? null : $topic_row['t_cache_first_post__text_parsed'], 't_cache_first_post__source_user' => multi_lang_content() ? null : $topic_row['t_cache_first_post__source_user']);
-    $topic['first_post'] = get_translated_tempcode('f_topics', $topic_row_tedit, 't_cache_first_post', $GLOBALS['FORUM_DB']);
-    $topic['first_post']->evaluate();
-    $GLOBALS['META_DATA'] = $bak;
-
     $topic['id'] = $topic_row['id'];
     $topic['num_views'] = $topic_row['t_num_views'];
     $topic['num_posts'] = $topic_row['t_cache_num_posts'];
@@ -522,7 +518,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
     if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id']))) {
-        $last_post_url = build_url(array('page' => 'topicview', 'id' => $topic['last_post_id'], 'type' => 'findpost'), get_module_zone('topicview'));
+        $last_post_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['last_post_id']), get_module_zone('topicview'));
         $last_post_url->attach('#post_' . strval($topic['last_post_id']));
         if (!is_null($topic['last_member_id'])) {
             if ($topic['last_member_id'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) {
@@ -550,25 +546,18 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     $url = build_url($map, get_module_zone('topicview'));
 
     // Modifiers
-    $topic_row_links = new Tempcode();
+    $topic_row_links = array();
     $modifiers = $topic['modifiers'];
     if (in_array('unread', $modifiers)) {
-        $first_unread_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'first_unread'), get_module_zone('topicview'));
+        $first_unread_url = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'));
         $first_unread_url->attach('#first_unread');
-        $topic_row_links->attach(do_template('CNS_FORUM_TOPIC_ROW_LINK', array('_GUID' => '6f52881ed999f4c543c9d8573b37fa48', 'URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'))));
+        $topic_row_links[] = array('URL' => $first_unread_url, 'IMG' => 'unread', 'ALT' => do_lang_tempcode('JUMP_TO_FIRST_UNREAD'));
     }
-    $topic_row_modifiers = new Tempcode();
+    $topic_row_modifiers = array();
     foreach ($modifiers as $modifier) {
         if ($modifier != 'unread') {
-            $topic_row_modifiers->attach(do_template('CNS_FORUM_TOPIC_ROW_MODIFIER', array('_GUID' => 'fbcb8791b571187fd699aa6796c3f401', 'IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier))));
+            $topic_row_modifiers[] = array('IMG' => $modifier, 'ALT' => do_lang_tempcode('MODIFIER_' . $modifier));
         }
-    }
-
-    // Emoticon
-    if ($topic['emoticon'] != '') {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON', array('_GUID' => 'dfbe0e4a11b3caa4d2da298ff23ca221', 'EMOTICON' => $topic['emoticon']));
-    } else {
-        $emoticon = do_template('CNS_FORUM_TOPIC_EMOTICON_NONE');
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {
@@ -639,7 +628,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         'TOPIC_ROW_MODIFIERS' => $topic_row_modifiers,
         '_TOPIC_ROW_MODIFIERS' => $modifiers,
         'POST' => $post,
-        'EMOTICON' => $emoticon,
+        'EMOTICON' => $topic['emoticon'],
         'DESCRIPTION' => $topic['description'],
         'URL' => $url,
         'TITLE' => $title,
@@ -704,7 +693,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         if ($child_or_list != '') {
             $child_or_list .= ' AND ';
         }
-        $query = 'SELECT DISTINCT t_forum_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval(get_member()) . ') WHERE t_forum_id IS NOT NULL AND ' . $child_or_list . 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' AND (l_time<t_cache_last_time OR l_time IS NULL)';
+        $query = 'SELECT DISTINCT t_forum_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval(get_member()) . ') WHERE t_forum_id IS NOT NULL AND ' . $child_or_list . 't_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' AND (l_time<t_cache_last_time OR l_time IS NULL)';
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $query .= ' AND t_validated=1';
         }
@@ -927,7 +916,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         $out['may_change_max'] = true;
         $out['may_move_topics'] = true;
         if (has_privilege(get_member(), 'multi_delete_topics')) {
-            $out['may_delete_topics'] = true; // Only super admins can casually delete topics - other staff are expected to trash them. At least deleted posts or trashed topics can be restored!
+            $out['may_delete_topics'] = true; // Only super admins can casually delete topics - other staff are expected to trash them. At least trashed topics can be restored!
         }
     }
     return $out;

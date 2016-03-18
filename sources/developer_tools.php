@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,7 +21,7 @@
  */
 
 /*
-Some basic developer tools for ocPortal PHP development.
+Some basic developer tools for Composr PHP development.
 
 Also see:
  firephp
@@ -31,6 +31,8 @@ Also see:
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__developer_tools()
 {
@@ -56,7 +58,7 @@ function semi_dev_mode_startup()
 
         if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (is_null(get_param_string('keep_devtest', null)))) {
             $_GET['keep_devtest'] = '1';
-            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). Whilst not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
+            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
         } else {
             $_GET['keep_devtest'] = '1';
         }
@@ -78,7 +80,7 @@ function semi_dev_mode_startup()
                 }
             }
             foreach ($_MODIFIED_FILES as $file) {
-                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (substr($file, -4) != '.tmp') && (basename($file) != 'rate_limiter.php') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
+                if ((strpos($file, 'cache') === false) && (substr($file, 0, strlen(get_file_base())) == get_file_base()) && (strpos($file, '/incoming/') === false) && (strpos($file, 'failover_rewritemap') !== false) && (substr($file, -4) != '.tmp') && (basename($file) != 'rate_limiter.php') && (strpos($file, 'log') === false) && (substr($file, -4) != '.log') && (basename($file) != 'permissioncheckslog.php')) {
                     @exit(escape_html('File not change-synched: ' . $file));
                 }
             }
@@ -116,9 +118,9 @@ function destrictify($change_content_type = true, $mysql_too = false)
     }
     $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
     $GLOBALS['TITLE_CALLED'] = true;
-    error_reporting(E_ALL ^ E_NOTICE);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(200);
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(200);
     }
     if ((get_forum_type() == 'cns') && ($mysql_too)) {
         $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
@@ -161,8 +163,8 @@ function restrictify()
 
     // Put back strictness
     error_reporting(E_ALL);
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
     if (get_forum_type() == 'cns') {
         $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);
@@ -207,6 +209,8 @@ function inspect_plain()
  *
  * @param  array $args Arguments to output
  * @param  boolean $force_plain Whether to force text output
+ *
+ * @ignore
  */
 function _inspect($args, $force_plain = false)
 {
@@ -301,9 +305,9 @@ function show_memory_points()
  * @param  ?string $death_message The message to exit with (null: return, do not exit)
  * @return boolean Whether we are
  */
-/*function debug_running_underneath($function, $death_message=NULL)
+/*function debug_running_underneath($function, $death_message = null)
 {
-    $stack=debug_backtrace();
+    $stack = debug_backtrace();
     foreach ($stack as $level) {
         if (in_array($function, $level)) {
             if (!is_null($death_message)) {
@@ -318,7 +322,7 @@ function show_memory_points()
 /**
  * Verify the parameters passed into the *calling* function match the phpdoc specification for that function.
  * Useful when testing robustness of APIs where the CQC and ocProducts PHP are not suitable.
- * For example, when web APIs are plumbed into ocPortal APIs and you need to ensure the types are coming in correctly.
+ * For example, when web APIs are plumbed into Composr APIs and you need to ensure the types are coming in correctly.
  *
  * @param  boolean $dev_only Whether to only run the checks in dev-mode
  */

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -72,7 +72,7 @@ class Hook_task_export_points_log
             $data_point[do_lang('USERNAME')] = $username;
             $data_point[$label] = $points_gained;
             $data_point[do_lang('POINTS_NOW')] = $points_now;
-            $data_point[do_lang('GROUPS')] = $usergroups;
+            $data_point[do_lang('USERGROUPS')] = $usergroups;
             $data_point[do_lang('EMAIL')] = $email;
 
             if (addon_installed('quizzes')) {
@@ -115,7 +115,7 @@ class Hook_task_export_points_log
         $ini_set['ocproducts.xss_detect'] = '0';
 
         require_code('files2');
-        $outfile_path = cms_tempnam('csv');
+        $outfile_path = cms_tempnam();
         make_csv($winner_data, $filename, false, false, $outfile_path);
         return array('text/csv', array($filename, $outfile_path), $headers, $ini_set);
     }

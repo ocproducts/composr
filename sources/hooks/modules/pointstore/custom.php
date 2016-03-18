@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -148,6 +148,8 @@ class Hook_pointstore_custom
             $map += insert_lang('c_mail_body', $mail_body, 2);
             $GLOBALS['SITE_DB']->query_insert('pstore_customs', $map);
         }
+
+        log_it('POINTSTORE_AMEND_CUSTOM_PRODUCTS');
     }
 
     /**
@@ -250,7 +252,7 @@ class Hook_pointstore_custom
         require_code('notifications');
         $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $message_raw = do_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
+        $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
         dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, 3, true, false, null, null, '', '', '', '', null, true);
 
         $member = get_member();

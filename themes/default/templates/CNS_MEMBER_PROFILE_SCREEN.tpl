@@ -1,6 +1,6 @@
 {$SET,name_set_elsewhere,1}
 
-<div class="vcard" itemscope="itemscope" itemtype="http://schema.org/ProfilePage">
+<div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage">
 	{TITLE}
 
 	{+START,IF,{$GT,{TABS},1}}

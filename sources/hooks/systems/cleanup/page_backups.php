@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -97,7 +97,7 @@ class Hook_cleanup_page_backups
         if ($dh !== false) {
             if (!file_exists($path . '/_old_backups')) {
                 mkdir($path . '/_old_backups', 0777);
-                fix_permissions($path . '/_old_backups', 0777);
+                fix_permissions($path . '/_old_backups');
             }
 
             while (($f = readdir($dh)) !== false) {

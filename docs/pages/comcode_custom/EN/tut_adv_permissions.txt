@@ -8,29 +8,34 @@ Some software tries to make options for everything, but the result tends to be t
 [title="2"]Match-key permissions[/title]
 
 [surround]
-[media width="150" description="Here we have removed banner submission for guests. Normally we would restrict based on content visibility level, but that is less fine-grained." float="right"]data_custom/images/docs/permissions_match_keys.png[/media]
+[media width="150" description="Here we have removed banner submission for guests. Normally we would restrict based on content visibility level, but that is less fine-grained." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys.png[/media]
 [b]For an explanation of [concept]match-key[/concept]s, see the [page="_SEARCH:tut_menus"]Customising what's on the menus[/page] tutorial.[/b]
 
 {!permissions:DOC_PAGE_MATCH_KEY_ACCESS}
+
+Configure Match-key permissions from:
+Admin Zone > Security > Match-keys
 [/surround]
 
 [title="3"]An example: controlling member-directory access[/title]
 
-[surround="spaced_list float_surrounder"]
-[media width="150" description="Set the denys." float="right"]data_custom/images/docs/permissions_match_keys_ex2.png[/media][media width="150" description="Make sure the pre-requisite addon is installed." float="right"]data_custom/images/docs/permissions_match_keys_ex1.png[/media]
+[surround]
+[media width="150" description="Observe that permissions are now being enforced." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys_ex3.png[/media]
+[media width="150" description="Set the denys." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys_ex2.png[/media]
+[media width="150" description="Make sure the pre-requisite addon is installed." float="right"]data_custom/images/docs/tut_adv_permissions/permissions_match_keys_ex1.png[/media]
+[b]Important[/b]: Understand that checking means 'deny access' when it comes to match-key permissions. It's the opposite of how permission checkboxes usually work.
+
 You may wish to prevent members viewing the member directory, but let them view their own profile
 
 This cannot be done directly using page permissions because both actions go through the same module. Match-key permissions can be used effectively here though.
 
 [list="1"]
-[*]Make sure the [tt]match_key_permissions[/tt] addon is installed.
-[*]If the "Single public zone" option is on then:
+[*] Make sure the [tt]match_key_permissions[/tt] addon is installed.
+[*] If the "Single public zone" option is on then:
  - Set to block all groups on [tt]:members:browse[/tt]
 If the "Single public zone" option is [i]not[/i] on then:
  - Set to block all groups on [tt]site:members:browse[/tt]
 [/list]
-
-[media width="150" description="Observe that permissions are now being enforced." float="right"]data_custom/images/docs/permissions_match_keys_ex3.png[/media][b]Important[/b]: understand that checking means 'deny access' when it comes to match-key permissions. It's the opposite of how permission checkboxes usually work.
 [/surround]
 
 [title="2"]Match-key error messages[/title]
@@ -41,15 +46,19 @@ If you put in a URL instead of a match-key, it will automatically convert to a m
 
 If you put in some text between quote marks, matching will be done on the basis of matching this to success/notice/warning/error messages (which is broader than match-keys, as Composr is programmed to mostly only consider whether these match when showing access-denied screens). You can even combine quoted strings and match-keys, for a double condition, e.g.: [tt]site:downloads "There are no entries at this time"[/tt] could be given a message of [tt]Nobody has added a download yet[/tt]. As you can see, this has nothing really to do with permissions: we can use this system much more broadly, to do some quite detailed specification of how Composr should message the user.
 
-[title="2"]Controlling page rendering in detail[/title]
+A good example of match-key error messages is in the [page="_SEARCH:sup_join_disabling"]How to disable joining tutorial[/page].
+
+[title="2"]Controlling page display in detail[/title]
 
 You may wish to only show certain parts of screens to particular usergroups. For example, you may want to 'tease' content to non-paying users.
 To implement this, you need to switch to a template editing mind-set, rather than a permissions mind-set. Use normal Tempcode techniques to fence off or change the output of templates, either:
-1) by using the [tt]IS_IN_GROUP[/tt] symbol
-2) working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
+[list="a"]
+[*] by using the [tt]IS_IN_GROUP[/tt] symbol
+[*] working off the back of a standard permission's setting using something like the [tt]HAS_PRIVILEGE[/tt] symbol)
+[/list]
 
 For example,
-[code]
+[code="Tempcode"]
 {+START,IF,{$IS_IN_GROUP,3-7,10}}
     Only groups 3, 4, 5, 6, 7, and 10, see this.
 {+END}

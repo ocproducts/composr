@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -48,7 +48,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         }
 
         $ret = array();
-        if (!$be_deferential) {
+
+        if (!$be_deferential && !$support_crosslinks) {
             $ret += array(
                 'browse' => array('CUSTOM_PROFILE_FIELDS', 'menu/adminzone/tools/users/custom_profile_fields'),
             );
@@ -58,7 +59,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             'stats' => array('CUSTOM_PROFILE_FIELD_STATS', 'menu/adminzone/tools/users/custom_profile_fields'),
         );
 
-        if (!$be_deferential) {
+        if (!$be_deferential && !$support_crosslinks) {
             $ret += parent::get_entry_points();
         }
 
@@ -68,10 +69,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -79,6 +80,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
+        require_lang('cns_special_cpf');
         require_css('cns_admin');
 
         set_helper_panel_tutorial('tut_adv_members');
@@ -183,10 +185,11 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('encryption');
         require_lang('fields');
 
-        if ($locked == 0) {
+        if (substr($name, 0, 4) != 'cms_') {
             $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         } else {
             $hidden->attach(form_input_hidden('name', $name));
+            attach_message(do_lang_tempcode('INBUILT_CPF_LANG_STRING', escape_html($name)));
         }
 
         $fields->attach(form_input_line_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
@@ -194,47 +197,43 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_VIEW'), do_lang_tempcode('DESCRIPTION_OWNER_VIEW'), 'owner_view', $owner_view == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_SET'), do_lang_tempcode('DESCRIPTION_OWNER_SET'), 'owner_set', $owner_set == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('PUBLIC_VIEW'), do_lang_tempcode('DESCRIPTION_PUBLIC_VIEW'), 'public_view', $public_view == 1));
-        if ((is_encryption_enabled()) && ($name == '')) {
+        if (($locked == 0) && (is_encryption_enabled()) && ($name == '')) {
             require_lang('encryption');
             $fields->attach(form_input_tick(do_lang_tempcode('ENCRYPTED'), do_lang_tempcode('DESCRIPTION_ENCRYPTED'), 'encrypted', $encrypted == 1));
         }
 
         require_code('fields');
         $type_list = create_selection_list_field_type($type, $name != '');
-        $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
+        if ($locked == 0) {
+            $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
+        } else {
+            $hidden->attach(form_input_hidden('type', $type));
+        }
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
+        if ($locked == 0) {
+            $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
+        } else {
+            $hidden->attach(form_input_hidden('required', strval($required)));
+        }
+
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_ON_JOIN_FORM'), do_lang_tempcode('DESCRIPTION_SHOW_ON_JOIN_FORM'), 'show_on_join_form', $show_on_join_form == 1));
-        $orderlist = new Tempcode();
-        $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
-        if ($name == '') {
-            $num_cpfs++;
-        }
-        $selected_one = false;
-        for ($i = 0; $i < (is_null($order) ? $num_cpfs : max($num_cpfs, $order)); $i++) {
-            $selected = (($i === $order) || (($name == '') && ($i == $num_cpfs - 1)));
-            if ($selected) {
-                $selected_one = true;
-            }
-            $orderlist->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
-        }
-        if (!$selected_one) {
-            $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
-        }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER'), 'order', $orderlist));
+
+        $fields->attach(get_order_field('cpf', null, $order));
+
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POSTS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POSTS'), 'show_in_posts', $show_in_posts == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
+
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
         if ($locked == 0) {
             $groups = new Tempcode();
-            //$groups=form_input_list_entry('-1',false,do_lang_tempcode('_ALL'));
+            //$groups = form_input_list_entry('-1', false, do_lang_tempcode('_ALL'));
             foreach ($rows as $group) {
                 if ($group['id'] != db_get_first_id()) {
                     $groups->attach(form_input_list_entry(strval($group['id']), count(array_intersect(array($group['id']), explode(',', $only_group))) != 0, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
                 }
             }
-            $fields->attach(form_input_multi_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_FIELD_ONLY_GROUP'), 'only_group', $groups));
+            $fields->attach(form_input_multi_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_FIELD_ONLY_GROUP'), 'only_group', $groups));
         } else {
             $hidden->attach(form_input_hidden('only_group', ''));
         }
@@ -348,21 +347,21 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $orderlist = new Tempcode();
+            $order_list = '';
             $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
             $selected_one = false;
             $order = $row['cf_order'];
-            for ($i = 0; $i < max($num_cpfs, $order); $i++) {
+            for ($i = 0; $i < max($num_cpfs, $order, 200); $i++) {
                 $selected = ($i === $order);
                 if ($selected) {
                     $selected_one = true;
                 }
-                $orderlist->attach(form_input_list_entry(strval($i), $selected, integer_format($i + 1)));
+                $order_list .= '<option value="' . strval($i) . '"' . ($selected ? ' selected="selected"' : '') . '>' . strval($i + 1) . '</option>'; // XHTMLXHTML
             }
             if (!$selected_one) {
-                $orderlist->attach(form_input_list_entry(strval($order), true, integer_format($order + 1)));
+                $order_list .= '<option value="' . strval($i) . '" selected="selected">' . ($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1) . '</option>'; // XHTMLXHTML
             }
-            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('ORDER'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $orderlist));
+            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $order_list));
 
             $fr = array();
             $fr[] = $trans;
@@ -410,7 +409,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $row_cf_order = 0;
         $table = get_table_prefix() . 'f_custom_fields';
         if ($start_order > $end_order) {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order ASC');
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
@@ -420,7 +419,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 }
             }
         } else {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order ASC');
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
             foreach ($rows as $row) {
                 $row_cf_order = $row['cf_order'];
                 if ($row_cf_order == $end_order) {
@@ -455,7 +454,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     {
         $rows = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), array('id' => intval($id)));
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'cpf'));
         }
         $myrow = $rows[0];
 
@@ -505,7 +504,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            post_param_integer('order'), $only_group,
+            post_param_order_field(),
+            $only_group,
             post_param_integer('show_on_join_form', 0),
             post_param_string('options'),
             false
@@ -533,7 +533,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             post_param_integer('required', 0),
             post_param_integer('show_in_posts', 0),
             post_param_integer('show_in_post_previews', 0),
-            post_param_integer('order'),
+            post_param_order_field(),
             $only_group,
             post_param_string('type'),
             post_param_integer('show_on_join_form', 0),
@@ -604,15 +604,15 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public function _stats()
     {
         $f_name = 'field_' . strval(get_param_integer('id'));
-        $_a = get_input_date('start');
+        $_a = post_param_date('start');
         $a = is_null($_a) ? '1=1' : ('m_join_time>' . strval($_a));
-        $_b = get_input_date('end');
+        $_b = post_param_date('end');
         $b = is_null($_b) ? '1=1' : ('m_join_time<' . strval($_b));
         $members_in_range = $GLOBALS['FORUM_DB']->query('SELECT ' . $f_name . ',COUNT(' . $f_name . ') AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id WHERE ' . $a . ' AND ' . $b . ' GROUP BY ' . $f_name . ' ORDER BY cnt', 300/*reasonable limit*/);
         if (count($members_in_range) == 300) {
             attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__TOP_ONLY', escape_html(integer_format(300))), 'warn');
         }
-        $lines = new Tempcode();
+        $lines = array();
         foreach ($members_in_range as $row) {
             if (!is_null($row[$f_name])) {
                 $val = $row[$f_name];
@@ -621,10 +621,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                     continue;
                 }
 
-                $lines->attach(do_template('CNS_CPF_STATS_LINE', array('_GUID' => '874c9b780f625ff4566e7b909f554288', 'CNT' => integer_format($row['cnt']), 'VAL' => is_integer($val) ? integer_format($val) : $val)));
+                $lines[] = array('CNT' => integer_format($row['cnt']), 'VAL' => is_integer($val) ? integer_format($val) : $val);
             }
         }
-        if ($lines->is_empty()) {
+        if ($lines === array()) {
             warn_exit(do_lang_tempcode('NO_DATA'));
         }
 

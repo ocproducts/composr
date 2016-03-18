@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -82,14 +82,15 @@ class Hook_video_syndication_youtube
         do {
             if (!is_null($transcoding_id)) {
                 /* EDIT: Actually we looked at transcoding table instead and lookup individual video and process as such
-                    $query_params['category']='sync'.strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
-                    $xml=$this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads',$query_params);
+                $query_params['category'] = 'sync' . strval($local_id); // Covers {http://gdata.youtube.com/schemas/2007/developertags.cat} and {http://gdata.youtube.com/schemas/2007/keywords.cat}
+                $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
 
-                    if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
-                    {
-                            unset($query_params['category']);
-                            $xml=$this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads',$query_params);
-                    }*/
+                if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
+                {
+                    unset($query_params['category']);
+                    $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
+                }
+                */
 
                 $xml = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads/' . $transcoding_id, array());
 
@@ -233,11 +234,11 @@ class Hook_video_syndication_youtube
 
         $api_url = 'https://uploads.gdata.youtube.com/resumable/feeds/api/users/default/uploads';
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10000);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10000);
         }
         try {
-            $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*,$file_path*/);
+            $test = $this->_http($api_url, array(), 'POST', $xml, 1000.0, $extra_headers/*, $file_path*/);
             $response = $this->_http($HTTP_DOWNLOAD_URL, null, 'PUT', null, 10000.0, $extra_headers, $file_path, $mime_type);
 
             if ($is_temp_file) {
@@ -270,7 +271,7 @@ class Hook_video_syndication_youtube
         $is_temp_file = false;
 
         if (substr($url, 0, strlen(get_custom_base_url())) != get_custom_base_url()) {
-            $temppath = cms_tempnam('vimeo_temp_dload');
+            $temppath = cms_tempnam();
             $tempfile = fopen($temppath, 'wb');
             http_download_file($url, 1024 * 1024 * 1024 * 5, true, false, 'Composr', null, null, null, null, null, $tempfile);
 
@@ -451,13 +452,8 @@ class Hook_video_syndication_youtube
             }
         }
 
-        if ($params !== null) {
-            $_params = '';
-            foreach ($params as $key => $val) {
-                $_params .= '&' . $key . '=' . urlencode($val);
-            }
-
-            $full_url = $url . '?strict=1&v=2.1' . $_params;
+        if (!empty($params)) {
+            $full_url = $url . '?strict=1&v=2.1&' . http_build_query($params);
         } else {
             $full_url = $url;
         }

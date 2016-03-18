@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    gallery_syndication
+ */
 
 function init__oauth()
 {
@@ -16,7 +29,7 @@ function ensure_got_oauth_client_id($service_name, $has_sep_key = false)
         $ob = object_factory('Hook_config_' . $service_name . '_client_id');
         $info = $ob->get_details();
 
-        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_' . $info['group']);
+        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), get_module_zone('admin_config'), null, false, false, false, 'group_' . $info['group']);
         require_code('site2');
         smart_redirect($config_url);
     }

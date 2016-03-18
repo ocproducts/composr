@@ -12,10 +12,12 @@ $timeout = $guest_session ? (time() + intval(60.0 * 60.0 * max(0.017, $session_e
 
 $test = setcookie(get_session_cookie(), $session_id, $timeout, get_cookie_path());
 
-/*$expires=60*60*1;     Caching won't work well
+/* Caching won't work well
+$expires = 60 * 60 * 1;
 header('Pragma: public');
-header('Cache-Control: max-age='.strval($expires));
-header('Expires: '.gmdate('D, d M Y H:i:s',time()+$expires).' GMT');*/
+header('Cache-Control: max-age=' . strval($expires));
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
+*/
 @header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
 @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 @header('Cache-Control: no-cache, max-age=0');
@@ -37,7 +39,7 @@ imagedestroy($img);
 function get_session_cookie()
 {
     global $SITE_INFO;
-    if (!array_key_exists('session_cookie', $SITE_INFO)) {
+    if (empty($SITE_INFO['session_cookie'])) {
         $SITE_INFO['session_cookie'] = 'cms_session';
     }
     return $SITE_INFO['session_cookie'];

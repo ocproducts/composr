@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,14 +10,19 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    member_filedumps
+ */
+
+/**
+ * Hook class.
  */
 class Hook_members_filedump
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
     public function run($member_id)
     {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,6 +23,7 @@ class moderation_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_moderation_action');
         require_code('cns_moderation_action2');
 
@@ -41,6 +42,7 @@ class moderation_test_set extends cms_test_case
     public function tearDown()
     {
         cns_delete_multi_moderation($this->mod_id);
+
         parent::tearDown();
     }
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_news
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -132,7 +133,6 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_SIDE_NEWS.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl',
-            'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY.tpl',
             'themes/default/templates/NEWS_CHICKLETS.tpl',
             'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl',
             'themes/default/images/newscats/index.html',
@@ -192,7 +192,6 @@ class Hook_addon_registry_news
             'templates/BLOCK_MAIN_NEWS.tpl' => 'block_main_news',
             'templates/BLOCK_SIDE_NEWS.tpl' => 'block_side_news',
             'templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl' => 'block_side_news_categories',
-            'templates/BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY.tpl' => 'block_side_news_categories',
             'templates/BLOCK_SIDE_NEWS_SUMMARY.tpl' => 'block_side_news',
             'templates/BLOCK_BOTTOM_NEWS.tpl' => 'block_bottom_news',
             'templates/NEWS_ENTRY_SCREEN.tpl' => 'news_full_screen',
@@ -223,7 +222,7 @@ class Hook_addon_registry_news
             'IMAGE_URL' => placeholder_image_url(),
             'URL' => placeholder_url(),
             'BODY' => lorem_paragraph_html(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'SUBMITTER' => placeholder_id(),
             'AUTHOR' => lorem_phrase(),
@@ -355,8 +354,8 @@ class Hook_addon_registry_news
                 'CLOSED' => lorem_word(),
                 'FIRSTUSERNAME' => lorem_word(),
                 'LASTUSERNAME' => lorem_word(),
-                'FIRSTMEMBERID' => lorem_word(),
-                'LASTMEMBERID' => lorem_word(),
+                'FIRSTMEMBERID' => placeholder_random_id(),
+                'LASTMEMBERID' => placeholder_random_id(),
                 'DATE_RAW' => lorem_word(),
                 'GIVE_CONTEXT' => false,
                 'TAGS' => '',
@@ -412,7 +411,7 @@ class Hook_addon_registry_news
     public function tpl_preview__news_archive_screen()
     {
         $content = do_lorem_template('NEWS_BRIEF', array(
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE_PLAIN' => lorem_word(),
             'ID' => placeholder_id(),
@@ -469,7 +468,7 @@ class Hook_addon_registry_news
                 'NEWS' => lorem_paragraph(),
                 'NEWS_TITLE' => lorem_phrase(),
                 '_DATE' => placeholder_date_raw(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
             )));
         }
 
@@ -494,17 +493,17 @@ class Hook_addon_registry_news
     public function tpl_preview__block_side_news_categories()
     {
         require_lang('news');
-        $contents = new Tempcode();
+        $categories = array();
         foreach (placeholder_array() as $k => $v) {
-            $contents->attach(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES_CATEGORY', array(
+            $categories[] = array(
                 'URL' => placeholder_url(),
                 'NAME' => lorem_phrase(),
-                'COUNT' => placeholder_random(),
-            )));
+                'COUNT' => placeholder_number(),
+            );
         }
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_NEWS_CATEGORIES', array(
-                'CONTENT' => $contents,
+                'CATEGORIES' => $categories,
                 'PRE' => '',
                 'POST' => '',
             )), null, '', true)
@@ -523,7 +522,7 @@ class Hook_addon_registry_news
         $contents_arr = array();
         foreach (placeholder_array() as $k => $v) {
             $contents_arr[] = array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE' => lorem_word(),
             );
@@ -597,7 +596,7 @@ class Hook_addon_registry_news
                 'COMMENT_DETAILS' => $comment_details,
                 'RATING_DETAILS' => lorem_sentence(),
                 'TRACKBACK_DETAILS' => lorem_sentence(),
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'AUTHOR' => lorem_word(),
                 'AUTHOR_URL' => placeholder_url(),
                 'NEWS_FULL' => lorem_paragraph(),

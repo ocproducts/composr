@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,6 +28,8 @@ We continue to prohibit much of what was deprecated in XHTML but brought back in
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webstandards()
 {
@@ -170,7 +172,7 @@ function init__webstandards()
         'colgroup' => array('col'),
         'select' => array('option', 'optgroup'),
         'legend' => array('ins', 'del'),
-        //'map'=>array('area'), Apparently no such rule (see w3.org)
+        //'map' => array('area'), Apparently no such rule (see w3.org)
         'html' => array('head', 'body'),
         'embed' => array('noembed'),
         'applet' => array('param'),
@@ -192,7 +194,7 @@ function init__webstandards()
         'pre' => array(),
         'script' => array(),
         'param' => array(),
-        /*'option'=>array(),*/
+        /*'option' => array(),*/
         'area' => array(),
         'link' => array('link'),
         'basefont' => array(),
@@ -216,7 +218,7 @@ function init__webstandards()
         'body' => array('html'),
         'head' => array('html'),
         'param' => array('script', 'object'),
-        'link' => array('head', 'link'),
+        //'link' => array('head', 'link'),  Composr will dynamically optimise things to tend towards correctness, so can't enable this rule
         'li' => array('ul', 'ol', 'dd', 'menu', 'dt', 'dl', 'dir'),
         'style' => array('head'),
         'tbody' => array('table'),
@@ -241,8 +243,8 @@ function init__webstandards()
     global $REQUIRE_ANCESTER;
     $REQUIRE_ANCESTER = array(
         'textarea' => 'form',
-        //'input'=>'form',
-        //'button'=>'form',
+        //'input' => 'form',
+        //'button' => 'form',
         'option' => 'form',
         'optgroup' => 'form',
         'select' => 'form',
@@ -301,8 +303,8 @@ function init__webstandards()
  */
 function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if (function_exists('disable_php_memory_limit')) {
@@ -391,7 +393,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
 
     $token = _get_next_tag();
     while (!is_null($token)) {
-        //echo $T_POS.'-'.$POS.' ('.$stack_size.')<br />';
+        //echo $T_POS . '-' . $POS . ' (' . $stack_size . ')<br />';
 
         while ((is_array($token)) && (count($token) != 0)) { // Some kind of error in our token
             if (is_null($WEBSTANDARDS_CHECKER_OFF)) {
@@ -654,6 +656,8 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
  * @param  boolean $raw Whether to not do a lang lookup
  * @param  integer $rel_pos Offset position
  * @return map A map of the error information
+ *
+ * @ignore
  */
 function _xhtml_error($error, $param_a = '', $param_b = '', $param_c = '', $raw = false, $rel_pos = 0)
 {
@@ -780,7 +784,8 @@ function fix_entities($in)
 /**
  * Get the next tag in the current XHTML document.
  *
- * @return ?mixed Either an array of error details, a string of the tag, or NULL for finished (null: no next tag)
+ * @return ?mixed Either an array of error details, a string of the tag, or null for finished (null: no next tag)
+ * @ignore
  */
 function _get_next_tag()
 {
@@ -815,7 +820,7 @@ function _get_next_tag()
             $LINENO++;
             $LINESTART = $POS;
         }
-        //echo $status.' for '.$next.'<br />';
+        //echo $status . ' for ' . $next . '<br />';
 
         // Entity checking
         if (($next == '&') && ($status != IN_CDATA) && ($status != IN_COMMENT) && (is_null($WEBSTANDARDS_CHECKER_OFF))) {
@@ -979,7 +984,7 @@ function _get_next_tag()
                     $status = IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
                 } elseif ($next == '<') {
                     $errors[] = array('XML_TAG_OPEN_ANOMALY', '5');
-                    //return array(NULL,$errors);
+                    //return array(null, $errors);
                     // We have to assume we shouldn't REALLY have found a tag
                     $POS--;
                     $current_tag = '';
@@ -997,7 +1002,7 @@ function _get_next_tag()
                         $errors[] = array('XML_TAG_CLOSE_ANOMALY');
                     }
                     // Things like nowrap, checked, etc
-                    //return array(NULL,$errors);
+                    //return array(null, $errors);
 
                     if (isset($attribute_map[$current_attribute_name])) {
                         $errors[] = array('XML_TAG_DUPLICATED_ATTRIBUTES', $current_tag);
@@ -1026,7 +1031,7 @@ function _get_next_tag()
                     if ($GLOBALS['XML_CONSTRAIN']) {
                         $errors[] = array('XML_ATTRIBUTE_ERROR');
                     }
-                    //return array(NULL,$errors);  Actually  <blah nowrap ... /> could cause this
+                    //return array(null, $errors);  Actually  <blah nowrap ... /> could cause this
 
                     $status = IN_TAG_BETWEEN_ATTRIBUTES;
                     if (isset($attribute_map[$current_attribute_name])) {
@@ -1205,6 +1210,8 @@ function _get_next_tag()
  * @param  boolean $close Whether this is a closing tag
  * @param  list $errors Errors detected so far. We will add to these and return
  * @return mixed String for tag basis form, or array of error information
+ *
+ * @ignore
  */
 function _check_tag($tag, $attributes, $self_close, $close, $errors)
 {
@@ -1244,6 +1251,8 @@ function _check_tag($tag, $attributes, $self_close, $close, $errors)
  *
  * @param  string $full The full tag
  * @return string The basis of the tag
+ *
+ * @ignore
  */
 function _get_tag_basis($full)
 {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -106,8 +106,8 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
             $expanded = true;
             $expander[$level] = -1;
         } else { // No (well maybe its not even expandable, maybe its a link)
-            /*$expand_this=get_param_integer('keep_'.$menu.'_expand_'.$i,0);
-            $expanded=($expand_this==1); PROBLEMS WITH CACHE - SO WE'LL USE JAVASCRIPT FOR THIS  */
+            /*$expand_this = get_param_integer('keep_' . $menu . '_expand_' . $i, 0);
+            $expanded = ($expand_this == 1); PROBLEMS WITH CACHE - SO WE'LL USE JAVASCRIPT FOR THIS  */
             $expanded = false;
             $expander[$level] = $i;
         }
@@ -130,7 +130,7 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
         if ($pos === false) {
             // Are we expanding or contracting?
             if (($expanded) || ($expander[$level] == -1)) { // If is naturally expanded, or there is nothing that can expand it (probably because it has no parent)
-                $modifiers['expanded'] = 1;
+                $modifiers['expanded'] = true;
             }
 
             array_push($stack, $current_level);
@@ -154,12 +154,12 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
             $url = ltrim(substr($line, $pos + 1));
             if ($url[0] == '~') {
                 $url = substr($url, 1);
-                $modifiers['new_window'] = 1;
+                $modifiers['new_window'] = true;
             }
             /*elseif ($url[0]=='?')   Cache says no-no
             {
-                    $url=substr($url,1);
-                    $modifers['check_perms']=1;
+                    $url = substr($url, 1);
+                    $modifers['check_perms'] = true;
             }*/
 
             $current_level['children'][] = array(

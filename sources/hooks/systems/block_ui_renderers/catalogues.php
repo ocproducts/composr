@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,13 +35,20 @@ class Hook_block_ui_renderers_catalogues
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
+        if (($parameter == 'param') && (in_array($block, array('main_contact_catalogues')))) {
+            require_code('catalogues');
+            $structured_list = create_selection_list_catalogues($default);
+
+            return form_input_list(titleify($parameter), escape_html($description), $parameter, $structured_list, null, false, false);
+        }
+
         if ((($default == '') || (is_numeric($default))) && ($parameter == 'param') && (in_array($block, array('main_cc_embed')))) {
             $num_categories = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)');
             $num_categories_top = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('cc_parent_id' => null));
             if (($num_categories_top < 300) && ((!$has_default) || ($num_categories < 300))) { // catalogue category
                 $list = new Tempcode();
                 $structured_list = new Tempcode();
-                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : null, 'ORDER BY c_name,id');
+                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title', 'c_name'), ($num_categories >= 300) ? array('cc_parent_id' => null) : null, 'ORDER BY cc_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cc_title'));
                 $last_cat = mixed();
                 foreach ($categories as $cat) {
                     if ((is_null($last_cat)) || ($cat['c_name'] != $last_cat)) {
@@ -59,6 +66,7 @@ class Hook_block_ui_renderers_catalogues
                 return form_input_list(titleify($parameter), escape_html($description), $parameter, $structured_list, null, false, false);
             }
         }
+
         return null;
     }
 }

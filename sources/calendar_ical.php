@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,8 +47,8 @@ function output_ical()
         return;
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $filter = get_param_integer('type_filter', null);
@@ -63,6 +63,11 @@ function output_ical()
         require_code('content_privacy');
         list($privacy_join, $privacy_where) = get_privacy_where_clause('event', 'r', null, 'r.e_member_calendar=' . strval(get_member()));
         $where .= $privacy_where;
+    }
+
+    if (get_option('filter_regions') == '1') {
+        require_code('locations');
+        $where .= sql_region_filter('event', 'r.id');
     }
 
     if (!is_null($filter)) {
@@ -160,7 +165,7 @@ function output_ical()
                         if ($comment['title'] != '') {
                             $comment['message'] = $comment['title'] . ': ' . $comment['message'];
                         }
-                        echo "COMMENT:" . ical_escape(strip_comcode($comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date($comment['date']) . ')') . "\n";
+                        echo "COMMENT:" . ical_escape(strip_comcode(is_object($comment['message']) ? $comment['message'] : $comment['message']) . ' - ' . $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], true) . ' (' . get_timezoned_date($comment['date']) . ')') . "\n";
                     }
                 }
                 $start += 1000;
@@ -322,7 +327,7 @@ function ical_import($file_name)
     $calendar_nodes = array();
 
     foreach ($events as $key => $items) {
-        $items = preg_replace('#(.+)\n +(.*)\n#', '${1}${2}' . "\n", $items); // Merge split lines
+        $items = preg_replace('#(.+)\n +(.*)\r?\n#', '${1}${2}' . "\n", $items); // Merge split lines
 
         $nodes = explode("\n", $items);
 
@@ -427,8 +432,8 @@ function get_event_data_ical($calendar_nodes)
     $rec_array = array('FREQ', 'BYDAY', 'INTERVAL', 'COUNT');
     $rec_by_day = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
 
-// if (array_key_exists('LOCATION',$calendar_nodes))
-//    $geo_position=$calendar_nodes['LOCATION'];      We don't support these in Composr, at least not yet
+    //if (array_key_exists('LOCATION', $calendar_nodes))
+    //    $geo_position = $calendar_nodes['LOCATION'];      We don't support these in Composr, at least not yet
 
     if ((array_key_exists('CLASS', $calendar_nodes)) && ($calendar_nodes['CLASS'] == 'PRIVATE')) {
         $is_public = 0;

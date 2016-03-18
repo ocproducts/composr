@@ -119,20 +119,22 @@ function script_load_stuff()
 			for (var i=0;i<stuck_navs.length;i++)
 			{
 				var stuck_nav=stuck_navs[i];
-				var stuck_nav_height=(typeof stuck_nav.real_height=='undefined')?find_height(stuck_nav,true,true):stuck_nav.real_height;
+				var stuck_nav_height=(typeof stuck_nav.real_height=='undefined')?find_height(stuck_nav,true):stuck_nav.real_height;
 				stuck_nav.real_height=stuck_nav_height;
 				var pos_y=find_pos_y(stuck_nav.parentNode,true);
 				var footer_height=find_height(document.getElementsByTagName('footer')[0]);
 				var panel_bottom=document.getElementById('panel_bottom');
+				if (panel_bottom) footer_height+=find_height(panel_bottom);
+				panel_bottom=document.getElementById('global_messages_2');
 				if (panel_bottom) footer_height+=find_height(panel_bottom);
 				if (stuck_nav_height<get_window_height()-footer_height) // If there's space in the window to make it "float" between header/footer
 				{
 					var extra_height=(get_window_scroll_y()-pos_y);
 					if (extra_height>0)
 					{
-						var width=find_width(stuck_nav);
-						var height=find_height(stuck_nav);
-						var stuck_nav_width=find_width(stuck_nav,true,true);
+						var width=find_width(stuck_nav,true);
+						var height=find_height(stuck_nav,true);
+						var stuck_nav_width=find_width(stuck_nav,true);
 						if (!abstract_get_computed_style(stuck_nav,'width')) // May be centered or something, we should be careful
 						{
 							stuck_nav.parentNode.style.width=width+'px';
@@ -283,7 +285,7 @@ function new_html__initialise(element)
 
 			// Convert a/img title attributes into Composr tooltips
 			/*{+START,IF,{$CONFIG_OPTION,js_overlays}}*/
-				convert_tooltip(element);
+				if (element.className.indexOf('activate_rich_semantic_tooltip')==-1) convert_tooltip(element);
 			/*{+END}*/
 
 			break;
@@ -1076,7 +1078,7 @@ function confirm_session(callback)
 	var url='{$FIND_SCRIPT_NOHTTP;,confirm_session}'+keep_stub(true);
 
 	// First see if session already established
-	require_javascript('javascript_ajax');
+	require_javascript('ajax',window.do_ajax_request);
 	if (typeof window.do_ajax_request=='undefined') return;
 	var ret=do_ajax_request(url+keep_stub(true),function(ret) {
 		if (!ret) return;
@@ -1161,14 +1163,19 @@ function require_css(sheet)
 	link.setAttribute('href','{$FIND_SCRIPT_NOHTTP;,sheet}?sheet='+sheet+keep_stub());
 	document.getElementsByTagName('head')[0].appendChild(link);
 }
-function require_javascript(script,lang)
+function require_javascript(script,detector)
 {
+	// Check it is not already loading
 	if (document.getElementById('loading_js_'+script)) return;
+
+	// Check it is already loaded
+	if (typeof detector!='undefined') return; // Some object reference into the file passed in was defined, so the file must have been loaded already
+
+	// Load it
 	var link=document.createElement('script');
 	link.setAttribute('id','loading_js_'+script);
 	link.setAttribute('type','text/javascript');
 	var url='{$FIND_SCRIPT_NOHTTP;,javascript}?script='+script+keep_stub();
-	if (lang) url=url+'&lang='+lang;
 	link.setAttribute('src',url);
 	document.getElementsByTagName('head')[0].appendChild(link);
 }
@@ -1188,7 +1195,7 @@ function find_url_tab(hash)
 		}
 		else if ((tab.indexOf('__')!=-1) && (document.getElementById('g_'+tab.substr(0,tab.indexOf('__')))))
 		{
-			var old=window.location.hash;
+			var old=hash;
 			select_tab('g',tab.substr(0,tab.indexOf('__')));
 			window.location.hash=old;
 		}
@@ -1247,7 +1254,7 @@ function select_tab(id,tab,from_url,automated)
 		}
 	}
 
-	if (typeof window['load_tab__'+tab]!='undefined') window['load_tab__'+tab](automated); // Usually an AJAX loader
+	if (typeof window['load_tab__'+tab]!='undefined') window['load_tab__'+tab](automated,document.getElementById(id+'_'+tab)); // Usually an AJAX loader
 
 	return false;
 }
@@ -1404,17 +1411,18 @@ function toggleable_tray(element,no_animate,cookie_id_name)
 }
 function begin_toggleable_tray_animation(element,animate_dif,animate_ticks,final_height,pic)
 {
-	var fullHeight=find_height(element,true);
+	var full_height=find_height(element,true);
 	if (final_height==-1) // We are animating to full height - not a fixed height
 	{
-		final_height=fullHeight;
+		final_height=full_height;
 		element.style.height='0px';
 		element.style.visibility='visible';
 		element.style.position='static';
 	}
-	if (fullHeight>300) // Quick finish in the case of huge expand areas
+	if (full_height>300) // Quick finish in the case of huge expand areas
 	{
-		animate_dif*=6;
+		toggleable_tray_done(element,final_height,animate_dif,'hidden',animate_ticks,pic);
+		return;
 	}
 	element.style.outline='1px dashed gray';
 
@@ -1451,27 +1459,31 @@ function toggleable_tray_animate(element,final_height,animate_dif,orig_overflow,
 		window.setTimeout(function() { toggleable_tray_animate(element,final_height,animate_dif,orig_overflow,animate_ticks,pic); } ,animate_ticks);
 	} else
 	{
-		element.style.height='auto';
+		toggleable_tray_done(element,final_height,animate_dif,orig_overflow,animate_ticks,pic);
+	}
+}
+function toggleable_tray_done(element,final_height,animate_dif,orig_overflow,animate_ticks,pic)
+{
+	element.style.height='auto';
+	if (animate_dif<0)
+	{
+		element.style.display='none';
+	}
+	element.style.overflow=orig_overflow;
+	element.style.outline='0';
+	if (pic)
+	{
 		if (animate_dif<0)
 		{
-			element.style.display='none';
-		}
-		element.style.overflow=orig_overflow;
-		element.style.outline='0';
-		if (pic)
+			set_tray_theme_image(pic,'expcon','expand','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/expand}','{$IMG;,2x/trays/expand}','{$IMG;,1x/trays/expand2}','{$IMG;,2x/trays/expand2}');
+		} else
 		{
-			if (animate_dif<0)
-			{
-				set_tray_theme_image(pic,'expcon','expand','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/expand}','{$IMG;,2x/trays/expand}','{$IMG;,1x/trays/expand2}','{$IMG;,2x/trays/expand2}');
-			} else
-			{
-				set_tray_theme_image(pic,'expcon','contract','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/contract}','{$IMG;,2x/trays/contract}','{$IMG;,1x/trays/contract2}','{$IMG;,2x/trays/contract2}');
-			}
-			pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;}':'{!EXPAND;}',(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}'));
-			pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}';
+			set_tray_theme_image(pic,'expcon','contract','{$IMG;,1x/trays/expcon}','{$IMG;,1x/trays/contract}','{$IMG;,2x/trays/contract}','{$IMG;,1x/trays/contract2}','{$IMG;,2x/trays/contract2}');
 		}
-		trigger_resize(true);
+		pic.setAttribute('alt',pic.getAttribute('alt').replace((animate_dif<0)?'{!CONTRACT;}':'{!EXPAND;}',(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}'));
+		pic.cms_tooltip_title=(animate_dif<0)?'{!EXPAND;}':'{!CONTRACT;}';
 	}
+	trigger_resize(true);
 }
 function handle_tray_cookie_setting(id)
 {
@@ -1740,19 +1752,19 @@ function get_window_height(win)
 function get_window_scroll_width(win)
 {
 	if (typeof win=='undefined') win=window;
+
 	return win.document.body.scrollWidth;
 }
-function get_window_scroll_height(win,dont_allow_iframe_size)
+function get_window_scroll_height(win)
 {
 	if (typeof win=='undefined') win=window;
-	if (typeof dont_allow_iframe_size=='undefined') dont_allow_iframe_size=false;
 
-	var rect;
-	rect=win.document.body.parentNode.getBoundingClientRect();
-	var a=rect.bottom-rect.top;
-	rect=win.document.body.getBoundingClientRect();
-	var b=rect.bottom-rect.top;
+	var rect_a=win.document.body.parentNode.getBoundingClientRect();
+	var a=rect_a.bottom-rect_a.top;
+	var rect_b=win.document.body.getBoundingClientRect();
+	var b=rect_b.bottom-rect_b.top;
 	if (a>b) return a;
+
 	return b;
 }
 function get_window_scroll_x(win)
@@ -1817,53 +1829,33 @@ function find_pos_y(obj,not_relative) /* if not_relative is true it gets the pos
 	}
 	return ret;
 }
-function find_width(obj,take_padding,take_margin,take_border)
+function find_width(obj,take_padding_and_border) // if take_padding_and_border is not set returns contentWidth+padding+border, else just contentWidth; margin never included
 {
-	if (typeof take_padding=='undefined') take_padding=false;
-	if (typeof take_margin=='undefined') take_margin=false;
-	if (typeof take_border=='undefined') take_border=false;
+	if (typeof take_padding_and_border=='undefined') take_padding_and_border=false;
 
 	if (!obj) return 0;
 
 	var ret=obj.offsetWidth;
-	if (take_padding)
+	if (take_padding_and_border)
 	{
 		ret-=sts(abstract_get_computed_style(obj,'padding-left'));
 		ret-=sts(abstract_get_computed_style(obj,'padding-right'));
-	}
-	if (take_margin)
-	{
-		ret-=sts(abstract_get_computed_style(obj,'margin-left'));
-		ret-=sts(abstract_get_computed_style(obj,'margin-right'));
-	}
-	if (take_border)
-	{
 		ret-=sts(abstract_get_computed_style(obj,'border-left-width'));
 		ret-=sts(abstract_get_computed_style(obj,'border-right-width'));
 	}
 	return ret;
 }
-function find_height(obj,take_padding,take_margin,take_border)
+function find_height(obj,take_padding_and_border)
 {
-	if (typeof take_padding=='undefined') take_padding=false;
-	if (typeof take_margin=='undefined') take_margin=false;
-	if (typeof take_border=='undefined') take_border=false;
+	if (typeof take_padding_and_border=='undefined') take_padding_and_border=false;
 
 	if (!obj) return 0;
 
 	var ret=obj.offsetHeight;
-	if (take_padding)
+	if (take_padding_and_border)
 	{
 		ret-=sts(abstract_get_computed_style(obj,'padding-top'));
 		ret-=sts(abstract_get_computed_style(obj,'padding-bottom'));
-	}
-	if (take_margin)
-	{
-		ret-=sts(abstract_get_computed_style(obj,'margin-top'));
-		ret-=sts(abstract_get_computed_style(obj,'margin-bottom'));
-	}
-	if (take_border)
-	{
 		ret-=sts(abstract_get_computed_style(obj,'border-top-width'));
 		ret-=sts(abstract_get_computed_style(obj,'border-bottom-width'));
 	}
@@ -1946,7 +1938,7 @@ function key_pressed(event,key,no_error_if_bad)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
@@ -2027,7 +2019,7 @@ function activate_rich_semantic_tooltip(ob,event,have_links)
 //  ac is the object to have the tooltip
 //  event is the event handler
 //  tooltip is the text for the tooltip
-//  width is in pixels (but you need 'px' on the end), can be null or auto but both of these will actually instead result in the default max-width of 360px
+//  width is in pixels (but you need 'px' on the end), can be null or auto
 //  pic is the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
 //  height is the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
 //  bottom is set to true if the tooltip should definitely appear upwards; rarely use this parameter
@@ -2035,10 +2027,15 @@ function activate_rich_semantic_tooltip(ob,event,have_links)
 //  lights_off is set to true if the image is to be dimmed
 //  force_width is set to true if you want width to not be a max width
 //  win is the window to open in
-//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip
+//  have_links is set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
 function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,lights_off,force_width,win,have_links)
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
+
+	if (!have_links)
+	{
+		if (document.body.className.indexOf(' touch_enabled') != -1) return; // Too erratic
+	}
 
 	if (typeof width=='undefined' || !width) var width='auto';
 	if (typeof pic=='undefined') pic='';
@@ -2098,13 +2095,13 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		{
 			tooltip_element.className+=' '+ac.className;
 		}
-		if (!force_width)
-		{
-			tooltip_element.style.maxWidth=width;
-			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
-		} else
+		if (force_width)
 		{
 			tooltip_element.style.width=width;
+		} else
+		{
+			tooltip_element.style.maxWidth=(width=='auto')?((get_window_width(win)-30-window.mouse_x)+'px'):width;
+			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
 		}
 		if ((height) && (height!='auto'))
 		{
@@ -2166,7 +2163,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
 		if (tooltip_element.style.width=='auto')
-			tooltip_element.style.width=find_width(tooltip_element,true,true,true)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
 		{
@@ -2228,13 +2225,13 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 		catch(ignore) {}
 
 		// Work out which direction to render in
-		var width=find_width(tooltip_element);
+		var width=find_width(tooltip_element,true);
 		if (tooltip_element.style.width=='auto')
 		{
 			if (width<200) width=200; // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
 		}
 		var height=find_height(tooltip_element);
-		var x_excess=x-get_window_width(win)-get_window_scroll_x(win)+width;
+		var x_excess=x-get_window_width(win)-get_window_scroll_x(win)+width+10/*magic tolerance factor*/;
 		if (x_excess>0) // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
 		{
 			var x_before=x;
@@ -2260,7 +2257,7 @@ function deactivate_tooltip(ac,tooltip_element)
 {
 	ac.is_over=false;
 
-	if ((!page_loaded) || (!ac.tooltip_id)) return;
+	if (typeof ac.tooltip_id=='undefined') return;
 
 	if (typeof tooltip_element=='undefined')
 		tooltip_element=document.getElementById(ac.tooltip_id);
@@ -2535,7 +2532,7 @@ function keep_stub(starting_query_string,skip_session,context) // starting_query
 	}
 	if (!done_session)
 	{
-		var session=read_cookie('{$SESSION_COOKIE_NAME;}');
+		var session=get_session_id();
 		gap_symbol=(((to_add=='') && (starting_query_string))?'?':'&');
 		if (session) to_add=to_add+gap_symbol+'keep_session='+window.encodeURIComponent(session);
 	}
@@ -2552,6 +2549,16 @@ function keep_stub(starting_query_string,skip_session,context) // starting_query
 	}
 
 	return to_add;
+}
+
+function get_csrf_token()
+{
+	return read_cookie('{$SESSION_COOKIE_NAME;}'); // Session also works as a CSRF-token, as client-side knows it (AJAX)
+}
+
+function get_session_id()
+{
+	return read_cookie('{$SESSION_COOKIE_NAME;}');
 }
 
 /* Get an element's HTML, including the element itself */
@@ -2968,7 +2975,7 @@ function set_inner_html(element,target_html,append,force_dom)
 					} else
 					{
 						var r=document.getElementById(r_id);
-						r.parentNode.removeChild(r);
+						if (r && r.parentNode) r.parentNode.removeChild(r);
 					}
 				}, 0); // Delayed so we know DOM has loaded
 			}
@@ -3106,7 +3113,7 @@ function ga_track(ob,category,action)
 
 		try
 		{ 
-			_gaq.push(['_trackEvent',category,action]); 
+			ga('send','event',category,action); 
 		}
 		catch(err) {}
 
@@ -3149,6 +3156,7 @@ function click_link(link)
 	}
 	else if (typeof link.fireEvent!='undefined')
 	{
+		// IE8
 		cancelled=!link.fireEvent('onclick');
 	}
 	link.onclick=backup;
@@ -3211,6 +3219,19 @@ function move_to_full_editor(button,more_url)
 			}
 			more_url+='stub='+window.encodeURIComponent(form.elements['post'].default_substring_to_strip);
 		}
+	}
+
+	// Try and make post reply a GET parameter
+	if (typeof form.elements['parent_id']!='undefined')
+	{
+		if (more_url.indexOf('?')==-1)
+		{
+			more_url+='?';
+		} else
+		{
+			more_url+='&';
+		}
+		more_url+='parent_id='+window.encodeURIComponent(form.elements['parent_id'].value);
 	}
 
 	// Reset form target
@@ -3527,6 +3548,17 @@ function confirm_delete(form,multi,callback)
 		}
 	);
 	return false;
+}
+
+function has_iframe_ownership(iframe)
+{
+	var has_ownership=false;
+	try
+	{
+		has_ownership=(iframe) && (iframe.contentWindow.location.host==window.location.host) && (iframe.contentWindow.document);
+	}
+	catch (e) {};
+	return has_ownership;
 }
 
 // LEGACY: IE8

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -115,10 +115,5 @@ class bump_member_group_timeout_test_set extends cms_test_case
 
         $this->assertFalse(in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups(3)));
         $this->assertFalse(in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups(4)));
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

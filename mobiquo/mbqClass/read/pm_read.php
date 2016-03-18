@@ -1,7 +1,7 @@
-<?php /*
+ptrad<?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -212,7 +212,7 @@ class CMSPmRead
         }
 
         // Too old to track
-        if ($topic_details['t_cache_last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) {
+        if ($topic_details['t_cache_last_time'] < time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) {
             return self::READ;
         }
 
@@ -248,7 +248,7 @@ class CMSPmRead
         $msg_details = $GLOBALS['FORUM_DB']->query_select($table, $select, $where, '', 1);
 
         if (!isset($msg_details[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
         $post_row = $msg_details[0];
@@ -272,13 +272,13 @@ class CMSPmRead
             $username = do_lang('UNKNOWN');
         }
 
-        $attachment_details = get_post_attachments($post_row['post_id']);
-
         $icon_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post_row['p_poster']);
 
         cns_ping_topic_read($post_row['p_topic_id']);
 
         $content = prepare_post_for_tapatalk($post_row, $return_html);
+
+        $attachment_details = get_post_attachments($post_row['post_id'], null, true, $content);
 
         return array(
             'msg_from_id' => $post_row['t_pt_from'],

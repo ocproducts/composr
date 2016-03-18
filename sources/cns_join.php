@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -80,6 +80,8 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
+    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+
     if ($intro_message_if_enabled) {
         $forum_id = get_option('intro_forum_id');
         if ($forum_id != '') {
@@ -155,7 +157,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     if ($one_per_email_address_if_enabled) {
         if (get_option('one_per_email_address') == '1') {
             $javascript .= "
-            url='" . addslashes($script) . "?snippet=email_exists&name='+window.encodeURIComponent(form.elements['email_address'].value);
+            url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
             if (!do_ajax_field_test(url))
             {
                 document.getElementById('submit_button').disabled=false;
@@ -257,15 +259,15 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     require_code('temporal2');
-    list($dob_year, $dob_month, $dob_day) = get_input_date_components('dob');
+    list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
     if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
         if (member_field_is_required(null, 'dob', null, null)) {
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
         }
 
-        $dob_day = -1;
-        $dob_month = -1;
-        $dob_year = -1;
+        $dob_day = null;
+        $dob_month = null;
+        $dob_year = null;
     }
     $reveal_age = post_param_integer('reveal_age', 0);
 
@@ -340,7 +342,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     if (!$confirm_if_enabled) {
         $skip_confirm = true;
     }
-    $validated_email_confirm_code = $skip_confirm ? '' : strval(mt_rand(1, 32000));
+    $validated_email_confirm_code = $skip_confirm ? '' : strval(mt_rand(1, mt_getrandmax()));
     $require_new_member_validation = get_option('require_new_member_validation') == '1';
     if (!$validate_if_enabled) {
         $require_new_member_validation = false;
@@ -394,7 +396,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         require_code('notifications');
         $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, true, 'tab__edit');
         $validation_url = $_validation_url->evaluate();
-        $message = do_lang('VALIDATE_NEW_MEMBER_MAIL', comcode_escape($username), comcode_escape($validation_url), comcode_escape(strval($member_id)), get_site_default_lang());
+        $message = do_notification_lang('VALIDATE_NEW_MEMBER_MAIL', comcode_escape($username), comcode_escape($validation_url), comcode_escape(strval($member_id)), get_site_default_lang());
         dispatch_notification('cns_member_needs_validation', null, do_lang('VALIDATE_NEW_MEMBER_SUBJECT', $username, null, null, get_site_default_lang()), $message, null, A_FROM_SYSTEM_PRIVILEGED);
     }
 
@@ -402,7 +404,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     require_code('notifications');
     $_member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, true);
     $member_url = $_member_url->evaluate();
-    $message = do_lang('NEW_MEMBER_NOTIFICATION_MAIL', comcode_escape($username), comcode_escape(get_site_name()), array(comcode_escape($member_url), comcode_escape(strval($member_id))), get_site_default_lang());
+    $message = do_notification_lang('NEW_MEMBER_NOTIFICATION_MAIL', comcode_escape($username), comcode_escape(get_site_name()), array(comcode_escape($member_url), comcode_escape(strval($member_id))), get_site_default_lang());
     dispatch_notification('cns_new_member', null, do_lang('NEW_MEMBER_NOTIFICATION_MAIL_SUBJECT', $username, get_site_name(), null, get_site_default_lang()), $message, null, A_FROM_SYSTEM_PRIVILEGED);
 
     // Intro post
@@ -451,7 +453,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             handle_active_login($username); // The auto-login simulates a real login, i.e. actually checks the password from the form against the real account. So no security hole when "re-registering" a real user
             $message->attach(do_lang_tempcode('CNS_LOGIN_AUTO'));
         } else { // Invite them to explicitly instant log in
-            $_login_url = build_url(array('page' => 'login', 'redirect' => get_param_string('redirect', null)), get_module_zone('login'));
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_param_string('redirect', null)), get_module_zone('login'));
             $login_url = $_login_url->evaluate();
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }

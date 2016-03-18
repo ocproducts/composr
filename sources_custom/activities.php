@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,7 +33,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
     require_all_lang();
 
     /*if (isset($member_ids[0])) // Useful for testing
-        $viewer_member=$member_ids[0];*/
+        $viewer_member = $member_ids[0];*/
 
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $is_guest = is_guest($viewer_member); // Can't be doing with overcomplicated SQL breakages. Weed it out.
@@ -250,7 +250,7 @@ function render_activity($row, $use_inside_cms = true)
         $extra_lang_string_params
     ));
 
-    // Lang string may not use all params, so add extras on if were unused
+    // Language string may not use all params, so add extras on if were unused
     for ($i = 1; $i <= 3; $i++) {
         if ((strpos($row['a_language_string_code'], '_UNTYPED') === false) && (strpos($test, '{1}') === false) && (strpos($test, '{2}') === false) && (strpos($test, '{3}') === false) && ($row['a_label_' . strval($i)] != '')) {
             if (!$message->is_empty()) {

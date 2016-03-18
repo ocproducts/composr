@@ -1,5 +1,7 @@
 ; Similar to stuff defined in sources/files.php, but defined in terms of what we want never to be in git
+/cgi-bin
 *.bak
+*.old
 ._*
 test_a
 /safe_mode_temp/*.dat
@@ -7,6 +9,9 @@ test_a
 /sources_custom/user_sync__customise.php
 /www.pid
 .DS_Store
+/.ftaccess
+/.ftpquota
+*.cms
 *.lcd
 *.tcp
 *.tcd
@@ -32,7 +37,6 @@ test_a
 /data_custom/modules/web_notifications/latest.dat
 /cms_sitemap.xml
 /*.clpprj
-/*.tmproj
 /.project
 /data_custom/latest_activity.txt
 /hphp-static-cache
@@ -67,6 +71,9 @@ default/images/*/*__*.jpeg
 /data_custom/failover_rewritemap__mobile.txt
 
 ; The matched files should be blocked for the main Composr dev repository but not for Composr projects
+/uploads/website_specific/compo.sr/demonstratr/servers/
+/themes/_unnamed_/
+/.gitconfig
 /.htaccess
 .idea
 /data_custom/modules/google_appengine/*
@@ -123,5 +130,7 @@ pages/html_custom/*/*.htm
 *.tempfile
 /data_custom/modules/user_export/out.csv
 /data_custom/execute_temp.php
-cms.sql
+/cms.sql
+/tracker/uploads/
+/stats
 

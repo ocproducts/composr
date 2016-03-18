@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ function handle_custom_purchase($purchase_id, $details, $type_code)
     require_code('notifications');
     $subject = do_lang('MAIL_REQUEST_CUSTOM', comcode_escape($c_title), null, null, get_site_default_lang());
     $username = $GLOBALS['FORUM_DRIVER']->get_username($purchase_id);
-    $message_raw = do_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
+    $message_raw = do_notification_lang('MAIL_REQUEST_CUSTOM_BODY', comcode_escape($c_title), $username, null, get_site_default_lang());
     dispatch_notification('pointstore_request_custom', 'custom' . strval($id) . '_' . strval($sale_id), $subject, $message_raw, null, null, 3, true);
 
     // Email member
@@ -76,7 +76,14 @@ class Hook_ecommerce_custom
         foreach ($rows as $row) {
             if ($row['c_cost'] != 0) {
                 $cost = floatval($row['c_cost']) / $ppc;
-                $products['CUSTOM_' . strval($row['id'])] = array(PRODUCT_PURCHASE_WIZARD, float_to_raw_string($cost), 'handle_custom_purchase', array(), get_translated_text($row['c_title']));
+                $products['CUSTOM_' . strval($row['id'])] = array(
+                    PRODUCT_PURCHASE_WIZARD,
+                    float_to_raw_string($cost),
+                    'handle_custom_purchase',
+                    array(),
+                    get_translated_text($row['c_title']),
+                    get_option('currency'),
+                );
             }
         }
 

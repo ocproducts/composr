@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,7 +23,9 @@ class bookmark_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('bookmarks');
+
         $this->bookmark_id = add_bookmark(4, "xyz", "abc", "www.xyz.com");
         $this->assertTrue('abc' == $GLOBALS['SITE_DB']->query_select_value('bookmarks', 'b_title', array('id' => $this->bookmark_id)));
     }
@@ -37,6 +39,7 @@ class bookmark_test_set extends cms_test_case
     public function tearDown()
     {
         delete_bookmark($this->bookmark_id, 4);
+
         parent::tearDown();
     }
 }

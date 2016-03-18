@@ -2,17 +2,17 @@
 	{$SET,player_id,player_{$RAND}}
 
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}
-		{+START,IF_EMPTY,{$META_DATA,video}}
-			{$META_DATA,video,{URL}}
-			{$META_DATA,video:height,{HEIGHT}}
-			{$META_DATA,video:width,{WIDTH}}
-			{$META_DATA,video:type,{MIME_TYPE}}
+		{+START,IF_EMPTY,{$METADATA,video}}
+			{$METADATA,video,{URL}}
+			{$METADATA,video:height,{HEIGHT}}
+			{$METADATA,video:width,{WIDTH}}
+			{$METADATA,video:type,{MIME_TYPE}}
 		{+END}
 	{+END}
 
 	<div class="webstandards_checker_off">
 		<embed id="{$GET*,player_id}" name="{$GET*,player_id}" type="audio/x-pn-realaudio"
-			src="{URL*}"
+			src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}"
 			autostart="false"
 			controls="ImageWindow,ControlPanel"
 			pluginspage="http://www.real.com"

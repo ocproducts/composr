@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,7 +22,7 @@
  * Get the Tempcode for a do next manager. A do next manager is a series of linked icons that are presented after performing an action. Modules that do not use do-next pages, usually use REFRESH_PAGE's.
  *
  * @param  ID_TEXT $title The title of what we are doing (a language string)
- * @param  ?mixed $text The language code for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
+ * @param  ?mixed $text The language string ID for the docs of the hook defined do-next manager that we're creating OR Tempcode for it (null: none)
  * @param  ID_TEXT $type The menu 'type' we are doing (filters out any icons that don't match it)
  * @param  ?string $main_title The title to use for the main links (a language string) (null: same as title)
  * @return Tempcode The do next manager
@@ -305,6 +305,8 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
  * @param  array $list A list of items (each item is a pair or a triple: <option,url[,field name=do_lang(option)]> ; url is a pair or a triple or a quarto also: <page,map[,zone[,warning]]>)
  * @param  Tempcode $title The title for the section
  * @return Tempcode The do next manager section
+ *
+ * @ignore
  */
 function _do_next_section($list, $title)
 {
@@ -363,7 +365,6 @@ function _do_next_section($list, $title)
             '_GUID' => 'f39b6055d1127edb452595e7eeaf2f01',
             'AUTO_ADD' => $auto_add,
             'I' => strval($i),
-            'I2' => strval(mt_rand(0, 32000)) . '_' . strval($i),
             'NUM_SIBLINGS' => strval($num_siblings),
             'TARGET' => $target,
             'PICTURE' => $option,

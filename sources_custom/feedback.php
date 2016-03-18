@@ -1,14 +1,22 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
 
 /**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    custom_ratings
+ */
+
+/**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__feedback()
 {

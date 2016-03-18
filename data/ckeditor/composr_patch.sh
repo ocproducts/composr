@@ -4,7 +4,7 @@ echo 'Note the build-config.js that can be used to download the latest CKEditor 
 
 echo 'Make sure data/ckeditor/plugins/{composr|imagepaste|spellchecktoggle|showcomcodeblocks} is preserved'
 
-echo 'Manually download and place moono and moonocolor skins which we like to also bundle';
+echo 'Manually download and place moono and moonocolor skins which we like to also bundle, place in skins/';
 
 echo "Removing unneeded files"
 rm -rf CHANGES.md samples _source ckeditor.pack config.js adapters

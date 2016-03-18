@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    user_mappr
+ */
+
+/**
+ * Block class.
  */
 class Block_main_google_map_users
 {
@@ -33,15 +38,6 @@ class Block_main_google_map_users
     }
 
     /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('latitude');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('longitude');
-    }
-
-    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -49,9 +45,8 @@ class Block_main_google_map_users
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        //add cpf
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('latitude', 100, 0, 1, 1, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('longitude', 100, 0, 1, 1, 0, '', 'short_text');
+        require_code('cpf_install');
+        install_gps_fields();
     }
 
     /**
@@ -66,6 +61,7 @@ class Block_main_google_map_users
 
         require_javascript('ajax');
         require_lang('google_map_users');
+        require_lang('locations');
 
         // Set up config/defaults
         $geolocate_user = array_key_exists('geolocate_user', $map) ? $map['geolocate_user'] : '1';
@@ -84,8 +80,14 @@ class Block_main_google_map_users
         if (!array_key_exists('longitude', $map)) {
             $map['longitude'] = '';
         }
-        $mapwidth = array_key_exists('width', $map) ? $map['width'] : '100%';
-        $mapheight = array_key_exists('height', $map) ? $map['height'] : '300px';
+        $map_width = array_key_exists('width', $map) ? $map['width'] : '100%';
+        if (is_numeric($map_width)) {
+            $map_width .= 'px';
+        }
+        $map_height = array_key_exists('height', $map) ? $map['height'] : '300px';
+        if (is_numeric($map_height)) {
+            $map_height .= 'px';
+        }
         $api_key = array_key_exists('api_key', $map) ? $map['api_key'] : '';
         $set_zoom = array_key_exists('zoom', $map) ? $map['zoom'] : '3';
         $set_center = array_key_exists('center', $map) ? $map['center'] : '0';
@@ -100,7 +102,7 @@ class Block_main_google_map_users
 
             $latitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_latitude'));
             $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
-            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.','','nothing_here');
+            //return paragraph('The maps block has not been installed correctly, the CPFs are missing.', '', 'nothing_here');
         }
 
         // Data query
@@ -144,7 +146,7 @@ class Block_main_google_map_users
             if ($i != 0) {
                 $member_data_js .= ',';
             }
-            $member_data_js .= "['" . addslashes($member_data['m_username']) . "'," .
+            $member_data_js .= "['" . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . "'," .
                                float_to_raw_string(@floatval($member_data['field_' . strval($latitude_cpf_id)])) . "," .
                                float_to_raw_string(@floatval($member_data['field_' . strval($longitude_cpf_id)])) . "," .
                                strval($member_data['m_primary_group']) . "]";
@@ -152,11 +154,11 @@ class Block_main_google_map_users
         $member_data_js .= "];";
 
         // See if we need to detect the current user's long/lat
-        $member_longitude = get_cms_cpf('longitude', get_member());
-        $member_latitude = get_cms_cpf('latitude', get_member());
-        $update_url = get_base_url() . '/data_custom/set_coordinates.php?mid=' . strval(get_member()) . '&coord=';
+        $member_longitude = @floatval(get_cms_cpf('longitude', get_member()));
+        $member_latitude = @floatval(get_cms_cpf('latitude', get_member()));
+        $set_coord_url = get_base_url() . '/data_custom/set_coordinates.php?mid=' . strval(get_member()) . '&coord=';
         if ((!empty($member_longitude) && !empty($member_latitude)) || (is_guest())) {
-            $update_url = '';
+            $set_coord_url = '';
         }
 
         return do_template('BLOCK_MAIN_GOOGLE_MAP_USERS', array(
@@ -164,12 +166,12 @@ class Block_main_google_map_users
             'TITLE' => $map['title'],
             'GEOLOCATE_USER' => $geolocate_user,
             'CLUSTER' => $cluster,
-            'SET_COORD_URL' => $update_url,
+            'SET_COORD_URL' => $set_coord_url,
             'REGION' => $map['region'],
             'DATA' => $member_data_js,
             'USERNAME_PREFIX' => $map['username_prefix'],
-            'WIDTH' => $mapwidth,
-            'HEIGHT' => $mapheight,
+            'WIDTH' => $map_width,
+            'HEIGHT' => $map_height,
             'LATITUDE' => $map['latitude'],
             'LONGITUDE' => $map['longitude'],
             'ZOOM' => $set_zoom,

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_backup
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -69,7 +69,7 @@ class Module_admin_backup
         delete_value('backup_b_type');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/exports/backups',true);
+        //deldir_contents(get_custom_file_base() . '/exports/backups', true);
     }
 
     /**
@@ -85,7 +85,7 @@ class Module_admin_backup
     private $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -208,7 +208,39 @@ class Module_admin_backup
         $javascript = '';
         if (addon_installed('calendar')) {
             if (cron_installed()) {
-                $javascript = 'var d_ob=[document.getElementById(\'schedule_day\'),document.getElementById(\'schedule_month\'),document.getElementById(\'schedule_year\'),document.getElementById(\'schedule_hour\'),document.getElementById(\'schedule_minute\')]; var hide_func=function() { document.getElementById(\'recurrance_days\').disabled=((d_ob[0].selectedIndex+d_ob[1].selectedIndex+d_ob[2].selectedIndex+d_ob[3].selectedIndex+d_ob[4].selectedIndex)>0); }; d_ob[0].onchange=hide_func; d_ob[1].onchange=hide_func; d_ob[2].onchange=hide_func; d_ob[3].onchange=hide_func; d_ob[4].onchange=hide_func; hide_func();';
+                $javascript = '
+                    var d_ob=[
+                        document.getElementById(\'schedule_day\'),
+                        document.getElementById(\'schedule_month\'),
+                        document.getElementById(\'schedule_year\'),
+                        document.getElementById(\'schedule_hour\'),
+                        document.getElementById(\'schedule_minute\')
+                    ];
+                    var hide_func;
+                    if (d_ob[0]!=null)
+                    {
+                        hide_func=function() {
+                            document.getElementById(\'recurrance_days\').disabled=((d_ob[0].selectedIndex+d_ob[1].selectedIndex+d_ob[2].selectedIndex+d_ob[3].selectedIndex+d_ob[4].selectedIndex)>0);
+                        };
+                        d_ob[0].onchange=hide_func;
+                        d_ob[1].onchange=hide_func;
+                        d_ob[2].onchange=hide_func;
+                        d_ob[3].onchange=hide_func;
+                        d_ob[4].onchange=hide_func;
+                    } else
+                    {
+                        d_ob=[
+                            document.getElementById(\'schedule\'),
+                            document.getElementById(\'schedule_time\')
+                        ];
+                        hide_func=function() {
+                            document.getElementById(\'recurrance_days\').disabled=(d_ob[0].value!=\'\' || d_ob[1].value!=\'\');
+                        };
+                        d_ob[0].onchange=hide_func;
+                        d_ob[1].onchange=hide_func;
+                    }
+                    hide_func();
+                ';
             }
         }
 
@@ -249,7 +281,7 @@ class Module_admin_backup
             $rows = new Tempcode();
             foreach ($entries as $entry) {
                 $delete_url = build_url(array('page' => '_SELF', 'type' => 'confirm_delete', 'file' => $entry['file']), '_SELF');
-                $link = get_custom_base_url() . '/exports/backups/' . $entry['file'];
+                $url = get_custom_base_url() . '/exports/backups/' . $entry['file'];
 
                 $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '23a8b5d5d345d8fdecc74b01fe5a9042', 'NAME' => $entry['file'], 'URL' => $delete_url));
 
@@ -269,7 +301,7 @@ class Module_admin_backup
                         break;
                 }
 
-                $rows->attach(columned_table_row(array(hyperlink($link, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date($entry['mtime'])), $actions), true));
+                $rows->attach(columned_table_row(array(hyperlink($url, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date($entry['mtime'])), $actions), true));
             }
 
             $files = do_template('COLUMNED_TABLE', array('_GUID' => '726070efa71843236e975d87d4a17dae', 'HEADER_ROW' => $header_row, 'ROWS' => $rows));
@@ -304,7 +336,7 @@ class Module_admin_backup
         }
 
         if (addon_installed('calendar')) {
-            $schedule = get_input_date('schedule');
+            $schedule = post_param_date('schedule');
             if (!is_null($schedule)) {
                 set_value('backup_schedule_time', strval($schedule));
                 set_value('backup_recurrance_days', strval(post_param_integer('recurrance_days', 0)));

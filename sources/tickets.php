@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,28 @@
  * @copyright  ocProducts Ltd
  * @package    tickets
  */
+
+/**
+ * Find the active support user. Supports the "support_operator" option, for anonymising support.
+ *
+ * @return MEMBER Member ID
+ */
+function get_active_support_user()
+{
+    $member_id = get_member();
+
+    if (has_privilege($member_id, 'support_operator')) {
+        $support_operator = get_option('support_operator');
+        if (!empty($support_operator)) {
+            $_member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($support_operator);
+            if (!is_null($_member_id)) {
+                $member_id = $_member_id;
+            }
+        }
+    }
+
+    return $member_id;
+}
 
 /**
  * Build a list of ticket types.
@@ -110,17 +132,17 @@ function check_ticket_access($id)
  * Get the forum ID for a given ticket type and member, taking the ticket_member_forums and ticket_type_forums options
  * into account.
  *
- * @param  ?AUTO_LINK $member The member ID (null: no member)
+ * @param  ?AUTO_LINK $member_id The member ID (null: no member)
  * @param  ?integer $ticket_type_id The ticket type (null: all ticket types)
  * @param  boolean $create Create the forum if it's missing
- * @param  boolean $silent_error_handling Whether to skip showing errors, returning NULL instead
+ * @param  boolean $silent_error_handling Whether to skip showing errors, returning null instead
  * @return ?AUTO_LINK Forum ID (null: not found)
  */
-function get_ticket_forum_id($member = null, $ticket_type_id = null, $create = false, $silent_error_handling = false)
+function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create = false, $silent_error_handling = false)
 {
     static $fid_cache = array();
-    if (isset($fid_cache[$member][$ticket_type_id])) {
-        return $fid_cache[$member][$ticket_type_id];
+    if (isset($fid_cache[$member_id][$ticket_type_id])) {
+        return $fid_cache[$member_id][$ticket_type_id];
     }
 
     $root_forum = get_option('ticket_forum_name');
@@ -144,8 +166,8 @@ function get_ticket_forum_id($member = null, $ticket_type_id = null, $create = f
 
     $category_id = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_forum_grouping_id', array('id' => $fid));
 
-    if ((!is_null($member)) && (get_option('ticket_member_forums') == '1')) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+    if ((!is_null($member_id)) && (get_option('ticket_member_forums') == '1')) {
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $rows = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id'), array('f_parent_forum' => $fid, 'f_name' => $username), '', 1);
         if (count($rows) == 0) {
             $fid = cns_make_forum($username, do_lang('SUPPORT_TICKETS_FOR_MEMBER', $username), $category_id, null, $fid);
@@ -167,7 +189,7 @@ function get_ticket_forum_id($member = null, $ticket_type_id = null, $create = f
         }
     }
 
-    $fid_cache[$member][$ticket_type_id] = $fid;
+    $fid_cache[$member_id][$ticket_type_id] = $fid;
 
     return $fid;
 }

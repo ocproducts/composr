@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    oc_gifts
+ * @package    giftr
  */
 
 require_code('crud_module');
@@ -42,7 +42,7 @@ class Module_admin_giftr extends Standard_crud_module
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 5;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -66,27 +66,27 @@ class Module_admin_giftr extends Standard_crud_module
             ));
 
             $default_gifts = array();
-            $default_gifts[] = array('name' => 'A Bouquet of Flowers', 'image' => 'uploads/giftr_addon/bouquet_of_flowers.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A bag of Money!', 'image' => 'uploads/giftr_addon/Money_Bag_Icon.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A glass of Beer', 'image' => 'uploads/giftr_addon/glass_of_beer.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Birthday Cake, Happy Birthday!!', 'image' => 'uploads/giftr_addon/Birthday_cake.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Football', 'image' => 'uploads/giftr_addon/3Football_%28soccer%29.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'Some Party Streamers, Lets Celebrate!!', 'image' => 'uploads/giftr_addon/ghirlande_festa.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Love Heart', 'image' => 'uploads/giftr_addon/love_heart.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Cocktail', 'image' => 'uploads/giftr_addon/hrum_cocktail.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'Some Balloons', 'image' => 'uploads/giftr_addon/jean_victor_balin_balloons.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A four leaf Clover, Good Luck!', 'image' => 'uploads/giftr_addon/liftarn_Four_leaf_clover.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Green hat', 'image' => 'uploads/giftr_addon/liftarn_Green_hat.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Glass of Wine', 'image' => 'uploads/giftr_addon/2Muga_Glass_of_red_wine.png', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Valentine\'s day Kiss', 'image' => 'uploads/giftr_addon/reporter_Happy_Valentine.gif', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Drum kit', 'image' => 'uploads/giftr_addon/Drum_Kit_3.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'An Electric Guitar', 'image' => 'uploads/giftr_addon/electric_guitar.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Piano', 'image' => 'uploads/giftr_addon/piano.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A single red Rose', 'image' => 'uploads/giftr_addon/red-rose.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'Some Champagne', 'image' => 'uploads/giftr_addon/Champagne.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Kiss', 'image' => 'uploads/giftr_addon/2a%20kiss.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Love note', 'image' => 'uploads/giftr_addon/love%20note.jpg', 'price' => 10, 'enabled' => 1);
-            $default_gifts[] = array('name' => 'A Santa hat', 'image' => 'uploads/giftr_addon/Santa_Hat.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Bouquet of Flowers', 'image' => 'data_custom/images/giftr/bouquet_of_flowers.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A bag of Money!', 'image' => 'data_custom/images/giftr/Money_Bag_Icon.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A glass of Beer', 'image' => 'data_custom/images/giftr/glass_of_beer.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Birthday Cake, Happy Birthday!!', 'image' => 'data_custom/images/giftr/Birthday_cake.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Football', 'image' => 'data_custom/images/giftr/3Football_%28soccer%29.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'Some Party Streamers, Lets Celebrate!!', 'image' => 'data_custom/images/giftr/ghirlande_festa.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Love Heart', 'image' => 'data_custom/images/giftr/love_heart.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Cocktail', 'image' => 'data_custom/images/giftr/hrum_cocktail.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'Some Balloons', 'image' => 'data_custom/images/giftr/jean_victor_balin_balloons.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A four leaf Clover, Good Luck!', 'image' => 'data_custom/images/giftr/liftarn_Four_leaf_clover.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Green hat', 'image' => 'data_custom/images/giftr/liftarn_Green_hat.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Glass of Wine', 'image' => 'data_custom/images/giftr/2Muga_Glass_of_red_wine.png', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Valentine\'s day Kiss', 'image' => 'data_custom/images/giftr/reporter_Happy_Valentine.gif', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Drum kit', 'image' => 'data_custom/images/giftr/Drum_Kit_3.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'An Electric Guitar', 'image' => 'data_custom/images/giftr/electric_guitar.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Piano', 'image' => 'data_custom/images/giftr/piano.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A single red Rose', 'image' => 'data_custom/images/giftr/red-rose.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'Some Champagne', 'image' => 'data_custom/images/giftr/Champagne.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Kiss', 'image' => 'data_custom/images/giftr/2a%20kiss.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Love note', 'image' => 'data_custom/images/giftr/love%20note.jpg', 'price' => 10, 'enabled' => 1);
+            $default_gifts[] = array('name' => 'A Santa hat', 'image' => 'data_custom/images/giftr/Santa_Hat.jpg', 'price' => 10, 'enabled' => 1);
             foreach ($default_gifts as $dg) {
                 $GLOBALS['SITE_DB']->query_insert('giftr', $dg + array('category' => do_lang('DEFAULT')));
             }
@@ -129,7 +129,7 @@ class Module_admin_giftr extends Standard_crud_module
         $GLOBALS['SITE_DB']->drop_table_if_exists('members_gifts');
 
         //require_code('files');
-        //deldir_contents(get_custom_file_base().'/uploads/giftr_addon',true);
+        //deldir_contents(get_custom_file_base() . '/uploads/giftr_addon', true);
     }
 
     /**
@@ -138,7 +138,7 @@ class Module_admin_giftr extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -151,10 +151,10 @@ class Module_admin_giftr extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -249,7 +249,7 @@ class Module_admin_giftr extends Standard_crud_module
         }
 
         require_code('templates_map_table');
-        return map_table(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
+        return map_table_screen(get_screen_title('VIEW_GIFT'), array('NAME' => $name, 'IMAGE' => $image, 'PRICE' => integer_format($price), 'CATEGORY' => $category, 'ENABLED' => $enabled));
     }
 
     public function get_form_fields($id = null, $name = '', $category = '', $image = '', $price = 10, $enabled = 1)

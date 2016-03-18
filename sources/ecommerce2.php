@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,11 +34,15 @@
  * @param  ?LONG_TEXT $mail_start The text of the e-mail to send out when a subscription is start (null: default)
  * @param  ?LONG_TEXT $mail_end The text of the e-mail to send out when a subscription is ended (null: default)
  * @param  ?LONG_TEXT $mail_uhoh The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)
- * @param  array $mails Other e-mails to send
+ * @param  ?array $mails Other e-mails to send (null: none)
  * @return AUTO_LINK The ID
  */
-function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails)
+function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
+    if (is_null($mails)) {
+        $mails = array();
+    }
+
     require_code('global4');
     prevent_double_submit('ADD_USERGROUP_SUBSCRIPTION', null, $title);
 
@@ -76,7 +80,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('usergroup_subscription', strval($id), null, null, true);
+        generate_resource_fs_moniker('usergroup_subscription', strval($id), null, null, true);
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -110,7 +114,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'usergroup_subscription'));
     }
     $myrow = $rows[0];
 
@@ -122,9 +126,11 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
         foreach ($subscriptions as $sub) {
             $member_id = $sub['s_member_id'];
-            if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
-                $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
-                $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
+            if ((get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group'))) {
+                    $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
+                    $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
+                }
             } else {
                 $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id), '', 1);
                 cns_add_member_to_group($member_id, $group_id);
@@ -193,7 +199,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('usergroup_subscription', strval($id));
+        generate_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
@@ -212,7 +218,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'usergroup_subscription'));
     }
     $myrow = $rows[0];
     $new_group = $myrow['s_group_id'];
@@ -267,7 +273,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('usergroup_subscription', strval($id));
+        expunge_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;

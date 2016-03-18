@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,12 +20,15 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__commandr()
 {
     require_lang('commandr');
     require_code('users_active_actions');
     require_code('commandr_fs');
+    require_code('xml');
 }
 
 /**
@@ -33,11 +36,11 @@ function init__commandr()
  */
 function commandr_script()
 {
-    $cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
 
     if ($cli) {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
     }
 
@@ -55,7 +58,7 @@ function commandr_script()
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        if (!has_actual_page_access(get_member(), 'admin_commandr')) {
+        if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
             fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
         }
     }
@@ -127,8 +130,8 @@ function commandr_script()
                 $temp = new Virtual_shell(trim($command));
                 $temp->output_xml();
             } catch (Exception $e) {
-                header('HTTP/1.0 200 Ok');
-                header('Content-type: text/xml; charset=' . get_charset());
+                @header('HTTP/1.0 200 Ok');
+                @header('Content-type: text/xml; charset=' . get_charset());
                 $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
                     <response>
                     	<result>
@@ -258,8 +261,6 @@ class Virtual_shell
      */
     public function output_xml()
     {
-        require_code('xml');
-
         if (count($this->parsed_input) < 1) {
             return false;
         }
@@ -282,7 +283,6 @@ class Virtual_shell
 
         // Make the HTML not use non-XML entities
         $html_bak = $this->output[STREAM_STDHTML];
-        require_code('xml');
         $this->output[STREAM_STDHTML] = convert_bad_entities($this->output[STREAM_STDHTML], get_charset());
 
         $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
@@ -315,7 +315,7 @@ class Virtual_shell
 <response>
     <result>
         <command>' . xmlentities($this->current_input) . '</command>
-        <stdcommand>' . $this->output[STREAM_STDCOMMAND] . '</stdcommand>
+        <stdcommand>' . xmlentities($this->output[STREAM_STDCOMMAND]) . '</stdcommand>
         <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . $this->output[STREAM_STDHTML] . '</div></stdhtml>
         <stdout>' . xmlentities($this->output[STREAM_STDOUT]) . '</stdout>
         <stderr>' . xmlentities($this->output[STREAM_STDERR]) . '</stderr>
@@ -1131,13 +1131,13 @@ class Virtual_shell
     protected function _array_to_html($array)
     {
         // Convert an array to an HTML format
-        $output = new Tempcode();
+        $output = array();
         $key = mixed();
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $value = protect_from_escaping($this->_array_to_html($value));
             }
-            $output->attach(do_template('COMMANDR_ARRAY_ELEMENT', array('_GUID' => '18c9700c05fbe9c8b45f454376deda05', 'KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'NULL' : (is_object($value) ? $value : strval($value))))));
+            $output[] = array('KEY' => is_string($key) ? $key : strval($key), 'VALUE' => is_string($value) ? $value : (is_null($value) ? 'null' : (is_object($value) ? $value : strval($value))));
         }
         return do_template('COMMANDR_ARRAY', array('_GUID' => 'ab75cdb77fa797d2e42185b51e34d857', 'ELEMENTS' => $output));
     }
@@ -1189,11 +1189,15 @@ class Virtual_shell
 
         // NOTE: Variables throughout this function use the $commandr_ prefix to avoid conflicts with any created through executing PHP commands from the CL
         if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+            // Reload settings...
+
             if (array_key_exists('commandr_state', $_COOKIE)) {
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state'] = stripslashes($_COOKIE['commandr_state']);
                 }
-                $commandr_state_diff = @unserialize(base64_decode($_COOKIE['commandr_state']));
+                $_commandr_state_diff = base64_decode($_COOKIE['commandr_state']);
+                secure_serialized_data($_commandr_state_diff);
+                $commandr_state_diff = @unserialize($_commandr_state_diff);
                 if (!is_array($commandr_state_diff)) {
                     $commandr_state_diff = array();
                 }
@@ -1205,19 +1209,28 @@ class Virtual_shell
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_lang'] = stripslashes($_COOKIE['commandr_state_lang']);
                 }
-                $commandr_state_lang_diff = @unserialize(base64_decode($_COOKIE['commandr_state_lang']));
+                $_commandr_state_lang_diff = base64_decode($_COOKIE['commandr_state_lang']);
+                secure_serialized_data($_commandr_state_lang_diff);
+                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff);
                 if (!is_array($commandr_state_lang_diff)) {
                     $commandr_state_lang_diff = array();
                 }
             } else {
                 $commandr_state_lang_diff = array();
             }
+            foreach ($commandr_state_lang_diff as $commandr_lang) {
+                if ((file_exists(get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $commandr_lang . '.ini')) || (file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $commandr_lang . '.ini'))) {
+                    require_lang($commandr_lang, null, null, true);
+                }
+            }
 
             if (array_key_exists('commandr_state_code', $_COOKIE)) {
                 if (get_magic_quotes_gpc()) {
                     $_COOKIE['commandr_state_code'] = stripslashes($_COOKIE['commandr_state_code']);
                 }
-                $commandr_state_code_diff = @unserialize(base64_decode($_COOKIE['commandr_state_code']));
+                $_commandr_state_code_diff = base64_decode($_COOKIE['commandr_state_code']);
+                secure_serialized_data($_commandr_state_code_diff);
+                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff);
                 if (!is_array($commandr_state_code_diff)) {
                     $commandr_state_code_diff = array();
                 }
@@ -1230,6 +1243,9 @@ class Virtual_shell
                 if (!is_scalar($commandr_val)) {
                     continue;
                 }
+                if (preg_match('#^\w+$#', $commandr_key) != 0) {
+                    continue;
+                }
 
                 if (is_bool($commandr_val)) {
                     eval('$' . $commandr_key . '=' . ($commandr_val ? 'true' : 'false') . ';');
@@ -1239,18 +1255,14 @@ class Virtual_shell
                     eval('$' . $commandr_key . '=' . strval($commandr_val) . ';');
                 }
             }
-
-            foreach ($commandr_state_lang_diff as $commandr_lang) {
-                if ((file_exists(get_custom_file_base() . '/lang_custom/' . fallback_lang() . '/' . $commandr_lang . '.ini')) || (file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $commandr_lang . '.ini'))) {
-                    require_lang($commandr_lang, null, null, true);
-                }
-            }
-
             foreach ($commandr_state_code_diff as $commandr_code) {
                 if ((file_exists(get_file_base() . '/sources_custom/' . $commandr_code . '.php')) && (!in_safe_mode()) || (file_exists(get_file_base() . '/sources/' . $commandr_code . '.php'))) {
                     require_code($commandr_code);
                 }
             }
+
+            // Run command...
+
             require_code('database_action');
             require_code('config2');
 
@@ -1267,21 +1279,39 @@ class Virtual_shell
             }
             ob_end_clean();
 
-            $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
-            $commandr_env_after = get_defined_vars();
-            $commandr_env_changes = array_diff(array_keys($commandr_env_after), $commandr_env_neglect);
-            $commandr_state_diff = array();
-            foreach ($commandr_env_changes as $commandr_change) {
-                if ((substr($commandr_change, 0, 6) != 'commandr_') && (is_scalar($commandr_env_after[$commandr_change]))) {
-                    $commandr_state_diff[$commandr_change] = $commandr_env_after[$commandr_change];
-                }
-            }
+            // Save settings...
 
             $cookie_size = strlen(serialize($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
-                cms_setcookie('commandr_state', base64_encode(serialize($commandr_state_diff)));
-                cms_setcookie('commandr_state_code', base64_encode(serialize(array_keys($GLOBALS['REQUIRED_CODE']))));
-                cms_setcookie('commandr_state_lang', base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED']))));
+                // Variables
+                $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
+                $commandr_env_after = get_defined_vars();
+                $commandr_env_changes = array_diff(array_keys($commandr_env_after), $commandr_env_neglect);
+                $commandr_state_diff = array();
+                foreach ($commandr_env_changes as $commandr_change) {
+                    if ((substr($commandr_change, 0, 6) != 'commandr_') && (is_scalar($commandr_env_after[$commandr_change]))) {
+                        $commandr_state_diff[$commandr_change] = $commandr_env_after[$commandr_change];
+                    }
+                }
+                $data = base64_encode(serialize($commandr_state_diff));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state', $data);
+                }
+
+                // Code includes
+                $newly_required = array_diff(array_keys($GLOBALS['REQUIRED_CODE']), $already_required);
+                $data = base64_encode(serialize($newly_required));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_code', $data);
+                }
+
+                // Lang file includes
+                $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
+                if (strlen($data) < 4096) {
+                    cms_setcookie('commandr_state_lang', $data);
+                }
+
+
                 // ^ We use base64 encoding to work around inane modsecurity restrictions. We can't always work around modsecurity (GET/POST encoding would be too messy), but for cookies it is an easy win
             } else {
                 cms_eatcookie('commandr_state');
@@ -1292,6 +1322,8 @@ class Virtual_shell
             $commandr_eval_output = true;
             $commandr_output = '';
         }
+
+        // Put out output...
 
         $this->output[STREAM_STDCOMMAND] = '';
         $this->output[STREAM_STDHTML] = '';

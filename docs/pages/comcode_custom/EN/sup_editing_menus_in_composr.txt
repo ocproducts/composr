@@ -1,0 +1,42 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Editing Menus in Composr[/title]
+
+[media width="150" description="Choosing a menu to edit" float="right"]data_custom/images/docs/sup_editing_menus_in_composr/2345b8f8816ee40d6bd1f39cf73bf545.jpg[/media]
+Your primary site menu is how most site visitors will find their way around your website and as such it's important you are able to edit it to reflect the key areas of your Composr website. This tutorial will guide you through from creating a new menu from scratch and populating it with links.
+
+First you will need to log in to your Admin Zone. Menu management can be found in the Structure section of the Admin Zone. You can now choose to edit one of the existing menus which are used within Composr. The main menu for your navigation (the one at the top) is called [tt]main_menu[/tt] as standard in Composr. But for the purpose of this tutorial we will create a new menu from scratch.
+
+I am calling this [tt]new_menu[/tt]. Once you have given the menu a name click Choose. You now have a blank menu screen. The menus are created in a tree structure which means you can add sub sections or branches below the main menu items. First level items will be seen as normal on the navigation. Secondary and tertiary levels of menu will usually only appear when the primary part of the menu is hovered over or expanded.
+
+You could for example have the primary navigation dedicated to the subject zones you have set up and then the sub menus could be links to related elements within that section. For example on a site I have I use the Zones as the primary navigation points and then have a link to the related forum section below each section. For example it could be something like this:
+ - Home
+ - Music Zone
+  - Music Forum
+ - Sport Zone
+  - Sport forum
+
+Begin by adding a first branch. It's considered good practice to add the first link as a link back to the home page. Once you click on the Caption to give it a name you will be shown some more options which are:
+[list]
+[*] [b]Link[/b] -- where the menu item goes to
+[*] [b]Options[/b] -- whether the item opens in a new window and whether Composr will hide menu items where a user doesn't have permission to view them. This is useful as it means you can have a Staff section linked from the main navigation which will only appear to those who can view it
+[*] [b]Branch type[/b] -- This is set as page as standard which means you won't be able to set sub branches. There is also contracted and expanded branch which will both allow you to add sub sections to the primary navigation items
+[/list]
+
+There is also an Advanced section which allows you to set tooltips when the menu item is hovered over, set menu images for the menu item and set match key restrictions.
+
+[media width="150" description="Choosing links from the Sitemap" float="right"]data_custom/images/docs/sup_editing_menus_in_composr/e4887d7c4a51e36c25ba6e827a0c6001.jpg[/media]
+To choose where the link is going you can either add a manual URL, add a manual page-link, or use the tree structure to select a link.
+
+For example to manually set a page-link to the start page in the [tt]music[/tt] zone we would enter [tt]music:start[/tt]. A [tt]news[/tt] page within the [tt]music[/tt] zone would be [tt]music:news[/tt]. To link to the Home page you can just use a colon ([tt]:[/tt]).
+
+It is easiest though just to use the tree structure on the right of the page to select where the link should go to.
+
+Set the Options whether it opens in a new window and whether permissions should be checked. I tend to use the Check permissions option on most menu items in case I make a zone private in future as it will stop me having to edit the menu again.
+
+Choose the Branch type. If the top level is set as an Expanded or Contracted branch you will then have the option to add sub sections to each menu item in the same way you added this first item. Once you have gone through this process to add all of your menu items click Save.
+
+If you want to edit the menu once it is set as the main navigation you can either go through the Admin Zone or when you are logged in as an admin you can hover over the menu and an edit link will appear to the right side of the menu which will look like this:
+[media description="The link to edit a menu" thumb="0"]data_custom/images/docs/sup_editing_menus_in_composr/9a1be81076fbaada971ead4643d63239.png[/media]
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Structure and navigation,novice}{$SET,tutorial_add_date,Jul 2014}{$SET,tutorial_summary,Your primary site menu is how most site visitors will find their way around your website and as such it's important you are able to edit it.}[block]main_tutorial_rating[/block]

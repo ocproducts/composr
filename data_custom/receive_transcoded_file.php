@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    transcoder
  */
 
 // Find Composr base directory, and chdir into it
@@ -64,13 +64,13 @@ function run()
     http_download_file($_GET['url'], null, false, false, 'Composr', null, null, null, null, null, $file_handle, null, null, 6.0);
     fclose($file_handle);
 
-    // move the old media file to the archive directory - '/uploads/'.$type.'/archive/'
+    // move the old media file to the archive directory - '/uploads/' . $type . '/archive/'
     $new_url = 'uploads/' . $type . '/' . rawurlencode($file);
     if (isset($get_old_file[0]['url']) && is_string($get_old_file[0]['url']) && $get_old_file[0]['url'] != $new_url && strlen($get_old_file[0]['url']) > 0) {
         $movedir = dirname(str_replace('/uploads/' . $type . '/', '/uploads/' . $type . '_archive_addon/', str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url'])));
         @mkdir($movedir, 0777);
         require_code('files');
-        fix_permissions($movedir, 0777);
+        fix_permissions($movedir);
         rename(str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url']), str_replace('/uploads/' . $type . '/', '/uploads/' . $type . '_archive_addon/', str_replace('\\', '/', get_custom_file_base()) . '/' . rawurldecode($get_old_file[0]['url'])));
     }
 

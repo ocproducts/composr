@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,dyn_comcode}
 
-<div class="box box___standardbox_accordion accordion_trayitem"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
+<div class="box box___standardbox_accordion accordion_trayitem{+START,IF_PASSED,CLASS} {CLASS*}{+END}"{+START,IF_NON_EMPTY,{WIDTH}} style="width: {WIDTH*}"{+END}>
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h3 class="toggleable_tray_title" onkeypress="this.onclick(event);" onclick="this.getElementsByTagName('a')[0].onclick(event);">
 			{+START,IF_NOT_IN_ARRAY,OPTIONS,tray_open}

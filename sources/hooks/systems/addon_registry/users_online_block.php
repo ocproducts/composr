@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_users_online_block
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -101,7 +102,6 @@ class Hook_addon_registry_users_online_block
             'sources/hooks/systems/config/usersonline_show_newest_member.php',
             'sources/hooks/systems/addon_registry/users_online_block.php',
             'themes/default/templates/BLOCK_SIDE_USERS_ONLINE.tpl',
-            'themes/default/templates/BLOCK_SIDE_USERS_ONLINE_USER.tpl',
             'sources/blocks/side_users_online.php',
         );
     }
@@ -114,7 +114,6 @@ class Hook_addon_registry_users_online_block
     public function tpl_previews()
     {
         return array(
-            'templates/BLOCK_SIDE_USERS_ONLINE_USER.tpl' => 'block_side_users_online',
             'templates/BLOCK_SIDE_USERS_ONLINE.tpl' => 'block_side_users_online'
         );
     }
@@ -128,37 +127,32 @@ class Hook_addon_registry_users_online_block
      */
     public function tpl_preview__block_side_users_online()
     {
-        $out = new Tempcode();
+        $online = array();
         foreach (placeholder_array() as $k => $v) {
-            $out->attach(do_lorem_template('BLOCK_SIDE_USERS_ONLINE_USER', array(
+            $online[] = array(
                 'URL' => placeholder_url(),
                 'USERNAME' => lorem_phrase(),
                 'COLOUR' => lorem_word(),
                 'MEMBER_ID' => placeholder_id(),
                 'AVATAR_URL' => placeholder_image_url(),
-            )));
+            );
         }
 
         $newest = new Tempcode();
-        $birthdays = new Tempcode();
-        foreach (placeholder_array() as $k => $v) {
-            $newest->attach(lorem_phrase());
 
-            $birthday = do_lorem_template('CNS_USER_MEMBER', array(
-                'FIRST' => $birthdays->is_empty(),
-                'COLOUR' => lorem_word(),
+        $birthdays = array();
+        foreach (placeholder_array() as $k => $v) {
+            $birthdays[] = array(
                 'AGE' => placeholder_number(),
                 'PROFILE_URL' => placeholder_url(),
-                'USERNAME' => lorem_phrase(),
-                'MEMBER_ID' => placeholder_id(),
-                'AT' => lorem_phrase(),
-            ));
-            $birthdays->attach($birthday);
+                'USERNAME' => lorem_word(),
+                'BIRTHDAY_URL' => placeholder_url(),
+            );
         }
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_USERS_ONLINE', array(
-                'CONTENT' => $out,
+                'ONLINE' => $online,
                 'GUESTS' => placeholder_number(),
                 'MEMBERS' => placeholder_number(),
                 '_GUESTS' => lorem_phrase(),

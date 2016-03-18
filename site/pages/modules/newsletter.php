@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Module_newsletter
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 11;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -117,7 +117,7 @@ class Module_newsletter
                 'id' => '*AUTO',
                 'd_inject_time' => 'TIME',
                 'd_subject' => 'SHORT_TEXT',
-                'd_message' => 'LONG_TRANS__COMCODE',
+                'd_message' => 'LONG_TEXT',
                 'd_html_only' => 'BINARY',
                 'd_to_email' => 'SHORT_TEXT',
                 'd_to_name' => 'SHORT_TEXT',
@@ -155,7 +155,11 @@ class Module_newsletter
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 11)) {
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
+
             $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', '#d_message');
+            $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', '#d_message', array('d_message'));
         }
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 11)) {
@@ -169,13 +173,15 @@ class Module_newsletter
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ($GLOBALS['SITE_DB']->query_select_value('newsletters', 'COUNT(*)') == 0) {
-            return array();
+        if ($check_perms) {
+            if ($GLOBALS['SITE_DB']->query_select_value('newsletters', 'COUNT(*)') == 0) {
+                return array();
+            }
         }
         return array(
             'browse' => array('NEWSLETTER_JOIN', 'menu/site_meta/newsletters'),
@@ -185,7 +191,7 @@ class Module_newsletter
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -233,6 +239,8 @@ class Module_newsletter
      */
     public function run()
     {
+        require_code('newsletter');
+
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
@@ -373,7 +381,7 @@ class Module_newsletter
         if ($password != trim(post_param_string('password_confirm', ''))) {
             warn_exit(make_string_tempcode(escape_html(do_lang('PASSWORD_MISMATCH'))));
         }
-        $lang = post_param_string('lang', user_lang());
+        $language = post_param_string('lang', user_lang());
         if (!is_email_address($email)) {
             return warn_screen($this->title, do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
@@ -404,25 +412,19 @@ class Module_newsletter
                 warn_exit(do_lang_tempcode('NOT_NEWSLETTER_SUBSCRIBER'));
             }
 
-            $code_confirm = is_null($old_confirm) ? mt_rand(1, 32000) : $old_confirm;
+            $code_confirm = is_null($old_confirm) ? mt_rand(1, mt_getrandmax()) : $old_confirm;
             if ($password == '') {
                 $password = get_rand_password();
             }
             $salt = produce_salt();
             if (is_null($old_confirm)) {
-                $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
-                    'n_forename' => $forename,
-                    'n_surname' => $surname,
-                    'join_time' => time(),
-                    'language' => $lang,
-                    'email' => $email,
-                    'code_confirm' => $code_confirm,
-                    'pass_salt' => $salt,
-                    'the_password' => ratchet_hash($password, $salt, PASSWORD_SALT),
-                ));
+                add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt, PASSWORD_SALT), $salt, $language, $forename, $surname);
+
                 $this->_send_confirmation($email, $code_confirm, $password, $forename, $surname);
             } else {
-                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('n_forename' => $forename, 'n_surname' => $surname, 'join_time' => time(), 'language' => $lang), array('email' => $email), '', 1);
+                $id = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'id', array('email' => $email));
+                edit_newsletter_subscriber($id, $email, time(), null, null, null, $language, $forename, $surname);
+
                 $this->_send_confirmation($email, $code_confirm, null, $forename, $surname);
             }
             $message = do_lang_tempcode('NEWSLETTER_CONFIRM', escape_html($email));
@@ -459,7 +461,8 @@ class Module_newsletter
 
             // Update name etc if it's an edit
             if ((!is_null($old_confirm)) && ($old_confirm == 0)) {
-                $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('n_forename' => $forename, 'n_surname' => $surname), array('email' => $email), '', 1);
+                $id = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'id', array('email' => $email));
+                edit_newsletter_subscriber($id, $email, null, null, null, null, null, $forename, $surname);
             }
         }
 
@@ -477,17 +480,17 @@ class Module_newsletter
         require_code('crypt');
 
         $email = trim(get_param_string('email'));
-        $lang = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
+        $language = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
         $salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
         $new_password = produce_salt();
         $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('the_password' => ratchet_hash($new_password, $salt, PASSWORD_SALT)), array('email' => $email), '', 1);
 
-        $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $lang);
+        $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $language);
 
         require_code('mail');
         mail_wrap(get_option('newsletter_title'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
-        return inform_screen($this->title, protect_from_escaping(do_lang('NEWSLETTER_PASSWORD_BEEN_RESET', null, null, null, $lang)));
+        return inform_screen($this->title, protect_from_escaping(do_lang('NEWSLETTER_PASSWORD_BEEN_RESET', null, null, null, $language)));
     }
 
     /**

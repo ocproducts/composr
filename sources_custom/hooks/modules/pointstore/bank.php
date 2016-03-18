@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -52,7 +52,7 @@ class Hook_pointstore_bank
         $_bank_dividend = get_option('bank_dividend');
         // IDEA: Make 30 days a config option too, or even have multiple products?
         // IDEA: Send email saying bank returned money?
-        // IDEA: Have the bank do marketing to people? http://compo.sr/forum/topicview/browse/addons/bankr_4.htm?redirected=1#post_87711
+        // IDEA: Have the bank do marketing to people?
         $bank_dividend = intval($_bank_dividend);
 
         $title = get_screen_title('BANKING');

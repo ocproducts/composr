@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    user_simple_csv_sync
+ */
 
 function init__user_import()
 {
@@ -32,8 +38,8 @@ function init__user_import()
 
 function do_user_import()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     if (!USER_IMPORT_TEST_MODE) {
@@ -115,7 +121,7 @@ function do_user_import()
                 }
             } else {
                 // Edit
-                cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
+                cns_edit_member($member_id, $email_address, null, $dob_day, $dob_month, $dob_year, $timezone, $primary_group, $custom_fields, null, null, null, null, null, null, null, null, $username, $password, null, null, null, null, null, null, null, null, null, $photo_url, null, null, null, true);
                 require_code('cns_groups_action2');
                 if (!is_null($groups)) {
                     $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id);

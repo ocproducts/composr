@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,7 +35,7 @@ class Hook_profiles_tabs_comments
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return array A tuple: The tab title, the tab contents, the suggested tab order, the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -54,8 +54,13 @@ class Hook_profiles_tabs_comments
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
         if (is_null($forum_id)) {
             require_code('cns_forums_action');
+
             $forum_grouping_id = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
-            $forum_id = cns_make_forum($forum_name, '', $forum_grouping_id, array(), db_get_first_id()/*parent*/, 20/*position*/, 1, 1, '', '', '', 'last_post', 1/*is threaded*/);
+
+            $val = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'AVG(f_allows_anonymous_posts)');
+            $allows_anonymous_posts = is_null($val) ? 1 : intval(round($val));
+
+            $forum_id = cns_make_forum($forum_name, '', $forum_grouping_id, array(), db_get_first_id()/*parent*/, 20/*position*/, 1, 1, '', '', '', 'last_post', 1/*is threaded*/, $allows_anonymous_posts);
         }
 
         // The member who 'owns' the tab should be receiving notifications
@@ -69,7 +74,7 @@ class Hook_profiles_tabs_comments
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notifications_enabled', 'id', $main_map);
         if (is_null($test)) {
             $GLOBALS['SITE_DB']->query_insert('notifications_enabled', array(
-                                                                           'l_setting' => A_INSTANT_EMAIL,
+                                                                           'l_setting' => _find_member_statistical_notification_type($member_id_of, 'comment_posted'),
                                                                        ) + $main_map);
         }
 

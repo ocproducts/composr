@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -15,8 +15,8 @@
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-$_sites_url = build_url(array('page' => 'sites'), 'site');
-$sites_url = $_sites_url->evaluate();
+$_download_page_url = build_url(array('page' => 'download'), 'site');
+$download_page_url = $_download_page_url->evaluate();
 
 $_importing_tutorial_url = build_url(array('page' => 'tut_importer'), 'docs');
 $importing_tutorial_url = $_importing_tutorial_url->evaluate();
@@ -25,15 +25,15 @@ $featuretree = array(
     // Ways to help (using same code, bit of a hack)
     'help' => array(
         'evangelism' => array(
-            'Evangelism',
+            'Evangelism (outreach)',
             array(
-                array('Twitter', 'Follow [url="https://twitter.com/composr_cms"]Composr[/url] on Twitter, and tweet about #composr.'),
-                array('Become a fan of Composr [url="http://www.facebook.com/pages/Composr/80430912569"]on Facebook[/url].'),
-                array('Support us on YouTube', 'Rate and comment on [url="http://www.youtube.com/results?search_query=composr"]our video tutorials[/url] on YouTube.'),
-                array('Vote for Composr', 'Vote/rate and review Composr wherever you see it. [url=http://www.hotscripts.com/listing/composr/]HotScripts[/url] and [url=http://php.opensourcecms.com/scripts/details.php?scriptid=210&name=Composr]OpenSourceCMS[/url] are two places to start.'),
-                array('Post about Composr', 'If you see CMSs compared on other websites and Composr isn\'t mentioned, [page="forum:topicview:browse:10312"]let us know about it[/page]!'),
-                array('Tell a friend', 'Recommend Composr if a friend or your company is looking to make a website.'),
-                array('Mention ocProducts', 'Mention the staff as web developers to help them bring in an income.'),
+                array('Twitter', 'Follow [url="https://twitter.com/composr_cms"]Composr[/url] on Twitter, and tweet about [url="#composr"]https://twitter.com/hashtag/composr[/url]. Answer [url="CMS questions"]twitter.com/search?q=CMS[/url].'),
+                array('Facebook', 'Become a fan of Composr [url="https://www.facebook.com/composrcms"]on Facebook[/url].'),
+                array('Stack Overflow', 'Answer CMS questions on [url="Stack Overflow"]http://stackoverflow.com/search?q=cms[/url].'),
+                array('YouTube', 'Rate and comment on [url="http://youtube.com/c/ComposrCMSvideo"]our video tutorials[/url] on YouTube.'),
+                array('Post about Composr', 'If you see other CMSs compared on other websites, {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Composr evangelism}"]let us know about it[/page]}!'),
+                array('Tell a friend about Composr', '[page=":recommend"]Recommend Composr[/page] if a friend or your company is looking to make a website.'),
+                array('Recommend ocProducts', 'Mention the ocProducts developers to help them bring in an income.'),
                 array('Show our ad', 'You can advertise Composr via the [url="banner ad"]{$BRAND_BASE_URL}/uploads/website_specific/compo.sr/ad-banner.swf.zip[/url] we have created.'),
                 array('Self-initiatives', 'Find any opportunity to share Composr with someone. Write your own article and publish it. Talk about Composr at a conference. Be creative!'),
             ),
@@ -42,35 +42,37 @@ $featuretree = array(
         'skill_based' => array(
             'Skill-based',
             array(
-                array('Make addons', 'If you know PHP, or are learning, [page="forum:topicview:browse:11688"]make and release some addons[/page] for the community. It takes a lot of knowledge, but anybody can learn and it\'s fun, fulfilling and makes you employable.'),
-                array('Theme', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are learning, [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
-                array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to make a new language pack.'),
-                //array('Use Composr for your own clients','Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
-                array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_template=general_feedback:cost=free"]contact us[/page] and we will work to try and make it happen.'),
+                array('Make addons', 'If you know PHP, or want to learn, [page="docs:sup_hardcore_1"]make and release some addons[/page] for the community. It takes a lot of knowledge, but [page="docs:tut_programming"]anybody can learn[/page] and it\'s fun, fulfilling and makes you more employable.'),
+                array('Make themes', 'If you know [abbr="eXtensible HyperText Markup Language"]XHTML[/abbr]/[abbr="Cascading Style Sheets"]CSS[/abbr], or are [page="docs:tut_markup"]learning[/page], [page="docs:tut_releasing_themes"]make and release some themes[/page] for the community. With CSS you can start small and still achieve cool things.'),
+                array('Translate', 'If you know another language, [url="collaborate with others on Transifex"]https://www.transifex.com/organization/ocproducts/dashboard[/url] to [page="docs:tut_intl"]make a new language pack[/page].'),
+                //array('Use Composr for your own clients', 'Are you a professional website developer? Try to start using Composr for your projects &ndash; it provides you [page="site:features"]lots of advantages[/page] to other software, it\'s free, and we want the community and install-base to grow!'),         Removed to save space
+                array('Google Summer of Code', 'If you\'re a student and want to work on Composr for the [url="http://code.google.com/soc/"]Google Summer of Code[/url], please [page="site:tickets:ticket:ticket_type=Partnership"]contact us[/page] and we will work to try and make it happen.'),
+                array('Developing unit tests', 'If you know some PHP you can help us test Composr en-masse. Write [page="docs:codebook_3"]unit tests[/page] (the latest version of the testing framework is in our public [url="git"]https://github.com/ocproducts/composr[/url] repository).'),
+                array('Contribute code', 'Help improve Composr directly by [page=":contact:contribute_code"]contributing code[/page].'),
             ),
         ),
 
         'our_site' => array(
             'On compo.sr',
             array(
-                array('Reach out to other users', 'Particularly new members, try [page="forum:forumview:browse:198"]to welcome them[/page] and help make sure they don\'t get lost. Also [page="forum:topicview:browse:11683"][/page] so people near you can get in contact.'),
+                array('Reach out to other users', '{$COMCODE,[page="forum:forumview:browse:{$FIND_ID_VIA_LABEL,forum,Introduce yourself}"]Welcome new users[/page]} and help make sure people don\'t get lost.[html]<br />[/html]Also {$COMCODE,[page="forum:topicview:browse:{$FIND_ID_VIA_LABEL,topic,Post your location}"]put yourself on the map[/page]} so people near you can get in contact.'),
                 array('Help others on the forum', 'Where you can, answer other user\'s questions.'),
+                array('Hang out in the chat', 'If we have users in the [page="site:chat"]chatroom[/page] 24&times;7 then users (including yourself) are less likely to feel stuck or isolated.'),
                 array('Give gift points', 'If you see other members doing good things, give them some gift points.'),
             ),
         ),
 
         'usability' => array(
-            'Usability and stability',
+            'User experience',
             array(
                 array('Reporting bugs', 'Big or tiny &ndash; we will be happy if you even report typos we make as bugs.'),
                 array('Reporting usability issues', 'We will be happy if you have any concrete suggestions for making reasonably common tasks even a little bit easier.'),
-                array('Write community tutorials', 'Post them on [page="site:wiki"]Wiki+[/page] and the staff may highlight them.'),
-                array('Developing unit tests', 'If you know some PHP you can help us test Composr en-masse. Write unit tests (the latest version of this framework is in our public git repository).'),
+                array('Write tutorials', 'Post them on [url="the tracker"]http://compo.sr/tracker/set_project.php?project_id=7[/url] and the staff may add them to the site.'),
             ),
         ),
 
         'money' => array(
-            'Money',
+            'Financial',
             array(
                 array('Sponsor a feature', 'Do you want something new implemented in Composr? Sponsor little projects listed on the [page="site:tracker"]tracker[/page] (payment is made via buying support credits).'),
             ),
@@ -80,8 +82,7 @@ $featuretree = array(
             'Other',
             array(
                 array('Supply test data for importers', 'Send an SQL-dump to help us create a Composr importer. There\'s no promise of anything, but it helps us a lot to have test data on hand should we decide to make an importer.'),
-                array('Core developers wanted', 'If you ask and demonstrate your skillz and commitment then you can get commit privileges and be fully credited as one of the Composr developers. We just need a standard dual-copyright agreement signing.'),
-                array('Other', 'Do you have some other expertise? Do you have the ability to help the staff make business connections? There are many other ways to support our mission &ndash; be imaginative!'),
+                array('Other', 'Do you have some other expertise? Do you have the ability to help the staff make business connections? There are many other ways to support [page="site:vision"]our mission[/page] &ndash; be imaginative!'),
             ),
         ),
     ),
@@ -114,6 +115,7 @@ $featuretree = array(
                 array('Show different banners to different usergroups'),
                 array('Track banner performance'),
                 array('Use the banner system to display whole sets of sponsor logos'),
+                array('Geotargetting'),
             ),
         ),
         'search' => array(
@@ -228,7 +230,7 @@ $featuretree = array(
                 null, // divider
                 array('Sound effects', 'Members may configure their own'),
                 array('Programmers can write their own chat bots'),
-                array('Download chat rooms logs'),
+                array('Download chatroom logs'),
                 array('Blocking', 'Choose to appear offline to certain members'),
             ),
         ),
@@ -287,6 +289,7 @@ $featuretree = array(
                 array('Priority flagging'),
                 array('Programmers can even use the calendar to schedule website cronjobs'),
                 array('<abbr title="Really Simple Syndication">RSS</abbr> and Atom support', 'Export support, but also support for overlaying news feeds onto the calendar'),
+                array('Geotargetting'),
             ),
         ),
         'news' => array(
@@ -303,6 +306,7 @@ $featuretree = array(
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Easily syndicate to Facebook and Twitter'),
+                array('Geotargetting'),
             ),
         ),
         'quizzes' => array(
@@ -331,6 +335,7 @@ $featuretree = array(
                 array('Automatic thumbnail generation'),
                 array('Import and export easily', 'With <kbd>.zip</kbd> and metadata support'),
                 array('Optional watermarking', 'To guard against thieving swines ;)'),
+                array('Geotargetting'),
             ),
         ),
         'downloads' => array(
@@ -392,18 +397,18 @@ $featuretree = array(
                 array('Versatile', 'You can strip down to a core system, or build up with 3rd-party addons <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Addons" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_addons&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Full <abbr title="Application Programming Interface">API</abbr> documentation <a target="_blank" class="link_exempt no_print" title="(Opens in new window) API documentation" href="{$BRAND_BASE_URL}/docs/api/"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('High coding standards', 'No PHP notices. Type-strict codebase. We use <abbr title="Model View Controller">MVC</abbr>'),
-                array('Free online developers guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:cookbook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Free online developers guide book <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Developers Documentation" href="{$PAGE_LINK*,docs:codebook}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
                 array('Custom field filters', 'For example, restrict news posts to a minimum length'),
                 array('Stack dumps for easy debugging'),
-                array('Synchronise data between staging and live sites using XML <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of XML transfer tool" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_xml_storage&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Synchronise data between staging and live sites using Resource-fs'),
             ),
         ),
         'integration' => array(
             'Integration and conversion',
             array(
                 array('Convert from other software', 'See our <a href="' . escape_html($importing_tutorial_url) . '">importing tutorial</a> for a list of importers'),
-                array('Use an existing member system', 'See our <a href="' . escape_html($sites_url) . '">download page</a> for a list of forum drivers'),
+                array('Use an existing member system', 'See our <a href="' . escape_html($download_page_url) . '">download page</a> for a list of forum drivers'),
                 array('Convert an <abbr title="HyperText Markup Language">HTML</abbr> site into Composr pages'),
                 array('LDAP support for corporate networks (<abbr title="The Composr forum">Conversr</abbr>) <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Help of LDAP usage" href="{$PAGE_LINK*,docs:tut_ldap}"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 null, // divider
@@ -531,7 +536,7 @@ $featuretree = array(
             'Performance',
             array(
                 array('Highly optimised code'),
-                array('Support for <acronym title="Content Delivery Networks">CDN</acronym>s'),
+                array('Support for <abbr title="Content Delivery Networks">CDN</abbr>s'),
                 null, // divider
                 array('Multiple levels of caching'),
                 array('Sophisticated template compiler'),
@@ -567,11 +572,11 @@ $featuretree = array(
             ),
         ),
         'seo' => array(
-            '<acronym title="Search Engine Optimisation">SEO</acronym> <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SEO" href="http://shareddemo.composr.info/index.php?page=sitemap"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
+            '<abbr title="Search Engine Optimisation">SEO</abbr> <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of SEO" href="http://shareddemo.composr.info/index.php?page=sitemap"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>',
             array(
                 array('Support for short URLs'),
                 array('Automatic site-map generation'),
-                array('META data', 'Meta descriptions and keywords for all content. Auto-summarisation.'),
+                array('Metadata', 'Meta descriptions and keywords for all content. Auto-summarisation.'),
                 array('XML Sitemaps'),
                 null, // divider
                 array('Keyword density analysis for your content'),
@@ -627,7 +632,6 @@ $featuretree = array(
                 array('Mass-moderation', 'Perform actions on many posts and topics at once'),
                 array('Post templates', 'Use your forum as a database for record gathering <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post Templates" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_post_templates"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Post preview', 'Read a topics first post directly from the forum-view'),
-                array('Records post edit/delete history <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Post History" href="http://shareddemo.composr.info/adminzone/index.php?admin_cns_history"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Highlight posts as &lsquo;important&rsquo; <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Highlighted Posts" href="http://shareddemo.composr.info/forum/index.php?page=topicview&amp;type=findpost&amp;id=13#post_13"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>', 'Your posts will be <a href="http://www.youtube.com/watch?v=lul-Y8vSr0I" target="_blank" title="(Opens in new window)">high as a kite by then</a>'),
             ),
             'Conversr-only',
@@ -645,7 +649,7 @@ $featuretree = array(
         'forumdrivers' => array(
             'Forum integration',
             array(
-                array('Support for popular products', 'See our <a href="' . escape_html($sites_url) . '">download page</a> for a list of supported forums'),
+                array('Support for popular products', 'See our <a href="' . escape_html($download_page_url) . '">download page</a> for a list of supported forums'),
                 array('Share login credentials', 'Login with the same usernames/passwords'),
                 array('Share usergroups', 'Control website access based on someone\'s usergroup'),
                 array('Emoticon support', 'The emoticons on your forum will also be used on your website. Your members will be happy little <a href="http://www.youtube.com/watch?v=XC73PHdQX04" target="_blank" title="(Opens in new window)">hobbits</a>'),
@@ -690,7 +694,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
         }
 
         // Icon and title
-        echo '<div class="icon_and_title">' . "\n\n";
+        echo '<div class="iconAndTitle">' . "\n\n";
         $subsection_title = $subsection[0];
         require_code('tempcode_compiler');
         $subsection_title = comcode_to_tempcode('[semihtml]' . $subsection_title . '[/semihtml]', null, true);
@@ -712,7 +716,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
             $subsection_caption = '';
         }
         if ((!is_null($subsection_caption)) && ($subsection_caption != '')) {
-            echo '<p class="subsection_caption">' . $subsection_caption . '.</p>';
+            echo '<p class="subsectionCaption">' . $subsection_caption . '.</p>';
         }
 
         // List
@@ -724,7 +728,7 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                     if (has_js()) {
                         echo '</ul></div>' . "\n\n";
                         $see_more = true;
-                        echo '<div class="moree"><ul class="more">';
+                        echo '<div class="moreE"><ul class="more">';
                     }
                 } else {
                     $item[0] = comcode_to_tempcode('[semihtml]' . $item[0] . '[/semihtml]', null, true);
@@ -735,12 +739,12 @@ foreach (($map['param'] == '') ? array() : explode(',', $map['param']) as $i => 
                     }
 
                     echo '<li>';
-                    echo '<span class="itemtitle">' . $item[0] . '</span>';
+                    echo '<span class="itemTitle">' . $item[0] . '</span>';
                     if (array_key_exists(1, $item)) {
-                        if ((substr($item[1], -1) != '!') && (substr($item[1], -1) != '?') && (substr($item[1], -1) != '.')) {
+                        if ((strpos($item[1], 'help_small') === false) && (substr($item[1], -1) != '!') && (substr($item[1], -1) != '?') && (substr($item[1], -1) != '.')) {
                             $item[1] .= '.';
                         }
-                        echo '<span class="itemdescription">' . $item[1] . '</span>';
+                        echo '<span class="itemDescription">' . $item[1] . '</span>';
                     }
                     echo '</li>';
                 }

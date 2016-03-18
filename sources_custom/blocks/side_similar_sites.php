@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,9 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    google_similar_sites
  */
+
 /*EXTRA FUNCTIONS: json_decode*/
 
 /**
@@ -73,7 +75,7 @@ class Block_side_similar_sites
         $links_count = 0;
         foreach ($search_results_array as $result) {
             //more details in output - page content and short url - if we need more details, i.e. for the main block we could use this
-            //$out .= '<li><strong><a href="'.$result["url"].'">'.$result["title"].'</a></strong> '.  $result["content"].' <em>'.$result["visibleUrl"].'</em></li>';
+            //$out .= '<li><strong><a href="' . $result['url'] . '">' . $result['title'] . '</a></strong> ' . $result['content'] . ' <em>' . $result['visibleUrl'] . '</em></li>';
             $links_count++;
             if ($links_count <= $max) {
                 $out .= '<li><a href="' . $result['url'] . '" target="_blank">' . $result['title'] . '</a></li>';

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_lookup
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -64,7 +64,7 @@ class Module_admin_lookup
     public $param;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -173,7 +173,7 @@ class Module_admin_lookup
                 }
                 $all_ips[] = $mask;
             }
-            if (strtolower(cms_srv('REQUEST_METHOD')) == 'post') {
+            if (cms_srv('REQUEST_METHOD') == 'POST') {
                 if (!array_key_exists('banned', $_POST)) {
                     $_POST['banned'] = array();
                 }
@@ -198,12 +198,12 @@ class Module_admin_lookup
                 foreach ($group as $row) {
                     $date = get_timezoned_date($row['date_and_time']);
                     $lookup_url = build_url(array('page' => '_SELF', 'param' => $row['ip']), '_SELF');
-                    $inner_ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '94a133f5f711bbf09100346661e3f7c9', 'UNIQID' => uniqid('', true), 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
+                    $inner_ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '94a133f5f711bbf09100346661e3f7c9', 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
                     if (in_array($row['ip'], $all_banned)) {
                         $one_sub_is_banned = true;
                     }
                 }
-                $ip_list->attach(do_template('LOOKUP_IP_LIST_GROUP', array('_GUID' => '10612a64654f3a75fca65d089e039e9a', 'OPEN_DEFAULT' => $one_sub_is_banned, 'UNIQID' => uniqid('', true), 'BANNED' => in_array($mask, $all_banned), 'MASK' => $mask, 'GROUP' => $inner_ip_list)));
+                $ip_list->attach(do_template('LOOKUP_IP_LIST_GROUP', array('_GUID' => '10612a64654f3a75fca65d089e039e9a', 'OPEN_DEFAULT' => $one_sub_is_banned, 'BANNED' => in_array($mask, $all_banned), 'MASK' => $mask, 'GROUP' => $inner_ip_list)));
             }
 
             $stats = get_stats_track($id, $ip, get_param_integer('start', 0), get_param_integer('max', 10), $sortable, $sort_order);

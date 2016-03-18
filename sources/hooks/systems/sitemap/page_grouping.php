@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -207,6 +207,11 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                     $title = $link[3];
                     $icon = $link[1];
 
+                    $child_description = null;
+                    if (isset($link[4])) {
+                        $child_description = (is_object($link[4])) ? $link[4] : comcode_lang_string($link[4]);
+                    }
+
                     if (!is_array($link[2])) { // Plain URL
                         $children[] = array(
                             'title' => $title,
@@ -217,9 +222,9 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                             'page_link' => null,
                             'url' => $link[2],
                             'extra_meta' => array(
-                                'description' => null,
-                                'image' => null,
-                                'image_2x' => null,
+                                'description' => $child_description,
+                                'image' => ($icon === null) ? null : find_theme_image('icons/24x24/' . $icon),
+                                'image_2x' => ($icon === null) ? null : find_theme_image('icons/48x48/' . $icon),
                                 'add_date' => null,
                                 'edit_date' => null,
                                 'submitter' => null,
@@ -273,11 +278,6 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                     }
                     $page_type = strtolower($details[0]);
 
-                    $child_description = null;
-                    if (isset($link[4])) {
-                        $child_description = (is_object($link[4])) ? $link[4] : comcode_lang_string($link[4]);
-                    }
-
                     $child_links[] = array($title, $child_page_link, $icon, $page_type, $child_description);
                 }
             }
@@ -301,7 +301,7 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
                                 $pages[$page] = $page_type;
                             }
 
-                            if ((!isset($pages_found[$_zone . ':' . $page])) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages_validation[$_zone . ':' . $page])))) {
+                            if ((!isset($pages_found[$_zone . ':' . $page])) && ($page != 'recommend_help'/*Special case*/) && ((strpos($page_type, 'comcode') === false) || (isset($root_comcode_pages_validation[$_zone . ':' . $page])))) {
                                 if ($this->_is_page_omitted_from_sitemap($_zone, $page)) {
                                     continue;
                                 }

@@ -1,0 +1,60 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Add a Survey to a Composr Website[/title]
+
+[media width="150" description="Adding a survey to Composr" float="right"]data_custom/images/docs/sup_add_a_survey_to_an_composr_website/6adeccba5782170956785b4094367c91.jpg[/media]
+Surveys make up an important part of many website types. They can be used to obtain feedback and information from your community members. A business can get important feedback from their clients and customers. Businesses can ask questions which the information may go some way to determining the direction of the business.
+
+Composr has an in built survey system which is built right into the core software which means you don't need to try and find a plugin made by a third party. The Composr survey system uses the same coding standards and styling as the rest of the site so it looks like a more professional integration without needing a large amount of extra coding.
+
+The survey system is under Quizzes within the system. There are actually three types of quiz:
+ - surveys, which are primarily aimed at getting feedback or information from the person filling in the survey
+ - tests, which can have right or wrong answers so someone can either pass or fail the test
+ - competitions, which can award a winner to the person who completes the quiz the best
+
+The other types will be covered in [page="_SEARCH:sup_explaining_the_composr_quiz_module"]my broader tutorial[/page].
+
+To begin to create your survey you need to go to Admin Zone > Content > Quizzes > Add quiz.
+
+Next give your new survey a name and choose a Survey.
+
+The next section is where you will choose the questions you want to include. There are three types of questions:
+ - Multiple choice questions
+ - Normal text box entry questions
+ - Long answer text box entry questions
+
+To create each type it's very simple.
+
+To create a multiple choice questions simply write the question title with each answer on a separate line below it like this:
+[code="Text"]
+Composr is?
+Great
+Fantastic
+Absolutely amazing
+Even better than sliced bread
+[/code]
+
+There shouldn't be any line spaces between the answers and the question. To add another question simply leave a line space. To add a question with a large space for answers write the question and leave a space on the same line and add the code [LONG] which will look like:
+[code="Text"]
+Arvixe Webhosting is awesome because? [LONG]
+[/code]
+
+The final type is a standard question which will have a single line text box for an answer which will just be the question written on a line on its own, i.e.:
+[code="Text"]
+What is the registry code of the Enterprise in Star Trek the Next Generation?
+[/code]
+
+These questions will look like this when you preview them:
+[media thumb="0"]data_custom/images/docs/sup_add_a_survey_to_an_composr_website/3cacffa9285660313cbab9122ab39bb0.jpg[/media]
+
+The next two boxes you will want to fill in are the two boxes which deal with the text which appears at the top of the survey explaining what the survey is for. The other box is the message which is displayed once the survey is completed.
+
+Most of the other options are primarily related to tests and competitions but you can set an open and close time for the survey if you only want the survey to be live during a set period. This option is found in the Advanced section.
+
+There is also an option to tie the survey to a specific newsletter group which allows you to only target a certain group of members for the survey. You can leave notes just below this for yourself or for other admin who will be potentially editing the survey.
+
+The final section deals with the Search Engine Optimisation options if you are creating a survey which is open to anyone. You can then preview the quiz and add the quiz once you are happy with it.
+
+You can now link this quiz to your site in the usual way on whichever page you need to. Once you have added the quiz you can click try quiz which will give you the URL of your new survey.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Feedback features,Content,novice}{$SET,tutorial_add_date,Jul 2013}{$SET,tutorial_summary,Surveys make up an important part of many website types. They can be used to obtain feedback and information from your community members. A business can get important feedback.}[block]main_tutorial_rating[/block]

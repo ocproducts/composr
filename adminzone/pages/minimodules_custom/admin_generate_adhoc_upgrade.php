@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    meta_toolkit
+ */
 
 /*EXTRA FUNCTIONS: diff_simple_2*/
 
@@ -19,7 +32,7 @@ if ($type != 'go') {
     $title->evaluate_echo();
 
     echo '
-        <p>This system will generate a TAR archive to upgrade a site to the files in this Composr installation. You choose which addons to include (both bundled and non-bundled are supported), and the date to get changed files from (both may be auto-detected from the install location).</p>
+        <p>This system will generate a package to upgrade a site to the files in this Composr installation. You choose which addons to include (both bundled and non-bundled are supported), and the date to get changed files from (both may be auto-detected from the install location).</p>
     ';
 }
 
@@ -155,7 +168,7 @@ if ($type == 'auto_probe') {
                     }
                 }
             } else {
-                if (!should_ignore_file($file, IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES | IGNORE_BUNDLED_VOLATILE)) {
+                if (!should_ignore_file($file, IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES | IGNORE_REVISION_FILES | IGNORE_EDITFROM_FILES | IGNORE_BUNDLED_VOLATILE)) {
                     $manual_changes['maybe_delete'][$file] = null;
                 }
             }
@@ -167,7 +180,7 @@ if ($type == 'auto_probe') {
         $advice_parts = array(
             'maybe_delete' => 'The following files might need deleting',
             'css_diff' => 'The following CSS/tpl changes have happened (diff; may need applying to overridden templates)',
-            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an adhoc upgrader'
+            'install_diff' => 'The following install code changes have happened (diff) &ndash; isolate to <kbd>data_custom/execute_temp.php</kbd> to make an ad hoc upgrader'
         );
         foreach ($advice_parts as $d => $message) {
             echo '
@@ -183,9 +196,9 @@ if ($type == 'auto_probe') {
                     if (!is_null($caption)) {
                         echo ':<br /><br />';
                         /*require_code('geshi');   If you want to see it highlighted
-                                        $geshi=new GeSHi($caption,'diff');
-                                        $geshi->set_header_type(GESHI_HEADER_DIV);
-                                        echo $geshi->parse_code();*/
+                        $geshi = new GeSHi($caption, 'diff');
+                        $geshi->set_header_type(GESHI_HEADER_DIV);
+                        echo $geshi->parse_code();*/
                         echo '<div style="overflow: auto; width: 100%; white-space: pre">' . ($caption) . '</div>';
                     }
                     echo '</li>';
@@ -259,7 +272,7 @@ echo '
     <form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'type' => 'auto_probe'), '_SELF'))) . '" method="post">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 
-        <h2>Auto-probe upgrade TAR settings, and give specialised advice</h2>
+        <h2>Auto-probe upgrade settings, and give specialised advice</h2>
 
         <p>
             <label for="probe_dir">
@@ -282,7 +295,7 @@ echo '
     <form action="' . escape_html(static_evaluate_tempcode(build_url(array('page' => '_SELF', 'type' => 'go'), '_SELF'))) . '" method="post">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 
-        <h2>Manually customise upgrade TAR settings</h2>
+        <h2>Manually customise upgrade settings</h2>
 
         <p>
             <label for="cutoff_days">
@@ -329,21 +342,10 @@ function get_addon_structure()
 
         $file_list = $hook_ob->get_file_list();
 
-        $_file_list = array();
-        foreach ($file_list as $file) {
-            if (preg_match('#^[^/]*\.tpl$#', $file) != 0) {
-                $_file_list[] = 'themes/default/templates/' . $file;
-            } elseif (preg_match('#^[^/]*\.css$#', $file) != 0) {
-                $_file_list[] = 'themes/default/css/' . $file;
-            } else {
-                $_file_list[] = $file;
-            }
-        }
-
         if ($place == 'sources') {
-            $struct['bundled'][$hook] = $_file_list;
+            $struct['bundled'][$hook] = $file_list;
         } else {
-            $struct['non_bundled'][$hook] = $_file_list;
+            $struct['non_bundled'][$hook] = $file_list;
         }
     }
     ksort($struct['bundled']);

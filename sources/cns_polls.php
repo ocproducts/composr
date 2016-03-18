@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -118,7 +118,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
 {
     $poll_info = $GLOBALS['FORUM_DB']->query_select('f_polls', array('*'), array('id' => $poll_id), '', 1);
     if (!array_key_exists(0, $poll_info)) {
-        fatal_exit(do_lang_tempcode('_MISSING_RESOURCE', 'poll#' . strval($poll_id)));
+        fatal_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html(strval($poll_id)), 'poll'));
     }
 
     $_answers = $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('*'), array('pa_poll_id' => $poll_id), 'ORDER BY id');

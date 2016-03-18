@@ -16,9 +16,16 @@
 	{WEBSERVICE_RESULT}
 {+END}
 
-<h2>{!STACK_TRACE}</h2>
+{+START,IF,{MAY_SEE_TRACE}}
+	<h2>{!STACK_TRACE}</h2>
 
-{TRACE}
+	{TRACE}
+{+END}
+{+START,IF,{$NOT,{MAY_SEE_TRACE}}}
+	<p>
+		{!STACK_TRACE_DENIED_ERROR_NOTIFICATION}
+	</p>
+{+END}
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {

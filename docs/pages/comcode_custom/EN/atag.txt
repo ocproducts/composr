@@ -1,8 +1,12 @@
-[title sub="Written by Chris Graham (ocProducts)"]Authoring Tool Accessibility Guidelines 2.0 - Composr version 3.0 compliance[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Authoring Tool Accessibility Guidelines 2.0 - Composr version 10.0 compliance[/title]
 
-This document fulfills the compliancy needs of the ATAG 2.0 draft document on demonstrating ATAG compliance for an authoring tool.
-The document is brief, but ocProducts are happy to clarify any issues that organisations or individuals may have, and if any flaw is found in our compliance, we will work to fix this.
-At the time of writing we believe Composr does indeed fully comply with ATAG, and we have made numerous changes to get Composr to that point. Some of the wording in the specification is, however, not completely appropriate to the kind of tool Composr is, and hence some guidelines are met in spirit rather than a strict literal interpretation would require; we believe that this is reasonable and expected.
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
+This document fulfils the compliancy needs of the ATAG 2.0 draft document on demonstrating ATAG compliance for an authoring tool.
+
+The document is brief, but the developers are happy to clarify any issues that organisations or individuals may have, and if any flaw is found in our compliance, we will work to fix this.
+
+At the time of writing we believe Composr does indeed fully comply with ATAG, and we have made numerous changes to get Composr to that point.
+Some of the wording in the specification is, however, not completely appropriate to the kind of tool Composr is, and hence some guidelines are met in spirit rather than a strict literal interpretation would require; we believe that this is reasonable and expected.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -10,15 +14,15 @@ At the time of writing we believe Composr does indeed fully comply with ATAG, an
 
 [b]Product[/b]: Composr
 [b]Vendor[/b]: ocProducts
-[b]Version[/b]: 3.0.0
+[b]Version[/b]: 10.0.0
 [b]Language[/b]: British English
 [b]Authoring tool functions available[/b]: Code-level, WYSIWYG, Indirect, Object-orientated
 [b]ATAG version[/b]: [url="2.0 Working draft, 23rd November 2005"]http://www.w3.org/TR/2005/WD-ATAG20-20051123/#conf-claim[/url]
 [b]ATAG level[/b]: Triple-A
 [b]WCAG version[/b]: [url="1.0"]http://www.w3.org/TR/WAI-WEBCONTENT/[/url] [most of the checkpoints for WCAG 2.0 are met]
 [b]URL to this document[/b]: {$TUTORIAL_URL,atag}
-[b]User agents[/b]: Internet Explorer 6.0, Opera 8.0, Firefox 1.5
-[b]Content-type[/b]: XHTML 1.0 + CSS 2.0 + PNG images [ + optional JavaScript: JavaScript may not be accessible, therefore it is assumed to be disabled for the purposes of accessibility]
+[b]User agents[/b]: Microsoft Edge 20, Internet Explorer 11, Firefox 40, Google Chrome 45, Safari 8
+[b]Content-type[/b]: XHTML 5.0 + CSS 2.1 [ + optional JavaScript: JavaScript may not be accessible, therefore it is assumed to be disabled for the purposes of accessibility]
 
 [title="2"]ACAG Compliance details[/title]
 
@@ -49,7 +53,7 @@ There must be an option to customize the items (from the set of all selectable a
 The non-administrative interfaces are menu driven, by default. These menus may freely be reordered, thus meeting the 'at least one' sub-criteria. The administrative interfaces are icon-driven and these icons are ordered alphabetically.
 
 [quote="ATAG checkpoint"]
-For any structured element set, the author must always be able to move the editing focus from any element to any other element with the following relationship (if they exist): the element immediately above (i.e. parent), the first element immediately below (i.e. child), the element immediately preceding at the same level (i.e. previous sibling), and the element immediately following at the same level (i.e. next sibling). 
+For any structured element set, the author must always be able to move the editing focus from any element to any other element with the following relationship (if they exist): the element immediately above (i.e. parent), the first element immediately below (i.e. child), the element immediately preceding at the same level (i.e. previous sibling), and the element immediately following at the same level (i.e. next sibling).
 [/quote]
 
 Focus may be shifted by pressing tab, as is standard for web browsing interfaces.
@@ -64,7 +68,7 @@ For any structured element set, the author must always be able to select content
 The authoring tool must provide the ability to save and reload all configuration settings related to visual or auditory output and keyboard operability.
 [/quote]
 
-As the interface is that of a web interface, such configuration would be stored in a user's own web browser. It is assumed that different users use different web browser installs. If more control is needed than a web browsers CSS override and view settings can provide, it is possible to edit templates to distinguish between users and user-groups - as this criteria is rationalised in order to allow personal settings, this should meet the criteria.
+As the interface is that of a web interface, such configuration would be stored in a user's own web browser. It is assumed that different users use different web browser installs. If more control is needed than a web browsers CSS override and view settings can provide, it is possible to edit templates to distinguish between users and usergroups - as this criteria is rationalised in order to allow personal settings, this should meet the criteria.
 
 [quote="ATAG checkpoint"]
 The author must be able to select, within the application, from multiple configuration sets.
@@ -73,13 +77,13 @@ The author must be able to select, within the application, from multiple configu
 This may be performed as users of the Composr system have their own profiles. Web browser or operating system profiles may give further control.
 
 [quote="ATAG checkpoint"]
-If a preview is provided, then (Ö):
+If a preview is provided, then:
 [/quote]
 
 As Composr is administered inside a web browser, any supported web browser may be used to view the preview.
 
 [quote="ATAG checkpoint"]
-At least one version of the documentation must conform to the minimum requirements (Level 1) of WCAG (whether delivered on the Web, CD-ROM, etc.). 
+At least one version of the documentation must conform to the minimum requirements (Level 1) of WCAG (whether delivered on the Web, CD-ROM, etc.).
 [/quote]
 
 The documentation meets the same level of compliance as Composr itself.
@@ -109,10 +113,10 @@ Any authoring tool that allows authors to choose the content type used for publi
 This document provides that benchmark, and prominence is given.
 
 [quote="ATAG checkpoint"]
-All transformations and conversions supported by the authoring tool must always meet both of the following conditions (Ö)
+All transformations and conversions supported by the authoring tool must always meet both of the following conditions
 [/quote]
 
-Composr does not perform transformations/conversions on mark-up, other than on mark-up of languages that are controlled by ocProducts and hence always fully understood.
+Composr does not perform transformations/conversions on mark-up, other than on mark-up of languages that are controlled by the developers and hence always fully understood.
 
 [quote="ATAG checkpoint"]
 All markup and content that is automatically generated by the authoring tool (i.e. not authored "by hand") must always conform to WCAG.
@@ -133,16 +137,16 @@ Every time that content that requires accessibility information from the author 
 The interface captions provide explicit information about accessibility. Where documentation would be required to understand how to use advanced functionality (such as typing Comcode directly), the documentation makes accessibility issues clear.
 
 [quote="ATAG checkpoint"]
-Whenever the tool provides instructions to the author, either the instructions (if followed) must lead to the creation of Web content that conforms to WCAG, or the author must be informed that following the instructions would lead to Web content accessibility problems. 
+Whenever the tool provides instructions to the author, either the instructions (if followed) must lead to the creation of Web content that conforms to WCAG, or the author must be informed that following the instructions would lead to Web content accessibility problems.
 [/quote]
 
 This is considered a core part of our WCAG compliance.
 
 [quote="ATAG checkpoint"]
-An individual check must be associated with each requirement in the content type benchmark document (i.e. not blanket statements such as "does the content meet all the requirements"). 
+An individual check must be associated with each requirement in the content type benchmark document (i.e. not blanket statements such as "does the content meet all the requirements").
 [/quote]
 
-The Composr webstandards checker will check all criteria, although some are non pragmatically verifiable and hence the checks for these provide information rather than error reports.
+The Composr webstandards checker will check all criteria, although some are non-pragmatically verifiable and hence the checks for these provide information rather than error reports.
 
 [quote="ATAG checkpoint"]
 For checks that are associated with a type of element (e.g. img), each element instance must be individually identified as potential accessibility problems. For checks that are relevant across multiple elements (e.g. consistent navigation, etc.) or apply to most or all elements (e.g. background color contrast, reading level, etc.), the entire span of elements must be identified as potential accessibility problems, up to the entire content if applicable.
@@ -154,7 +158,7 @@ This is how the webstandards checker works; it only uses global context for buil
 If the authoring tool relies on author judgment to determine if a potential accessibility problem is correctly identified, then the message to the author must be tailored to that potential accessibility problem (i.e. to that requirement in the context of that element or span of elements).
 [/quote]
 
-This is the case - errors are targetted.
+This is the case - errors are targeted.
 
 [quote="ATAG checkpoint"]
 The authoring tool must present checking as an option to the author at or before the completion of authoring.
@@ -163,7 +167,7 @@ The authoring tool must present checking as an option to the author at or before
 If an author does not immediately validate the item, then they can see an error 'before completion'; otherwise they see it at completion. They may also generate previews before anything is submitted, and these previews would show the problems before the actual preview was viewable.
 
 [quote="ATAG checkpoint"]
-For each potential accessibility problem identified by the checking function (required in checkpoint B.2.2) provide at least one of the following (Ö): 
+For each potential accessibility problem identified by the checking function (required in checkpoint B.2.2) provide at least one of the following:
 [/quote]
 
 Information is provided in the error that details the problem and the solution is either obvious from this, or also mentioned.
@@ -175,10 +179,10 @@ When the author inserts an unrecognized non-text object, the tool must never ins
 This never happens.
 
 [quote="ATAG checkpoint"]
-When the author inserts a non-text object for which the tool has a previously authored equivalent alternatives (i.e. created by the author, tool designer, pre-authored content developer, etc.), but the function of the object is not known with certainty, the tool must always prompt the author to confirm insertion of the equivalent. However, where the function of the non-text object is known with certainty (e.g. "home button" on a navigation bar, etc.), the tool may automatically insert the equivalent. 
+When the author inserts a non-text object for which the tool has a previously authored equivalent alternatives (i.e. created by the author, tool designer, pre-authored content developer, etc.), but the function of the object is not known with certainty, the tool must always prompt the author to confirm insertion of the equivalent. However, where the function of the non-text object is known with certainty (e.g. "home button" on a navigation bar, etc.), the tool may automatically insert the equivalent.
 [/quote]
 
-This does not really apply - object re-use is not a concept appropriate to Composr. Attachments may be re-used and the caption is known with certainty and hence re-used, however it may be changed to differ from the original usage if so desired by the author. 
+This does not really apply - object re-use is not a concept appropriate to Composr. Attachments may be re-used and the caption is known with certainty and hence re-used, however it may be changed to differ from the original usage if so desired by the author.
 
 [quote="ATAG checkpoint"]
 The authoring tool must always keep a record of alternative equivalents that the author inserts for particular non-text objects in a way that allows the text equivalent to be offered back to the author for modification and re-use if the same non-text object is reused.
@@ -202,7 +206,7 @@ There is a tutorial intended solely for this purpose.
 All examples of markup and screenshots of the authoring tool user interface that appear in the documentation and help must demonstrate accessible Web content.
 [/quote]
 
-This is the case. It is not easy to create inaccessible content in Composr and examples are usually basic and thus accessible. 
+This is the case. It is not easy to create inaccessible content in Composr and examples are usually basic and thus accessible.
 
 [quote="ATAG checkpoint"]
 A tutorial on the accessible authoring process for the specific authoring tool must be provided.
@@ -238,10 +242,10 @@ The prominence is extremely high - the system will actually put up a blocker pag
 Any authoring tool feature that helps to sequence author actions (such as object insertion dialogs, design guides, templates, wizards, tutorials, or instruction text) must integrate relevant accessibility prompts at or before the author is required to make the authoring decision related to the prompt (e.g. finalize a page design wizard or an image insertion operation).
 [/quote]
 
-Any accessibility information that is required is requested as an integral part of the operation, not as an 'add-on'. If manual input of HTML is being performed, the webstandards checker would pick up on any problems. Hence this is not totally appropriate, but is in essence complied with.
+Any accessibility information that is required is requested as an integral part of the operation, not as an 'addon'. If manual input of HTML is being performed, the webstandards checker would pick up on any problems. Hence this is not totally appropriate, but is in essence complied with.
 
 [quote="ATAG checkpoint"]
-The configurability of all functions related to accessibility prompting, checking, repair, and documentation must at least match the configurability of other prompting, checking, repair, and documentation functions of the tool (respectively), in terms of both of the following (Ö)
+The configurability of all functions related to accessibility prompting, checking, repair, and documentation must at least match the configurability of other prompting, checking, repair, and documentation functions of the tool (respectively), in terms of both of the following
 [/quote]
 
 Checking and repair is configurable using a number of checkboxes that control what aspects are checked.
@@ -252,7 +256,7 @@ Documentation is not configurable.
 
 [title="2"]WCAG Compliance details[/title]
 
-Our WCAG compliance is detailed in a [url="separate document"]{$TUTORIAL_URL,tut_accessibility}[/url].
+Our WCAG compliance is detailed in a [page="_SEARCH:tut_accessibility"]separate document[/page].
 
 This is because the information is important for those who modify templates in Composr, so that they understand the techniques we have used and know how to apply them themselves.
 

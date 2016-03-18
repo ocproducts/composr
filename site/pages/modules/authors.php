@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,6 +36,7 @@ class Module_authors
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -64,8 +65,6 @@ class Module_authors
                 'description' => 'LONG_TRANS__COMCODE',
                 'skills' => 'LONG_TRANS__COMCODE',
             ));
-
-            $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 3)) {
@@ -74,6 +73,12 @@ class Module_authors
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'forum_handle', '?MEMBER', 'member_id');
+
+            $GLOBALS['SITE_DB']->delete_index_if_exists('authors', 'findmemberlink');
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
     }
 
@@ -83,7 +88,7 @@ class Module_authors
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -100,7 +105,7 @@ class Module_authors
     public $author;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -109,6 +114,7 @@ class Module_authors
         $type = get_param_string('type', 'browse');
 
         require_lang('authors');
+        require_code('authors');
 
         $author = get_param_string('id', null);
         if (is_null($author)) {
@@ -116,7 +122,7 @@ class Module_authors
                 global $EXTRA_HEAD;
                 $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
             }
 
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
@@ -134,41 +140,6 @@ class Module_authors
         $this->title = get_screen_title('_AUTHOR', true, array(escape_html($author)), null, $awards);
 
         seo_meta_load_for('authors', $author);
-
-        $this->author = $author;
-
-        return null;
-    }
-
-    /**
-     * Execute the module.
-     *
-     * @return Tempcode The result of execution.
-     */
-    public function run()
-    {
-        set_feed_url('?mode=authors&select=');
-
-        require_code('authors');
-
-        // Decide what we're doing
-        $type = get_param_string('type', 'browse');
-
-        if ($type == 'browse') {
-            return $this->show_author();
-        }
-
-        return new Tempcode();
-    }
-
-    /**
-     * The UI to view an author.
-     *
-     * @return Tempcode The UI
-     */
-    public function show_author()
-    {
-        $author = $this->author;
 
         $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), array('author' => $author), '', 1);
         if (!array_key_exists(0, $rows)) {
@@ -188,10 +159,50 @@ class Module_authors
             $details = $rows[0];
         }
 
+        // Metadata
+        set_extra_request_metadata(array(
+            'identifier' => '_SEARCH:authors:browse:' . $author,
+        ), $details, 'author', $author);
+
+        $this->author = $author;
+        $this->details = $details;
+
+        return null;
+    }
+
+    /**
+     * Execute the module.
+     *
+     * @return Tempcode The result of execution.
+     */
+    public function run()
+    {
+        set_feed_url('?mode=authors&select=');
+
+        // Decide what we're doing
+        $type = get_param_string('type', 'browse');
+
+        if ($type == 'browse') {
+            return $this->show_author();
+        }
+
+        return new Tempcode();
+    }
+
+    /**
+     * The UI to view an author.
+     *
+     * @return Tempcode The UI
+     */
+    public function show_author()
+    {
+        $author = $this->author;
+        $details = $this->details;
+
         // Links associated with the mapping between the author and a forum member
         $handle = get_author_id_from_name($author);
         if (!is_null($handle)) {
-            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, false, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
+            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, true, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
             if (addon_installed('points')) {
                 $give_points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $handle), get_module_zone('points'));
                 $point_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => '2bfb9bf9b5fdf1dad34102abd4bc4648', 'ACTION' => hyperlink($give_points_url, do_lang_tempcode('AUTHOR_POINTS'), false, false)));

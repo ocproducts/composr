@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,6 +39,6 @@ class Hook_snippet_exists_emoticon
 
         require_lang('cns');
 
-        return make_string_tempcode(strip_tags(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val)))));
+        return make_string_tempcode(strip_html(do_lang('CONFLICTING_EMOTICON_CODE', escape_html($val))));
     }
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -98,8 +98,8 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         't_forum_id' => $forum_id,
         't_pt_from' => $pt_from,
         't_pt_to' => $pt_to,
-        't_description' => substr($description, 0, 255),
-        't_description_link' => substr($description_link, 0, 255),
+        't_description' => cms_mb_substr($description, 0, 255),
+        't_description_link' => cms_mb_substr($description_link, 0, 255),
         't_emoticon' => $emoticon,
         't_num_views' => $num_views,
         't_validated' => $validated,
@@ -133,7 +133,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('topic', strval($topic_id), null, null, true);
+        generate_resource_fs_moniker('topic', strval($topic_id), null, null, true);
     }
 
     require_code('member_mentions');

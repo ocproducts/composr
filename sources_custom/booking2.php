@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -214,8 +214,8 @@ function delete_booking($id)
  */
 function get_bookable_details_from_form()
 {
-    $active_from = get_input_date('active_from');
-    $active_to = get_input_date('active_to');
+    $active_from = post_param_date('active_from');
+    $active_to = post_param_date('active_to');
     if (!is_null($active_to)) {
         if ($active_to < $active_from) {
             warn_exit(do_lang_tempcode('DATE_AROUND'));
@@ -246,22 +246,23 @@ function get_bookable_details_from_form()
         'active_to_year' => is_null($active_to) ? null : intval(date('Y', $active_to)),
     );
 
-    /*$blacked=array();
-    $supplements=array();
-    foreach (array_keys($_POST) as $key)
-    {
-        if (substr($key,0,8)=='blacked_')
-        {
-            if (post_param_integer($key,0)==1)
-                    $blacked[]=intval(substr($key,8));
+    /*
+    $blacked = array();
+    $supplements = array();
+    foreach (array_keys($_POST) as $key) {
+        if (substr($key, 0, 8) == 'blacked_') {
+            if (post_param_integer($key, 0) == 1) {
+                $blacked[] = intval(substr($key, 8));
+            }
         }
 
-        if (substr($key,0,11)=='supplement_')
-        {
-            if (post_param_integer($key,0)==1)
-                    $supplements[]=intval(substr($key,11));
+        if (substr($key, 0, 11) == 'supplement_') {
+            if (post_param_integer($key, 0) == 1) {
+                $supplements[] = intval(substr($key, 11));
+            }
         }
-    }*/
+    }
+    */
     if (!isset($_POST['blacked'])) {
         $_POST['blacked'] = array();
     }
@@ -329,8 +330,8 @@ function get_bookable_blacked_details_from_form()
     }
     $bookables = array_map('intval', $_POST['bookables']);
 
-    $blacked_from = get_input_date('blacked_from');
-    $blacked_to = get_input_date('blacked_to');
+    $blacked_from = post_param_date('blacked_from');
+    $blacked_to = post_param_date('blacked_to');
 
     if ($blacked_to < $blacked_from) {
         warn_exit(do_lang_tempcode('DATE_AROUND'));
@@ -546,7 +547,7 @@ function delete_bookable($bookable_id)
 function add_bookable_supplement($details, $bookables = null)
 {
     /*require_code('global4');   $title is not actually unique enough to do this
-    prevent_double_submit('ADD_BOOKABLE_SUPPLEMENT',NULL,$title);*/
+    prevent_double_submit('ADD_BOOKABLE_SUPPLEMENT', null, $title);*/
 
     if (is_null($bookables)) {
         $bookables = array();

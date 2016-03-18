@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    nested_cpf_csv_lists
+ */
 
 /*EXTRA FUNCTIONS: json_encode*/
 
@@ -25,6 +38,8 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         }
     }
 }
+
+require_code('json');
 
 // Output JavaScript
 echo "

@@ -1,7 +1,3 @@
-{$REQUIRE_CSS,widget_select2}
-{$REQUIRE_JAVASCRIPT,jquery}
-{$REQUIRE_JAVASCRIPT,select2}
-
 <select multiple="multiple" size="{SIZE*}" tabindex="{TABINDEX*}" class="input_list wide_field" id="{NAME*}" name="{NAME*}[]">
 	{CONTENT}
 </select>
@@ -30,11 +26,13 @@
 	</div>
 {+END}
 
-<script>// <![CDATA[
-	add_event_listener_abstract(window,'load',function() {
-		$("#{NAME#/}").select2({
-			dropdownAutoWidth: true,
-			containerCssClass: 'wide_field'
+{+START,IF,{$EQ,{SIZE},5}}
+	<script>// <![CDATA[
+		add_event_listener_abstract(window,'load',function() {
+			$("#{NAME#/}").select2({
+				dropdownAutoWidth: true,
+				containerCssClass: 'wide_field'
+			});
 		});
-	});
-//]]></script>
+	//]]></script>
+{+END}

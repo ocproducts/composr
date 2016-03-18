@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -153,7 +153,7 @@ function build_preview($multi_return = false)
 
         if (substr($key, -4) == '_day') {
             $key = substr($key, 0, strlen($key) - 4);
-            $timestamp = get_input_date($key);
+            $timestamp = post_param_date($key);
             if (is_null($timestamp)) {
                 $is_hidden = true;
             } else {

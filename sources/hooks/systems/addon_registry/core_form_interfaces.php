@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_form_interfaces
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -332,7 +333,6 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/plugins/clipboard/dialogs/paste.js',
             'data/ckeditor/plugins/colordialog/dialogs/colordialog.js',
             'data/ckeditor/plugins/dialog/dialogDefinition.js',
-            'data/ckeditor/plugins/fakeobjects/images/spacer.gif',
             'data/ckeditor/plugins/find/dialogs/find.js',
             'data/ckeditor/plugins/icons.png',
             'data/ckeditor/plugins/icons_hidpi.png',
@@ -462,7 +462,6 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/skins/moonocolor/dialog_ie7.css',
             'data/ckeditor/skins/moonocolor/dialog_ie8.css',
             'data/ckeditor/skins/moonocolor/dialog_iequirks.css',
-            'data/ckeditor/skins/moonocolor/dialog_opera.css',
             'data/ckeditor/skins/moonocolor/editor.css',
             'data/ckeditor/skins/moonocolor/editor_gecko.css',
             'data/ckeditor/skins/moonocolor/editor_ie.css',
@@ -487,7 +486,6 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/skins/kama/dialog_ie7.css',
             'data/ckeditor/skins/kama/dialog_ie8.css',
             'data/ckeditor/skins/kama/dialog_iequirks.css',
-            'data/ckeditor/skins/kama/dialog_opera.css',
             'data/ckeditor/skins/kama/editor.css',
             'data/ckeditor/skins/kama/editor_ie.css',
             'data/ckeditor/skins/kama/editor_ie7.css',
@@ -504,6 +502,21 @@ class Hook_addon_registry_core_form_interfaces
             'data/ckeditor/skins/kama/images/toolbar_start.gif',
             'data/ckeditor/skins/kama/readme.md',
             'data/ckeditor/styles.js',
+            'data/ckeditor/plugins/a11yhelp/dialogs/lang/af.js',
+            'data/ckeditor/plugins/a11yhelp/dialogs/lang/eu.js',
+            'data/ckeditor/plugins/a11yhelp/dialogs/lang/fo.js',
+            'data/ckeditor/plugins/specialchar/dialogs/lang/af.js',
+            'data/ckeditor/plugins/specialchar/dialogs/lang/da.js',
+            'data/ckeditor/plugins/specialchar/dialogs/lang/eu.js',
+            'data/ckeditor/plugins/specialchar/dialogs/lang/ko.js',
+            'data/ckeditor/plugins/specialchar/dialogs/lang/lt.js',
+            'data/ckeditor/skins/kama/images/spinner.gif',
+            'data/ckeditor/skins/moono/images/spinner.gif',
+            'data/ckeditor/skins/moonocolor/images/spinner.gif',
+            'data/ckeditor/plugins/image2/dialogs/image2.js',
+            'data/ckeditor/plugins/imageresponsive/README.md',
+            'data/ckeditor/plugins/pastecode/CHANGES.md',
+            'data/ckeditor/plugins/widget/images/handle.png',
             'sources/hooks/systems/symbols/CKEDITOR_PATH.php',
             'sources/hooks/systems/symbols/COMCODE_TAGS.php',
             'themes/default/css/widget_date.css',
@@ -850,7 +863,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => true,
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '1',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -858,7 +871,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '2',
             'TEXT' => lorem_phrase(),
         )));
         $radios->attach(do_lorem_template('FORM_SCREEN_INPUT_RADIO_LIST_ENTRY', array(
@@ -866,7 +879,7 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => 'false',
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
-            'VALUE' => placeholder_random(),
+            'VALUE' => '3',
             'TEXT' => lorem_phrase(),
         )));
 
@@ -922,7 +935,7 @@ class Hook_addon_registry_core_form_interfaces
             'DESCRIPTION' => lorem_sentence(),
             'TABINDEX' => placeholder_number(),
             '_REQUIRED' => '',
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'DEFAULT' => '',
         )));
 
@@ -1033,7 +1046,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $_comcode = do_lorem_template('COMCODE_MESSAGE', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'W' => '',
             'URL' => placeholder_url(),
         ));
@@ -1303,6 +1316,7 @@ class Hook_addon_registry_core_form_interfaces
             'OPTIONS' => serialize(''),
             'DESCRIPTION' => lorem_sentence_html(),
             'MULTI_SELECT' => false,
+            'CONTENT_TYPE' => '',
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
@@ -1469,7 +1483,7 @@ class Hook_addon_registry_core_form_interfaces
         )));
 
         $hidden->attach(do_lorem_template('FORM_SCREEN_INPUT_HIDDEN', array(
-            'NAME' => lorem_word(),
+            'NAME' => placeholder_random_id(),
             'VALUE' => lorem_word(),
         )));
 
@@ -1707,7 +1721,7 @@ class Hook_addon_registry_core_form_interfaces
             'HIDDEN_FIELDS' => '',
             'PRETTY_NAME' => lorem_word(),
             'NAME' => placeholder_random_id(),
-            'TABINDEX_PF' => placeholder_random(),
+            'TABINDEX_PF' => placeholder_number(),
             'COMCODE_EDITOR' => placeholder_blank(),
             'COMCODE_EDITOR_SMALL' => placeholder_blank(),
             'CLASS' => lorem_word(),
@@ -1760,7 +1774,6 @@ class Hook_addon_registry_core_form_interfaces
 
         $buttons = new Tempcode();
         $_buttons = array(
-            'img',
             'thumb',
             'url',
             'page',
@@ -1828,6 +1841,8 @@ class Hook_addon_registry_core_form_interfaces
                 'SPECIALISATION' => placeholder_fields(),
                 'SPECIALISATION2' => placeholder_fields(),
                 'REQUIRED' => true,
+                'SUPPORT_AUTOSAVE' => false,
+                'DESCRIPTION' => lorem_paragraph(),
             )), null, '', true)
         );
     }

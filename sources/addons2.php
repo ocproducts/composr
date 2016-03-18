@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__addons2()
 {
@@ -101,7 +103,7 @@ function reinstall_addon_soft($addon, $ini_info = null)
         'addon_organisation' => $addon_info['organisation'],
         'addon_version' => $addon_info['version'],
         'addon_category' => $addon_info['category'],
-        'addon_copyright_attribution' => implode(chr(10), $addon_info['copyright_attribution']),
+        'addon_copyright_attribution' => implode("\n", $addon_info['copyright_attribution']),
         'addon_licence' => $addon_info['licence'],
         'addon_description' => $addon_info['description'],
         'addon_install_time' => time()
@@ -147,11 +149,13 @@ function uninstall_addon_soft($addon)
     require_code('config2');
     require_code('files2');
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
-    $ob = object_factory('Hook_addon_registry_' . $addon);
+    if (addon_installed($addon)) {
+        require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+        $ob = object_factory('Hook_addon_registry_' . $addon);
 
-    if (method_exists($ob, 'uninstall')) {
-        $ob->uninstall();
+        if (method_exists($ob, 'uninstall')) {
+            $ob->uninstall();
+        }
     }
 }
 
@@ -167,7 +171,7 @@ function find_remote_addons()
         return $addons; // Caching
     }
     $stub = (get_param_integer('localhost', 0) == 1) ? get_base_url() : 'http://compo.sr';
-    $v = 'Version ' . float_to_raw_string(cms_version_number(), 1);
+    $v = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     $url = $stub . '/data/ajax_tree.php?hook=choose_download&id=' . rawurlencode($v) . '&file_type=tar&full_depth=1';
     $contents = http_download_file($url, null, false);
     $matches = array();
@@ -202,7 +206,7 @@ function find_updated_addons()
         return array();
     }
 
-    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number()));
+    $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/addon_manifest.php?version=' . urlencode(float_to_raw_string(cms_version_number(), 2, true));
     foreach (array_keys($addons) as $i => $addon) {
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }
@@ -254,9 +258,10 @@ function find_installed_addons($just_non_bundled = false)
 {
     $addons_installed = array();
 
+    $hooks = find_all_hooks('systems', 'addon_registry');
+
     if (!$just_non_bundled) {
         // Find installed addons- file system method (for coded addons). Coded addons don't need to be in the DB, although they will be if they are (re)installed after the original Composr installation finished.
-        $hooks = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($hooks) as $addon) {
             if (substr($addon, 0, 4) != 'core') {
                 $addons_installed[$addon] = read_addon_info($addon);
@@ -268,6 +273,10 @@ function find_installed_addons($just_non_bundled = false)
     $_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'));
     foreach ($_rows as $row) {
         $addon = $row['addon_name'];
+
+        if (($just_non_bundled) && (isset($hooks[$addon])) && ($hooks[$addon] == 'sources')) {
+            continue;
+        }
 
         if (!isset($addons_installed[$addon])) {
             $addons_installed[$addon] = read_addon_info($addon);
@@ -339,7 +348,7 @@ function find_available_addons($installed_too = true)
             if (!empty($info['copyright_attribution'])) {
                 $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);
             } else {
-                $info['copyright_attribution'] = array ();
+                $info['copyright_attribution'] = array();
             }
             if (empty($info['licence'])) {
                 $info['category'] = '(Unstated)';
@@ -457,11 +466,13 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         if ((get_param_integer('keep_theme_test', 0) == 1) && (file_exists($themed_version))) {
             $mode = fileperms($themed_version);
             $mtime = 0;
-            //if ((file_exists(get_file_base().'/.git')) && (function_exists('json_decode')) && (filemtime($themed_version)>60*60*24-31*4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/))
-            //{
-            // $_themed_version=dirname($val).'/'.$themed_suffix.basename($val);
-            // $json_data=@json_decode(http_download_file('http://github.com/api/v2/json/commits/list/chrisgraham/Composr/master/'.$_themed_version));
-            // if (isset($json_data->commits[0]->committed_date)) $mtime=strtotime($json_data->commits[0]->committed_date);
+            //if ((file_exists(get_file_base() . '/.git')) && (filemtime($themed_version) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
+            //    require_code('json');
+            //    $_themed_version = dirname($val) . '/' . $themed_suffix . basename($val);
+            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $_themed_version));
+            //    if (isset($json_data->commits[0]->committed_date)) {
+            //        $mtime = strtotime($json_data->commits[0]->committed_date);
+            //    }
             //}
             if ($mtime == 0) {
                 $mtime = filemtime($themed_version);
@@ -473,10 +484,12 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         } else {
             $mode = fileperms($full);
             $mtime = 0;
-            //if ((file_exists(get_file_base().'/.git')) && (function_exists('json_decode')) && (filemtime($full)>60*60*24-31*4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/))
-            //{
-            // $json_data=@json_decode(http_download_file('http://github.com/api/v2/json/commits/list/chrisgraham/Composr/master/'.$val));
-            // if (isset($json_data->commits[0]->committed_date)) $mtime=strtotime($json_data->commits[0]->committed_date);
+            //if ((file_exists(get_file_base() . '/.git')) && (filemtime($full) > 60 * 60 * 24 - 31 * 4/*If newer than 4 months it is likely git has garbled the modification date during a checkout*/)) {
+            //    require_code('json');
+            //    $json_data = @json_decode(http_download_file('http://github.com/api/v2/json/commits/list/ocproducts/composr/master/' . $val));
+            //    if (isset($json_data->commits[0]->committed_date)) {
+            //        $mtime = strtotime($json_data->commits[0]->committed_date);
+            //    }
             //}
             if ($mtime == 0) {
                 $mtime = filemtime($full);
@@ -536,7 +549,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
 }
 
 /**
- * Uninstall an addon.
+ * Install an addon.
  *
  * @param  string $file Name of the addon TAR file
  * @param  ?array $files The files to install (null: all)
@@ -602,7 +615,7 @@ function install_addon($file, $files = null)
             }
 
             if ((is_null($files)) || (in_array($addon_file, $files))) {
-                if (preg_match('#^' . $prefix . 'pages/(modules|modules\_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
+                if (preg_match('#^' . $prefix . 'pages/(modules|modules_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
                     if (!module_installed($matches[2])) {
                         reinstall_module($zone, $matches[2]);
                     } else {
@@ -657,9 +670,17 @@ function install_addon($file, $files = null)
     // Clear some caching
     require_code('caches3');
     erase_comcode_page_cache();
-    erase_block_cache();
+    erase_block_cache(true);
     erase_persistent_cache();
-    erase_cached_templates();
+    erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
+    $template_files_to_erase = array();
+    foreach ($directory as $dir) {
+        $addon_file = $dir['path'];
+        if (substr($addon_file, 0, 7) == 'themes/') {
+            $template_files_to_erase[] = preg_replace('#\..*$#', '', basename($addon_file));
+        }
+    }
+    erase_cached_templates(false, $template_files_to_erase);
     erase_cached_language();
 
     // Load addon_install_code.php if it exists
@@ -687,13 +708,15 @@ function install_addon($file, $files = null)
  * Uninstall an addon.
  *
  * @param  string $addon Name of the addon
+ * @param  boolean $clear_caches Whether to clear caches
  */
-function uninstall_addon($addon)
+function uninstall_addon($addon, $clear_caches = true)
 {
     $addon_info = read_addon_info($addon);
 
     require_code('zones2');
     require_code('zones3');
+    require_code('abstract_file_manager');
 
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);
@@ -752,21 +775,31 @@ function uninstall_addon($addon)
         }
     }
 
-    // Clear some caching
-    require_code('caches3');
-    erase_comcode_page_cache();
-    erase_block_cache();
-    erase_persistent_cache();
-    erase_cached_templates();
-    erase_cached_language();
-    erase_theme_images_cache();
-    global $HOOKS_CACHE;
-    $HOOKS_CACHE = array();
-
     global $ADDON_INSTALLED_CACHE;
     unset($ADDON_INSTALLED_CACHE[$addon_info['name']]);
-    if (function_exists('persistent_cache_set')) {
-        persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
+
+    if ($clear_caches) {
+        // Clear some caching
+        require_code('caches3');
+        erase_comcode_page_cache();
+        erase_block_cache(true);
+        erase_persistent_cache();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_ADDON);
+        $template_files_to_erase = array();
+        foreach ($addon_info['files'] as $addon_file) {
+            if (substr($addon_file, 0, 7) == 'themes/') {
+                $template_files_to_erase[] = preg_replace('#\..*$#', '', basename($addon_file));
+            }
+        }
+        erase_cached_templates(false, $template_files_to_erase);
+        erase_cached_language();
+        erase_theme_images_cache();
+        global $HOOKS_CACHE;
+        $HOOKS_CACHE = array();
+
+        if (function_exists('persistent_cache_set')) {
+            persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
+        }
     }
 
     log_it('UNINSTALL_ADDON', $addon_info['name']);
@@ -795,7 +828,7 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     // Look in the tar
     require_code('tar');
     if (!file_exists($full)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ADDON')));
     }
     $tar = tar_open($full, 'rb');
     $directory = tar_get_directory($tar);
@@ -806,8 +839,8 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
     $info = better_parse_ini_file(null, $info_file['data']);
     if (!empty($info['copyright_attribution'])) {
         $info['copyright_attribution'] = explode("\n", $info['copyright_attribution']);
-    } else  {
-        $info['copyright_attribution'] = array ();
+    } else {
+        $info['copyright_attribution'] = array();
     }
     $info += get_default_addon_details();
     $addon = $info['name'];
@@ -831,6 +864,13 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
         }
 
         $data = (strtolower(substr($entry['path'], -4, 4)) == '.tpl') ? tar_get_file($tar, $entry['path'], true) : null;
+
+        // check valid path
+        $php_errormsg = mixed();
+        @file_exists(get_file_base() . '/' . $entry['path']); //@d due to possible bad file paths
+        if ((isset($php_errormsg)) && (strpos($php_errormsg, 'be a valid path') !== false)) {
+            warn_exit(do_lang_tempcode('CORRUPT_TAR'));
+        }
 
         // .php?
         if ((strtolower(substr($entry['path'], -4, 4)) == '.php') || ((!is_null($data)) && ((strpos($data['data'], '{+START,PHP') !== false) || (strpos($data['data'], '<' . '?php') !== false)))) {
@@ -975,13 +1015,13 @@ function inform_about_addon_install($file, $also_uninstalling = null, $also_inst
         }
     }
 
-    //if (!$overwrite->is_empty()) $warnings->attach(do_template('ADDON_INSTALL_WARNING',array('_GUID'=>'fe40ed8192a452a835be4c0fde64406b','WARNING'=>do_lang_tempcode('ADDON_WARNING_OVERWRITE',escape_html($overwrite),escape_html($file)))));
+    //if (!$overwrite->is_empty()) $warnings->attach(do_template('ADDON_INSTALL_WARNING', array('_GUID' => 'fe40ed8192a452a835be4c0fde64406b', 'WARNING' => do_lang_tempcode('ADDON_WARNING_OVERWRITE', escape_html($overwrite), escape_html($file)))));
     if ($info['author'] != 'Core Team') {
         if ($php) {
             $warnings->attach(do_template('ADDON_INSTALL_WARNING', array('_GUID' => '8cf249a119d10b2e97fc94cb9981dcea', 'WARNING' => do_lang_tempcode('ADDON_WARNING_PHP', escape_html($file)))));
         }
     }
-    //if ($chmod!='') $warnings->attach(do_template('ADDON_INSTALL_WARNING',array('_GUID'=>'78121e40b9a26c2f33d09f7eee7b74be','WARNING'=>do_lan g_tempcode('ADDON_WARNING_CHMOD',escape_html($chmod))))); // Now uses AFM
+    //if ($chmod != '') $warnings->attach(do_template('ADDON_INSTALL_WARNING', array('_GUID' => '78121e40b9a26c2f33d09f7eee7b74be', 'WARNING' => do_lan g_tempcode('ADDON_WARNING_CHMOD', escape_html($chmod))))); // Now uses AFM
 
     $files_combined = new Tempcode();
     $files_combined->attach($files_warnings);
@@ -1024,7 +1064,7 @@ function has_feature($dependency)
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
-    if (($dependency == 'cns') && (get_forum_type() == 'cns')) {
+    if ((($dependency == 'cns') || ($dependency == 'Conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagepng'))) {

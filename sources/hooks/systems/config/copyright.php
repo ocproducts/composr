@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,6 +50,6 @@ class Hook_config_copyright
      */
     public function get_default()
     {
-        return 'Copyright &copy; ' . get_site_name() . ' ' . date('Y') . '';
+        return 'Copyright &copy; $CURRENT_YEAR=' . date('Y') . ' ' . get_site_name();
     }
 }

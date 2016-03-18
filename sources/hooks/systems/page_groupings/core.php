@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -65,7 +65,7 @@ class Hook_page_groupings_core
             addon_installed('actionlog') ? array('audit', 'menu/adminzone/audit/actionlog', array('admin_actionlog', array('type' => 'browse'), get_module_zone('admin_actionlog')), do_lang_tempcode('actionlog:VIEW_ACTIONLOGS'), 'actionlog:DOC_ACTIONLOG') : null,
             addon_installed('securitylogging') ? array('audit', 'menu/adminzone/audit/security_log', array('admin_security', array('type' => 'browse'), get_module_zone('admin_security')), do_lang_tempcode('security:SECURITY_LOG'), 'security:DOC_SECURITY_LOG') : null,
             array('audit', 'menu/adminzone/audit/email_log', array('admin_email_log', array('type' => 'browse'), get_module_zone('admin_email_log')), do_lang_tempcode('emaillog:EMAIL_LOG'), 'emaillog:DOC_EMAIL_LOG'),
-            (get_forum_type() != 'cns') ? null : array('audit', 'buttons/history', array('admin_cns_history', array('type' => 'browse'), get_module_zone('admin_cns_history')), do_lang_tempcode('cns:POST_HISTORY'), 'cns:DOC_POST_HISTORY'),
+            (get_option('store_revisions') == '0' || !addon_installed('actionlog')) ? null : array('audit', 'buttons/revisions', array('admin_revisions', array('type' => 'browse'), get_module_zone('admin_revisions')), do_lang_tempcode('actionlog:REVISIONS'), 'actionlog:DOC_REVISIONS'),
             (!addon_installed('content_reviews')) ? null : array('audit', 'menu/adminzone/audit/content_reviews', array('admin_content_reviews', array('type' => 'browse'), get_module_zone('admin_content_reviews')), do_lang_tempcode('content_reviews:CONTENT_REVIEWS'), 'content_reviews:DOC_CONTENT_REVIEWS'),
 
             array('style', 'menu/adminzone/style/themes/themes', array('admin_themes', array('type' => 'browse'), get_module_zone('admin_themes')), do_lang_tempcode('THEMES'), 'DOC_THEMES'),
@@ -74,13 +74,12 @@ class Hook_page_groupings_core
             array('setup', 'menu/adminzone/setup/config/config', array('admin_config', array('type' => 'browse'), get_module_zone('admin_config')), do_lang_tempcode('CONFIGURATION'), 'DOC_CONFIGURATION'),
             addon_installed('awards') ? array('setup', 'menu/adminzone/setup/awards', array('admin_awards', array('type' => 'browse'), get_module_zone('admin_awards')), do_lang_tempcode('awards:AWARDS'), 'awards:DOC_AWARDS') : null,
             addon_installed('awards') ? array('site_meta', 'menu/adminzone/setup/awards', array('awards', array('type' => 'browse'), get_module_zone('awards')), do_lang_tempcode('awards:AWARDS')) : null,
-            (get_forum_type() == 'cns' || !addon_installed('welcome_emails')) ?/*Is on members menu*/
-                null : array('setup', 'menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('cns_welcome_emails:WELCOME_EMAILS'), 'cns_welcome_emails:DOC_WELCOME_EMAILS'),
+            (get_forum_type() == 'cns' || !addon_installed('welcome_emails')) ?/*Is on members menu*/null : array('setup', 'menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('cns_welcome_emails:WELCOME_EMAILS'), 'cns_welcome_emails:DOC_WELCOME_EMAILS'),
             ((get_forum_type() == 'cns')/*Is on members menu*/ || (addon_installed('securitylogging'))) ? null : array('tools', 'menu/adminzone/tools/users/investigate_user', array('admin_lookup', array(), get_module_zone('admin_lookup')), do_lang_tempcode('lookup:INVESTIGATE_USER'), 'lookup:DOC_INVESTIGATE_USER'),
             addon_installed('xml_fields') ? array('setup', 'menu/adminzone/setup/xml_fields', array('admin_config', array('type' => 'xml_fields'), get_module_zone('admin_config')), do_lang_tempcode('config:FIELD_FILTERS'), 'config:DOC_FIELD_FILTERS') : null,
 
             (get_forum_type() != 'cns') ? null : array('tools', 'menu/adminzone/tools/users/member_add', array('admin_cns_members', array(), get_module_zone('admin_cns_members')), do_lang_tempcode('MEMBERS'), 'cns:DOC_MEMBERS'),
-            //((get_forum_type()!='cns')||(!has_privilege($member_id,'control_usergroups')))?null:array('tools','menu/social/groups',array('groups',array('type'=>'browse'),get_module_zone('groups'),do_lang_tempcode('SWITCH_ZONE_WARNING')),do_lang_tempcode('SECONDARY_GROUP_MEMBERSHIP'),'DOC_SECONDARY_GROUP_MEMBERSHIP'),
+            //((get_forum_type() != 'cns') || (!has_privilege($member_id, 'control_usergroups'))) ? null : array('tools', 'menu/social/groups', array('groups', array('type' => 'browse'), get_module_zone('groups'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('SECONDARY_GROUP_MEMBERSHIP'), 'DOC_SECONDARY_GROUP_MEMBERSHIP'),
             array('tools', 'menu/adminzone/tools/cleanup', array('admin_cleanup', array('type' => 'browse'), get_module_zone('admin_cleanup')), do_lang_tempcode('cleanup:CLEANUP_TOOLS'), 'cleanup:DOC_CLEANUP_TOOLS'),
             (is_null(get_value('brand_base_url'))) ? array('tools', 'menu/adminzone/tools/upgrade', array('admin_config', array('type' => 'upgrader'), get_module_zone('admin_config')), do_lang_tempcode('upgrade:FU_UPGRADER_TITLE'), 'upgrade:FU_UPGRADER_INTRO') : null,
             (addon_installed('syndication')) ? array('tools', 'links/rss', array('admin_config', array('type' => 'backend'), get_module_zone('admin_config')), do_lang_tempcode('FEEDS'), 'rss:OPML_INDEX_DESCRIPTION') : null,
@@ -88,14 +87,14 @@ class Hook_page_groupings_core
 
             array('security', 'menu/adminzone/security/permissions/permission_tree_editor', array('admin_permissions', array('type' => 'browse'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:PERMISSIONS_TREE'), 'permissions:DOC_PERMISSIONS_TREE'),
             addon_installed('match_key_permissions') ? array('security', 'menu/adminzone/security/permissions/match_keys', array('admin_permissions', array('type' => 'match_keys'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:PAGE_MATCH_KEY_ACCESS'), 'permissions:DOC_PAGE_MATCH_KEY_ACCESS') : null,
-            //array('security','menu/adminzone/security/permissions/permission_tree_editor',array('admin_permissions',array('type'=>'page'),get_module_zone('admin_permissions')),do_lang_tempcode('permissions:PAGE_ACCESS'),'permissions:DOC_PAGE_PERMISSIONS'),  // Disabled as not needed - but tree permission editor will redirect to it if no javascript available
+            //array('security', 'menu/adminzone/security/permissions/permission_tree_editor', array('admin_permissions', array('type' => 'page'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:PAGE_ACCESS'), 'permissions:DOC_PAGE_PERMISSIONS'),  // Disabled as not needed - but tree permission editor will redirect to it if no javascript available
             addon_installed('securitylogging') ? array('security', 'menu/adminzone/security/ip_ban', array('admin_ip_ban', array('type' => 'browse'), get_module_zone('admin_ip_ban')), do_lang_tempcode('submitban:BANNED_ADDRESSES'), 'submitban:DOC_IP_BAN') : null,
             array('security', 'menu/adminzone/security/permissions/privileges', array('admin_permissions', array('type' => 'privileges'), get_module_zone('admin_permissions')), do_lang_tempcode('permissions:GLOBAL_PRIVILEGES'), 'permissions:DOC_PRIVILEGES'),
             (get_forum_type() != 'cns') ? null : array('security', 'menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups')), do_lang_tempcode('cns:USERGROUPS'), 'cns:DOC_GROUPS'),
             (get_forum_type() != 'cns') ? null : array('security', 'menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('group_member_timeouts:GROUP_MEMBER_TIMEOUTS'), 'group_member_timeouts:DOC_MANAGE_GROUP_MEMBER_TIMEOUTS'),
             (get_forum_type() == 'cns') ? null : array('security', 'menu/social/groups', array('admin_permissions', array('type' => 'absorb'), get_module_zone('admin_security')), do_lang_tempcode('permissions:ABSORB_PERMISSIONS'), 'permissions:DOC_ABSORB_PERMISSIONS'),
 
-            //(get_comcode_zone('start',false)===NULL)?null:array('','menu/start',array('start',array(),get_comcode_zone('start')),do_lang_tempcode('HOME')),  Attached to zone, so this is not needed
+            //(get_comcode_zone('start', false) === null) ? null : array('', 'menu/start', array('start', array(), get_comcode_zone('start')), do_lang_tempcode('HOME')),  Attached to zone, so this is not needed
             array('', 'menu/pages', array('admin', array('type' => 'pages'), 'adminzone'), do_lang_tempcode('PAGES')),
             array('', 'menu/rich_content', array('admin', array('type' => 'rich_content'), 'adminzone'), do_lang_tempcode('menus:RICH_CONTENT')),
             array('', 'menu/site_meta', array('admin', array('type' => 'site_meta'), 'adminzone'), do_lang_tempcode('menus:SITE_META')),
@@ -103,14 +102,14 @@ class Hook_page_groupings_core
 
             (get_comcode_zone('about', false) === null || get_comcode_zone('about', false) == 'collaboration') ? null : array('pages', 'menu/pages/about_us', array('about', array(), get_comcode_zone('about')), do_lang_tempcode('menus:ABOUT')),
 
-            //(get_comcode_zone('keymap',false)===NULL)?null:array('site_meta',/*'menu/pages/keymap'*/NULL,array('keymap',array(),get_comcode_zone('keymap')),do_lang_tempcode('KEYBOARD_MAP')),   Shows as child of help page
+            //(get_comcode_zone('keymap', false) === null) ? null : array('site_meta',/*'menu/pages/keymap'*/null, array('keymap', array(), get_comcode_zone('keymap')), do_lang_tempcode('KEYBOARD_MAP')),   Shows as child of help page
             (get_comcode_zone('privacy', false) === null || get_option('bottom_show_privacy_link') == '1') ? null : array('site_meta', 'menu/pages/privacy_policy', array('privacy', array(), get_comcode_zone('privacy')), do_lang_tempcode('PRIVACY')),
             (get_comcode_zone('rules', false) === null || get_option('bottom_show_rules_link') == '1') ? null : array('site_meta', 'menu/pages/rules', array('rules', array(), get_comcode_zone('rules')), do_lang_tempcode('RULES')),
             (get_comcode_zone('feedback', false) === null || get_option('bottom_show_feedback_link') == '1') ? null : array('site_meta', 'menu/site_meta/contact_us', array('feedback', array(), get_comcode_zone('feedback')), do_lang_tempcode('FEEDBACK')),
-            //(get_comcode_zone('sitemap',false)===NULL || get_option('bottom_show_sitemap_button')=='1')?null:array('site_meta','tool_buttons/sitemap',array('sitemap',array(),get_comcode_zone('sitemap')),do_lang_tempcode('SITEMAP')),   Redundant, menu itself is a sitemap
+            //(get_comcode_zone('sitemap', false) === null || get_option('bottom_show_sitemap_button') == '1') ? null : array('site_meta', 'tool_buttons/sitemap', array('sitemap', array(), get_comcode_zone('sitemap')), do_lang_tempcode('SITEMAP')),   Redundant, menu itself is a sitemap
             // userguide_comcode is child of help_page
             (get_forum_type() == 'none' || !is_guest($member_id)) ? null : array('site_meta', 'menu/site_meta/user_actions/login', array('login', array(), ''), do_lang_tempcode('_LOGIN')),
-            //(get_forum_type()=='none' || is_guest($member_id))?null:array('site_meta','menu/site_meta/user_actions/logout',array('login',array(),''),do_lang_tempcode('LOGOUT')), Don't show an immediate action, don't want accidental preloading
+            //(get_forum_type() == 'none' || is_guest($member_id)) ? null : array('site_meta', 'menu/site_meta/user_actions/logout', array('login', array(), ''), do_lang_tempcode('LOGOUT')), Don't show an immediate action, don't want accidental preloading
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/join', array('join', array(), get_module_zone('join')), do_lang_tempcode('_JOIN')),
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/lost_password', array('lost_password', array(), get_module_zone('lost_password')), do_lang_tempcode('cns:LOST_PASSWORD')),
 

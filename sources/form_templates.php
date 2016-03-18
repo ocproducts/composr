@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__form_templates()
 {
@@ -210,9 +212,12 @@ function get_attachments($posting_field_name)
 {
     $image_types = str_replace(',', ', ', get_option('valid_images'));
 
-    require_lang('javascript');
+    require_lang('comcode');
     require_javascript('plupload');
     require_css('widget_plupload');
+    require_javascript('editing');
+    require_javascript('checking');
+    require_javascript('posting');
 
     require_code('upload_syndication');
     list($syndication_json, $filter) = get_upload_syndication_json(CMS_UPLOAD_ANYTHING);
@@ -230,7 +235,7 @@ function get_attachments($posting_field_name)
 
     require_code('files2');
     $max_attach_size = get_max_file_size(is_null($syndication_json) ? get_member() : null, $GLOBALS['SITE_DB']);
-    $no_quota = (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0);
+    $no_quota = ((get_forum_type() == 'cns') && (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0));
     if ($no_quota) {
         if (is_null($syndication_json)) {
             return array(new Tempcode(), new Tempcode());
@@ -270,6 +275,7 @@ function get_attachments($posting_field_name)
         'ATTACHMENTS' => $attachments,
         'MAX_ATTACHMENTS' => strval($max_attachments),
         'NUM_ATTACHMENTS' => strval($num_attachments),
+        'FILTER' => $filter,
     ));
 
     return array($attachments, $attach_size_field);
@@ -295,11 +301,11 @@ function get_attachments($posting_field_name)
  * @param  boolean $avoid_wysiwyg Whether to avoid WYSIWYG mode
  * @param  boolean $support_autosave Whether to support auto-save
  * @param  boolean $specialisation2_hidden Whether to support auto-save
+ * @param  mixed $description A description for this input field
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false)
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $javascript = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
-    require_lang('javascript');
     require_javascript('posting');
     require_javascript('ajax');
     require_javascript('plupload');
@@ -310,6 +316,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
+    $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));
 
@@ -333,7 +340,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $comcode_editor = get_comcode_editor();
     $comcode_editor_small = get_comcode_editor('post', true);
 
-    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg') && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
+    $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
     $class = '';
     attach_wysiwyg();
@@ -374,6 +381,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'SPECIALISATION2' => $specialisation2,
         'SPECIALISATION2_HIDDEN' => $specialisation2_hidden,
         'SUPPORT_AUTOSAVE' => $support_autosave,
+        'DESCRIPTION' => $description,
     ));
 }
 
@@ -410,7 +418,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
     if (has_zone_access(get_member(), 'adminzone')) {
         $_buttons[] = 'page';
     }
-    //if (!$cut_down) $_buttons[]='email';   Not enough space any more
+    //if (!$cut_down) $_buttons[]='email';   Not enough space anymore
 
     // Wrappers
     $_buttons[] = 'quote';
@@ -428,7 +436,13 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
         if (($button == 'url') || ($button == 'quote') || ($i == 0)) {
             $divider = true;
         }
-        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => 'e4fe3bc16cec070e06532fedc598d075', 'DIVIDER' => $divider, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+        $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array(
+            '_GUID' => 'e4fe3bc16cec070e06532fedc598d075',
+            'DIVIDER' => $divider,
+            'FIELD_NAME' => $field_name,
+            'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button),
+            'B' => $button,
+        )));
     }
 
     $micro_buttons = new Tempcode();
@@ -438,20 +452,49 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             array('t' => 'i'),
         );
         foreach ($_micro_buttons as $button) {
-            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf', 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']), 'B' => $button['t'])));
+            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array(
+                '_GUID' => 'dbab001b3fa5480bb590ffed3ca81eaf',
+                'FIELD_NAME' => $field_name,
+                'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']),
+                'B' => $button['t'],
+            )));
         }
     }
-    return do_template('COMCODE_EDITOR', array('_GUID' => 'ebff3145776a0441d115f2e4e13617d6', 'POSTING_FIELD' => $field_name, 'BUTTONS' => $buttons, 'MICRO_BUTTONS' => $micro_buttons));
+    return do_template('COMCODE_EDITOR', array(
+        '_GUID' => 'ebff3145776a0441d115f2e4e13617d6',
+        'POSTING_FIELD' => $field_name,
+        'BUTTONS' => $buttons,
+        'MICRO_BUTTONS' => $micro_buttons,
+    ));
 }
 
 /**
  * Find whether WYSIWYG is currently on.
  *
+ * @param  ?string $default Comcode that might be WYSIWYG edited (null: none)
  * @return boolean Whether it is
  */
-function wysiwyg_on()
+function wysiwyg_on($default = null)
 {
-    return ((browser_matches('wysiwyg')) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
+    return ((browser_matches('wysiwyg', $default)) && ((!array_key_exists('use_wysiwyg', $_COOKIE)) || ($_COOKIE['use_wysiwyg'] != '0')));
+}
+
+/**
+ * Find if a form field is required via fields.xml filters.
+ *
+ * @param  ID_TEXT $name The codename for this field
+ * @param  boolean $required Whether it is required by default
+ * @return boolean Whether it is required
+ */
+function filter_form_field_required($name, $required)
+{
+    if (!$required) {
+        $minlength = get_field_restrict_property('minlength', $name);
+        if ((!empty($minlength)) && (intval($minlength) > 0)) {
+            $required = true;
+        }
+    }
+    return $required;
 }
 
 /**
@@ -479,8 +522,8 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
             if (simulated_wildcard_match($field, trim($__r), true)) {
                 foreach ($_restrictions as $bits) {
                     list($restriction, $attributes) = $bits;
-                    if (strtolower($restriction) == strtolower($field)) {
-                        return $bits['embed'];
+                    if (strtolower($restriction) == strtolower($property)) {
+                        return $bits[1]['embed'];
                     }
                 }
             }
@@ -503,7 +546,7 @@ function get_field_restrict_property($property, $field, $page = null, $type = nu
  * @param  ?string $placeholder The placeholder value for this input field (null: none)
  * @return Tempcode The input field
  */
-function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = null, $extra_chars = null, $placeholder = null)
+function form_input_codename($pretty_name, $description, $name, $default, $required, $tabindex = null, $_maxlength = 40, $extra_chars = null, $placeholder = null)
 {
     if (is_null($default)) {
         $default = '';
@@ -514,6 +557,7 @@ function form_input_codename($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -549,6 +593,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -558,7 +603,7 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
         $maxlength = strval($_maxlength);
     }
     $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', $pattern_error);
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (is_null($pattern_error) && !is_null($pattern)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
 /**
@@ -579,6 +624,7 @@ function form_input_url($pretty_name, $description, $name, $default, $required, 
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -606,6 +652,7 @@ function form_input_username($pretty_name, $description, $name, $default, $requi
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -639,6 +686,7 @@ function form_input_author($pretty_name, $description, $name, $default, $require
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     require_javascript('ajax');
     require_javascript('ajax_people_lists');
@@ -679,6 +727,7 @@ function form_input_email($pretty_name, $description, $name, $default, $required
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -713,6 +762,7 @@ function form_input_colour($pretty_name, $description, $name, $default, $require
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -770,6 +820,7 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
     }
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     $tabindex = get_form_field_tabindex($tabindex);
 
@@ -804,6 +855,12 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -864,6 +921,12 @@ function form_input_text_multi($pretty_name, $description, $name, $default_array
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default_array[0] = filter_form_field_default($name, array_key_exists(0, $default_array) ? $default_array[0] : '');
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -904,6 +967,13 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
+
+    if ($num_required == 0) {
+        $required = filter_form_field_required($name, false);
+        if ($required) {
+            $num_required = 1;
+        }
+    }
 
     $input = new Tempcode();
     $i = 0;
@@ -953,6 +1023,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -990,7 +1061,7 @@ function form_input_text($pretty_name, $description, $name, $default, $required,
  */
 function form_input_text_comcode($pretty_name, $description, $name, $default, $required, $tabindex = null, $force_non_wysiwyg = false, $description_side = '', $default_parsed = null, $scrolls = false, $rows = null)
 {
-    if ((browser_matches('wysiwyg')) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
+    if ((browser_matches('wysiwyg', $default)) && (!$force_non_wysiwyg) && (strpos($default, '{$,page hint: no_wysiwyg}') === false)) {
         return form_input_huge_comcode($pretty_name, $description, $name, $default, $required, $tabindex, 10, $description_side, $default_parsed, $scrolls);
     }
 
@@ -1004,13 +1075,14 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
     $default_parsed = new Tempcode();
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
     if (!$force_non_wysiwyg) {
         attach_wysiwyg();
 
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1065,6 +1137,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1074,7 +1147,7 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
     attach_wysiwyg();
 
     if (!$force_non_wysiwyg) {
-        $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
+        $w = (has_js()) && (browser_matches('wysiwyg', $default) && (strpos($default, '{$,page hint: no_wysiwyg}') === false));
         if ($w) {
             $_required .= ' wysiwyg';
         }
@@ -1129,6 +1202,7 @@ function form_input_huge($pretty_name, $description, $name, $default, $required,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $default = filter_form_field_default($name, $default);
+    $required = filter_form_field_required($name, $required);
 
     check_suhosin_request_size(strlen($default));
 
@@ -1235,7 +1309,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
 
             $value = (filter_form_field_default($name, $value ? '1' : '0') == '1');
 
-            $out[] = array('CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
+            $out[] = array('DISABLED' => false, 'CHECKED' => $value, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'PRETTY_NAME' => $pretty_name, 'DESCRIPTION' => $_description);
         }
 
         if ($custom_value === array()) {
@@ -1279,6 +1353,18 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     require_code('images');
 
+    // Remap theme image to URL if needed
+    if ($images_only) {
+        if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
+            require_code('themes2');
+            $ids = get_all_image_ids_type($theme_image_type);
+
+            if (in_array($default, $ids)) {
+                $default = find_theme_image($default);
+            }
+        }
+    }
+
     // ---
 
     // Upload
@@ -1318,11 +1404,11 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ((addon_installed('filedump')) && (has_actual_page_access(null, 'filedump'))) {
         require_code('files2');
-        $fullpath = get_custom_file_base() . '/uploads/filedump';
-        $files = get_directory_contents($fullpath, '', false, false);
+        $full_path = get_custom_file_base() . '/uploads/filedump';
+        $files = get_directory_contents($full_path, '', false, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
-            if (is_image($file) || is_dir($fullpath . '/' . $file)) {
+            if (is_image($file) || is_dir($full_path . '/' . $file)) {
                 $has_image_or_dir = true;
                 break;
             }
@@ -1349,9 +1435,6 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
 
     if ($images_only) {
         if ($theme_image_type !== null && get_option('allow_theme_image_selector') == '1') {
-            require_code('themes2');
-            $ids = get_all_image_ids_type($theme_image_type);
-
             if (count($ids) > 0) {
                 $field_choose = $set_name . '__theme_image';
 
@@ -1381,7 +1464,6 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
  */
 function form_input_upload($pretty_name, $description, $name, $required, $default = null, $tabindex = null, $plupload = true, $filter = '', $syndication_json = null)
 {
-    require_lang('javascript');
     if ($plupload) {
         require_javascript('plupload');
         require_css('widget_plupload');
@@ -1441,7 +1523,6 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
  */
 function form_input_upload_multi($pretty_name, $description, $name, $required, $tabindex = null, $default = null, $plupload = true, $filter = '', $syndication_json = null)
 {
-    require_lang('javascript');
     if ($plupload) {
         require_javascript('plupload');
         require_css('widget_plupload');
@@ -1497,6 +1578,10 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_LIST', array('_GUID' => '112dd79a8e0069aa21615594aec1e509', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $content, 'INLINE_LIST' => $inline_list, 'IMAGES' => $images, 'SIZE' => strval($size)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
@@ -1519,7 +1604,7 @@ function form_input_combo($pretty_name, $description, $name, $default, $options,
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_COMBO', array('_GUID' => '4f4595c0b0dfcf09b004481e317d02a8', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'CONTENT' => $options, 'DEFAULT' => $default));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 
@@ -1573,6 +1658,18 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         $nice_label = $default;
     }
 
+    require_code('content');
+    $content_type = preg_replace('#^choose_#', '', $hook);
+    if ($content_type != '') {
+        $cma_ob = get_content_object($content_type);
+        if (!is_null($cma_ob)) {
+            $cma_info = $cma_ob->info();
+            if (!is_null($cma_info['parent_category_meta_aware_type'])) {
+                $content_type = $cma_info['parent_category_meta_aware_type'];
+            }
+        }
+    }
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
         '_GUID' => '21e9644eeac24356f38459ebe37f693a',
@@ -1588,6 +1685,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         'ROOT_ID' => is_null($root_id) ? '' : $root_id,
         'OPTIONS' => serialize($options),
         'DESCRIPTION' => $description,
+        'CONTENT_TYPE' => $content_type,
     ));
     return _form_input($name, $pretty_name, '', $input, $required, false, $tabindex);
 }
@@ -1608,6 +1706,10 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
 function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
+
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
 
     $_required = ($required) ? '_required' : '';
 
@@ -1641,6 +1743,10 @@ function form_input_huge_list($pretty_name, $description, $name, $content, $tabi
 function form_input_multi_list($pretty_name, $description, $name, $content, $tabindex = null, $size = 5, $required = false, $custom_name = null, $custom_value = null)
 {
     $tabindex = get_form_field_tabindex($tabindex);
+
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
 
     $input = do_template('FORM_SCREEN_INPUT_MULTI_LIST', array(
         '_GUID' => 'ed0739205c0bf5039e1d4fe2ddfc06da',
@@ -1812,7 +1918,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
     // Show each category
     $content = new Tempcode();
     foreach ($categories as $cat => $ids) {
-        $cat = titleify($cat);
+        $cat = $direct_titles ? $cat : titleify($cat);
 
         if ($avatars) {
             $cut_pos = strpos($cat, '/');
@@ -1861,7 +1967,12 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 continue;
             }
 
-            $test = @getimagesize($url);
+            $file_path = convert_url_to_path($url);
+            if (!is_null($file_path)) {
+                $test = @getimagesize($file_path);
+            } else {
+                $test = @getimagesize($url);
+            }
             if ($test !== false) {
                 list($width, $height) = $test;
             } else {
@@ -1908,7 +2019,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
 }
 
 /**
- * Get the Tempcode for a date input. Use get_input_date to read the result.
+ * Get the Tempcode for a date input. Use post_param_date to read the result.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
@@ -1946,6 +2057,8 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  ?ID_TEXT $timezone Timezone to input in (null: current user's timezone)
  * @param  boolean $handle_timezone Convert $default_time to $timezone
  * @return Tempcode The input field
+ *
+ * @ignore
  */
 function _form_input_date($name, $required, $null_default, $do_time, $default_time = null, $total_years_to_show = 10, $year_start = null, $tabindex = null, $do_date = true, $timezone = null, $handle_timezone = true)
 {
@@ -1956,6 +2069,8 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     $default_month = mixed();
     $default_day = mixed();
     $default_year = mixed();
+
+    $required = filter_form_field_required($name, $required);
 
     if ((is_array($default_time)) && ($default_time[4] < 1970) && (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963')) { // Some systems can't do negative timestamps. Actually the maximum negative integer size is also an issue
         list($default_minute, $default_hour, $default_month, $default_day, $default_year) = $default_time;
@@ -2068,6 +2183,8 @@ function form_input_integer($pretty_name, $description, $name, $default, $requir
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : intval($_default);
 
+    $required = filter_form_field_required($name, $required);
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_INTEGER', array('_GUID' => 'da09e21f329f300f71dd4dd518cb6242', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : strval($default)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
@@ -2096,8 +2213,7 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
     $default_height = ($_default_height == '') ? null : intval($_default_height);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array(
-        'TABINDEX' => strval($tabindex),
+    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array('_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35', 'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME_WIDTH' => $name_width,
         'DEFAULT_WIDTH' => is_null($default_width) ? '' : strval($default_width),
@@ -2124,6 +2240,8 @@ function form_input_float($pretty_name, $description, $name, $default, $required
 
     $_default = filter_form_field_default($name, is_null($default) ? '' : strval($default));
     $default = ($_default == '') ? null : floatval($_default);
+
+    $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_to_raw_string($default, 10, true)));
@@ -2206,7 +2324,7 @@ function single_field__end()
 }
 
 /**
- * Used to create a NULL option for field sets.
+ * Used to create a null option for field sets.
  *
  * @param  mixed $pretty_name The human-readable name for this field
  * @param  ?integer $tabindex The tab index (null: none specified)
@@ -2232,6 +2350,8 @@ function form_input_na($pretty_name, $tabindex = null)
  * @param  mixed $description_side A secondary side description for this input field
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
  * @return Tempcode The field
+ *
+ * @ignore
  */
 function _form_input($name, $pretty_name, $description, $input, $required, $comcode = false, $tabindex = null, $w = false, $skip_label = false, $description_side = '', $pattern_error = null)
 {

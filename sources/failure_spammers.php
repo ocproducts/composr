@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -83,6 +83,9 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
         $udata = array('userinfo' => $userinfo);
         $result = $client->submit($udata, array('add' => $add));
         if ($trigger_error) {
+            if (is_object($result)) {
+                attach_message('dnsbl.tornevall.org: ' . $result->getMessage(), 'warn');
+            }
             if (isset($result['error'])) {
                 attach_message('dnsbl.tornevall.org: ' . $result['error']['message'], 'warn');
             }

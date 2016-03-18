@@ -72,7 +72,7 @@
 	{+END}
 
 	<p class="proceed_button">
-		<input class="buttons__proceed button_screen" type="submit" value="{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}" />
+		<input class="button_screen buttons__proceed" type="submit" value="{$?,{$IS_GUEST},{!PROCEED},{!BOOK}}" />
 	</p>
 </form>
 
@@ -80,7 +80,7 @@
 	<form action="{BACK_URL*}" method="post">
 		<div>
 			{HIDDEN}
-			<input type="image" title="{!_NEXT_ITEM_BACK}" alt="{!_NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
+			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>
 		</div>
 	</form>
 {+END}

@@ -1,6 +1,6 @@
-<script src="http://www.google.com/jsapi"></script>
-{+START,IF,{$EQ,{CLUSTER},1}}
-	<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
+<script src="https://www.google.com/jsapi"></script>
+{+START,IF,{CLUSTER}}
+	<script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js"></script>
 {+END}
 <script>// <![CDATA[
 	if (typeof window.data_map=='undefined') window.data_map=null;
@@ -11,7 +11,7 @@
 		window.data_map=new google.maps.Map(document.getElementById('{DIV_ID;/}'),
 		{
 			zoom: {ZOOM%},
-			{+START,IF,{$NEQ,{CENTER},1}} {$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
+			{+START,IF,{$NOT,{CENTER}}} {$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
 				center: specified_center,
 			{+END}
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -40,7 +40,7 @@
 		{$,Show markers}
 		var latLng,marker_options,marker;
 		var bound_length=0;
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 		var markers=[];
 		{+END}
 		{+START,IF,{$AND,{$NEQ,{MIN_LATITUDE},{MAX_LATITUDE}},{$NEQ,{MIN_LONGITUDE},{MAX_LONGITUDE}}}}
@@ -82,10 +82,10 @@
 
 			marker=new google.maps.Marker(marker_options);
 
-			{+START,IF,{$EQ,{CLUSTER},1}}
+			{+START,IF,{CLUSTER}}
 				markers.push(marker);
 			{+END}
-			{+START,IF,{$NEQ,{CLUSTER},1}}
+			{+START,IF,{$NOT,{CLUSTER}}}
 				marker.setMap(data_map);
 			{+END}
 
@@ -104,12 +104,12 @@
 			})(marker,data[i][0],data[i][4],data[i][5])); {$,These are the args passed to the dynamic function above.}
 		}
 
-		{+START,IF,{$EQ,{CLUSTER},1}}
+		{+START,IF,{CLUSTER}}
 			var markerCluster=new MarkerClusterer(data_map,markers);
 		{+END}
 
 		{$,Autofit the map around the markers}
-		{+START,IF,{$EQ,{CENTER},1}}
+		{+START,IF,{CENTER}}
 			if (bound_length==0) {$,We may have to center at given lat/long after all if there are no pins}
 			{
 				data_map.setCenter(specified_center);
@@ -133,12 +133,22 @@
 			\});
 		}
 	}
-	google.load('maps','3',{callback: google_map_initialize,other_params:'sensor=true'{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 //]]></script>
 
-<section class="box box___block_main_google_map"><div class="box_inner">
+{+START,IF_NON_EMPTY,{TITLE}}
+<section class="box box___block_main_google_map inline_block"><div class="box_inner">
 	<h3>{TITLE*}</h3>
+{+END}
 
-	<div id="{DIV_ID*}" style="width:{WIDTH}; height:{HEIGHT}"></div>
+	<div style="width:{WIDTH}; height:{HEIGHT}" id="{DIV_ID*}"></div>
+
+	<script>// <![CDATA[
+		add_event_listener_abstract(window,'load',function() {
+			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+		});
+	//]]></script>
+
+{+START,IF_NON_EMPTY,{TITLE}}
 </div></section>
+{+END}
 

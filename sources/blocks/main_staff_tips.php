@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -84,6 +84,16 @@ class Block_main_staff_tips
         // What tips have been permanently dismissed by the current member?
         $read = collapse_1d_complexity('t_tip', $GLOBALS['SITE_DB']->query_select('staff_tips_dismissed', array('t_tip'), array('t_member' => get_member())));
 
+        $esc_free_support = escape_html(get_brand_page_url(array('page' => 'contact', 'type' => 'free'), ''));
+        $esc_brand_name = escape_html(brand_name());
+        $remaining_tip_params = array(
+            escape_html(get_brand_page_url(array('page' => 'professional_support'), ''/*is site, except runs with single public zone*/)),
+            escape_html(get_brand_page_url(array('page' => ''), 'forum')),
+            escape_html(get_tutorial_url('tutorials')),
+            escape_html(get_tutorial_url(null)),
+            escape_html(get_tutorial_url('tut_do')),
+        );
+
         // Load up tips by searching for the correctly named language files; also choose level
         require_lang('tips');
         $tips = array();
@@ -96,15 +106,7 @@ class Block_main_staff_tips
                 if (!in_array($tip_id, $read)) {
                     $lang2 = do_lang('TIP_' . $tip_id, null, null, null, null, false);
                     if (!is_null($lang2)) {
-                        $lang = do_lang_tempcode(
-                            'TIP_' . $tip_id,
-                            get_brand_page_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_template' => 'general_feedback', 'cost' => 'free'), 'site'),
-                            brand_name(),
-                            array(
-                                get_brand_page_url(array('page' => 'commercial_support'), 'site'),
-                                get_brand_page_url(array('page' => ''), 'forum')
-                            )
-                        );
+                        $lang = do_lang_tempcode('TIP_' . $tip_id, $esc_free_support, $esc_brand_name, $remaining_tip_params);
                         $tips[$i][$tip_id] = $lang;
                     }
                 }
@@ -116,7 +118,7 @@ class Block_main_staff_tips
 
         // Choose a tip from the level we're on
         if (!array_key_exists($level, $tips)) {
-            $tip = do_lang_tempcode('ALL_TIPS_READ');
+            $tip = do_lang_tempcode('ALL_TIPS_READ', $esc_free_support, $esc_brand_name, $remaining_tip_params);
             $level = 5;
             $tip_code = '';
             $count = 0;

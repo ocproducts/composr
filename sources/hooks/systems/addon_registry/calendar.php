@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_calendar
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -131,8 +132,6 @@ class Hook_addon_registry_calendar
             'themes/default/templates/CALENDAR_MONTH_ENTRY_FREE.tpl',
             'themes/default/templates/CALENDAR_MONTH_WEEK.tpl',
             'themes/default/templates/CALENDAR_EVENT_SCREEN.tpl',
-            'themes/default/templates/CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION.tpl',
-            'themes/default/templates/CALENDAR_EVENT_SCREEN_SUBSCRIPTION.tpl',
             'themes/default/templates/CALENDAR_WEEK.tpl',
             'themes/default/templates/CALENDAR_WEEK_HOUR_DAY.tpl',
             'themes/default/templates/CALENDAR_WEEK_ENTRY.tpl',
@@ -189,6 +188,7 @@ class Hook_addon_registry_calendar
             'themes/default/images/calendar/rss.png',
             'themes/default/images/calendar/system_command.png',
             'sources/hooks/systems/notifications/member_calendar_changes.php',
+            'sources/hooks/systems/commandr_fs_extended_member/calendar_interests.php',
         );
     }
 
@@ -227,8 +227,6 @@ class Hook_addon_registry_calendar
             'templates/CALENDAR_YEAR_MONTH_ROW.tpl' => 'calendar_year_view',
             'templates/CALENDAR_YEAR_MONTH.tpl' => 'calendar_year_view',
             'templates/CALENDAR_YEAR.tpl' => 'calendar_year_view',
-            'templates/CALENDAR_EVENT_SCREEN_SUBSCRIPTION.tpl' => 'calendar_event_screen',
-            'templates/CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION.tpl' => 'calendar_event_screen',
             'templates/CALENDAR_EVENT_SCREEN.tpl' => 'calendar_event_screen',
             'templates/CALENDAR_EVENT_BOX.tpl' => 'calendar_event_box'
         );
@@ -372,7 +370,7 @@ class Hook_addon_registry_calendar
                 'EVENTS' => placeholder_array(),
                 'CALENDAR_URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'VIEW_URL' => placeholder_url(),
                 'ICON' => 'calendar/activity',
                 'T_TITLE' => lorem_word(),
@@ -452,7 +450,7 @@ class Hook_addon_registry_calendar
                         $entries = do_lorem_template('CALENDAR_DAY_ENTRY', array(
                             'ID' => placeholder_id(),
                             'URL' => placeholder_url(),
-                            'TIME' => placeholder_time(),
+                            'TIME' => placeholder_date(),
                             'T_TITLE' => lorem_phrase(),
                             'TITLE' => lorem_word(),
                             'DESCRIPTION' => lorem_word_2(),
@@ -496,7 +494,7 @@ class Hook_addon_registry_calendar
                             $entries = do_lorem_template('CALENDAR_WEEK_ENTRY', array(
                                 'ID' => placeholder_id(),
                                 'URL' => placeholder_url(),
-                                'TIME' => placeholder_time(),
+                                'TIME' => placeholder_date(),
                                 'TITLE' => lorem_word(),
                                 'E' => lorem_word(),
                                 'ICON' => 'calendar/general',
@@ -719,21 +717,23 @@ class Hook_addon_registry_calendar
      */
     public function tpl_preview__calendar_event_screen()
     {
-        $sub = new Tempcode();
+        $subscriptions = array();
         foreach (placeholder_array() as $v) {
-            $sub->attach(do_lorem_template('CALENDAR_EVENT_SCREEN_PERSONAL_SUBSCRIPTION', array(
+            $subscriptions[] = array(
                 'UNSUBSCRIBE_URL' => placeholder_url(),
-                'TIME' => placeholder_time(),
-            )));
+                'TIME' => placeholder_date(),
+            );
         }
-        $subed = new Tempcode();
+
+        $subscribed = array();
         foreach (placeholder_array() as $v) {
-            $subed->attach(do_lorem_template('CALENDAR_EVENT_SCREEN_SUBSCRIPTION', array(
+            $subscribed[] = array(
                 'MEMBER_ID' => placeholder_id(),
                 'MEMBER_URL' => placeholder_url(),
                 'USERNAME' => lorem_word(),
-            )));
+            );
         }
+
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
@@ -752,6 +752,7 @@ class Hook_addon_registry_calendar
             'FIRST_POST' => '',
             'NAME' => 'field',
         ));
+
         return array(
             lorem_globalise(do_lorem_template('CALENDAR_EVENT_SCREEN', array(
                 'ID' => placeholder_id(),
@@ -763,22 +764,22 @@ class Hook_addon_registry_calendar
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
                 'LOGO' => placeholder_img_code(''),
-                'DAY' => placeholder_time(),
+                'DAY' => placeholder_date(),
                 'RECURRENCE' => placeholder_number(),
                 'IS_PUBLIC' => lorem_phrase(),
                 'PRIORITY' => lorem_phrase(),
                 'PRIORITY_LANG' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
-                'TIME' => placeholder_time(),
+                'TIME' => placeholder_date(),
                 'TIME_RAW' => placeholder_date_raw(),
                 'TIME_VCAL' => placeholder_date_raw(),
                 'EDIT_URL' => placeholder_url(),
-                'SUBSCRIPTIONS' => $sub,
+                'SUBSCRIPTIONS' => $subscriptions,
                 'SUBSCRIBE_URL' => placeholder_url(),
                 'TITLE' => lorem_title(),
                 'BACK_URL' => placeholder_url(),
                 'CONTENT' => lorem_phrase(),
-                'SUBSCRIBED' => $subed,
+                'SUBSCRIBED' => $subscribed,
                 'RATING_DETAILS' => lorem_sentence_html(),
                 'TRACKBACK_DETAILS' => lorem_sentence_html(),
                 'VALIDATED' => true,

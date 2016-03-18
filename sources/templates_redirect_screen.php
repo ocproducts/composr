@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,6 +28,7 @@
  * @param  ID_TEXT $msg_type Code of message type to show
  * @set    warn inform fatal
  * @return Tempcode Redirection message (likely to not actually be seen due to instant redirection)
+ * @ignore
  */
 function _redirect_screen($title, $url, $text = null, $intermediary_hop = false, $msg_type = 'inform')
 {
@@ -35,21 +36,23 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
         $url = $url->evaluate();
     }
 
-    if (is_null($text)) {
-        $text = do_lang_tempcode('_REDIRECTING');
-    }
-
-    global $FORCE_META_REFRESH, $ATTACHED_MESSAGES_RAW;
+    global $ATTACHED_MESSAGES_RAW;
     $special_page_type = get_param_string('special_page_type', 'view');
-    if (($special_page_type == 'view') && (!headers_sent()) && (!$FORCE_META_REFRESH)) {
-        foreach ($ATTACHED_MESSAGES_RAW as $message) {
+
+    foreach ($ATTACHED_MESSAGES_RAW as $message) {
+        $_message = is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]);
+        if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
                 'r_session_id' => get_session_id(),
-                'r_message' => is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]),
+                'r_message' => $_message,
                 'r_type' => $message[1],
                 'r_time' => time(),
             ));
         }
+    }
+
+    // Even if we have $FORCE_META_REFRESH we want to relay $text if provided --- our delay is zero so it won't be read in time by most users
+    if (!is_null($text)) {
         $_message = is_object($text) ? $text->evaluate() : escape_html($text);
         if ($_message != '' && $_message != do_lang('_REDIRECTING')) {
             $GLOBALS['SITE_DB']->query_insert('messages_to_render', array(
@@ -59,17 +62,22 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
                 'r_time' => time(),
             ));
         }
+    }
 
-        if (!$intermediary_hop) {
-            $hash_pos = strpos($url, '#');
-            if ($hash_pos !== false) {
-                $hash_bit = substr($url, $hash_pos);
-                $url = substr($url, 0, $hash_pos);
-            } else {
-                $hash_bit = '';
-            }
-            $url .= ((strpos($url, '?') === false) ? '?' : '&') . 'redirected=1' . $hash_bit;
+    if (!$intermediary_hop) {
+        $hash_pos = strpos($url, '#');
+        if ($hash_pos !== false) {
+            $hash_bit = substr($url, $hash_pos);
+            $url = substr($url, 0, $hash_pos);
+        } else {
+            $hash_bit = '';
         }
+        extend_url($url, 'redirected=1');
+        $url .= $hash_bit;
+    }
+
+    if (is_null($text)) {
+        $text = do_lang_tempcode('_REDIRECTING');
     }
 
     require_code('site2');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -424,7 +424,7 @@ if (!is_null($results)) {
     $pedantic = (in_array('checks', $_SERVER['argv'])) || ((array_key_exists('pedantic', $_SERVER['argv']) && ($_SERVER['argv']['pedantic'] == '1')));
     $skip_over = $pedantic ? array() : array('XHTML_EMPTY_TAG', 'CSS_INLINE_STYLES', 'WCAG_ADJACENT_LINKS', 'XHTML_SPELLING');
     foreach ($results['errors'] as $result) {
-        //echo ' '.implode(' ',$result['error'])."\n";
+        //echo ' ' . implode(' ', $result['error']) . "\n";
         $error_exp = trim(is_array($result['error']) ? implode(' ', $result['error']) : $result['error']);
         $sp = strpos($error_exp, ' ');
         if (in_array($sp === false ? $error_exp : substr($error_exp, 0, $sp), $skip_over)) {

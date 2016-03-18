@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_ebay_store
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -89,10 +90,7 @@ class Hook_addon_registry_ebay_store
 
 The block is more suitable to be used as a main block because if it placed on a panel the block size is too small and it is hard to be navigated inside of it. The block dimensions width/height could also be adjusted (to fit better on the block area).
 
-Parameters are:
- - [tt]type[/tt] will be either "seller" or "store"
- - [tt]seller[/tt] will be the seller or store ID
- - [tt]query[/tt] (only works for stores) will display results from a particular search query';
+The normal Composr block construction assistant will help you set up the block on your site.';
     }
 
     /**

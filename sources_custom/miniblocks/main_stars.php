@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    idolisr
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -15,12 +21,16 @@ require_lang('cns');
 
 $stars = array();
 
-if (multi_lang_content()) {
-    $sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE ' . $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like($map['param'] . ': %') . '\' AND gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' GROUP BY gift_to ORDER BY cnt DESC';
-} else {
-    $sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE reason LIKE \'' . db_encode_like($map['param'] . ': %') . '\' AND gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' GROUP BY gift_to ORDER BY cnt DESC';
-}
+$sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE ';
+$sql .= $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like($map['param'] . ': %') . '\' AND gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
+$sql .= ' GROUP BY gift_to ORDER BY cnt DESC';
 $gifts = $GLOBALS['SITE_DB']->query($sql, 10);
+
+if (count($gifts) == 0 && $GLOBALS['DEV_MODE']) {
+    $gifts[] = array('gift_to' => 2, 'cnt' => 123);
+    $gifts[] = array('gift_to' => 3, 'cnt' => 7334);
+}
+
 $count = 0;
 foreach ($gifts as $gift) {
     $member_id = $gift['gift_to'];
@@ -46,4 +56,4 @@ foreach ($gifts as $gift) {
     }
 }
 
-return do_template('BLOCK_MAIN_STARS', array('STARS' => $stars));
+return do_template('BLOCK_MAIN_STARS', array('_GUID' => '298e81f1062087de02e30d77ff61305d', 'STARS' => $stars));

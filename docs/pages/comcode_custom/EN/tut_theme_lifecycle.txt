@@ -2,12 +2,14 @@
 
 If you've developed a theme, you'll need to keep it updated as new Composr versions come out.
 Where possible we try and automate this, but automation is imperfect.
+
 This tutorial will explain how theme overrides get made, the consequences of overrides, and how to keep them in sync.
 
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]The start of an override[/title]
 
+[media width="150" description="Comparing a theme's overridden [tt]global.css[/tt] using DiffMerge" float="right"]data_custom/images/docs/tut_theme_lifecycle/diffmerge.png[/media]
 Imagine you have a new empty theme. Nothing is overridden in it, it is just an empty shell built on top of the default theme.
 
 [box="A note about override chains"]
@@ -29,7 +31,7 @@ This override process is exactly the same for templates (including JavaScript te
 
 [title="2"]The template cache[/title]
 
-Composr never actually directly serves CSS files to the visitor web browsers. First the CSS files are compiled with Tempcode, and then they are minified. The Tempcode process allows Composr to properly tie-in theme images, language string references, colour references, and to separately compile out the mobile and desktop versions of the CSS, amongst other things.
+Composr never actually directly serves CSS files to the visitor web browsers. First the CSS files are compiled with Tempcode, and then they are minified. The Tempcode process allows Composr to properly tie-in theme images, language string references, colour references, and to separately compile out the mobile and desktop versions of the CSS, among other things.
 
 Templates are obviously not served direct to the visitor web browser either.
 
@@ -54,24 +56,24 @@ It is often better to go through the process by hand, or to go over by hand to p
 
 This is where the auto-created [tt].editfrom[/tt] files are useful...
 
-First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url]. DiffMerge on Mac, and Kompare on Linux are similar.
+First install a diff tool on your own desktop machine such as [url="WinMerge"]http://winmerge.org/[/url]. [url="Beyond Compare"]http://www.scootersoftware.com/[/url] (cross platform, commercial), [url="DiffMerge"]https://sourcegear.com/diffmerge/[/url] on Mac, and Kompare on Linux are similar.
 
 Then download the themes directory from your server, to your own desktop machine.
 
 Comparing these files:
-[tt]themes/example/css_custom/global.css.editfrom[/tt]
-[tt]themes/default/css/global.css[/tt]
-would show all changes made in the default theme since you first made your override (i.e. official changes).
+ - [tt]themes/example/css_custom/global.css.editfrom[/tt]
+ - [tt]themes/default/css/global.css[/tt]
+...would show all changes made in the default theme since you first made your override (i.e. official changes).
 
 Comparing these files:
-[tt]themes/example/css_custom/global.css.editfrom[/tt]
-[tt]themes/example/css_custom/global.css[/tt]
-would show all the changes you directly made within your own theme (i.e. your changes).
+ - [tt]themes/example/css_custom/global.css.editfrom[/tt]
+ - [tt]themes/example/css_custom/global.css[/tt]
+...would show all the changes you directly made within your own theme (i.e. your changes).
 
 Comparing these files:
-[tt]themes/default/css/global.css[/tt]
-[tt]themes/example/css_custom/global.css[/tt]
-would show all the differences between the default theme and your own theme (i.e. the changes you directly made, any the changes made in the default theme since you first made your override).
+ - [tt]themes/default/css/global.css[/tt]
+ - [tt]themes/example/css_custom/global.css[/tt]
+...would show all the differences between the default theme and your own theme (i.e. the changes you directly made, any the changes made in the default theme since you first made your override).
 
 Therefore using a diff tool you can locate what changes you need to make back into your custom theme, then upload your updated file(s).
 

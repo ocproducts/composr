@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -120,7 +120,7 @@ class Block_main_forum_topics
         if ((is_numeric($forum_name)) && (get_forum_type() == 'cns')) {
             $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => intval($forum_name)));
             if (is_null($forum_name)) {
-                return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red_alert');
+                return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'topic'), '', 'red_alert');
             }
         }
         $_title = do_lang_tempcode('ACTIVE_TOPICS_IN', escape_html($forum_name));
@@ -147,7 +147,7 @@ class Block_main_forum_topics
             $max_rows = 0;
             $topics = $GLOBALS['FORUM_DRIVER']->show_forum_topics($forum_ids, $limit, 0, $max_rows, '', true, $date_key, $hot == 1);
 
-            $out = new Tempcode();
+            $_topics = array();
             if (!is_null($topics)) {
                 sort_maps_by($topics, $date_key);
                 $topics = array_reverse($topics, false);
@@ -171,7 +171,7 @@ class Block_main_forum_topics
                     $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
                     $topic_url_unread = mixed();
                     if (get_forum_type() == 'cns') {
-                        $topic_url_unread = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'first_unread'), get_module_zone('topicview'), null, false, false, false, 'first_unread');
+                        $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), null, false, false, false, 'first_unread');
                     }
                     $title = escape_html($topic['title']);
                     $date = get_timezoned_date($topic[$date_key]);
@@ -182,8 +182,7 @@ class Block_main_forum_topics
                     }
                     $forum_name = is_null($forum_names_map) ? null : $forum_names_map[$topic['forum_id']];
 
-                    $out->attach(do_template('BLOCK_MAIN_FORUM_TOPICS_TOPIC', array(
-                        '_GUID' => 'ae4e351b3fa5422bf8ecdfb7e49076d1',
+                    $_topics[] = array(
                         'POST' => $topic['firstpost'],
                         'FORUM_ID' => is_null($forum_names_map) ? null : strval($topic['forum_id']),
                         'FORUM_NAME' => $forum_name,
@@ -195,7 +194,7 @@ class Block_main_forum_topics
                         'USERNAME' => $username,
                         'MEMBER_ID' => is_null($member_id) ? '' : strval($member_id),
                         'NUM_POSTS' => integer_format($topic['num']),
-                    )));
+                    );
 
                     $done++;
 
@@ -204,7 +203,7 @@ class Block_main_forum_topics
                     }
                 }
             }
-            if ($out->is_empty()) {
+            if ($_topics === array()) {
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => 'c76ab018a0746c2875c6cf69c92a01fb',
                     'HIGH' => false,
@@ -219,7 +218,7 @@ class Block_main_forum_topics
             return do_template('BLOCK_MAIN_FORUM_TOPICS', array(
                 '_GUID' => '368b80c49a335ad035b00510681d5008',
                 'TITLE' => $_title,
-                'CONTENT' => $out,
+                'TOPICS' => $_topics,
                 'FORUM_NAME' => array_key_exists('param', $map) ? $map['param'] : 'General chat',
                 'SUBMIT_URL' => $submit_url,
             ));

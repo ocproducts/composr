@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,12 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    addon_publish
+ */
 
 /*EXTRA FUNCTIONS: json_decode,json_encode*/
 
@@ -33,6 +39,12 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain');
+        exit('Must run this script on command line, for security reasons');
+    }
+
     push_to_transifex();
 
     header('Content-type: text/plain; charset=' . get_charset());
@@ -42,13 +54,19 @@ function transifex_push_script()
 
 function push_to_transifex()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain; charset=' . get_charset());
+        exit('Must run this script on command line, for security reasons');
+    }
+
     require_code('addons');
     require_code('lang_compile');
     require_code('lang2');
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
@@ -71,7 +89,7 @@ function push_to_transifex()
     }
 
     // Find language string descriptions
-    $descriptions = get_lang_file_descriptions(fallback_lang());
+    $descriptions = get_lang_file_section(fallback_lang());
 
     // Create project if it does not already exist
     $args = array(
@@ -184,7 +202,7 @@ function _push_to_transifex($f, $project_slug, $custom, $addon_files, $descripti
         $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'INI', 'content' => $c)));
     }
 
-    // Set meta-data
+    // Set metadata
     foreach ($map as $key => $val) {
         if (isset($descriptions[$key])) {
             $descrip = $descriptions[$key];
@@ -230,8 +248,8 @@ function pull_from_transifex($version)
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(3000);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(3000);
     }
 
     require_code('lang2');
@@ -284,7 +302,7 @@ function pull_from_transifex($version)
 {$open} /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -304,9 +322,10 @@ class Hook_addon_registry_addon_publish
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -435,10 +454,10 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     $username = get_value('transifex_username', null, true);
     $password = get_value('transifex_password', null, true);
     if (empty($username)) {
-        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\');', true);
+        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);
     }
     if (empty($password)) {
-        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\');', true);
+        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true);', true);
     }
 
     if (substr($call, 0, 1) != '/') {
@@ -461,5 +480,11 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     $auth = array($username, $password);
     global $HTTP_MESSAGE;
     $result = http_download_file($url, null, $trigger_error, false, 'Composr', ($http_verb == 'GET') ? null : $params, null, null, null, null, null, null, $auth, 30.0, $raw_post, null, null, $http_verb, $raw_content_type);
+
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if ($cli) {
+        @print('Done call to ' . $url . ' [' . $HTTP_MESSAGE . ']' . "\n");
+    }
+
     return array($result, $HTTP_MESSAGE);
 }

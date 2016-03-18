@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_stats
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -129,7 +130,9 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/addon_registry/stats.php',
             'sources/hooks/modules/admin_import_types/stats.php',
             'sources/hooks/modules/admin_stats/.htaccess',
+            'sources_custom/hooks/modules/admin_stats/.htaccess',
             'sources/hooks/modules/admin_stats/index.html',
+            'sources_custom/hooks/modules/admin_stats/index.html',
             'themes/default/templates/STATS_GRAPH.tpl',
             'themes/default/templates/STATS_SCREEN.tpl',
             'themes/default/templates/STATS_SCREEN_ISCREEN.tpl',
@@ -145,6 +148,7 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/cleanup/stats.php',
             'sources/svg.php',
             'sources/hooks/systems/config/bot_stats.php',
+            'sources/hooks/systems/tasks/install_geolocation_data.php',
         );
     }
 

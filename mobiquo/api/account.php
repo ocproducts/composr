@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts/Tapatalk, 2004-2015
+ Copyright (c) ocProducts/Tapatalk, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -96,7 +96,7 @@ function sign_in_func($raw_params)
         'max_jpg_size' => mobiquo_val($user_details['max_jpg_size'], 'int'),
         'post_countdown' => mobiquo_val($user_details['post_countdown'], 'int'),
     );
-    if ($user_details['display_text'] != $user_details['username']) {
+    if (isset($user_details['display_text'])) {
         $arr += array(
             'display_text' => mobiquo_val($user_details['display_text'], 'base64'),
         );
@@ -205,7 +205,7 @@ function register_func($raw_params)
     $email = $params[2];
     $token = isset($params[3]) ? $params[3] : null;
     $code = isset($params[4]) ? $params[4] : null;
-    //$custom_fields=isset($params[5])?$params[5]:array();	Register is old endpoint, doesn't support custom fields
+    //$custom_fields = isset($params[5]) ? $params[5] : array();	Register is old endpoint, doesn't support custom fields
 
     $account_object = new CMSAccountWrite();
     $results = $account_object->register($username, $password, $email, $token, $code, array());

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_wiki_page
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_wiki');
+        $applies = (get_page_name() == 'cms_wiki');
         return array($applies, 'wiki_page', false);
     }
 }

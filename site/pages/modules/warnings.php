@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -27,7 +27,7 @@ class Module_warnings extends Standard_crud_module
 {
     public $lang_type = 'WARNING';
     public $select_name = 'SUBMITTER';
-    public $select_name_description = 'DESCRIPTION_SUBMITTER';
+    public $select_name_description = '';
     public $redirect_type = '!';
     public $menu_label = 'MODULE_TRANS_NAME_warnings';
     public $table = 'f_warnings';
@@ -51,7 +51,7 @@ class Module_warnings extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -66,10 +66,10 @@ class Module_warnings extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -82,6 +82,7 @@ class Module_warnings extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
         require_lang('cns_warnings');
+        require_lang('submitban');
 
         if ($type == 'history') {
             $this->title = get_screen_title('PUNITIVE_HISTORY');
@@ -480,7 +481,7 @@ class Module_warnings extends Standard_crud_module
                 }
             }
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('BANNED_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
+                $fields->attach(form_input_tick(do_lang_tempcode('BAN_MEMBER'), do_lang_tempcode('DESCRIPTION_BANNED_MEMBER'), 'banned_member', false));
 
                 $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), array('g_is_private_club' => 0));
                 $groups = new Tempcode();
@@ -659,7 +660,7 @@ class Module_warnings extends Standard_crud_module
         // Topic silencing
         $silence_from_topic = post_param_integer('topic_id', null);
         if (!is_null($silence_from_topic)) {
-            $_silence_from_topic = get_input_date('silence_from_topic');
+            $_silence_from_topic = post_param_date('silence_from_topic');
             $GLOBALS['SITE_DB']->query_delete('member_privileges', array(
                 'member_id' => $member_id,
                 'privilege' => 'submit_lowrange_content',
@@ -704,7 +705,7 @@ class Module_warnings extends Standard_crud_module
                 'module_the_name' => 'forums',
                 'category_name' => strval($silence_from_forum),
             ));
-            $_silence_from_forum = get_input_date('silence_from_forum');
+            $_silence_from_forum = post_param_date('silence_from_forum');
 
             require_code('cns_general_action2');
             cns_mod_log_it('SILENCE_FROM_FORUM', strval($member_id), strval($silence_from_forum));

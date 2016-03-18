@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -54,7 +54,7 @@ ini_set('memory_limit', '-1');
 $classes = array();
 $global = array();
 global $TO_USE;
-//$files=array($COMPOSR_PATH.'/sources/global2.php'); For debugging
+//$files = array($COMPOSR_PATH . '/sources/global2.php'); For debugging
 foreach ($files as $filename) {
     if (strpos($filename, 'sabredav/') !== false || strpos($filename, 'Swift/') !== false || strpos($filename, 'tracker/') !== false) { // Lots of complex code we want to ignore, even if doing custom files
         continue;
@@ -66,7 +66,7 @@ foreach ($files as $filename) {
     if ($_filename == 'sources' . DIRECTORY_SEPARATOR . 'minikernel.php') {
         continue;
     }
-    //echo 'SIGNATURES-DOING '.$_filename.cnl();
+    //echo 'SIGNATURES-DOING ' . $_filename . cnl();
     $result = get_php_file_api($_filename, false);
 
     foreach ($result as $i => $r) {
@@ -90,7 +90,7 @@ foreach ($files as $filename) {
             $classes[$class] = $in;
         }
     }
-    //echo 'SIGNATURES-DONE '.$_filename.cnl();
+    //echo 'SIGNATURES-DONE ' . $_filename . cnl();
 }
 
 $classes['__global'] = array('functions' => $global);

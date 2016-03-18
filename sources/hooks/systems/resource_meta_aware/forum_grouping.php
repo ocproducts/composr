@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_resource_meta_aware_forum_grouping
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
-            'content_type_label' => 'FORUM_GROUPING',
+            'content_type_label' => 'cns:FORUM_GROUPING',
+            'content_type_universal_label' => 'Forum grouping',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_forum_groupings',
@@ -49,10 +50,14 @@ class Hook_resource_meta_aware_forum_grouping
             'parent_spec__table_name' => null,
             'parent_spec__parent_name' => null,
             'parent_spec__field_name' => null,
-            'category_is_string' => true,
+            'category_is_string' => false,
 
             'title_field' => 'c_title',
             'title_field_dereference' => false,
+            'description_field' => null,
+            'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forum_groupings:_edit:_WILD',
@@ -63,7 +68,9 @@ class Hook_resource_meta_aware_forum_grouping
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -73,9 +80,14 @@ class Hook_resource_meta_aware_forum_grouping
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'cns_forum',
 
@@ -85,7 +97,11 @@ class Hook_resource_meta_aware_forum_grouping
             'commandr_filesystem_hook' => 'forum_groupings',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_FORUM_GROUPING',
         );

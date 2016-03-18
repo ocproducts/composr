@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -135,7 +135,7 @@ function cns_get_topic_tree($forum_id = null, $breadcrumbs = null, $title = null
  *
  * @param  ?MEMBER $member_id The member that the view privileges are done for (null: current member).
  * @param  ?AUTO_LINK $base_forum The forum we are starting from (null: capture the whole tree).
- * @param  ?array $selected_forum The forum(s) to select by default (null: no preference). Only applies if !$topics_too. An array of AUTO_LINK's (for IDs) or strings (for names).
+ * @param  ?array $selected_forum The forum(s) to select by default (null: no preference). An array of AUTO_LINK's (for IDs) or strings (for names).
  * @param  boolean $use_compound_list Whether to generate a compound list (a list of all the ancesters, for each point in the forum tree) as well as the tree.
  * @param  ?integer $levels The number of recursive levels to search (null: all)
  * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
@@ -219,7 +219,7 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
         } else {
             $_forum_details = $GLOBALS['FORUM_DB']->query_select('f_forums', array('f_order_sub_alpha'), array('id' => $base_forum), '', 1);
             if (!array_key_exists(0, $_forum_details)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
             }
             $forum_details = $_forum_details[0];
         }
@@ -235,10 +235,10 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
         $FORUM_TREE_SECURE_CACHE = ($num_forums >= 300); // Mark it as 'huge'
     }
     if ($FORUM_TREE_SECURE_CACHE === true) {
-        $forums = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' AND ' . (is_null($base_forum) ? 'f_parent_forum IS NULL' : ('f_parent_forum=' . strval($base_forum))) . ' ORDER BY f_position', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+        $forums = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' AND ' . (is_null($base_forum) ? 'f_parent_forum IS NULL' : ('f_parent_forum=' . strval($base_forum))) . ' ORDER BY f_position,f_name', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     } else {
         if ((is_null($FORUM_TREE_SECURE_CACHE)) || ($FORUM_TREE_SECURE_CACHE === false)) {
-            $FORUM_TREE_SECURE_CACHE = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' ORDER BY f_position');
+            $FORUM_TREE_SECURE_CACHE = $GLOBALS['FORUM_DB']->query('SELECT id,f_order_sub_alpha,f_name,f_forum_grouping_id,f_parent_forum,f_position,f_cache_last_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id IS NOT NULL AND ' . db_string_equal_to('f_redirection', '') . ' ORDER BY f_position,f_name');
         }
         foreach ($FORUM_TREE_SECURE_CACHE as $x) {
             if ($x['f_parent_forum'] === $base_forum) {

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_stats_block
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -121,7 +122,9 @@ class Hook_addon_registry_stats_block
             'sources/blocks/side_stats.php',
             'sources/hooks/blocks/side_stats/stats_forum.php',
             'sources/hooks/blocks/side_stats/.htaccess',
+            'sources_custom/hooks/blocks/side_stats/.htaccess',
             'sources/hooks/blocks/side_stats/index.html',
+            'sources_custom/hooks/blocks/side_stats/index.html',
         );
     }
 

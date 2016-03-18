@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_bankr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -85,7 +86,7 @@ class Hook_addon_registry_bankr
      */
     public function get_description()
     {
-        return 'Members can deposit some of their hard earned points (but not the gift points) into a "bank account" and extract them again only after a month. The administrator can set the interest rate, that users will get with their points back at the end of the account term. To set the Interest rate go to Admin Zone > Setup > Manage point-store inventory and click "edit your point-store configuration" and change the interest rate to the level you would like. To deposit points go to the point store and click on the bank option and choose how much you would like to deposit for a month. The interest paid out will be at the level it was at when the points were deposited.';
+        return 'Members can deposit some of their hard earned points (but not the gift points) into a "bank account" and extract them again only after a month. The administrator can set the interest rate, that users will get with their points back at the end of the account term. To set the Interest rate go to Admin Zone > Setup > Manage Point Store inventory and click "edit your Point Store configuration" and change the interest rate to the level you would like. To deposit points go to the point store and click on the bank option and choose how much you would like to deposit for a month. The interest paid out will be at the level it was at when the points were deposited.';
     }
 
     /**

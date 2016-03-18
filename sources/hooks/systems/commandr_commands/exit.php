@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,12 +33,10 @@ class Hook_commandr_command_exit
      */
     public function run($options, $parameters, &$commandr_fs)
     {
-        require_code('xml');
-
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('exit', array('h'), array()), '', '');
         } else {
-            return array('if (document.getElementById(\'commandr_box\')) load_commandr(); else window.location.href=\'' . xmlentities(addslashes(static_evaluate_tempcode(build_url(array('page' => ''), '')))) . '\';', '', do_lang('SUCCESS'), '');
+            return array('if (document.getElementById(\'commandr_box\')) load_commandr(); else window.location.href=\'' . addslashes(static_evaluate_tempcode(build_url(array('page' => ''), ''))) . '\';', '', do_lang('SUCCESS'), '');
         }
     }
 }

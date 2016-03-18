@@ -1,5 +1,6 @@
 {TITLE}
 
+{$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,widget_color}
 {$REQUIRE_CSS,widget_color}
 
@@ -23,7 +24,7 @@
 		</div>
 		<div class="left">
 			<form autocomplete="off" title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" style="display: inline;">
-				<input type="button" class="buttons__send button_micro" name="post_now" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
+				<input type="button" class="button_micro buttons__send" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
 			</form>
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{MICRO_BUTTONS}
@@ -60,6 +61,8 @@
 </p></div>
 
 <form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
 	<div class="box box___chat_screen_options box_prominent"><div class="box_inner">
 		<h2>{!OPTIONS}</h2>
 
@@ -74,13 +77,13 @@
 						<label for="text_colour">{!CHAT_OPTIONS_COLOUR_NAME}:</label>
 					</p>
 					<p>
-						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
+						<input size="10" maxlength="7" class="input_line_required" type="color" id="text_colour" name="text_colour" value="{+START,IF,{$NEQ,{TEXT_COLOUR_DEFAULT},inherit}}#{TEXT_COLOUR_DEFAULT*}{+END}" onchange="if (this.form.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/)) { this.style.color=this.value; document.getElementById('colour').value=this.value; update_picker_colour(); }" />
 					</p>
 				</div>
 
 				<div class="chat_font_option">
 					<p>
-						<label for="text_colour">{!CHAT_OPTIONS_TEXT_NAME}:</label>
+						<label for="font_name">{!CHAT_OPTIONS_TEXT_NAME}:</label>
 					</p>
 					<p>
 						<select onclick="this.onchange(event);" onchange="on_font_change(this);" id="font_name" name="font_name">
@@ -97,30 +100,32 @@
 			</p>
 
 			<p>
-				<input class="buttons__save button_screen_item" onclick="var form=this.form; window.fauxmodal_confirm('{!SAVE_COMPUTER_USING_COOKIE}',function(answer) { if (answer) form.submit(); }); return false;" type="submit" value="{!CHAT_CHANGE_OPTIONS=}" />
+				<input class="button_screen_item buttons__save" onclick="var form=this.form; window.fauxmodal_confirm('{!SAVE_COMPUTER_USING_COOKIE}',function(answer) { if (answer) form.submit(); }); return false;" type="submit" value="{!CHAT_CHANGE_OPTIONS=}" />
 			</p>
 		</div>
 
 		<div class="chat_room_actions">
 			<p class="lonely_label">{!ACTIONS}:</p>
-			<ul role="navigation" class="actions_list">
-				{+START,LOOP,LINKS}
-					{+START,IF_NON_EMPTY,{_loop_var}}
-						<li class="icon_14_{_loop_key*}">{_loop_var}</li>
+			<nav>
+				<ul class="actions_list">
+					{+START,LOOP,LINKS}
+						{+START,IF_NON_EMPTY,{_loop_var}}
+							<li class="icon_14_{_loop_key*}">{_loop_var}</li>
+						{+END}
 					{+END}
-				{+END}
-			</ul>
-
-			<div class="force_margin">
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=member_entered_chatroom
-					NOTIFICATIONS_ID={CHATROOM_ID}
-					BREAK=1
-				{+END}
-			</div>
+				</ul>
+			</nav>
 		</div>
 	</div></div>
 </form>
+
+<div class="force_margin">
+	{+START,INCLUDE,NOTIFICATION_BUTTONS}
+		NOTIFICATIONS_TYPE=member_entered_chatroom
+		NOTIFICATIONS_ID={CHATROOM_ID}
+		BREAK=1
+	{+END}
+</div>
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'real_load',function() {

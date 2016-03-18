@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,6 +50,9 @@ class Hook_config_mail_queue
      */
     public function get_default()
     {
+        if (!cron_installed()) {
+            return null;
+        }
         return '0';
     }
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -133,7 +133,8 @@ function rain_get_country_image($ip_address)
         return '';
     }
 
-    require_code('global4');
+    require_code('locations');
+
     $country = geolocate_ip($ip_address);
     if (is_null($country)) {
         return '';
@@ -143,7 +144,7 @@ function rain_get_country_image($ip_address)
 }
 
 /**
- * Returns a map with an icon and multiplicity parameter (that may be NULL).
+ * Returns a map with an icon and multiplicity parameter (that may be null).
  *
  * @param  ?IP $ip_address An IP address (used to check against bots) (null: no IP).
  * @param  TIME $timestamp A timestamp (used to check for logged sent emails).

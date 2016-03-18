@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -59,21 +59,29 @@ class Hook_rss_galleries
         }
         $galleries = collapse_2d_complexity('name', '_title', $_galleries);
 
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('video', 'r');
+            list($extra_join, $extra_where) = get_privacy_where_clause('video', 'r');
         }
-        $rows1 = $GLOBALS['SITE_DB']->query('SELECT r.*,\'video\' AS type FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'videos r' . $privacy_join . ' WHERE add_date>' . strval($cutoff) . ' AND ' . $filters . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . $privacy_where . ' ORDER BY add_date DESC', $max);
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('video', 'r.id');
+        }
+        $rows1 = $GLOBALS['SITE_DB']->query('SELECT r.*,\'video\' AS type FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'videos r' . $extra_join . ' WHERE add_date>' . strval($cutoff) . ' AND ' . $filters . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . $extra_where . ' ORDER BY add_date DESC', $max);
 
-        $privacy_join = '';
-        $privacy_where = '';
+        $extra_join = '';
+        $extra_where = '';
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('image', 'r');
+            list($extra_join, $extra_where) = get_privacy_where_clause('image', 'r');
         }
-        $rows2 = browser_matches('itunes') ? array() : $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS type FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'images r' . $privacy_join . ' WHERE add_date>' . strval($cutoff) . ' AND ' . $filters . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . $privacy_where . ' ORDER BY add_date DESC', $max);
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where .= sql_region_filter('image', 'r.id');
+        }
+        $rows2 = browser_matches('itunes') ? array() : $GLOBALS['SITE_DB']->query('SELECT r.*,\'image\' AS type FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'images r' . $extra_join . ' WHERE add_date>' . strval($cutoff) . ' AND ' . $filters . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1 ' : '') . $extra_where . ' ORDER BY add_date DESC', $max);
 
         $rows = array_merge($rows1, $rows2);
         foreach ($rows as $row) {

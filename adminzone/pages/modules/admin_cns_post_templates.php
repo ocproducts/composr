@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,7 +41,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -50,7 +50,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             return null;
         }
 
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 
@@ -62,10 +62,10 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -76,7 +76,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
         require_lang('cns_post_templates');
         require_css('cns_admin');
 
-        set_helper_panel_tutorial('tut_forum_helpdesk');
+        set_helper_panel_tutorial('tut_support_desk');
 
         breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
 
@@ -175,7 +175,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
 
         $text = paragraph(do_lang_tempcode('DESCRIPTION_IMPORT_STOCK_RESPONSES_PT'));
 
-        return do_template('FORM_SCREEN', array('TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
+        return do_template('FORM_SCREEN', array('_GUID' => '7089deefe20d3917020610768e0f7f24', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES_PT'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
     }
 
     /**
@@ -348,7 +348,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     {
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('_POST'), do_lang_tempcode('DESCRIPTION_POST_TEMPLATE_X'), 'text', $text, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('FORUM_POST'), do_lang_tempcode('DESCRIPTION_POST_TEMPLATE_X'), 'text', $text, true));
         $fields->attach(cns_get_forum_multi_code_field($forum_multi_code));
         $fields->attach(form_input_tick(do_lang_tempcode('DEFAULT'), do_lang_tempcode('USE_AS_DEFAULT_ON_APPLICABLE_FORUMS'), 'use_default_forums', $use_default_forums == 1));
 
@@ -365,7 +365,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     {
         $m = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post_template'));
         }
         $r = $m[0];
 

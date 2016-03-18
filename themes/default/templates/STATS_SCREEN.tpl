@@ -12,6 +12,6 @@
 
 {+START,IF_NON_PASSED_OR_FALSE,NO_CSV}
 	<ul class="actions_list force_margin">
-		<li><a href="{$SELF_URL*}&amp;csv=1" class="xls_link">{!EXPORT_STATS_TO_CSV}</a></li>
+		<li><a href="{$EXTEND_URL*,{$SELF_URL},csv=1}" class="xls_link">{!EXPORT_STATS_TO_CSV}</a></li>
 	</ul>
 {+END}

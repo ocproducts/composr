@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts/Tapatalk, 2004-2015
+ Copyright (c) ocProducts/Tapatalk, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -81,14 +81,16 @@ function mark_all_as_read_test()
  */
 function get_id_by_url_test()
 {
-    /*$result=mobiquo_xmlrpc_simple_call(
-        preg_replace('#_test$#','',__FUNCTION__),
+    /*
+    $result = mobiquo_xmlrpc_simple_call(
+        preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            static_evaluate_tempcode(build_url(array('page'=>'topicview','id'=>1),'forum')),
+            static_evaluate_tempcode(build_url(array('page' => 'topicview', 'id' => 1), 'forum')),
         ),
         'admin'
     );
-    print_mobiquo_result($result);*/
+    print_mobiquo_result($result);
+    */
 
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),

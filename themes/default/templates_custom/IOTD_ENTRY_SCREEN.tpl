@@ -13,7 +13,7 @@
 	</div>
 
 	<p class="media_box">
-		<img class="scale_down" alt="{!IMAGE}" src="{URL*}" itemprop="contentURL" />
+		<img class="scale_down" alt="{!IMAGE}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" itemprop="contentURL" />
 	</p>
 
 	{+START,IF_NON_EMPTY,{CAPTION}}
@@ -57,5 +57,5 @@
 
 	{$REVIEW_STATUS,iotd,{ID}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 </div>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,11 +39,8 @@ function backend_cloud_script()
     if ($protocol == 'http-post') {
         exit('false');
     }
-    if (($protocol == 'xml-rpc') && (!function_exists('xmlrpc_encode'))) {
-        exit('false');
-    }
     $port = post_param_integer('port', '80');
-    // $watching_channel=$_POST['channels'];
+    // $watching_channel = $_POST['channels'];
     $status = _cloud_register_them($path, $procedure, $protocol, $port, get_param_string('type', ''));
     if (!$status) {
         exit('false');
@@ -60,6 +57,8 @@ function backend_cloud_script()
  * @param  integer $port The port to connect to them on
  * @param  string $watching_channel The channel they are interested in
  * @return boolean Success status
+ *
+ * @ignore
  */
 function _cloud_register_them($path, $procedure, $protocol, $port, $watching_channel)
 {
@@ -204,7 +203,7 @@ function rss_backend_script()
         $content = is_null($_content) ? array() : $_content;
     }
 
-    if (($type == 'RSS2') && (function_exists('xmlrpc_encode'))) {
+    if ($type == 'RSS2') {
         // Change a full url into constituent parts
         $base_url = get_base_url();
         $port = 80;

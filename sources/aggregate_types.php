@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,7 +44,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
     if (!is_null($test)) {
         if ($uniqify) {
-            $aggregate_label .= '_' . uniqid('', true);
+            $aggregate_label .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('DUPLICATE_AGGREGATE_INSTANCE', escape_html($aggregate_label)));
         }
@@ -70,7 +70,7 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('aggregate_type_instance', strval($id), null, null, true);
+        generate_resource_fs_moniker('aggregate_type_instance', strval($id), null, null, true);
     }
 
     return $id;
@@ -84,8 +84,10 @@ function add_aggregate_type_instance($aggregate_label, $aggregate_type, $_other_
  * @param  ID_TEXT $aggregate_type What the instance is of
  * @param  array $_other_parameters Additional parameters
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
+ * @param  ?TIME $add_time Add time (null: don't change)
+ * @param  ?TIME $edit_time Edit time (null: now)
  */
-function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_other_parameters, $uniqify = false)
+function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_other_parameters, $uniqify = false, $add_time = null, $edit_time = null)
 {
     // Check aggregate type
     $types = parse_aggregate_xml();
@@ -102,18 +104,22 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'id', array('aggregate_type' => $aggregate_type, 'aggregate_label' => $aggregate_label));
     if ((!is_null($test)) && ($test != $id)) {
         if ($uniqify) {
-            $aggregate_label .= '_' . uniqid('', true);
+            $aggregate_label .= '_' . uniqid('', false);
         } else {
             warn_exit(do_lang_tempcode('DUPLICATE_AGGREGATE_INSTANCE', escape_html($aggregate_label)));
         }
     }
 
-    $GLOBALS['SITE_DB']->query_update('aggregate_type_instances', array(
+    $map = array(
         'aggregate_label' => $aggregate_label,
         'aggregate_type' => $aggregate_type,
         'other_parameters' => $other_parameters,
-        'edit_time' => time(),
-    ), array('id' => $id), '', 1);
+        'edit_time' => is_null($edit_time) ? time() : $edit_time,
+    );
+    if (!is_null($add_time)) {
+        $map['add_time'] = $add_time;
+    }
+    $GLOBALS['SITE_DB']->query_update('aggregate_type_instances', $map, array('id' => $id), '', 1);
 
     sync_aggregate_type_instance($id, $aggregate_label, $old_aggregate_label, $aggregate_type, $_other_parameters, $old_parameters);
 
@@ -121,7 +127,7 @@ function edit_aggregate_type_instance($id, $aggregate_label, $aggregate_type, $_
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('aggregate_type_instance', strval($id));
+        generate_resource_fs_moniker('aggregate_type_instance', strval($id));
     }
 }
 
@@ -135,7 +141,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
 {
     $aggregate_label = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'aggregate_label', array('id' => $id));
     if (is_null($aggregate_label)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'aggregate_type_instance'));
     }
     $aggregate_type = $GLOBALS['SITE_DB']->query_select_value_if_there('aggregate_type_instances', 'aggregate_type', array('id' => $id));
 
@@ -161,7 +167,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
                 $resource['label'] = $tempcode->evaluate();
 
                 // Can we bind to an existing resource? (using subpath and label)
-                $object_fs = get_resource_commandrfs_object($resource['type']);
+                $object_fs = get_resource_commandr_fs_object($resource['type']);
                 $filename = $object_fs->convert_label_to_filename($resource['label'], $resource['subpath'], $resource['type'], true);
 
                 // If bound, delete resource
@@ -178,7 +184,7 @@ function delete_aggregate_type_instance($id, $delete_matches = false)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('aggregate_type_instance', strval($id));
+        expunge_resource_fs_moniker('aggregate_type_instance', strval($id));
     }
 }
 
@@ -210,6 +216,8 @@ function find_aggregate_type_parameters($aggregate_type)
  *
  * @param  string $src_text Text
  * @param  array $parameters Reference to our parameter list
+ *
+ * @ignore
  */
 function _find_parameters_in($src_text, &$parameters)
 {
@@ -445,7 +453,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
     if ((is_null($aggregate_label)) || (is_null($aggregate_type)) || (is_null($other_parameters))) {
         $instance_rows = $GLOBALS['SITE_DB']->query_select('aggregate_type_instances', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $instance_rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'aggregate_type_instance'));
         }
         $instance_row = $instance_rows[0];
         $aggregate_label = $instance_row['aggregate_label'];
@@ -507,7 +515,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
 
         // Can we bind to an existing resource? (using subpath and label)
         $is_new = false;
-        $object_fs = get_resource_commandrfs_object($resource['type']);
+        $object_fs = get_resource_commandr_fs_object($resource['type']);
         if (is_null($object_fs)) {
             warn_exit(do_lang_tempcode('MISSING_CONTENT_TYPE', escape_html($resource['type'])));
         }

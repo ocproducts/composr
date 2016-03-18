@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_pointstore
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -143,7 +144,6 @@ class Hook_addon_registry_pointstore
             'themes/default/templates/POINTSTORE_SCREEN.tpl',
             'themes/default/templates/POINTSTORE_CONFIRM_SCREEN.tpl',
             'themes/default/text/POINTSTORE_FORWARDER_MAIL.txt',
-            'themes/default/templates/POINTSTORE_ITEM.tpl',
             'themes/default/templates/POINTSTORE_LOG_SCREEN.tpl',
             'themes/default/text/POINTSTORE_MAIL.txt',
             'themes/default/templates/POINTSTORE_MFORWARDING_LINK.tpl',
@@ -160,16 +160,21 @@ class Hook_addon_registry_pointstore
             'site/pages/modules/pointstore.php',
             'sources/hooks/blocks/main_staff_checklist/pointstore.php',
             'sources/hooks/modules/pointstore/.htaccess',
+            'sources_custom/hooks/modules/pointstore/.htaccess',
             'sources/hooks/modules/pointstore/custom.php',
             'sources/hooks/modules/pointstore/forwarding.php',
             'sources/hooks/modules/pointstore/gambling.php',
             'sources/hooks/modules/pointstore/highlight_name.php',
             'sources/hooks/modules/pointstore/index.html',
+            'sources_custom/hooks/modules/pointstore/index.html',
             'sources/hooks/modules/pointstore/permission.php',
             'sources/hooks/modules/pointstore/pop3.php',
             'sources/hooks/modules/pointstore/topic_pin.php',
             'sources/hooks/systems/page_groupings/pointstore.php',
             'sources/pointstore.php',
+            'sources/hooks/systems/commandr_fs_extended_config/pstore_customs.php',
+            'sources/hooks/systems/commandr_fs_extended_config/pstore_permissions.php',
+            'sources/hooks/systems/commandr_fs_extended_config/pstore_prices.php',
         );
     }
 
@@ -194,7 +199,6 @@ class Hook_addon_registry_pointstore
             'text/POINTSTORE_QUOTA_MAIL.txt' => 'pointstore_quota_mail',
             'templates/POINTSTORE_CUSTOM_ITEM_SCREEN.tpl' => 'pointstore_custom_item_screen',
             'templates/POINTSTORE_HIGHLIGHT_NAME_SCREEN.tpl' => 'pointstore_highlight_name_screen',
-            'templates/POINTSTORE_ITEM.tpl' => 'pointstore_screen',
             'templates/POINTSTORE_MFORWARDING_LINK.tpl' => 'pointstore_screen',
             'templates/POINTSTORE_MPOP3_LINK.tpl' => 'pointstore_screen',
             'text/POINTSTORE_MAIL.txt' => 'pointstore_screen',
@@ -371,8 +375,9 @@ class Hook_addon_registry_pointstore
     {
         require_css('forms');
 
-        $input = do_lorem_template('FORM_SCREEN_INPUT_INTEGER', array('TABINDEX' => placeholder_number(), 'REQUIRED' => '_required', 'NAME' => lorem_word(), 'DEFAULT' => lorem_word()));
-        $fields = do_lorem_template('FORM_SCREEN_FIELD', array('REQUIRED' => true, 'SKIP_LABEL' => false, 'NAME' => lorem_word(), 'PRETTY_NAME' => lorem_word(), 'DESCRIPTION' => lorem_sentence_html(), 'DESCRIPTION_SIDE' => '', 'INPUT' => $input, 'COMCODE' => ''));
+        $name = placeholder_random_id();
+        $input = do_lorem_template('FORM_SCREEN_INPUT_INTEGER', array('TABINDEX' => placeholder_number(), 'REQUIRED' => '_required', 'NAME' => $name, 'DEFAULT' => lorem_word()));
+        $fields = do_lorem_template('FORM_SCREEN_FIELD', array('REQUIRED' => true, 'SKIP_LABEL' => false, 'NAME' => $name, 'PRETTY_NAME' => lorem_word(), 'DESCRIPTION' => lorem_sentence_html(), 'DESCRIPTION_SIDE' => '', 'INPUT' => $input, 'COMCODE' => ''));
 
         $text = do_lorem_template('POINTSTORE_QUOTA', array('POINTS_LEFT' => placeholder_number(), 'PRICE' => placeholder_number(), 'TOP_AMOUNT' => placeholder_number(), 'EMAIL' => lorem_word()));
 
@@ -465,19 +470,11 @@ class Hook_addon_registry_pointstore
      */
     public function tpl_preview__pointstore_screen()
     {
-        $items = new Tempcode();
-        foreach (placeholder_array() as $k => $v) {
-            $item = do_lorem_template('POINTSTORE_ITEM', array('ITEM' => lorem_phrase()));
-            $items->attach($item);
-        }
-
         $pointstore_mail_pop3_link = do_lorem_template('POINTSTORE_MPOP3_LINK', array('POP3_URL' => placeholder_url()));
 
         $pointstore_mail_forwarding_link = do_lorem_template('POINTSTORE_MFORWARDING_LINK', array('FORWARDING_URL' => placeholder_url()));
 
-        $mail_tpl = do_lorem_template('POINTSTORE_MAIL', array('POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text');
-
-        $items->attach(do_lorem_template('POINTSTORE_ITEM', array('ITEM' => $mail_tpl)));
+        $items = do_lorem_template('POINTSTORE_MAIL', array('POINTSTORE_MAIL_POP3_LINK' => $pointstore_mail_pop3_link, 'POINTSTORE_MAIL_FORWARDING_LINK' => $pointstore_mail_forwarding_link), null, false, null, '.txt', 'text');
 
         return array(
             lorem_globalise(

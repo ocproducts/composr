@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -107,12 +107,18 @@ class Hook_pointstore_banners
 
         $this->handle_has_banner_already();
 
+        $title = get_screen_title('ADD_BANNER');
+
+        breadcrumb_set_parents(array(
+            array('_SELF:_SELF:browse', do_lang_tempcode('POINTSTORE')),
+            array('_SELF:_SELF:bannerinfo:banners', do_lang_tempcode('BANNERS')),
+        ));
+
         // We can purchase a banner...
         $initial_hits = intval(get_option('initial_banner_hits'));
         $banner_price = intval(get_option('banner_setup'));
         $text = paragraph(do_lang_tempcode('BANNERS_DESCRIPTION', escape_html(integer_format($initial_hits)), escape_html(integer_format($banner_price))));
         list($fields, $javascript) = get_banner_form_fields(true);
-        $title = get_screen_title('ADD_BANNER');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_newbanner', 'id' => 'banners', 'uploading' => 1), '_SELF');
 
         $hidden = new Tempcode();
@@ -135,6 +141,14 @@ class Hook_pointstore_banners
         require_code('uploads');
 
         $title = get_screen_title('ADD_BANNER');
+
+        breadcrumb_set_parents(array(
+            array('_SELF:_SELF:browse', do_lang_tempcode('POINTSTORE')),
+            array('_SELF:_SELF:bannerinfo:banners', do_lang_tempcode('BANNERS')),
+            array('_SELF:_SELF:newbanner:banners', do_lang_tempcode('ADD_BANNER')),
+        ));
+
+        breadcrumb_set_self(do_lang_tempcode('CONFIRM'));
 
         $member_id = get_member(); // the ID of the member who is logged in right now
         $cost = intval(get_option('banner_setup'));
@@ -199,6 +213,17 @@ class Hook_pointstore_banners
             return new Tempcode();
         }
 
+        $title = get_screen_title('ADD_BANNER');
+
+        breadcrumb_set_parents(array(
+            array('_SELF:_SELF:browse', do_lang_tempcode('POINTSTORE')),
+            array('_SELF:_SELF:bannerinfo:banners', do_lang_tempcode('BANNERS')),
+            array('_SELF:_SELF:newbanner:banners', do_lang_tempcode('ADD_BANNER')),
+        ));
+
+
+        breadcrumb_set_self(do_lang_tempcode('DONE'));
+
         $this->check_afford_banner();
 
         // So we don't need to call these big ugly names, again...
@@ -214,7 +239,7 @@ class Hook_pointstore_banners
         $this->handle_has_banner_already();
 
         check_banner();
-        add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, 1, null, get_member(), 0);
+        add_banner($name, $image_url, '', $caption, $direct_code, intval(get_option('initial_banner_hits')), $site_url, 3, $notes, BANNER_PERMANENT, null, get_member(), 0);
         $GLOBALS['SITE_DB']->query_insert('sales', array('date_and_time' => time(), 'memberid' => get_member(), 'purchasetype' => 'banner', 'details' => $name, 'details2' => ''));
         require_code('points2');
         charge_member(get_member(), $cost, do_lang('ADD_BANNER'));
@@ -226,7 +251,6 @@ class Hook_pointstore_banners
             send_validation_request('ADD_BANNER', 'banners', true, $name, $edit_url);
         }
 
-        $title = get_screen_title('ADD_BANNER');
         $stats_url = build_url(array('page' => 'banners', 'type' => 'browse'), get_module_zone('banners'));
         $text = do_lang_tempcode('PURCHASED_BANNER');
 
@@ -279,6 +303,11 @@ class Hook_pointstore_banners
 
         $title = get_screen_title('TITLE_BANNER_UPGRADE');
 
+        breadcrumb_set_parents(array(
+            array('_SELF:_SELF:browse', do_lang_tempcode('POINTSTORE')),
+            array('_SELF:_SELF:bannerinfo:banners', do_lang_tempcode('BANNERS')),
+        ));
+
         $impcost = intval(get_option('banner_imp'));
         $hitcost = intval(get_option('banner_hit'));
 
@@ -305,6 +334,14 @@ class Hook_pointstore_banners
         }
 
         $title = get_screen_title('TITLE_BANNER_UPGRADE');
+
+        breadcrumb_set_parents(array(
+            array('_SELF:_SELF:browse', do_lang_tempcode('POINTSTORE')),
+            array('_SELF:_SELF:bannerinfo:banners', do_lang_tempcode('BANNERS')),
+            array('_SELF:_SELF:upgradebanner:banners', do_lang_tempcode('TITLE_BANNER_UPGRADE')),
+        ));
+
+        breadcrumb_set_self(do_lang_tempcode('CONFIRM'));
 
         $member_id = get_member();
         $points_left = available_points($member_id);

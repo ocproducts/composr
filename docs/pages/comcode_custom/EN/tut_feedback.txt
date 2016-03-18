@@ -3,63 +3,217 @@
 Composr allows you to create a highly interactive site if you desire, with numerous features for user feedback at your disposal.
 
 Most major content in Composr can be:
- - commented upon
- - rated
- - given track-backs (this is defined and discussed in the 'Advanced news' tutorial)
+ - [b]Commented[/b] upon
+ - [b]Rated[/b]
+ - Given [b]track-backs[/b] (this is defined and discussed in the [page="_SEARCH:tut_adv_news"]Advanced news tutorial[/page])
+
 These features are known together as the Composr 'feedback system'.
+
+This tutorial covers:
+1) The feedback system
+2) Contact systems
+3) Polls
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="2"]Enabling[/title]
+[title="2"]Feedback systems[/title]
 
-We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in the 'User interaction' subsection of the 'Feature options' section of the main Admin Zone Configuration module.
+[title="3"]Enabling[/title]
+
+We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in Admin Zone > Setup > Configuration > Feature options > User interaction.
 
 In addition to site-wide control of feedback, feedback may also be enabled/disabled on a content entry level. For a piece of content to support rating, for example, that content must be configured for rating, and Composr must have rating enabled site-wide. Composr is quite smart: if most of the content entries for a content type don't have ratings/comments enabled then the default for new entries will match that.
 
-Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in the 'Feature options' section of the main Admin Zone Configuration module.
+[title="3"]Rating[/title]
 
-Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the in-built forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
-
-[title="2"]Rating[/title]
-
-[media width="150" description="This content page demonstrates rating and comments" float="right"]data_custom/images/docs/feedback_poll_page.png[/media]
+[media width="150" description="This content page demonstrates rating and comments" float="right"]data_custom/images/docs/tut_feedback/feedback_poll_page.png[/media]
 The Composr rating system allows 'one rating per IP address'. Therefore, if a user gets a new IP address, they can rate again.
 
 Our own forum does not allow poll voting by guests, and hence more serious rating/poll situations may be handled there.
 
-There is a 'main_rating' block that you may use to allow any Comcode page to be rated (by placing the block on the page).
+There is a [tt]main_rating[/tt] block that you may use to allow any Comcode page to be rated (by placing the block on the page).
 
-[title="2"]The comments block[/title]
+[title="3"]Trackbacks[/title]
 
-There is a Composr block named 'main_comments' that allows any Comcode page to become a page with its own comments. This is a very useful feature, usable for purposes such as:
+Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news tutorial[/page].
+
+[title="3"]Comments[/title]
+
+Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > Feature options > User interaction.
+
+Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the in-built forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
+
+[title="4"]The comments block[/title]
+
+There is a Composr block named [tt]main_comments[/tt] that allows any Comcode page to become a page with its own comments. This is a very useful feature, usable for purposes such as:
  - a guest-book
  - documentation where users may make comments, adding to it, or directing staff to make improvements
 
-[title="2"]Placing comment topics[/title]
+[title="4"]Placing comment topics (advanced)[/title]
 
 By default, all comment topics all placed in the configured website comment topics forum.
+
 However, you can use the Commandr [tt]set_comment_forum[/tt] command to set it so resources under specific content-types and categories have their comments into forums of your choice.
 
-[title="2"]The contact block[/title]
+[title="2"]The contact blocks[/title]
 
-Composr also includes a contact block, 'main_contact_us', that allows you to have users leave messages that other users can't see. It works via posts in a private staff forum, and is very useful as a way for staff to get private feedback without resorting to support tickets or e-mail.
+[title="3"]The Messaging system[/title]
 
-[title="2"]The shout-box block[/title]
+[surround]
+[media width="150" description="Viewing a message" float="right"]data_custom/images/docs/tut_feedback/messaging_message.png[/media]
+[media width="150" description="List of messages" float="right"]data_custom/images/docs/tut_feedback/feedback_messaging_list.png[/media]
+[media width="150" description="The [tt]main_contact_us[/tt] block" float="right"]data_custom/images/docs/tut_feedback/feedback_contact_block.png[/media]
+If the [tt]staff_messaging[/tt] addon is installed, Composr also includes a contact block, [tt]main_contact_us[/tt], that allows you to have users leave messages that other users can't see. This is called the Message system.
 
-Composr includes a 'shout-box' block, which is essentially a little portion of your menu that can be used for members to place short messages. Like all blocks, the shout-box is of course optional. The shout-box is tied to a specified chat room, which by default, is the 'General Chat' chat-room.
+Any messages gathered will be e-mailed out to any staff who have notifications enabled for the particular usage of the block. Staff can set up their notifications by visiting the Comcode page where the block is placed.
+
+When staff are e-mailed they get a link to view the message, and discuss it between themselves. One member of staff may opt to take ownership over the message, which gives them the responsibility of actioning/implementing whatever it implies is required (e.g. if it is a suggestion, implementing that suggestion).
+
+You can browse the past message archive from:
+Admin Zone > Audit > Messaging (Contact Us)
+Messages are actually stored via posts in a private staff forum, but accessing from the message archive is cleaner.
+[/surround]
+
+[title="3"]Catalogues contact form[/title]
+
+[surround="right float_separation"]
+[media width="170" description="Viewing the [tt]main_contact_catalogues[/tt] block"]data_custom/images/docs/tut_feedback/catalogue_block_3.png[/media]
+[media width="170" description="The [tt]main_contact_catalogues[/tt] block form"]data_custom/images/docs/tut_feedback/catalogue_block_2.png[/media]
+[media width="170" description="Choosing the [tt]main_contact_catalogues[/tt] block from the block construction assistant"]data_custom/images/docs/tut_feedback/catalogue_block_1.png[/media]
+[/surround]
+[media width="150" description="Adding a contact catalogue" float="right"]data_custom/images/docs/tut_feedback/catalogue_add.png[/media]
+The [tt]main_contact_catalogues[/tt] block shows a form of custom fields coded into a catalogue. This is great for creating complex contact forms.
+
+The process for using this block is as follows:
+1) Add a new catalogue, via Content Management > Catalogues > Add catalogue. Include whatever fields on the catalogue that you want on the contact form.
+2) (Don't add any entries or categories to the catalogue, that wouldn't serve any purpose)
+3) Go to add/edit the page where the block should go.
+4) Add the block to it in the normal way. When adding the block you are asked which catalogue to use.
+
+[title="3"]Simple e-mail form[/title]
+
+There is also the [tt]main_contact_simple[/tt] block.
+
+This block relays direct to e-mail, avoiding any dealing with notifications and message management.
+
+This block looks very similar to the [tt]main_contact_us[/tt] block.
+
+[title="3"]Custom commenting forms (advanced)[/title]
+
+You can use the [tt]data/form_to_email.php[/tt] script to relay custom POST data sent to it, to the staff e-mail address.
+
+The clear advantages of this over the Composr contact blocks are:
+1) If you don't want to wrestle with the default Composr template's HTML/CSS ([tt]COMMENTS_POSTING_FORM.tpl[/tt])
+2) If you want to set up multiple contact forms with very different HTML/CSS and are not comfortable using advanced Tempcode to make [tt]COMMENTS_POSTING_FORM.tpl[/tt] contextual
+3) If you already have some HTML/CSS to use and just want to keep things very straight-forward, not having to think too much about integration and 'jumping through Composr hoops'
+
+The following special POST fields are supported:
+ - [tt]subject[/tt]: Subject line (default is site name)
+ - [tt]email[/tt]: E-mail address of sender (default is the e-mail address of the current user or staff address if there is none)
+ - [tt]name[/tt]: Name of sender (default is the username of the current user)
+ - [tt]to_members_email[/tt]: Member to e-mail. This is not available by default. See the Code Book for the [tt]allow_member_mail_relay[/tt] option if you need the form to work for e-mailing regular members.
+ - [tt]redirect[/tt]: URL to redirect to after the relay is done (if non-set then it will show a success message)
+
+Any other fields (except certain special reserved names) you pass will become part of the post body. Pass [tt]label_for__<field_name>[/tt] to label the fields for a neater e-mail (optional).
+You can of course have hidden fields ([tt]type="hidden"[/tt] in HTML), to pass special values through automatically. This is useful for customised tracking.
+
+Here is an example blob of HTML+Tempcode to demonstrate the functionality:
+[code="HTML"]
+{$REQUIRE_JAVASCRIPT,checking}
+
+<form action="{$BASE_URL*}/data/form_to_email.php" method="post" onsubmit="return check_form(this,false);">
+    <p>
+        <label for="subject">Subject:</label>
+        <input class="input_required" type="text" name="subject" value="" />
+    </p>
+
+    <p>
+        <label for="name">Your Name:</label>
+        <input type="text" name="name" value="" />
+    </p>
+
+    <p>
+        <label for="age">Your Age:</label>
+        <input type="text" name="age" value="" />
+        <input type="hidden" name="label_for__age" value="Your Age" />
+    </p>
+
+    <p>
+        <label for="location">Your Location:</label>
+        <input type="text" name="location" value="" />
+        <input type="hidden" name="label_for__location" value="Your Location" />
+    </p>
+
+    <p>
+        <label for="email">Your e-mail address:</label>
+        <input type="text" name="email" value="" />
+    </p>
+
+    <input type="hidden" name="redirect" value="{$PAGE_LINK*,:thanks}" />
+
+    <input type="submit" value="Send message" />
+
+    {$INSERT_SPAMMER_BLACKHOLE}
+</form>
+[/code]
+
+In this example the subject field has been made required.
+
+If you want to use this outside Composr:
+[indent="30"]
+The Tempcode is just to make it easily portable between sites, no Tempcode is required. You would replace [tt]{$BASE_URL*}[/tt] with your known base URL, replace [tt]{$PAGE_LINK*,:thanks}[/tt] with a static URL, and either remove [tt]{$INSERT_SPAMMER_BLACKHOLE}[/tt] or replace it with whatever Composr outputs for this symbol (as it produces static code based on your website name).
+The required field validation wouldn't work as this is controlled via the Composr JavaScript framework. You'd need to either implement check_form yourself, or remove/change the onsubmit attribute.
+[/indent]
+
+If you want this within a Comcode page:
+[indent="30"]
+Just put it inside [tt]semihtml[/tt] Comcode tags, or paste into the source view of the WYSIWYG editor.
+[/indent]
+
+The example will produce an e-mail like:
+[quote]
+Your Age: the age input
+
+Your Location: the location input
+[/quote]
+with the e-mail Subject and From lines set appropriately.
+
+[title="4"]Anti-spam security[/title]
+
+We don't use CAPTCHA here to keep things simple. But you can see we did include the spammer blackhole (enabled by default, "Blackhole detection" option), which will typically trick bots into getting themselves blocked.
+CAPTCHA can be supported. To do so you have to:
+1) pass a hidden [tt]_security[/tt] field with value [tt]1[/tt]
+2) copy and paste the CAPTCHA code from [tt]COMMENTS_POSTING_FORM.tpl[/tt]
+3) ideally, configure your web server to block requests to the [tt]data/form_to_email.php[/tt] script if [tt]_security[/tt] is not set. Otherwise CAPTCHA won't be enforced and someone could (if they had the will...) write a smart bot that strips the [tt]_security[/tt] field from the requests.
+As you can see, that's complex, so unless you have a spam problem here that your spam filters can't tackle for you, and that the blackhole doesn't deal with, it probably is not worth bothering.
 
 [title="2"]Polls[/title]
 
-[media width="150" description="Initially there is no poll, so the poll block displays like this" float="right"]data_custom/images/docs/feedback_no_poll.png[/media]
+[surround]
+[media width="150" description="The poll block, once a poll is chosen" float="right"]data_custom/images/docs/tut_feedback/feedback_poll.png[/media]
+[media width="150" description="Adding a poll" float="right"]data_custom/images/docs/tut_feedback/feedback_add_poll.png[/media]
+[media width="150" description="Initially there is no poll, so the poll block displays like this" float="right"]data_custom/images/docs/tut_feedback/feedback_no_poll.png[/media]
 {!polls:DOC_POLLS}
+Polls are managed from Content Management > Polls.
+You can delete a poll from the bottom of its edit form.
 
-[media width="150" description="Adding a poll" float="left"]data_custom/images/docs/feedback_add_poll.png[/media]
-[media width="150" description="The poll block, once a poll is chosen" float="right"]data_custom/images/docs/feedback_poll.png[/media]
 By default, the poll block is displayed on the front page (unless this was changed in the Setup Wizard), and set up to display whatever poll is currently selected from those that were added. On a fresh install, there is of course no poll yet, so a message about this is shown. When you add or edit a poll, you have the choice to select it as the current poll: the selection date is stored, and this allows Composr to display an archive of past polls.
 
-Members can only vote once in a poll. Guests may only vote once. IP addresses as well as member IDs are used to see who has previously voted. If a user chooses to view poll results before voting, they forfeit their vote. Once Composr has decided a user cannot vote (again), that user will only see the results whenever they see that poll.
+Past polls can be found from the [tt]polls[/tt] module ([tt]site:polls[/tt] page-link, Social > Polls on the default menus).
+
+Members can only vote once in a poll. Guests may only vote once. IP addresses as well as member IDs are used to see who has previously voted. If a user chooses to view poll results before voting, they forfeit their vote. Once Composr has decided a user cannot vote (again), that user will always/only see the results whenever they see that poll.
+
+If you can't vote remember:
+1) You can only vote once.
+3) Double-vote prevention is IP-tied as well as member-tied. If you test across multiple accounts it will count together.
+3) Clicking "view results" acts as a forfeit, counts as a vote.
 
 Any numbers of different polls may be shown on your website if you choose to select them using poll ID number as a block parameter, rather than relying on the standard selection mechanism (click the "Add Block" button when editing a Comcode page if you'd like help placing [tt]main_poll[/tt] blocks).
+[/surround]
+
+[title="2"]Staff notes[/title]
+
+Content usually has a "Staff notes" field, which can be used to put notes intended only for people to see upon-edit. This can be enabled/disabled via the "Enable staff notes" option.
 
 [concepts
  1_key="Feedback"   1_value="The common title given to Composr systems for feedback that are available across different forms of content"
@@ -67,9 +221,11 @@ Any numbers of different polls may be shown on your website if you choose to sel
 
 [title="2"]See also[/title]
 
+ - http://www.futurelab.net/blog/2012/05/1990-rule-outdated
  - [page="_SEARCH:tut_support_desk"]Running an on-line help desk with Composr[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_adv_news"]Advanced news[/page]
- - [page="_SEARCH:tut_adv_comcode_pages"]Using Blocks[/page]
+ - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
+ - [page="_SEARCH:tut_quizzes"]Quizzes[/page]
 
-{$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Feedback features,staff_messaging,core_feedback_features,polls,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr helps you create a highly interactive site, with features for user interaction/feedback at your disposal.}[block]main_tutorial_rating[/block]

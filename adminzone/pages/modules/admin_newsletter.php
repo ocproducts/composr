@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -39,7 +39,7 @@ class Module_admin_newsletter extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -62,10 +62,10 @@ class Module_admin_newsletter extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -92,7 +92,11 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if ($type == 'import_subscribers') {
-            $this->title = get_screen_title('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            if (either_param_integer('level', null) === 0) {
+                $this->title = get_screen_title('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
+            } else {
+                $this->title = get_screen_title('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            }
         }
 
         if ($type == 'bounce_filter_a' || $type == 'bounce_filter_v' || $type == 'bounce_filter_c' || $type == 'bounce_filter_d') {
@@ -248,7 +252,7 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $map = array();
         $map[strval($id)] = $level;
-        $results = newsletter_who_send_to($map, $lang, 0, 0);
+        $results = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
         return $results[6][strval($id)];
     }
 
@@ -259,9 +263,9 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function import_subscribers()
     {
-        $_lang = choose_language($this->title);
-        if (is_object($_lang)) {
-            return $_lang;
+        $_language = choose_language($this->title);
+        if (is_object($_language)) {
+            return $_language;
         }
 
         require_lang('cns');
@@ -271,6 +275,9 @@ class Module_admin_newsletter extends Standard_crud_module
 
         // Select newsletter and attach CSV
         if (is_null($newsletter_id)) {
+            $default_newsletter_id = get_param_integer('id', null);
+            $default_level = get_param_integer('level', 4);
+
             $fields = new Tempcode();
             $hidden = new Tempcode();
             require_code('form_templates');
@@ -279,187 +286,68 @@ class Module_admin_newsletter extends Standard_crud_module
             $newsletters = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('newsletters', array('id', 'title'));
             foreach ($rows as $newsletter) {
-                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, get_translated_text($newsletter['title'])));
+                $newsletters->attach(form_input_list_entry(strval($newsletter['id']), $newsletter['id'] === $default_newsletter_id, get_translated_text($newsletter['title'])));
+            }
+            if (get_forum_type() == 'cns') {
+                $newsletters->attach(form_input_list_entry('-1', -1 === $default_newsletter_id, do_lang_tempcode('NEWSLETTER_CNS')));
             }
             if ($newsletters->is_empty()) {
                 inform_exit(do_lang_tempcode('NO_CATEGORIES'));
             }
-            $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            if (count($rows) == 0) {
+                $hidden->attach(form_input_hidden('id', '-1'));
+            } else {
+                $fields->attach(form_input_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters));
+            }
             $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_2'), 'file', true, null, null, true, 'csv,txt'));
             // Choose level
             if (get_option('interest_levels') == '0') {
                 $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', false, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NEWSLETTER_IMPORT')));
-                $fields->attach(form_input_list(do_lang_tempcode('SETTINGS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_3'), 'level', $l));
+                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
+                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_IMPORT')));
+                $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_STATUS'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_3'), 'level', $l));
             } else {
                 $l = new Tempcode();
-                $l->attach(form_input_list_entry('0', false, do_lang_tempcode('NEWSLETTER_0')));
-                $l->attach(form_input_list_entry('1', $level == 1, do_lang_tempcode('NEWSLETTER_1')));
-                $l->attach(form_input_list_entry('2', $level == 2, do_lang_tempcode('NEWSLETTER_2')));
-                $l->attach(form_input_list_entry('3', $level == 3, do_lang_tempcode('NEWSLETTER_3')));
-                $l->attach(form_input_list_entry('4', $level == 4, do_lang_tempcode('NEWSLETTER_4')));
+                $l->attach(form_input_list_entry('0', 0 == $default_level, do_lang_tempcode('NEWSLETTER_0')));
+                $l->attach(form_input_list_entry('1', 1 == $default_level, do_lang_tempcode('NEWSLETTER_1')));
+                $l->attach(form_input_list_entry('2', 2 == $default_level, do_lang_tempcode('NEWSLETTER_2')));
+                $l->attach(form_input_list_entry('3', 3 == $default_level, do_lang_tempcode('NEWSLETTER_3')));
+                $l->attach(form_input_list_entry('4', 4 == $default_level, do_lang_tempcode('NEWSLETTER_4')));
                 $fields->attach(form_input_list(do_lang_tempcode('SUBSCRIPTION_LEVEL'), do_lang_tempcode('DESCRIPTION_SUBSCRIPTION_LEVEL_2'), 'level', $l));
             }
 
-            $submit_name = do_lang_tempcode('IMPORT_NEWSLETTER_SUBSCRIBERS');
+            $submit_name = do_lang_tempcode('PROCEED');
             $post_url = get_self_url();
 
-            $hidden->attach(form_input_hidden('lang', $_lang));
+            $hidden->attach(form_input_hidden('lang', $_language));
             handle_max_file_size($hidden);
 
             return do_template('FORM_SCREEN', array('_GUID' => '7e0387bcc4a1b7e2846ba357d36dbc15', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
         }
 
         // Read data
-        $ok = false;
         require_code('uploads');
         if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
-            if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
-                $fixed_contents = unixify_line_format(file_get_contents($_FILES['file']['tmp_name']));
-                $myfile = @fopen($_FILES['file']['tmp_name'], 'wb');
-                if ($myfile !== false) {
-                    fwrite($myfile, $fixed_contents);
-                    fclose($myfile);
-                }
+            $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);
+            if (!file_exists(dirname($target_path))) {
+                mkdir(dirname($target_path), 0777);
+                fix_permissions(dirname($target_path));
             }
-
-            safe_ini_set('auto_detect_line_endings', '1');
-            $myfile = fopen($_FILES['file']['tmp_name'], 'rt');
-            $del = ',';
-            $csv_test_line = fgetcsv($myfile, 4096, $del);
-            if ((count($csv_test_line) == 1) && (strpos($csv_test_line[0], ';') !== false)) {
-                $del = ';';
-            }
-            rewind($myfile);
-
-            $email_index = 0;
-            $forename_index = 1;
-            $surname_index = 2;
-            $username_index = 3;
-            $hash_index = 6;
-            $salt_index = 7;
-            $lang_index = 8;
-            $code_confirm_index = 9;
-            $jointime_index = 10;
-
-            $count = 0;
-            $count2 = 0;
-
-            do {
-                $i = 0;
-                $_csv_data = array();
-                while (($csv_line = fgetcsv($myfile, 4096, $del)) !== false) {
-                    $_csv_data[] = $csv_line;
-                    $i++;
-                    if ($i == 500) {
-                        break;
-                    }
-                }
-
-                // Process data
-                foreach ($_csv_data as $i => $csv_line) {
-                    if (($i <= 1) && (count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') === false)) {
-                        foreach ($csv_line as $j => $val) {
-                            if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address', strtolower(do_lang('EMAIL_ADDRESS'))))) {
-                                $email_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('forename', 'forenames', 'first name', strtolower(do_lang('FORENAME'))))) {
-                                $forename_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('surname', 'surnames', 'last name', strtolower(do_lang('SURNAME'))))) {
-                                $surname_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('username', strtolower(do_lang('NAME'))))) {
-                                $username_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('hash', 'password', 'pass', 'code', 'secret', strtolower(do_lang('PASSWORD_HASH'))))) {
-                                $hash_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('salt', strtolower(do_lang('SALT'))))) {
-                                $salt_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('lang', 'language', strtolower(do_lang('LANGUAGE'))))) {
-                                $hash_index = $j;
-                            }
-                            if (in_array(strtolower($val), array('confirm code', strtolower(do_lang('CONFIRM_CODE'))))) {
-                                $code_confirm_index = $j;
-                            }
-                            if ((stripos($val, 'time') !== false) || (stripos($val, 'date') !== false) || (strtolower($val) == do_lang('JOIN_DATE'))) {
-                                $jointime_index = $j;
-                            }
-                        }
-                        continue;
-                    }
-
-                    if ((count($csv_line) >= 1) && (!is_null($csv_line[$email_index])) && (strpos($csv_line[$email_index], '@') !== false)) {
-                        $email = $csv_line[$email_index];
-                        $forename = array_key_exists($forename_index, $csv_line) ? $csv_line[$forename_index] : '';
-                        if ($forename == $email) {
-                            $forename = ucfirst(strtolower(preg_replace('#^(\w+)([^\w].*)?$#', '\\1', $forename)));
-                            if (in_array($forename, array('Sales', 'Info', 'Business', 'Enquiries', 'Admin'))) {
-                                $forename = '';
-                            }
-                        }
-                        $surname = array_key_exists($surname_index, $csv_line) ? $csv_line[$surname_index] : '';
-                        $username = array_key_exists($username_index, $csv_line) ? $csv_line[$username_index] : '';
-                        $hash = array_key_exists($hash_index, $csv_line) ? $csv_line[$hash_index] : '';
-                        $salt = array_key_exists($salt_index, $csv_line) ? $csv_line[$salt_index] : '';
-                        $lang = (array_key_exists($lang_index, $csv_line) && ((file_exists(get_custom_file_base() . '/lang/' . $csv_line[$lang_index])) || (file_exists(get_custom_file_base() . '/lang_custom/' . $csv_line[$lang_index])))) ? $csv_line[$lang_index] : $_lang;
-                        if ($lang == '') {
-                            $lang = $_lang;
-                        }
-                        $code_confirm = array_key_exists($code_confirm_index, $csv_line) ? intval($csv_line[$code_confirm_index]) : 0;
-                        $jointime = array_key_exists($jointime_index, $csv_line) ? strtotime($csv_line[$jointime_index]) : time();
-                        if ($jointime === false) {
-                            $jointime = time();
-                        }
-
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'id', array('email' => $email));
-                        if (is_null($test)) {
-                            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribers', array(
-                                'email' => $email,
-                                'join_time' => $jointime,
-                                'code_confirm' => $code_confirm,
-                                'the_password' => $hash,
-                                'pass_salt' => $salt,
-                                'language' => $lang,
-                                'n_forename' => $forename,
-                                'n_surname' => $surname,
-                            ));
-                            $count++;
-                        } else {
-                            $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array(
-                                'n_forename' => $forename,
-                                'n_surname' => $surname,
-                            ), array(
-                                'email' => $email,
-                            ), '', 1);
-                        }
-
-                        // In case $email is already a subscriber, we delete first
-                        $GLOBALS['SITE_DB']->query_delete('newsletter_subscribe', array(
-                            'newsletter_id' => $newsletter_id,
-                            'email' => $email,
-                        ), '', 1);
-                        if ($level != 0) { // Allow deletion CSV via setting subscription level to 0. So we only reinsert if NOT deletion.
-                            $GLOBALS['SITE_DB']->query_insert('newsletter_subscribe', array(
-                                'newsletter_id' => $newsletter_id,
-                                'the_level' => $level,
-                                'email' => $email,
-                            ));
-                        }
-                        $count2++;
-                    }
-                }
-            } while (count($_csv_data) != 0);
-
-            fclose($myfile);
+            copy($_FILES['file']['tmp_name'], $target_path);
+            fix_permissions($target_path);
+            sync_file($target_path);
         } else {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
         }
 
-        return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_IMPORTED_THIS', escape_html(integer_format($count)), escape_html(integer_format($count2))));
+        if (either_param_integer('level', null) === 0) {
+            $action_title = do_lang('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
+        } else {
+            $action_title = do_lang('IMPORT_NEWSLETTER_SUBSCRIBERS');
+        }
+
+        require_code('tasks');
+        return call_user_func_array__long_task($action_title, $this->title, 'import_newsletter_subscribers', array($_language, $newsletter_id, $level, $target_path));
     }
 
     /**
@@ -655,10 +543,10 @@ class Module_admin_newsletter extends Standard_crud_module
                     if ($group_id != db_get_first_id()) {
                         $map = array();
                         $map['g' . strval($group_id)] = 1;
-                        $_c = newsletter_who_send_to($map, $lang, 0, 0);
+                        $_c = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
                         $c6 = $_c[6]['g' . strval($group_id)];
                         if ($c6 != 0) {
-                            $newsletters->attach(form_input_list_entry('g' . strval($group_id), false, do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group)))));
+                            $newsletters->attach(form_input_list_entry('g' . strval($group_id), false, do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group)))));
                         }
                     }
                 }
@@ -717,13 +605,13 @@ class Module_admin_newsletter extends Standard_crud_module
             $max_rows = 0;
             if (is_null($level)) { // implies all Conversr members
                 $map[$id] = 1; // $id will be -1
-                $_c = newsletter_who_send_to($map, $lang, 0, 0, true);
+                $_c = newsletter_who_send_to($map, $lang, 0, 0, true, '', true);
                 if (isset($_c[6][$id])) {
                     $max_rows = $_c[6][$id];
                 }
             } else { // implies normal newsletter / usergroup
                 $map[$id] = $level; // We're requesting that we probe subscribers of $id on $level
-                $_c = newsletter_who_send_to($map, $lang, 0, 0, true);
+                $_c = newsletter_who_send_to($map, $lang, 0, 0, true, '', true);
                 if (isset($_c[6][$id])) {
                     $max_rows = $_c[6][$id];
                 }
@@ -737,10 +625,10 @@ class Module_admin_newsletter extends Standard_crud_module
                 $map = array();
                 if (is_null($level)) { // implies all Conversr members
                     $map[$id] = 1; // $id will be -1
-                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true);
+                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true, '', true);
                 } else { // implies normal newsletter / usergroup
                     $map[$id] = $level; // We're requesting that we probe subscribers of $id on $level
-                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true);
+                    $_c = newsletter_who_send_to($map, $lang, $start + $start2, $max, true, '', true);
                 }
                 $rows = $_c[7];
 
@@ -749,7 +637,7 @@ class Module_admin_newsletter extends Standard_crud_module
                         if (!is_null($level)) {
                             echo '"LEVEL ' . do_lang('NEWSLETTER_' . strval($level)) . '"' . "\n";
                         }
-                        echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '"' . "\n";
+                        echo '"' . str_replace('"', '""', do_lang('EMAIL_ADDRESS')) . '",' . '"' . str_replace('"', '""', do_lang('FORENAME')) . '",' . '"' . str_replace('"', '""', do_lang('SURNAME')) . '",' . '"' . str_replace('"', '""', do_lang('NAME')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_SEND_ID')) . '",' . '"' . str_replace('"', '""', do_lang('NEWSLETTER_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('PASSWORD_HASH')) . '",' . '"' . str_replace('"', '""', do_lang('SALT')) . '",' . '"' . str_replace('"', '""', do_lang('LANGUAGE')) . '",' . '"' . str_replace('"', '""', do_lang('CONFIRM_CODE')) . '",' . '"' . str_replace('"', '""', do_lang('JOIN_DATE')) . '",' . '"' . str_replace('"', '""', do_lang('SUBSCRIPTION_LEVEL')) . '"' . "\n";
                     }
                 } else {
                     $out = '';
@@ -762,7 +650,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $name = array_key_exists('m_username', $r) ? $r['m_username'] : '';
 
                     $salt = array_key_exists('pass_salt', $r) ? $r['pass_salt'] : '';
-                    $_lang = array_key_exists('language', $r) ? $r['language'] : '';
+                    $_language = array_key_exists('language', $r) ? $r['language'] : '';
                     $confirm_code = array_key_exists('confirm_code', $r) ? $r['confirm_code'] : 0;
                     $join_time = array_key_exists('join_time', $r) ? $r['join_time'] : time();
 
@@ -771,7 +659,7 @@ class Module_admin_newsletter extends Standard_crud_module
                     $unsub = array_key_exists('the_password', $r) ? ratchet_hash($r['the_password'], 'xunsub') : '';
 
                     if ($csv == 1) {
-                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_lang) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '"' . "\n";
+                        echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '",' . '"' . strval($level) . '"' . "\n";
                     } else {
                         $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
                         $out .= $tpl->evaluate();
@@ -931,17 +819,19 @@ class Module_admin_newsletter extends Standard_crud_module
     public function whatsnew_2()
     {
         require_code('form_templates');
+        require_code('global4');
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(180);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(180);
         }
+        send_http_output_ping();
         disable_php_memory_limit();
 
         $fields = new Tempcode();
 
         $lang = choose_language($this->title);
 
-        $cutoff_time = get_input_date('cutoff');
+        $cutoff_time = post_param_date('cutoff');
 
         $chosen_categories = '';
 
@@ -993,8 +883,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $text = do_lang_tempcode('SELECT_CATEGORIES_WANTED');
 
-        return do_template('FORM_SCREEN', array(
-            'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array('_GUID' => 'bacc372b7338d8e1103facc05ae4598f', 'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
             'TEXT' => $text,
@@ -1012,6 +901,8 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function whatsnew_3()
     {
+        require_code('global4');
+
         // Handle requested periodic "What's new" newsletter maintenance
         // =============================================================
 
@@ -1030,7 +921,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         // Actualiser for removal
         if (preg_match('#^periodic\_remove\_confirmed\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
-            $GLOBALS['SITE_DB']->query_delete('newsletter_periodic', array('id' => intval($matches[1])), '', 1);
+            delete_periodic_newsletter(intval($matches[1]));
 
             // We redirect back to the admin_newsletter main page
             $url = build_url(array('page' => 'admin_newsletter', 'type' => 'browse', 'redirected' => '1'), get_module_zone('admin_newsletter'));
@@ -1042,7 +933,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $lang = choose_language($this->title);
 
-        $cutoff_time = get_input_date('cutoff');
+        $cutoff_time = post_param_date('cutoff');
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories');
         $message = $this->_generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
@@ -1162,7 +1053,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         $completed = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
 
-        $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''));
+        $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''), null, false, null, '.txt', 'text');
 
         return $completed;
     }
@@ -1414,10 +1305,10 @@ class Module_admin_newsletter extends Standard_crud_module
                 if ($group_id != db_get_first_id()) {
                     $map = array();
                     $map['g' . strval($group_id)] = 1;
-                    $_c = newsletter_who_send_to($map, $lang, 0, 0);
+                    $_c = newsletter_who_send_to($map, $lang, 0, 0, false, '', true);
                     $c6 = $_c[6]['g' . strval($group_id)];
                     if ($c6 != 0) {
-                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('GROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
+                        $fields->attach(form_input_tick(do_lang_tempcode('THIS_WITH', do_lang_tempcode('USERGROUP'), make_string_tempcode(escape_html($group))), do_lang_tempcode('NUM_READERS', escape_html(integer_format($c6))), 'g' . strval($group_id), post_param_integer('g' . strval($group_id), 0) == 1));
                     }
                 }
             }
@@ -1571,7 +1462,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $extra_post_data['make_periodic'] = '1';
 
             // Re-generate preview from latest chosen_categories
-            $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, get_input_date('cutoff'));
+            $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
         }
 
         $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
@@ -1685,21 +1576,6 @@ class Module_admin_newsletter extends Standard_crud_module
             } elseif ($when == 'weekly') {
                 $day = post_param_integer('periodic_weekday_weekly', 5);
             }
-            $map = array(
-                'np_message' => post_param_string('chosen_categories', ''),
-                'np_subject' => $subject,
-                'np_lang' => $lang,
-                'np_send_details' => serialize($send_details),
-                'np_html_only' => $html_only,
-                'np_from_email' => $from_email,
-                'np_from_name' => $from_name,
-                'np_priority' => $priority,
-                'np_csv_data' => $csv_data,
-                'np_frequency' => $when,
-                'np_day' => $day,
-                'np_in_full' => $in_full,
-                'np_template' => $template,
-            );
             require_lang('dates');
             $week_days = array(1 => do_lang('MONDAY'), 2 => do_lang('TUESDAY'), 3 => do_lang('WEDNESDAY'), 4 => do_lang('THURSDAY'), 5 => do_lang('FRIDAY'), 6 => do_lang('SATURDAY'), 7 => do_lang('SUNDAY'));
             if ($when == 'weekly') {
@@ -1713,16 +1589,16 @@ class Module_admin_newsletter extends Standard_crud_module
 
             $matches = array();
             if (preg_match('#^replace_existing\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
+                $last_sent = null;
                 if (post_param_string('periodic_for') != 'future') {
-                    $map['np_last_sent'] = 0;
+                    $last_sent = 0;
                 }
-                $GLOBALS['SITE_DB']->query_update('newsletter_periodic', $map, array('id' => intval($matches[1])), '', 1);
+                edit_periodic_newsletter(intval($matches[1]), $subject, post_param_string('chosen_categories', ''), $lang, serialize($send_details), $html_only, $from_email, $from_name, $priority, $csv_data, $when, $day, $in_full, $template, $last_sent);
                 $message = do_lang('PERIODIC_SUCCESS_MESSAGE_EDIT', $when, $each);
             } else {
                 $last_sent = (post_param_string('periodic_for') == 'future') ? time() : 0;
-                $map['np_last_sent'] = $last_sent;
 
-                $GLOBALS['SITE_DB']->query_insert('newsletter_periodic', $map, true);
+                add_periodic_newsletter($subject, post_param_string('chosen_categories', ''), $lang, serialize($send_details), $html_only, $from_email, $from_name, $priority, $csv_data, $when, $day, $in_full, $template, $last_sent);
                 $message = do_lang('PERIODIC_SUCCESS_MESSAGE_ADD', $when, $each);
             }
 
@@ -1731,7 +1607,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if (addon_installed('calendar')) {
-            $schedule = get_input_date('schedule');
+            $schedule = post_param_date('schedule');
             if (!is_null($schedule)) {
                 require_code('calendar');
                 require_code('calendar2');
@@ -1808,7 +1684,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $language = lookup_language_full_name($rows[0]['language']);
 
         require_code('templates_map_table');
-        return map_table(get_screen_title('NEWSLETTER'), array('DATE_TIME' => $time, 'LANGUAGE' => $language, 'SUBSCRIPTION_LEVEL' => integer_format($level), 'SUBJECT' => $subject, 'MESSAGE' => comcode_to_tempcode($message)));
+        return map_table_screen(get_screen_title('NEWSLETTER'), array('DATE_TIME' => $time, 'LANGUAGE' => $language, 'SUBSCRIPTION_LEVEL' => integer_format($level), 'SUBJECT' => $subject, 'MESSAGE' => comcode_to_tempcode($message)));
     }
 
     /**

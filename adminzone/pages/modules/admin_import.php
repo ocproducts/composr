@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ class Module_admin_import
         $info['hack_version'] = null;
         $info['version'] = 7;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -60,9 +60,11 @@ class Module_admin_import
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((!is_null($upgrade_from)) && ($upgrade_from < 7)) {
-            $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', 'ID_TEXT');
-            $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', 'ID_TEXT');
-            $GLOBALS['SITE_DB']->add_table_field('import_parts_done', 'id', '*AUTO');
+            $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', '*ID_TEXT');
+
+            $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', '*ID_TEXT');
+
+            $GLOBALS['SITE_DB']->add_auto_key('import_parts_done');
             $GLOBALS['SITE_DB']->alter_table_field('import_parts_done', 'imp_session', 'ID_TEXT');
         }
 
@@ -112,7 +114,7 @@ class Module_admin_import
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -125,7 +127,7 @@ class Module_admin_import
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -157,7 +159,7 @@ class Module_admin_import
 
         if ($type == 'import') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('IMPORT')), array('_SELF:_SELF:session', do_lang_tempcode('IMPORT_SESSION')), array('_SELF:_SELF:hook:importer=session2:session=' . get_param_string('session'), do_lang_tempcode('IMPORT'))));
-            breadcrumb_set_self(do_lang_tempcode('START'));
+            breadcrumb_set_self(do_lang_tempcode('ACTIONS'));
         }
 
         $this->title = get_screen_title('IMPORT');
@@ -466,7 +468,7 @@ class Module_admin_import
                 continue;
             }
 
-            $text = do_lang((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
+            $text = do_lang_tempcode((strtolower($lang_array[$import]) != $lang_array[$import]) ? $lang_array[$import] : strtoupper($lang_array[$import]));
             $_import_list_2[$import] = $text;
         }
         if ((array_key_exists('cns_members', $_import_list_2)) && (get_forum_type() == $importer) && ($db_name == get_db_forums()) && ($db_table_prefix == $GLOBALS['FORUM_DB']->get_table_prefix())) {
@@ -532,10 +534,11 @@ class Module_admin_import
     {
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
         $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
-        if (function_exists('set_time_limit')) {
-            @set_time_limit($refresh_time);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit($refresh_time);
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
+        send_http_output_ping();
         header('Content-type: text/html; charset=' . get_charset());
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
@@ -687,7 +690,7 @@ class Module_admin_import
                     continue; // Lots of data and it's not important
                 }
 
-                //echo '(working) '.$field['m_table'].'/'.$field['m_name'].'<br />';
+                //echo '(working) ' . $field['m_table'] . '/' . $field['m_name'] . '<br />';
 
                 $values = $GLOBALS['SITE_DB']->query_select($field['m_table'], array('*'));
                 foreach ($values as $value) {

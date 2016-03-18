@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,7 +48,7 @@ class Hook_notification_actionlog extends Hook_notification__Staff
 
         require_all_lang();
 
-        $types = $GLOBALS['SITE_DB']->query_select('adminlogs', array('DISTINCT the_type'));
+        $types = $GLOBALS['SITE_DB']->query_select('actionlogs', array('DISTINCT the_type'));
         if (get_forum_type() == 'cns') {
             $types = array_merge($types, $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('DISTINCT l_the_type AS the_type')));
         }

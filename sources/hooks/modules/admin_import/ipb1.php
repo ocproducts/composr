@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -103,7 +103,7 @@ class Hook_ipb1 extends Hook_ipb_base
                 continue;
             }
 
-            $description = strip_tags(@html_entity_decode($row['description'], ENT_QUOTES, get_charset()));
+            $description = strip_html($row['description']);
             $expanded_by_default = 1;
 
             $id_new = cns_make_forum_grouping($title, $description, $expanded_by_default);
@@ -137,7 +137,7 @@ class Hook_ipb1 extends Hook_ipb_base
             }
 
             $name = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
-            $description = strip_tags(@html_entity_decode($row['description'], ENT_QUOTES, get_charset()));
+            $description = strip_html($row['description']);
             $category_id = import_id_remap_get('category', strval($row['category']));
             $parent_forum = db_get_first_id();
             $position = $row['position'];
@@ -193,8 +193,8 @@ class Hook_ipb1 extends Hook_ipb_base
         require($file_base . '/conf_global.php');
         set_option('staff_address', $PROBED_FORUM_CONFIG['email_out']);
         set_option('restricted_usernames', $PROBED_FORUM_CONFIG['ban_names']);
-        /*set_option('forum_posts_per_page',$PROBED_FORUM_CONFIG['display_max_posts']);   Not useful
-        set_option('forum_topics_per_page',$PROBED_FORUM_CONFIG['display_max_topics']);*/
+        /*set_option('forum_posts_per_page', $PROBED_FORUM_CONFIG['display_max_posts']);   Not useful
+        set_option('forum_topics_per_page', $PROBED_FORUM_CONFIG['display_max_topics']);*/
         set_option('site_name', $PROBED_FORUM_CONFIG['home_name']);
         set_option('site_closed', $PROBED_FORUM_CONFIG['board_offline']);
         set_option('closed', $PROBED_FORUM_CONFIG['offline_msg']);

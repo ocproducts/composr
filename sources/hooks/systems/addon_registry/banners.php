@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_banners
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -121,7 +122,7 @@ class Hook_addon_registry_banners
             'themes/default/templates/BANNER_IMAGE.tpl',
             'themes/default/templates/BANNER_SHOW_CODE.tpl',
             'themes/default/templates/BANNER_ADDED_SCREEN.tpl',
-            'themes/default/templates/BLOCK_MAIN_TOPSITES.tpl',
+            'themes/default/templates/BLOCK_MAIN_TOP_SITES.tpl',
             'themes/default/templates/BLOCK_MAIN_BANNER_WAVE.tpl',
             'themes/default/templates/BLOCK_MAIN_BANNER_WAVE_BWRAP.tpl',
             'sources/hooks/systems/sitemap/banner.php',
@@ -132,7 +133,7 @@ class Hook_addon_registry_banners
             'site/pages/modules/banners.php',
             'sources/banners.php',
             'sources/banners2.php',
-            'sources/blocks/main_topsites.php',
+            'sources/blocks/main_top_sites.php',
             'sources/blocks/main_banner_wave.php',
             'sources/hooks/modules/admin_setupwizard/banners.php',
             'sources/hooks/modules/admin_unvalidated/banners.php',
@@ -163,7 +164,7 @@ class Hook_addon_registry_banners
             'templates/BANNER_PREVIEW.tpl' => 'banner_preview',
             'templates/BANNER_SHOW_CODE.tpl' => 'banner_show_code',
             'templates/BANNER_ADDED_SCREEN.tpl' => 'administrative__banner_added_screen',
-            'templates/BLOCK_MAIN_TOPSITES.tpl' => 'block_main_topsites',
+            'templates/BLOCK_MAIN_TOP_SITES.tpl' => 'block_main_top_sites',
             'templates/BLOCK_MAIN_BANNER_WAVE_BWRAP.tpl' => 'block_main_banner_wave',
             'templates/BLOCK_MAIN_BANNER_WAVE.tpl' => 'block_main_banner_wave',
             'templates/BANNERS_NONE.tpl' => 'banners_none',
@@ -206,7 +207,7 @@ class Hook_addon_registry_banners
     {
         return array(
             lorem_globalise(do_lorem_template('BANNER_SHOW_CODE', array(
-                'NAME' => lorem_word(),
+                'NAME' => placeholder_random_id(),
                 'WIDTH' => placeholder_number(),
                 'HEIGHT' => placeholder_number(),
                 'TYPE' => lorem_word(),
@@ -241,17 +242,17 @@ class Hook_addon_registry_banners
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__block_main_topsites()
+    public function tpl_preview__block_main_top_sites()
     {
         return array(
-            lorem_globalise(do_lorem_template('BLOCK_MAIN_TOPSITES', array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_TOP_SITES', array(
                 'TYPE' => lorem_phrase(),
                 'BANNERS' => placeholder_array(),
                 'SUBMIT_URL' => placeholder_url(),
                 'DESCRIPTION' => lorem_word(),
                 'BANNER' => lorem_word_2(),
-                'HITSFROM' => placeholder_number(),
-                'HITSTO' => placeholder_number(),
+                'HITS_FROM' => placeholder_number(),
+                'HITS_TO' => placeholder_number(),
             )), null, '', true)
         );
     }
@@ -297,6 +298,7 @@ class Hook_addon_registry_banners
             'TYPE' => lorem_phrase(),
             'BANNER' => $banners,
             'MORE_COMING' => lorem_phrase(),
+            'MAX' => placeholder_number(),
         ));
 
         return array(
@@ -304,6 +306,7 @@ class Hook_addon_registry_banners
                 'EXTRA' => lorem_phrase(),
                 'TYPE' => lorem_phrase(),
                 'ASSEMBLE' => $assemble,
+                'MAX' => placeholder_number(),
             )), null, '', true)
         );
     }
@@ -496,6 +499,8 @@ class Hook_addon_registry_banners
                 'MAP_TABLE' => lorem_phrase(),
                 'BANNER' => lorem_phrase(),
                 'NAME' => placeholder_id(),
+                'RESULTS_TABLE' => placeholder_table(),
+                'RESET_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

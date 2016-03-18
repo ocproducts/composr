@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_authors
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -103,12 +104,11 @@ class Hook_addon_registry_authors
             'themes/default/images/icons/24x24/menu/rich_content/authors.png',
             'themes/default/images/icons/48x48/menu/rich_content/authors.png',
             'themes/default/css/authors.css',
+            'sources/hooks/systems/attachments/author.php',
             'sources/hooks/systems/meta/authors.php',
             'sources/hooks/systems/addon_registry/authors.php',
             'themes/default/templates/AUTHOR_MANAGE_SCREEN.tpl',
             'themes/default/templates/AUTHOR_SCREEN.tpl',
-            'themes/default/templates/AUTHOR_POPUP_WINDOW_DEFINED.tpl',
-            'themes/default/templates/AUTHOR_POPUP_WINDOW_UNDEFINED.tpl',
             'themes/default/templates/AUTHOR_POPUP.tpl',
             'themes/default/templates/AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY.tpl',
             'data/authors.php',
@@ -135,8 +135,6 @@ class Hook_addon_registry_authors
             'templates/AUTHOR_MANAGE_SCREEN.tpl' => 'administrative__author_manage_screen',
             'templates/AUTHOR_SCREEN.tpl' => 'author_screen',
             'templates/AUTHOR_POPUP.tpl' => 'author_popup_window',
-            'templates/AUTHOR_POPUP_WINDOW_DEFINED.tpl' => 'author_popup_window',
-            'templates/AUTHOR_POPUP_WINDOW_UNDEFINED.tpl' => 'author_popup_window',
             'templates/AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY.tpl' => 'author_screen'
         );
     }
@@ -175,7 +173,7 @@ class Hook_addon_registry_authors
         $news_released = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('NEWS_BRIEF', array(
-                'DATE' => placeholder_time(),
+                'DATE' => placeholder_date(),
                 'FULL_URL' => placeholder_url(),
                 'NEWS_TITLE_PLAIN' => lorem_word(),
                 'ID' => placeholder_id(),
@@ -241,17 +239,19 @@ class Hook_addon_registry_authors
     {
         require_lang('authors');
 
-        $out = new Tempcode();
-        $out->attach(do_lorem_template('AUTHOR_POPUP_WINDOW_DEFINED', array(
+        $authors = array();
+        $authors[] = array(
             'AUTHOR' => lorem_phrase(),
             'FIELD_NAME' => lorem_word(),
-        )));
-        $out->attach(do_lorem_template('AUTHOR_POPUP_WINDOW_UNDEFINED', array(
+            'DEFINED' => true,
+        );
+        $authors[] = array(
             'AUTHOR' => lorem_phrase(),
             'FIELD_NAME' => lorem_word(),
-        )));
+            'DEFINED' => false,
+        );
 
-        $out = do_lorem_template('AUTHOR_POPUP', array('CONTENT' => $out, 'NEXT_URL' => placeholder_url()));
+        $out = do_lorem_template('AUTHOR_POPUP', array('AUTHORS' => $authors, 'NEXT_URL' => placeholder_url()));
 
         return array(
             lorem_globalise($out, null, '', true)

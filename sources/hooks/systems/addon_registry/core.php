@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -61,10 +62,18 @@ class Hook_addon_registry_core
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_webapp',
             'tut_do',
             'tut_drinking',
             'tut_metadata',
+            'tut_sql',
+            'tut_short_urls',
+            'tut_seo',
+            'tut_selectcode',
+            'tut_filtercode',
+            'tut_keymap',
+            'tut_email',
+            'tut_disaster',
+            'tut_antispam',
         );
     }
 
@@ -181,8 +190,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/48x48/menu/adminzone/setup/config/base_config.png',
             'themes/default/images/icons/24x24/buttons/cancel.png',
             'themes/default/images/icons/48x48/buttons/cancel.png',
-            'themes/default/images/icons/24x24/buttons/changes.png',
-            'themes/default/images/icons/48x48/buttons/changes.png',
             'themes/default/images/icons/24x24/buttons/choose.png',
             'themes/default/images/icons/48x48/buttons/choose.png',
             'themes/default/images/icons/24x24/buttons/clear.png',
@@ -261,8 +268,6 @@ class Hook_addon_registry_core
             'themes/default/images/icons/48x48/buttons/new_reply.png',
             'themes/default/images/icons/24x24/buttons/report.png',
             'themes/default/images/icons/48x48/buttons/report.png',
-            'themes/default/images/icons/24x24/buttons/restore.png',
-            'themes/default/images/icons/48x48/buttons/restore.png',
             'themes/default/images/icons/24x24/menu/pages/rules.png',
             'themes/default/images/icons/48x48/menu/pages/rules.png',
             'themes/default/images/icons/24x24/buttons/search.png',
@@ -455,10 +460,11 @@ class Hook_addon_registry_core
             'themes/default/images/icons/28x28/remove.png',
             'themes/default/images/icons/28x28/remove_manage.png',
             'themes/default/images/icons/28x28/tools.png',
-            'sources/hooks/systems/commandr_fs_extended_config/.htaccess',
             'sources/hooks/systems/resource_meta_aware/.htaccess',
+            'sources_custom/hooks/systems/resource_meta_aware/.htaccess',
             'sources/hooks/systems/resource_meta_aware/index.html',
-            'sources/hooks/systems/commandr_fs_extended_config/privilege.php',
+            'sources_custom/hooks/systems/resource_meta_aware/index.html',
+            'sources/hooks/systems/commandr_fs_extended_member/group_timeouts.php',
             'sources/block_add.php',
             'themes/default/css/carousels.css',
             'themes/default/css/adminzone.css',
@@ -487,21 +493,41 @@ class Hook_addon_registry_core
             'sources/hooks/systems/snippets/password_strength.php',
             'sources/hooks/blocks/main_staff_checklist/version.php',
             'sources/hooks/systems/sitemap/.htaccess',
+            'sources_custom/hooks/systems/sitemap/.htaccess',
             'sources/hooks/systems/sitemap/index.html',
+            'sources_custom/hooks/systems/sitemap/index.html',
             'sources/hooks/systems/sitemap/root.php',
             'sources/hooks/systems/sitemap/page.php',
             'sources/hooks/systems/sitemap/page_grouping.php',
             'sources/hooks/systems/sitemap/zone.php',
             'sources/hooks/systems/sitemap/entry_point.php',
             'web.config',
-            'data/html5.js',
+            'data/html5.js', // LEGACY
+            'data/external_url_proxy.php',
             'adminzone/.htaccess',
             'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/no_image.png',
             'themes/default/css/install.css',
             'lang/EN/installer.ini',
             'lang/EN/encryption.ini',
+            'sources/json.php',
+            'sources/json_inner.php',
+            'sources/locations.php',
+            'sources/locations_geocoding.php',
+            'sources/locations_cpfs.php',
+            'sources/hooks/systems/cns_cpf_filter/options.php',
+            'sources/cpf_install.php',
+            'sources/hooks/systems/symbols/COUNTRY.php',
+            'sources/hooks/systems/symbols/COUNTRY_CODE_TO_NAME.php',
+            'sources/hooks/systems/symbols/COUNTRY_NAME_TO_CODE.php',
+            'sources/hooks/systems/symbols/CURRENCY.php',
+            'sources/hooks/systems/symbols/REGION.php',
+            'lang/EN/locations.ini',
+            'data/geocode.php',
+            'sources/web_resources.php',
             'sources/hooks/systems/cron/git_autopull.php',
+            'sources/hooks/systems/cron/dynamic_firewall.php',
+            'data_custom/firewall_rules.txt',
             'sources/hooks/systems/cron/group_member_timeouts.php',
             'sources/group_member_timeouts.php',
             'adminzone/pages/modules/admin_group_member_timeouts.php',
@@ -578,13 +604,20 @@ class Hook_addon_registry_core
             'data/editarea/reg_syntax/xml.js',
             'data/editarea/template.html',
             'sources/hooks/systems/meta/index.html',
+            'sources_custom/hooks/systems/meta/index.html',
             'uploads/website_specific/index.html',
             'sources/hooks/systems/upon_page_load/index.html',
+            'sources_custom/hooks/systems/upon_page_load/index.html',
             'sources/hooks/systems/upon_access_denied/index.html',
+            'sources_custom/hooks/systems/upon_access_denied/index.html',
             'sources/hooks/systems/upon_query/index.html',
+            'sources_custom/hooks/systems/upon_query/index.html',
             'sources/hooks/systems/upon_login/index.html',
+            'sources_custom/hooks/systems/upon_login/index.html',
             'sources/hooks/systems/login_providers/.htaccess',
+            'sources_custom/hooks/systems/login_providers/.htaccess',
             'sources/hooks/systems/login_providers/index.html',
+            'sources_custom/hooks/systems/login_providers/index.html',
             'sources/hooks/systems/login_providers/httpauth.php',
             'data/question_ui.php',
             'data/crossdomain.php',
@@ -597,7 +630,7 @@ class Hook_addon_registry_core
             'sources/firephp.php',
             'sources/content.php',
             'sources/content2.php',
-            'lang/EN/meta_data.ini',
+            'lang/EN/metadata.ini',
             'adminzone/find_permissions.php',
             'themes/default/javascript/sound.js',
             'data/sounds/message_background.mp3',
@@ -622,7 +655,8 @@ class Hook_addon_registry_core
             'sources/filtercode.php',
             'lang/EN/filtercode.ini',
             'sources/blocks/main_content_filtering.php',
-            'sources/stemmer_EN.php',
+            'sources/lang_stemmer_EN.php',
+            'sources/lang_filter_EN.php',
             'themes/default/templates/MISSING_SCREEN.tpl',
             'themes/default/templates/PARAM_INFO.tpl',
             'sources/profiler.php',
@@ -662,42 +696,80 @@ class Hook_addon_registry_core
             'themes/default/images/icons/32x32/filetypes/page_xls.png',
             'data/autosave.php',
             'sources/hooks/systems/addon_registry/core.php',
+            'sources/hooks/modules/video_syndication/.htaccess',
+            'sources_custom/hooks/modules/video_syndication/.htaccess',
+            'sources/hooks/modules/video_syndication/index.html',
+            'sources_custom/hooks/modules/video_syndication/index.html',
+            'sources/hooks/systems/activities/.htaccess',
+            'sources_custom/hooks/systems/activities/.htaccess',
+            'sources/hooks/systems/activities/index.html',
+            'sources_custom/hooks/systems/activities/index.html',
+            'sources/hooks/systems/cdn_transfer/.htaccess',
+            'sources_custom/hooks/systems/cdn_transfer/.htaccess',
+            'sources/hooks/systems/cdn_transfer/index.html',
+            'sources_custom/hooks/systems/cdn_transfer/index.html',
+            'sources/hooks/systems/login_providers_direct_auth/.htaccess',
+            'sources_custom/hooks/systems/login_providers_direct_auth/.htaccess',
+            'sources/hooks/systems/login_providers_direct_auth/index.html',
+            'sources_custom/hooks/systems/login_providers_direct_auth/index.html',
+            'sources/hooks/systems/referrals/.htaccess',
+            'sources_custom/hooks/systems/referrals/.htaccess',
+            'sources/hooks/systems/referrals/index.html',
+            'sources_custom/hooks/systems/referrals/index.html',
+            'sources/hooks/systems/syndication/.htaccess',
+            'sources_custom/hooks/systems/syndication/.htaccess',
+            'sources/hooks/systems/syndication/index.html',
+            'sources_custom/hooks/systems/syndication/index.html',
+            'sources/hooks/systems/upload_syndication/.htaccess',
+            'sources_custom/hooks/systems/upload_syndication/.htaccess',
+            'sources/hooks/systems/upload_syndication/index.html',
+            'sources_custom/hooks/systems/upload_syndication/index.html',
             'sources/hooks/systems/non_active_urls/.htaccess',
+            'sources_custom/hooks/systems/non_active_urls/.htaccess',
             'sources/hooks/systems/non_active_urls/index.html',
+            'sources_custom/hooks/systems/non_active_urls/index.html',
             'sources/hooks/systems/addon_registry/index.html',
+            'sources_custom/hooks/systems/addon_registry/index.html',
             'sources/hooks/blocks/main_notes/.htaccess',
+            'sources_custom/hooks/blocks/main_notes/.htaccess',
             'sources/hooks/blocks/main_notes/index.html',
+            'sources_custom/hooks/blocks/main_notes/index.html',
             'sources/hooks/systems/chmod/.htaccess',
+            'sources_custom/hooks/systems/chmod/.htaccess',
             'sources/hooks/systems/chmod/index.html',
+            'sources_custom/hooks/systems/chmod/index.html',
             'sources/hooks/systems/disposable_values/.htaccess',
+            'sources_custom/hooks/systems/disposable_values/.htaccess',
             'sources/hooks/systems/disposable_values/index.html',
-            'sources/hooks/systems/special_cpf/.htaccess',
-            'sources/hooks/systems/special_cpf/index.html',
+            'sources_custom/hooks/systems/disposable_values/index.html',
             'sources/hooks/systems/symbols/.htaccess',
+            'sources_custom/hooks/systems/symbols/.htaccess',
             'sources/hooks/systems/symbols/index.html',
+            'sources_custom/hooks/systems/symbols/index.html',
             'sources/url_remappings.php',
             'sources/hooks/systems/addon_registry/.htaccess',
+            'sources_custom/hooks/systems/addon_registry/.htaccess',
             'sources/activities.php',
             'sources/crypt.php',
-            'themes/default/templates/JOIN_OR_LOGIN.tpl',
+            'data_custom/sitemaps/index.html',
             'themes/default/templates/JS_BLOCK.tpl',
             'themes/default/javascript/modernizr.js',
             'themes/default/javascript/jquery.js',
             'themes/default/javascript/jquery_ui.js',
             'themes/default/images/jquery_ui/index.html',
-        	'themes/default/images/jquery_ui/ui-bg_flat_0_aaaaaa_40x100.png',
-        	'themes/default/images/jquery_ui/ui-bg_flat_75_ffffff_40x100.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_55_fbf9ee_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_75_dadada_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_75_e6e6e6_1x400.png',
-        	'themes/default/images/jquery_ui/ui-bg_glass_95_fef1ec_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_flat_0_aaaaaa_40x100.png',
+            'themes/default/images/jquery_ui/ui-bg_flat_75_ffffff_40x100.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_55_fbf9ee_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_75_dadada_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_75_e6e6e6_1x400.png',
+            'themes/default/images/jquery_ui/ui-bg_glass_95_fef1ec_1x400.png',
             'themes/default/images/jquery_ui/ui-bg_glass_65_ffffff_1x400.png',
             'themes/default/images/jquery_ui/ui-icons_222222_256x240.png',
-        	'themes/default/images/jquery_ui/ui-bg_highlight-soft_75_cccccc_1x100.png',
-        	'themes/default/images/jquery_ui/ui-icons_2e83ff_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_454545_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_888888_256x240.png',
-        	'themes/default/images/jquery_ui/ui-icons_cd0a0a_256x240.png',
+            'themes/default/images/jquery_ui/ui-bg_highlight-soft_75_cccccc_1x100.png',
+            'themes/default/images/jquery_ui/ui-icons_2e83ff_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_454545_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_888888_256x240.png',
+            'themes/default/images/jquery_ui/ui-icons_cd0a0a_256x240.png',
             'themes/default/css/jquery_ui.css',
             'themes/default/javascript/global.js',
             'themes/default/javascript/ajax.js',
@@ -717,7 +789,7 @@ class Hook_addon_registry_core
             'themes/default/templates/BLOCK_TOP_LOGIN.tpl',
             'themes/default/templates/BLOCK_TOP_PERSONAL_STATS.tpl',
             'themes/default/templates/BLOCK_MAIN_CONTENT_FILTERING.tpl',
-            'themes/default/templates/LOGIN_REDIRECT_SCREEN.tpl',
+            'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
             'themes/default/templates/CSS_NEED.tpl',
@@ -733,10 +805,7 @@ class Hook_addon_registry_core
             'themes/default/templates/LOOKUP_IP_LIST_ENTRY.tpl',
             'themes/default/templates/LOOKUP_SCREEN.tpl',
             'themes/default/templates/FATAL_SCREEN.tpl',
-            'themes/default/templates/STACK_TRACE_HYPER_WRAP.tpl',
-            'themes/default/templates/STACK_TRACE_LINE.tpl',
-            'themes/default/templates/STACK_TRACE_WRAP.tpl',
-            'themes/default/templates/BLOCK_MAIN_EMOTICON_CODES_ENTRY.tpl',
+            'themes/default/templates/STACK_TRACE.tpl',
             'themes/default/templates/BLOCK_MAIN_EMOTICON_CODES.tpl',
             'themes/default/templates/BLOCK_NO_ENTRIES.tpl',
             'adminzone/index.php',
@@ -764,7 +833,6 @@ class Hook_addon_registry_core
             'adminzone/pages/modules/.htaccess',
             'adminzone/pages/modules/admin.php',
             'themes/default/images/keyboard.png',
-            'data_custom/sitemaps/index.html',
             'sources/sitemap.php',
             'sources/sitemap_ajax.php',
             'sources/sitemap_xml.php',
@@ -851,13 +919,17 @@ class Hook_addon_registry_core
             'themes/index.html',
             'themes/map.ini',
             'sources/hooks/systems/module_permissions/.htaccess',
+            'sources_custom/hooks/systems/module_permissions/.htaccess',
             'sources/hooks/systems/module_permissions/forums.php',
             'sources/hooks/systems/module_permissions/index.html',
+            'sources_custom/hooks/systems/module_permissions/index.html',
             'lang/EN/permissions.ini',
             'sources/permissions.php',
             'sources/permissions2.php',
             'sources/hooks/systems/block_ui_renderers/.htaccess',
+            'sources_custom/hooks/systems/block_ui_renderers/.htaccess',
             'sources/hooks/systems/block_ui_renderers/index.html',
+            'sources_custom/hooks/systems/block_ui_renderers/index.html',
             'themes/default/images/1x/arrow_box.png',
             'themes/default/images/1x/arrow_box_hover.png',
             'themes/default/images/2x/arrow_box.png',
@@ -907,6 +979,7 @@ class Hook_addon_registry_core
             'themes/default/images/icons/28x28/download.png',
             'themes/default/images/icons/28x28/edit.png',
             'sources/hooks/systems/startup/index.html',
+            'sources_custom/hooks/systems/startup/index.html',
             'data/confirm_session.php',
             'data/cron_bridge.php',
             'data/curl-ca-bundle.crt',
@@ -928,10 +1001,11 @@ class Hook_addon_registry_core
             'data/sheet.php',
             'data/sitemap.php',
             'data/snippet.php',
-            'data/soundmanager2.swf',
-            'data/soundmanager2_flash9.swf',
-            'data/soundmanager2_flash9_debug.swf',
-            'data/soundmanager2_debug.swf',
+            'data/soundmanager/soundmanager2.swf',
+            'data/soundmanager/soundmanager2_flash9.swf',
+            'data/soundmanager/soundmanager2_flash9_debug.swf',
+            'data/soundmanager/soundmanager2_debug.swf',
+            'data/soundmanager/index.html',
             'data/sounds/index.html',
             'data_custom/execute_temp.php',
             'data_custom/functions.dat',
@@ -1072,6 +1146,7 @@ class Hook_addon_registry_core
             'sources/database.php',
             'sources/database_security_filter.php',
             'sources/database_helper.php',
+            'sources/database_repair.php',
             'sources/database_action.php',
             'sources/database_search.php',
             'sources/diff.php',
@@ -1081,22 +1156,27 @@ class Hook_addon_registry_core
             'sources/forum_stub.php',
             'sources/global.php',
             'sources/shared_installs.php',
-            'sources/xml_storage.php',
             'sources/override_api.php',
             'sources/global2.php',
             'sources/character_sets.php',
             'sources/css_and_js.php',
             'sources/jsmin.php',
-            'sources/word_filter.php',
+            'sources/database_relations.php',
+            'sources/wordfilter.php',
             'sources/input_filter.php',
+            'sources/csrf_filter.php',
             'sources/input_filter_2.php',
             'sources/hooks/systems/checks/.htaccess',
+            'sources_custom/hooks/systems/checks/.htaccess',
             'sources/hooks/systems/checks/base_url.php',
+            'sources/hooks/systems/checks/no_ad_script.php',
+            'data/blank.php',
             'sources/hooks/systems/checks/disk_space.php',
             'sources/hooks/systems/checks/file_uploads.php',
             'sources/hooks/systems/checks/functions_needed.php',
             'sources/hooks/systems/checks/gd.php',
             'sources/hooks/systems/checks/index.html',
+            'sources_custom/hooks/systems/checks/index.html',
             'sources/hooks/systems/checks/max_execution_time.php',
             'sources/hooks/systems/checks/max_input_vars.php',
             'sources/hooks/systems/checks/mbstring_overload.php',
@@ -1114,7 +1194,6 @@ class Hook_addon_registry_core
             'sources/index.html',
             'sources/integrator.php',
             'sources/lang.php',
-            'sources/lang_urlise.php',
             'sources/lang_compile.php',
             'sources/lang2.php',
             'sources/lang3.php',
@@ -1143,6 +1222,7 @@ class Hook_addon_registry_core
             'sources/symbols.php',
             'sources/symbols2.php',
             'sources/tar.php',
+            'sources/tar2.php',
             'sources/tempcode.php',
             'sources/tempcode_compiler.php',
             'sources/tempcode_optimiser.php',
@@ -1171,23 +1251,39 @@ class Hook_addon_registry_core
             'sources/hooks/.htaccess',
             'sources/hooks/blocks/.htaccess',
             'sources/hooks/blocks/index.html',
+            'sources_custom/hooks/blocks/.htaccess',
+            'sources_custom/hooks/blocks/index.html',
             'sources/hooks/index.html',
             'sources/hooks/modules/.htaccess',
             'sources/hooks/modules/index.html',
+            'sources_custom/hooks/modules/.htaccess',
+            'sources_custom/hooks/modules/index.html',
             'sources/hooks/systems/.htaccess',
             'sources/hooks/systems/index.html',
+            'sources_custom/hooks/systems/.htaccess',
+            'sources_custom/hooks/systems/index.html',
             'data/ajax_tree.php',
             'sources/hooks/systems/ajax_tree/.htaccess',
+            'sources_custom/hooks/systems/ajax_tree/.htaccess',
             'sources/hooks/systems/ajax_tree/index.html',
+            'sources_custom/hooks/systems/ajax_tree/index.html',
             'sources/hooks/systems/cron/.htaccess',
+            'sources_custom/hooks/systems/cron/.htaccess',
             'sources/hooks/systems/cron/index.html',
+            'sources_custom/hooks/systems/cron/index.html',
             'sources/hooks/systems/page_groupings/.htaccess',
+            'sources_custom/hooks/systems/page_groupings/.htaccess',
             'sources/hooks/systems/page_groupings/core.php',
             'sources/hooks/systems/page_groupings/index.html',
+            'sources_custom/hooks/systems/page_groupings/index.html',
             'sources/hooks/systems/preview/.htaccess',
+            'sources_custom/hooks/systems/preview/.htaccess',
             'sources/hooks/systems/preview/index.html',
+            'sources_custom/hooks/systems/preview/index.html',
             'sources/hooks/systems/snippets/.htaccess',
+            'sources_custom/hooks/systems/snippets/.htaccess',
             'sources/hooks/systems/snippets/index.html',
+            'sources_custom/hooks/systems/snippets/index.html',
             'sources/hooks/systems/snippets/css_compile__text.php',
             'sources/hooks/systems/snippets/block.php',
             'sources/blocks.php',
@@ -1203,14 +1299,23 @@ class Hook_addon_registry_core
             'themes/default/images/iphone.png',
             'themes/default/images/quote_gradient.png',
             'sources/hooks/systems/content_meta_aware/.htaccess',
+            'sources_custom/hooks/systems/content_meta_aware/.htaccess',
             'sources/hooks/systems/content_meta_aware/index.html',
+            'sources_custom/hooks/systems/content_meta_aware/index.html',
             'sources/hooks/systems/meta/.htaccess',
+            'sources_custom/hooks/systems/meta/.htaccess',
             'sources/hooks/systems/cns_auth/.htaccess',
+            'sources_custom/hooks/systems/cns_auth/.htaccess',
             'sources/hooks/systems/startup/.htaccess',
+            'sources_custom/hooks/systems/startup/.htaccess',
             'sources/hooks/systems/upon_access_denied/.htaccess',
+            'sources_custom/hooks/systems/upon_access_denied/.htaccess',
             'sources/hooks/systems/upon_login/.htaccess',
+            'sources_custom/hooks/systems/upon_login/.htaccess',
             'sources/hooks/systems/upon_page_load/.htaccess',
+            'sources_custom/hooks/systems/upon_page_load/.htaccess',
             'sources/hooks/systems/upon_query/.htaccess',
+            'sources_custom/hooks/systems/upon_query/.htaccess',
             'sources_custom/database/.htaccess',
             'sources_custom/database/index.html',
             'sources/decision_tree.php',
@@ -1241,7 +1346,9 @@ class Hook_addon_registry_core
             'themes/default/templates/EMAIL_LOG_SCREEN.tpl',
             'sources/hooks/systems/cron/implicit_usergroup_sync.php',
             'sources/hooks/systems/cns_implicit_usergroups/index.html',
+            'sources_custom/hooks/systems/cns_implicit_usergroups/index.html',
             'sources/hooks/systems/cns_implicit_usergroups/.htaccess',
+            'sources_custom/hooks/systems/cns_implicit_usergroups/.htaccess',
             'themes/default/css/personal_stats.css',
             'themes/default/templates/MASS_SELECT_MARKER.tpl',
             'themes/default/templates/MASS_SELECT_DELETE_FORM.tpl',
@@ -1253,12 +1360,36 @@ class Hook_addon_registry_core
             'sources/hooks/systems/config/tasks_background.php',
             'sources/hooks/systems/cron/tasks.php',
             'sources/hooks/systems/tasks/index.html',
+            'sources_custom/hooks/systems/tasks/index.html',
             'sources/hooks/systems/notifications/task_completed.php',
             'sources/hooks/systems/tasks/.htaccess',
+            'sources_custom/hooks/systems/tasks/.htaccess',
             'themes/default/images/EN/1x/index.html',
             'themes/default/images/EN/2x/index.html',
             'themes/default/images/icons/16x16/index.html',
             'sources/persistent_caching/.htaccess',
+            'sources/deep_clean.php',
+            'sources/hooks/systems/symbols/DEEP_CLEAN.php',
+
+            // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
+            'data/endpoint.php',
+            'sources/endpoints.php',
+            'sources/hooks/endpoints/.htaccess',
+            'sources/hooks/endpoints/index.html',
+            'sources/hooks/endpoints/account/.htaccess',
+            'sources/hooks/endpoints/account/index.html',
+            'sources/hooks/endpoints/content/.htaccess',
+            'sources/hooks/endpoints/content/index.html',
+            'sources/hooks/endpoints/misc/.htaccess',
+            'sources/hooks/endpoints/misc/index.html',
+            'sources_custom/hooks/endpoints/.htaccess',
+            'sources_custom/hooks/endpoints/index.html',
+            'sources_custom/hooks/endpoints/account/.htaccess',
+            'sources_custom/hooks/endpoints/account/index.html',
+            'sources_custom/hooks/endpoints/content/.htaccess',
+            'sources_custom/hooks/endpoints/content/index.html',
+            'sources_custom/hooks/endpoints/misc/.htaccess',
+            'sources_custom/hooks/endpoints/misc/index.html',
 
             // Admin theme
             'themes/admin/css/index.html',
@@ -1304,7 +1435,7 @@ class Hook_addon_registry_core
             'templates/ACTIONLOGS_SCREEN.tpl' => 'administrative__actionlogs_screen',
             'templates/ACTIONLOGS_TOGGLE_LINK.tpl' => 'administrative__actionlogs_toggle_link',
             'templates/LOGIN_SCREEN.tpl' => 'login_screen',
-            'templates/LOGIN_REDIRECT_SCREEN.tpl' => 'login_redirect_screen',
+            'templates/REDIRECT_POST_METHOD_SCREEN.tpl' => 'redirect_post_method_screen',
             'templates/FORUMS_EMBED.tpl' => 'forums_embed',
             'templates/JS_BLOCK.tpl' => 'js_block',
             'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
@@ -1312,9 +1443,7 @@ class Hook_addon_registry_core
             'templates/JAVASCRIPT_NEED.tpl' => 'javascript_need',
             'templates/CSS_NEED.tpl' => 'css_need',
             'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
-            'templates/STACK_TRACE_LINE.tpl' => 'administrative__stack_trace_hyper_wrap',
-            'templates/STACK_TRACE_WRAP.tpl' => 'administrative__stack_trace_hyper_wrap',
-            'templates/STACK_TRACE_HYPER_WRAP.tpl' => 'administrative__stack_trace_hyper_wrap',
+            'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
             'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
             'templates/MISSING_SCREEN.tpl' => 'missing_screen',
             'templates/PARAM_INFO.tpl' => 'param_info',
@@ -1328,19 +1457,16 @@ class Hook_addon_registry_core
             'templates/BLOCK_TOP_LOGIN.tpl' => 'block_top_login',
             'templates/BLOCK_TOP_PERSONAL_STATS.tpl' => 'block_top_personal_stats',
             'templates/BLOCK_NO_ENTRIES.tpl' => 'nothing_here',
-            'templates/BLOCK_MAIN_EMOTICON_CODES_ENTRY.tpl' => 'block_main_emoticon_codes',
             'templates/BLOCK_MAIN_EMOTICON_CODES.tpl' => 'block_main_emoticon_codes',
             'templates/BLOCK_MAIN_COMCODE_PAGE_CHILDREN.tpl' => 'block_main_comcode_page_children',
             'templates/QUERY_LOG.tpl' => 'administrative__query_screen',
             'templates/QUERY_SCREEN.tpl' => 'administrative__query_screen',
             'templates/BROKEN_URLS.tpl' => 'administrative__broken_urls',
             'templates/BROKEN_LANG_STRINGS.tpl' => 'administrative__broken_lang_strings',
-            'templates/JOIN_OR_LOGIN.tpl' => 'join_or_login',
             'templates/FORUM_ATTACHMENT_IMAGE.tpl' => 'forum_attachment_image',
             'templates/FORUM_ATTACHMENT_IMAGE_THUMB.tpl' => 'forum_attachment_link',
             'templates/FORUM_ATTACHMENT_LINK.tpl' => 'forum_attachment_link',
             'text/tempcode_test.txt' => 'administrative__tempcode_test',
-            'templates/ADMIN_ZONE_SEARCH.tpl' => 'admin_zone_search',
             'templates/EMAIL_LOG_SCREEN.tpl' => 'email_log_screen',
             'templates/BLOCK_MAIN_CONTENT_FILTERING.tpl' => 'block_main_content_filtering',
             'templates/BLOCK_MAIN_CONTENT.tpl' => 'block_main_content',
@@ -1368,8 +1494,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_CONTENT', array(
                 'TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => lorem_phrase_html(),
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
@@ -1390,8 +1516,8 @@ class Hook_addon_registry_core
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MULTI_CONTENT', array(
                 'TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
-                'RAW_AWARD_DATE' => placeholder_time(),
-                'AWARD_DATE' => placeholder_time(),
+                'RAW_AWARD_DATE' => placeholder_date(),
+                'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => array(
                     lorem_phrase_html()
                 ),
@@ -1404,20 +1530,6 @@ class Hook_addon_registry_core
                 'START_PARAM' => 'x_start',
                 'MAX_PARAM' => 'x_max',
             )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__admin_zone_search()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('ADMIN_ZONE_SEARCH', array()), null, '', true)
         );
     }
 
@@ -1510,10 +1622,10 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__login_redirect_screen()
+    public function tpl_preview__redirect_post_method_screen()
     {
         return array(
-            lorem_globalise(do_lorem_template('LOGIN_REDIRECT_SCREEN', array(
+            lorem_globalise(do_lorem_template('REDIRECT_POST_METHOD_SCREEN', array(
                 'REFRESH' => '',
                 'TITLE' => lorem_title(),
                 'TEXT' => lorem_sentence_html(),
@@ -1601,6 +1713,7 @@ class Hook_addon_registry_core
                 'TITLE' => lorem_title(),
                 'MESSAGE' => lorem_phrase(),
                 'TRACE' => lorem_phrase(),
+                'MAY_SEE_TRACE' => true,
             )), null, '', true)
         );
     }
@@ -1612,27 +1725,27 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__administrative__stack_trace_hyper_wrap()
+    public function tpl_preview__administrative__stack_trace()
     {
-        $trace = new Tempcode();
+        $trace = array();
         foreach (placeholder_array() as $value) {
-            $traces = new Tempcode();
+            $traces = array();
             foreach (placeholder_array() as $key => $value1) {
-                $traces->attach(do_lorem_template('STACK_TRACE_LINE', array(
+                $traces[] = array(
                     'LINE' => $value1,
                     'FILE' => lorem_phrase(),
                     'KEY' => ucfirst($value1),
                     'VALUE' => lorem_sentence(),
-                )));
+                );
             }
-            $trace->attach(do_lorem_template('STACK_TRACE_WRAP', array(
+            $trace[] = array(
                 'TRACES' => $traces,
-            )));
+            );
         }
 
         return array(
-            lorem_globalise(do_lorem_template('STACK_TRACE_HYPER_WRAP', array(
-                'CONTENT' => $trace,
+            lorem_globalise(do_lorem_template('STACK_TRACE', array(
+                'TRACE' => $trace,
                 'POST' => placeholder_array(),
             )), null, '', true)
         );
@@ -1671,6 +1784,7 @@ class Hook_addon_registry_core
                 'PAGE' => lorem_phrase(),
                 'DID_MEAN' => lorem_word(),
                 'ADD_REDIRECT_URL' => placeholder_url(),
+                'SKIP_SITEMAP' => true,
             )), null, '', true)
         );
     }
@@ -1736,39 +1850,43 @@ class Hook_addon_registry_core
     public function tpl_preview__block_side_personal_stats()
     {
         $details = new Tempcode();
-        $links = new Tempcode();
-
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
             'KEY' => lorem_word(),
             'VALUE' => placeholder_number(),
         )));
+        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
+            'KEY' => do_lang_tempcode('USERGROUP'),
+            'VALUE' => placeholder_link(),
+        )));
 
+        $links = new Tempcode();
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
             'NAME' => lorem_word_2(),
             'DESCRIPTION' => lorem_phrase(),
             'URL' => placeholder_url(),
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array(
             'NAME' => lorem_word(),
             'URL' => placeholder_url(),
             'REL' => 'me',
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LOGOUT', array(
             'NAME' => do_lang_tempcode('LOGOUT'),
             'URL' => placeholder_url(),
         )));
 
-        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('GROUP'),
-            'VALUE' => placeholder_link(),
+        $links_ecommerce = new Tempcode();
+        $links_ecommerce->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
+            'NAME' => lorem_word_2(),
+            'DESCRIPTION' => lorem_phrase(),
+            'URL' => placeholder_url(),
         )));
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS', array(
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
+                'LINKS_ECOMMERCE' => $links_ecommerce,
                 'DETAILS' => $details,
                 'USERNAME' => lorem_word(),
             )), null, '', true)
@@ -1785,43 +1903,47 @@ class Hook_addon_registry_core
     public function tpl_preview__block_top_personal_stats()
     {
         $details = new Tempcode();
-        $links = new Tempcode();
-
         $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
             'KEY' => lorem_word(),
             'VALUE' => placeholder_number(),
         )));
+        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
+            'KEY' => do_lang_tempcode('USERGROUP'),
+            'VALUE' => placeholder_link(),
+        )));
 
+        $links = new Tempcode();
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
             'NAME' => lorem_word_2(),
             'DESCRIPTION' => lorem_phrase(),
             'URL' => placeholder_url(),
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array(
             'NAME' => lorem_word(),
             'URL' => placeholder_url(),
             'REL' => 'me',
         )));
-
         $links->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LOGOUT', array(
             'NAME' => do_lang_tempcode('LOGOUT'),
             'URL' => placeholder_url(),
         )));
 
-        $details->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINE_COMPLEX', array(
-            'KEY' => do_lang_tempcode('GROUP'),
-            'VALUE' => placeholder_link(),
+        $links_ecommerce = new Tempcode();
+        $links_ecommerce->attach(do_lorem_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array(
+            'NAME' => lorem_word_2(),
+            'DESCRIPTION' => lorem_phrase(),
+            'URL' => placeholder_url(),
         )));
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_TOP_PERSONAL_STATS', array(
                 'AVATAR_URL' => placeholder_avatar(),
                 'LINKS' => $links,
+                'LINKS_ECOMMERCE' => $links_ecommerce,
                 'DETAILS' => $details,
                 'USERNAME' => lorem_word(),
                 'MEMBER_ID' => placeholder_id(),
-            )), null, '', true)
+            )), null, '', false)
         );
     }
 
@@ -1898,37 +2020,24 @@ class Hook_addon_registry_core
         require_code('comcode_renderer');
 
         $emoticons = placeholder_emoticons();
-        $entries = new Tempcode();
+
+        $rows = array();
         global $EMOTICON_LEVELS;
         foreach ($emoticons as $code => $imgcode) {
             if ((is_null($EMOTICON_LEVELS)) || ($EMOTICON_LEVELS[$code] < 3)) {
-                $entries->attach(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES_ENTRY', array(
-                    'CODE' => $code,
-                    'TPL' => do_emoticon($imgcode),
-                )));
+                $rows[] = array(
+                    'COLUMNS' => array(array(
+                       'CODE' => $code,
+                       'TPL' => do_emoticon($imgcode),
+                   )),
+                );
             }
         }
 
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES', array(
-                'ENTRIES' => $entries,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__join_or_login()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('JOIN_OR_LOGIN', array(
-                'LOGIN_URL' => placeholder_url(),
-                'JOIN_URL' => placeholder_url(),
+                'ROWS' => $rows,
+                'NUM_COLUMNS' => '1',
             )), null, '', true)
         );
     }

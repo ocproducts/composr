@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_commandr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -107,25 +108,35 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/find_guid_via_id.php',
             'sources/hooks/systems/commandr_commands/find_id_via_guid.php',
             'sources/hooks/systems/commandr_commands/find_id_via_label.php',
-            'sources/hooks/systems/commandr_commands/find_id_via_commandrfs_filename.php',
+            'sources/hooks/systems/commandr_commands/find_id_via_commandr_fs_filename.php',
             'sources/hooks/systems/commandr_commands/find_label_via_id.php',
-            'sources/hooks/systems/commandr_commands/find_commandrfs_filename_via_id.php',
+            'sources/hooks/systems/commandr_commands/find_commandr_fs_filename_via_id.php',
             'sources/hooks/systems/commandr_fs_extended_config/index.html',
+            'sources_custom/hooks/systems/commandr_fs_extended_config/index.html',
+            'sources/hooks/systems/commandr_fs_extended_config/.htaccess',
+            'sources_custom/hooks/systems/commandr_fs_extended_config/.htaccess',
+            'sources/hooks/systems/commandr_fs_extended_member/index.html',
+            'sources_custom/hooks/systems/commandr_fs_extended_member/index.html',
+            'sources/hooks/systems/commandr_fs_extended_member/.htaccess',
+            'sources_custom/hooks/systems/commandr_fs_extended_member/.htaccess',
+            'sources/hooks/systems/commandr_fs_extended_config/privileges.php',
             'sources/hooks/systems/config/bottom_show_commandr_button.php',
             'sources/hooks/systems/config/commandr_chat_announce.php',
             'sources/hooks/systems/commandr_fs/.htaccess',
+            'sources_custom/hooks/systems/commandr_fs/.htaccess',
             'sources/hooks/systems/commandr_notifications/.htaccess',
+            'sources_custom/hooks/systems/commandr_notifications/.htaccess',
             'sources/hooks/systems/addon_registry/commandr.php',
             'sources/hooks/systems/commandr_commands/antispam_check.php',
             'sources/hooks/systems/commandr_commands/set_comment_forum.php',
             'sources/resource_fs.php',
+            'sources/resource_fs_base_class.php',
             'data/modules/admin_commandr/.htaccess',
             'themes/default/templates/COMMANDR_HELP.tpl',
             'themes/default/templates/COMMANDR_LS.tpl',
             'themes/default/templates/COMMANDR_MAIN.tpl',
             'themes/default/javascript/commandr.js',
             'themes/default/templates/COMMANDR_ARRAY.tpl',
-            'themes/default/templates/COMMANDR_ARRAY_ELEMENT.tpl',
             'themes/default/templates/COMMANDR_BOX.tpl',
             'themes/default/templates/COMMANDR_CHAT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_COMMAND.tpl',
@@ -139,7 +150,6 @@ class Hook_addon_registry_commandr
             'themes/default/templates/COMMANDR_CNS_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_PT_NOTIFICATION.tpl',
             'themes/default/templates/COMMANDR_RSS.tpl',
-            'themes/default/templates/COMMANDR_RSS_ITEM.tpl',
             'themes/default/templates/COMMANDR_USERS_ONLINE.tpl',
             'themes/default/templates/COMMANDR_WHOIS.tpl',
             'themes/default/javascript/button_commandr.js',
@@ -152,6 +162,7 @@ class Hook_addon_registry_commandr
             'data/commandr.php',
             'lang/EN/commandr.ini',
             'sources/hooks/systems/commandr_commands/.htaccess',
+            'sources_custom/hooks/systems/commandr_commands/.htaccess',
             'sources/hooks/systems/commandr_commands/alien_check.php',
             'sources/hooks/systems/commandr_commands/directory_sizes.php',
             'sources/hooks/systems/commandr_commands/mysql_table_sizes.php',
@@ -182,6 +193,7 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/grep.php',
             'sources/hooks/systems/commandr_commands/help.php',
             'sources/hooks/systems/commandr_commands/index.html',
+            'sources_custom/hooks/systems/commandr_commands/index.html',
             'sources/hooks/systems/commandr_commands/ls.php',
             'sources/hooks/systems/commandr_commands/mkdir.php',
             'sources/hooks/systems/commandr_commands/mv.php',
@@ -203,13 +215,16 @@ class Hook_addon_registry_commandr
             'sources/hooks/systems/commandr_commands/database_upgrade.php',
             'sources/hooks/systems/commandr_commands/check_perms.php',
             'sources/hooks/systems/commandr_commands/integrity_check.php',
+            'sources/hooks/systems/commandr_commands/deep_clean.php',
             'sources/hooks/systems/commandr_fs/bin.php',
             'sources/hooks/systems/commandr_fs/database.php',
             'sources/hooks/systems/commandr_fs/etc.php',
             'sources/hooks/systems/commandr_fs/index.html',
+            'sources_custom/hooks/systems/commandr_fs/index.html',
             'sources/hooks/systems/commandr_fs/raw.php',
             'sources/hooks/systems/commandr_fs/root.php',
             'sources/hooks/systems/commandr_notifications/index.html',
+            'sources_custom/hooks/systems/commandr_notifications/index.html',
             'sources/hooks/systems/commandr_notifications/commandrchat.php',
             'sources/hooks/systems/page_groupings/commandr.php',
             'sources/hooks/systems/snippets/commandr.php',
@@ -229,13 +244,11 @@ class Hook_addon_registry_commandr
             'templates/COMMANDR_MAIN.tpl' => 'administrative__commandr_main',
             'templates/COMMANDR_MAIN_SCREEN.tpl' => 'administrative__commandr_main_screen',
             'templates/COMMANDR_COMMAND.tpl' => 'administrative__commandr_command',
-            'templates/COMMANDR_ARRAY_ELEMENT.tpl' => 'administrative__commandr_array',
             'templates/COMMANDR_ARRAY.tpl' => 'administrative__commandr_array',
             'templates/COMMANDR_NOTIFICATION.tpl' => 'administrative__commandr_command',
             'templates/COMMANDR_HELP.tpl' => 'administrative__commandr_help',
             'templates/COMMANDR_BOX.tpl' => 'administrative__commandr_box',
             'templates/COMMANDR_COMMANDS.tpl' => 'administrative__commandr_commands',
-            'templates/COMMANDR_RSS_ITEM.tpl' => 'administrative__commandr_rss',
             'templates/COMMANDR_RSS.tpl' => 'administrative__commandr_rss',
             'templates/COMMANDR_EDIT.tpl' => 'administrative__commandr_edit',
             'templates/COMMANDR_USERS_ONLINE.tpl' => 'administrative__commandr_users_online',
@@ -328,10 +341,11 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_array()
     {
-        $elements = do_lorem_template('COMMANDR_ARRAY_ELEMENT', array(
+        $elements = array();
+        $elements[] = array(
             'KEY' => lorem_phrase(),
             'VALUE' => lorem_phrase(),
-        ));
+        );
 
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_ARRAY', array(
@@ -399,12 +413,13 @@ class Hook_addon_registry_commandr
      */
     public function tpl_preview__administrative__commandr_rss()
     {
-        $content = do_lorem_template('COMMANDR_RSS_ITEM', array(
+        $content = array();
+        $content[] = array(
             'FULL_URL' => placeholder_url(),
             'NEWS_TITLE' => lorem_phrase(),
-            'DATE' => placeholder_time(),
+            'DATE' => placeholder_date(),
             'SUMMARY' => lorem_paragraph(),
-        ));
+        );
 
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_RSS', array(
@@ -425,7 +440,6 @@ class Hook_addon_registry_commandr
     {
         return array(
             lorem_globalise(do_lorem_template('COMMANDR_EDIT', array(
-                'UNIQ_ID' => placeholder_random(),
                 'FILE' => lorem_phrase(),
                 'SUBMIT_URL' => placeholder_url(),
                 'FILE_CONTENTS' => lorem_sentence(),

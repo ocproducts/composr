@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -114,23 +114,18 @@ class Block_main_bottom_bar
         }
 
         // Birthdays
-        $birthdays = new Tempcode();
+        $birthdays = array();
         if (get_option('enable_birthdays') != '0') {
             $_birthdays = cns_find_birthdays();
             foreach ($_birthdays as $_birthday) {
                 $birthday_url = build_url(array('page' => 'topics', 'type' => 'birthday', 'id' => $_birthday['username']), get_module_zone('topics'));
-                $birthday = do_template('CNS_BIRTHDAY_LINK', array(
-                    '_GUID' => 'a98959187d37d80e134d47db7e3a52fa',
+                $birthdays[] = array(
                     'AGE' => array_key_exists('age', $_birthday) ? integer_format($_birthday['age']) : null,
                     'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], false, true),
                     'USERNAME' => $_birthday['username'],
                     'MEMBER_ID' => strval($_birthday['id']),
                     'BIRTHDAY_URL' => $birthday_url,
-                ));
-                $birthdays->attach($birthday);
-            }
-            if (!$birthdays->is_empty()) {
-                $birthdays = do_template('CNS_BIRTHDAYS', array('_GUID' => '03da2c0d46e76407d63bff22aac354bd', 'BIRTHDAYS' => $birthdays));
+                );
             }
         }
 

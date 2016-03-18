@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
     public $file_resource_type = 'poll';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -39,7 +39,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -47,7 +47,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['SITE_DB']->query_select('poll', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('question') => $label));
+        $_ret = $GLOBALS['SITE_DB']->query_select('poll', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('question') => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);
@@ -56,48 +56,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'answer1' => 'SHORT_TRANS',
-            'answer2' => 'SHORT_TRANS',
-            'answer3' => 'SHORT_TRANS',
-            'answer4' => 'SHORT_TRANS',
-            'answer5' => 'SHORT_TRANS',
-            'answer6' => 'SHORT_TRANS',
-            'answer7' => 'SHORT_TRANS',
-            'answer8' => 'SHORT_TRANS',
-            'answer9' => 'SHORT_TRANS',
-            'answer10' => 'SHORT_TRANS',
-            'current' => 'BINARY',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'use_time' => '?TIME',
-            'votes1' => 'INTEGER',
-            'votes2' => 'INTEGER',
-            'votes3' => 'INTEGER',
-            'votes4' => 'INTEGER',
-            'votes5' => 'INTEGER',
-            'votes6' => 'INTEGER',
-            'votes7' => 'INTEGER',
-            'votes8' => 'INTEGER',
-            'votes9' => 'INTEGER',
-            'votes10' => 'INTEGER',
-            'views' => 'INTEGER',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -106,7 +65,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('polls2');
 
@@ -153,8 +112,8 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'poll', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'poll', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $use_time = $this->_default_property_int_null($properties, 'use_time');
         $v1 = $this->_default_property_int($properties, 'votes1');
         $v2 = $this->_default_property_int($properties, 'votes2');
@@ -167,13 +126,16 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $v9 = $this->_default_property_int($properties, 'votes9');
         $v10 = $this->_default_property_int($properties, 'votes10');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $id = add_poll($label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $current, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $time, $submitter, $use_time, $v1, $v2, $v3, $v4, $v5, $v6, $v7, $v8, $v9, $v10, $views, $edit_date);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -189,18 +151,18 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         }
         $row = $rows[0];
 
-        return array(
-            'label' => $row['question'],
-            'answer1' => $row['option1'],
-            'answer2' => $row['option2'],
-            'answer3' => $row['option3'],
-            'answer4' => $row['option4'],
-            'answer5' => $row['option5'],
-            'answer6' => $row['option6'],
-            'answer7' => $row['option7'],
-            'answer8' => $row['option8'],
-            'answer9' => $row['option9'],
-            'answer10' => $row['option10'],
+        $properties = array(
+            'label' => get_translated_text($row['question']),
+            'answer1' => get_translated_text($row['option1']),
+            'answer2' => get_translated_text($row['option2']),
+            'answer3' => get_translated_text($row['option3']),
+            'answer4' => get_translated_text($row['option4']),
+            'answer5' => get_translated_text($row['option5']),
+            'answer6' => get_translated_text($row['option6']),
+            'answer7' => get_translated_text($row['option7']),
+            'answer8' => get_translated_text($row['option8']),
+            'answer9' => get_translated_text($row['option9']),
+            'answer10' => get_translated_text($row['option10']),
             'current' => $row['is_current'],
             'allow_rating' => $row['allow_rating'],
             'allow_comments' => $row['allow_comments'],
@@ -218,14 +180,16 @@ class Hook_commandr_fs_polls extends Resource_fs_base
             'votes9' => $row['votes9'],
             'votes10' => $row['votes10'],
             'views' => $row['poll_views'],
-            'submitter' => $row['submitter'],
-            'add_date' => $row['add_time'],
-            'edit_date' => $row['edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['submitter']),
+            'add_date' => remap_time_as_portable($row['add_time']),
+            'edit_date' => remap_time_as_portable($row['edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -235,7 +199,7 @@ class Hook_commandr_fs_polls extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('polls2');
 
@@ -283,8 +247,8 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'poll', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'poll', 1);
         $notes = $this->_default_property_str($properties, 'notes');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
+        $add_time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $use_time = $this->_default_property_int_null($properties, 'use_time');
         $v1 = $this->_default_property_int($properties, 'votes1');
         $v2 = $this->_default_property_int($properties, 'votes2');
@@ -297,15 +261,17 @@ class Hook_commandr_fs_polls extends Resource_fs_base
         $v9 = $this->_default_property_int($properties, 'votes9');
         $v10 = $this->_default_property_int($properties, 'votes10');
         $views = $this->_default_property_int($properties, 'views');
-        $edit_time = $this->_default_property_int_null($properties, 'edit_date');
+        $edit_time = $this->_default_property_time($properties, 'edit_date');
 
         edit_poll(intval($resource_id), $label, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, $a10, $num_options, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $edit_time, $add_time, $views, $submitter, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

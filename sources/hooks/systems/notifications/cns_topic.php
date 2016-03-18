@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -153,7 +153,7 @@ class Hook_notification_cns_topic extends Hook_Notification
      */
     public function get_default_auto_setting($notification_code, $category = null)
     {
-        return A_INSTANT_EMAIL;
+        return A__STATISTICAL;
     }
 
     /**
@@ -226,7 +226,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             if (!is_null($forum_id)) { // Forum
                 list($members2, $maybe_more2) = $this->_all_members_who_have_enabled($notification_code, 'forum:' . strval($forum_id), $to_member_ids, $start, $max);
                 $members += $members2;
-                $maybe_more |= $maybe_more2;
+                $maybe_more = $maybe_more || $maybe_more2;
             } else { // Private topic, scan for participation against those already monitoring, for retroactive security (maybe someone lost access)
                 require_code('cns_topics');
                 $members_new = $members;

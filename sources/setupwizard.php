@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,6 +26,8 @@
  * @param  boolean $collapse_zones Whether we have zone collapsing on
  * @param  ID_TEXT $installprofile ID of the install profile
  * @return array Structure of pages
+ *
+ * @ignore
  */
 function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones, $installprofile)
 {

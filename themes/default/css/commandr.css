@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 {$THEME_WIZARD_COLOR,#222222,commandr_background,100% 222222}
@@ -54,6 +54,10 @@
 .command_output, .past_command td {
 	color: {$GET,commandr_text};
 }
+.command_output, .past_command .results_table td {
+	color: {$GET,slightly_seeded_text}; /* Undoes the above td rule as needed */
+	background-color: {$GET,main_background};
+}
 
 .commandr_dir {
 	color: {$GET,commandr_directory_listing};
@@ -79,6 +83,4 @@
 
 .whois_ip {
 	font-weight: bolder;
-	color: {$GET,commandr_text};
 }
-

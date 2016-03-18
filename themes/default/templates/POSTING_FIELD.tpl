@@ -9,7 +9,7 @@
 		{+END}
 		{+START,IF_NON_PASSED,POST_COMMENT}
 			<span class="field_name">
-				<label class="accessibility_hidden" for="{NAME*}">{!_POST}</label>
+				<label class="accessibility_hidden" for="{NAME*}">{!TEXT}</label>
 			</span>
 
 			<span id="required_readable_marker__{$?,{$IS_EMPTY,{NAME*}},{$RAND},{NAME*}}" style="display: {$?,{REQUIRED*},inline,none}"><span class="required_star">*</span> <span class="accessibility_hidden">{!REQUIRED}</span></span>
@@ -52,17 +52,15 @@
 		{+END}
 
 		<div class="float_surrounder">
-			{+START,IF,{$NOT,{$MOBILE}}}
-				{+START,IF,{$JS_ON}}
-					<div class="float_surrounder" role="toolbar">
-						<div id="post_special_options2" style="display: none">
-							{COMCODE_EDITOR_SMALL}
-						</div>
-						<div id="post_special_options">
-							{COMCODE_EDITOR}
-						</div>
+			{+START,IF,{$JS_ON}}
+				<div role="toolbar" class="float_surrounder post_options_wrap">
+					<div id="post_special_options2" style="display: none">
+						{COMCODE_EDITOR_SMALL}
 					</div>
-				{+END}
+					<div id="post_special_options">
+						{COMCODE_EDITOR}
+					</div>
+				</div>
 			{+END}
 
 			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
@@ -77,10 +75,10 @@
 					<script>// <![CDATA[
 						if ((window.wysiwyg_on) && (wysiwyg_on()))
 						{
-							document.getElementById('{NAME;*}').readOnly=true; // Stop typing while it loads
+							document.getElementById('{NAME;/}').readOnly=true; // Stop typing while it loads
 							window.setTimeout(function() {
-								if (document.getElementById('{NAME;*}').value==document.getElementById('{NAME;*}').defaultValue)
-									document.getElementById('{NAME;*}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
+								if (document.getElementById('{NAME;/}').value==document.getElementById('{NAME;/}').defaultValue)
+									document.getElementById('{NAME;/}').readOnly=false; // Too slow, maybe WYSIWYG failed due to some network issue
 							},3000);
 						}
 
@@ -95,20 +93,33 @@
 		</div>
 
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
-			{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
-				<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
-					{+START,IF,{$AND,{$CNS},{$JS_ON}}}
-						<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
-					{+END}
+			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
+				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$AND,{$CNS},{$JS_ON}}}}
+					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+						{+START,IF,{$AND,{$CNS},{$JS_ON}}}
+							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'site_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
+						{+END}
 
-					{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}
-						{EMOTICON_CHOOSER}
-					{+END}
-				</div>
-			{+END}{+END}
+						{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}}
+							{EMOTICON_CHOOSER}
+						{+END}
+					</div>
+				{+END}{+END}
+			{+END}
+		{+END}
 
+		{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms}}}
 			{+START,IF_PASSED,POST_COMMENT}
 				<p class="posting_rules">{!USE_WEBSITE_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
+			{+END}
+		{+END}
+
+		{+START,IF,{$MATCH_KEY_MATCH,cms}}
+			{+START,IF,{$VALUE_OPTION,download_associated_media}}
+				<p class="vertical_alignment">
+					<label for="{NAME*}_download_associated_media">{!comcode:DOWNLOAD_ASSOCIATED_MEDIA}</label>
+					<input title="{!comcode:DESCRIPTION_DOWNLOAD_ASSOCIATED_MEDIA}" checked="checked" type="checkbox" name="{NAME*}_download_associated_media" id="{NAME*}_download_associated_media" value="1" />
+				</p>
 			{+END}
 		{+END}
 
@@ -116,10 +127,22 @@
 			manage_scroll_height(document.getElementById('{NAME;/}'));
 			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}{+END}
 		//]]></script>
+
+		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
+			{ATTACHMENTS}
+
+			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+
+			<script>// <![CDATA[
+				add_event_listener_abstract(window,'load',function() {
+					initialise_html5_dragdrop_upload('container_for_{NAME;/}','{NAME;/}');
+				});
+			//]]></script>
+		{+END}
 	</td>
 </tr>
 
-{+START,IF_NON_EMPTY,{ATTACHMENTS}}
+{+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	<tr class="form_table_field_spacer">
 		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			{+START,IF,{$JS_ON}}

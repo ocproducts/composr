@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Block_main_staff_website_monitoring
         $info['version'] = 3;
         $info['locked'] = false;
         $info['parameters'] = array();
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -62,7 +62,7 @@ class Block_main_staff_website_monitoring
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('sitewatchlist');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_website_monitoring');
     }
 
     /**
@@ -74,14 +74,14 @@ class Block_main_staff_website_monitoring
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ((is_null($upgrade_from)) || ($upgrade_from < 2)) {
-            $GLOBALS['SITE_DB']->create_table('sitewatchlist', array(
+            $GLOBALS['SITE_DB']->create_table('staff_website_monitoring', array(
                 'id' => '*AUTO',
-                'siteurl' => 'URLPATH',
+                'site_url' => 'URLPATH',
                 'site_name' => 'SHORT_TEXT',
             ));
 
-            $GLOBALS['SITE_DB']->query_insert('sitewatchlist', array(
-                'siteurl' => get_base_url(),
+            $GLOBALS['SITE_DB']->query_insert('staff_website_monitoring', array(
+                'site_url' => get_base_url(),
                 'site_name' => get_site_name(),
             ));
         }
@@ -101,7 +101,7 @@ class Block_main_staff_website_monitoring
         $p = array();
         $result = http_download_file('http://data.alexa.com/data?cli=10&dat=s&url=' . $url, null, false, false, 'Composr', null, null, null, null, null, null, null, null, 1.0);
         if (preg_match('#<POPULARITY [^<>]*TEXT="([0-9]+){1,}"#si', $result, $p) != 0) {
-            $rank = integer_format(intval($p[2]));
+            $rank = integer_format(intval($p[1]));
         } else {
             $rank = do_lang('NA');
         }
@@ -137,7 +137,7 @@ class Block_main_staff_website_monitoring
             $check *= $magic;
             //If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
             //  the result of converting to integer is undefined
-            //  refer to http://www.php.net/manual/en/language.types.integer.php
+            //  refer to http://php.net/manual/en/language.types.integer.php
             if ((is_integer($check) && floatval($check) >= $int_32_unit) ||
                 (is_float($check) && $check >= $int_32_unit)
             ) {
@@ -253,7 +253,7 @@ class Block_main_staff_website_monitoring
 
         $links = post_param_string('website_monitoring_list_edit', null);
         if (!is_null($links)) {
-            $GLOBALS['SITE_DB']->query_delete('sitewatchlist');
+            $GLOBALS['SITE_DB']->query_delete('staff_website_monitoring');
             $items = explode("\n", $links);
             foreach ($items as $i) {
                 $q = trim($i);
@@ -274,39 +274,38 @@ class Block_main_staff_website_monitoring
                             $site_name = $link;
                         }
                     }
-                    $GLOBALS['SITE_DB']->query_insert('sitewatchlist', array('site_name' => $site_name, 'siteurl' => fixup_protocolless_urls($link)));
+                    $GLOBALS['SITE_DB']->query_insert('staff_website_monitoring', array('site_name' => $site_name, 'site_url' => fixup_protocolless_urls($link)));
                 }
             }
 
             decache('main_staff_website_monitoring');
+
+            log_it('SITE_WATCHLIST');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('sitewatchlist');
+        $rows = $GLOBALS['SITE_DB']->query_select('staff_website_monitoring');
 
-        $sitesbeingwatched = array();
-        $sitegriddata = array();
+        $sites_being_watched = array();
+        $grid_data = array();
         if (count($rows) > 0) {
             foreach ($rows as $r) {
-                $alex = $this->getAlexaRank(($r['siteurl']));
-                $sitesbeingwatched[$r['siteurl']] = $r['site_name'];
-                $googleranking = integer_format(intval($this->getPageRank($r['siteurl'])));
-                $alexaranking = $alex[0];
-                $alexatraffic = $alex[1];
+                $alex = $this->getAlexaRank(($r['site_url']));
+                $sites_being_watched[$r['site_url']] = $r['site_name'];
+                $google_ranking = integer_format(intval($this->getPageRank($r['site_url'])));
+                $alexa_ranking = $alex[0];
+                $alexa_traffic = $alex[1];
 
-                $sitegriddata[] = array(
-                    'URL' => $r['siteurl'],
-                    'GRANK' => $googleranking,
-                    'ALEXAR' => $alexaranking,
-                    'ALEXAT' => $alexatraffic,
-                    'SITETITLE' => $r['site_name'],
+                $grid_data[] = array(
+                    'URL' => $r['site_url'],
+                    'GOOGLE_RANKING' => $google_ranking,
+                    'ALEXA_RANKING' => $alexa_ranking,
+                    'ALEXA_TRAFFIC' => $alexa_traffic,
+                    'SITE_NAME' => $r['site_name'],
                 );
             }
         }
 
-        $map_comcode = '';
-        foreach ($map as $key => $val) {
-            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
-        }
-        return do_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array('_GUID' => '0abf65878c508bf133836589a8cc45da', 'URL' => get_self_url(), 'BLOCK_NAME' => 'main_staff_website_monitoring', 'MAP' => $map_comcode, 'SITEURLS' => $sitesbeingwatched, 'GRIDDATA' => $sitegriddata));
+        $map_comcode = get_block_ajax_submit_map($map);
+        return do_template('BLOCK_MAIN_STAFF_WEBSITE_MONITORING', array('_GUID' => '0abf65878c508bf133836589a8cc45da', 'URL' => get_self_url(), 'BLOCK_NAME' => 'main_staff_website_monitoring', 'MAP' => $map_comcode, 'SITES_BEING_WATCHED' => $sites_being_watched, 'GRID_DATA' => $grid_data));
     }
 }

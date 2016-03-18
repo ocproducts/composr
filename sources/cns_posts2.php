@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -108,7 +108,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
                         'HIGHLIGHT_NAME' => null,
                     ));
                 } else {
-                    $poster = do_template('CNS_POSTER_GUEST', array('LOOKUP_IP_URL' => '', 'POSTER_DETAILS' => $poster_details, 'POSTER_USERNAME' => ($row['p_poster_name_if_guest'] != '') ? $row['p_poster_name_if_guest'] : do_lang('GUEST')));
+                    $poster = do_template('CNS_POSTER_GUEST', array('_GUID' => '260a204ec51a3a79896f4e39325f025e', 'LOOKUP_IP_URL' => '', 'POSTER_DETAILS' => $poster_details, 'POSTER_USERNAME' => ($row['p_poster_name_if_guest'] != '') ? $row['p_poster_name_if_guest'] : do_lang('GUEST')));
                 }
             } else {
                 $poster = do_template('CNS_POSTER_GUEST', array('_GUID' => ($guid != '') ? $guid : 'bb1724a9d97f93e097cf49b50eeafa66', 'LOOKUP_IP_URL' => '', 'POSTER_DETAILS' => $poster_details, 'POSTER_USERNAME' => ($row['p_poster_name_if_guest'] != '') ? $row['p_poster_name_if_guest'] : do_lang('GUEST')));
@@ -244,6 +244,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             'ID' => strval($row['id']),
             'TITLE' => $title,
             'SUMMARY' => $tpl,
+            'RESOURCE_TYPE' => 'post',
         ));
     }
 

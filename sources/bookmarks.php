@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -72,7 +72,7 @@ function add_bookmark_form($post_url)
     require_code('character_sets');
 
     $url = base64_decode(get_param_string('url', '', true));
-    $url = convert_to_internal_encoding($url, 'UTF-8'); // Note that this is intentionally passed in to not be a short URL
+    $url = convert_to_internal_encoding($url, 'UTF-8'); // Note that this is intentionally passed in to not be a URL Scheme
     $page_link = convert_to_internal_encoding(url_to_page_link($url, false, false), 'UTF-8');
     $default_title = get_param_string('title', '', true);
     $default_title = convert_to_internal_encoding($default_title, 'UTF-8');
@@ -101,7 +101,7 @@ function add_bookmark_form($post_url)
 
     $set_name = 'folder';
     $required = true;
-    $set_title = do_lang_tempcode('BOOKMARK_FOLDER');
+    $set_title = do_lang_tempcode('FOLDER');
     $field_set = alternate_fields_set__start($set_name);
 
     $field_set->attach(form_input_list(do_lang_tempcode('EXISTING'), do_lang_tempcode('DESCRIPTION_OLD_BOOKMARK_FOLDER'), 'folder', $list, null, false, false));
@@ -127,11 +127,16 @@ function add_bookmark_form($post_url)
  * @param  MEMBER $member Member who it will belong to
  * @param  string $folder Folder (blank: root)
  * @param  string $title Title/caption
- * @param  string $page_link The page-link
+ * @param  string $page_link The page-link or URL
  * @return AUTO_LINK The ID
  */
 function add_bookmark($member, $folder, $title, $page_link)
 {
+    $_page_link = url_to_page_link($page_link, true);
+    if ($_page_link != '') {
+        $page_link = $_page_link;
+    }
+
     $id = $GLOBALS['SITE_DB']->query_insert('bookmarks', array(
         'b_owner' => $member,
         'b_folder' => $folder,
@@ -154,6 +159,11 @@ function add_bookmark($member, $folder, $title, $page_link)
  */
 function edit_bookmark($id, $member, $title, $page_link)
 {
+    $_page_link = url_to_page_link($page_link, true);
+    if ($_page_link != '') {
+        $page_link = $_page_link;
+    }
+
     $GLOBALS['SITE_DB']->query_update('bookmarks', array('b_page_link' => $page_link, 'b_title' => $title), array('id' => $id, 'b_owner' => $member), '', 1); // Second select param for needed security
 
     decache('menu');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Block_side_users_online
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 3;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array();
         return $info;
@@ -77,7 +77,7 @@ class Block_side_users_online
             require_css('cns');
         }
 
-        $out = new Tempcode();
+        $online = array();
         $guests = 0;
         $_members = 0;
         $done_members = array();
@@ -97,21 +97,20 @@ class Block_side_users_online
                     $colour = (get_forum_type() == 'cns') ? get_group_colour(cns_get_member_primary_group($member)) : null;
                     $done_members[$member] = 1;
                     $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true, true);
-                    $out->attach(do_template('BLOCK_SIDE_USERS_ONLINE_USER', array(
-                        '_GUID' => 'a0b55810fe2f306c2886ec0c4cd8e8fd',
+                    $online[] = array(
                         'URL' => $url,
                         'USERNAME' => $username,
                         'COLOUR' => $colour,
                         'MEMBER_ID' => strval($member),
                         'AVATAR_URL' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member),
-                    )));
+                    );
                     $_members++;
                 }
             }
         }
 
         $newest = new Tempcode();
-        $birthdays = new Tempcode();
+        $birthdays = array();
         if (get_forum_type() == 'cns') {
             require_lang('cns');
 
@@ -126,29 +125,22 @@ class Block_side_users_online
             if (get_option('usersonline_show_birthdays') == '1') {
                 require_code('cns_members');
                 $_birthdays = cns_find_birthdays();
-
                 foreach ($_birthdays as $_birthday) {
-                    $colour = get_group_colour(cns_get_member_primary_group($_birthday['id']));
-
-                    $birthday = do_template('CNS_USER_MEMBER', array(
-                        '_GUID' => 'b2d355ff45f4b4170b937ef0753e6a78',
-                        'FIRST' => $birthdays->is_empty(),
-                        'COLOUR' => $colour,
+                    $birthday_url = build_url(array('page' => 'topics', 'type' => 'birthday', 'id' => $_birthday['username']), get_module_zone('topics'));
+                    $birthdays[] = array(
                         'AGE' => array_key_exists('age', $_birthday) ? integer_format($_birthday['age']) : null,
-                        'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_birthday['id'], false, true),
+                        'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], false, true),
                         'USERNAME' => $_birthday['username'],
-                    ));
-                    $birthdays->attach($birthday);
-                }
-                if (!$birthdays->is_empty()) {
-                    $birthdays = do_template('CNS_BIRTHDAYS', array('_GUID' => '080ed2e74efd6410bd6b83ec01962c04', 'BIRTHDAYS' => $birthdays));
+                        'MEMBER_ID' => strval($_birthday['id']),
+                        'BIRTHDAY_URL' => $birthday_url,
+                    );
                 }
             }
         }
 
         return do_template('BLOCK_SIDE_USERS_ONLINE', array(
             '_GUID' => 'fdfa68dff479b4ea7d517585297ea6af',
-            'CONTENT' => $out,
+            'ONLINE' => $online,
             'GUESTS' => integer_format($guests),
             'MEMBERS' => integer_format($_members),
             '_GUESTS' => strval($guests),

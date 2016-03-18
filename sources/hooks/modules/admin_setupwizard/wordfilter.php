@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -49,7 +49,7 @@ class Hook_sw_wordfilter
         require_lang('wordfilter');
         $fields = new Tempcode();
         if ($current_settings['have_default_wordfilter'] == '1') {
-            $fields->attach(form_input_tick(do_lang_tempcode('KEEP_WORD_FILTER'), do_lang_tempcode('DESCRIPTION_HAVE_DEFAULT_WORDFILTER'), 'have_default_wordfilter', $field_defaults['have_default_wordfilter'] == '1'));
+            $fields->attach(form_input_tick(do_lang_tempcode('KEEP_WORDFILTER'), do_lang_tempcode('DESCRIPTION_HAVE_DEFAULT_WORDFILTER'), 'have_default_wordfilter', $field_defaults['have_default_wordfilter'] == '1'));
         }
         return $fields;
     }

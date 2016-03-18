@@ -1,4 +1,17 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    facebook_support
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
@@ -13,7 +26,7 @@ $title = get_screen_title('FACEBOOK_OAUTH');
 $facebook_appid = get_option('facebook_appid');
 
 if ($facebook_appid == '') {
-    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'USERS', 'redirect' => get_self_url(true)), '_SELF', null, false, false, false, 'group_FACEBOOK_SYNDICATION');
+    $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'COMPOSR_APIS', 'redirect' => get_self_url(true)), get_module_zone('admin_config'), null, false, false, false, 'group_FACEBOOK_SYNDICATION');
     $echo = redirect_screen($title, $config_url, do_lang_tempcode('FACEBOOK_SETUP_FIRST'));
     $echo->evaluate_echo();
     return;

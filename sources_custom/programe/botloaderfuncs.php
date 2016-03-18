@@ -134,7 +134,7 @@ function flushcache()
 function upperkeysarray($testa)
 {
     $newtesta=array();
-    $newkeys=array_keys($testa);
+    $newkeys=@array_keys($testa);
     for ($x=0;$x<sizeof($newkeys);$x++){
         $newtesta[strtoupper($newkeys[$x])]=$testa[$newkeys[$x]];
     }
@@ -1100,7 +1100,7 @@ function learnallfiles($curbot)
 function learnstring($xmlstring)
 {
 
-    if (function_exists('set_time_limit')) @set_time_limit(600);
+    if (php_function_allowed('set_time_limit')) set_time_limit(600);
     $xml_parser = xml_parser_create();
     xml_parser_set_option($xml_parser,XML_OPTION_CASE_FOLDING,0);
     xml_set_element_handler($xml_parser, "startElement", "endElement");
@@ -1132,7 +1132,7 @@ function learnstring($xmlstring)
 function learn($file)
 {
 
-    if (function_exists('set_time_limit')) @set_time_limit(600);
+    if (php_function_allowed('set_time_limit')) set_time_limit(600);
     $xml_parser = xml_parser_create();
     xml_parser_set_option($xml_parser,XML_OPTION_CASE_FOLDING,0);
     xml_set_element_handler($xml_parser, "startElement", "endElement");

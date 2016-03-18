@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,7 +50,7 @@ class Hook_task_import_catalogue
 
         // Find out what categories we have in the catalogue
         $categories = array();
-        $cat_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_title', 'cc_parent_id'), array('c_name' => $catalogue_name));
+        $cat_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_title', 'cc_parent_id', 'id'), array('c_name' => $catalogue_name));
         foreach ($cat_rows as $cat_row) {
             $categories[get_translated_text($cat_row['cc_title'])] = $cat_row['id'];
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__galleries()
 {
@@ -231,7 +233,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         $member_info = new Tempcode();
     }
 
-    // Meta data
+    // Metadata
     list($num_children, $num_images, $num_videos) = get_recursive_gallery_details($myrow['name']);
     if ($num_children == 0) {
         if ($myrow['accept_videos'] == 0) {
@@ -391,7 +393,7 @@ function gallery_has_content($name)
  *
  * @param  ID_TEXT $gallery_name The name of the gallery
  * @param  ?array $row Gallery row (null: look it up)
- * @param  boolean $only_if_personal_gallery Only non-NULL if it is a personal gallery
+ * @param  boolean $only_if_personal_gallery Only non-null if it is a personal gallery
  * @return ?MEMBER The owner of the gallery (null: not a member owned gallery)
  */
 function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_personal_gallery = false)
@@ -405,7 +407,7 @@ function get_member_id_from_gallery_name($gallery_name, $row = null, $only_if_pe
         if (is_null($row)) {
             $rows = $GLOBALS['SITE_DB']->query_select('galleries', array('g_owner'), array('name' => $gallery_name));
             if (!isset($rows[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'gallery'));
             }
             $row = $rows[0];
         }
@@ -601,7 +603,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
     if (is_null($gallery_info)) {
         $_gallery_info = $GLOBALS['SITE_DB']->query_select('galleries', array('fullname', 'is_member_synched', 'accept_images', 'accept_videos'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $_gallery_info)) {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html('gallery:' . $gallery)));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($gallery), 'gallery'));
         }
         $gallery_info = $_gallery_info[0];
     }
@@ -809,7 +811,7 @@ function can_submit_to_gallery($name)
         if ($name == 'root') {
             return (-2);
         }
-        $parent_id = $GLOBALS['SITE_DB']->query_select_value('galleries', 'parent_id', array('name' => $name));
+        $parent_id = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => $name));
         if (is_null($parent_id)) {
             return false; // No, does not even exist (probably a block was given a bad parameter)
         }
@@ -868,7 +870,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         $category_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('parent_id', 'fullname'), array('name' => $gallery), '', 1);
         if (!array_key_exists(0, $category_rows)) {
             return array();
-        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery)));
+        }//fatal_exit(do_lang_tempcode('CAT_NOT_FOUND',escape_html($gallery), 'gallery'));
         $PT_PAIR_CACHE_G[$gallery] = $category_rows[0];
     }
 
@@ -876,11 +878,11 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
 
     $title = get_translated_text($PT_PAIR_CACHE_G[$gallery]['fullname']);
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, $title);
+        $segments[] = array($page_link, escape_html($title));
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
-        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery)));
+        fatal_exit(do_lang_tempcode('RECURSIVE_TREE_CHAIN', escape_html($gallery), 'gallery'));
     }
 
     if ((get_option('personal_under_members') == '1') && (get_forum_type() == 'cns')) {

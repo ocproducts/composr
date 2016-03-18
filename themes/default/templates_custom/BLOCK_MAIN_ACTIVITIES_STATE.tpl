@@ -23,7 +23,7 @@
 			{+START,IF,{$NOT,{$ADDON_INSTALLED,chat}}}
 				<input type="hidden" name="privacy" value="{!PUBLIC}" />
 			{+END}
-			<input onclick="disable_button_just_clicked(this);" type="submit" class="buttons__save button_screen_item" name="button" id="button" value="{!UPDATE}" />
+			<input onclick="disable_button_just_clicked(this);" type="submit" class="button_screen_item buttons__save" name="button" id="button" value="{!UPDATE}" />
 			<p id="activities_update_notify" class="activities_update_success">254 {!activities:CHARACTERS_LEFT}</p> {$,Do not remove; the AJAX notifications are inserted here.}
 		</div>
 
@@ -35,11 +35,13 @@
 </div>
 
 <script>//<![CDATA[
-	if (jQuery('#fp_status_form').length!=0) {
-		jQuery('textarea','#fp_status_form').bind('focus',s_update_focus);
-		jQuery('textarea','#fp_status_form').bind('blur',s_update_blur);
-		jQuery('#fp_status_form').submit(s_update_submit);
-		jQuery('textarea','#fp_status_form').keyup(s_maintain_char_count);
-		jQuery('textarea','#fp_status_form').keypress(s_maintain_char_count);
-	}
+	add_event_listener_abstract(window,'load',function() {
+		if ($('#fp_status_form').length!=0) {
+			$('textarea','#fp_status_form').bind('focus',s_update_focus);
+			$('textarea','#fp_status_form').bind('blur',s_update_blur);
+			$('#fp_status_form').submit(s_update_submit);
+			$('textarea','#fp_status_form').keyup(s_maintain_char_count);
+			$('textarea','#fp_status_form').keypress(s_maintain_char_count);
+		}
+	});
 //]]></script>

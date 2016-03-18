@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     public $file_resource_type = 'catalogue_entry';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -50,7 +50,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -60,7 +60,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         switch ($resource_type) {
             case 'catalogue_entry':
-                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('MIN(cf_order)', 'id', 'cf_type'), null, 'GROUP BY c_name');
+                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('MIN(cf_order)', 'id', 'cf_type'), null, 'GROUP BY c_name ORDER BY id');
                 $ret = array();
                 require_code('fields');
                 foreach ($fields as $field_bits) {
@@ -80,7 +80,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 return $ret;
 
             case 'catalogue_category':
-                $_ret = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => $label));
+                $_ret = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => $label), 'ORDER BY id');
                 $ret = array();
                 foreach ($_ret as $r) {
                     $ret[] = strval($r['id']);
@@ -149,50 +149,14 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @param  ID_TEXT $category Parent category (blank: root / not applicable)
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_folder_properties($category)
-    {
-        if (substr($category, 0, 10) != 'CATALOGUE-') { // Category
-            return array(
-                        'description' => 'LONG_TRANS',
-                       'notes' => 'LONG_TEXT',
-                       'rep_image' => 'URLPATH',
-                       'move_days_lower' => '?INTEGER',
-                       'move_days_higher' => '?INTEGER',
-                       'move_target' => '?catalogue_category',
-                       'meta_keywords' => 'LONG_TRANS',
-                       'meta_description' => 'LONG_TRANS',
-                       'add_date' => 'TIME',
-                   ) + $this->_custom_fields_enumerate_properties('catalogue_category');
-        }
-
-        return array( // Catalogue
-                      'description' => 'LONG_TRANS',
-                      'display_type' => 'SHORT_INTEGER',
-                      'is_tree' => 'BINARY',
-                      'notes' => 'LONG_TEXT',
-                      'submit_points' => 'INTEGER',
-                      'ecommerce' => 'BINARY',
-                      'send_view_reports' => 'BINARY',
-                      'default_review_freq' => '?INTEGER',
-                      'fields' => 'LONG_TRANS',
-                      'add_date' => 'TIME',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_folder_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', $row['c_name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CATALOGUE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CATALOGUE') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', $row['c_name']) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CATALOGUE') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CATALOGUE') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -220,7 +184,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      * Get the resource ID for a filename. Note that filenames are unique across all folders in a filesystem.
      *
      * @param  ID_TEXT $filename The filename, or filepath
-     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-NULL from overridden functions within hooks that are calling this as a helper function)
+     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-null from overridden functions within hooks that are calling this as a helper function)
      * @return array A pair: The resource type, the resource ID
      */
     public function folder_convert_filename_to_id($filename, $resource_type = null)
@@ -255,7 +219,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $ecommerce = $this->_default_property_int($properties, 'ecommerce');
         $send_view_reports = $this->_default_property_int($properties, 'send_view_reports');
         $default_review_freq = $this->_default_property_int_null($properties, 'default_review_freq');
-        $add_time = $this->_default_property_int_null($properties, 'add_date');
+        $add_time = $this->_default_property_time($properties, 'add_date');
 
         return array($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time);
     }
@@ -265,9 +229,10 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      *
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties (may be empty, properties given are open to interpretation by the hook but generally correspond to database fields)
+     * @param  boolean $edit Is an edit
      * @return ~array Properties (false: error)
      */
-    protected function __folder_read_in_properties_category($path, $properties)
+    protected function __folder_read_in_properties_category($path, $properties, $edit)
     {
         if (strpos($path, '/') === false) {
             list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue');
@@ -287,19 +252,20 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
-        $rep_image = $this->_default_property_str($properties, 'rep_image');
+        $rep_image = $this->_default_property_urlpath($properties, 'rep_image', $edit);
         $move_days_lower = $this->_default_property_int($properties, 'move_days_lower');
         $move_days_higher = $this->_default_property_int($properties, 'move_days_higher');
-        $move_target = $this->_default_property_int_null($properties, 'move_target');
-        $add_date = $this->_default_property_int_null($properties, 'add_date');
+        $move_target = $this->_default_property_resource_id_null('catalogue_category', $properties, 'move_target');
+        $order = $this->_default_property_int($properties, 'order');
+        $add_date = $this->_default_property_time($properties, 'add_date');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description);
+        return array($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -308,23 +274,25 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
      */
     public function folder_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties);
-
         require_code('catalogues2');
 
         if ($path != '') { // Category
-            $_properties = $this->__folder_read_in_properties_category($path, $properties);
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'catalogue_category');
+
+            $_properties = $this->__folder_read_in_properties_category($path, $properties, false);
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, null, $meta_keywords, $meta_description);
+            $id = actual_add_catalogue_category($catalogue_name, $label, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, null, $meta_keywords, $meta_description);
 
-            $this->_custom_fields_save('catalogue_category', strval($id), $properties);
+            $this->_resource_save_extend('catalogue_category', strval($id), $filename, $label, $properties);
 
             return strval($id);
         } else { // Catalogue
+            list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, 'catalogue');
+
             list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
 
             $name = $this->_create_name_from_label($label);
@@ -332,7 +300,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             $name = actual_add_catalogue($name, $label, $description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time, true);
 
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
-                $fields_data = unserialize($properties['fields']);
+                $fields_data = $properties['fields'];
                 foreach ($fields_data as $field_data) {
                     $type = $field_data['type'];
                     $order = $field_data['order'];
@@ -362,12 +330,14 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 actual_add_catalogue_field($name, do_lang('TITLE'), '', 'short_text', 0, 1, 1, 1, '', 1, 1, 1);
             }
 
+            $this->_resource_save_extend('catalogue', $name, $filename, $label, $properties);
+
             return $name;
         }
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -388,18 +358,21 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_category', strval($row['id']));
 
-            return array(
-                'label' => $row['cc_title'],
-                'description' => $row['cc_description'],
+            $properties = array(
+                'label' => get_translated_text($row['cc_title']),
+                'description' => get_translated_text($row['cc_description']),
                 'notes' => $row['cc_notes'],
-                'rep_image' => $row['rep_image'],
+                'rep_image' => remap_urlpath_as_portable($row['rep_image']),
                 'move_days_lower' => $row['cc_move_days_lower'],
                 'move_days_higher' => $row['cc_move_days_higher'],
-                'move_target' => $row['cc_move_target'],
+                'move_target' => remap_resource_id_as_portable('catalogue_category', $row['cc_move_target']),
+                'order' => $row['cc_order'],
                 'meta_keywords' => $meta_keywords,
                 'meta_description' => $meta_description,
-                'add_date' => $row['cc_add_date'],
-            ) + $this->_custom_fields_load('catalogue_category', strval($row['id']));
+                'add_date' => remap_time_as_portable($row['cc_add_date']),
+            );
+            $this->_resource_load_extend('catalogue_category', $resource_id, $properties, $filename, $path);
+            return $properties;
         }
 
         // Catalogue
@@ -412,11 +385,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $row = $rows[0];
 
         $fields = array();
-        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $resource_id), 'ORDER BY cf_order');
+        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $resource_id), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($_fields as $_field) {
             $fields[] = array(
-                'field_title' => $this->_get_translated_text($_field['cf_name'], $GLOBALS['SITE_DB']),
-                'description' => $this->_get_translated_text($_field['cf_description'], $GLOBALS['SITE_DB']),
+                'field_title' => get_translated_text($_field['cf_name']),
+                'description' => get_translated_text($_field['cf_description']),
                 'type' => $_field['cf_type'],
                 'order' => $_field['cf_order'],
                 'defines_order' => $_field['cf_defines_order'],
@@ -430,9 +403,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             );
         }
 
-        return array(
-            'label' => $row['c_title'],
-            'description' => $row['c_description'],
+        $properties = array(
+            'label' => get_translated_text($row['c_title']),
+            'description' => get_translated_text($row['c_description']),
             'display_type' => $row['c_display_type'],
             'is_tree' => $row['c_is_tree'],
             'notes' => $row['c_notes'],
@@ -440,13 +413,15 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'ecommerce' => $row['c_ecommerce'],
             'send_view_reports' => $row['c_send_view_reports'],
             'default_review_freq' => $row['c_default_review_freq'],
-            'fields' => serialize($fields),
-            'add_date' => $row['c_add_date'],
+            'fields' => $fields,
+            'add_date' => remap_time_as_portable($row['c_add_date']),
         );
+        $this->_resource_load_extend('catalogue', $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -459,6 +434,8 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         require_code('catalogues2');
 
+        list($properties, $label) = $this->_folder_magic_filter($filename, $path, $properties, $resource_type);
+
         if ($resource_type == 'catalogue') {
             $label = $this->_default_property_str($properties, 'label');
             list($description, $display_type, $is_tree, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $add_time) = $this->__folder_read_in_properties_catalogue($path, $properties);
@@ -469,9 +446,9 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
             // How to handle the fields
             if ((array_key_exists('fields', $properties)) && ($properties['fields'] != '')) {
-                $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_description'), array('c_name' => $name), 'ORDER BY cf_order');
+                $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_description'), array('c_name' => $name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
 
-                $fields_data = unserialize($properties['fields']);
+                $fields_data = $properties['fields'];
                 foreach ($fields_data as $i => $field_data) {
                     $type = $field_data['type'];
                     $order = $field_data['order'];
@@ -484,57 +461,39 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                     $put_in_search = $field_data['put_in_search'];
                     $options = $field_data['options'];
 
-                    $_field_title = $field_data['field_title'];
-                    $_description = $field_data['description'];
+                    $field_title = $field_data['field_title'];
+                    $description = $field_data['description'];
 
                     if (array_key_exists($i, $_fields)) {
                         $id = $_fields[$i]['id'];
 
-                        $field_title = mixed();
-                        foreach ($_field_title as $lang => $val) {
-                            delete_lang($_fields[$i]['cf_name']);
-                            $field_title = insert_lang('cf_name', $val, 2, null, false, $_fields[$i]['cf_name'], $lang);
-                        }
-                        $description = mixed();
-                        foreach ($_description as $lang => $val) {
-                            delete_lang($_fields[$i]['cf_description']);
-                            $description = insert_lang('cf_description', $val, 2, null, false, $_fields[$i]['cf_description'], $lang);
-                        }
-
                         actual_edit_catalogue_field($id, $name, $field_title, $description, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category, $put_in_search, $options, $type);
                     } else {
-                        $field_title = mixed();
-                        foreach ($_field_title as $lang => $val) {
-                            $field_title = insert_lang('cf_name', $val, 2, null, false, $field_title, $lang);
-                        }
-                        $description = mixed();
-                        foreach ($_description as $lang => $val) {
-                            $description = insert_lang('cf_decription', $val, 2, null, false, $description, $lang);
-                        }
-
                         actual_add_catalogue_field($name, $field_title, $description, $type, $order, $defines_order, $visible, $searchable, $default, $required, $put_in_category, $put_in_search, $options);
                     }
                 }
             }
+
+            $this->_resource_save_extend('catalogue', $name, $filename, $label, $properties);
         } else {
             $label = $this->_default_property_str($properties, 'label');
 
-            $_properties = $this->__folder_read_in_properties_category($path, $properties);
+            $_properties = $this->__folder_read_in_properties_category($path, $properties, true);
             if ($_properties === false) {
                 return false;
             }
-            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $meta_keywords, $meta_description) = $_properties;
+            list($catalogue_name, $description, $notes, $parent_id, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $meta_keywords, $meta_description) = $_properties;
 
-            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $add_date, $catalogue_name);
+            actual_edit_catalogue_category(intval($resource_id), $label, $description, $notes, $parent_id, $meta_keywords, $meta_description, $rep_image, $move_days_lower, $move_days_higher, $move_target, $order, $add_date, $catalogue_name);
 
-            $this->_custom_fields_save('catalogue_category', $resource_id, $properties);
+            $this->_resource_save_extend('catalogue_category', $resource_id, $filename, $label, $properties);
         }
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -556,80 +515,14 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @param  ID_TEXT $category Parent category (blank: root / not applicable)
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties($category)
-    {
-        $props = array();
-
-        $category_id = $this->_integer_category($category);
-        $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => $category_id));
-        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type', 'cf_default', 'cf_name'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
-        $unique_key_num = $this->_find_unique_key_num($_fields);
-        foreach ($_fields as $i => $field_bits) {
-            if ($i != $unique_key_num) {
-                $cf_name = get_translated_text($field_bits['cf_name']);
-                $fixed_id = fix_id($cf_name);
-                if (!array_key_exists($fixed_id, $props)) {
-                    $key = $fixed_id;
-                } else {
-                    $key = 'field_' . strval($field_bits['id']);
-                }
-
-                require_code('fields');
-                $ob = get_fields_hook($field_bits['cf_type']);
-                list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $field_bits['cf_type'], 'cf_default' => ''));
-                $_type = 'SHORT_TEXT';
-                switch ($storage_type) {
-                    case 'short_trans':
-                        $_type = 'SHORT_TRANS';
-                        break;
-                    case 'long_trans':
-                        $_type = 'LONG_TRANS';
-                        break;
-                    case 'long':
-                        $_type = 'LONG_TEXT';
-                        break;
-                    case 'integer':
-                        $_type = 'INTEGER';
-                        break;
-                    case 'float':
-                        $_type = 'REAL';
-                        break;
-                }
-                $props[$key] = $_type;
-            }
-        }
-
-        $props += array(
-            'validated' => 'BINARY',
-            'notes' => 'LONG_TEXT',
-            'allow_rating' => 'BINARY',
-            'allow_comments' => 'SHORT_INTEGER',
-            'allow_trackbacks' => 'BINARY',
-            'views' => 'INTEGER',
-            'meta_keywords' => 'LONG_TRANS',
-            'meta_description' => 'LONG_TRANS',
-            'submitter' => 'member',
-            'add_date' => 'TIME',
-            'edit_date' => '?TIME',
-        );
-
-        return $props;
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CATALOGUE_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CATALOGUE_CATEGORY') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_CATALOGUE_CATEGORY') . ' OR ' . db_string_equal_to('the_type', 'EDIT_CATALOGUE_CATEGORY') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
@@ -663,7 +556,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $category_id = $this->_integer_category($category);
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => $category_id));
-        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type', 'cf_default', 'cf_name'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+        $_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type', 'cf_default', 'cf_name'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         $unique_key_num = $this->_find_unique_key_num($_fields);
         $map = array();
         $props_already = array();
@@ -698,18 +591,17 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         $allow_rating = $this->_default_property_int_modeavg($properties, 'allow_rating', 'catalogue_entries', 1);
         $allow_comments = $this->_default_property_int_modeavg($properties, 'allow_comments', 'catalogue_entries', 1);
         $allow_trackbacks = $this->_default_property_int_modeavg($properties, 'allow_trackbacks', 'catalogue_entries', 1);
-        $time = $this->_default_property_int_null($properties, 'add_date');
-        $submitter = $this->_default_property_int_null($properties, 'submitter');
-        $edit_date = $this->_default_property_int_null($properties, 'edit_date');
+        $time = $this->_default_property_time($properties, 'add_date');
+        $submitter = $this->_default_property_member($properties, 'submitter');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
 
-        return array($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description);
+        return array($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -719,7 +611,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     public function file_add($filename, $path, $properties)
     {
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue_category');
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -730,14 +622,19 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         require_code('catalogues2');
 
-        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+
+        $edit_date = $this->_default_property_time_null($properties, 'edit_date');
 
         $id = actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, null, $meta_keywords, $meta_description);
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -755,7 +652,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
 
         list($meta_keywords, $meta_description) = seo_meta_get_for('catalogue_entry', strval($row['id']));
 
-        $ret = array(
+        $properties = array(
             'validated' => $row['ce_validated'],
             'notes' => $row['notes'],
             'allow_rating' => $row['allow_rating'],
@@ -764,10 +661,11 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             'views' => $row['ce_views'],
             'meta_keywords' => $meta_keywords,
             'meta_description' => $meta_description,
-            'submitter' => $row['ce_submitter'],
-            'add_date' => $row['ce_add_date'],
-            'edit_date' => $row['ce_edit_date'],
+            'submitter' => remap_resource_id_as_portable('member', $row['ce_submitter']),
+            'add_date' => remap_time_as_portable($row['ce_add_date']),
+            'edit_date' => remap_time_as_portable($row['ce_edit_date']),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
 
         require_code('catalogues');
         $fields = get_catalogue_entry_field_values($row['c_name'], intval($resource_id));
@@ -784,25 +682,25 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
             }
 
             if ($field_num == $unique_key_num) {
-                $ret['label'] = $val;
+                $properties['label'] = $val;
             } else {
                 $cf_name = get_translated_text($field['cf_name']);
                 $fixed_id = fix_id($cf_name);
-                if (!array_key_exists($fixed_id, $ret)) {
+                if (!array_key_exists($fixed_id, $properties)) {
                     $key = $fixed_id;
                 } else {
                     $key = 'field_' . strval($field['id']);
                 }
 
-                $ret[$key] = $val;
+                $properties[$key] = $val;
             }
         }
 
-        return $ret;
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -813,7 +711,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
         list($category_resource_type, $category) = $this->folder_convert_filename_to_id($path, 'catalogue_category');
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         if ($category == '') {
             return false;
@@ -825,15 +723,19 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
         require_code('catalogues2');
 
         $label = $this->_default_property_str($properties, 'label');
-        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $edit_date, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+        list($category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $time, $submitter, $views, $meta_keywords, $meta_description) = $this->__file_read_in_properties($path, $properties, $category, $label);
+
+        $edit_date = $this->_default_property_time($properties, 'edit_date');
 
         actual_edit_catalogue_entry(intval($resource_id), $category_id, $validated, $notes, $allow_rating, $allow_comments, $allow_trackbacks, $map, $meta_keywords, $meta_description, $edit_date, $time, $views, $submitter, true);
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Hook_profiles_tabs_edit_signature
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -65,7 +65,9 @@ class Hook_profiles_tabs_edit_signature
 
         // UI
 
-        $signature = get_translated_tempcode('f_members', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of), 'm_signature', $GLOBALS['FORUM_DB']);
+        $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id_of);
+        $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+        $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
         $signature_original = get_translated_text($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_signature'), $GLOBALS['FORUM_DB']);
 
         $size = cns_get_member_best_group_property($member_id_of, 'max_sig_length_comcode');
@@ -91,7 +93,6 @@ class Hook_profiles_tabs_edit_signature
         $required = false;
         $has_preview = true;
 
-        require_lang('javascript');
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('ajax');

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -54,7 +54,7 @@ function send_content_validated_notification($content_type, $content_id)
         require_code('notifications');
         require_lang('unvalidated');
         $subject = do_lang('CONTENT_VALIDATED_NOTIFICATION_MAIL_SUBJECT', $content_title, get_site_name());
-        $mail = do_lang('CONTENT_VALIDATED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($content_title), array($content_url_safe->evaluate()));
+        $mail = do_notification_lang('CONTENT_VALIDATED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($content_title), array($content_url_safe->evaluate()));
         dispatch_notification('content_validated', null, $subject, $mail, array($submitter_id));
     }
 }
@@ -62,7 +62,7 @@ function send_content_validated_notification($content_type, $content_id)
 /**
  * Send (by e-mail) a validation request for a submitted item to the admin.
  *
- * @param  ID_TEXT $type The validation request will say one of this type has been submitted. By convention it is the language code of what was done, e.g. ADD_DOWNLOAD
+ * @param  ID_TEXT $type The validation request will say one of this type has been submitted. By convention it is the language string ID of what was done, e.g. ADD_DOWNLOAD
  * @param  ?ID_TEXT $table The table saved into (null: unknown)
  * @param  boolean $non_integer_id Whether the ID field is not an integer
  * @param  ID_TEXT $id The validation request will say this ID has been submitted
@@ -125,9 +125,10 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
         $type = $_type;
     }
 
-    $comcode = do_template('VALIDATION_REQUEST_MAIL', array('_GUID' => '1885be371b2ff7810287715ef2f7b948', 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id), 'TYPE' => $type, 'ID' => $id, 'URL' => $url), get_site_default_lang(), false, null, '.txt', 'text');
-
     require_code('notifications');
+
+    $comcode = do_notification_template('VALIDATION_REQUEST_MAIL', array('_GUID' => '1885be371b2ff7810287715ef2f7b948', 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id), 'TYPE' => $type, 'ID' => $id, 'URL' => $url), get_site_default_lang(), false, null, '.txt', 'text');
+
     $subject = do_lang('UNVALIDATED_TITLE', $title, '', '', get_site_default_lang());
     $message = $comcode->evaluate(get_site_default_lang());
     dispatch_notification('needs_validation', null, $subject, $message, null, $member_id, 3, false, false, null, null, '', '', '', '', null, true);
@@ -136,7 +137,7 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
 /**
  * Give points to a member for submitting something, then returns the XHTML page to say so.
  *
- * @param  ID_TEXT $type One of this type has been submitted. By convention it is the language code of what was done, e.g. ADD_DOWNLOAD
+ * @param  ID_TEXT $type One of this type has been submitted. By convention it is the language string ID of what was done, e.g. ADD_DOWNLOAD
  * @param  ?MEMBER $member The member to give the points to (null: give to current member)
  * @return ?string A message about the member being given these submit points (null: no message)
  */
@@ -158,7 +159,7 @@ function give_submit_points($type, $member = null)
 }
 
 /**
- * Find a member from their IP address. Unlike plain $GLOBALS['FORUM_DRIVER']->probe_ip, it has the benefit of looking in the adminlogs table also.
+ * Find a member from their IP address. Unlike plain $GLOBALS['FORUM_DRIVER']->probe_ip, it has the benefit of looking in the actionlogs table also.
  *
  * @param  IP $ip The IP address to probe
  * @return array The members found
@@ -166,9 +167,9 @@ function give_submit_points($type, $member = null)
 function wrap_probe_ip($ip)
 {
     if (strpos($ip, '*') !== false) {
-        $a = $GLOBALS['SITE_DB']->query('SELECT DISTINCT member_id AS id FROM ' . get_table_prefix() . 'adminlogs WHERE ip LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
+        $a = $GLOBALS['SITE_DB']->query('SELECT DISTINCT member_id AS id FROM ' . get_table_prefix() . 'actionlogs WHERE ip LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
     } else {
-        $a = $GLOBALS['SITE_DB']->query_select('adminlogs', array('DISTINCT member_id AS id'), array('ip' => $ip));
+        $a = $GLOBALS['SITE_DB']->query_select('actionlogs', array('DISTINCT member_id AS id'), array('ip' => $ip));
     }
     $b = $GLOBALS['FORUM_DRIVER']->probe_ip($ip);
     $r = array();
@@ -198,6 +199,8 @@ function ban_ip($ip, $descrip = '')
     if (($ban != '') && (!compare_ip_address($ban, get_ip_address()))) {
         require_code('failure');
         add_ip_ban($ban, $descrip);
+
+        log_it('IP_BANNED', $ip);
     } elseif (compare_ip_address($ban, get_ip_address())) {
         attach_message(do_lang_tempcode('AVOIDING_BANNING_SELF'), 'warn');
     }
@@ -214,4 +217,6 @@ function unban_ip($ip)
 
     $unban = trim($ip);
     remove_ip_ban($unban);
+
+    log_it('IP_UNBANNED', $ip);
 }

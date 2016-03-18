@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_lang
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -80,7 +80,7 @@ class Module_admin_lang
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -162,7 +162,7 @@ class Module_admin_lang
             return $this->set_lang_code();
         }
         if ($type == '_code2') {
-            return $this->set_lang_code_2(); // This is a lang string setter called from an external source. Strings may be from many different files
+            return $this->set_lang_code_2(); // This is a language string setter called from an external source. Strings may be from many different files
         }
 
         return new Tempcode();
@@ -441,7 +441,7 @@ class Module_admin_lang
             $_to_translate[] = $it;
         }
         $to_translate = $_to_translate;
-        foreach ($to_translate as $i=>$it) {
+        foreach ($to_translate as $i => $it) {
             $old = $it['text_original'];
             $current = $this->find_lang_matches($old, $lang);
             $priority = ($last_level === $it['importance_level']) ? null : do_lang('PRIORITY_' . strval($it['importance_level']));
@@ -649,7 +649,7 @@ class Module_admin_lang
         // Get some stuff
         $for_lang = get_lang_file_map($lang, $lang_file);
         $for_base_lang = get_lang_file_map($base_lang, $lang_file, true);
-        $descriptions = get_lang_file_descriptions($base_lang, $lang_file);
+        $descriptions = get_lang_file_section($base_lang, $lang_file);
 
         // Make our translation page
         $lines = '';
@@ -662,7 +662,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             if (($current == '') && (strtolower($name) != $name)) {
                 $trans_lot .= str_replace('\n', "\n", str_replace(array('{', '}'), array('(((', ')))'), $old)) . $delimit;
@@ -691,7 +691,7 @@ class Module_admin_lang
             if (array_key_exists($name, $for_lang)) {
                 $current = $for_lang[$name];
             } else {
-                $current = '';//$this->find_lang_matches($old,$lang); Too slow / useless for code translation
+                $current = '';//$this->find_lang_matches($old, $lang); Too slow / useless for code translation
             }
             $description = array_key_exists($name, $descriptions) ? $descriptions[$name] : '';
             if (($current == '') && (strtolower($name) != $name) && (array_key_exists($next, $translated_stuff))) {
@@ -720,7 +720,7 @@ class Module_admin_lang
     }
 
     /**
-     * Convert a standard language code to a google code.
+     * Convert a standard language codename to a google code.
      *
      * @param  LANGUAGE_NAME $in The code to convert
      * @return string The converted code (or blank if none can be found)
@@ -749,9 +749,10 @@ class Module_admin_lang
 
         $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
         $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-        $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+        $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+        $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
-        if ((count($_POST) == 0) && (strtolower(cms_srv('REQUEST_METHOD')) != 'post')) {
+        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 
@@ -776,7 +777,16 @@ class Module_admin_lang
         }
         fwrite($myfile, "[descriptions]\n");
         foreach ($descriptions as $key => $description) {
-            fwrite($myfile, $key . '=' . $description . "\n");
+            if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
+        }
+        fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+        fwrite($myfile, "[runtime_processing]\n");
+        foreach ($runtime_processing as $key => $flag) {
+            if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
         }
         fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
         fwrite($myfile, "[strings]\n");
@@ -803,7 +813,7 @@ class Module_admin_lang
 
         require_code('caches3');
         erase_cached_language();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_LANG);
         persistent_cache_delete('LANGS_LIST');
 
         // Show it worked / Refresh
@@ -830,7 +840,8 @@ class Module_admin_lang
         foreach (array_keys($lang_files) as $lang_file) {
             $for_base_lang = get_lang_file_map(fallback_lang(), $lang_file, true);
             $for_base_lang_2 = get_lang_file_map($lang, $lang_file, false);
-            $descriptions = get_lang_file_descriptions(fallback_lang(), $lang_file);
+            $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
+            $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
             $out = '';
 
@@ -862,6 +873,14 @@ class Module_admin_lang
                         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                     }
                 }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
+                fwrite($myfile, "[runtime_processing]\n");
+                foreach ($runtime_processing as $key => $flag) {
+                    if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    }
+                }
+                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 fwrite($myfile, "\n[strings]\n");
                 fwrite($myfile, $out);
                 @flock($myfile, LOCK_UN);
@@ -878,7 +897,7 @@ class Module_admin_lang
 
         require_code('caches3');
         erase_cached_language();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_LANG);
         persistent_cache_delete('LANGS_LIST');
 
         // Show it worked / Refresh

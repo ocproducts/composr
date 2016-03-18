@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,10 +23,9 @@ class Hook_startup_multi_domain_login
         if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP) && (running_script('index'))) {
             //if (isset($_POST['login_username'])) return;  Actually, we'll use caching to avoid this
 
-            $value = "<!-- Syndicate sessions -->\n";
-            $value .= '<script>';
-            //$url=$this->session_syndicate_code(cms_srv('HTTP_HOST'),preg_replace('#^.*://[^/]*(/|$)#','',get_base_url()));
-            //$value.='new Image().src=\''.addslashes($url).'\';';
+            $value = '';
+            //$url = $this->session_syndicate_code(cms_srv('HTTP_HOST'), preg_replace('#^.*://[^/]*(/|$)#', '', get_base_url()));
+            //$value .= 'new Image().src=\'' . addslashes($url) . '\';';
             foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
                 if (substr($key, 0, strlen('ZONE_MAPPING_')) == 'ZONE_MAPPING_') {
                     if ($_val[0] != cms_srv('HTTP_HOST')) {
@@ -35,9 +34,13 @@ class Hook_startup_multi_domain_login
                     }
                 }
             }
-            $value .= "</script>\n\n";
+            if ($value != '') {
+                $value = "<!-- Syndicate sessions -->\n" . $value;
+                $value .= '<script>';
+                $value .= "</script>\n\n";
 
-            attach_to_screen_header($value);
+                attach_to_screen_header($value);
+            }
         }
     }
 

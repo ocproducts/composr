@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ class Module_admin_config
         $info['hack_version'] = null;
         $info['version'] = 15;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -47,7 +47,7 @@ class Module_admin_config
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -87,7 +87,7 @@ class Module_admin_config
     public $category;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -107,6 +107,12 @@ class Module_admin_config
             /*Actually let's save the space  set_helper_panel_tutorial('tut_adv_configuration');*/
 
             $category = get_param_string('id');
+
+            $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
+            if (is_null($test)) {
+                warn_exit(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'));
+            }
+
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CONFIGURATION'))));
             breadcrumb_set_self(do_lang_tempcode('CONFIG_CATEGORY_' . $category));
 
@@ -231,13 +237,12 @@ class Module_admin_config
     {
         // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
         if (count($_POST) == 0) {
-            $proper_url = build_url(array('page' => ''), '');
-            $_proper_url = $proper_url->evaluate();
-            $test_a = http_download_file($_proper_url, 0, false, true);
+            $test_url = get_custom_base_url() . '/uploads/index.html';
+            $test_a = http_download_file($test_url, 0, false, true);
             $message_a = $GLOBALS['HTTP_MESSAGE'];
             if ($message_a == '200')
             {
-                $test_b = http_download_file($_proper_url, 0, false, true, 'ocPortal', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
+                $test_b = http_download_file($test_url, 0, false, true, 'Composr', array('test_a' => '/usr/bin/unzip -o @_SRC_@ -x -d @_DST_@', 'test_b' => '<iframe src="http://example.com/"></iframe>', 'test_c' => '<script>console.log(document.cookie);</script>'));
                 $message_b = $GLOBALS['HTTP_MESSAGE'];
                 if ($message_b != '200')
                 {
@@ -305,7 +310,7 @@ class Module_admin_config
                 '_GUID' => '6ba2b09432d06e7502c71e7aac2d3527',
                 'COUNT' => $count,
                 'NAME' => $category_name,
-                'TITLE' => protect_from_escaping(do_lang('CONFIGURATION') . ': ' . $_category_name),
+                'TITLE' => '',
                 'DESCRIPTION' => $description,
                 'URL' => $url,
             )));
@@ -313,7 +318,7 @@ class Module_admin_config
         $categories_tpl->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
             '_GUID' => '6fde99ae81367fb7405e94b6731a7d9a',
             'COUNT' => null,
-            'TITLE' => protect_from_escaping(do_lang('CONFIGURATION') . ': ' . do_lang('BASE_CONFIGURATION')),
+            'TITLE' => '',
             'URL' => get_base_url() . '/config_editor.php',
             'NAME' => do_lang_tempcode('BASE_CONFIGURATION'),
             'DESCRIPTION' => do_lang_tempcode('DOC_BASE_CONFIGURATION'),
@@ -405,7 +410,7 @@ class Module_admin_config
         }
 
         // Render option groups
-        $groups_tempcode = new Tempcode();
+        $groups_arr = array();
         require_code('form_templates');
         $_groups = array();
         foreach ($groups as $group_codename => $rows) {
@@ -413,12 +418,18 @@ class Module_admin_config
             foreach ($rows as $myrow) {
                 $name = $myrow['name']; // Can't get from array key, as sorting nuked it
 
-                // Lang strings
+                // Language strings
                 $human_name = do_lang_tempcode($myrow['human_name']);
                 $_explanation = do_lang($myrow['explanation'], null, null, null, null, false);
                 if (is_null($_explanation)) {
-                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
-                    $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group'], null, null, null, null, false);
+                    if (is_null($_explanation)) {
+                        // So an error shows
+                        $_explanation = do_lang($myrow['explanation']);
+                        $explanation = do_lang_tempcode($myrow['explanation']);
+                    } else {
+                        $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                    }
                 } else {
                     $explanation = do_lang_tempcode($myrow['explanation']);
                 }
@@ -558,6 +569,7 @@ class Module_admin_config
                         break;
 
                     case 'usergroup':
+                    case 'usergroup_not_guest':
                         if (get_forum_type() == 'cns') {
                             $tmp_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => get_option($name)));
 
@@ -566,7 +578,7 @@ class Module_admin_config
                             if (!$required) {
                                 $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
-                            $_list->attach(cns_create_selection_list_usergroups($tmp_value));
+                            $_list->attach(cns_create_selection_list_usergroups($tmp_value, $myrow['type'] == 'usergroup'));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
@@ -586,8 +598,7 @@ class Module_admin_config
             } else {
                 $group_description = do_lang_tempcode('CONFIG_GROUP_DESCRIP_' . $group_codename, escape_html($post_max_size), escape_html($upload_max_filesize));
             }
-            $group = do_template('CONFIG_GROUP', array('_GUID' => '84c0db86002a33a383a7c2e195dd3913', 'GROUP_DESCRIPTION' => $group_description, 'GROUP_NAME' => $group_codename, 'GROUP' => $out, 'GROUP_TITLE' => $group_title));
-            $groups_tempcode->attach($group->evaluate());
+            $groups_arr[] = array('GROUP_DESCRIPTION' => $group_description, 'GROUP_NAME' => $group_codename, 'GROUP' => $out, 'GROUP_TITLE' => $group_title);
             $_groups[$group_codename] = $group_title;
         }
 
@@ -602,7 +613,7 @@ class Module_admin_config
             'WARNING_DETAILS' => $warning_details,
             'TITLE' => $this->title,
             'URL' => $post_url,
-            'GROUPS' => $groups_tempcode,
+            'GROUPS' => $groups_arr,
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
         ));
@@ -618,15 +629,17 @@ class Module_admin_config
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
+        require_code('caches3');
+
         global $CONFIG_OPTIONS_CACHE;
 
         $category = get_param_string('id', 'MAIN');
 
-        if (strtoupper(cms_srv('REQUEST_METHOD')) != 'POST') {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        // Make sure we haven't locked ourselves out due to short URL support
+        // Make sure we haven't locked ourselves out due to URL Scheme support
         if ((post_param_string('url_scheme', 'RAW') != 'RAW') && (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) || ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules()))) || (http_download_file(get_base_url() . '/sitemap.htm', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404'))) {
             warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
         }
@@ -661,9 +674,13 @@ class Module_admin_config
         // Empty thumbnail cache if needed
         if (function_exists('imagetypes')) {
             if ((!is_null(post_param_string('thumb_width', null))) && (post_param_string('thumb_width') != get_option('thumb_width'))) {
-                require_code('caches3');
                 erase_thumb_cache();
             }
+        }
+
+        // Empty language cache if needed
+        if ((!is_null(post_param_string('yeehaw', null))) && (post_param_string('yeehaw') != get_option('yeehaw'))) {
+            erase_cached_language();
         }
 
         // Find all options in category
@@ -694,7 +711,7 @@ class Module_admin_config
             if ($myrow['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($myrow['type'] == 'date') {
-                $date_value = get_input_date($name);
+                $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
             } elseif ((($myrow['type'] == 'forum') || ($myrow['type'] == '?forum')) && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);
@@ -712,7 +729,7 @@ class Module_admin_config
                 if (is_null($value)) {
                     $value = '';
                 }
-            } elseif (($myrow['type'] == 'usergroup') && (get_forum_type() == 'cns')) {
+            } elseif ((($myrow['type'] == 'usergroup') || ($myrow['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
                 $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
                 if (is_null($_value)) {
                     $value = '';
@@ -736,17 +753,16 @@ class Module_admin_config
         }
 
         // Clear some caching
-        require_code('caches3');
         erase_comcode_page_cache();
         erase_block_cache();
         //persistent_cache_delete('OPTIONS');  Done by set_option / erase_persistent_cache
         erase_persistent_cache();
-        erase_cached_templates();
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_CONFIG);
 
         // Show it worked / Refresh
         $redirect = get_param_string('redirect', null);
         if ($redirect === null) {
-            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // ,'type'=>'category','id'=>$category
+            $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF'); // , 'type' => 'category', 'id' => $category
         } else {
             $url = make_string_tempcode($redirect);
         }

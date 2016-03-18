@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,24 +26,412 @@ A match specifier may be:
  - an avoiding-literal (e.g. '!1')
  - a bounded acceptable-range (e.g. '1-3')
  - a non-bounded acceptable-range (e.g. '3+')
+ - an acceptable category (e.g. '3#') [for entry record-sets]
  - an acceptable subtree (e.g. '3*')
  - an acceptable set of direct descendents (e.g. '3>')
  - an avoiding subtree (e.g. '3~')
  - all-acceptable '*'
 Note that:
  - this will work on string IDs as well as numeric IDs (except of course for the range specifiers) -- as the string IDs do not contain any special symbols (!-+*~,>).
- - subtree specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
+ - subtree/category specifiers work on category-sets rather than record-sets. In other words, it's a different set of IDs, unless the category-set equals the record-set for the specific case. It is possible that there could be no category-set available, in which case subtree specifiers will produce no effect.
  - nothing is accepted by default. If you want this, add '*' into your Selectcode.
  - avoidance overrides acceptance, and there is no ordering. For example, "!3,3*" would get everything under category 3 except ID#3 (if our record-set equals our category-set, this example makes more sense as something useful)
- - whilst Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
+ - while Selectcode isn't fully expressive, almost anything can be achieved with a little thought. There is no practical reason to need brackets, order-support, etc.
  - for record searching, look at Filtercode, the companion language
 
 EXAMPLE CALLS...
-$results=selectcode_to_sqlfragment('1,3-10,!6,12*','id','download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_db('1,3-10,!6,12*','downloads','id','download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_memory('1,3-10,!6,12*',array(1=>2,2=>2,3=>2,4=>3),'download_categories','parent_id','cat','id');
-$results=selectcode_to_idlist_using_callback('1,3-10,!6,12*','_callback_get_download_structure','download_categories','parent_id','cat','id');
+$results = selectcode_to_sqlfragment('1,3-10,!6,12*', 'id', 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_db('1,3-10,!6,12*', 'downloads', 'id', 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_memory('1,3-10,!6,12*', array(1 => 2, 2 => 2, 3 => 2, 4 => 3), 'download_categories', 'parent_id', 'cat', 'id');
+$results = selectcode_to_idlist_using_callback('1,3-10,!6,12*', '_callback_get_download_structure', 'download_categories', 'parent_id', 'cat', 'id');
 */
+
+/**
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, relying on the database to extract the record-set.
+ *
+ * @param  string $filter The filter
+ * @param  string $field_name The database's ID field for the record-set we're matching
+ * @param  string $table_name The database's table for the record-set we're matching
+ * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
+ * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
+ * @param  ?object $db Database connection to use (null: website)
+ * @return array A list of ID numbers
+ */
+function selectcode_to_idlist_using_db($filter, $field_name, $table_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
+{
+    return _selectcode_to_generic($filter, $field_name, $table_name, null, null, $parent_spec__table_name, $parent_spec__parent_name, $category_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
+}
+
+/**
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, using a prebuilt memory representation of the record-set.
+ *
+ * @param  string $filter The filter
+ * @param  array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs
+ * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
+ * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
+ * @param  ?object $db Database connection to use (null: website)
+ * @return array A list of ID numbers
+ */
+function selectcode_to_idlist_using_memory($filter, $ids_and_parents, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
+{
+    return _selectcode_to_generic($filter, null, null, $ids_and_parents, null, $parent_spec__table_name, $parent_spec__parent_name, $category_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
+}
+
+/**
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers.
+ *
+ * @param  string $filter The filter
+ * @param  string $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches)
+ * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
+ * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
+ * @param  ?object $db Database connection to use (null: website)
+ * @return array A list of ID numbers
+ */
+function selectcode_to_idlist_using_callback($filter, $ids_and_parents_callback, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
+{
+    return _selectcode_to_generic($filter, null, null, null, $ids_and_parents_callback, $parent_spec__table_name, $parent_spec__parent_name, $category_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
+}
+
+/**
+ * Turn an Selectcode (a filter specifying which records to match) into an SQL query fragment.
+ *
+ * @param  string $filter The filter
+ * @param  string $field_name The database's ID field for the record-set we're matching. E.g. 'id'.
+ * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches). E.g. 'categories'.
+ * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base). E.g. 'parent_id'.
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches). E.g. 'cat'.
+ * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base). E.g. 'id'.
+ * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
+ * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
+ * @param  ?object $db Database connection to use (null: website)
+ * @return string SQL query fragment. Note that brackets will be put around this automatically if required, so there's no need to do this yourself.
+ */
+function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
+{
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    if ($filter == '') {
+        return '1=2';
+    }
+    if ($filter == '*') {
+        return '1=1';
+    }
+    if ($parent_spec__table_name !== 'catalogue_categories') {
+        if ($filter == strval(db_get_first_id()) . '*') {
+            return '1=1';
+        }
+    }
+
+    if ($parent_spec__table_name === null) {
+        if (($parent_spec__parent_name !== null) || ($category_field_name !== null) || ($parent_spec__field_name !== null)) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+    }
+
+    $out_or = '';
+    $out_and = '';
+
+    $cached_mappings = mixed();
+
+    $tokens = explode(',', $filter);
+    $matches = array();
+    foreach ($tokens as $token) {
+        $token = trim($token);
+
+        if ($token == '*') { // '*'
+            if ($out_or != '') {
+                $out_or .= ' OR ';
+            }
+            $out_or .= '1=1';
+        } elseif (preg_match('#^\!(.*)$#', $token, $matches) != 0) { // e.g. '!1'
+            if ($matches[1] != '') { // Likely came from referencing some Tempcode that didn't return a result
+                if ($out_and != '') {
+                    $out_and .= ' AND ';
+                }
+                $out_and .= _selectcode_neq($field_name, $matches[1], $numeric_record_set_ids);
+            }
+        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')
+            for ($i = intval($matches[1]); $i <= intval($matches[2]); $i++) {
+                if ($out_or != '') {
+                    $out_or .= ' OR ';
+                }
+                $out_or .= _selectcode_eq($field_name, strval($i), $numeric_record_set_ids);
+            }
+        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\+$#', $token, $matches) != 0)) { // e.g. '3+'
+            if ($out_or != '') {
+                $out_or .= ' OR ';
+            }
+            $out_or .= $field_name . '>=' . strval(intval($matches[1]));
+        } elseif ((preg_match('#^(.+)(\#|\*|>)$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3#' or '3*' or '3>'
+            if ($matches[2] == '#') {
+                $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
+            } else {
+                if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($category_field_name == 'cc_id') && ($matches[2] != '>') && (db_has_subqueries($db->connection_read))) { // Special case (optimisation) for catalogues
+                    // MySQL should be smart enough to not enumerate the 'IN' clause here, which would be bad - instead it can jump into the embedded WHERE clause on each test iteration
+                    $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
+                    if ($this_details[0]['c_is_tree'] == 0) {
+                        $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
+                    } elseif ($this_details[0]['cc_parent_id'] === null) {
+                        if ($this_details[0]['cc_parent_id'] === null) {
+                            $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
+                        } else {
+                            $out_or .= $category_field_name . ' IN (SELECT cc_id FROM ' . $db->get_table_prefix() . 'catalogue_cat_treecache WHERE cc_ancestor_id=' . strval(intval($matches[1])) . ')';
+                        }
+                    } else {
+                        $out_or = '1=0';
+                    }
+                } else {
+                    $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+                    foreach ($subtree as $ii) {
+                        if ($out_or != '') {
+                            $out_or .= ' OR ';
+                        }
+                        $out_or .= _selectcode_eq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
+                    }
+                }
+            }
+        } elseif ((preg_match('#^(.+)\~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
+            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
+            foreach ($subtree as $ii) {
+                if ($out_and != '') {
+                    $out_and .= ' AND ';
+                }
+                $out_and .= _selectcode_neq($category_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
+            }
+        } else { // e.g. "1"
+            if ($out_or != '') {
+                $out_or .= ' OR ';
+            }
+            $out_or .= _selectcode_eq($field_name, $token, $numeric_record_set_ids);
+        }
+    }
+
+    if ($out_or == '') {
+        $sql = ($out_and == '') ? '0=1' : $out_and;
+    }
+    elseif ($out_and == '') {
+        $sql = ($out_or == '') ? '0=1' : ('(' . $out_or . ')');
+    } else {
+        $sql = '(' . $out_or . ') AND (' . $out_and . ')';
+    }
+
+    return $sql;
+}
+
+/**
+ * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, relying on the database to extract the record-set.
+ *
+ * @param  string $filter The filter
+ * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
+ * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
+ * @param  ?array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs (null: use a different lookup method)
+ * @param  ?mixed $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches) (null: use a different lookup method)
+ * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
+ * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
+ * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
+ * @param  ?object $db Database connection to use (null: website)
+ * @return array A list of ID numbers
+ *
+ * @ignore
+ */
+function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $parent_spec__table_name, $parent_spec__parent_name, $category_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db)
+{
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    if ($filter == '') {
+        return array();
+    }
+
+    if ($parent_spec__table_name !== null) {
+        if (($category_field_name === null) || ($parent_spec__field_name === null)) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+    } else {
+        if (($parent_spec__parent_name !== null) || ($category_field_name !== null) || ($parent_spec__field_name !== null)) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+    }
+
+    $out_accept = array();
+    $out_avoid = array();
+
+    $cached_mappings = mixed();
+
+    if (($ids_and_parents === null) && ($ids_and_parents_callback === null)) {
+        $has_no_parents = ($category_field_name === null);
+        $ids_and_parents_callback = array('_selectcode_to_generic_callback', array($table_name, $field_name, $category_field_name, $has_no_parents));
+    }
+
+    // Support read_multi_code subsyntax also (this isn't user-edited normally, but we like to be able to use the same selectcode API)
+    if (substr($filter, 0, 1) == '+') {
+        $filter = substr($filter, 1);
+    } elseif (substr($filter, 0, 1) == '-') {
+        $filter = substr($filter, 1);
+        $tokens = explode(',', $filter);
+        foreach ($tokens as $i => $token) {
+            $token = trim($token);
+
+            if (is_numeric($token)) {
+                $token = '!' . $token;
+            }
+            $tokens[$i] = $token;
+        }
+        $tokens[] = '*';
+        $filter = implode(',', $tokens);
+    }
+
+    $tokens = explode(',', $filter);
+    $matches = array();
+    foreach ($tokens as $token) {
+        $token = trim($token);
+
+        if ($token == '*') { // '*'
+            if ($ids_and_parents === null) {
+                if ($field_name !== null) {
+                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
+                } else {
+                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
+                }
+            }
+            foreach (array_keys($ids_and_parents) as $id) {
+                $out_accept[] = $numeric_record_set_ids ? $id : strval($id);
+            }
+        } elseif (preg_match('#^\!(.*)$#', $token, $matches) != 0) { // e.g. '!1'
+            if ($matches[1] != '') {// Likely came from referencing some Tempcode that didn't return a result
+                $out_avoid[] = $numeric_record_set_ids ? intval($matches[1]) : $matches[1];
+            }
+        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')
+            for ($i = intval($matches[1]); $i <= intval($matches[2]); $i++) {
+                if ($numeric_record_set_ids) {
+                    $out_accept[] = $i;
+                } else {
+                    $out_accept[] = strval($i);
+                }
+            }
+        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\+$#', $token, $matches) != 0)) { // e.g. '3+'
+            if ($ids_and_parents === null) {
+                if ($field_name !== null) {
+                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
+                } else {
+                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
+                }
+            }
+            foreach (array_keys($ids_and_parents) as $id) {
+                if (is_string($id)) {
+                    $id = intval($id);
+                }
+                if ($id >= intval($matches[1])) {
+                    if ($numeric_record_set_ids) {
+                        $out_accept[] = $id;
+                    } else {
+                        $out_accept[] = strval($id);
+                    }
+                }
+            }
+        } elseif (preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) { // e.g. '3#' or '3*' or '3>'
+            if ($ids_and_parents === null) {
+                if ($field_name !== null) {
+                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
+                } else {
+                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
+                }
+            }
+
+            if ($matches[2] == '#') {
+                $subtree = array($matches[1]);
+            } else {
+                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');
+            }
+
+            foreach ($subtree as $subtree_i) {
+                foreach ($ids_and_parents as $id => $parent_id) {
+                    if (!is_string($parent_id)) {
+                        $parent_id = ($parent_id === null) ? '' : strval($parent_id);
+                    }
+                    if (!is_string($subtree_i)) {
+                        $subtree_i = strval($subtree_i);
+                    }
+                    if ($parent_id == $subtree_i) {
+                        if ($numeric_record_set_ids) {
+                            $out_accept[] = intval($id);
+                        } else {
+                            $out_accept[] = $id;
+                        }
+                    }
+                }
+            }
+        } elseif (preg_match('#^(.+)\~$#', $token, $matches) != 0) { // e.g. '3~'
+            if ($ids_and_parents === null) {
+                if ($field_name !== null) {
+                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
+                } else {
+                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db);
+                }
+            }
+            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
+            foreach ($subtree as $subtree_i) {
+                foreach ($ids_and_parents as $id => $parent_id) {
+                    if ($parent_id == $subtree_i) {
+                        if ($numeric_record_set_ids) {
+                            $out_avoid[] = intval($id);
+                        } else {
+                            $out_avoid[] = $id;
+                        }
+                    }
+                }
+            }
+        } else { // e.g. "1"
+            if ($numeric_record_set_ids) {
+                $out_accept[] = intval($token);
+            } else {
+                $out_accept[] = $token;
+            }
+        }
+    }
+
+    return array_diff($out_accept, $out_avoid);
+}
+
+/**
+ * Function to do an actual data lookup sourced via the database, used as a kind of a callback function (it's name gets passed into the generic API).
+ *
+ * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
+ * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
+ * @param  boolean $has_no_parents Whether there are parents in the filter
+ * @param  ?object $db Database connection to use (null: website)
+ * @return array A list of ID numbers
+ *
+ * @ignore
+ */
+function _selectcode_to_generic_callback($table_name, $field_name, $category_field_name, $has_no_parents, $db)
+{
+    $vals = $db->query_select($table_name, $has_no_parents ? array($field_name) : array($field_name, $category_field_name));
+    $out = array();
+    foreach ($vals as $x) {
+        $out[$x[$field_name]] = $has_no_parents ? null : $x[$category_field_name];
+    }
+    return $out;
+}
 
 /**
  * Helper function to generate an SQL "not equal to" fragment.
@@ -52,6 +440,8 @@ $results=selectcode_to_idlist_using_callback('1,3-10,!6,12*','_callback_get_down
  * @param  string $var The string value (may actually hold an integer, if $numeric)
  * @param  boolean $numeric Whether the value is numeric
  * @return string SQL fragment
+ *
+ * @ignore
  */
 function _selectcode_neq($field_name, $var, $numeric)
 {
@@ -69,6 +459,8 @@ function _selectcode_neq($field_name, $var, $numeric)
  * @param  string $var The string value (may actually hold an integer, if $numeric)
  * @param  boolean $numeric Whether the value is numeric
  * @return string SQL fragment
+ *
+ * @ignore
  */
 function _selectcode_eq($field_name, $var, $numeric)
 {
@@ -88,10 +480,12 @@ function _selectcode_eq($field_name, $var, $numeric)
  * @param  string $field_name The database's field name for the category-set's category-ID
  * @param  boolean $numeric_ids Whether the category-set IDs are numeric
  * @param  object $db Database connection to use
- * @param  array $cached_mappings A place to store cached data we've already loaded once in this function. Pass in an NULL variable (not a NULL literal)
+ * @param  array $cached_mappings A place to store cached data we've already loaded once in this function. Pass in an null variable (not a null literal)
  * @param  boolean $first Whether this is the base call to this recursive function (just leave it as the default, true)
  * @param  boolean $recurse Whether to run recursively
  * @return array Subtree: list of IDs in category-set
+ *
+ * @ignore
  */
 function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $field_name, $numeric_ids, $db, &$cached_mappings, $first = true, $recurse = true)
 {
@@ -145,393 +539,23 @@ function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $fiel
  *
  * @param  string $field_name The ID field name in the record-set
  * @param  string $table_name The table name of the record-set
- * @param  ?string $parent_field_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches)
+ * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
  * @param  object $db Database connection to use
  * @return array A map between record-set IDs and record-set parent-category-IDs
+ *
+ * @ignore
  */
-function _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db)
+function _selectcode_find_ids_and_parents($field_name, $table_name, $category_field_name, $db)
 {
-    if ($parent_field_name === null) {
+    if ($category_field_name === null) {
         return array();
     }
 
-    $rows = $db->query_select($table_name, ($parent_field_name === null) ? array($field_name) : array($field_name, $parent_field_name));
+    $rows = $db->query_select($table_name, ($category_field_name === null) ? array($field_name) : array($field_name, $category_field_name));
     $ret = array();
 
     foreach ($rows as $row) {
-        $ret[$row[$field_name]] = ($parent_field_name === null) ? '' : $row[$parent_field_name];
+        $ret[$row[$field_name]] = ($category_field_name === null) ? '' : $row[$category_field_name];
     }
     return $ret;
-}
-
-/**
- * Function to do an actual data lookup sourced via the database, used as a kind of a callback function (it's name gets passed into the generic API).
- *
- * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
- * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  boolean $has_no_parents Whether there are parents in the filter
- * @param  ?object $db Database connection to use (null: website)
- * @return array A list of ID numbers
- */
-function _selectcode_to_generic_callback($table_name, $field_name, $parent_field_name, $has_no_parents, $db)
-{
-    $vals = $db->query_select($table_name, $has_no_parents ? array($field_name) : array($field_name, $parent_field_name));
-    $out = array();
-    foreach ($vals as $x) {
-        $out[$x[$field_name]] = $has_no_parents ? null : $x[$parent_field_name];
-    }
-    return $out;
-}
-
-/**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, relying on the database to extract the record-set.
- *
- * @param  string $filter The filter
- * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
- * @param  ?string $table_name The database's table for the record-set we're matching (null: use a different lookup method)
- * @param  ?array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs (null: use a different lookup method)
- * @param  ?mixed $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches) (null: use a different lookup method)
- * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
- * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
- * @return array A list of ID numbers
- */
-function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_parents, $ids_and_parents_callback, $parent_spec__table_name, $parent_spec__parent_name, $parent_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db)
-{
-    if ($db === null) {
-        $db = $GLOBALS['SITE_DB'];
-    }
-
-    if ($filter == '') {
-        return array();
-    }
-
-    if ($parent_spec__table_name !== null) {
-        if (($parent_field_name === null) || ($parent_spec__field_name === null)) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-        }
-    } else {
-        if (($parent_spec__parent_name !== null) || ($parent_field_name !== null) || ($parent_spec__field_name !== null)) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-        }
-    }
-
-    $out_accept = array();
-    $out_avoid = array();
-
-    $cached_mappings = mixed();
-
-    if (($ids_and_parents === null) && ($ids_and_parents_callback === null)) {
-        $has_no_parents = ($parent_field_name === null);
-        $ids_and_parents_callback = array('_selectcode_to_generic_callback', array($table_name, $field_name, $parent_field_name, $has_no_parents));
-    }
-
-    // Support read_multi_code subsyntax also (this isn't user-edited normally, but we like to be able to use the same selectcode API)
-    if (substr($filter, 0, 1) == '+') {
-        $filter = substr($filter, 1);
-    } elseif (substr($filter, 0, 1) == '-') {
-        $filter = substr($filter, 1);
-        $tokens = explode(',', $filter);
-        foreach ($tokens as $i => $token) {
-            $token = trim($token);
-
-            if (is_numeric($token)) {
-                $token = '!' . $token;
-            }
-            $tokens[$i] = $token;
-        }
-        $tokens[] = '*';
-        $filter = implode(',', $tokens);
-    }
-
-    $tokens = explode(',', $filter);
-    $matches = array();
-    foreach ($tokens as $token) {
-        $token = trim($token);
-
-        if ($token == '*') { // '*'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db);
-                }
-            }
-            foreach (array_keys($ids_and_parents) as $id) {
-                $out_accept[] = $numeric_record_set_ids ? $id : strval($id);
-            }
-        } elseif (preg_match('#^\!(.*)$#', $token, $matches) != 0) { // e.g. '!1'
-            if ($matches[1] != '') {// Likely came from referencing some Tempcode that didn't return a result
-                $out_avoid[] = $numeric_record_set_ids ? intval($matches[1]) : $matches[1];
-            }
-        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')
-            for ($i = intval($matches[1]); $i <= intval($matches[2]); $i++) {
-                if ($numeric_record_set_ids) {
-                    $out_accept[] = $i;
-                } else {
-                    $out_accept[] = strval($i);
-                }
-            }
-        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\+$#', $token, $matches) != 0)) { // e.g. '3+'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db);
-                }
-            }
-            foreach (array_keys($ids_and_parents) as $id) {
-                if (is_string($id)) {
-                    $id = intval($id);
-                }
-                if ($id >= intval($matches[1])) {
-                    if ($numeric_record_set_ids) {
-                        $out_accept[] = $id;
-                    } else {
-                        $out_accept[] = strval($id);
-                    }
-                }
-            }
-        } elseif (preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) { // e.g. '3*'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db);
-                }
-            }
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, true, $matches[2] != '>');
-
-            foreach ($subtree as $subtree_i) {
-                foreach ($ids_and_parents as $id => $parent_id) {
-                    if (!is_string($parent_id)) {
-                        $parent_id = ($parent_id === null) ? '' : strval($parent_id);
-                    }
-                    if (!is_string($subtree_i)) {
-                        $subtree_i = strval($subtree_i);
-                    }
-                    if ($parent_id == $subtree_i) {
-                        if ($numeric_record_set_ids) {
-                            $out_accept[] = intval($id);
-                        } else {
-                            $out_accept[] = $id;
-                        }
-                    }
-                }
-            }
-        } elseif (preg_match('#^(.+)\~$#', $token, $matches) != 0) { // e.g. '3~'
-            if ($ids_and_parents === null) {
-                if ($field_name !== null) {
-                    $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));
-                } else {
-                    $ids_and_parents = _selectcode_find_ids_and_parents($field_name, $table_name, $parent_field_name, $db);
-                }
-            }
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
-            foreach ($subtree as $subtree_i) {
-                foreach ($ids_and_parents as $id => $parent_id) {
-                    if ($parent_id == $subtree_i) {
-                        if ($numeric_record_set_ids) {
-                            $out_avoid[] = intval($id);
-                        } else {
-                            $out_avoid[] = $id;
-                        }
-                    }
-                }
-            }
-        } else { // e.g. "1"
-            if ($numeric_record_set_ids) {
-                $out_accept[] = intval($token);
-            } else {
-                $out_accept[] = $token;
-            }
-        }
-    }
-
-    return array_diff($out_accept, $out_avoid);
-}
-
-/**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, relying on the database to extract the record-set.
- *
- * @param  string $filter The filter
- * @param  string $field_name The database's ID field for the record-set we're matching
- * @param  string $table_name The database's table for the record-set we're matching
- * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
- * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
- * @return array A list of ID numbers
- */
-function selectcode_to_idlist_using_db($filter, $field_name, $table_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $parent_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
-{
-    return _selectcode_to_generic($filter, $field_name, $table_name, null, null, $parent_spec__table_name, $parent_spec__parent_name, $parent_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
-}
-
-/**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers, using a prebuilt memory representation of the record-set.
- *
- * @param  string $filter The filter
- * @param  array $ids_and_parents A map between record-set IDs and record-set parent-category-IDs
- * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
- * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
- * @return array A list of ID numbers
- */
-function selectcode_to_idlist_using_memory($filter, $ids_and_parents, $parent_spec__table_name = null, $parent_spec__parent_name = null, $parent_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
-{
-    return _selectcode_to_generic($filter, null, null, $ids_and_parents, null, $parent_spec__table_name, $parent_spec__parent_name, $parent_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
-}
-
-/**
- * Turn an Selectcode (a filter specifying which records to match) into a list of ID numbers.
- *
- * @param  string $filter The filter
- * @param  string $ids_and_parents_callback A call_user_func_array specifier to a function that will give a map between record-set IDs and record-set parent-category-IDs. We pass a call_user_func_array specifier because we don't want to have to generate it unless we need to (if we need to do 'avoiding' matches or 'subtree' matches)
- * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
- * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
- * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
- * @return array A list of ID numbers
- */
-function selectcode_to_idlist_using_callback($filter, $ids_and_parents_callback, $parent_spec__table_name = null, $parent_spec__parent_name = null, $parent_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
-{
-    return _selectcode_to_generic($filter, null, null, null, $ids_and_parents_callback, $parent_spec__table_name, $parent_spec__parent_name, $parent_field_name, $parent_spec__field_name, $numeric_record_set_ids, $numeric_category_set_ids, $db);
-}
-
-/**
- * Turn an Selectcode (a filter specifying which records to match) into an SQL query fragment.
- *
- * @param  string $filter The filter
- * @param  string $field_name The database's ID field for the record-set we're matching. E.g. 'id'.
- * @param  ?string $parent_spec__table_name The database's table that contains parent/child relationships in the record-set's category-set (the category-set is equal to the record-set if we're matching categories, but not if we're matching entries) (null: don't support subtree [*-style] searches). E.g. 'categories'.
- * @param  ?string $parent_spec__parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base). E.g. 'parent_id'.
- * @param  ?string $parent_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches). E.g. 'cat'.
- * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base). E.g. 'id'.
- * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
- * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
- * @return string SQL query fragment. Note that brackets will be put around this automatically if required, so there's no need to do this yourself.
- */
-function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $parent_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
-{
-    if ($db === null) {
-        $db = $GLOBALS['SITE_DB'];
-    }
-
-    if ($filter == '') {
-        return '1=2';
-    }
-    if ($filter == '*') {
-        return '1=1';
-    }
-    if ($parent_spec__table_name !== 'catalogue_categories') {
-        if ($filter == strval(db_get_first_id()) . '*') {
-            return '1=1';
-        }
-    }
-
-    if ($parent_spec__table_name === null) {
-        if (($parent_spec__parent_name !== null) || ($parent_field_name !== null) || ($parent_spec__field_name !== null)) {
-            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
-        }
-    }
-
-    $out_or = '';
-    $out_and = '';
-
-    $cached_mappings = mixed();
-
-    $tokens = explode(',', $filter);
-    $matches = array();
-    foreach ($tokens as $token) {
-        $token = trim($token);
-
-        if ($token == '*') { // '*'
-            if ($out_or != '') {
-                $out_or .= ' OR ';
-            }
-            $out_or .= '1=1';
-        } elseif (preg_match('#^\!(.*)$#', $token, $matches) != 0) { // e.g. '!1'
-            if ($matches[1] != '') { // Likely came from referencing some Tempcode that didn't return a result
-                if ($out_and != '') {
-                    $out_and .= ' AND ';
-                }
-                $out_and .= _selectcode_neq($field_name, $matches[1], $numeric_record_set_ids);
-            }
-        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')
-            for ($i = intval($matches[1]); $i <= intval($matches[2]); $i++) {
-                if ($out_or != '') {
-                    $out_or .= ' OR ';
-                }
-                $out_or .= _selectcode_eq($field_name, strval($i), $numeric_record_set_ids);
-            }
-        } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\+$#', $token, $matches) != 0)) { // e.g. '3+'
-            if ($out_or != '') {
-                $out_or .= ' OR ';
-            }
-            $out_or .= $field_name . '>=' . strval(intval($matches[1]));
-        } elseif ((preg_match('#^(.+)(\*|>)$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3*'
-            if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($parent_field_name == 'cc_id') && ($matches[2] != '>') && (db_has_subqueries($db->connection_read))) { // Special case (optimisation) for catalogues
-                // MySQL should be smart enough to not enumerate the 'IN' clause here, which would be bad - instead it can jump into the embedded WHERE clause on each test iteration
-                $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
-                if ($this_details[0]['c_is_tree'] == 0) {
-                    $out_or .= _selectcode_eq($parent_field_name, $matches[1], $numeric_category_set_ids);
-                } elseif ($this_details[0]['cc_parent_id'] === null) {
-                    if ($this_details[0]['cc_parent_id'] === null) {
-                        $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
-                    } else {
-                        $out_or .= $parent_field_name . ' IN (SELECT cc_id FROM ' . $db->get_table_prefix() . 'catalogue_cat_treecache WHERE cc_ancestor_id=' . strval(intval($matches[1])) . ')';
-                    }
-                } else {
-                    $out_or = '1=0';
-                }
-            } else {
-                $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, true, $matches[2] != '>');
-                foreach ($subtree as $ii) {
-                    if ($out_or != '') {
-                        $out_or .= ' OR ';
-                    }
-                    $out_or .= _selectcode_eq($parent_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
-                }
-            }
-        } elseif ((preg_match('#^(.+)\~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
-            $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
-            foreach ($subtree as $ii) {
-                if ($out_and != '') {
-                    $out_and .= ' AND ';
-                }
-                $out_and .= _selectcode_neq($parent_field_name, is_integer($ii) ? strval($ii) : $ii, $numeric_category_set_ids);
-            }
-        } else { // e.g. "1"
-            if ($out_or != '') {
-                $out_or .= ' OR ';
-            }
-            $out_or .= _selectcode_eq($field_name, $token, $numeric_record_set_ids);
-        }
-    }
-
-    if ($out_or == '') {
-        return ($out_and == '') ? '0=1' : $out_and;
-    }
-    if ($out_and == '') {
-        return ($out_or == '') ? '0=1' : ('(' . $out_or . ')');
-    }
-
-    return '(' . $out_or . ') AND (' . $out_and . ')';
 }

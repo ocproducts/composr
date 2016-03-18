@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -221,10 +221,10 @@ class Forum_driver_phpbb2 extends Forum_driver_base
     }
 
     /**
-     * Set a custom profile fields value. It should not be called directly.
+     * Set a custom profile field's value, if the custom field exists. Only works on specially-named (titled) fields.
      *
      * @param  MEMBER $member The member ID
-     * @param  string $field The field name
+     * @param  string $field The field name (e.g. "firstname" for the CPF with a title of "cms_firstname")
      * @param  string $value The value
      */
     public function set_custom_field($member, $field, $value)
@@ -481,7 +481,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
      * @param  SHORT_TEXT $poster_name_if_guest The name of the poster
      * @param  ?AUTO_LINK $parent_id ID of post being replied to (null: N/A)
      * @param  boolean $staff_only Whether the reply is only visible to staff
-     * @return array Topic ID (may be NULL), and whether a hidden post has been made
+     * @return array Topic ID (may be null), and whether a hidden post has been made
      */
     public function make_post_forum_topic($forum_name, $topic_identifier, $member, $post_title, $_post, $content_title, $topic_identifier_encapsulation_prefix, $content_url = null, $time = null, $ip = null, $validated = null, $topic_validated = 1, $skip_post_checks = false, $poster_name_if_guest = '', $parent_id = null, $staff_only = false)
     {
@@ -786,7 +786,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
     }
 
     /**
-     * Get the member ID of the next member after the given one, or NULL.
+     * Get the member ID of the next member after the given one, or null.
      * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
      *
      * @param  MEMBER $member The member ID to increment
@@ -812,7 +812,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
 
     /**
      * Get the name relating to the specified member ID.
-     * If this returns NULL, then the member has been deleted. Always take potential NULL output into account.
+     * If this returns null, then the member has been deleted. Always take potential null output into account.
      *
      * @param  MEMBER $member The member ID
      * @return ?SHORT_TEXT The member name (null: member deleted)
@@ -942,7 +942,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
             }
             $this->EMOTICON_CACHE[$myrow['code']] = array('EMOTICON_IMG_CODE_DIR', $src, $myrow['code']);
         }
-        uksort($this->EMOTICON_CACHE, 'strlen_sort');
+        uksort($this->EMOTICON_CACHE, '_strlen_sort');
         $this->EMOTICON_CACHE = array_reverse($this->EMOTICON_CACHE);
         return $this->EMOTICON_CACHE;
     }
@@ -963,7 +963,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
 
     /**
      * Try to find the theme that the logged-in/guest member is using, and map it to a Composr theme.
-     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, whilst others made the humanly readeable name.
+     * The themes/map.ini file functions to provide this mapping between forum themes, and Composr themes, and has a slightly different meaning for different forum drivers. For example, some drivers map the forum themes theme directory to the Composr theme name, while others made the humanly readeable name.
      *
      * @param  boolean $skip_member_specific Whether to avoid member-specific lookup
      * @return ID_TEXT The theme
@@ -1187,7 +1187,8 @@ class Forum_driver_phpbb2 extends Forum_driver_base
         $real_member_cookie = substr($member_cookie_name, $colon_pos + 1);
         $real_pass_cookie = substr(get_pass_cookie(), $colon_pos + 1);
 
-        $hash = substr(uniqid(strval(mt_rand(0, 32000)), true), 0, 17);
+        require_code('crypt');
+        $hash = substr(get_rand_password(), 0, 17);
         $cookie = serialize(array($real_member_cookie => strval($id), $real_pass_cookie => $hash));
         $this->connection->query_insert('sessions', array('session_id' => md5($hash), 'session_user_id' => $id, 'session_ip' => ip2long(get_ip_address()), 'session_time' => time()));
 
@@ -1196,7 +1197,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
     }
 
     /**
-     * Find if the given member ID and password is valid. If username is NULL, then the member ID is used instead.
+     * Find if the given member ID and password is valid. If username is null, then the member ID is used instead.
      * All authorisation, cookies, and form-logins, are passed through this function.
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
@@ -1205,7 +1206,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
-     * @return array A map of 'id' and 'error'. If 'id' is NULL, an error occurred and 'error' is set
+     * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
     public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
     {
@@ -1228,7 +1229,7 @@ class Forum_driver_phpbb2 extends Forum_driver_base
         }
         $row = $rows[0];
         if ($this->is_banned($row['user_id'])) { // All hands to the guns
-            $out['error'] = (do_lang_tempcode('MEMBER_BANNED'));
+            $out['error'] = (do_lang_tempcode('YOU_ARE_BANNED'));
             return $out;
         }
         if ($cookie_login) {

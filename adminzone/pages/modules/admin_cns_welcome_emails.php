@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         $info['hack_version'] = null;
         $info['version'] = 4;
         $info['locked'] = true;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -79,7 +79,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
                 'w_send_time' => 'INTEGER',
                 'w_newsletter' => '?AUTO_LINK',
                 'w_usergroup' => '?AUTO_LINK',
-                'w_usergroup_type' => 'ID_TEXT',
+                'w_usergroup_type' => 'ID_TEXT', // <blank>, primary, secondary
             ));
         }
 
@@ -98,7 +98,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -107,7 +107,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             return null;
         }
 
-        if ($be_deferential) {
+        if ($be_deferential || $support_crosslinks) {
             return null;
         }
 
@@ -119,10 +119,10 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -225,9 +225,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         $fields->attach(form_input_huge_comcode(do_lang_tempcode('TEXT'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_TEXT'), 'text', $text, true));
         $fields->attach(form_input_integer(do_lang_tempcode('SEND_TIME'), do_lang_tempcode('DESCRIPTION_SEND_TIME'), 'send_time', $send_time, true));
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3c9bf61e762eb8715a7fdde214b7eac2', 'SECTION_HIDDEN' => false,
-                                                                      'TITLE' => do_lang_tempcode('SCOPE'),
-        )));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3c9bf61e762eb8715a7fdde214b7eac2', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('SCOPE'))));
 
         if (addon_installed('newsletter')) {
             require_lang('newsletter');
@@ -248,7 +246,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             $usergroups = new Tempcode();
             $usergroups->attach(form_input_list_entry('', $usergroup === null, do_lang_tempcode('NA_EM')));
             $usergroups->attach(cns_create_selection_list_usergroups($usergroup));
-            $fields->attach(form_input_list(do_lang_tempcode('GROUP'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_USERGROUP', escape_html(get_site_name())), 'usergroup', $usergroups, null, false, false));
+            $fields->attach(form_input_list(do_lang_tempcode('USERGROUP'), do_lang_tempcode('DESCRIPTION_WELCOME_EMAIL_USERGROUP', escape_html(get_site_name())), 'usergroup', $usergroups, null, false, false));
 
             $radios = new Tempcode();
             $radios->attach(form_input_radio_entry('usergroup_type', '', true, do_lang_tempcode('WELCOME_EMAIL_USERGROUP_TYPE_BOTH')));

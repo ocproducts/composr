@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -48,6 +48,7 @@ class Block_main_sortable_table
 
         require_javascript('sortable_tables');
         require_css('sortable_tables');
+        require_code('json');
 
         disable_php_memory_limit();
 
@@ -366,7 +367,7 @@ class Block_main_sortable_table
                 '_GUID' => $guid,
                 'VALUES' => $row,
                 'TOOLTIP_VALUES' => $tooltip_values,
-                'RAW_DATA' => serialize($_rows_raw[$i]),
+                'RAW_DATA' => json_encode($_rows_raw[$i]),
             )));
         }
 

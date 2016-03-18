@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_resource_meta_aware_menu_item
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
-            'content_type_label' => 'MENU_ITEMS',
+            'content_type_label' => 'menus:MENU_ITEM',
+            'content_type_universal_label' => 'Menu item',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'menu_items',
@@ -53,6 +54,10 @@ class Hook_resource_meta_aware_menu_item
 
             'title_field' => 'i_caption',
             'title_field_dereference' => true,
+            'description_field' => null,
+            'thumb_field' => null,
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => null,
             'edit_page_link_pattern' => null,
@@ -63,7 +68,9 @@ class Hook_resource_meta_aware_menu_item
             'support_url_monikers' => false,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -73,9 +80,14 @@ class Hook_resource_meta_aware_menu_item
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // NULL if has no permissions
+            'permissions_type_code' => null, // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => null,
 
             'addon_name' => 'core_menus',
 
@@ -85,7 +97,11 @@ class Hook_resource_meta_aware_menu_item
             'commandr_filesystem_hook' => 'menus',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_MENU_ITEM',
         );

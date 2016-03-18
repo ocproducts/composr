@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_content_meta_aware_news_category
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => false,
+            'support_custom_fields' => false,
 
             'content_type_label' => 'news:NEWS_CATEGORY',
+            'content_type_universal_label' => 'News category',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'news_categories',
@@ -56,6 +57,7 @@ class Hook_content_meta_aware_news_category
             'description_field' => null,
             'thumb_field' => 'nc_img',
             'thumb_field_is_theme_image' => true,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:news:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_news:_edit_category:_WILD',
@@ -66,7 +68,9 @@ class Hook_content_meta_aware_news_category
             'support_url_monikers' => true,
 
             'views_field' => null,
+            'order_field' => null,
             'submitter_field' => null,
+            'author_field' => null,
             'add_time_field' => null,
             'edit_time_field' => null,
             'date_field' => null,
@@ -76,9 +80,14 @@ class Hook_content_meta_aware_news_category
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'news', // NULL if has no permissions
+            'permissions_type_code' => 'news', // null if has no permissions
 
             'search_hook' => null,
+            'rss_hook' => null,
+            'attachment_hook' => null,
+            'unvalidated_hook' => null,
+            'notification_hook' => null,
+            'sitemap_hook' => 'news_category',
 
             'addon_name' => 'news',
 
@@ -88,7 +97,11 @@ class Hook_content_meta_aware_news_category
             'commandr_filesystem_hook' => 'news',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => null,
+            'support_revisions' => false,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_NEWS_CATEGORY',
         );

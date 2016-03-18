@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -65,16 +65,32 @@ class Database_super_mysql
      */
     public function db_create_index($table_name, $index_name, $_fields, $db)
     {
+        $query = $this->db_create_index_sql($table_name, $index_name, $_fields, $db);
+        if (!is_null($query)) {
+            $this->db_query($query, $db);
+        }
+    }
+
+    /**
+     * SQL to create a table index.
+     *
+     * @param  ID_TEXT $table_name The name of the table to create the index on
+     * @param  ID_TEXT $index_name The index name (not really important at all)
+     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
+     * @return ?string SQL (null: do nothing)
+     */
+    public function db_create_index_sql($table_name, $index_name, $_fields)
+    {
         if ($index_name[0] == '#') {
             if ($this->using_innodb()) {
-                return;
+                return null;
             }
             $index_name = substr($index_name, 1);
             $type = 'FULLTEXT';
         } else {
             $type = 'INDEX';
         }
-        $this->db_query('ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')', $db);
+        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
     }
 
     /**
@@ -86,8 +102,7 @@ class Database_super_mysql
      */
     public function db_change_primary_key($table_name, $new_key, $db)
     {
-        $this->db_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY', $db);
-        $this->db_query('ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $db);
+        $this->db_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $db);
     }
 
     /**
@@ -140,14 +155,14 @@ class Database_super_mysql
     {
         $type_remap = array(
             'AUTO' => 'integer unsigned auto_increment',
-            'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing (NB: *_TRANS is signed, so trans fields are not perfectly AUTO_LINK compatible and can have double the positive range -- in the real world it will not matter though)
+            'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing (NB: *_TRANS is signed, so trans fields are not perfectly AUTO_LINK compatible and can have double the positive range -- in the real world it will not matter though)
             'INTEGER' => 'integer',
             'UINTEGER' => 'integer unsigned',
             'SHORT_INTEGER' => 'tinyint',
             'REAL' => 'real',
             'BINARY' => 'tinyint(1)',
-            'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
-            'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage whilst importing
+            'MEMBER' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
+            'GROUP' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing
             'TIME' => 'integer unsigned',
             'LONG_TRANS' => 'integer unsigned',
             'SHORT_TRANS' => 'integer unsigned',
@@ -184,6 +199,21 @@ class Database_super_mysql
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
     public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
+    {
+        $query = $this->db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
+        $this->db_query($query, $db, null, null);
+    }
+
+    /**
+     * SQL to create a new table.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  array $fields A map of field names to Composr field types (with *#? encodings)
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return string SQL
+     */
+    public function db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -229,18 +259,19 @@ class Database_super_mysql
         )';
 
         global $SITE_INFO;
-        if (!array_key_exists('database_charset', $SITE_INFO)) {
-            $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8mb4' : 'latin1';
+        if (empty($SITE_INFO['database_charset'])) {
+            $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         $charset = $SITE_INFO['database_charset'];
         if ($charset == 'utf8mb4' && $save_bytes) {
             $charset = 'utf8';
         }
 
-        $query .= ' CHARACTER SET='.preg_replace('#\_.*$#','',$charset);
+        $query .= ' CHARACTER SET=' . preg_replace('#\_.*$#', '', $charset);
 
-        $query .= ' ' . $type_key . '=' . $table_type . ';';
-        $this->db_query($query, $db, null, null);
+        $query .= ' ' . $type_key . '=' . $table_type;
+
+        return $query;
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,22 +19,6 @@
  */
 
 /**
- * Convert an IP address to a currency code.
- *
- * @param  ?IP $ip IP address (null: that of current member).
- * @return ID_TEXT The currency code.
- */
-function ip_to_currency($ip = null)
-{
-    require_code('global4');
-    if (is_null($ip)) {
-        $ip = get_ip_address();
-    }
-    $country = geolocate_ip($ip);
-    return country_to_currency($country);
-}
-
-/**
  * Convert a country code to a currency code.
  *
  * @param  ID_TEXT $country The country code.
@@ -50,6 +34,39 @@ function country_to_currency($country)
             break;
         }
     }
+    return $currency;
+}
+
+/**
+ * Find the active ISO currency for the current user.
+ *
+ * @return string The active currency
+ */
+function get_currency()
+{
+    // Perform a preferential guessing sequence
+    // ========================================
+
+    // keep_currency
+    $currency = get_param_string('keep_currency', null);
+    if (is_null($currency)) {
+        // a specially named custom profile field for the currency.
+        $currency = get_cms_cpf('currency');
+        if ($currency === '') {
+            $currency = null;
+        }
+        if (is_null($currency)) {
+            require_code('locations');
+
+            $country = get_country();
+            if (is_null($country)) {
+                $currency = get_option('currency');
+            } else {
+                $currency = country_to_currency($country);
+            }
+        }
+    }
+
     return $currency;
 }
 
@@ -72,39 +89,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
     }
 
     if (is_null($to_currency)) {
-        // Perform a preferential guessing sequence
-        // ========================================
-
-        // keep_currency
-        $to_currency = get_param_string('keep_currency', null);
-        if (is_null($to_currency)) {
-            // a specially named custom profile field for the currency.
-            $to_currency = get_cms_cpf('currency');
-            if ($to_currency === '') {
-                $to_currency = null;
-            }
-            if (is_null($to_currency)) {
-                // keep_country
-                $country = get_param_string('keep_country', null);
-                if (!is_null($country)) {
-                    $to_currency = country_to_currency($country);
-                }
-                if (is_null($to_currency)) {
-                    // a specially named custom profile field for the country.
-                    $country = get_cms_cpf('country');
-                    if ($country != '') {
-                        $to_currency = country_to_currency($country);
-                    }
-                    if (is_null($to_currency)) {
-                        // geolocation
-                        $to_currency = ip_to_currency();
-                        if (is_null($to_currency)) {
-                            $to_currency = get_option('currency');
-                        }
-                    }
-                }
-            }
-        }
+        $to_currency = get_currency();
     }
 
     // (We now know $to_currency)
@@ -160,7 +145,7 @@ function currency_convert($amount, $from_currency, $to_currency = null, $string 
  * Get the symbol for a currency.
  *
  * @param  ID_TEXT $currency The currency.
- * @return array A pair: The symbol, and whether the symbol is okay to use on it's own (as it is the accepted default for the symbol).
+ * @return array A pair: The symbol, and whether the symbol is okay to use on its own (as it is the accepted default for the symbol).
  */
 function get_currency_symbol($currency)
 {

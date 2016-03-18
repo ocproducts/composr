@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,7 +26,7 @@
  */
 function has_leader_board_since($cutoff)
 {
-    $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'leader_board WHERE date_and_time>' . strval($cutoff));
+    $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'leader_board WHERE date_and_time>=' . strval($cutoff));
     return ($test > 0);
 }
 
@@ -45,7 +45,7 @@ function calculate_latest_leader_board($retrieve = true)
             return null;
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT lb_member,lb_points FROM ' . get_table_prefix() . 'leader_board WHERE date_and_time>' . strval($cutoff));
+        $rows = $GLOBALS['SITE_DB']->query('SELECT lb_member,lb_points FROM ' . get_table_prefix() . 'leader_board WHERE date_and_time>=' . strval($cutoff));
         $rows = collapse_2d_complexity('lb_member', 'lb_points', $rows);
         arsort($rows);
         return $rows;
@@ -75,6 +75,8 @@ function calculate_latest_leader_board($retrieve = true)
 
     arsort($points);
 
+    $rows = array();
+
     $i = 0;
     $time = time();
     foreach ($points as $id => $num_points) {
@@ -83,11 +85,12 @@ function calculate_latest_leader_board($retrieve = true)
             set_value('site_bestmember', $username);
         }
 
-        if ($i == $limit) {
+        if ($i >= $limit) {
             break;
         }
 
-        $GLOBALS['SITE_DB']->query_insert('leader_board', array('lb_member' => $id, 'lb_points' => $num_points, 'date_and_time' => $time), false, true); // Allow failure due to race conditions
+        $row = array('lb_member' => $id, 'lb_points' => $num_points, 'date_and_time' => $time);
+        $GLOBALS['SITE_DB']->query_insert('leader_board', $row, false, true); // Allow failure due to race conditions
 
         $i++;
     }
@@ -96,5 +99,5 @@ function calculate_latest_leader_board($retrieve = true)
         return null;
     }
 
-    return $points;
+    return $rows;
 }

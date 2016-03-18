@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,7 +34,7 @@ class Hook_config_one_per_email_address
             'human_name' => 'ONE_PER_EMAIL_ADDRESS',
             'type' => 'tick',
             'category' => 'USERS',
-            'group' => '_LOGIN',
+            'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_one_per_email_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

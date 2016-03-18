@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,6 +38,7 @@ class Hook_config_security_token_exceptions
             'explanation' => 'CONFIG_OPTION_security_token_exceptions',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order' => 1,
 
             'addon' => 'core_configuration',
         );
@@ -50,6 +51,8 @@ class Hook_config_security_token_exceptions
      */
     public function get_default()
     {
-        return '';
+        return 'purchase
+subscriptions
+invoices';
     }
 }

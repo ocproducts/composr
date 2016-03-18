@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,7 +34,7 @@ class catalogues_category_test_set extends cms_test_case
 
     public function testEditCatalogue_category()
     {
-        actual_edit_catalogue_category($this->cat_id, 'Test_Cat', 'Cat_edit', 'Test', 1, '', '', '', 30, 60, null);
+        actual_edit_catalogue_category($this->cat_id, 'Test_Cat', 'Cat_edit', 'Test', 1, '', '', '', 30, 60, null, 0);
 
         $this->assertTrue('Testing_category' == $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'c_name', array('id' => $this->cat_id)));
     }

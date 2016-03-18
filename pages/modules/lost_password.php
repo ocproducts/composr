@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -43,7 +43,7 @@ class Module_lost_password
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -108,7 +108,7 @@ class Module_lost_password
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -164,107 +164,31 @@ class Module_lost_password
     {
         $username = trim(post_param_string('username', ''));
         $email_address = trim(post_param_string('email_address', ''));
-        if (($username == '') && ($email_address == '')) {
-            warn_exit(do_lang_tempcode('PASSWORD_RESET_ERROR'));
-        }
 
-        if ($username != '') {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
-        } else {
-            $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email_address);
-        }
-        if (is_null($member_id)) {
-            warn_exit(do_lang_tempcode('PASSWORD_RESET_ERROR_2'));
-        }
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == '') && (has_privilege($member_id, 'disable_lost_passwords')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
-            warn_exit(do_lang_tempcode('NO_RESET_ACCESS'));
-        }
-        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'httpauth') {
-            warn_exit(do_lang_tempcode('NO_PASSWORD_RESET_HTTPAUTH'));
-        }
-        $is_ldap = cns_is_ldap_member($member_id);
-        $is_httpauth = cns_is_httpauth_member($member_id);
-        if (($is_ldap)/* || ($is_httpauth  Actually covered more explicitly above - over mock-httpauth, like Facebook, may have passwords reset to break the integrations)*/) {
-            warn_exit(do_lang_tempcode('EXT_NO_PASSWORD_CHANGE'));
-        }
+        require_code('cns_lost_password');
+        list($email, $email_address_masked, $member_id) = lost_password_emailer_step($username, $email_address);
 
-        require_code('crypt');
-        $code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code'); // Re-use existing code if possible, so that overlapping reset emails don't cause chaos
-        if ($code != '') {
-            if (get_option('password_reset_process') == 'ultra') {
-                list($code, $session_id) = explode('__', $code);
-            }
-        }
-        if (($code == '') || (get_option('password_reset_process') == 'ultra') && ($session_id != get_session_id())) {
-            $code = get_rand_password();
-            if (get_option('password_reset_process') == 'ultra') {
-                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => $code . '__' . get_session_id()), array('id' => $member_id), '', 1);
-            } else {
-                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => $code), array('id' => $member_id), '', 1);
-            }
-        }
-
-        $email = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address');
-        if ($email == '') {
-            warn_exit(do_lang_tempcode('MEMBER_NO_EMAIL_ADDRESS_RESET_TO'));
-        }
-
-        log_it('LOST_PASSWORD', strval($member_id), $code);
-
-        $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
-
-        $temporary_passwords = (get_option('password_reset_process') != 'emailed');
-
-        // Send confirm mail
-        if (get_option('password_reset_process') != 'ultra') {
-            $zone = get_module_zone('lost_password');
-            $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member_id), $zone, null, false, false, true);
-            $url = $_url->evaluate();
-            $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
-            $url_simple = $_url_simple->evaluate();
-            $message = do_lang($temporary_passwords ? 'LOST_PASSWORD_TEXT_TEMPORARY' : 'LOST_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array($url, comcode_escape($url_simple), strval($member_id), $code), get_lang($member_id));
-            require_code('mail');
-            mail_wrap(do_lang('LOST_PASSWORD_CONFIRM', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
-        } else {
-            $old_php_self = cms_srv('PHP_SELF');
-            $old_server_name = cms_srv('SERVER_NAME');
-
-            // Fiddle to try and anonymise details of the e-mail
-            $_SERVER['PHP_SELF'] = "/";
-            $_SERVER['SERVER_NAME'] = cms_srv('SERVER_ADDR');
-
-            $from_email = get_option('website_email');
-            //$from_email='noreply@'.$_SERVER['SERVER_ADDR'];  Won't work on most hosting
-            $from_name = do_lang('PASSWORD_RESET_ULTRA_FROM');
-            $subject = do_lang('PASSWORD_RESET_ULTRA_SUBJECT', $code);
-            $body = do_lang('PASSWORD_RESET_ULTRA_BODY', $code);
-            mail($email, $subject, $body, 'From: ' . $from_name . ' <' . $from_email . '>' . "\r\n" . 'Reply-To: ' . $from_name . ' <' . $from_email . '>');
-
-            // Put env details back to how they should be
-            $_SERVER['PHP_SELF'] = $old_php_self;
-            $_SERVER['SERVER_NAME'] = $old_server_name;
-
-            // Input UI
+        if (get_option('password_reset_process') == 'ultra') {
+            // Input UI (as code will be typed immediately, there's no link in the e-mail for 'ultra' mode)
             $zone = get_module_zone('lost_password');
             $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'member' => $member_id), $zone);
             require_code('form_templates');
             $fields = new Tempcode();
             $fields->attach(form_input_line(do_lang_tempcode('CODE'), '', 'code', null, true));
             $submit_name = do_lang_tempcode('PROCEED');
-            return do_template('FORM_SCREEN', array('_GUID' => '9f03d4abe0140559ec6eba2fa34fe3d6', 'TITLE' => $this->title,
-                                                    'GET' => true,
-                                                    'SKIP_WEBSTANDARDS' => true,
-                                                    'HIDDEN' => '',
-                                                    'URL' => $_url,
-                                                    'FIELDS' => $fields,
-                                                    'TEXT' => do_lang_tempcode('ENTER_CODE_FROM_EMAIL'),
-                                                    'SUBMIT_ICON' => 'menu__site_meta__user_actions__lost_password',
-                                                    'SUBMIT_NAME' => $submit_name,
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => '9f03d4abe0140559ec6eba2fa34fe3d6',
+                'TITLE' => $this->title,
+                'GET' => true,
+                'SKIP_WEBSTANDARDS' => true,
+                'HIDDEN' => '',
+                'URL' => $_url,
+                'FIELDS' => $fields,
+                'TEXT' => do_lang_tempcode('ENTER_CODE_FROM_EMAIL'),
+                'SUBMIT_ICON' => 'menu__site_meta__user_actions__lost_password',
+                'SUBMIT_NAME' => $submit_name,
             ));
         }
-
-        $email_address_masked = preg_replace('#^(\w).*@.*(\w\.\w+)$#', '${1}...@...${2}', $email);
 
         return inform_screen($this->title, do_lang_tempcode('RESET_CODE_MAILED', escape_html($email_address_masked), escape_html($email)));
     }
@@ -319,7 +243,7 @@ class Module_lost_password
             }
         }
         if ($code != $correct_code) {
-            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('adminlogs', 'date_and_time', array('the_type' => 'LOST_PASSWORD', 'param_a' => strval($member_id), 'param_b' => $code));
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('actionlogs', 'date_and_time', array('the_type' => 'LOST_PASSWORD', 'param_a' => strval($member_id), 'param_b' => $code));
             if (!is_null($test)) {
                 warn_exit(do_lang_tempcode('INCORRECT_PASSWORD_RESET_CODE')); // Just an old code that has expired
             }
@@ -337,7 +261,7 @@ class Module_lost_password
 
         if (!$temporary_passwords) {
             // Send password in mail
-            $_login_url = build_url(array('page' => 'login', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
             $message = do_lang('MAIL_NEW_PASSWORD', comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate()));
@@ -372,6 +296,7 @@ class Module_lost_password
 
             $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $GLOBALS['FORCE_META_REFRESH'] = true; // Some browsers can't set cookies and redirect at the same time
             return redirect_screen($this->title, $redirect_url, do_lang_tempcode('YOU_HAVE_TEMPORARY_PASSWORD', escape_html($username)));
         }
 

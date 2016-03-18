@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -11,7 +11,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composrcom
+ * @package    composr_homesite
  */
 
 // Find Composr base directory, and chdir into it
@@ -44,7 +44,7 @@ $interest_level = get_param_integer('interest_level');
 $lang = get_param_string('lang');
 
 if ($advertise_on == 1) {
-    $GLOBALS['SITE_DB']->query_insert('mayfeature', array('url' => $url));
+    $GLOBALS['SITE_DB']->query_insert('may_feature', array('url' => $url));
 }
 
 if (($email != 'dont_sign_me_up@compo.sr') && ($email != '')) {

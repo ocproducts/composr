@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__points2()
 {
@@ -32,8 +34,9 @@ function init__points2()
  * @param  SHORT_TEXT $reason The reason for the transfer
  * @param  integer $amount The size of the transfer
  * @param  MEMBER $member_id The member the transfer is to
+ * @param  boolean $include_in_log Whether to include a log line
  */
-function system_gift_transfer($reason, $amount, $member_id)
+function system_gift_transfer($reason, $amount, $member_id, $include_in_log = true)
 {
     require_lang('points');
     require_code('points');
@@ -45,15 +48,18 @@ function system_gift_transfer($reason, $amount, $member_id)
         return;
     }
 
-    $map = array(
-        'date_and_time' => time(),
-        'amount' => $amount,
-        'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
-        'gift_to' => $member_id,
-        'anonymous' => 1,
-    );
-    $map += insert_lang_comcode('reason', $reason, 4);
-    $GLOBALS['SITE_DB']->query_insert('gifts', $map);
+    if ($include_in_log) {
+        $map = array(
+            'date_and_time' => time(),
+            'amount' => $amount,
+            'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id(),
+            'gift_to' => $member_id,
+            'anonymous' => 1,
+        );
+        $map += insert_lang_comcode('reason', $reason, 4);
+        $GLOBALS['SITE_DB']->query_insert('gifts', $map);
+    }
+
     $_before = point_info($member_id);
     $before = array_key_exists('points_gained_given', $_before) ? $_before['points_gained_given'] : 0;
     $new = strval($before + $amount);
@@ -116,13 +122,13 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
         $url = $_url->evaluate();
         require_code('notifications');
         if ($anonymous) {
-            $message_raw = do_lang('GIVEN_POINTS_FOR_ANON', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url)), get_lang($recipient_id));
+            $message_raw = do_notification_lang('GIVEN_POINTS_FOR_ANON', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url)), get_lang($recipient_id));
             dispatch_notification('received_points', null, do_lang('YOU_GIVEN_POINTS', integer_format($amount), null, null, get_lang($recipient_id)), $message_raw, array($recipient_id), A_FROM_SYSTEM_UNPRIVILEGED);
         } else {
-            $message_raw = do_lang('GIVEN_POINTS_FOR', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_lang($recipient_id));
+            $message_raw = do_notification_lang('GIVEN_POINTS_FOR', comcode_escape(get_site_name()), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_lang($recipient_id));
             dispatch_notification('received_points', null, do_lang('YOU_GIVEN_POINTS', integer_format($amount), null, null, get_lang($recipient_id)), $message_raw, array($recipient_id), $sender_id, 3, false, false, null, null, '', '', '', '', null, true);
         }
-        $message_raw = do_lang('MEMBER_GIVEN_POINTS_FOR', comcode_escape($their_displayname), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_site_default_lang());
+        $message_raw = do_notification_lang('MEMBER_GIVEN_POINTS_FOR', comcode_escape($their_displayname), comcode_escape(integer_format($amount)), array(comcode_escape($reason), comcode_escape($url), comcode_escape($your_displayname), comcode_escape($your_username), comcode_escape($their_username)), get_site_default_lang());
         dispatch_notification('receive_points_staff', null, do_lang('MEMBER_GIVEN_POINTS', integer_format($amount), null, null, get_site_default_lang()), $message_raw, null, $sender_id);
     }
 
@@ -199,4 +205,30 @@ function add_to_charge_log($member_id, $amount, $reason, $time = null)
     );
     $map += insert_lang_comcode('reason', $reason, 4);
     $GLOBALS['SITE_DB']->query_insert('chargelog', $map);
+}
+
+/**
+ * Reverse a particular gift point transaction.
+ *
+ * @param  AUTO_LINK $id The transaction ID
+ */
+function reverse_point_gift_transaction($id)
+{
+    $rows = $GLOBALS['SITE_DB']->query_select('gifts', array('*'), array('id' => $id), '', 1);
+    if (!array_key_exists(0, $rows)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
+    $myrow = $rows[0];
+    $amount = $myrow['amount'];
+    $sender_id = $myrow['gift_from'];
+    $recipient_id = $myrow['gift_to'];
+
+    $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $id), '', 1);
+    if (!is_guest($sender_id)) {
+        $_sender_gift_points_used = point_info($sender_id);
+        $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
+        $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
+    }
+    $temp_points = point_info($recipient_id);
+    $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
 }

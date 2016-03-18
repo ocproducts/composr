@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,7 @@ class Module_admin_workflow extends Standard_crud_module
     public $select_name = 'NAME';
     public $menu_label = 'WORKFLOW';
     public $appended_actions_already = true;
+    public $do_preview = false;
 
     /**
      * Find details of the module.
@@ -37,7 +38,6 @@ class Module_admin_workflow extends Standard_crud_module
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['update_require_upgrade'] = 0;
         $info['version'] = 1;
         $info['locked'] = false;
         return $info;
@@ -120,7 +120,7 @@ class Module_admin_workflow extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -134,10 +134,10 @@ class Module_admin_workflow extends Standard_crud_module
     public $doing;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -148,8 +148,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         require_lang('workflows');
 
-        // TODO: Add tutorial
-        //set_helper_panel_tutorial('tut_workflow');
+        set_helper_panel_tutorial('sup_set_up_a_workflow_in_composr');
 
         if ($type == '_add') {
             $doing = 'ADD_' . $this->lang_type;
@@ -319,7 +318,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // Actions
         $fields2 = new Tempcode();
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('TITLE' => do_lang_tempcode('ACTIONS'))));
+        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e578cf36d2552947dfe406f38a2e2877', 'TITLE' => do_lang_tempcode('ACTIONS'))));
 
         // Add an option to redefine the approval permissions
         $fields2->attach(form_input_tick(do_lang('REDEFINE_WORKFLOW_POINTS'), do_lang('REDEFINE_WORKFLOW_POINTS_DESC'), 'redefine_points', false));
@@ -417,8 +416,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // Add the form elements for each section
         if (count($clarify_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
-                'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '956a8b51ebbbd5e581092520534bd332', 'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS_HELP', escape_html(implode(', ', $clarify_points))),
             )));
             foreach ($clarify_points as $seq_id => $p) {
@@ -438,8 +436,7 @@ class Module_admin_workflow extends Standard_crud_module
         }
 
         if (count($redefine_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
-                'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1670e74ade97bd18b8dc798033a14f36', 'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS_HELP'),
             )));
 
@@ -469,8 +466,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         $title = get_screen_title('DEFINE_WORKFLOW_POINTS');
 
-        return do_template('FORM_SCREEN', array(
-            'TITLE' => $title,
+        return do_template('FORM_SCREEN', array('_GUID' => '31a56dccccdf5d7691439f79d120ffcb', 'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
             'HIDDEN' => $hidden,

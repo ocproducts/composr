@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,6 +21,7 @@ class comcode_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('comcode');
     }
 
@@ -40,8 +41,35 @@ class comcode_test_set extends cms_test_case
         }
     }
 
-    public function tearDown()
+    public function testMentions()
     {
-        parent::tearDown();
+        global $MEMBER_MENTIONS_IN_COMCODE;
+
+        $tests = array(
+            // Positives
+            '@test' => true,
+            ' @test' => true,
+            '@test ' => true,
+            ' @test ' => true,
+            '@test,' => true,
+
+            // Negatives
+            ',@test' => false, // Must be preceded by white-space or nothing
+            ',@test,' => false, // "
+            'x@test ' => false, // "
+            '@testx' => false, // Must not have junk on tail-end
+        );
+
+        foreach ($tests as $test => $expected) {
+            $MEMBER_MENTIONS_IN_COMCODE = array();
+            comcode_to_tempcode($test);
+
+            if ($expected) {
+                $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 1, 'Expected to see a mention for: "' . $test . '"');
+            } else 
+            {
+                $this->assertTrue(count($MEMBER_MENTIONS_IN_COMCODE) == 0, 'Expected to NOT see a mention for: "' . $test . '"');
+            }
+        }
     }
 }

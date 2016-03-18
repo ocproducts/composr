@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__mail()
 {
@@ -35,6 +37,8 @@ function init__mail()
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _mail_img_rep_callback($matches)
 {
@@ -53,14 +57,27 @@ function _mail_img_rep_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _mail_css_rep_callback($matches)
 {
-    global $CID_IMG_ATTACHMENT;
-    $cid = uniqid('', true) . '@' . get_domain();
-    if ((basename($matches[1]) != 'block_background.png') && (basename($matches[1]) != 'gradient.png') && (basename($matches[1]) != 'keyboard.png') && (basename($matches[1]) != 'email_link.png') && (basename($matches[1]) != 'external_link.png')) {
+    $filename = basename($matches[1]);
+    if (($filename != 'block_background.png') && ($filename != 'gradient.png') && ($filename != 'keyboard.png') && ($filename != 'email_link.png') && ($filename != 'external_link.png')) {
+        /*global $CID_IMG_ATTACHMENT;   CSS CIDs do not work with Thunderbird, but data does
+        $cid = uniqid('', true) . '@' . get_domain();
         $CID_IMG_ATTACHMENT[$cid] = $matches[1];
-        return 'url(\'cid:' . $cid . '\')';
+        return 'url(\'cid:' . $cid . '\')';*/
+
+        $total_filesize = 0;
+        $test = _get_image_for_cid($matches[1], $GLOBALS['FORUM_DRIVER']->get_guest_id(), $total_filesize);
+        if (is_null($test) || $total_filesize > 1024 * 50/*Let's be reasonable here*/) {
+            return 'none';
+        }
+        list($mime_type, $filename, $file_contents) = $test;
+
+        $value = 'data:' . get_mime_type(get_file_extension($filename), false) . ';base64,' . base64_encode($file_contents);
+        return 'url(\'data:' . $value . '\')';
     }
     return 'none';
 }
@@ -70,6 +87,8 @@ function _mail_css_rep_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _indent_callback($matches)
 {
@@ -81,14 +100,22 @@ function _indent_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _title_callback($matches)
 {
     $symbol = '-';
-    if (strpos($matches[1], '1') !== false) {
+    if (strpos($matches[2], '1') !== false || $matches[2] == '') {
         $symbol = '=';
     }
-    return $matches[2] . "\n" . str_repeat($symbol, strlen($matches[2]));
+
+    $ret = $matches[1];
+    if (substr_count($matches[1], "\n") == 0) {
+        $ret .= "\n";
+    }
+    $ret .= $matches[3] . "\n" . str_repeat($symbol, strlen($matches[3]));
+    return $ret;
 }
 
 /**
@@ -96,6 +123,8 @@ function _title_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _box_callback($matches)
 {
@@ -107,6 +136,8 @@ function _box_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _page_callback($matches)
 {
@@ -120,6 +151,8 @@ function _page_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _random_callback($matches)
 {
@@ -133,6 +166,8 @@ function _random_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _shocker_callback($matches)
 {
@@ -153,6 +188,8 @@ function _shocker_callback($matches)
  *
  * @param  array $matches Matches
  * @return string Replacement
+ *
+ * @ignore
  */
 function _comcode_callback($matches)
 {
@@ -173,7 +210,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $tags_to_preserve = array();
     }
 
-    //$message_plain=str_replace("\n",'',$message_plain);
+    //$message_plain = str_replace("\n", '', $message_plain);
 
     // Very simple case
     if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {
@@ -240,7 +277,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
     if (!in_array('attachment', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
     }
     if (!in_array('media', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Usi", '[url="\2"]\1[/url]', $message_plain);
@@ -250,8 +287,8 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $message_plain));
     }
     if (!in_array('img', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $message_plain);
+        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
     }
     if (!in_array('email', $tags_to_preserve)) {
         $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Usi", '[url="mailto:\1"]\1[/url]', $message_plain);
@@ -291,9 +328,11 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Usi', '\2 (\1)', $message_plain);
     }
 
-    if (!in_array('currency', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[currency\](.*)\[/currency\#Usi', get_option('currency') . ' \1', $message_plain);
-        $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+    if (addon_installed('ecommerce')) {
+        if (!in_array('currency', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
+            $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+        }
     }
 
     if (!in_array('hide', $tags_to_preserve)) {
@@ -306,7 +345,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('title', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\s*\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
+        $message_plain = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
     }
 
     if (!in_array('box', $tags_to_preserve)) {
@@ -336,7 +375,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     if (!in_array('surround', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[surround="accessibility_hidden"\].*\[/surround\]#Usi', '', $message_plain);
+        $message_plain = preg_replace('#\[surround="[\w ]+"\].*\[/surround\]#Usi', '', $message_plain);
     }
 
     if (!in_array('if_in_group', $tags_to_preserve)) {
@@ -378,7 +417,7 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         'no_parse',
         'code',
 
-        // Intentional meta data in these actually, so just leave them in
+        // Intentional metadata in these actually, so just leave them in
         //'reference',
         //'cite',
         //'quote',
@@ -515,10 +554,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
         }
 
-        $through_queue =
-            (!$bypass_queue) &&
-            ((get_option('mail_queue') === '1') || ((get_option('mail_queue_debug') === '1') &&
-                                                    (cron_installed())));
+        $through_queue = (!$bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
         if (!is_null($attachments)) {
             foreach (array_keys($attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
@@ -528,7 +564,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         }
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
-            'm_subject' => substr($subject_line, 0, 255),
+            'm_subject' => cms_mb_substr($subject_line, 0, 255),
             'm_message' => $message_raw,
             'm_to_email' => serialize($to_email),
             'm_to_name' => serialize($to_name),
@@ -614,17 +650,19 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Line termination is fiddly. It is safer to rely on sendmail supporting \n than undetectable-qmail/postfix-masquerading-as-sendmail not supporting the correct \r\n
-    /*$sendmail_path=ini_get('sendmail_path');
-    if ((strpos($sendmail_path,'qmail')!==false) || (strpos($sendmail_path,'sendmail')!==false))
-        $line_term="\n";
-    else
-        $line_term="\r\n";
+    /*
+    $sendmail_path = ini_get('sendmail_path');
+    if ((strpos($sendmail_path, 'qmail') !== false) || (strpos($sendmail_path, 'sendmail') !== false)) {
+        $line_term = "\n";
+    } else {
+        $line_term = "\r\n";
+    }
     */
     if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') || (get_option('smtp_sockets_use') == '1')) {
         $line_term = "\r\n";
-        /*} elseif (strtoupper(substr(PHP_OS,0,3))=='MAC')
-        {
-            $line_term="\r";*/
+    /*} elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'MAC')
+    {
+        $line_term = "\r";*/
     } else {
         $line_term = "\n";
     }
@@ -698,14 +736,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
                     'CSS' => '{CSS}',
                     'LOGOURL' => get_logo_url(''),
-                    /*'LOGOMAP'=>get_option('logo_map'),*/
                     'LANG' => $lang,
                     'TITLE' => $subject,
                     'CONTENT' => $_html_content,
                 ), $lang, false, null, '.tpl', 'templates', $theme);
             }
             require_css('email');
-            $css = css_tempcode(true, true, $message_html->evaluate($lang), $theme);
+            $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
@@ -865,7 +902,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
     if (get_option('allow_ext_images') != '1') {
+        $cid_before = array_keys($CID_IMG_ATTACHMENT);
         $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
+        $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
             $num_matches = preg_match_all($over, $html_evaluated, $matches);
@@ -876,6 +915,12 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
                 }
             }
+        }
+
+        // This is a hack to stop the images used by CSS showing as attachments in some mail clients
+        $cid_just_css = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_just_html);
+        foreach ($cid_just_css as $cid) {
+            $html_evaluated .= '<img width="0" height="0" src="cid:' . $cid . '" />';
         }
     }
 
@@ -888,64 +933,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     $total_filesize = 0;
     foreach ($CID_IMG_ATTACHMENT as $id => $img) {
-        $sending_message .= '--' . $boundary3 . $line_term;
-        $file_path_stub = convert_url_to_path($img);
-        $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
-        $filename = basename($img);
-        if (!is_null($file_path_stub)) {
-            $total_filesize += @filesize($file_path_stub);
-            if ($total_filesize > 1024 * 1024 * 5) {
-                continue; // Too large to process into an email
-            }
-
-            $file_contents = @file_get_contents($file_path_stub);
-        } else {
-            $file_contents = mixed();
-            $matches = array();
-            require_code('attachments');
-            if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
-                $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
-                if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
-                    $myrow = $rows[0];
-
-                    if ($matches[2] == '1') {
-                        $full = $myrow['a_thumb_url'];
-                    } else {
-                        $full = $myrow['a_url'];
-                    }
-
-                    if (url_is_local($full)) {
-                        $_full = get_custom_file_base() . '/' . rawurldecode($full);
-                        if (file_exists($_full)) {
-                            $filename = $myrow['a_original_filename'];
-                            require_code('mime_types');
-                            $total_filesize += @filesize($_full);
-                            if ($total_filesize > 1024 * 1024 * 5) {
-                                continue; // Too large to process into an email
-                            }
-                            $file_contents = file_get_contents($_full);
-                            $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
-                        }
-                    }
-                }
-            }
-            if ($file_contents === null) {
-                $file_contents = http_download_file($img, 1024 * 1024 * 5, false);
-                if (is_null($file_contents)) {
-                    continue;
-                }
-                $total_filesize += strlen($file_contents);
-                if ($total_filesize > 1024 * 1024 * 5) {
-                    continue; // Too large to process into an email
-                }
-                if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
-                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
-                }
-                if (!is_null($GLOBALS['HTTP_FILENAME'])) {
-                    $filename = $GLOBALS['HTTP_FILENAME'];
-                }
-            }
+        $test = _get_image_for_cid($img, $as, $total_filesize);
+        if (is_null($test)) {
+            continue;
         }
+        list($mime_type, $filename, $file_contents) = $test;
+
+        $sending_message .= '--' . $boundary3 . $line_term;
         $sending_message .= 'Content-Type: ' . str_replace("\r", '', str_replace("\n", '', $mime_type)) . $line_term;
         $sending_message .= 'Content-ID: <' . $id . '>' . $line_term;
         $sending_message .= 'Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term;
@@ -962,7 +956,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     if (!is_null($attachments)) {
         foreach ($attachments as $path => $filename) {
             $sending_message .= '--' . $boundary . $line_term;
-            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // .'; name="'.str_replace("\r",'',str_replace("\n",'',$filename)).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
+            $sending_message .= 'Content-Type: ' . get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous')) . $line_term; // . '; name="' . str_replace("\r", '', str_replace("\n", '', $filename)).'"'   http://www.imc.org/ietf-822/old-archive2/msg02121.html
             $sending_message .= 'Content-Transfer-Encoding: base64' . $line_term;
             $sending_message .= 'Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term . $line_term;
 
@@ -985,7 +979,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Support for SMTP sockets rather than PHP mail()
     $error = null;
-    if ((get_option('smtp_sockets_use') == '1') && (function_exists('fsockopen')) && (strpos(@ini_get('disable_functions'), 'shell_exec') === false)) {
+    if ((get_option('smtp_sockets_use') == '1') && (php_function_allowed('fsockopen'))) {
         $worked = false;
 
         $host = get_option('smtp_sockets_host');
@@ -1152,8 +1146,79 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 }
 
 /**
+ * Download a URL, for use as an inline mail image.
+ *
+ * @param  URLPATH $img URL
+ * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
+ * @param  integer $total_filesize Reference to where total filesize is being held
+ * @return ?array A tuple: Mime type filename, file contents (null: error)
+ */
+function _get_image_for_cid($img, $as, &$total_filesize)
+{
+    $file_path_stub = convert_url_to_path($img);
+    $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
+    $filename = basename($img);
+    if (!is_null($file_path_stub)) {
+        $total_filesize += @filesize($file_path_stub);
+        if ($total_filesize > 1024 * 1024 * 5) {
+            return null; // Too large to process into an email
+        }
+
+        $file_contents = @file_get_contents($file_path_stub);
+    } else {
+        $file_contents = mixed();
+        $matches = array();
+        require_code('attachments');
+        if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
+            $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
+            if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
+                $myrow = $rows[0];
+
+                if ($matches[2] == '1') {
+                    $full = $myrow['a_thumb_url'];
+                } else {
+                    $full = $myrow['a_url'];
+                }
+
+                if (url_is_local($full)) {
+                    $_full = get_custom_file_base() . '/' . rawurldecode($full);
+                    if (file_exists($_full)) {
+                        $filename = $myrow['a_original_filename'];
+                        require_code('mime_types');
+                        $total_filesize += @filesize($_full);
+                        if ($total_filesize > 1024 * 1024 * 5) {
+                            return null; // Too large to process into an email
+                        }
+                        $file_contents = file_get_contents($_full);
+                        $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
+                    }
+                }
+            }
+        }
+        if ($file_contents === null) {
+            $file_contents = http_download_file($img, 1024 * 1024 * 5, false);
+            if (is_null($file_contents)) {
+                return null;
+            }
+            $total_filesize += strlen($file_contents);
+            if ($total_filesize > 1024 * 1024 * 5) {
+                return null; // Too large to process into an email
+            }
+            if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
+                $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
+            }
+            if (!is_null($GLOBALS['HTTP_FILENAME'])) {
+                $filename = $GLOBALS['HTTP_FILENAME'];
+            }
+        }
+    }
+
+    return array($mime_type, $filename, $file_contents);
+}
+
+/**
  * Filter out any CSS selector blocks from the given CSS if they definitely do not affect the given (X)HTML.
- * Whilst this is a clever algorithm, it isn't so clever as to actually try and match each selector against a DOM tree. If any segment of a compound selector matches, match is assumed.
+ * While this is a clever algorithm, it isn't so clever as to actually try and match each selector against a DOM tree. If any segment of a compound selector matches, match is assumed.
  *
  * @param  ID_TEXT $c CSS file
  * @param  ?ID_TEXT $theme Theme (null: default)
@@ -1326,19 +1391,102 @@ function form_to_email_entry_script()
  */
 function form_to_email($subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
+    $details = _form_to_email(null, $subject, $intro, $fields, $to_email, $outro, $is_via_post);
+    list($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments) = $details;
+
+    if (addon_installed('captcha')) {
+        if (post_param_integer('_security', 0) == 1) {
+            require_code('captcha');
+            enforce_captcha();
+        }
+    }
+
+    mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+
+    if ($from_email != '') {
+        mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
+    }
+}
+
+/**
+ * Worker funtion for form_to_email.
+ *
+ * @param  ?array $extra_boring_fields Fields to skip in addition to the normal skipped ones (null: just the normal skipped ones)
+ * @param  ?string $subject The subject of the email (null: from posted subject parameter).
+ * @param  string $intro The intro text to the mail (blank: none).
+ * @param  ?array $fields A map of fields to field titles to transmit. (null: all posted fields, except subject and email)
+ * @param  ?string $to_email Email address to send to (null: look from post environment / staff address).
+ * @param  string $outro The outro text to the mail (blank: none).
+ * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
+ * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments
+ *
+ * @ignore
+ */
+function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
+{
     if (is_null($subject)) {
         $subject = post_param_string('subject', get_site_name());
     }
+
     if (is_null($fields)) {
         $fields = array();
-        foreach (array_diff(array_keys($_POST), array('MAX_FILE_SIZE', 'perform_webstandards_check', '_validated', 'posting_ref_id', 'f_face', 'f_colour', 'f_size', 'x', 'y', 'name', 'subject', 'email', 'to_members_email', 'to_written_name', 'redirect', 'http_referer')) as $key) {
-            $is_hidden = (strpos($key, 'hour') !== false) || (strpos($key, 'access_') !== false) || (strpos($key, 'minute') !== false) || (strpos($key, 'confirm') !== false) || (strpos($key, 'pre_f_') !== false) || (strpos($key, 'label_for__') !== false) || (strpos($key, 'wysiwyg_version_of_') !== false) || (strpos($key, 'is_wysiwyg') !== false) || (strpos($key, 'require__') !== false) || (strpos($key, 'tempcodecss__') !== false) || (strpos($key, 'comcode__') !== false) || (strpos($key, '_parsed') !== false) || (substr($key, 0, 1) == '_') || (substr($key, 0, 9) == 'hidFileID') || (substr($key, 0, 11) == 'hidFileName');
+        $boring_fields = array( // NB: Keep in sync with static_export.php
+            'MAX_FILE_SIZE',
+            'perform_webstandards_check',
+            '_validated',
+            'posting_ref_id',
+            'f_face',
+            'f_colour',
+            'f_size',
+            'x',
+            'y',
+            'name',
+            'subject',
+            'email',
+            'to_members_email',
+            'to_written_name',
+            'redirect',
+            'http_referer',
+            'session_id',
+            'csrf_token',
+            md5(get_site_name() . ': antispam'),
+        );
+        if (!is_null($extra_boring_fields)) {
+            $boring_fields = array_merge($boring_fields, $extra_boring_fields);
+        }
+        foreach (array_diff(array_keys($_POST), $boring_fields) as $key) {
+            $is_hidden =  // NB: Keep in sync with static_export.php
+                (strpos($key, 'hour') !== false) || 
+                (strpos($key, 'access_') !== false) || 
+                (strpos($key, 'minute') !== false) || 
+                (strpos($key, 'confirm') !== false) || 
+                (strpos($key, 'pre_f_') !== false) || 
+                (strpos($key, 'tick_on_form__') !== false) || 
+                (strpos($key, 'label_for__') !== false) || 
+                (strpos($key, 'description_for__') !== false) || 
+                (strpos($key, 'wysiwyg_version_of_') !== false) || 
+                (strpos($key, 'is_wysiwyg') !== false) || 
+                (strpos($key, 'require__') !== false) || 
+                (strpos($key, 'tempcodecss__') !== false) || 
+                (strpos($key, 'comcode__') !== false) || 
+                (strpos($key, '_parsed') !== false) || 
+                (substr($key, 0, 1) == '_') || 
+                (substr($key, 0, 9) == 'hidFileID') || 
+                (substr($key, 0, 11) == 'hidFileName');
             if ($is_hidden) {
                 continue;
             }
 
             if (substr($key, 0, 1) != '_') {
-                $fields[$key] = post_param_string('label_for__' . $key, titleify($key));
+                $label = post_param_string('label_for__' . $key, titleify($key));
+                $description = post_param_string('description_for__' . $key, '');
+                $_label = $label . (($description == '') ? '' : (' (' . $description . ')'));
+
+                if ($is_via_post) {
+                    $fields[$key] = $_label;
+                } else {
+                    $fields[$label] = post_param_string($key, null);
+                }
             }
         }
     }
@@ -1351,12 +1499,12 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     }
 
     if ($is_via_post) {
-        foreach ($fields as $field => $field_title) {
-            $field_val = post_param_string($field, null);
+        foreach ($fields as $field_name => $field_title) {
+            $field_val = post_param_string($field_name, null);
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ' . $field_val . "\n\n";
+                _append_form_to_email($message_raw, post_param_integer('tick_on_form__' . $field_name, null) !== null, $field_title, $field_val);
 
-                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field, '') == 'email')) {
+                if (($from_email == '') && ($field_val != '') && (post_param_string('field_tagged__' . $field_name, '') == 'email')) {
                     $from_email = $field_val;
                 }
             }
@@ -1364,7 +1512,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     } else {
         foreach ($fields as $field_title => $field_val) {
             if (!is_null($field_val)) {
-                $message_raw .= $field_title . ': ' . $field_val . "\n\n";
+                _append_form_to_email($message_raw, false, $field_title, $field_val);
             }
         }
     }
@@ -1379,7 +1527,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
     $from_name = post_param_string('name', $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
     $to_name = mixed();
-    if (is_null($to_email)) {
+    if ((is_null($to_email)) && (!is_null(get_value('allow_member_mail_relay')))) {
         $to = post_param_integer('to_members_email', null);
         if (!is_null($to)) {
             $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($to);
@@ -1394,12 +1542,44 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
         $attachments[$file['tmp_name']] = $file['name'];
     }
 
-    if (addon_installed('captcha')) {
-        if (post_param_integer('_security', 0) == 1) {
-            require_code('captcha');
-            enforce_captcha();
+    return array($subject, $message_raw, $to_email, $to_name, $from_email, $from_name, $attachments);
+}
+
+/**
+ * Append a value to a text e-mail.
+ *
+ * @param  string $message_raw Text-email (altered by reference).
+ * @param  boolean $is_tick Whether it is a tick field.
+ * @param  string $field_title Field title.
+ * @param  string $field_val Field value.
+ *
+ * @ignore
+ */
+function _append_form_to_email(&$message_raw, $is_tick, $field_title, $field_val)
+{
+    $prefix = '';
+    $prefix .= '[b]' . $field_title . '[/b]:';
+    if (strpos($prefix, "\n") !== false || strpos($field_title, ' (') !== false) {
+        $prefix .= "\n";
+    } else {
+        $prefix .= " ";
+    }
+
+    if ($is_tick && in_array($field_val, array('', '0', '1'))) {
+        $message_raw .= $prefix;
+        $message_raw .= ($field_val == '1') ? do_lang('YES') : do_lang('NO');
+    } else {
+        if ($field_val == '') {
+            return; // We won't show blank values, gets long
+        }
+
+        $message_raw .= $prefix;
+        if ($field_val == '') {
+            $message_raw .= '(' . do_lang('EMPTY') . ')';
+        } else {
+            $message_raw .= $field_val;
         }
     }
 
-    mail_wrap($subject, $message_raw, array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
+    $message_raw .= "\n\n";
 }

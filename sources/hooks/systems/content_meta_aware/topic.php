@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,14 +31,22 @@ class Hook_content_meta_aware_topic
      */
     public function info($zone = null)
     {
-        if (get_forum_type() != 'cns') {
+        if (get_forum_type() != 'cns' || !isset($GLOBALS['FORUM_DB'])) {
             return null;
         }
 
+        if (is_null($zone)) {
+            $zone = get_module_zone('forumview');
+            if (is_null($zone)) {
+                return null;
+            }
+        }
+
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
             'content_type_label' => 'cns:FORUM_TOPIC',
+            'content_type_universal_label' => 'Forum topic',
 
             'connection' => $GLOBALS['FORUM_DB'],
             'table' => 'f_topics',
@@ -57,24 +65,27 @@ class Hook_content_meta_aware_topic
 
             'title_field' => 't_cache_first_title',
             'title_field_dereference' => false,
-            /*'title_field__resource_fs'=>'t_cache_first_title',
-            'title_field_dereference__resource_fs'=>false,*/
-            'title_field__resource_fs' => 't_description',
+            'title_field__resource_fs' => 't_cache_first_title',
             'title_field_dereference__resource_fs' => false,
+            /*'title_field__resource_fs' => 't_description',
+            'title_field_dereference__resource_fs' => false,*/
             'description_field' => 't_description',
             'thumb_field' => 't_emoticon',
             'thumb_field_is_theme_image' => true,
+            'alternate_icon_theme_image' => 'icons/48x48/menu/social/forum/forums',
 
             'view_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_topic:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'add_url' => '',
-            'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('forumview')) . ':forumview',
+            'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => true,
 
             'views_field' => 't_num_views',
+            'order_field' => null,
             'submitter_field' => 't_cache_first_member_id',
+            'author_field' => null,
             'add_time_field' => 't_cache_first_time',
             'edit_time_field' => 't_cache_last_time',
             'date_field' => 't_cache_first_time',
@@ -84,9 +95,14 @@ class Hook_content_meta_aware_topic
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => 'forums', // NULL if has no permissions
+            'permissions_type_code' => 'forums', // null if has no permissions
 
             'search_hook' => 'cns_posts',
+            'rss_hook' => 'cns_forumview',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'cns_topics',
+            'notification_hook' => 'cns_topic',
+            'sitemap_hook' => 'topic',
 
             'addon_name' => 'cns_forum',
 
@@ -96,7 +112,11 @@ class Hook_content_meta_aware_topic
             'commandr_filesystem_hook' => 'forums',
             'commandr_filesystem__is_folder' => true,
 
-            'rss_hook' => 'cns_forumview',
+            'support_revisions' => true,
+
+            'support_privacy' => false,
+
+            'support_content_reviews' => false,
 
             'actionlog_regexp' => '\w+_TOPIC',
         );

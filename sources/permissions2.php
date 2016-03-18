@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,12 +19,40 @@
  */
 
 /**
+ * Allow all usergroups to access a category
+ *
+ * @param  string $module The module
+ * @param  mixed $category The category (integer or string)
+ */
+function set_global_category_access($module, $category)
+{
+    if (is_integer($category)) {
+        $category = strval($category);
+    }
+
+    $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true);
+
+    $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
+
+    foreach (array_keys($groups) as $group_id) {
+        if (in_array($group_id, $admin_groups)) {
+            continue;
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+    }
+}
+
+/**
  * Log permission checks to the permission_checks.log file
  *
  * @param  MEMBER $member The user checking against
  * @param  ID_TEXT $op The function that was called to check a permission
  * @param  array $params Parameters to this permission-checking function
  * @param  boolean $result Whether the permission was held
+ *
+ * @ignore
  */
 function _handle_permission_check_logging($member, $op, $params, $result)
 {
@@ -159,7 +187,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $category = mixed();
     }
 
-    $server_id = get_module_zone($page) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
+    $server_id = get_module_zone($page, 'modules', null, 'php', true, false) . ':' . $page; // $category is not of interest to us because we use this to find our inheritance settings
 
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);
@@ -185,7 +213,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 
     // Heading
     require_code('zones2');
-    $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
     $out = new Tempcode;
     if (is_null($_overridables[0])) {
         $temp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '6789cb454688a1bc811af1b4011ede35', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'HELP' => $help, 'SECTION_HIDDEN' => true));
@@ -415,7 +443,7 @@ function set_category_permissions_from_environment($module, $category, $page = n
         $GLOBALS[($module == 'forums') ? 'FORUM_DB' : 'SITE_DB']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
     }
 
-    $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+    $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
     if (is_null($_overridables[0])) {
         $overridables = array();
     } else {

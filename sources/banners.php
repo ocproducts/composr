@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,12 +20,53 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__banners()
 {
     define('BANNER_PERMANENT', 0);
     define('BANNER_CAMPAIGN', 1);
-    define('BANNER_DEFAULT', 2);
+    define('BANNER_FALLBACK', 2);
+}
+
+/**
+ * Get SQL for selecting appropriate banners
+ *
+ * @param  ?ID_TEXT $b_type The banner type needed (null: don't care)
+ * @param  boolean $do_type_join If we want the banner type row joined in
+ * @param  ?string $banner_to_avoid Do not show this specific banner (null: none to not show)
+ * @param  ?string $region Region to show for (null: auto-detect)
+ * @return string Banner selection SQL
+ */
+function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null, $region = null)
+{
+    $sql = 'SELECT * FROM ' . get_table_prefix() . 'banners b';
+    if ($do_type_join) {
+        $sql .= ' LEFT JOIN ' . get_table_prefix() . 'banner_types t ON b.b_type=t.id';
+    }
+    $sql .= ' WHERE ';
+
+    $sql .= '(the_type<>' . strval(BANNER_CAMPAIGN) . ' OR ((campaign_remaining>0) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . '))))';
+
+    if (!is_null($b_type)) {
+        $sql .= ' AND (' . db_string_equal_to('b_type', $b_type) . ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'banners_types bt WHERE b.name=bt.name AND ' . db_string_equal_to('bt.b_type', $b_type) . '))';
+    }
+
+    if (get_option('filter_regions') == '1') {
+        require_code('locations');
+        $sql .= sql_region_filter('banner', 'b.name', $region);
+    }
+
+    if (!is_null($banner_to_avoid)) {
+        $sql .= ' AND ' . db_string_not_equal_to('name', $banner_to_avoid);
+    }
+
+    if (addon_installed('unvalidated')) {
+        $sql .= ' AND validated=1';
+    }
+
+    return $sql;
 }
 
 /**
@@ -48,7 +89,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
     $_title = $row['name'];
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER'), $_title) : $_title;
 
-    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['the_type'], $row['submitter']);
+    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
 
     return do_template('SIMPLE_PREVIEW_BOX', array(
         '_GUID' => ($guid != '') ? $guid : 'aaea5f7f64297ab46aa3b3182fb57c37',
@@ -59,6 +100,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         'URL' => $url,
         'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
         'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_banners:__edit:' . $row['name'],
+        'RESOURCE_TYPE' => 'banner',
     ));
 }
 
@@ -79,9 +121,9 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
 
     $_title = $row['id'];
     if ($_title == '') {
-        $_title = do_lang('GENERAL');
+        $_title = do_lang('_DEFAULT');
     }
-    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('_BANNER_TYPE'), $_title) : $_title;
+    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER_TYPE'), $_title) : $_title;
 
     $num_entries = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('validated' => 1));
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
@@ -93,6 +135,7 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
         'SUMMARY' => '',
         'ENTRY_DETAILS' => $entry_details,
         'URL' => $url,
+        'RESOURCE_TYPE' => 'banner_type',
     ));
 }
 
@@ -107,9 +150,10 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
  * @param  ?string $source The banner advertisor who is actively displaying the banner (calling up this function) and hence is rewarded (null: get from URL param) (blank: our own site)
  * @param  ?integer $width The width (null: standard for banner type)
  * @param  ?integer $height The height (null: standard for banner type)
+ * @param  ?string $region Region to show for (null: auto-detect)
  * @return ?Tempcode Result (null: we weren't asked to return the result)
  */
-function banners_script($ret = false, $type = null, $dest = null, $b_type = null, $source = null, $width = null, $height = null)
+function banners_script($ret = false, $type = null, $dest = null, $b_type = null, $source = null, $width = null, $height = null, $region = null)
 {
     require_code('images');
     require_lang('banners');
@@ -119,7 +163,20 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         $type = get_param_string('type', '');
     }
 
-    if ($type == 'click') {
+    if ($type == 'image_proxy') {
+        $dest = get_param_string('dest');
+
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $dest), 1);
+
+        $img_url = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'img_url', array('name' => $dest));
+        if (empty($img_url)) {
+            $img_url = find_theme_image('blank');
+        }
+        if (url_is_local($img_url)) {
+            $img_url = get_custom_base_url() . '/' . $img_url;
+        }
+        header('Location: ' . $img_url);
+    } elseif ($type == 'click') {
         // Input parameters
         if ($source === null) {
             $source = get_param_string('source', '');
@@ -135,7 +192,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         // Find the information about the dest
         $rows = $GLOBALS['SITE_DB']->query_select('banners', array('site_url', 'hits_to', 'campaign_remaining'), array('name' => $dest));
         if (!array_key_exists(0, $rows)) {
-            fatal_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'banner'));
         }
         $myrow = $rows[0];
         $url = $myrow['site_url'];
@@ -215,7 +272,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         if ($dest != '') {
             $myquery = 'SELECT * FROM ' . get_table_prefix() . 'banners WHERE ' . db_string_equal_to('name', $dest);
         } else {
-            $myquery = 'SELECT * FROM ' . get_table_prefix() . 'banners WHERE ((the_type<>' . strval(BANNER_CAMPAIGN) . ') OR (campaign_remaining>0)) AND ((expiry_date IS NULL) OR (expiry_date>' . strval(time()) . ')) AND ' . db_string_not_equal_to('name', $source) . ' AND validated=1 AND ' . db_string_equal_to('b_type', $b_type);
+            $myquery = banner_select_sql($b_type, false, $source, $region);
         }
 
         // Run Query
@@ -240,11 +297,11 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             }
         }
 
-        // Are we allowed to show default banners?
-        $show_defaults = true;
+        // Are we allowed to show fallback banners?
+        $show_fallbacks = true;
         foreach ($rows as $counter => $myrow) {
             if ($myrow['the_type'] == BANNER_CAMPAIGN) {
-                $show_defaults = false;
+                $show_fallbacks = false;
             }
         }
 
@@ -270,10 +327,10 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         while (array_key_exists($counter, $rows)) {
             $myrow = $rows[$counter];
 
-            if (($myrow['the_type'] == 2) && (!$show_defaults)) {
+            if (($myrow['the_type'] == 2) && (!$show_fallbacks)) {
                 $myrow['importance_modulus'] = 0;
             }
-            $tally += $myrow['importance_modulus'];
+            $tally += max(0, $myrow['importance_modulus']);
             $bound[$counter] = $tally;
             $counter++;
         }
@@ -294,9 +351,9 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         // Choose which banner to show from the results
-        $rand = mt_rand(1, $tally);
-        for ($i = 0; $i < $counter; $i++) {
-            if ($rand <= $bound[$i]) {
+        $rand = mt_rand(0, $tally);
+        for ($i = 0; $i < $counter - 1; $i++) {
+            if ($rand >= (isset($bound[$i - 1]) ? $bound[$i - 1] : 0) && $rand < $bound[$i]) {
                 break;
             }
         }
@@ -335,15 +392,19 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
 /**
  * Get a nice, formatted XHTML list to select a banner type
  *
- * @param  ?ID_TEXT $it The currently selected licence (null: none selected)
- * @return Tempcode The list of categories
+ * @param  ?mixed $it The currently selected banner type (null: none selected)
+ * @return Tempcode The list of banner types
  */
 function create_selection_list_banner_types($it = null)
 {
+    if (is_string($it)) {
+        $it = array($it);
+    }
+
     $list = new Tempcode();
     $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), null, 'ORDER BY id');
     foreach ($rows as $row) {
-        $caption = ($row['id'] == '') ? do_lang('GENERAL') : $row['id'];
+        $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
 
         if ($row['t_is_textual'] == 1) {
             $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', $caption);
@@ -351,7 +412,7 @@ function create_selection_list_banner_types($it = null)
             $type_line = do_lang_tempcode('BANNER_TYPE_LINE', $caption, strval($row['t_image_width']), strval($row['t_image_height']));
         }
 
-        $list->attach(form_input_list_entry($row['id'], $it === $row['id'], $type_line));
+        $list->attach(form_input_list_entry($row['id'], in_array($row['id'], $it), $type_line));
     }
     return $list;
 }
@@ -482,7 +543,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
 /**
  * Get a list of banners.
  *
- * @param  ?AUTO_LINK $it The ID of the banner selected by default (null: no specific default)
+ * @param  ?ID_TEXT $it The ID of the banner selected by default (null: no specific default)
  * @param  ?MEMBER $only_owned Only show banners owned by the member (null: no such restriction)
  * @return Tempcode The list
  */

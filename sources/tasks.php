@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,13 +24,16 @@
 function tasks_script()
 {
     $id = get_param_integer('id');
-    $secure_ref = get_param_string('secure_ref');
+    $secure_ref = get_param_string('secure_ref', '');
 
-    $task_rows = $GLOBALS['SITE_DB']->query_select('task_queue', array('*'), array(
+    $where = array(
         'id' => $id,
-        't_secure_ref' => $secure_ref,
         't_locked' => 0,
-    ), '', 1);
+    );
+    if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
+        $where['t_secure_ref'] = $secure_ref;
+    }
+    $task_rows = $GLOBALS['SITE_DB']->query_select('task_queue', array('*'), $where, '', 1);
     if (!array_key_exists(0, $task_rows)) {
         return; // Missing / locked / secure_ref error
     }
@@ -63,12 +66,19 @@ function execute_task_background($task_row)
     create_session($requester, 1);
 
     disable_php_memory_limit();
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     $hook = $task_row['t_hook'];
-    $args = unserialize($task_row['t_args']);
+    $args = @unserialize($task_row['t_args']);
+    if ($args === false) {
+        $GLOBALS['SITE_DB']->query_delete('task_queue', array(
+            'id' => $task_row['id'],
+        ), '', 1);
+
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
     require_code('hooks/systems/tasks/' . filter_naughty($hook));
     $ob = object_factory('Hook_task_' . $hook);
     $result = call_user_func_array(array($ob, 'run'), $args);
@@ -76,9 +86,11 @@ function execute_task_background($task_row)
     if ($task_row['t_send_notification'] == 1) {
         $attachments = array();
 
+        require_code('notifications');
+
         if (is_null($result)) {
             $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
-            $message = do_lang('TASK_COMPLETED_BODY_SIMPLE');
+            $message = do_notification_lang('TASK_COMPLETED_BODY_SIMPLE');
         } else {
             $content_result = mixed();
 
@@ -88,7 +100,7 @@ function execute_task_background($task_row)
             if (is_null($mime_type)) {
                 $subject = do_lang('TASK_FAILED_SUBJECT', $task_row['t_title']);
                 $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                $message = do_lang('TASK_FAILED_SIMPLE', $_content_result);
+                $message = do_notification_lang('TASK_FAILED_SIMPLE', $_content_result);
             } else {
                 $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
 
@@ -102,7 +114,7 @@ function execute_task_background($task_row)
                     }
 
                     $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                    $message = do_lang('TASK_COMPLETED_SIMPLE', $_content_result);
+                    $message = do_notification_lang('TASK_COMPLETED_SIMPLE', $_content_result);
                 } else {
                     // Some downloaded result
                     if (is_array($content_result)) {
@@ -111,12 +123,11 @@ function execute_task_background($task_row)
                         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
                     }
 
-                    $message = do_lang('TASK_COMPLETED_BODY_ATTACHMENT');
+                    $message = do_notification_lang('TASK_COMPLETED_BODY_ATTACHMENT');
                 }
             }
         }
 
-        require_code('notifications');
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', $attachments);
 
         if (is_null(!$result)) {
@@ -134,7 +145,7 @@ function execute_task_background($task_row)
 }
 
 /**
- * Send out the newsletter.
+ * Execute a long task, via the task queue.
  *
  * @param  string $plain_title Title to use for completion notification subject lines
  * @param  ?Tempcode $title Title to use if there is no queueing or a queue message (null: don't return a full screen)
@@ -154,7 +165,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
     if (
         (get_param_integer('keep_debug_tasks', 0) == 1) ||
         (get_option('tasks_background') == '0') ||
-        ((is_guest()) && ($send_notification))
+        ((is_guest()) && ($send_notification)) ||
+        (!$GLOBALS['SITE_DB']->table_exists('task_queue')/*LEGACY*/)
     ) {
         $force_immediate = true;
     }
@@ -171,8 +183,8 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
 
         // Disable limits, as tasks can be resource-intensive
         disable_php_memory_limit();
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Run task
@@ -235,7 +247,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
             sync_file($content_result[1]);
         }/* elseif (is_object($content_result))
         {
-            $content_result->evaluate_echo(NULL);
+            $content_result->evaluate_echo(null);
         } else
         {
             echo $content_result;

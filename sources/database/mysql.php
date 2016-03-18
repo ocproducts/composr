@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,7 +41,7 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
@@ -92,8 +92,8 @@ class Database_Static_mysql extends Database_super_mysql
         $this->last_select_db = $db_name;
 
         global $SITE_INFO;
-        if (!array_key_exists('database_charset', $SITE_INFO)) {
-            $SITE_INFO['database_charset'] = (strtolower(get_charset()) == 'utf-8') ? 'utf8mb4' : 'latin1';
+        if (empty($SITE_INFO['database_charset'])) {
+            $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
             mysql_set_charset($SITE_INFO['database_charset'], $db);
@@ -167,6 +167,8 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         static $mres = null;
         if ($mres === null) {
             $mres = function_exists('mysql_real_escape_string');
@@ -202,10 +204,12 @@ class Database_Static_mysql extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet='.strval(intval(strlen($query)*1.3)),$db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query)));
+                } else {
+                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...' . integer_format(strlen($query))), 'warn');
                 }
                 return null;
             }
@@ -255,14 +259,14 @@ class Database_Static_mysql extends Database_super_mysql
                 }
                 fatal_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
             } else {
-                echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']' . '<br />' . "\n");
+                echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']') . "<br />\n";
                 return null;
             }
         }
 
         $query = ltrim($query);
         $sub = substr($query, 0, 4);
-        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'EXPL') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
+        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 
@@ -314,7 +318,7 @@ class Database_Static_mysql extends Database_super_mysql
 
                 switch ($type) {
                     case 'int':
-                        if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of NULL
+                        if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of null
                             $newrow[$name] = null;
                         } else {
                             if ($v == "\0" || $v == "\1") {

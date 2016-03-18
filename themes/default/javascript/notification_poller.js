@@ -15,7 +15,7 @@ if (typeof window.notifications_time_barrier=='undefined')
 
 function notification_poller_init(time_barrier)
 {
-	require_javascript('sound');
+	require_javascript('sound',window.SoundManager);
 
 	window.notifications_time_barrier=time_barrier;
 
@@ -133,13 +133,13 @@ function display_alert(notification)
 			var go_func=function() {
 				var sound_url='data/sounds/message_received.mp3';
 				var base_url=((sound_url.indexOf('data_custom')==-1)&&(sound_url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
-				window.soundManager.createSound('notification_ping',base_url+'/'+sound_url);
-				window.soundManager.play('notification_ping');
+				var sound_object=window.soundManager.createSound({url: base_url+'/'+sound_url});
+				sound_object.play();
 			};
 
 			if (!window.soundManager.setupOptions.url)
 			{
-				window.soundManager.setup({onready: go_func, url: get_base_url()+'/data', debugMode: false});
+				window.soundManager.setup({onready: go_func, url: get_base_url()+'/data/soundmanager', debugMode: false});
 			} else
 			{
 				go_func();
@@ -148,6 +148,7 @@ function display_alert(notification)
 	}
 
 	// Show desktop notification
+	/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 	if (window.notify.isSupported)
 	{
 		var icon='{$IMG;,favicon}'.replace(/^https?:/,window.location.protocol);
@@ -175,6 +176,7 @@ function display_alert(notification)
 			window.notify.requestPermission(); // Probably won't actually work (silent fail), as we're not running via a user-initiated event; this is why we have explicit_notifications_enable_request called elsewhere
 		}
 	}
+	/*{+END}*/
 
 	// Mark done
 	window.notifications_already_presented[id]=true;
@@ -183,7 +185,9 @@ function display_alert(notification)
 // We attach to an onclick handler, to enable desktop notifications later on; we need this as we cannot call requestPermission out of the blue
 function explicit_notifications_enable_request()
 {
+	/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 	window.notify.requestPermission();
+	/*{+END}*/
 }
 
 function toggle_top_personal_stats(event)
@@ -271,6 +275,8 @@ function _toggle_messaging_box(event,name,hide)
 
 	return false;
 }
+
+/*{+START,IF,{$CONFIG_OPTION,notification_desktop_alerts}}*/
 
 /**
  * Copyright 2012 Tsvetan Tsvetkov
@@ -487,3 +493,5 @@ function _toggle_messaging_box(event,name,hide)
 		Object.seal(win.notify);
 	}
 }(window));
+
+/*{+END}*/

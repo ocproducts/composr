@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,11 +21,14 @@ class Hook_addon_registry_buildr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
-        return array();
+        return array(
+            'buildr_addon',
+        );
     }
 
     /**
@@ -188,7 +191,7 @@ Buildr is a full zone addon for Composr.';
             'buildr/pages/comcode_custom/EN/docs.txt',
             'buildr/pages/comcode/EN/index.html',
             'buildr/pages/comcode_custom/EN/rules.txt',
-            'buildr/pages/comcode/EN/start.txt',
+            'buildr/pages/comcode_custom/EN/start.txt',
             'buildr/pages/comcode/index.html',
             'buildr/pages/comcode_custom/.htaccess',
             'buildr/pages/comcode_custom/EN/.htaccess',
@@ -256,7 +259,6 @@ Buildr is a full zone addon for Composr.';
             'data_custom/modules/buildr/docs/room1.3.png',
             'data_custom/modules/buildr/docs/roompw1.0.png',
             'data_custom/modules/buildr/docs/roompw1.1.png',
-            'data_custom/modules/buildr/docs//modules/buildr/index.html',
         );
     }
 }

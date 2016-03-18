@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -73,7 +73,7 @@ function dispatch_member_mention_notifications($content_type, $content_id, $subm
         }
 
         $subject = do_lang('NOTIFICATION_MEMBER_MENTION_SUBJECT', $poster_username, strtolower($content_type_title), array($content_title, $content_url_email_safe->evaluate(), $content_type_title, $poster_displayname));
-        $message = do_lang('NOTIFICATION_MEMBER_MENTION_BODY', comcode_escape($poster_username), comcode_escape(strtolower($content_type_title)), array(comcode_escape($content_title), $content_url_email_safe->evaluate(), comcode_escape($content_type_title), comcode_escape($poster_displayname), $rendered));
+        $message = do_notification_lang('NOTIFICATION_MEMBER_MENTION_BODY', comcode_escape($poster_username), comcode_escape(strtolower($content_type_title)), array(comcode_escape($content_title), $content_url_email_safe->evaluate(), comcode_escape($content_type_title), comcode_escape($poster_displayname), $rendered));
 
         dispatch_notification('member_mention', '', $subject, $message, array($member_id), get_member());
     }

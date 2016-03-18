@@ -58,7 +58,7 @@ function initialise_image_fader_html(data,v,k)
 function initialise_image_fader_image(data,v,k,mill,total)
 {
 	var period_in_msecs=50;
-	increment=3;
+	var increment=3;
 	if (period_in_msecs*100/increment>mill)
 	{
 		period_in_msecs=mill*increment/100;
@@ -288,7 +288,7 @@ function flip_page(to,pass_id,sections)
 		x=document.getElementById(pass_id+'_section_'+sections[i]);
 		var current_place=document.getElementById(pass_id+'_section_'+sections[current_pos]);
 		//var width=current_place?'100%':null;
-		var width=current_place?find_width(current_place,true,true,true):null;
+		var width=current_place?find_width(current_place,true):null;
 		if (x)
 		{
 			if (x.className=='comcode_big_tab')

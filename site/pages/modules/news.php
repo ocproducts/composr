@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Module_news
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 7;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -134,12 +134,10 @@ class Module_news
             ));
             $GLOBALS['SITE_DB']->create_index('news_category_entries', 'news_entry_category', array('news_entry_category'));
 
-            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
             $categories = $GLOBALS['SITE_DB']->query_select('news_categories', array('id'));
             foreach ($categories as $_id) {
-                foreach (array_keys($groups) as $group_id) {
-                    $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($_id['id']), 'group_id' => $group_id));
-                }
+                require_code('permissions2');
+                set_global_category_access('news', $_id['id']);
             }
 
             $GLOBALS['SITE_DB']->create_index('news', 'ftjoin_ititle', array('title'));
@@ -161,7 +159,7 @@ class Module_news
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -193,7 +191,7 @@ class Module_news
     public $category;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -202,6 +200,7 @@ class Module_news
         $type = get_param_string('type', 'browse');
 
         require_lang('news');
+        require_code('news');
 
         inform_non_canonical_parameter('select');
         inform_non_canonical_parameter('select_and');
@@ -225,21 +224,32 @@ class Module_news
             $select = get_param_string('id', get_param_string('select', '*'));
             $select_and = get_param_string('select_and', '*');
 
+            $news_cat_id = null;
+            $news_cat_rows = array();
+            if (is_numeric($select)) {
+                $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array('id' => intval($select)), '', 1);
+                if (array_key_exists(0, $news_cat_rows)) {
+                    $news_cat_id = intval($select);
+                }
+            }
+
             // Title
             if ($blog === 1) {
                 $this->title = get_screen_title('BLOG_NEWS_ARCHIVE');
             } else {
-                if (is_numeric($select)) {
-                    $news_cat_title = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
-                    if (array_key_exists(0, $news_cat_title)) {
-                        $news_cat_title[0]['_nc_title'] = get_translated_text($news_cat_title[0]['nc_title']);
-                        $this->title = get_screen_title(make_fractionable_editable('news_category', $select, $news_cat_title[0]['_nc_title']), false);
-                    } else {
-                        $this->title = get_screen_title('NEWS_ARCHIVE');
-                    }
+                if ($news_cat_id !== null) {
+                    $news_cat_rows[0]['_nc_title'] = get_translated_text($news_cat_rows[0]['nc_title']);
+                    $this->title = get_screen_title(make_fractionable_editable('news_category', $select, $news_cat_rows[0]['_nc_title']), false);
                 } else {
                     $this->title = get_screen_title('NEWS_ARCHIVE');
                 }
+            }
+
+            // Metadata
+            if ($news_cat_id !== null) {
+                set_extra_request_metadata(array(
+                    'identifier' => '_SEARCH:news:browse:select=:' . strval($news_cat_id),
+                ), $news_cat_rows[0], 'news_category', strval($news_cat_id));
             }
 
             // Breadcrumbs
@@ -273,7 +283,7 @@ class Module_news
             // Load from database
             $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $id), '', 1);
             if (!array_key_exists(0, $rows)) {
-                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE'));
+                return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE', 'news'));
             }
             $myrow = $rows[0];
 
@@ -289,10 +299,10 @@ class Module_news
                 $parent_title = do_lang_tempcode('BLOG_NEWS_ARCHIVE');
             } else {
                 if (is_numeric($select)) {
-                    $news_cat_title = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
-                    if (array_key_exists(0, $news_cat_title)) {
-                        $news_cat_title[0]['_nc_title'] = get_translated_text($news_cat_title[0]['nc_title']);
-                        $parent_title = make_string_tempcode(escape_html($news_cat_title[0]['_nc_title']));
+                    $news_cat_rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('nc_title'), array('id' => intval($select)), '', 1);
+                    if (array_key_exists(0, $news_cat_rows)) {
+                        $news_cat_rows[0]['_nc_title'] = get_translated_text($news_cat_rows[0]['nc_title']);
+                        $parent_title = make_string_tempcode(escape_html($news_cat_rows[0]['_nc_title']));
                     } else {
                         $parent_title = do_lang_tempcode('NEWS_ARCHIVE');
                     }
@@ -325,7 +335,7 @@ class Module_news
             // Category membership
             $news_cats = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'news_categories WHERE nc_owner IS NULL OR id=' . strval($myrow['news_category']));
             $news_cats = list_to_map('id', $news_cats);
-            $img = ($news_cats[$myrow['news_category']]['nc_img'] == '') ? '' : find_theme_image($news_cats[$myrow['news_category']]['nc_img']);
+            $img = get_news_category_image_url($news_cats[$myrow['news_category']]['nc_img']);
             if (is_null($img)) {
                 $img = '';
             }
@@ -351,19 +361,12 @@ class Module_news
                 }
             }
 
-            // Meta data
+            // Metadata
             set_extra_request_metadata(array(
-                'created' => date('Y-m-d', $myrow['date_and_time']),
-                'creator' => $myrow['author'],
-                'publisher' => $GLOBALS['FORUM_DRIVER']->get_username($myrow['submitter']),
-                'modified' => is_null($myrow['edit_date']) ? '' : date('Y-m-d', $myrow['edit_date']),
-                'type' => 'News article',
-                'title' => get_translated_text($myrow['title']),
                 'identifier' => '_SEARCH:news:view:' . strval($id),
                 'image' => $og_img,
-                'description' => strip_comcode(get_translated_text($myrow['news'])),
                 'category' => $category,
-            ));
+            ), $myrow, 'news', strval($id));
 
             $this->id = $id;
             $this->blog = $blog;
@@ -389,7 +392,6 @@ class Module_news
     public function run()
     {
         require_code('feedback');
-        require_code('news');
         require_css('news');
 
         $type = get_param_string('type', 'browse');
@@ -589,7 +591,10 @@ class Module_news
                 access_denied('PRIVILEGE', 'jump_to_unvalidated');
             }
 
-            $warning_details = do_template('WARNING_BOX', array('_GUID' => '5fd82328dc2ac9695dc25646237065b0', 'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT')));
+            $warning_details = do_template('WARNING_BOX', array(
+                '_GUID' => '5fd82328dc2ac9695dc25646237065b0',
+                'WARNING' => do_lang_tempcode((get_param_integer('redirected', 0) == 1) ? 'UNVALIDATED_TEXT_NON_DIRECT' : 'UNVALIDATED_TEXT', 'news'),
+            ));
         } else {
             $warning_details = new Tempcode();
         }

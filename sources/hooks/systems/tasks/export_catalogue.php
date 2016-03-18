@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,10 +50,10 @@ class Hook_task_export_catalogue
 
         $category_names = array();
 
-        $outfile_path = cms_tempnam('csv');
+        $outfile_path = cms_tempnam();
         $outfile = fopen($outfile_path, 'w+b');
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order');
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         global $CAT_FIELDS_CACHE;
         $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
         fwrite($outfile, 'ID,');

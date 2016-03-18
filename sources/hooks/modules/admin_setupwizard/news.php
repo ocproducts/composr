@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -83,6 +83,8 @@ class Hook_sw_news
         if (!addon_installed('news')) {
             return;
         }
+
+        require_code('news');
 
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
         $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);

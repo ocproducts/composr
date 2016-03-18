@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,10 +24,10 @@
 class Hook_members_quiz
 {
     /**
-     * Find member-related links to inject.
+     * Find member-related links to inject to details section of the about tab of the member profile.
      *
-     * @param  MEMBER $member_id The ID of the member we are getting link hooks for
-     * @return array List of lists of tuples for results (by link section). Each tuple is: type,title,url
+     * @param  MEMBER $member_id The ID of the member we are getting links for
+     * @return array List of pairs: title to value.
      */
     public function run($member_id)
     {
@@ -78,10 +78,10 @@ class Hook_members_quiz
         $selectors = new Tempcode();
         foreach ($_selectors as $selector_value => $selector_name) {
             $selected = ($order == $selector_value);
-            $selectors->attach(do_template('PAGINATION_SORTER', array('SELECTED' => $selected, 'NAME' => do_lang_tempcode($selector_name), 'VALUE' => $selector_value)));
+            $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => '87b66fd533e5b2b185b00ed97c1d4c6b', 'SELECTED' => $selected, 'NAME' => do_lang_tempcode($selector_name), 'VALUE' => $selector_value)));
         }
         $sort_url = get_self_url(false, false, array('sort_quiz_results' => null));
-        $sorting = do_template('PAGINATION_SORT', array('SORT' => 'sort_quiz_results', 'URL' => $sort_url, 'SELECTORS' => $selectors));
+        $sorting = do_template('PAGINATION_SORT', array('_GUID' => '80b6bfaaf33fe0f455d57e9d940abf96', 'SORT' => 'sort_quiz_results', 'URL' => $sort_url, 'SELECTORS' => $selectors));
 
         if ($order == 'q_name ASC' || $order == 'q_name DESC') {
             $order = str_replace('q_name', $GLOBALS['SITE_DB']->translate_field_ref('q_name'), $order);
@@ -97,7 +97,7 @@ class Hook_members_quiz
             false,
             array('q_name' => 'SHORT_TRANS')
         );
-        //$has_points = ($GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type'=>'TEST', 'q_validated' => 1)) > 0.0);
+        //$has_points = ($GLOBALS['SITE_DB']->query_select_value('quizzes', 'SUM(q_points_for_passing)', array('q_type' => 'TEST', 'q_validated' => 1)) > 0.0);
         $categories = array();
         foreach ($entries as $entry) {
             list(
@@ -191,8 +191,7 @@ class Hook_members_quiz
             $delete_url = build_url(array('page' => 'admin_quiz', 'type' => 'delete_quiz_results'), get_module_zone('admin_quiz'));
         }
 
-        return array(do_template('MEMBER_QUIZ_ENTRIES', array(
-            'CATEGORIES' => $categories,
+        return array(do_template('MEMBER_QUIZ_ENTRIES', array('_GUID' => '3143daff524b1e8e8de090d445e20b28', 'CATEGORIES' => $categories,
             'MEMBER_ID' => strval($member_id),
             'SORTING' => $sorting,
             'DELETE_URL' => $delete_url,

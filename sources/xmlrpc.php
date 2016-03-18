@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,11 @@
  * @copyright  ocProducts Ltd
  * @package    core
  */
+
+/*
+Note that we generally prefer JSON in Composr.
+However in some cases legacy APIs may force us to use XML-RPC.
+*/
 
 /**
  * Do a highly-simplified XML-RPC request (no actual calling supported - just messaging).
@@ -52,7 +57,7 @@ END;
 </methodCall>
 END;
 
-    $result = http_download_file($url, null, true, false, 'Composr', array('_' => $rpc));
+    $result = http_download_file($url, null, true, false, 'Composr', array($rpc), null, null, null, null, null, null, null, 6.0, true, null, null, null, 'text/xml');
     return $result;
 }
 
@@ -61,6 +66,8 @@ END;
  *
  * @param  mixed $_value Data
  * @return string XML-RPC format version
+ *
+ * @ignore
  */
 function _xml_rpc_type_convert($_value)
 {

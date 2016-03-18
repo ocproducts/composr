@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,11 +20,11 @@
 
 /*
 This file is designed to be able to work as standalone, should you want to hook rewrite rules directly into it.
-This allows static cache to run even when ocPortal is itself not booting at all.
+This allows static cache to run even when Composr is itself not booting at all.
 */
 
 if (!isset($GLOBALS['FILE_BASE'])) {
-    // Find ocPortal base directory, and chdir into it
+    // Find Composr base directory, and chdir into it
     global $FILE_BASE;
     $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
     $FILE_BASE = dirname(dirname($FILE_BASE));
@@ -69,10 +69,18 @@ function can_static_cache()
     if (isset($_GET['redirect'])) {
         return false;
     }
-    /*$url_easy=static_cache__get_self_url_easy();
-    if (strpos($url_easy,'sort=')!==false) return false;	Actually this stops very useful caching, esp on the forum - better to just reduce the cache time to a fraction of an hour
-    if (strpos($url_easy,'start=')!==false) return false;
-    if (strpos($url_easy,'max=')!==false) return false;*/
+    /* Actually this stops very useful caching, esp on the forum - better to just reduce the cache time to a fraction of an hour
+    $url_easy = static_cache__get_self_url_easy();
+    if (strpos($url_easy, 'sort=') !== false) {
+        return false;
+    }
+    if (strpos($url_easy, 'start=') !== false) {
+        return false;
+    }
+    if (strpos($url_easy, 'max=') !== false) {
+        return false;
+    }
+    */
     return true;
 }
 

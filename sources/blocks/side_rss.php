@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -62,6 +62,10 @@ class Block_side_rss
      */
     public function run($map)
     {
+        if (!addon_installed('news')) {
+            return new Tempcode();
+        }
+
         require_lang('news');
         require_css('news');
         require_code('obfuscate');

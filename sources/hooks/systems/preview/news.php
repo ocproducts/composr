@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_news
      */
     public function applies()
     {
-        $applies = ((get_param_string('page', '') == 'cms_news') || (get_param_string('page', '') == 'cms_blogs')) && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
+        $applies = ((get_page_name() == 'cms_news') || (get_page_name() == 'cms_blogs')) && ((get_param_string('type', '') == 'add') || (get_param_string('type', '') == '_edit'));
         return array($applies, 'news', false);
     }
 
@@ -43,7 +43,7 @@ class Hook_preview_news
     {
         $original_comcode = post_param_string('post');
 
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         $post_bits = do_comcode_attachments($original_comcode, 'news', strval(-$posting_ref_id), true, $GLOBALS['SITE_DB']);
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];

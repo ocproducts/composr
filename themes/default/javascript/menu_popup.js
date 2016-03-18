@@ -153,7 +153,7 @@ function pop_up_menu(id,place,menu,event,outside_fixed_width)
 		var pos_top=t;
 		if (pos_top+find_height(e)+10>full_height)
 		{
-			var above_pos_top=pos_top-find_height(e,true,true,true)+e_parent_height-10;
+			var above_pos_top=pos_top-find_height(e,true)+e_parent_height-10;
 			if (above_pos_top>0) pos_top=above_pos_top;
 		}
 		e.style.top=pos_top+'px';

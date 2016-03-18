@@ -33,7 +33,7 @@ class Hook_cron_downloads_followup_email
         //    2=debug output with short interval (.01 hour instead of default 24 hours) for manually running cron_bridge.php
         //    1=debug output with normal interval (default 24 hours)
         //    0=no debug output
-        // In Commandr :set_value('downloads_followup_email_debug','1');
+        // In Commandr :set_value('downloads_followup_email_debug', '1');
         $debug_mode = get_value('downloads_followup_email_debug');
         if ($debug_mode != '0' && $debug_mode != '1' && $debug_mode != '2') {
             $debug_mode = '0';
@@ -73,8 +73,8 @@ class Hook_cron_downloads_followup_email
             return; // Don't do more than once per $cron_interval (default is 24 hours)
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         // Set the templates names to use. Use CUSTOM template if it exists, else use the default template.
@@ -143,7 +143,7 @@ class Hook_cron_downloads_followup_email
             }
             $subject_line = do_lang('SUBJECT_DOWNLOADS_FOLLOWUP_EMAIL', get_site_name(), $member_name, $s, $lang, false);
             // Pass download count, download list, and member ID to template.
-            $message = static_evaluate_tempcode(do_template("$mail_template", array('MEMBER_ID' => strval($member_id), 'DOWNLOAD_LIST' => $download_list, 'DOWNLOAD_COUNT' => strval($count))));
+            $message = static_evaluate_tempcode(do_notification_template($mail_template, array('MEMBER_ID' => strval($member_id), 'DOWNLOAD_LIST' => $download_list, 'DOWNLOAD_COUNT' => strval($count))));
 
             if ($debug) {
                 echo "downloads_followup_email: sending notification (if user allows download followup notifications) to ID #" . strval($member_id) . " ($member_name)\n";

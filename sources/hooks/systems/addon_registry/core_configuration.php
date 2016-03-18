@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_core_configuration
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -102,6 +103,8 @@ class Hook_addon_registry_core_configuration
             'themes/default/images/icons/24x24/menu/adminzone/setup/config/config.png',
             'themes/default/images/icons/48x48/menu/adminzone/setup/config/config.png',
             'sources/hooks/systems/sitemap/config_category.php',
+            'sources/hooks/systems/config/csrf_token_expire_fresh.php',
+            'sources/hooks/systems/config/csrf_token_expire_new.php',
             'sources/hooks/systems/config/header_menu_call_string.php',
             'sources/hooks/systems/config/max_moniker_length.php',
             'sources/hooks/systems/config/enable_seo_fields.php',
@@ -150,7 +153,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/allow_theme_image_selector.php',
             'sources/hooks/systems/config/infinite_scrolling.php',
             'sources/hooks/systems/config/check_broken_urls.php',
-            'sources/hooks/systems/config/windows_auth_is_enabled.php',
             'sources/hooks/systems/config/google_analytics.php',
             'sources/hooks/systems/config/show_personal_sub_links.php',
             'sources/hooks/systems/config/show_content_tagging.php',
@@ -197,15 +199,24 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/ip_forwarding.php',
             'sources/hooks/systems/config/ip_strict_for_sessions.php',
             'sources/hooks/systems/config/is_on_emoticon_choosers.php',
-            'sources/hooks/systems/config/is_on_preview_webstandards.php',
             'sources/hooks/systems/config/is_on_strong_forum_tie.php',
             'sources/hooks/systems/config/keywords.php',
-            'sources/hooks/systems/config/log_php_errors.php',
+            'sources/hooks/systems/config/dynamic_firewall.php',
+            'sources/hooks/systems/config/google_geocode_api_key.php',
             'sources/hooks/systems/config/low_space_check.php',
             'sources/hooks/systems/config/main_forum_name.php',
             'sources/hooks/systems/config/max_download_size.php',
             'sources/hooks/systems/config/maximum_users.php',
             'sources/hooks/systems/config/stats_when_closed.php',
+            'sources/hooks/systems/config/cpf_enable_street_address.php',
+            'sources/hooks/systems/config/cpf_enable_city.php',
+            'sources/hooks/systems/config/cpf_enable_country.php',
+            'sources/hooks/systems/config/cpf_enable_name.php',
+            'sources/hooks/systems/config/cpf_enable_phone.php',
+            'sources/hooks/systems/config/cpf_enable_post_code.php',
+            'sources/hooks/systems/config/cpf_enable_county.php',
+            'sources/hooks/systems/config/cpf_enable_state.php',
+            'sources/hooks/systems/config/filter_regions.php',
             'sources/hooks/systems/config/cns_show_profile_link.php',
             'sources/hooks/systems/config/show_avatar.php',
             'sources/hooks/systems/config/show_conceded_mode_link.php',
@@ -231,6 +242,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/smtp_sockets_use.php',
             'sources/hooks/systems/config/smtp_sockets_username.php',
             'sources/hooks/systems/config/ssw.php',
+            'sources/hooks/systems/config/yeehaw.php',
+            'sources/hooks/systems/config/cookie_notice.php',
             'sources/hooks/systems/config/staff_address.php',
             'sources/hooks/systems/config/thumb_width.php',
             'sources/hooks/systems/config/unzip_cmd.php',
@@ -264,11 +277,12 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/imap_username.php',
             'sources/hooks/systems/addon_registry/core_configuration.php',
             'themes/default/templates/CONFIG_CATEGORY_SCREEN.tpl',
-            'themes/default/templates/CONFIG_GROUP.tpl',
             'adminzone/pages/modules/admin_config.php',
             'lang/EN/config.ini',
             'sources/hooks/systems/config/.htaccess',
+            'sources_custom/hooks/systems/config/.htaccess',
             'sources/hooks/systems/config/index.html',
+            'sources_custom/hooks/systems/config/index.html',
             'themes/default/templates/XML_CONFIG_SCREEN.tpl',
         );
     }
@@ -281,7 +295,6 @@ class Hook_addon_registry_core_configuration
     public function tpl_previews()
     {
         return array(
-            'templates/CONFIG_GROUP.tpl' => 'administrative__config_category_screen',
             'templates/CONFIG_CATEGORY_SCREEN.tpl' => 'administrative__config_category_screen',
             'templates/XML_CONFIG_SCREEN.tpl' => 'administrative__xml_config_screen'
         );
@@ -296,16 +309,15 @@ class Hook_addon_registry_core_configuration
      */
     public function tpl_preview__administrative__config_category_screen()
     {
-        $groups = new Tempcode();
+        $groups = array();
 
         foreach (placeholder_array() as $k => $group) {
-            $group = do_lorem_template('CONFIG_GROUP', array(
+            $groups[] = array(
                 'GROUP_DESCRIPTION' => lorem_word(),
                 'GROUP_NAME' => $group,
                 'GROUP' => placeholder_fields(),
                 'GROUP_TITLE' => 'ID' . strval($k),
-            ));
-            $groups->attach($group->evaluate());
+            );
         }
 
         return array(

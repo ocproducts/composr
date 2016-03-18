@@ -113,52 +113,53 @@ function script_load_stuff_staff()
 				var id=links[i].href.match(url_pattern);
 				if (id)
 				{
-					var myfunc=function(hook,id,link)
-					{
-						add_event_listener_abstract(link,'mouseout',function(event) {
-							if (typeof event=='undefined') event=window.event;
-							if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
-						});
-						add_event_listener_abstract(link,'mousemove',function(event) {
-							if (typeof event=='undefined') event=window.event;
-							if (typeof window.activate_tooltip!='undefined') reposition_tooltip(link,event,false,false,null,true);
-						});
-						add_event_listener_abstract(link,'mouseover',function(event) {
-							if (typeof event=='undefined') event=window.event;
-
-							if (typeof window.activate_tooltip!='undefined')
-							{
-								var id_chopped=id[1];
-								if (typeof id[2]!='undefined') id_chopped+=':'+id[2];
-								var comcode='[block="'+hook+'" id="'+window.decodeURIComponent(id_chopped)+'" no_links="1"]main_content[/block]';
-								if (typeof link.rendered_tooltip=='undefined')
-								{
-									link.is_over=true;
-
-									var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame,ajax_result) {
-										if (ajax_result)
-										{
-											link.rendered_tooltip=get_inner_html(ajax_result);
-										}
-										if (typeof link.rendered_tooltip!='undefined')
-										{
-											if (link.is_over)
-												activate_tooltip(link,event,link.rendered_tooltip,'400px',null,null,false,false,false,true);
-										}
-									},'data='+window.encodeURIComponent(comcode));
-								} else
-								{
-									activate_tooltip(link,event,link.rendered_tooltip,'400px',null,null,false,false,false,true);
-								}
-							}
-						});
-					};
-					myfunc(hook,id,links[i]);
+					apply_comcode_tooltip(hook,id,links[i]);
 				}
 			}
 		}
 	}
 }
+
+function apply_comcode_tooltip(hook,id,link)
+{
+	add_event_listener_abstract(link,'mouseout',function(event) {
+		if (typeof event=='undefined') event=window.event;
+		if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(link);
+	});
+	add_event_listener_abstract(link,'mousemove',function(event) {
+		if (typeof event=='undefined') event=window.event;
+		if (typeof window.activate_tooltip!='undefined') reposition_tooltip(link,event,false,false,null,true);
+	});
+	add_event_listener_abstract(link,'mouseover',function(event) {
+		if (typeof event=='undefined') event=window.event;
+
+		if (typeof window.activate_tooltip!='undefined')
+		{
+			var id_chopped=id[1];
+			if (typeof id[2]!='undefined') id_chopped+=':'+id[2];
+			var comcode='[block="'+hook+'" id="'+window.decodeURIComponent(id_chopped)+'" no_links="1"]main_content[/block]';
+			if (typeof link.rendered_tooltip=='undefined')
+			{
+				link.is_over=true;
+
+				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame,ajax_result) {
+					if (ajax_result)
+					{
+						link.rendered_tooltip=get_inner_html(ajax_result);
+					}
+					if (typeof link.rendered_tooltip!='undefined')
+					{
+						if (link.is_over)
+							activate_tooltip(link,event,link.rendered_tooltip,'400px',null,null,false,false,false,true);
+					}
+				},'data='+window.encodeURIComponent(comcode));
+			} else
+			{
+				activate_tooltip(link,event,link.rendered_tooltip,'400px',null,null,false,false,false,true);
+			}
+		}
+	});
+};
 
 function local_page_caching(html)
 {
@@ -204,7 +205,7 @@ function local_page_caching(html)
 
 function contextual_css_edit()
 {
-	var spt=document.getElementById('special_page_type'),css_option,i,l,sheet;
+	var spt=document.getElementById('spacer_1'),css_option,i,l,sheet;
 	if (!spt) return;
 	var possibilities=find_css_sheets(window);
 	for (i=0;i<possibilities.length;i++)
@@ -217,7 +218,7 @@ function contextual_css_edit()
 			css_option.value=sheet+'.css';
 			css_option.id='opt_for_sheet_'+sheet;
 			if (find_active_selectors(sheet,window).length!=0)
-				spt.options[2].parentNode.insertBefore(css_option,spt.options[2]);
+				spt.appendChild(css_option);
 		}
 	}
 }
@@ -429,13 +430,22 @@ function load_software_chat(event)
 	cancel_bubbling(event);
 	if (typeof event.preventDefault!='undefined') event.preventDefault();
 
+	var url='https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
+	if (typeof window.cms_username!='undefined' && window.cms_username!='admin')
+	{
+		url+=window.encodeURIComponent(window.cms_username.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+	} else
+	{
+		url+=window.encodeURIComponent('{$SITE_NAME;}'.replace(/[^a-zA-Z0-9\_\-\\\[\]\{\}\^`|]/g,''));
+	}
+	url+='#composrcms';
 	var html=' \
 		<div class="software_chat"> \
 			<h2>{!CMS_COMMUNITY_HELP}</h2> \
 			<ul class="spaced_list">{!SOFTWARE_CHAT_EXTRA;}</ul> \
-			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="http://chat.zoho.com/guest.sas?k=%7B%22g%22%3A%22Anonymous%22%2C%22c%22%3A%2299b05040669de8c406b674d2366ff9b0401fe3523f0db988%22%2C%22o%22%3A%22e89335657fd675dcfb8e555ea0615984%22'+'%7D'+'&amp;participants=true">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
+			<p class="associated_link associated_links_block_group"><a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;}" target="_blank" href="'+escape_html(url)+'">{!SOFTWARE_CHAT_STANDALONE}</a> <a href="#" onclick="return load_software_chat(event);">{!HIDE}</a></p> \
 		</div> \
-		<iframe class="software_chat_iframe" frameborder="0" style="border: 0" src="http://chat.zoho.com/shout.sas?k=%7B%22g%22%3A%22Anonymous%22%2C%22c%22%3A%2299b05040669de8c406b674d2366ff9b0401fe3523f0db988%22%2C%22o%22%3A%22e89335657fd675dcfb8e555ea0615984%22'+'%7D'+'&amp;chaturl=Composr%20chat&amp;V=000000-70a9e1-eff4f9-70a9e1-Composr%20chat&amp;user={$SITE_NAME.*}'+((typeof window.cms_username!='undefined')?window.encodeURIComponent('/'+window.cms_username):'')+'&amp;participants=true"></iframe> \
+		<iframe class="software_chat_iframe" style="border: 0" src="'+escape_html(url)+'"></iframe> \
 	'.replace(/\\{1\\}/,escape_html((window.location+'').replace(get_base_url(),'http://baseurl')));
 
 	var box=document.getElementById('software_chat_box');
@@ -448,16 +458,18 @@ function load_software_chat(event)
 	{
 		box=document.createElement('div');
 
+		var width=950;
+		var height=550;
 		box.id='software_chat_box';
-		box.style.width='750px';
+		box.style.width=width+'px';
+		box.style.height=height+'px';
 		box.style.background='#EEE';
 		box.style.color='#000';
 		box.style.padding='5px';
 		box.style.border='3px solid #AAA';
-		box.style.height='420px';
 		box.style.position='absolute';
 		box.style.zIndex=2000;
-		box.style.left=(get_window_width()-650)/2+'px';
+		box.style.left=(get_window_width()-width)/2+'px';
 		var top_temp=100;
 		box.style.top=top_temp+'px';
 
@@ -497,6 +509,22 @@ function staff_actions_select(ob)
 		if (test) form.setAttribute('target',test.name);
 		if (!is_form_submit)
 			form.submit();
+	}
+}
+
+function staff_actions_change(ob)
+{
+	var value=ob.options[ob.selectedIndex].value;
+	if (value=='templates' || value=='tree')
+	{
+		/*
+		This is not actually needed, see code in PHP has_caching_for function
+		var hidden=document.createElement('input');
+		hidden.type='hidden';
+		hidden.name='cache_templates';
+		hidden.value='0';
+		ob.form.appendChild(hidden);
+		*/
 	}
 }
 
@@ -546,9 +574,9 @@ function set_task_hiding(hide_done)
 
 function submit_custom_task(form)
 {
-	var new_task=load_snippet('checklist_task_manage&type=add&recurevery='+window.encodeURIComponent(form.elements['recurevery'].value)+'&recurinterval='+window.encodeURIComponent(form.elements['recur'].value)+'&tasktitle='+window.encodeURIComponent(form.elements['new_task'].value));
+	var new_task=load_snippet('checklist_task_manage','type=add&recur_every='+window.encodeURIComponent(form.elements['recur_every'].value)+'&recur_interval='+window.encodeURIComponent(form.elements['recur'].value)+'&task_title='+window.encodeURIComponent(form.elements['new_task'].value));
 
-	form.elements['recurevery'].value='';
+	form.elements['recur_every'].value='';
 	form.elements['recur'].value='';
 	form.elements['new_task'].value='';
 
@@ -559,7 +587,7 @@ function submit_custom_task(form)
 
 function delete_custom_task(ob,id)
 {
-	load_snippet('checklist_task_manage&type=delete&id='+window.encodeURIComponent(id));
+	load_snippet('checklist_task_manage','type=delete&id='+window.encodeURIComponent(id));
 	ob.parentNode.parentNode.parentNode.style.display='none';
 
 	return false;
@@ -567,14 +595,14 @@ function delete_custom_task(ob,id)
 
 function mark_done(ob,id)
 {
-	load_snippet('checklist_task_manage&type=mark_done&id='+window.encodeURIComponent(id));
+	load_snippet('checklist_task_manage','type=mark_done&id='+window.encodeURIComponent(id));
 	ob.onclick=function() { mark_undone(ob,id); };
 	ob.getElementsByTagName('img')[1].setAttribute('src','{$IMG;,checklist/checklist1}');
 }
 
 function mark_undone(ob,id)
 {
-	load_snippet('checklist_task_manage&type=mark_undone&id='+window.encodeURIComponent(id));
+	load_snippet('checklist_task_manage','type=mark_undone&id='+window.encodeURIComponent(id));
 	ob.onclick=function() { mark_done(ob,id); };
 	ob.getElementsByTagName('img')[1].setAttribute('src','{$IMG;,checklist/not_completed}');
 }

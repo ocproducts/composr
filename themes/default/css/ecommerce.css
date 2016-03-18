@@ -1,16 +1,17 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .purchase_button {
 	text-align: center;
 }
 
-.purchase_licence {
+.purchase_terms {
 	width: 100%;
 	font-family: Courier, monospace;
 	white-space: pre-wrap;
+	margin: 1em 0;
 }
 
 .purchase_screen_contents {

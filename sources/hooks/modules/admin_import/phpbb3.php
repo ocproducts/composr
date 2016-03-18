@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__hooks__modules__admin_import__phpbb3()
 {
@@ -191,7 +193,7 @@ class Hook_phpbb3
 
             set_privilege($id, 'own_avatars', $PROBED_FORUM_CONFIG['allow_avatar_upload'] == '1');
             set_privilege($id, 'rename_self', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
-            set_privilege($id, 'bypass_word_filter', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
+            set_privilege($id, 'bypass_wordfilter', $PROBED_FORUM_CONFIG['allow_namechange'] == '1');
         }
     }
 
@@ -417,10 +419,15 @@ class Hook_phpbb3
                     foreach ($rows2[0] as $key => $val) {
                         if (substr($key, 0, 3) == 'pf_') {
                             if (is_null($val)) {
-                                /*if ($cpf_rows[substr($key,3)]==FIELD_INT) $val=NULL; Actually is stored as a string
-                                                                            elseif ($cpf_rows[substr($key,3)]==FIELD_BOOL) $val=NULL;
-                                                                            elseif ($cpf_rows[substr($key,3)]==FIELD_DATE) $val=NULL;
-                                                                            else */
+                                /* Actually is stored as a string
+                                if ($cpf_rows[substr($key, 3)] == FIELD_INT) {
+                                    $val = null;
+                                } elseif ($cpf_rows[substr($key, 3)] == FIELD_BOOL) {
+                                    $val = null;
+                                } elseif ($cpf_rows[substr($key, 3)] == FIELD_DATE) {
+                                    $val = null;
+                                } else
+                                */
                                 $val = '';
                             }
                             if (!is_string($val)) {
@@ -775,7 +782,7 @@ class Hook_phpbb3
                 }
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']));
 
-                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_approved'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, 0, null, null, false, $row['topic_views']);
+                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_visibility'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, 0, null, null, false, $row['topic_views']);
 
                 import_id_remap_put('topic', strval($row['topic_id']), $id_new);
             }
@@ -847,7 +854,7 @@ class Hook_phpbb3
                     $row['post_username'] = $GLOBALS['CNS_DRIVER']->get_username($member_id);
                 }
 
-                $id_new = cns_make_post($topic_id, $title, $post, 0, $first_post, $row['post_approved'], 0, $row['post_username'], $this->_un_phpbb_ip($row['poster_ip']), $row['post_time'], $member_id, null, $last_edit_time, $last_edit_by, false, false, $forum_id, false);
+                $id_new = cns_make_post($topic_id, $title, $post, 0, $first_post, $row['post_visibility'], 0, $row['post_username'], $this->_un_phpbb_ip($row['poster_ip']), $row['post_time'], $member_id, null, $last_edit_time, $last_edit_by, false, false, $forum_id, false);
 
                 foreach ($attach_id as $i => $_attach_id) {
                     if (!is_null($_attach_id)) {
@@ -1345,7 +1352,7 @@ class Hook_phpbb3
                         $default = $_default;
                         break;
                     /*case FIELD_DATE: Unsupported
-                                        $type='integer';
+                                        $type = 'integer';
                                         break;*/
                 }
 

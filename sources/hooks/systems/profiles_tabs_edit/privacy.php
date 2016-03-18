@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,7 +44,7 @@ class Hook_profiles_tabs_edit_privacy
      *
      * @param  MEMBER $member_id_of The ID of the member who is being viewed
      * @param  MEMBER $member_id_viewing The ID of the member who is doing the viewing
-     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents NULL, if tis hook supports it, so that AJAX can load it later
+     * @param  boolean $leave_to_ajax_if_possible Whether to leave the tab contents null, if tis hook supports it, so that AJAX can load it later
      * @return ?array A tuple: The tab title, the tab body text (may be blank), the tab fields, extra JavaScript (may be blank) the suggested tab order, hidden fields (optional) (null: if $leave_to_ajax_if_possible was set), the icon
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
@@ -72,7 +72,7 @@ class Hook_profiles_tabs_edit_privacy
                     $groups_view = '';
                 } else {
                     $_guests_view = post_param_string('guests_' . strval($field_id), null);
-                    //$_members_view=post_param_string('members_'.strval($field_id),NULL);
+                    //$_members_view = post_param_string('members_' . strval($field_id), null);
                     $_friends_view = post_param_string('friends_' . strval($field_id), null);
                     $_groups_view = post_param_string('groups_' . strval($field_id), null);
                     $_members_view = ($_groups_view == 'all') ? 1 : 0;
@@ -159,6 +159,7 @@ class Hook_profiles_tabs_edit_privacy
 
             // Work out the displayed CPF title
             if (substr($cpf_title, 0, 4) == 'cms_') {
+                require_lang('cns_special_cpf');
                 $_cpf_title = do_lang('SPECIAL_CPF__' . $cpf_title, null, null, null, null, false);
                 if (!is_null($_cpf_title)) {
                     $cpf_title = $_cpf_title;
@@ -177,7 +178,7 @@ class Hook_profiles_tabs_edit_privacy
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '00c9fa8c21c17b30dc06bd2e86518d6f', 'TITLE' => do_lang_tempcode('WHO_CAN_SEE_YOUR', escape_html($cpf_title)))));
 
                 $fields->attach(form_input_tick(do_lang_tempcode('GUESTS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_GUESTS'), 'guests_' . strval($cpf_id), $view_by_guests));
-                //$fields->attach(form_input_tick(do_lang_tempcode('MEMBERS'),do_lang_tempcode('DESCRIPTION_VISIBLE_TO_MEMBERS'),'members_'.strval($cpf_id),$view_by_members));  Same as 'all' in groups
+                //$fields->attach(form_input_tick(do_lang_tempcode('MEMBERS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_MEMBERS'), 'members_' . strval($cpf_id), $view_by_members));  Same as 'all' in groups
                 $fields->attach(form_input_tick(do_lang_tempcode('FRIENDS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_FRIENDS'), 'friends_' . strval($cpf_id), $view_by_friends));
 
                 $groups = new Tempcode();
@@ -191,7 +192,7 @@ class Hook_profiles_tabs_edit_privacy
                     $groups->attach(form_input_list_entry(strval($gr_key), $current_group_view, $group));
                 }
 
-                $fields->attach(form_input_multi_list(do_lang_tempcode('GROUPS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_GROUPS'), 'groups_' . strval($cpf_id), $groups));
+                $fields->attach(form_input_multi_list(do_lang_tempcode('USERGROUPS'), do_lang_tempcode('DESCRIPTION_VISIBLE_TO_GROUPS'), 'groups_' . strval($cpf_id), $groups));
             }
         }
 

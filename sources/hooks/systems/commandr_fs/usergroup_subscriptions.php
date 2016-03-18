@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     public $file_resource_type = 'usergroup_subscription';
 
     /**
-     * Standard commandr_fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
+     * Standard Commandr-fs function for seeing how many resources are. Useful for determining whether to do a full rebuild.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @return integer How many resources there are
@@ -39,7 +39,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs function for searching for a resource by label.
+     * Standard Commandr-fs function for searching for a resource by label.
      *
      * @param  ID_TEXT $resource_type The resource type
      * @param  LONG_TEXT $label The resource label
@@ -47,7 +47,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
      */
     public function find_resource_by_label($resource_type, $label)
     {
-        $_ret = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id'), array($GLOBALS['FORUM_DB']->translate_field_ref('s_title') => $label));
+        $_ret = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id'), array($GLOBALS['FORUM_DB']->translate_field_ref('s_title') => $label), 'ORDER BY id');
         $ret = array();
         foreach ($_ret as $r) {
             $ret[] = strval($r['id']);
@@ -66,41 +66,19 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     }
 
     /**
-     * Standard commandr_fs introspection function.
-     *
-     * @return array The properties available for the resource type
-     */
-    protected function _enumerate_file_properties()
-    {
-        return array(
-            'description' => 'LONG_TRANS',
-            'cost' => 'SHORT_TEXT',
-            'length' => 'INTEGER',
-            'length_units' => 'SHORT_TEXT',
-            'group_id' => 'GROUP',
-            'enabled' => 'BINARY',
-            'mail_start' => 'LONG_TRANS',
-            'mail_end' => 'LONG_TRANS',
-            'mail_uhoh' => 'LONG_TRANS',
-            'uses_primary' => 'BINARY',
-            'mails' => 'LONG_TEXT',
-        );
-    }
-
-    /**
-     * Standard commandr_fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
+     * Standard Commandr-fs date fetch function for resource-fs hooks. Defined when getting an edit date is not easy.
      *
      * @param  array $row Resource row (not full, but does contain the ID)
      * @return ?TIME The edit date or add date, whichever is higher (null: could not find one)
      */
     protected function _get_file_edit_date($row)
     {
-        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_USERGROUP_SUBSCRIPTION') . ' OR ' . db_string_equal_to('the_type', 'EDIT_USERGROUP_SUBSCRIPTION') . ')';
+        $query = 'SELECT MAX(date_and_time) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('param_a', strval($row['id'])) . ' AND  (' . db_string_equal_to('the_type', 'ADD_USERGROUP_SUBSCRIPTION') . ' OR ' . db_string_equal_to('the_type', 'EDIT_USERGROUP_SUBSCRIPTION') . ')';
         return $GLOBALS['SITE_DB']->query_value_if_there($query);
     }
 
     /**
-     * Standard commandr_fs add function for resource-fs hooks. Adds some resource with the given label and properties.
+     * Standard Commandr-fs add function for resource-fs hooks. Adds some resource with the given label and properties.
      *
      * @param  LONG_TEXT $filename Filename OR Resource label
      * @param  string $path The path (blank: root / not applicable)
@@ -109,7 +87,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
      */
     public function file_add($filename, $path, $properties)
     {
-        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('ecommerce2');
 
@@ -118,21 +96,27 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
-        $group_id = $this->_default_property_int($properties, 'group_id');
+        $group_id = $this->_default_property_group($properties, 'group_id');
         $uses_primary = $this->_default_property_int($properties, 'uses_primary');
         $enabled = $this->_default_property_int($properties, 'enabled');
         $mail_start = $this->_default_property_str($properties, 'mail_start');
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : unserialize($_mails);
 
-        $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
+        $id = add_usergroup_subscription($label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+
+        if (isset($properties['mails'])) {
+            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => $id), TABLE_REPLACE_MODE_NONE);
+        }
+
+        $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
+
         return strval($id);
     }
 
     /**
-     * Standard commandr_fs load function for resource-fs hooks. Finds the properties for some resource.
+     * Standard Commandr-fs load function for resource-fs hooks. Finds the properties for some resource.
      *
      * @param  SHORT_TEXT $filename Filename
      * @param  string $path The path (blank: root / not applicable). It may be a wildcarded path, as the path is used for content-type identification only. Filenames are globally unique across a hook; you can calculate the path using ->search.
@@ -148,40 +132,26 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         }
         $row = $rows[0];
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-
-        $_mails = $GLOBALS['FORUM_DB']->query_select('f_usergroup_sub_mails', array('*'), array('m_usergroup_sub_id' => intval($resource_id)), 'ORDER BY id');
-        $mails = array();
-        foreach ($_mails as $_mail) {
-            $mails[] = array(
-                'subject' => get_translated_text($_mail['m_subject'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-                'body' => get_translated_text($_mail['m_body'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-                'ref_point' => $_mail['m_ref_point'],
-                'ref_point_offset' => $_mail['m_ref_point_offset'],
-            );
-        }
-
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
-
-        return array(
-            'label' => $row['s_title'],
-            'description' => $row['s_description'],
+        $properties = array(
+            'label' => get_translated_text($row['s_title'], $GLOBALS['FORUM_DB']),
+            'description' => get_translated_text($row['s_description'], $GLOBALS['FORUM_DB']),
             'cost' => $row['s_cost'],
             'length' => $row['s_length'],
             'length_units' => $row['s_length_units'],
-            'group_id' => $row['s_group_id'],
+            'group_id' => remap_resource_id_as_portable('group', $row['s_group_id']),
             'enabled' => $row['s_enabled'],
             'mail_start' => $row['s_mail_start'],
             'mail_end' => $row['s_mail_end'],
             'mail_uhoh' => $row['s_mail_uhoh'],
             'uses_primary' => $row['s_uses_primary'],
-            'mails' => serialize($mails),
+            'mails' => table_to_portable_rows('f_usergroup_sub_mails', array('id', 'm_usergroup_sub_id'), array('m_usergroup_sub_id' => intval($resource_id))),
         );
+        $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
+        return $properties;
     }
 
     /**
-     * Standard commandr_fs edit function for resource-fs hooks. Edits the resource to the given properties.
+     * Standard Commandr-fs edit function for resource-fs hooks. Edits the resource to the given properties.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -191,7 +161,7 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
     public function file_edit($filename, $path, $properties)
     {
         list($resource_type, $resource_id) = $this->file_convert_filename_to_id($filename);
-        list($properties,) = $this->_file_magic_filter($filename, $path, $properties);
+        list($properties,) = $this->_file_magic_filter($filename, $path, $properties, $this->file_resource_type);
 
         require_code('ecommerce2');
 
@@ -201,22 +171,27 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         $length = $this->_default_property_int($properties, 'length');
         $length_units = $this->_default_property_str($properties, 'length_units');
         $auto_recur = $this->_default_property_int($properties, 'auto_recur');
-        $group_id = $this->_default_property_int($properties, 'group_id');
+        $group_id = $this->_default_property_group($properties, 'group_id');
         $uses_primary = $this->_default_property_int($properties, 'uses_primary');
         $enabled = $this->_default_property_int($properties, 'enabled');
         $mail_start = $this->_default_property_str($properties, 'mail_start');
         $mail_end = $this->_default_property_str($properties, 'mail_end');
         $mail_uhoh = $this->_default_property_str($properties, 'mail_uhoh');
         $_mails = $this->_default_property_str($properties, 'mails');
-        $mails = ($_mails == '') ? array() : unserialize($_mails);
 
-        edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails);
+        edit_usergroup_subscription(intval($resource_id), $label, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh);
+
+        if (isset($properties['mails'])) {
+            table_from_portable_rows('f_usergroup_sub_mails', $properties['mails'], array('m_usergroup_sub_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
+        }
+
+        $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 
         return $resource_id;
     }
 
     /**
-     * Standard commandr_fs delete function for resource-fs hooks. Deletes the resource.
+     * Standard Commandr-fs delete function for resource-fs hooks. Deletes the resource.
      *
      * @param  ID_TEXT $filename The filename
      * @param  string $path The path (blank: root / not applicable)
@@ -230,5 +205,25 @@ class Hook_commandr_fs_usergroup_subscriptions extends Resource_fs_base
         delete_usergroup_subscription(intval($resource_id));
 
         return true;
+    }
+
+    /**
+     * Get the resource ID for a filename (of file). Note that filenames are unique across all folders in a filesystem.
+     *
+     * @param  ID_TEXT $filename The filename, or filepath
+     * @param  ?ID_TEXT $resource_type The resource type (null: assumption of only one folder resource type for this hook; only passed as non-null from overridden functions within hooks that are calling this as a helper function)
+     * @return ?array A pair: The resource type, the resource ID (null: could not find)
+     */
+    public function file_convert_filename_to_id($filename, $resource_type = null)
+    {
+        if (is_null($resource_type)) {
+            $resource_type = $this->file_resource_type;
+        }
+
+        $filename = preg_replace('#^.*/#', '', $filename); // Paths not needed, as filenames are globally unique; paths would not be in alternative_ids table
+
+        $label = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION); // Remove file extension from filename
+        $resource_id = find_id_via_label($resource_type, $label);
+        return array($resource_type, $resource_id);
     }
 }

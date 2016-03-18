@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_pointstore_to_main
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -85,7 +86,7 @@ class Hook_addon_registry_pointstore_to_main
      */
     public function get_description()
     {
-        return 'Allows point-store custom products to be bought inside the main eCommerce store (i.e. for real money). This is one way to allow people to sell downloads through Composr.';
+        return 'Allows Point Store custom products to be bought inside the main eCommerce store (i.e. for real money). This is one way to allow people to sell downloads through Composr.';
     }
 
     /**

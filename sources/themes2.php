@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -67,10 +67,10 @@ function autoprobe_cdns()
         (substr($domain_name, 0, 4) == 'www.') ? preg_replace('#^www\.#', '', $domain_name) : ('www' . '.' . $domain_name),
         'ftp' . '.' . $domain_name,
         'mail' . '.' . $domain_name,
-        /*'smtp'.'.'.$domain_name,  Let's be at least somewhat reasonable ;-)
-        'imap'.'.'.$domain_name,
-        'pop'.'.'.$domain_name,
-        'webmail'.'.'.$domain_name,*/
+        /*'smtp' . '.' . $domain_name,  Let's be at least somewhat reasonable ;-)
+        'imap' . '.' . $domain_name,
+        'pop' . '.' . $domain_name,
+        'webmail' . '.' . $domain_name,*/
     );
 
     $detected_cdns = '';
@@ -151,7 +151,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
     foreach ($langs as $lang) {
-        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
     }
 
     if (!$quick) {
@@ -159,7 +159,7 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
 
         if (addon_installed('!ssl')) {
             require_code('caches3');
-            erase_cached_templates(); // Paths may have been cached
+            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
         }
 
         log_it('EDIT_THEME_IMAGE', $id, $theme);
@@ -279,7 +279,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     if (addon_installed('!ssl')) {
         require_code('caches3');
-        erase_cached_templates(); // Paths may have been cached
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }
 }
 
@@ -305,7 +305,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         $upload_to = 'themes/default/images_custom/' . $type;
         @mkdir(get_custom_file_base() . '/' . $upload_to, 0777);
         if (file_exists(get_custom_file_base() . '/' . $upload_to)) {
-            fix_permissions(get_custom_file_base() . '/' . $upload_to, 0777);
+            fix_permissions(get_custom_file_base() . '/' . $upload_to);
         } else {
             $upload_to = 'themes/default/images_custom';
         }
@@ -319,7 +319,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, false);
 
-        $theme_img_code = $type . '/' . $urls[1];
+        $theme_img_code = $type . '/' . basename($urls[2], '.' . get_file_extension($urls[2]));
         if (find_theme_image($theme_img_code, true) != '') {
             $theme_img_code = $type . '/' . uniqid('', true);
         }
@@ -362,7 +362,11 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         }
     }
 
-    $thumb_specify_name = $name . '__url__thumb';
+    $thumb_specify_name = $name . '__thumb__url';
+    $test = post_param_string($thumb_specify_name, '');
+    if ($test == '') {
+        $thumb_specify_name = $name . '__thumb__filedump';
+    }
 
     // Upload
     // ------
@@ -371,7 +375,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
         $upload_to = 'themes/default/images_custom/' . $theme_image_type;
         @mkdir(get_custom_file_base() . '/' . $upload_to, 0777);
         if (file_exists(get_custom_file_base() . '/' . $upload_to)) {
-            fix_permissions(get_custom_file_base() . '/' . $upload_to, 0777);
+            fix_permissions(get_custom_file_base() . '/' . $upload_to);
         } else {
             $upload_to = 'themes/default/images_custom';
         }
@@ -379,7 +383,7 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
 
     require_code('uploads');
     $field_file = $name . '__upload';
-    $thumb_attach_name = $name . '__upload__thumb';
+    $thumb_attach_name = $name . '__thumb__upload';
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
@@ -626,6 +630,8 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  array $skip The list of files/directories to skip
+ *
+ * @ignore
  */
 function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip)
 {
@@ -874,24 +880,26 @@ function find_all_themes($full_details = false)
     }
     closedir($_dir);
     if (get_custom_file_base() != get_file_base()) {
-        $_dir = opendir(get_custom_file_base() . '/themes/');
-        while (false !== ($file = readdir($_dir))) {
-            $ini_file = get_custom_file_base() . '/themes/' . $file . '/theme.ini';
-            if ((strpos($file, '.') === false) && (is_dir(get_custom_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
-                $details = better_parse_ini_file($ini_file);
-                if (!array_key_exists('title', $details)) {
-                    $details['title'] = '?';
+        $_dir = @opendir(get_custom_file_base() . '/themes/');
+        if ($_dir !== false) {
+            while (false !== ($file = readdir($_dir))) {
+                $ini_file = get_custom_file_base() . '/themes/' . $file . '/theme.ini';
+                if ((strpos($file, '.') === false) && (is_dir(get_custom_file_base() . '/themes/' . $file)) && (file_exists($ini_file))) {
+                    $details = better_parse_ini_file($ini_file);
+                    if (!array_key_exists('title', $details)) {
+                        $details['title'] = '?';
+                    }
+                    if (!array_key_exists('description', $details)) {
+                        $details['description'] = '?';
+                    }
+                    if (!array_key_exists('author', $details)) {
+                        $details['author'] = '?';
+                    }
+                    $themes[$file] = $full_details ? $details : $details['title'];
                 }
-                if (!array_key_exists('description', $details)) {
-                    $details['description'] = '?';
-                }
-                if (!array_key_exists('author', $details)) {
-                    $details['author'] = '?';
-                }
-                $themes[$file] = $full_details ? $details : $details['title'];
             }
+            closedir($_dir);
         }
-        closedir($_dir);
     }
     if (!array_key_exists('default', $themes)) {
         $details = better_parse_ini_file(get_file_base() . '/themes/default/theme.ini');

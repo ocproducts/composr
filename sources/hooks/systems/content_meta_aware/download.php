@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_content_meta_aware_download
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
-            'content_type_label' => 'DOWNLOAD',
+            'content_type_label' => 'downloads:DOWNLOAD_NOUN',
+            'content_type_universal_label' => 'Download',
 
             'connection' => $GLOBALS['SITE_DB'],
             'table' => 'download_downloads',
@@ -55,6 +56,8 @@ class Hook_content_meta_aware_download
             'title_field_dereference' => true,
             'description_field' => 'description',
             'thumb_field' => 'rep_image',
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:downloads:entry:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_downloads:_edit:_WILD',
@@ -65,6 +68,7 @@ class Hook_content_meta_aware_download
             'support_url_monikers' => true,
 
             'views_field' => 'download_views',
+            'order_field' => null,
             'submitter_field' => 'submitter',
             'author_field' => 'author',
             'add_time_field' => 'add_date',
@@ -76,9 +80,14 @@ class Hook_content_meta_aware_download
 
             'feedback_type_code' => 'downloads',
 
-            'permissions_type_code' => 'downloads', // NULL if has no permissions
+            'permissions_type_code' => 'downloads', // null if has no permissions
 
             'search_hook' => 'downloads',
+            'rss_hook' => 'downloads',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'downloads',
+            'notification_hook' => 'download',
+            'sitemap_hook' => 'download',
 
             'addon_name' => 'downloads',
 
@@ -88,11 +97,13 @@ class Hook_content_meta_aware_download
             'commandr_filesystem_hook' => 'downloads',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'downloads',
+            'support_revisions' => false,
+
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_DOWNLOAD',
-
-            'supports_privacy' => true,
         );
     }
 

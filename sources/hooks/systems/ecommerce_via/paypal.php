@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Hook_paypal
      */
     protected function _get_remote_form_url()
     {
-        return 'https://secure.worldpay.com/wcc/purchase';
+        return ecommerce_test_mode() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
     }
 
     /**
@@ -62,7 +62,7 @@ class Hook_paypal
         if (!is_guest()) {
             $user_details['first_name'] = get_cms_cpf('firstname');
             $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('building_name_or_number');
+            $user_details['address1'] = get_cms_cpf('street_address');
             $user_details['city'] = get_cms_cpf('city');
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');
@@ -176,8 +176,12 @@ class Hook_paypal
         if (($tax != '') && (intval($tax) > 0) && ($mc_gross != '')) {
             $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($tax));
         }
-        /*$shipping=post_param_string('shipping','');  Actually, the hook will have added shipping to the overall product cost
-        if (($shipping!='') && (intval($shipping)>0) && ($mc_gross!='')) $mc_gross=float_to_raw_string(floatval($mc_gross)-floatval($shipping));*/
+        /* Actually, the hook will have added shipping to the overall product cost
+        $shipping = post_param_string('shipping', '');
+        if (($shipping != '') && (intval($shipping) > 0) && ($mc_gross != '')) {
+            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($shipping));
+        }
+        */
         $mc_currency = post_param_string('mc_currency', ''); // May be blank for subscription
 
         // More stuff that we might need
@@ -327,16 +331,13 @@ class Hook_paypal
         }
 
         // SECURITY: Check it came into our own account
-        $primary_paypal_email = get_option('primary_paypal_email');
         $receiver_email = post_param_string('receiver_email');
-        if ($primary_paypal_email != '') {
-            if ($receiver_email != $primary_paypal_email) {
-                fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR'));
-            }
-        } else {
-            if ($receiver_email != $this->_get_payment_address()) {
-                fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR'));
-            }
+        $primary_paypal_email = get_option('primary_paypal_email');
+        if ($primary_paypal_email == '') {
+            $primary_paypal_email = $this->_get_payment_address();
+        }
+        if ($receiver_email != $primary_paypal_email && $receiver_email != $this->_get_payment_address()) {
+            fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 
         // Shopping cart
@@ -349,6 +350,7 @@ class Hook_paypal
 
     /**
      * Make a transaction (payment) button for multiple shopping cart items.
+     * Optional method, provides more detail than make_transaction_button.
      *
      * @param  array $items Items array.
      * @param  Tempcode $currency Currency symbol.
@@ -368,7 +370,7 @@ class Hook_paypal
         if (!is_guest()) {
             $user_details['first_name'] = get_cms_cpf('firstname');
             $user_details['last_name'] = get_cms_cpf('lastname');
-            $user_details['address1'] = get_cms_cpf('building_name_or_number');
+            $user_details['address1'] = get_cms_cpf('street_address');
             $user_details['city'] = get_cms_cpf('city');
             $user_details['state'] = get_cms_cpf('state');
             $user_details['zip'] = get_cms_cpf('post_code');

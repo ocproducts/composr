@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,11 +11,6 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
-
-/**
- * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
- * @copyright  ocProducts Ltd
- */
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License

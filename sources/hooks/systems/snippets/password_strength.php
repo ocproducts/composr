@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,6 +31,6 @@ class Hook_snippet_password_strength
     public function run()
     {
         require_code('password_strength');
-        return make_string_tempcode(strval(test_password(either_param_string('password'), either_param_string('username', ''))));
+        return make_string_tempcode(strval(test_password(post_param_string('password'), post_param_string('username', ''))));
     }
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_config_twitter_api_key
         return array(
             'human_name' => 'TWITTER_API_KEY',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'COMPOSR_APIS',
             'group' => 'TWITTER_SYNDICATION',
             'explanation' => 'CONFIG_OPTION_twitter_api_key',
             'shared_hosting_restricted' => '0',

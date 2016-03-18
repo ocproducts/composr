@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -25,6 +25,8 @@
  *
  * @param  array $param Symbol parameters
  * @return array A pair: Image dimensions
+ *
+ * @ignore
  */
 function _symbol_image_dims($param)
 {
@@ -87,6 +89,8 @@ function _symbol_image_dims($param)
  *
  * @param  array $param Symbol parameters
  * @return string Rendered symbol
+ *
+ * @ignore
  */
 function _symbol_thumbnail($param)
 {
@@ -104,7 +108,9 @@ function _symbol_thumbnail($param)
     // where: If padding or cropping, specifies where to crop or pad. One of "start", "end", "both", "start_if_vertical", "end_if_vertical", "start_if_horizontal", or "end_if_vhorizontal"
     // option: An extra option if desired. If type is "pad" then this can be a hex colour for the padding
     // only_make_smaller: Whether to avoid growing small images to fit (smaller images are better for the Web). One of 0 (false) or 1 (true)
-	if (!empty($param[0])) {
+    if (!empty($param[0])) {
+        disable_php_memory_limit();
+
         $only_make_smaller = isset($param[8]) ? ($param[8] == '1') : false;
         $orig_url = $param[0]; // Source for thumbnail generation
         if (url_is_local($orig_url)) {
@@ -128,13 +134,15 @@ function _symbol_thumbnail($param)
             $algorithm = trim($param[5]);
         }
 
+        $fallback = (trim(isset($param[4]) ? $param[4] : '') == '') ? $orig_url : $param[4];
+
         if (isset($param[2]) && $param[2] != '') { // Where we are saving to
             $thumb_save_dir = $param[2];
             if (strpos($thumb_save_dir, '/') === false) {
                 $thumb_save_dir = 'uploads/' . $thumb_save_dir;
             }
         } else {
-            //$thumb_save_dir=dirname(rawurldecode(preg_replace('#'.preg_quote(get_custom_base_url().'/','#').'#','',$orig_url)));  Annoying
+            //$thumb_save_dir = dirname(rawurldecode(preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $orig_url)));  Annoying
             $thumb_save_dir = 'uploads/auto_thumbs';
         }
         if (!is_dir(get_custom_file_base() . '/' . $thumb_save_dir)) {
@@ -169,16 +177,16 @@ function _symbol_thumbnail($param)
         // made one with these options
         if ((!is_file($save_path)) && (!is_file($save_path . '.png'))) {
             if (!function_exists('imagepng')) {
-                return $param[0];
+                return $fallback;
             }
 
             // Branch based on the type of thumbnail we're making
             if ($algorithm == 'box') {
                 // We just need to scale to the given dimension
-                $result = convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
+                $result = @convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
             } elseif ($algorithm == 'width' || $algorithm == 'height') {
                 // We just need to scale to the given dimension
-                $result = convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
+                $result = @convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
             } elseif ($algorithm == 'crop' || $algorithm == 'pad' || $algorithm == 'pad_horiz_crop_horiz' || $algorithm == 'pad_vert_crop_vert') {
                 // We need to shrink a bit and crop/pad
                 require_code('files');
@@ -188,13 +196,13 @@ function _symbol_thumbnail($param)
                 if (!is_null($converted_to_path)) {
                     $sizes = @getimagesize($converted_to_path);
                     if ($sizes === false) {
-                        return '';
+                        return $fallback;
                     }
                     list($source_x, $source_y) = $sizes;
                 } else {
                     $source = @imagecreatefromstring(http_download_file($orig_url, null, false));
                     if ($source === false) {
-                        return '';
+                        return $fallback;
                     }
                     $source_x = imagesx($source);
                     $source_y = imagesy($source);
@@ -250,17 +258,17 @@ function _symbol_thumbnail($param)
 
                 // Now do the cropping, padding and scaling
                 if ($modify_image) {
-                    $result = convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => (isset($param[7]) ? trim($param[7]) : null), 'where' => (isset($param[6]) ? trim($param[6]) : 'both'), 'scale' => $scale));
+                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => (isset($param[7]) ? trim($param[7]) : null), 'where' => (isset($param[6]) ? trim($param[6]) : 'both'), 'scale' => $scale));
                 } else {
                     // Just resize
-                    $result = convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
+                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
                 }
             }
 
             // If the conversion failed then give back the fallback,
             // or if it's empty then give back the original image
             if (!$result) {
-                $value = (trim(isset($param[4]) ? $param[4] : '') == '') ? $orig_url : $param[4];
+                $value = $fallback;
             }
         }
 
@@ -319,6 +327,8 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $js_tooltip = true;
     }
 
+    $url = preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $url);
+
     $box_size = (($width === null) && ($height === null));
 
     if ($width === null) {
@@ -347,7 +357,7 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
 
         if (!file_exists($file_thumb)) {
             convert_image($url, $file_thumb, $box_size ? -1 : $width, $box_size ? -1 : $height, $box_size ? $width : -1, false, null, false, $only_make_smaller);
-            if (!file_exists($file_thumb)) {
+            if (!file_exists($file_thumb) && file_exists($file_thumb . '.png')/*convert_image maybe had to change the extension*/) {
                 $new_name .= '.png';
             }
         }
@@ -442,19 +452,40 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
     if (url_is_local($from)) {
         $from = get_custom_base_url() . '/' . $from;
     }
-    if (!file_exists($thumb_path)) {
-        if (is_video($from, true)) {
-            require_code('galleries2');
-            create_video_thumb($full_url, $thumb_path);
-        } else {
-            convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
-            if (!file_exists($thumb_path)) {
-                $thumb_url .= '.png';
-            }
+    if (is_video($from, true)) {
+        require_code('galleries2');
+        create_video_thumb($full_url, $thumb_path);
+    } else {
+        convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
+        if (!file_exists($thumb_path) && file_exists($thumb_path . '.png'/*convert_image maybe had to change the extension*/)) {
+            $thumb_url .= '.png';
         }
     }
 
     return get_custom_base_url() . '/' . $thumb_url;
+}
+
+/**
+ * Find the path to imagemagick.
+ *
+ * @return ?PATH Path to imagemagick (null: not found)
+ */
+function find_imagemagick()
+{
+    $imagemagick = '/usr/bin/convert';
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/usr/local/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/opt/local/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        $imagemagick = '/opt/cloudlinux/bin/convert';
+    }
+    if (!@file_exists($imagemagick)) {
+        return null;
+    }
+    return $imagemagick;
 }
 
 /**
@@ -466,61 +497,53 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  */
 function check_memory_limit_for($file_path, $exit_on_error = true)
 {
-    if (function_exists('memory_get_usage')) {
-        $ov = ini_get('memory_limit');
+    $ov = ini_get('memory_limit');
 
-        $_what_we_will_allow = get_value('real_memory_available_mb');
-        $what_we_will_allow = is_null($_what_we_will_allow) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
+    $_what_we_will_allow = get_value('real_memory_available_mb');
+    $what_we_will_allow = is_null($_what_we_will_allow) ? null : (intval($_what_we_will_allow) * 1024 * 1024);
 
-        if ((substr($ov, -1) == 'M') || (!is_null($what_we_will_allow))) {
-            if (is_null($what_we_will_allow)) {
-                $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
+    if ((substr($ov, -1) == 'M') || (!is_null($what_we_will_allow))) {
+        if (is_null($what_we_will_allow)) {
+            $total_memory_limit_in_bytes = intval(substr($ov, 0, strlen($ov) - 1)) * 1024 * 1024;
 
-                $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 3; // 3 is for 3MB extra space needed to finish off
-            }
+            $what_we_will_allow = $total_memory_limit_in_bytes - memory_get_usage() - 1024 * 1024 * 8; // 8 is for 8MB extra space needed to finish off
+        }
 
-            $details = @getimagesize($file_path);
-            if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
-                $magic_factor = 3.0; /* factor of inefficency by experimentation */
+        $details = @getimagesize($file_path);
+        if ($details !== false) { // Check it is not corrupt. If it is corrupt, we will give an error later
+            $magic_factor = 3.0; /* factor of inefficency by experimentation */
 
-                $channels = 4;//array_key_exists('channels',$details)?$details['channels']:3; it will be loaded with 4
-                $bits_per_channel = 8;//array_key_exists('bits',$details)?$details['bits']:8; it will be loaded with 8
-                $bytes = ($details[0] * $details[1]) * ($bits_per_channel / 8) * ($channels + 1) * $magic_factor;
+            $channels = 4;//array_key_exists('channels', $details) ? $details['channels'] : 3; it will be loaded with 4
+            $bits_per_channel = 8;//array_key_exists('bits', $details) ? $details['bits'] : 8; it will be loaded with 8
+            $bytes = ($details[0] * $details[1]) * ($bits_per_channel / 8) * ($channels + 1) * $magic_factor;
 
-                if ($bytes > floatval($what_we_will_allow)) {
-                    $max_dim = intval(sqrt(floatval($what_we_will_allow) / 4.0 / $magic_factor/*4 1 byte channels*/));
+            if ($bytes > floatval($what_we_will_allow)) {
+                $max_dim = intval(sqrt(floatval($what_we_will_allow) / 4.0 / $magic_factor/*4 1 byte channels*/));
 
-                    // Can command line imagemagick save the day?
-                    $imagemagick = '/usr/bin/convert';
-                    if (!@file_exists($imagemagick)) {
-                        $imagemagick = '/usr/local/bin/convert';
-                    }
-                    if (!@file_exists($imagemagick)) {
-                        $imagemagick = '/opt/local/bin/convert';
-                    }
-                    if (@file_exists($imagemagick)) {
-                        $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
-                        $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
-                        $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
-                        $err_cond = -1;
-                        $output_arr = array();
-                        if (strpos(@ini_get('disable_functions'), 'shell_exec') === false) {
-                            $err_cond = @shell_exec($shrink_command);
-                            if (!is_null($err_cond)) {
-                                return true;
-                            }
+                // Can command line imagemagick save the day?
+                $imagemagick = find_imagemagick();
+                if ($imagemagick !== null) {
+                    $shrink_command = $imagemagick . ' ' . escapeshellarg_wrap($file_path);
+                    $shrink_command .= ' -resize ' . strval(intval(floatval($max_dim) / 1.5)) . 'x' . strval(intval(floatval($max_dim) / 1.5));
+                    $shrink_command .= ' ' . escapeshellarg_wrap($file_path);
+                    $err_cond = -1;
+                    $output_arr = array();
+                    if (php_function_allowed('shell_exec')) {
+                        $err_cond = @shell_exec($shrink_command);
+                        if (!is_null($err_cond)) {
+                            return true;
                         }
                     }
-
-                    $message = do_lang_tempcode('IMAGE_TOO_LARGE_FOR_THUMB', escape_html(integer_format($max_dim)), escape_html(integer_format($max_dim)));
-                    if (!$exit_on_error) {
-                        attach_message($message, 'warn');
-                    } else {
-                        warn_exit($message);
-                    }
-
-                    return false;
                 }
+
+                $message = do_lang_tempcode('IMAGE_TOO_LARGE_FOR_THUMB', escape_html(integer_format($max_dim)), escape_html(integer_format($max_dim)));
+                if (!$exit_on_error) {
+                    attach_message($message, 'warn');
+                } else {
+                    warn_exit($message);
+                }
+
+                return false;
             }
         }
     }
@@ -565,6 +588,8 @@ function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_er
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
  * @return boolean Success
+ *
+ * @ignore
  */
 function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
@@ -611,7 +636,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             } else {
                 if (!file_exists(dirname($to))) {
                     if (@mkdir(dirname($to), 0777)) {
-                        fix_permissions(dirname($to), 0777);
+                        fix_permissions(dirname($to));
                         sync_file(dirname($to));
                     } else {
                         intelligent_write_error(dirname($to));
@@ -632,14 +657,15 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
     if ($from_file === false) {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('UPLOAD_PERMISSION_ERROR', escape_html($from)));
+            warn_exit(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)));
         }
         require_code('site');
-        if (!file_exists(get_custom_file_base() . '/uploads/missing_ok')) {
-            attach_message(do_lang_tempcode('UPLOAD_PERMISSION_ERROR', escape_html($from)), 'warn');
+        if (get_value('no_cannot_access_url_messages') !== '1') {
+            attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn');
         }
         return false;
     }
+
     $source = @imagecreatefromstring($from_file);
     if ($source === false) {
         if ($exit_on_error) {
@@ -654,6 +680,8 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     if ((!is_null($thumb_options)) || (!$only_make_smaller)) {
         unset($from_file);
     }
+
+    //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
 
     // Derive actual width x height, for the given maximum box (maintain aspect ratio)
     // ===============================================================================
@@ -1054,6 +1082,10 @@ function adjust_pic_orientation($img, $exif)
                 $src_height = $height;
 
                 $imgdest = imagecreatetruecolor($width, $height);
+                imagealphablending($imgdest, false);
+                if (function_exists('imagesavealpha')) {
+                    imagesavealpha($imgdest, true);
+                }
 
                 if (imagecopyresampled($imgdest, $img, 0, 0, $src_x, $src_y, $width, $height, $src_width, $src_height)) {
                     imagedestroy($img);
@@ -1065,6 +1097,89 @@ function adjust_pic_orientation($img, $exif)
         }
     }
     return array($img, false);
+}
+
+/**
+ * Remove white/transparent edges from an image.
+ *
+ * @param  resource $img GD image resource
+ * @return resource Trimmed image
+ */
+function remove_white_edges($img)
+{
+    $width = imagesx($img);
+    $height = imagesy($img);
+
+    // From top
+    $remove_from_top = 0;
+    for ($y = 0; $y < $height; $y++) {
+        for ($x = 0; $x < $width; $x++) {
+            $_color = imagecolorat($img, $x, $y);
+            if ($_color != 0) {
+                break 2;
+            }
+        }
+        $remove_from_top++;
+    }
+
+    // From bottom
+    $remove_from_bottom = 0;
+    for ($y = $height - 1; $y >= 0; $y--) {
+        for ($x = 0; $x < $width; $x++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_bottom++;
+    }
+
+    // From left
+    $remove_from_left = 0;
+    for ($x = 0; $x < $width; $x++) {
+        for ($y = 0; $y < $height; $y++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_left++;
+    }
+
+    // From right
+    $remove_from_right = 0;
+    for ($x = $width - 1; $x >= 0; $x--) {
+        for ($y = 0; $y < $height; $y++) {
+            $color = imagecolorsforindex($img, imagecolorat($img, $x, $y));
+            if (($color['red'] != 0 || $color['green'] != 0 || $color['blue'] != 0) && ($color['alpha'] != 127)) {
+                break 2;
+            }
+        }
+        $remove_from_right++;
+    }
+
+    // Any changes?
+    if ($remove_from_top + $remove_from_bottom + $remove_from_left + $remove_from_right == 0 || $remove_from_left == $width || $remove_from_top == $height) {
+        return $img;
+    }
+
+    // Do trimming...
+
+    $target_width = $width - $remove_from_left - $remove_from_right;
+    $target_height = $height - $remove_from_top - $remove_from_bottom;
+
+    $imgdest = imagecreatetruecolor($target_width, $target_height);
+    imagealphablending($imgdest, false);
+    if (function_exists('imagesavealpha')) {
+        imagesavealpha($imgdest, true);
+    }
+
+    if (imagecopyresampled($imgdest, $img, 0, 0, $remove_from_left, $remove_from_top, $target_width, $target_height, $target_width, $target_height)) {
+        imagedestroy($img);
+        $img = $imgdest;
+    }
+
+    return $img;
 }
 
 /**

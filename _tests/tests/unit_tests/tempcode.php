@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -376,7 +376,7 @@ class Tempcode_test_set extends cms_test_case
 
 
 	<p>
-		IF_EMPTY false negative (Tempcode) (good)
+		IF_EMPTY false negative (tempcode) (good)
 	</p>
 
 

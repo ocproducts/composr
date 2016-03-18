@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,6 +23,7 @@ class rss_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('rss');
         $rssfeed = get_file_base() . "/_tests/tests/testrss.cms";
         $atomfeed = get_file_base() . "/_tests/tests/testatom.cms";
@@ -32,10 +33,5 @@ class rss_test_set extends cms_test_case
         $atomtitle = $atom->gleamed_items[0]['title'];
         $this->assertTrue('Item Example' == $rsstitle);
         $this->assertTrue('Atom-Powered Robots Run Amok' == $atomtitle);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

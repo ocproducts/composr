@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -116,7 +116,7 @@ class Hook_pointstore_gambling
         $maximum_gamble_multiplier = floatval(get_option('maximum_gamble_multiplier')) / 100.0;
         $above_average = (mt_rand(0, 10) < 5);
         if ($above_average) {
-            //       $winnings=round($average_gamble_multiplier*$amount+mt_rand(0,round($maximum_gamble_multiplier*$amount-$average_gamble_multiplier*$amount)));   Even distribution is NOT wise
+            //$winnings = round($average_gamble_multiplier * $amount + mt_rand(0, round($maximum_gamble_multiplier * $amount - $average_gamble_multiplier * $amount)));   Even distribution is NOT wise
             $peak = $maximum_gamble_multiplier * $amount;
             $under = 0.0;
             $number = intval(round($average_gamble_multiplier * $amount + mt_rand(0, intval(round($maximum_gamble_multiplier * $amount - $average_gamble_multiplier * $amount)))));

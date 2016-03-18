@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -246,8 +246,8 @@ class CMSSearchRead
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(10);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(10);
         }
 
         $full_sql = 'SELECT *,t.id AS topic_id,p.id AS post_id,t.t_cache_first_title,f.id AS forum_id,f.f_name' . $sql;

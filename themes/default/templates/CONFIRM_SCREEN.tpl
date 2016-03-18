@@ -27,20 +27,20 @@
 		<p class="proceed_button">
 			{+START,IF_NON_PASSED,BACK_URL}
 				{+START,IF,{$JS_ON}}
-					<input class="buttons__back button_screen" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
+					<input class="button_screen buttons__back" type="button" onclick="history.back(); return false;" value="{!GO_BACK}" />
 				{+END}
 			{+END}
 
-			<input onclick="disable_button_just_clicked(this);" accesskey="u" class="buttons__proceed button_screen" type="submit" value="{!PROCEED}" />
+			<input onclick="disable_button_just_clicked(this);" accesskey="u" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 		</p>
 	</div>
 </form>
 
 {+START,IF_PASSED,BACK_URL}
-	<form class="back_button" title="{!_NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post">
+	<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post">
 		<div>
 			{FIELDS}
-			<button class="button_icon" type="submit"><img title="{!_NEXT_ITEM_BACK}" alt="{!_NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></button>
+			<button class="button_icon" type="submit"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></button>
 		</div>
 	</form>
 {+END}

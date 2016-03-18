@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,11 +20,13 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__uploads()
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
     }
 
     if (!defined('CMS_UPLOAD_ANYTHING')) {
@@ -54,14 +56,18 @@ function init__uploads()
  */
 function post_param_multi_source_upload($name, $upload_to, $required = true, $is_edit = false, &$filename = null, &$thumb_url = null, $upload_type = 15, $copy_to_server = false)
 {
-    $thumb_specify_name = $name . '__url__thumb';
+    $thumb_specify_name = $name . '__thumb__url';
+    $test = post_param_string($thumb_specify_name, '');
+    if ($test == '') {
+        $thumb_specify_name = $name . '__thumb__filedump';
+    }
 
     // Upload
     // ------
 
     require_code('uploads');
     $field_file = $name . '__upload';
-    $thumb_attach_name = $name . '__upload__thumb';
+    $thumb_attach_name = $name . '__thumb__upload';
     if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
@@ -374,7 +380,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             return array('', '', '', '');
         }
         if (($copy_to_server) && (!url_is_local($url[0]))) {
-            $path2 = cms_tempnam('cmsfc');
+            $path2 = cms_tempnam();
             $tmpfile = fopen($path2, 'wb');
 
             $file = http_download_file($url[0], $max_size, true, false, 'Composr', null, null, null, null, null, $tmpfile);
@@ -493,7 +499,9 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     }
 
     $out[0] = $url[0];
+    $out[1] = '';
     $out[2] = $url[1];
+    $out[3] = '';
 
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
@@ -563,17 +571,15 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         }
         if (!is_null($thumb)) {
             $out[1] = $thumb;
-        } else {
-            $out[1] = '';
         }
     }
 
     // For reentrance of previews
     if ($specify_name != '') {
-        $_POST[$specify_name] = array_key_exists(0, $out) ? $out[0] : '';
+        $_POST[$specify_name] = $out[0];
     }
     if ($thumb_specify_name != '') {
-        $_POST[$thumb_specify_name] = array_key_exists(1, $out) ? $out[1] : '';
+        $_POST[$thumb_specify_name] = $out[1];
     }
 
     if (count($filearrays) != 0) {
@@ -592,6 +598,8 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return array A pair: the URL and the filename
+ *
+ * @ignore
  */
 function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_type = 15, $accept_errors = false)
 {
@@ -688,6 +696,8 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return boolean Success status
+ *
+ * @ignore
  */
 function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_errors = false)
 {
@@ -777,6 +787,8 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
  * @param  boolean $accept_errors Whether to accept upload errors
  * @param  ?string $filename Filename to use (null: choose one)
  * @return array A pair: the URL and the filename
+ *
+ * @ignore
  */
 function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folder_full, $enforce_type = 15, $obfuscate = 0, $accept_errors = false, $filename = null)
 {
@@ -805,11 +817,11 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
 
     if (is_null($filename)) {
         // If we are not obfuscating then we will need to search for an available filename
-        if (($obfuscate == 0) || ($obfuscate == 3)) {
+        if (($obfuscate == 0) || ($obfuscate == 3) || (strlen($file) > 150)) {
             $filename = preg_replace('#\..*\.#', '.', $file);
             $place = $upload_folder_full . '/' . $filename;
-            $i = 2;
             // Hunt with sensible names until we don't get a conflict
+            $i = 2;
             while (file_exists($place)) {
                 $filename = strval($i) . preg_replace('#\..*\.#', '.', $file);
                 $place = $upload_folder_full . '/' . $filename;

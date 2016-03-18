@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,7 +33,7 @@ function find_post_id_url($post_id)
 
     $id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
     if (is_null($id)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     // What page is it on?
@@ -41,7 +41,7 @@ function find_post_id_url($post_id)
     $start = intval(floor(floatval($before) / floatval($max))) * $max;
 
     // Now redirect accordingly
-    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id);
+    $map = array('page' => 'topicview', 'type' => null, 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'post_id' => $post_id, 'threaded' => get_param_integer('threaded', null));
     foreach ($_GET as $key => $val) {
         if ((substr($key, 0, 3) == 'kfs') || (in_array($key, array('topic_start', 'topic_max')))) {
             $map[$key] = $val;
@@ -74,7 +74,7 @@ function find_first_unread_url($id)
     $last_read_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => get_member(), 'l_topic_id' => $id));
     if (is_null($last_read_time)) {
         // Assumes that everything made in the last two weeks has not been read
-        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) . ' ORDER BY id', 1);
+        $unread_details = $GLOBALS['FORUM_DB']->query('SELECT id,p_time FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($id) . ' AND p_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) . ' ORDER BY id', 1);
         if (array_key_exists(0, $unread_details)) {
             $last_read_time = $unread_details[0]['p_time'] - 1;
         } else {
@@ -144,8 +144,16 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         'is_emphasised' => $_postdetails['p_is_emphasised'],
         'poster_username' => $_postdetails['p_poster_name_if_guest'],
         'poster' => $_postdetails['p_poster'],
-        'has_history' => !is_null($_postdetails['h_post_id'])
     );
+
+    $post['has_revisions'] = false;
+    if (addon_installed('actionlog')) {
+        require_code('revisions_engine_database');
+        $revision_engine = new RevisionEngineDatabase(true);
+        if ($revision_engine->has_revisions(array('post'), strval($_postdetails['id']))) {
+            $post['has_revisions'] = true;
+        }
+    }
 
     if (array_key_exists('message_comcode', $_postdetails)) {
         $post['message_comcode'] = $_postdetails['message_comcode'];
@@ -184,7 +192,9 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
             } else {
-                $sig = get_translated_tempcode('f_members', $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']), 'm_signature', $GLOBALS['FORUM_DB']);
+                $member_row = $GLOBALS['CNS_DRIVER']->get_member_row($_postdetails['p_poster']);
+                $just_member_row = db_map_restrict($member_row, array('id', 'm_signature'));
+                $sig = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
                 $SIGNATURES_CACHE[$_postdetails['p_poster']] = $sig;
             }
             $post['signature'] = $sig;
@@ -275,7 +285,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
         $_topic_info = $GLOBALS['FORUM_DB']->query_select($table, $select, array('t.id' => $topic_id), '', 1);
         if (!array_key_exists(0, $_topic_info)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
         $topic_info = $_topic_info[0];
 
@@ -340,17 +350,9 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_threaded' => $is_threaded,
             'is_really_threaded' => is_null($topic_info['f_is_threaded']) ? 0 : $topic_info['f_is_threaded'],
             'last_time' => $topic_info['t_cache_last_time'],
-            'meta_data' => array(
-                'created' => date('Y-m-d', $topic_info['t_cache_first_time']),
-                'creator' => $topic_info['t_cache_first_username'],
-                'publisher' => '', // blank means same as creator
-                'modified' => date('Y-m-d', $topic_info['t_cache_last_time']),
-                'type' => 'Forum topic',
-                'title' => $topic_info['t_cache_first_title'],
+            'metadata' => array(
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
-                'image' => find_theme_image('icons/48x48/menu/social/forum/forums'),
-                //'category'=>???,
             ),
             'row' => $topic_info,
         );
@@ -371,11 +373,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
         // Post query
         $where = cns_get_topic_where($topic_id);
-        if (!db_has_subqueries($GLOBALS['FORUM_DB']->connection_read)) {
-            $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
-        } else { // Can use subquery to avoid having to assume p_last_edit_time was not chosen as null during avoidance of duplication of rows
-            $query = 'SELECT p.*, (SELECT h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h WHERE (h.h_post_id=p.id) LIMIT 1) AS h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
-        }
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     } else {
         $out = array(
             'num_views' => 0,
@@ -394,12 +392,12 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_open' => 1,
             'is_threaded' => 0,
             'last_time' => time(),
-            'meta_data' => array(),
+            'metadata' => array(),
         );
 
         // Post query
         $where = 'p_intended_solely_for=' . strval(get_member());
-        $query = 'SELECT p.*,h.h_post_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_post_history h ON h.h_post_id=p.id AND h.h_action_date_and_time=p.p_last_edit_time WHERE ' . $where . ' ORDER BY p_time,p.id';
+        $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
     }
 
     // Posts
@@ -450,7 +448,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 
             // Fake a quoted post? (kind of a nice 'tidy up' feature if a forum's threading has been turned off, leaving things for flat display)
             if ((!is_null($_postdetails['p_parent_id'])) && (strpos($_postdetails['message_comcode'], '[quote') === false)) {
-                $p = mixed(); // NULL
+                $p = mixed(); // null
                 if (array_key_exists($_postdetails['p_parent_id'], $_postdetailss)) { // Ah, we're already loading it on this page
                     $p = $_postdetailss[$_postdetails['p_parent_id']];
 
@@ -495,7 +493,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                     if (!is_null($ticket_type_id)) {
                         $ticket_type_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_types', 'ticket_type_name', array('id' => $ticket_id));
                     }
-                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_id)));
+                    $out['title'] = do_lang_tempcode('_VIEW_SUPPORT_TICKET', escape_html($out['title']), is_null($ticket_type_name) ? do_lang('UNKNOWN') : escape_html(get_translated_text($ticket_type_name)));
                     $_postdetails['p_title'] = '';
                 } else {
                     $out['title'] = do_lang_tempcode('SPACER_TOPIC_TITLE_WRAP', escape_html($out['title']));
@@ -755,7 +753,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
                     $quote_to_new_post = do_lang('POSTING_TICKET_AS', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $ticket_url->evaluate(), $_postdetails['message_comcode']);
                     $hidden = form_input_hidden('post', $quote_to_new_post);
 
-                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
+                    $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '927d758415a3358d6b69e1587cab1e8d', 'IMMEDIATE' => true, 'HIDDEN' => $hidden, 'IMG' => 'buttons__new_quote', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url, 'TARGET' => '_blank')));
                 }
             }
         }
@@ -838,13 +836,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         }
     }
 
-    if ((has_privilege(get_member(), 'view_content_history')) && ($_postdetails['has_history'])) {
-        $action_url = build_url(array('page' => 'admin_cns_history', 'type' => 'browse', 'post_id' => $_postdetails['id']), 'adminzone');
-        $_title = do_lang_tempcode('POST_HISTORY');
+    if ($_postdetails['has_revisions']) {
+        $action_url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'post', 'resource_id' => $_postdetails['id']), get_module_zone('admin_revisions'));
+        $_title = do_lang_tempcode('actionlog:REVISIONS');
         $_title_full = new Tempcode();
         $_title_full->attach($_title);
         $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));
-        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__history', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
+        $buttons->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '6086b2ae226bf2a69d1e34641d22ae21', 'REL' => 'history nofollow', 'IMMEDIATE' => false, 'IMG' => 'buttons__revisions', 'TITLE' => $_title, 'FULL_TITLE' => $_title_full, 'URL' => $action_url)));
     }
 
     if ($rendering_context != 'tickets') {

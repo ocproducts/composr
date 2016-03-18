@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -112,10 +112,5 @@ class auth_test_set extends cms_test_case
                 $this->assertTrue($HTTP_MESSAGE == '401');
             }
         }
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

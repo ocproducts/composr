@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -13,7 +13,7 @@
  * @package    composr_release_build
  */
 
-/*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
+/*EXTRA FUNCTIONS: shell_exec|escapeshellarg|DOM.*|pretty_print_dom_document*/
 
 function init__make_release()
 {
@@ -48,18 +48,19 @@ function make_installers($skip_file_grab = false)
     $builds_path = get_builds_path();
     if (!file_exists($builds_path . '/builds/build/')) {
         @mkdir($builds_path . '/builds/build/', 0777) or warn_exit('Could not make temporary build folder');
-        fix_permissions($builds_path . '/builds/build/', 0777);
+        fix_permissions($builds_path . '/builds/build/');
     }
+
     if (!$skip_file_grab) {
         deldir_contents($builds_path . '/builds/build/' . $version_branch . '/');
     }
     if (!file_exists($builds_path . '/builds/build/' . $version_branch . '/')) {
         mkdir($builds_path . '/builds/build/' . $version_branch . '/', 0777) or warn_exit('Could not make branch build folder');
-        fix_permissions($builds_path . '/builds/build/' . $version_branch . '/', 0777);
+        fix_permissions($builds_path . '/builds/build/' . $version_branch . '/');
     }
     if (!file_exists($builds_path . '/builds/' . $version_dotted . '/')) {
         mkdir($builds_path . '/builds/' . $version_dotted . '/', 0777) or warn_exit('Could not make version build folder');
-        fix_permissions($builds_path . '/builds/' . $version_dotted . '/', 0777);
+        fix_permissions($builds_path . '/builds/' . $version_dotted . '/');
     }
 
     if (!$skip_file_grab) {
@@ -68,10 +69,12 @@ function make_installers($skip_file_grab = false)
 
         // Get file data array
         $out .= '<ul>';
-        $out .= populate_build_files_array();
+        $out .= populate_build_files_list();
         $out .= '</ul>';
 
         make_files_manifest();
+        make_database_manifest();
+        make_install_sql();
     }
 
     //header('Content-type: text/plain; charset=' . get_charset());var_dump(array_keys($MAKE_INSTALLERS__FILE_ARRAY));exit(); Useful for testing quickly what files will be built
@@ -81,15 +84,19 @@ function make_installers($skip_file_grab = false)
     $quick_zip = $builds_path . '/builds/' . $version_dotted . '/composr_quick_installer-' . $version_dotted . '.zip';
     $manual_zip = $builds_path . '/builds/' . $version_dotted . '/composr_manualextraction_installer-' . $version_dotted . '.zip';
     $mszip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '-webpi.zip'; // Aka msappgallery, related to webmatrix
+    $aps_zip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '.app.zip'; // APS package
+    $uni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
 
     // Flags
     $make_quick = (get_param_integer('skip_quick', 0) == 0);
     $make_manual = (get_param_integer('skip_manual', 0) == 0);
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
+    $make_aps = (get_param_integer('skip_aps', 0) == 0);
+    $make_uni_upgrader = (post_param_integer('make_uni_upgrader', 0) == 1);
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
     disable_php_memory_limit();
 
@@ -190,12 +197,21 @@ function make_installers($skip_file_grab = false)
 
         chdir($builds_path . '/builds/' . $version_dotted);
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('data.cms') . ' ' . escapeshellarg('install.php');
-        $output2 = $cmd . ':' . "\n" . shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        $out .= do_build_archive_output($quick_zip, $output2);
 
         chdir(get_file_base() . '/data_custom/builds');
         $cmd = 'zip -r -9 ' . escapeshellarg($quick_zip) . ' ' . escapeshellarg('readme.txt');
-        $output2 .= $cmd . ':' . "\n" . shell_exec($cmd);
-        $out .= do_build_zip_output($quick_zip, $output2);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        //$out .= do_build_archive_output($quick_zip, $output2);    Don't care
 
         chdir(get_file_base());
     }
@@ -211,8 +227,12 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'zip -r -9 ' . escapeshellarg($manual_zip) . ' *';
-        $output2 = shell_exec($cmd);
-        $out .= do_build_zip_output($manual_zip, $output2);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        $out .= do_build_archive_output($manual_zip, $output2);
 
         chdir(get_file_base());
     }
@@ -228,26 +248,39 @@ function make_installers($skip_file_grab = false)
         copy(get_file_base() . '/_config.php.template', $builds_path . '/builds/build/' . $version_branch . '/_config.php.template');
         fix_permissions($builds_path . '/builds/build/' . $version_branch . '/_config.php.template');
 
-        // Do the main work
+        // Do the main work...
+
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' * --mode=a+X';
-        $output2 = '';
-        $cmd_result = shell_exec($cmd);
-        if ($cmd_result !== null) {
-            $output2 .= $cmd_result;
+        $cmd = 'tar -cvf ' . escapeshellarg($bundled) . ' *';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
         }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
+
         chdir(get_file_base() . '/data_custom/builds');
-        $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt --mode=a+X';
-        $cmd_result = shell_exec($cmd);
-        if ($cmd_result !== null) {
-            $output2 .= $cmd_result;
+        $cmd = 'tar -rvf ' . escapeshellarg($bundled) . ' readme.txt';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
         }
-        //$out.=do_build_zip_output($v,$output2);  Don't mention, as will get auto-deleted after gzipping anyway
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        //$out .= do_build_archive_output($v, $output2);  Don't mention, as will get auto-deleted after gzipping anyway
+
         chdir($builds_path . '/builds/build/' . $version_branch);
         $cmd = 'gzip -n ' . escapeshellarg($bundled);
-        shell_exec($cmd);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            if (is_file($bundled . '.gz')) {
+                $cmd_result = '(no output)'; // gzip produces no output normally anyway, which means shell_exec returns null
+            } else {
+                fatal_exit('Failed to run: ' . $cmd);
+            }
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
         @unlink($bundled);
-        $out .= do_build_zip_output($bundled . '.gz', $output2);
+        $out .= do_build_archive_output($bundled . '.gz', $output2);
 
         // Remove those files we copied
         unlink($builds_path . '/builds/build/' . $version_branch . '/install.sql');
@@ -291,8 +324,12 @@ function make_installers($skip_file_grab = false)
         // Do the main work
         chdir($builds_path . '/builds/build');
         $cmd = 'zip -r -9 -v ' . escapeshellarg($mszip) . ' composr manifest.xml parameters.xml install1.sql install2.sql install3.sql install4.sql user.sql postinstall.sql';
-        $output2 = shell_exec($cmd);
-        $out .= do_build_zip_output($mszip, $output2);
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        $out .= do_build_archive_output($mszip, $output2);
 
         // Undo temporary renaming
         rename($builds_path . '/builds/build/composr', $builds_path . '/builds/build/' . $version_branch);
@@ -303,6 +340,113 @@ function make_installers($skip_file_grab = false)
 
         // Remove temporary files from main folder
         unlink($builds_path . '/builds/build/' . $version_branch . '/_config.php.template');
+
+        chdir(get_file_base());
+    }
+
+    // Build APS package
+    if ($make_aps) {
+        @unlink($aps_zip);
+
+        if (file_exists($builds_path . '/builds/aps/')) {
+            deldir_contents($builds_path . '/builds/aps/');
+        }
+
+        // Copy the files we need
+        copy_r(get_file_base() . '/aps', $builds_path . '/builds/aps');
+        fix_permissions($builds_path . '/builds/aps');
+        copy(get_file_base() . '/install.sql', $builds_path . '/builds/aps/scripts/install.sql');
+        fix_permissions($builds_path . '/builds/aps/scripts/install.sql');
+
+        // Temporary renaming
+        rename($builds_path . '/builds/build/' . $version_branch . '/', $builds_path . '/builds/aps/htdocs/');
+
+        /* Prepare changelog for APP-META.xml*/
+        // Load the template APP-META.xml
+        $app_meta_doc = new DOMDocument();
+        $app_meta_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-META.xml'));
+
+        $xpath = new DOMXPath($app_meta_doc);
+        $xpath->registerNamespace('x', 'http://apstandard.com/ns/1');
+
+        $application_el = $xpath->query('/x:application')->item(0);
+        $application_el->setAttribute('packaged', date(DATE_ATOM));
+
+        $version_el = $xpath->query('/x:application/x:version')->item(0);
+        $version_el->nodeValue = $version_dotted;
+
+        $changelog_el = $xpath->query('/x:application/x:presentation/x:changelog')->item(0);
+        $changelog_previous_version_el = $changelog_el->getElementsByTagName('version')->item(0);
+
+        $previous_version_dotted = $changelog_previous_version_el->getAttribute('version');
+
+        if ($version_dotted !== $previous_version_dotted) {
+            $changelog_version_el = $changelog_previous_version_el->cloneNode(1);
+            $changelog_version_el->setAttribute('version', $version_dotted);
+
+            $changelog_version_entry_el = $changelog_version_el->getElementsByTagName('entry')->item(0);
+            $changelog_version_entry_el->nodeValue = 'Composr ' . $version_dotted . ' release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=' . $version_dotted;
+
+            $changelog_el->insertBefore($changelog_version_el, $changelog_previous_version_el);
+        }
+
+        $app_meta_doc = pretty_print_dom_document($app_meta_doc);
+        // Update the template APP-META.xml
+        $app_meta_doc->save(get_file_base() . '/aps/APP-META.xml');
+        // Make the build APP-META.xml
+        $app_meta_doc->save($builds_path . '/builds/aps/APP-META.xml');
+
+        /* Prepare APP-LIST.xml */
+        // Load the template APP-LIST.xml
+        $app_list_doc = new DOMDocument();
+        $app_list_doc->loadXML(file_get_contents(get_file_base() . '/aps/APP-LIST.xml'));
+
+        $files_el = $app_list_doc->getElementsByTagName('files')->item(0);
+
+        unlink($builds_path . '/builds/aps/APP-LIST.xml'); // Delete the copied template so it's not included in the list
+
+        $success = make_file_elements($app_list_doc, $files_el, $builds_path . '/builds/aps');
+        if ($success === false) {
+            warn_exit('Failed to build APP-LIST.xml');
+        }
+
+        // Save the build APP-LIST.xml
+        $app_list_doc = pretty_print_dom_document($app_list_doc);
+        $app_list_doc->save($builds_path . '/builds/aps/APP-LIST.xml');
+
+        // Do the main work
+        chdir($builds_path . '/builds/aps');
+        $cmd = 'zip -r -9 -v ' . escapeshellarg($aps_zip) . ' htdocs images scripts test APP-LIST.xml APP-META.xml';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        $out .= do_build_archive_output($aps_zip, $output2);
+
+        // Undo temporary renaming
+        rename($builds_path . '/builds/aps/htdocs/', $builds_path . '/builds/build/' . $version_branch . '/');
+
+        // Delete the copied files
+        deldir_contents($builds_path . '/builds/aps/');
+        rmdir($builds_path . '/builds/aps/');
+
+        chdir(get_file_base());
+    }
+
+    // Build uni-upgrader
+    if ($make_uni_upgrader) {
+        @unlink($uni_upgrader);
+
+        // Do the main work
+        chdir($builds_path . '/builds/build/' . $version_branch);
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' *';
+        $cmd_result = shell_exec($cmd . ' 2>&1');
+        if (!is_string($cmd_result)) {
+            fatal_exit('Failed to run: ' . $cmd);
+        }
+        $output2 = $cmd . ':' . "\n" . $cmd_result;
+        $out .= do_build_archive_output($uni_upgrader, $output2);
 
         chdir(get_file_base());
     }
@@ -323,6 +467,12 @@ function make_installers($skip_file_grab = false)
     if ($make_bundled) {
         $details .= '<li>' . $bundled . '.gz file size: ' . clean_file_size(filesize($bundled . '.gz')) . '</li>';
     }
+    if ($make_aps) {
+        $details .= '<li>' . $aps_zip . ' file size: ' . clean_file_size(filesize($aps_zip)) . '</li>';
+    }
+    if ($make_uni_upgrader) {
+        $details .= '<li>' . $uni_upgrader . ' file size: ' . clean_file_size(filesize($uni_upgrader)) . '</li>';
+    }
 
     $out .= '
         <h2>Statistics</h2>
@@ -340,12 +490,56 @@ function make_installers($skip_file_grab = false)
     return $out;
 }
 
+// Used in the APS build process
+function make_file_elements(DOMDocument $app_list_doc, DOMElement $files_el, $dir_path)
+{
+    $entries = scandir($dir_path);
+    if ($entries === false) {
+        return false;
+    }
+    $entries = array_diff($entries, array('.', '..'));
+
+    foreach ($entries as $entry) {
+        $entry_path = $dir_path . '/' . $entry;
+
+        if (is_dir($entry_path)) {
+            $success = make_file_elements($app_list_doc, $files_el, $entry_path);
+            if ($success === false) {
+                return false;
+            }
+            continue;
+        }
+
+        $name = substr($entry_path, strlen(get_builds_path() . '/builds/aps/')); // Remove base path, we need a relative path
+
+        $el = $app_list_doc->createElement('ns2:file');
+        $el->setAttribute('name', $name);
+        $el->setAttribute('size', strval(filesize($entry_path)));
+        $el->setAttribute('sha256', hash_file('sha256', $entry_path));
+
+        $files_el->appendChild($el);
+    }
+
+    return true;
+}
+
+// Used in the APS build process
+function pretty_print_dom_document(DOMDocument $doc)
+{
+    $new_doc = new DOMDocument();
+    $new_doc->preserveWhiteSpace = false;
+    $new_doc->formatOutput = true;
+    $new_doc->loadXML($doc->saveXML());
+
+    return $new_doc;
+}
+
 function get_builds_path()
 {
     $builds_path = get_file_base() . '/exports';
     if (!file_exists($builds_path . '/builds')) {
         mkdir($builds_path . '/builds', 0777) or warn_exit('Could not make master build folder');
-        fix_permissions($builds_path . '/builds', 0777);
+        fix_permissions($builds_path . '/builds');
     }
     return $builds_path;
 }
@@ -354,7 +548,7 @@ function copy_r($path, $dest)
 {
     if (is_dir($path)) {
         @mkdir($dest, 0777);
-        fix_permissions($dest, 0777);
+        fix_permissions($dest);
         $objects = scandir($path);
         if (count($objects) > 0) {
             foreach ($objects as $file) {
@@ -392,19 +586,19 @@ function do_build_directory_output($path)
     return '<li>Directory "' . escape_html($path) . '" traversed.</li>';
 }
 
-function do_build_zip_output($file, $new_output)
+function do_build_archive_output($file, $new_output)
 {
     $version_dotted = get_version_dotted();
 
     $builds_path = get_builds_path();
     return '
         <div class="zip_surround">
-        <h2>Compiling ZIP file "<a href="' . escape_html($file) . '" title="Download the file.">' . escape_html($builds_path . $version_dotted . '/' . $file) . '</a>"</h2>
+        <h2>Compiling archive file "<a href="' . escape_html($file) . '" title="Download the file.">' . escape_html($builds_path . $version_dotted . '/' . $file) . '</a>"</h2>
         <p>' . nl2br(trim(escape_html($new_output))) . '</p>
         </div>';
 }
 
-function populate_build_files_array($dir = '', $pretend_dir = '')
+function populate_build_files_list($dir = '', $pretend_dir = '')
 {
     require_code('files');
 
@@ -432,7 +626,7 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir(get_file_base() . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
             continue;
         }
 
@@ -440,8 +634,8 @@ function populate_build_files_array($dir = '', $pretend_dir = '')
             $num_files = count($MAKE_INSTALLERS__FILE_ARRAY);
             $MAKE_INSTALLERS__DIR_ARRAY[] = $pretend_dir . $file;
             @mkdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
-            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 0777);
-            $_out = populate_build_files_array($dir . $file . '/', $pretend_dir . $file . '/');
+            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
+            $_out = populate_build_files_list($dir . $file . '/', $pretend_dir . $file . '/');
             if ($num_files == count($MAKE_INSTALLERS__FILE_ARRAY)) { // Empty, effectively (maybe was from a non-bundled addon) - don't use it
                 array_pop($MAKE_INSTALLERS__DIR_ARRAY);
                 rmdir($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
@@ -488,7 +682,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
 
     if (count($MAKE_INSTALLERS__FILE_ARRAY) == 0) {
-        populate_build_files_array();
+        populate_build_files_list();
     }
 
     $files = array();
@@ -522,3 +716,306 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     fclose($tmp);
     fix_permissions($builds_path . '/builds/build/' . $version_branch . '/data/files.dat');
 }
+
+function make_database_manifest() // Builds db_meta.dat, which is used for database integrity checks
+{
+    require_code('database_relations');
+
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+
+    // Work out what addons everything belongs to...
+
+    $table_addons = array();
+    $index_addons = array();
+    $privilege_addons = array();
+
+    require_code('files2');
+    $files = get_directory_contents(get_file_base(), '', true);
+    foreach ($files as $file) {
+        if (substr($file, -4) != '.php' && substr($file, -strlen('_custom')) != '_custom') {
+            continue;
+        }
+
+        $contents = file_get_contents(get_file_base() . '/' . $file);
+        $matches = array();
+        if (preg_match('#@package\s+(\w+)\r?\n#', $contents, $matches) != 0) {
+            $addon = $matches[1];
+            if ($addon == 'installer') {
+                $addon = 'core';
+            }
+
+            $table_regexp = '#->create_table\(\'(\w+)\'#';
+            $table_matches = array();
+            $table_num_matches = preg_match_all($table_regexp, $contents, $table_matches);
+            for ($i = 0; $i < $table_num_matches; $i++) {
+                $table_name = $table_matches[1][$i];
+                $table_addons[$table_name] = $addon;
+            }
+
+            $index_regexp = '#->create_index\(\'(\w+)\',\s*\'([\#\w]+)\'#';
+            $index_matches = array();
+            $index_num_matches = preg_match_all($index_regexp, $contents, $index_matches);
+            for ($i = 0; $i < $index_num_matches; $i++) {
+                $table_name = $index_matches[1][$i];
+                $index_name = $index_matches[2][$i];
+                $universal_index_key = $table_name . '__' . $index_name;
+                $index_addons[$universal_index_key] = $addon;
+            }
+
+            if ($file == 'sources/cns_install.php') {
+                $privilege_regexp = '#\'(\w+)\'#';
+            } elseif ($file == 'sources/database_action.php') {
+                $privilege_regexp = '#array\(\'\w+\',\s*\'(\w+)\'\)#';
+            } else {
+                $privilege_regexp = '#add_privilege\(\'\w+\',\s*\'(\w+)\'#';
+            }
+            $privilege_matches = array();
+            $privilege_num_matches = preg_match_all($privilege_regexp, $contents, $privilege_matches);
+            for ($i = 0; $i < $privilege_num_matches; $i++) {
+                $privilege_name = $privilege_matches[1][$i];
+                $privilege_addons[$privilege_name] = $addon;
+            }
+        }
+    }
+
+    // Check we have found everything the database knows about...
+
+    if (get_param_integer('skip_errors', 0) != 1) {
+        $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table')));
+        foreach ($all_tables as $table_name) {
+            if (!array_key_exists($table_name, $table_addons)) {
+                if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                    warn_exit('Table ' . $table_name . ' in meta database could not be sourced.');
+                }
+            }
+        }
+
+        $all_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('i_name', 'i_table'));
+        foreach ($all_indices as $index) {
+            $table_name = $index['i_table'];
+            $index_name = $index['i_name'];
+
+            $universal_index_key = $table_name . '__' . $index_name;
+
+            if (!isset($index_addons[$universal_index_key])) {
+                if (!array_key_exists($table_name, $table_addons)) {
+                    if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                        warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
+                    }
+                } else {
+                    $index_addons[$universal_index_key] = $table_addons[$table_name];
+                }
+            }
+        }
+
+        $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
+        foreach ($all_privileges as $privilege_name) {
+            if (!array_key_exists($privilege_name, $privilege_addons)) {
+                warn_exit('Privilege ' . $privilege_name . ' in meta database could not be sourced.');
+            }
+        }
+    }
+
+    // Build up db_meta.dat structure...
+
+    $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
+    $tables = array();
+    foreach ($field_details as $field) {
+        $table_name = $field['m_table'];
+
+        if (!isset($table_addons[$table_name])) {
+            continue;
+        }
+
+        if (!isset($tables[$table_name])) {
+            $tables[$table_name] = array(
+                'addon' => $table_addons[$table_name],
+                'fields' => array(),
+            );
+        }
+        $tables[$field['m_table']]['fields'][$field['m_name']] = $field['m_type'];
+    }
+
+    $index_details = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
+    $indices = array();
+    foreach ($index_details as $index) {
+        $table_name = $index['i_table'];
+        $index_name = trim($index['i_name'], '#');
+
+        $universal_index_key = $table_name . '__' . $index['i_name'];
+
+        if (!isset($index_addons[$universal_index_key])) {
+            continue;
+        }
+
+        $indices[$universal_index_key] = array(
+            'addon' => $index_addons[$universal_index_key],
+            'name' => $index_name,
+            'table' => $table_name,
+            'fields' => explode(',', preg_replace('#\([^\)]*\)#', '', $index['i_fields'])),
+            'is_full_text' => (strpos($index['i_name'], '#') !== false),
+        );
+    }
+
+    $privilege_details = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'));
+    $privileges = array();
+    foreach ($privilege_details as $privilege) {
+        if (!isset($privilege_addons[$privilege['the_name']])) {
+            continue;
+        }
+
+        $privileges[$privilege['the_name']] = array(
+            'addon' => $privilege_addons[$privilege['the_name']],
+            'section' => $privilege['p_section'],
+            'default' => $privilege['the_default'],
+        );
+    }
+
+    $data = array(
+        'tables' => $tables,
+        'indices' => $indices,
+        'privileges' => $privileges,
+    );
+
+    // Save
+    $path = get_file_base() . '/data/db_meta.dat';
+    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+    fwrite($myfile, serialize($data));
+    fclose($myfile);
+    fix_permissions($path);
+    sync_file($path);
+
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+}
+
+function make_install_sql()
+{
+    global $SITE_INFO;
+
+    // Where to build database to
+    $database = 'cms_make_release_tmp';
+    $username = 'root';
+    $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
+    $table_prefix = 'cms_';
+
+    // Build database
+    require_code('install_headless');
+    $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
+    if (!$test) {
+        warn_exit('Failed to execute installer, while building install.sql');
+    }
+
+    // Get database connection
+    $conn = new DatabaseConnector($database, get_db_site_host(), $username, $password, $table_prefix);
+
+    // Remove caching
+    require_code('database_relations');
+    $table_purposes = get_table_purpose_flags();
+    foreach ($table_purposes as $table => $purpose) {
+        if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($conn->table_exists($table))) {
+            $conn->query_delete($table);
+        }
+    }
+
+    // Build SQL dump
+    require_code('database_toolkit');
+    $st = get_sql_dump(true, false, null, null, null, false, $conn);
+    $myfile = fopen(get_file_base() . '/install.sql', 'wb');
+    foreach ($st as $s) {
+        fwrite($myfile, $s);
+        fwrite($myfile, "\n\n");
+    }
+    fclose($myfile);
+    fix_permissions(get_file_base() . '/install.sql');
+    sync_file(get_file_base() . '/install.sql');
+
+    // Run some checks to make sure our process is not buggy...
+
+    $contents = file_get_contents(get_file_base() . '/install.sql');
+
+    // Not with forced charsets or other contextual noise
+    if (strpos($contents, "\n" . 'SET') !== false) {
+        warn_exit('install.sql: Contains unwanted context');
+    }
+    if (preg_match('#\d+ SET #', $contents) != 0) {
+        warn_exit('install.sql: Contains unwanted context');
+    }
+
+    // Old way of specifying table types
+    if (strpos($contents, ' TYPE=') !== false) {
+        warn_exit('install.sql: Change TYPE= to ENGINE=');
+    }
+
+    // Not with bundled addons
+    if (strpos($contents, 'CREATE TABLE cms_workflow_') !== false) {
+        warn_exit('install.sql: Contains non-bundled addons');
+    }
+
+    // Not with wrong table prefixes / multiple installs
+    if (preg_match('#CREATE TABLE cms\d+\_#', $contents) != 0) {
+        warn_exit('install.sql: Contains a version-prefixed install');
+    }
+    if (preg_match('#CREATE TABLE cms\_#', $contents) == 0) {
+        warn_exit('install.sql: Does not contain a standard-prefixed install');
+    }
+
+    // Not having been run
+    if (preg_match('#INSERT INTO cms\_cache#i', $contents) != 0) {
+        warn_exit('install.sql: Contains cache data');
+    }
+    if (preg_match('#INSERT INTO cms\_stats#i', $contents) != 0) {
+        warn_exit('install.sql: Contains stat data - site should not have been loaded ever yet');
+    }
+
+    // Out-dated version
+    $v = float_to_raw_string(cms_version_number());
+    $version_marker = '\'version\', \'' . $v . '\'';
+    if (strpos($contents, $version_marker) === false) {
+        warn_exit('install.sql: Contains wrong version');
+    }
+
+    // Do split...
+
+    $split_points = array(
+        '',
+        'DROP TABLE IF EXISTS cms_db_meta;',
+        'DROP TABLE IF EXISTS cms_f_polls;',
+        'DROP TABLE IF EXISTS cms_member_privileges;',
+    );
+
+    // Check we can find split points
+    $contents = file_get_contents(get_file_base() . '/install.sql');
+    foreach ($split_points as $p) {
+        if ($p != '') {
+            if (strpos($contents, $p) === false) {
+                warn_exit('install.sql: Cannot find split point ' . $p);
+            }
+        }
+    }
+    $froms = array();
+    foreach ($split_points as $p) {
+        if ($p == '') {
+            $from = 0;
+        } else {
+            $from = strpos($contents, $p);
+        }
+        $froms[] = $from;
+    }
+    sort($froms);
+    for ($i = 0; $i < 4; $i++) {
+        $from = $froms[$i];
+        if ($i < 3) {
+            $to = $froms[$i + 1];
+            $segment = substr($contents, $from, $to - $from);
+        } else {
+            $segment = substr($contents, $from);
+        }
+        file_put_contents(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment);
+        fix_permissions(get_file_base() . '/install' . strval($i + 1) . '.sql');
+        sync_file(get_file_base() . '/install' . strval($i + 1) . '.sql');
+    }
+}
+
+// See phpdoc_parser.php for functions.dat manifest building
+
+// Also see chmod_consistency.php, and build_rewrite_rules.php

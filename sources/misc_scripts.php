@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -12,6 +12,8 @@
 
 */
 
+/*EXTRA FUNCTIONS: curl_.**/
+
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
@@ -20,6 +22,8 @@
 
 /**
  * Script to make a nice textual image, vertical writing.
+ *
+ * @ignore
  */
 function gd_text_script()
 {
@@ -118,8 +122,21 @@ function gd_text_script()
     imagealphablending($img, false);
     $fg_color = array_key_exists('fg_color', $_GET) ? $_GET['fg_color'] : '000000';
     if (substr($fg_color, 0, 5) == 'seed-') {
-        require_code('themewizard');
-        $fg_color = find_theme_seed(substr($fg_color, 5));
+        $theme = substr($fg_color, 5);
+
+        if (addon_installed('themewizard')) {
+            require_code('themewizard');
+            $fg_color = find_theme_seed($theme);
+        } else {
+            $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+            if (is_file($ini_path)) {
+                require_code('files');
+                $map = better_parse_ini_file($ini_path);
+            } else {
+                $map = array();
+            }
+            $fg_color = isset($map['seed']) ? $map['seed'] : '000000';
+        }
     }
     $color = imagecolorallocate($img, hexdec(substr($fg_color, 0, 2)), hexdec(substr($fg_color, 2, 2)), hexdec(substr($fg_color, 4, 2)));
     if ((!function_exists('imagettftext')) || (!array_key_exists('FreeType Support', gd_info())) || (@imagettfbbox(26.0, 0.0, get_file_base() . '/data/fonts/Vera.ttf', 'test') === false) || (strlen($text) == 0)) {
@@ -179,6 +196,8 @@ function gd_text_script()
 
 /**
  * Script to track clicks to external sites.
+ *
+ * @ignore
  */
 function simple_tracker_script()
 {
@@ -199,6 +218,8 @@ function simple_tracker_script()
 
 /**
  * Script to show previews of content being added/edited.
+ *
+ * @ignore
  */
 function preview_script()
 {
@@ -222,11 +243,13 @@ function preview_script()
  * Script to perform Composr CRON jobs called by the real CRON.
  *
  * @param  PATH $caller File path of the cron_bridge.php script
+ *
+ * @ignore
  */
 function cron_bridge_script($caller)
 {
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(1000); // May get overridden lower later on
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(1000); // May get overridden lower later on
     }
 
     // In query mode, Composr will just give advice on CRON settings to use
@@ -241,7 +264,7 @@ function cron_bridge_script($caller)
 
     // For multi-site installs, run for each install
     global $CURRENT_SHARE_USER, $SITE_INFO;
-    if ((is_null($CURRENT_SHARE_USER)) && (array_key_exists('custom_share_domain', $SITE_INFO))) {
+    if ((is_null($CURRENT_SHARE_USER)) && (!empty($SITE_INFO['custom_share_domain']))) {
         require_code('files');
 
         foreach ($SITE_INFO as $key => $val) {
@@ -300,11 +323,13 @@ function cron_bridge_script($caller)
 
 /**
  * Script to handle iframe.
+ *
+ * @ignore
  */
 function iframe_script()
 {
     $zone = get_param_string('zone');
-    $page = get_param_string('page');
+    $page = get_page_name();
     $ajax = (get_param_integer('ajax', 0) == 1);
 
     process_url_monikers($page);
@@ -322,7 +347,7 @@ function iframe_script()
     if ($zones[0]['zone_require_session'] == 1) {
         header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
     }
-    if (($zones[0]['zone_name'] != '') && (get_option('windows_auth_is_enabled') != '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
+    if (($zones[0]['zone_name'] != '') && (get_value('windows_auth_is_enabled') !== '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
         access_denied('ZONE_ACCESS_SESSION');
     }
     if (!has_actual_page_access(get_member(), $page, $zone)) {
@@ -363,6 +388,8 @@ function iframe_script()
 
 /**
  * Redirect the browser to where a page_link specifies.
+ *
+ * @ignore
  */
 function page_link_redirect_script()
 {
@@ -380,6 +407,8 @@ function page_link_redirect_script()
 
 /**
  * Outputs the page-link chooser popup.
+ *
+ * @ignore
  */
 function page_link_chooser_script()
 {
@@ -405,6 +434,8 @@ function page_link_chooser_script()
 
 /**
  * Shows an HTML page of all emoticons clickably.
+ *
+ * @ignore
  */
 function emoticons_script()
 {
@@ -418,12 +449,12 @@ function emoticons_script()
     require_javascript('editing');
 
     $extra = has_privilege(get_member(), 'use_special_emoticons') ? '' : ' AND e_is_special=0';
-    $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<3' . $extra);
+    $_rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<3' . $extra);
 
     // Work out what grid spacing to use
     $max_emoticon_width = 0;
     require_code('images');
-    foreach ($rows as $myrow) {
+    foreach ($_rows as $myrow) {
         list($_width,) = _symbol_image_dims(array(find_theme_image($myrow['e_theme_img_code'], true)));
         $max_emoticon_width = max($max_emoticon_width, intval($_width));
     }
@@ -438,22 +469,29 @@ function emoticons_script()
     }
 
     // Render UI
-    $content = new Tempcode();
-    $current_row = new Tempcode();
-    foreach ($rows as $i => $myrow) {
+    $rows = array();
+    $cells = array();
+    foreach ($_rows as $i => $myrow) {
         if (($i % $cols == 0) && ($i != 0)) {
-            $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => '283bff0bb281039b94ff2d4dcaf79172', 'CELLS' => $current_row)));
-            $current_row = new Tempcode();
+            $rows[] = array('CELLS' => $cells);
+            $cells = array();
         }
 
         $code_esc = $myrow['e_code'];
-        $current_row->attach(do_template('CNS_EMOTICON_CELL', array('_GUID' => 'ddb838e6fa296df41299c8758db92f8d', 'COLS' => strval($cols), 'FIELD_NAME' => get_param_string('field_name', 'post'), 'CODE_ESC' => $code_esc, 'THEME_IMG_CODE' => $myrow['e_theme_img_code'], 'CODE' => $myrow['e_code'])));
+        $cells[] = array(
+            '_GUID' => 'ddb838e6fa296df41299c8758db92f8d',
+            'COLS' => strval($cols),
+            'FIELD_NAME' => filter_naughty_harsh(get_param_string('field_name', 'post')),
+            'CODE_ESC' => $code_esc,
+            'THEME_IMG_CODE' => $myrow['e_theme_img_code'],
+            'CODE' => $myrow['e_code'],
+        );
     }
-    if (!$current_row->is_empty()) {
-        $content->attach(do_template('CNS_EMOTICON_ROW', array('_GUID' => 'd13e74f7febc560dc5fc241dc7914a03', 'CELLS' => $current_row)));
+    if ($cells !== array()) {
+        $rows[] = array('CELLS' => $cells);
     }
 
-    $content = do_template('CNS_EMOTICON_TABLE', array('_GUID' => 'd3dd9bbfacede738e2aff4712b86944b', 'ROWS' => $content));
+    $content = do_template('CNS_EMOTICON_TABLE', array('ROWS' => $rows));
 
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
@@ -465,6 +503,8 @@ function emoticons_script()
 
 /**
  * Allows conversion of a URL to a thumbnail via a simple script.
+ *
+ * @ignore
  */
 function thumb_script()
 {
@@ -478,9 +518,6 @@ function thumb_script()
     $new_name = url_to_filename($url_full);
     if (!is_saveable_image($new_name)) {
         $new_name .= '.png';
-    }
-    if (is_null($new_name)) {
-        warn_exit(do_lang_tempcode('URL_THUMB_TOO_LONG'));
     }
     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
     if (!file_exists($file_thumb)) {
@@ -500,6 +537,8 @@ function thumb_script()
 
 /**
  * Outputs a modal question dialog.
+ *
+ * @ignore
  */
 function question_ui_script()
 {
@@ -522,4 +561,66 @@ function question_ui_script()
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '8d72daa4c9f922656b190b643a6fe61d', 'TITLE' => escape_html($title), 'POPUP' => true, 'CONTENT' => $message));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
+}
+
+/**
+ * Proxy an external URL.
+ *
+ * @ignore
+ */
+function external_url_proxy_script()
+{
+    $url = get_param_string('url', false, true);
+
+    // Don't allow loops
+    if (strpos($url, 'external_url_proxy.php') !== false) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // Don't allow non-HTTP(S)
+    if (preg_match('#^https?://#', $url) == 0) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
+    // No time-limits wanted
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
+    }
+
+    // Can't add in compression
+    safe_ini_set('zlib.output_compression', 'Off');
+
+    // No ocProducts XSS filter
+    safe_ini_set('ocproducts.xss_detect', '0');
+
+    // Stream
+    $content_type = 'application/octet-stream';
+    $f = @fopen($url, 'rb');
+    if (isset($http_response_header)) {
+        // Work out appropriate content type (with restrictions)
+        require_code('mime_types');
+        $mime_types = array_flip(get_mime_types(false));
+        $matches = array();
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header, $matches) != 0) {
+                $content_type = $matches[1];
+            }
+        }
+        if (!isset($mime_types[$content_type])) {
+            $content_type = 'application/octet-stream';
+        }
+        header('Content-Type: ' . $content_type);
+
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type:\s*(.*)\s*#i', $header) == 0) {
+                header($header);
+            }
+        }
+    } else {
+        header('Content-Type: ' . $content_type);
+    }
+    if ($f !== false) {
+        fpassthru($f);
+        @fclose($f);
+    }
 }

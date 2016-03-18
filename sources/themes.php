@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__themes()
 {
@@ -63,14 +65,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $db = $GLOBALS['SITE_DB'];
     }
 
-    if ($RECORD_THEME_IMAGES_CACHE) {
-        global $RECORDED_THEME_IMAGES;
-        if (is_on_multi_site_network()) {
-            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = 1;
-        }
-    }
-
-    $true_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+    $true_theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     if ($theme === null) {
         $theme = $true_theme;
     }
@@ -203,7 +198,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         if ($path === null) {
             if (!$silent_fail) {
                 require_code('site');
-                attach_message(do_lang_tempcode('NO_SUCH_IMAGE', escape_html($id)), 'warn');
+                attach_message(do_lang_tempcode('NO_SUCH_THEME_IMAGE', escape_html($id)), 'warn');
             }
             if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
                 $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, '');
@@ -225,6 +220,11 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             }
             return $ret;
         }
+    }
+
+    // Add to cache
+    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
+        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $path);
     }
 
     // Make absolute
@@ -253,9 +253,14 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
     }
 
     $ret = cdn_filter($path);
-    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
+
+    if ($RECORD_THEME_IMAGES_CACHE) {
+        global $RECORDED_THEME_IMAGES;
+        if (!is_on_multi_site_network()) {
+            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = true;
+        }
     }
+
     return $ret;
 }
 
@@ -352,6 +357,7 @@ function cdn_filter($path)
  * @param  ID_TEXT $id The theme image ID
  * @param  ID_TEXT $dir Directory to search
  * @return ?string The path to the image (null: was not found)
+ * @ignore
  */
 function _search_img_file($theme, $lang, $id, $dir = 'images')
 {

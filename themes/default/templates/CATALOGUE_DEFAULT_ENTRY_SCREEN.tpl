@@ -36,7 +36,7 @@
 	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 	{+START,INCLUDE,STAFF_ACTIONS}
 		1_URL={EDIT_URL*}
-		1_TITLE={!_EDIT_LINK}
+		1_TITLE={!EDIT_LINK}
 		1_ACCESSKEY=q
 		1_REL=edit
 		1_ICON=menu/_generic_admin/edit_this
@@ -56,5 +56,5 @@
 
 	{$,Uncomment and modify to create a reply link <a href="\{$PAGE_LINK*,site:contact_member:browse:\{SUBMITTER\}:subject=Response to listing, \{FIELD_1\}:message=\}">Respond</a>}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 </div>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -136,8 +136,8 @@ class Hook_sitemap_root extends Hook_sitemap_base
             if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) == 0) {
                 require_code('hooks/systems/sitemap/zone');
                 $ob = object_factory('Hook_sitemap_zone');
-                $temp = $ob->get_node(':');
-                $struct['children'] = $temp['children'];
+                $temp = $ob->get_node(':', $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, null, $return_anyway);
+                $struct['children'] = isset($temp['children']) ? $temp['children'] : array();
                 $struct['extra_meta'] = $temp['extra_meta'];
                 $struct['permissions'] = $temp['permissions'];
                 $struct['privilege_page'] = $temp['privilege_page'];

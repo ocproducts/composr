@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__webstandards2()
 {
@@ -554,7 +556,7 @@ function init__webstandards2()
     $TAG_ATTRIBUTES += array(
         'table.frame' => '(void|above|below|hsides|lhs|rhs|vsides|box|border)',
         'table.rules' => '(none|groups|rows|cols|all)',
-        //'table.summary'=>'.*', Not in HTML5
+        //'table.summary' => '.*', Not in HTML5
         'tbody.char' => $enforce_character,
         'tbody.charoff' => $enforce_length,
         'td.axis' => '.+',
@@ -594,7 +596,7 @@ function init__webstandards2()
 
         // Below brought back in in modules (target, iframe) / fully in HTML5
         'a.target' => '.+',
-        //'area.target'=>'.+',
+        //'area.target' => '.+',
         'base.target' => '.+',
         'form.target' => '.+',
         'iframe.longdesc' => '.+',
@@ -602,10 +604,10 @@ function init__webstandards2()
         'iframe.src' => '.+',
 
         // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay
-        //'iframe.scrolling'=>'(yes|no|auto)',
-        //'iframe.frameborder'=>'(1|0)',
-        //'iframe.marginheight'=>$enforce_pixels,
-        //'iframe.marginwidth'=>$enforce_pixels,
+        //'iframe.scrolling' => '(yes|no|auto)',
+        //'iframe.frameborder' => '(1|0)',
+        //'iframe.marginheight' => $enforce_pixels,
+        //'iframe.marginwidth' => $enforce_pixels,
     );
     $TAG_ATTRIBUTES += array(
         '*.hidden' => '(hidden)',
@@ -668,13 +670,13 @@ function init__webstandards2()
     global $TAG_ATTRIBUTES_REQUIRED;
     $TAG_ATTRIBUTES_REQUIRED = array(
         'base' => array('href'), // XHTML-strict
-        //'html'=>array('xmlns'/*,'xml:lang' Not in XHTML5*/),
+        //'html' => array('xmlns'/*, 'xml:lang' Not in XHTML5*/),
         'meta' => array('content'),
         'style' => array(/*'type'*/),
         'script' => array(/*'type'*/),
         'bdo' => array('dir'),
         'basefont' => array('size'),
-        //  'param'=>array('name'), Not needed in XHTML strict
+        //'param' => array('name'), Not needed in XHTML strict
         'iframe' => array('src', 'title'),
         'img' => array('src', 'alt'),
         'label' => array('for'),
@@ -682,7 +684,7 @@ function init__webstandards2()
         'area' => array('alt'),
         'form' => array('action', 'title'),
         'textarea' => array('cols', 'rows'),
-        //'input'=>array('value'), // accessibility, checked somewhere else
+        //'input' => array('value'), // accessibility, checked somewhere else
         'table' => array(/*'summary' not in html5*/),
         'optgroup' => array('label')
     );
@@ -728,7 +730,7 @@ function init__webstandards2()
         'video.height' => $enforce_length,
         'video.loop' => '(loop)',
         'video.poster' => '.*',
-        'video.preload' => '(preload)',
+        'video.preload' => '(auto|metadata|none)',
         'video.src' => '.*',
         'video.width' => $enforce_length,
         'time.datetime' => '.*',
@@ -831,6 +833,8 @@ function init__webstandards2()
  * @param  boolean $close Whether this is a closing tag
  * @param  list $errors Errors detected so far. We will add to these and return
  * @return array Array of error information
+ *
+ * @ignore
  */
 function __check_tag($tag, $attributes, $self_close, $close, $errors)
 {
@@ -925,7 +929,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
         }
 
         // Embed is a special case
-        //if (($tag=='embed') && (!$self_close)) $EXPECTING_TAG='noembed'; // noembed not valid in (X)HTML5
+        //if (($tag == 'embed') && (!$self_close)) $EXPECTING_TAG = 'noembed'; // noembed not valid in (X)HTML5
 
         if (($tag == 'fieldset') && (!$self_close)) {
             $EXPECTING_TAG = 'legend';
@@ -995,7 +999,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                     if (function_exists('require_code')) {
                         require_code('webstandards_js_lint');
                     }
-                    $content = substr($OUT, $POS, strpos($OUT, '</script>', $POS) - $POS); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = substr($OUT, $POS, strpos($OUT, '</script>', $POS) - $POS); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $content = preg_replace('#((<![CDATA[)|(]]>)|(<!--)|(-->))#', '', $content);
                     $js_conformance = check_js($content, true);
                     if (is_array($js_conformance)) {
@@ -1006,7 +1010,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
             case 'style':
                 if (($GLOBALS['WEBSTANDARDS_CSS']) && ((!isset($attributes['type'])) || ((isset($attributes['type'])) && ($attributes['type'] == 'text/css')))) { // Validate CSS
-                    $content = substr($OUT, $POS, strpos($OUT, '</style>', $POS) - $POS); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = substr($OUT, $POS, strpos($OUT, '</style>', $POS) - $POS); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $content = preg_replace('#((<![CDATA[)|(]]>)|(<!--)|(-->))#', '', $content);
                     $css_conformance = _webstandards_css_sheet($content);
                     if (is_array($css_conformance)) {
@@ -1068,7 +1072,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                         }
                     }
 
-                    if ((isset($attributes['size'])) && (isset($attributes['type'])) && (($attributes['type'] == 'week') || ($attributes['type'] == 'hidden') || ($attributes['type'] == 'color') || ($attributes['type'] == 'month') || ($attributes['type'] == 'range') || ($attributes['type'] == 'radio') || ($attributes['type'] == 'checkbox') || ($attributes['type'] == 'number'))) {
+                    if ((isset($attributes['size'])) && (isset($attributes['type'])) && (($attributes['type'] == 'week') || ($attributes['type'] == 'hidden')/* || ($attributes['type'] == 'color') || ($attributes['type'] == 'number') Size would apply if browser is using non-HTML5 fallback*/ || ($attributes['type'] == 'month') || ($attributes['type'] == 'range') || ($attributes['type'] == 'radio') || ($attributes['type'] == 'checkbox'))) {
                         $errors[] = array('XHTML_NO_SIZE_FOR');
                     }
 
@@ -1097,14 +1101,15 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 break;
 
             case 'select':
-                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && ((get_option('webstandards') == '0') || (!has_js()))) {
+                $webstandards_check = function_exists('get_param_integer') ? get_param_integer('keep_webstandards_check', get_param_integer('webstandards_check', 0)) : 0;
+                if ((isset($attributes['onchange'])) && (strpos($attributes['onchange'], 'form.submit()') !== false) && (strpos($attributes['onchange'], '/*guarded*/') === false) && (($webstandards_check == 0) || (!has_js()))) {
                     $errors[] = array('WCAG_AUTO_SUBMIT_LIST');
                 }
                 break;
 
             case 'table':
                 if ((isset($attributes['summary'])) && (($attributes['summary'] == do_lang('SPREAD_TABLE')) || ($attributes['summary'] == do_lang('MAP_TABLE')))) {
-                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // Whilst the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
                     $th_count = substr_count($content, '<th');
                     if (($th_count == 0) && (trim($content) != 'x')) {
                         $errors[] = array('WCAG_MISSING_TH');
@@ -1148,11 +1153,14 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                     $errors[] = array('WCAG_BAD_LAYOUT_TABLE');
                 }
 
-                /*if (!isset($attributes['abbr'])) We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
-                    {
-                            $content=trim(substr($OUT,$POS,strpos($OUT,'</th>',$POS)-$POS)); // This isn't perfect - In theory a th could contain a table itself: but it's not very semantic if it does
-                            if (strlen(trim(@html_entity_decode(strip_tags($content),ENT_QUOTES,get_charset())))>40) $errors[]=array('WCAG_TH_TOO_LONG');
-                    }*/
+                /* We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
+                if (!isset($attributes['abbr'])) {
+                    $content = trim(substr($OUT, $POS, strpos($OUT, '</th>', $POS) - $POS)); // This isn't perfect - In theory a th could contain a table itself: but it's not very semantic if it does
+                    if (strlen(trim(@html_entity_decode(strip_tags($content), ENT_QUOTES, get_charset()))) > 40) {
+                        $errors[] = array('WCAG_TH_TOO_LONG');
+                    }
+                }
+                */
                 break;
 
             case 'a':
@@ -1178,8 +1186,10 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
         /*if (($tag[0]=='h') && (is_numeric(substr($tag,1))))   Excessive check, heading order gaps are okay as long as order is still logical
         {
             global $LAST_HEADING;
-            if ($LAST_HEADING<intval(substr($tag,1))-1) $errors[]=array('WCAG_HEADING_ORDER');
-            $LAST_HEADING=intval(substr($tag,1));
+            if ($LAST_HEADING < intval(substr($tag, 1)) - 1) {
+                $errors[] = array('WCAG_HEADING_ORDER');
+            }
+            $LAST_HEADING = intval(substr($tag, 1));
         }*/
 
         if (isset($attributes['accesskey'])) {
@@ -1213,6 +1223,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
+ * @ignore
  */
 function _check_blockyness($tag, $attributes, $self_close, $close)
 {
@@ -1233,7 +1244,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
             $errors[] = array($TAGS_DEPRECATE_ALLOW ? 'XHTML_DEPRECATED_TAG' : 'XHTML_UNKNOWN_TAG', $tag);
         }
     } elseif ((isset($TAGS_INLINE[$tag])) || (isset($TAGS_INLINE_DEPRECATED[$tag]))) {
-        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG!='span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[]=array('XHTML_ANCESTER_INLINE_NORMAL',$tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
+        //if (($BLOCK_CONSTRAIN) && ($PARENT_TAG != 'span') && ((isset($TAGS_NORMAL[$PARENT_TAG])) || ((isset($TAGS_NORMAL_DEPRECATED[$PARENT_TAG]))))) $errors[] = array('XHTML_ANCESTER_INLINE_NORMAL', $tag); This restriction isn't really a proper one, some checkers seem to have it but it is not used anymore (XHTML5+) and pretty silly
         if ($tag != 'label') {
             $ANCESTER_INLINE += $dif;
         }
@@ -1267,6 +1278,7 @@ function _check_blockyness($tag, $attributes, $self_close, $close)
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
+ * @ignore
  */
 function _check_attributes($tag, $attributes, $self_close, $close)
 {
@@ -1306,7 +1318,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
                 continue;
             }
 
-            //if ($tag=='embed') continue; // Hack, to allow rich media to work in multiple browsers. Not needed now that <object> tag is quite stable.
+            //if ($tag == 'embed') continue; // Hack, to allow rich media to work in multiple browsers. Not needed now that <object> tag is quite stable.
             $errors[] = array('XHTML_UNKNOWN_ATTRIBUTE', $tag, $attribute);
             continue;
         } else {
@@ -1324,7 +1336,7 @@ function _check_attributes($tag, $attributes, $self_close, $close)
             $errors = array_merge($errors, check_spelling($_value));
         }
 
-        //if (($attribute=='alt') && ($tag!='input') && (strlen(strip_tags($value))>150)) $errors[]=array('WCAG_ATTRIBUTE_TOO_LONG',$attribute);
+        //if (($attribute == 'alt') && ($tag != 'input') && (strlen(strip_tags($value)) > 150)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', $attribute);
 
         if (($attribute == 'href') || ($attribute == 'src') || (($attribute == 'data') && ($tag == 'object'))) {
             $CRAWLED_URLS[] = @html_entity_decode($value, ENT_QUOTES, get_charset());
@@ -1401,6 +1413,7 @@ function check_spelling($value)
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
+ * @ignore
  */
 function _check_externals($tag, $attributes, $self_close, $close)
 {
@@ -1482,6 +1495,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
+ * @ignore
  */
 function _check_link_accessibility($tag, $attributes, $self_close, $close)
 {
@@ -1490,13 +1504,16 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
     $errors = array();
 
     // Check positioning - not anymore "until user agents"
-    /*if ((!is_null($LAST_A_TAG)) && (isset($attributes['href'])))
-    {
-        $between=substr($OUT,$LAST_A_TAG+1,$TAG_RANGES[count($TAG_RANGES)-1][0]-$LAST_A_TAG-2);
-        $between=str_replace('&nbsp;',' ',$between);
-        $between=strip_tags($between,'<li><td><img><hr><br><p><th>');
-        if (trim($between)=='') $errors[]=array('WCAG_ADJACENT_LINKS');
-    }*/
+    /*
+    if ((!is_null($LAST_A_TAG)) && (isset($attributes['href']))) {
+        $between = substr($OUT, $LAST_A_TAG + 1, $TAG_RANGES[count($TAG_RANGES) - 1][0] - $LAST_A_TAG - 2);
+        $between = str_replace('&nbsp;', ' ', $between);
+        $between = strip_tags($between, '<li><td><img><hr><br><p><th>');
+        if (trim($between) == '') {
+            $errors[] = array('WCAG_ADJACENT_LINKS');
+        }
+    }
+    */
 
     // Check captioning
     global $A_LINKS;
@@ -1529,7 +1546,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
                 }
             }
         }
-        //if ((strlen(@html_entity_decode($_content,ENT_QUOTES,get_charset()))>40) && (isset($attributes['href'])) && (strpos($attributes['href'],'tut_')===false)) $errors[]=array('WCAG_ATTRIBUTE_TOO_LONG','a');
+        //if ((strlen(@html_entity_decode($_content, ENT_QUOTES, get_charset())) > 40) && (isset($attributes['href'])) && (strpos($attributes['href'], 'tut_') === false)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', 'a');
         if ($title == '') {
             if (strtolower($content) == 'more') {
                 $errors[] = array('WCAG_DODGY_LINK_2', $string);
@@ -1549,6 +1566,7 @@ function _check_link_accessibility($tag, $attributes, $self_close, $close)
  * @param  boolean $self_close Whether this is a self-closing tag
  * @param  boolean $close Whether this is a closing tag
  * @return ?list Array of errors (null: none)
+ * @ignore
  */
 function _check_labelling($tag, $attributes, $self_close, $close)
 {
@@ -1557,8 +1575,8 @@ function _check_labelling($tag, $attributes, $self_close, $close)
     $errors = array();
 
     global $FOR_LABEL_IDS, $FOR_LABEL_IDS_2, $INPUT_TAG_IDS;
-    if (($tag == 'td')/* || ($tag=='div')*/) {
-        //$FOR_LABEL_IDS=array(); // Can't work across table cells      Actually this is an ancient and lame restriction that hurts accessibility more than helping it
+    if (($tag == 'td')/* || ($tag == 'div')*/) {
+        //$FOR_LABEL_IDS = array(); // Can't work across table cells      Actually this is an ancient and lame restriction that hurts accessibility more than helping it
     }
     if (($tag == 'label') && (isset($attributes['for']))) {
         $FOR_LABEL_IDS[$attributes['for']] = 1;
@@ -1580,7 +1598,7 @@ function _check_labelling($tag, $attributes, $self_close, $close)
                 }
             }
 
-            //if ((!in_array('label',$TAG_STACK)) )//&& ((!isset($attributes['value']) || ($attributes['value']=='')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
+            //if ((!in_array('label', $TAG_STACK)))//&& ((!isset($attributes['value']) || ($attributes['value'] == '')))) { // Compromise - sometimes we will use a default value as a substitute for a label. Not strictly allowed in accessibility rules, but writers mention as ok (+ we need it so we don't clutter things unless we start hiding labels, which is not nice)
             if (!isset($attributes['id'])) {
                 $attributes['id'] = 'unnamed_' . strval(mt_rand(0, 10000));
             }
@@ -1627,6 +1645,7 @@ function check_css($data)
  *
  * @param  string $data The data of the style sheet
  * @return ?map Error information (null: no error)
+ * @ignore
  */
 function _webstandards_css_sheet($data)
 {
@@ -1643,7 +1662,7 @@ function _webstandards_css_sheet($data)
     $class = '';
     $at_rule = '';
     $at_rule_block = '';
-    //$left_no_mans_land_once=false;
+    //$left_no_mans_land_once = false;
     $brace_level = 0;
     $i = 0;
     $class_start_line = null;
@@ -1744,7 +1763,7 @@ function _webstandards_css_sheet($data)
                     }
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '';
-                    //$left_no_mans_land_once=true;
+                    //$left_no_mans_land_once = true;
                 } elseif ($next == '@') {
                     $status = CSS_AT_RULE;
                     $at_rule = '';
@@ -1754,7 +1773,7 @@ function _webstandards_css_sheet($data)
                 } elseif ($next == '*') {
                     $status = CSS_IN_IDENTIFIER;
                     $class_name = '*';
-                    //$left_no_mans_land_once=true;
+                    //$left_no_mans_land_once = true;
                 } else {
                     $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
                 }
@@ -1821,7 +1840,7 @@ function _webstandards_css_sheet($data)
                         $class = '';
                     } else {
                         $matches = array();
-                        if (($next == '[') && (preg_match('#\[(\w+|)?\w+([$*~|^]?="[^;"]*")?\]#', substr($data, $i, 50), $matches))) {
+                        if (($next == '[') && (preg_match('#\[(\w+|)?\w+([$*~|^]?="[^;"]*")?\]#', $data, $matches, 0, $i) == 1)) {
                             $i += strlen($matches[0]) - 1;
                         } else {
                             $errors[] = array(0 => 'CSS_UNEXPECTED_CHARACTER', 1 => $next, 2 => integer_format($line), 'pos' => $i);
@@ -1912,6 +1931,7 @@ function _webstandards_css_sheet($data)
  * @param  integer $_i Current parse position
  * @param  integer $line The higher-level line number we are checking for (to give better debug output)
  * @return ?map Error information (null: no error)
+ * @ignore
  */
 function _webstandards_css_class($data, $_i, $line = 0)
 {
@@ -2033,6 +2053,7 @@ function _webstandards_css_class($data, $_i, $line = 0)
  * @param  string $value The value of the attribute
  * @param  integer $_i Current parse position
  * @return ?map Error information (null: no error)
+ * @ignore
  */
 function _check_css_value($key, $value, $_i)
 {

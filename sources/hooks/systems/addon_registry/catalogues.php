@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_catalogues
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -255,6 +256,7 @@ class Hook_addon_registry_catalogues
             'TITLE' => lorem_phrase(),
             'SUMMARY' => lorem_paragraph_html(),
             'URL' => placeholder_url(),
+            'RESOURCE_TYPE' => 'catalogue_category',
         )));
         $tags = do_lorem_template('TAGS', array(
             'TAGS' => placeholder_array(),
@@ -303,13 +305,14 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'EDIT_CATALOGUE_URL' => placeholder_url(),
                 'ENTRIES' => $entries,
@@ -360,6 +363,7 @@ class Hook_addon_registry_catalogues
             'FIELD_0' => lorem_word(),
             'GIVE_CONTEXT' => false,
         ));
+
         foreach (placeholder_array(2) as $v) {
             $entries->attach(do_lorem_template('CATALOGUE_CATEGORY_HEADING', array(
                 'LETTER' => lorem_phrase(),
@@ -386,13 +390,14 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'EDIT_CATALOGUE_URL' => placeholder_url(),
                 'ENTRIES' => $entries,
@@ -454,13 +459,14 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'EDIT_CATALOGUE_URL' => placeholder_url(),
                 'ENTRIES' => $entries,
@@ -542,13 +548,14 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'EDIT_CATALOGUE_URL' => placeholder_url(),
                 'ENTRIES' => $entries,
@@ -626,13 +633,14 @@ class Hook_addon_registry_catalogues
         return array(
             lorem_globalise(do_lorem_template('CATALOGUE_DEFAULT_CATEGORY_SCREEN', array(
                 'ID' => placeholder_id(),
-                'ADD_DATE_RAW' => placeholder_time(),
+                'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
                 'TAGS' => $tags,
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
                 'ADD_CAT_URL' => placeholder_url(),
+                'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => placeholder_url(),
                 'EDIT_CATALOGUE_URL' => placeholder_url(),
                 'ENTRIES' => $entries,
@@ -691,11 +699,10 @@ class Hook_addon_registry_catalogues
                 'ID' => placeholder_id(),
                 'ENTRY' => $entry,
                 'EDIT_URL' => placeholder_url(),
-                '_EDIT_LINK' => placeholder_link(),
                 'TRACKBACK_DETAILS' => lorem_phrase(),
                 'RATING_DETAILS' => lorem_phrase(),
                 'COMMENT_DETAILS' => lorem_phrase(),
-                'ADD_DATE' => placeholder_time(),
+                'ADD_DATE' => placeholder_date(),
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => placeholder_number(),

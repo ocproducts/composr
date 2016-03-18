@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,6 +30,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__minikernel()
 {
@@ -43,11 +45,8 @@ function init__minikernel()
     }
     if ((!array_key_exists('REQUEST_URI', $_SERVER)) && (!array_key_exists('REQUEST_URI', $_ENV))) { // May be missing on IIS
         $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        $first = true;
-        foreach ($_GET as $key => $val) {
-            $_SERVER['REQUEST_URI'] .= $first ? '?' : '&';
-            $_SERVER['REQUEST_URI'] .= urlencode($key) . '=' . urlencode($val);
-            $first = false;
+        if (count($_GET) > 0) {
+            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
         }
     }
 
@@ -112,6 +111,22 @@ function sync_file($filename)
 }
 
 /**
+ * Find whether a particular PHP function is blocked.
+ *
+ * @param  string $function Function name.
+ * @return boolean Whether it is.
+ */
+function php_function_allowed($function)
+{
+    if (!in_array($function, /*These are actually language constructs rather than functions*/array('eval', 'exit', 'include', 'include_once', 'isset', 'require', 'require_once', 'unset', 'empty', 'print',))) {
+        if (!function_exists($function)) {
+            return false;
+        }
+    }
+    return (@preg_match('#(\s|,|^)' . str_replace('#', '\#', preg_quote($function)) . '(\s|$|,)#', strtolower(@ini_get('disable_functions') . ',' . ini_get('suhosin.executor.func.blacklist') . ',' . ini_get('suhosin.executor.include.blacklist') . ',' . ini_get('suhosin.executor.eval.blacklist'))) == 0);
+}
+
+/**
  * Return a debugging back-trace of the current execution stack. Use this for debugging purposes.
  *
  * @return Tempcode Debugging backtrace
@@ -125,10 +140,10 @@ function get_html_trace()
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
-    $trace = new Tempcode();
+    $trace = array();
     foreach ($_trace as $i => $stage) {
-        $traces = new Tempcode();
-//    if (in_array($stage['function'],array('get_html_trace','composr_error_handler','fatal_exit'))) continue;
+        $traces = array();
+        //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;
         $file = '';
         $line = '';
         $__value = mixed();
@@ -175,13 +190,13 @@ function get_html_trace()
                     ob_end_clean();
                 }
             }
-            $traces->attach(do_template('STACK_TRACE_LINE', array('_GUID' => 'a3bdbe9f0980b425f6aeac5d00fe4f96', 'LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value)));
+            $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
         }
-        $trace->attach(do_template('STACK_TRACE_WRAP', array('_GUID' => '748860b0c83ea19d56de594fdc04fe12', 'TRACES' => $traces)));
+        $trace[] = array('TRACES' => $traces);
     }
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
 
-    return do_template('STACK_TRACE_HYPER_WRAP', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'CONTENT' => $trace, 'POST' => ''));
+    return do_template('STACK_TRACE', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'TRACE' => $trace, 'POST' => ''));
 }
 
 /**
@@ -193,16 +208,12 @@ function get_html_trace()
  */
 function fatal_exit($text)
 {
-    //   if (is_object($text)) $text=$text->evaluate();
+    //if (is_object($text)) $text = $text->evaluate();
 
     // To break any looping of errors
     global $EXITING;
     if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
-        if ((get_domain() == 'localhost') || ((function_exists('get_member')) && (has_privilege(get_member(), 'see_stack_dump')))) {
-            die_html_trace($text);
-        } else {
-            critical_error('RELAY', is_object($text) ? $text->evaluate() : escape_html($text));
-        }
+        die_html_trace($text);
     }
     $EXITING = 1;
 
@@ -210,7 +221,7 @@ function fatal_exit($text)
 
     $trace = get_html_trace();
     $echo = new Tempcode();
-    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'MESSAGE' => $text, 'TRACE' => $trace)));
+    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => true,)));
     $css_url = 'install.php?type=css';
     $css_url_2 = 'install.php?type=css_2';
     $logo_url = 'install.php?type=logo';
@@ -236,6 +247,18 @@ function fatal_exit($text)
     $out_final->evaluate_echo();
 
     exit();
+}
+
+/**
+ * Lookup error on compo.sr, to see if there is more information.
+ * (null implementation for minikernel)
+ *
+ * @param  mixed $error_message The error message (string or Tempcode)
+ * @return ?string The result from the web service (null: no result)
+ */
+function get_webservice_result($error_message)
+{
+    return null;
 }
 
 /**
@@ -366,7 +389,7 @@ function get_charset()
         return do_lang('charset');
     }
     global $SITE_INFO;
-    $lang = array_key_exists('default_lang', $SITE_INFO) ? $SITE_INFO['default_lang'] : 'EN';
+    $lang = (!empty($SITE_INFO['default_lang'])) ? $SITE_INFO['default_lang'] : 'EN';
     $path = get_file_base() . '/lang_custom/' . $lang . '/global.ini';
     if (!file_exists($path)) {
         $path = get_file_base() . '/lang/' . $lang . '/global.ini';
@@ -375,7 +398,7 @@ function get_charset()
     $contents = unixify_line_format(fread($file, 100));
     fclose($file);
     $matches = array();
-    if (preg_match('#charset=([\w\-]+)\n#', $contents, $matches) != 0) {
+    if (preg_match('#charset=([\w\-]+)\r?\n#', $contents, $matches) != 0) {
         return strtolower($matches[1]);
     }
     return strtolower('utf-8');
@@ -413,11 +436,7 @@ function warn_exit($text)
     // To break any looping of errors
     global $EXITING;
     if ((!is_null($EXITING)) || (!class_exists('Tempcode'))) {
-        if ((get_domain() == 'localhost') || ((function_exists('get_member')) && (has_privilege(get_member(), 'see_stack_dump')))) {
-            die_html_trace($text);
-        } else {
-            critical_error('RELAY', is_object($text) ? $text->evaluate() : escape_html($text));
-        }
+        die_html_trace($text);
     }
     $EXITING = 1;
 
@@ -473,14 +492,14 @@ function cms_version_pretty()
 }
 
 /**
- * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults amongst other things.
+ * Get the domain the website is installed on (preferably, without any www). The domain is used for e-mail defaults among other things.
  *
  * @return string The domain of the website
  */
 function get_domain()
 {
     global $SITE_INFO;
-    if (!array_key_exists('domain', $SITE_INFO)) {
+    if (empty($SITE_INFO['domain'])) {
         $SITE_INFO['domain'] = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
     }
     return $SITE_INFO['domain'];
@@ -494,7 +513,7 @@ function get_domain()
 function get_forum_type()
 {
     global $SITE_INFO;
-    if (!array_key_exists('forum_type', $SITE_INFO)) {
+    if (empty($SITE_INFO['forum_type'])) {
         return 'none';
     }
     return $SITE_INFO['forum_type'];
@@ -511,7 +530,7 @@ function get_forum_base_url()
         return '';
     }
     global $SITE_INFO;
-    if (!array_key_exists('board_prefix', $SITE_INFO)) {
+    if (empty($SITE_INFO['board_prefix'])) {
         return get_base_url();
     }
     return $SITE_INFO['board_prefix'];
@@ -528,7 +547,7 @@ function get_site_name()
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our installation).
+ * Get the base URL (the minimum fully qualified URL to our installation).
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  string $zone_for What zone this is running in
@@ -537,7 +556,7 @@ function get_site_name()
 function get_base_url($https = null, $zone_for = '')
 {
     global $SITE_INFO;
-    if (!array_key_exists('base_url', $SITE_INFO)) {
+    if (empty($SITE_INFO['base_url'])) {
         $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
         if (substr($base_url, -1) == '/') {
             $base_url = substr($base_url, 0, strlen($base_url) - 1);
@@ -549,7 +568,7 @@ function get_base_url($https = null, $zone_for = '')
 }
 
 /**
- * Get the base url (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base-url.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @return URLPATH The base-url
@@ -562,7 +581,7 @@ function get_custom_base_url($https = null)
 /**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
- * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string codename
+ * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
  * @param  SHORT_TEXT $reason_param_a A parameter for the hack attack language string (this should be based on a unique ID, preferably)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @return mixed Never returns (i.e. exits)
@@ -583,7 +602,7 @@ function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b
  * @param  boolean $perm_check Whether to allow permission-based skipping, and length-based skipping
  * @return string "Fixed" version
  */
-function check_word_filter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
+function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = false, $perm_check = true)
 {
     return $a;
 }
@@ -593,7 +612,7 @@ function check_word_filter($a, $name = null, $no_die = false, $try_patterns = fa
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function either_param_string($name, $default = null)
 {
@@ -606,7 +625,7 @@ function either_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function post_param_string($name, $default = null)
 {
@@ -619,7 +638,7 @@ function post_param_string($name, $default = null)
  *
  * @param  ID_TEXT $name The name of the parameter to get
  * @param  ?string $default The default value to give the parameter if the parameter value is not defined (null: give error on missing parameter)
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
  */
 function get_param_string($name, $default = null)
 {
@@ -635,7 +654,8 @@ function get_param_string($name, $default = null)
  * @param  ?mixed $default The default value to use for the parameter (null: no default)
  * @param  boolean $must_integer Whether the parameter has to be an integer
  * @param  boolean $is_post Whether the parameter is a POST parameter
- * @return ?string The value of the parameter (null: not there, and default was NULL)
+ * @return ?string The value of the parameter (null: not there, and default was null)
+ * @ignore
  */
 function __param($array, $name, $default, $must_integer = false, $is_post = false)
 {
@@ -807,7 +827,7 @@ function simulated_wildcard_match($context, $word, $full_cover = false)
  *
  * @param  mixed $key Key
  * @param  ?TIME $min_cache_date Minimum timestamp that entries from the cache may hold (null: don't care)
- * @return ?mixed The data (null: not found / NULL entry)
+ * @return ?mixed The data (null: not found / null entry)
  */
 function persistent_cache_get($key, $min_cache_date = null)
 {

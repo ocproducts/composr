@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__menus2()
 {
@@ -158,7 +160,7 @@ function menu_management_script()
  * @param  SHORT_TEXT $url The URL (in entry point form).
  * @param  BINARY $expanded Whether it is an expanded branch.
  * @param  BINARY $check_permissions Whether people who may not view the entry point do not see the link.
- * @param  boolean $dereference_caption Whether the caption is a language code.
+ * @param  boolean $dereference_caption Whether the caption is a language string.
  * @param  SHORT_TEXT $caption_long The tooltip (blank: none).
  * @param  BINARY $new_window Whether the link will open in a new window.
  * @param  ID_TEXT $theme_image_code The theme image code.
@@ -247,7 +249,7 @@ function add_menu_item($menu, $order, $parent, $caption, $url, $check_permission
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('menu_item', strval($id), null, null, true);
+        generate_resource_fs_moniker('menu_item', strval($id), null, null, true);
     }
 
     return $id;
@@ -294,7 +296,7 @@ function edit_menu_item($id, $menu, $order, $parent, $caption, $url, $check_perm
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('menu_item', strval($id));
+        generate_resource_fs_moniker('menu_item', strval($id));
     }
 }
 
@@ -316,7 +318,7 @@ function delete_menu_item($id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('menu_item', strval($id));
+        expunge_resource_fs_moniker('menu_item', strval($id));
     }
 }
 
@@ -327,7 +329,7 @@ function delete_menu_item($id)
  */
 function delete_menu($menu_id)
 {
-    // Get language codes currently used
+    // Get language strings currently used
     $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
     // Erase old stuff
@@ -342,13 +344,12 @@ function delete_menu($menu_id)
         $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => 'header_menu_call_string'), '', 1);
 
         // Clear caches
+        require_code('caches3');
         if (function_exists('persistent_cache_delete')) {
             persistent_cache_delete('OPTIONS');
         }
         Self_learning_cache::erase_smart_cache();
-        // Config option saves into templates
-        require_code('caches3');
-        erase_cached_templates();
+        erase_cached_templates(false, array('GLOBAL_HTML_WRAP')); // Config option saves into templates
     }
 
     decache('menu');
@@ -356,7 +357,7 @@ function delete_menu($menu_id)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('menu', $menu_id);
+        expunge_resource_fs_moniker('menu', $menu_id);
     }
 }
 
@@ -382,6 +383,8 @@ function copy_from_sitemap_to_new_menu($target_menu, $source)
  * @param  array $node Sitemap node, containing children.
  * @param  integer $order Sequence order to save with.
  * @param  ?AUTO_LINK $parent Menu parent ID (null: root).
+ *
+ * @ignore
  */
 function _copy_from_sitemap_to_new_menu($target_menu, $node, &$order, $parent = null)
 {

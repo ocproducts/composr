@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Favicons, Web fonts, Media file compatibility[/title]
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Supplementary web technologies (media, social networking, etc)[/title]
 
 This tutorial will explain and detail some of the fringe features of web technologies.
 
@@ -6,35 +6,63 @@ This tutorial will explain and detail some of the fringe features of web technol
 
 [title="2"]Favicons[/title]
 
-Microsoft created a technology that allows websites to have their own little icons, for placement in the Favorites menu, and the web browser window icon. This technology has since been adopted for use by other web browsers.
+[media width="150" description="The default webclipicon, viewing the multiple sizes within" float="right" width="179"]data_custom/images/docs/tut_fringe/webclipicon.png[/media]
+[media width="150" description="The default favicon, viewing the multiple sizes within" float="right" width="71"]data_custom/images/docs/tut_fringe/favicon.png[/media]
+Microsoft created a technology that allows websites to have their own little icons, that has since been adopted by all major web browsers. These icons often show up (depending on the web browser):
+ - in the favorites/bookmarks menu
+ - as the web browser window icon
+ - as the browsing tab icon (next to the page's title on the tab)
+ - by the browser's address bar
+ - in the history browsing interface
+ - as a desktop icon
 
-Favicons are supported in Composr, and to use one you just need to edit the 'favicon' theme image. Creating an icon file is beyond the scope of this tutorial, but there are many tools to do it.
+Favicons are supported in Composr, and to use one you just need to edit the [tt]favicon[/tt] theme image.
 
-Please note that on Internet Explorer the favicon will only be used for the web browser window for a page that has been put into the Favorites/Bookmarks. It is this action that triggers the web browser to acknowledge and cache the icon.
+The default icon supplied with Composr actually contains multiple sizes:
+ - 16&times;16 &ndash; Standard size for browsers
+ - 24&times;24 &ndash; Internet Explorer 9+ pinned site size for user interface
+ - 32&times;32 &ndash; Internet Explorer/Microsoft Edge new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
+ - 48&times;48 &ndash; Windows site
+
+There are a number of online tools for creating favicon, namely X-Icon-Editor, favicon.cc, Faviconist, Genfavicon, etc. We'll avoid giving specific links because these tools come and go. We advise using a tool that can save multiple sizes like above.
+
+Editing the [tt]favicon[/tt] theme image:
+1) Go to Admin Zone > Style > Themes. This will take us to the Manage Themes screen.
+2) Next to each theme we have an 'edit' section and there we have an icon to 'manage theme images' which we need to click. Click the icon for the default theme and ignore the warning (the favicon is usually for the whole site regardless of theme, so is best put in the default theme).
+3) We are now lead to a screen containing a number of images grouped by category. We can see the images present and edit them by clicking the expand button placed alongside each category name. The favicon is available under the category given the same name as your site. Select the [tt]favicon[/tt] image.
+4) You are now lead to a screen "Edit theme image" and in that we can see the current image and the options for uploading new image. Click the "Upload" radio button then the Browse button, then attach your new icon file.
+5) Click "Save".
+
+[title="3"]Apple webclip icons[/title]
+
+These icons (aka apple touch icons) show on the iOS home screens, if you choose to bookmark a site there. They can be set by editing the [tt]webclipicon[/tt] theme image.
 
 The default icon actually contains multiple sizes:
- - 16x16 &ndash; Standard size for browsers
- - 24x24 &ndash; IE9 pinned site size for user interface
- - 32x32 &ndash; IE new page tab, Windows 7+ taskbar button, Safari Reading List sidebar
- - 48x48 &ndash; Windows site
+ - 120&times;120 &ndash; iPhone/iPod retina touch iOS7
+ - 152&times;152 &ndash; iPad retina touch iOS7
 
-[title="3"]Apple web clip icons[/title]
+Systems will typically get the icon most closely matching their required display size. It is pointless trying to have every possible size of icon, as there are too many variations between software, version, and dpi, to get everything.
 
-These icons show on the iPhone and iPod Touch home screens, if you choose to bookmark a site there. They can be set by editing the 'webclipicon' theme image.
+iOS automatically adds the curved border and shadow effect for you, unless you alter [tt]HTML_HEAD.tpl[/tt] and change [tt]apple-touch-icon[/tt] to [tt]apple-touch-icon-precomposed[/tt].
 
-The default icon actually contains multiple sizes:
- - 120x120 &ndash; iPhone retina touch iOS7
- - 144x144 &ndash; IE10 Metro tile for pinned site
- - 152x152 &ndash; iPad retina touch iOS7
+To add to the home screen on an iOS device:
+1) open a fresh load of your website in mobile Safari
+2) open the page actions (in the bottom bar it is the box with the upward arrow)
+3) select "Add to home screen"
+4) fill in the details
+5) tap Add
+6) check back on the home screen
+
+Unfortunately iOS has deep caching for the webclip icons, which you cannot clear. Fortunately the default [tt]HTML_HEAD.tpl[/tt] adds a cache-busting parameter which is the file modification time of the image. You still need to remove then re-add the home icon for your site though.
 
 [title="2"]Web fonts[/title]
 
-Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default windows fonts.
+Fonts have always been a tricky area in computing, as the actual font typeface is a copyrighted works, and hence cannot be distributed without a licence. This problem extends to the Internet, where there is a stronger need for common fonts than there ever was. It is important to remember that not all viewers to a website will be using Microsoft Windows, and therefore they will not all have the set of default Windows fonts.
 
 Fortunately there are three things that improve on this situation:
- - there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information)
- - CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use
- - [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts
+1) there are certain common fonts and 'font families' that are available for almost all web browsers to use. However, it is beyond the scope of this tutorial which fonts these actually are and there is a degree of ambiguity as to whether a font is 'common enough' for usage (see http://web.mit.edu/jmorzins/www/fonts.html for more information).
+2) CSS (the technology used to stylise web documents) supports a fall-back mechanism for the specification of what font to use.
+3) [url="Google Web Fonts"]http://www.google.com/webfonts[/url] provides a compatibility layer to smooth over external font support in different web browsers, and access to free fonts. It is very easy to integrate via a change to the [tt]HTML_HEAD.tpl[/tt] template and the CSS. Also, [url="TypeKit"]https://typekit.com/[/url].
 
 [title="3"]Fonts within content[/title]
 
@@ -42,7 +70,7 @@ The WYSIWYG editor will not select a font by default.
 
 Unlike a word processor, whatever is being edited is going to end up inserted into a wider existing document context (i.e. into your overall web design). This means that whatever font was used within that wider context would be the default font. This is best for most cases. For example:
  - If the theme font default is changed, it will sweep across all content automatically
- - You can have different fonts in different contexts. For example, perhaps emails should have a different font to the main website.
+ - You can have different fonts in different contexts. For example, perhaps e-mails should have a different font to the main website.
 
 The default Composr theme defines a font in the [tt]global.css[/tt] as follows:
 [code="CSS"]
@@ -70,12 +98,12 @@ Sound and video formats are an area of extreme complexity unfortunately, as is t
 Unlike for most file types, video files cannot be identified fully be file extension. The file extensions identifies the 'container format' (such as MPEG or AVI) but not the 'codec' used for the video data and which codec was used for the sound data. Codecs are often proprietary, and tied to Windows, and they often aren't installed on user's computers. Some codecs and container formats require specific software, as vendors such as Microsoft, Apple and Real tend to lock each others formats out, as they battle for supremacy.
 
 You have a choice between six options:
- - Use an old badly compressed format -- this is likely very in-feasible, due to high file size
- - Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
- - Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
- - Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
- - Use standard MPEG technology other than h264 -- the drawback to this is that MPEG standardisation has declined, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
- - Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
+1) Use an old badly compressed format -- this is likely very in-feasible, due to high file size
+2) Use an alternative format, such as MIDI -- this is likely very in-feasible, as content is rarely made to it now, and users are more discerning than they once were
+3) Use HTML5 / Macromedia flash to distribute videos and music in h264 format: HTML5 natively supports h264 video and Flash contains its own code to decompress this data (for old browsers). [b]Recommended[/b] (Composr includes an integrated HTML5/Flash file player)
+4) Put up with media only working where Windows Media Player / RealPlayer / Quicktime is installed (noting that the best support for this is on Internet Explorer on Windows, and getting it to work elsewhere can be tricky or impossible)
+5) Use standard MPEG technology other than h264 -- the drawback to this is that such MPEG standardisation is weak, with MPEG4 being more of a 'class of formats' that includes formats such as DivX and many others
+6) Use an open alternative such as those sponsored by the BBC, or Ogg, or Google (WebM) -- using them is technical difficult, and users generally need to install special software
 
 Our practical advice is to always use h264/mp3, which has worked on all major browsers for a number of years.
 
@@ -83,7 +111,7 @@ Our practical advice is to always use h264/mp3, which has worked on all major br
 
 MPEG is a standardisation committee who release waves of MPEG standards (basically, standards for audio and video). The committee is made up of people from many companies, such as Apple, Microsoft. There are a huge number of MPEG standards, and each contain many 'parts' (which are standards of their own). The parts are then defined across many profiles, levels, and versions, and there are many customisations out there too. There are often multiple names to refer to the different parts, as they all have their own history to them.
 
-There is a great deal of confusion around the MPEG formats, because the abbeviations commonly used outside the official specifications can be very ambiguous. Here's what the terms typically actually mean:
+There is a great deal of confusion around the MPEG formats, because the abbreviations commonly used outside the official specifications can be very ambiguous. Here's what the terms typically actually mean:
  - [b]mp3[/b] is actually MPEG-2 Part 3 (audio format).
  - [b]aac[/b] is MPEG-2 Part 7 (audio format).
  - [b]mp4[/b] is actually MPEG-4 Part 14 (container format).
@@ -96,55 +124,45 @@ The clear points of confusion are:
 
 For web-safe videos you need to use either the aac or mp3 audio codec, the h264 video codec, and the mp4 container format.
 
-[title="2"]Achieving advanced designs with the custom graphics block[/title]
+[title="2"]The custom graphics block (advanced)[/title]
 
-It's commonplace nowadays for professional designers/developers working on static sites to make use of:
- - Rich typography
- - Text overlaid onto images
- - Custom rollovers
+It is very common for the best modern designs to have content text built direct into graphics. There are 3 approaches to achieve this:
+1) CSS. This is usually the best approach, using CSS to overlay the text over images.
+2) Having web developers manually create lots of variants of the same image, each with different text.
+3) Automatically generating the images in Composr using the custom graphics block.
 
-[title="3"]Rich typography[/title]
+This section describes the last approach. Frankly this is quite an obscure and rare thing to need to do, because of the power of CSS. However it does have its occasionally usefulness.
 
-It's well known that built-in web browser font support is severely limited, for two reasons:
-1) There is only a small set of fonts you can trust to be installed on a users computer (the "Web fonts")
-2) Browser fonts can often look ugly when put against smooth designs, as they are not always anti-aliased (depends on operating system and web browser)
-
-Fortunately using something like Google Fonts allows you to get access to a much larger set of fonts. Composr has no special support for it, but that is not needed -- it is very easy to integrate via a change to the [tt]HTML_HEAD[/tt] template and the CSS.
-
-[title="3"]Text overlaid onto images[/title]
-
-It is very common for the best modern designs to have content text built direct into graphics. The only solution until now has been for web developers to make lots of variants of the same image, each with different text. Now it is possible to have a site generate its own graphics, so it is easy for any content writers to extend and maintain, without ever going back into Photoshop.
-
+[media width="150" description="The [tt]main_custom_gfx[/tt] with the example code to the left" float="right"]data_custom/images/docs/tut_fringe/main_custom_gfx.png[/media]
 Here is a simple example of a custom button:
-
-[code]
+[code="Comcode"]
 [block="text_overlay" data="This is a test" img="button1"]main_custom_gfx[/block]
 [/code]
 
-(we've built the button graphic here into Composr itself, and the Theme Wizard will style it -- but you can tell the block to write onto any theme image of your choice using the 'img' parameter)
+(we've built the button graphic here into Composr itself, and the Theme Wizard will style it -- but you can tell the block to write onto any theme image of your choice using the [tt]img[/tt] parameter)
 
 Full list of parameters:
- - img (the code of the Theme image to use)
- - data (the text to write)
- - font_size (e.g. "12" for 12pt)
- - 'x' and 'y' (where to write the text)
- - color (has to be 6 hex digits, e.g. 'FFFFFF')
- - font (e.g. "Vera" for the [tt]data/fonts/Vera.ttf[/tt] file we bundle with Composr [there are a number of other ttf files in that directory ready for use])
- - center (set to "1" to center the text)
+ - [tt]img[/tt] (the code of the Theme image to use)
+ - [tt]data[/tt] (the text to write)
+ - [tt]ont_size[/tt] (e.g. "12" for 12pt)
+ - [tt]x[/tt] and [tt]y[/tt] (where to write the text)
+ - [tt]color[/tt] (has to be 6 hex digits, e.g. 'FFFFFF')
+ - [tt]font[/tt] (e.g. "Vera" for the [tt]data/fonts/Vera.ttf[/tt] file we bundle with Composr [there are a number of other [tt].ttf[/tt] files in that directory ready for use])
+ - [tt]center[/tt] (set to "1" to center the text)
 
 [title="3"]Custom rollovers[/title]
 
 Take the above example further, how would you like to automatically have [b]both[/b] frames of a rollover generated for you?
 
-[code]
+[code="Comcode"]
 [block="rollover_button" data="This is a test" img1="button1" img2="button2"]main_custom_gfx[/block]
 [/code]
 
-This takes the same parameters, except 'img' is now 'img1', and there is also an 'img2'.
+This takes the same parameters, except [tt]img[/tt] is now [tt]img1[/tt], and there is also an [tt]img2[/tt].
 
 [title="3"]And, for programmers, more[/title]
 
-You have probably spotted that all these examples are using a new block, 'main_custom_gfx'. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
+You have probably spotted that all these examples are using a new block, [tt]main_custom_gfx[/tt]. The three cases above are what we have supplied 'out of the box', but programmers can write additional renderers in PHP code (hooks) to create configurable graphics of any complexity.
 
 [title="2"]Social media accounts[/title]
 
@@ -156,13 +174,15 @@ You may wish to set up profiles on popular social media sites, such as:
  - Pinterest
  - LinkedIn
 
-You may also wish to have a prescence on question and answer sites, such as:
+You may also wish to have a presence on question and answer sites, such as:
  - Quora
  - Stack Overflow
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_markup"]Introduction to XHTML, CSS and JavaScript[/page]
- - [page="_SEARCH:tut_metadata"]Meta Data[/page]
+ - https://www.email-standards.org/
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
+ - [page="_SEARCH:tut_metadata"]Metadata[/page]
+ - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 
 {$SET,tutorial_tags,core_graphic_text,Design & Themeing,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,This tutorial will explain and detail some of the features of web technologies that are often forgotten.}[block]main_tutorial_rating[/block]

@@ -9,9 +9,9 @@
 		<input type="hidden" id="theme_img_code_{I*}" name="theme_img_code_{I*}" value="{THEME_IMG_CODE*}"{+START,IF_EMPTY,{THEME_IMG_CODE}} disabled="disabled"{+END} />
 		<input type="hidden" id="parent_{I*}" name="parent_{I*}" value="{PARENT*}" />
 		<input type="hidden" id="order_{I*}" name="order_{I*}" value="{ORDER*}" />
-		<input type="hidden" id="new_window_{I*}" name="new_window_{I*}" value="{NEW_WINDOW*}"{+START,IF,{$EQ,{NEW_WINDOW},0}} disabled="disabled"{+END} />
-		<input type="hidden" id="check_perms_{I*}" name="check_perms_{I*}" value="{CHECK_PERMS*}"{+START,IF,{$EQ,{CHECK_PERMS},0}} disabled="disabled"{+END} />
-		<input type="hidden" id="include_sitemap_{I*}" name="include_sitemap_{I*}" value="{INCLUDE_SITEMAP*}"{+START,IF,{$EQ,{INCLUDE_SITEMAP},0}} disabled="disabled"{+END} />
+		<input type="hidden" id="new_window_{I*}" name="new_window_{I*}" value="{NEW_WINDOW*}"{+START,IF,{$NOT,{NEW_WINDOW}}} disabled="disabled"{+END} />
+		<input type="hidden" id="check_perms_{I*}" name="check_perms_{I*}" value="{CHECK_PERMS*}"{+START,IF,{$NOT,{CHECK_PERMS}}} disabled="disabled"{+END} />
+		<input type="hidden" id="include_sitemap_{I*}" name="include_sitemap_{I*}" value="{INCLUDE_SITEMAP*}"{+START,IF,{$NOT,{INCLUDE_SITEMAP}}} disabled="disabled"{+END} />
 		<div class="accessibility_hidden"><label id="label_branch_type_{I*}" for="branch_type_{I*}">{!MENU_ENTRY_BRANCH}</label></div>
 		<select style="display: none" onclick="this.onchange(event);" onchange="menu_editor_branch_type_change(this.name.substr(12,this.name.length));" title="{$STRIP_TAGS,{!MENU_ENTRY_BRANCH;}}" id="branch_type_{I*}" name="branch_type_{I*}">
 			{+START,IF,{$NOT,{CLICKABLE_SECTIONS}}}
@@ -24,7 +24,7 @@
 		<input type="image" class="horiz_field_sep" src="{$IMG*,results/sortablefield_desc}" id="down_{I*}" alt="{!MOVE_DOWN}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,false,true); return false;" />
 		<input type="image" src="{$IMG*,results/sortablefield_asc}" id="up_{I*}" alt="{!MOVE_UP}" onkeypress="if (enter_pressed()) this.onclick(event);" onclick="handle_ordering(this,true,false); return false;" />
 
-		<input class="menu___generic_admin__delete horiz_field_sep button_micro" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
+		<input class="menu___generic_admin__delete button_micro horiz_field_sep" value="{!DELETE}" type="button" id="del_{I*}" name="del_{I*}" onclick="delete_menu_branch(this);" />
 	</div>
 
 	<script>// <![CDATA[

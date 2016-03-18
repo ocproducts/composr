@@ -1,28 +1,28 @@
-        {+START,IF,{$EQ,{SHOWPLAYER},1}}
+        {+START,IF,{SHOWPLAYER}}
             {$SET,showplayer,1}
         {+END}
-        {+START,IF,{$EQ,{SHOWPLAYER},0}}
+        {+START,IF,{$NOT,{SHOWPLAYER}}}
             {$SET,showplayer,0}
         {+END}
-        {+START,IF,{$EQ,{NOTHUMBPLAYER},1}}
+        {+START,IF,{NOTHUMBPLAYER}}
             {$SET,nothumbplayer,1}
         {+END}
-        {+START,IF,{$EQ,{NOTHUMBPLAYER},0}}
+        {+START,IF,{$NOT,{NOTHUMBPLAYER}}}
             {$SET,nothumbplayer,0}
         {+END}
         {+START,IF,($EQ,{EMBED_ALLOWED},1}}
-            {+START,IF,{$AND,{$EQ,{SHOWPLAYER},1},{$EQ,{EMBEDPLAYER_ALLOWED},0}}}
+            {+START,IF,{$AND,{SHOWPLAYER},{$NOT,{EMBEDPLAYER_ALLOWED}}}}
                 {$SET,nothumbplayer,1}
                 {$SET,showplayer,0}
             {+END}
         {+END}
-        {+START,IF,{$EQ,{STYLE},1}}
+        {+START,IF,{STYLE}}
             <table border="0" cellpadding="0" cellspacing="4">
                 <tr>
                     {+START,IF,{$EQ,{$GET,nothumbplayer},1}}
                     <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                         <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-                        {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                        {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                             <br />Embedding not allowed<br />
                             <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                         {+END}
@@ -35,10 +35,10 @@
                             <tr><td style='text-align: right;'><b>Channel:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'><a href='{CHANNEL_URL}' target='_blank'>{CHANNEL_NAME}</a></td></tr>
                             <tr><td style='text-align: right;' nowrap="nowrap"><b>Uploaded:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$FROM_TIMESTAMP,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP,{UPLOAD_DATE}}}</td></tr>
                             {+START,IF,{$EQ,{DESCRIPTION_TYPE},long}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION}} </td></tr>{+END}
-                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{$EQ,{DESCRIPTION_SHORTENED},1}}<b>...</b>{+END}</td></tr>{+END}
+                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{DESCRIPTION_SHORTENED}}<b>...</b>{+END}</td></tr>{+END}
                             <tr><td style='text-align: right;'><b>Duration:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{DURATION_NUMERIC} ({DURATION_TEXT})</td></tr>
                             {+START,IF,{$NEQ,{FAVORITE_COUNT},0}}<tr><td style='text-align: right;'><b>Favorited:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{FAVORITE_COUNT} person(s) have favorited this video.</td></tr>{+END}
-                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br /> 
+                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br />
                                 {$SET,i,0}
                                 {+START,WHILE,{$GT,{$SUBTRACT,{RATING_NUMERIC},{$GET,i}},0}}
                                     <img style="border: 0px none; margin: 0px; padding: 0px; vertical-align: middle; font-size: 11px;" alt="" src="{$IMG,youtube_channel_integration/star_full}" align="top">
@@ -60,9 +60,9 @@
             </table>
           {+START,IF,{$EQ,{$GET,showplayer},1}}
             <br />
-            <div align='{PLAYERALIGN}'> 
-              <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe> 
-            </div> 
+            <div align='{PLAYERALIGN}'>
+              <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe>
+            </div>
           {+END}
         {+END}
 
@@ -71,9 +71,9 @@
                 <tr>
                   {+START,IF,{$EQ,{$GET,showplayer},1}}
                     <td style='vertical-align: middle'>
-                        <div align='{PLAYERALIGN}'> 
-                        <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe> 
-                        </div> 
+                        <div align='{PLAYERALIGN}'>
+                        <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe>
+                        </div>
                     </td>
                     <td>&nbsp;</td>
                     <td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
@@ -86,7 +86,7 @@
                         <tr align='left'>
                             <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                                 <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-                                {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                                {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                                     <br />Embedding not allowed<br />
                                     <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                                 {+END}
@@ -98,7 +98,7 @@
                     <td><table><tr>
                     <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                         <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-                        {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                        {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                             <br />Embedding not allowed<br />
                             <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                         {+END}
@@ -111,10 +111,10 @@
                             <tr><td style='text-align: right;'><b>Channel:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'><a href='{CHANNEL_URL}' target='_blank'>{CHANNEL_NAME}</a></td></tr>
                             <tr><td style='text-align: right;' nowrap="nowrap"><b>Uploaded:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$FROM_TIMESTAMP,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP,{UPLOAD_DATE}}}</td></tr>
                             {+START,IF,{$EQ,{DESCRIPTION_TYPE},long}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION}} </td></tr>{+END}
-                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{$EQ,{DESCRIPTION_SHORTENED},1}}<b>...</b>{+END}</td></tr>{+END}
+                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{DESCRIPTION_SHORTENED}}<b>...</b>{+END}</td></tr>{+END}
                             <tr><td style='text-align: right;'><b>Duration:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{DURATION_NUMERIC} ({DURATION_TEXT})</td></tr>
                             {+START,IF,{$NEQ,{FAVORITE_COUNT},0}}<tr><td style='text-align: right;'><b>Favorited:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{FAVORITE_COUNT} person(s) have favorited this video.</td></tr>{+END}
-                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br /> 
+                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br />
                                 {$SET,i,0}
                                 {+START,WHILE,{$GT,{$SUBTRACT,{RATING_NUMERIC},{$GET,i}},0}}
                                     <img style="border: 0px none; margin: 0px; padding: 0px; vertical-align: middle; font-size: 11px;" alt="" src="{$IMG,youtube_channel_integration/star_full}" align="top">
@@ -141,9 +141,9 @@
                 <tr>
                   {+START,IF,{$EQ,{$GET,showplayer},1}}
                     <td style='vertical-align: middle'>
-                        <div align='{PLAYERALIGN}'> 
-                        <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe> 
-                        </div> 
+                        <div align='{PLAYERALIGN}'>
+                        <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe>
+                        </div>
                     </td>
                     <td>&nbsp;</td>
                     <td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
@@ -156,7 +156,7 @@
                         <tr align='left'>
                             <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                                 <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-                                {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                                {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                                     <br />Embedding not allowed<br />
                                     <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                                 {+END}
@@ -168,7 +168,7 @@
                     <td><table><tr>
                     <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                         <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT_0}'></a>
-                        {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                        {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                             <br />Embedding not allowed<br />
                             <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                         {+END}
@@ -180,8 +180,8 @@
                             <tr><td><b><a href='{VIDEO_URL}' target='_blank'>{VIDEO_TITLE}</a></b></td></tr>
                             <tr><td><b>{$FROM_TIMESTAMP,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP,{UPLOAD_DATE}}}</b></td></tr>
                             {+START,IF,{$EQ,{DESCRIPTION_TYPE},long}}<tr><td>long: {$COMCODE,{DESCRIPTION}}</td></tr>{+END}
-                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td>short: {$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{$EQ,{DESCRIPTION_SHORTENED},1}}<b>...</b>{+END}</td></tr>{+END}
-                            {+START,IF_NON_EMPTY,{FOR_MORE_URL}}{+START,IF_EMPTY,{FOR_MORE_TEXT}}<tr><td><br />{FOR_MORE_LEAD} <a href='{FOR_MORE_URL}'>{FOR_MORE_URL}</a></td></tr>{+END}{+END}{+START,IF_NON_EMPTY,{FOR_MORE_URL}}{+START,IF_NON_EMPTY,{FOR_MORE_TEXT}}<tr><td><br />{FOR_MORE_LEAD} <a href='{FOR_MORE_URL}'>{FOR_MORE_TEXT}</a></td></tr>{+END}{+END} 
+                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td>short: {$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{DESCRIPTION_SHORTENED}}<b>...</b>{+END}</td></tr>{+END}
+                            {+START,IF_NON_EMPTY,{FOR_MORE_URL}}{+START,IF_EMPTY,{FOR_MORE_TEXT}}<tr><td><br />{FOR_MORE_LEAD} <a href='{FOR_MORE_URL}'>{FOR_MORE_URL}</a></td></tr>{+END}{+END}{+START,IF_NON_EMPTY,{FOR_MORE_URL}}{+START,IF_NON_EMPTY,{FOR_MORE_TEXT}}<tr><td><br />{FOR_MORE_LEAD} <a href='{FOR_MORE_URL}'>{FOR_MORE_TEXT}</a></td></tr>{+END}{+END}
                         </table>
                     </td></tr></table></td>
                 </tr>
@@ -190,18 +190,18 @@
 
         {+START,IF,{$EQ,{STYLE},4}}
           {+START,IF,{$EQ,{$GET,showplayer},1}}
-            <div align='{PLAYERALIGN}'> 
-              <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe> 
-            </div> 
+            <div align='{PLAYERALIGN}'>
+              <iframe width="{PLAYERWIDTH}" height="{PLAYERHEIGHT}" src="{EMBEDVIDEO}" frameborder="0" allowfullscreen></iframe>
+            </div>
             <br />
           {+END}
-            <div align='{PLAYERALIGN}'> 
+            <div align='{PLAYERALIGN}'>
             <table border="0" cellpadding="0" cellspacing="4">
                 <tr>
                     {+START,IF,{$EQ,{$GET,nothumbplayer},1}}
                     <td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
                         <a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-                        {+START,IF,{$AND,{$EQ,{EMBEDPLAYER_ALLOWED},0},{$EQ,{EMBED_ALLOWED},1}}}
+                        {+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
                             <br />Embedding not allowed<br />
                             <a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
                         {+END}
@@ -214,10 +214,10 @@
                             <tr><td style='text-align: right;'><b>Channel:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'><a href='{CHANNEL_URL}' target='_blank'>{CHANNEL_NAME}</a></td></tr>
                             <tr><td style='text-align: right;' nowrap="nowrap"><b>Uploaded:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$FROM_TIMESTAMP,%d %B %Y\, %I:%M:%S %p,{$TO_TIMESTAMP,{UPLOAD_DATE}}}</td></tr>
                             {+START,IF,{$EQ,{DESCRIPTION_TYPE},long}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION}} </td></tr>{+END}
-                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{$EQ,{DESCRIPTION_SHORTENED},1}}<b>...</b>{+END}</td></tr>{+END}
+                            {+START,IF,{$EQ,{DESCRIPTION_TYPE},short}}<tr><td style='text-align: right;'><b>Description:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{$COMCODE,{DESCRIPTION_SHORT}} {+START,IF,{DESCRIPTION_SHORTENED}}<b>...</b>{+END}</td></tr>{+END}
                             <tr><td style='text-align: right;'><b>Duration:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{DURATION_NUMERIC} ({DURATION_TEXT})</td></tr>
                             {+START,IF,{$NEQ,{FAVORITE_COUNT},0}}<tr><td style='text-align: right;'><b>Favorited:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{FAVORITE_COUNT} person(s) have favorited this video.</td></tr>{+END}
-                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br /> 
+                            {+START,IF,{$NEQ,{RATING_NUM_RATES},0}}<tr><td style='text-align: right;'><b>Likes/Dislikes:</b></td><td width='5'>&nbsp;</td><td style='text-align: left;'>{RATING_LIKES}/{RATING_DISLIKES} ({RATING_LIKE_PERCENT}% liked out of {RATING_NUM_RATES} total ratings.)<br />
                                 {$SET,i,0}
                                 {+START,WHILE,{$GT,{$SUBTRACT,{RATING_NUMERIC},{$GET,i}},0}}
                                     <img style="border: 0px none; margin: 0px; padding: 0px; vertical-align: middle; font-size: 11px;" alt="" src="{$IMG,youtube_channel_integration/star_full}" align="top">

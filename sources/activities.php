@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,10 +21,10 @@
 /**
  * Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.
  *
- * @param  string $a_language_string_code Language string code
- * @param  string $a_label_1 Label 1 (given as a parameter to the language string code)
- * @param  string $a_label_2 Label 2 (given as a parameter to the language string code)
- * @param  string $a_label_3 Label 3 (given as a parameter to the language string code)
+ * @param  string $a_language_string_code Language string ID
+ * @param  string $a_label_1 Label 1 (given as a parameter to the language string ID)
+ * @param  string $a_label_2 Label 2 (given as a parameter to the language string ID)
+ * @param  string $a_label_3 Label 3 (given as a parameter to the language string ID)
  * @param  string $a_page_link_1 Page-link 1
  * @param  string $a_page_link_2 Page-link 2
  * @param  string $a_page_link_3 Page-link 3
@@ -71,16 +71,17 @@ function has_external_site_wide_syndication()
 /**
  * Get syndication field UI.
  *
+ * @param  string $content_type The content type this is for
  * @return Tempcode Syndication fields (or empty)
  */
-function get_syndication_option_fields()
+function get_syndication_option_fields($content_type)
 {
     $hooks = find_all_hooks('systems', 'activities');
     $ret = new Tempcode();
     foreach (array_keys($hooks) as $hook) { // We only expect one actually
         require_code('hooks/systems/activities/' . $hook);
         $ob = object_factory('Hook_activities_' . $hook);
-        $ret->attach($ob->get_syndication_option_fields());
+        $ret->attach($ob->get_syndication_option_fields($content_type));
     }
     return $ret;
 }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -64,7 +64,6 @@ class Block_main_newsletter_signup
     public function run($map)
     {
         require_lang('newsletter');
-        require_lang('javascript');
         require_css('newsletter');
 
         $newsletter_id = array_key_exists('param', $map) ? intval($map['param']) : db_get_first_id();

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,6 +23,7 @@ class news_category_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('news2');
 
         $this->news_id = add_news_category('Today', 'news.gif', 'Headlines', null, null);
@@ -40,6 +41,7 @@ class news_category_test_set extends cms_test_case
     public function tearDown()
     {
         delete_news_category($this->news_id);
+
         parent::tearDown();
     }
 }

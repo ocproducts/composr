@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -33,7 +33,7 @@ class Hook_page_groupings_wordfilter
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('security', 'menu/adminzone/security/wordfilter', array('admin_wordfilter', array('type' => 'browse'), get_module_zone('admin_wordfilter')), do_lang_tempcode('wordfilter:WORD_FILTER'), 'wordfilter:DOC_WORDFILTER'),
+            array('security', 'menu/adminzone/security/wordfilter', array('admin_wordfilter', array('type' => 'browse'), get_module_zone('admin_wordfilter')), do_lang_tempcode('wordfilter:WORDFILTER'), 'wordfilter:DOC_WORDFILTER'),
         );
     }
 }

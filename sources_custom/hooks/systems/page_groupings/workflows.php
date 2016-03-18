@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -28,7 +28,7 @@ class Hook_page_groupings_workflows
     public function run($member_id = null, $extensive_docs = false)
     {
         return array(
-            array('setup', 'menu/workflows', array('admin_workflow', array('type' => 'browse'), get_module_zone('admin_workflow')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('workflows:WORKFLOWS'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('workflows', 'COUNT(*)'))))), 'workflows:DOC_WORKFLOWS'),
+            array('setup', 'menu/workflows', array('admin_workflow', array('type' => 'browse'), get_module_zone('admin_workflow')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('workflows:WORKFLOWS'), @make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('workflows', 'COUNT(*)', null, '', true))))), 'workflows:DOC_WORKFLOWS'),
         );
     }
 }

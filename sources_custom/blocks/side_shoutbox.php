@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,11 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    shoutr
+ */
+
+/**
+ * Block class.
  */
 class Block_side_shoutbox
 {
@@ -58,7 +63,7 @@ class Block_side_shoutbox
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
         if (is_null($room_id)) {
-            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*,'room_language'=>user_lang()*/));
+            $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
             if (is_null($room_id)) {
                 return new Tempcode();
             }
@@ -92,7 +97,7 @@ class Block_side_shoutbox
 
         $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
         if (!array_key_exists(0, $room_check)) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE'), '', 'red_alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'chat'), '', 'red_alert');
         }
 
         // Did a message get sent last time?

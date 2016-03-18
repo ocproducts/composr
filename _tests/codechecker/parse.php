@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -58,7 +58,7 @@ function _parse_php()
                         log_warning('Duplicated function \'' . $_function['name'] . '\'');
                     }
                 }
-                //log_special('defined',$_function['name']);
+                //log_special('defined', $_function['name']);
                 $program['functions'][] = $_function;
                 break;
 
@@ -307,7 +307,7 @@ function _parse_command_actual($no_term_needed = false)
                 pparse__parser_next();
                 $command = _parse_call_chain($command, $suppress_error);
             }
-            //log_special('functions',$identifier.'/'.count($parameters));
+            //log_special('functions', $identifier . '/' . count($parameters));
             if (!$no_term_needed) {
                 _test_command_end();
             }
@@ -1024,7 +1024,7 @@ function _parse_expression_inner()
                 $parameters = _parse_comma_expressions();
                 pparse__parser_expect('BRACKET_CLOSE');
                 $expression = array('CALL_DIRECT', $next[1], $parameters, $suppress_error, $GLOBALS['I']);
-                //log_special('functions',$next[1].'/'.count($parameters));
+                //log_special('functions', $next[1] . '/' . count($parameters));
             } else {
                 if (strtolower($next[1]) == $next[1]) {
                     _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
@@ -1138,7 +1138,7 @@ function _parse_variable($suppress_error, $can_be_dangling_method_call_instead =
         }
     }
 
-    $variable_chain = _parse_variable_dereferencing_chain_segment($suppress_error/*,$can_be_dangling_method_call_instead*/);
+    $variable_chain = _parse_variable_dereferencing_chain_segment($suppress_error/*, $can_be_dangling_method_call_instead*/);
     if ($variable_chain !== array()) {
         // Restructure the chain around any particular calls made
         $actual_expression = array('VARIABLE', $variable[1], $variable_chain, $GLOBALS['I']);
@@ -1233,9 +1233,9 @@ function _parse_variable_dereferencing_chain_segment($suppress_error)
             $variable = array('CALL_METHOD', null/*will be subbed later for preceding part of chain*/, $args, $suppress_error, $GLOBALS['I'], $tunnel);
             break;
 
-        /*case 'CURLY_OPEN':  Not in PHP 6
+        /*case 'CURLY_OPEN':  Not in PHP 7
             pparse__parser_next();
-            $variable=array('CHAR_OF_STRING',_parse_expression(),$GLOBALS['I']);
+            $variable = array('CHAR_OF_STRING', _parse_expression(), $GLOBALS['I']);
             pparse__parser_expect('CURLY_CLOSE');
             break;*/
 
@@ -1259,7 +1259,7 @@ function _parse_assignment_operator()
 
 function _parse_literal()
 {
-    // Choice{"SUBTRACT" literal | "integer_literal" | "float_literal" | "string_literal" | "true" | "false" | "NULL" | "IDENTIFIER"}
+    // Choice{"SUBTRACT" literal | "integer_literal" | "float_literal" | "string_literal" | "true" | "false" | "null" | "IDENTIFIER"}
 
     $next = pparse__parser_peek();
     switch ($next) {
@@ -1482,18 +1482,16 @@ function _parse_parameter()
                 // Variable with type hint
                 $var = pparse__parser_expect('variable');
                 if (pparse__parser_peek() == 'EQUAL') {
-                    // Variable with type hint and default value. This can only be
-                    // NULL
+                    // Variable with type hint and default value. This can only be null
                     pparse__parser_next();        // Consume the EQUAL
                     if (pparse__parser_peek() == 'null') {
-                        // If the default value is NULL, the hint is extended to allow
-                        // NULL
-                        pparse__parser_next();        // Consume the NULL
+                        // If the default value is null, the hint is extended to allow null
+                        pparse__parser_next();        // Consume the null
                         // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                         $parameter = array('RECEIVE_BY_VALUE', $var, null, $GLOBALS['I']);
                         $parameter['HINT'] = '?' . $hint;
                     } else {
-                        parser_error('Default arguments for type-hinted parameters can only be NULL');
+                        parser_error('Default arguments for type-hinted parameters can only be null');
                     }
                 } else {
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
@@ -1508,18 +1506,16 @@ function _parse_parameter()
             $variable = pparse__parser_expect('variable');
             // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
             if (pparse__parser_peek() == 'EQUAL') {
-                // Variable with type hint and default value. This can only be
-                // NULL
+                // Variable with type hint and default value. This can only be null
                 pparse__parser_next();        // Consume the EQUAL
                 if (pparse__parser_peek() == 'null') {
-                    // If the default value is NULL, the hint is extended to allow
-                    // NULL
-                    pparse__parser_next();        // Consume the NULL
+                    // If the default value is null, the hint is extended to allow null
+                    pparse__parser_next();        // Consume the null
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
                     $parameter['HINT'] = '?' . $hint;
                 } else {
-                    parser_error('Default arguments for referenced parameters can only be NULL');
+                    parser_error('Default arguments for referenced parameters can only be null');
                 }
             } else {
                 $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $GLOBALS['I']);
@@ -1629,11 +1625,14 @@ function pparse__parser_next($all = false)
 function parser_error($message)
 {
     global $TOKENS, $I;
-    /*foreach ($TOKENS as $key=>$token)   Debug output
-    {
-        if ($key==$I) echo '<strong>';
-        echo ' '.$token[0].' ';
-        if ($key==$I) echo '</strong>';
+    /*foreach ($TOKENS as $key => $token) { Debug output
+        if ($key == $I) {
+            echo '<strong>';
+        }
+        echo ' ' . $token[0] . ' ';
+        if ($key == $I) {
+            echo '</strong>';
+        }
     }*/
     list($pos, $line, $full_line) = pos_to_line_details($I);
     die_error('PARSER', $pos, $line, $message);
@@ -1668,9 +1667,6 @@ function handle_comment($comment)
         if (strpos($comment[1], 'FUDGE') !== false) {
             log_warning('FUDGE comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
-        if (strpos($comment[1], 'HACKHACK') !== false) {
-            log_warning('HACKHACK comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
-        }
-        //if (strpos($comment[1],'XHTMLXHTML')!==false) log_warning('XHTMLXHTML comment found',$GLOBALS['I']); Don't want to report these
+        //if (strpos($comment[1], 'XHTMLXHTML') !== false) log_warning('XHTMLXHTML comment found', $GLOBALS['I']); Don't want to report these
     }
 }

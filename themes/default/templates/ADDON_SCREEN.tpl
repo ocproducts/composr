@@ -5,11 +5,13 @@
 {+START,IF_NON_EMPTY,{ADDONS}}
 	{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
 		{$,Link repeated here and below because it is important}
-		<ul role="navigation" class="actions_list spaced_list">
-			<li>
-				<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
-			</li>
-		</ul>
+		<nav>
+			<ul class="actions_list spaced_list">
+				<li>
+					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
+				</li>
+			</ul>
+		</nav>
 	{+END}
 
 	{+START,IF,{$JS_ON}}
@@ -21,6 +23,8 @@
 	{+END}
 
 	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<div class="not_too_tall_addons">
 			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table">
 				<thead>
@@ -50,7 +54,7 @@
 		</div>
 
 		<p class="proceed_button">
-			<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
+			<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 		</p>
 	</form>
 {+END}
@@ -62,20 +66,21 @@
 
 <h2>{!ACTIONS}</h2>
 
-<ul role="navigation" class="actions_list spaced_list">
-	{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
+<nav>
+	<ul class="actions_list spaced_list">
+		{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
+			<li>
+				<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}">{!IMPORT_UPDATED_ADDONS}</a>
+			</li>
+		{+END}
 		<li>
-			<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}">{!IMPORT_UPDATED_ADDONS}</a>
+			<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import}">{!IMPORT_ADDON}</a> ({!IMPORT_ADDON_2})
 		</li>
-	{+END}
-	<li>
-		<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import}">{!IMPORT_ADDON}</a> ({!IMPORT_ADDON_2})
-	</li>
-	<li>
-		<a href="{$PAGE_LINK*,_SELF:_SELF:addon_export}">{!EXPORT_ADDON_TITLE}</a>
-	</li>
-	<li>
-		{!ADVANCED}: <a href="{$PAGE_LINK*,_SELF:_SELF:modules}">{!MODULE_MANAGEMENT}</a>
-	</li>
-</ul>
-
+		<li>
+			<a href="{$PAGE_LINK*,_SELF:_SELF:addon_export}">{!EXPORT_ADDON_TITLE}</a>
+		</li>
+		<li>
+			{!ADVANCED}: <a href="{$PAGE_LINK*,_SELF:_SELF:modules}">{!MODULE_MANAGEMENT}</a>
+		</li>
+	</ul>
+</nav>

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Module_search
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 5;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
     }
@@ -84,7 +84,9 @@ class Module_search
             $GLOBALS['SITE_DB']->create_index('searches_logged', 'past_search', array('s_primary'));
 
             $GLOBALS['SITE_DB']->create_index('searches_logged', '#past_search_ft', array('s_primary'));
+        }
 
+        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
             add_privilege('SEARCH', 'autocomplete_past_search', false);
             add_privilege('SEARCH', 'autocomplete_keyword_comcode_page', false);
             add_privilege('SEARCH', 'autocomplete_title_comcode_page', false);
@@ -97,7 +99,7 @@ class Module_search
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -112,7 +114,7 @@ class Module_search
     public $info;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -179,9 +181,10 @@ class Module_search
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(15); // We really don't want to let it thrash the DB too long
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(15); // We really don't want to let it thrash the DB too long
         }
+        send_http_output_ping();
 
         $type = get_param_string('type', 'browse');
         if (($type == 'browse') || ($type == 'results')) {
@@ -240,6 +243,16 @@ class Module_search
                 $url_map['embedded'] = 1;
             }
             $url = build_url($url_map, '_SELF', null, false, true);
+
+            require_code('content');
+            $content_type = convert_composr_type_codes('search_hook', $id, 'content_type');
+            if ($content_type != '') {
+                $cma_ob = get_content_object($content_type);
+                $cma_info = $cma_ob->info();
+                if (isset($info['parent_category_meta_aware_type'])) {
+                    $content_type = $info['parent_category_meta_aware_type'];
+                }
+            }
 
             require_code('hooks/modules/search/' . filter_naughty_harsh($id), true);
             $ob = object_factory('Hook_search_' . filter_naughty_harsh($id));
@@ -302,6 +315,7 @@ class Module_search
                     'ROOT_ID' => '',
                     'OPTIONS' => serialize($ajax_options),
                     'DESCRIPTION' => '',
+                    'CONTENT_TYPE' => $content_type,
                 ));
             } else {
                 $ajax = false;
@@ -412,8 +426,8 @@ class Module_search
         $cutoff_to_year = mixed();
 
         if (get_option('search_with_date_range') == '1') {
-            $cutoff_from = get_input_date('cutoff_from', true);
-            $cutoff_to = get_input_date('cutoff_to', true);
+            $cutoff_from = post_param_date('cutoff_from', true);
+            $cutoff_to = post_param_date('cutoff_to', true);
             if (is_null($cutoff_from) && is_null($cutoff_to)) {
                 $cutoff = null;
             } else {
@@ -594,7 +608,7 @@ class Module_search
         foreach (array_keys($_hooks) as $hook) {
             $test = get_param_integer('search_' . $hook, 0);
 
-            if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
+            if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook))) {
                 require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
                 $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
                 if (is_null($ob)) {
@@ -606,7 +620,7 @@ class Module_search
                 }
             }
 
-            if ((($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && ($info['default'])) || ($id == $hook)) && (($id == '') || ($id == $hook))) {
+            if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && ($info['default'])) || ($id == $hook))) {
                 // Category filter
                 if (($search_under != '!') && ($search_under != '-1') && (array_key_exists('category', $info))) {
                     $cats = explode(',', $search_under);
@@ -632,8 +646,8 @@ class Module_search
 
                 $only_search_meta = get_param_integer('only_search_meta', 0) == 1;
                 $direction = get_param_string('direction', 'ASC');
-                if (function_exists('set_time_limit')) {
-                    @set_time_limit(5); // Prevent errant search hooks (easily written!) taking down a server. Each call given 5 seconds (calling set_time_limit resets the timer).
+                if (php_function_allowed('set_time_limit')) {
+                    set_time_limit(5); // Prevent errant search hooks (easily written!) taking down a server. Each call given 5 seconds (calling set_time_limit resets the timer).
                 }
                 $hook_results = $ob->run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $max, $boolean_operator, $where_clause, $search_under, $boolean_search ? 1 : 0);
                 if (is_null($hook_results)) {
@@ -649,8 +663,8 @@ class Module_search
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(15);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(15);
         }
 
         // Now glue our templates together
@@ -674,7 +688,7 @@ class Module_search
             $GLOBALS['SITE_DB']->query_insert('searches_logged', array(
                 's_member_id' => get_member(),
                 's_time' => time(),
-                's_primary' => substr($content, 0, 255),
+                's_primary' => cms_mb_substr($content, 0, 255),
                 's_auxillary' => serialize(array_merge($_POST, $_GET)),
                 's_num_results' => count($results),
             ));

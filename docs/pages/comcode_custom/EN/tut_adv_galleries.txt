@@ -6,13 +6,28 @@ The Composr gallery system provides a number of advanced features -- this tutori
 
 [title="2"]Importing[/title]
 
-[media width="150" description="The interface to import to a gallery" float="right"]data_custom/images/docs/adv_gallery_import.png[/media]
+[media width="150" description="The screen to import to a gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_import.png[/media]
 {!galleries:DOC_GALLERY_IMPORT}
 
-If you have a CSV (spreadsheet) file named [tt]uploads/galleries/descriptions.csv[/tt], with the first column containing filenames, and the second column containing descriptions, then this will be checked when bulk importing files.
+If you have a CSV (spreadsheet) file saved to your server as (strictly) [tt]uploads/galleries/descriptions.csv[/tt], with the first column containing filenames, and the second column containing descriptions, then this will be checked when bulk importing files. The filenames should not contain a path component (so just the filenames), and should be under [tt]uploads/galleries[/tt] also.
 Also, EXIF data (in JPEG and TIFF files) will be checked for descriptions.
 
 The orphaned files importer will auto-select any orphaned files that are put in a directory of the same name as the gallery you are importing. This is useful if you have been organising your gallery images/videos into a directory structure before-hand, as it stops you having to manually re-select what-goes-where when you do the import. Note that the gallery structure is only one-level-deep, there is no support for subdirectory nesting; however, that is not required anyway as gallery names must be unique and thus there is no potential for directory name conflict.
+
+[title="3"]EXIF[/title]
+
+On gallery import, e.g. when you import from a ZIP, EXIF data may be gathered.
+
+This process works by matching up custom fields created for images, with the name of EXIF tags:
+http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
+
+For example, see [tt]GainControl[/tt] is an EXIF field. If there was a custom field named [tt]GainControl[/tt] or [tt]Gain Control[/tt], it should copy the EXIF value into that during a gallery import.
+
+Additionally, the EXIF caption is used for the title. i.e. the caption goes into the standard Composr title field, not a custom field.
+
+For non-gallery-import, the user is expected to manually fill in the form.
+
+JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handle_metadata_receipt[/tt] function and do something with the data.
 
 [title="2"]Exporting[/title]
 
@@ -21,14 +36,15 @@ For members that have permission, gallery contents may be downloaded in a ZIP fi
 These ZIP files contain only the actual image and video files, and not any meta content such as descriptions.
 
 [title="2"]Member Galleries -- quick start[/title]
+
 [surround]
-[media width="150" description="Editing a gallery to be a member gallery container" float="right"]data_custom/images/docs/adv_gallery_container.png[/media]
-[media width="150" description="Making a personal gallery by adding an image" float="right"]data_custom/images/docs/adv_gallery_add.png[/media]
+[media width="150" description="Editing a gallery to be a member gallery container" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_container.png[/media]
+[media width="150" description="Making a personal gallery by adding an image" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_add.png[/media]
 Composr supports members having their own galleries of images/videos.
 
-To enable this:
+To enable this, you as admin need to:
 1) make sure members have permission to "Add image/video". You can check this from the Permissions Tree Editor at the "Module: galleries" node (probably under the Welcome or Site zone, depending on your set up). You can either assign this permission explicitly, or let it get inherited from the global "Submit mid-impact (medium visibility) content" privilege.
-2) and also permission to have personal categories. You can do this in the Permissions Tree Editor, or again by setting the privilege globally.
+2) and also permission to have personal categories. You can do this in the Permissions Tree Editor (as "have personal galleries"), or again by setting the privilege globally.
 3) Make sure members have View Access to the Content Management zone. This can again be done in the Permissions Tree Editor, at "Zone: Content Management".
 4) Add/edit a gallery (the "Galleries home" gallery will do, if you want personal galleries to be created directly underneath this) to have the 'Personal category container' option ticked (checked). You can find this on the gallery add/edit form under 'Advanced'.
 5) On the same add/edit gallery form, make sure that the gallery you add/edit also has "Accept images" and "Accept videos" enabled (assuming you want to allow both images and videos). This is because the properties of this gallery will be transferred to new personal galleries underneath it.
@@ -36,28 +52,29 @@ Now when members submit a new image/video, they will get the choice to create th
 
 Members may have multiple personal galleries if you set multiple galleries to be 'Personal category container'.
 [/surround]
+
 [title="2"]Member Galleries -- full explanation[/title]
+
 [surround]
-[media width="150" description="A personal gallery as displayed in the container gallery" float="right"]data_custom/images/docs/adv_gallery_members.png[/media]
+[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_member.png[/media]
+[media width="150" description="A personal gallery as displayed in the container gallery" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_members.png[/media]
 If a member is in a usergroup with special permission (permission to have personal categories), they may create their own galleries that are:
 1) displayed as belonging to them
 2) display their profile details
 3) and only addable-to (by default) by them
-[/surround]
-The personal gallery system is very sophisticated, and integrated with the hierarchical nature of the gallery system. Members may have personal galleries underneath any gallery in the hierarchy that is marked as a 'Personal category container'; this means that a member may have multiple personal galleries if there are multiple containers.
 
-The settings of new personal galleries are based on:
+The personal gallery system is very sophisticated, and integrated with the hierarchical nature of the gallery system. Members may have personal galleries underneath any gallery in the hierarchy that is marked as a 'Personal category container'; this means that a member may have multiple personal galleries if multiple container galleries have been created by the staff.
+
+Personal galleries, like personal news categories, may be created on demand, simply by choosing a personal gallery for the adding member that 'has the potential to exist' from the list of galleries to submit to: upon submitting, the gallery is automatically created. Personal galleries are given a codename corresponding to the owner, as shown in the screen-shot.
+
+The settings of new personal galleries are based on a combination of:
 1) hard-coded defaults
 2) the settings of the container gallery
 3) the permissions of the container gallery
-For example, if the container gallery does not allow videos, neither will personal galleries underneath it, unless edited after it's auto-creation to do so.
+For example, if the container gallery does not allow videos, neither will personal galleries underneath it, unless edited after its auto-creation to do so.
+[/surround]
 
-[media width="150" description="The naming scheme that identifies personal galleries" float="right"]data_custom/images/docs/adv_gallery_naming.png[/media]
-Personal galleries, like personal news categories, may be created on demand, simply by choosing a personal gallery for the adding member that 'has the potential to exist' from the list of galleries to submit to: upon submitting, the gallery is automatically created. Personal galleries are given a codename corresponding to the owner, as shown in the screen-shot.
-
-
-
-[media width="150" description="Viewing an image in a member gallery" float="right"]data_custom/images/docs/adv_gallery_member.png[/media]
+[media width="150" description="The naming scheme that identifies personal galleries" float="right"]data_custom/images/docs/tut_adv_galleries/adv_gallery_naming.png[/media]
 An example of a complex gallery hierarchy is as follows:
  - (root)
   - Germany Holiday Photos 2004 (*)
@@ -72,8 +89,8 @@ An example of a complex gallery hierarchy is as follows:
     - Benjamin's Photos (+)
     - Harry's Photos (+)
 
-[tt](*)[/tt] denotes a personal gallery container
-[tt](+)[/tt] denotes a personal gallery created upon adding by the owner
+[tt](*)[/tt] denotes a personal gallery container that an admin has pre-created in advance
+[tt](+)[/tt] denotes a personal gallery created automatically by a member (now the gallery owner) adding media
 
 Personal galleries may only be submitted to by the owner of the personal gallery, unless the "Submit to categories belonging to other members" privilege is assigned.
 
@@ -81,49 +98,42 @@ Personal galleries may only be submitted to by the owner of the personal gallery
 
 There are permissions and configuration options relating to the gallery system that allow you to limit the number of entries that members may have in their own galleries.
 Composr provides this functionality using a three-tiered system:
- - low limit on entries in member galleries
- - high limit on entries in member galleries
- - no limit on entries in member galleries
+1) low limit on entries in member galleries
+2) high limit on entries in member galleries
+3) no limit on entries in member galleries
 The 'low' and 'high' limits are configurable using configuration options, with separate settings for both images and videos.
 The tier that a member resides in is based on usergroup permissions with two privileges which may be set for usergroups:
- - has high limit in member galleries
- - has no limit in member galleries
-
-[title="3"]EXIF[/title]
-
-On gallery import, e.g. when you import from a zip, EXIF data may be gathered.
-
-This process works by matching up custom fields created for images, with the name of EXIF tags:
-http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html
-
-For example, see [tt]GainControl[/tt] is an EXIF field. If there was a custom field named [tt]GainControl[/tt] or [tt]Gain Control[/tt], it should copy the EXIF value into that during a gallery import.
-
-Additionally, the EXIF caption is used for the title. i.e. the caption goes into the standard Composr title field, not a custom field.
-
-For non-gallery-import, the user is expected to manually fill in the form.
-
-JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handle_meta_data_receipt[/tt] function and do something with the data.
+1) has high limit in member galleries
+2) has no limit in member galleries
 
 [title="3"]Linking directly for a member to add to their own member gallery[/title]
 
 If you find the link to submit to a particular member gallery, you'll find it looks something like:
-[tt]http://baseurl/cms/index.php?page=cms_galleries&type=add&cat=member_13_foobar[/tt]
+[tt]http://yourbaseurl/cms/index.php?page=cms_galleries&type=add&cat=member_13_foobar[/tt]
 
 (this is for member #13's gallery under [tt]foobar[/tt])
 
-If you change the member ID to a question mark, it will work as a generic URL that you can give any member:
-[tt]http://baseurl/cms/index.php?page=cms_galleries&type=add&cat=member_?_foobar[/tt]
+If you change the member ID to a question mark, it will work as a generic URL that can be supplied to members to easily direct them to create or add to a particular personal gallery:
+[tt]http://yourbaseurl/cms/index.php?page=cms_galleries&type=add&cat=member_?_foobar[/tt]
+
+You may, for example, include it on a Comcode page, or on a menu, to guide users.
 
 (Composr automatically will substitute the question mark with the ID of the current member)
 
 [title="2"]Podcasts[/title]
 
-Composr RSS complies with Apple's podcast format.
-The podcast URL for a gallery is:
-[tt]http://baseurl/backend.php?mode=galleries&select=galleryname&type=rss&itunes=1[/tt]
-Reply [tt]baseurl[/tt] and [tt]galleryname[/tt] as appropriate.
+Composr RSS complies with Apple's podcast format. Other companies support the same format, as it has become a de facto standard.
 
-Note that the default advertised Atom feed will not work. Only RSS is supported by iTunes, and only the RSS feed is given the extra meta-data required. The [tt]&itunes=1[/tt] marker also tells Composr to supply an iTunes-friendly feed.
+The podcast URL for a gallery is:
+[tt]http://yourbaseurl/backend.php?mode=galleries&select=galleryname&type=rss&itunes=1[/tt]
+
+Replace [tt]yourbaseurl[/tt] and [tt]galleryname[/tt] as appropriate.
+
+This URL can be supplied to users to help them subscribe. In iTunes they go to the File menu, then "Subscribe to Podcast".
+
+Note that the default advertised Atom feed will not work. Only RSS is supported by iTunes, and only the RSS feed is given the extra metadata required. The [tt]&itunes=1[/tt] marker also tells Composr to supply an iTunes-friendly feed.
+
+[url="Apple provide a guide"]http://www.apple.com/uk/itunes/podcasts/specs.html[/url] on publishing your podcast within the iTunes store. Publishing may have more stringent requirements that the default Composr podcast can provide (the developers don't routinely test this), but templating can be used on the [tt]RSS_*.tpl[/tt] templates to supplement additional data if required.
 
 [title="2"]See also[/title]
 

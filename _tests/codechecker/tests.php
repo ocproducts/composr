@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -486,7 +486,7 @@ if (preg_match('a','a')) exit();
 END;
 
     $tests[53] = <<<END
-\$bool=\$whatever==NULL;
+\$bool=\$whatever==null;
 END;
 
     $tests[54] = <<<END
@@ -561,7 +561,7 @@ END;
     $tests[61] = <<<END
 class A
 {
-    public function foo(A \$a, A \$b=NULL, A &\$c, array \$d, array \$e=NULL, array &\$f, array &\$g, \$h, \$i=5)
+    public function foo(A \$a, A \$b=null, A &\$c, array \$d, array \$e=null, array &\$f, array &\$g, \$h, \$i=5)
     {
     }
 }

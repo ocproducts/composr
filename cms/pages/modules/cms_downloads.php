@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Module_cms_downloads extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -96,10 +96,10 @@ class Module_cms_downloads extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -236,7 +236,7 @@ class Module_cms_downloads extends Standard_crud_module
     {
         $destination = post_param_integer('destination');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('downloads',$destination)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('downloads', $destination)*/);
 
         set_mass_import_mode();
 
@@ -276,7 +276,7 @@ class Module_cms_downloads extends Standard_crud_module
     {
         $destination = post_param_integer('destination');
 
-        check_privilege('mass_import'/*Not currently scoped to categories,array('downloads',$destination)*/);
+        check_privilege('mass_import'/*Not currently scoped to categories, array('downloads', $destination)*/);
 
         set_mass_import_mode();
 
@@ -359,7 +359,7 @@ class Module_cms_downloads extends Standard_crud_module
             $fields->attach(form_input_line(do_lang_tempcode('ORIGINAL_FILENAME'), do_lang_tempcode('DESCRIPTION_ORIGINAL_FILENAME'), 'original_filename', $original_filename, false));
         }
         if ((get_value('no_confirm_url_spec_cats') !== '1') || (is_null($category_id))) {
-            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE'), 'category_id', null, 'choose_download_category', array(), true, strval(is_null($category_id) ? db_get_first_id() : $category_id)));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_CATEGORY_TREE', 'download_category'), 'category_id', null, 'choose_download_category', array(), true, strval(is_null($category_id) ? db_get_first_id() : $category_id)));
         } else {
             $hidden->attach(form_input_hidden('category_id', strval($category_id)));
         }
@@ -369,7 +369,7 @@ class Module_cms_downloads extends Standard_crud_module
         if (has_privilege(get_member(), 'draw_to_server')) {
             $fields->attach(form_input_tick(do_lang_tempcode('COPY_TO_SERVER'), do_lang_tempcode('DESCRIPTION_COPY_TO_SERVER'), 'copy_to_server', false));
         }
-        $fields->attach(form_input_integer(do_lang_tempcode('_FILE_SIZE'), do_lang_tempcode('DESCRIPTION_FILE_SIZE'), 'file_size', $file_size, false));
+        $fields->attach(form_input_integer(do_lang_tempcode('FILE_SIZE'), do_lang_tempcode('DESCRIPTION_FILE_SIZE'), 'file_size', $file_size, false));
         if (addon_installed('authors')) {
             if ($author == '') {
                 $author = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'author', array('member_id' => get_member()));
@@ -379,7 +379,7 @@ class Module_cms_downloads extends Standard_crud_module
             }
         }
         if (addon_installed('authors')) {
-            $fields->attach(form_input_author(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR'), 'author', $author, true));
+            $fields->attach(form_input_author(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', 'download'), 'author', $author, true));
         }
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
         $image_upload_field = form_input_upload(do_lang_tempcode('IMAGE'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_IMAGE_SHORTCUT'), 'img_file', false, null, null, true, str_replace(' ', '', get_option('valid_images')));
@@ -394,7 +394,7 @@ class Module_cms_downloads extends Standard_crud_module
         }
         if (has_some_cat_privilege(get_member(), 'bypass_validation_' . $this->permissions_require . 'range_content', null, $this->permissions_cat_require)) {
             if (addon_installed('unvalidated')) {
-                $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED'), 'validated', $validated == 1));
+                $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'download'), 'validated', $validated == 1));
             }
         }
 
@@ -439,12 +439,12 @@ class Module_cms_downloads extends Standard_crud_module
             $fields->attach(form_input_list(do_lang_tempcode('LICENCE'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_LICENCE'), 'licence', $licences));
         }
 
-        // Meta data
+        // Metadata
         require_code('seo2');
         $seo_fields = seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false);
         require_code('feedback2');
-        $feedback_fields = feedback_fields($allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
-        $fields->attach(meta_data_get_fields('download', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? META_DATA_HEADER_YES : META_DATA_HEADER_FORCE));
+        $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
+        $fields->attach(metadata_get_fields('download', is_null($id) ? null : strval($id), false, null, ($seo_fields->is_empty() && $feedback_fields->is_empty()) ? METADATA_HEADER_YES : METADATA_HEADER_FORCE));
         if (has_privilege(get_member(), 'edit_meta_fields')) {
             $fields->attach(form_input_integer(do_lang_tempcode('NUM_DOWNLOADS'), do_lang_tempcode('DESCRIPTION_META_NUM_DOWNLOADS'), 'meta_num_downloads', null, false));
         }
@@ -492,7 +492,7 @@ class Module_cms_downloads extends Standard_crud_module
     {
         $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'category_id', array('id' => $id));
         if (is_null($temp)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
         }
         return $temp;
     }
@@ -509,7 +509,7 @@ class Module_cms_downloads extends Standard_crud_module
 
         $myrows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $myrows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download'));
         }
         $myrow = $myrows[0];
 
@@ -572,10 +572,10 @@ class Module_cms_downloads extends Standard_crud_module
         $thumb_url = null;
         $url = post_param_multi_source_upload('file', 'uploads/downloads', true, false, $original_filename, $thumb_url, CMS_UPLOAD_ANYTHING, $copy_to_server == 1);
 
-        $meta_data = actual_meta_data_get_fields('download', null);
-        actual_meta_data_get_fields__special($meta_data, 'num_downloads', 0);
+        $metadata = actual_metadata_get_fields('download', null);
+        actual_metadata_get_fields__special($metadata, 'num_downloads', 0);
 
-        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $meta_data['add_time'],/*$meta_data['num_downloads']*/0, $meta_data['views'], $meta_data['submitter'], null, null, '', '', 1, $url_redirect);
+        $id = add_download($category_id, $name, fixup_protocolless_urls($url), $description, $author, $additional_details, $out_mode_id, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, $metadata['add_time'],/*$metadata['num_downloads']*/0, $metadata['views'], $metadata['submitter'], null, null, '', '', 1, $url_redirect);
 
         set_url_moniker('download', strval($id));
 
@@ -692,7 +692,7 @@ class Module_cms_downloads extends Standard_crud_module
             save_privacy_form_fields('download', strval($id), $privacy_level, $additional_access);
         }
 
-        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value('download_downloads', 'validated', array('id' => $id)) == 0)) { // Just became validated, syndicate as just added
+        if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'submitter', array('id' => $id));
 
             if ((has_actual_page_access(get_modal_user(), 'downloads')) && (has_category_access(get_modal_user(), 'downloads', strval($category_id)))) {
@@ -708,10 +708,10 @@ class Module_cms_downloads extends Standard_crud_module
             }
         }
 
-        $meta_data = actual_meta_data_get_fields('download', strval($id));
-        actual_meta_data_get_fields__special($meta_data, 'num_downloads', INTEGER_MAGIC_NULL);
+        $metadata = actual_metadata_get_fields('download', strval($id));
+        actual_metadata_get_fields__special($metadata, 'num_downloads', INTEGER_MAGIC_NULL);
 
-        edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $meta_data['edit_time'], $meta_data['add_time'], $meta_data['views'], $meta_data['submitter'], $meta_data['num_downloads'], true, $url_redirect);
+        edit_download($id, $category_id, $name, $url, $description, $author, $additional_details, $out_mode_id, $default_pic, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $original_filename, $file_size, $cost, $submitter_gets_points, $licence, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $metadata['edit_time'], $metadata['add_time'], $metadata['views'], $metadata['submitter'], $metadata['num_downloads'], true, $url_redirect);
 
         if ((addon_installed('galleries')) && (!fractional_edit())) {
             require_code('permissions2');
@@ -807,7 +807,7 @@ class Module_cms_downloads_alt extends Standard_crud_module
 
         $myrows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id));
         if (!array_key_exists(0, $myrows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
         }
         $myrow = $myrows[0];
 
@@ -878,6 +878,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
     public $content_type = 'download_category';
     public $protect_first = 1;
     public $menu_label = 'SECTION_DOWNLOADS';
+    public $is_chained_with_parent_browse = true;
 
     /**
      * Standard crud_module list function.
@@ -922,7 +923,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'category', $category, true));
 
         if (!is_null($parent_id)) {
-            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT'), 'parent_id', null, 'choose_download_category', array(), true, strval($parent_id)));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('PARENT'), do_lang_tempcode('DESCRIPTION_PARENT', 'download_category'), 'parent_id', null, 'choose_download_category', array(), true, strval($parent_id)));
         }
 
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_DESCRIPTION'), 'description', $description, false));
@@ -931,9 +932,9 @@ class Module_cms_downloads_cat extends Standard_crud_module
             $fields->attach(form_input_text(do_lang_tempcode('NOTES'), do_lang_tempcode('DESCRIPTION_NOTES'), 'notes', $notes, false));
         }
 
-        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE'), $hidden, 'image', null, false, $rep_image));
+        $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE', 'download_category'), $hidden, 'image', null, false, $rep_image));
 
-        $fields->attach(meta_data_get_fields('download_category', is_null($id) ? null : strval($id)));
+        $fields->attach(metadata_get_fields('download_category', is_null($id) ? null : strval($id)));
         require_code('seo2');
         $fields->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id), false));
 
@@ -959,7 +960,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('*'), array('id' => $category_id), '', 1);
         if (!array_key_exists(0, $rows)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_category'));
         }
         $myrow = $rows[0];
 
@@ -984,9 +985,9 @@ class Module_cms_downloads_cat extends Standard_crud_module
         require_code('themes2');
         $rep_image = resize_rep_image(post_param_image('image', 'uploads/repimages', null, false));
 
-        $meta_data = actual_meta_data_get_fields('download_category', null);
+        $metadata = actual_metadata_get_fields('download_category', null);
 
-        $category_id = add_download_category($category, $parent_id, $description, $notes, $rep_image, null, $meta_data['add_time']);
+        $category_id = add_download_category($category, $parent_id, $description, $notes, $rep_image, null, $metadata['add_time']);
 
         set_url_moniker('download_category', strval($category_id));
 
@@ -1026,9 +1027,9 @@ class Module_cms_downloads_cat extends Standard_crud_module
             $rep_image = STRING_MAGIC_NULL;
         }
 
-        $meta_data = actual_meta_data_get_fields('download_category', strval($category_id));
+        $metadata = actual_metadata_get_fields('download_category', strval($category_id));
 
-        edit_download_category($category_id, $category, $parent_id, $description, $notes, $rep_image, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $meta_data['add_time']);
+        edit_download_category($category_id, $category, $parent_id, $description, $notes, $rep_image, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $metadata['add_time']);
         if (!fractional_edit()) {
             $this->set_permissions(strval($category_id));
         }

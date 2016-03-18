@@ -1,0 +1,66 @@
+[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Translations code philosophy[/title]
+
+This tutorial discusses some technical matters relating to how Composr's translation system is defined. It is designed to be read by translators wanting to know why things are as they are, and by programmers trying to uphold standards.
+
+[contents]decimal,lower-alpha[/contents]
+
+[title="2"]Grammar in different languages[/title]
+
+There are many possible pitfalls we try and avoid, including:
+1) Often languages will use one word in different contexts, while others will not. For example "Download" may be a verb or a noun. Or worse, "Book" may refer to 'make a booking' or 'paper book'. We therefore need to try and avoid re-using language strings inappropriately, and commenting the true meaning of strings wherever they may be ambiguous.
+2) The way we compose strings from different parts may make assumptions about tense or gender (for example) that do not hold in some translations. We therefore have to try avoid situations where we are inserting a diverse possibility of different words inside stock sentences. The only viable solutions are to just to have many very similar long language strings, or to embed the inserted word within quotes to 'firewall' it from surrounding words (clunky/imperfect, but often necessary), or to use PHP code to dynamically make language adjustments. We use all these solutions as deemed appropriate.
+
+To solve some problems we have a PHP-based language string enhancement system. Each pack can optionally define a [tt]sources[_custom]/lang_filter_<lang>.php[/tt] file that performs appropriate substitutions.
+The bundled [tt]sources/lang_filter_EN.php[/tt] fixes a number of grammatical complexities in English, adds extra specificity to language strings, and implements an American-English variant. PHP programming is beyond the scope of this tutorial.
+
+[title="2"]Avoiding duplication[/title]
+
+[media float="right" thumb="0" framed="0"]data_custom/images/docs/remember.png[/media]
+Approximately 6% of the language strings contain the same text as other language strings.
+
+However, that's not an accurate reflection of the situation, as some of those actually are different
+(see "Grammar in different languages" above).
+So, maybe it's more like 5% duplication in practice.
+
+The remaining duplicated ones are for pragmatic reasons, such as:
+1) [b]Often language string names are determined automatically[/b]. For example, [tt]BLOCK_main_content_PARAM_param_TITLE[/tt] has to exist so that the block construction assistant can create an input field for the [tt]param[/tt] field of the [tt]main_content[/tt] block. It may have the actual same content as some other string. We could try and create some kind of cross-linking system to avoid the duplication, but situations like this are always a trade-off between competing priorities. Adding cross-linking would mean extra processing over-head, extra-code to be written and maintained, and extra complexity in the language string encoding scheme that everyone would need to understand and follow.
+2) If we have the same non-core phrase in [b]multiple optional addons[/b]. We can't absorb too much bloat into the core Composr code, so it is possible that multiple addons would define their own versions of a language string (we could not assume both addons would always be installed together, and creating a sharing scheme would be unrealistic given that these are just isolated scenarios involving a diverse set of individual strings).
+3) [b]Human error[/b]. Reusing language strings [i]is[/i] one of the items on our standards checklist, but programmers are taxed with maintaining many standards so mistakes can happen. In fact there's a serious lack of skilled programmers who understand any of these kinds of peripheral issues so mistakes are very likely, and picking them all up in advance is very unlikely.
+4) We may feel that even if things are the same by default, users of Composr may want to introduce specific differences to make their websites more user-friendly.
+
+Fortunately [url="Transifex"]https://www.transifex.com/organization/ocproducts[/url] does [url="show suggestions"]http://docs.transifex.com/features/tm/[/url] as you go through translating. So if you've translated one, and another is the same, it should show that as a translation suggestion. Therefore Transifex largely mitigates these issues.
+
+[title="2"]Reporting issues[/title]
+
+The developers gladly accept pointed feedback on anything that makes translation harder that it needs to be (the above constraints notwithstanding).
+
+Here are some specific cases of translation issues that could be reported as bugs:
+1) if strings are repeated for no good reason (good reasons defined in "Avoiding duplication" above)
+2) if assumptions that hold in English, but not other languages, are being made (see "Grammar in different languages" above)
+3) spelling/grammar mistakes in the source English
+4) source English that is not easy enough to understand
+
+File a bug report in the normal way. Make sure you are specific though -- don't talk of classes of issue, reference the specific strings involved.
+
+If you can think of a better approach to what we take, bearing in mind the various trade-offs we have to try and make, please make a feature suggestion to the tracker.
+
+[title="2"]Non-ISO languages (advanced)[/title]
+
+By default Composr supplies language codenames and their human-understood names, based on the ISO 639 standards. ISO have defined codenames for all common world languages.
+
+If you want to do something crazy such as create an Elvish language pack, you can add new faux-codenames by overriding the [tt]lang/langs.ini[/tt] file to [tt]lang_custom/langs.ini[/tt]. You'd add a line like:
+[code="INI"]
+EV=Elvish
+[/code]
+
+The codenames have to be 1-4 characters.
+
+This just adds the codename, not the pack.
+
+When you add a new language pack in Composr you have to enter the codename. If you added a mapping (as shown above) it would show your human-understood name (e.g. Elvish) as a label. Otherwise, it would just use the codename as a label.
+
+[title="2"]See also[/title]
+
+ - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
+
+{$SET,tutorial_tags,core_language_editing,Internationalisation,Contributing,expert}{$SET,tutorial_add_date,Aug 2015}{$SET,tutorial_summary,Some technical matters relating to how Composr's translation system is defined.}[block]main_tutorial_rating[/block]

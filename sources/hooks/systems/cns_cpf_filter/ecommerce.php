@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -38,7 +38,7 @@ class Hook_cns_cpf_filter_ecommerce
 
         // Local payment
         if (get_option('use_local_payment') == '1') {
-            $cpf = array_merge($cpf, array('payment_type' => true, 'payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true, 'payment_card_cv2' => true,));
+            $cpf = array_merge($cpf, array('payment_type' => true, 'payment_cardholder_name' => true, 'payment_card_type' => true, 'payment_card_number' => true, 'payment_card_start_date' => true, 'payment_card_expiry_date' => true, 'payment_card_issue_number' => true, 'payment_card_cv2' => true));
         }
 
         return $cpf;

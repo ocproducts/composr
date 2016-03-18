@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -114,7 +114,7 @@ class Module_sites
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -128,7 +128,7 @@ class Module_sites
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -208,7 +208,7 @@ class Module_sites
         $fields->attach(form_input_line(do_lang_tempcode('SEARCH_UNDERNEATH'), do_lang_tempcode('DESCRIPTION_FTP_SEARCH_UNDER'), 'search_under', '/', false));
         $post_url = build_url(array('page' => '_SELF', 'type' => 'hostingcopy_step2'), '_SELF');
         $submit_name = do_lang('PROCEED');
-        $hostingcopy_form = do_template('FORM_SCREEN', array('TITLE' => $this->title, '_GUID' => 'e9f51de85f7cf800aa3097366a03ca5e', 'HIDDEN' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('CMS_COPYWAIT'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array('_GUID' => '32928b56f4f4b0e7d7e835673dc5aff8', 'TITLE' => $this->title, '_GUID' => 'e9f51de85f7cf800aa3097366a03ca5e', 'HIDDEN' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('CMS_COPYWAIT'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
     }
 
     /**
@@ -299,8 +299,8 @@ class Module_sites
      */
     public function hostingcopy_step2()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $hidden = build_keep_post_fields();
@@ -335,8 +335,8 @@ class Module_sites
      */
     public function hostingcopy_step3()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $conn_id = $this->_hostingcopy_ftp_connect();
@@ -352,15 +352,13 @@ class Module_sites
             }
         }
 
-        // Find latest version
-        $t = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'url', array($GLOBALS['SITE_DB']->translate_field_ref('description') => 'This is the latest version.'));
+        // Check there's a latest version
+        $t = get_latest_version_pretty();
         if (is_null($t)) {
             warn_exit(do_lang_tempcode('ARCHIVE_NOT_AVAILABLE'));
         }
-        if (url_is_local($t)) {
-            $t = get_custom_file_base() . '/' . rawurldecode($t);
-        }
 
+        // Do upload to hosting
         $array = array('install.php' => get_file_base() . '/uploads/downloads/install.php', 'data.cms' => get_file_base() . '/uploads/downloads/data.cms');
         foreach ($array as $filename => $tmp_file) {
             if (!@ftp_put($conn_id, $filename, $tmp_file, FTP_BINARY)) {
@@ -374,11 +372,11 @@ class Module_sites
         }
         ftp_close($conn_id);
 
+        // Generate URL to installer on hosting
         $base_url = post_param_string('base_url');
         if (substr($base_url, -1) != '/') {
             $base_url .= '/';
         }
-
         $install_url = $base_url . 'install.php';
 
         return do_template('CMS_HOSTING_COPY_SUCCESS_SCREEN', array(

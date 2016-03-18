@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -40,7 +40,7 @@ class Module_cms_booking extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -72,10 +72,10 @@ class Module_cms_booking extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -91,7 +91,7 @@ class Module_cms_booking extends Standard_crud_module
         if (is_null($type)) {
             $type = get_param_string('type', 'browse');
 
-            // Type equivalencies, for meta-data purposes (i.e. activate correct title-generation code)
+            // Type equivalencies, for metadata purposes (i.e. activate correct title-generation code)
             if ($type == 'add_booking') {
                 $type = 'add';
             }
@@ -285,9 +285,9 @@ class Module_cms_booking extends Standard_crud_module
             }
         }
         $fields->attach(form_input_line(do_lang_tempcode('BOOKABLE_CATEGORISATION'), do_lang_tempcode('DESCRIPTION_BOOKABLE_CATEGORISATION'), 'categorisation', $categorisation, true));
-        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'),do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'),'cycle_type',$details['cycle_type'],false));
-        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'),do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'),'cycle_pattern',$details['cycle_pattern'],false));
-        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'),do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'),'user_may_choose_code',$details['user_may_choose_code']==1));
+        //$fields->attach(form_input_select(do_lang_tempcode('CYCLE_TYPE'), do_lang_tempcode('DESCRIPTION_CYCLE_TYPE'), 'cycle_type', $details['cycle_type'], false));
+        //$fields->attach(form_input_line(do_lang_tempcode('CYCLE_PATTERN'), do_lang_tempcode('DESCRIPTION_CYCLE_PATTERN'), 'cycle_pattern', $details['cycle_pattern'], false));
+        //$fields->attach(form_input_tick(do_lang_tempcode('USER_MAY_CHOOSE_CODE'), do_lang_tempcode('DESCRIPTION_USER_MAY_CHOOSE_CODE'), 'user_may_choose_code', $details['user_may_choose_code']==1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('BOOKABLE_DATES_ARE_RANGES'), do_lang_tempcode('DESCRIPTION_BOOKABLE_DATES_ARE_RANGES'), 'dates_are_ranges', $details['dates_are_ranges'] == 1));
 
@@ -505,7 +505,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_SUPPLEMENT_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $fields->attach(form_input_tick(do_lang_tempcode('PRICE_IS_PER_PERIOD'), do_lang_tempcode('DESCRIPTION_PRICE_IS_PER_PERIOD'), 'price_is_per_period', $details['price_is_per_period'] == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_QUANTITIES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_QUANTITIES'), 'supports_quantities', $details['supports_quantities'] == 1));
-        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'),do_lang_tempcode('DESCRIPTION_PROMO_CODE'),'promo_code',$details['promo_code'],true));
+        //$fields->attach(form_input_line(do_lang_tempcode('PROMO_CODE'), do_lang_tempcode('DESCRIPTION_PROMO_CODE'), 'promo_code', $details['promo_code'], true));
         $fields->attach(form_input_tick(do_lang_tempcode('SUPPORTS_NOTES'), do_lang_tempcode('DESCRIPTION_SUPPORTS_NOTES'), 'supports_notes', $details['supports_notes'] == 1));
         $fields->attach(form_input_integer(do_lang_tempcode('SORT_ORDER'), do_lang_tempcode('DESCRIPTION_SORT_ORDER'), 'sort_order', $details['sort_order'], true));
 

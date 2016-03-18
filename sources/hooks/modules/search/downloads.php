@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -52,7 +52,7 @@ class Hook_search_downloads extends FieldsSearchHook
         $info['default'] = true;
         $info['category'] = 'category_id';
         $info['integer_category'] = true;
-        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('_FILE_SIZE')) + $this->_get_extra_sort_fields('_download');
+        $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('FILE_SIZE')) + $this->_get_extra_sort_fields('_download');
 
         $info['permissions'] = array(
             array(

@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Releasing a theme[/title]
 
-If you've developed your own theme for Composr, and would like to share it with others, we strongly encourage you to do so via the {$BRAND_BASE_URL} theme gallery.
+If you've developed your own theme for Composr, and would like to share it with others, we strongly encourage you to do so via the {$BRAND_BASE_URL} theme gallery. This tutorial explains how to do it.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -11,17 +11,17 @@ If you've developed your own theme for Composr, and would like to share it with 
 
 [title="2"]How to make a theme pack[/title]
 
-[media width="150" description="Making a theme pack using the 'addon' facility" float="right"]data_custom/images/docs/releasing_themes_make.png[/media]
-Details on how to create a theme are outside the scope of this tutorial, and included in the 'Themeing your site' tutorial.
+[media width="150" description="Making a theme pack using the 'addon' facility" float="right"]data_custom/images/docs/tut_releasing_themes/releasing_themes_make.png[/media]
+Details on how to create a theme are outside the scope of this tutorial, and included in the [page="_SEARCH:tut_themes"]Themeing your site tutorial[/page].
 
 To actually make a theme pack that is ready for release, you just need to export your theme as an addon (as in the screen-shot).
 
 [title="2"]Releasing your theme pack[/title]
 
 Once this is done, all you need to do is to upload the addon to our site:
-1) Go to our website
-2) Go to the community section
-3) Go to the themes section
+1) Go to [url="our website"]http://compo.sr/[/url]
+2) Go to the Community section (you will be taken to the addons category for the most recent version)
+3) Go to the Themes category
 4) Use the 'Add a new download' link
 5) Fill in the Name/Upload/Author/Description and click the "Add a new download" button
 6) You will be invited on what to do next; we like it if users submit images to go with their theme so that's a good next step
@@ -30,21 +30,31 @@ Your theme will at first be non-validated (i.e. not live for download), but we w
 
 [title="2"]Editing your theme pack[/title]
 
+If you have improved your theme somehow (e.g. fixed a bug), you'll want to replace the download with a newer version.
+
 You can edit your download via the edit link when viewing it.
 
 [title="2"]How other users get your theme pack[/title]
 
-Theme packs are just packaged as normal Composr addons, so are installed from Admin Zone > Setup > Addons.
-The user will need to import the addon into their own site, which they can do either by point and click (all compo.sr's addons are shown for easy import), or via uploading the .tar file after downloading it manually from {$BRAND_BASE_URL}.
-Once a theme is installed, it is available from the 'Manage themes' section of Composr, and can be set as active.
+Theme packs are just packaged as normal Composr addons, so are installed from Admin Zone > Structure > Addons.
+
+The user will need to import the addon into their own site, which they can do either by point and click (all {$BRAND_BASE_URL}'s addons are shown for easy import), or via uploading the [tt].tar[/tt] file after downloading it manually from {$BRAND_BASE_URL}.
+
+Once a theme is installed, it is available from Admin Zone > Style > Manage themes, and can be set as active.
 
 [title="2"]Automatic upgrades with new versions[/title]
 
 Themes are built for a specific version of Composr. Particularly, the CSS files used are based on those from the default theme.
+
 Sometimes a new version of Composr will change the CSS files, perhaps for reasons of styling a new feature, fixing a styling bug, or improving browser compatibility.
 
 In order to allow such CSS changes to (hopefully) come through to the new theme from the altered default theme, upon upgrade, we store the source CSS files of the default theme within your theme as [tt]*.editfrom[/tt] files. These files tell the upgrader what the CSS files were built from so it can compare that against the latest default theme CSS files (i.e. see what has changed in the upgrade), and apply those differences to your CSS files (if there are any in the upgrade).
+
 This upgrade process happens on individual site's that use your theme, and hence why the [tt]*.editfrom[/tt] files are included with what you release.
+
+The process will never be perfect, so some manual fixes may be required.
+
+In any event, it is good for you to maintain the theme over time if anything has changed. Between Composr patch releases do it by editing your theme pack. Between Composr major releases do it by releasing a new version to the new Composr version's new Themes category.
 
 [title="2"]See also[/title]
 

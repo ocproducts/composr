@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,7 +32,7 @@ class Hook_preview_cns_welcome_email
     {
         $member_id = get_param_integer('id', get_member());
 
-        $applies = (get_param_string('page', '') == 'admin_cns_welcome_emails');
+        $applies = (get_page_name() == 'admin_cns_welcome_emails');
         if ($applies) {
             require_lang('cns');
             require_code('mail');

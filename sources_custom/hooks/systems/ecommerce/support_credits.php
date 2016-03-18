@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -71,7 +71,8 @@ class Hook_ecommerce_support_credits
                 float_to_raw_string($bundle * floatval(get_option('support_credit_value'))),
                 'handle_support_credits',
                 null,
-                do_lang('customers:CUSTOMER_SUPPORT_CREDITS', integer_format($bundle))
+                do_lang('customers:CUSTOMER_SUPPORT_CREDITS', integer_format($bundle)),
+                get_option('currency'),
             );
         }
 
@@ -146,7 +147,7 @@ class Hook_ecommerce_support_credits
         $member_id = get_member();
 
         // Allow admins to specify the member who should receive the credits with the field in get_needed_fields
-        if (has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce'))) {
+        if (has_actual_page_access(get_member(), 'admin_ecommerce', get_module_zone('admin_ecommerce')) && get_page_name() == 'admin_ecommerce') {
             $id = post_param_integer('member_id', null);
             if (!is_null($id)) {
                 $manual = 1;

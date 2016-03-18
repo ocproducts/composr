@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="cns_post_details_date">
-			{!POST_DATE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
+			{!POSTED_TIME_SIMPLE,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
 		</div>
 
 		{+START,IF_NON_EMPTY,{UNVALIDATED}}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_cleanup_admin_theme_images
     public function info()
     {
         $info = array();
-        $info['title'] = do_lang_tempcode('THEME_IMAGES_CACHE');
+        $info['title'] = do_lang_tempcode('themes:THEME_IMAGES');
         $info['description'] = do_lang_tempcode('DESCRIPTION_THEME_IMAGES_CACHE');
         $info['type'] = 'cache';
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,13 +30,13 @@ class Hook_cron_cns_welcome_emails
     {
         //if (!running_script('execute_temp')) return;
         $time_now = time();
-        //$time_now=1335726076;
+        //$time_now = 1335726076;
         $last_cron_time = intval(get_value('last_welcome_mail_time', null, true));
         if ($last_cron_time == 0) {
             $last_cron_time = $time_now - 24 * 60 * 60 * 7;
         }
         set_value('last_welcome_mail_time', strval($time_now), true);
-        //$last_cron_time=$time_now-60*60*1; Useful for debugging
+        //$last_cron_time = $time_now - 60 * 60 * 1; Useful for debugging
 
         require_code('mail');
 
@@ -121,7 +121,7 @@ class Hook_cron_cns_welcome_emails
                     } else {
                         $forename = '';
                         $surname = '';
-                        $name = $member['m_username'];
+                        $name = $GLOBALS['FORUM_DRIVER']->get_displayname($member['m_username']);
                     }
 
                     if (addon_installed('newsletter')) {

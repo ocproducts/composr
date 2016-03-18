@@ -1,0 +1,27 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: How to Close or Open Your Composr Website[/title]
+
+Whether your site is new and you want to close it while you are creating it, or you want to close your site while performing maintenance or completing a site redesign. You may want to open your site after either of these tasks. You may also want to set bandwidth or user limits on your site.
+
+The first part of the process is exactly the same whichever of these tasks you want to perform. These are:
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Setup section of the Admin Zone menu
+[*] Choose the Configuration icon
+[*] Click Site options
+[*] The close and open site options are in their own section of the configuration.
+[/list]
+
+This section of the configuration gives you a number of options and depending on the task you are performing you will need to choose different options.
+
+[media width="150" description="Closed site options" float="right"]data_custom/images/docs/sup_how_to_close_or_open_your_composr_website/d5b43a8b1d70f40114682cff2ba319aa.png[/media]
+The first option relates to whether you want your site to collect stats while the site is closed. There are number of reasons you might want to leave this unticked (unchecked); for example, you may want to be able to see how many visitors you are receiving while the site is closed. You may choose to disable this so you don't skew any time on site or pages visited statistics.
+
+The second option is whether the site is open or closed. Tick (check) the box to close the site or untick (uncheck) it to open the site.
+
+The third section is a message you can display when the site is closed. This is very important for you to be able to inform your visitors why the site is closed and when or even if the site is likely to be re-opened. This section is especially important if your site has been open for a while and receives regular visitors. Leaving this section blank may mean they won't return.
+
+The fourth and fifth section deal with setting limits on your website and closing the site if they are exceeded. Option 4 will limit access to the site if you reach the user limit. By default this is set to 400 users. You can change this to whatever setting you like but if you are using shared hosting you may want to tweak this to ensure your site performs adequately under a heavy traffic load.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Maintenance,novice}{$SET,tutorial_add_date,Apr 2013}{$SET,tutorial_summary,You'll want to use the closed site feature if your site is new and you want to keep it temporarily closed, or you want to close your site while performing maintenance. This tutorial explains how it works.}[block]main_tutorial_rating[/block]

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,7 +24,7 @@
 class Hook_commandr_fs_etc
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -42,7 +42,7 @@ class Hook_commandr_fs_etc
         }
         load_config_options();
 
-        $query = 'SELECT param_a,MAX(date_and_time) AS date_and_time FROM ' . get_table_prefix() . 'adminlogs WHERE ' . db_string_equal_to('the_type', 'CONFIGURATION') . ' GROUP BY param_a';
+        $query = 'SELECT param_a,MAX(date_and_time) AS date_and_time FROM ' . get_table_prefix() . 'actionlogs WHERE ' . db_string_equal_to('the_type', 'CONFIGURATION') . ' GROUP BY param_a';
         $modification_times = collapse_2d_complexity('param_a', 'date_and_time', $GLOBALS['SITE_DB']->query($query));
 
         $listing = array();
@@ -57,7 +57,7 @@ class Hook_commandr_fs_etc
 
             $listing[] = array(
                 $option,
-                COMMANDRFS_FILE,
+                COMMANDR_FS_FILE,
                 strlen($value),
                 $modification_time,
             );
@@ -71,8 +71,8 @@ class Hook_commandr_fs_etc
             $modification_time = $ob->get_edit_date();
 
             $listing[] = array(
-                '_' . $hook . 's' . '.' . RESOURCEFS_DEFAULT_EXTENSION,
-                COMMANDRFS_FILE,
+                '_' . $hook . 's' . '.' . RESOURCE_FS_DEFAULT_EXTENSION,
+                COMMANDR_FS_FILE,
                 null/*don't calculate a filesize*/,
                 $modification_time,
             );
@@ -82,7 +82,7 @@ class Hook_commandr_fs_etc
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -96,7 +96,7 @@ class Hook_commandr_fs_etc
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -110,7 +110,7 @@ class Hook_commandr_fs_etc
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -128,7 +128,7 @@ class Hook_commandr_fs_etc
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -143,9 +143,8 @@ class Hook_commandr_fs_etc
         }
 
         require_code('resource_fs');
-
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
-        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
+        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
             require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
             $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);
@@ -160,7 +159,7 @@ class Hook_commandr_fs_etc
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -172,14 +171,14 @@ class Hook_commandr_fs_etc
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
         require_code('config2');
-        require_code('resource_fs');
 
         if (count($meta_dir) > 0) {
             return false; // Directory doesn't exist
         }
 
+        require_code('resource_fs');
         $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
-        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCEFS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
+        $extended_config_filename = preg_replace('#^\_(.*)s' . preg_quote('.' . RESOURCE_FS_DEFAULT_EXTENSION, '#') . '$#', '${1}', $file_name);
         if (array_key_exists($extended_config_filename, $hooks)) {
             require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($extended_config_filename));
             $ob = object_factory('Hook_commandr_fs_extended_config__' . $extended_config_filename);

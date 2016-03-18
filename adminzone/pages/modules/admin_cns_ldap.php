@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,7 +36,7 @@ class Module_admin_cns_ldap
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 4;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
     }
@@ -47,7 +47,7 @@ class Module_admin_cns_ldap
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -64,7 +64,7 @@ class Module_admin_cns_ldap
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -103,9 +103,11 @@ class Module_admin_cns_ldap
         require_code('cns_groups_action2');
 
         global $LDAP_CONNECTION;
-        if (is_null($LDAP_CONNECTION)) {
+        if (is_null($LDAP_CONNECTION) && !$GLOBALS['DEV_MODE']) {
             warn_exit(do_lang_tempcode('LDAP_DISABLED'));
         }
+
+        require_code('cns_ldap');
 
         // Decide what we're doing
         $type = get_param_string('type', 'browse');
@@ -131,6 +133,9 @@ class Module_admin_cns_ldap
         $members_delete = new Tempcode();
 
         $all_ldap_groups = cns_get_all_ldap_groups();
+        if ($GLOBALS['DEV_MODE'] && count($all_ldap_groups) == 0) {
+            $all_ldap_groups[] = 'Example LDAP group';
+        }
         foreach ($all_ldap_groups as $group) {
             if (is_null(cns_group_ldapcn_to_cnsid($group))) {
                 $_group = str_replace(' ', '_space_', $group);
@@ -146,9 +151,10 @@ class Module_admin_cns_ldap
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
+        send_http_output_ping();
 
         $start = 0;
         do {
@@ -193,6 +199,7 @@ class Module_admin_cns_ldap
         $all_ldap_members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array('m_password_compat_scheme' => 'ldap'));
         require_code('cns_groups_action');
         require_code('cns_groups_action2');
+        require_code('cns_members_action2');
         foreach ($all_ldap_members as $row) {
             $id = $row['id'];
 

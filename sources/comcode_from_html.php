@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__comcode_from_html()
 {
@@ -31,6 +33,8 @@ function init__comcode_from_html()
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _img_tag_fixup($matches)
 {
@@ -51,9 +55,8 @@ function _img_tag_fixup($matches)
     }
     $params = str_replace(' ismap', '', $params);
 
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     if ((strpos($matches[2], '{$FIND_SCRIPT') === false) && (strpos($matches[2], '{$IMG') === false)) {
         $new_url = qualify_url($matches[2], $caller_url);
@@ -69,12 +72,13 @@ function _img_tag_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _img_tag_fixup_raw($matches)
 {
-    /*$referer=post_param_string('http_referer',cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
-    $caller_url = /*looks_like_url($referer)?preg_replace('#/[^/]*$#','',$referer):*/
-        get_base_url();
+    /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
+    $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
     $matches[2] = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
 
@@ -94,6 +98,8 @@ function _img_tag_fixup_raw($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _a_tag_link_fixup($matches)
 {
@@ -108,6 +114,8 @@ function _a_tag_link_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _css_color_fixup($matches)
 {
@@ -132,6 +140,8 @@ function _css_color_fixup($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _css_quot_fixup($matches)
 {
@@ -139,10 +149,12 @@ function _css_quot_fixup($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _cdata_protect($matches)
 {
@@ -157,10 +169,12 @@ function _cdata_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _codetag_protect($matches)
 {
@@ -171,10 +185,12 @@ function _codetag_protect($matches)
 }
 
 /**
- * Apply temporary adhoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _codetag_unprotect($matches)
 {
@@ -189,6 +205,8 @@ function _codetag_unprotect($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _reorder_xhtml_attributes($matches)
 {
@@ -223,6 +241,8 @@ function _reorder_xhtml_attributes($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
 function _reorder_css_properties($matches)
 {
@@ -243,12 +263,14 @@ function _reorder_css_properties($matches)
 }
 
 /**
- * Convert Semi-HTML into comcode. Cleanup where possible. preg_replace_callback callback
+ * Convert Semi-HTML into Comcode. Cleanup where possible. preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function semihtml_to_comcode_wrap($matches)
+function _semihtml_to_comcode_wrap($matches)
 {
     $middle = semihtml_to_comcode($matches[2]);
     if (substr($middle, 0, 10) == '[semihtml]') {
@@ -262,23 +284,54 @@ function semihtml_to_comcode_wrap($matches)
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function debuttonise($matches)
+function _debuttonise($matches)
 {
     return html_entity_decode($matches[1], ENT_QUOTES, get_charset());
 }
 
 /**
- * Extract underlying Comcode from an editor Comcode XML tag. preg_replace_callback callback
+ * Extract underlying Comcode from an editor XML tag. preg_replace_callback callback
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
+ *
+ * @ignore
  */
-function detagonise($matches)
+function _detagonise($matches)
 {
     $tag = $matches[1];
     $attributes = html_entity_decode(str_replace('&quot;', '\"', isset($matches[2]) ? $matches[2] : ''), ENT_QUOTES, get_charset());
+    $attributes = preg_replace('# id="[^"]*"#', '', $attributes); // IDs aren't a real Comcode attribute
     return '[' . $tag . $attributes . ']';
+}
+
+/**
+ * Extract underlying Tempcode directive from an editor XML tag. preg_replace_callback callback
+ *
+ * @param  array $matches Array of matches
+ * @return string Substituted text
+ *
+ * @ignore
+ */
+function _dedirectiveise($matches)
+{
+    $attributes_arr = array();
+    $attributes_xml = isset($matches[1]) ? $matches[1] : '';
+    $matches_attributes = array();
+    $num_matches_attributes = preg_match_all('#\s+([\w\_\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
+    for ($i = 0; $i < $num_matches_attributes; $i++) {
+        $attributes_arr[$matches_attributes[1][$i]] = $matches_attributes[2][$i];
+    }
+
+    $attributes = '';
+    if (!empty($attributes_arr['params'])) {
+        $attributes = html_entity_decode($attributes_arr['params'], ENT_QUOTES, get_charset());
+    }
+
+    return $attributes;
 }
 
 /**
@@ -291,14 +344,14 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     // Our invisible characters isolating the cms Keep markers from style run-off
     $semihtml = str_replace('&#8203;', '', $semihtml);
     $array_html_preg_replace = array();
-    if (strtolower(get_charset()) == 'utf-8') {
+    if (get_charset() == 'utf-8') {
         $semihtml = str_replace(chr(hexdec('e2')) . chr(hexdec('80')) . chr(hexdec('8b')), '', $semihtml);
     }
 
     // Our button editing for embedded tags
     do {
         $semihtml_before = $semihtml;
-        $semihtml = preg_replace_callback('#<input [^>]*class="cms_keep_ui_controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', 'debuttonise', $semihtml);
+        $semihtml = preg_replace_callback('#<input [^>]*class="cms_keep_ui_controlled" [^>]*title="([^"]*)" [^>]*type="button" [^>]*value="[^"]*"[^>]*/?' . '>#siU', '_debuttonise', $semihtml);
     } while ($semihtml != $semihtml_before);
 
     // Our Comcode tag start/end markers
@@ -310,9 +363,11 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     _custom_comcode_import($GLOBALS['SITE_DB']);
     global $VALID_COMCODE_TAGS;
     foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-        $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', 'detagonise', $semihtml);
-        $semihtml = preg_replace('#</\s*comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
+        $semihtml = preg_replace_callback('#<comcode-(' . preg_quote($tag, '#') . ')( [^<>]*)?' . '>#', '_detagonise', $semihtml);
+        $semihtml = preg_replace('#</comcode-' . preg_quote($tag, '#') . '\s*>#', '[/' . $tag . ']', $semihtml);
     }
+    $semihtml = preg_replace_callback('#<tempcode( [^<>]*)' . '>\s*#', '_dedirectiveise', $semihtml);
+    $semihtml = preg_replace('#</tempcode\s*>#', '{+END}', $semihtml);
 }
 
 /**
@@ -445,17 +500,19 @@ function semihtml_to_comcode($semihtml, $force = false)
         if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }
-        $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
-        if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
-            if ($semihtml != '') {
-                $semihtml = '[html]' . $semihtml . '[/html]';
+        if (strpos($semihtml, 'data:') === false) {
+            $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
+            if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
+                if ($semihtml != '') {
+                    $semihtml = '[html]' . $semihtml . '[/html]';
+                }
+                $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
+                $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
+                $semihtml = str_replace('[/html][html]', '', $semihtml);
+                $semihtml = str_replace('[html][/html]', '', $semihtml);
+                return $semihtml;
             }
-            $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[/html][semihtml][title]${1}[/title][/semihtml][html]', $semihtml);
-            $semihtml = str_replace('[attachment', '[/html][semihtml][attachment', str_replace('[/attachment]', '[/attachment][/semihtml][html]', $semihtml));
-            $semihtml = str_replace('[/html][html]', '', $semihtml);
-            $semihtml = str_replace('[html][/html]', '', $semihtml);
-            return $semihtml;
         }
         if ($semihtml != '') {
             $semihtml = '[semihtml]' . $semihtml . '[/semihtml]';
@@ -487,29 +544,30 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace_callback('#(<![CDATA[)(.*)(]]>)#siU', '_cdata_protect', $semihtml);
     // And use same method to protect our code tags
     /* foreach (array_keys($GLOBALS['CODE_TAGS']) as $code_tag)
-            $semihtml=preg_replace_callback('#(\['.$code_tag.'[^\]]*\])(.*)(\[/'.$code_tag.'\])#siU','_codetag_protect',$semihtml);
+        $semihtml = preg_replace_callback('#(\[' . $code_tag . '[^\]]*\])(.*)(\[/' . $code_tag . '\])#siU', '_codetag_protect', $semihtml);
     Actually no, we don't want this. These tags are typed potentially to show HTML and thus the entities must get decoded
     */
+
+    // Not full HTML
+    $semihtml = preg_replace('#<head[^<>]*>.*</head>#Us', '', $semihtml);
+    $semihtml = preg_replace('#</?(html|head|body)[^<>]*>#Us', '', $semihtml);
 
     // Cleanup from certain word processors
     // LibreOffice
     $semihtml = str_replace('<h2 class="western">', '<h2>', $semihtml);
-    $semihtml = preg_replace('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom: 0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
-    $semihtml = preg_replace('#<p style="margin-bottom: 0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '', $semihtml);
-    $semihtml = preg_replace('#<li>\s*<p style="margin-bottom: 0(cm|em|px)?">(.*)</p>\s*</li>#Us', '<li>${2}</li>', $semihtml);
-    $semihtml = preg_replace('#<p style="margin-bottom: 0(cm|em|px)?">(.*)</p>\s*<(ul|ol|h1|h2|h3|h4|h5|h6)>#Us', '${2}<${3}>', $semihtml);
-    $semihtml = str_replace('<p style="margin-bottom: 0cm">', '<p>', $semihtml);
+    $semihtml = preg_replace('#</(ul|ol|h1|h2|h3|h4|h5|h6)>\s*<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '</${1}>', $semihtml);
+    $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">\s*&nbsp;\s*</p>\s*#Us', '', $semihtml);
+    $semihtml = preg_replace('#<li>\s*<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*</li>#Us', '<li>${2}</li>', $semihtml);
+    $semihtml = preg_replace('#<p style="margin-bottom:\s*0(cm|em|px)?">(.*)</p>\s*<(ul|ol|h1|h2|h3|h4|h5|h6)>#Us', '${2}<${3}>', $semihtml);
     $semihtml = preg_replace('#(<style[^>]*>)(.*)(</style>)#siU', '', $semihtml); // We shouldn't allow this nested anyway (invalid XHTML), and word abuses it
     $semihtml = preg_replace('#<span class="Apple-style-span"[^>]*>(.*)</span>#siU', '${1}', $semihtml); // webkit
     $semihtml = preg_replace('#<meta[^>]*>#siU', '', $semihtml); // We shouldn't allow this nested anyway (invalid XHTML), and word abuses it
     $semihtml = preg_replace('#(<[^>]*) lang="[^"]*"#i', '${1}', $semihtml);
-    $semihtml = preg_replace('#(<[^>]*) style="margin-right: 0\w*;?"#i', '${1}', $semihtml);
+    $semihtml = preg_replace('#(<[^>]*) style="margin-right:\s*0\w*;?"#i', '${1}', $semihtml);
     $semihtml = preg_replace('#(<[^>]*) dir="' . do_lang('dir') . '"#i', '${1}', $semihtml);
     $semihtml = preg_replace_callback('#<[^>"]* style="([^">]*&quot;[^">]*)*"#i', '_css_quot_fixup', $semihtml);
     $semihtml = preg_replace('#<a name="OLE_LINK1">([^<]*)</a>#siU', '${1}', $semihtml);
-    $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right: [\d\.]+pt;\s*)?text-align: right;?"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right: [\d\.]+pt;\s*)?text-align: center;?"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = preg_replace('#(?U)(<[^>]* style="[^"]*)(?-U);?\s*page-break-after: avoid;?"#is', '${1}"', $semihtml);
+    $semihtml = preg_replace('#(?U)(<[^>]* style="[^"]*)(?-U);?\s*page-break-after:\s*avoid;?"#is', '${1}"', $semihtml);
     $semihtml = str_replace('<place>', '', $semihtml);
     $semihtml = str_replace('</place>', '', $semihtml);
     $semihtml = preg_replace('#<link [^>]*href="file://[^"]*"[^>]*/>#sU', '', $semihtml);
@@ -520,7 +578,17 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#(<[^>]*) [ovw]:[^>"]*"[^"]*"([^>]*>)#s', '${1}${2}', $semihtml);
     $semihtml = preg_replace('#</?st1:[^>]*>#', '', $semihtml); // Word smart tags
     $semihtml = str_replace('<br class="Apple-interchange-newline" />', '<br />', $semihtml);
-
+    $semihtml = preg_replace('# class="Mso\w+"#', '', $semihtml);
+    $semihtml = preg_replace('#margin-(top|bottom):\s*0cm#', '', $semihtml);
+    $semihtml = str_replace('text-align:justify', '', $semihtml);
+    $semihtml = str_replace(' type="disc"', '', $semihtml);
+    $semihtml = str_replace(' type="1"', '', $semihtml);
+    $semihtml = str_replace(' start="1"', '', $semihtml);
+    $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '', $semihtml);
+    $semihtml = preg_replace('#mso-[\w-]+:[^;"\']*#', '', $semihtml);
+    $semihtml = str_replace('text-autospace:none', '', $semihtml);
+    $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
+    $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = str_replace("\n", ' ', $semihtml);
     // Clean some whitespace (they have a special Comcode meaning, but no special HTML meaning)
     $inline_elements = array(
@@ -536,6 +604,15 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#>\s+#', '>', $semihtml);
     $semihtml = preg_replace('#\s+<#', '<', $semihtml);
     $semihtml = preg_replace('#\s+#', ' ', $semihtml);
+
+    // Clean redundant CSS syntax
+    do
+    {
+        $old = $semihtml;
+        $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
+    }
+    while ($old != $semihtml);
+    $semihtml = str_replace(' style=""', '', $semihtml);
 
     // Cleanup impossible stuff in code tags
     global $CODE_TAGS;
@@ -619,10 +696,10 @@ function semihtml_to_comcode($semihtml, $force = false)
     $array_html_preg_replace = array();
     $array_html_preg_replace[] = array('#^<p class="msoNormal">\s*(.*)\s*</p>$#siU', '${1}<br />');
     $array_html_preg_replace[] = array('#^<p align="(\w+)" class="msoNormal">\s*(.*)\s*</p>$#siU', '[align="${1}"]${2}[/align]');
-    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin: \d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin: 0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p style="margin: \d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
-    $array_html_preg_replace[] = array('#^<p style="margin: 0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin:\s*\d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p class="msoNormal" style="margin:\s*0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p style="margin:\s*\d+pt 0[\w;]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Cleanup from Word
+    $array_html_preg_replace[] = array('#^<p style="margin:\s*0[\w;]* 0[\w;]* 0[\w;]*">\s*(.*)\s*</p>$#siU', '${1}<br />'); // Cleanup from Word
     $array_html_preg_replace[] = array('#^<p class="Mso\w*" style="[^"]*">\s*(.*)\s*</p>$#siU', '<br />${1}<br />'); // Aggressive cleanup from Word (it's here last because we want the nicer matches to get a chance to work instead. It's a shame we need to do this, as we are throwing away potentially important styling (although actually the spans etc far above will have got most of this - we only match p level styling here)- but Word throws so much into a mix it's impossible to "remove the wheat from the chaff". People will need to put it back in using the WYSIWYG editor directly.
     $array_html_preg_replace[] = array('#^<p>\s*(.*)\s*</p>$#siU', '${1}<br /><br />');
     $array_html_preg_replace[] = array('#^<p align="(\w+)">\s*(.*)\s*</p>$#siU', '[align="${1}"]${2}[/align]');
@@ -747,6 +824,20 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[left\](.*)\[/left\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
     $semihtml = comcode_preg_replace('center', '#^\[center\]\[right\](.*)\[/right\]\[/center\]$#si', '[center]${1}[/center]', $semihtml);
 
+    // Clean redundant CSS syntax (again)
+    do
+    {
+        $old = $semihtml;
+        $semihtml = preg_replace('# style="([^"]*); ?; ?+[^"]*#', ' style="$1;', $semihtml);
+    }
+    while ($old != $semihtml);
+    $semihtml = str_replace(' style=""', '', $semihtml);
+
+    // Clean some now-empty span/p/align tags
+    $semihtml = preg_replace('#<span( style="[^"]*")?' . '>&nbsp;</span>#', ' ', $semihtml);
+    $semihtml = preg_replace('#<p( style="[^"]*")?' . '>\s*(&nbsp;)?\s*</p>#', '<br /><br />', $semihtml);
+    $semihtml = preg_replace('#\[align="\w+"\]\s*(&nbsp;)?\s*\[/align\]#', '', $semihtml);
+
     // Cleanup list Comcode (nice and pretty)
     $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
     $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*\[\*\](&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*#', '[*]', $semihtml);
@@ -770,9 +861,11 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</CDATA__amp>', '&', $semihtml);
 
     // Tempcode escaping
-    /*$semihtml=str_replace('{+','\{+',$semihtml); No - people should be able to type this if they want
-    $semihtml=str_replace('{$','\{$',$semihtml);
-    $semihtml=str_replace('{!','\{!',$semihtml);*/
+    /* No - people should be able to type this if they want
+    $semihtml = str_replace('{+', '\{+', $semihtml);
+    $semihtml = str_replace('{$', '\{$', $semihtml);
+    $semihtml = str_replace('{!', '\{!', $semihtml);
+    */
 
     $semihtml = str_replace('[ html', '[html', $semihtml);
     $semihtml = str_replace('[ semihtml', '[semihtml', $semihtml);
@@ -832,7 +925,7 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // Cleanup impossible stuff in code tags
     foreach (array_keys($CODE_TAGS) as $tag) {
-        $semihtml2 = comcode_preg_replace($tag, '#^(\[' . $tag . '\])([.\n]*)(\[/' . $tag . '\])$#i', array('semihtml_to_comcode_wrap'), $semihtml2);
+        $semihtml2 = comcode_preg_replace($tag, '#^(\[' . $tag . '\])([.\n]*)(\[/' . $tag . '\])$#i', array('_semihtml_to_comcode_wrap'), $semihtml2);
     }
 
     // These can only be used outside semihtml - so we do them in a copy of our output, and only use that copy if we find we are able to do a 100% Comcode conversion
@@ -859,7 +952,7 @@ function semihtml_to_comcode($semihtml, $force = false)
         }
         $imgcode[1] = str_replace(get_base_url(), '', $imgcode[1]);
 
-        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>\s*#si', $code, $semihtml2);
+        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>([ \t])?[ \t]*#si', $code . '$1', $semihtml2);
     }
 
     $semihtml2 = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup', $semihtml2);
@@ -867,9 +960,9 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
     if (strpos($semihtml2, '<') === false) {
-        //     $semihtml2=str_replace(array('&lt;','&gt;','&amp;'),array('___lt___','___gt___','___amp___'),$semihtml2);
+        //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
         $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES, get_charset());
-//    $semihtml2=str_replace(array('___lt___','___gt___','___amp___'),array('&lt;','&gt;','&amp;'),$semihtml2);
+        //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
         return $semihtml2;
     }
 
@@ -886,7 +979,8 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</p>', '</p>' . "\n", $semihtml);
     $semihtml = str_replace('[/align]', '[/align]' . "\n", $semihtml);
 
-    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/($semihtml) . '[/semihtml]';
+    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/
+           ($semihtml) . '[/semihtml]';
 }
 
 /**
@@ -960,6 +1054,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
 
 /**
  * Do some regular expression matches, locked correctly to single HTML elements. This is necessary to make sure nesting is handled correctly, which regular expressions cannot do on their own.
+ * It is case-sensitive for performance reasons. But everyone uses lower-case tags for a long time now. Also assumes no tabs within tag definition.
  *
  * @param  string $element The element name to replace over
  * @param  array $array A list of pairs: Pattern, Replacement
@@ -968,17 +1063,66 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
  */
 function array_html_preg_replace($element, $array, $semihtml)
 {
+    // Quick exit, for efficiency
+    if (strpos($semihtml, '<' . $element) === false) {
+        return $semihtml;
+    }
+
+    // See if we have no nesting (no nesting --> $easy_replace)
+    $easy_replace = true;
+    $on_closer = true;
+    $pos = 0;
+    do {
+        $pos_opener_1 = strpos($semihtml, '<' . $element . '>', $pos);
+        $pos_opener_2 = strpos($semihtml, '<' . $element . ' ', $pos);
+        $pos_opener = ($pos_opener_1 !== false && ($pos_opener_2 === false || $pos_opener_1 < $pos_opener_2)) ? $pos_opener_1 : $pos_opener_2;
+        if ($pos_opener === false) {
+            break;
+        }
+
+        if ($pos == 0) // First iteration is just to find first opener
+        {
+            $pos = $pos_opener + 1;
+            continue;
+        }
+
+        $pos_closer_1 = strpos($semihtml, '</' . $element . '>', $pos);
+        $pos_closer_2 = strpos($semihtml, '</' . $element . ' ', $pos);
+        $pos_closer = ($pos_closer_1 !== false && ($pos_closer_2 === false || $pos_closer_1 < $pos_closer_2)) ? $pos_closer_1 : $pos_closer_2;
+        if ($pos_closer === false) {
+            break;
+        }
+
+        if ($pos_opener < $pos_closer) {
+            $easy_replace = false;
+            break;
+        }
+
+        $pos = $pos_opener + 1;
+    } while ($pos !== false);
+
+    // Short way
+    if ($easy_replace) {
+        foreach ($array as $temp) {
+            list($pattern, $replacement) = $temp;
+            $semihtml = preg_replace(str_replace('$', '', str_replace('^', '', $pattern)), $replacement, $semihtml);
+        }
+        return $semihtml;
+    }
+
+    // Long way
     $old_semihtml = '';
     do {
         $old_semihtml = $semihtml;
 
+        // Find offset of openers and closers
         $matches = array();
-        $count = preg_match_all('#<' . $element . '[\s>]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $count = preg_match_all('#<' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
         $starts = array();
         for ($i = 0; $i < $count; $i++) {
             $starts[] = $matches[0][$i][1];
         }
-        $count = preg_match_all('#</' . $element . '[\s>]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
+        $count = preg_match_all('#</' . $element . '[ >]#', $semihtml, $matches, PREG_OFFSET_CAPTURE);
         $ends = array();
         $lengths = array();
         for ($i = 0; $i < $count; $i++) {
@@ -994,9 +1138,11 @@ function array_html_preg_replace($element, $array, $semihtml)
                     if ($end < $start) {
                         continue;
                     }
+
                     $opens = @$s_opens[$start][$end];
                     $closes = @$s_closes[$start][$end];
-                    if (is_null($opens)) {
+                    if (is_null($opens)) // Not worked out yet, work out and put into $s_opens and $s_closes
+                    {
                         $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
                         $opens = substr_count($segment, '<' . $element . ' ') + substr_count($segment, '<' . $element . '>');
                         $closes = substr_count($segment, '</' . $element . '>');
@@ -1005,6 +1151,8 @@ function array_html_preg_replace($element, $array, $semihtml)
                     } else {
                         $segment = null;
                     }
+
+                    // Segment is a clean isolated tag
                     if ($opens == $closes) {
                         if (is_null($segment)) {
                             $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
@@ -1015,7 +1163,7 @@ function array_html_preg_replace($element, $array, $semihtml)
                         $semihtml = $before . $subbed . $after;
                         if ($semihtml != $old_semihtml) {
                             break 3;
-                        }
+                        } // We need to start again now as the offsets have all changed
                         break; // Ok, well at least we know we found our tag bound, so no more need to search
                     }
                 }

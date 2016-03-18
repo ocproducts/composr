@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,57 @@
  * @copyright  ocProducts Ltd
  * @package    core_cns
  */
+
+/**
+ * Get the poster name a Guest may have specified, after sanitising it.
+ *
+ * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
+ * @return string Poster name.
+ */
+function cns_get_safe_specified_poster_name($is_required_field = null)
+{
+    if ($is_required_field === null) {
+        $is_required_field = (get_option('force_guest_names') === '1');
+    }
+
+    if ((get_option('force_guest_names') === '1') && (is_guest())) {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest');
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', null);
+    }
+    if ($poster_name_if_guest == '') {
+        $poster_name_if_guest = null;
+    }
+    if (!is_null($poster_name_if_guest)) {
+        $poster_name_if_guest = trim($poster_name_if_guest);
+
+        if ($is_required_field) {
+            if ($poster_name_if_guest == do_lang('GUEST')) {
+                warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html(post_param_string('label_for__poster_name_if_guest', 'poster_name_if_guest'))));
+            }
+        }
+
+        $restricted_usernames = explode(',', get_option('restricted_usernames'));
+        $restricted_usernames[] = do_lang('UNKNOWN');
+        $restricted_usernames[] = do_lang('SYSTEM');
+        if (!is_null($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest))) {
+            $restricted_usernames[] = $poster_name_if_guest;
+        }
+        foreach ($restricted_usernames as $_restricted_username) {
+            $restricted_username = trim($_restricted_username);
+            if ($restricted_username == '') {
+                continue;
+            }
+            if ($poster_name_if_guest == $restricted_username) {
+                $poster_name_if_guest = $poster_name_if_guest . ' (' . do_lang('GUEST') . ')';
+                break;
+            }
+        }
+    } else {
+        $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+    }
+    return $poster_name_if_guest;
+}
 
 /**
  * Check to see if a member deserves promotion, and handle it.
@@ -71,9 +122,9 @@ function cns_member_handle_promotion($member_id = null)
             ));
 
             // Notify the member
-            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
-            $mail = do_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             require_code('notifications');
+            $subject = do_lang('RANK_PROMOTED_MAIL_SUBJECT', cns_get_group_name($_p), null, null, get_lang($member_id));
+            $mail = do_notification_lang('RANK_PROMOTED_MAIL', comcode_escape(cns_get_group_name($_p)), null, null, get_lang($member_id));
             dispatch_notification('cns_rank_promoted', null, $subject, $mail, array($member_id));
 
             // Carefully update run-time caching
@@ -97,6 +148,7 @@ function cns_member_handle_promotion($member_id = null)
     }
 
     if (count($promotes_today) != 0) {
+		require_lang('cns');
         $name = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
         log_it('MEMBER_PROMOTED_AUTOMATICALLY', strval($member_id), $name);
     }
@@ -135,8 +187,11 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($sender_member_id);
 
     require_lang('cns');
+
+    require_code('notifications');
+
     $subject = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL_SUBJECT' : 'POST_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $topic_title, array($sender_displayname, $sender_username));
-    $mail = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
+    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
 
     $limit_to = is_null($_limit_to) ? array() : array($_limit_to);
 
@@ -150,8 +205,6 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
         $limit_to[] = $topic_info[0]['t_pt_from'];
         $limit_to = array_merge($limit_to, collapse_1d_complexity('s_member_id', $GLOBALS['FORUM_DB']->query_select('f_special_pt_access', array('s_member_id'), array('s_topic_id' => $topic_id))));
     }
-
-    require_code('notifications');
     dispatch_notification('cns_topic', strval($topic_id), $subject, $mail, (count($limit_to) == 0) ? null : $limit_to, $sender_member_id, 3, false, false, $no_notify_for__notification_code, $no_notify_for__code_category);
 }
 
@@ -192,7 +245,12 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             }
         }
         if ($last) { // We're updating caching of the last
-            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), 'ORDER BY p_time DESC,id DESC', 1);
+            if (get_option('is_on_post_map') == '1') {
+                $order_by = 'ORDER BY p_last_edit_time DESC,p_time DESC,id DESC';
+            } else {
+                $order_by = 'ORDER BY p_time DESC,id DESC';
+            }
+            $posts = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_intended_solely_for' => null, 'p_topic_id' => $topic_id), $order_by, 1);
             if (!array_key_exists(0, $posts)) {
                 $last_post_id = null;
                 $last_time = null;
@@ -225,7 +283,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             't_cache_first_post_id=' . (is_null($first_post_id) ? 'NULL' : strval($first_post_id)) . ',
         ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\'') . ',') . '
         t_cache_first_time=' . (is_null($first_time) ? 'NULL' : strval($first_time)) . ',
-        t_cache_first_post=' . (multi_lang_content() ? ((is_null($first_post) ? '\'NULL\'' : strval($first_post))) : '\'\'') . ',
+        t_cache_first_post=' . (multi_lang_content() ? ((is_null($first_post) ? 'NULL' : strval($first_post))) : '\'\'') . ',
         t_cache_first_username=\'' . db_escape_string($first_username) . '\',
         t_cache_first_member_id=' . (is_null($first_member_id) ? 'NULL' : strval($first_member_id)) . ',';
     }
@@ -235,7 +293,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             't_cache_last_post_id=' . (is_null($last_post_id) ? 'NULL' : strval($last_post_id)) . ',
         t_cache_last_title=\'' . db_escape_string($last_title) . '\',
         t_cache_last_time=' . (is_null($last_time) ? 'NULL' : strval($last_time)) . ',
-        t_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
+        t_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
         t_cache_last_member_id=' . (is_null($last_member_id) ? 'NULL' : strval($last_member_id)) . ',';
     }
 
@@ -321,7 +379,7 @@ function cns_force_update_forum_caching($forum_id, $num_topics_increment = null,
                                 'f_cache_last_topic_id=' . (!is_null($last_topic_id) ? strval($last_topic_id) : 'NULL') . ',
         f_cache_last_title=\'' . db_escape_string($last_title) . '\',
         f_cache_last_time=' . (!is_null($last_time) ? strval($last_time) : 'NULL') . ',
-        f_cache_last_username=\'' . db_escape_string(substr($last_username, 0, 255)) . '\',
+        f_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
         f_cache_last_member_id=' . (!is_null($last_member_id) ? strval($last_member_id) : 'NULL') . ',
         f_cache_last_forum_id=' . (!is_null($last_forum_id) ? strval($last_forum_id) : 'NULL') . '
             WHERE id=' . strval($forum_id), 1, null, false, true);

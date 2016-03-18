@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -35,16 +35,38 @@ class Hook_task_find_broken_urls
         $found = array();
         $found_404 = array();
 
-        global $COMCODE_BROKEN_URLS;
-
         $checked_already = array();
-
-        $skip_hooks = find_all_hooks('systems', 'non_active_urls');
 
         $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
-        $urlpaths = $GLOBALS['SITE_DB']->query('SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%URLPATH%') . '\'');
+        $this->check_url_fields($checked_already, $found_404, $found);
+        $this->check_comcode_fields($checked_already, $found_404, $found);
+        $this->check_catalogues($checked_already, $found_404, $found);
+        $this->check_comcode_pages($checked_already, $found_404, $found);
+
+        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+
+        $ret = do_template('BROKEN_URLS', array(
+            '_GUID' => '7b60d02e1b95f8d9053fb0a49f45d892',
+            'FOUND' => $found,
+            'FOUND_404' => $found_404,
+        ));
+        return array('text/html', $ret);
+    }
+
+    /**
+     * Check URL fields for broken URLs.
+     *
+     * @param  array $checked_already Place to record what we've already checked
+     * @param  array $found_404 Place to put 404 errors
+     * @param  array $found Place to put file-not-found errors
+     */
+    private function check_url_fields(&$checked_already, &$found_404, &$found)
+    {
+        $skip_hooks = find_all_hooks('systems', 'non_active_urls');
+        $sql = 'SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%URLPATH%') . '\'';
+        $urlpaths = $GLOBALS['SITE_DB']->query($sql);
         foreach ($urlpaths as $urlpath) {
             if ($urlpath['m_table'] == 'hackattack') {
                 continue;
@@ -62,13 +84,37 @@ class Hook_task_find_broken_urls
             $ofs = $GLOBALS['SITE_DB']->query_select($urlpath['m_table'], array('*'));
             foreach ($ofs as $of) {
                 $url = $of[$urlpath['m_name']];
-                $this->check_url($url, $urlpath['m_table'], $urlpath['m_name'], array_key_exists('id', $of) ? strval($of['id']) : (array_key_exists('name', $of) ? $of['name'] : do_lang('UNKNOWN')), $checked_already, $found_404, $found);
+
+                $this->check_url(
+                    $url,
+                    $urlpath['m_table'],
+                    $urlpath['m_name'],
+                    array_key_exists('id', $of) ? strval($of['id']) : (array_key_exists('name', $of) ? $of['name'] : do_lang('UNKNOWN')),
+                    $checked_already,
+                    $found_404,
+                    $found
+                );
             }
         }
-        $possible_comcode_fields = $GLOBALS['SITE_DB']->query('SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%LONG_TRANS%') . '\'');
+    }
+
+    /**
+     * Check Comcode fields for broken URLs.
+     *
+     * @param  array $checked_already Place to record what we've already checked
+     * @param  array $found_404 Place to put 404 errors
+     * @param  array $found Place to put file-not-found errors
+     */
+    private function check_comcode_fields(&$checked_already, &$found_404, &$found)
+    {
+        global $COMCODE_BROKEN_URLS;
+
         global $LAX_COMCODE;
         $temp = $LAX_COMCODE;
         $LAX_COMCODE = true;
+
+        $sql = 'SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%LONG_TRANS__COMCODE%') . '\'';
+        $possible_comcode_fields = $GLOBALS['SITE_DB']->query($sql);
         foreach ($possible_comcode_fields as $field) {
             if ($field['m_table'] == 'seo_meta') {
                 continue;
@@ -77,11 +123,11 @@ class Hook_task_find_broken_urls
                 continue;
             }
 
-            $ofs = $GLOBALS['SITE_DB']->query_select($field['m_table'] . ' x', array('x.' . $field['m_name'], 't.source_user'));
+            $ofs = $GLOBALS['SITE_DB']->query_select($field['m_table'], array('*'));
             foreach ($ofs as $of) {
-                $comcode = get_translated_text($of[$field['m_name']]);
+                $COMCODE_BROKEN_URLS = array();
 
-                comcode_to_tempcode($comcode, $of['source_user']);
+                get_translated_tempcode($field['m_table'], $of, $field['m_name']);
 
                 if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && (!is_null($COMCODE_BROKEN_URLS))) {
                     foreach ($COMCODE_BROKEN_URLS as $i => $_url) {
@@ -97,7 +143,19 @@ class Hook_task_find_broken_urls
                 }
             }
         }
+
         $LAX_COMCODE = $temp;
+    }
+
+    /**
+     * Check catalogues for broken URLs.
+     *
+     * @param  array $checked_already Place to record what we've already checked
+     * @param  array $found_404 Place to put 404 errors
+     * @param  array $found Place to put file-not-found errors
+     */
+    private function check_catalogues(&$checked_already, &$found_404, &$found)
+    {
         if (addon_installed('catalogues')) {
             $catalogue_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('cf_type' => 'url'));
             $or_list = '';
@@ -108,20 +166,46 @@ class Hook_task_find_broken_urls
                 $or_list .= 'cf_id=' . strval($field['id']);
             }
             if ($or_list != '') {
-                $values = $GLOBALS['SITE_DB']->query('SELECT id,cv_value,ce_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short WHERE ' . $or_list, null, null, false, true);
+                $sql = 'SELECT id,cv_value,ce_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short WHERE ' . $or_list;
+                $values = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
                 foreach ($values as $value) {
                     $url = $value['cv_value'];
-                    $this->check_url($url, 'catalogue_efv_short', 'cv_value', strval($value['ce_id']), $checked_already, $found_404, $found);
+
+                    $this->check_url(
+                        $url,
+                        'catalogue_efv_short',
+                        'cv_value',
+                        strval($value['ce_id']),
+                        $checked_already,
+                        $found_404,
+                        $found
+                    );
                 }
             }
         }
-        $COMCODE_BROKEN_URLS = array();
-        $zones = find_all_zones();
+    }
+
+    /**
+     * Check Comcode pages for broken URLs.
+     *
+     * @param  array $checked_already Place to record what we've already checked
+     * @param  array $found_404 Place to put 404 errors
+     * @param  array $found Place to put file-not-found errors
+     */
+    private function check_comcode_pages(&$checked_already, &$found_404, &$found)
+    {
+        global $COMCODE_BROKEN_URLS;
+
+        global $LAX_COMCODE;
         $temp = $LAX_COMCODE;
         $LAX_COMCODE = true;
+
+        $zones = find_all_zones();
         foreach ($zones as $zone) {
             $pages = find_all_pages($zone, 'comcode_custom/' . get_site_default_lang(), 'txt', true) + find_all_pages($zone, 'comcode/' . get_site_default_lang(), 'txt', true);
             foreach ($pages as $page => $type) {
+                $COMCODE_BROKEN_URLS = array();
+
                 $file_path = zone_black_magic_filterer(((strpos($type, '_custom') !== false) ? get_custom_file_base() : get_file_base()) . '/' . $zone . '/pages/' . $type . '/' . $page);
                 $comcode = file_get_contents($file_path);
                 comcode_to_tempcode($comcode, null, true);
@@ -136,7 +220,7 @@ class Hook_task_find_broken_urls
                 }
             }
         }
-        $lax_comcode = $temp;
+
         if ((array_key_exists('COMCODE_BROKEN_URLS', $GLOBALS)) && (!is_null($COMCODE_BROKEN_URLS))) {
             foreach ($COMCODE_BROKEN_URLS as $_url) {
                 list($url, $spot) = $_url;
@@ -147,14 +231,7 @@ class Hook_task_find_broken_urls
             }
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
-
-        $ret = do_template('BROKEN_URLS', array(
-            '_GUID' => '7b60d02e1b95f8d9053fb0a49f45d892',
-            'FOUND' => $found,
-            'FOUND_404' => $found_404,
-        ));
-        return array('text/html', $ret);
+        $lax_comcode = $temp;
     }
 
     /**
@@ -169,12 +246,12 @@ class Hook_task_find_broken_urls
      * @param  array $found Place to put file-not-found errors
      * @param  string $spot A textual identifier to where the content can be seen
      */
-    public function check_url($url, $table, $field, $id, &$checked_already, &$found_404, &$found, $spot = '')
+    private function check_url($url, $table, $field, $id, &$checked_already, &$found_404, &$found, $spot = '')
     {
         if (trim($url) == '') {
             return;
         }
-        if (array_key_exists($url, $checked_already)) {
+        if (isset($checked_already[$url])) {
             return;
         }
 
@@ -186,6 +263,7 @@ class Hook_task_find_broken_urls
             if ((!file_exists(rawurldecode($url))) && ($field != 'm_avatar_url')) {
                 $found[] = array('URL' => $url, 'TABLE' => $table, 'FIELD' => $field, 'ID' => $id);
             }
+
         } elseif ($url != '') {
             if (url_is_local($url)) {
                 if (($url[0] == '/') && (strpos(get_base_url(), '/') !== false)) {
@@ -201,6 +279,6 @@ class Hook_task_find_broken_urls
             }
         }
 
-        $checked_already[$url] = 1;
+        $checked_already[$url] = true;
     }
 }

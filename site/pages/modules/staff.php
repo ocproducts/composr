@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_staff
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -63,7 +63,6 @@ class Module_staff
     {
         $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('sites');
         $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('role');
-        $GLOBALS['FORUM_DRIVER']->install_delete_custom_field('fullname');
     }
 
     /**
@@ -74,15 +73,14 @@ class Module_staff
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('sites', 100, 1, 0, 0, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, 1, 0, 1, 0, '', 'short_text');
-        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('fullname', 100, 1, 0, 1, 0, '', 'short_text');
+        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('sites', 255, 1, 0, 0, 0, '', 'short_text');
+        $GLOBALS['FORUM_DRIVER']->install_create_custom_field('role', 100, 0, 0, 1, 0, '', 'short_text');
     }
 
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -156,7 +154,7 @@ class Module_staff
             }
 
             $username = $row_staff['username'];
-            $url = build_url(array('page' => '_SELF', 'id' => $username, 'type' => 'view'), '_SELF');
+            $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $username), '_SELF');
             $role = escape_html(get_cms_cpf('role', $id));
             if (is_null($role)) {
                 $description = ''; // Null should not happen, but sometimes things corrupt
@@ -196,7 +194,7 @@ class Module_staff
         }
         $id = $GLOBALS['FORUM_DRIVER']->mrow_id($row_staff);
 
-        $_real_name = get_cms_cpf('fullname', $id);
+        $_real_name = trim(get_cms_cpf('firstname', $id) . ' ' . get_cms_cpf('lastname', $id));
         if ($_real_name == '') {
             $real_name = do_lang_tempcode('_UNKNOWN'); // Null should not happen, but sometimes things corrupt
         } else {

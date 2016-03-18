@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,7 +34,7 @@ class Hook_config_max_chat_lobby_friends
             'human_name' => 'MAX_CHAT_LOBBY_FRIENDS',
             'type' => 'integer',
             'category' => 'FEATURE',
-            'group' => 'CHAT',
+            'group' => 'SECTION_CHAT',
             'explanation' => 'CONFIG_OPTION_max_chat_lobby_friends',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

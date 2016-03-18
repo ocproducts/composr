@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -101,6 +101,12 @@ class Block_main_image_slider
             $extra_where_video .= $privacy_where_video;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $extra_where_image .= sql_region_filter('image', 'r.id');
+            $extra_where_video .= sql_region_filter('video', 'r.id');
+        }
+
         $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
         $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,thumb_url AS url,title,description,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
         $all_rows = array();
@@ -169,8 +175,7 @@ class Block_main_image_slider
             if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat))) && (can_submit_to_gallery($cat))) {
                 $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
             }
-            return do_template('BLOCK_NO_ENTRIES', array(
-                'HIGH' => false,
+            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8b92cd992508e55bfe4139b5c09475c2', 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('GALLERY'),
                 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                 'ADD_NAME' => do_lang_tempcode('ADD_IMAGE'),
@@ -184,8 +189,7 @@ class Block_main_image_slider
         }
         $gallery_url = build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $nice_cat), $zone);
 
-        return do_template('BLOCK_MAIN_IMAGE_SLIDER', array(
-            'GALLERY_URL' => $gallery_url,
+        return do_template('BLOCK_MAIN_IMAGE_SLIDER', array('_GUID' => '264a178c1ea7fa719ac53af07129a38c', 'GALLERY_URL' => $gallery_url,
             'IMAGES' => $images,
             'MILL' => strval($mill),
             'WIDTH' => strval($width),

@@ -242,7 +242,7 @@ function load_html_edit(posting_form,ajax_copy)
 
 	if (typeof window.do_ajax_request=='undefined') return;
 	if (typeof window.merge_text_nodes=='undefined') return;
-	if (typeof window.CKEDITOR=='undefined') return;
+	if (typeof window.CKEDITOR=='undefined' || window.CKEDITOR==null) return;
 	if (!browser_matches('wysiwyg')) return;
 	if (!wysiwyg_on()) return;
 
@@ -403,7 +403,7 @@ function wysiwyg_editor_init_for(element,id)
 	window.lang_NO_IMAGE_PASTE_SAFARI='{!javascript:NO_IMAGE_PASTE_SAFARI;}';
 
 	// Mainly used by autosaving
-	editor.on('key', function (event) {
+	editor.on('key',function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
@@ -411,11 +411,13 @@ function wysiwyg_editor_init_for(element,id)
 		}
 	});
 
-	// Instant preview of Comcode
 	editor.on('instanceReady', function (event) {
+		editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
+
 		if (typeof window.set_up_comcode_autocomplete!='undefined')
 			set_up_comcode_autocomplete(id);
 
+		// Instant preview of Comcode
 		find_tags_in_editor(editor,element);
 	});
 	window.setInterval(function() {
@@ -503,7 +505,7 @@ function find_tags_in_editor(editor,element)
 					var field_name=editor.name;
 					if ((typeof window.event!='undefined') && (window.event)) window.event.returnValue=false;
 					if (this.id=='') this.id='comcode_tag_'+Math.round(Math.random()*10000000);
-					var tag_type=this.title.replace(/^\[/,'').replace(/[= \]].*$/,'');
+					var tag_type=this.title.replace(/^\[/,'').replace(/[= \]](.|\n)*$/,'');
 					if (tag_type=='block')
 					{
 						var block_name=this.title.replace(/\[\/block\]$/,'').replace(/^(.|\s)*\]/,'');
@@ -686,6 +688,9 @@ html: HTML to insert (if not passed then 'text' will be escaped)
 */
 function insert_textbox(element,text,sel,plain_insert,html)
 {
+	if (typeof plain_insert=='undefined') plain_insert=false;
+	if (typeof html=='undefined') html=null;
+
 	if (is_wysiwyg_field(element))
 	{
 		var editor=window.wysiwyg_editors[element.id];
@@ -719,7 +724,9 @@ function insert_textbox(element,text,sel,plain_insert,html)
 				editor.document.getBody().appendHtml(insert);
 			} else
 			{
-				editor.insertHtml(insert);
+				//editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+				var element_for_inserting=CKEDITOR.dom.element.createFromHtml(insert);
+				editor.insertElement(element_for_inserting);
 			}
 
 			var after=editor.getData();

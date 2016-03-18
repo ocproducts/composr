@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -89,7 +89,7 @@ class Hook_whatsnew_catalogues
             }
             $c_title = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => $c_name));
 
-            $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type'), array('c_name' => $c_name), 'ORDER BY cf_order');
+            $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_type'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
 
             // Work out name
             $name = '';

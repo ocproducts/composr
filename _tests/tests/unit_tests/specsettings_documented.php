@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,8 +20,8 @@ class specsettings_documented_test_set extends cms_test_case
 {
     public function setUp()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         require_code('files2');
@@ -32,7 +32,7 @@ class specsettings_documented_test_set extends cms_test_case
     public function testSymbols()
     {
         $symbols_file = file_get_contents(get_file_base() . '/sources/symbols.php');
-        $directives_start_pos = strpos($symbols_file, 'if ($type==TC_DIRECTIVE)');
+        $directives_start_pos = strpos($symbols_file, 'if ($type == TC_DIRECTIVE)');
 
         $tempcode_tutorial = file_get_contents(get_file_base() . '/docs/pages/comcode_custom/EN/tut_tempcode.txt');
 
@@ -60,13 +60,17 @@ class specsettings_documented_test_set extends cms_test_case
                 $num_matches = preg_match_all('#(\$SITE_INFO|\$GLOBALS\[\'SITE_INFO\'\])\[\'([^\'"]+)\'\]#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $var = $matches[2][$i];
-                    if (($var != 'multi_lang_content'/*Can't just flip so simply*/) && (/*string replace array*/
-                            $var != 'reps') && (/*AFM*/
-                            strpos($var, 'ftp_') === false) && (/*demonstratr*/
-                            strpos($var, 'throttle_') === false) && (/*demonstratr*/
-                            strpos($var, 'custom_') === false) && (/*Legacy password name*/
-                            $var != 'admin_password') && (/*XML dev environment*/
-                            strpos($var, '_chain') === false)
+                    if (
+                        (/*Can't just flip so simply*/$var != 'multi_lang_content') &&
+                        (/*string replace array*/$var != 'reps') &&
+                        (/*AFM*/strpos($var, 'ftp_') === false) &&
+                        (/*demonstratr*/strpos($var, 'throttle_') === false) &&
+                        (/*demonstratr*/strpos($var, 'custom_') === false) &&
+                        (/*Demonstratr*/$var != 'mysql_demonstratr_password') &&
+                        (/*Demonstratr*/$var != 'mysql_root_password') &&
+                        (/*Custom domains*/strpos($var, 'ZONE_MAPPING') === false) &&
+                        (/*Legacy password name*/$var != 'admin_password') &&
+                        (/*XML dev environment*/strpos($var, '_chain') === false)
                     ) {
                         $found[$var] = 1;
                     }
@@ -90,7 +94,7 @@ class specsettings_documented_test_set extends cms_test_case
 
         $files = get_directory_contents(get_file_base());
         foreach ($files as $f) {
-            if ((substr($f, -4) == '.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'sources/forum/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if ((substr($f, -4) == '.php') && (basename($f) != 'upgrade.php') && (basename($f) != 'shared_installs.php') && (strpos($f, '_tests') === false) && (strpos($f, '_custom') === false) && (strpos($f, 'sources/forum/') === false) && (strpos($f, 'exports/') === false) && (basename($f) != 'errorlog.php') && (basename($f) != 'phpstub.php') && (basename($f) != 'permissioncheckslog.php')) {
                 $c = file_get_contents(get_file_base() . '/' . $f);
                 $matches = array();
                 $num_matches = preg_match_all('#get\_value\(\'([^\']+)\'\)#', $c, $matches);

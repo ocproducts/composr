@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__zones()
 {
@@ -72,7 +74,7 @@ function init__zones()
                 unset($MODULES_ZONES_CACHE_DEFAULT[$key]);
             }
         }
-        $MODULES_ZONES_CACHE = array(get_zone_name() => $MODULES_ZONES_CACHE_DEFAULT);
+        $MODULES_ZONES_CACHE = array(get_zone_name() => array('modules' => $MODULES_ZONES_CACHE_DEFAULT));
     }
 
     global $ALL_ZONES_CACHE, $ALL_ZONES_TITLED_CACHE;
@@ -159,6 +161,8 @@ function i_solemnly_declare($declarations)
 
 /**
  * Enter a new security scope (i.e. a custom block or module).
+ *
+ * @ignore
  */
 function _solemnly_enter()
 {
@@ -180,6 +184,8 @@ function _solemnly_enter()
  * Leave the most recent security scope (i.e. a custom block or module).
  *
  * @param  ?string $out Output to filter, if I_UNDERSTAND_XSS is not set (null: nothing to filter).
+ *
+ * @ignore
  */
 function _solemnly_leave(&$out = null)
 {
@@ -190,10 +196,12 @@ function _solemnly_leave(&$out = null)
 
     if ((!has_solemnly_declared(I_UNDERSTAND_XSS)) && ($out !== null)) {
         foreach (array_merge(array_values($_POST), array_values($_GET)) as $before) {
-            $after = $before;
-            kid_gloves_html_escaping_singular($after);
-            if ($after !== $before) {
-                $out = str_replace($before, $after, $out);
+            if (is_string($before)) {
+                $after = $before;
+                kid_gloves_html_escaping_singular($after);
+                if ($after !== $before) {
+                    $out = str_replace($before, $after, $out);
+                }
             }
         }
     }
@@ -293,6 +301,33 @@ function zone_black_magic_filterer($path, $relative = false)
 }
 
 /**
+ * Find the filebase-relative path of a Comcode page.
+ *
+ * @param  LANGUAGE_NAME $lang The language most preferable
+ * @param  ID_TEXT $file The page name
+ * @param  ID_TEXT $zone The zone
+ * @return array A triple: The file base, The path (blank: not found), Combined path (blank: not found)
+ */
+function find_comcode_page($lang, $file, $zone)
+{
+    $file_path = zone_black_magic_filterer(filter_naughty($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $file . '.txt'), true);
+    if ((!is_file(get_file_base() . '/' . $file_path)) && (!is_file(get_custom_file_base() . '/' . $file_path))) {
+        $page_request = _request_page($file, $zone);
+        if ($page_request === false || strpos($page_request[0], 'COMCODE') === false) {
+            return array(get_file_base(), '', '');
+        }
+        $file_path = $page_request[count($page_request) - 1];
+    }
+
+    $file_base = get_custom_file_base();
+    if (!is_file($file_base . '/' . $file_path)) {
+        $file_base = get_file_base();
+    }
+
+    return array($file_base, $file_path, ($file_path == '') ? '' : ($file_base . '/' . $file_path));
+}
+
+/**
  * Get the name of the zone the current page request is coming from.
  *
  * @return ID_TEXT The current zone
@@ -348,7 +383,7 @@ function load_redirect_cache()
     if (addon_installed('redirects_editor')) {
         $redirect = persistent_cache_get(array('REDIRECT', $_zone));
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them ,array('r_from_zone'=>$_zone)*/);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
             persistent_cache_set(array('REDIRECT', $_zone), $redirect);
         }
         foreach ($redirect as $r) {
@@ -369,39 +404,40 @@ function load_redirect_cache()
  * @param  ?string $dir2 The special subcategorisation of page we are looking for (e.g. 'EN' for a Comcode page) (null: none)
  * @param  string $ftype The file extension for the page type
  * @param  boolean $error Whether Composr should bomb out if the page was not found
+ * @param  boolean $check_redirects Whether to check against redirects
  * @return ?ID_TEXT The zone the page is in (null: not found)
  */
-function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype = 'php', $error = true)
+function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype = 'php', $error = true, $check_redirects = true)
 {
     $_zone = get_zone_name();
     $zone = $_zone;
 
     global $MODULES_ZONES_CACHE;
-    if ((isset($MODULES_ZONES_CACHE[$zone][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone])) && ($type == 'modules')/*don't want to look at cached failure for different page type*/)) {
-        return $MODULES_ZONES_CACHE[$zone][$module_name];
+    if ((isset($MODULES_ZONES_CACHE[$zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone][$type])) && ($type == 'modules')/*don't want to look at cached failure for different page type*/)) {
+        return $MODULES_ZONES_CACHE[$zone][$type][$module_name];
     }
 
     $error = false; // hack for now
 
     if (($module_name == get_page_name()) && (running_script('index')) && ($module_name != 'login')) {
-        $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+        $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
         return $zone;
     }
 
     if (get_value('allow_admin_in_other_zones') !== '1') {
         if (($type == 'modules') && (substr($module_name, 0, 6) == 'admin_')) {
             $zone = 'adminzone';
-            $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+            $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             return $zone;
         }
         if (($type == 'modules') && (substr($module_name, 0, 4) == 'cms_')) {
             $zone = 'cms';
-            $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+            $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             return $zone;
         }
     }
 
-    $check_redirects = (get_value('no_priority_redirects') !== '1');
+    $check_redirects = $check_redirects && (get_value('no_priority_redirects') !== '1');
 
     global $REDIRECT_CACHE;
     if ($check_redirects && $REDIRECT_CACHE === null) {
@@ -416,7 +452,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     }
     foreach ($first_zones as $zone) {
         if (($check_redirects) && ((isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 1) || (isset($REDIRECT_CACHE['*'][$module_name])) && ($REDIRECT_CACHE['*'][$module_name]['r_is_transparent'] == 1))) { // Only needs to actually look for redirections in first zones until end due to the way precedences work (we know the current zone will be in the first zones)
-            $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+            $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
             }
@@ -429,7 +465,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
             if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] == $module_name)) {
                 $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
             }
-            $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+            $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
             }
@@ -446,7 +482,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
                 if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] == $module_name)) {
                     $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
                 }
-                $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+                $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
                 if (function_exists('persistent_cache_set')) {
                     persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
                 }
@@ -457,7 +493,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
 
     foreach ($zones as $zone) { // Okay, finally check for redirects
         if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 1)) {
-            $MODULES_ZONES_CACHE[$_zone][$module_name] = $zone;
+            $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
             }
@@ -466,7 +502,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     }
 
     if (!$error) {
-        $MODULES_ZONES_CACHE[$zone][$module_name] = null;
+        $MODULES_ZONES_CACHE[$zone][$type][$module_name] = null;
         return null;
     }
     warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', $module_name));
@@ -554,8 +590,8 @@ function load_minimodule_page($string, &$out = null)
         $PAGE_STRING = $string;
     }
 
-    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out!==NULL))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
-        $out->evaluate_echo(NULL,true);*/
+    /*if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null))  Actually we cannot do this, as some minimodules don't return HTML and exit themselves (e.g. CSV downloads)
+        $out->evaluate_echo(null, true);*/
 
     return _load_mini_code($string);
 }
@@ -567,6 +603,8 @@ function load_minimodule_page($string, &$out = null)
  * @param  PATH $string The relative path to the code file
  * @param  ?array $map The block parameters (null: none)
  * @return Tempcode The result of executing the code
+ *
+ * @ignore
  */
 function _load_mini_code($string, $map = null)
 {
@@ -726,16 +764,16 @@ function load_module_page($string, $codename, &$out = null)
         }
 
         if (($GLOBALS['OUTPUT_STREAMING']) && ($out !== null)) {
-            /*if (strpos($string,'_custom/')!==false)    Breaks output streaming
-            {
-                    $_out=$out->evaluate();
-                    _solemnly_leave($_out);
-                    if (!has_solemnly_declared(I_UNDERSTAND_XSS))
-                    {
-                            $out=make_string_tempcode($_out);
-                    }
-                    _solemnly_enter();
-            }*/
+            /* Breaks output streaming
+            if (strpos($string, '_custom/') !== false) {
+                $_out = $out->evaluate();
+                _solemnly_leave($_out);
+                if (!has_solemnly_declared(I_UNDERSTAND_XSS)) {
+                    $out = make_string_tempcode($_out);
+                }
+                _solemnly_enter();
+            }
+            */
 
             $out->evaluate_echo(null, true);
         }
@@ -882,6 +920,8 @@ function module_installed($module)
  * @param  ID_TEXT $zone The zone name
  * @param  ID_TEXT $module The module name
  * @return PATH The module path
+ *
+ * @ignore
  */
 function _get_module_path($zone, $module)
 {
@@ -896,7 +936,7 @@ function _get_module_path($zone, $module)
  * Get an array of all the hook implementations for a hook class.
  *
  * @param  ID_TEXT $type The type of hook
- * @set    blocks modules systems
+ * @set    blocks endpoints modules systems
  * @param  ID_TEXT $entry The hook class to find hook implementations for (e.g. the name of a module)
  * @return array A map of hook implementation name to [sources|sources_custom]
  */
@@ -920,7 +960,7 @@ function find_all_hooks($type, $entry)
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
-            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                 $out[$basename] = 'sources';
             }
         }
@@ -932,7 +972,7 @@ function find_all_hooks($type, $entry)
         if ($dh !== false) {
             foreach ($dh as $file) {
                 $basename = basename($file, '.php');
-                if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#',$basename)!=0) Let's trust - performance*/) {
+                if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                     $out[$basename] = 'sources_custom';
                 }
             }
@@ -940,7 +980,7 @@ function find_all_hooks($type, $entry)
     }
 
     // Optimisation, so that hooks with same name as our page get loaded first
-    $page = get_param_string('page', '', true);
+    $page = get_param_string('page', '', true); // Not get_page_name for bootstrap order reasons
     if (array_key_exists($page, $out)) {
         $_out = array($page => $out[$page]);
         unset($out[$page]);
@@ -1067,8 +1107,8 @@ function do_block($codename, $map = null, $ttl = null)
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
                         disable_php_memory_limit();
-                        if (function_exists('set_time_limit')) {
-                            @set_time_limit(200);
+                        if (php_function_allowed('set_time_limit')) {
+                            set_time_limit(200);
                         }
                     }
                     if ($new_security_scope) {
@@ -1086,7 +1126,7 @@ function do_block($codename, $map = null, $ttl = null)
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] == '1')/* && (has_cookies())*/) {
-                            $cache = make_string_tempcode(preg_replace('#((\?)|(&(amp;)?))keep\_[^="]*=[^&"]*#', '\2', $cache->evaluate()));
+                            $cache = apply_quick_caching($cache);
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
@@ -1172,6 +1212,71 @@ function do_block($codename, $map = null, $ttl = null)
         restore_output_state(false, true);
     }
     return $cache;
+}
+
+/**
+ * Simplify some Tempcode (losing dynamicness), for the quick cache option.
+ * Includes remove of  contextual URL parameters for neutrality within quick cache.
+ *
+ * @param  Tempcode $_cache Input Tempcode
+ * @return Tempcode Output Tempcode
+ */
+function apply_quick_caching($_cache)
+{
+    $cache = $_cache->evaluate();
+
+    $new_tempcode = new Tempcode();
+    $prior_offset = 0;
+
+    $matches = array();
+    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
+    for ($i = 0; $i < $num_matches; $i++) {
+        $new_offset = $matches[0][$i][1];
+
+        $portion = substr($cache, $prior_offset, $new_offset - $prior_offset);
+        if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
+            ocp_mark_as_escaped($portion);
+        }
+
+        $new_tempcode->attach($portion);
+
+        if ($matches[0][$i][0][0] == '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
+            $keep = symbol_tempcode('KEEP', array('0'), array(ENTITY_ESCAPED));
+        } else { // All parameters are keep_*
+            $keep = symbol_tempcode('KEEP', array('1'), array(ENTITY_ESCAPED));
+        }
+        $new_tempcode->attach($keep);
+
+        $prior_offset = $new_offset + strlen($matches[0][$i][0]);
+    }
+
+    $portion = substr($cache, $prior_offset);
+    if ($portion !='') {
+        if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
+            ocp_mark_as_escaped($portion);
+        }
+
+        $new_tempcode->attach($portion);
+    }
+
+    return $new_tempcode;
+}
+
+/**
+ * Get Comcode used for a block to submit back to itself via AJAX.
+ *
+ * @param  array $map The parameters
+ * @return string Parameters for a Comcode block tag
+ */
+function get_block_ajax_submit_map($map)
+{
+    $map_comcode = '';
+    foreach ($map as $key => $val) {
+        if ($key != 'defer') {
+            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
+        }
+    }
+    return $map_comcode;
 }
 
 /**
@@ -1401,6 +1506,8 @@ function do_block_get_cache_identifier($cache_on, $map)
  *
  * @param  ID_TEXT $block The name of the block
  * @return PATH The path to the block
+ *
+ * @ignore
  */
 function _get_block_path($block)
 {
@@ -1561,7 +1668,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
 
     global $ARB_COUNTER;
 
-    $r = preg_replace('#[^\w]#', '', basename($path, '.php')) . strval(mt_rand(0, 100000)) . '_' . strval($ARB_COUNTER);
+    $r = preg_replace('#[^\w]#', '', basename($path, '.php')) . strval(mt_rand(0, mt_getrandmax())) . '_' . strval($ARB_COUNTER);
     $ARB_COUNTER++;
     $out = array();
     $_params = '';
@@ -1575,7 +1682,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             if (is_string($param)) {
                 $_params .= '\'' . str_replace('\'', '\\\'', $param) . '\'';
             } elseif ($param === null) {
-                $_params .= 'NULL';
+                $_params .= 'null';
             } elseif (is_bool($param)) {
                 $_params .= $param ? 'true' : 'false';
             } else {

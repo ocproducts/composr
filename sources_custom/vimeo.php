@@ -453,7 +453,7 @@ class phpVimeo
             // Create pieces
             $number_of_chunks = intval(ceil(filesize($file_path) / $size));
             for ($i = 0; $i < $number_of_chunks; $i++) {
-                $chunk_file_path = cms_tempnam('vimeochunking');
+                $chunk_file_path = cms_tempnam();
 
                 // Break it up
                 $chunk = file_get_contents($file_path, false, null, $i * $size, $size);

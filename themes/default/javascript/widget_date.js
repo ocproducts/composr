@@ -192,9 +192,9 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         $dateBtn.appendTo(calendarContainer);
         $calendarDiv.appendTo(calendarContainer);
         $calendarDiv.datepicker({
-          dayNames: ['{!dates:SATURDAY;}','{!dates:SUNDAY;}','{!dates:MONDAY;}','{!dates:TUESDAY;}','{!dates:WEDNESDAY;}','{!dates:THURSDAY;}','{!dates:FRIDAY;}'],
-          dayNamesMin: ['{$SUBSTR,{!dates:SATURDAY;},0,2}','{$SUBSTR,{!dates:SUNDAY;},0,2}','{$SUBSTR,{!dates:MONDAY;},0,2}','{$SUBSTR,{!dates:TUESDAY;},0,2}','{$SUBSTR,{!dates:WEDNESDAY;},0,2}','{$SUBSTR,{!dates:THURSDAY;},0,2}','{$SUBSTR,{!dates:FRIDAY;},0,2}'],
-          dayNamesShort: ['{$SUBSTR,{!dates:SATURDAY;},0,3}','{$SUBSTR,{!dates:SUNDAY;},0,3}','{$SUBSTR,{!dates:MONDAY;},0,3}','{$SUBSTR,{!dates:TUESDAY;},0,3}','{$SUBSTR,{!dates:WEDNESDAY;},0,3}','{$SUBSTR,{!dates:THURSDAY;},0,3}','{$SUBSTR,{!dates:FRIDAY;},0,3}'],
+          dayNames: ['{!dates:SUNDAY;}','{!dates:MONDAY;}','{!dates:TUESDAY;}','{!dates:WEDNESDAY;}','{!dates:THURSDAY;}','{!dates:FRIDAY;}','{!dates:SATURDAY;}'],
+          dayNamesMin: ['{$SUBSTR,{!dates:SUNDAY;},0,2}','{$SUBSTR,{!dates:MONDAY;},0,2}','{$SUBSTR,{!dates:TUESDAY;},0,2}','{$SUBSTR,{!dates:WEDNESDAY;},0,2}','{$SUBSTR,{!dates:THURSDAY;},0,2}','{$SUBSTR,{!dates:FRIDAY;},0,2}','{$SUBSTR,{!dates:SATURDAY;},0,2}'],
+          dayNamesShort: ['{$SUBSTR,{!dates:SUNDAY;},0,3}','{$SUBSTR,{!dates:MONDAY;},0,3}','{$SUBSTR,{!dates:TUESDAY;},0,3}','{$SUBSTR,{!dates:WEDNESDAY;},0,3}','{$SUBSTR,{!dates:THURSDAY;},0,3}','{$SUBSTR,{!dates:FRIDAY;},0,3}','{$SUBSTR,{!dates:SATURDAY;},0,3}'],
           monthNames: ['{!dates:JANUARY;}','{!dates:FEBRUARY;}','{!dates:MARCH;}','{!dates:APRIL;}','{!dates:MAY;}','{!dates:JUNE;}','{!dates:JULY;}','{!dates:AUGUST;}','{!dates:SEPTEMBER;}','{!dates:OCTOBER;}','{!dates:NOVEMBER;}','{!dates:DECEMBER;}'],
           monthNamesShort: ['{$SUBSTR,{!dates:JANUARY;},0,3}','{$SUBSTR,{!dates:FEBRUARY;},0,3}','{$SUBSTR,{!dates:MARCH;},0,3}','{$SUBSTR,{!dates:APRIL;},0,3}','{$SUBSTR,{!dates:MAY;},0,3}','{$SUBSTR,{!dates:JUNE;},0,3}','{$SUBSTR,{!dates:JULY;},0,3}','{$SUBSTR,{!dates:AUGUST;},0,3}','{$SUBSTR,{!dates:SEPTEMBER;},0,3}','{$SUBSTR,{!dates:OCTOBER;},0,3}','{$SUBSTR,{!dates:NOVEMBER;},0,3}','{$SUBSTR,{!dates:DECEMBER;},0,3}'],
           prevText: '{!PREVIOUS;}',

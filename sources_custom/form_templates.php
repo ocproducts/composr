@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    workflows
  */
 
 /**
@@ -74,7 +75,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
         $out = array();
         foreach ($_option[0] as $option) {
             // $disabled has been added to the API, so we must emulate the
-            // previous behaviour if it isn't supplied (ie. $disabled='0')
+            // previous behaviour if it isn't supplied (ie. $disabled == '0')
             if (count($option) == 4) {
                 list($pretty_name, $name, $value, $_description) = $option;
                 $disabled = '0';

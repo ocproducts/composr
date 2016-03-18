@@ -2,7 +2,7 @@
 
 /* Form editing code (mostly stuff only used on posting forms) */
 
-require_javascript('ajax');
+require_javascript('ajax',window.do_ajax_request);
 
 // ===========
 // ATTACHMENTS
@@ -17,16 +17,23 @@ function add_attachment(start_num,posting_field_name)
 
 	window.num_attachments++;
 
-	var new_div=document.createElement('div');
-	set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
-	add_to.appendChild(new_div);
-	document.getElementById('file'+window.num_attachments).setAttribute('unselectable','on');
-
-	if (window.num_attachments==window.max_attachments)
+	// Add new file input, if we are using naked file inputs
+	if (window.attachment_template.replace(/\s/,'')!='')
 	{
-		var btn=document.getElementById('add_another_button');
-		if (btn) btn.disabled=true;
+		var new_div=document.createElement('div');
+		set_inner_html(new_div,window.attachment_template.replace(/\_\_num_attachments\_\_/g,window.num_attachments));
+		add_to.appendChild(new_div);
 	}
+
+	// Rebuild uploader button, if we have a singular button
+	if (typeof window.rebuild_attachment_button_for_next!='undefined')
+	{
+		rebuild_attachment_button_for_next(posting_field_name);
+	}
+
+	// Previous file input cannot be used anymore, if it exists
+	var element=document.getElementById('file'+window.num_attachments);
+	if (element) element.setAttribute('unselectable','on');
 
 	if (typeof window.trigger_resize!='undefined') trigger_resize();
 }
@@ -36,7 +43,7 @@ function attachment_present(post_value,number)
 	return !(post_value.indexOf('[attachment]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="1"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="1"]new_'+number+'[/attachment_safe]')==-1) && (post_value.indexOf('[attachment thumb="0"]new_'+number+'[/attachment]')==-1) && (post_value.indexOf('[attachment_safe thumb="0"]new_'+number+'[/attachment_safe]')==-1);
 }
 
-function set_attachment(field_name,number,filename,multi)
+function set_attachment(field_name,number,filename,multi,uploader_settings)
 {
 	if (typeof multi=='undefined') multi=false;
 
@@ -55,7 +62,7 @@ function set_attachment(field_name,number,filename,multi)
 	}
 
 	var post_value=get_textbox(post);
-	var done=attachment_present(post.value,number) || attachment_present(post_value,number) || (tmp_form.getAttribute('itemtype')=='http://schema.org/ContactPage');
+	var done=attachment_present(post.value,number) || attachment_present(post_value,number);
 	if (!done)
 	{
 		var filepath=filename;
@@ -63,6 +70,7 @@ function set_attachment(field_name,number,filename,multi)
 		{
 			filepath=document.getElementById('file'+number).value;
 		}
+
 		if (filepath=='')
 			return; // Upload error
 
@@ -73,6 +81,15 @@ function set_attachment(field_name,number,filename,multi)
 		var is_audio=(',{$CONFIG_OPTION;,valid_audios},'.indexOf(','+ext+',')!=-1);
 		var is_archive=(ext=='tar') || (ext=='zip');
 
+		var prefix='',suffix='';
+		if (multi && is_image)
+		{
+			prefix='[media_set]\n';
+			suffix='[/media_set]';
+		}
+
+		var tag='attachment';
+
 		var show_overlay,defaults={};
 		if (filepath.indexOf('fakepath')==-1) // iPhone gives c:\fakepath\image.jpg, so don't use that
 			defaults.description=filepath; // Default caption to local file path
@@ -80,23 +97,22 @@ function set_attachment(field_name,number,filename,multi)
 
 		if (!show_overlay)
 		{
-			var comcode='[attachment';
+			var comcode='['+tag;
 			for (var key in defaults)
 			{
 				comcode+=' '+key+'="'+(defaults[key].replace(/"/g,'\\"'))+'"';
 			}
-			comcode+=']new_'+number+'[/attachment]';
+			comcode+=']new_'+number+'[/'+tag+']';
+			if (prefix!='') insert_textbox(post,prefix);
 			if (multi)
 			{
 				var split_filename=document.getElementById('txtFileName_file'+window.num_attachments).value.split(/:/);
-				for (var i=1;i<split_filename.length;i++)
+				for (var i=0;i<split_filename.length;i++)
 				{
-					window.num_attachments++;
-					//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped
+					if (i!=0) window.num_attachments++;
 					insert_textbox(
 						post,
-						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'['),
-						document.selection?document.selection:null
+						comcode.replace(']new_'+number+'[',']new_'+window.num_attachments+'[')
 					);
 				}
 				number=''+(window.parseInt(number)+split_filename.length-1);
@@ -115,6 +131,19 @@ function set_attachment(field_name,number,filename,multi)
 					add_attachment(window.num_attachments+1,field_name);
 				}
 			}
+			if (suffix!='') insert_textbox(post,suffix);
+
+			if (typeof uploader_settings!='undefined')
+			{
+				uploader_settings.callbacks.push(function() {
+					// Do insta-preview
+					if (is_wysiwyg_field(post))
+					{
+						generate_background_preview(post);
+					}
+				});
+			}
+
 			return;
 		}
 
@@ -124,18 +153,11 @@ function set_attachment(field_name,number,filename,multi)
 		var url='{$FIND_SCRIPT;,comcode_helper}';
 		url+='?field_name='+field_name;
 		url+='&type=step2';
-		url+='&tag='+(is_image?'attachment_safe':'attachment');
+		url+='&tag='+tag;
 		url+='&default=new_'+number;
-		if (multi || is_image) url+='&default_framed=0';
 		url+='&is_image='+(is_image?'1':'0');
 		url+='&is_archive='+(is_archive?'1':'0');
 		url+='&multi='+(multi?'1':'0');
-		var prefix='',suffix='';
-		if (multi && is_image)
-		{
-			prefix='[media_set]\n';
-			suffix='[/media_set]';
-		}
 		url+='&prefix='+prefix;
 		if (wysiwyg) url+='&in_wysiwyg=1';
 		for (var key in defaults)
@@ -161,7 +183,6 @@ function set_attachment(field_name,number,filename,multi)
 							for (var i=1;i<split_filename.length;i++)
 							{
 								window.num_attachments++;
-								//insert_textbox(post,"\n\n",null,true,"<br /><br />"); // Not sure why but one break gets stripped	 Don't want this on new UI
 								var tmp=window.insert_comcode_tag(']new_'+number+'[',']new_'+window.num_attachments+'[',true);
 								comcode_semihtml+=tmp[0];
 								comcode+=tmp[1];
@@ -199,7 +220,7 @@ function set_attachment(field_name,number,filename,multi)
 					}
 				}
 			);
-		},800 ); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
+		},800); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
 	} else
 	{
 		// Add field for next one
@@ -246,7 +267,7 @@ function do_input_code(field_name)
 
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
-	insert_textbox_wrapping(post,'codebox','');
+	insert_textbox_wrapping(post,(post.name=='message')?'tt':'codebox','');
 }
 
 function do_input_quote(field_name)
@@ -256,7 +277,7 @@ function do_input_quote(field_name)
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
 	window.fauxmodal_prompt(
-		'{!ENTER_QUOTE_BY;^}',
+		'{!javascript:ENTER_QUOTE_BY;^}',
 		'',
 		function(va)
 		{
@@ -273,7 +294,7 @@ function do_input_box(field_name)
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
 	window.fauxmodal_prompt(
-		'{!ENTER_BOX_TITLE;^}',
+		'{!javascript:ENTER_BOX_TITLE;^}',
 		'',
 		function(va)
 		{
@@ -288,14 +309,14 @@ function do_input_menu(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_MENU_NAME;^,'+(document.getElementById(field_name).form.menu_items.value)+'}',
+		'{!javascript:ENTER_MENU_NAME;^,'+(document.getElementById(field_name).form.menu_items.value)+'}',
 		'',
 		function(va)
 		{
 			if (va)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_MENU_CAPTION;^}',
+					'{!javascript:ENTER_MENU_CAPTION;^}',
 					'',
 					function(vb)
 					{
@@ -325,11 +346,87 @@ function do_input_block(field_name)
 
 function do_input_comcode(field_name,tag)
 {
+	var attributes={};
+	var default_embed=null;
+	var save_to_id=null;
+
+	if (tag==null)
+	{
+		var element=document.getElementById(field_name);
+		if (is_wysiwyg_field(element))
+		{
+			var selection=wysiwyg_editors[field_name].getSelection();
+			var ranges=selection.getRanges();
+			if (typeof ranges[0]!='undefined')
+			{
+				var comcode_element=ranges[0].startContainer.$;
+				do
+				{
+					var matches=comcode_element.nodeName.toLowerCase().match(/^comcode-(\w+)/);
+					if (matches!==null)
+					{
+						tag=matches[1];
+
+						for (var i=0;i<comcode_element.attributes.length;i++)
+						{
+							if (comcode_element.attributes[i].name!='id')
+							{
+								attributes[comcode_element.attributes[i].name]=comcode_element.attributes[i].value;
+							}
+						}
+
+						default_embed=get_inner_html(comcode_element);
+
+						if (comcode_element.id=='')
+						{
+							comcode_element.id='comcode_'+Date.now();
+						}
+						save_to_id=comcode_element.id;
+
+						break;
+					}
+
+					comcode_element=comcode_element.parentNode;
+				}
+				while (comcode_element!==null);
+			}
+		}
+	}
+
 	if ((typeof window.event!='undefined') && (window.event)) window.event.returnValue=false;
-	var url='{$FIND_SCRIPT;,comcode_helper}?field_name='+field_name;
-	if (tag) url+='&type=step2&tag='+tag;
+
+	var url='{$FIND_SCRIPT;,comcode_helper}?field_name='+window.encodeURIComponent(field_name);
+	if (tag)
+	{
+		url+='&tag='+window.encodeURIComponent(tag);
+	}
+	if (default_embed!==null)
+	{
+		url+='&type=replace';
+	} else
+	{
+		if (tag==null)
+		{
+			url+='&type=step1';
+		} else {
+			url+='&type=step2';
+		}
+	}
 	if (is_wysiwyg_field(document.getElementById(field_name))) url+='&in_wysiwyg=1';
+	for (var key in attributes)
+	{
+		url+='&default_'+key+'='+window.encodeURIComponent(attributes[key]);
+	}
+	if (default_embed!==null)
+	{
+		url+='&default='+window.encodeURIComponent(default_embed);
+	}
+	if (save_to_id!==null)
+	{
+		url+='&save_to_id='+window.encodeURIComponent(save_to_id);
+	}
 	url+=keep_stub();
+
 	window.faux_open(maintain_theme_in_link(url),'','width=750,height=auto,status=no,resizable=yes,scrollbars=yes',null,'{!INPUTSYSTEM_CANCEL;}');
 }
 
@@ -343,7 +440,7 @@ function do_input_list(field_name,add)
 	post=ensure_true_id(post,field_name);
 	insert_textbox(post,'\n');
 	window.fauxmodal_prompt(
-		'{!ENTER_LIST_ENTRY;^}',
+		'{!javascript:ENTER_LIST_ENTRY;^}',
 		'',
 		function(va)
 		{
@@ -378,14 +475,14 @@ function do_input_hide(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_WARNING;^}',
+		'{!javascript:ENTER_WARNING;^}',
 		'',
 		function(va)
 		{
 			if (va)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_HIDDEN_TEXT;^}',
+					'{!javascript:ENTER_HIDDEN_TEXT;^}',
 					'',
 					function(vb)
 					{
@@ -393,7 +490,7 @@ function do_input_hide(field_name)
 						element=ensure_true_id(element,field_name);
 						if (vb)
 						{
-							insert_textbox(element,'<hide><hideTitle>'+va+'</hideTitle>'+escape_html(vb)+'</hide>');
+							insert_textbox(element,'[hide=\"'+escape_comcode(va)+'\"]'+escape_comcode(vb)+'[/hide]');
 						}
 					},
 					'{!comcode:INPUT_COMCODE_hide;^}'
@@ -408,28 +505,36 @@ function do_input_thumb(field_name,va)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 
+	if (typeof window.start_simplified_upload!='undefined' && document.getElementById(field_name).name!='message')
+	{
+		var test=start_simplified_upload(field_name);
+		if (test) return;
+	}
+
 	window.fauxmodal_prompt(
-		'{!ENTER_URL;^}',
+		'{!javascript:ENTER_URL;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_thumb(field_name,va);
+				window.fauxmodal_alert('{!javascript:NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va)
 			{
 				generate_question_ui(
-					'{!THUMB_OR_IMG_2;^}',
+					'{!javascript:THUMB_OR_IMG_2;^}',
 					{buttons__thumbnail: '{!THUMBNAIL;^}',buttons__fullsize: '{!IMAGE;^}'},
-					'{!_ATTACHMENT;^}',
+					'{!comcode:INPUT_COMCODE_img;^}',
 					null,
 					function(vb)
 					{
 						window.fauxmodal_prompt(
-							'{!ENTER_IMAGE_CAPTION;^}',
+							'{!javascript:ENTER_IMAGE_CAPTION;^}',
 							'',
 							function(vc)
 							{
@@ -447,8 +552,7 @@ function do_input_thumb(field_name,va)
 							},
 							'{!comcode:INPUT_COMCODE_img;^}'
 						);
-					},
-					'{!comcode:INPUT_COMCODE_img;^}'
+					}
 				);
 			}
 		},
@@ -461,13 +565,13 @@ function do_input_attachment(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_ATTACHMENT;^}',
+		'{!javascript:ENTER_ATTACHMENT;^}',
 		'',
 		function(va)
 		{
 			if (!is_integer(va))
 			{
-				window.fauxmodal_alert('{!NOT_VALID_ATTACHMENT;^}');
+				window.fauxmodal_alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
 			} else
 			{
 				var element=document.getElementById(field_name);
@@ -484,20 +588,22 @@ function do_input_url(field_name,va)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_URL;^}',
+		'{!javascript:ENTER_URL;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}');
-				return do_input_url(field_name,va);
+				window.fauxmodal_alert('{!javascript:NOT_A_URL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_LINK_NAME;^}',
+					'{!javascript:ENTER_LINK_NAME;^}',
 					'',
 					function(vb)
 					{
@@ -530,7 +636,7 @@ function do_input_page(field_name)
 				if ((typeof result=='undefined') || (result===null)) return;
 
 				window.fauxmodal_prompt(
-					'{!ENTER_CAPTION;^}',
+					'{!javascript:ENTER_CAPTION;^}',
 					'',
 					function(vc)
 					{
@@ -543,14 +649,14 @@ function do_input_page(field_name)
 	} else
 	{
 		window.fauxmodal_prompt(
-			'{!ENTER_ZONE;^}',
+			'{!javascript:ENTER_ZONE;^}',
 			'',
 			function(va)
 			{
 				if (va!==null)
 				{
 					window.fauxmodal_prompt(
-						'{!ENTER_PAGE;^}',
+						'{!javascript:ENTER_PAGE;^}',
 						'',
 						function(vb)
 						{
@@ -559,7 +665,7 @@ function do_input_page(field_name)
 								result=va+':'+vb;
 
 								window.fauxmodal_prompt(
-									'{!ENTER_CAPTION;^}',
+									'{!javascript:ENTER_CAPTION;^}',
 									'',
 									function(vc)
 									{
@@ -589,20 +695,22 @@ function do_input_email(field_name,va)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_ADDRESS;^}',
+		'{!javascript:ENTER_ADDRESS;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('@')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_EMAIL;^}');
-				return do_input_email(field_name,va);
+				window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;^}',function() {
+					do_input_url(field_name,va);
+				});
+				return;
 			}
 
 			if (va!==null)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_CAPTION;^}',
+					'{!javascript:ENTER_CAPTION;^}',
 					'',
 					function(vb)
 					{
@@ -648,7 +756,7 @@ function do_input_font(field_name)
 	var colour=form.elements['f_colour'];
 	if ((face.value=='') && (size.value=='') && (colour.value==''))
 	{
-		window.fauxmodal_alert('{!NO_FONT_SELECTED;^}');
+		window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
 		return;
 	}
 	insert_textbox_wrapping(document.getElementById(field_name),'[font=\"'+escape_comcode(face.value)+'\" color=\"'+escape_comcode(colour.value)+'\" size=\"'+escape_comcode(size.value)+'\"]','[/font]');
@@ -688,6 +796,10 @@ The advantage of remove saving is you can switch machines.
 function init_form_saving(form_id)
 {
 	window.last_autosave=new Date();
+
+	{+START,IF,{$DEV_MODE}}
+		if (typeof console.log!='undefined') console.log('Initialising auto-save subsystem');
+	{+END}
 
 	// Go through all forms/elements
 	var form=document.getElementById(form_id);
@@ -729,6 +841,15 @@ function init_form_saving(form_id)
 					{
 						biggest_length_data=value;
 					}
+
+					{+START,IF,{$DEV_MODE}}
+						if (typeof console.log!='undefined') console.log('+ Has autosave for '+element_name+' ('+autosave_name+')');
+					{+END}
+				} else
+				{
+					{+START,IF,{$DEV_MODE}}
+						//if (typeof console.log!='undefined') console.log('- Has no autosave for '+element_name);
+					{+END}
 				}
 			}
 
@@ -736,17 +857,37 @@ function init_form_saving(form_id)
 			{
 				_restore_form_autosave(form,fields_to_do,biggest_length_data);
 				return; // If we had it locally, we won't let it continue on to try via AJAX
+			} else
+			{
+				{+START,IF,{$DEV_MODE}}
+					if (typeof console.log!='undefined') console.log('No auto-save, fields found was '+fields_to_do_counter+', largest length was '+biggest_length_data.length);
+				{+END}
 			}
 		}
+	} else
+	{
+		{+START,IF,{$DEV_MODE}}
+			if (typeof console.log!='undefined') console.log('Nothing in local storage');
+		{+END}
 	}
 
 	// Load via AJAX (if issue happened on another machine, or if we do not support local storage)
 	if (navigator.onLine)
 	{
+		{+START,IF,{$DEV_MODE}}
+			if (typeof console.log!='undefined') console.log('Searching AJAX for auto-save');
+		{+END}
+
 		var url='{$FIND_SCRIPT;,autosave}?type=retrieve';
 		url+='&stem='+window.encodeURIComponent(get_autosave_url_stem());
 		url+=keep_stub();
-		var callback=function(form) { return function(result) { _retrieve_form_autosave(result,form); } }(form);
+		var callback=function(form) { return function(result) {
+			{+START,IF,{$DEV_MODE}}
+				if (typeof console.log!='undefined') console.log('AJAX says',result);
+			{+END}
+
+			_retrieve_form_autosave(result,form);
+		} }(form);
 		do_ajax_request(url,callback);
 	}
 }
@@ -788,6 +929,11 @@ function _retrieve_form_autosave(result,form)
 	if ((fields_to_do_counter!=0) && (biggest_length_data.length>25))
 	{
 		_restore_form_autosave(form,fields_to_do,biggest_length_data);
+	} else
+	{
+		{+START,IF,{$DEV_MODE}}
+			if (typeof console.log!='undefined') console.log('No auto-save, fields found was '+fields_to_do_counter+', largest length was '+biggest_length_data.length);
+		{+END}
 	}
 }
 
@@ -810,10 +956,7 @@ function _restore_form_autosave(form,fields_to_do,biggest_length_data)
 
 					if (typeof form.elements[key]!='undefined')
 					{
-						if (typeof console.log!='undefined')
-						{
-							console.log('Restoring '+key);
-						}
+						if (typeof console.log!='undefined') console.log('Restoring '+key);
 						clever_set_value(form,form.elements[key],fields_to_do[key]);
 					}
 				}
@@ -929,6 +1072,10 @@ function handle_form_saving_explicit(event,form)
 {
 	if (event.keyCode==83/*s*/ && (navigator.platform.match('Mac')?event.metaKey:event.ctrlKey) && (!navigator.platform.match('Mac')?event.ctrlKey:event.metaKey) && (!event.altKey))
 	{
+		{+START,IF,{$DEV_MODE}}
+			if (typeof console.log!='undefined') console.log('Doing explicit auto-save');
+		{+END}
+
 		event.preventDefault(); // Prevent browser save dialog
 
 		// Go through al fields to save
@@ -958,8 +1105,8 @@ function handle_form_saving_explicit(event,form)
 				do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() {
 					if (document.body.style.cursor=='wait') document.body.style.cursor='';
 
-					var message=found_validated_field?'{!DRAFT_SAVED_WITH_VALIDATION;^}':'{!DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-					fauxmodal_alert(message,null,'{!DRAFT_SAVE;^}');
+					var message=found_validated_field?'{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}':'{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
+					fauxmodal_alert(message,null,'{!javascript:DRAFT_SAVE;^}');
 				},post);
 			}
 		}
@@ -976,6 +1123,10 @@ function handle_form_saving(event,element,force)
 		// Save remotely
 		if (navigator.onLine)
 		{
+			{+START,IF,{$DEV_MODE}}
+				if (typeof console.log!='undefined') console.log('Doing AJAX auto-save');
+			{+END}
+
 			do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() { },post);
 		}
 	}
@@ -1009,7 +1160,8 @@ function _handle_form_saving(event,element,force)
 	}
 
 	// Mark it as saved, so the server can clear it out when we submit, signally local storage should get deleted too
-	var autosave_name=get_autosave_name((typeof element.name=='undefined')?element[0].name:element.name);
+	var element_name=(typeof element.name=='undefined')?element[0].name:element.name;
+	var autosave_name=get_autosave_name(element_name);
 	set_cookie(encodeURIComponent(get_autosave_url_stem()),'1',0.167/*4 hours*/);
 
 	window.last_autosave=this_date;
@@ -1017,6 +1169,10 @@ function _handle_form_saving(event,element,force)
 	// Save locally
 	if (typeof window.localStorage!='undefined')
 	{
+		{+START,IF,{$DEV_MODE}}
+			if (typeof console.log!='undefined') console.log('Doing local storage auto-save for '+element_name+' ('+autosave_name+')');
+		{+END}
+
 		localStorage.setItem(autosave_name,value);
 	}
 

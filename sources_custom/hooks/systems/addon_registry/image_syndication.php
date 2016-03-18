@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_image_syndication
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -170,10 +171,9 @@ class Hook_addon_registry_image_syndication
             'sources_custom/photobucket/PBAPI/Response/xmlserializer.php',
             'sources_custom/photobucket/PBAPI/Response.php',
             'sources_custom/photobucket/PBAPI.php',
-            'sources_custom/hooks/systems/upload_syndication/index.html',
             'sources_custom/hooks/systems/upload_syndication/photobucket.php',
             'sources_custom/hooks/systems/config/photobucket_client_id.php',
-            'sources_custom/hooks/systems/config/photobucket_client_secret.php ',
+            'sources_custom/hooks/systems/config/photobucket_client_secret.php',
             'lang_custom/EN/video_syndication_photobucket.ini',
         );
     }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -52,12 +52,11 @@ require($FILE_BASE . '/sources/global.php');
 prepare_for_known_ajax_response();
 
 header('Content-type: text/javascript; charset=' . get_charset());
-$lang = get_param_string('lang', '');
-if ($lang != '') {
-    require_lang($lang);
-}
 $script = get_param_string('script');
 safe_ini_set('ocproducts.xss_detect', '0');
 if ($script != '') {
-    echo file_get_contents(javascript_enforce(filter_naughty_harsh($script)));
+    $path = javascript_enforce(filter_naughty_harsh($script));
+    if ($path != '') {
+        echo file_get_contents($path);
+    }
 }

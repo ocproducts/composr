@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,7 +22,7 @@
  * Outputs the shoutbox iframe.
  *
  * @param  boolean $ret Whether to get the output instead of outputting it directly
- * @param  ?AUTO_LINK $room_id Chat room ID (null: read from environment)
+ * @param  ?AUTO_LINK $room_id Chatroom ID (null: read from environment)
  * @param  ?integer $num_messages The maximum number of messages to show (null: read from environment)
  * @return ?object Output (null: outputted it already)
  */
@@ -40,18 +40,16 @@ function shoutbox_script($ret = false, $room_id = null, $num_messages = null)
     require_code('chat');
     require_css('chat');
 
-// if (is_guest()) return; // No guests
-
     if (is_null($room_id)) {
-        $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*,'room_language'=>user_lang()*/));
+        $room_id = $GLOBALS['SITE_DB']->query_select_value_if_there('chat_rooms', 'MIN(id)', array('is_im' => 0/*, 'room_language' => user_lang()*/));
         if (is_null($room_id)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
         }
     }
 
     $room_check = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('id' => $room_id), '', 1);
     if (!array_key_exists(0, $room_check)) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'chat'));
     }
     if (!check_chatroom_access($room_check[0])) {
         warn_exit(do_lang_tempcode('ACCESS_DENIED__CHATROOM_UNAUTHORISED', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));

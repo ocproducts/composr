@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -65,6 +65,7 @@ class user_test_set extends cms_test_case
             '*', // pt_allow
             '', // pt_rules_text
             null, // on_probation_until
+            null, // auto_mark_read
             null, // join_time
             null, // avatar_url
             null, // signature

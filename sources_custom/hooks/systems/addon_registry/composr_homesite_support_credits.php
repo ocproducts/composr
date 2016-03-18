@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_composr_homesite_support_credits
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -111,7 +112,11 @@ class Hook_addon_registry_composr_homesite_support_credits
             'requires' => array(
                 'tickets',
             ),
-            'recommends' => array(),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_release_build',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }
@@ -145,18 +150,17 @@ class Hook_addon_registry_composr_homesite_support_credits
             'sources_custom/hooks/systems/cns_cpf_filter/customers.php',
             'sources_custom/miniblocks/credit_exps.php',
             'sources_custom/miniblocks/show_credits.php',
+            'themes/default/templates_custom/SHOW_CREDITS_BAR.tpl',
+            'themes/default/templates_custom/CUSTOMER_CREDIT_INFO.tpl',
             'themes/default/templates_custom/BLOCK_CREDIT_EXPS_INNER.tpl',
-            'themes/default/templates_custom/POINTS_PROFILE.tpl',
             'themes/default/templates_custom/SUPPORT_CREDITS_OUTSTANDING_SCREEN.tpl',
-            'sources_custom/hooks/systems/config/support_budget_priority.php',
+            'sources_custom/hooks/systems/config/support_priority_regular_minutes.php',
+            'sources_custom/hooks/systems/config/support_priority_backburner_minutes.php',
             'sources_custom/hooks/systems/config/support_credit_value.php',
-            'sources_custom/hooks/systems/config/support_day_priority.php',
-            'sources_custom/hooks/systems/config/support_emergency_priority.php',
-            'sources_custom/hooks/systems/config/support_high_priority.php',
-            'sources_custom/hooks/systems/config/support_normal_priority.php',
-            'sources_custom/tickets.php',
             'sources_custom/points.php',
             'sources_custom/points3.php',
+            'themes/default/templates_custom/POINTS_PROFILE.tpl',
+            'sources_custom/tickets.php',
             'tracker/.gitignore',
             'tracker/TrackerTables.sql',
             'tracker/account_delete.php',
@@ -225,7 +229,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/bugnote_update.php',
             'tracker/bugnote_view_inc.php',
             'tracker/changelog_page.php',
-            'tracker/configs_inc.php',
             'tracker/config_defaults_inc.php',
             'tracker/config_filter_defaults_inc.php',
             'tracker/config_inc.php',
@@ -264,7 +267,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/core/events_inc.php',
             'tracker/core/excel_api.php',
             'tracker/core/file_api.php',
-            'tracker/core/file_api.php.orig',
             'tracker/core/filter_api.php',
             'tracker/core/form_api.php',
             'tracker/core/gpc_api.php',
@@ -273,7 +275,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/core/history_api.php',
             'tracker/core/html_api.php',
             'tracker/core/http_api.php',
-            'tracker/core/http_api.php.orig',
             'tracker/core/icon_api.php',
             'tracker/core/json_api.php',
             'tracker/core/lang_api.php',
@@ -286,7 +287,6 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/core/plugin_api.php',
             'tracker/core/prepare_api.php',
             'tracker/core/print_api.php',
-            'tracker/core/print_api.php.orig',
             'tracker/core/profile_api.php',
             'tracker/core/projax_api.php',
             'tracker/core/project_api.php',
@@ -1219,6 +1219,9 @@ class Hook_addon_registry_composr_homesite_support_credits
             'tracker/view_user_page.php',
             'tracker/wiki.php',
             'tracker/xmlhttprequest.php',
+            'themes/default/css_custom/tracker.css',
+            'themes/default/templates_custom/MANTIS_TRACKER.tpl',
+            'themes/default/templates_custom/BLOCK_MAIN_MANTIS_TRACKER.tpl',
             'themes/default/images_custom/tracker/credit.png',
             'themes/default/images_custom/tracker/easy.png',
             'themes/default/images_custom/tracker/hard.png',

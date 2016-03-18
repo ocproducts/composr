@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,6 +22,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database()
 {
@@ -54,7 +56,7 @@ function init__database()
     // Create our main database objects
     global $TABLE_LANG_FIELDS_CACHE;
     $TABLE_LANG_FIELDS_CACHE = array();
-    if ((array_key_exists('db_site', $SITE_INFO)) || (array_key_exists('db_site_user', $SITE_INFO))) {
+    if ((!empty($SITE_INFO['db_site'])) || (!empty($SITE_INFO['db_site_user']))) {
         global $SITE_DB;
         /** The connection to the active site database.
          *
@@ -99,14 +101,15 @@ function multi_lang_content()
     global $HAS_MULTI_LANG_CONTENT;
     if ($HAS_MULTI_LANG_CONTENT === null) {
         global $SITE_INFO;
-        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true/*for LEGACY reasons*/
-        ;
+        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true; // For legacy reasons
     }
     return $HAS_MULTI_LANG_CONTENT;
 }
 
 /**
  * Called once our DB connection becomes active.
+ *
+ * @ignore
  */
 function _general_db_init()
 {
@@ -338,7 +341,7 @@ function get_db_type()
 function get_use_persistent()
 {
     global $SITE_INFO;
-    return array_key_exists('use_persistent', $SITE_INFO) ? ($SITE_INFO['use_persistent'] == '1') : false;
+    return (!empty($SITE_INFO['use_persistent'])) ? ($SITE_INFO['use_persistent'] == '1') : false;
 }
 
 /**
@@ -363,7 +366,7 @@ function get_table_prefix()
 function get_db_site_host()
 {
     global $SITE_INFO;
-    return array_key_exists('db_site_host', $SITE_INFO) ? $SITE_INFO['db_site_host'] : 'localhost';
+    return (!empty($SITE_INFO['db_site_host'])) ? $SITE_INFO['db_site_host'] : 'localhost';
 }
 
 /**
@@ -374,7 +377,7 @@ function get_db_site_host()
 function get_db_site()
 {
     global $SITE_INFO;
-    if ((!array_key_exists('db_site', $SITE_INFO)) || ($SITE_INFO['db_site'] === null)) {
+    if (empty($SITE_INFO['db_site'])) {
         return basename(get_file_base());
     }
     return $SITE_INFO['db_site'] . (($GLOBALS['CURRENT_SHARE_USER'] === null) ? '' : ('_' . $GLOBALS['CURRENT_SHARE_USER']));
@@ -389,9 +392,9 @@ function get_db_site_user()
 {
     global $SITE_INFO;
     if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
-        return substr(md5($SITE_INFO['db_forums_user'] . '_' . $GLOBALS['CURRENT_SHARE_USER']), 0, 16);
+        return substr(md5($SITE_INFO['db_site_user'] . '_' . $GLOBALS['CURRENT_SHARE_USER']), 0, 16);
     }
-    return ((array_key_exists('db_site_user', $SITE_INFO)) && ($SITE_INFO['db_site_user'] !== null)) ? $SITE_INFO['db_site_user'] : 'root';
+    return (!empty($SITE_INFO['db_site_user'])) ? $SITE_INFO['db_site_user'] : 'root';
 }
 
 /**
@@ -413,7 +416,7 @@ function get_db_site_password()
 function get_db_forums_host()
 {
     global $SITE_INFO;
-    return array_key_exists('db_forums_host', $SITE_INFO) ? $SITE_INFO['db_forums_host'] : (array_key_exists('db_site_host', $SITE_INFO) ? $SITE_INFO['db_site_host'] : 'localhost');
+    return (!empty($SITE_INFO['db_forums_host'])) ? $SITE_INFO['db_forums_host'] : (!empty($SITE_INFO['db_site_host']) ? $SITE_INFO['db_site_host'] : 'localhost');
 }
 
 /**
@@ -424,7 +427,7 @@ function get_db_forums_host()
 function get_db_forums()
 {
     global $SITE_INFO;
-    if (!array_key_exists('db_forums', $SITE_INFO)) {
+    if (empty($SITE_INFO['db_forums'])) {
         return get_db_site();
     }
     return $SITE_INFO['db_forums'] . (($GLOBALS['CURRENT_SHARE_USER'] === null) ? '' : ('_' . $GLOBALS['CURRENT_SHARE_USER']));
@@ -438,7 +441,7 @@ function get_db_forums()
 function get_db_forums_user()
 {
     global $SITE_INFO;
-    if (!array_key_exists('db_forums_user', $SITE_INFO)) {
+    if (empty($SITE_INFO['db_forums_user'])) {
         return get_db_site_user();
     }
     if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
@@ -469,10 +472,22 @@ function get_db_forums_password()
  */
 function is_on_multi_site_network($db = null)
 {
-    if ($db !== null) {
-        return !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
+    static $cache = null;
+    if (isset($cache)) {
+        return $cache;
     }
-    return ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+
+    if (get_forum_type() == 'none') {
+        $cache = false;
+        return false;
+    }
+
+    if ($db !== null) {
+        $cache = !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
+        return $cache;
+    }
+    $cache = ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
+    return $cache;
 }
 
 /**
@@ -488,7 +503,7 @@ function is_forum_db($db)
         return false;
     }
 
-    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write));
+    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($db->connection_write != $GLOBALS['SITE_DB']->connection_write));
 }
 
 /**
@@ -518,7 +533,7 @@ class DatabaseConnector
      * @param string $db_user The connection username
      * @param string $db_password The connection password
      * @param string $table_prefix The table prefix
-     * @param boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @param ?object         $static Static call object (null: use global static call object)
      */
     public function __construct($db_name, $db_host, $db_user, $db_password, $table_prefix, $fail_ok = false, $static = null)
@@ -574,30 +589,33 @@ class DatabaseConnector
     /**
      * Check if a table exists.
      *
-     * @param  ID_TEXT $tablename The table name
+     * @param  ID_TEXT $table_name The table name
+     * @param  boolean $really Check direct, not using meta-table (if possible)
      * @return boolean Whether it exists
      */
-    public function table_exists($tablename)
+    public function table_exists($table_name, $really = false)
     {
-        /*
-        // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
-
-        $full_tablename=$this->get_table_prefix().$tablename;
-
-        $rows=$this->query("SHOW TABLES LIKE '".$full_tablename."'");
-        foreach ($rows as $row)
-            foreach ($row as $field)
-                    if ($field==$full_tablename) return true;
-        return false;
-        */
-
-        if (array_key_exists($tablename, $this->table_exists_cache)) {
-            return $this->table_exists_cache[$tablename];
+        if ($really && strpos(get_db_type(), 'mysql') !== false) {
+            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
+            $full_table_name = $this->get_table_prefix() . $table_name;
+            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
+            foreach ($rows as $row) {
+                foreach ($row as $field) {
+                    if ($field == $full_table_name) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
-        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $tablename));
-        $this->table_exists_cache[$tablename] = ($test !== null);
-        return $this->table_exists_cache[$tablename];
+        if (array_key_exists($table_name, $this->table_exists_cache)) {
+            return $this->table_exists_cache[$table_name];
+        }
+
+        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
+        $this->table_exists_cache[$table_name] = ($test !== null);
+        return $this->table_exists_cache[$table_name];
     }
 
     /**
@@ -607,7 +625,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields The fields
      * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
-     * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
+     * @param  boolean $skip_null_check Whether to skip the check for null string fields
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
     public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
@@ -692,7 +710,7 @@ class DatabaseConnector
         }
 
         if (count($all_values) == 1) { // usually $all_values only has length of 1
-            if ((in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'))) && (substr(get_db_type(), 0, 5) == 'mysql') && (get_value('enable_delayed_inserts') === '1')) {
+            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) == 'mysql')) {
                 $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             } else {
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
@@ -732,7 +750,7 @@ class DatabaseConnector
 
         $select = '';
         foreach ($select_map as $key) {
-            //if (!is_string($key)) $key=strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
+            //if (!is_string($key)) $key = strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
 
             if ($select != '') {
                 $select .= ',';
@@ -786,7 +804,7 @@ class DatabaseConnector
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return mixed The first value of the first row returned
      */
     public function query_select_value($table, $selected_value, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
@@ -818,14 +836,14 @@ class DatabaseConnector
     }
 
     /**
-     * Get the specified value from the database, or NULL if there is no matching row (or if the value itself is NULL). This is good for detection existence of records, or for use if they might may or may not be present.
+     * Get the specified value from the database, or null if there is no matching row (or if the value itself is null). This is good for detection existence of records, or for use if they might may or may not be present.
      *
      * @param  string $table The table name
      * @param  string $select The field to select
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_select_value_if_there($table, $select, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
@@ -843,7 +861,7 @@ class DatabaseConnector
      * @param  string $query The complete SQL query
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
     public function query_value_if_there($query, $fail_ok = false, $skip_safety_check = false, $lang_fields = null)
@@ -886,7 +904,7 @@ class DatabaseConnector
      * @param  ?integer $max The maximum number of rows to select (null: get all)
      * @param  ?integer $start The starting row to select (null: start at first)
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return array The results (empty array: empty result set)
      */
     public function query_select($table, $select = null, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false, $lang_fields = null)
@@ -912,7 +930,7 @@ class DatabaseConnector
      * @param  array $select The SELECT map
      * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
      * @param  string $end Something to tack onto the end of the SQL query
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      */
     protected function _automatic_lang_fields(&$table, &$full_table, &$select, &$where_map, &$end, &$lang_fields)
     {
@@ -984,7 +1002,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1023,7 +1041,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
@@ -1078,7 +1096,7 @@ class DatabaseConnector
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get an insert ID
-     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: none)
+     * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
@@ -1105,8 +1123,10 @@ class DatabaseConnector
 
         if (!$NO_QUERY_LIMIT) {
             $QUERY_COUNT++;
-            //@exit('!');
-            //if ($QUERY_COUNT>10) @ob_end_clean();@print('Query: '.$query."\n");
+            /*if ($QUERY_COUNT > 10) {
+                @ob_end_clean();
+            }
+            @print('Query: ' . $query . "\n");*/
         }
         static $fb = null;
         if ($fb === null) {
@@ -1257,7 +1277,6 @@ class DatabaseConnector
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE === null) {
-            $UPON_QUERY_HOOKS_CACHE = array();
             if ((!running_script('restore')) && (function_exists('find_all_hooks')) && (!isset($GLOBALS['DOING_USERS_INIT'])/*can't check for safe mode meaning can't get a full hook list yet*/)) {
                 $UPON_QUERY_HOOKS_CACHE = array();
                 $hooks = find_all_hooks('systems', 'upon_query');
@@ -1283,11 +1302,12 @@ class DatabaseConnector
             $out = array('time' => ($after - $before), 'text' => $text, 'rows' => is_array($ret) ? count($ret) : null);
             $QUERY_LIST[] = $out;
         }
-        /*if (microtime_diff($after,$before)>1.0)  Generally one would use MySQL's own slow query log, which will impact Composr performance less
-        {
+        /*  Generally one would use MySQL's own slow query log, which will impact Composr performance less
+        if (microtime_diff($after, $before) > 1.0) {
             cms_profile_start_for('_query:SLOW_ALERT');
-            cms_profile_end_for('_query:SLOW_ALERT',$query);
-        }*/
+            cms_profile_end_for('_query:SLOW_ALERT', $query);
+        }
+        */
 
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE !== null) {
@@ -1450,7 +1470,7 @@ class DatabaseConnector
                     $where .= $key . ' IS NULL';
                 } else {
                     if ((is_string($value)) && ($value == '') && ($this->static_ob->db_empty_is_null())) {
-                        $where .= $key . ' IS NULL'; // $value=' ';
+                        $where .= $key . ' IS NULL'; // $value = ' ';
                     } else {
                         $where .= db_string_equal_to($key, $value);
                     }
@@ -1535,6 +1555,20 @@ class DatabaseConnector
     {
         require_code('database_helper');
         _helper_change_primary_key($this, $table_name, $new_key);
+    }
+
+    /**
+     * Use an *AUTO key for a table that had some other key before.
+     *
+     * @param  ID_TEXT $table_name Table name
+     * @param  ID_TEXT $field_name Field name for new key
+     *
+     * @ignore
+     */
+    public function add_auto_key($table_name, $field_name = 'id')
+    {
+        require_code('database_helper');
+        _helper_add_auto_key($this, $table_name, $field_name);
     }
 
     /**

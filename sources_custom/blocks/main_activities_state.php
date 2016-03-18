@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Block_main_activities_state
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 1;
-        $info['update_require_upgrade'] = 1;
+        $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         $info['parameters'] = array('param');
         return $info;
@@ -49,6 +49,7 @@ class Block_main_activities_state
 
         require_lang('activities');
         require_css('activities');
+        require_javascript('activities');
         require_javascript('activities_state');
         require_javascript('jquery');
 

@@ -8,10 +8,10 @@
 {TEXT}
 
 {+START,IF,{$NOT,{NEW}}}
-	{$SET,extra_buttons,<a class="menu___generic_admin__delete button_screen" href="{DELETE_URL*}"><span>{!DELETE}</span></a>}
+	{$SET,extra_buttons,<a class="button_screen menu___generic_admin__delete" href="{DELETE_URL*}"><span>{!DELETE}</span></a>}
 {+END}
 
 {POSTING_FORM}
 
-{REVISION_HISTORY}
+{REVISIONS}
 

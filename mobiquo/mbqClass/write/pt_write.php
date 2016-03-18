@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -66,8 +66,8 @@ class CMSPtWrite
 
         $body = add_attachments_from_comcode($body, $attachment_ids);
 
-        require_code('word_filter');
-        $subject = check_word_filter($subject);
+        require_code('wordfilter');
+        $subject = check_wordfilter($subject);
 
         $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, 0, $from_id, $to_member);
         cns_make_post($new_topic_id, $subject, $body, 0, true);
@@ -101,8 +101,8 @@ class CMSPtWrite
 
         $body = add_attachments_from_comcode($body, $attachment_ids);
 
-        require_code('word_filter');
-        $subject = check_word_filter($subject);
+        require_code('wordfilter');
+        $subject = check_wordfilter($subject);
 
         $new_post_id = cns_make_post($topic_id, $subject, $body); // NB: Checks perms implicitly
 
@@ -162,8 +162,8 @@ class CMSPtWrite
         require_code('cns_topics_action2');
 
         $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_pt_from', 't_pt_to', 't_pt_from_category', 't_pt_to_category'), array('id' => $topic_id), '', 1);
-        if (!isset($topic_info[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        if (!array_key_exists(0, $topic_info)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
 
         if ($topic_info[0]['t_pt_from'] == get_member()) {

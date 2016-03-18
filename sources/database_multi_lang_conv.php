@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -61,8 +61,8 @@ function disable_content_translation()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     reload_lang_fields(true);
@@ -145,8 +145,8 @@ function enable_content_translation()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(0);
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
     reload_lang_fields(true);
@@ -238,13 +238,14 @@ function enable_content_translation()
  * Change content translation setting in th config file.
  *
  * @param  boolean $new_setting New setting value (i.e. on or off)
+ * @ignore
  */
 function _update_base_config_for_content_translation($new_setting)
 {
     $config_path = get_file_base() . '/_config.php';
     $config_file = file_get_contents($config_path);
-    $has = '$SITE_INFO[\'multi_lang_content\']=\'' . ($new_setting ? '0' : '1') . '\';';
-    $wants = '$SITE_INFO[\'multi_lang_content\']=\'' . ($new_setting ? '1' : '0') . '\';';
+    $has = '$SITE_INFO[\'multi_lang_content\'] = \'' . ($new_setting ? '0' : '1') . '\';';
+    $wants = '$SITE_INFO[\'multi_lang_content\'] = \'' . ($new_setting ? '1' : '0') . '\';';
     if (strpos($config_file, $has) !== false || strpos($config_file, $wants) !== false) {
         $config_file = str_replace($has, $wants, $config_file);
         $config_file = str_replace($wants, $wants, $config_file);

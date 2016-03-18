@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,12 +46,12 @@ class Hook_admin_import_types_core
             'config' => 'CONFIGURATION',
             'logs' => 'LOGS',
             'pages' => 'COMCODE_PAGES',
-            'rss' => '_RSS',
-            'blocks' => '_BLOCK_LABEL',
+            'rss' => 'RSS',
+            'blocks' => '_BLOCKS',
             'menu_items' => 'MENU_ITEMS',
-            'stafflinks' => 'STAFF_LINKS',
-            'customtasks' => 'CHECK_LIST',
-            'sitewatchlist' => 'SITE_WATCHLIST',
+            'staff_links' => 'STAFF_LINKS',
+            'staff_checklist_cus_tasks' => 'CHECK_LIST',
+            'staff_website_monitoring' => 'SITE_WATCHLIST',
             'searches_saved' => 'SAVED_SEARCHES',
             'notifications' => 'NOTIFICATIONS',
         );

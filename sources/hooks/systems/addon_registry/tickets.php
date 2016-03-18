@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_tickets
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -105,10 +106,6 @@ class Hook_addon_registry_tickets
             'themes/default/images/icons/48x48/buttons/new_reply_staff_only.png',
             'sources/hooks/systems/resource_meta_aware/ticket_type.php',
             'sources/hooks/systems/commandr_fs/ticket_types.php',
-            'sources/hooks/systems/config/ticket_forum_name.php',
-            'sources/hooks/systems/config/ticket_member_forums.php',
-            'sources/hooks/systems/config/ticket_text.php',
-            'sources/hooks/systems/config/ticket_type_forums.php',
             'sources/hooks/systems/addon_registry/tickets.php',
             'sources/hooks/modules/admin_import_types/tickets.php',
             'themes/default/templates/SUPPORT_TICKET_TYPE_SCREEN.tpl',
@@ -135,6 +132,10 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/notifications/ticket_assigned_staff.php',
             'sources/tickets_email_integration.php',
             'sources/hooks/systems/cron/tickets_email_integration.php',
+            'sources/hooks/systems/config/ticket_forum_name.php',
+            'sources/hooks/systems/config/ticket_member_forums.php',
+            'sources/hooks/systems/config/ticket_text.php',
+            'sources/hooks/systems/config/ticket_type_forums.php',
             'sources/hooks/systems/config/ticket_mail_on.php',
             'sources/hooks/systems/config/ticket_email_from.php',
             'sources/hooks/systems/config/ticket_mail_server.php',
@@ -142,7 +143,10 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/config/ticket_mail_server_type.php',
             'sources/hooks/systems/config/ticket_mail_username.php',
             'sources/hooks/systems/config/ticket_mail_password.php',
+            'sources/hooks/systems/config/support_operator.php',
+            'sources/hooks/systems/config/ticket_auto_assign.php',
             'data/incoming_ticket_email.php',
+            'sources/hooks/systems/commandr_fs_extended_member/ticket_known_emailers.php',
         );
     }
 
@@ -201,7 +205,7 @@ class Hook_addon_registry_tickets
                 'TITLE' => lorem_title(),
                 'MESSAGE' => lorem_phrase(),
                 'LINKS' => $links,
-                'TICKET_TYPE' => lorem_word(),
+                'TICKET_TYPE_ID' => placeholder_id(),
                 'NAME' => lorem_word_2(),
                 'SELECTED' => true,
                 'ADD_TICKET_URL' => placeholder_url(),
@@ -284,7 +288,6 @@ class Hook_addon_registry_tickets
                 'WARNING_DETAILS' => '',
                 'NEW' => lorem_phrase(),
                 'TICKET_TYPE' => null,
-                'SUPPORT_OPERATOR_URL' => null,
                 'TICKET_PAGE_TEXT' => lorem_sentence_html(),
                 'POST_TEMPLATES' => '',
                 'TYPES' => placeholder_array(),

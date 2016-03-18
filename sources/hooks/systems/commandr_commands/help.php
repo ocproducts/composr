@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -56,7 +56,7 @@ class Hook_commandr_command_help
             }
         } else {
             // Output a standard "how to use Commandr" help page
-            return array('window.open(unescape("' . urlencode(get_tutorial_url('commandr')) . '"),"commandr_window1","");', '', do_lang('SUCCESS'), '');
+            return array('window.open(\'' . addslashes(get_tutorial_url('commandr')) . '\',\'commandr_window1\',\'\');', '', do_lang('SUCCESS'), '');
         }
     }
 }

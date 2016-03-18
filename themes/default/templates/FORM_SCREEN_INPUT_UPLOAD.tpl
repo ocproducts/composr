@@ -1,5 +1,5 @@
 {+START,IF,{$AND,{IS_IMAGE},{$IS_NON_EMPTY,{EXISTING_URL}}}}
-<img class="upload_field_image_preview" src="{EXISTING_URL;^*}" title="" alt="{!EXISTING;^}" />
+<img class="upload_field_image_preview" src="{$ENSURE_PROTOCOL_SUITABILITY*,{EXISTING_URL}}" title="" alt="{!EXISTING;^}" />
 {+END}
 
 <div class="upload_field inline_block">
@@ -19,7 +19,7 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="buttons__clear button_micro" type="button" id="clear_button_{NAME*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' &amp;&amp; x.fakeonchange) x.fakeonchange(event); return false;" title="{!CLEAR}{+START,IF_PASSED,PRETTY_NAME}: {PRETTY_NAME*}{+END}" />{+END}
+		{+START,IF,{$AND,{$JS_ON},{$BROWSER_MATCHES,gecko}}}<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' &amp;&amp; x.fakeonchange) x.fakeonchange(event); return false;" title="{!CLEAR}{+START,IF_PASSED,PRETTY_NAME}: {PRETTY_NAME*}{+END}" />{+END}
 	</div>
 
 	{+START,IF_PASSED,SYNDICATION_JSON}

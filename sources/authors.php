@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -41,6 +41,7 @@ function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid 
         'TITLE' => $title,
         'SUMMARY' => get_translated_tempcode('author', $row, 'description'),
         'URL' => $url,
+        'RESOURCE_TYPE' => 'author',
     ));
 }
 
@@ -72,7 +73,7 @@ function authors_script()
 
     $rows = array_unique($rows);
 
-    $field_name = get_param_string('field_name');
+    $field_name = filter_naughty_harsh(get_param_string('field_name'));
 
     $content = new Tempcode();
     $i = 0;
@@ -131,9 +132,39 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 
     $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {
-        delete_lang($rows[0]['description']);
-        delete_lang($rows[0]['skills']);
-        $GLOBALS['SITE_DB']->query_delete('authors', array('author' => $author), '', 1);
+        $_description = $rows[0]['description'];
+        $_skills = $rows[0]['skills'];
+
+        require_code('attachments2');
+        require_code('attachments3');
+
+        $map = array(
+            'url' => $url,
+            'member_id' => $member_id,
+        );
+        $map += lang_remap('skills', $_skills, $skills);
+        $map += update_lang_comcode_attachments('description', $_description, $description, 'author', $author, null, $member_id);
+
+        $GLOBALS['SITE_DB']->query_update('authors', $map, array('author' => $author), '', 1);
+    } else {
+        require_code('attachments2');
+
+        $map = array(
+            'author' => $author,
+            'url' => $url,
+            'member_id' => $member_id,
+        );
+        $map += insert_lang_comcode_attachments('description', 3, $description, 'author', $author, null, false, $member_id);
+        $map += insert_lang_comcode('skills', $skills, 3);
+        $GLOBALS['SITE_DB']->query_insert('authors', $map);
+
+        if ((addon_installed('commandr')) && (!running_script('install'))) {
+            require_code('resource_fs');
+            generate_resource_fs_moniker('author', $author, null, null, true);
+        }
+
+        require_code('sitemap_xml');
+        notify_sitemap_node_add('SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
     }
 
     require_code('seo2');
@@ -142,23 +173,6 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
     } else {
         seo_meta_set_for_explicit('authors', $author, $meta_keywords, $meta_description);
     }
-
-    $map = array(
-        'author' => $author,
-        'url' => $url,
-        'member_id' => $member_id,
-    );
-    $map += insert_lang_comcode('description', $description, 3);
-    $map += insert_lang_comcode('skills', $skills, 3);
-    $GLOBALS['SITE_DB']->query_insert('authors', $map);
-
-    if ((addon_installed('commandr')) && (!running_script('install'))) {
-        require_code('resource_fs');
-        generate_resourcefs_moniker('author', $author, null, null, true);
-    }
-
-    require_code('sitemap_xml');
-    notify_sitemap_node_add('SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
 }
 
 /**
@@ -170,11 +184,15 @@ function delete_author($author)
 {
     $rows = $GLOBALS['SITE_DB']->query_select('authors', array('description', 'skills'), array('author' => $author), '', 1);
     if (array_key_exists(0, $rows)) {
-        delete_lang($rows[0]['description']);
+        require_code('attachments2');
+        require_code('attachments3');
+        delete_lang_comcode_attachments($rows[0]['description'], 'author', $author);
+
         delete_lang($rows[0]['skills']);
+
         $GLOBALS['SITE_DB']->query_delete('authors', array('author' => $author), '', 1);
     } else {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
     }
 
     if (addon_installed('catalogues')) {
@@ -185,7 +203,7 @@ function delete_author($author)
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        expunge_resourcefs_moniker('author', $author);
+        expunge_resource_fs_moniker('author', $author);
     }
 
     require_code('sitemap_xml');

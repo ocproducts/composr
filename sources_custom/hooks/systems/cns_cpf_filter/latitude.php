@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_cns
+ * @package    user_mappr
  */
 
 /**
@@ -25,7 +25,6 @@ class Hook_cns_cpf_filter_latitude
      */
     public function to_enable()
     {
-        require_lang('google_map_users');
         $cpf = array();
         $cpf['latitude'] = true;
         $cpf['longitude'] = true;

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -47,7 +47,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                 $path = end($details);
                 if ($details[0] == 'MODULES' || $details[0] == 'MODULES_CUSTOM') {
                     $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
-                        true, // $check_perms
+                        false, // $check_perms
                         null, // $member_id
                         true, // $support_crosslinks
                         true // $be_deferential
@@ -119,6 +119,9 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $this->_make_zone_concrete($zone, $page_link);
 
         $details = $this->_request_page_details($page, $zone);
+        if ($details === false) {
+            return null;
+        }
 
         $path = end($details);
 
@@ -132,7 +135,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
             $functions = extract_module_functions(get_file_base() . '/' . $path, array('get_entry_points', 'get_wrapper_icon'), array(
                 true, // $check_perms
                 null, // $member_id
-                true, //$support_crosslinks
+                false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
                 false //$be_deferential
 
             ));
@@ -170,11 +173,21 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
         $_title = $entry_point[0];
         $icon = $entry_point[1];
         if (is_null($_title)) {
-            $title = new Tempcode();
+            if (!is_null($row)) {
+                $title = $row[0];
+            } else {
+                $title = new Tempcode();
+            }
         } elseif (is_object($_title)) {
             $title = $_title;
         } else {
             $title = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
+        }
+
+        if (is_null($icon)) {
+            if (!is_null($row)) {
+                $icon = $row[1];
+            }
         }
 
         $struct = array(

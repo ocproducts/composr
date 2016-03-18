@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_comcode_pages
+ * @package    actionlog
  */
 
 /**
@@ -34,13 +34,13 @@ class Hook_config_store_revisions
             'human_name' => 'STORE_REVISIONS',
             'type' => 'tick',
             'category' => 'ADMIN',
-            'group' => 'COMCODE_PAGE_MANAGEMENT',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_store_revisions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 1,
 
-            'addon' => 'core_comcode_pages',
+            'addon' => 'actionlog',
         );
     }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -155,6 +155,11 @@ class Hook_search_videos extends FieldsSearchHook
             require_code('content_privacy');
             list($privacy_join, $privacy_where) = get_privacy_where_clause('video', 'r');
             $where_clause .= $privacy_where;
+        }
+
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $where_clause .= sql_region_filter('video', 'r.id');
         }
 
         $table = 'videos r';

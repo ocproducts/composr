@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,7 +32,7 @@ class CMSUserRead
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
         if (is_null($username)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
         $user_type = 'normal';
@@ -146,14 +146,16 @@ class CMSUserRead
         $user_ids = array();
 
         if (!is_guest()) {
-            // This really isn't as designed. Chat blocking != Forum blocking
-            //$chat_blocked=$GLOBALS['SITE_DB']->query_select('chat_blocking',array('member_blocked'),array('member_blocker'=>$user_id));
-            //$user_ids=array_merge(collapse_1d_complexity('member_blocked',$chat_blocked),$user_ids);
+            /* This really isn't as designed. Chat blocking != Forum blocking
+            $chat_blocked = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => $user_id));
+            $user_ids = array_merge(collapse_1d_complexity('member_blocked', $chat_blocked), $user_ids);
+            */
         }
 
-        // We don't really want to filter these, would confuse
-        //$banned=$GLOBALS['SITE_DB']->query_select('usersubmitban_member',array('the_member'));
-        //$user_ids=array_merge(collapse_1d_complexity('the_member',$banned),$user_ids);
+        /* We don't really want to filter these, would confuse
+        $banned = $GLOBALS['SITE_DB']->query_select('usersubmitban_member', array('the_member'));
+        $user_ids = array_merge(collapse_1d_complexity('the_member', $banned), $user_ids);
+        */
 
         return array_unique($user_ids);
     }
@@ -339,16 +341,20 @@ class CMSUserRead
                 }
             }
 
-            if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_reveal_age') == 1) {
-                $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_day');
-                $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_month');
-                $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_year');
-                if (!is_null($day)) {
+            $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_day');
+            $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_month');
+            $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_dob_year');
+            if (($day !== null) && ($month !== null) && ($year !== null)) {
+                if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_reveal_age') == 1) {
                     if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-                        $custom_fields_list[do_lang('DATE_OF_BIRTH')] = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+                        $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                     } else {
                         $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true, true);
                     }
+                    $custom_fields_list[do_lang('DATE_OF_BIRTH')] = $dob;
+                } else {
+                    $dob = strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+                    $custom_fields_list[do_lang('ENTER_YOUR_BIRTHDAY')] = $dob;
                 }
             }
 
@@ -367,7 +373,7 @@ class CMSUserRead
 
             $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($user_id);
             foreach ($groups as $group_id) {
-                $custom_fields_list[do_lang('GROUP')] = cns_get_group_name($group_id, true);
+                $custom_fields_list[do_lang('USERGROUP')] = cns_get_group_name($group_id, true);
             }
 
             $member_title = get_member_title($user_id);
@@ -406,6 +412,10 @@ class CMSUserRead
      */
     private function get_member_follow_count($user_id, $i_follow = true)
     {
+        if (!addon_installed('chat')) {
+            return 0;
+        }
+
         if ($i_follow) {
             return $GLOBALS['FORUM_DB']->query_select_value('chat_friends', 'COUNT(*)', array('member_likes' => $user_id));
         }
@@ -488,6 +498,10 @@ class CMSUserRead
         cms_verify_parameters_phpdoc();
 
         if (is_guest()) {
+            return array(0, array());
+        }
+
+        if (!addon_installed('chat')) {
             return array(0, array());
         }
 

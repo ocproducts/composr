@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -69,6 +69,10 @@ class Hook_rss_cns_private_topics
                 $edit_date = '';
             }
 
+            if ($row['t_cache_first_time'] < $cutoff) {
+                continue;
+            }
+
             $news_title = xmlentities($row['t_cache_first_title']);
             $post_row = db_map_restrict($row, array('p_post_first')) + array('id' => $row['t_cache_first_post_id']);
             $_summary = get_translated_tempcode('f_posts', $post_row, 'p_post_first', $GLOBALS['FORUM_DB']);
@@ -83,7 +87,7 @@ class Hook_rss_cns_private_topics
             $view_url .= '#' . strval($row['p_id']);
 
             if ($prefix == 'RSS_') {
-                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '448f736ecf0154960177c131dde76125', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_id'])));
+                $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '448f736ecf0154960177c131dde76125', 'COMMENT_URL' => $view_url, 'ID' => strval($row['p_id'])), null, false, null, '.xml', 'xml');
             } else {
                 $if_comments = new Tempcode();
             }

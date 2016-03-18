@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,8 +44,8 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-if (function_exists('set_time_limit')) {
-    @set_time_limit(0);
+if (php_function_allowed('set_time_limit')) {
+    set_time_limit(0);
 }
 
 require_code('news');
@@ -71,10 +71,8 @@ foreach ($categories_default as $category) {
         $id = add_news_category($category, '', '');
         $categories_existing[$id] = $category;
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($id), 'group_id' => $group_id));
-        }
+        require_code('permissions2');
+        set_global_category_access('news', $id);
     }
 }
 
@@ -112,10 +110,8 @@ while (($r = fgetcsv($csvfile, 1024000)) !== false) {
         $categories_existing[$id] = $r[0];
         $main_news_category = $id;
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-        foreach (array_keys($groups) as $group_id) {
-            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'news', 'category_name' => strval($id), 'group_id' => $group_id));
-        }
+        require_code('permissions2');
+        set_global_category_access('news', $id);
     }
     $author = trim($r[2]);
     $title = trim($r[3]);

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_setupwizard
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -104,7 +105,9 @@ class Hook_addon_registry_setupwizard
             'themes/default/images/icons/24x24/menu/adminzone/setup/setupwizard.png',
             'themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.png',
             'sources/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
+            'sources_custom/hooks/modules/admin_setupwizard_installprofiles/.htaccess',
             'sources/hooks/modules/admin_setupwizard_installprofiles/index.html',
+            'sources_custom/hooks/modules/admin_setupwizard_installprofiles/index.html',
             'sources/hooks/modules/admin_setupwizard_installprofiles/community.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/infosite.php',
             'themes/default/templates/SETUPWIZARD_SCREEN.tpl',
@@ -117,7 +120,9 @@ class Hook_addon_registry_setupwizard
             'sources/hooks/systems/preview/setupwizard_blocks.php',
             'adminzone/pages/modules/admin_setupwizard.php',
             'sources/hooks/modules/admin_setupwizard/.htaccess',
+            'sources_custom/hooks/modules/admin_setupwizard/.htaccess',
             'sources/hooks/modules/admin_setupwizard/index.html',
+            'sources_custom/hooks/modules/admin_setupwizard/index.html',
             'sources/hooks/systems/page_groupings/setupwizard.php',
             'sources/hooks/modules/admin_setupwizard/core.php',
             'sources/hooks/modules/admin_setupwizard_installprofiles/minimalistic.php',

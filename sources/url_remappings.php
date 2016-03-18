@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,7 +34,7 @@ build_rewrite_rules.php is in git / the composr_release_build addon.
 function get_remappings($url_scheme)
 {
     // The target mapping... upper case means variable substitution, lower case means constant-string
-    // The source mapping... NULL means 'anything' (we'll use it in a variable substitution), else we require a certain value
+    // The source mapping... null means 'anything' (we'll use it in a variable substitution), else we require a certain value
     // These have to be in longest to shortest number of bindings order, to reduce the potential for &'d attributes
 
     $rules = array();

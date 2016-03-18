@@ -1,6 +1,6 @@
 [title]Comcode help[/title]
 
-Comcode is used for formatting input data (the data marked as being comcode).
+Comcode is used for formatting input data (the data marked as being Comcode).
 
 {+START,IF,{$IS_STAFF}}[highlight]For full Comcode help, see the [url="Composr Comcode tutorial"]{$TUTORIAL_URL*,tut_comcode}[/url] (only staff see this link).[/highlight]
 {+END}
@@ -27,7 +27,7 @@ Numbers are used on the example list to provide a frame of reference -- your lis
 
 <tbody>
 <tr><td>
-[/semihtml][code]
+[/semihtml][code="Comcode"]
 A list
  - 1
  - 2
@@ -162,7 +162,7 @@ JavaScript script tags, onX handlers and URLs will all be filtered/blocked. Don'
 [title="2"]Boxes[/title]
 
 You can put things in boxes. For example:
-[code][box="My Box"]Testing boxes[/box][/code]
+[code="Comcode"][box="My Box"]Testing boxes[/box][/code]
 ...produces:
 [box="My Box"]Testing boxes[/box]
 
@@ -218,7 +218,7 @@ You can put things in boxes. For example:
 [/semihtml]
 [title="2"]Attachments[/title]
 
-You can use attachments with a number of different comcode forms. The attachment tags are automatically inserted into your Comcode when you choose an attachment, and you may re-arrange them to move the attachments around; you may also wish to change the width, height, description, or set the type to 'download'. After adding your attachments you may re-use them in other pieces of comcode, and the attachment will exist until all references are deleted.
+You can use attachments with a number of different Comcode forms. The attachment tags are automatically inserted into your Comcode when you choose an attachment, and you may re-arrange them to move the attachments around; you may also wish to change the width, height, description, or set the type to 'download'. After adding your attachments you may re-use them in other pieces of Comcode, and the attachment will exist until all references are deleted.
 
 Attachments may be movies, flash animations, audio, images or general downloads. The website automatically decides how to treat your attachment.
 
@@ -239,7 +239,7 @@ Users may add attachments according to their quota, and re-use other people's at
 	<tr><td>[tt][hide="Secret"]This is an example of hidden text.[/hide][/tt]</td><td>[hide="Secret"]This is an example of hidden text.[/hide]</td></tr>
 	<tr><td>[tt][reference type="url" param="Wikipedia"]http://wikipedia.org[/reference][/tt]</td><td>[reference type="url" param="Wikipedia"]http://wikipedia.org[/reference]</td></tr>
 	<tr><td>[tt][quote param="Philip"]This is an example of a quote.[/quote][/tt]</td><td>[quote param="Philip"]This is an example of a quote.[/quote]</td></tr>
-	<tr><td>[tt][staff_note]This isn't rendered (not even for staff), but is saved. Staff can view it when editing the comcode.[/staff_note][/tt]</td><td>[staff_note]This isn't rendered (not even for staff), but is saved. Staff can view it when editing the comcode.[/staff_note]</td></tr>
+	<tr><td>[tt][staff_note]This isn't displayed (not even for staff), but is saved. Staff can view it when editing the Comcode.[/staff_note][/tt]</td><td>[staff_note]This isn't displayed (not even for staff), but is saved. Staff can view it when editing the Comcode.[/staff_note]</td></tr>
 </tbody>
 </table></div>
 [/semihtml]

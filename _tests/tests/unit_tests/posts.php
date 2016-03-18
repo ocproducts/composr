@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,6 +24,7 @@ class posts_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('cns_topics');
         require_code('cns_posts');
         require_code('cns_forums');

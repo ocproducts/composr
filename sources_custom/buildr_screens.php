@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -37,7 +37,7 @@ function realms()
 
         $out->attach(do_template('W_REALM_LIST_ENTRY', array('_GUID' => '7dc973deec3b92b1b2c189ae14451a5b', 'NAME' => $myrow['name'], 'ID' => strval($myrow['id']), 'ROOMS' => strval($rooms), 'PP' => $pp, 'OWNER' => $owner, 'URL' => $url)));
     }
-    ocw_refresh_with_message($out);
+    buildr_refresh_with_message($out);
 }
 
 /**
@@ -139,9 +139,9 @@ function output_inventory_screen($member_id)
  */
 function output_room_screen($member_id)
 {
-    $title = get_screen_title('OCWORLD');
+    $title = get_screen_title('BUILDR');
 
-    /*$test_tpl=internalise_own_screen($title); Would require lots of work to make sure all links point right
+    /*$test_tpl = internalise_own_screen($title); Would require lots of work to make sure all links point right
     if (is_object($test_tpl)) return $test_tpl;*/
 
     destick($member_id);
@@ -247,9 +247,9 @@ function output_room_screen($member_id)
             $aux = do_lang_tempcode('W_IS_TROLL');
         }
         if ($id == $member_id) {
-            $style = 'ocw_self_member';
+            $style = 'buildr_self_member';
         } else {
-            $style = 'ocw_other_member';
+            $style = 'buildr_other_member';
         }
 
         if ($id < 0) {

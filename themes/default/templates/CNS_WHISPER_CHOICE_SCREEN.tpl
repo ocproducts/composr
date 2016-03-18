@@ -1,5 +1,7 @@
 {TITLE}
 
+{$GET,whisper_screen_text}
+
 <div class="cns_whisper_lead_in">
 	<img src="{$IMG*,icons/48x48/buttons/new_topic}" alt="" class="right" />
 
@@ -22,7 +24,7 @@
 						<input type="hidden" name="type" value="new_pt" />
 
 						<p class="proceed_button">
-							<input class="buttons__new_topic button_screen" type="submit" onclick="disable_button_just_clicked(this);" value="{!QUOTE_TO_PT}" />
+							<input class="button_screen buttons__new_topic" type="submit" onclick="disable_button_just_clicked(this);" value="{!QUOTE_TO_PT}" />
 						</p>
 					</div>
 				</form>
@@ -43,7 +45,7 @@
 					<input type="hidden" name="type" value="new_post" />
 
 					<p class="proceed_button">
-						<input class="buttons__new_post_full button_screen" type="submit" onclick="disable_button_just_clicked(this);" value="{!IN_TOPIC_PP}" />
+						<input class="button_screen buttons__new_post_full" type="submit" onclick="disable_button_just_clicked(this);" value="{!IN_TOPIC_PP}" />
 					</p>
 				</div>
 			</form>
@@ -53,7 +55,7 @@
 
 {+START,IF,{$JS_ON}}
 	<p class="back_button">
-		<a href="#" onclick="history.back(); return false;"><img title="{!_NEXT_ITEM_BACK}" alt="{!_NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
+		<a href="#" onclick="history.back(); return false;"><img title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" /></a>
 	</p>
 {+END}
 

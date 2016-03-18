@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,6 +30,6 @@ class Hook_cns_cpf_filter_points_chat
      */
     public function to_enable()
     {
-        return array();//Actually, hide all these  array('points_gained_chat' => true);
+        return array('points_gained_chat' => true);
     }
 }

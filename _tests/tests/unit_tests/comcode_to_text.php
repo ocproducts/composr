@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -45,10 +45,11 @@ box contents
 blah
 blah[/indent]
 
-[random a="Want" b="Do not want"]1233[/random]
+[random a="Want"]1233[/random]
 
 [abbr="Cascading Style Sheets"]CSS[/abbr]
 ';
+
         $got = strip_comcode($text);
 
         $expected = '
@@ -58,7 +59,7 @@ header 1
 under header 1
 
 header 2
-========
+--------
 
 under header 2
 
@@ -79,14 +80,14 @@ box contents
 
 Want
 
-Cascading Style Sheets
-            ';
+CSS (Cascading Style Sheets)
+';
 
         $ok = trim($got) == trim($expected);
         $this->assertTrue($ok);
         if (!$ok) {
             require_code('diff');
-            echo '<code style="white-space: pre">' . diff_simple_2($got, $expected, true) . '</code>';
+            echo '<code style="white-space: pre">' . diff_simple_2(trim($got), trim($expected), true) . '</code>';
         }
     }
 }

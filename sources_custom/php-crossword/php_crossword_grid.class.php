@@ -85,7 +85,7 @@ class PHP_Crossword_Grid
 
 
 		if (!count($words))
-		return PC_WORDS_FULLY_CROSSED;
+			return PC_WORDS_FULLY_CROSSED;
 
 		$n = array_rand($words);
 		$n = $words[$n];
@@ -139,14 +139,16 @@ class PHP_Crossword_Grid
 		// disable cell before first cell
 		$c = $s - 1;
 		if ($c >= 0 )
-		$this->cells[$cx][$cy]->setCanCross(PC_AXIS_BOTH, FALSE);
+		{
+			$this->cells[$cx][$cy]->setCanCross(PC_AXIS_BOTH, FALSE);
 
-		$this->cells[$cx][$cy]->number = $w->inum; // sandy addition
+			$this->cells[$cx][$cy]->number = $w->inum; // sandy addition
+		}
 
 		// disable cell after first cell
 		$c = $s + strlen($word);
-		if (is_object($this->cells[$cx][$cy]))
-		$this->cells[$cx][$cy]->setCanCross(PC_AXIS_BOTH, FALSE);
+		if (isset($this->cells[$cx][$cy]) && is_object($this->cells[$cx][$cy]))
+			$this->cells[$cx][$cy]->setCanCross(PC_AXIS_BOTH, FALSE);
 
 	}
 
@@ -346,7 +348,7 @@ class PHP_Crossword_Grid
 
 				$class = isset($this->cells[$x][$y]->letter) ? 'cellLetter' : 'cellEmpty';
 
-				if (!$colors) $color = "white";
+				if (!$colors) $color = "transparent";
 				else $class = 'cellDebug';
 
 				$html .= "\n";

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -132,7 +132,7 @@ class CMSModerationWrite
         require_code('cns_posts_action3');
         $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_topic_id', array('id' => $post_id));
         if (is_null($topic_id)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
         cns_delete_posts_topic($topic_id, array($post_id), $reason); // NB: Checks perms implicitly
         return true;
@@ -266,7 +266,7 @@ class CMSModerationWrite
 
         $target_posts = $GLOBALS['FORUM_DB']->query_select('f_posts p', array('*', 'p.id AS post_id'), array('p.id' => $target_post_id), '', 1);
         if (!isset($target_posts[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
         $target_post = $target_posts[0];
 
@@ -291,7 +291,7 @@ class CMSModerationWrite
 
         $GLOBALS['FORUM_DB']->query_update(
             'f_posts',
-            array('p_post' => lang_remap_comcode($target_post['p_post'], $merged_post, $GLOBALS['FORUM_DB'])),
+            lang_remap_comcode('p_post', $target_post['p_post'], $merged_post, $GLOBALS['FORUM_DB']),
             array('id' => $target_post_id),
             '',
             1
@@ -391,7 +391,7 @@ class CMSModerationWrite
 
         $user_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
         if (is_null($user_id)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
         require_lang('cns_warnings');
@@ -451,7 +451,7 @@ class CMSModerationWrite
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
         if (is_null($username)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
         require_lang('cns_warnings');
@@ -490,7 +490,7 @@ class CMSModerationWrite
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
         if (is_null($username)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
         }
 
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_ip_address');

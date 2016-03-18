@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_config_finish_profile
     public function get_details()
     {
         return array(
-            'human_name' => 'FINISH_PROFILE',
+            'human_name' => 'ENSURE_FINISH_PROFILE',
             'type' => 'tick',
             'category' => 'USERS',
             'group' => '_LOGIN',

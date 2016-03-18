@@ -1,7 +1,7 @@
 <?php /*
 
- ocPortal
- Copyright (c) ocProducts, 2004-2015
+ Composr
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_cloudinary
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -110,7 +111,7 @@ class Hook_addon_registry_cloudinary
     public function get_dependencies()
     {
         return array(
-            'requires' => array('PHP 5.3'),
+            'requires' => array('PHP5.3'),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -147,7 +148,7 @@ class Hook_addon_registry_cloudinary
             'sources_custom/Cloudinary/cacert.pem',
             'sources_custom/Cloudinary/index.html',
             'sources_custom/hooks/systems/cdn_transfer/cloudinary.php',
-            'sources_custom/hooks/systems/cdn_transfer/index.html',
+            'sources_custom/Cloudinary/.htaccess',
         );
     }
 }

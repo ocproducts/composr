@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -59,7 +59,7 @@ function unit_testing_run()
 
     $sets = find_testsets();
     echo '<ul>';
-    //echo '<li><em><a href="?id=!">All</a></em></li>'.chr(10);             Better to use Chrome "Open all selected links" extension
+    //echo '<li><em><a href="?id=!">All</a></em></li>' . chr(10);             Better to use Chrome "Open all selected links" extension
     foreach ($sets as $set) {
         echo '<li><a href="?id=' . escape_html($set) . '">' . escape_html($set) . '</a></li>' . "\n";
     }

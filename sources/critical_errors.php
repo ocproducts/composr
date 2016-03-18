@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -82,12 +82,12 @@ if (!function_exists('critical_error')) {
 
         switch ($code) {
             case 'MISSING_SOURCE':
-                $error = 'A source-code (' . $relay . ') file is missing.';
+                $error = 'A source-code (' . $relay . ') file is missing/corrupt/incompatible.';
                 break;
             case 'PASSON':
                 $error = $relay;
                 break;
-            case 'MEMBER_BANNED':
+            case 'YOU_ARE_BANNED':
                 $error = 'The member you are masquerading as has been banned. We cannot finish initialising the virtualised environment for this reason.';
                 break;
             case 'BANNED':

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,7 +29,6 @@ class Hook_page_groupings_composr_homesite
     {
         return array(
             array('tools', 'menu/_generic_admin/tool', array('admin_cmsusers', array(), get_module_zone('admin_cmsusers')), make_string_tempcode('compo.sr: Table of Composr users')),
-            array('pages', 'menu/_generic_spare/page', array('sites', array('type' => 'browse'), get_module_zone('sites')), make_string_tempcode('compo.sr')),
         );
     }
 }

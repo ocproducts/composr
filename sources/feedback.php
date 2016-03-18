@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__feedback()
 {
@@ -346,9 +348,9 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
                 $all_rating_criteria[$i] = array('NUM_RATINGS' => integer_format($num_ratings), 'RATING' => strval($calculated_rating)) + $all_rating_criteria[$i];
 
-                $extra_meta_data = array();
-                $extra_meta_data['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
-                set_extra_request_metadata($extra_meta_data);
+                $extra_metadata = array();
+                $extra_metadata['rating' . (($rating_criteria['TYPE'] == '') ? '' : ('_' . $rating_criteria['TYPE']))] = strval($calculated_rating);
+                set_extra_request_metadata($extra_metadata);
 
                 $has_ratings = true;
             }
@@ -553,7 +555,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
 
     // Top rating / liked
     if (($rating === 10) && ($type == '') && ($past_rating !== $rating)) {
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
 
             // Special case. Would prefer not to hard-code, but important for usability
@@ -589,8 +591,8 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                         $rendered = preg_replace('#keep_devtest=\w*#', 'filtered=1', $rendered);
                     }
                 }
-                $mail = do_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
-                dispatch_notification('like', null, $subject, $mail, array($submitter));
+                $mail = do_notification_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
+                dispatch_notification('like', null, $subject, $mail, array($submitter), A_FROM_SYSTEM_PRIVILEGED);
             }
 
             $privacy_ok = true;
@@ -778,7 +780,12 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     list(, $submitter, , $safe_content_url, $cma_info) = get_details_behind_feedback_code($content_type, $content_id);
 
-    $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    if (get_forum_type() == 'cns') {
+        require_code('cns_posts_action2');
+        $poster_name_if_guest = cns_get_safe_specified_poster_name(false);
+    } else {
+        $poster_name_if_guest = post_param_string('poster_name_if_guest', '');
+    }
     list($topic_id, $is_hidden) = $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
     // Define scope
         $forum,
@@ -854,7 +861,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
         $content_type_title = $content_type;
-        if ((!is_null($cma_info)) && (isset($cma_info['content_type_label']))) {
+        if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
         }
 
@@ -864,7 +871,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
         $subject = do_lang('NEW_COMMENT_SUBJECT', get_site_name(), ($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title, array($post_title, $displayname, $username), get_site_default_lang());
         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $message_raw = do_lang('NEW_COMMENT_BODY', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(($post_title == '') ? do_lang('NO_SUBJECT') : $post_title, post_param_string('post'), comcode_escape($content_url_flat), comcode_escape($displayname), strval(get_member()), comcode_escape($username)), get_site_default_lang());
+        $message_raw = do_notification_lang('NEW_COMMENT_BODY', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(($post_title == '') ? do_lang('NO_SUBJECT') : $post_title, post_param_string('post'), comcode_escape($content_url_flat), comcode_escape($displayname), strval(get_member()), comcode_escape($username)), get_site_default_lang());
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
             $privacy_limits = privacy_limits_for($content_type, $content_id);
@@ -1091,13 +1098,13 @@ function actualise_post_trackback($allow_trackbacks, $content_type, $content_id)
     require_code('antispam');
     inject_action_spamcheck();
 
-    $url = either_param_string('url', null);
+    $url = post_param_string('url', null);
     if (is_null($url)) {
         return false;
     }
-    $title = either_param_string('title', $url);
-    $excerpt = either_param_string('excerpt', '');
-    $name = either_param_string('blog_name', $url);
+    $title = post_param_string('title', $url);
+    $excerpt = post_param_string('excerpt', '');
+    $name = post_param_string('blog_name', $url);
 
     $GLOBALS['SITE_DB']->query_insert('trackbacks', array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id, 'trackback_ip' => get_ip_address(), 'trackback_time' => time(), 'trackback_url' => $url, 'trackback_title' => $title, 'trackback_excerpt' => $excerpt, 'trackback_name' => $name));
 

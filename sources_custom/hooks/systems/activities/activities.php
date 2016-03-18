@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,10 +22,10 @@ class Hook_activities_activities
     /**
      * Syndicate human-intended descriptions of activities performed to the internal wall, and external listeners.
      *
-     * @param  string $a_language_string_code Language string code
-     * @param  string $a_label_1 Label 1 (given as a parameter to the language string code)
-     * @param  string $a_label_2 Label 2 (given as a parameter to the language string code)
-     * @param  string $a_label_3 Label 3 (given as a parameter to the language string code)
+     * @param  string $a_language_string_code Language string ID
+     * @param  string $a_label_1 Label 1 (given as a parameter to the language string ID)
+     * @param  string $a_label_2 Label 2 (given as a parameter to the language string ID)
+     * @param  string $a_label_3 Label 3 (given as a parameter to the language string ID)
      * @param  string $a_page_link_1 Page-link 1
      * @param  string $a_page_link_2 Page-link 2
      * @param  string $a_page_link_3 Page-link 3
@@ -67,9 +67,10 @@ class Hook_activities_activities
     /**
      * Get syndication field UI.
      *
+     * @param  string $content_type The content type this is for
      * @return Tempcode Syndication fields (or empty)
      */
-    public function get_syndication_option_fields()
+    public function get_syndication_option_fields($content_type)
     {
         $fields = new Tempcode();
         require_code('activities');
@@ -77,7 +78,8 @@ class Hook_activities_activities
             require_lang('activities');
 
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ded75eeb85f5bb8a6c1b6da597555750', 'TITLE' => do_lang_tempcode('SYNDICATION'))));
-            $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_THIS'), do_lang_tempcode('DESCRIPTION_SYNDICATE_THIS'), 'syndicate_this', true));
+            $default = in_array($content_type, array_map('trim', explode(',', get_option('syndicate_site_activity_default'))));
+            $fields->attach(form_input_tick(do_lang_tempcode('SYNDICATE_THIS'), do_lang_tempcode('DESCRIPTION_SYNDICATE_THIS'), 'syndicate_this', $default));
         }
         return $fields;
     }

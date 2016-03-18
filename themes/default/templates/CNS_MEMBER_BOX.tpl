@@ -11,11 +11,11 @@
 	<div class="inline_lined_up">
 		{+START,IF,{$NOT,{$MOBILE}}}
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<img class="cns_member_box_avatar" src="{AVATAR_URL*}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
+				<img class="cns_member_box_avatar" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" title="{!SPECIFIC_AVATAR,{$USERNAME*,{MEMBER_ID}}}" />
 			{+END}
 		{+END}
 
-		<table class="map_table tooltip_fields autosized_table">
+		<div>{$,div will be set as inline block}<table class="map_table tooltip_fields autosized_table">
 			<tbody>
 				<tr><th class="de_th">{!USERNAME}:</th><td><a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}">{$USERNAME*,{MEMBER_ID}}</a></td></tr>
 				<tr><th class="de_th">{!cns:SPECIFIC_FORUM_POSTS}:</th><td>{POSTS*}</td></tr>
@@ -44,7 +44,7 @@
 				<tr><th class="de_th">{!ONLINE_NOW}:</th><td>{$?*,{ONLINE},{!YES},{!NO}}</td></tr>
 				{CUSTOM_FIELDS}
 			</tbody>
-		</table>
+		</table></div>
 	</div>
 {+START,IF,{$NOT,{GIVE_CONTEXT}}}
 </div>

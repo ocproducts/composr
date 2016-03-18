@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__config()
 {
@@ -37,7 +39,7 @@ function init__config()
                 $_cache = $SMART_CACHE->get('CONFIG_OPTIONS');
                 if ($_cache !== null) {
                     foreach ($_cache as $c_key => $c_value) {
-                        $CONFIG_OPTIONS_CACHE[$c_key] = array('c_value_translated' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => false);
+                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => 0);
                     }
                 }
             }
@@ -126,16 +128,24 @@ function load_config_options()
 
     $CONFIG_OPTIONS_FULLY_LOADED = true;
 
-    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*'), null, '', null, null, true);
+    if (!isset($GLOBALS['SITE_DB'])) {
+        return;
+    }
+
+    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
 
     if ($temp === null) {
-        if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
-            $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
-            if ($temp === null) {
+        if (running_script('install')) {
+            $temp = array();
+        } else {
+            if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
+                $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
+                if ($temp === null) {
+                    critical_error('DATABASE_FAIL');
+                }
+            } else {
                 critical_error('DATABASE_FAIL');
             }
-        } else {
-            critical_error('DATABASE_FAIL');
         }
     }
 
@@ -149,28 +159,28 @@ function load_value_options()
 {
     global $VALUE_OPTIONS_CACHE, $VALUES_FULLY_LOADED;
 
-    $VALUES_FULLY_LOADED = true;
-
     $VALUE_OPTIONS_CACHE = persistent_cache_get('VALUES');
     if (!is_array($VALUE_OPTIONS_CACHE)) {
         $_value_options = $GLOBALS['SITE_DB']->query_select('values', array('*'));
         $VALUE_OPTIONS_CACHE = list_to_map('the_name', $_value_options);
         persistent_cache_set('VALUES', $VALUE_OPTIONS_CACHE);
     }
+
+    $VALUES_FULLY_LOADED = true;
 }
 
 /**
  * Find the value of the specified configuration option.
  *
  * @param  ID_TEXT $name The name of the option
- * @param  boolean $missing_ok Where to accept a missing option (and return NULL)
- * @return ?SHORT_TEXT The value (null: either null value, or no option found whilst $missing_ok set)
+ * @param  boolean $missing_ok Where to accept a missing option (and return null)
+ * @return ?SHORT_TEXT The value (null: either null value, or no option found while $missing_ok set)
  */
 function get_option($name, $missing_ok = false)
 {
     global $CONFIG_OPTIONS_CACHE, $CONFIG_OPTIONS_FULLY_LOADED, $SMART_CACHE;
 
-    // Maybe missing a DB row, or has an old NULL one, so we need to auto-create from hook
+    // Maybe missing a DB row, or has an old null one, so we need to auto-create from hook
     if (!isset($CONFIG_OPTIONS_CACHE[$name]['c_value'])) {
         if ((!$CONFIG_OPTIONS_FULLY_LOADED) && (!array_key_exists($name, $CONFIG_OPTIONS_CACHE))) {
             load_config_options();
@@ -215,8 +225,8 @@ function get_option($name, $missing_ok = false)
     $option = &$CONFIG_OPTIONS_CACHE[$name];
 
     // The master of redundant quick exit points
-    if (isset($option['c_value_translated'])) {
-        $value = $option['c_value_translated'];
+    if (isset($option['_cached_string_value'])) {
+        $value = $option['_cached_string_value'];
 
         if ($CONFIG_OPTIONS_FULLY_LOADED) {
             if ($SMART_CACHE !== null) {
@@ -230,7 +240,7 @@ function get_option($name, $missing_ok = false)
     // Non-translated
     if ($option['c_needs_dereference'] == 0) {
         $value = $option['c_value'];
-        $option['c_value_translated'] = $value; // Allows slightly better code path next time
+        $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
         if ($CONFIG_OPTIONS_FULLY_LOADED) {
             if ($SMART_CACHE !== null) {
@@ -242,8 +252,8 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = get_translated_text($option['c_value_trans']);
-    $option['c_value_translated'] = $value;
+    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
+    $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
         if ($SMART_CACHE !== null) {
@@ -258,15 +268,15 @@ function get_option($name, $missing_ok = false)
  * Find a specified value. Values are set with set_value.
  *
  * @param  ID_TEXT $name The name of the value
- * @param  ?ID_TEXT $default Value to return if value not found (null: return NULL)
+ * @param  ?ID_TEXT $default Value to return if value not found (null: return null)
  * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
  * @param  boolean $env_also Whether to also check server environmental variables. Only use if $elective_or_lengthy is set to false
- * @return ?SHORT_TEXT The value (null: value not found and default is NULL)
+ * @return ?SHORT_TEXT The value (null: value not found and default is null)
  */
 function get_value($name, $default = null, $elective_or_lengthy = false, $env_also = false)
 {
     if ($elective_or_lengthy) {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install'));
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install') || running_script('upgrader'));
     }
 
     global $IN_MINIKERNEL_VERSION, $VALUE_OPTIONS_CACHE, $SMART_CACHE;
@@ -352,7 +362,7 @@ function set_value($name, $value, $elective_or_lengthy = false)
     if ($elective_or_lengthy) {
         $GLOBALS['SITE_DB']->query_delete('values_elective', array('the_name' => $name), '', 1);
         if ($value !== null) {
-            $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name));
+            $GLOBALS['SITE_DB']->query_insert('values_elective', array('date_and_time' => time(), 'the_value' => $value, 'the_name' => $name), false, true); // Allow failure, if there is a race condition
         }
         return $value;
     }

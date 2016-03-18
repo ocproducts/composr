@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_comcode_page
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'cms_comcode_pages');
+        $applies = (get_page_name() == 'cms_comcode_pages');
         return array($applies, 'comcode_page', false, array('post'));
     }
 
@@ -46,13 +46,12 @@ class Hook_preview_comcode_page
 
         $original_comcode = post_param_string('post');
 
-        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, 100000));
+        $posting_ref_id = post_param_integer('posting_ref_id', mt_rand(0, mt_getrandmax() - 1));
         $post_bits = do_comcode_attachments($original_comcode, 'comcode_page', strval(-$posting_ref_id), true, $GLOBALS['SITE_DB']);
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];
 
-        $output = do_template('COMCODE_PAGE_SCREEN', array(
-            'IS_PANEL' => (substr($codename, 0, 6) == 'panel_'),
+        $output = do_template('COMCODE_PAGE_SCREEN', array('_GUID' => '08595d86788f09cc77f8f88098ff6fcd', 'IS_PANEL' => (substr($codename, 0, 6) == 'panel_'),
             'BEING_INCLUDED' => false,
             'SUBMITTER' => strval(get_member()),
             'TAGS' => '',

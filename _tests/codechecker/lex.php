@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -361,7 +361,8 @@ function lex($text = null)
                 }
 
                 // Special case, don't allow tokens in object dereferencing chains
-                if (end($tokens)[0] == 'OBJECT_OPERATOR') {
+                $_last_token = end($tokens);
+                if ($_last_token[0] == 'OBJECT_OPERATOR') {
                     $applicable_tokens = array();
                 }
 
@@ -380,7 +381,7 @@ function lex($text = null)
                     } elseif ($token_found == 'START_HEREDOC') {
                         $lex_state = PLEXER_HEREDOC;
                         $matches = array();
-                        preg_match('#[A-Za-z0-9\_]*#', substr($TEXT, $i, 30), $matches);
+                        preg_match('#[A-Za-z0-9\_]*#', $TEXT, $matches, 0, $i);
                         $heredoc_symbol = $matches[0];
                         $i += strlen($heredoc_symbol);
                         break;
@@ -437,7 +438,7 @@ function lex($text = null)
                         }
                     }
 
-                    if (($i_current > 0) && ($TEXT[$i_current - 1] == ' ') && ($TEXT[$i_current - 2] != ' ') && (in_array($token_found, array('OBJECT_OPERATOR')))) {
+                    if (($i_current > 0) && (isset($TEXT[$i_current - 2])) && ($TEXT[$i_current - 1] == ' ') && ($TEXT[$i_current - 2] != ' ') && (in_array($token_found, array('OBJECT_OPERATOR')))) {
                         log_warning('Superfluous spacing (for ' . $token_found . ') against coding standards', $i, true);
                     }
                     if (($i_current > 0) && (($TEXT[$i] != ' ') && ($TEXT[$i] != "\n") && ($TEXT[$i] != ')') && ($TEXT[$i] != "/") && ($TEXT[$i] != "\r")) && (in_array($token_found, array('COMMA', 'COMMAND_TERMINATE')))) {
@@ -602,14 +603,14 @@ function lex($text = null)
                             $exit = true;
                         } else {
                             $matches = array();
-                            if (($char == '[') && ($TEXT[$i] == '\'') && (preg_match('#^\[\'([^\']*)\'\]#', substr($TEXT, $i - 1, 40), $matches) != 0)) { // NOTE: Have disallowed escaping within the quotes
+                            if (($char == '[') && ($TEXT[$i] == '\'') && (preg_match('#\[\'([^\']*)\'\]#A', $TEXT, $matches, 0, $i - 1) != 0)) { // NOTE: Have disallowed escaping within the quotes
                                 $heredoc_buildup[] = array((count($heredoc_buildup) == 0) ? 'variable' : 'IDENTIFIER', $special_token_value_2, $i);
                                 $special_token_value_2 = '';
                                 $heredoc_buildup[] = array('EXTRACT_OPEN', $i);
                                 $heredoc_buildup[] = array('string_literal', $matches[1], $i);
                                 $heredoc_buildup[] = array('EXTRACT_CLOSE', $i);
                                 $i += strlen($matches[1]) + 3;
-                            } elseif (($char == '[') && (preg_match('#^\[([A-Za-z0-9\_]+)\]#', substr($TEXT, $i - 1, 40), $matches) != 0)) {
+                            } elseif (($char == '[') && (preg_match('#\[([A-Za-z0-9\_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
                                 $heredoc_buildup[] = array((count($heredoc_buildup) == 0) ? 'variable' : 'IDENTIFIER', $special_token_value_2, $i);
                                 $special_token_value_2 = '';
                                 $heredoc_buildup[] = array('EXTRACT_OPEN', $i);
@@ -634,7 +635,7 @@ function lex($text = null)
                             $special_token_value_2 = '';
                             $heredoc_buildup[] = array('OBJECT_OPERATOR', $i);
                             $i++;
-                        } elseif (($char == '[') && (preg_match('#^\[([\'A-Za-z0-9\_]+)\]#', substr($TEXT, $i - 1, 40), $matches) != 0)) {
+                        } elseif (($char == '[') && (preg_match('#\[([\'A-Za-z0-9\_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
                             if (strpos($matches[1], "'") !== false) {
                                 log_warning('Do not use quotes with the simple variable embedding syntax', $i, true);
                                 break 2;

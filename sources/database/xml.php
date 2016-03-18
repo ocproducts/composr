@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -57,6 +57,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__database__xml()
 {
@@ -83,15 +85,15 @@ function init__database__xml()
 
     // Support for chaining a DB- to make reads faster
     global $SITE_INFO;
-    if ((array_key_exists('db_chain_type', $SITE_INFO)) && (!running_script('xml_db_import')) && (get_param_integer('keep_no_chain', 0) != 1)) {
+    if ((!empty($SITE_INFO['db_chain_type'])) && (!running_script('xml_db_import')) && (get_param_integer('keep_no_chain', 0) != 1)) {
         require_code('database/' . $SITE_INFO['db_chain_type']);
         $GLOBALS['XML_CHAIN_DB'] = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
     } else {
         $GLOBALS['XML_CHAIN_DB'] = null;
     }
 
-    if (function_exists('set_time_limit')) {
-        @set_time_limit(100); // XML DB is *slow*
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(100); // XML DB is *slow*
     }
 }
 
@@ -99,6 +101,8 @@ function init__database__xml()
  * Get a list of all SQL keywords
  *
  * @return array List of keywords
+ *
+ * @ignore
  */
 function _get_sql_keywords()
 {
@@ -274,7 +278,7 @@ class Database_Static_xml
 
         @mkdir($path, 0777);
         require_code('files');
-        fix_permissions($path, 0777);
+        fix_permissions($path);
         sync_file($path);
     }
 
@@ -380,7 +384,7 @@ class Database_Static_xml
      * @param  string $db_host The database host (the server)
      * @param  string $db_user The database connection username
      * @param  string $db_password The database connection password
-     * @param  boolean $fail_ok Whether to on error echo an error and return with a NULL, rather than giving a critical error
+     * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (null: failed)
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
@@ -391,7 +395,7 @@ class Database_Static_xml
         if (!file_exists($db_name)) { // Will create on first usage
             mkdir($db_name, 0777);
             require_code('files');
-            fix_permissions($db_name, 0777);
+            fix_permissions($db_name);
             sync_file($db_name);
         }
 
@@ -439,6 +443,8 @@ class Database_Static_xml
      */
     public function db_escape_string($string)
     {
+        $string = fix_bad_unicode($string);
+
         return addslashes($string);
     }
 
@@ -966,7 +972,7 @@ class Database_Static_xml
             if (!file_exists($db[0] . '/' . $table_name)) {
                 mkdir($db[0] . '/' . $table_name, 0777);
                 require_code('files');
-                fix_permissions($db[0] . '/' . $table_name, 0777);
+                fix_permissions($db[0] . '/' . $table_name);
                 sync_file($db[0] . '/' . $table_name);
             }
             @chdir($db[0] . '/' . $table_name);
@@ -1139,9 +1145,13 @@ class Database_Static_xml
             }
         }
 
-        /*$ob=new xml_file_parse($file_contents); Too slow
-        if (!is_null($ob->error)) fatal_exit($ob->error);
-        $_record=$ob->output;*/
+        /* Too slow
+        $ob = new xml_file_parse($file_contents);
+        if (!is_null($ob->error)) {
+            fatal_exit($ob->error);
+        }
+        $_record = $ob->output;
+        */
         // This is much faster, even though it's a bit of a hack as it assumes all records are as Composr would write them
         $bits = preg_split('#</?([^>]*)>#', $file_contents, -1, PREG_SPLIT_DELIM_CAPTURE);
         $_record = array();
@@ -1262,7 +1272,7 @@ class Database_Static_xml
         if (!file_exists($db[0] . '/' . $table_name)) {
             mkdir($db[0] . '/' . $table_name, 0777);
             require_code('files');
-            fix_permissions($db[0] . '/' . $table_name, 0777);
+            fix_permissions($db[0] . '/' . $table_name);
             sync_file($db[0] . '/' . $table_name);
         }
 
@@ -1308,18 +1318,19 @@ class Database_Static_xml
         @flock($myfile, LOCK_UN);
         fclose($myfile);
         require_code('files');
-        fix_permissions($path, 0666);
+        fix_permissions($path);
         sync_file($path);
 
-        /*if (file_exists($db[0].'/'.$table_name.'/.svn/prop-base/'))      If we want them in subversion as binary, but we probably don't as merging can often work
-        {
-            $tpath=$db[0].'/'.$table_name.'/.svn/prop-base/'.$guid.$suffix;
-            $myfile=fopen($tpath,'wb');
-            fwrite($myfile,'K 13\nsvn:mime-type\nV 24\napplication/octet-stream\nEND');
-            fclose($myfile);
-            fix_permissions($tpath,0666);
-            sync_file($tpath);
-        }*/
+        /* If we want them in subversion as binary, but we probably don't as merging can often work
+            if (file_exists($db[0] . '/' . $table_name . '/.svn/prop-base/')) {
+                $tpath = $db[0] . '/' . $table_name . '/.svn/prop-base/' . $guid . $suffix;
+                $myfile = fopen($tpath, 'wb');
+                fwrite($myfile, 'K 13\nsvn:mime-type\nV 24\napplication/octet-stream\nEND');
+                fclose($myfile);
+                fix_permissions($tpath);
+                sync_file($tpath);
+            }
+        */
 
         unset($GLOBALS['DIR_CONTENTS_CACHE'][$table_name]);
 
@@ -1329,8 +1340,7 @@ class Database_Static_xml
             $new_path = $db[0] . '/' . $table_name . '/' . $new_guid . $suffix;
             if ($path != $new_path) {
                 rename($path, $new_path);
-                /*if (substr($path,-5)=='.mine')
-                            unlink();  Yuck, messy, we will ignore this potential problem - people should not edit stuff that is conflicted */
+                /*if (substr($path, -5) == '.mine') unlink();  Yuck, messy, we will ignore this potential problem - people should not edit stuff that is conflicted */
             }
         }
     }
@@ -1345,20 +1355,21 @@ class Database_Static_xml
     {
         /* This generally is a bad idea. Things can get deleted then re-made, and we don't even need it. This command works better:
         svn status | grep '\!.*\.xml' | awk '{print $2;}' | xargs svn rm
-        $svn_command='svn remove "'.str_replace('"','\"',$path).'"';
+        $svn_command = 'svn remove "' . str_replace('"', '\"', $path) . '"';
         //@shell_exec($svn_command);   Can't do as it would not execute with the correct permissions
-        $new=!file_exists($db[0].'/deletions.sh');
-        $command_file=@fopen($db[0].'/deletions.sh','at');
-        if ($command_file!==false)
-        {
-            if ($new)
-                    fwrite($command_file,'#!/bin/sh'."\n");
-            fwrite($command_file,$svn_command."\n");
+        $new = !file_exists($db[0] . '/deletions.sh');
+        $command_file = @fopen($db[0] . '/deletions.sh', 'at');
+        if ($command_file !== false) {
+            if ($new) {
+                fwrite($command_file, '#!/bin/sh' . "\n");
+            }
+            fwrite($command_file, $svn_command . "\n");
             fclose($command_file);
             require_code('files');
-            fix_permissions($db[0].'/deletions.sh',0777);
-            sync_file($db[0].'/deletions.sh');
-        }*/
+            fix_permissions($db[0] . '/deletions.sh');
+            sync_file($db[0] . '/deletions.sh');
+        }
+        */
 
         if (file_exists($path)) {
             $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
@@ -2133,7 +2144,7 @@ class Database_Static_xml
                 return null;
 
             case 'FIELD':
-                //if (!array_key_exists($expr[1],$bindings)) {@var_dump($bindings);exit($expr[1]);}   // Useful for debugging
+                //if (!array_key_exists($expr[1], $bindings)) {@var_dump($bindings);exit($expr[1]);}   // Useful for debugging
                 return $bindings[$expr[1]];
 
             case '+':
@@ -3286,7 +3297,7 @@ class Database_Static_xml
      * @param  integer $at Our offset counter
      * @param  array $tokens Tokens
      * @param  string $query Query that was executed
-     * @param  boolean $fail_ok Whether it can return NULL if we're out of output (otherwise fails)
+     * @param  boolean $fail_ok Whether it can return null if we're out of output (otherwise fails)
      * @return ?string Token read (null: error, read too far)
      */
     protected function _parsing_read(&$at, $tokens, $query, $fail_ok = false)

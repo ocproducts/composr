@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_data_mappr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -156,8 +157,6 @@ When you add the block you see various block parameters to be filled in includin
             'sources_custom/blocks/main_google_map.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP.tpl',
             'sources_custom/hooks/systems/fields/float.php',
-            'sources_custom/hooks/systems/fields/.htaccess',
-            'sources_custom/hooks/systems/fields/index.html',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'themes/default/images_custom/star_highlight.png',
             'sources_custom/catalogues2.php',

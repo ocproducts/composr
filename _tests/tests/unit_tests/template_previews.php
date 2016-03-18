@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,8 +26,8 @@ class template_previews_test_set extends cms_test_case
     {
         parent::setUp();
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $_GET['keep_has_js'] = '0';
@@ -72,8 +72,7 @@ class template_previews_test_set extends cms_test_case
         global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
 
-        $only_do_these = array( // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
-        );
+        $only_do_these = array(); // If you want to test specific templates temporarily put the template names (without .tpl) in this array. But remove again before you commit!
 
         $lists = find_all_previews__by_template();
         foreach ($lists as $template => $list) {
@@ -101,8 +100,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $RECORDED_TEMPLATES_USED = array();
@@ -186,8 +185,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             init__lorem();
@@ -197,7 +196,12 @@ class template_previews_test_set extends cms_test_case
             $PANELS_CACHE = array();
             $out1 = render_screen_preview($template, $hook, $function);
             $_out1 = $out1->evaluate();
+            $_out1 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out1); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
+            $_out1 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out1);
+            $_out1 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out1);
+            $_out1 = preg_replace('#\s#', '', $_out1);
             restore_output_state();
+
             init__lorem();
             push_output_state();
             $LOADED_TPL_CACHE = array();
@@ -205,8 +209,14 @@ class template_previews_test_set extends cms_test_case
             $PANELS_CACHE = array();
             $out2 = render_screen_preview($template, $hook, $function);
             $_out2 = $out2->evaluate();
+            $_out2 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out2); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
+            $_out2 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out2);
+            $_out2 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out2);
+            $_out2 = preg_replace('#\s#', '', $_out2);
             restore_output_state();
+
             $different = ($_out1 != $_out2);
+
             $this->assertFalse($different, 'Screen preview not same each time, ' . $function);
 
             if (!$different) {
@@ -254,8 +264,8 @@ class template_previews_test_set extends cms_test_case
                 continue; // To make easier to debug through
             }
 
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
 
             $ATTACHED_MESSAGES = new Tempcode();
@@ -266,7 +276,7 @@ class template_previews_test_set extends cms_test_case
                 $ATTACHED_MESSAGES = new Tempcode();
             }
             $put_out = (!$ATTACHED_MESSAGES->is_empty()) || (count($ATTACHED_MESSAGES_RAW) > 0);
-            $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_tags($ATTACHED_MESSAGES->evaluate()) . ')');
+            $this->assertFalse($put_out, 'Messages put out by ' . $function . '  (' . strip_html($ATTACHED_MESSAGES->evaluate()) . ')');
 
             if (!$put_out) {
                 fclose(fopen(get_file_base() . '/_tests/screens_tested/nonemissing__' . $function . '.tmp', 'wb'));
@@ -326,10 +336,5 @@ class template_previews_test_set extends cms_test_case
 
         safe_ini_set('ocproducts.type_strictness', '0');
         safe_ini_set('ocproducts.xss_detect', '0');
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

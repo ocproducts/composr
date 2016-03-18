@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -79,10 +79,7 @@ class Block_main_notes
         $contents = read_text_file($file, $lang, true);
         $post_url = get_self_url();
 
-        $map_comcode = '';
-        foreach ($map as $key => $val) {
-            $map_comcode .= ' ' . $key . '="' . addslashes($val) . '"';
-        }
+        $map_comcode = get_block_ajax_submit_map($map);
         return do_template('BLOCK_MAIN_NOTES', array('_GUID' => 'f737053505de3bd8ccfe806ec014b8fb', 'TITLE' => $title, 'BLOCK_NAME' => 'main_notes', 'MAP' => $map_comcode, 'CONTENTS' => $contents, 'SCROLLS' => array_key_exists('scrolls', $map) && ($map['scrolls'] == '1'), 'URL' => $post_url));
     }
 }

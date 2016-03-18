@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -73,7 +73,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -133,10 +133,10 @@ class Module_admin_custom_comcode extends Standard_crud_module
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for meta-data purposes (null: read from environment).
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
     public function pre_run($top_level = true, $type = null)
@@ -144,6 +144,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $type = get_param_string('type', 'browse');
 
         require_lang('custom_comcode');
+        require_lang('comcode');
 
         set_helper_panel_tutorial('tut_adv_comcode');
 
@@ -301,7 +302,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     {
         $m = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('*'), array('tag_tag' => $id), '', 1);
         if (!array_key_exists(0, $m)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'custom_comcode_tag'));
         }
         $r = $m[0];
 
@@ -340,6 +341,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $block_tag = post_param_integer('block_tag', 0);
         $textual_tag = post_param_integer('textual_tag', 0);
 
+        $this->check_parameters_all_there(($parameters == '') ? array() : explode(',', $parameters), $replace);
+
         add_custom_comcode_tag($tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag);
 
         return $tag;
@@ -377,9 +380,45 @@ class Module_admin_custom_comcode extends Standard_crud_module
         $block_tag = post_param_integer('block_tag', 0);
         $textual_tag = post_param_integer('textual_tag', 0);
 
+        $this->check_parameters_all_there(($parameters == '') ? array() : explode(',', $parameters), $replace);
+
         edit_custom_comcode_tag($id, $tag, $title, $description, $replace, $example, $parameters, $enabled, $dangerous_tag, $block_tag, $textual_tag);
 
         $this->new_id = $tag;
+    }
+
+    /**
+     * Check defined parameters are consistent with replace text.
+     *
+     * @param  array  $_parameters Parameters configured
+     * @param  string $replace Text to replace within
+     */
+    private function check_parameters_all_there($_parameters, $replace)
+    {
+        $parameters = array();
+        foreach ($_parameters as $param) {
+            $parameters[] = strtolower(preg_replace('#=.*$#', '', $param));
+        }
+        $parameters[] = 'content'; // implied
+
+        $matches = array();
+        $num_matches = preg_match_all('#\{(\w+)[^\w\}]*\}#', $replace, $matches);
+        $parameters_in_replace = array();
+        for ($i = 0; $i < $num_matches; $i++) {
+            $parameters_in_replace[] = strtolower($matches[1][$i]);
+        }
+
+        foreach (array_unique($parameters) as $param) {
+            if (!in_array($param, $parameters_in_replace)) {
+                attach_message(do_lang_tempcode('PARAMETER_DEFINED_NOT_USED', escape_html($param)), 'warn');
+            }
+        }
+
+        foreach (array_unique($parameters_in_replace) as $param) {
+            if (!in_array($param, $parameters)) {
+                attach_message(do_lang_tempcode('PARAMETER_USED_NOT_DEFINED', escape_html($param)), 'warn');
+            }
+        }
     }
 
     /**

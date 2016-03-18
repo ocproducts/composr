@@ -23,7 +23,9 @@
 
 						<div class="accessibility_hidden">{!FOLLOWING_SUBSCRIBED}</div>
 						<ul class="nl">
-							{SUBSCRIBED}
+							{+START,LOOP,SUBSCRIBED}
+								<li class="attendee"><a class="value" href="{MEMBER_URL*}" itemprop="attendees">{USERNAME*}</a></li>
+							{+END}
 						</ul>
 					</div></div>
 				{+END}
@@ -33,7 +35,13 @@
 
 					{+START,IF_NON_EMPTY,{SUBSCRIPTIONS}}
 						<ul class="event_subscriptions">
-							{SUBSCRIPTIONS}
+							{+START,LOOP,SUBSCRIPTIONS}
+								<li class="float_surrounder">
+									{TIME*}
+
+									<span class="horiz_field_sep associated_link"><a href="{UNSUBSCRIBE_URL*}" title="{!UNSUBSCRIBE}: {TIME*}">{!UNSUBSCRIBE}</a></span>
+								</li>
+							{+END}
 						</ul>
 					{+END}
 
@@ -178,5 +186,5 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$META_DATA,title}}{+END}
+	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 </div>

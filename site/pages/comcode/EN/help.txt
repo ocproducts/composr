@@ -1,14 +1,14 @@
 [title="1" sub="{$SITE_NAME} help"]Help[/title]
 
-[title="2"]Logging-in[/title]
+[title="2"]{$?,{$IS_GUEST},Logging-in,Your login}[/title]
 
-You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
+{$?,{$IS_GUEST},You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to,With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
 
 {+START,IF,{$ADDON_INSTALLED,points}}[title="2"]Points[/title]
 
 Every logged-in member can gain points as they contribute to our community, in ways like...
  - Posting on the forums
- - Contributing content to {$SITE_NAME}, such as images of the day
+ - Contributing content to {$SITE_NAME}, such as gallery images
 
 As you gain points, you can spend them on various fun or useful things, such as buying your own e-mail account.
 
@@ -29,7 +29,7 @@ The items that are purchasable may include:
  - Banner advertisements, and upgrades. Through this you may advertise something of your own that ordinarily the staff would not allocate advertising space for.
  - E-mail addresses. You may be able to purchase forwarding and POP3 e-mail addresses
 
-Products that require manual set-up will usually only be charged for upon activation, not at point of sale.
+Products that require manual setup will usually only be charged for upon activation, not at point of sale.
 {+END}
 {+START,IF,{$AND,{$ADDON_INSTALLED,news},{$HAS_ACTUAL_PAGE_ACCESS,cms_news}}}[title="2"]News/Blogs[/title]
 
@@ -44,11 +44,11 @@ Products that require manual set-up will usually only be charged for upon activa
 
 Other features we have include:
 [list]
-{+START,IF,{$ADDON_INSTALLED,calendar}}[*]a calendar[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,chat}}[*]chat rooms[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,downloads}}[*]downloads[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,cns_forum}}[*]forums[/*][*]private topics (for private messaging)[/*]{+END}
-{+START,IF,{$ADDON_INSTALLED,quizzes}}[*]quizzes[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,calendar}}[*] a calendar[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,chat}}[*] chatrooms[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,downloads}}[*] downloads[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,cns_forum}}[*] forums[/*][*] private topics (for private messaging)[/*]{+END}
+{+START,IF,{$ADDON_INSTALLED,quizzes}}[*] quizzes[/*]{+END}
 [/list]
 
 You may see submission links on the menus, and in other places. Submitting any kind of entry will be a similar process to submitting news: your entry will likely be put in a validation queue.

@@ -1,11 +1,17 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
- See text/en/licence.txt for full licencing information.
+ See text/EN/licence.txt for full licencing information.
 
 */
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_release_build
+ */
 
 /*EXTRA FUNCTIONS: shell_exec|escapeshellarg*/
 
@@ -13,8 +19,6 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 
 restrictify();
 safe_ini_set('ocproducts.xss_detect', '0');
-
-define('SOLUTION_FORUM', 283); // The forum ID on compo.sr for problem solution posts
 
 $_title = get_screen_title('Composr bugfix tool', false);
 $_title->evaluate_echo();
@@ -37,7 +41,7 @@ if (strpos($git_result, 'git: command not found') !== false) {
 // Actualisation
 // =============
 
-if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
+if (cms_srv('REQUEST_METHOD') == 'POST') {
     $git_commit_id = post_param_string('git_commit_id', '');
 
     $done = array();
@@ -108,7 +112,7 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
         }
     }
     if ($git_commit_id !== null) {
-        $git_url = 'https://github.com/chrisgraham/Composr/commit/' . $git_commit_id;
+        $git_url = 'https://github.com/ocproducts/composr/commit/' . $git_commit_id;
         if (post_param_string('git_commit_id', '') == '') {
             $done['Commited to git'] = $git_url;
         }
@@ -123,23 +127,11 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
     }
     $tracker_comment_message .= 'A hotfix (a TAR of files to upload) have been uploaded to this issue. These files are made to the latest intra-version state (i.e. may roll in earlier fixes too if made to the same files) - so only upload files newer than what you have already. Always take backups of files you are replacing or keep a copy of the manual installer for your version, and only apply fixes you need. These hotfixes are not necessarily reliable or well supported. Not sure how to extract TAR files to your Windows computer? Try 7-zip (http://www.7-zip.org/).';
     create_tracker_post($tracker_id, $tracker_comment_message);
-    // A tar of fixed files is uploaded to the tracker issue (correct relative file paths intact)
+    // A TAR of fixed files is uploaded to the tracker issue (correct relative file paths intact)
     upload_to_tracker_issue($tracker_id, create_hotfix_tar($tracker_id, $fixed_files));
     // The tracker issue gets closed
     close_tracker_issue($tracker_id);
     $done[(post_param_string('tracker_id', '') == '') ? 'Created new tracker issue' : 'Responded to existing tracker issue'] = $tracker_url;
-
-    // A bug is posted in the bugs catalogue, linking to the tracker
-    $post_to_bug_catalogue = !is_null(post_param_string('post_to_bug_catalogue', null));
-    if ($post_to_bug_catalogue) {
-        $ce_title = $title;
-        $ce_description = $notes;
-        $ce_affects = $affects;
-        $ce_fix = 'This issue is properly filed (and managed) on the tracker. See issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url].';
-        $entry_id = post_in_bugs_catalogue(get_version_pretty__from_dotted($version_dotted), $ce_title, $ce_description, $ce_affects, $ce_fix);
-        $ce_url = $REMOTE_BASE_URL . '/site/catalogues/entry/' . strval($entry_id) . '.htm';
-        $done['Added to bugs catalogue'] = $ce_url;
-    }
 
     // If a forum post ID was given, an automatic reply is given pointing to the tracker issue
     $post_id = post_param_integer('post_id', null);
@@ -150,15 +142,6 @@ if (strtoupper(cms_srv('REQUEST_METHOD')) == 'POST') {
         $reply_id = create_forum_post($post_id, $post_reply_title, $post_reply_message, $post_important);
         $reply_url = $REMOTE_BASE_URL . '/forum/topicview/findpost/' . strval($reply_id) . '.htm';
         $done['Posted reply'] = $reply_url;
-    }
-
-    // Problem solution system
-    $recog_error_substring = post_param_string('recog_error_substring', '');
-    if ($recog_error_substring != '') {
-        $recog_post = 'Your error seems to match a known and fixed bug in Composr (' . $title . ').' . "\n\n" . '[title="2"]How did this happen?[/title]' . "\n\n" . 'The bug description is as follows...' . "\n\n" . $notes . "\n\n" . '[title="2"]How do I fix it?[/title]' . "\n\n" . 'A hotfix is available under issue [url="#' . strval($tracker_id) . '"]' . $tracker_url . '[/url].';
-        $recog_topic_id = create_forum_topic(SOLUTION_FORUM, $recog_error_substring, $recog_post);
-        $recog_topic_url = $REMOTE_BASE_URL . '/forum/topicview/browse/' . strval($recog_topic_id) . '.htm';
-        $done['Posted recognition signature'] = $recog_topic_url;
     }
 
     // Show progress
@@ -215,8 +198,8 @@ if ((count($files) == 0) && (@$_GET['full_scan'] != '1')) {
     if (count($files) == 0) {
         $files = push_bugfix_do_dir(get_file_base(), $git_found, 24 * 60 * 60 * 14);
     }
-    /*$git_status='required="required"';
-    $git_status_2='';*/
+    /*$git_status = 'required="required"';
+    $git_status_2 = '';*/
     $git_status_3 = '<strong>Git commit ID</strong>';
     $choose_files_label = '<strong>Choose files</strong>';
 }
@@ -263,15 +246,6 @@ echo <<<END
     </fieldset>
 
     <fieldset>
-        <legend>Recognition signature <em>(optional)</em></legend>
-
-        <div>
-            <label for="recog_error_substring">Error message substring <span style="font-size: 0.8em">(use <kbd>xxx</kbd> to make a wild-card)</span></label>
-            <input size="40" name="recog_error_substring" id="recog_error_substring" type="text" value="" placeholder="optional" />
-        </div>
-    </fieldset>
-
-    <fieldset>
         <legend>Post to</legend>
 
         <div>
@@ -282,11 +256,6 @@ echo <<<END
         <div>
             <label for="tracker_id">Tracker ID to attach to <span style="font-size: 0.8em">(if not entered a new one will be made)</span></label>
             <input name="tracker_id" id="tracker_id" type="number" value="" placeholder="optional" />
-        </div>
-
-        <div>
-            <label for="post_to_bug_catalogue">Post to bug catalogue <span style="font-size: 0.8em">(if hotfix is worth advertising and issue is new)</span></label>
-            <input checked="checked" type="checkbox" id="post_to_bug_catalogue" name="post_to_bug_catalogue" />
         </div>
 
         <div>
@@ -403,7 +372,7 @@ function create_hotfix_tar($tracker_id, $files)
     $builds_path = get_builds_path();
     if (!file_exists($builds_path . '/builds/hotfixes')) {
         mkdir($builds_path . '/builds/hotfixes', 0777);
-        fix_permissions($builds_path . '/builds/hotfixes', 0777);
+        fix_permissions($builds_path . '/builds/hotfixes');
     }
     chdir($builds_path . '/builds/hotfixes');
     $tar = ((DIRECTORY_SEPARATOR == '\\') ? ('tar') : 'COPYFILE_DISABLE=1 tar');
@@ -414,12 +383,6 @@ function create_hotfix_tar($tracker_id, $files)
     }
     echo '<!--' . shell_exec($cmd . ' 2>&1') . '-->';
     return $tar_path;
-}
-
-function post_in_bugs_catalogue($version_pretty, $ce_title, $ce_description, $ce_affects, $ce_fix)
-{
-    $args = func_get_args();
-    return intval(make_call(__FUNCTION__, array('parameters' => $args)));
 }
 
 function create_forum_post($replying_to_post, $post_reply_title, $post_reply_message, $post_important)
@@ -544,7 +507,7 @@ function push_bugfix_do_dir($dir, $git_found, $seconds_since)
     $dh = opendir($_dir);
     if ($dh) {
         while (($file = readdir($dh)) !== false) {
-            if (($file != 'push_bugfix.php') && (!should_ignore_file(str_replace(get_file_base() . '/', '', $_dir . '/' . $file), IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE))) {
+            if (($file != 'push_bugfix.php') && (!should_ignore_file(str_replace(get_file_base() . '/', '', $_dir . '/' . $file), IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_HIDDEN_FILES | IGNORE_NONBUNDLED_SCATTERED | IGNORE_USER_CUSTOMISE | IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE))) {
                 $path = $dir . ((substr($dir, -1) != '/') ? '/' : '') . $file;
                 if (is_file($_dir . '/' . $file)) {
                     if ((filemtime($path) < time() - $seconds_since) && (!isset($git_found[$path]))) {

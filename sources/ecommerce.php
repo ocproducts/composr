@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__ecommerce()
 {
@@ -77,12 +79,13 @@ function ecommerce_get_currency_symbol($currency = null)
  * @param  ID_TEXT $purchase_id The purchase ID
  * @param  SHORT_TEXT $item_name The item name
  * @param  SHORT_TEXT $amount The amount
+ * @param  ID_TEXT $currency The currency
  * @param  ?integer $length The length (null: not a subscription)
  * @param  ID_TEXT $length_units The length units
  * @param  ?ID_TEXT $via The service the payment will go via via (null: autodetect).
  * @return array A pair: The form fields, Hidden fields
  */
-function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $length, $length_units, $via = null)
+function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amount, $currency, $length, $length_units, $via = null)
 {
     if (is_null($via)) {
         $via = get_option('payment_gateway');
@@ -102,6 +105,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
         'e_purchase_id' => $purchase_id,
         'e_item_name' => $item_name,
         'e_amount' => $amount,
+        'e_currency' => $currency,
         'e_member_id' => get_member(),
         'e_ip_address' => get_ip_address(),
         'e_session_id' => get_session_id(),
@@ -124,9 +128,10 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
     $fields->attach(form_input_line(do_lang_tempcode('CARD_CV2'), do_lang_tempcode('DESCRIPTION_CARD_CV2'), 'cv2', ecommerce_test_mode() ? '123' : get_cms_cpf('payment_card_cv2'), true));
 
     // Shipping address fields
+    require_lang('cns_special_cpf');
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_firstname'), '', 'first_name', get_cms_cpf('firstname'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_lastname'), '', 'last_name', get_cms_cpf('last_name'), true));
-    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_building_name_or_number'), '', 'address1', get_cms_cpf('building_name_or_number'), true));
+    $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_street_address'), '', 'address1', get_cms_cpf('street_address'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_city'), '', 'city', get_cms_cpf('city'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_state'), '', 'zip', get_cms_cpf('state'), true));
     $fields->attach(form_input_line(do_lang_tempcode('SPECIAL_CPF__cms_post_code'), '', 'zip', get_cms_cpf('post_code'), true));
@@ -245,7 +250,7 @@ function send_invoice_notification($member_id, $id)
     require_code('notifications');
     $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
     $url = $_url->evaluate();
-    dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
+    dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
 }
 
 /**
@@ -322,7 +327,7 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  * @param  ID_TEXT $search The product codename/item name
  * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
  * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename
- * @return array A pair: The product-class map, and the formal product name (both will be NULL if not found).
+ * @return array A pair: The product-class map, and the formal product name (both will be null if not found).
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {
@@ -481,7 +486,8 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_PRICE', $item_name), $is_subscription);
         }
     }
-    if ($mc_currency != get_option('currency')) {
+    $expected_currency = isset($found[5]) ? $found[5] : get_option('currency');
+    if ($mc_currency != $expected_currency) {
         if (($payment_status != 'SCancelled') && ($via != 'manual')) {
             fatal_ipn_exit(do_lang('PURCHASE_WRONG_CURRENCY'));
         }
@@ -592,11 +598,11 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
                 }
                 if ($payment_status == 'Completed') { // Completed
                     $subject = do_lang('SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
+                    $body = do_notification_lang('_SERVICE_PAID_FOR', $item_name, $username, get_site_name(), get_site_default_lang());
                     dispatch_notification('service_paid_for_staff', null, $subject, $body);
                 } else { // Must be SCancelled
                     $subject = do_lang('SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
-                    $body = do_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
+                    $body = do_notification_lang('_SERVICE_CANCELLED', $item_name, $username, get_site_name(), get_site_default_lang());
                     dispatch_notification('service_cancelled_staff', null, $subject, $body);
                 }
             }

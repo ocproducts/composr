@@ -4,12 +4,13 @@
 	<input type="hidden" name="upload" value="1" />
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
 	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:from=paypal}" />
-	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce}?from=paypal" />
+	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce,1}?from=paypal" />
 	<input type="hidden" name="no_shipping" value="0" />
 	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:shopping:finish:cancel=1:from=paypal}" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
 	<input type="hidden" name="custom" value="{ORDER_ID*}" />
 	<input type="hidden" name="rm" value="2" />
+	<input type="hidden" name="bn" value="ocproducts_SP" />
 
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
 		<!-- <input type="hidden" name="address_override" value="1" /> -->
@@ -42,8 +43,8 @@
 	{+END}
 
 	<p class="purchase_button">
-		<input class="buttons__cart_checkout button_screen" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
-	</p>	
+		<input class="button_screen buttons__cart_checkout" type="submit" name="submit" value="{!shopping:CHECK_OUT}" />
+	</p>
 </form>
 
 {+START,IF_NON_EMPTY,{NOTIFICATION_TEXT}}

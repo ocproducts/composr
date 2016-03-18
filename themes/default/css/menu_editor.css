@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .menu_editor_page {
@@ -17,6 +17,8 @@
 	font-size: 0.9em;
 	width: 100%;
 	z-index: 100; /* Needed for Opera, else footer icons with 'transform' CSS property overlay (bug in Opera) */
+	padding: 0 0.5em;
+	{$BETA_CSS_PROPERTY,box-layout: border-box;}
 }
 
 .docked .menu_edit_main {
@@ -25,6 +27,7 @@
 
 .dock_button {
 	float: right;
+	margin-right: 0.5em;
 	padding: 0.5em;
 	cursor: pointer;
 }

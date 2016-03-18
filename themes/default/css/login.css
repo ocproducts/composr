@@ -1,6 +1,6 @@
 /*
  {$BRAND_NAME`}
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 */
 
 .page_running_login #main_website_inner {
@@ -24,10 +24,6 @@
 
 .login_page .box {
 	margin-top: 0;
-}
-
-.login_extra_info {
-	margin-top: 60px;
 }
 
 /*{+START,IF,{$MOBILE}}*/

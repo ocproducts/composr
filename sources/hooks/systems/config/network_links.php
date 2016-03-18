@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -50,6 +50,6 @@ class Hook_config_network_links
      */
     public function get_default()
     {
-        return get_base_url() . '/netlink.php';
+        return get_base_url() . '/data/netlink.php';
     }
 }

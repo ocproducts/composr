@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,9 +32,10 @@ class Hook_content_meta_aware_video
     public function info($zone = null)
     {
         return array(
-            'supports_custom_fields' => true,
+            'support_custom_fields' => true,
 
-            'content_type_label' => 'VIDEO',
+            'content_type_label' => 'global:VIDEO',
+            'content_type_universal_label' => 'Video',
 
             'connection' => $GLOBALS['SITE_DB'],
             'where' => 'cat NOT LIKE \'' . db_encode_like('download\_%') . '\'',
@@ -56,6 +57,8 @@ class Hook_content_meta_aware_video
             'title_field_dereference' => true,
             'description_field' => 'description',
             'thumb_field' => 'thumb_url',
+            'thumb_field_is_theme_image' => false,
+            'alternate_icon_theme_image' => null,
 
             'view_page_link_pattern' => '_SEARCH:galleries:video:_WILD',
             'edit_page_link_pattern' => '_SEARCH:cms_galleries:_edit_other:_WILD',
@@ -66,7 +69,9 @@ class Hook_content_meta_aware_video
             'support_url_monikers' => true,
 
             'views_field' => 'video_views',
+            'order_field' => null,
             'submitter_field' => 'submitter',
+            'author_field' => null,
             'add_time_field' => 'add_date',
             'edit_time_field' => 'edit_date',
             'date_field' => 'add_date',
@@ -76,9 +81,14 @@ class Hook_content_meta_aware_video
 
             'feedback_type_code' => 'videos',
 
-            'permissions_type_code' => 'galleries', // NULL if has no permissions
+            'permissions_type_code' => 'galleries', // null if has no permissions
 
             'search_hook' => 'videos',
+            'rss_hook' => 'galleries',
+            'attachment_hook' => null,
+            'unvalidated_hook' => 'videos',
+            'notification_hook' => 'gallery_entry',
+            'sitemap_hook' => 'video',
 
             'addon_name' => 'galleries',
 
@@ -88,11 +98,13 @@ class Hook_content_meta_aware_video
             'commandr_filesystem_hook' => 'galleries',
             'commandr_filesystem__is_folder' => false,
 
-            'rss_hook' => 'galleries',
+            'support_revisions' => false,
+
+            'support_privacy' => true,
+
+            'support_content_reviews' => true,
 
             'actionlog_regexp' => '\w+_VIDEO',
-
-            'supports_privacy' => true,
         );
     }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -55,8 +55,8 @@ class Hook_ecommerce_catalogue_items
             }
         }
 
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         $start = 0;
@@ -91,7 +91,14 @@ class Hook_ecommerce_catalogue_items
                 $price = float_to_raw_string($this->calculate_product_price(floatval($item_price), $tax, $product_weight));
 
                 /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
-                $products[strval($ecomm_item['id'])] = array(PRODUCT_CATALOGUE, $price, 'handle_catalogue_items', array('tax' => $tax), $product_title);
+                $products[strval($ecomm_item['id'])] = array(
+                    PRODUCT_CATALOGUE,
+                    $price,
+                    'handle_catalogue_items',
+                    array('tax' => $tax),
+                    $product_title,
+                    get_option('currency'),
+                );
             }
             $start += 500;
         } while (count($items) == 500);
@@ -126,12 +133,14 @@ class Hook_ecommerce_catalogue_items
             return ECOMMERCE_PRODUCT_INTERNAL_ERROR;
         }
 
-        if (is_object($fields[4]['effective_value'])) {
-            $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
-        }
+        if (array_key_exists(4, $fields)) {
+            if (is_object($fields[4]['effective_value'])) {
+                $fields[4]['effective_value'] = $fields[4]['effective_value']->evaluate();
+            }
 
-        if ((is_null($fields[4]['effective_value'])) || (intval($fields[4]['effective_value']) == 0)) {
-            return ECOMMERCE_PRODUCT_AVAILABLE;
+            if ((is_null($fields[4]['effective_value'])) || (intval($fields[4]['effective_value']) == 0)) {
+                return ECOMMERCE_PRODUCT_AVAILABLE;
+            }
         }
 
         if (is_object($fields[3]['effective_value'])) {
@@ -226,7 +235,7 @@ class Hook_ecommerce_catalogue_items
         $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => intval($type_code)), '', 1);
 
         if (!array_key_exists(0, $entries)) {
-            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE'));
+            return warn_screen(get_screen_title('CATALOGUES'), do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $entry = $entries[0];
@@ -256,7 +265,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $pid));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $product_det = get_catalogue_entry_field_values($catalogue_name, $pid, null, null, true);
@@ -437,7 +446,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
         }
 
         $image = $this->get_product_image($catalogue_name, $entry['product_id']);
@@ -465,12 +474,12 @@ class Hook_ecommerce_catalogue_items
                 array(
                     $product_image,
                     $product_link,
-                    $currency . escape_html(float_format(round($entry["price"], 2))),
+                    $currency . escape_html(float_format($entry['price'], 2)),
                     $edit_qnty,
                     $currency . escape_html(float_format($order_price)),
-                    $currency . escape_html(float_format(round($total_tax, 2))),
-                    $currency . escape_html(float_format(round($total_shipping, 2))),
-                    $currency . escape_html(float_format(round($price, 2))),
+                    $currency . escape_html(float_format($total_tax, 2)),
+                    $currency . escape_html(float_format($total_shipping, 2)),
+                    $currency . escape_html(float_format($price, 2)),
                     $del_item
                 ), false, $tpl_set
             )
@@ -648,7 +657,9 @@ class Hook_ecommerce_catalogue_items
             stock_maintain_warn_mail($product_name, $entry_id);
         }
 
-        $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        if (array_key_exists(3, $fields)) { // Stock level
+            $GLOBALS['SITE_DB']->query_update('catalogue_efv_integer', array('cv_value' => intval($stock_after_dispatch)), array('cf_id' => $stock_field, 'ce_id' => $entry_id));
+        }
     }
 
     /**
@@ -693,7 +704,7 @@ class Hook_ecommerce_catalogue_items
         if (array_key_exists('FIELD_0', $map)) {
             $product_title = $map['FIELD_0_PLAIN'];
             if (is_object($product_title)) {
-                $product_title = @html_entity_decode(strip_tags($product_title->evaluate()), ENT_QUOTES);
+                $product_title = strip_html($product_title->evaluate());
             }
         }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,8 @@
  * @copyright  ocProducts Ltd
  * @package    downloads
  */
+
+/*EXTRA FUNCTIONS: ftp_.**/
 
 /**
  * Hook class.
@@ -57,7 +59,7 @@ class Hook_task_import_ftp_downloads
         require_lang('installer');
         $conn_id = @ftp_connect(array_key_exists('host', $parsed_url) ? $parsed_url['host'] : 'localhost', array_key_exists('port', $parsed_url) ? $parsed_url['port'] : 21);
         if ($conn_id === false) {
-            return array(null, do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($server_url))); // Yes it's FTP not HTTP, but lang string is ok
+            return array(null, do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($server_url))); // Yes it's FTP not HTTP, but language string is ok
         }
         if ((array_key_exists('user', $parsed_url)) && (array_key_exists('pass', $parsed_url))) {
             $login_result = @ftp_login($conn_id, $parsed_url['user'], $parsed_url['pass']);
@@ -109,8 +111,6 @@ class Hook_task_import_ftp_downloads
     {
         $num_added = 0;
 
-        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-
         $contents = @ftp_nlist($conn_id, $directory);
         if ($contents === false) {
             return 0;
@@ -130,9 +130,8 @@ class Hook_task_import_ftp_downloads
                     if (is_null($category_id)) {
                         // Add the directory
                         $category_id = add_download_category(titleify($entry), $dest_cat, '', '', '');
-                        foreach (array_keys($groups) as $group_id) {
-                            $GLOBALS['SITE_DB']->query_insert('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id), 'group_id' => $group_id));
-                        }
+                        require_code('permissions2');
+                        set_global_category_access('downloads', $category_id);
                     }
                     // Call this function again to recurse it
                     $num_added += $this->ftp_recursive_downloads_scan($conn_id, $full_url, $full_path, $category_id, true);

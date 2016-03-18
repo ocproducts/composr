@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -17,6 +17,16 @@
  * @copyright  ocProducts Ltd
  * @package    ecommerce
  */
+
+/*
+A note about currencies...
+
+The invoice module is only in the configured site currency. It is intentionally kept very simple.
+
+If you need more sophisticated invoicing then you should override the invoicing code with your own.
+
+The core eCommerce functionality does support multiple currencies.
+*/
 
 /**
  * Module page class.
@@ -74,7 +84,7 @@ class Module_invoices
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -90,7 +100,7 @@ class Module_invoices
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -168,10 +178,11 @@ class Module_invoices
             $payable = ($row['i_state'] == 'new');
             $deliverable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);
+            $currency = get_option('currency');
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button(substr(get_class($object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), get_option('currency'));
+                $transaction_button = make_transaction_button(substr(get_class($object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
@@ -190,7 +201,7 @@ class Module_invoices
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'CURRENCY' => get_option('currency'), 'INVOICES' => $invoices));
+        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'CURRENCY' => $currency, 'INVOICES' => $invoices));
     }
 
     /**
@@ -218,7 +229,7 @@ class Module_invoices
         $products = $object->get_products(false, $type_code);
         $invoice_title = $products[$type_code][4];
 
-        list($fields, $hidden) = get_transaction_form_fields(null, strval($id), $invoice_title, float_to_raw_string($row['i_amount']), null, '');
+        list($fields, $hidden) = get_transaction_form_fields(null, strval($id), $invoice_title, float_to_raw_string($row['i_amount']), get_option('currency'), null, '');
 
         $text = do_lang_tempcode('TRANSACT_INFO');
 

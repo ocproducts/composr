@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -11,6 +11,8 @@
    **** If you ignore this advice, then your website upgrades (e.g. for bug fixes) will likely kill your changes ****
 
 */
+
+/*EXTRA FUNCTIONS: xml_.**/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -58,30 +60,54 @@ function load_breadcrumb_substitutions($segments)
     $segments_new = array();
     $done_one = false;
 
-    foreach ($segments as $i => $segment) {
+    foreach ($segments as $i => $segment) { // Loop by active breadcrumb segments
         if (is_object($segment[1])) {
             $segment[1] = $segment[1]->evaluate();
         }
 
-        if (!$done_one && $segment[0] != '') {
-            list($zone, $attributes, $hash) = page_link_decode($segment[0]);
+        if (!$done_one && $segment[0] !== '') {
+            if ($segment[0] === null) {
+                list($segment_zone, $segment_attributes, $segment_hash) = array(null, null, null); // active page
+            } else {
+                list($segment_zone, $segment_attributes, $segment_hash) = page_link_decode($segment[0]);
+            }
 
-            foreach ($substitutions as $j => $details) {
-                if ($details !== null) {
-                    if (($details[0][0][0] == 'site') && ($zone == '') || ($details[0][0][0] == '') && ($zone == 'site')) {
-                        // Special handling, we don't want single public zone option (collapse_user_zones) to be too "smart" and apply a rule intended for when that option is off
-                        continue;
+            foreach ($substitutions as $j => $substitution_details) { // Loop by substitutions
+                if ($substitution_details !== null) {
+                    if ($segment[0] === null) {
+                        $does_match = match_key_match($substitution_details[0], false);
+                    } else {
+                        if (($substitution_details[0][0][0] == 'site') && ($segment_zone == '') || ($substitution_details[0][0][0] == '') && ($segment_zone == 'site')) {
+                            // Special handling, we don't want single public zone option (collapse_user_zones) to be too "smart" and apply a rule intended for when that option is off
+                            continue;
+                        }
+
+                        $does_match = isset($segment_attributes['page']) && match_key_match($substitution_details[0], false, $segment_attributes, $segment_zone, $segment_attributes['page']);
                     }
 
-                    if (isset($attributes['page']) && match_key_match($details[0], false, $attributes, $zone, $attributes['page'])) {
-                        if ($details[1] === null || $details[1] == $segment[1]) {
-                            if (!$done_one) {
-                                $segments_new = $details[2]; // New stem found
-                                $done_one = true;
+                    if ($does_match) {
+                        if (!$done_one) {
+                            // New stem found
+                            $segments_new_bak = $segments_new;
+                            $segments_new = array();
+                            foreach ($substitution_details[2] as $new_segment) {
+                                if ((empty($new_segment[0])) && (empty($new_segment[1]))) { // <link /> indicating to keep existing links on tail, possibly new links on head
+                                    $segments_new = array_merge($segments_new, $segments_new_bak);
+                                } else {
+                                    $segments_new[] = $new_segment;
+                                }
                             }
 
-                            $substitutions[$j] = null; // Stop loops when recursing
+                            $done_one = true;
                         }
+
+                        if ($segment[0] === null) { // New label for active page specified here?
+                            if ($substitution_details[1] !== null) {
+                                $GLOBALS['BREADCRUMB_SET_SELF'] = $substitution_details[1];
+                            }
+                        }
+
+                        $substitutions[$j] = null; // Stop loops when recursing
                     }
                 }
             }
@@ -201,6 +227,10 @@ class Breadcrumb_substitution_loader
 
         switch ($tag) {
             case 'substitution':
+                if (isset($tag_attributes['skip_if_single_public_zone']) && $tag_attributes['skip_if_single_public_zone'] == 'true' && get_option('collapse_user_zones') == '1') {
+                    break;
+                }
+
                 $this->substitutions[] = array(
                     $this->substitution_current_match_key,
                     $this->substitution_current_label,
@@ -212,7 +242,7 @@ class Breadcrumb_substitution_loader
                 $page_link = trim(str_replace('\n', "\n", $this->text_so_far));
                 $this->substitution_current_links[] = array(
                     $page_link,
-                    isset($tag_attributes['label']) ? static_evaluate_tempcode(comcode_to_tempcode($tag_attributes['label'])) : new Tempcode()
+                    isset($tag_attributes['label']) ? static_evaluate_tempcode(comcode_to_tempcode($tag_attributes['label'])) : ''
                 );
                 break;
         }

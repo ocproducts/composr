@@ -10,7 +10,9 @@
 			<!-- List put in here -->
 		</div>
 		<script>// <![CDATA[
-			new tree_list('{NAME;/}','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1{+START,IF_PASSED,PAGE_TYPE}&page_type={PAGE_TYPE;/}{+END}','','',false,null,false,true);
+			add_event_listener_abstract(window,'load',function() {
+				new tree_list('{NAME;/}','data/sitemap.php?get_perms=0{$KEEP;/}&start_links=1{+START,IF_PASSED,PAGE_TYPE}&page_type={PAGE_TYPE;/}{+END}','','',false,null,false,true);
+			});
 		//]]></script>
 
 		<p class="associated_details">

@@ -12,18 +12,18 @@ function password_strength(ob)
 	var _ind=document.getElementById('password_strength_'+ob.id);
 	if (!_ind) return;
 	var ind=_ind.getElementsByTagName('div')[0];
-	var url='password='+window.encodeURIComponent(ob.value);
+	var post='password='+window.encodeURIComponent(ob.value);
 	if (ob.form && typeof ob.form.elements['username']!='undefined')
 	{
-		url+='&username='+ob.form.elements['username'].value;
+		post+='&username='+ob.form.elements['username'].value;
 	} else
 	{
 		if (ob.form && typeof ob.form.elements['edit_username']!='undefined')
 		{
-			url+='&username='+ob.form.elements['edit_username'].value;
+			post+='&username='+ob.form.elements['edit_username'].value;
 		}
 	}
-	var strength=load_snippet('password_strength',url);
+	var strength=load_snippet('password_strength',post);
 	strength*=2; if (strength>10) strength=10; // Normally too harsh!
 	ind.style.width=(strength*10)+'px';
 	if (strength>=6)
@@ -305,7 +305,7 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 	if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements))
 	{
 		window.setInterval(window.trigger_resize,500);  /* In case its running in an iframe itself */
-		animate_frame_load(pf,'preview_iframe',50);
+		illustrate_frame_load(pf,'preview_iframe',50);
 	}
 
 	disable_buttons_just_clicked(document.getElementsByTagName('input'));
@@ -344,8 +344,21 @@ function clever_find_value(form,element)
 			value='';
 			if (element.selectedIndex>=0)
 			{
-				value=element.options[element.selectedIndex].value;
-				if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				if (element.multiple)
+				{
+					for (var i=0;i<element.options.length;i++)
+					{
+						if (element.options[i].selected)
+						{
+							if (value!='') value+=',';
+							value+=element.options[i].value;
+						}
+					}
+				} else if (element.selectedIndex>=0)
+				{
+					value=element.options[element.selectedIndex].value;
+					if ((value=='') && (element.getAttribute('size')>1)) value='-1'; // Fudge, as we have selected something explicitly that is blank
+				}
 			}
 			break;
 		case 'input':
@@ -379,6 +392,8 @@ function clever_find_value(form,element)
 				case 'time':
 				case 'url':
 				case 'week':
+				case 'password':
+				default:
 					value=element.value;
 					break;
 			}
@@ -434,12 +449,6 @@ function check_field(the_element,the_form,for_preview)
 	// Class name
 	the_class=first_class_name(the_element.className);
 
-	// Deleting?
-	if ((!for_preview) && (the_element.name=='delete') && (((the_class=='input_radio') && (the_element.value!='0')) || (the_class=='input_tick')) && (the_element.checked))
-	{
-		return [false,the_element,0,true]; // Because we're deleting, errors do not matter
-	}
-
 	// Find whether field is required and value of it
 	if (the_element.type=='radio')
 	{
@@ -468,45 +477,46 @@ function check_field(the_element,the_form,for_preview)
 			var month=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].selectedIndex].value;
 			var year=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].selectedIndex].value;
 			var source_date=new Date(year,month-1,day);
-			if (year!=source_date.getFullYear()) error_msg='{!NOT_A_DATE;^}';
-			if (month!=source_date.getMonth()+1) error_msg='{!NOT_A_DATE;^}';
-			if (day!=source_date.getDate()) error_msg='{!NOT_A_DATE;^}';
+			if (year!=source_date.getFullYear()) error_msg='{!javascript:NOT_A_DATE;^}';
+			if (month!=source_date.getMonth()+1) error_msg='{!javascript:NOT_A_DATE;^}';
+			if (day!=source_date.getDate()) error_msg='{!javascript:NOT_A_DATE;^}';
 		}
 		if (((the_class=='input_email') || (the_class=='input_email_required')) && (my_value!='') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)))
 		{
-			error_msg='{!NOT_A_EMAIL;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_A_EMAIL;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_username') || (the_class=='input_username_required')) && (my_value!='') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username='+encodeURIComponent(my_value))))
 		{
-			error_msg='{!NOT_USERNAME;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_USERNAME;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_codename') || (the_class=='input_codename_required')) && (my_value!='') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/)))
 		{
-			error_msg='{!NOT_CODENAME;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_CODENAME;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_integer') || (the_class=='input_integer_required')) && (my_value!='') && (parseInt(my_value,10)!=my_value-0))
 		{
-			error_msg='{!NOT_INTEGER;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_INTEGER;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_float') || (the_class=='input_float_required')) && (my_value!='') && (parseFloat(my_value)!=my_value-0))
 		{
-			error_msg='{!NOT_FLOAT;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_FLOAT;^}'.replace('\{1}',my_value);
 		}
 
-		// shim for HTML5 regexp patterns
+		// Shim for HTML5 regexp patterns
 		if (the_element.getAttribute('pattern'))
 		{
 			if ((my_value!='') && (!my_value.match(new RegExp(the_element.getAttribute('pattern')))))
 			{
-				error_msg='{!PATTERN_NOT_MATCHED;^}'.replace('\{1}',my_value);
+				error_msg='{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}',my_value);
 			}
 		}
 
 		// Custom error messages
 		if (error_msg!='')
 		{
-			if ((errormsg_element) && (errormsg_element.getAttribute('data-errorRegexp')!=''))
-				error_msg=errormsg_element.getAttribute('data-errorRegexp');
+			var custom_msg=errormsg_element.getAttribute('data-errorRegexp');
+			if ((errormsg_element) && (custom_msg!=null) && (custom_msg!=''))
+				error_msg=custom_msg;
 		}
 	}
 
@@ -523,6 +533,12 @@ function check_field(the_element,the_form,for_preview)
 
 function check_form(the_form,for_preview)
 {
+	var delete_element=document.getElementById('delete');
+	if ((!for_preview) && (delete_element!=null) && (((first_class_name(delete_element.className)=='input_radio') && (the_element.value!='0')) || (first_class_name(delete_element.className)=='input_tick')) && (delete_element.checked))
+	{
+		return true;
+	}
+
 	var j,the_element,erroneous=false,total_file_size=0,alerted=false,error_element=null,check_result;
 	for (j=0;j<the_form.elements.length;j++)
 	{
@@ -585,7 +601,7 @@ function check_form(the_form,for_preview)
 			}
 			if (!alerted)
 			{
-				window.fauxmodal_alert('{!TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{'+'1'+'\\\\}','g'),Math.round(total_file_size/1024)).replace(new RegExp('\\\\{'+'2'+'\\\\}','g'),Math.round(the_form.elements['MAX_FILE_SIZE'].value/1024)));
+				window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{'+'1'+'\\\\}','g'),Math.round(total_file_size/1024)).replace(new RegExp('\\\\{'+'2'+'\\\\}','g'),Math.round(the_form.elements['MAX_FILE_SIZE'].value/1024)));
 			}
 			alerted=true;
 		}
@@ -1038,18 +1054,23 @@ function initialise_input_theme_image_entry(name,code)
 	}
 }
 
-function choose_picture(id,ob,name,event)
+function choose_picture(j_id,img_ob,name,event)
 {
-	if (!ob) return;
+	var j=document.getElementById(j_id);
+	if (!j) return;
 
-	var r=document.getElementById(id);
-	if (!r) return;
-	var e=r.form.elements[name];
+	if (!img_ob)
+	{
+		img_ob=document.getElementById('w_'+j_id.substring(2,j_id.length)).getElementsByTagName('img')[0];
+		if (typeof img_ob=='undefined') return;
+	}
+
+	var e=j.form.elements[name];
 	for (var i=0;i<e.length;i++)
 	{
 		if (e[i].disabled) continue;
 		var img=e[i].parentNode.parentNode.getElementsByTagName('img')[0];
-		if ((img) && (img!=ob))
+		if ((img) && (img!=img_ob))
 		{
 			if (img.parentNode.className.indexOf(' selected')!=-1)
 			{
@@ -1060,12 +1081,12 @@ function choose_picture(id,ob,name,event)
 		}
 	}
 
-	if (r.disabled) return;
-	r.checked=true;
-	//if (r.onclick) r.onclick(); causes loop
-	if (typeof r.fakeonchange!='undefined' && r.fakeonchange) r.fakeonchange(event);
-	ob.parentNode.className+=' selected';
-	ob.style.outline='1px dotted';
+	if (j.disabled) return;
+	j.checked=true;
+	//if (j.onclick) j.onclick(); causes loop
+	if (typeof j.fakeonchange!='undefined' && j.fakeonchange) j.fakeonchange(event);
+	img_ob.parentNode.className+=' selected';
+	img_ob.style.outline='1px dotted';
 }
 
 function preview_mobile_button(ob)
@@ -1108,7 +1129,7 @@ function disable_preview_scripts(under)
 		{
 			try
 			{
-				if ((!elements[i].href) || (elements[i].href.toLowerCase().indexOf('javascript:')!=0)) // guard due to weird Firefox bug, JS actions still opening new window
+				if (((!elements[i].href) || (elements[i].href.toLowerCase().indexOf('javascript:')!=0)) && (elements[i].target!=='_self') && (elements[i].target!=='_blank')) // guard due to weird Firefox bug, JS actions still opening new window
 				{
 					elements[i].target='false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
 				}
@@ -1238,5 +1259,61 @@ function assign_radio_deletion_confirm(name)
 				}
 			}
 		}
+	}
+}
+
+/* Geolocation for address fields */
+function geolocate_address_fields()
+{
+	if (typeof navigator.geolocation!='undefined')
+	{
+		try
+		{
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var fields=[
+					'{!cns_special_cpf:SPECIAL_CPF__cms_street_address;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_city;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_county;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_state;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_post_code;}',
+					'{!cns_special_cpf:SPECIAL_CPF__cms_country;}'
+				];
+
+				var geocode_url='{$FIND_SCRIPT;,geocode}';
+				geocode_url+='?latitude='+window.encodeURIComponent(position.coords.latitude)+'&longitude='+window.encodeURIComponent(position.coords.longitude);
+				geocode_url+=keep_stub();
+
+				do_ajax_request(geocode_url,function(ajax_result) {
+					var parsed=JSON.parse(ajax_result.responseText);
+					if (parsed===null) return;
+					var labels=document.getElementsByTagName('label'),label,field_name,field;
+					for (var i=0;i<labels.length;i++)
+					{
+						label=get_inner_html(labels[i]);
+						for (var j=0;j<fields.length;j++)
+						{
+							if (fields[j].replace(/^.*: /,'')==label)
+							{
+								if (parsed[j+1]===null) parsed[j+1]='';
+
+								field_name=labels[i].getAttribute('for');
+								field=document.getElementById(field_name);
+								if (field.nodeName.toLowerCase()=='select')
+								{
+									field.value=parsed[j+1];
+									if (typeof $(field).select2!='undefined') {
+										$(field).trigger('change');
+									}
+								} else
+								{
+									field.value=parsed[j+1];
+								}
+							}
+						}
+					}
+				});
+			});
+		}
+		catch (e) {}
 	}
 }

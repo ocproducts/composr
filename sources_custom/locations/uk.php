@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    locations
+ * @package    world_regions
  */
 
 /**
@@ -18,12 +18,9 @@
  *
  * @return array Map: region=>list of counties
  */
-function get_county_map()
+function get_region_structure_GB()
 {
-    /* NB: Choice of counties dictated by the address data we had available for free. */
-    /* NB: We can assume all lower-level region names are globally unique. */
-
-    $data = array(
+    return array(
         'Scotland' => array('Inverclyde' => true, 'Renfrewshire' => true, 'West Dunbartonshire' => true, 'East Dunbartonshire' => true, 'Glasgow City' => true, 'East Renfrewshire' => true, 'North Lanarkshire' => true, 'Falkirk' => true, 'West Lothian' => true, 'City of Edinburgh' => true, 'Midlothian' => true, 'East Lothian' => true, 'Clackmannanshire' => true, 'Fife' => true, 'Dundee City' => true, 'Angus' => true, 'Aberdeenshire' => true, 'Aberdeen City' => true, 'Moray' => true, 'Highland and Isle of Skye' => true, 'Western Isles' => true, 'Argyll and Bute' => true, 'Perth and Kinross' => true, 'Stirling' => true, 'North Ayrshire' => true, 'East Ayrshire' => true, 'South Ayrshire' => true, 'Dumfries and Galloway' => true, 'South Lanarkshire' => true, 'Scottish Borders' => true, 'Orkney Islands' => true, 'Shetland Islands' => true,), // http://en.wikipedia.org/wiki/Council_Areas_of_Scotland=http://en.wikipedia.org/wiki/Subdivisions_of_Scotland [NOT http://en.wikipedia.org/wiki/Lieutenancy_areas_of_Scotland OR http://en.wikipedia.org/wiki/Registration_county OR http://en.wikipedia.org/wiki/Large_burghs OR http://en.wikipedia.org/wiki/Regions_and_districts_of_Scotland OR http://en.wikipedia.org/wiki/Counties_of_Scotland]
         'Northern Ireland' => array('County Antrim' => true, 'County Armagh' => true, 'County Down' => true, 'County Fermanagh' => true, 'County Londonderry' => true, 'County Tyrone' => true),
         'Wales' => array('Merthyr Tydfil' => true, 'Caerphilly' => true, 'Blaenau Gwent' => true, 'Torfae' => true, 'Monmouthshire' => true, 'Newport' => true, 'Cardiff' => true, 'Vale of Glamorgan' => true, 'Bridgend' => true, 'Rhondda Cynon Taff' => true, 'Neath Port Talbot' => true, 'Swansea' => true, 'Carmarthenshire' => true, 'Ceredigion' => true, 'Powys' => true, 'Wrexham' => true, 'Flintshire' => true, 'Denbighshire' => true, 'Conwy' => true, 'Gwynedd' => true, 'Isle of Anglesey' => true, 'Pembrokeshire' => true), // http://en.wikipedia.org/wiki/Administrative_divisions_of_Wales [NOT http://en.wikipedia.org/wiki/Preserved_counties_of_Wales OR http://en.wikipedia.org/wiki/Historic_counties_of_Wales]
@@ -42,5 +39,4 @@ function get_county_map()
         'South West' => array('Bath and North East Somerset' => true, 'South Gloucestershire' => true, 'North Somerset' => true, 'Bournemouth' => true, 'Poole' => true, 'Somerset' => true, 'Bristol' => true, 'Gloucestershire' => true, 'Wiltshire' => true, 'Dorset' => true, 'Devon' => true, 'Cornwall' => true),
         'London' => array('Central London and West End (WC, EC, W, SW)' => true, 'North London (N, EN)' => true, 'East London (E, IG, RM)' => true, 'South East London (SE, BR, DA, TN)' => true, 'South West London (SW, CR, KT, SM, TW)' => true, 'West London (W)' => true, 'North West London (NW, HA, UB)' => true),
     );
-    return $data;
 }

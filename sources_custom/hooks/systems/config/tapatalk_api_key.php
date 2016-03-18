@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,15 +26,15 @@ class Hook_config_tapatalk_api_key
     public function get_details()
     {
         return array(
-            'human_name' => 'TAPATALK_TAPATALK_API_KEY',
+            'human_name' => 'TAPATALK_API_KEY',
             'type' => 'line',
-            'category' => 'FORUMS',
+            'category' => 'COMPOSR_APIS',
             'group' => 'TAPATALK',
             'explanation' => 'CONFIG_OPTION_tapatalk_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
 
-            'addon' => 'ocf_tapatalk',
+            'addon' => 'cns_tapatalk',
         );
     }
 

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,6 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
+ * @package    stress_test
  */
 
 /*EXTRA FUNCTIONS: gc_enable*/
@@ -38,7 +39,7 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/sources/global.php');
 
-if (function_exists('set_time_limit')) {
+if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
 safe_ini_set('ocproducts.xss_detect', '0');
@@ -54,10 +55,16 @@ do_work();
 
 function do_work()
 {
+    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (!$cli) {
+        header('Content-type: text/plain; charset=' . get_charset());
+        exit('Must run this script on command line, for security reasons');
+    }
+
     $num_wanted = 200;
 
     require_code('config2');
-    set_option('post_history_days', '0'); // Needed for a little sanity in recent post retrieval
+    set_option('post_read_history_days', '0'); // Needed for a little sanity in recent post retrieval
     set_option('enable_sunk', '0');
 
     set_mass_import_mode();
@@ -106,9 +113,10 @@ function do_work()
     }
 
     // banners
+    require_code('banners');
     require_code('banners2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        add_banner(uniqid('', true), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', db_get_first_id(), null, db_get_first_id() + 1, 1);
+        add_banner(uniqid('', true), get_logo_url(), random_line(), random_text(), '', 100, get_base_url(), 3, '', BANNER_PERMANENT, null, db_get_first_id() + 1, 1);
     }
     echo 'done banner stuff' . "\n";
 
@@ -121,9 +129,9 @@ function do_work()
     require_code('files2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('comcode_pages', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $file = uniqid('', true);
-        /*$path=get_custom_file_base().'/site/pages/comcode_custom/'.fallback_lang().'/'.$file.'.txt';
-        $myfile=fopen($path,GOOGLE_APPENGINE?'wb':'wt');
-        fwrite($myfile,random_text());
+        /*$path = get_custom_file_base() . '/site/pages/comcode_custom/' . fallback_lang() . '/' . $file . '.txt';
+        $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
+        fwrite($myfile, random_text());
         fclose($myfile);
         sync_file($path);
         fix_permissions($path);*/
@@ -168,14 +176,14 @@ function do_work()
         gc_enable();
     }
 
-    // chat rooms
+    // chatrooms
     require_code('chat2');
     require_code('chat');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'COUNT(*)'); $i < $num_wanted; $i++) {
         $room_id = add_chatroom(random_text(), random_line(), mt_rand(db_get_first_id() + 1, $num_wanted - 1), strval(db_get_first_id() + 1), '', '', '', fallback_lang());
     }
     $room_id = db_get_first_id() + 1;
-    // messages in chat room
+    // messages in chatroom
     for ($j = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)'); $j < $num_wanted; $j++) {
         $map = array(
             'system_message' => 0,

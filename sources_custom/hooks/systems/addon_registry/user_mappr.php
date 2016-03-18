@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_user_mappr
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -147,6 +148,7 @@ Parameters:
             'lang_custom/EN/google_map_users.ini',
             'sources_custom/blocks/main_google_map_users.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP_USERS.tpl',
+            'sources_custom/hooks/systems/fields/float.php',
             'data_custom/set_coordinates.php',
             'sources_custom/hooks/systems/cns_cpf_filter/latitude.php',
             'data_custom/get_member_tooltip.php',

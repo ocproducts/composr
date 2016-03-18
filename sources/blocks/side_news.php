@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -68,10 +68,10 @@ class Block_side_news
     {
         require_lang('news');
         require_css('news');
+        require_code('news');
 
         $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
-        require_lang('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
         $historic = array_key_exists('historic', $map) ? $map['historic'] : '';
         $select_and = array_key_exists('select_and', $map) ? $map['select_and'] : '';
@@ -122,11 +122,16 @@ class Block_side_news
             $q_filter .= $privacy_where;
         }
 
+        if (get_option('filter_regions') == '1') {
+            require_code('locations');
+            $q_filter .= sql_region_filter('news', 'p.id');
+        }
+
         if ($historic == '') {
             $news = $GLOBALS['SITE_DB']->query('SELECT p.* FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id' . $join . ' WHERE ' . $q_filter . ' AND validated=1' . (can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . ' ORDER BY date_and_time DESC', $max, null, false, true);
         } else {
-            if (function_exists('set_time_limit')) {
-                @set_time_limit(0);
+            if (php_function_allowed('set_time_limit')) {
+                set_time_limit(0);
             }
             $start = 0;
             do {
@@ -207,7 +212,7 @@ class Block_side_news
 
                 $content->attach(do_template('BLOCK_SIDE_NEWS_SUMMARY', array(
                     '_GUID' => 'f7bc5288680e68641ca94ca4a3111d4a',
-                    'IMG_URL' => ($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img'] == '') ? '' : find_theme_image($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
+                    'IMG_URL' => get_news_category_image_url($NEWS_CATS_CACHE[$myrow['news_category']]['nc_img']),
                     'AUTHOR' => $myrow['author'],
                     'ID' => strval($myrow['id']),
                     'SUBMITTER' => strval($myrow['submitter']),

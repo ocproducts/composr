@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -29,18 +29,15 @@ function adminzone_special_cases($codename)
     The current design does not require these, but this code may be useful in the future.
     If we put it back, we should do it with hooks, for proper modularity.
 
-    if (($codename=='start') && (get_page_name()=='start') && (get_option('show_docs')!=='0'))
-    {
+    if (($codename == 'start') && (get_page_name() == 'start') && (get_option('show_docs') !== '0')) {
         require_lang('menus');
         set_helper_panel_text(comcode_lang_string('menus:DOC_ADMIN_ZONE'));
         set_helper_panel_tutorial('tut_adminzone');
-    }
-    elseif (($codename=='netlink') && (get_page_name()=='netlink'))
-    {
+    } elseif (($codename == 'netlink') && (get_page_name() == 'netlink')) {
         set_helper_panel_text(comcode_lang_string('menus:DOC_NETLINK'));
         set_helper_panel_tutorial('tut_msn');
     }
-*/
+    */
 
     if ($codename == 'start') {
         // Various checks
@@ -90,6 +87,8 @@ function adminzone_extended_breadcrumbs()
     }
 
     if (($page != 'admin') && ($page != 'cms')) {
+        require_lang('menus');
+
         // Loop over menus, hunting for connection
         $hooks = find_all_hooks('systems', 'page_groupings');
         $_hooks = array();
@@ -117,7 +116,7 @@ function adminzone_extended_breadcrumbs()
                             $page_link = build_page_link(array('page' => 'admin', 'type' => $i[0]), 'adminzone');
                         }
 
-                        $title = do_lang_tempcode(strtoupper($i[0])); // The lang string version of the page grouping we found our current module was in
+                        $title = do_lang_tempcode(strtoupper($i[0])); // The language string ID version of the page grouping we found our current module was in
 
                         $breadcrumbs[] = array($page_link, $title);
 

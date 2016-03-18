@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -23,6 +23,7 @@ class usergroup_test_set extends cms_test_case
     public function setUp()
     {
         parent::setUp();
+
         require_code('ecommerce2');
 
         $this->usr_grp_id = add_usergroup_subscription('test', 'test', '123', 12, 'y', 1, 1, 1, 1, ' ', ' ', ' ', array());
@@ -40,6 +41,7 @@ class usergroup_test_set extends cms_test_case
     public function tearDown()
     {
         delete_usergroup_subscription($this->usr_grp_id, 'test@test.com');
+
         parent::tearDown();
     }
 }

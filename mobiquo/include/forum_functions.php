@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -22,6 +22,7 @@ define('RENDER_TOPIC_POST_KEY_NAME', 1);
 define('RENDER_TOPIC_MODERATED_BY', 2);
 define('RENDER_TOPIC_DEEP_PERMISSIONS', 4);
 define('RENDER_TOPIC_SEARCH', 8);
+define('RENDER_TOPIC_LAST_POSTER', 16);
 
 define('RENDER_POST_SHORT_CONTENT', 1);
 define('RENDER_POST_FORUM_DETAILS', 2);
@@ -69,7 +70,7 @@ function get_num_unread_topics($forum_id, $subscribed_only = false, $member_id =
         $sql .= ' ' . cns_get_all_subordinate_forums($forum_id, 't.t_forum_id');
     }
     $sql .= ' AND (l_time IS NULL OR l_time<t_cache_last_time)'; // Cannot get join match OR gets one and it is behind of last post
-    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_history_days'))); // Within tracking range
+    $sql .= ' AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))); // Within tracking range
     if (addon_installed('unvalidated')) {
         $sql .= ' AND t_validated=1';
     }
@@ -207,7 +208,7 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
             1
         );
         if (!isset($_details[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
         }
         $details = $_details[0];
     }
@@ -229,11 +230,19 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
             'topic_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
         );
     } else {
-        $arr += array(
-            'post_author_id' => mobiquo_val(strval($details['t_cache_first_member_id']), 'string'),
-            'post_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
-            'post_id' => mobiquo_val(strval($details['t_cache_first_post_id']), 'string'),
-        );
+        if (($behaviour_modifiers & RENDER_TOPIC_LAST_POSTER) == 0) {
+            $arr += array(
+                'post_author_id' => mobiquo_val(strval($details['t_cache_first_member_id']), 'string'),
+                'post_author_name' => mobiquo_val(strval($details['t_cache_first_username']), 'base64'),
+                'post_id' => mobiquo_val(strval($details['t_cache_first_post_id']), 'string'),
+            );
+        } else {
+            $arr += array(
+                'post_author_id' => mobiquo_val(strval($details['t_cache_last_member_id']), 'string'),
+                'post_author_name' => mobiquo_val(strval($details['t_cache_last_username']), 'base64'),
+                'post_id' => mobiquo_val(strval($details['t_cache_last_post_id']), 'string'),
+            );
+        }
     }
 
     if (($behaviour_modifiers & RENDER_TOPIC_MODERATED_BY) != 0) {
@@ -253,10 +262,28 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         }
     }
 
+    if (($behaviour_modifiers & RENDER_TOPIC_LAST_POSTER) == 0) {
+        $arr += array(
+            'post_time' => mobiquo_val($details['t_cache_first_time'], 'dateTime.iso8601'),
+            'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']), 'string'),
+            'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']),
+        );
+    } else {
+        $arr += array(
+            'post_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
+            'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_last_member_id']), 'string'),
+            'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_last_member_id']),
+        );
+    }
+
     $arr += array(
-        'post_time' => mobiquo_val($details['t_cache_first_time'], 'dateTime.iso8601'),
         'timestamp' => mobiquo_val(strval($details['t_cache_last_time']), 'string'),
-        'topic_author_avatar' => mobiquo_val($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']), 'string'),
+        'last_reply_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
+        'last_reply_author_name' => mobiquo_val($details['t_cache_last_username'], 'base64'),
+        'last_reply_author_id' => mobiquo_val($details['t_cache_last_member_id'], 'string'),
+    );
+
+    $arr += array(
         'view_number' => mobiquo_val($details['t_num_views'], 'int'),
         'prefix' => mobiquo_val('', 'base64'),
         'is_subscribed' => mobiquo_val(get_topic_subscription_status($topic_id), 'boolean'),
@@ -280,16 +307,12 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         'can_ban' => mobiquo_val($moderation_details['can_ban'], 'boolean'),
         'can_mark_spam' => mobiquo_val($moderation_details['can_ban'], 'boolean'), // will be overridden later, if we have a jump position set
         'position' => mobiquo_val($start + 1, 'int'),
-        'icon_url' => $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($details['t_cache_first_member_id']),
-        'last_reply_time' => mobiquo_val($details['t_cache_last_time'], 'dateTime.iso8601'),
-        'last_reply_author_name' => mobiquo_val($details['t_cache_last_username'], 'base64'),
-        'last_reply_author_id' => mobiquo_val($details['t_cache_last_member_id'], 'string'),
         'reply_number' => mobiquo_val($details['t_cache_num_posts'] - 1, 'int'),
         'new_post' => mobiquo_val(is_topic_unread($topic_id, $member_id, $details), 'boolean'),
         'short_content' => mobiquo_val(generate_shortened_post($details, true), 'base64'),
-        /*'is_moved'=>, We don't have these topic shells in Composr
-        'is_merged'=>,
-        'real_topic_id'=>,*/
+        /*'is_moved' =>, We don't have these topic shells in Composr
+        'is_merged' =>,
+        'real_topic_id' => ,*/
         'can_upload' => mobiquo_val(true, 'boolean'),
     );
 
@@ -439,7 +462,7 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t ON t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
         if (!isset($post_rows[0])) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
 
         $post_row = $post_rows[0];
@@ -448,8 +471,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     $member_id = get_member();
 
     $moderation_details = moderation_assessment_post($post_row, $member_id, $behaviour_modifiers);
-
-    $attachments = get_post_attachments($post_id, null, true);
 
     $post_author_id = $post_row['p_poster'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($post_author_id);
@@ -509,13 +530,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         'can_move' => mobiquo_val($moderation_details['can_move'], 'boolean'),
     );
 
-    if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
-        $arr += array(
-            'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
-            'likes_info' => mobiquo_val($likes_info, 'array'),
-        );
-    }
-
     $validated = $post_row['p_validated'];
     $arr['state'] = mobiquo_val(($validated == 1) ? TAPATALK_POST_LIVE : TAPATALK_POST_NEEDS_VALIDATION, 'int');
 
@@ -542,6 +556,16 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     } else {
         $content = prepare_post_for_tapatalk($post_row, $return_html);
     }
+
+    $attachments = get_post_attachments($post_id, null, true, $content);
+
+    if (($behaviour_modifiers & RENDER_POST_SEARCH) == 0) {
+        $arr += array(
+            'attachments' => mobiquo_val(render_tapatalk_attachments($attachments), 'array'),
+            'likes_info' => mobiquo_val($likes_info, 'array'),
+        );
+    }
+
     if (($behaviour_modifiers & RENDER_POST_SHORT_CONTENT) != 0) {
         $arr['short_content'] = mobiquo_val($content, 'base64');
     } else {
@@ -652,8 +676,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         }
     }
 
-    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array(
-        'CONTENT' => $content,
+    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array('_GUID' => 'ef6a156778d1bcaf9228c8bddef938fc', 'CONTENT' => $content,
         'WHISPER_USERNAME' => $whisper_username,
         'HAS_POLL' => $has_poll,
         'POST_ID' => strval($post['id']),
@@ -675,7 +698,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         require_code('comcode_from_html');
         $content = force_clean_comcode($content);
 
-        // HACKHACK: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
+        // FUDGE: Disable emoticons. Tapatalk will sub in those that it supports. If we don't do this it replaces them all with the normal smile emoticon using a dum replacer for any inline images
         $emoticon_map = get_tapatalk_to_composr_emoticon_map('perfect_matches');
         $bak = $GLOBALS['FORUM_DRIVER']->EMOTICON_CACHE;
         foreach ($emoticon_map as $tapatalk_code => $composr_code) {
@@ -706,6 +729,18 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         $content = tapatalk_strip_comcode($content);
         $content = nl2br(htmlspecialchars($content, ENT_NOQUOTES, get_charset()));
         $content = preg_replace('#\[color="[^"\[\]]"\](.*)\[/color\]#is', '<font color="\1">\2</font>', $content);
+
+        $comcode_remap = array(
+            '#\[b\]#' => '<b>',
+            '#\[/b\]#' => '</b>',
+            '#\[i\]#' => '<i>',
+            '#\[/i\]#' => '</i>',
+            '#\[u\]#' => '<u>',
+            '#\[/u\]#' => '</u>',
+            '#\[color="?([^\[\]]*)"?\]#' => '<font color="\1">',
+            '#\[/color\]#' => '</font>',
+        );
+        $content = preg_replace(array_keys($comcode_remap), array_values($comcode_remap), $content);
     } else {
         $content = tapatalk_strip_comcode($content);
     }
@@ -719,9 +754,10 @@ function prepare_post_for_tapatalk($post, $return_html = false)
  * @param  ?AUTO_LINK $post_id Post ID (null: Use attachment ID)
  * @param  ?AUTO_LINK $attachment_id Attachment ID (null: Use post ID)
  * @param  boolean $non_image_only Only do non-image attachments (because image ones are shown as [img] tags separately). Can only be used if $attachment_id is null.
+ * @param  ?string $content Write content changes here (null: Don't)
  * @return array List of attachment details
  */
-function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false)
+function get_post_attachments($post_id, $attachment_id = null, $non_image_only = false, &$content = null)
 {
     require_code('files');
     require_code('images');
@@ -736,9 +772,15 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             }
 
             if ($non_image_only) {
-                if (is_image($attachment_row[0]['a_original_filename'])) {
+                if (is_image($attachment_row[0]['a_original_filename'])) // Already as [img] tag
+                {
+                    if (!url_is_local($attachment_row[0]['a_url'])) {
+                        if (!is_null($content)) {
+                            $content = preg_replace('#\[img\][^\[\]]*' . preg_quote(find_script('attachment'), '#') . '\?id=' . strval($att['a_id']) . '[^\[\]]*\[\/img\]#U', '[img]' . $attachment_row[0]['a_url'] . '[/img]', $content);
+                        }
+                    }
                     continue;
-                } // Already as [img] tag
+                }
             }
 
             if (!is_image($attachment_row[0]['a_thumb_url'])) {
@@ -897,8 +939,8 @@ function report_post($post_id, $reason = '')
     $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
 
     $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts p JOIN ' . $table_prefix . 'f_topics t on t.id=p.p_topic_id', array('*', 'p.id AS post_id', 't.id AS topic_id'), array('p.id' => $post_id), '', 1);
-    if (!isset($post_info[0])) {
-        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    if (!array_key_exists(0, $post_info)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }
 
     if (!has_post_access($post_id, null, $post_info[0])) {
@@ -933,7 +975,7 @@ function report_post($post_id, $reason = '')
     }
 
     $__post = preg_replace('#\[staff_note\].*\[/staff_note\]#Us', '', get_translated_text($post_info[0]['p_post'], $GLOBALS['FORUM_DB']));
-    $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_title, 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
+    $post = do_template('CNS_REPORTED_POST_FCOMCODE', array('_GUID' => '6e9a43a3503c357b52b724e11d3d4eef', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_TITLE' => $topic_title, 'POST' => $__post, 'POSTER' => $poster), null, false, null, '.txt', 'text');
     if ($reason != '') {
         $post->attach($reason);
     }

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -52,7 +52,7 @@ function cns_make_multi_moderation($name, $post_text, $move_to, $pin_state, $sin
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
-        generate_resourcefs_moniker('multi_moderation', strval($id), null, null, true);
+        generate_resource_fs_moniker('multi_moderation', strval($id), null, null, true);
     }
 
     return $id;

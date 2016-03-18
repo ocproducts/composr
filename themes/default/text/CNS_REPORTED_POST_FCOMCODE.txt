@@ -1,6 +1,6 @@
-{!REPORTED_POST,[post param="{TOPIC_TITLE#}"]{POST_ID@}[/post],{MEMBER}}
+{!REPORTED_POST,[post param="{TOPIC_TITLE#}"]{POST_ID@}[/post],{NAME}}
 
-[quote="{MEMBER#}"]
+[quote="{MEMBER_ID#}"]
 {POST}
 [/quote]
 

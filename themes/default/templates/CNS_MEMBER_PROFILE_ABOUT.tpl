@@ -2,7 +2,7 @@
 	<div class="cns_profile_column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}
 			<div class="cns_member_profile_avatar">
-				<img src="{AVATAR_URL*}" alt="{!AVATAR}" />
+				<img src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" alt="{!AVATAR}" />
 			</div>
 		{+END}
 
@@ -16,31 +16,29 @@
 		</ul>
 
 		<div class="cns_account_links">
-			<h2>{!MORE_ACCOUNT_LINKS,{$DISPLAYED_USERNAME*,{USERNAME}}}</h2>
-
 			{+START,IF,{VIEW_PROFILES}}
 				{+START,LOOP,CUSTOM_FIELDS}
-					{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
+					{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
 					{+START,IF,{$GET,is_messenger_field}}
 						{+START,SET,messenger_fields}{+START,IF_NON_EMPTY,{RAW_VALUE}}
 							{$GET,messenger_fields}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/skype}" srcset="{$IMG*,icons/48x48/links/skype} 2x"/> <a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_im_jabber_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/xmpp}" srcset="{$IMG*,icons/48x48/links/xmpp} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_twitter_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_facebook_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
-							{+START,IF,{$EQ,{NAME},{!DEFAULT_CPF_sn_google_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/google_plus}" srcset="{$IMG*,icons/48x48/links/google_plus} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
+							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/skype}" srcset="{$IMG*,icons/48x48/links/skype} 2x"/> <a title="{!PHONE_THEM_UP} {!LINK_NEW_WINDOW}" href="skype:{RAW_VALUE*}?call">{!PHONE_THEM_UP}</a> (Skype)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/xmpp}" srcset="{$IMG*,icons/48x48/links/xmpp} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="xmpp:{RAW_VALUE*}">{!MESSAGE_THEM}</a> (Jabber/XMPP)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/twitter}" srcset="{$IMG*,icons/48x48/links/twitter} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="http://twitter.com/{RAW_VALUE*}" rel="me">@{RAW_VALUE*}</a> (Twitter)</li>{+END}
+							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/facebook}" srcset="{$IMG*,icons/48x48/links/facebook} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Facebook</a></li>{+END}
+							{+START,IF,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}<li><img alt="" src="{$IMG*,icons/24x24/links/google_plus}" srcset="{$IMG*,icons/48x48/links/google_plus} 2x"/> <a title="{!MESSAGE_THEM} {!LINK_NEW_WINDOW}" href="{RAW_VALUE*}" rel="me">Google+</a></li>{+END}
 						{+END}{+END}
 					{+END}
 				{+END}
 			{+END}
 			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
 				<div>
-					<h3>
+					<h2>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTACT}</a>
-					</h3>
+					</h2>
 
-					<nav class="toggleable_tray" style="display: block" role="navigation">
+					<nav class="toggleable_tray" style="display: block">
 						<ul class="nl">
 							{ACTIONS_contact}
 							{$GET,messenger_fields}
@@ -51,12 +49,12 @@
 
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
 				<div>
-					<h3>
+					<h2>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!CONTENT}</a>
-					</h3>
+					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_content}
 						</ul>
@@ -66,12 +64,12 @@
 
 			{+START,IF_NON_EMPTY,{ACTIONS_views}{ACTIONS_profile}}
 				<div>
-					<h3>
+					<h2>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!ACCOUNT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!ACCOUNT}</a>
-					</h3>
+					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_views}
 							{ACTIONS_profile}
@@ -82,12 +80,12 @@
 
 			{+START,IF_NON_EMPTY,{ACTIONS_audit}}
 				<div>
-					<h3>
+					<h2>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {!AUDIT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!AUDIT}</a>
-					</h3>
+					</h2>
 
-					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" role="navigation" aria-expanded="false">
+					<nav class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<ul class="nl">
 							{ACTIONS_audit}
 						</ul>
@@ -106,72 +104,130 @@
 			</p>
 		{+END}
 
-		<div class="wide_table_wrap">
-			<table class="map_table wide_table cns_profile_fields">
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<colgroup>
-						<col class="cns_profile_about_field_name_column" />
-						<col class="cns_profile_about_field_value_column" />
-					</colgroup>
-				{+END}
+		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
+			<h2>{!ABOUT}</h2>
 
-				<tbody>
-					{+START,IF,{VIEW_PROFILES}}
-						{+START,LOOP,CUSTOM_FIELDS}
-							{$SET,is_point_field,{$EQ,{NAME},{!SPECIAL_CPF__cms_points_used},{!SPECIAL_CPF__cms_gift_points_used},{!SPECIAL_CPF__cms_points_gained_chat},{!SPECIAL_CPF__cms_points_gained_given},{!SPECIAL_CPF__cms_points_gained_visiting},{!SPECIAL_CPF__cms_points_gained_rating},{!SPECIAL_CPF__cms_points_gained_voting},{!SPECIAL_CPF__cms_points_gained_wiki}}}
-							{$SET,is_messenger_field,{$EQ,{NAME},{!DEFAULT_CPF_im_skype_NAME},{!DEFAULT_CPF_im_jabber_NAME},{!DEFAULT_CPF_sn_twitter_NAME},{!DEFAULT_CPF_sn_facebook_NAME},{!DEFAULT_CPF_sn_google_NAME}}}
+			<div class="wide_table_wrap">
+				<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
+					{+START,IF,{$NOT,{$MOBILE}}}
+						<colgroup>
+							<col class="cns_profile_about_field_name_column" />
+							<col class="cns_profile_about_field_value_column" />
+						</colgroup>
+					{+END}
 
-							{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
-								<tr id="cpf_{NAME|*}">
-									<th class="de_th">
-										{NAME*}:
-									</th>
+					<tbody>
+						{+START,IF,{VIEW_PROFILES}}
+							{+START,LOOP,CUSTOM_FIELDS}
+								{$SET,is_point_field,{$EQ,{NAME},{!SPECIAL_CPF__cms_points_used},{!SPECIAL_CPF__cms_gift_points_used},{!SPECIAL_CPF__cms_points_gained_chat},{!SPECIAL_CPF__cms_points_gained_given},{!SPECIAL_CPF__cms_points_gained_visiting},{!SPECIAL_CPF__cms_points_gained_rating},{!SPECIAL_CPF__cms_points_gained_voting},{!SPECIAL_CPF__cms_points_gained_wiki}}}
+								{$SET,is_messenger_field,{$EQ,{NAME},{!cns_special_cpf:DEFAULT_CPF_im_skype_NAME},{!cns_special_cpf:DEFAULT_CPF_im_jabber_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_twitter_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_facebook_NAME},{!cns_special_cpf:DEFAULT_CPF_sn_google_NAME}}}
 
-									<td>
-										<span{+START,IF,{$EQ,{NAME},{!SPECIAL_CPF__cms_fullname}}} class="fn given-name"{+END}>
-											{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
-												{+START,IF_PASSED,EDITABILITY}
-													{$SET,edit_type,{EDIT_TYPE}}
-													{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+								{+START,IF,{$NOR,{$GET,is_point_field},{$GET,is_messenger_field}}}
+									<tr id="cpf_{NAME|*}" class="cpf_{FIELD_ID|*}">
+										<th class="de_th">
+											{NAME*}:
+										</th>
+
+										<td>
+											<span>
+												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF_PASSED,EDITABILITY}
+														{$SET,edit_type,{EDIT_TYPE}}
+														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+													{+END}
+													{+START,IF_NON_PASSED,EDITABILITY}
+														{VALUE}
+													{+END}
 												{+END}
-												{+START,IF_NON_PASSED,EDITABILITY}
-													{VALUE}
+												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
 												{+END}
-											{+END}
-											{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-												{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
-												{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
-											{+END}
-											<!-- {$,Break out of non-terminated comments in CPF} -->
-										</span>
-									</td>
-								</tr>
+												<!-- {$,Break out of non-terminated comments in CPF} -->
+											</span>
+										</td>
+									</tr>
+								{+END}
 							{+END}
 						{+END}
-					{+END}
 
-					{+START,IF_NON_EMPTY,{$TRIM,{SIGNATURE}}}
-						<tr>
-							<th class="de_th">
-								{!SIGNATURE}:
-							</th>
+						{+START,IF,{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}
+							<tr>
+								<th class="de_th">
+									{!SIGNATURE}:
+								</th>
 
-							<td>
-								{SIGNATURE}
-							</td>
-						</tr>
-					{+END}
-				</tbody>
-			</table>
-		</div>
+								<td>
+									{SIGNATURE}
+								</td>
+							</tr>
+						{+END}
+					</tbody>
+				</table>
+			</div>
+		{+END}
+
+		{+START,IF,{VIEW_PROFILES}}
+			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}
+				{+START,LOOP,CUSTOM_FIELDS_SECTIONS}
+					<h2>{_loop_key*}</h2>
+
+					<div class="wide_table_wrap">
+						<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
+							{+START,IF,{$NOT,{$MOBILE}}}
+								<colgroup>
+									<col class="cns_profile_about_field_name_column" />
+									<col class="cns_profile_about_field_value_column" />
+								</colgroup>
+							{+END}
+
+							<tbody>
+								{+START,LOOP,CUSTOM_FIELDS_SECTION}
+									<tr id="cpf_{NAME|*}">
+										<th class="de_th">
+											{NAME*}:
+										</th>
+
+										<td>
+											<span>
+												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF,{$EQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
+														{$COUNTRY_CODE_TO_NAME,{VALUE}}
+													{+END}
+
+													{+START,IF,{$NEQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
+														{+START,IF_PASSED,EDITABILITY}
+															{$SET,edit_type,{EDIT_TYPE}}
+															{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+														{+END}
+														{+START,IF_NON_PASSED,EDITABILITY}
+															{VALUE}
+														{+END}
+													{+END}
+												{+END}
+												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
+												{+END}
+												<!-- {$,Break out of non-terminated comments in CPF} -->
+											</span>
+										</td>
+									</tr>
+								{+END}
+							</tbody>
+						</table>
+					</div>
+				{+END}
+			{+END}
+		{+END}
 
 		{+START,IF,{VIEW_PROFILES}}
 			<h2>{!DETAILS}</h2>
 
-			<meta itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
+			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_details">
+				<table class="map_table wide_table cns_profile_details cns_profile_about_section">
 					{+START,IF,{$NOT,{$MOBILE}}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
@@ -213,9 +269,14 @@
 							<td>{TIME_FOR_THEM*}</td>
 						</tr>
 
+						<tr>
+							<th class="de_th">{!TIMEZONE}:</th>
+							<td>{USERS_TIMEZONE*}</td>
+						</tr>
+
 						{+START,IF_NON_EMPTY,{BANNED}}
 							<tr>
-								<th class="de_th">{!_BANNED}:</th>
+								<th class="de_th">{!BANNED}:</th>
 								<td>{BANNED*}</td>
 							</tr>
 						{+END}
@@ -262,7 +323,7 @@
 			<h2>{!TRACKING}</h2>
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_statistics">
+				<table class="map_table wide_table cns_profile_tracking cns_profile_about_section">
 					{+START,IF,{$NOT,{$MOBILE}}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
@@ -294,7 +355,14 @@
 							{+START,IF_NON_EMPTY,{IP_ADDRESS}}
 								<tr>
 									<th class="de_th">{!IP_ADDRESS}:</th>
-									<td><a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},20,1,1}</a></td>
+									<td>
+										{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}
+											<a href="{$PAGE_LINK*,_SEARCH:admin_lookup:param={IP_ADDRESS&}}">{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}</a>
+										{+END}
+										{+START,IF,{$NOT,{$HAS_ACTUAL_PAGE_ACCESS,admin_lookup}}}
+											{$TRUNCATE_SPREAD,{IP_ADDRESS*},40,1,1}
+										{+END}
+									</td>
 								</tr>
 							{+END}
 						{+END}
@@ -310,6 +378,13 @@
 							<tr>
 								<th class="de_th">{!USER_OS}:</th>
 								<td>{OPERATING_SYSTEM*}</td>
+							</tr>
+						{+END}
+
+						{+START,LOOP,EXTRA_TRACKING_DETAILS}
+							<tr>
+								<th class="de_th">{_loop_key*}:</th>
+								<td><span>{_loop_var*}</span></td>
 							</tr>
 						{+END}
 					</tbody>

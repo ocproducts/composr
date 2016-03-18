@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,8 +20,8 @@ class standard_dir_files_test_set extends cms_test_case
 {
     public function setUp()
     {
-        if (function_exists('set_time_limit')) {
-            @set_time_limit(0);
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(0);
         }
 
         parent::setUp();
@@ -40,7 +40,11 @@ class standard_dir_files_test_set extends cms_test_case
 
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS, 0)) {
+                    continue;
+                }
+
+                if ($file == 'test-a') {
                     continue;
                 }
 
@@ -53,7 +57,7 @@ class standard_dir_files_test_set extends cms_test_case
         }
 
         if ($contents > 0) {
-            if ((!file_exists($dir . '/index.php')) && (!file_exists($dir . '/index.html')) && (strpos($dir, 'ckeditor') === false) && (strpos($dir, 'areaedit') === false) && (strpos($dir, 'personal_dicts') === false)) {
+            if ((!file_exists($dir . '/index.php')) && (!file_exists($dir . '/index.html')) && (strpos($dir, 'ckeditor') === false) && (strpos($dir, 'personal_dicts') === false)) {
                 $this->assertTrue(false, 'touch "' . $dir . '/index.html" ; git add -f "' . $dir . '/index.html"');
             }
 
@@ -63,8 +67,30 @@ class standard_dir_files_test_set extends cms_test_case
         }
     }
 
-    public function tearDown()
+    public function testParallelHookDirs()
     {
-        parent::tearDown();
+        foreach (array('systems', 'blocks', 'modules') as $dir) {
+            $a = array();
+            $dh = opendir(get_file_base() . '/sources/hooks/' . $dir);
+            while (($f = readdir($dh)) !== false) {
+                $a[] = $f;
+            }
+            closedir($dh);
+            sort($a);
+
+            $b = array();
+            $dh = opendir(get_file_base() . '/sources_custom/hooks/' . $dir);
+            while (($f = readdir($dh)) !== false) {
+                $b[] = $f;
+            }
+            closedir($dh);
+            sort($b);
+
+            $diff = array_diff($a, $b);
+            $this->assertTrue(count($diff) == 0, 'Missing in sources/' . $dir . ': ' . serialize($diff));
+
+            $diff = array_diff($b, $a);
+            $this->assertTrue(count($diff) == 0, 'Missing in sources_custom/' . $dir . ': ' . serialize($diff));
+        }
     }
 }

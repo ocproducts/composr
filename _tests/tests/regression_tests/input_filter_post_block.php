@@ -1,7 +1,7 @@
 <?php /*
 
- ocPortal
- Copyright (c) ocProducts, 2004-2015
+ Composr
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -14,7 +14,7 @@
  */
 
 /**
- * ocPortal test case class (unit testing).
+ * Composr test case class (unit testing).
  */
 class input_filter_post_block_test_set extends cms_test_case
 {

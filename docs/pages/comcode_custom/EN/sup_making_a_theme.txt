@@ -11,7 +11,7 @@ However it is still very useful to see the exact steps taken to make a theme, st
 
 We will make a new theme, Paradise.
 
-[img]data_custom/images/docs/making_a_theme.jpg[/img]
+[img]data_custom/images/docs/sup_making_a_theme/making_a_theme.jpg[/img]
 
 Files needed for this tutorial:
 [media]data_custom/modules/docs/documents-Paradise.zip[/media]
@@ -22,7 +22,7 @@ The [tt]replacement-code-css.png[/tt] was extracted using a diff tool to assist 
 
 Continuing on with the Paradise theme, we can make a new theme Jungle, by just copying it. This is useful if you like an existing Composr theme and want to modify it without making the changes directly on top of the original theme.
 
-[img]data_custom/images/docs/copying_a_theme.jpg[/img]
+[img]data_custom/images/docs/sup_making_a_theme/copying_a_theme.jpg[/img]
 
 Here are the images used:
 [media]data_custom/modules/docs/documents-Jungle.zip[/media]
@@ -33,5 +33,6 @@ Here are the images used:
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
  - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
+ - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 
 {$SET,tutorial_tags,themewizard,core_themeing,core_primary_layout,core_html_abstractions,core_form_interfaces,core_abstract_interfaces,core_abstract_components,Design & Themeing,novice}{$SET,tutorial_add_date,May 2012}{$SET,tutorial_summary,An illustrated step-by-step tutorial on making a new theme.}[block]main_tutorial_rating[/block]

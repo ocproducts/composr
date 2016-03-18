@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -119,7 +119,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false)
     {
-        $_page_link = str_replace(':select=', '', $page_link);
+        $_page_link = str_replace(':select=', ':', $page_link);
 
         $_ = $this->_create_partial_node_structure($_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
         if ($_ === null) {

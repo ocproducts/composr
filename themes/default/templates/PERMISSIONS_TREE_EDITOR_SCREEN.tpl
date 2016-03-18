@@ -27,7 +27,7 @@
 				<!-- onmouseover="fade_icons_out();" onmouseout="fade_icons_in();" firefox too buggy -->
 				<div class="pte_icon_box">
 					<div class="box box___permissions_tree_editor_screen"><div class="box_inner">
-						<form title="{!CHOOSE} {!GROUP}" action="index.php" method="post">
+						<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post">
 							<img alt="" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
 							<select id="group" name="group" onclick="this.onchange(event);" onchange="update_group_displayer(this)">
 								{GROUPS}
@@ -80,7 +80,7 @@
 					<em>{!PERMISSIONS_TREE_EDITOR_NONE_SELECTED}</em>
 				</p>
 				<div>
-					<input type="button" class="buttons__save button_screen_item" id="selection_button" disabled="disabled" value="{!SET}" onclick="set_permissions(document.getElementById('tree_list'));" />
+					<input type="button" class="button_screen_item buttons__save" id="selection_button" disabled="disabled" value="{!SET}" onclick="set_permissions(document.getElementById('tree_list'));" />
 				</div>
 			</div>
 		</form>

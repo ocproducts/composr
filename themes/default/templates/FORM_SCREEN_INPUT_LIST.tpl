@@ -1,7 +1,3 @@
-{$REQUIRE_CSS,widget_select2}
-{$REQUIRE_JAVASCRIPT,jquery}
-{$REQUIRE_JAVASCRIPT,select2}
-
 {+START,IF,{INLINE_LIST}}
 <select size="{SIZE*}" tabindex="{TABINDEX*}" class="input_list{REQUIRED*} wide_field" id="{NAME*}" name="{NAME*}">
 {+END}

@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -73,7 +73,7 @@ class Block_main_member_bar
 
             // Misc (shared with side_personal_stats block)
             require_code('global4');
-            list($links, $details, $num_unread_pps) = member_personal_links_and_details($member_id);
+            list($links, $links_ecommerce, $details, $num_unread_pps) = member_personal_links_and_details($member_id);
 
             // Any unread PT-PPs?
             $pt_extra = ($num_unread_pps == 0) ? new Tempcode() : do_lang_tempcode('NUM_UNREAD', escape_html(integer_format($num_unread_pps)));
@@ -96,14 +96,15 @@ class Block_main_member_bar
                 'UNREAD_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unread'), get_module_zone('vforums')),
                 'RECENTLY_READ_URL' => build_url(array('page' => 'vforums', 'type' => 'recently_read'), get_module_zone('vforums')),
                 'INLINE_PERSONAL_POSTS_URL' => build_url(array('page' => 'topicview'), get_module_zone('topicview')),
-                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
-                'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved_topics'), get_module_zone('vforums')),
+                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered'), get_module_zone('vforums')),
+                'INVOLVED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'involved'), get_module_zone('vforums')),
                 'PT_EXTRA' => $pt_extra,
                 'NUM_UNREAD_PTS' => strval($num_unread_pps),
                 'NEW_TOPICS' => integer_format($new_topics),
                 'NEW_POSTS' => integer_format($new_posts),
                 'MAX_AVATAR_HEIGHT' => strval($max_avatar_height),
                 'LINKS' => $links,
+                'LINKS_ECOMMERCE' => $links_ecommerce,
                 'DETAILS' => $details
             ));
         } else { // Guest

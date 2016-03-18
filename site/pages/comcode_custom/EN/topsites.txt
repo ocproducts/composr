@@ -1,4 +1,0 @@
-[title]{!banners:TOP_SITES}[/title]
-
-[block="topsites_standard"]main_topsites[/block]
-[staff_note][block="topsites_button"]main_topsites[/block] use this code if you want the buttons instead[/staff_note]

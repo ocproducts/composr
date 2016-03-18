@@ -11,9 +11,9 @@
 		{STDHTML}
 		{+START,IF_NON_EMPTY,{STDCOMMAND}}
 			<script>// <![CDATA[
-				{STDCOMMAND`}
+				{STDCOMMAND*/}
 			//]]></script>
 		{+END}
 		{+START,IF_NON_EMPTY,{STDERR}}<p class="red_alert" role="error">{STDERR}</p>{+END}
-	</div>	
+	</div>
 </div>

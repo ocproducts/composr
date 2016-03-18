@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -20,6 +20,8 @@
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__permissions()
 {
@@ -99,7 +101,7 @@ function handle_permission_check_logging($member, $op, $params, $result)
     if (array_key_exists($sz, $PERMISSIONS_ALREADY_LOGGED)) {
         return;
     }
-    $PERMISSIONS_ALREADY_LOGGED[$sz] = 1;
+    $PERMISSIONS_ALREADY_LOGGED[$sz] = true;
     if ($result) {
         return;
     }
@@ -154,8 +156,12 @@ function has_zone_access($member, $zone)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('zone_access_needed', $zone, true);
-    $test = $SMART_CACHE->get('zone_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('zone_access_needed', $zone, true);
+        $test = $SMART_CACHE->get('zone_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -299,8 +305,12 @@ function has_page_access($member, $page, $zone, $at_now = false)
 
     global $SMART_CACHE;
     $where = '1=0';
-    $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
-    $test = $SMART_CACHE->get('page_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
+        $test = $SMART_CACHE->get('page_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -502,9 +512,14 @@ function has_category_access($member, $module, $category)
  * @param  MEMBER $member The member who's usergroups will be OR'd
  * @param  boolean $consider_clubs Whether to consider clubs (pass this false if considering page permissions, which work via explicit-denys across all groups, which could not happen for clubs as those denys could not have been set in the UI)
  * @return ?string The SQL query fragment (null: admin, so permission regardless)
+ * @ignore
  */
 function _get_where_clause_groups($member, $consider_clubs = true)
 {
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return '1=0';
+    }
+
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
         return null;
     }
@@ -661,7 +676,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     }
 
     if ($page === null) {
-        $page = get_page_name();
+        $page = str_replace('-', '_', get_param_string('page', '')); // Not get_page_name for bootstrap order reasons
     }
 
     global $SPAM_REMOVE_VALIDATION;
@@ -727,8 +742,12 @@ function has_privilege($member, $permission, $page = null, $cats = null)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('privileges_needed', $permission, true);
-    $test = $SMART_CACHE->get('privileges_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('privileges_needed', $permission, true);
+        $test = $SMART_CACHE->get('privileges_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -1006,7 +1025,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member = n
  * Check to see if a member has permission to edit a Comcode page
  *
  * @param  integer $scope A bitmask of COMCODE_EDIT_* constants, identifying what kind of editing permission we are looking for
- * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a NULL zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
+ * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a null zone works for checking add/bypass-validation permissions because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
  * @param  ?MEMBER $member The member being checked for access (null: current member)
  * @return boolean If the permission is there
  */

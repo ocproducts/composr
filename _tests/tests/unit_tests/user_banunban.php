@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -36,10 +36,5 @@ class user_banunban_test_set extends cms_test_case
         cns_unban_member(3);
 
         $this->assertTrue(0 == $GLOBALS['FORUM_DB']->query_select_value('f_members', 'm_is_perm_banned', array('id' => 3)));
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
     }
 }

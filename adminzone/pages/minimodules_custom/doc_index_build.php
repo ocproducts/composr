@@ -1,9 +1,22 @@
-<?php
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    composr_tutorials
+ */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
 // Prepare for synonyms
-require_code('stemmer_' . user_lang());
+require_code('lang_stemmer_' . user_lang());
 $stemmer = object_factory('Stemmer_' . user_lang());
 require_code('adminzone/pages/modules/admin.php');
 $admin = object_factory('Module_admin');
@@ -30,7 +43,7 @@ foreach ($_addons as $addon => $place) {
 
         $pretty = titleify($addon);
 
-        $stemmed_addon = $stemmer->stem($pretty);
+        $stemmed_addon = strtolower($stemmer->stem($pretty));
         $_synonyms = array();
         foreach ($synonyms as $ss) {
             if (in_array($ss[0], array('export', 'permission'))) {
@@ -38,7 +51,6 @@ foreach ($_addons as $addon => $place) {
             }
 
             $_ss = array_map(array($stemmer, 'stem'), $ss);
-
             if (in_array($stemmed_addon, $_ss)) {
                 $_synonyms = array_merge($_synonyms, $ss);
                 $test = array_search($stemmed_addon, $_synonyms);
@@ -86,8 +98,6 @@ $out = '
         <tr>
             <th>Addon</th>
             <th>Description</th>
-            <!--<th>Core (compulsary)</th>-->
-            <th>Dependencies</th>
             <th>Tutorials</th>
             <th>Synonyms</th>
             <th>Feature suggestions</th>
@@ -114,10 +124,12 @@ foreach ($addons as $addon => $addon_details) {
 
     $out .= '
         <tr>
-            <td>' . $icon . escape_html($addon_details['pretty']) . '<br />(<kbd>' . escape_html($addon) . '</kbd>)</td>
+            <td>
+                ' . $icon . escape_html($addon_details['pretty']) . '<br />(<kbd>' . escape_html($addon) . '</kbd>)<br /><br />
+                <strong>Core</strong>: ' . escape_html($addon_details['core'] ? 'Yes' : 'No') . '<br /><br />
+                <strong>Dependencies</strong>: ' . (($addon_details['dependencies'] == array()) ? '<em>None</em>' : '<kbd>' . implode('</kbd>, <kbd>', array_map('escape_html', $addon_details['dependencies'])) . '</kbd>') . '
+            </td>
             <td>' . escape_html($addon_details['description']) . '</td>
-            <!--<td>' . escape_html($addon_details['core'] ? 'Yes' : 'No') . '</td>-->
-            <td><kbd>' . implode('<br /><br />', array_map('escape_html', $addon_details['dependencies'])) . '</kbd></td>
             <td>' . $tutorials . '</td>
             <td>' . implode('<br /><br />', array_map('escape_html', $addon_details['synonyms'])) . '</td>
             <td><a href="' . escape_html($addon_details['tracker_url']) . '">Link</a></td>
@@ -144,6 +156,7 @@ $addon_index_file = file_get_contents($path);
 $marker = '[staff_note]Automatic code inserts after this[/staff_note]';
 $pos = strpos($addon_index_file, $marker);
 $addon_index_file = substr($addon_index_file, 0, $pos + strlen($marker)) . '[semihtml]' . str_replace(get_custom_base_url(), get_brand_base_url(), $out) . '[/semihtml]';
+$addon_index_file .= "\n\n" . '{$SET,tutorial_tags,Addon,Introduction,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,An index showing what addons are available, and linking to relevant tutorials.}[block]main_tutorial_rating[/block]';
 file_put_contents($path, $addon_index_file);
 fix_permissions($path);
 sync_file($path);

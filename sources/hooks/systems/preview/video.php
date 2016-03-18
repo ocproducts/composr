@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -31,7 +31,7 @@ class Hook_preview_video
     public function applies()
     {
         require_code('uploads');
-        $applies = (get_param_string('page', '') == 'cms_galleries') && ((get_param_string('type', '') == 'add_other') || (get_param_string('type', '') == '_edit_other'));
+        $applies = (get_page_name() == 'cms_galleries') && ((get_param_string('type', '') == 'add_other') || (get_param_string('type', '') == '_edit_other'));
         return array($applies, null, false);
     }
 

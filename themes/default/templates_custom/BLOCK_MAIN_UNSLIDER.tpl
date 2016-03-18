@@ -1,9 +1,6 @@
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,unslider}
 
-<script src="//use.typekit.net/vgf3zbf.js"></script>
-<script>try { Typekit.load(); } catch(e){}</script>
-
 {+START,IF_NON_EMPTY,{WIDTH}}<div style="width: {WIDTH*}">{+END}
 	<div id="{SLIDER_ID*}" class="unslider{+START,IF_EMPTY,{WIDTH}{HEIGHT}} responsive{+END}"{+START,IF_NON_EMPTY,{HEIGHT}} style="height: {HEIGHT*}"{+END}>
 		<ul>
@@ -14,7 +11,7 @@
 			{+END}
 		</ul>
 	</div>
-{+START,IF_PASSED,WIDTH}</div>{+END}
+{+START,IF_NON_EMPTY,{WIDTH}}</div>{+END}
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {

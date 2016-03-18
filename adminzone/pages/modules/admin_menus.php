@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_menus
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -59,7 +59,7 @@ class Module_admin_menus
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -133,13 +133,14 @@ class Module_admin_menus
         require_code('form_templates');
 
         $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
-        $list = new Tempcode();//form_input_list_entry('',false,do_lang_tempcode('NA_EM'));
+        $rows = list_to_map('i_menu', $rows);
+        $list = new Tempcode();
         foreach ($rows as $row) {
             $item_count = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'COUNT(*)', array('i_menu' => $row['i_menu']));
             $label = do_lang_tempcode('MENU_ITEM_COUNT', escape_html($row['i_menu']), escape_html(integer_format($item_count)));
             $list->attach(form_input_list_entry($row['i_menu'], false, $label));
         }
-        if ($list->is_empty()) {
+        if (!isset($rows['main_menu'])) {
             $list->attach(form_input_list_entry('', false, do_lang_tempcode('DEFAULT')));
         }
 
@@ -218,13 +219,14 @@ class Module_admin_menus
             require_code('menus2');
             delete_menu($id);
             copy_from_sitemap_to_new_menu($id, $copy_from);
+
             if (post_param_integer('switch_over', 0) == 1) {
                 require_code('config2');
                 set_option('header_menu_call_string', $id);
 
                 // Config option saves into templates
                 require_code('caches3');
-                erase_cached_templates();
+                erase_cached_templates(false, array('GLOBAL_HTML_WRAP'));
             }
         }
 
@@ -439,7 +441,7 @@ class Module_admin_menus
 
             $orderings = array_keys($ids);
 
-            // Get language codes currently used
+            // Get language strings currently used
             $old_menu_bits = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_caption', 'i_caption_long'), array('i_menu' => $menu_id)));
 
             // Now, process everything on the root
@@ -483,7 +485,7 @@ class Module_admin_menus
      * @param  integer $id The ID of the menu item (i.e. what it is referenced as in POST)
      * @param  array $ids The map of IDs on the menu (ID=>parent)
      * @param  ?integer $parent The ID of the parent branch (null: no parent)
-     * @param  array $old_menu_bits The map of menu id=>string language IDs employed by items before the edit
+     * @param  array $old_menu_bits The map of menu id=>string language string IDs employed by items before the edit
      * @param  integer $order The order this branch has in the editor (and due to linearly moving through, the number of branches shown assembled ready)
      */
     public function add_menu_item($menu, $id, &$ids, $parent, &$old_menu_bits, &$order)

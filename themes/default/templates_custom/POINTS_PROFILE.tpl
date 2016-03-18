@@ -22,7 +22,7 @@
 		{!VIEWING_POINTS_PROFILE_OF,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}
 	</p>
 
-	<table class="columned_table variable_table points_summary_table">
+	<table class="columned_table autosized_table points_summary_table">
 		<thead>
 			<tr>
 				<th>{!ACTIVITY}</th>
@@ -83,17 +83,17 @@
 			{+END}{+END}
 			{+START,IF,{$NEQ,{POINTS_RATING},0}}
 				<tr>
-					<td>&bull; {!COUNT_RATINGS}:</td>
+					<td>&bull; {!RATING_CONTENT}:</td>
 					<td class="equation">{POINTS_GAINED_RATING*} &times; {POINTS_RATING*} {!POINTS_UNIT}</td>
 					<td class="answer">= {MULT_POINTS_RATING*} {!POINTS_UNIT}</td>
 				</tr>
 			{+END}
 			{+START,IF,{$NEQ,{POINTS_CREDITS},0}}{+START,IF,{$ADDON_INSTALLED,support_credits}}
-			<tr>
-				<td>&bull; {!SPECIAL_CPF__cms_support_credits}:</td>
-				<td class="equation">{POINTS_GAINED_CREDITS*} &times; {POINTS_CREDITS*} {!POINTS_UNIT}</td>
-				<td class="answer">= {MULT_POINTS_CREDITS*} {!POINTS_UNIT}</td>
-			</tr>
+				<tr>
+					<td>&bull; {!SPECIAL_CPF__cms_support_credits}:</td>
+					<td class="equation">{POINTS_GAINED_CREDITS*} &times; {POINTS_CREDITS*} {!POINTS_UNIT}</td>
+					<td class="answer">= {MULT_POINTS_CREDITS*} {!POINTS_UNIT}</td>
+				</tr>
 			{+END}{+END}
 		</tbody>
 	</table>

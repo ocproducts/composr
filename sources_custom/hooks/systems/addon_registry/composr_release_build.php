@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -21,9 +21,10 @@ class Hook_addon_registry_composr_release_build
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -85,7 +86,7 @@ class Hook_addon_registry_composr_release_build
      */
     public function get_description()
     {
-        return 'The Composr release build platform.';
+        return 'The Composr release build platform. Should be run from a developers machine, not the server.';
     }
 
     /**
@@ -106,8 +107,14 @@ class Hook_addon_registry_composr_release_build
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
-            'recommends' => array(),
+            'requires' => array(
+                'meta_toolkit',
+            ),
+            'recommends' => array(
+                'composr_homesite',
+                'composr_homesite_support_credits',
+                'composr_tutorials',
+            ),
             'conflicts_with' => array()
         );
     }
@@ -137,9 +144,29 @@ class Hook_addon_registry_composr_release_build
             'sources_custom/hooks/systems/page_groupings/make_release.php',
             'adminzone/pages/minimodules_custom/push_bugfix.php',
             'adminzone/pages/minimodules_custom/plug_guid.php',
+            'data_custom/build_db_meta_file.php',
             'exports/builds/index.html',
             'data_custom/builds/index.html',
             'data_custom/builds/readme.txt',
+            '_config.php.template',
+            'install.sql',
+            'install1.sql',
+            'install2.sql',
+            'install3.sql',
+            'install4.sql',
+            'user.sql',
+            'postinstall.sql',
+            'parameters.xml',
+            'manifest.xml',
+            'data_custom/execute_temp.php.bundle',
+            'aps/APP-LIST.xml',
+            'aps/APP-META.xml',
+            'aps/images/icon.png',
+            'aps/images/screenshot.png',
+            'aps/scripts/configure',
+            'aps/scripts/templates/_config.php.in',
+            'aps/test/composrIDEtest.xml',
+            'aps/test/TEST-META.xml',
         );
     }
 }

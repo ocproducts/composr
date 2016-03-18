@@ -1,13 +1,16 @@
 "use strict";
 
-function make_tooltip_func(op,directory)
+function make_tooltip_func(ob,op)
 {
 	return function(event) {
 		if (typeof event=='undefined') event=window.event;
+
+		ob.hovered=true;
+
 		if (typeof window.tpl_descrips[op]=='undefined')
 		{
-			var get_descrip=function(callback) {
-				do_ajax_request(window.url+'?theme='+window.encodeURIComponent(window.current_theme)+'&id='+window.encodeURIComponent(op)+'&directory='+window.encodeURIComponent(directory)+keep_stub(),function(loaded_result) {
+			var get_and_pass_descrip=function(callback) {
+				do_ajax_request(window.tpl_load_url+'?theme='+window.encodeURIComponent(window.current_theme)+'&id='+window.encodeURIComponent(op)+keep_stub(),function(loaded_result) {
 					if (!loaded_result) return '';
 					window.tpl_descrips[op]=loaded_result.responseText;
 					callback('<div class="whitespace_visible">'+escape_html(window.tpl_descrips[op])+'</div>');
@@ -15,20 +18,28 @@ function make_tooltip_func(op,directory)
 			};
 		} else
 		{
-			var get_descrip=function(callback) { callback('<div class="whitespace_visible">'+escape_html(window.tpl_descrips[op])+'</div>'); };
+			var get_and_pass_descrip=function(callback) {
+				callback('<div class="whitespace_visible">'+escape_html(window.tpl_descrips[op])+'</div>');
+			};
 		}
-		if (typeof window.activate_tooltip!='undefined')
-			get_descrip(function(text) { activate_tooltip(this,event,text,'20%',null,'130px'); });
+
+		if (typeof window.activate_tooltip!='undefined') {
+			var callback=function(text) {
+				if (ob.hovered) // If still hovered
+					activate_tooltip(ob,event,text,'20%',null,'130px');
+			};
+			get_and_pass_descrip(callback);
+		}
 	}
 }
 
 if (typeof window.tpl_descrips=='undefined')
 {
 	window.tpl_descrips=[];
-	window.url='{$FIND_SCRIPT_NOHTTP;,load_template}';
+	window.tpl_load_url='{$FIND_SCRIPT_NOHTTP;,load_template}';
 }
 
-function load_template_previews(directory)
+function load_template_previews()
 {
 	var elements=document.getElementById('f0file').options;
 	var ob;
@@ -36,10 +47,16 @@ function load_template_previews(directory)
 	{
 		ob=elements[i];
 		if ((ob.value=='') || (ob.disabled)) continue;
-		ob.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
-		ob.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
+
 		var op=ob.value;
-		ob.onmouseover=make_tooltip_func(op,directory);
+		ob.onmouseover=make_tooltip_func(ob,op);
+
+		ob.onmouseout=function(ob) { return function() {
+			ob.hovered=false;
+
+			if (!event) var event=window.event;
+			window.deactivate_tooltip(ob);
+		}; }(ob);
 	}
 }
 

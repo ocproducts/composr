@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts/Tapatalk, 2004-2015
+ Copyright (c) ocProducts/Tapatalk, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -19,7 +19,7 @@
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_config_func($raw_params)
@@ -70,7 +70,7 @@ function get_config_func($raw_params)
         'default_smilies' => '1',
         'can_unread' => '1',
         'announcement' => '1',
-        'emoji_support' => (get_charset() == 'utf-8') ? '1' : '0',
+        'emoji_support' => '1', // Can't be disabled, on iOS just results in Unicode emoji if disabled (which is problematic for us)
         'support_md5' => '0',
         'support_sha1' => '0',
         'conversation' => '1',
@@ -126,7 +126,7 @@ function get_config_func($raw_params)
         'timezone' => get_site_timezone(),
         'disable_bbcode' => '0',
 
-        //'json_support'=>'1',	Enable once JSON is tested. Test it if Tapatalk has stopped supporting XML-RPC.
+        //'json_support' => '1',	Enable once JSON is tested. Test it if Tapatalk has stopped supporting XML-RPC.
 
         'push' => '1',
         'push_type' => 'pm,sub,quote,newtopic,tag',
@@ -180,7 +180,7 @@ function get_config_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_forum_func($raw_params) // Get forum tree structure
@@ -214,7 +214,7 @@ function get_forum_func($raw_params) // Get forum tree structure
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_participated_forum_func($raw_params)
@@ -248,7 +248,7 @@ function get_participated_forum_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function mark_all_as_read_func($raw_params)
@@ -273,7 +273,7 @@ function mark_all_as_read_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  */
 function login_forum_func($raw_params)
 {
@@ -286,7 +286,7 @@ function login_forum_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_id_by_url_func($raw_params)
@@ -311,7 +311,7 @@ function get_id_by_url_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_board_stat_func($raw_params)
@@ -338,7 +338,7 @@ function get_board_stat_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_forum_status_func($raw_params)
@@ -376,7 +376,7 @@ function get_forum_status_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_smilies_func($raw_params)

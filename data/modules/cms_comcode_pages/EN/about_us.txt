@@ -1,4 +1,4 @@
-[title="1"]About Us[/title]
+[title]About Us[/title]
 
 {$SITE_NAME} is a leader in both foo and bar. We've been going from strength to strength since 1999.
 

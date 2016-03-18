@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -10,7 +10,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    oc_gifts
+ * @package    giftr
  */
 
 /**
@@ -173,11 +173,11 @@ class Hook_pointstore_giftr
                     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($from_member);
                     $private_topic_url = $GLOBALS['FORUM_DRIVER']->member_pm_url($from_member);
 
-                    $message = do_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
+                    $message = do_notification_lang('GIFT_EXPLANATION_MAIL', comcode_escape($sender_displayname), comcode_escape($gift_name), array($sender_url, $gift_image_url, $gift_message, $private_topic_url, comcode_escape($sender_username)), get_lang($to_member_id));
 
                     dispatch_notification('gift', null, $subject, $message, array($to_member_id), $member_id, 3, false, false, null, null, '', '', '', '', null, true);
                 } else {
-                    $message = do_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
+                    $message = do_notification_lang('GIFT_EXPLANATION_ANONYMOUS_MAIL', comcode_escape($gift_name), $gift_image_url, $gift_message, get_lang($to_member_id));
 
                     dispatch_notification('gift', null, $subject, $message, array($to_member_id), A_FROM_SYSTEM_UNPRIVILEGED);
                 }

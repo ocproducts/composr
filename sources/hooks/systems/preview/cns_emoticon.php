@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -30,7 +30,7 @@ class Hook_preview_cns_emoticon
      */
     public function applies()
     {
-        $applies = (get_param_string('page', '') == 'admin_cns_emoticons');
+        $applies = (get_page_name() == 'admin_cns_emoticons');
         return array($applies, null, false);
     }
 

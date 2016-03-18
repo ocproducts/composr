@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -44,7 +44,7 @@ class Hook_snippet_profile_tab
             }
             $keep_get[$key] = get_param_string($key, null, true);
         }
-        set_execution_context(array('page' => 'members', 'type' => 'view', 'id' => $member_id_of) + $keep_get);
+        $former_context = set_execution_context(array('page' => 'members', 'type' => 'view', 'id' => $member_id_of) + $keep_get);
 
         require_code('hooks/systems/profiles_tabs/' . $hook);
         $ob = object_factory('Hook_profiles_tabs_' . $hook);
@@ -67,8 +67,29 @@ class Hook_snippet_profile_tab
             $out->attach(symbol_tempcode('JS_TEMPCODE'));
             $out->attach($eval);
             $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
+
+            call_user_func_array('set_execution_context', $former_context);
+
             return $out;
         }
+
+        // Very likely a session was lost
+        if (is_guest()) {
+            $login_url = build_url(array('page' => 'login', 'type' => 'login'), '_SELF');
+            require_css('login');
+            $passion = form_input_hidden('redirect', static_evaluate_tempcode($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true, true)));
+            $ret = do_template('LOGIN_SCREEN', array('_GUID' => 'f401d48a9d2a70af6c2976d396207fc1', 'EXTRA' => '', 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of), 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(), 'TITLE' => '', 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
+            $out = new Tempcode();
+            $eval = $ret->evaluate();
+            $out->attach(symbol_tempcode('CSS_TEMPCODE'));
+            $out->attach(symbol_tempcode('JS_TEMPCODE'));
+            $out->attach($eval);
+            $out->attach(symbol_tempcode('JS_TEMPCODE', array('footer')));
+            return $out;
+        }
+
+        call_user_func_array('set_execution_context', $former_context);
+
         return do_template('INLINE_WIP_MESSAGE', array('_GUID' => 'aae58043638dac785405a42e9578202b', 'MESSAGE' => do_lang_tempcode('INTERNAL_ERROR')));
     }
 }

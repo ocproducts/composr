@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_points
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -132,7 +133,6 @@ class Hook_addon_registry_points
             'themes/default/templates/POINTS_SCREEN.tpl',
             'themes/default/templates/POINTS_SEARCH_SCREEN.tpl',
             'themes/default/templates/POINTS_SEARCH_RESULT.tpl',
-            'themes/default/templates/POINTS_TRANSACTIONS_WRAP.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD_SCREEN.tpl',
             'themes/default/templates/POINTS_LEADER_BOARD_ROW.tpl',
@@ -159,6 +159,8 @@ class Hook_addon_registry_points
             'sources/hooks/systems/config/gift_reward_amount.php',
             'sources/hooks/systems/config/gift_reward_chance.php',
             'sources/hooks/systems/tasks/export_points_log.php',
+            'sources/hooks/systems/commandr_fs_extended_member/point_charges.php',
+            'sources/hooks/systems/commandr_fs_extended_member/point_gifts_given.php',
         );
     }
 
@@ -179,7 +181,6 @@ class Hook_addon_registry_points
             'templates/POINTS_GIVE.tpl' => 'points_screen',
             'templates/POINTS_PROFILE.tpl' => 'points_screen',
             'templates/POINTS_SCREEN.tpl' => 'points_screen',
-            'templates/POINTS_TRANSACTIONS_WRAP.tpl' => 'points_screen'
         );
     }
 
@@ -284,20 +285,11 @@ class Hook_addon_registry_points
      */
     public function tpl_preview__points_screen()
     {
-        $chargelog_details = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $chargelog_details = placeholder_table();
 
-        $from = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $from = placeholder_table();
 
-        $to = do_lorem_template('POINTS_TRANSACTIONS_WRAP', array(
-            'CONTENT' => placeholder_table(),
-            'TITLE' => lorem_phrase(),
-        ));
+        $to = placeholder_table();
 
         $give_template = do_lorem_template('POINTS_GIVE', array(
             'GIVE_URL' => placeholder_url(),
@@ -339,6 +331,7 @@ class Hook_addon_registry_points
             'MULT_POINTS_WIKI_POSTING' => placeholder_number(),
             'MULT_POINTS_POSTING' => placeholder_number(),
             'MULT_POINTS_PER_DAY' => placeholder_number(),
+            'MULT_POINTS_VISITING' => placeholder_number(),
             'POINTS_CREDITS' => '', // From non-bundled addon
         ));
 

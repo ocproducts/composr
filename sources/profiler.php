@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -34,6 +34,8 @@ data_custom/profiling--<memberID>.<timestamp>.<uniqid>--<requestTimeInSeconds>.l
 
 /**
  * Standard code module initialisation function.
+ *
+ * @ignore
  */
 function init__profiler()
 {
@@ -88,6 +90,8 @@ function cms_profile_is_enabled()
  * Start a profiling block, for a specified identifier (of your own choosing).
  *
  * @param  ID_TEXT $identifier Identifier
+ *
+ * @ignore
  */
 function _cms_profile_start_for($identifier)
 {
@@ -113,6 +117,7 @@ function _cms_profile_start_for($identifier)
  *
  * @param  ID_TEXT $identifier Identifier
  * @param  ?string $specifics Longer details of what happened (e.g. a specific SQL query that ran) (null: none provided)
+ * @ignore
  */
 function _cms_profile_end_for($identifier, $specifics = null)
 {
@@ -147,6 +152,8 @@ function _cms_profile_end_for($identifier, $specifics = null)
  * @param  array $at The signature for what we just profiled
  * @param  integer $cnt This will be the nth of this identifier to be logged
  * @return string Log line
+ *
+ * @ignore
  */
 function _cms_profile_generate_line($identifier, $at, $cnt)
 {
@@ -163,6 +170,8 @@ function _cms_profile_generate_line($identifier, $at, $cnt)
  * Store a line in the profiling log.
  *
  * @param  string $line Log line
+ *
+ * @ignore
  */
 function _cms_profile_log_line($line)
 {
@@ -195,6 +204,8 @@ function _cms_profile_log_line($line)
 
 /**
  * Finish the profiler (automatically run at script termination).
+ *
+ * @ignore
  */
 function _cms_profiler_script_end()
 {
@@ -215,9 +226,7 @@ function _cms_profiler_script_end()
     // Post-logging
     _cms_profile_log_line(''); // Spacer line
     _cms_profiler_generic_logging();
-    if (function_exists('memory_get_usage')) {
-        _cms_profile_log_line('PHP memory usage: ' . clean_file_size(memory_get_usage()));
-    }
+    _cms_profile_log_line('PHP memory usage: ' . clean_file_size(memory_get_usage()));
     if (function_exists('memory_get_peak_usage')) {
         _cms_profile_log_line('PHP peak memory usage: ' . clean_file_size(memory_get_peak_usage()));
     }
@@ -236,6 +245,8 @@ function _cms_profiler_script_end()
 
 /**
  * Add in generic logging lines to the profiling log (background/context information). Assumes Linux.
+ *
+ * @ignore
  */
 function _cms_profiler_generic_logging()
 {

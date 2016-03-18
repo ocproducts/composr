@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -32,8 +32,10 @@ function restricted_manually_enabled_backdoor()
 
     $ks = get_param_string('keep_su', null);
     if (!is_null($ks)) {
-        $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
-        $GLOBALS['SESSION_CONFIRMED'] = 1;
+        if (get_param_integer('keep_su_strict', 0) == 0) {
+            $GLOBALS['IS_ACTUALLY_ADMIN'] = true;
+            $GLOBALS['SESSION_CONFIRMED'] = 1;
+        }
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
 
         if (!is_null($su)) {
@@ -117,7 +119,11 @@ function handle_active_login($username)
         // Create invisibility cookie
         if ((array_key_exists(get_member_cookie() . '_invisible', $_COOKIE)/*i.e. already has cookie set, so adjust*/) || ($remember == 1)) {
             $invisible = post_param_integer('login_invisible', 0);
-            cms_setcookie(get_member_cookie() . '_invisible', strval($invisible));
+            if ($invisible == 1) {
+                cms_setcookie(get_member_cookie() . '_invisible', '1');
+            } else {
+                cms_eatcookie(get_member_cookie() . '_invisible');
+            }
             $_COOKIE[get_member_cookie() . '_invisible'] = strval($invisible);
         }
 
@@ -175,7 +181,7 @@ function handle_active_login($username)
         enforce_temporary_passwords($member);
     } else {
         $GLOBALS['SITE_DB']->query_insert('failedlogins', array(
-            'failed_account' => substr(trim(post_param_string('login_username')), 0, 80),
+            'failed_account' => cms_mb_substr(trim(post_param_string('login_username')), 0, 80),
             'date_and_time' => time(),
             'ip' => get_ip_address(),
         ));
@@ -224,6 +230,8 @@ function handle_active_logout()
  * Make sure temporary passwords restrict you to the edit account page. May not return, if it needs to do a redirect.
  *
  * @param  MEMBER $member The current member
+ *
+ * @ignore
  */
 function _enforce_temporary_passwords($member)
 {
@@ -301,28 +309,6 @@ function delete_session($session)
 }
 
 /**
- * Deletes a cookie (if it exists), from within Composr's cookie environment.
- *
- * @param  string $name The name of the cookie
- * @return boolean The result of the PHP setcookie command
- */
-function cms_eatcookie($name)
-{
-    $expire = time() - 100000; // Note the negative number must be greater than 13*60*60 to account for maximum timezone difference
-
-    // Try and remove other potentials
-    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '', '');
-    @setcookie($name, '', $expire, '/', '');
-
-    // Delete standard potential
-    return @setcookie($name, '', $expire, get_cookie_path(), get_cookie_domain());
-}
-
-/**
  * Set invisibility on the current user.
  *
  * @param  boolean $make_invisible Whether to make the current user invisible (true=make invisible, false=make visible)
@@ -334,7 +320,7 @@ function set_invisibility($make_invisible = true)
     if ($SESSION_CACHE[get_session_id()]['member_id'] == get_member()) // A little security
     {
         $SESSION_CACHE[get_session_id()]['session_invisible'] = $make_invisible ? 1 : 0;
-        if (get_value('session_prudence') !== '1') {
+        if (get_option('session_prudence') == '0') {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -344,7 +330,11 @@ function set_invisibility($make_invisible = true)
     // Store in cookie, if we have login cookies around
     if (array_key_exists(get_member_cookie(), $_COOKIE)) {
         require_code('users_active_actions');
-        cms_setcookie(get_member_cookie() . '_invisible', strval($make_invisible ? 1 : 0));
+        if ($make_invisible) {
+            cms_setcookie(get_member_cookie() . '_invisible', '1');
+        } else {
+            cms_eatcookie(get_member_cookie() . '_invisible');
+        }
         $_COOKIE[get_member_cookie() . '_invisible'] = strval($make_invisible ? 1 : 0);
     }
 }
@@ -361,9 +351,15 @@ function set_invisibility($make_invisible = true)
  */
 function cms_setcookie($name, $value, $session = false, $http_only = false, $days = null)
 {
-    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {    Annoying, and non-cookie support is very well tested by now
+    /*if (($GLOBALS['DEV_MODE']) && (running_script('index')) && (get_forum_type() == 'cns') && (get_param_integer('keep_debug_has_cookies', 0) == 0) && ($name != 'has_referers')) {    Annoying, and non-cookie support is very well tested by now
         return true;
     }*/
+
+    static $cache = array();
+    $sz = serialize(array($name, $value, $session, $http_only));
+    if (isset($cache[$sz])) {
+        return $cache[$sz];
+    }
 
     $cookie_domain = get_cookie_domain();
     $path = get_cookie_path();
@@ -388,7 +384,7 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
                 $output = @setcookie($name, $value, $time, $path, $cookie_domain . '; HttpOnly');
             } else {
                 $output = @call_user_func_array('setcookie', array($name, $value, $time, $path, $cookie_domain, 0, true)); // For Phalanger
-                //$output=@setcookie($name,$value,$time,$path,$cookie_domain,0,true);
+                //$output = @setcookie($name, $value, $time, $path, $cookie_domain, 0, true);
             }
         }
     }
@@ -396,5 +392,29 @@ function cms_setcookie($name, $value, $session = false, $http_only = false, $day
         $_COOKIE[$name] = get_magic_quotes_gpc() ? addslashes($value) : $value;
     }
 
+    $cache[$sz] = $output;
+
     return $output;
+}
+
+/**
+ * Deletes a cookie (if it exists), from within Composr's cookie environment.
+ *
+ * @param  string $name The name of the cookie
+ * @return boolean The result of the PHP setcookie command
+ */
+function cms_eatcookie($name)
+{
+    $expire = time() - 100000; // Note the negative number must be greater than 13*60*60 to account for maximum timezone difference
+
+    // Try and remove other potentials
+    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '', '');
+    @setcookie($name, '', $expire, '/', '');
+
+    // Delete standard potential
+    return @setcookie($name, '', $expire, get_cookie_path(), get_cookie_domain());
 }

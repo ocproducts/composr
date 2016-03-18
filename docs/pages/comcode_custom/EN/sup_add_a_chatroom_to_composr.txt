@@ -1,0 +1,40 @@
+[title sub="Written by Steve Jarvis, Sponsored by Arvixe hosting"]Composr Supplementary: Add a Chatroom to Composr[/title]
+
+[media width="150" description="Add chatroom form" float="right"]data_custom/images/docs/sup_add_a_chatroom_to_composr/81af5751bc05343a4a0fc0732474202e.png[/media]
+Composr has its own inbuilt text chatrooms available to be used for any community website. Chatrooms are useful for conducting a discussion quicker than utilising the forums. You can add as many different chatrooms as you require which gives you the flexibility to be able to add chatrooms focused on specific subject and create private chatrooms for staff discussion for example.
+
+As you'd expect, the Composr Chatrooms come with a full range of moderation options to make sure you can keep control of them and remove any troublesome users! The chatrooms can also integrate a shoutbox onto your website which is linked to a specific chatroom.
+
+The inbuilt chatroom facility also powers Composr's site-wide Instant messaging feature allowing your users to conduct a conversation with other site users from any page within your website.
+
+For very advanced users it is possible to program a chat-bot to conduct some activities within the rooms and also to interact with your users.
+
+On top of this there are also the usual features you would expect including the ability to block users, add sound effects and download the logs from the chatroom.
+
+[title="2"]Adding a new chatroom to your Composr website[/title]
+
+[list="1"]
+[*] Go to the Admin Zone
+[*] Navigate to the Structure section of the Admin Zone menu
+[*] Choose the Chatrooms icon
+[*] Choose the Add Chatroom icon
+[/list]
+
+You will then be taken to the add chatroom page and will need to fill in the form.
+
+The first section has three options which are:
+[list]
+[*] [b]Room name[/b] -- this is the name of the room which will be visible to all occupants of the room
+[*] [b]Welcome Message[/b] -- This is a message which is displayed to all new members of the room
+[*] [b]Room Owner[/b] -- This is the owner of the room if it is a personal chatroom
+[/list]
+
+The next section deals with the low level permissions of the chatroom and who can access the room. You can either add names individually or choose one or a number of usergroups which are allowed to access the room.
+
+Under the advanced section you can set a disallow list in the same way you set the allow list above you can add either individual users or a full usergroup.
+
+In the final section you can specify which groups can view each chatroom.
+
+[box="Thank you Arvixe"]This tutorial was sponsored by [url="Arvixe hosting"]http://www.arvixe.com/5256-223-3-122.html[/url].[/box]
+
+{$SET,tutorial_tags,Chatrooms,Social,Chatrooms,novice}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,Composr has its own inbuilt text chatrooms available to be used for any community website. Chatrooms are useful for conducting a discussion quicker than utilising the forums.}[block]main_tutorial_rating[/block]

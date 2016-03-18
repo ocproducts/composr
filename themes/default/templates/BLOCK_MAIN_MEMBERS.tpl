@@ -15,7 +15,7 @@
 
 				<div class="search_fields float_surrounder">
 					<div class="search_button">
-						<input onclick="disable_button_just_clicked(this);" accesskey="u" class="buttons__filter button_screen_item" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
+						<input onclick="disable_button_just_clicked(this);" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
 					</div>
 
 					{+START,LOOP,{FILTERS_ROW_A}}
@@ -29,7 +29,7 @@
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
 					<div class="search_fields float_surrounder">
 						<div class="search_button">
-							<input onclick="window.location.href='{$PAGE_LINK;*,_SELF:_SELF}';" class="buttons__clear button_screen_item" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
+							<input onclick="window.location.href='{$PAGE_LINK;*,_SELF:_SELF}';" class="button_screen_item buttons__clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
 						</div>
 
 						{+START,LOOP,{FILTERS_ROW_B}}
@@ -72,14 +72,14 @@
 				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{BOX;^*}','auto');">
 					<p>
 						{+START,IF,{$EQ,{DISPLAY_MODE},avatars}}
-							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,,pad,both,FFFFFF00}}
+							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,{$IMG,cns_default_avatars/default},pad,both,FFFFFF00}}
 						{+END}
 
 						{+START,IF,{$EQ,{DISPLAY_MODE},photos}}
-							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$PHOTO,{MEMBER_ID}}},{$IMG,no_image},{$PHOTO,{MEMBER_ID}}},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width},,,,pad,both,FFFFFF00}}
+							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$PHOTO,{MEMBER_ID}}},{$IMG,no_image},{$PHOTO,{MEMBER_ID}}},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width},,,{$IMG,no_image},pad,both,FFFFFF00}}
 						{+END}
 
-						<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" src="{$GET*,image}" /></a>
+						<a href="{$MEMBER_PROFILE_URL*,{MEMBER_ID}}"><img alt="" src="{$ENSURE_PROTOCOL_SUITABILITY*,{$GET,image}}" /></a>
 					</p>
 
 					<p>
@@ -115,9 +115,9 @@
 			{+END}
 
 			{+START,IF,{$EQ,{DISPLAY_MODE},boxes}}
-				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END} class="box"><div class="box_inner">
+				<div{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}><div class="box"><div class="box_inner">
 					{BOX}
-				</div></div>
+				</div></div></div>
 
 				{+START,IF,{BREAK}}
 					<br />

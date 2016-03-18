@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -84,7 +84,7 @@ class Block_side_cns_private_topics
         require_lang('cns');
         $out = new Tempcode();
         foreach ($rows as $topic) {
-            $topic_url = build_url(array('page' => 'topicview', 'id' => $topic['id'], 'type' => 'findpost'), get_module_zone('topicview'));
+            $topic_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['id']), get_module_zone('topicview'));
             $topic_url->attach('#post_' . strval($topic['id']));
             $title = $topic['t_cache_first_title'];
             $date = get_timezoned_date($topic['t_cache_last_time'], true);
@@ -97,7 +97,7 @@ class Block_side_cns_private_topics
             $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
             $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
 
-            $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
+            $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 
             $out->attach(do_template('CNS_PRIVATE_TOPIC_LINK', array(
                 '_GUID' => '05beab5a3fab191df988bf101f44a47a',

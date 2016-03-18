@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -26,9 +26,10 @@ class Hook_addon_registry_ldap
     /**
      * Get a list of file permissions to set
      *
+     * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
      */
-    public function get_chmod_array()
+    public function get_chmod_array($runtime = false)
     {
         return array();
     }
@@ -149,7 +150,7 @@ class Hook_addon_registry_ldap
         $members_delete = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $members_delete->attach($tpl);
@@ -158,7 +159,7 @@ class Hook_addon_registry_ldap
         $groups_delete = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $groups_delete->attach($tpl);
@@ -167,7 +168,7 @@ class Hook_addon_registry_ldap
         $groups_add = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(
-                'NAME' => lorem_word() . placeholder_random(),
+                'NAME' => placeholder_random_id(),
                 'NICE_NAME' => lorem_word(),
             ));
             $groups_add->attach($tpl);

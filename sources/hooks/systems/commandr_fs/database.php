@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -24,7 +24,7 @@
 class Hook_commandr_fs_database
 {
     /**
-     * Standard commandr_fs listing function for Commandr FS hooks.
+     * Standard Commandr-fs listing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -54,7 +54,7 @@ class Hook_commandr_fs_database
 
                 $listing[] = array(
                     $table_name,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     $modification_time,
                 );
@@ -92,7 +92,7 @@ class Hook_commandr_fs_database
                 }
                 $listing[] = array(
                     $x,
-                    COMMANDRFS_DIR,
+                    COMMANDR_FS_DIR,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );
@@ -111,7 +111,7 @@ class Hook_commandr_fs_database
             foreach ($row as $field_name => $field_value) {
                 $listing[] = array(
                     $field_name,
-                    COMMANDRFS_FILE,
+                    COMMANDR_FS_FILE,
                     null/*don't calculate a filesize*/,
                     null/*don't specify a modification time*/,
                 );
@@ -124,7 +124,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs directory creation function for Commandr FS hooks.
+     * Standard Commandr-fs directory creation function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -165,7 +165,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs directory removal function for Commandr FS hooks.
+     * Standard Commandr-fs directory removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -192,7 +192,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file removal function for Commandr FS hooks.
+     * Standard Commandr-fs file removal function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -227,7 +227,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file reading function for Commandr FS hooks.
+     * Standard Commandr-fs file reading function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory
@@ -257,7 +257,7 @@ class Hook_commandr_fs_database
     }
 
     /**
-     * Standard commandr_fs file writing function for Commandr FS hooks.
+     * Standard Commandr-fs file writing function for commandr_fs hooks.
      *
      * @param  array $meta_dir The current meta-directory path
      * @param  string $meta_root_node The root node of the current meta-directory

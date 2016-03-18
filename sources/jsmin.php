@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -69,7 +69,7 @@
 Licensing note by ocProducts...
 
 The "Good, not Evil" bit was inserted to this MIT-derived licence by Douglas Crockford, as a joke [reference: his talk, "The JSON Saga"].
-Therefore we can interpret this in a very moderate way. Also it's definition is clear, so no one could rule a particular usage as evil as there is no legal definition of evil.
+Therefore we can interpret this in a very moderate way. Also its definition is clear, so no one could rule a particular usage as evil as there is no legal definition of evil.
 Lastly, this cogent point has been made:
 "The terms of Evil are not outlined. And to use license to stop freedom is Evil [in the spirit of the original MIT licence the statement is written into], therefore the only Evil is using the software to stop its free use..."
 */
@@ -155,7 +155,6 @@ class JSMin
                             $this->a === ':' || $this->a === '[' || $this->a === '!' ||
                             $this->a === '&' || $this->a === '|' || $this->a === '?')
                     ) {
-
                         $this->output .= $this->a . $this->b;
 
                         while (true) {

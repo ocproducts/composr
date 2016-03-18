@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2015
+ Copyright (c) ocProducts, 2004-2016
 
  See text/EN/licence.txt for full licencing information.
 
@@ -46,7 +46,7 @@ class Module_admin_points
      * @param  boolean $check_perms Whether to check permissions.
      * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
      * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
-     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return NULL to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
      * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
@@ -65,7 +65,7 @@ class Module_admin_points
     public $title;
 
     /**
-     * Module pre-run function. Allows us to know meta-data for <head> before we start streaming output.
+     * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
      */
@@ -167,7 +167,7 @@ class Module_admin_points
      */
     public function points_export()
     {
-        $d = array(get_input_date('from', true), get_input_date('to', true));
+        $d = array(post_param_date('from', true), post_param_date('to', true));
         if (is_null($d[0])) {
             return $this->_get_between($this->title);
         }
@@ -225,8 +225,7 @@ class Module_admin_points
             }
 
             $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => get_self_url(true)), '_SELF');
-            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
-                'NAME' => do_lang_tempcode('REVERSE'),
+            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '3585ec7f35a1027e8584d62ffeb41e56', 'NAME' => do_lang_tempcode('REVERSE'),
                 'URL' => $delete_url,
                 'HIDDEN' => form_input_hidden('id', strval($myrow['id'])),
             ));
@@ -273,14 +272,8 @@ class Module_admin_points
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'd3d654c7dcffb353638d08b53697488b', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'URL' => get_self_url(false, false, array('confirm' => 1)), 'FIELDS' => build_keep_post_fields()));
         }
 
-        $GLOBALS['SITE_DB']->query_delete('gifts', array('id' => $id), '', 1);
-        if (!is_guest($sender_id)) {
-            $_sender_gift_points_used = point_info($sender_id);
-            $sender_gift_points_used = array_key_exists('gift_points_used', $_sender_gift_points_used) ? $_sender_gift_points_used['gift_points_used'] : 0;
-            $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used - $amount));
-        }
-        $temp_points = point_info($recipient_id);
-        $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) - $amount));
+        require_code('points2');
+        reverse_point_gift_transaction($id);
 
         // Show it worked / Refresh
         $url = get_param_string('redirect', null);
