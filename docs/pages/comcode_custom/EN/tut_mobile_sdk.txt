@@ -1326,6 +1326,25 @@ Inserts a string input control similar to an HTML input box. There are no valida
 		isRequired:<is_required ?>];
 [/code]
 
+[title="4"]form_input_password_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_password_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a password input control similar to an HTML password input box. There are no validations: it will accept any type of characters but display as password dots.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_password_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
 [title="4"]form_input_list_withPrettyName[/title]
 
 [i]Prototype:[/i]
