@@ -166,7 +166,7 @@ class Module_admin_pointstore
                     break;
                 default:
                     $_type = do_lang($row['purchasetype'], null, null, null, null, false);
-                    if (is_null($type)) {
+                    if (is_null($_type)) {
                         $type = make_string_tempcode($row['purchasetype']);
                     } else {
                         $type = do_lang_tempcode($row['purchasetype']);

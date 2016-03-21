@@ -939,7 +939,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BLOCK,block=main_search,zone=site}</td>
-			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd>. For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
+			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd> (<strong>not</strong> just placed in there as a lone parameter). For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$LOAD_PAGE,about,site}</td>

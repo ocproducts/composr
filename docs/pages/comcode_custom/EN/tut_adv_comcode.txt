@@ -185,7 +185,7 @@ If you want to know how it looks, just look at the code as displayed throughout 
 [title="2"]Comcode Menus (advanced)[/title]
 
 [surround="right float_separation"]
-[media width="150" description="The example in action"]data_custom/images/docs/tut_adv_comcode/comcode_menu.png[/media]
+[media width="150" description="The syntax sample in action"]data_custom/images/docs/tut_adv_comcode/comcode_menu.png[/media]
 [box="Tip" width="160"]
 You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.
 [/box]
@@ -196,7 +196,7 @@ The menu tag takes a single parameter -- the codename assigned to the menu. Each
 
 It is important to be careful not to break the syntactic rules for the menu formation, the syntax is delicate. The menu is [b]only[/b] designed for organising links. You should not attempt to store other content in a Comcode menu tag.
 
-Here is an example of a menu tag in action...
+Here is a sample of how the syntax works...
 
 [code="Comcode"]
 [menu="some_codename"]
@@ -207,6 +207,19 @@ Here is an example of a menu tag in action...
 +expanded section
  page = URL
  page = URL
+[/menu]
+[/code]
+
+Or, a more practical example...
+
+[code="Comcode"]
+[menu="my_menu"]
+-Sample pages
+ Example Page = http://example.com
+ Composr CMS = http://compo.sr
++Computer companies
+ Google = http://google.com
+ Apple = http://apple.com
 [/menu]
 [/code]
 
