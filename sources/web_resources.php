@@ -356,7 +356,7 @@ function css_enforce($c, $theme = null, $minify = null)
         css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 
-    if (@filesize($css_cache_path) == 0/*@ for race condition*/) {
+    if (@intval(filesize($css_cache_path)) == 0/*@ for race condition*/) {
         return '';
     }
 

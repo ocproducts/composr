@@ -16,8 +16,8 @@
 if (!function_exists('init__forum__cns')) {
     function init__forum__cns($in = null)
     {
-        $option = get_option('jestr_name_changes');
-        if ($option == '') {
+        $option = get_option('jestr_name_changes', true);
+        if (empty($option)) {
             return $in;
         }
 

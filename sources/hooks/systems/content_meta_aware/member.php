@@ -60,7 +60,7 @@ class Hook_content_meta_aware_member
             'title_field' => 'm_username',
             'title_field_dereference' => false,
             'description_field' => 'm_title',
-            'thumb_field' => 'm_avatar_url',
+            'thumb_field' => addon_installed('cns_member_avatars') ? 'm_avatar_url' : null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
 

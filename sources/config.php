@@ -213,7 +213,11 @@ function get_option($name, $missing_ok = false)
                 return null;
             }
 
-            attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+            if (function_exists('attach_message')) {
+                attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+            } else {
+                critical_error('PASSON', 'Missing option: ' . $name);
+            }
         } else {
             set_option($name, $value, 0);
         }
