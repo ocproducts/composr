@@ -42,10 +42,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/_config.php');
 
-if (php_function_allowed('php_sapi_name')) {
-    if (php_sapi_name() != 'cli') {
-        header('Content-type: text/plain');
-    }
+$cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+if ($cli) {
+    header('Content-type: text/plain');
 }
 
 $required_settings = array(

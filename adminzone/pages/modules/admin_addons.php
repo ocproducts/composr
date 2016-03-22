@@ -930,7 +930,6 @@ class Module_admin_addons
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $organisation = get_site_name();
         $description = '';
-        $category = is_null($theme) ? ($is_language ? 'Translations' : 'Uncategorised/Unstable') : 'Themes';
         $version = '1.0';
         $copyright_attribution = '';
         $licence = 'Creative Commons Attribution-ShareAlike';
@@ -978,7 +977,35 @@ class Module_admin_addons
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('VERSION'), do_lang_tempcode('DESCRIPTION_VERSION'), 'version', $version, true);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $category, true);
+        if (!is_null($theme)) {
+            $categories = array(
+                'Themes',
+            );
+            $category = 'Themes';
+        }
+        elseif ($is_language) {
+            $categories = array(
+                'Translations',
+            );
+            $category = 'Translations';
+        } else {
+            $categories = array(
+                'Admin Utilities',
+                'Development',
+                'Fun and Games',
+                'Graphical',
+                'Information Display',
+                'New Features',
+                'Third Party Integration',
+                'Uncategorised/Alpha',
+            );
+            $category = 'Uncategorised/Alpha';
+        }
+        $_categories = new Tempcode();
+        foreach ($categories as $_category) {
+            $_categories->attach(form_input_list_entry($_category, $_category == $category));
+        }
+        $field = form_input_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $_categories, true);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, true);
         $fields .= $field->evaluate();

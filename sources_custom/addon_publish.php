@@ -140,7 +140,7 @@ function get_addons_list_under_category($category_name)
             if (method_exists($ob, 'get_category')) {
                 $category_name_here = $ob->get_category();
             } else {
-                $category_name_here = 'Uncategorised/Unstable';
+                $category_name_here = 'Uncategorised/Alpha';
             }
 
             if ($category_name_here == $category_name) {
@@ -165,7 +165,7 @@ function find_addon_category_list()
             if (method_exists($ob, 'get_category')) {
                 $category_name = $ob->get_category();
             } else {
-                $category_name = 'Uncategorised/Unstable';
+                $category_name = 'Uncategorised/Alpha';
             }
 
             $categories[] = $category_name;

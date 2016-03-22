@@ -209,7 +209,7 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
     /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {     Useful for testing non-cookie support, but annoying if left on
         $test = false;
     } else {*/
-    $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
+    $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path(), get_cookie_domain()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
     if (is_null($test)) {
         $test = false;
     }

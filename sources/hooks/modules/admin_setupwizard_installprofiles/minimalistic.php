@@ -68,6 +68,7 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
                 'syndication_blocks',
                 'themewizard',
                 'users_online_block',
+                'tickets',
             ),
         );
     }

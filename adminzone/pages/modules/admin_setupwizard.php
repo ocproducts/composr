@@ -409,10 +409,14 @@ class Module_admin_setupwizard
         foreach ($addon_list_override_to_off_by_default as $_to_find) {
             if (!is_null($addon_list_on_by_default)) {
                 $_found = array_search($_to_find, $addon_list_on_by_default);
-                unset($addon_list_on_by_default[$_found]);
+                if ($_found !== false) {
+                    unset($addon_list_on_by_default[$_found]);
+                }
             }
             $_found = array_search($_to_find, $addon_list_advanced_on_by_default);
-            unset($addon_list_advanced_on_by_default[$_found]);
+            if ($_found !== false) {
+                unset($addon_list_advanced_on_by_default[$_found]);
+            }
         }
 
         $addon_list_advanced_off_by_default = array( // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.

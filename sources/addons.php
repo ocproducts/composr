@@ -30,7 +30,7 @@ function get_default_addon_details()
         'author' => '',
         'organisation' => '',
         'version' => '1.0',
-        'category' => 'Uncategorised/Unstable',
+        'category' => 'Uncategorised/Alpha',
         'copyright_attribution' => array(),
         'licence' => '(Unstated)',
         'description' => '',
