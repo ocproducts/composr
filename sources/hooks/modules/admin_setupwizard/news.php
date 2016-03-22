@@ -56,7 +56,7 @@ class Hook_sw_news
      */
     public function get_fields($field_defaults)
     {
-        if (!addon_installed('news')) {
+        if (!addon_installed('news') || post_param_integer('addon_news', null) === 0) {
             return new Tempcode();
         }
 

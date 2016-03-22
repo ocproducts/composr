@@ -204,6 +204,9 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
         }
 
         if (count($_POST) > 80 && !$force_everything) {
+            if (substr($key, 0, 14) == 'tick_on_form__') {
+                continue;
+            }
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }

@@ -1,8 +1,0 @@
-[title]ModSecurity[/title]
-
-You may have just been impacted by ModSecurity, which is an unofficial web server plugin that many webhosts install.
-It interferes with request patterns it thinks are "suspicious", which can block normal form posts, such as when saving customised HTML in the Admin Zone.
-
-Unfortunately there is no standardised workaround we can deploy for you. You will need to ask your webhost to disable ModSecurity, or at least disable troublesome rules in it.
-
-[url="More information is available"]http://compo.sr/docs/sup_modsecurity.htm[/url]

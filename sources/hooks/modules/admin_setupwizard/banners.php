@@ -46,7 +46,7 @@ class Hook_sw_banners
      */
     public function get_fields($field_defaults)
     {
-        if (!addon_installed('banners')) {
+        if (!addon_installed('banners') || post_param_integer('addon_banners', null) === 0) {
             return new Tempcode();
         }
 

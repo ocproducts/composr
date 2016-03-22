@@ -2329,7 +2329,7 @@ function step_10_populate_database()
     if (file_exists(get_file_base() . '/docs')) { // installing from git
         $zones[] = 'docs';
     }
-    foreach ($zones as $zone) {
+    foreach (array_unique($zones)/*in case find_all_zones did find docs*/ as $zone) {
         if (($zone != 'site') && ($zone != 'adminzone') && ($zone != 'forum') && ($zone != 'cms')) {
             $modules = find_all_modules($zone);
             foreach (array_keys($modules) as $module) {

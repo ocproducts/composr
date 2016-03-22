@@ -505,7 +505,6 @@ class Hook_addon_registry_core
             'data/html5.js', // LEGACY
             'data/external_url_proxy.php',
             'adminzone/.htaccess',
-            'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/no_image.png',
             'themes/default/css/install.css',
             'lang/EN/installer.ini',

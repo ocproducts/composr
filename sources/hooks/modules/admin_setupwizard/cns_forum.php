@@ -100,8 +100,8 @@ class Hook_sw_cns_forum
      */
     public function set_fields()
     {
-        if (get_forum_type() != 'cns') {
-            return;
+        if (get_forum_type() != 'cns' || post_param_integer('addon_wordfilter', null) === 0) {
+            return new Tempcode();
         }
 
         $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
