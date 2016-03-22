@@ -1249,7 +1249,7 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_post_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM f_posts WHERE p_cache_forum_id IS NOT NULL');
+            $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL');
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
             }
