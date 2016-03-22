@@ -10,7 +10,7 @@
 [title="2"]Latest activity [size="0.8"]([page="adminzone:admin_actionlog"]more[/page])[/size][/title]
 
 {| 60%:37% wide floats
-| [box="Website Activity" options="tray_open"][block defer="1"]main_staff_actions[/block][/box]
+| [block defer="1"]main_staff_actions[/block]
 | [block defer="1"]main_db_notes[/block]
 |}
 

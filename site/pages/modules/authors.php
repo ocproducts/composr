@@ -114,6 +114,7 @@ class Module_authors
         $type = get_param_string('type', 'browse');
 
         require_lang('authors');
+        require_code('authors');
 
         $author = get_param_string('id', null);
         if (is_null($author)) {
@@ -177,8 +178,6 @@ class Module_authors
     public function run()
     {
         set_feed_url('?mode=authors&select=');
-
-        require_code('authors');
 
         // Decide what we're doing
         $type = get_param_string('type', 'browse');

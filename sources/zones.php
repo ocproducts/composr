@@ -1126,8 +1126,7 @@ function do_block($codename, $map = null, $ttl = null)
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] == '1')/* && (has_cookies())*/) {
-                            $stripped = preg_replace('#((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*#', '\2', $cache->evaluate()); // Remove contextual URL parameters for neutrality within quick cache
-                            $cache = make_string_tempcode($stripped);
+                            $cache = apply_quick_caching($cache);
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
@@ -1213,6 +1212,54 @@ function do_block($codename, $map = null, $ttl = null)
         restore_output_state(false, true);
     }
     return $cache;
+}
+
+/**
+ * Simplify some Tempcode (losing dynamicness), for the quick cache option.
+ * Includes remove of  contextual URL parameters for neutrality within quick cache.
+ *
+ * @param  Tempcode $_cache Input Tempcode
+ * @return Tempcode Output Tempcode
+ */
+function apply_quick_caching($_cache)
+{
+    $cache = $_cache->evaluate();
+
+    $new_tempcode = new Tempcode();
+    $prior_offset = 0;
+
+    $matches = array();
+    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
+    for ($i = 0; $i < $num_matches; $i++) {
+        $new_offset = $matches[0][$i][1];
+
+        $portion = substr($cache, $prior_offset, $new_offset - $prior_offset);
+        if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
+            ocp_mark_as_escaped($portion);
+        }
+
+        $new_tempcode->attach($portion);
+
+        if ($matches[0][$i][0][0] == '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
+            $keep = symbol_tempcode('KEEP', array('0'), array(ENTITY_ESCAPED));
+        } else { // All parameters are keep_*
+            $keep = symbol_tempcode('KEEP', array('1'), array(ENTITY_ESCAPED));
+        }
+        $new_tempcode->attach($keep);
+
+        $prior_offset = $new_offset + strlen($matches[0][$i][0]);
+    }
+
+    $portion = substr($cache, $prior_offset);
+    if ($portion !='') {
+        if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
+            ocp_mark_as_escaped($portion);
+        }
+
+        $new_tempcode->attach($portion);
+    }
+
+    return $new_tempcode;
 }
 
 /**

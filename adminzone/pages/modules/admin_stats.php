@@ -1123,6 +1123,9 @@ class Module_admin_stats
     {
         $page_request = _request_page(get_zone_default_page(''), '');
         $page = $page_request[count($page_request) - 1];
+        if (is_array($page)) {
+            $page = $page['r_to_page'];
+        }
 
         list($graph_views_monthly, $list_views_monthly) = array_values($this->views_per_x($page, 'views_hourly', 'VIEWS_PER_MONTH', 'DESCRIPTION_VIEWS_PER_MONTH', 730, 8766));
 

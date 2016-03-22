@@ -54,6 +54,7 @@ $g_database_name = $SITE_INFO['db_site'];
 $g_db_type       = $SITE_INFO['db_type'];
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
 $cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
+$cms_sc_multi_lang_content = (!isset($SITE_INFO['multi_lang_content'])) || ($SITE_INFO['multi_lang_content'] == '1');
 
 # --- Anonymous Access / Signup ---
 $g_allow_signup				= ON;

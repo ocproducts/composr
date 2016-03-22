@@ -98,6 +98,10 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
 
             $this_level = $current_level;
             $current_level = array_pop($stack);
+            if ($current_level === null) {
+                $current_level = $this_level;
+                break;
+            }
             $current_level['children'][] = $this_level;
         }
 
@@ -186,8 +190,11 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
     for ($x = 0; $x < count($stack); $x++) {
         $this_level = $current_level;
         $current_level = array_pop($stack);
+        if ($current_level === null) {
+            $current_level = $this_level;
+            break;
+        }
         $current_level['children'][] = $this_level;
     }
-
     return _render_menu($current_level, $source_member, $type);
 }

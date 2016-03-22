@@ -75,14 +75,14 @@ function authors_script()
 
     $field_name = filter_naughty_harsh(get_param_string('field_name'));
 
-    $content = new Tempcode();
+    $authors = array();
     $i = 0;
     foreach ($rows as $author => $table) {
         if (($i >= $start) && ($i < $start + $max)) {
             if ($table == 'authors') {
-                $content->attach(do_template('AUTHOR_POPUP_WINDOW_DEFINED', array('_GUID' => 'cffa9926cebd3ec2920677266a3299ea', 'FIELD_NAME' => $field_name, 'AUTHOR' => $author)));
+                $authors[] = array('_GUID' => 'cffa9926cebd3ec2920677266a3299ea', 'DEFINED' => true, 'FIELD_NAME' => $field_name, 'AUTHOR' => $author);
             } else {
-                $content->attach(do_template('AUTHOR_POPUP_WINDOW_UNDEFINED', array('_GUID' => '6210be6d1eef4bc2bda7f49947301f97', 'FIELD_NAME' => $field_name, 'AUTHOR' => $author)));
+                $authors[] = array('_GUID' => '6210be6d1eef4bc2bda7f49947301f97', 'DEFINED' => false, 'FIELD_NAME' => $field_name, 'AUTHOR' => $author);
             }
         }
 
@@ -96,7 +96,7 @@ function authors_script()
         $next_url = null;
     }
 
-    $content = do_template('AUTHOR_POPUP', array('_GUID' => 'e18411d1bf24c6ed945b4d9064774884', 'CONTENT' => $content, 'NEXT_URL' => $next_url));
+    $content = do_template('AUTHOR_POPUP', array('_GUID' => 'e18411d1bf24c6ed945b4d9064774884', 'AUTHORS' => $authors, 'NEXT_URL' => $next_url));
 
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'ab8d8c9d276530d82ddd84202aacf32f', 'TITLE' => do_lang_tempcode('CHOOSE_AUTHOR'), 'CONTENT' => $content, 'POPUP' => true));
     $echo->handle_symbol_preprocessing();

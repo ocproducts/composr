@@ -104,10 +104,8 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$OR,{VIEW_PROFILES},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
-			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}{+START,IF_NON_EMPTY,{CUSTOM_FIELDS_SECTIONS}}
-				<h2>{!ABOUT}</h2>
-			{+END}{+END}
+		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
+			<h2>{!ABOUT}</h2>
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_fields cns_profile_about_section">

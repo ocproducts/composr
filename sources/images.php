@@ -183,10 +183,10 @@ function _symbol_thumbnail($param)
             // Branch based on the type of thumbnail we're making
             if ($algorithm == 'box') {
                 // We just need to scale to the given dimension
-                $result = convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
+                $result = @convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
             } elseif ($algorithm == 'width' || $algorithm == 'height') {
                 // We just need to scale to the given dimension
-                $result = convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
+                $result = @convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
             } elseif ($algorithm == 'crop' || $algorithm == 'pad' || $algorithm == 'pad_horiz_crop_horiz' || $algorithm == 'pad_vert_crop_vert') {
                 // We need to shrink a bit and crop/pad
                 require_code('files');

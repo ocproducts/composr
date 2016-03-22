@@ -155,7 +155,6 @@ class JSMin
                             $this->a === ':' || $this->a === '[' || $this->a === '!' ||
                             $this->a === '&' || $this->a === '|' || $this->a === '?')
                     ) {
-
                         $this->output .= $this->a . $this->b;
 
                         while (true) {

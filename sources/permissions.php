@@ -156,8 +156,12 @@ function has_zone_access($member, $zone)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('zone_access_needed', $zone, true);
-    $test = $SMART_CACHE->get('zone_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('zone_access_needed', $zone, true);
+        $test = $SMART_CACHE->get('zone_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -301,8 +305,12 @@ function has_page_access($member, $page, $zone, $at_now = false)
 
     global $SMART_CACHE;
     $where = '1=0';
-    $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
-    $test = $SMART_CACHE->get('page_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
+        $test = $SMART_CACHE->get('page_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -508,6 +516,10 @@ function has_category_access($member, $module, $category)
  */
 function _get_where_clause_groups($member, $consider_clubs = true)
 {
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return '1=0';
+    }
+
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
         return null;
     }
@@ -730,8 +742,12 @@ function has_privilege($member, $permission, $page = null, $cats = null)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('privileges_needed', $permission, true);
-    $test = $SMART_CACHE->get('privileges_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('privileges_needed', $permission, true);
+        $test = $SMART_CACHE->get('privileges_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }

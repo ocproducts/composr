@@ -180,9 +180,9 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  * @param  ?LONG_TEXT $label The (new) label (null: lookup for specified resource)
- * @return array A triple: The moniker (may be new, or the prior one if the moniker did not need to change), the GUID, the label
  * @param  ?ID_TEXT $new_guid GUID to forcibly assign (null: don't force)
  * @param  boolean $definitely_new If we know this is new, i.e. has no existing moniker
+ * @return array A triple: The moniker (may be new, or the prior one if the moniker did not need to change), the GUID, the label
  */
 function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
@@ -207,7 +207,7 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     if (is_null($label)) {
         list($label) = content_get_details($resource_type, $resource_id, true);
         if (is_null($label)) {
-            return array(null, null);
+            return array(null, null, null);
         }
     }
 

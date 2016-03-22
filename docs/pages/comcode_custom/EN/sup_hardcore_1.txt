@@ -102,7 +102,7 @@ Make a block that detects if the current logged in member has ever posted on the
 You might go about this in one of two ways:
 [list]
 [*] Writing it by checking post count, which can be read via the Composr forum driver system
-([tt]$count=$GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt])
+([tt]$count = $GLOBALS['FORUM_DRIVER']->get_post_count(get_member());[/tt])
 [*] Assuming a forum type, such as Conversr, and querying the database
 ([tt]$count=$GLOBALS['FORUM_DB']->query_select_value('<post table name>','COUNT(*)',array('<poster field id>'=>get_member()));[/tt])
 [/list]
