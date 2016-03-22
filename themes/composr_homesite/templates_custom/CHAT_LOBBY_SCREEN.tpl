@@ -8,6 +8,6 @@
 
 <p>
 	Our goal is to make it really easy to talk to other Composr users to help each other.<br /><br />
-	Want to help out by hanging out here longer-term? Set up an IRC client to automatically connect to the Freenode #composrcms channel.<br /><br />
+	Want to help out by hanging out here longer-term? Set up an IRC client (such as <a title="HexChat {!LINK_NEW_WINDOW}" href="https://hexchat.github.io/screenshots.html" target="_blank">HexChat</a>) to automatically connect to the Freenode #composrcms channel.<br /><br />
 	Questions only get answered if people like you are here to answer them and/or to set an example.
 </p>
