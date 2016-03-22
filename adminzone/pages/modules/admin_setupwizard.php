@@ -954,7 +954,7 @@ class Module_admin_setupwizard
             foreach ($addons_installed as $i => $addon_info) {
                 $addon_info += read_addon_info($addon_info['name']);
 
-                if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] == 'core' && substr($addon_info['name'], 0, 5) == 'core_') {
+                if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] != 'core' && substr($addon_info['name'], 0, 5) != 'core_') {
                     $uninstalling[$addon_info['name']] = $addon_info;
                 }
 
