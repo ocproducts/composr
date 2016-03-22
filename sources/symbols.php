@@ -3061,7 +3061,7 @@ function ecv_BLOCK($lang, $escaped, $param)
  */
 function ecv_FORCE_PREVIEWS($lang, $escaped, $param)
 {
-    if (get_option('forced_preview_option', true) === '1') {
+    if (get_option('forced_preview_option') == '1') {
         if (get_forum_type() == 'cns') {
             if ((is_guest()) && (get_option('default_preview_guests') == '0')) {
                 $value = '0';

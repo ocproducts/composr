@@ -5,7 +5,7 @@
 </p>
 
 <div class="box box___cns_join_step1_screen"><div class="box_inner">
-	<div>
+	<div class="cns_join_rules">
 		{RULES}
 	</div>
 </div></div>

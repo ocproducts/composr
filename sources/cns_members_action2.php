@@ -595,7 +595,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
         // Various forum options
         if (addon_installed('cns_forum')) {
-            if (get_option('forced_preview_option', true) === '1') {
+            if (get_option('forced_preview_option') == '1') {
                 $fields->attach(form_input_tick(do_lang_tempcode('PREVIEW_POSTS'), do_lang_tempcode('DESCRIPTION_PREVIEW_POSTS'), 'preview_posts', $preview_posts == 1));
             }
             if (addon_installed('cns_signatures')) {

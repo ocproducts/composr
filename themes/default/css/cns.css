@@ -181,6 +181,18 @@ div.cns_table_footer>div>div {
 
 /*
 =========================
+=========Joining=========
+=========================
+*/
+
+.cns_join_rules {
+	max-height: 30em;
+	overflow-y: auto;
+	{$BETA_CSS_PROPERTY,overflow-scrolling: touch;}
+}
+
+/*
+=========================
 =====Marking system======
 =========================
 */
