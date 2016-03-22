@@ -275,11 +275,6 @@ class Module_calendar
 
         if ($type == 'view') {
             $id = get_param_integer('id');
-            if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_seg_recurrences', array('id' => $id)) == 0) {
-                inform_non_canonical_parameter('day');
-                inform_non_canonical_parameter('date');
-            }
-            inform_non_canonical_parameter('back');
 
             $filter = $this->get_filter();
 
@@ -289,6 +284,13 @@ class Module_calendar
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
             }
             $event = $rows[0];
+
+            // Set SEO ignores
+            if ($event['e_seg_recurrences'] == 0) {
+                inform_non_canonical_parameter('day');
+                inform_non_canonical_parameter('date');
+            }
+            inform_non_canonical_parameter('back');
 
             // Check permissions
             check_privilege('view_calendar');
