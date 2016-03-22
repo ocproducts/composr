@@ -3316,10 +3316,16 @@ function ecv_EXTRA_FOOT($lang, $escaped, $param)
 function ecv_RAND($lang, $escaped, $param)
 {
     if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
-        if ((array_key_exists(0, $param)) && ($param[0] == '1')) {
-            $GLOBALS['NO_EVAL_CACHE'] = true;
+        static $before = array(); // Don't allow repeats
+        do {
+            $random = mt_rand(0, mt_getrandmax());
         }
-        $value = strval(mt_rand(0, empty($param[1]) ? mt_getrandmax() : intval($param[1])));
+        while (isset($before[$random]));
+        if (count($before) < 2147480000) {
+            $before[$random] = true;
+        }
+
+        $value = strval($random);
     } else { // Been told to behave statically
         $value = '4';
     }
@@ -3349,9 +3355,6 @@ function ecv_SET_RAND($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
-            if ((array_key_exists(0, $param)) && ($param[0] == '1')) {
-                $GLOBALS['NO_EVAL_CACHE'] = true;
-            }
             $value = $param[mt_rand(0, count($param) - 1)];
         } else { // Been told to behave statically
             $value = $param[0];

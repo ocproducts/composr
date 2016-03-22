@@ -283,7 +283,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RAND}</td>
-			<td>A random number between 0 and 2147483647. You can also give an upper bound as a second parameter</td>
+			<td>A random number between 0 and 2147483647</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_RAND,a,b,c}</td>

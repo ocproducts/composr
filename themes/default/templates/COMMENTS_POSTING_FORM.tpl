@@ -222,7 +222,7 @@
 										{+START,IF_PASSED,ATTACH_SIZE_FIELD}
 											{ATTACH_SIZE_FIELD}
 										{+END}
-										<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+										<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 										{ATTACHMENTS}
 									</div>
 								{+END}
