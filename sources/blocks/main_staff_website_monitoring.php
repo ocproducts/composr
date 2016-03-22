@@ -234,7 +234,7 @@ class Block_main_staff_website_monitoring
     //return the pagerank figure
     public function getPageRank($url)
     {
-        if (preg_match('/^(http:\/\/)?([^\/]+)/i', $url) == 0) {
+        if (preg_match('/^(https?:\/\/)?([^\/]+)/i', $url) == 0) {
             $url = 'http://' . $url;
         }
         $pr = $this->getpr($url);

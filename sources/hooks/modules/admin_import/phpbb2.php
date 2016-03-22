@@ -652,7 +652,11 @@ class Hook_phpbb2
             $server_path = $rows[0]['config_value'];
             $server_name = $rows[1]['config_value'];
             $server_port = $rows[2]['config_value'];
-            $OLD_BASE_URL = ($server_port == '80') ? ('http://' . $server_name . $server_path) : ('http://' . $server_name . ':' . $server_port . $server_path);
+            if ($server_port == '443') {
+                $OLD_BASE_URL = 'https://' . $server_name . $server_path;
+            } else {
+                $OLD_BASE_URL = ($server_port == '80') ? ('http://' . $server_name . $server_path) : ('http://' . $server_name . ':' . $server_port . $server_path);
+            }
         }
         $post = preg_replace_callback('#' . preg_quote($OLD_BASE_URL) . '/(viewtopic\.php\?t=)(\d*)#', array($this, '_fix_links_callback_topic'), $post);
         $post = preg_replace_callback('#' . preg_quote($OLD_BASE_URL) . '/(viewforum\.php\?f=)(\d*)#', array($this, '_fix_links_callback_forum'), $post);

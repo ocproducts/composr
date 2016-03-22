@@ -711,7 +711,7 @@ function step_4()
 
     // Probing
 
-    $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+    $base_url = post_param_string('base_url', get_base_url());
 
     // Our forum is
     $forum_type = post_param_string('forum_type');
@@ -3022,7 +3022,7 @@ END;
     if ((is_writable_wrap(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
         global $HTTP_MESSAGE;
 
-        $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+        $base_url = post_param_string('base_url', get_base_url());
 
         foreach ($clauses as $i => $clause) {
             $myfile = fopen(get_file_base() . '/exports/addons/index.php', GOOGLE_APPENGINE ? 'wb' : 'wt');

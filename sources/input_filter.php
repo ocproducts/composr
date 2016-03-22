@@ -70,7 +70,7 @@ function check_input_field_string($name, &$val, $posted = false)
                     get_base_url(false) . '/',
                     get_base_url(true) . '/',
                     get_forum_base_url() . '/',
-                    'http://ocportal.com/',
+                    'http://compo.sr/',
                 );
                 $allowed_partners = get_allowed_partner_sites();
                 foreach ($allowed_partners as $allowed) {

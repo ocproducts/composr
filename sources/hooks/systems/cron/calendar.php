@@ -59,7 +59,7 @@ class Hook_cron_calendar
                     }
 
                     $job_text = get_translated_text($job['e_content']);
-                    if (substr($job_text, 0, 7) == 'http://') { // It's URL
+                    if (substr($job_text, 0, 7) == 'http://' || substr($job_text, 0, 8) == 'https://') { // It's a URL
                         require_code('character_sets');
 
                         echo convert_to_internal_encoding(http_download_file($job_text));
