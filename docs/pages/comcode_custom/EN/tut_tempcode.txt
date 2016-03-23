@@ -1670,12 +1670,8 @@ You can store and retrieve values in Tempcode variables. These work across templ
 			<td>Set a Tempcode variable to a value (give it the name of a variable, and a value, returns nothing). Bear in mind that the Composr Tempcode-preprocessor will likely cause your code to run once in every code branch before it outputs (meaning even code inside IF directives that never are true will still pre-process), and once again as it outputs. So always reinitialise your variables in your template to make sure they are not dirty from the pre-processing stage. This behaviour may seem strange, but it is necessary for performance, comprehensive caching, and reasons of Composr needing conditionless output foresight.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$SET_NOPREEVAL,test,1}</td>
-			<td>As above, but with no pre-processing.</td>
-		</tr>
-		<tr style="background: #DDFFDD">
 			<td>{$GET,test}</td>
-			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. <kbd>SET_NOPREEVAL</kbd> must be used to do the initial SET.</td>
+			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}</td>
@@ -1777,7 +1773,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>Find the number of elements in an array.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>SET / SET_NOPREEVAL</td>
+			<td>SET</td>
 			<td>Like the SET symbol, but sets with surrounded block of code rather than the second parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1815,6 +1811,10 @@ Note that you cannot use directives for symbol parameters because directives con
 		<tr style="background: #DDFFDD">
 			<td>COMMENT</td>
 			<td>A comment (i.e. does nothing)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>NO_PREPROCESSING</td>
+			<td>Avoid preprocessing of anything inside the directive, and internal caching too. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
 		</tr>
 	</tbody>
 </table>

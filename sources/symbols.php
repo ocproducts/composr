@@ -256,15 +256,6 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 break;
 
-            case 'SET_NOPREEVAL':
-                if (isset($param[1])) {
-                    global $TEMPCODE_SETGET;
-
-                    $var = $param[0]->evaluate();
-                    $TEMPCODE_SETGET[$var] = $param[1]->bind($param['vars'], '');
-                }
-                break;
-
             case 'SET':
                 if (isset($param[1])) {
                     global $TEMPCODE_SETGET;
@@ -584,21 +575,6 @@ function ecv_PAGE_LINK($lang, $escaped, $param)
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
-function ecv_SET_NOPREEVAL($lang, $escaped, $param)
-{
-    return ecv_SET($lang, $escaped, $param);
 }
 
 /**
