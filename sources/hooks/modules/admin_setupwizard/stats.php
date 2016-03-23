@@ -63,7 +63,7 @@ class Hook_sw_stats
      */
     public function set_fields()
     {
-        if (!addon_installed('stats')) {
+        if (!addon_installed('stats') || post_param_integer('addon_stats', null) === 0) {
             return;
         }
 

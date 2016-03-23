@@ -99,7 +99,7 @@ class lang_test_set extends cms_test_case
 
         // Support debranding
         if (!is_null($key)) {
-            if (strpos($string, 'Composr') !== false && $key != 'NO_PHP_IN_TEMPLATES' && $key != 'WHAT_TO_EXPECT' && $key != 'DESCRIPTION_INCLUDE_CMS_ADVERT' && $key != 'INCLUDE_CMS_ADVERT' && $key != 'UNINSTALL_WARNING' && $key != 'SOFTWARE_CHAT_EXTRA' && (strpos($key, 'SETUPWIZARD') === false) && $key != 'CANNOT_CONNECT_HOME' && $key != 'NO_GD_ON_SERVER' && $key != 'MYSQL_TOO_OLD' && $key != 'LOW_MEMORY_LIMIT' && $key != 'NO_ZIP_ON_SERVER' && $key != 'TRANSCODING_SERVER' && $key != 'CONFIG_OPTION_transcoding_server' && $key != 'CONFIG_OPTION_network_links' && $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' && $key != 'DISABLED_FUNCTION' && $file != 'lang.ini' && $file != 'version.ini' && $file != 'debrand.ini' && $file != 'import.ini' && $file != 'installer.ini' && $file != 'upgrade.ini' && $file != 'commandr.ini' && $file != 'addons.ini') {
+            if (strpos($string, 'Composr') !== false && $key != 'NO_PHP_IN_TEMPLATES' && $key != 'WHAT_TO_EXPECT' && $key != 'DESCRIPTION_INCLUDE_CMS_ADVERT' && $key != 'INCLUDE_CMS_ADVERT' && $key != 'UNINSTALL_WARNING' && $key != 'SOFTWARE_CHAT_EXTRA' && $key != 'CONFIG_CATEGORY_COMPOSR_APIS' && $key != 'CONFIG_CATEGORY_DESCRIPTION__COMPOSR_APIS' && (strpos($key, 'SETUPWIZARD') === false) && $key != 'CANNOT_CONNECT_HOME' && $key != 'NO_GD_ON_SERVER' && $key != 'MYSQL_TOO_OLD' && $key != 'LOW_MEMORY_LIMIT' && $key != 'NO_ZIP_ON_SERVER' && $key != 'TRANSCODING_SERVER' && $key != 'CONFIG_OPTION_transcoding_server' && $key != 'CONFIG_OPTION_network_links' && $key != 'WARNING_MBSTRING_FUNC_OVERLOAD' && $key != 'DISABLED_FUNCTION' && $file != 'lang.ini' && $file != 'version.ini' && $file != 'debrand.ini' && $file != 'import.ini' && $file != 'installer.ini' && $file != 'upgrade.ini' && $file != 'commandr.ini' && $file != 'addons.ini') {
                 $this->assertTrue(false, 'The word \'Composr\' was used in ' . $file . ' (' . $key . '). This should probably be changed to \'the software\'.');
             }
         }
@@ -110,7 +110,7 @@ class lang_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false)) {
+        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }

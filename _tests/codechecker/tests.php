@@ -308,13 +308,13 @@ END;
 END;
 
     $tests[26] = <<<END
-// <unary if error #1>
+// <ternary if error #1>
 
 \$a=''?1:2;
 END;
 
     $tests[27] = <<<END
-// <unary if error #2>
+// <ternary if error #2>
 
 \$a=true?'':2;
 END;

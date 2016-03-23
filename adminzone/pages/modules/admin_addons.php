@@ -1005,7 +1005,7 @@ class Module_admin_addons
         foreach ($categories as $_category) {
             $_categories->attach(form_input_list_entry($_category, $_category == $category));
         }
-        $field = form_input_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $_categories, true);
+        $field = form_input_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $_categories);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, true);
         $fields .= $field->evaluate();

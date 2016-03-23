@@ -69,7 +69,7 @@ class Hook_sw_banners
      */
     public function set_fields()
     {
-        if (!addon_installed('banners')) {
+        if (!addon_installed('banners') || post_param_integer('addon_banners', null) === 0) {
             return;
         }
 

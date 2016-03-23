@@ -59,7 +59,7 @@ class Hook_sw_galleries
      */
     public function set_fields()
     {
-        if (!addon_installed('galleries')) {
+        if (!addon_installed('galleries') || post_param_integer('addon_galleries', null) === 0) {
             return;
         }
 

@@ -113,6 +113,7 @@ class html_safe_lang_test_set extends cms_test_case
                             'BANNER_HITS_TO',
                             'CANT_TRACK',
                             'BANNER_CLICKTHROUGH',
+                            'SU_CHATTING_AS',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));

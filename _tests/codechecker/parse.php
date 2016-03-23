@@ -897,9 +897,9 @@ function _parse_function_dec($function_modifiers = null)
     return $function;
 }
 
-// In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==UNARY_IF
+// In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==TERNARY_IF
 global $OPS;
-$OPS = array('QUESTION', 'UNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'REFERENCE', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER');
+$OPS = array('QUESTION', 'TERNARY_IF', 'BOOLEAN_XOR', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'REFERENCE', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ADD', 'SUBTRACT', 'CONC', 'MULTIPLY', 'DIVIDE', 'REMAINDER');
 
 function _parse_expression()
 {
@@ -918,7 +918,7 @@ function _parse_expression()
             $expression_2 = _parse_expression();
             pparse__parser_expect('COLON');
             $expression_3 = _parse_expression();
-            $op_list[] = 'UNARY_IF';
+            $op_list[] = 'TERNARY_IF';
             $op_list[] = array($expression_2, $expression_3);
         } else {
             $expression_2 = _parse_expression_inner();

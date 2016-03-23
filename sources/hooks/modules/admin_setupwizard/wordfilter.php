@@ -63,6 +63,10 @@ class Hook_sw_wordfilter
      */
     public function set_fields()
     {
+        if (!addon_installed('wordfilter') || post_param_integer('addon_wordfilter', null) === 0) {
+            return;
+        }
+
         if (post_param_integer('have_default_wordfilter', 0) == 0) {
             $GLOBALS['SITE_DB']->query_delete('wordfilter');
         }

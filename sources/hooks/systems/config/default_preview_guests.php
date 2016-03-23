@@ -40,7 +40,7 @@ class Hook_config_default_preview_guests
             'list_options' => '',
             'order_in_category_group' => 2,
 
-            'addon' => 'cns_forum',
+            'addon' => 'core_configuration',
         );
     }
 

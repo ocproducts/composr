@@ -1673,14 +1673,14 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
         if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
             $function_guard .= ',' . $e[1][2][0][1][1] . ',';
         }
-        $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (unary)');
+        $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (ternary)');
         if ($passes) {
             infer_expression_type_to_variable_type('boolean', $e[1]);
         }
         $type_a = check_expression($e[2][0], false, false, $function_guard);
         $type_b = check_expression($e[2][1], false, false, $function_guard);
         if (($type_a != 'null') && ($type_b != 'null')) {
-            $passes = ensure_type(array($type_a, 'mixed'/*imperfect, but useful for performance*/), $type_b, $c_pos, 'Type symettry error in unary operator');
+            $passes = ensure_type(array($type_a, 'mixed'/*imperfect, but useful for performance*/), $type_b, $c_pos, 'Type symettry error in ternary operator');
             if ($passes) {
                 infer_expression_type_to_variable_type($type_a, $e[2][1]);
             }

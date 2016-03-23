@@ -70,7 +70,7 @@ class Hook_sw_cns_forum
      */
     public function get_fields($field_defaults)
     {
-        if (get_forum_type() != 'cns') {
+        if (get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
             return new Tempcode();
         }
 
@@ -100,8 +100,8 @@ class Hook_sw_cns_forum
      */
     public function set_fields()
     {
-        if (get_forum_type() != 'cns' || post_param_integer('addon_wordfilter', null) === 0) {
-            return new Tempcode();
+        if (get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
+            return;
         }
 
         $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];

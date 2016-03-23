@@ -904,8 +904,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     if (!array_key_exists('host', $base_url_parsed)) {
         $base_url_parsed['host'] = '127.0.0.1';
     }
-    $config_ip_forwarding = get_option('ip_forwarding');
-    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
+    $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
+    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
     if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
         if ($config_ip_forwarding == '1') {
             $connect_to = cms_srv('LOCAL_ADDR');
