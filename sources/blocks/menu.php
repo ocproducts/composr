@@ -124,6 +124,8 @@ function block_menu__cache_on($map)
     particular menu block instance. cache="0". It won't hurt very much, menus are relatively fast.
     */
 
+    require_code('permissions');
+
     $menu = array_key_exists('param', $map) ? $map['param'] : '';
     $page = get_page_name();
     $url_type = get_param_string('type', 'browse');

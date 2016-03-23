@@ -2119,9 +2119,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             // New attachments need inserting
             if (is_null($attachment_row)) {
+                require_code('images');
+
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    require_code('images');
                     if (is_image($original_filename)) {
                         if (function_exists('imagetypes')) {
                             require_code('images');

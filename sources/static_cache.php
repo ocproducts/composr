@@ -33,9 +33,11 @@ if (!isset($GLOBALS['FILE_BASE'])) {
 
     require($FILE_BASE . '/_config.php');
 
-    define('STATIC_CACHE__FAST_SPIDER', 1);
-    define('STATIC_CACHE__GUEST', 2);
-    define('STATIC_CACHE__FAILOVER_MODE', 4);
+    if (!defined('STATIC_CACHE__FAST_SPIDER')) {
+        define('STATIC_CACHE__FAST_SPIDER', 1);
+        define('STATIC_CACHE__GUEST', 2);
+        define('STATIC_CACHE__FAILOVER_MODE', 4);
+    }
 
     static_cache(STATIC_CACHE__FAILOVER_MODE);
 }
