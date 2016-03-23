@@ -45,7 +45,7 @@ class Hook_check_base_url
             (is_null($test)) &&
             ($HTTP_MESSAGE !== '200') && ($HTTP_MESSAGE !== '401') && ((!is_file(get_file_base() . '/install.php')) || ($HTTP_MESSAGE !== '500'))
         ) {
-            if ((($GLOBALS['HTTP_MESSAGE'] == 'no-data') || (strpos($GLOBALS['HTTP_MESSAGE'], 'Connection refused') !== false)) && ((running_script('install')) || (get_option('ip_forwarding') == '0'))) {
+            if ((($GLOBALS['HTTP_MESSAGE'] == 'no-data') || (strpos($GLOBALS['HTTP_MESSAGE'], 'Connection refused') !== false)) && ((running_script('install')) || (get_option('ip_forwarding') == '0') || (get_option('ip_forwarding') == ''))) {
                 $warning[] = do_lang_tempcode('config:ENABLE_IP_FORWARDING', do_lang('config:IP_FORWARDING'));
             } else {
                 $warning[] = do_lang_tempcode((strpos(get_base_url(), '://www.') !== false) ? 'HTTP_REDIRECT_PROBLEM_WITHWWW' : 'HTTP_REDIRECT_PROBLEM_WITHOUTWWW', escape_html(get_base_url() . '/config_editor.php'));

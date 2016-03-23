@@ -32,7 +32,7 @@ class Hook_config_ip_forwarding
     {
         return array(
             'human_name' => 'IP_FORWARDING',
-            'type' => 'tick',
+            'type' => 'line',
             'category' => 'SERVER',
             'group' => 'NETWORKING',
             'explanation' => 'CONFIG_OPTION_ip_forwarding',
@@ -50,6 +50,6 @@ class Hook_config_ip_forwarding
      */
     public function get_default()
     {
-        return '0';
+        return '';
     }
 }
