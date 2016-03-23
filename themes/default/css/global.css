@@ -3321,7 +3321,7 @@ div.proceed_button_left_2 {
 }
 
 .mass_select_marker {
-	padding: 0.5em;
+	padding: 0.2em;
 	float: {!en_right};
 	border: 1px solid {$GET,standard_border};
 	margin-{!en_left}: 2em;

@@ -966,6 +966,8 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
                     break;
 
                 case '~=':
+                    $filter_val = trim($filter_val, '*'); // In case user does not understand that this is not a wildcard search
+
                     if ($filter_val != '') {
                         if ($alt != '') {
                             $alt .= ' OR ';

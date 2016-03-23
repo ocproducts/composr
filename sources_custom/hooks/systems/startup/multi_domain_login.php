@@ -35,9 +35,7 @@ class Hook_startup_multi_domain_login
                 }
             }
             if ($value != '') {
-                $value = "<!-- Syndicate sessions -->\n" . $value;
-                $value .= '<script>';
-                $value .= "</script>\n\n";
+                $value = "<!-- Syndicate sessions -->\n<script>" . $value . "</script>\n\n";
 
                 attach_to_screen_header($value);
             }

@@ -454,7 +454,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
             'TARGET' => '_self',
             'CONTENT' => $middle,
         ));
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
         return $global;
     }
 
@@ -478,7 +480,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
                 'MIDDLE' => $middle,
             ));
         }
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
     }
 
     if (get_value('xhtml_strict') === '1') {

@@ -130,7 +130,7 @@ function execute_task_background($task_row)
 
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', $attachments);
 
-        if (is_null(!$result)) {
+        if (!is_null($result)) {
             list($mime_type, $content_result) = $result;
             @unlink($content_result[1]);
             sync_file($content_result[1]);
