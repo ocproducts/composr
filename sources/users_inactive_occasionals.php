@@ -96,6 +96,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     }
 
     $new_session = mixed();
+    $prior_session_row = mixed();
     $restored_session = delete_expired_sessions_or_recover($member);
     if (is_null($restored_session)) { // We're force to make a new one
         // Generate random session
@@ -163,7 +164,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     if ((!is_null($member)) && (!is_guest($member)) && (addon_installed('points')) && (addon_installed('stats'))) {
         // See if this is the first visit today
         global $SESSION_CACHE;
-        $test = isset($SESSION_CACHE[get_session_id()]['last_activity']) ? $SESSION_CACHE[get_session_id()]['last_activity'] : null;
+        $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
             $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member));
         }
