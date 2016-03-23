@@ -1867,7 +1867,7 @@ abstract class Resource_fs_base
         }
 
         // Content reviews (by staff)
-        if ($cma_info['support_content_reviews']) {
+        if ($cma_info['support_content_reviews'] && addon_installed('content_reviews')) {
             $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
         }
 

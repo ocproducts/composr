@@ -204,6 +204,9 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
         }
 
         if (count($_POST) > 80 && !$force_everything) {
+            if (substr($key, 0, 14) == 'tick_on_form__') {
+                continue;
+            }
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }
@@ -366,7 +369,7 @@ function _fixup_protocolless_urls($in)
         return $in;
     }
 
-    // Rule 1: // If we have a dot before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
+    // Rule 1: // If we have a dot somewhere before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
     if (preg_match('#\..*/#', $in) != 0) {
         return 'http://' . $in; // Fix it
     }
@@ -395,8 +398,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     }
 
     // Try and strip any variants of the base URL from our $url variable, to make it relative
-    $non_www_base_url = str_replace('http://www.', 'http://', get_base_url());
-    $www_base_url = str_replace('http://', 'http://www.', get_base_url());
+    $non_www_base_url = str_replace('https://www.', 'https://', str_replace('http://www.', 'http://', get_base_url()));
+    $www_base_url = str_replace('https://', 'https://www.', str_replace('http://', 'http://www.', get_base_url()));
     $url = preg_replace('#^' . preg_quote(get_base_url() . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($non_www_base_url . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($www_base_url . '/', '#') . '#', '', $url);

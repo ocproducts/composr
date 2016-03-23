@@ -583,18 +583,18 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $type = js_check_expression($e[1], false, $is_guarded);
         return $type;
     }
-    if ($e[0] == 'UNARY_IF') {
+    if ($e[0] == 'TERNARY_IF') {
         $rem = $GLOBALS['JS_PARSING_CONDITIONAL'];
         $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
         $t = js_check_expression($e[1], false, $is_guarded);
         $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (unary)');
+        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (ternary)');
         //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $type_a = js_check_expression($e[2][0]);
         $type_b = js_check_expression($e[2][1]);
         /*if (($type_a != 'Null') && ($type_b != 'Null'))
         {
-            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in unary operator');
+            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in ternary operator');
             //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2][1]);
         }*/
         return $type_a;

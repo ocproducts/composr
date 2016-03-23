@@ -1,9 +1,9 @@
-{$SET,RAND,_{$RAND}}
+{$SET,RAND_WEBSITE_MONITORING,{$RAND}}
 
 <div class="form_ajax_target">
 	<section id="tray_{!SITE_WATCHLIST|}" class="box box___block_main_staff_website_monitoring">
 		<h3 class="toggleable_tray_title">
-			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#" onclick="return staff_block_flip_over('website_monitoring_list{$GET,RAND}');">{!EDIT}</a>
+			<a title="{!EDIT}: {!SITE_WATCHLIST}" class="top_left_toggleicon" href="#" onclick="return staff_block_flip_over('website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}');">{!EDIT}</a>
 
 			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode,false,'{!SITE_WATCHLIST|}');"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!SITE_WATCHLIST}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
@@ -11,7 +11,7 @@
 		</h3>
 
 		<div class="toggleable_tray">
-			<div class="wide_table_wrap" id="website_monitoring_list{$GET,RAND}"><table class="columned_table results_table wide_table autosized_table">
+			<div class="wide_table_wrap" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}"><table class="columned_table results_table wide_table autosized_table">
 				<thead>
 					<tr>
 						<th>{!config:SITE_NAME}</th>
@@ -36,7 +36,7 @@
 				</tbody>
 			</table></div>
 
-			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list{$GET,RAND}_form">
+			<form title="{!SITE_WATCHLIST}: {!EDIT}"{+START,IF,{$JS_ON}} style="display: none" aria-hidden="true"{+END} action="{URL*}" method="post" id="website_monitoring_list_{$GET%,RAND_WEBSITE_MONITORING}_form">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="constrain_field">

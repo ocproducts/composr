@@ -1,11 +1,11 @@
-{$SET,RAND,{$RAND}}
+{$SET,RAND_FADER_IMAGE,{$RAND}}
 
 {+START,IF,{$GET,simple_image_fader}}
 	<div class="box box___block_main_image_fader"><div class="box_inner">
 		<h2>{!MEDIA}</h2>
 
 		<div class="img_thumb_wrap">
-			<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET,RAND}" src="{FIRST_URL*}" alt="" /></a>
+			<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{FIRST_URL*}" alt="" /></a>
 		</div>
 	</div></div>
 {+END}
@@ -15,13 +15,13 @@
 			<div class="float_surrounder">
 				<div class="gallery_tease_pic_pic">
 					<div class="img_thumb_wrap">
-						<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET,RAND}" src="{FIRST_URL*}" alt="" /></a>
+						<a href="{GALLERY_URL*}"><img class="img_thumb" id="image_fader_{$GET%,RAND_FADER_IMAGE}" src="{FIRST_URL*}" alt="" /></a>
 					</div>
 				</div>
 
-				<h2 id="image_fader_title_{$GET,RAND}">{!MEDIA}</h2>
+				<h2 id="image_fader_title_{$GET%,RAND_FADER_IMAGE}">{!MEDIA}</h2>
 
-				<div class="gallery_tease_pic_teaser" id="image_fader_scrolling_text_{$GET,RAND}">
+				<div class="gallery_tease_pic_teaser" id="image_fader_scrolling_text_{$GET%,RAND_FADER_IMAGE}">
 					<span aria-busy="true"><img id="loading_image" alt="" src="{$IMG*,loading}" /></span>
 				</div>
 			</div>
@@ -38,7 +38,7 @@
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
 		var data={};
-		initialise_image_fader(data,'{$GET%,RAND}');
+		initialise_image_fader(data,'{$GET%,RAND_FADER_IMAGE}');
 
 		{+START,LOOP,TITLES}
 			initialise_image_fader_title(data,'{_loop_var;^/}',{_loop_key%});

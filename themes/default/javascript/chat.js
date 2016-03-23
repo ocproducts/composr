@@ -32,7 +32,7 @@ function play_sound_url(url) // Used for testing different sounds
 
 	var base_url=((url.indexOf('data_custom')==-1)&&(url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
 	var sound_object=window.soundManager.createSound({url: base_url+'/'+url});
-	sound_object.play();
+	if (sound_object) sound_object.play();
 }
 
 function play_chat_sound(s_id,for_member)

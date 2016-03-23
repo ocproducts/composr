@@ -356,7 +356,7 @@ function css_enforce($c, $theme = null, $minify = null)
         css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $minify);
     }
 
-    if (@filesize($css_cache_path) == 0/*@ for race condition*/) {
+    if (@intval(filesize($css_cache_path)) == 0/*@ for race condition*/) {
         return '';
     }
 
@@ -491,7 +491,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, $_mobile = null)
 {
     static $seed = null;
-    if ($_seed !== null) {
+    if ($_seed !== null || running_script('preview'/*may change seed in script code*/)) {
         $_seed = '';
         if (has_privilege(get_member(), 'view_profiling_modes')) {
             $_seed = get_param_string('keep_theme_seed', '');

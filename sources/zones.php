@@ -1251,7 +1251,7 @@ function apply_quick_caching($_cache)
     }
 
     $portion = substr($cache, $prior_offset);
-    if ($portion !='') {
+    if ($portion != '') {
         if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
             ocp_mark_as_escaped($portion);
         }

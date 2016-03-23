@@ -247,7 +247,7 @@ function init__global2()
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
-            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != get_ip_address())) && (!isset($_GET['keep_session']))) {
+            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
@@ -1214,7 +1214,7 @@ function get_base_url($https = null, $zone_for = null)
                 $php_self = dirname($php_self);
             }
         }
-        $SITE_INFO['base_url'] = 'http://' . $domain . str_replace('%2F', '/', rawurlencode($php_self));
+        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($php_self));
     }
 
     // Lookup
@@ -1223,7 +1223,7 @@ function get_base_url($https = null, $zone_for = null)
     if ($CURRENT_SHARE_USER !== null) {
         // Put in access domain, in case there is a custom domain attached to the site
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
-        $base_url = preg_replace('#^http://([\w]+\.)?' . preg_quote($SITE_INFO['custom_share_domain'], '#') . '#', 'http://' . $domain, $base_url);
+        $base_url = preg_replace('#^http(s)?://([\w]+\.)?' . preg_quote($SITE_INFO['custom_share_domain'], '#') . '#', 'http$1://' . $domain, $base_url);
     }
     $found_mapping = false;
     if ($VIRTUALISED_ZONES_CACHE) { // Special searching if we are doing a complex zone scheme
@@ -1232,7 +1232,7 @@ function get_base_url($https = null, $zone_for = null)
         if (!empty($SITE_INFO['ZONE_MAPPING_' . $zone_doing])) {
             $domain = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][0];
             $path = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][1];
-            $base_url = 'http://' . $domain;
+            $base_url = ((strpos($base_url, 'https://') === false) ? 'http://' : 'https://') . $domain;
             if ($path != '') {
                 $base_url .= '/' . $path;
             }

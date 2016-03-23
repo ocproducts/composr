@@ -134,7 +134,7 @@ function display_alert(notification)
 				var sound_url='data/sounds/message_received.mp3';
 				var base_url=((sound_url.indexOf('data_custom')==-1)&&(sound_url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
 				var sound_object=window.soundManager.createSound({url: base_url+'/'+sound_url});
-				sound_object.play();
+				if (sound_object) sound_object.play();
 			};
 
 			if (!window.soundManager.setupOptions.url)

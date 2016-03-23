@@ -904,14 +904,24 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     if (!array_key_exists('host', $base_url_parsed)) {
         $base_url_parsed['host'] = '127.0.0.1';
     }
-    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1');
+    $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
+    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
     if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
-        $connect_to = cms_srv('LOCAL_ADDR');
-        if ($connect_to == '') {
-            $connect_to = cms_srv('SERVER_ADDR');
-        }
-        if ($connect_to == '') {
-            $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
+        if ($config_ip_forwarding == '1') {
+            $connect_to = cms_srv('LOCAL_ADDR');
+            if ($connect_to == '') {
+                $connect_to = cms_srv('SERVER_ADDR');
+            }
+            if ($connect_to == '') {
+                $connect_to = '127.0.0.1'; // "localhost" can fail due to IP6
+            }
+        } else {
+            $protocol_end_pos = strpos($config_ip_forwarding, '://');
+            if ($protocol_end_pos !== false) {
+                $url = preg_replace('#^(https?://)#', substr($config_ip_forwarding, 0, $protocol_end_pos + 3), $url);
+                $config_ip_forwarding = substr($config_ip_forwarding, $protocol_end_pos + 3);
+            }
+            $connect_to = $config_ip_forwarding;
         }
     } elseif (php_function_allowed('gethostbyname')) {
         $connect_to = @gethostbyname($connect_to); // for DNS caching
@@ -919,6 +929,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
     }
+
+    $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
 
     // File-system/shell_exec method, for local calls
     $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
@@ -1149,11 +1161,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            if ($do_ip_forwarding) {
-                                                $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
-                                            } else {
-                                                $_url = $url;
-                                            }
                                             $ch = curl_init($_url);
                                             $curl_headers = array();
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
@@ -1168,7 +1175,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
                                                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
                                             } else {
-                                                curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
+                                                    curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                } else {
+                                                    curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
+                                                }
                                             }
                                             if ($do_ip_forwarding) {
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -1755,12 +1766,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             $opts = array(
                 'method' => $http_verb,
-                'header' => $headers,
+                'header' => rtrim('Host: ' . $url_parts['host'] . "\r\n" . $headers),
                 'user_agent' => $ua,
                 'content' => $raw_payload,
                 'follow_location' => $no_redirect ? 0 : 1,
                 'ssl' => array(
-                    'verify_peer' => true,
+                    'verify_peer' => !$do_ip_forwarding,
                     'cafile' => $crt_path,
                     'SNI_enabled' => true,
                     'ciphers' => 'TLSv1',
@@ -1780,9 +1791,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $context = stream_context_create(array('http' => $opts));
             $php_errormsg = mixed();
             if ((is_null($byte_limit)) && (is_null($write_to_file))) {
-                $read_file = @file_get_contents($url, false, $context);
+                $read_file = @file_get_contents($_url, false, $context);
             } else {
-                $_read_file = @fopen($url, 'rb', false, $context);
+                $_read_file = @fopen($_url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
                     while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
@@ -1802,8 +1813,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             safe_ini_set('allow_url_fopen', '0');
             safe_ini_set('default_socket_timeout', $timeout_before);
-            foreach ($http_response_header as $header) {
-                _read_in_headers($header . "\r\n");
+            if (isset($http_response_header)) {
+                foreach ($http_response_header as $header) {
+                    _read_in_headers($header . "\r\n");
+                }
             }
             if ($read_file !== false) {
                 $DOWNLOAD_LEVEL--;

@@ -43,6 +43,10 @@ class Hook_sw_wordfilter
      */
     public function get_fields($field_defaults)
     {
+        if (!addon_installed('wordfilter') || post_param_integer('addon_wordfilter', null) === 0) {
+            return new Tempcode();
+        }
+
         $current_settings = $this->get_current_settings();
         $field_defaults += $current_settings; // $field_defaults will take precedence, due to how "+" operator works in PHP
 
@@ -59,6 +63,10 @@ class Hook_sw_wordfilter
      */
     public function set_fields()
     {
+        if (!addon_installed('wordfilter') || post_param_integer('addon_wordfilter', null) === 0) {
+            return;
+        }
+
         if (post_param_integer('have_default_wordfilter', 0) == 0) {
             $GLOBALS['SITE_DB']->query_delete('wordfilter');
         }

@@ -1,7 +1,7 @@
 <form title="{!SORT_BY}" action="{$URL_FOR_GET_FORM*,{URL}}{+START,IF_PASSED,HASH}#{HASH*}{+END}" method="get" target="_self" class="inline">
 	{$HIDDENS_FOR_GET_FORM,{URL},{SORT}}
 
-	{$SET,RAND,{$RAND}}
+	{$SET,RAND_PAGINATION,{$RAND}}
 
 	<div class="inline">
 		{+START,SET,sort_button}
@@ -23,8 +23,8 @@
 			<label for="filter"><span class="field_name">{!SEARCH}:</span> <input value="{FILTER*}" name="filter" id="filter" size="10" /></label>
 		{+END}
 
-		<label for="r_{$GET*,RAND}">{!SORT_BY}: <span class="accessibility_hidden">{$GET*,TEXT_ID}</span></label>
-		<select{+START,IF,{$NOR,{$GET,show_sort_button},{$NOT,{$JS_ON}}}} onchange="/*guarded*/this.form.submit();"{+END} id="r_{$GET*,RAND}" name="{SORT*}">
+		<label for="r_{$GET*,RAND_PAGINATION}">{!SORT_BY}: <span class="accessibility_hidden">{$GET*,TEXT_ID}</span></label>
+		<select{+START,IF,{$NOR,{$GET,show_sort_button},{$NOT,{$JS_ON}}}} onchange="/*guarded*/this.form.submit();"{+END} id="r_{$GET*,RAND_PAGINATION}" name="{SORT*}">
 			{SELECTORS}
 		</select>{$GET,sort_button}
 	</div>

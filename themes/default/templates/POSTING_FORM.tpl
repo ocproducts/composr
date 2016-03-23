@@ -41,7 +41,7 @@
 		{+END}
 
 		<input type="hidden" name="comcode__post" value="1" />
-		<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+		<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 	</div>
 </form>
 

@@ -1619,7 +1619,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             } else {
                 $url_full = $url;
             }
-            $striped_base_url = str_replace('www.', '', str_replace('http://', '', get_base_url()));
+            $striped_base_url = str_replace('www.', '', str_replace('https://', '', str_replace('http://', '', get_base_url())));
             if (($striped_base_url != '') && (substr($url, 0, 1) != '%') && (strpos($url_full, $striped_base_url) === false)) { // We don't want to hammer our own server when we have Comcode pages full of links to our own site (much less risk of hammering other people's servers, as we won't tend to have loads of links to them). Would also create bugs in emails sent out - e.g. auto-running approve_ip.php links hence voiding the intent of the feature.
                 $temp_tpl = test_url($url_full, 'url', $given_url, $source_member);
             }
@@ -2119,9 +2119,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             // New attachments need inserting
             if (is_null($attachment_row)) {
+                require_code('images');
+
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    require_code('images');
                     if (is_image($original_filename)) {
                         if (function_exists('imagetypes')) {
                             require_code('images');

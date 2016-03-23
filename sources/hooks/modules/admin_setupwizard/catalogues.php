@@ -50,7 +50,7 @@ class Hook_sw_catalogues
      */
     public function get_fields($field_defaults)
     {
-        if (!addon_installed('catalogues')) {
+        if (!addon_installed('catalogues') || post_param_integer('addon_catalogues', null) === 0) {
             return new Tempcode();
         }
 
@@ -79,7 +79,7 @@ class Hook_sw_catalogues
      */
     public function set_fields()
     {
-        if (!addon_installed('catalogues')) {
+        if (!addon_installed('catalogues') || post_param_integer('addon_catalogues', null) === 0) {
             return;
         }
 

@@ -267,7 +267,7 @@ switch ($a)
 [/code]
 The 'break;' lines are very important because without them, execution actually continues as if the next [tt]case[/tt] section were assumed to be matched, even if it isn't.
 
-[title="3"]Unary syntax[/title]
+[title="3"]Ternary syntax[/title]
 
 This allows conditional testing to be performed inside an expression. We could reformulate our first example as:
 [code="PHP"]

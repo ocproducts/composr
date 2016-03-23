@@ -89,11 +89,11 @@
     			</h3>
     		{+END}{+END}
 
-    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
+    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{DESCRIPTION},{POST_TITLE}}}
     			<h3>
     				{DESCRIPTION*}
     			</h3>
-    		{+END}{+END}
+    		{+END}{+END}{+END}
 
 			{POST}
 		</div>

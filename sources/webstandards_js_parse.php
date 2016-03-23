@@ -25,9 +25,9 @@
  */
 function init__webstandards_js_parse()
 {
-    // In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==UNARY_IF
+    // In precendence order. Note REFERENCE==BW_AND (it gets converted, for clarity). Ditto QUESTION==TERNARY_IF
     global $JS_OPS;
-    $JS_OPS = array('QUESTION', 'UNARY_IF', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'OBJECT_OPERATOR', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ZSR', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE', 'REMAINDER');
+    $JS_OPS = array('QUESTION', 'TERNARY_IF', 'BOOLEAN_OR', 'BOOLEAN_AND', 'BW_OR', 'BW_XOR', 'OBJECT_OPERATOR', 'BW_AND', 'IS_EQUAL', 'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL', 'IS_SMALLER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_GREATER_OR_EQUAL', 'SL', 'SR', 'ZSR', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE', 'REMAINDER');
 }
 
 /**
@@ -620,7 +620,7 @@ function _webstandards_js_parse_expression()
             if (is_null($expression_3)) {
                 return null;
             }
-            $op_list[] = 'UNARY_IF';
+            $op_list[] = 'TERNARY_IF';
             $op_list[] = array($expression_2, $expression_3);
         } else {
             $expression_2 = _webstandards_js_parse_expression_inner();
