@@ -1320,7 +1320,7 @@ class Module_filedump
             require_code('users2');
             if (has_actual_page_access(get_modal_user(), get_page_name(), get_zone_name())) {
                 require_code('activities');
-                syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $place . '/' . $file, '', '', '', '', '', 'filedump');
+                syndicate_described_activity('filedump:ACTIVITY_FILEDUMP_UPLOAD', $place . '/' . $filename, '', '', '', '', '', 'filedump');
             }
         }
 

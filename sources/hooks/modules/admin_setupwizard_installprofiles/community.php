@@ -97,7 +97,7 @@ class Hook_admin_setupwizard_installprofiles_community
                                  'side_stats',
                                  'side_calendar',
                                  'side_shoutbox',
-                             ) + ((get_option('sitewide_im') == '1') ? array('side_friends') : array()),
+                             ) + ((get_option('sitewide_im', true) === '1') ? array('side_friends') : array()),
         );
     }
 

@@ -36,6 +36,10 @@ class Hook_page_groupings_supermember_directory
             return array();
         }
 
+        if (!addon_installed('collaboration_zone')) {
+            return array();
+        }
+
         return array(
             array('collaboration', 'menu/collaboration/supermembers', array('supermembers', array(), get_module_zone('supermembers')), do_lang_tempcode('supermembers:MODULE_TRANS_NAME_supermembers')),
         );

@@ -48,6 +48,7 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
             array(
                 'banners',
                 'ecommerce',
+                'shopping',
                 'cns_avatars',
                 'cns_cartoon_avatars',
                 'cns_member_avatars',
@@ -59,12 +60,15 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
                 'language_block',
                 'printer_friendly_block',
                 'search',
+                'supermembers',
+                'staff',
                 'stats',
                 'stats_block',
                 'syndication',
                 'syndication_blocks',
                 'themewizard',
                 'users_online_block',
+                'tickets',
             ),
         );
     }

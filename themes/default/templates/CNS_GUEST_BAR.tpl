@@ -19,7 +19,7 @@
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
 							<label for="remember">{!REMEMBER_ME}:</label> <input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} onclick="if (this.checked) { var t=this; window.fauxmodal_confirm('{!REMEMBER_ME_COOKIE;}',function(answer) { if (!answer) t.checked=false; });  }"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
-						<input class="menu__site_meta__user_actions__login button_screen_item" type="submit" value="{!_LOGIN}" />
+						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 
 						<ul class="horizontal_links associated_links_block_group horiz_field_sep">
 							<li><a href="{JOIN_URL*}">{!_JOIN}</a></li>

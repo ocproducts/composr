@@ -1126,7 +1126,6 @@ class Module_chat
             access_denied('NOT_AS_GUEST');
         }
 
-        require_lang('javascript');
         require_javascript('chat');
         require_javascript('sound');
         require_javascript('plupload');

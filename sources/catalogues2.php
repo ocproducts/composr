@@ -867,6 +867,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     require_code('seo2');
     seo_meta_erase_storage('catalogue_category', strval($id));
 
+    $_title = get_translated_text($myrow['cc_title']);
+
     // Delete lang
     delete_lang($myrow['cc_title']);
     delete_lang($myrow['cc_description']);
@@ -880,7 +882,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     calculate_category_child_count_cache($old_parent_id);
 
-    log_it('DELETE_CATALOGUE_CATEGORY', strval($id), get_translated_text($myrow['cc_title']));
+    log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

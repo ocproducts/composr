@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cns_forum
+ * @package    core_configuration
  */
 
 /**
@@ -40,7 +40,7 @@ class Hook_config_forced_preview_option
             'list_options' => '',
             'order_in_category_group' => 3,
 
-            'addon' => 'cns_forum',
+            'addon' => 'core_configuration',
         );
     }
 

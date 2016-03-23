@@ -328,7 +328,7 @@ class Module_cms_blogs extends Standard_crud_module
         $fields2->attach(seo_get_fields($this->seo_type, is_null($id) ? null : strval($id)));
 
         require_code('activities');
-        $fields2->attach(get_syndication_option_fields());
+        $fields2->attach(get_syndication_option_fields('news'));
 
         return array($fields, $hidden, null, null, null, null, make_string_tempcode($fields2->evaluate())/*XHTMLXHTML*/);
     }

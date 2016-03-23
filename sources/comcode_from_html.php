@@ -952,7 +952,7 @@ function semihtml_to_comcode($semihtml, $force = false)
         }
         $imgcode[1] = str_replace(get_base_url(), '', $imgcode[1]);
 
-        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>\s*#si', $code, $semihtml2);
+        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>([ \t])?[ \t]*#si', $code . '$1', $semihtml2);
     }
 
     $semihtml2 = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup', $semihtml2);

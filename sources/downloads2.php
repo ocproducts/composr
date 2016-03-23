@@ -929,7 +929,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     }
 
     require_code('tasks');
-    call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename));
+    call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename), false, false, false);
 
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
@@ -1084,7 +1084,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     delete_upload('uploads/downloads', 'download_downloads', 'url', 'id', $id, $url);
 
     require_code('tasks');
-    call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename));
+    call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename), false, false, false);
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;

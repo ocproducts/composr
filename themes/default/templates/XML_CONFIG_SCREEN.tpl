@@ -9,7 +9,7 @@
 	</div>
 
 	<p class="proceed_button">
-		<input class="buttons__save button_screen" id="submit_button" accesskey="u" type="submit" value="{!SAVE}" />
+		<input class="button_screen buttons__save" id="submit_button" accesskey="u" type="submit" value="{!SAVE}" />
 	</p>
 </form>
 

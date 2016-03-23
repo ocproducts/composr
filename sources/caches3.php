@@ -309,6 +309,11 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                     $_dir = @opendir($dir_path);
                     if ($_dir !== false) {
                         while (false !== ($file = readdir($_dir))) {
+                            // Basic filter
+                            if ($file[0] == '.' || $file == 'index.html') {
+                                continue;
+                            }
+
                             if (!isset($all_template_data[$file])) {
                                 $all_template_data[$file] = array();
                             }
@@ -486,7 +491,7 @@ function erase_theme_images_cache()
         if ($path['path'] == '') {
             $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
         } elseif (preg_match('#^themes/[^/]+/images_custom/#', $path['path']) != 0) {
-            if ((!file_exists(get_custom_file_base() . '/' . $path['path'])) && (!file_exists(get_file_base() . '/' . $path['path']))) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($path['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($path['path'])))) {
                 $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
             }
         }

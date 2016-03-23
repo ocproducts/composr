@@ -22,7 +22,7 @@
 
 		{+START,IF_NON_EMPTY,{RESULT_URL}}
 			<p>
-				<input disabled="disabled" id="poll{PID*}" onclick="disable_button_just_clicked(this);" class="buttons__vote button_screen_item" type="submit" value="{!VOTE}" />
+				<input disabled="disabled" id="poll{PID*}" onclick="disable_button_just_clicked(this);" class="button_screen_item buttons__vote" type="submit" value="{!VOTE}" />
 			</p>
 		{+END}
 	</form>

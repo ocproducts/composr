@@ -7,7 +7,7 @@
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
 			<label class="accessibility_hidden" for="friends_search">{!SEARCH}</label>
-			<input autocomplete="off" maxlength="255" onkeyup="update_ajax_search_list(this,event);" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" /><input class="buttons__filter button_micro" type="submit" value="{!FILTER}" />
+			<input autocomplete="off" maxlength="255" onkeyup="update_ajax_search_list(this,event);" type="search" id="friends_search" name="friends_search" value="{$_GET*,friends_search}" /><input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 		</form>
 
 		<p>{!DESCRIPTION_FRIENDS,{$USERNAME*,{MEMBER_ID},1}}</p>

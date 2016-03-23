@@ -131,7 +131,7 @@
 		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 			{ATTACHMENTS}
 
-			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
 				add_event_listener_abstract(window,'load',function() {
@@ -168,7 +168,7 @@
 		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
 			{ATTACHMENTS}
 
-			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
 				add_event_listener_abstract(window,'load',function() {

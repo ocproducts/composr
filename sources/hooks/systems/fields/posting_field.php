@@ -109,7 +109,6 @@ class Hook_fields_posting_field
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
 
-        require_lang('javascript');
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('ajax');

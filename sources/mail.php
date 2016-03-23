@@ -62,11 +62,22 @@ function _mail_img_rep_callback($matches)
  */
 function _mail_css_rep_callback($matches)
 {
-    global $CID_IMG_ATTACHMENT;
-    $cid = uniqid('', true) . '@' . get_domain();
-    if ((basename($matches[1]) != 'block_background.png') && (basename($matches[1]) != 'gradient.png') && (basename($matches[1]) != 'keyboard.png') && (basename($matches[1]) != 'email_link.png') && (basename($matches[1]) != 'external_link.png')) {
+    $filename = basename($matches[1]);
+    if (($filename != 'block_background.png') && ($filename != 'gradient.png') && ($filename != 'keyboard.png') && ($filename != 'email_link.png') && ($filename != 'external_link.png')) {
+        /*global $CID_IMG_ATTACHMENT;   CSS CIDs do not work with Thunderbird, but data does
+        $cid = uniqid('', true) . '@' . get_domain();
         $CID_IMG_ATTACHMENT[$cid] = $matches[1];
-        return 'url(\'cid:' . $cid . '\')';
+        return 'url(\'cid:' . $cid . '\')';*/
+
+        $total_filesize = 0;
+        $test = _get_image_for_cid($matches[1], $GLOBALS['FORUM_DRIVER']->get_guest_id(), $total_filesize);
+        if (is_null($test) || $total_filesize > 1024 * 50/*Let's be reasonable here*/) {
+            return 'none';
+        }
+        list($mime_type, $filename, $file_contents) = $test;
+
+        $value = 'data:' . get_mime_type(get_file_extension($filename), false) . ';base64,' . base64_encode($file_contents);
+        return 'url(\'data:' . $value . '\')';
     }
     return 'none';
 }
@@ -731,7 +742,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 ), $lang, false, null, '.tpl', 'templates', $theme);
             }
             require_css('email');
-            $css = css_tempcode(true, true, $message_html->evaluate($lang), $theme);
+            $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
             if (!GOOGLE_APPENGINE) {
                 if (get_option('allow_ext_images') != '1') {
@@ -922,64 +933,13 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     $total_filesize = 0;
     foreach ($CID_IMG_ATTACHMENT as $id => $img) {
-        $sending_message .= '--' . $boundary3 . $line_term;
-        $file_path_stub = convert_url_to_path($img);
-        $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
-        $filename = basename($img);
-        if (!is_null($file_path_stub)) {
-            $total_filesize += @filesize($file_path_stub);
-            if ($total_filesize > 1024 * 1024 * 5) {
-                continue; // Too large to process into an email
-            }
-
-            $file_contents = @file_get_contents($file_path_stub);
-        } else {
-            $file_contents = mixed();
-            $matches = array();
-            require_code('attachments');
-            if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
-                $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
-                if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
-                    $myrow = $rows[0];
-
-                    if ($matches[2] == '1') {
-                        $full = $myrow['a_thumb_url'];
-                    } else {
-                        $full = $myrow['a_url'];
-                    }
-
-                    if (url_is_local($full)) {
-                        $_full = get_custom_file_base() . '/' . rawurldecode($full);
-                        if (file_exists($_full)) {
-                            $filename = $myrow['a_original_filename'];
-                            require_code('mime_types');
-                            $total_filesize += @filesize($_full);
-                            if ($total_filesize > 1024 * 1024 * 5) {
-                                continue; // Too large to process into an email
-                            }
-                            $file_contents = file_get_contents($_full);
-                            $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
-                        }
-                    }
-                }
-            }
-            if ($file_contents === null) {
-                $file_contents = http_download_file($img, 1024 * 1024 * 5, false);
-                if (is_null($file_contents)) {
-                    continue;
-                }
-                $total_filesize += strlen($file_contents);
-                if ($total_filesize > 1024 * 1024 * 5) {
-                    continue; // Too large to process into an email
-                }
-                if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
-                    $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
-                }
-                if (!is_null($GLOBALS['HTTP_FILENAME'])) {
-                    $filename = $GLOBALS['HTTP_FILENAME'];
-                }
-            }
+        $test = _get_image_for_cid($img, $as, $total_filesize);
+        if (is_null($test)) {
+            continue;
         }
+        list($mime_type, $filename, $file_contents) = $test;
+
+        $sending_message .= '--' . $boundary3 . $line_term;
         $sending_message .= 'Content-Type: ' . str_replace("\r", '', str_replace("\n", '', $mime_type)) . $line_term;
         $sending_message .= 'Content-ID: <' . $id . '>' . $line_term;
         $sending_message .= 'Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"' . $line_term;
@@ -1183,6 +1143,77 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     $SENDING_MAIL = false;
     return null;
+}
+
+/**
+ * Download a URL, for use as an inline mail image.
+ *
+ * @param  URLPATH $img URL
+ * @param  ?MEMBER $as Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
+ * @param  integer $total_filesize Reference to where total filesize is being held
+ * @return ?array A tuple: Mime type filename, file contents (null: error)
+ */
+function _get_image_for_cid($img, $as, &$total_filesize)
+{
+    $file_path_stub = convert_url_to_path($img);
+    $mime_type = get_mime_type(get_file_extension($img), has_privilege($as, 'comcode_dangerous'));
+    $filename = basename($img);
+    if (!is_null($file_path_stub)) {
+        $total_filesize += @filesize($file_path_stub);
+        if ($total_filesize > 1024 * 1024 * 5) {
+            return null; // Too large to process into an email
+        }
+
+        $file_contents = @file_get_contents($file_path_stub);
+    } else {
+        $file_contents = mixed();
+        $matches = array();
+        require_code('attachments');
+        if ((preg_match('#^' . preg_quote(find_script('attachment'), '#') . '\?id=(\d+)&amp;thumb=(0|1)#', $img, $matches) != 0) && (strpos($img, 'forum_db=1') === false)) {
+            $rows = $GLOBALS['SITE_DB']->query_select('attachments', array('*'), array('id' => intval($matches[1])), 'ORDER BY a_add_time DESC');
+            if ((array_key_exists(0, $rows)) && (has_attachment_access($as, intval($matches[1])))) {
+                $myrow = $rows[0];
+
+                if ($matches[2] == '1') {
+                    $full = $myrow['a_thumb_url'];
+                } else {
+                    $full = $myrow['a_url'];
+                }
+
+                if (url_is_local($full)) {
+                    $_full = get_custom_file_base() . '/' . rawurldecode($full);
+                    if (file_exists($_full)) {
+                        $filename = $myrow['a_original_filename'];
+                        require_code('mime_types');
+                        $total_filesize += @filesize($_full);
+                        if ($total_filesize > 1024 * 1024 * 5) {
+                            return null; // Too large to process into an email
+                        }
+                        $file_contents = file_get_contents($_full);
+                        $mime_type = get_mime_type(get_file_extension($filename), has_privilege($as, 'comcode_dangerous'));
+                    }
+                }
+            }
+        }
+        if ($file_contents === null) {
+            $file_contents = http_download_file($img, 1024 * 1024 * 5, false);
+            if (is_null($file_contents)) {
+                return null;
+            }
+            $total_filesize += strlen($file_contents);
+            if ($total_filesize > 1024 * 1024 * 5) {
+                return null; // Too large to process into an email
+            }
+            if (!is_null($GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'])) {
+                $mime_type = $GLOBALS['HTTP_DOWNLOAD_MIME_TYPE'];
+            }
+            if (!is_null($GLOBALS['HTTP_FILENAME'])) {
+                $filename = $GLOBALS['HTTP_FILENAME'];
+            }
+        }
+    }
+
+    return array($mime_type, $filename, $file_contents);
 }
 
 /**

@@ -32,7 +32,7 @@ function init__chat()
     $EFFECT_SETTINGS_ROWS = null;
 
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
-        define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations. NB: This define is duplicated in chat_poller.php for performance
+        define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations, including member timeouts for going offline. NB: This define is duplicated in chat_poller.php for performance
         define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
 }
@@ -423,8 +423,8 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
             $GLOBALS['SITE_DB']->query_delete('chat_active', array('member_id' => get_member(), 'room_id' => $room_id), '', 1);
             $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => $room_id));
         }
-        chat_room_prune(-1);
     }
+    chat_room_prune(-1);
 
     $from_id = null;
     $start = null;

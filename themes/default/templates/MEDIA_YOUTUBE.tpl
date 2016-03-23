@@ -2,8 +2,8 @@
 
 <div class="webstandards_checker_off">
 	<embed id="{$GET,player_id}" type="application/x-shockwave-flash" width="{WIDTH*}" height="{HEIGHT*}"
-		src="http://www.youtube.com/v/{REMOTE_ID*}?enablejsapi=1"
-		data="http://www.youtube.com/v/{REMOTE_ID*}?enablejsapi=1"
+		src="https://www.youtube.com/v/{REMOTE_ID*}?enablejsapi=1"
+		data="https://www.youtube.com/v/{REMOTE_ID*}?enablejsapi=1"
 		wmode="transparent"
 		allowscriptaccess="always" allowfullscreen="true"
 	></embed>

@@ -25,7 +25,7 @@
 		</select>
 
 		{+START,IF,{$NOT,{$JS_ON}}}
-			<input class="buttons__proceed button_screen_item" type="submit" name="action_button" title="{!PROCEED}: {ORDER_TITLE*}" value="{!PROCEED_SHORT}" />
+			<input class="button_screen_item buttons__proceed" type="submit" name="action_button" title="{!PROCEED}: {ORDER_TITLE*}" value="{!PROCEED_SHORT}" />
 		{+END}
 	</form>
 </div>

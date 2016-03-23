@@ -320,6 +320,8 @@ tree_list.prototype.render_tree=function(xml,html,element)
 			}
 		} else // Assume entry
 		{
+			new_html=null;
+
 			escaped_title=escape_html((typeof node.getAttribute('title')!='undefined')?node.getAttribute('title'):'');
 			if (escaped_title=='') escaped_title='{!NA_EM;^}';
 

@@ -204,6 +204,9 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
         }
 
         if (count($_POST) > 80 && !$force_everything) {
+            if (substr($key, 0, 14) == 'tick_on_form__') {
+                continue;
+            }
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }
@@ -366,7 +369,7 @@ function _fixup_protocolless_urls($in)
         return $in;
     }
 
-    // Rule 1: // If we have a dot before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
+    // Rule 1: // If we have a dot somewhere before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
     if (preg_match('#\..*/#', $in) != 0) {
         return 'http://' . $in; // Fix it
     }
@@ -395,8 +398,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     }
 
     // Try and strip any variants of the base URL from our $url variable, to make it relative
-    $non_www_base_url = str_replace('http://www.', 'http://', get_base_url());
-    $www_base_url = str_replace('http://', 'http://www.', get_base_url());
+    $non_www_base_url = str_replace('https://www.', 'https://', str_replace('http://www.', 'http://', get_base_url()));
+    $www_base_url = str_replace('https://', 'https://www.', str_replace('http://', 'http://www.', get_base_url()));
     $url = preg_replace('#^' . preg_quote(get_base_url() . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($non_www_base_url . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($www_base_url . '/', '#') . '#', '', $url);
@@ -594,6 +597,9 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     }
     $db = ((substr($ob_info['table'], 0, 2) != 'f_') || (get_forum_type() == 'none')) ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
     $where = get_content_where_for_str_id($effective_id, $ob_info);
+    if (isset($where['the_zone'])) {
+        $where['the_zone'] = $zone;
+    }
     $_moniker_src = $db->query_select($ob_info['table'], $select, $where); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
     if (!array_key_exists(0, $_moniker_src)) {
@@ -724,7 +730,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
     $moniker_origin = $moniker;
     $next_num = 1;
     if (is_numeric($moniker)) {
-        $moniker .= '_1';
+        $moniker .= '-1';
     }
     $test = mixed();
     do {
@@ -753,7 +759,7 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
         $test = $GLOBALS['SITE_DB']->query_value_if_there($dupe_sql, false, true);
         if (!is_null($test)) { // Oh dear, will pass to next iteration, but trying a new moniker
             $next_num++;
-            $moniker = $moniker_origin . '_' . strval($next_num);
+            $moniker = $moniker_origin . '-' . strval($next_num);
         }
     } while (!is_null($test));
 
@@ -842,7 +848,11 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (!is_null($ob_info['parent_category_field'])) {
             $select[] = $ob_info['parent_category_field'];
         }
-        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, get_content_where_for_str_id(($type == '') ? $page : $id, $ob_info));
+        $where = get_content_where_for_str_id(($type == '') ? $page : $id, $ob_info);
+        if (isset($where['the_zone'])) {
+            $where['the_zone'] = $zone;
+        }
+        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where);
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
         if (!array_key_exists(0, $_moniker_src)) {
             return $moniker; // been deleted?

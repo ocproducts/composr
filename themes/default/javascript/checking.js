@@ -477,29 +477,29 @@ function check_field(the_element,the_form,for_preview)
 			var month=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_month')].selectedIndex].value;
 			var year=the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].options[the_form.elements[the_element.name.replace(/\_(day|month|year)$/,'_year')].selectedIndex].value;
 			var source_date=new Date(year,month-1,day);
-			if (year!=source_date.getFullYear()) error_msg='{!NOT_A_DATE;^}';
-			if (month!=source_date.getMonth()+1) error_msg='{!NOT_A_DATE;^}';
-			if (day!=source_date.getDate()) error_msg='{!NOT_A_DATE;^}';
+			if (year!=source_date.getFullYear()) error_msg='{!javascript:NOT_A_DATE;^}';
+			if (month!=source_date.getMonth()+1) error_msg='{!javascript:NOT_A_DATE;^}';
+			if (day!=source_date.getDate()) error_msg='{!javascript:NOT_A_DATE;^}';
 		}
 		if (((the_class=='input_email') || (the_class=='input_email_required')) && (my_value!='') && (!my_value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)))
 		{
-			error_msg='{!NOT_A_EMAIL;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_A_EMAIL;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_username') || (the_class=='input_username_required')) && (my_value!='') && (window.do_ajax_field_test) && (!do_ajax_field_test('{$FIND_SCRIPT_NOHTTP;,username_exists}?username='+encodeURIComponent(my_value))))
 		{
-			error_msg='{!NOT_USERNAME;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_USERNAME;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_codename') || (the_class=='input_codename_required')) && (my_value!='') && (!my_value.match(/^[a-zA-Z0-9\-\.\_]*$/)))
 		{
-			error_msg='{!NOT_CODENAME;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_CODENAME;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_integer') || (the_class=='input_integer_required')) && (my_value!='') && (parseInt(my_value,10)!=my_value-0))
 		{
-			error_msg='{!NOT_INTEGER;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_INTEGER;^}'.replace('\{1}',my_value);
 		}
 		if (((the_class=='input_float') || (the_class=='input_float_required')) && (my_value!='') && (parseFloat(my_value)!=my_value-0))
 		{
-			error_msg='{!NOT_FLOAT;^}'.replace('\{1}',my_value);
+			error_msg='{!javascript:NOT_FLOAT;^}'.replace('\{1}',my_value);
 		}
 
 		// Shim for HTML5 regexp patterns
@@ -507,15 +507,16 @@ function check_field(the_element,the_form,for_preview)
 		{
 			if ((my_value!='') && (!my_value.match(new RegExp(the_element.getAttribute('pattern')))))
 			{
-				error_msg='{!PATTERN_NOT_MATCHED;^}'.replace('\{1}',my_value);
+				error_msg='{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}',my_value);
 			}
 		}
 
 		// Custom error messages
 		if (error_msg!='')
 		{
-			if ((errormsg_element) && (errormsg_element.getAttribute('data-errorRegexp')!=''))
-				error_msg=errormsg_element.getAttribute('data-errorRegexp');
+			var custom_msg=errormsg_element.getAttribute('data-errorRegexp');
+			if ((errormsg_element) && (custom_msg!=null) && (custom_msg!=''))
+				error_msg=custom_msg;
 		}
 	}
 
@@ -600,7 +601,7 @@ function check_form(the_form,for_preview)
 			}
 			if (!alerted)
 			{
-				window.fauxmodal_alert('{!TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{'+'1'+'\\\\}','g'),Math.round(total_file_size/1024)).replace(new RegExp('\\\\{'+'2'+'\\\\}','g'),Math.round(the_form.elements['MAX_FILE_SIZE'].value/1024)));
+				window.fauxmodal_alert('{!javascript:TOO_MUCH_FILE_DATA;^}'.replace(new RegExp('\\\\{'+'1'+'\\\\}','g'),Math.round(total_file_size/1024)).replace(new RegExp('\\\\{'+'2'+'\\\\}','g'),Math.round(the_form.elements['MAX_FILE_SIZE'].value/1024)));
 			}
 			alerted=true;
 		}

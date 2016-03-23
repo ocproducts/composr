@@ -60,7 +60,7 @@
 	{+START,IF,{$OR,{FORCE_PRESETS},{$IS_NON_EMPTY,{OVERRIDES}}}}
 		{+START,IF,{$JS_ON}}
 			<td class="form_table_field_input">
-				<button class="buttons__copy button_micro button_screen_item_tall" type="button" id="copy_button_access_{GROUP_ID*}" onclick="permission_repeating(this,'access_{GROUP_ID%}'); return false;">{!REPEAT_PERMISSION}</button>
+				<button class="buttons__copy button_screen_item button_micro_tall" type="button" id="copy_button_access_{GROUP_ID*}" onclick="permission_repeating(this,'access_{GROUP_ID%}'); return false;">{!REPEAT_PERMISSION}</button>
 			</td>
 		{+END}
 	{+END}

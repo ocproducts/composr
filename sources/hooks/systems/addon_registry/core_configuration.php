@@ -141,6 +141,8 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/spam_approval_threshold.php',
             'sources/hooks/systems/config/spam_ban_threshold.php',
             'sources/hooks/systems/config/spam_blackhole_detection.php',
+            'sources/hooks/systems/config/forced_preview_option.php',
+            'sources/hooks/systems/config/default_preview_guests.php',
             'sources/hooks/systems/config/spam_block_lists.php',
             'sources/hooks/systems/config/spam_block_threshold.php',
             'sources/hooks/systems/config/spam_cache_time.php',

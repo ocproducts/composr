@@ -14,10 +14,10 @@
 		<div class="trinav_left" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
-				<a class="buttons__previous button_screen"{+START,IF,{SLIDESHOW}} onclick="return slideshow_backward();"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
+				<a class="button_screen buttons__previous"{+START,IF,{SLIDESHOW}} onclick="return slideshow_backward();"{+END} rel="prev" accesskey="j" href="{BACK_URL*}"><span>{!PREVIOUS}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{BACK_URL}}
-				<span class="buttons__previous_none button_screen"><span>{!PREVIOUS}</span></span>
+				<span class="button_screen buttons__previous_none"><span>{!PREVIOUS}</span></span>
 			{+END}
 		</div>
 
@@ -26,17 +26,17 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}
 					{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="buttons__slideshow button_screen" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}{+END}
 				{+END}
 			{+END}
 
 			{$,Next}
 			{+START,IF_NON_EMPTY,{NEXT_URL}}
-				<a class="buttons__next button_screen"{+START,IF,{SLIDESHOW}} onclick="return slideshow_forward();"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
+				<a class="button_screen buttons__next"{+START,IF,{SLIDESHOW}} onclick="return slideshow_forward();"{+END} rel="next" accesskey="k" href="{NEXT_URL*}"><span>{!NEXT}</span></a>
 			{+END}
 			{+START,IF_EMPTY,{NEXT_URL}}
-				<span class="buttons__next_none button_screen"><span>{!NEXT}</span></span>
+				<span class="button_screen buttons__next_none"><span>{!NEXT}</span></span>
 			{+END}
 		</div>
 
@@ -76,7 +76,7 @@
 			{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
 				<div class="float_surrounder">
 					<div class="right">
-						<a class="buttons__slideshow button_screen" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					</div>
 				</div>
 			{+END}{+END}

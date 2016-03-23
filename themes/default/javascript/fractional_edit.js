@@ -187,7 +187,7 @@ function fractional_edit(event,object,url,raw_text,edit_param_name,was_double_cl
 				{
 					var tmp=input.onblur;
 					input.onblur=null;
-					fauxmodal_confirm('{!FRACTIONAL_EDIT_CANCEL_CONFIRM;}',function(result) {
+					fauxmodal_confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;}',function(result) {
 						if (result)
 						{
 							cancel_function();

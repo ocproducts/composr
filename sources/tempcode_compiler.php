@@ -35,7 +35,7 @@ function init__tempcode_compiler()
     define('PARSE_DIRECTIVE_INNER', 5);
 
     global $DIRECTIVES_NEEDING_VARS;
-    $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true, 'SET_NOPREEVAL' => true);
+    $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true);
 
     // Work out what symbols may be compiled out (look at patterns at top of caches3.php if changing this)
     global $COMPILABLE_SYMBOLS;
@@ -505,7 +505,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         $current_level_params = array();
                         $current_level_mode = PARSE_DIRECTIVE_INNER;
                         if ($opener_params == array(array('"NO_PREPROCESSING"'))) {
-                            array_push($preprocessable_bits_stack, $preprocessable_bits);
+                            array_push($preprocessable_bits_stack, $preprocessable_bits); // So anything inside will end up being thrown away when we pop back to what we had before in $preprocessable_bits
                         }
                     } elseif ($eval == 'END') { // END
                         // Test that the top stack does represent a started directive, and close directive level
@@ -580,7 +580,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 }
                                 break;
                         }
-                        if ($directive_name == 'SET_NOPREEVAL') { // Needs to be dynamic
+                        if ($preprocessable_bits_stack != array()/*A NO_PREPROCESSING directive is around us*/) { // Needs to be dynamic as NO_PREPROCESSING also implies avoid internal caching
                             $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
                             $_past_level_data = implode('.', $past_level_data);
                             $unset_code = '';

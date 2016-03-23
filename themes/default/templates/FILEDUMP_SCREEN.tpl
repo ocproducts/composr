@@ -1,6 +1,6 @@
 {TITLE}
 
-{+START,SET_NOPREEVAL,file_dump_search}
+{+START,NO_PREPROCESSING}{+START,SET,file_dump_search}
 	<div class="float_surrounder">
 		{+START,IF,{$ADDON_INSTALLED,search}}
 			{$SET,search_url,{$SELF_URL}}
@@ -53,14 +53,14 @@
 						<option{+START,IF,{$EQ,{SORT},size DESC}} selected="selected"{+END} value="size DESC">{!FILE_SIZE},{!_DESCENDING}</option>
 					</select>
 
-					<input class="buttons__filter button_micro" type="submit" value="{!FILTER}" />
+					<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 				</p>
 			</form>
 		{+END}
 	</div>
-{+END}
+{+END}{+END}
 
-{+START,SET_NOPREEVAL,file_dump_footer}
+{+START,NO_PREPROCESSING}{+START,SET,file_dump_footer}
 	<hr class="spaced_rule" />
 
 	<div class="float_surrounder">
@@ -80,10 +80,10 @@
 				<option value="zip">{!FILEDUMP_ZIP}</option>
 			</select>
 
-			<input type="submit" value="{!PROCEED}" class="buttons__proceed button_micro" />
+			<input type="submit" value="{!PROCEED}" class="button_micro buttons__proceed" />
 		</div>
 	</div>
-{+END}
+{+END}{+END}
 
 <div>
 	<div class="float_surrounder"><div class="tabs" role="tablist">

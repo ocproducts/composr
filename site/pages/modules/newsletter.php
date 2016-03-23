@@ -117,7 +117,7 @@ class Module_newsletter
                 'id' => '*AUTO',
                 'd_inject_time' => 'TIME',
                 'd_subject' => 'SHORT_TEXT',
-                'd_message' => 'LONG_TRANS__COMCODE',
+                'd_message' => 'LONG_TEXT',
                 'd_html_only' => 'BINARY',
                 'd_to_email' => 'SHORT_TEXT',
                 'd_to_name' => 'SHORT_TEXT',

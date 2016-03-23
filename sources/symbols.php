@@ -256,15 +256,6 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 break;
 
-            case 'SET_NOPREEVAL':
-                if (isset($param[1])) {
-                    global $TEMPCODE_SETGET;
-
-                    $var = $param[0]->evaluate();
-                    $TEMPCODE_SETGET[$var] = $param[1]->bind($param['vars'], '');
-                }
-                break;
-
             case 'SET':
                 if (isset($param[1])) {
                     global $TEMPCODE_SETGET;
@@ -584,21 +575,6 @@ function ecv_PAGE_LINK($lang, $escaped, $param)
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
-}
-
-/**
- * Evaluate a particular Tempcode symbol.
- *
- * @ignore
- *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
- * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
- */
-function ecv_SET_NOPREEVAL($lang, $escaped, $param)
-{
-    return ecv_SET($lang, $escaped, $param);
 }
 
 /**
@@ -3316,10 +3292,16 @@ function ecv_EXTRA_FOOT($lang, $escaped, $param)
 function ecv_RAND($lang, $escaped, $param)
 {
     if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
-        if ((array_key_exists(0, $param)) && ($param[0] == '1')) {
-            $GLOBALS['NO_EVAL_CACHE'] = true;
+        static $before = array(); // Don't allow repeats
+        do {
+            $random = mt_rand(0, mt_getrandmax());
         }
-        $value = strval(mt_rand(0, empty($param[1]) ? mt_getrandmax() : intval($param[1])));
+        while (isset($before[$random]));
+        if (count($before) < 2147480000) {
+            $before[$random] = true;
+        }
+
+        $value = strval($random);
     } else { // Been told to behave statically
         $value = '4';
     }
@@ -3349,9 +3331,6 @@ function ecv_SET_RAND($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) { // Normal operation
-            if ((array_key_exists(0, $param)) && ($param[0] == '1')) {
-                $GLOBALS['NO_EVAL_CACHE'] = true;
-            }
             $value = $param[mt_rand(0, count($param) - 1)];
         } else { // Been told to behave statically
             $value = $param[0];
@@ -4250,10 +4229,10 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
     $value = '';
 
     if (!$GLOBALS['STATIC_TEMPLATE_TEST_MODE']) {
-        if (get_option('spam_blackhole_detection') == '1' && !$done_once) {
+        if (get_option('spam_blackhole_detection') == '1' && !$done_once && get_page_name() != 'members'/*in case of some weird autocomplete issue when changing your password*/) {
             $field_name = 'y' . md5(get_site_name() . ': antispam');
             $tag = ((isset($param[0])) && ($param[0] == '1')) ? 'span' : 'div';
-            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
+            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input autocomplete="off" id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
             if (!$GLOBALS['SEMI_DEV_MODE']) {
                 $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
             }

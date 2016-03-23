@@ -454,7 +454,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
             'TARGET' => '_self',
             'CONTENT' => $middle,
         ));
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
         return $global;
     }
 
@@ -478,7 +480,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
                 'MIDDLE' => $middle,
             ));
         }
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
     }
 
     if (get_value('xhtml_strict') === '1') {
@@ -554,8 +558,13 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
         foreach ($cma_mappings as $meta_type => $cma_field) {
             if (!isset($METADATA[$meta_type])) {
-                if (isset($row[$cma_info[$cma_field]])) {
+                if ($cma_field == 'content_type_universal_label' || isset($row[$cma_info[$cma_field]])) {
                     switch ($meta_type) {
+                        case 'type':
+                            $val_raw = $cma_info[$cma_field];
+                            $val = $val_raw;
+                            break;
+
                         case 'created':
                         case 'modified':
                             $val_raw = strval($row[$cma_info[$cma_field]]);
@@ -587,7 +596,11 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
                             break;
 
                         case 'description':
-                            $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            if (is_integer($row[$cma_info[$cma_field]])) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
                             $val = $val_raw;
                             break;
 
@@ -1808,6 +1821,8 @@ function is_valid_ip($ip)
  */
 function get_ip_address($amount = 4, $ip = null)
 {
+    require_code('config');
+
     if ((get_value('cloudflare_workaround') === '1') && (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) && (isset($_SERVER['REMOTE_ADDR']))) {
         $regexp = '^(204\.93\.240\.|204\.93\.177\.|199\.27\.|173\.245\.|103\.21\.|103\.22\.|103\.31\.|141\.101\.|108\.162\.|190\.93\.|188\.114\.|197\.234\.|198\.41\.|162\.)';
         if (preg_match('#' . $regexp . '#', $_SERVER['REMOTE_ADDR']) != 0) {

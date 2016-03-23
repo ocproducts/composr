@@ -305,7 +305,10 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
 
     $require_new_member_validation = get_option('require_new_member_validation') == '1';
     $validated = $require_new_member_validation ? 0 : 1;
-    attach_message(do_lang_tempcode('AWAITING_MEMBER_VALIDATION'), 'notice');
+    if ($require_new_member_validation) {
+        require_code('site');
+        attach_message(do_lang_tempcode('AWAITING_MEMBER_VALIDATION'), 'notice');
+    }
 
     // Add member
     require_code('cns_members_action');

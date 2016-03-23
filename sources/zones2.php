@@ -156,18 +156,6 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
         foreach ($index_php as $i) {
             afm_make_file($zone . (($zone == '') ? '' : '/') . $i . '/index.html', '', false);
         }
-        afm_make_file($zone . '/pages/comcode_custom/EN/panel_right.txt', '', true);
-        $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
-            'the_zone' => $zone,
-            'the_page' => 'panel_right',
-            'p_parent_page' => '',
-            'p_validated' => 1,
-            'p_edit_date' => null,
-            'p_add_date' => time(),
-            'p_submitter' => get_member(),
-            'p_show_as_edit' => 0,
-            'p_order' => 0,
-        ));
     }
 
     afm_make_file($zone . '/pages/comcode_custom/EN/' . filter_naughty($default_page) . '.txt', '[title]' . do_lang('YOUR_NEW_ZONE') . '[/title]' . "\n\n" . do_lang('YOUR_NEW_ZONE_PAGE', $zone . ':' . $default_page) . "\n\n" . '[block]main_comcode_page_children[/block]', true);
@@ -919,7 +907,7 @@ function check_page_name($zone, $page)
         }
         if ($url_scheme == 'HTM') {
             // No naming a welcome zone page the same as a zone
-            if ((file_exists(get_file_base() . '/' . $page . '/index.php')) || (file_exists(get_custom_file_base() . '/' . $page . '/index.php'))) {
+            if ((file_exists(get_file_base() . '/' . $page . '/pages/comcode')) || (file_exists(get_custom_file_base() . '/' . $page . '/pages/comcode'))) {
                 require_lang('zones');
                 warn_exit(do_lang_tempcode('CONFLICTING_PAGE_NAME'));
             }

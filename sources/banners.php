@@ -330,7 +330,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             if (($myrow['the_type'] == 2) && (!$show_fallbacks)) {
                 $myrow['importance_modulus'] = 0;
             }
-            $tally += $myrow['importance_modulus'];
+            $tally += max(0, $myrow['importance_modulus']);
             $bound[$counter] = $tally;
             $counter++;
         }

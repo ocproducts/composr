@@ -43,7 +43,7 @@ class Hook_sw_stats
      */
     public function get_fields($field_defaults)
     {
-        if (!addon_installed('stats')) {
+        if (!addon_installed('stats') || post_param_integer('addon_stats', null) === 0) {
             return new Tempcode();
         }
 
@@ -63,7 +63,7 @@ class Hook_sw_stats
      */
     public function set_fields()
     {
-        if (!addon_installed('stats')) {
+        if (!addon_installed('stats') || post_param_integer('addon_stats', null) === 0) {
             return;
         }
 

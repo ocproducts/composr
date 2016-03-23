@@ -99,6 +99,15 @@ class Module_topicview
             access_denied('NOT_AS_GUEST');
         }
 
+        if (!is_null($id)) {
+            $notification_where_map = array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member());
+            $notification_id = $GLOBALS['SITE_DB']->query_select_value_if_there('digestives_tin', 'id', $notification_where_map);
+            if ($notification_id !== null) {
+                $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('id' => $notification_id));
+                decache('_get_notifications', null, get_member());
+            }
+        }
+
         if ($type == 'findpost') {
             $post_id = get_param_integer('id');
             $redirect = find_post_id_url($post_id);
@@ -277,10 +286,6 @@ class Module_topicview
         require_css('cns');
 
         $first_unread_id = -1;
-
-        if (!is_null($id)) {
-            $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member()));
-        }
 
         require_code('users');
 

@@ -589,8 +589,8 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
         $SMART_CACHE->get('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
     }
 
-    $ret = _get_cache_entries(array($det));
-    return $ret[0];
+    $rets = _get_cache_entries(array($det));
+    return $rets[0];
 }
 
 /**
@@ -761,6 +761,5 @@ function _get_cache_entries($dets)
         $cache[$sz] = $ret;
         $rets[] = $ret;
     }
-
     return $rets;
 }

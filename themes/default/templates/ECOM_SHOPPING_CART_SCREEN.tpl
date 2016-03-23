@@ -22,7 +22,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}
-				<input class="buttons__cart_empty button_screen" type="submit" onclick="return confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
+				<input class="button_screen buttons__cart_empty" type="submit" onclick="return confirm_empty('{!EMPTY_CONFIRM}','{EMPTY_CART_URL;*}',this.form);" value="{!EMPTY_CART}" />
 			{+END}
 		</div>
 
@@ -30,7 +30,7 @@
 			<input type="hidden" name="product_ids" id="product_ids" value="{PRO_IDS*}" />
 
 			{+START,IF_NON_EMPTY,{CONT_SHOPPING_URL}}
-				<a class="menu__rich_content__catalogues__products button_screen" href="{CONT_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
+				<a class="button_screen menu__rich_content__catalogues__products" href="{CONT_SHOPPING_URL*}"><span>{!CONTINUE_SHOPPING}</span></a>
 			{+END}
 		</div>
 	</div>

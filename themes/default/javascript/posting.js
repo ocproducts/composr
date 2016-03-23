@@ -277,7 +277,7 @@ function do_input_quote(field_name)
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
 	window.fauxmodal_prompt(
-		'{!ENTER_QUOTE_BY;^}',
+		'{!javascript:ENTER_QUOTE_BY;^}',
 		'',
 		function(va)
 		{
@@ -294,7 +294,7 @@ function do_input_box(field_name)
 	var post=document.getElementById(field_name);
 	post=ensure_true_id(post,field_name);
 	window.fauxmodal_prompt(
-		'{!ENTER_BOX_TITLE;^}',
+		'{!javascript:ENTER_BOX_TITLE;^}',
 		'',
 		function(va)
 		{
@@ -309,14 +309,14 @@ function do_input_menu(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_MENU_NAME;^,'+(document.getElementById(field_name).form.menu_items.value)+'}',
+		'{!javascript:ENTER_MENU_NAME;^,'+(document.getElementById(field_name).form.menu_items.value)+'}',
 		'',
 		function(va)
 		{
 			if (va)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_MENU_CAPTION;^}',
+					'{!javascript:ENTER_MENU_CAPTION;^}',
 					'',
 					function(vb)
 					{
@@ -440,7 +440,7 @@ function do_input_list(field_name,add)
 	post=ensure_true_id(post,field_name);
 	insert_textbox(post,'\n');
 	window.fauxmodal_prompt(
-		'{!ENTER_LIST_ENTRY;^}',
+		'{!javascript:ENTER_LIST_ENTRY;^}',
 		'',
 		function(va)
 		{
@@ -475,14 +475,14 @@ function do_input_hide(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_WARNING;^}',
+		'{!javascript:ENTER_WARNING;^}',
 		'',
 		function(va)
 		{
 			if (va)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_HIDDEN_TEXT;^}',
+					'{!javascript:ENTER_HIDDEN_TEXT;^}',
 					'',
 					function(vb)
 					{
@@ -512,13 +512,13 @@ function do_input_thumb(field_name,va)
 	}
 
 	window.fauxmodal_prompt(
-		'{!ENTER_URL;^}',
+		'{!javascript:ENTER_URL;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+				window.fauxmodal_alert('{!javascript:NOT_A_URL;^}',function() {
 					do_input_url(field_name,va);
 				});
 				return;
@@ -527,14 +527,14 @@ function do_input_thumb(field_name,va)
 			if (va)
 			{
 				generate_question_ui(
-					'{!THUMB_OR_IMG_2;^}',
+					'{!javascript:THUMB_OR_IMG_2;^}',
 					{buttons__thumbnail: '{!THUMBNAIL;^}',buttons__fullsize: '{!IMAGE;^}'},
 					'{!comcode:INPUT_COMCODE_img;^}',
 					null,
 					function(vb)
 					{
 						window.fauxmodal_prompt(
-							'{!ENTER_IMAGE_CAPTION;^}',
+							'{!javascript:ENTER_IMAGE_CAPTION;^}',
 							'',
 							function(vc)
 							{
@@ -565,13 +565,13 @@ function do_input_attachment(field_name)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_ATTACHMENT;^}',
+		'{!javascript:ENTER_ATTACHMENT;^}',
 		'',
 		function(va)
 		{
 			if (!is_integer(va))
 			{
-				window.fauxmodal_alert('{!NOT_VALID_ATTACHMENT;^}');
+				window.fauxmodal_alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
 			} else
 			{
 				var element=document.getElementById(field_name);
@@ -588,13 +588,13 @@ function do_input_url(field_name,va)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_URL;^}',
+		'{!javascript:ENTER_URL;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('://')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_URL;^}',function() {
+				window.fauxmodal_alert('{!javascript:NOT_A_URL;^}',function() {
 					do_input_url(field_name,va);
 				});
 				return;
@@ -603,7 +603,7 @@ function do_input_url(field_name,va)
 			if (va!==null)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_LINK_NAME;^}',
+					'{!javascript:ENTER_LINK_NAME;^}',
 					'',
 					function(vb)
 					{
@@ -636,7 +636,7 @@ function do_input_page(field_name)
 				if ((typeof result=='undefined') || (result===null)) return;
 
 				window.fauxmodal_prompt(
-					'{!ENTER_CAPTION;^}',
+					'{!javascript:ENTER_CAPTION;^}',
 					'',
 					function(vc)
 					{
@@ -649,14 +649,14 @@ function do_input_page(field_name)
 	} else
 	{
 		window.fauxmodal_prompt(
-			'{!ENTER_ZONE;^}',
+			'{!javascript:ENTER_ZONE;^}',
 			'',
 			function(va)
 			{
 				if (va!==null)
 				{
 					window.fauxmodal_prompt(
-						'{!ENTER_PAGE;^}',
+						'{!javascript:ENTER_PAGE;^}',
 						'',
 						function(vb)
 						{
@@ -665,7 +665,7 @@ function do_input_page(field_name)
 								result=va+':'+vb;
 
 								window.fauxmodal_prompt(
-									'{!ENTER_CAPTION;^}',
+									'{!javascript:ENTER_CAPTION;^}',
 									'',
 									function(vc)
 									{
@@ -695,13 +695,13 @@ function do_input_email(field_name,va)
 	if (typeof window.insert_textbox=='undefined') return;
 
 	window.fauxmodal_prompt(
-		'{!ENTER_ADDRESS;^}',
+		'{!javascript:ENTER_ADDRESS;^}',
 		va,
 		function(va)
 		{
 			if ((va!=null) && (va.indexOf('@')==-1))
 			{
-				window.fauxmodal_alert('{!NOT_A_EMAIL;^}',function() {
+				window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;^}',function() {
 					do_input_url(field_name,va);
 				});
 				return;
@@ -710,7 +710,7 @@ function do_input_email(field_name,va)
 			if (va!==null)
 			{
 				window.fauxmodal_prompt(
-					'{!ENTER_CAPTION;^}',
+					'{!javascript:ENTER_CAPTION;^}',
 					'',
 					function(vb)
 					{
@@ -756,7 +756,7 @@ function do_input_font(field_name)
 	var colour=form.elements['f_colour'];
 	if ((face.value=='') && (size.value=='') && (colour.value==''))
 	{
-		window.fauxmodal_alert('{!NO_FONT_SELECTED;^}');
+		window.fauxmodal_alert('{!javascript:NO_FONT_SELECTED;^}');
 		return;
 	}
 	insert_textbox_wrapping(document.getElementById(field_name),'[font=\"'+escape_comcode(face.value)+'\" color=\"'+escape_comcode(colour.value)+'\" size=\"'+escape_comcode(size.value)+'\"]','[/font]');
@@ -1105,8 +1105,8 @@ function handle_form_saving_explicit(event,form)
 				do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() {
 					if (document.body.style.cursor=='wait') document.body.style.cursor='';
 
-					var message=found_validated_field?'{!DRAFT_SAVED_WITH_VALIDATION;^}':'{!DRAFT_SAVED_WITHOUT_VALIDATION;^}';
-					fauxmodal_alert(message,null,'{!DRAFT_SAVE;^}');
+					var message=found_validated_field?'{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}':'{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
+					fauxmodal_alert(message,null,'{!javascript:DRAFT_SAVE;^}');
 				},post);
 			}
 		}

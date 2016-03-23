@@ -5,7 +5,7 @@
 			{LIST}
 		</select></label>
 
-		<input onclick="disable_button_just_clicked(this);" class="buttons__proceed button_screen_item" type="submit" value="{!PROCEED}" />
+		<input onclick="disable_button_just_clicked(this);" class="button_screen_item buttons__proceed" type="submit" value="{!PROCEED}" />
 	</form>
 
 	<hr class="spaced_rule" />
@@ -14,14 +14,14 @@
 		{TPL}
 
 		<div class="buttons_group">
-			<a class="buttons__choose button_screen_item" onclick="do_attachment('{FIELD_NAME;*}','{ID;*}','{DESCRIPTION;*}'); if (typeof window.faux_close!='undefined') faux_close(); else window.close(); return false;" href="#"><span>{!CHOOSE}</span></a>
+			<a class="button_screen_item buttons__choose" onclick="do_attachment('{FIELD_NAME;*}','{ID;*}','{DESCRIPTION;*}'); if (typeof window.faux_close!='undefined') faux_close(); else window.close(); return false;" href="#"><span>{!CHOOSE}</span></a>
 
 			{+START,IF,{MAY_DELETE}}
 				<form title="{!DELETE}" class="inline" method="post" action="{DELETE_URL*}">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input type="hidden" name="delete_{ID*}" value="1" />
-					<input onclick="var form=this.form; fauxmodal_confirm('{!ARE_YOU_SURE_DELETE;*}',function(v) { if (v) form.submit(); }); return false;" type="submit" class="menu___generic_admin__delete button_screen_item" value="{!DELETE}" />
+					<input onclick="var form=this.form; fauxmodal_confirm('{!ARE_YOU_SURE_DELETE;*}',function(v) { if (v) form.submit(); }); return false;" type="submit" class="button_screen_item menu___generic_admin__delete" value="{!DELETE}" />
 				</form>
 			{+END}
 		</div>

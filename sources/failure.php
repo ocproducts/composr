@@ -155,8 +155,7 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
-    require_lang('javascript');
-    warn_exit(do_lang_tempcode('NOT_INTEGER'));
+    warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
     return '';
 }
 
@@ -424,7 +423,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         require_code('site');
     }
 
-    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml')) {
+    if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
         $restrict_answer = cns_get_best_group_property($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()), 'flood_control_submit_secs');
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
@@ -1029,7 +1028,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('urls');
     require_code('tempcode');
 
-    $error_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, true, false, true));
+    $error_url = get_self_url_easy();
 
     require_code('notifications');
     require_code('comcode');

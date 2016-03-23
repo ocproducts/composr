@@ -36,7 +36,7 @@
 				<div>
 					<label for="vga_username">{!USERNAME}: </label>
 					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="80" onkeyup="update_ajax_member_list(this,null,false,event);" alt="{!USERNAME}" type="text" id="vga_username" name="username" value="" />
-					<input class="menu___generic_admin__add_one button_screen_item" type="submit" value="{!ADD}" />
+					<input class="button_screen_item menu___generic_admin__add_one" type="submit" value="{!ADD}" />
 				</div>
 			</form>
 		</div></div>

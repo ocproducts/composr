@@ -211,7 +211,7 @@ class Module_admin_themes
             $file = '';
             foreach (array_keys($_REQUEST) as $_i) {
                 if (preg_match('#f(\d+)file#', $_i) != 0) {
-                    $file = basename($_i);
+                    $file = either_param_string($_i);
                 }
             }
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_templates:theme=' . $theme, do_lang_tempcode('CHOOSE_TEMPLATES')), array('_SELF:_SELF:_edit_templates:theme=' . $theme . ':file=' . $file, do_lang_tempcode('EDIT_TEMPLATES'))));
@@ -1241,7 +1241,7 @@ class Module_admin_themes
      * @param  string $suffix File type suffix of template file (e.g. .tpl)
      * @set    .tpl .js .xml .txt .css
      * @param  boolean $this_theme_only Just for this theme
-     * @return array A map of the files (for revisions, file=>timestamp, generally, file=>path)
+     * @return array A map of the files (file=>path)
      */
     private function get_template_files_list($theme, $directory, $suffix, $this_theme_only = false)
     {
@@ -1556,7 +1556,7 @@ class Module_admin_themes
             // Lots of UI stuff...
 
             $matches = array();
-            $cnt = preg_match_all('#\{([\w][\w\_]*)\}#', $old_contents, $matches);
+            $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', $old_contents, $matches);
             $parameters = new Tempcode();
             $p_done = array();
             for ($j = 0; $j < $cnt; $j++) {
@@ -1775,7 +1775,11 @@ class Module_admin_themes
 
             // Convert from current path to save path
             $directory = dirname($_file);
-            $file = str_replace($directory . '/', $directory . '_custom/', $_file);
+            if ($directory == '.' || $directory == '') {
+                $file = 'templates_custom/' . $_file;
+            } else {
+                $file = str_replace($directory . '/', $directory . '_custom/', $_file);
+            }
             $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
             if (!file_exists(dirname($full_path))) {
                 require_code('files2');
@@ -2320,7 +2324,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function Tempcode_tester()
+    public function tempcode_tester()
     {
         require_javascript('ajax');
 

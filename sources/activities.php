@@ -71,16 +71,17 @@ function has_external_site_wide_syndication()
 /**
  * Get syndication field UI.
  *
+ * @param  string $content_type The content type this is for
  * @return Tempcode Syndication fields (or empty)
  */
-function get_syndication_option_fields()
+function get_syndication_option_fields($content_type)
 {
     $hooks = find_all_hooks('systems', 'activities');
     $ret = new Tempcode();
     foreach (array_keys($hooks) as $hook) { // We only expect one actually
         require_code('hooks/systems/activities/' . $hook);
         $ob = object_factory('Hook_activities_' . $hook);
-        $ret->attach($ob->get_syndication_option_fields());
+        $ret->attach($ob->get_syndication_option_fields($content_type));
     }
     return $ret;
 }

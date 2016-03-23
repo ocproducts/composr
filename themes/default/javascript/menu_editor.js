@@ -310,7 +310,7 @@ function magic_copier(object,caption,url,error_message,confirm_message)
 			yes=true;
 		}
 	}
-	if (!yes) window.fauxmodal_alert('{!RADIO_NOTHING_SELECTED;^}');
+	if (!yes) window.fauxmodal_alert('{!javascript:RADIO_NOTHING_SELECTED;^}');
 
 	return false;
 }

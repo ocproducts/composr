@@ -2176,7 +2176,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .pagination * {
 	vertical-align: middle;
 }
-.pagination .inline {
+.pagination .inline, .pagination nav {
 	display: inline-block;
 }
 
@@ -3321,7 +3321,7 @@ div.proceed_button_left_2 {
 }
 
 .mass_select_marker {
-	padding: 0.5em;
+	padding: 0.2em;
 	float: {!en_right};
 	border: 1px solid {$GET,standard_border};
 	margin-{!en_left}: 2em;
@@ -3470,9 +3470,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-.buttons__undo {
-	background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
-}
+{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	.buttons__undo {
+		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
+	}
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
+	}
+{+END}
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -3583,9 +3588,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__revisions {
-		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
-	}
 	.buttons__choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
 	}
@@ -3655,9 +3657,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	.buttons__undo {
-		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
-	}
+	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+		.buttons__undo {
+			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
+		}
+		.buttons__revisions {
+			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
+		}
+	{+END}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}

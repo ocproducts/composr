@@ -2100,7 +2100,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 			tooltip_element.style.width=width;
 		} else
 		{
-			tooltip_element.style.maxWidth=width;
+			tooltip_element.style.maxWidth=(width=='auto')?((get_window_width(win)-30-window.mouse_x)+'px'):width;
 			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
 		}
 		if ((height) && (height!='auto'))
@@ -2257,7 +2257,7 @@ function deactivate_tooltip(ac,tooltip_element)
 {
 	ac.is_over=false;
 
-	if ((!page_loaded) || (!ac.tooltip_id)) return;
+	if (typeof ac.tooltip_id=='undefined') return;
 
 	if (typeof tooltip_element=='undefined')
 		tooltip_element=document.getElementById(ac.tooltip_id);
@@ -3548,6 +3548,17 @@ function confirm_delete(form,multi,callback)
 		}
 	);
 	return false;
+}
+
+function has_iframe_ownership(iframe)
+{
+	var has_ownership=false;
+	try
+	{
+		has_ownership=(iframe) && (iframe.contentWindow.location.host==window.location.host) && (iframe.contentWindow.document);
+	}
+	catch (e) {};
+	return has_ownership;
 }
 
 // LEGACY: IE8

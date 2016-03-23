@@ -49,6 +49,8 @@ class Module_lost_password
      */
     public function pre_run()
     {
+        $GLOBALS['OUTPUT_STREAMING'] = false; // Due to meta refresh that may happen
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -232,6 +234,11 @@ class Module_lost_password
         }
         $correct_code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code');
         if ($correct_code == '') {
+            if (get_member() == $member_id) { // Already reset and already logged in
+                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
+                return redirect_screen($this->title, $redirect_url);
+            }
+
             $_reset_url = build_url(array('page' => '_SELF', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), '_SELF');
             $reset_url = $_reset_url->evaluate();
             warn_exit(do_lang_tempcode('PASSWORD_ALREADY_RESET', escape_html($reset_url), get_site_name()));

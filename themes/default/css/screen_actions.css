@@ -42,7 +42,7 @@
 }
 
 .screen_actions div a span {
-	display: none;
+	visibility: hidden;
 }
 
 .screen_actions .facebook_like {

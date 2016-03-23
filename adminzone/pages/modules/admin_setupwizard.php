@@ -409,10 +409,14 @@ class Module_admin_setupwizard
         foreach ($addon_list_override_to_off_by_default as $_to_find) {
             if (!is_null($addon_list_on_by_default)) {
                 $_found = array_search($_to_find, $addon_list_on_by_default);
-                unset($addon_list_on_by_default[$_found]);
+                if ($_found !== false) {
+                    unset($addon_list_on_by_default[$_found]);
+                }
             }
             $_found = array_search($_to_find, $addon_list_advanced_on_by_default);
-            unset($addon_list_advanced_on_by_default[$_found]);
+            if ($_found !== false) {
+                unset($addon_list_advanced_on_by_default[$_found]);
+            }
         }
 
         $addon_list_advanced_off_by_default = array( // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.
@@ -462,7 +466,8 @@ class Module_admin_setupwizard
         sort_maps_by($all_addons, 'name');
         require_code('addons');
         foreach ($all_addons as $addon_name => $row) {
-            if (($addon_name != 'core') && (substr($addon_name, 0, 5) != 'core_') && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
+            $is_core = ($addon_name == 'core') || (substr($addon_name, 0, 5) == 'core_');
+            if ((!$is_core) && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
                 $install_by_default = ((!is_null($addon_list_on_by_default)) && (in_array($addon_name, $addon_list_on_by_default)) || ($is_advanced_on_by_default) || ((is_null($addon_list_on_by_default)) && (!$is_advanced_off_by_default)));
@@ -484,7 +489,7 @@ class Module_admin_setupwizard
                 } else {
                     $fields .= $field->evaluate();
                 }
-            } else {
+            } elseif (!$is_core) {
                 $hidden .= static_evaluate_tempcode(form_input_hidden('addon_' . $addon_name, '1'));
             }
         }
@@ -611,6 +616,10 @@ class Module_admin_setupwizard
         ksort($main_blocks);
         ksort($side_blocks);
 
+        if (count($main_blocks) == 0 && count($side_blocks) == 0) {
+            return $this->step7();
+        }
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step7'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_6_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
@@ -621,62 +630,66 @@ class Module_admin_setupwizard
         require_lang('zones');
         require_code('zones2');
 
-        $tmp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'dfc20251e4f6b37ec1e046d0903250aa', 'TITLE' => do_lang_tempcode('HOME')));
-        $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
-        foreach ($main_blocks as $block => $position_bits) {
-            if (!file_exists(get_file_base() . '/sources/blocks/' . $block . '.php')) {
-                continue;
-            }
+        if (count($main_blocks) > 0) {
+            $tmp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'dfc20251e4f6b37ec1e046d0903250aa', 'TITLE' => do_lang_tempcode('HOME')));
+            $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
+            foreach ($main_blocks as $block => $position_bits) {
+                if (!file_exists(get_file_base() . '/sources/blocks/' . $block . '.php')) {
+                    continue;
+                }
 
-            $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
-            $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
-            $block_nice = cleanup_block_name($block);
-            if (is_null($default_blocks)) {
-                $position = $position_bits[1];
-            } else {
-                $position = 'NO';
-                foreach (array('YES', 'YES_CELL', 'PANEL_LEFT', 'PANEL_RIGHT') as $p) {
-                    if (in_array($block, $default_blocks[$p])) {
-                        $position = $p;
+                $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
+                $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
+                $block_nice = cleanup_block_name($block);
+                if (is_null($default_blocks)) {
+                    $position = $position_bits[1];
+                } else {
+                    $position = 'NO';
+                    foreach (array('YES', 'YES_CELL', 'PANEL_LEFT', 'PANEL_RIGHT') as $p) {
+                        if (in_array($block, $default_blocks[$p])) {
+                            $position = $p;
+                        }
                     }
                 }
+                $main_list = new Tempcode();
+                $main_list->attach(form_input_list_entry('NO', $position == 'NO', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_NO')));
+                $main_list->attach(form_input_list_entry('YES', $position == 'YES', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_YES')));
+                $main_list->attach(form_input_list_entry('YES_CELL', $position == 'YES_CELL', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_YES_CELL')));
+                $main_list->attach(form_input_list_entry('PANEL_LEFT', $position == 'PANEL_LEFT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_LEFT')));
+                $main_list->attach(form_input_list_entry('PANEL_RIGHT', $position == 'PANEL_RIGHT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_RIGHT')));
+                $tmp = form_input_list($block_nice, $description, 'block_SITE_' . $block, $main_list);
+                $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
             }
-            $main_list = new Tempcode();
-            $main_list->attach(form_input_list_entry('NO', $position == 'NO', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_NO')));
-            $main_list->attach(form_input_list_entry('YES', $position == 'YES', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_YES')));
-            $main_list->attach(form_input_list_entry('YES_CELL', $position == 'YES_CELL', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_YES_CELL')));
-            $main_list->attach(form_input_list_entry('PANEL_LEFT', $position == 'PANEL_LEFT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_LEFT')));
-            $main_list->attach(form_input_list_entry('PANEL_RIGHT', $position == 'PANEL_RIGHT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_RIGHT')));
-            $tmp = form_input_list($block_nice, $description, 'block_SITE_' . $block, $main_list);
-            $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
         }
 
-        $tmp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '13e0d3002669654d9b45b4739ecbf28c', 'TITLE' => do_lang_tempcode('PANELS')));
-        $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
-        foreach ($side_blocks as $block => $position_bits) {
-            if (!file_exists(get_file_base() . '/sources/blocks/' . $block . '.php')) {
-                continue;
-            }
+        if (count($side_blocks) > 0) {
+            $tmp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '13e0d3002669654d9b45b4739ecbf28c', 'TITLE' => do_lang_tempcode('PANELS')));
+            $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
+            foreach ($side_blocks as $block => $position_bits) {
+                if (!file_exists(get_file_base() . '/sources/blocks/' . $block . '.php')) {
+                    continue;
+                }
 
-            $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
-            $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
-            $block_nice = cleanup_block_name($block);
-            if (is_null($default_blocks)) {
-                $position = $position_bits[1];
-            } else {
-                $position = 'NO';
-                foreach (array('YES', 'YES_CELL', 'PANEL_LEFT', 'PANEL_RIGHT') as $p) {
-                    if (in_array($block, $default_blocks[$p])) {
-                        $position = $p;
+                $description = paragraph(do_lang_tempcode('BLOCK_' . $block . '_DESCRIPTION'));
+                $description->attach(paragraph(do_lang_tempcode('BLOCK_' . $block . '_USE')));
+                $block_nice = cleanup_block_name($block);
+                if (is_null($default_blocks)) {
+                    $position = $position_bits[1];
+                } else {
+                    $position = 'NO';
+                    foreach (array('YES', 'YES_CELL', 'PANEL_LEFT', 'PANEL_RIGHT') as $p) {
+                        if (in_array($block, $default_blocks[$p])) {
+                            $position = $p;
+                        }
                     }
                 }
+                $side_list = new Tempcode();
+                $side_list->attach(form_input_list_entry('PANEL_NONE', $position == 'PANEL_NONE', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_NONE')));
+                $side_list->attach(form_input_list_entry('PANEL_LEFT', $position == 'PANEL_LEFT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_LEFT')));
+                $side_list->attach(form_input_list_entry('PANEL_RIGHT', $position == 'PANEL_RIGHT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_RIGHT')));
+                $tmp = form_input_list($block_nice, $description, 'block_SITE_' . $block, $side_list);
+                $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
             }
-            $side_list = new Tempcode();
-            $side_list->attach(form_input_list_entry('PANEL_NONE', $position == 'PANEL_NONE', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_NONE')));
-            $side_list->attach(form_input_list_entry('PANEL_LEFT', $position == 'PANEL_LEFT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_LEFT')));
-            $side_list->attach(form_input_list_entry('PANEL_RIGHT', $position == 'PANEL_RIGHT', do_lang_tempcode('BLOCK_CONFIGURATION__PANEL_RIGHT')));
-            $tmp = form_input_list($block_nice, $description, 'block_SITE_' . $block, $side_list);
-            $fields .= $tmp->evaluate(); /*XHTMLXHTML*/
         }
 
         $inner = do_template('FORM', array(
@@ -945,7 +958,7 @@ class Module_admin_setupwizard
             foreach ($addons_installed as $i => $addon_info) {
                 $addon_info += read_addon_info($addon_info['name']);
 
-                if (post_param_integer('addon_' . $addon_info['name'], 0) == 0) {
+                if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] != 'core' && substr($addon_info['name'], 0, 5) != 'core_') {
                     $uninstalling[$addon_info['name']] = $addon_info;
                 }
 

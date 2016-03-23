@@ -32,7 +32,7 @@ function play_sound_url(url) // Used for testing different sounds
 
 	var base_url=((url.indexOf('data_custom')==-1)&&(url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
 	var sound_object=window.soundManager.createSound({url: base_url+'/'+url});
-	sound_object.play();
+	if (sound_object) sound_object.play();
 }
 
 function play_chat_sound(s_id,for_member)
@@ -96,7 +96,7 @@ function check_chat_options(ob)
 {
 	if (!ob.elements['text_colour'].value.match(/^#[0-9A-F][0-9A-F][0-9A-F]([0-9A-F][0-9A-F][0-9A-F])?$/))
 	{
-		window.fauxmodal_alert('{!BAD_HTML_COLOUR;^}');
+		window.fauxmodal_alert('{!chat:BAD_HTML_COLOUR;^}');
 		return false;
 	}
 
@@ -147,7 +147,7 @@ function get_ticked_people(form)
 
 	if (people=='')
 	{
-		window.fauxmodal_alert('{!NOONE_SELECTED_YET;^}');
+		window.fauxmodal_alert('{!chat:NOONE_SELECTED_YET;^}');
 		return '';
 	}
 
@@ -158,7 +158,7 @@ function do_input_private_message(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_RECIPIENT;^}',
+		'{!chat:ENTER_RECIPIENT;^}',
 		'',
 		function(va)
 		{
@@ -183,14 +183,14 @@ function do_input_invite(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_RECIPIENT;^}',
+		'{!chat:ENTER_RECIPIENT;^}',
 		'',
 		function(va)
 		{
 			if (va!=null)
 			{
 				var vb=window.fauxmodal_prompt(
-					'{!ENTER_CHATROOM;^}',
+					'{!chat:ENTER_CHATROOM;^}',
 					'',
 					function(vb)
 					{
@@ -208,14 +208,14 @@ function do_input_new_room(field_name)
 {
 	if (typeof window.insert_textbox=='undefined') return;
 	window.fauxmodal_prompt(
-		'{!ENTER_CHATROOM;^}',
+		'{!chat:ENTER_CHATROOM;^}',
 		'',
 		function(va)
 		{
 			if (va!=null)
 			{
 				var vb=window.prompt(
-					'{!ENTER_ALLOW;^}',
+					'{!chat:ENTER_ALLOW;^}',
 					'',
 					function(vb)
 					{

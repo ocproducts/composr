@@ -633,7 +633,7 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         require_code('activities');
-        $fields2->attach(get_syndication_option_fields());
+        $fields2->attach(get_syndication_option_fields('event'));
 
         // Metadata
         require_code('seo2');

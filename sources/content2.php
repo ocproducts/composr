@@ -374,10 +374,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                 $url_moniker = '';
                 $parent = post_param_string('parent_page', '');
                 while ($parent != '') {
-                    if ($url_moniker != '') {
-                        $url_moniker .= '/';
-                    }
-                    $url_moniker .= $parent;
+                    $url_moniker = str_replace('_', '-', $parent) . (($url_moniker != '') ? ('/' . $url_moniker) : '');
 
                     $parent = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_parent_page', array('the_page' => $parent));
                     if ($parent === null) {
@@ -385,7 +382,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
                     }
                 }
                 if ($url_moniker != '') {
-                    $url_moniker .= '/' . preg_replace('#^.*:#', '', $content_id);
+                    $url_moniker .= '/' . preg_replace('#^.*:#', '', str_replace('_', '-', $content_id));
                 } else {
                     $url_moniker = null;
                 }

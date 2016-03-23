@@ -8,7 +8,7 @@
 	</div>
 	{+START,IF,{$JS_ON}}
 		<div class="right">
-			<input class="menu___generic_admin__add_one button_micro" name="f{ID*}dd_{NAME*}" onclick="return template_edit_page('f{ID;*}{NAME;*}','{ID;*}');" type="button" value="{LANG*}" />
+			<input class="button_micro menu___generic_admin__add_one" name="f{ID*}dd_{NAME*}" onclick="return template_edit_page('f{ID;*}{NAME;*}','{ID;*}');" type="button" value="{LANG*}" />
 		</div>
 	{+END}
 </div>

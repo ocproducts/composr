@@ -15,7 +15,7 @@
 
 				<div class="search_fields float_surrounder">
 					<div class="search_button">
-						<input onclick="disable_button_just_clicked(this);" accesskey="u" class="buttons__filter button_screen_item" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
+						<input onclick="disable_button_just_clicked(this);" accesskey="u" class="button_screen_item buttons__filter" type="submit" value="{!FILTER}{+START,IF_NON_EMPTY,{FILTERS_ROW_B}} &#9745;{+END}" />
 					</div>
 
 					{+START,LOOP,{FILTERS_ROW_A}}
@@ -29,7 +29,7 @@
 				{+START,IF_NON_EMPTY,{FILTERS_ROW_B}}
 					<div class="search_fields float_surrounder">
 						<div class="search_button">
-							<input onclick="window.location.href='{$PAGE_LINK;*,_SELF:_SELF}';" class="buttons__clear button_screen_item" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
+							<input onclick="window.location.href='{$PAGE_LINK;*,_SELF:_SELF}';" class="button_screen_item buttons__clear" type="button" value="{$,{!RESET_FILTER} }&#9746;" />
 						</div>
 
 						{+START,LOOP,{FILTERS_ROW_B}}

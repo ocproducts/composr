@@ -24,7 +24,7 @@
 			{+END}
 		{+END}
 
-		{+START,IF,{$JS_ON}}<input class="buttons__clear button_micro" type="button" id="clear_button_{NAME_STUB*}_{I*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME_STUB;*}_{I;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' &amp;&amp; x.fakeonchange) x.fakeonchange(event); return false;" />{+END}
+		{+START,IF,{$JS_ON}}<input class="button_micro buttons__clear" type="button" id="clear_button_{NAME_STUB*}_{I*}" value="{!CLEAR}" onclick="var x=document.getElementById('{NAME_STUB;*}_{I;*}'); x.value=''; if (typeof x.fakeonchange!='undefined' &amp;&amp; x.fakeonchange) x.fakeonchange(event); return false;" />{+END}
 
 		<!--Additional uploaders will auto-append here-->
 	</div>

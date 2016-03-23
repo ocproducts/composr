@@ -428,7 +428,7 @@ class Module_cms_downloads extends Standard_crud_module
         if (addon_installed('points')) {
             require_lang('points');
             $fields->attach(form_input_integer(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_DOWNLOAD_COST'), 'cost', $cost, true));
-            $fields->attach(form_input_tick(do_lang_tempcode('SUBMITTER_GETS_POINTS'), do_lang_tempcode('DESCRIPTION_SUBMITTER_GETS_POINTS'), 'submitter_gets_points', $submitter_gets_points == 1));
+            $fields->attach(form_input_tick(do_lang_tempcode('SUBMITTER_GETS_POINTS'), do_lang_tempcode('DESCRIPTION_SUBMITTER_GETS_POINTS', 'download'), 'submitter_gets_points', $submitter_gets_points == 1));
         } else {
             $hidden->attach(form_input_hidden('cost', ''));
         }

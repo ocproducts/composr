@@ -277,7 +277,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                             break;
                         case 'LANGUAGE_NAME':
                             $field_type = 'list';
-                            require_code('lang3');
+                            require_code('lang2');
                             $_extra = array_keys(find_all_langs());
                             $extra = array();
                             foreach (array_keys(find_all_langs()) as $lang) {
@@ -966,6 +966,8 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
                     break;
 
                 case '~=':
+                    $filter_val = trim($filter_val, '*'); // In case user does not understand that this is not a wildcard search
+
                     if ($filter_val != '') {
                         if ($alt != '') {
                             $alt .= ' OR ';

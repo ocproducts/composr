@@ -70,7 +70,9 @@
 	{+START,IF_NON_EMPTY,{$METADATA,description}}<meta name="DC.Description" content="{$TRIM,{$METADATA*,description}}" />{+END}
 {+END}
 {+START,IF_NON_EMPTY,{$METADATA,title}}<meta property="og:title" content="{$METADATA*,title}" />{+END}
-{+START,IF_NON_EMPTY,{$METADATA,type}}<meta property="og:type" content="{$REPLACE*, ,_,{$LCASE,{$METADATA,type}}}" />{+END}
+{+START,COMMENT,cms has to be replaced with proper OpenGraph namespace}
+	{+START,IF_NON_EMPTY,{$METADATA,type}}<meta property="og:type" content="cms:{$REPLACE*, ,_,{$LCASE,{$METADATA,type}}}" />{+END}
+{+END}
 <meta property="og:url" content="{$CANONICAL_URL*}" /><meta property="og:site_name" content="{$SITE_NAME*}" />
 {+START,COMMENT,Commented out by default to save bandwidth}
 	Only do this if you have a real uid, not a page id... {+START,IF_NON_EMPTY,{$CONFIG_OPTION*,facebook_uid,1}}<meta property="fb:admins" content="{$CONFIG_OPTION*,facebook_uid}" />{+END}
