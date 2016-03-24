@@ -295,6 +295,10 @@ function inform_non_canonical_parameter($param)
 
     if (substr($param, 0, 1) == '#') {
         foreach (array_keys($_GET) as $key) {
+            if (is_numeric($key)) {
+                $key = strval($key);
+            }
+
             if (preg_match($param, $key) != 0) {
                 inform_non_canonical_parameter($key);
             }
