@@ -35,7 +35,7 @@ class Module_admin_themes
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 5;
+        $info['version'] = 6;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -180,6 +180,8 @@ class Module_admin_themes
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
 
             $this->title = get_screen_title('_EDIT_TEMPLATES', true, array(escape_html($this->theme)));
+
+            breadcrumb_set_self(do_lang_tempcode('EDIT_TEMPLATES'));
         }
 
         if ($type == 'manage_images') {

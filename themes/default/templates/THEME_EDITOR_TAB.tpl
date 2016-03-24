@@ -499,6 +499,26 @@
 	</div>
 {+END}
 
+{$,Related templates}
+
+{+START,IF_NON_EMPTY,{RELATED}}
+	<div class="related">
+		<h3>
+			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!RELATED_TEMPLATES}</a>
+		</h3>
+		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
+			<ul>
+				{+START,LOOP,RELATED}
+					<li>
+						<a onclick="theme_editor_add_tab('{_loop_var;^*}'); return false;" href="#">{_loop_var*}</a>
+					</li>
+				{+END}
+			</ul>
+		</div>
+	</div>
+{+END}
+
 {$,Revisions}
 
 {REVISIONS}

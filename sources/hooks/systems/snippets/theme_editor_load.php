@@ -120,6 +120,11 @@ class Hook_snippet_theme_editor_load
 
             $guids = find_template_guids($file, $active_guid);
 
+            $related = collapse_1d_complexity('rel_b', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $file), 'ORDER BY rel_b', 50));
+            if (count($related) == 50) {
+                $related = array();
+            }
+
             $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns($file, $file_id);
 
             $all_previews = find_all_previews__by_template();
@@ -175,6 +180,8 @@ class Hook_snippet_theme_editor_load
 
             $guids = array();
 
+            $related = array();
+
             $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns(null, $file_id);
         }
 
@@ -196,6 +203,7 @@ class Hook_snippet_theme_editor_load
             'HIGHLIGHTER_TYPE' => $highlighter_type,
             'REVISIONS' => $revisions,
             'GUIDS' => $guids,
+            'RELATED' => $related,
             'PREVIEW_URL' => $preview_url,
 
             'INCLUDE_TEMPCODE_EDITING' => $include_tempcode_editing,

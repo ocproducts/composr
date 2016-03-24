@@ -16,6 +16,24 @@ function file_to_file_id(file)
 	return file.replace(/\//,'__').replace(/:/,'__');
 }
 
+function theme_editor_assign_unload_event()
+{
+	add_event_listener_abstract(window,'beforeunload',function(event) {
+		if (!event) event=window.event;
+
+		if (get_elements_by_class_name(document,'file_changed').length>0)
+		{
+			undo_staff_unload_action();
+			window.unloaded=false;
+
+			var ret='{!UNSAVED_TEMPLATE_CHANGES;^}';
+			event.returnValue=ret; // Fix Chrome bug (explained on https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload)
+			return ret;
+		}
+		return null;
+	});
+}
+
 /* Tab and file management */
 
 function add_template()

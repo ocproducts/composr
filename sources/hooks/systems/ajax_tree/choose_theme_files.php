@@ -48,10 +48,16 @@ class Hook_choose_theme_files
         if (is_null($id)) {
             $top_level = array(
                 'templates' => array(do_lang('TEMPLATES_HTML'), 'DOC_TEMPLATES'),
+                'templates-related' => array(do_lang('TEMPLATES_HTML_RELATED'), 'DOC_TEMPLATES_RELATED'),
                 'css' => array(do_lang('TEMPLATES_CSS'), 'DOC_CSS'),
+                'css-related' => array(do_lang('TEMPLATES_CSS_RELATED'), 'DOC_TEMPLATES_RELATED'),
                 'javascript' => array(do_lang('TEMPLATES_JAVASCRIPT'), 'DOC_TEMPLATES_JAVASCRIPT'),
+                'javascript-related' => array(do_lang('TEMPLATES_JAVASCRIPT_RELATED'), 'DOC_TEMPLATES_RELATED'),
                 'xml' => array(do_lang('TEMPLATES_XML'), 'DOC_TEMPLATES_XML'),
+                'xml-related' => array(do_lang('TEMPLATES_XML_RELATED'), 'DOC_TEMPLATES_RELATED'),
                 'text' => array(do_lang('TEMPLATES_TEXT'), 'DOC_TEMPLATES_TEXT'),
+                'text-related' => array(do_lang('TEMPLATES_TEXT_RELATED'), 'DOC_TEMPLATES_RELATED'),
+                'addons' => array(do_lang('addons:ADDONS'), 'DOC_TEMPLATES_BY_ADDON'),
             );
 
             $test = $GLOBALS['SITE_DB']->query_select_value('theme_screen_tree', 'COUNT(*)');
@@ -81,6 +87,12 @@ class Hook_choose_theme_files
                 ></category>';
             }
         } else {
+            $related = (substr($id, -8) == '-related');
+            if ($related) {
+                $id = substr($id, 0, strlen($id) - 8);
+                $relations = collapse_2d_complexity('rel_a', 'cnt', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_a', 'COUNT(*) AS cnt'), null, 'GROUP BY rel_a'));
+            }
+
             switch ($id) {
                 case 'templates':
                 case 'css':
@@ -101,14 +113,46 @@ class Hook_choose_theme_files
 
                         $description_html = $this->get_template_details_table($theme, $template_file, $template_file_path, $action_log_times);
 
+                        if ($related) {
+                            $has_children = isset($relations[$template_file]);
+
+                            if ($has_children) {
+                                $out .= '
+                                <category
+                                    id="' . xmlentities($this->get_next_id()) . '"
+                                    serverid="' . xmlentities($template_file) . '"
+                                    title="' . xmlentities($_template_file) . '"
+                                    has_children="' . ($has_children ? 'true' : 'false') . '"
+                                    selectable="true"
+                                    description_html="' . xmlentities($description_html->evaluate()) . '"
+                                ></category>';
+                            }
+                        } else {
+                            $out .= '
+                            <entry
+                                id="' . xmlentities($this->get_next_id()) . '"
+                                serverid="' . xmlentities($template_file) . '"
+                                title="' . xmlentities($_template_file) . '"
+                                selectable="true"
+                                description_html="' . xmlentities($description_html->evaluate()) . '"
+                            ></entry>';
+                        }
+                    }
+                    break;
+
+                case 'addons':
+                    $addons = find_all_hooks('systems', 'addon_registry');
+                    foreach (array_keys($addons) as $addon) {
+                        $has_children = (count($this->templates_for_addons($addon)) > 0);
+
                         $out .= '
-                        <entry
+                        <category
                             id="' . xmlentities($this->get_next_id()) . '"
-                            serverid="' . xmlentities($template_file) . '"
-                            title="' . xmlentities($_template_file) . '"
+                            serverid="' . xmlentities('<' . $addon . '>') . '"
+                            title="' . xmlentities($addon) . '"
+                            has_children="' . ($has_children ? 'true' : 'false') . '"
                             selectable="true"
-                            description_html="' . xmlentities($description_html->evaluate()) . '"
-                        ></entry>';
+                        ></category>';
                     }
                     break;
 
@@ -129,12 +173,64 @@ class Hook_choose_theme_files
                     break;
 
                 default:
-                    if (strpos(rtrim($id, ':'), ':') !== false) {
+                    if (preg_match('#^(<\w+>)$#', $id) != 0) {
+                        // Must be browsing an addon
+
+                        $action_log_times = $this->load_actionlog_times_templates($theme);
+
+                        $templates = array_keys($this->templates_for_addons(trim($id, '<>')));
+                        foreach ($templates as $template) {
+                            $template_file_path = find_template_path(basename($template), dirname($template), $theme);
+                            if (empty($template_file_path)) {
+                                continue;
+                            }
+
+                            $description_html = $this->get_template_details_table($theme, $template, $template_file_path, $action_log_times);
+
+                            $out .= '
+                            <entry
+                                id="' . xmlentities($this->get_next_id()) . '"
+                                serverid="' . xmlentities($template) . '"
+                                title="' . xmlentities(basename($template)) . '"
+                                selectable="true"
+                                description_html="' . xmlentities($description_html->evaluate()) . '"
+                            ></entry>';
+                        }
+                    }
+
+                    elseif (preg_match('#^(templates|css|javascript|xml|text)/\w+\.(tpl|css|js|xml|txt)$#', $id) != 0) {
+                        // Must be for related templates
+
+                        $action_log_times = $this->load_actionlog_times_templates($theme);
+
+                        $related = collapse_1d_complexity('rel_b', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $id), 'ORDER BY rel_b'));
+                        array_unshift($related, $id);
+                        foreach ($related as $rel) {
+                            $template_file_path = find_template_path(basename($rel), dirname($rel), $theme);
+                            if (empty($template_file_path)) {
+                                continue;
+                            }
+
+                            $description_html = $this->get_template_details_table($theme, $rel, $template_file_path, $action_log_times);
+
+                            $out .= '
+                            <entry
+                                id="' . xmlentities($this->get_next_id()) . '"
+                                serverid="' . xmlentities($rel) . '"
+                                title="' . xmlentities(basename($rel)) . '"
+                                selectable="true"
+                                description_html="' . xmlentities($description_html->evaluate()) . '"
+                            ></entry>';
+                        }
+                    }
+
+                    elseif (strpos(rtrim($id, ':'), ':') !== false) {
                         // Must be a screen show meta-tree...
 
                         $json_tree = $GLOBALS['SITE_DB']->query_select_value('theme_screen_tree', 'json_tree', array('page_link' => $id));
                         $tree = json_decode($json_tree, true);
                         $out .= $this->build_screen_tree($theme, $tree);
+
                     } else {
                         // Must be a zone, show pages in it...
 
@@ -173,18 +269,23 @@ class Hook_choose_theme_files
     /**
      * Find what addons templates are.
      *
+     * @param ?ID_TEXT $addon Just for this addon (null: all)
      * @return array Map of template file to addon
      */
-    private function templates_for_addons()
+    private function templates_for_addons($filter_addon = null)
     {
-        static $templates_for_addons = null;
-        if ($templates_for_addons !== null) {
-            return $templates_for_addons;
+        static $templates_for_addons = array();
+        if (isset($templates_for_addons[$filter_addon])) {
+            return $templates_for_addons[$filter_addon];
         }
 
-        $templates_for_addons = array();
+        $_templates_for_addons = array();
         $addons = find_all_hooks('systems', 'addon_registry');
         foreach (array_keys($addons) as $addon) {
+            if ($filter_addon !== null && $filter_addon != $addon) {
+                continue;
+            }
+
             require_code('hooks/systems/addon_registry/' . $addon);
             $ob = object_factory('Hook_addon_registry_' . $addon);
             $_files = $ob->get_file_list();
@@ -197,13 +298,18 @@ class Hook_choose_theme_files
                         $file = basename($file_path);
 
                         if (($file != 'index.html') && ($file != '.htaccess')) {
-                            $templates_for_addons[$subdir . '/' . $file] = $addon;
+                            $_templates_for_addons[$subdir . '/' . $file] = $addon;
                         }
                     }
                 }
             }
         }
-        return $templates_for_addons;
+
+        ksort($_templates_for_addons);
+
+        $templates_for_addons[$filter_addon] = $_templates_for_addons;
+
+        return $_templates_for_addons;
     }
 
     /**

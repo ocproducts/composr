@@ -14,6 +14,10 @@
 	{WARNING_DETAILS}
 {+END}
 
+<noscript>
+	{!THEME_EDITOR_ACCESSIBILITY_HELP}
+</noscript>
+
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{POST_URL*}">
 	<input type="hidden" name="template_preview_op" value="1" />
 
@@ -62,5 +66,7 @@
 		},1000);
 
 		$('.theme_editor_file_selector').resizable();
+
+		theme_editor_assign_unload_event();
 	});
 //]]></script>
