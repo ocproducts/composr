@@ -107,6 +107,9 @@ function theme_editor_add_tab(file)
 	if (document.getElementById('t_'+file_id))
 	{
 		select_tab('g',file_id);
+
+		theme_editor_show_tab(file_id);
+
 		return;
 	}
 
@@ -120,8 +123,13 @@ function theme_editor_add_tab(file)
 	header.className='tab file_nonchanged';
 	header.onclick=function(event) {
 		if (typeof event=='undefined') event=window.event;
+
 		event.returnValue=false;
+
 		select_tab('g',file_id);
+
+		theme_editor_show_tab(file_id);
+
 		return false;
 	};
 	var span=document.createElement('span');
@@ -182,6 +190,32 @@ function theme_editor_add_tab(file)
 
 	// Select tab
 	select_tab('g',file_id);
+
+	theme_editor_show_tab(file_id);
+}
+
+function theme_editor_show_tab(file_id)
+{
+	window.setTimeout(function() {
+		if (document.getElementById('t_'+file_id).className.indexOf('tab_active')==-1)
+		{
+			// No longer visible
+			return;
+		}
+
+		$('#e_'+file_id.replace(/\./g,'\\.')+'_wrap').resizable({
+			resize: function(event,ui) {
+				var editor=window.ace_editors['e_'+file_id];
+				if (typeof editor!='undefined')
+				{
+					$('#e_'+file_id.replace(/\./g,'\\.')+'__ace')[0].style.height='100%';
+					$('#e_'+file_id.replace(/\./g,'\\.')+'__ace')[0].parentNode.style.height='100%';
+					editor.resize();
+				}
+			},
+			handles: 's'
+		});
+	},1000);
 }
 
 function theme_editor_tab_loaded_content(ajax_result,file)
@@ -265,7 +299,13 @@ function theme_editor_tab_unload_content(file)
 		// Select tab
 		var c=document.getElementById('theme_editor_tab_headers').childNodes;
 		if (typeof c[0]!='undefined')
-			select_tab('g',c[0].id.substr(2));
+		{
+			var next_file_id=c[0].id.substr(2);
+
+			select_tab('g',next_file_id);
+
+			theme_editor_show_tab(next_file_id);
+		}
 	}
 }
 
