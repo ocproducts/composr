@@ -2659,8 +2659,7 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $a = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => '455b0f61e6ce2eaf2acce2844fdd5e7a', 'NAME' => $name, 'INPUT' => $input1, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => $description));
         if ((substr($name, 0, 3) != 'db_') && (substr($name, 0, 12) != 'gae_live_db_') && ($name != 'ftp_password')) {
             $input2 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '0f15bfe5b58f3ca7830a48791f1a6a6d', 'REQUIRED' => $_required, 'NAME' => $name . '_confirm', 'VALUE' => $value));
-            $nice_name_2 = do_lang_tempcode('RELATED_FIELD', $nice_name);
-            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3', 'NAME' => $name, 'INPUT' => $input2, 'NICE_NAME' => $nice_name_2, 'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD')));
+            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3', 'NAME' => $name, 'INPUT' => $input2, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD')));
             $a->attach($b);
         }
         return $a;

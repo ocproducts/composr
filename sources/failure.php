@@ -1209,6 +1209,15 @@ function put_value_in_stack_trace($value)
     } catch (Exception $e) { // Can happen for SimpleXMLElement or PDO
         $_value = '...';
     }
+
+    global $SITE_INFO;
+    if ((isset($SITE_INFO['db_site_password'])) && (strlen($SITE_INFO['db_site_password']) > 4)) {
+        $_value = str_replace($SITE_INFO['db_site_password'], '(password removed)', $_value);
+    }
+    if ((isset($SITE_INFO['db_forums_password'])) && (strlen($SITE_INFO['db_forums_password']) > 4)) {
+        $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
+    }
+
     return escape_html($_value);
 }
 
@@ -1234,6 +1243,7 @@ function get_html_trace()
             } elseif ($key == 'line') {
                 $line = strval($__value);
             }
+
             if ($key == 'args') {
                 $_value = new Tempcode();
                 foreach ($__value as $param) {
@@ -1243,14 +1253,6 @@ function get_html_trace()
                 }
             } else {
                 $_value = put_value_in_stack_trace($__value);
-            }
-
-            global $SITE_INFO;
-            if ((isset($SITE_INFO['db_site_password'])) && (strlen($SITE_INFO['db_site_password']) > 4)) {
-                $_value = str_replace($SITE_INFO['db_site_password'], '(password removed)', $_value);
-            }
-            if ((isset($SITE_INFO['db_forums_password'])) && (strlen($SITE_INFO['db_forums_password']) > 4)) {
-                $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
             $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);

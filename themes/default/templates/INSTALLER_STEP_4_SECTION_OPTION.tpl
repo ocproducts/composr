@@ -2,7 +2,7 @@
 	<th class="de_th form_table_field_name">
 		<span class="field_name">{NICE_NAME*}</span>
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
-		<div class="associated_details">{DESCRIPTION}</div>
+			<div class="associated_details">{DESCRIPTION}</div>
 		{+END}
 	</th>
 

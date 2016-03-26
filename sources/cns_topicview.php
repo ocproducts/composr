@@ -393,6 +393,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'is_threaded' => 0,
             'last_time' => time(),
             'metadata' => array(),
+            'row' => array(),
         );
 
         // Post query
