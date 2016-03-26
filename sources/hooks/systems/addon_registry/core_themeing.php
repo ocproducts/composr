@@ -122,9 +122,9 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/THEME_MANAGE_SCREEN.tpl',
             'themes/default/templates/THEME_IMAGE_MANAGE_SCREEN.tpl',
             'themes/default/templates/THEME_IMAGE_PREVIEW.tpl',
+            'themes/default/templates/THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_SCREEN.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_TAB.tpl',
-            'themes/default/templates/THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_RESTORE_REVISION.tpl',
             'themes/default/templates/TEMPLATE_LIST_ENTRY.tpl',
@@ -136,8 +136,8 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/TEMPLATE_TREE_NODE.tpl',
             'themes/default/templates/TEMPLATE_LIST.tpl',
             'themes/default/templates/TEMPLATE_LIST_WRAP.tpl',
-            'themes/default/javascript/themeing.js',
             'themes/default/templates/TEMPCODE_TESTER_SCREEN.tpl',
+            'themes/default/javascript/themeing.js',
             'sources/themes2.php',
             'sources/themes3.php',
             'lang/EN/themes.ini',
@@ -168,6 +168,11 @@ class Hook_addon_registry_core_themeing
             'templates/TEMPLATE_LIST.tpl' => 'administrative__template_previews_screen',
             'templates/TEMPLATE_LIST_WRAP.tpl' => 'administrative__template_previews_screen',
             'templates/TEMPCODE_TESTER_SCREEN.tpl' => 'administrative__tempcode_tester_screen',
+            'templates/THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL.tpl' => 'administrative__theme_template_editor_template_detail',
+            'templates/THEME_TEMPLATE_EDITOR_SCREEN.tpl' => 'administrative__theme_template_editor_screen',
+            'templates/THEME_TEMPLATE_EDITOR_TAB.tpl' => 'administrative__theme_template_editor_tab',
+            'templates/THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN.tpl' => 'administrative__theme_template_editor_tab',
+            'templates/THEME_TEMPLATE_EDITOR_RESTORE_REVISION.tpl' => 'administrative__theme_template_editor_restore_revision',
         );
     }
 
@@ -400,6 +405,122 @@ class Hook_addon_registry_core_themeing
         return array(
             lorem_globalise(do_lorem_template('TEMPCODE_TESTER_SCREEN', array(
                 'TITLE' => lorem_title(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__theme_template_editor_template_detail()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL', array(
+                'FILE' => lorem_word(),
+                'FULL_PATH' => lorem_word(),
+                'LAST_EDITING_USERNAME' => lorem_word(),
+                'LAST_EDITING_DATE' => placeholder_date(),
+                'FILE_SIZE' => placeholder_number(),
+                'ADDON' => lorem_word(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__theme_template_editor_screen()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'FILES_TO_LOAD' => array(),
+                'THEME' => lorem_word(),
+                'POST_URL' => placeholder_url(),
+                'PREVIEW_URL' => placeholder_url(),
+                'WARNING_DETAILS' => '',
+                'PING_URL' => placeholder_url(),
+                'ACTIVE_GUID' => placeholder_id(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__theme_template_editor_tab()
+    {
+        $_parameters = do_lorem_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => true, 'DISABLED' => false, 'CLASS' => '', 'NAME' => placeholder_id(), 'TEXT' => lorem_phrase()));
+
+        $parameters = do_lorem_template('THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN', array(
+            'FILE_ID' => lorem_word(),
+            'PARAMETERS' => $_parameters,
+            'STUB' => 'parameter',
+            'LANG' => do_lang_tempcode('INSERT_PARAMETER'),
+        ));
+
+        $guids = array(array(
+            'GUID_FILENAME' => lorem_word(),
+            'GUID_LINE' => placeholder_number(),
+            'GUID_GUID' => placeholder_id(),
+            'GUID_IS_LIVE' => false,
+        ));
+
+        $related = array(placeholder_id());
+
+        return array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_EDITOR_TAB', array(
+                'THEME' => lorem_word(),
+                'FILE' => lorem_word(),
+                'FILE_ID' => lorem_word(),
+                'CONTENTS' => lorem_paragraph(),
+                'HIGHLIGHTER_TYPE' => 'htm',
+                'REVISIONS' => placeholder_table(),
+                'GUIDS' => $guids,
+                'RELATED' => $related,
+                'PREVIEW_URL' => placeholder_url(),
+
+                'INCLUDE_TEMPCODE_EDITING' => true,
+                'PARAMETERS' => $parameters,
+                'DIRECTIVES' => new Tempcode(),
+                'MISC_SYMBOLS' => new Tempcode(),
+                'PROGRAMMATIC_SYMBOLS' => new Tempcode(),
+                'ABSTRACTION_SYMBOLS' => new Tempcode(),
+                'ARITHMETICAL_SYMBOLS' => new Tempcode(),
+                'FORMATTING_SYMBOLS' => new Tempcode(),
+                'LOGICAL_SYMBOLS' => new Tempcode(),
+
+                'INCLUDE_CSS_EDITING' => false,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__theme_template_editor_restore_revision()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('THEME_TEMPLATE_EDITOR_RESTORE_REVISION', array(
+                'DATE' => placeholder_date(),
+                'FILE' => lorem_word(),
+                'REVISION_ID' => placeholder_id(),
             )), null, '', true)
         );
     }
