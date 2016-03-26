@@ -39,7 +39,7 @@
 					{!REDIRECT_TO_PAGE}
 				</th>
 				<th>
-					<abbr title="{!IS_TRANSPARENT_REDIRECT=}">{!REDIRECT_TRANS_SHORT}</abbr>
+					<abbr title="{$STRIP_TAGS,{!IS_TRANSPARENT_REDIRECT}}">{!REDIRECT_TRANS_SHORT}</abbr>
 				</th>
 				<th>
 				</th>
@@ -77,7 +77,7 @@
 					{!REDIRECT_TO_PAGE}
 				</th>
 				<th>
-					<abbr title="{!IS_TRANSPARENT_REDIRECT=}">{!REDIRECT_TRANS_SHORT}</abbr>
+					<abbr title="{$STRIP_TAGS,{!IS_TRANSPARENT_REDIRECT}}">{!REDIRECT_TRANS_SHORT}</abbr>
 				</th>
 				<th>
 				</th>
