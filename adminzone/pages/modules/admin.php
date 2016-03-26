@@ -173,6 +173,7 @@ class Module_admin
             array('maximum', 'limit', 'total', 'max', 'increase', 'long', 'count', 'tally'),
             array('characters', 'words', 'bytes'),
 
+            array('integer', 'number'),
             array('webclipicon', 'webclip', 'apple touch icon'),
             array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
             array('delineate', 'delimit', 'delimitate', 'demarcate'),
