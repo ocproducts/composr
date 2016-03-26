@@ -816,7 +816,7 @@ class Module_admin_themes
             );
         }
 
-        // NB: Files are loaded via AJAX theme_editor_load snippet hook, and saved via theme_editor_save snippet hook
+        // NB: Files are loaded via AJAX template_editor_load snippet hook, and saved via template_editor_save snippet hook
 
         // Conflict resolution
         list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
@@ -824,7 +824,7 @@ class Module_admin_themes
         // Screen preview feature
         $preview_url = get_param_string('preview_url', null);
 
-        return do_template('THEME_EDITOR_SCREEN', array(
+        return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
             'TITLE' => $this->title,
             'FILES_TO_LOAD' => $files_to_load,
             'THEME' => $theme,

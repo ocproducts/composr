@@ -450,7 +450,7 @@
 {$,Buttons}
 
 <div class="float_surrounder buttons_group">
-	<input onclick="disable_button_just_clicked(this); theme_editor_tab_save_content('{FILE;^*}'); return false;" accesskey="U" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+	<input onclick="disable_button_just_clicked(this); template_editor_tab_save_content('{FILE;^*}'); return false;" accesskey="U" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 
 	{+START,IF_PASSED,PREVIEW_URL}
 		<input onclick="this.form.target='_blank'; this.form.action='{PREVIEW_URL;*}';" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
@@ -511,7 +511,7 @@
 			<ul>
 				{+START,LOOP,RELATED}
 					<li>
-						<a onclick="theme_editor_add_tab('{_loop_var;^*}'); return false;" href="#">{_loop_var*}</a>
+						<a onclick="template_editor_add_tab('{_loop_var;^*}'); return false;" href="#">{_loop_var*}</a>
 					</li>
 				{+END}
 			</ul>

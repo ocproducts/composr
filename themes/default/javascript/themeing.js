@@ -1,6 +1,6 @@
 "use strict";
 
-window.theme_editor_open_files={};
+window.template_editor_open_files={};
 
 /*
 Naming conventions...
@@ -16,7 +16,7 @@ function file_to_file_id(file)
 	return file.replace(/\//,'__').replace(/:/,'__');
 }
 
-function theme_editor_assign_unload_event()
+function template_editor_assign_unload_event()
 {
 	add_event_listener_abstract(window,'beforeunload',function(event) {
 		if (!event) event=window.event;
@@ -79,7 +79,7 @@ function add_template()
 									break;
 							}
 
-							theme_editor_add_tab(file);
+							template_editor_add_tab(file);
 						}
 					},
 					'{!themes:ADD_TEMPLATE;^}'
@@ -92,12 +92,12 @@ function add_template()
 	return false;
 }
 
-function theme_editor_add_tab_wrap(file)
+function template_editor_add_tab_wrap(file)
 {
-	theme_editor_add_tab(document.getElementById('theme_files').value);
+	template_editor_add_tab(document.getElementById('theme_files').value);
 }
 
-function theme_editor_add_tab(file)
+function template_editor_add_tab(file)
 {
 	var tab_title=file.replace(/^.*\//,'');
 
@@ -108,13 +108,13 @@ function theme_editor_add_tab(file)
 	{
 		select_tab('g',file_id);
 
-		theme_editor_show_tab(file_id);
+		template_editor_show_tab(file_id);
 
 		return;
 	}
 
 	// Create new tab header
-	var headers=document.getElementById('theme_editor_tab_headers');
+	var headers=document.getElementById('template_editor_tab_headers');
 	var header=document.createElement('a');
 	header.setAttribute('aria-controls','g_'+file_id);
 	header.setAttribute('role','tab');
@@ -128,7 +128,7 @@ function theme_editor_add_tab(file)
 
 		select_tab('g',file_id);
 
-		theme_editor_show_tab(file_id);
+		template_editor_show_tab(file_id);
 
 		return false;
 	};
@@ -149,23 +149,23 @@ function theme_editor_add_tab(file)
 		cancel_bubbling(event);
 		if (typeof event.preventDefault!='undefined') event.preventDefault();
 
-		if (window.theme_editor_open_files[file].unsaved_changes)
+		if (window.template_editor_open_files[file].unsaved_changes)
 		{
 			fauxmodal_confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}',file),function(result) {
 				if (result)
 				{
-					theme_editor_tab_unload_content(file);
+					template_editor_tab_unload_content(file);
 				}
 			},'{!Q_SURE;}',true);
 		} else {
-			theme_editor_tab_unload_content(file);
+			template_editor_tab_unload_content(file);
 		}
 	}
 	header.appendChild(close_button);
 	headers.appendChild(header);
 
 	// Create new tab body
-	var bodies=document.getElementById('theme_editor_tab_bodies');
+	var bodies=document.getElementById('template_editor_tab_bodies');
 	var body=document.createElement('div');
 	body.setAttribute('aria-labeledby','t_'+file_id);
 	body.setAttribute('role','tabpanel');
@@ -174,27 +174,27 @@ function theme_editor_add_tab(file)
 	bodies.appendChild(body);
 
 	// Set content
-	var url='theme_editor_load';
+	var url='template_editor_load';
 	url+='&file='+window.encodeURIComponent(file);
-	url+='&theme='+window.encodeURIComponent(window.theme_editor_theme);
-	if (typeof window.theme_editor_active_guid!='undefined')
+	url+='&theme='+window.encodeURIComponent(window.template_editor_theme);
+	if (typeof window.template_editor_active_guid!='undefined')
 	{
-		url+='&active_guid='+window.encodeURIComponent(window.theme_editor_active_guid);
+		url+='&active_guid='+window.encodeURIComponent(window.template_editor_active_guid);
 	}
 	load_snippet(url,null,function(ajax_result) {
-		theme_editor_tab_loaded_content(ajax_result,file);
+		template_editor_tab_loaded_content(ajax_result,file);
 	});
 
 	// Cleanup
-	theme_editor_clean_tabs();
+	template_editor_clean_tabs();
 
 	// Select tab
 	select_tab('g',file_id);
 
-	theme_editor_show_tab(file_id);
+	template_editor_show_tab(file_id);
 }
 
-function theme_editor_show_tab(file_id)
+function template_editor_show_tab(file_id)
 {
 	window.setTimeout(function() {
 		if (document.getElementById('t_'+file_id).className.indexOf('tab_active')==-1)
@@ -218,7 +218,7 @@ function theme_editor_show_tab(file_id)
 	},1000);
 }
 
-function theme_editor_tab_loaded_content(ajax_result,file)
+function template_editor_tab_loaded_content(ajax_result,file)
 {
 	var file_id=file_to_file_id(file);
 
@@ -231,85 +231,85 @@ function theme_editor_tab_loaded_content(ajax_result,file)
 			var editor=window.ace_editors[textarea_id];
 			var editor_session=editor.getSession();
 			editor_session.on('change',function() {
-				theme_editor_tab_mark_changed_content(file);
+				template_editor_tab_mark_changed_content(file);
 			});
 		} else
 		{
 			add_event_listener_abstract(get_file_textbox(file),'change',function() {
-				theme_editor_tab_mark_changed_content(file);
+				template_editor_tab_mark_changed_content(file);
 			});
 		}
 	},100);
 
-	window.theme_editor_open_files[file]={
+	window.template_editor_open_files[file]={
 		unsaved_changes: false
 	};
 }
 
-function theme_editor_tab_mark_changed_content(file)
+function template_editor_tab_mark_changed_content(file)
 {
-	window.theme_editor_open_files[file].unsaved_changes=true;
+	window.template_editor_open_files[file].unsaved_changes=true;
 
 	var file_id=file_to_file_id(file);
 	var ob=document.getElementById('t_'+file_id);
 	ob.className=ob.className.replace(/ file_nonchanged/,' file_changed');
 }
 
-function theme_editor_tab_save_content(file)
+function template_editor_tab_save_content(file)
 {
-	var url='theme_editor_save';
+	var url='template_editor_save';
 	url+='&file='+window.encodeURIComponent(file);
-	url+='&theme='+window.encodeURIComponent(window.theme_editor_theme);
+	url+='&theme='+window.encodeURIComponent(window.template_editor_theme);
 	editarea_reverse_refresh('e_'+file_to_file_id(file));
 	var post='contents='+window.encodeURIComponent(get_file_textbox(file).value);
 	load_snippet(url,post,function(ajax_result) {
 		fauxmodal_alert(ajax_result.responseText,null,null,true);
-		theme_editor_tab_mark_nonchanged_content(file);
+		template_editor_tab_mark_nonchanged_content(file);
 	});
 }
 
-function theme_editor_tab_mark_nonchanged_content(file)
+function template_editor_tab_mark_nonchanged_content(file)
 {
-	window.theme_editor_open_files[file].unsaved_changes=false;
+	window.template_editor_open_files[file].unsaved_changes=false;
 
 	var file_id=file_to_file_id(file);
 	var ob=document.getElementById('t_'+file_id);
 	ob.className=ob.className.replace(/ file_changed/,' file_nonchanged');
 }
 
-function theme_editor_get_tab_count()
+function template_editor_get_tab_count()
 {
 	var count=0;
-	for (var k in window.theme_editor_open_files)
+	for (var k in window.template_editor_open_files)
 	{
-		if (window.theme_editor_open_files.hasOwnProperty(k)) count++;
+		if (window.template_editor_open_files.hasOwnProperty(k)) count++;
 	}
 	return count;
 }
 
-function theme_editor_tab_unload_content(file)
+function template_editor_tab_unload_content(file)
 {
 	var file_id=file_to_file_id(file);
-	var was_active=theme_editor_remove_tab(file_id);
+	var was_active=template_editor_remove_tab(file_id);
 
-	delete window.theme_editor_open_files[file];
+	delete window.template_editor_open_files[file];
 
 	if (was_active)
 	{
 		// Select tab
-		var c=document.getElementById('theme_editor_tab_headers').childNodes;
+		var c=document.getElementById('template_editor_tab_headers').childNodes;
 		if (typeof c[0]!='undefined')
 		{
 			var next_file_id=c[0].id.substr(2);
 
 			select_tab('g',next_file_id);
 
-			theme_editor_show_tab(next_file_id);
+			template_editor_show_tab(next_file_id);
 		}
 	}
 }
 
-function theme_editor_remove_tab(file_id)
+function template_editor_remove_tab(file_id)
 {
 	var header=document.getElementById('t_'+file_id);
 	if (header)
@@ -320,7 +320,7 @@ function theme_editor_remove_tab(file_id)
 		var body=document.getElementById('g_'+file_id);
 		if (body) body.parentNode.removeChild(body);
 
-		theme_editor_clean_tabs();
+		template_editor_clean_tabs();
 
 		return is_active;
 	}
@@ -328,10 +328,10 @@ function theme_editor_remove_tab(file_id)
 	return false;
 }
 
-function theme_editor_clean_tabs()
+function template_editor_clean_tabs()
 {
-	var headers=document.getElementById('theme_editor_tab_headers');
-	var bodies=document.getElementById('theme_editor_tab_bodies');
+	var headers=document.getElementById('template_editor_tab_headers');
+	var bodies=document.getElementById('template_editor_tab_bodies');
 	var num_tabs=headers.childNodes.length;
 
 	var header=document.getElementById('t_default');

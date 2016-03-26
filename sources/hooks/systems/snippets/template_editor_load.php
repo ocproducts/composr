@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_snippet_theme_editor_load
+class Hook_snippet_template_editor_load
 {
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
@@ -195,7 +195,7 @@ class Hook_snippet_theme_editor_load
             make_missing_directory(dirname($custom_path));
         }
 
-        return do_template('THEME_EDITOR_TAB', array(
+        return do_template('THEME_TEMPLATE_EDITOR_TAB', array(
             'THEME' => $theme,
             'FILE' => $file,
             'FILE_ID' => $file_id,
@@ -235,7 +235,7 @@ class Hook_snippet_theme_editor_load
             foreach ($_parameters as $parameter) {
                 $parameters->attach(form_input_list_entry($parameter . '__0', false, $parameter));
             }
-            $parameters = do_template('THEME_EDITOR_TEMPCODE_DROPDOWN', array(
+            $parameters = do_template('THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN', array(
                 '_GUID' => '50f31c49c99b864c1719fb51ed426274',
                 'FILE_ID' => $file_id,
                 'PARAMETERS' => $parameters,
@@ -373,7 +373,7 @@ class Hook_snippet_theme_editor_load
             $lang = do_lang_tempcode($stub . '__' . $op);
             $out->attach(form_input_list_entry($op . '__' . $arity, false, $lang));
         }
-        return do_template('THEME_EDITOR_TEMPCODE_DROPDOWN', array(
+        return do_template('THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN', array(
             '_GUID' => 'c6d24f278ec874a4b6abff8c359f80ba',
             'FILE_ID' => $file_id,
             'PARAMETERS' => $out,

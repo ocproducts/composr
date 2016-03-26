@@ -15,7 +15,7 @@
 {+END}
 
 <noscript>
-	{!THEME_EDITOR_ACCESSIBILITY_HELP}
+	{!TEMPLATE_EDITOR_ACCESSIBILITY_HELP}
 </noscript>
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{POST_URL*}">
@@ -25,9 +25,9 @@
 
 	<div class="float_surrounder">
 		{$,Tree list}
-		<div class="theme_editor_file_selector">
+		<div class="template_editor_file_selector">
 			<div class="inner">
-				<input type="hidden" id="theme_files" name="theme_files" value="" onchange="theme_editor_add_tab_wrap();" />
+				<input type="hidden" id="theme_files" name="theme_files" value="" onchange="template_editor_add_tab_wrap();" />
 				<div id="tree_list__root_theme_files">
 					<!-- List put in here -->
 				</div>
@@ -37,36 +37,36 @@
 		</div>
 
 		{$,Tabs}
-		<div class="theme_editor_tabs">
+		<div class="template_editor_tabs">
 			<div class="float_surrounder">
 				<div class="float_surrounder">
-					<div class="tabs" role="tablist" id="theme_editor_tab_headers"></div>
+					<div class="tabs" role="tablist" id="template_editor_tab_headers"></div>
 				</div>
-				<div class="tab_surround" id="theme_editor_tab_bodies"></div>
+				<div class="tab_surround" id="template_editor_tab_bodies"></div>
 			</div>
 		</div>
 	</div>
 </form>
 
 <script>// <![CDATA[
-	window.theme_editor_theme='{THEME;^/}';
+	window.template_editor_theme='{THEME;^/}';
 	{+START,IF_PASSED,ACTIVE_GUID}
-		window.theme_editor_active_guid='{ACTIVE_GUID;^/}';
+		window.template_editor_active_guid='{ACTIVE_GUID;^/}';
 	{+END}
 
 	add_event_listener_abstract(window,'load',function() {
-		theme_editor_clean_tabs();
+		template_editor_clean_tabs();
 
 		window.sitemap=new tree_list('theme_files','data/ajax_tree.php?hook=choose_theme_files&theme={THEME;/}{$KEEP;/}',null,'',false,null,false,true);
 
 		window.setTimeout(function() {
 			{+START,LOOP,FILES_TO_LOAD}
-				theme_editor_add_tab('{_loop_var;^/}');
+				template_editor_add_tab('{_loop_var;^/}');
 			{+END}
 		},1000);
 
-		$('.theme_editor_file_selector').resizable();
+		$('.template_editor_file_selector').resizable();
 
-		theme_editor_assign_unload_event();
+		template_editor_assign_unload_event();
 	});
 //]]></script>

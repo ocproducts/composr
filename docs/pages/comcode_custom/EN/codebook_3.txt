@@ -789,7 +789,7 @@ Here are some assorted hints:
 
 Considerations for design and themeing:
  - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
- - In particular, do not make theme image changes using Composr's theme editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
+ - In particular, do not make theme image changes using Composr's themes editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
  - If you are adding new functionality and write new templates, it is best to save these into the default theme's [tt]templates_custom[/tt]/[tt]javascript_custom[/tt]/[tt]xml_custom[/tt]/[tt]text_custom[/tt]/[tt]css_custom[/tt] directories, so that your functionality works on all themes. If you are overriding default theme templates/CSS, it is then that you save them into your site's theme. A similar rule applies for custom images.
 
 Take particular care with Comcode pages:

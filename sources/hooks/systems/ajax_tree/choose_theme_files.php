@@ -365,7 +365,7 @@ class Hook_choose_theme_files
             $action_log_times = $this->load_actionlog_times_templates($theme, $template_file);
         }
 
-        return do_template('THEME_EDITOR_TEMPLATE_DETAIL', array(
+        return do_template('THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL', array(
             'FILE' => $template_file,
             'FULL_PATH' => $template_file_path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$template_file]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$template_file]['member_id']) : null,
@@ -390,7 +390,7 @@ class Hook_choose_theme_files
             $action_log_times = $this->load_actionlog_times_pages($zone, $page);
         }
 
-        return do_template('THEME_EDITOR_TEMPLATE_DETAIL', array(
+        return do_template('THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL', array(
             'FILE' => $zone . ':' . $page,
             'FULL_PATH' => $path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$page]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$page]['member_id']) : null,

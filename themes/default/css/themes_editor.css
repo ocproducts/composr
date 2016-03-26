@@ -53,9 +53,9 @@
 	vertical-align: middle;
 }
 
-/* Theme editor (template editor) */
+/* Template editor */
 
-.theme_editor_file_selector {
+.template_editor_file_selector {
 	width: 20em;
 	padding-right: 16px;
 	float: left;
@@ -63,14 +63,14 @@
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
 }
 
-.theme_editor_file_selector>.inner {
+.template_editor_file_selector>.inner {
 	overflow-x: hidden;
 	overflow-y: auto;
 	width: 100%;
 	height: 100%;
 }
 
-.theme_editor_tabs {
+.template_editor_tabs {
 }
 
 .file_changed {

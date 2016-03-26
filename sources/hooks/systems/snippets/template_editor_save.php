@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_snippet_theme_editor_save
+class Hook_snippet_template_editor_save
 {
     /**
      * Run function for snippet hooks. Generates XHTML to insert into a page using AJAX.
