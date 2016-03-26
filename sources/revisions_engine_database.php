@@ -437,123 +437,120 @@ class RevisionEngineDatabase
 
         require_lang('actionlog');
 
-        // Revisions
+        // Revisions...
+
         $undo_revision = get_param_integer('undo_revision', null);
-        if ($undo_revision === null) {
-            require_code('files');
-            require_code('diff');
-            require_code('templates_results_table');
 
-            $start = get_param_integer('revisions_start', 0);
-            $max = get_param_integer('revisions_max', 5);
+        require_code('files');
+        require_code('diff');
+        require_code('templates_results_table');
 
-            $sortables = array('log_time' => do_lang_tempcode('DATE'));
-            $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC'), 2);
-            if (count($test) == 1) {
-                $test[1] = 'DESC';
+        $start = get_param_integer('revisions_start', 0);
+        $max = get_param_integer('revisions_max', 5);
+
+        $sortables = array('log_time' => do_lang_tempcode('DATE'));
+        $test = explode(' ', get_param_string('revisions_sort', 'log_time DESC'), 2);
+        if (count($test) == 1) {
+            $test[1] = 'DESC';
+        }
+        list($sortable, $sort_order) = $test;
+        if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
+            log_hack_attack_and_exit('ORDERBY_HACK');
+        }
+
+        $max_rows = $this->total_revisions(array($resource_type), $resource_id);
+        if (!has_js()) {
+            $max = $max_rows; // No AJAX pagination if no JS
+        }
+        $revisions = $this->find_revisions(array($resource_type), $resource_id, null, null, null, $max, $start);
+
+        $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
+
+        $_fields_titles = array(
+            do_lang_tempcode('DATE_TIME'),
+            do_lang_tempcode('MEMBER'),
+            do_lang_tempcode('SIZE_CHANGE'),
+            do_lang_tempcode('CHANGE_MICRO'),
+            do_lang_tempcode('UNDO'),
+        );
+        if ($do_actionlog) {
+            $_fields_titles[] = do_lang_tempcode('LOG');
+        }
+
+        $more_recent_text = $text;
+        $field_rows = new Tempcode();
+        foreach ($revisions as $revision) {
+            $date = get_timezoned_date($revision['log_time']);
+
+            $size_change = strlen($more_recent_text) - strlen($revision['r_original_text']);
+
+            $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
+
+            if (function_exists('diff_simple_2')) {
+                $rendered_diff = diff_simple_2($revision['r_original_text'], $more_recent_text);
+                $diff_icon = do_template('REVISIONS_DIFF_ICON', array('_GUID' => 'e7e8b28e58f1699ecc960ad7032e3730', 'RENDERED_DIFF' => $rendered_diff,
+                ));
+            } else {
+                $diff_icon = do_lang_tempcode('NA_EM');
             }
-            list($sortable, $sort_order) = $test;
-            if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
-                log_hack_attack_and_exit('ORDERBY_HACK');
+
+            $undo_url = get_self_url(false, false, array('undo_revision' => $revision['id']));
+            $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);
+
+            if (is_null($revision['r_moderatorlog_id'])) {
+                $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
+                $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_actionlog_id']));
+            } else {
+                $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_moderatorlog_id'], 'mode' => 'cns'), get_module_zone('admin_actionlog'));
+                $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_moderatorlog_id']));
             }
 
-            $max_rows = $this->total_revisions(array($resource_type), $resource_id);
-            if (!has_js()) {
-                $max = $max_rows; // No AJAX pagination if no JS
-            }
-            $revisions = $this->find_revisions(array($resource_type), $resource_id, null, null, null, $max, $start);
-
-            $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
-
-            $_fields_titles = array(
-                do_lang_tempcode('DATE_TIME'),
-                do_lang_tempcode('MEMBER'),
-                do_lang_tempcode('SIZE_CHANGE'),
-                do_lang_tempcode('CHANGE_MICRO'),
-                do_lang_tempcode('UNDO'),
+            $_revision = array(
+                escape_html($date),
+                $member_link,
+                escape_html(clean_file_size($size_change)),
+                $diff_icon,
+                $undo_link,
             );
             if ($do_actionlog) {
-                $_fields_titles[] = do_lang_tempcode('LOG');
+                $_revision[] = $actionlog_link;
             }
+            $field_rows->attach(results_entry($_revision, false));
 
-            $more_recent_text = $text;
-            $field_rows = new Tempcode();
-            foreach ($revisions as $revision) {
-                $date = get_timezoned_date($revision['log_time']);
+            $more_recent_text = $revision['r_original_text']; // For next iteration
+        }
 
-                $size_change = strlen($more_recent_text) - strlen($revision['r_original_text']);
+        if ($field_rows->is_empty()) {
+            return new Tempcode();
+        }
 
-                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
+        $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
+        $results = results_table(
+            do_lang_tempcode('REVISIONS'),
+            $start,
+            'revisions_start',
+            $max,
+            'revisions_max',
+            $max_rows,
+            $fields_titles,
+            $field_rows,
+            $sortables,
+            $sortable,
+            $sort_order,
+            'revisions_sort'
+        );
 
-                if (function_exists('diff_simple_2')) {
-                    $rendered_diff = diff_simple_2($revision['r_original_text'], $more_recent_text);
-                    $diff_icon = do_template('REVISIONS_DIFF_ICON', array('_GUID' => 'e7e8b28e58f1699ecc960ad7032e3730', 'RENDERED_DIFF' => $rendered_diff,
-                    ));
-                } else {
-                    $diff_icon = do_lang_tempcode('NA_EM');
-                }
+        $revisions_tpl = do_template('REVISIONS_WRAP', array(
+            '_GUID' => '1fc38d9d7ec57af110759352446e533d',
+            'RESULTS' => $results,
+        ));
 
-                $undo_url = get_self_url(false, false, array('undo_revision' => $revision['id']));
-                $undo_link = hyperlink($undo_url, do_lang_tempcode('UNDO'), false, false, $date);
+        $_text = $GLOBALS['SITE_DB']->query_select_value_if_there('revisions', 'r_original_text', array('id' => $undo_revision));
+        if (!is_null($_text)) {
+            $text = $_text;
+            $revision_loaded = true;
 
-                if (is_null($revision['r_moderatorlog_id'])) {
-                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_actionlog_id'], 'mode' => 'cms'), get_module_zone('admin_actionlog'));
-                    $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_actionlog_id']));
-                } else {
-                    $actionlog_url = build_url(array('page' => 'admin_actionlog', 'type' => 'view', 'id' => $revision['r_moderatorlog_id'], 'mode' => 'cns'), get_module_zone('admin_actionlog'));
-                    $actionlog_link = hyperlink($actionlog_url, do_lang_tempcode('LOG'), false, false, strval($revision['r_moderatorlog_id']));
-                }
-
-                $_revision = array(
-                    escape_html($date),
-                    $member_link,
-                    escape_html(clean_file_size($size_change)),
-                    $diff_icon,
-                    $undo_link,
-                );
-                if ($do_actionlog) {
-                    $_revision[] = $actionlog_link;
-                }
-                $field_rows->attach(results_entry($_revision, false));
-
-                $more_recent_text = $revision['r_original_text']; // For next iteration
-            }
-
-            if ($field_rows->is_empty()) {
-                return new Tempcode();
-            }
-
-            $fields_titles = results_field_title($_fields_titles, $sortables, 'revisions_sort', $sortable . ' ' . $sort_order);
-            $results = results_table(
-                do_lang_tempcode('REVISIONS'),
-                $start,
-                'revisions_start',
-                $max,
-                'revisions_max',
-                $max_rows,
-                $fields_titles,
-                $field_rows,
-                $sortables,
-                $sortable,
-                $sort_order,
-                'revisions_sort'
-            );
-
-            $revisions_tpl = do_template('REVISIONS_WRAP', array(
-                '_GUID' => '1fc38d9d7ec57af110759352446e533d',
-                'RESULTS' => $results,
-            ));
-
-        } else {
-            $_text = $GLOBALS['SITE_DB']->query_select_value_if_there('revisions', 'r_original_text', array('id' => $undo_revision));
-            if (!is_null($_text)) {
-                $text = $_text;
-                $revision_loaded = true;
-
-                $revisions_tpl = do_template('REVISION_UNDO');
-            } else {
-                $revisions_tpl = new Tempcode();
-            }
+            $revisions_tpl->attach(do_template('REVISION_UNDO'));
         }
 
         return $revisions_tpl;

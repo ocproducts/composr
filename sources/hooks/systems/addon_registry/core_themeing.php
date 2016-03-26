@@ -126,6 +126,7 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/THEME_TEMPLATE_EDITOR_TAB.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_TEMPLATE_DETAIL.tpl',
             'themes/default/templates/THEME_TEMPLATE_EDITOR_TEMPCODE_DROPDOWN.tpl',
+            'themes/default/templates/THEME_TEMPLATE_EDITOR_RESTORE_REVISION.tpl',
             'themes/default/templates/TEMPLATE_LIST_ENTRY.tpl',
             'themes/default/templates/TEMPLATE_LIST_SCREEN.tpl',
             'themes/default/templates/TEMPLATE_EDIT_LINK.tpl',

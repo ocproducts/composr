@@ -174,13 +174,7 @@ function template_editor_add_tab(file)
 	bodies.appendChild(body);
 
 	// Set content
-	var url='template_editor_load';
-	url+='&file='+window.encodeURIComponent(file);
-	url+='&theme='+window.encodeURIComponent(window.template_editor_theme);
-	if (typeof window.template_editor_active_guid!='undefined')
-	{
-		url+='&active_guid='+window.encodeURIComponent(window.template_editor_active_guid);
-	}
+	var url=template_editor_loading_url(file);
 	load_snippet(url,null,function(ajax_result) {
 		template_editor_tab_loaded_content(ajax_result,file);
 	});
@@ -192,6 +186,22 @@ function template_editor_add_tab(file)
 	select_tab('g',file_id);
 
 	template_editor_show_tab(file_id);
+}
+
+function template_editor_loading_url(file,revision_id)
+{
+	var url='template_editor_load';
+	url+='&file='+window.encodeURIComponent(file);
+	url+='&theme='+window.encodeURIComponent(window.template_editor_theme);
+	if (typeof window.template_editor_active_guid!='undefined')
+	{
+		url+='&active_guid='+window.encodeURIComponent(window.template_editor_active_guid);
+	}
+	if (typeof revision_id!='undefined')
+	{
+		url+='&undo_revision='+window.encodeURIComponent(revision_id);
+	}
+	return url;
 }
 
 function template_editor_show_tab(file_id)
@@ -348,6 +358,21 @@ function template_editor_clean_tabs()
 		set_inner_html(headers,'<a href="#" id="t_default" class="tab" onclick="event.returnValue=false;"><span>&mdash;</span></a>');
 		set_inner_html(bodies,'<div id="g_default"><p class="nothing_here">{!NA}</p<</div>');
 	}
+}
+
+function template_editor_restore_revision(file,revision_id)
+{
+	var file_id=file_to_file_id(file);
+
+	// Set content from revision
+	var url=template_editor_loading_url(file,revision_id);
+	load_snippet(url,null,function(ajax_result) {
+		document.getElementById('t_'+file_id).className='tab tab_active';
+
+		template_editor_tab_loaded_content(ajax_result,file);
+	});
+
+	return false;
 }
 
 /* Editing */
