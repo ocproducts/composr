@@ -37,7 +37,6 @@ function _redirect_screen($title, $url, $text = null, $intermediary_hop = false,
     }
 
     global $ATTACHED_MESSAGES_RAW;
-    $special_page_type = get_param_string('special_page_type', 'view');
 
     foreach ($ATTACHED_MESSAGES_RAW as $message) {
         $_message = is_object($message[0]) ? $message[0]->evaluate() : escape_html($message[0]);

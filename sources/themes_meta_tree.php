@@ -245,16 +245,17 @@ function create_template_tree_metadata($type = 0, $identifier = '', $children = 
  * Convert a template tree structure into a HTML representation.
  *
  * @param  array $metadata Tempcode metadata node
+ * @param  array $collected_templates A map of templates detected will be saved into here
  * @return string HTML representation
  */
-function find_template_tree_nice($metadata)
+function find_template_tree_nice($metadata, &$collected_templates)
 {
     $identifier = $metadata['identifier'];
     $children = $metadata['children'];
 
     // Simplify?
     if (($metadata['type'] != TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE) && (count($metadata['children']) == 1)) {
-        return find_template_tree_nice($metadata['children'][0]);
+        return find_template_tree_nice($metadata['children'][0], $collected_templates);
     }
 
     // Basic node rendering
@@ -262,6 +263,8 @@ function find_template_tree_nice($metadata)
         case TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE: // Full template editing link
             $file = $identifier;
             $codename = basename($identifier, '.tpl');
+
+            $collected_templates[$file] = true;
 
             // Find GUID
             $guid = mixed();
@@ -369,7 +372,7 @@ function find_template_tree_nice($metadata)
     // Render
     $child_items = array();
     foreach ($children as $child) {
-        $child_rendered = find_template_tree_nice($child);
+        $child_rendered = find_template_tree_nice($child, $collected_templates);
         if ($child_rendered != '') {
             $_middle = do_template('TEMPLATE_TREE_ITEM_WRAP', array('_GUID' => '59f003e298db3b621132649d2e315f9d', 'CONTENT' => $child_rendered));
             $child_items[$_middle->evaluate()] = true;

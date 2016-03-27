@@ -137,9 +137,9 @@ class Hook_snippet_template_editor_load
                     'hook' => $all_previews[$file][0],
                     'function' => $all_previews[$file][1],
                     'arg' => '',
+                    'cache_blocks' => 0,
                     'keep_theme' => $theme,
                     'keep_wide_high' => 1,
-                    'keep_cache' => 0,
                     // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
                 );
                 $screen_preview_url = build_url($url_map, get_module_zone('admin_themes'));
@@ -188,8 +188,8 @@ class Hook_snippet_template_editor_load
 
             $url_map = array(
                 'page' => $page,
+                'cache_blocks' => 0,
                 'keep_theme' => $theme,
-                'keep_cache' => 0,
                 // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
             );
             $screen_preview_url = build_url($url_map, $zone);

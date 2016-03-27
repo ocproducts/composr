@@ -505,7 +505,16 @@ function staff_actions_select(ob)
 	{
 		if (typeof form.elements['cache']!='undefined')
 			form.elements['cache'].value=(val.substring(val.length-4,val.length)=='.css')?'1':'0';
-		var test=window.open('','cms_dev_tools'+Math.floor(Math.random()*10000),'width=1000,height=700,scrollbars=yes');
+		var window_name='cms_dev_tools'+Math.floor(Math.random()*10000);
+		var window_options;
+		if (val=='templates')
+		{
+			window_options='width='+window.screen.availWidth+',height='+window.screen.availHeight+',scrollbars=yes';
+		} else
+		{
+			window_options='width=1000,height=700,scrollbars=yes';
+		}
+		var test=window.open('',window_name,window_options);
 		if (test) form.setAttribute('target',test.name);
 		if (!is_form_submit)
 			form.submit();

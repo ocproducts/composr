@@ -1196,7 +1196,7 @@ class Module_admin_themes
 
                     $template_used = "(" . implode(', ', $all_previews__by_screen[$func]) . ")";
 
-                    $tpl_x = do_template('TEMPLATE_LIST', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview\_\_#', '', $func), 'LIST' => $template_used));
+                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview\_\_#', '', $func), 'LIST' => $template_used));
                     if (preg_match('#^tpl_preview\_\_administrative\_\_#', $func) != 0) {
                         $lis_admin->attach($tpl_x);
                     } else {
@@ -1207,7 +1207,7 @@ class Module_admin_themes
                 }
             } else {
                 // No preview for these
-                $tpl_x = do_template('TEMPLATE_LIST', array('_GUID' => '96115a3b168769744b4b69fd2e1e7f6c', 'URL' => '', 'COLOR' => 'red', 'TEMPLATE' => $t, 'LIST' => ''));
+                $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '96115a3b168769744b4b69fd2e1e7f6c', 'URL' => '', 'COLOR' => 'red', 'TEMPLATE' => $t, 'LIST' => ''));
                 $lis->attach($tpl_x);
             }
         }
@@ -1219,7 +1219,7 @@ class Module_admin_themes
         /* $lis (the main previews) will be displayed in the main INDEX_SCREEN content */
 
         // LISTING ADMIN PREVIEWS
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => '1e847f3c75998f2276765bc0c8ab6b78', 'LI' => $lis_admin, 'TITLE' => do_lang('ADMIN_SCREENS'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => '1e847f3c75998f2276765bc0c8ab6b78', 'LI' => $lis_admin, 'TITLE' => do_lang('ADMIN_SCREENS'))));
 
         // LISTING COMCODE FILES
         $com_li = new Tempcode();
@@ -1234,10 +1234,10 @@ class Module_admin_themes
 
                 $file = $page . '.txt';
                 $url = build_url(array('page' => $page), $zone);
-                $com_li->attach(do_template('TEMPLATE_LIST', array('_GUID' => '9db6fa9333470137ccf9bb752fd9b19e', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
+                $com_li->attach(do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '9db6fa9333470137ccf9bb752fd9b19e', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
             }
         }
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => 'adf69728048cbdbc3a0d9a2e2485a234', 'LI' => $com_li, 'TITLE' => do_lang('COMCODE_PAGES'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => 'adf69728048cbdbc3a0d9a2e2485a234', 'LI' => $com_li, 'TITLE' => do_lang('COMCODE_PAGES'))));
 
         // LISTING HTML FILES
         $htm_li = new Tempcode();
@@ -1246,10 +1246,10 @@ class Module_admin_themes
                 $file = $page . '.htm';
                 $url = build_url(array('page' => $page), $zone);
 
-                $htm_li->attach(do_template('TEMPLATE_LIST', array('_GUID' => '16d1c1c5dc5556254f7a3f28a44fdb52', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
+                $htm_li->attach(do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '16d1c1c5dc5556254f7a3f28a44fdb52', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
             }
         }
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => '2220938b443ecdb7d3f2d869665b3a4e', 'LI' => $htm_li, 'TITLE' => do_lang('HTML_PAGES'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => '2220938b443ecdb7d3f2d869665b3a4e', 'LI' => $htm_li, 'TITLE' => do_lang('HTML_PAGES'))));
 
         return do_template('INDEX_SCREEN', array('_GUID' => '6137f107de679580a6aafe36af427cdd', 'TITLE' => $this->title, 'CONTENT' => $lis, 'POST' => $post, 'PRE' => ''));
     }

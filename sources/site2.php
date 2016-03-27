@@ -31,10 +31,9 @@ function get_staff_actions_list()
     );
     $list += array(
         'spacer_1' => do_lang_tempcode('THEME'),
+        'templates' => do_lang_tempcode('EDIT_TEMPLATES'),
         'show_edit_links' => do_lang_tempcode('TEMPLATES_WITH_EDIT_LINKS'),
         'show_markers' => do_lang_tempcode('TEMPLATES_WITH_HTML_COMMENT_MARKERS'),
-        'tree' => do_lang_tempcode('TEMPLATE_TREE'),
-        'templates' => do_lang_tempcode('TEMPLATES'),
         'theme_images' => do_lang_tempcode('THEME_IMAGE_EDITING'),
         'code' => do_lang_tempcode('WEBSTANDARDS'),
     );

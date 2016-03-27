@@ -5,6 +5,6 @@
 </p>
 
 <ul>
-	{TEMPLATES}
+	{TREE}
 </ul>
 

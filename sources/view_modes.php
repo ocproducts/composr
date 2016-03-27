@@ -28,12 +28,12 @@ function initialise_special_page_types($special_page_type)
 {
     disable_php_memory_limit();
 
-    if ($special_page_type == 'templates') {
+    // NB: These modes will typically be used together with &cache_blocks=0&cache_comcode_pages=0. This is what unsets caching, not special_page_type directly.
+    //  The footer options do this.
+
+    if ($special_page_type == 'templates' || $special_page_type == 'tree') {
         global $RECORD_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
-    } elseif ($special_page_type == 'tree') {
-        global $RECORD_TEMPLATES_TREE;
-        $RECORD_TEMPLATES_TREE = true;
     } elseif (substr($special_page_type, 0, 12) == 'lang_content') {
         global $RECORD_LANG_STRINGS_CONTENT;
         /** A marker indicating whether all referenced content language strings need to be collected, so that the contextual editor knows what was used to generate the screen.
@@ -76,11 +76,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     }
 
     // FUDGE: Yuck. We have to after-the-fact make it wide, and empty lots of internal caching to reset the state.
-    $_GET['wide_high'] = '1';
-    $_GET['wide'] = '1';
     $GLOBALS['PANELS_CACHE'] = array();
-    $GLOBALS['IS_WIDE_HIGH_CACHE'] = 1;
-    $GLOBALS['IS_WIDE_CACHE'] = 1;
     $GLOBALS['TEMPCODE_SETGET'] = array();
     $GLOBALS['LOADED_TPL_CACHE'] = array();
     $GLOBALS['HELPER_PANEL_TEXT'] = null;
@@ -91,8 +87,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $url_map = array(
             'page' => 'admin_themes',
             'type' => 'edit_templates',
+            'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
             'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
-            'f0file' => $special_page_type,
+            'f0file' => 'css/' . $special_page_type,
             'keep_wide_high' => 1,
         );
         $url = build_url($url_map, get_module_zone('admin_themes'));
@@ -324,6 +321,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
         ));
+
     } // Language mode
     elseif (substr($special_page_type, 0, 4) == 'lang') {
         $map_a = get_file_base() . '/lang/langs.ini';
@@ -384,76 +382,78 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
     }
 
     // Template mode?
-    if (($special_page_type == 'templates') || ($special_page_type == 'tree')) {
-        require_lang('themes');
-
+    if ($special_page_type == 'templates' || $special_page_type == 'tree'/*not directly linked, but could potentially be handy*/) {
         global $RECORD_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = false;
-        $templates = new Tempcode();
+
+        // Render template tree...
+
+        require_code('themes_meta_tree');
+        if (!isset($out->metadata)) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+        $collected_templates = array(
+            'templates/HTML_HEAD.tpl' => true, // FUDGEFUDGE. Due to the Tempcode inlining optimisation, this might not be picked up on, but is an important template - so we'll force it into here
+        );
+        $_tree = find_template_tree_nice($out->metadata, $collected_templates);
+
+        $edit_url_map = array(
+            'page' => 'admin_themes',
+            'type' => 'edit_templates',
+            'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+            'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+        );
+        $edit_url = build_url($edit_url_map, get_module_zone('admin_themes'));
+
+        $tree = do_template('TEMPLATE_TREE', array(
+            '_GUID' => 'ff2a2233b8b4045ba4d8777595ef64c7',
+            'HIDDEN' => '',
+            'EDIT_URL' => $edit_url,
+            'TREE' => $_tree,
+        ));
+
+        $middle_spt = do_template('TEMPLATE_TREE_SCREEN', array(
+            '_GUID' => 'ab859f67dcb635fcb4d1747d3c6a2c17',
+            'TITLE' => get_screen_title('TEMPLATE_TREE'),
+            'TREE' => $tree,
+        ));
 
         if ($special_page_type == 'templates') {
-            $title = get_screen_title('TEMPLATES');
+            // There's some templates we won't open in the editor...
 
-            asort($RECORDED_TEMPLATES_USED);
-            foreach ($RECORDED_TEMPLATES_USED as $name => $count) {
-                $edit_url_map = array(
-                    'page' => 'admin_themes',
-                    'type' => 'edit_templates',
-                    'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
-                    'f0file' => $name,
-                );
-                $edit_url = build_url($edit_url_map, 'adminzone', null, false, true);
-
-                $templates->attach(do_template('TEMPLATE_LIST_ENTRY', array(
-                    '_GUID' => '67fb5ac96a4ab2103ae82f9be7c43e24',
-                    'COUNT' => integer_format($count),
-                    'NAME' => $name,
-                    'EDIT_URL' => $edit_url,
-                )));
-            }
-        } else { // tree
-            $title = get_screen_title('TEMPLATE_TREE');
-
-            $hidden = new Tempcode();
-            global $CSSS, $JAVASCRIPTS;
-            foreach (array_keys($CSSS) as $c) {
-                if (substr($c, 0, 8) != 'merged__') {
-                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, mt_getrandmax())) . 'file', 'css/' . $c . '.css'));
-                }
-            }
-            foreach (array_keys($JAVASCRIPTS) as $c) {
-                if (substr($c, 0, 8) != 'merged__') {
-                    $hidden->attach(form_input_hidden('f' . strval(mt_rand(0, mt_getrandmax())) . 'file', 'javascript/' . $c . '.js'));
+            $boring_templates = array(
+                'templates/CSS_NEED_INLINE.tpl' => true,
+                'templates/CSS_NEED.tpl' => true,
+                'templates/JAVASCRIPT_NEED.tpl' => true,
+                'templates/MENU_STAFF_LINK.tpl' => true,
+                'templates/HYPERLINK.tpl' => true,
+                'templates/COMCODE_SURROUND.tpl' => true,
+                'templates/PARAGRAPH.tpl' => true,
+            );
+            $collected_templates = array_diff_key($collected_templates, $boring_templates);
+            foreach ($collected_templates as $template => $_) {
+                if (substr($template, -3) == '.js') {
+                    unset($collected_templates[$template]);
                 }
             }
 
-            $edit_url_map = array(
+            // We redirect straight into the template editor (the tree may be useful)...
+
+            $url_map = array(
                 'page' => 'admin_themes',
                 'type' => 'edit_templates',
-                'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+                'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
                 'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
             );
-            $edit_url = build_url($edit_url_map, 'adminzone', null, false, true);
-
-            require_code('themes_meta_tree');
-            if (!isset($out->metadata)) {
-                fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            foreach (array_keys($collected_templates) as $i => $template_file) {
+                $url_map['f' . strval($i) . 'file'] = $template_file;
             }
-            $tree = find_template_tree_nice($out->metadata);
+            $url_map['keep_wide_high'] = 1;
+            $url = build_url($url_map, get_module_zone('admin_themes'));
 
-            $templates = do_template('TEMPLATE_TREE', array(
-                '_GUID' => 'ff2a2233b8b4045ba4d8777595ef64c7',
-                'HIDDEN' => $hidden,
-                'EDIT_URL' => $edit_url,
-                'TREE' => $tree,
-            ));
+            require_code('site2');
+            smart_redirect($url->evaluate());
         }
-
-        $middle_spt = do_template('TEMPLATE_LIST_SCREEN', array(
-            '_GUID' => 'ab859f67dcb635fcb4d1747d3c6a2c17',
-            'TITLE' => $title,
-            'TEMPLATES' => $templates,
-        ));
     }
 
     // Query mode?

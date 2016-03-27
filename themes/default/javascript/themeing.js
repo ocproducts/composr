@@ -171,6 +171,11 @@ function template_editor_add_tab(file)
 	body.setAttribute('role','tabpanel');
 	body.id='g_'+file_id;
 	body.style.display='none';
+	var loading_image=document.createElement('img');
+	loading_image.className='ajax_loading';
+	loading_image.src='{$IMG;,loading}'.replace(/^https?:/,window.location.protocol);
+	loading_image.style.height='12px';
+	body.appendChild(loading_image);
 	bodies.appendChild(body);
 
 	// Set content
@@ -577,8 +582,8 @@ function load_contextual_css_editor(file,file_id)
 	var ui=document.getElementById('selectors_'+file_id);
 	ui.style.display='block';
 	var list=document.createElement('ul');
+	list.id='selector_list_'+file_id;
 	document.getElementById('selectors_inner_'+file_id).appendChild(list);
-	list.id='selector_list';
 
 	set_up_parent_page_highlighting(file,file_id);
 

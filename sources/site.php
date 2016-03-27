@@ -809,9 +809,8 @@ function do_site()
     }
     $doing_special_page_type = ($special_page_type != 'view') && ($special_page_type != 'show_markers') && ($special_page_type != 'show_edit_links') && ($special_page_type != 'memory') && ((has_privilege(get_member(), 'view_profiling_modes')) || ($GLOBALS['IS_ACTUALLY_ADMIN']));
     if (get_option('grow_template_meta_tree') == '1' || get_param_integer('keep_grow_template_meta_tree', 0) == 1) {
-        global $RECORD_TEMPLATES_USED, $RECORD_TEMPLATES_TREE;
+        global $RECORD_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
-        $RECORD_TEMPLATES_TREE = true;
     }
 
     // Allow the site to be closed
@@ -884,7 +883,7 @@ function do_site()
     }
 
     // Save template tree
-    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
         require_code('themes_meta_tree');
         global $CSSS, $JAVASCRIPTS;
         foreach (array_keys($CSSS) as $css) {

@@ -704,7 +704,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                if (($template_name == $eval) || ((!$GLOBALS['SEMI_DEV_MODE']) && (get_param_string('special_page_type', '') == '')) && ($count_directive_opener_params == 3) && ($past_level_data == array('""')) && (!isset($FILE_ARRAY))) { // Simple case
+                                if (($template_name == $eval) || ($count_directive_opener_params == 3) && ($past_level_data == array('""')) && (!isset($FILE_ARRAY))) { // Simple case
                                     $found = find_template_place($eval, '', $theme, '.tpl', 'templates', $template_name == $eval);
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {

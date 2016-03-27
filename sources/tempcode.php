@@ -60,10 +60,9 @@ function init__tempcode()
     $LOADED_TPL_CACHE = array();
     $KEEP_TPL_FUNCS = array();
 
-    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $RECORD_TEMPLATES_TREE, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
+    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
     $RECORD_TEMPLATES_USED = false;
     $RECORDED_TEMPLATES_USED = array();
-    $RECORD_TEMPLATES_TREE = false;
     /** The name of a template that was called to render the current screen (null: not rendering a screen), auto-populated within the template system. This is tracked during dev mode to confirm that each screen really does wrap itself in a proper screen template.
      *
      * @global ?ID_TEXT $SCREEN_TEMPLATE_CALLED
@@ -705,10 +704,12 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         kid_gloves_html_escaping($parameters);
     }
 
-    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORD_TEMPLATES_TREE, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE;
+    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE;
+
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
         fill_template_preview_op_cache();
     }
+
     $special_treatment = ((($KEEP_MARKERS) || ($SHOW_EDIT_LINKS)) && ($XHTML_SPIT_OUT === null));
 
     if ($RECORD_TEMPLATES_USED) {
@@ -730,9 +731,13 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
     $_data = mixed();
     $_data = false;
-    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/
-            ($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
-    ) {
+    $may_use_template_cache =
+        ($CACHE_TEMPLATES) &&
+        //(/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || (!$RECORD_TEMPLATES_USED)) && Actually, unnecessary slowness, we don't care that much, and &cache_templates=0 can be set if we do
+        (!$IS_TEMPLATE_PREVIEW_OP_CACHE) &&
+        ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
+        ;
+    if ($may_use_template_cache) {
         if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
             $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
             $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
@@ -818,14 +823,19 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
     if (!isset($parameters)) { // Streamlined if no parameters involved
         $out = new Tempcode();
+
         $out->codename = $codename;
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             $out->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($_data->metadata) ? $_data->metadata['children'] : array());
         }
+
         $out->code_to_preexecute = $_data->code_to_preexecute;
+
         if (!$GLOBALS['OUTPUT_STREAMING']) {
             $out->preprocessable_bits = $_data->preprocessable_bits;
         }
+
         $out->seq_parts = $_data->seq_parts;
 
         foreach ($out->seq_parts as &$seq_parts_group) {
@@ -840,7 +850,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
 
     $ret = $_data->bind($parameters, $codename);
-    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
         $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($ret->metadata) ? $ret->metadata['children'] : array());
         if ($special_treatment) {
             $ret->metadata['type'] = TEMPLATE_TREE_NODE__UNKNOWN; // Stop optimisation that assumes the codename represents the sole content of it
@@ -949,7 +959,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'INCLUDE':
-            if ($GLOBALS['RECORD_TEMPLATES_USED'] || $GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
                 if (!isset($param[1])) {
@@ -964,18 +974,12 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $template_suffix = (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
                 $tpl_path_descrip = $template_subdir . '/' . $template_file . $template_suffix;
 
-                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-                    record_template_used($tpl_path_descrip);
-                }
+                record_template_used($tpl_path_descrip);
 
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $param = $seq_part[3];
+                $temp = @do_template($template_file, null, null, true, null, $template_suffix, $template_subdir);
 
-                    $temp = @do_template($template_file, null, null, true, null, $template_suffix, $template_subdir);
-
-                    require_code('themes_meta_tree');
-                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);
-                }
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);
             }
             return;
 
@@ -1003,7 +1007,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $val = implode(',', $param_copy);
                 $TEMPCODE_SETGET[$key] = $val;
 
-                if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (is_object($param[1]))) {
+                if (($GLOBALS['RECORD_TEMPLATES_USED']) && (is_object($param[1]))) {
                     require_code('themes_meta_tree');
                     $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $key);
                 }
@@ -1070,7 +1074,8 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     }
 
                     $b_value->handle_symbol_preprocessing();
-                    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+
+                    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                         require_code('themes_meta_tree');
 
                         $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__BLOCK, $block_parms['block'], $b_value);
@@ -1116,7 +1121,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
         case 'PARAGRAPH':
             $param = $seq_part[3];
             if ((isset($param[0])) && (is_object($param[0]))) {
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                     require_code('themes_meta_tree');
                     $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TRIM, '', $param[0]);
                 }
@@ -1164,7 +1169,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                         $tp_value->handle_symbol_preprocessing();
 
-                        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+                        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                             require_code('themes_meta_tree');
                             $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PANEL, (array_key_exists(1, $param) ? $param[1] : get_zone_name()) . ':panel_' . $param[0], $tp_value);
                         }
@@ -1185,7 +1190,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'JS_TEMPCODE':
-            if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
                 foreach ($param as $i => $p) {
                     if (is_object($p)) {
@@ -1201,7 +1206,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'CSS_TEMPCODE':
-            if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
                 $temp = css_tempcode();
@@ -1271,7 +1276,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     flush();
                 }
 
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                     require_code('themes_meta_tree');
                     $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PAGE, $zone . ':' . $page, $tp_value);
                 }
@@ -1327,7 +1332,7 @@ class Tempcode
             $this->code_to_preexecute = $details[0];
             $this->seq_parts = $details[1];
 
-            if (!$GLOBALS['OUTPUT_STREAMING'] || $GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if (!$GLOBALS['OUTPUT_STREAMING'] || $GLOBALS['RECORD_TEMPLATES_USED']) {
                 $pp_bits = array();
 
                 foreach ($this->seq_parts as $seq_parts_group) {
@@ -1372,7 +1377,7 @@ class Tempcode
             }
         }
 
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             require_code('themes_meta_tree');
             $this->metadata = create_template_tree_metadata();
         }
@@ -1451,7 +1456,7 @@ class Tempcode
                 }
             }
 
-            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($attach->metadata))) {
+            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($attach->metadata))) {
                 if (!isset($this->metadata)) {
                     require_code('themes_meta_tree');
                     $this->metadata = create_template_tree_metadata();
@@ -1517,7 +1522,7 @@ class Tempcode
      */
     public function from_assembly_executed($file, $forced_reload_details)
     {
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             require_code('themes_meta_tree');
             $this->metadata = create_template_tree_metadata();
         }
@@ -1596,7 +1601,7 @@ class Tempcode
      */
     public function from_assembly(&$raw_data, $allow_failure = false)
     {
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             require_code('themes_meta_tree');
             $this->metadata = create_template_tree_metadata();
         }
@@ -1672,7 +1677,7 @@ class Tempcode
             }
         }
 
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             require_code('themes_meta_tree');
             $out->metadata = isset($this->metadata) ? $this->metadata : create_template_tree_metadata();
             foreach ($parameters as $key => $parameter) {
@@ -1733,7 +1738,7 @@ class Tempcode
     {
         $this->cached_output = null;
 
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             if (is_object($parameter)) {
                 require_code('themes_meta_tree');
 
@@ -1787,7 +1792,7 @@ class Tempcode
             handle_symbol_preprocessing($seq_part, $children);
         }
 
-        if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (isset($this->metadata['children']))) {
+        if (($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($this->metadata['children']))) {
             $this->metadata['children'] = array_merge($this->metadata['children'], $children);
         }
 
