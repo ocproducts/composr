@@ -4340,6 +4340,23 @@ a[rel="lightbox"] {
 
 /*
 =========================
+===Live themeing editor==
+=========================
+*/
+
+@-webkit-keyframes greenPulse {
+	from { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
+	50% { background-color: #91bd09; {$BETA_CSS_PROPERTY,box-shadow: 0 0 18px #91bd09;} }
+	to { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
+}
+.glowing_node {
+	{$BETA_CSS_PROPERTY,animation-name: greenPulse;}
+	{$BETA_CSS_PROPERTY,animation-duration: 2s;}
+	{$BETA_CSS_PROPERTY,animation-iteration-count: infinite;}
+}
+
+/*
+=========================
 ====Link type display====
 ===Based on "Elements"===
 ==== by Ben Henschel ====

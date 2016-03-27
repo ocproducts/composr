@@ -903,6 +903,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
  * Prepare some invisible text to annotate the HTML output stream.
  * It works using invisible unicode characters.
  * It's a bit like having hidden messages in the “umm”s and “err”s in speech. If I said “it’s lovely err err umm outside, want to umm err err umm go for a walk”, it can be a hidden code.
+ * Also implemented in JavaScript (themeing.js), function invisible_output_encode(string).
  *
  * @param  string $string Input
  * @return string Output
@@ -922,12 +923,25 @@ function invisible_output_encode($string)
             $bitmask = bindec($_bitmask);
             $bit = ($char & $bitmask) != 0;
             if ($utf8) {
-                $ret .= $bit ? (chr(0xE2) . chr(0x80) . chr(0x8B)) : (chr(0xEF) . chr(0xBB) . chr(0xBF));
+                if ($bit)
+                {
+                    $ret .= (hr(0xE2) . chr(0x80) . chr(0x8B); // http://www.fileformat.info/info/unicode/char/200B/index.htm (ZERO WIDTH SPACE)
+                } else
+                {
+                    $ret .= chr(0xEF) . chr(0xBB) . chr(0xBF); // http://www.fileformat.info/info/unicode/char/feff/index.htm (ZERO WIDTH NO-BREAK SPACE)
+                }
             } else {
                 $ret .= $bit ? '&#x200b;' : '&#xfeff;';
             }
         }
     }
+
+    // Possible for future...
+    //  http://www.fileformat.info/info/unicode/char/fffe/index.htm (Unicode Noncharacter)
+    //  Also lots more in http://www.unicode.org/faq/private_use.html
+    //  And more https://en.wikipedia.org/wiki/Unicode_control_characters
+    //  And more https://en.wikipedia.org/wiki/Control_character
+    //  And more https://en.wikipedia.org/wiki/Whitespace_character#Unicode
 
     return $ret;
 }

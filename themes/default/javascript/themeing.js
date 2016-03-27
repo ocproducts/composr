@@ -473,6 +473,8 @@ function template_editor_keypress(event)
 	return true;
 }
 
+/* Templates (.tpl) */
+
 function insert_guid(file,guid)
 {
 	var textbox=get_file_textbox(file);
@@ -616,22 +618,74 @@ function _get_parameter_parameters(definite_gets,parameter,arity,box,name,value,
 	}
 }
 
-function css_equation_helper(file_id,theme)
+function _walk_dom(node,func,depth)
 {
-	cancel_bubbling(event,this);
+	func(node,depth);
+	node=node.firstChild;
+	while (node)
+	{
+		_walk_dom(node,func,depth+1);
+		node=node.nextSibling;
+	}
+}
 
-	var url='themewizard_equation';
-	url+='&theme='+window.encodeURIComponent(theme);
-	url+='&css_equation='+window.encodeURIComponent(document.getElementById('css_equation_'+file_id).value);
+function highlight_template(win,template_path)
+{
+	var start=invisible_output_encode('<'+template_path+'>');
+	var end=invisible_output_encode('</'+template_path+'>');
 
-	var result=load_snippet(url);
+	var within_template=null;
 
-	if (result=='' || result.indexOf('<html')!=-1)
-		window.fauxmodal_alert('{!ERROR_OCCURRED;}');
-	else
-		document.getElementById('css_result_'+file_id).value=result;
+	var processing_func=function(node,depth) {
+		if (node.nodeType===3) // Is it a Text node?
+		{
+			var start_pos=node.data.indexOf(start);
+			if (start_pos!=-1) within_template=depth;
 
-	return false;
+			var end_pos=node.data.indexOf(end);
+			if (end_pos!=-1 && (start_pos==-1 || start_pos<end_pos)) within_template=null;
+		} else
+		{
+			if (within_template!=null)
+			{
+				TODO
+			} else if (depth==within_template)
+			{
+				if (node.className.indexOf('glowing_node')==-1)
+					node.className+=' glowing_node';
+			} else
+			{
+				if (node.className.indexOf('glowing_node')!=-1)
+					node.className=node.className.replace(/\s?glowing_node/,'');
+			}
+		}
+	};
+	_walk_dom(win.document.body,processing_func,0);
+}
+
+function invisible_output_encode(string)
+{
+	var ret='';
+	var len=string.length;
+	var i,j,char,_bitmask,bitmask,_bit,bit;
+	for (i=0;i<len;i++)
+	{
+		char=string.charCodeAt(i);
+
+		for (_bit=7;_bit>=0;_bit--)
+		{
+			_bitmask='1';
+			for (j=0;j<_bit;j++)
+			{
+				_bitmask+='0';
+			}
+			bitmask = window.parseInt(_bitmask,2);
+			bit=(char&bitmask)!=0;
+			ret+=bit?"\u200B":"\uFEFF";
+		}
+	}
+
+	return ret;
 }
 
 /* CSS */
@@ -928,3 +982,20 @@ function receive_compiled_css(ajax_result_frame,file,win)
 	}
 }
 
+function css_equation_helper(file_id,theme)
+{
+	cancel_bubbling(event,this);
+
+	var url='themewizard_equation';
+	url+='&theme='+window.encodeURIComponent(theme);
+	url+='&css_equation='+window.encodeURIComponent(document.getElementById('css_equation_'+file_id).value);
+
+	var result=load_snippet(url);
+
+	if (result=='' || result.indexOf('<html')!=-1)
+		window.fauxmodal_alert('{!ERROR_OCCURRED;}');
+	else
+		document.getElementById('css_result_'+file_id).value=result;
+
+	return false;
+}
