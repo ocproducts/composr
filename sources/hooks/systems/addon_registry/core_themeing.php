@@ -300,6 +300,7 @@ class Hook_addon_registry_core_themeing
                 'WARNING_DETAILS' => '',
                 'PING_URL' => placeholder_url(),
                 'ACTIVE_GUID' => placeholder_id(),
+                'DEFAULT_THEME_FILES_LOCATION' => '',
             )), null, '', true)
         );
     }

@@ -78,7 +78,7 @@ class Hook_choose_theme_files
 
                 $out .= '
                 <category
-                    id="' . xmlentities($this->get_next_id()) . '"
+                    id="' . xmlentities($_id) . '"
                     serverid="' . xmlentities($_id) . '"
                     title="' . xmlentities($title) . '"
                     has_children="true"
@@ -163,7 +163,7 @@ class Hook_choose_theme_files
 
                         $out .= '
                         <category
-                            id="' . xmlentities($this->get_next_id()) . '"
+                            id="' . xmlentities($page_link) . '"
                             serverid="' . xmlentities($page_link) . '"
                             title="' . xmlentities($page_link) . '"
                             has_children="true"
@@ -261,6 +261,11 @@ class Hook_choose_theme_files
                     }
                     break;
             }
+        }
+
+        if ($default !== null && preg_match('#^\w*:\w+$#', $default)) {
+            $out .= '<expand>screens</expand>';
+            $out .= '<expand>' . $default . '</expand>';
         }
 
         return '<result>' . $out . '</result>';

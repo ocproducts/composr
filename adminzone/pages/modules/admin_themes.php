@@ -822,7 +822,10 @@ class Module_admin_themes
         list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
 
         // Screen preview feature
-        $live_preview_url = get_param_string('live_preview_url', null);
+        $live_preview_url = get_param_string('live_preview_url', null, true);
+
+        // Opening up file browser location
+        $default_theme_files_location = get_param_string('default_theme_files_location', null, true);
 
         return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
             'TITLE' => $this->title,
@@ -832,6 +835,7 @@ class Module_admin_themes
             'WARNING_DETAILS' => $warning_details,
             'PING_URL' => $ping_url,
             'ACTIVE_GUID' => $active_guid,
+            'DEFAULT_THEME_FILES_LOCATION' => $default_theme_files_location,
         ));
     }
 

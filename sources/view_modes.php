@@ -437,13 +437,14 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 }
             }
 
-            // We redirect straight into the template editor (the tree may be useful)...
+            // We redirect straight into the template editor...
 
             $url_map = array(
                 'page' => 'admin_themes',
                 'type' => 'edit_templates',
                 'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
                 'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+                'default_theme_files_location' => get_zone_name() . ':' . get_page_name(),
             );
             foreach (array_keys($collected_templates) as $i => $template_file) {
                 $url_map['f' . strval($i) . 'file'] = $template_file;

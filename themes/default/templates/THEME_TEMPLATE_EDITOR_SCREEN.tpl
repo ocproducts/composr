@@ -28,7 +28,7 @@
 		{$,Tree list}
 		<div class="template_editor_file_selector">
 			<div class="inner">
-				<input type="hidden" id="theme_files" name="theme_files" value="" onchange="template_editor_add_tab_wrap();" />
+				<input type="hidden" id="theme_files" name="theme_files" value="{DEFAULT_THEME_FILES_LOCATION*}" onchange="template_editor_add_tab_wrap();" />
 				<div id="tree_list__root_theme_files">
 					<!-- List put in here -->
 				</div>
