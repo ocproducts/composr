@@ -282,6 +282,7 @@ function template_editor_tab_loaded_content(ajax_result,file)
 			var editor_session=editor.getSession();
 			editor_session.on('change',function() {
 				template_editor_tab_mark_changed_content(file);
+				editor.last_change=(new Date()).getTime();
 			});
 		} else
 		{
@@ -289,7 +290,7 @@ function template_editor_tab_loaded_content(ajax_result,file)
 				template_editor_tab_mark_changed_content(file);
 			});
 		}
-	},100);
+	},1000);
 
 	window.template_editor_open_files[file]={
 		unsaved_changes: false
@@ -648,27 +649,34 @@ function load_contextual_css_editor(file,file_id)
 	set_up_parent_page_highlighting(file,file_id);
 
 	// Set up background compiles
-	if (typeof window.do_ajax_request!='undefined')
+	var textarea_id='e_'+file_id;
+	if (editarea_is_loaded(textarea_id))
 	{
-		var textarea=get_file_textbox(file);
-		editarea_reverse_refresh('e_'+file_id);
-		var last_css=textarea.value;
+		var editor=window.ace_editors[textarea_id];
+
+		var last_css=editarea_get_value(textarea_id);
+
 		window.css_recompiler_timer=window.setInterval(function() {
 			if ((window.opener) && (window.opener.document))
 			{
+				if (typeof editor.last_change=='undefined') return; // No change made at all
+
+				var milliseconds_ago=(new Date()).getTime()-editor.last_change;
+				if (milliseconds_ago<3*1000) return; // Not changed recently enough (within last 3 seconds)
+
 				if (typeof window.opener.have_set_up_parent_page_highlighting=='undefined')
 				{
 					set_up_parent_page_highlighting(file,file_id);
 					last_css='';/*force new CSS to apply*/
 				}
 
-				var new_value=textarea.value;
-				if (new_value!=last_css)
-				{
-					var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();
-					do_ajax_request(url,receive_compiled_css,'css='+window.encodeURIComponent(new_value));
-				}
-				last_css=new_value;
+				var new_css=editarea_get_value(textarea_id);
+				if (new_css==last_css) return; // Not changed
+
+				var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();
+				do_ajax_request(url,receive_compiled_css,'css='+window.encodeURIComponent(new_css));
+
+				last_css=new_css;
 			}
 		}, 2000 );
 	}

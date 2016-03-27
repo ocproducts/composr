@@ -87,7 +87,7 @@ function editarea_set_value(textarea_id,value)
 	editor.setValue(value,-1);
 }
 
-function editarea_get_value(textarea_id,value)
+function editarea_get_value(textarea_id)
 {
 	var editor=window.ace_editors[textarea_id];
 

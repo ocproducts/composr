@@ -24,23 +24,23 @@
 						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
 						<ul>
 							<li>
-								<a onclick="editarea_do_search('css','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
 							</li>
 							<li>
-								<a onclick="editarea_do_search('css','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
 							</li>
 							<li>
-								<a onclick="editarea_do_search('css','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
 							</li>
 							{+START,IF,{$CONFIG_OPTION,fixed_width}}
 								<li>
-									<a onclick="editarea_do_search('css','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
 								</li>
 								<li>
-									<a onclick="editarea_do_search('css','logo_outer'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','\n.logo_outer {'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
 								</li>
 								<li>
-									<a onclick="editarea_do_search('css','#main_website #main_website_inner'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','#main_website #main_website_inner {'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
 								</li>
 							{+END}
 						</ul>
@@ -581,16 +581,16 @@
 			},2000);
 		}
 
+		{+START,IF,{$CONFIG_OPTION,editarea}}
+			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}',false);
+		{+END}
+
 		{+START,IF,{INCLUDE_CSS_EDITING}}
 			// If this is a contextual edit, start talking to the parent window
 			if ((window.opener) && (window.opener.document))
 			{
 				load_contextual_css_editor('{FILE;^/}','{FILE_ID;^/}');
 			}
-		{+END}
-
-		{+START,IF,{$CONFIG_OPTION,editarea}}
-			ace_composr_loader('e_{FILE_ID;^/}','{HIGHLIGHTER_TYPE;^/}',false);
 		{+END}
 	});
 //]]></script>
