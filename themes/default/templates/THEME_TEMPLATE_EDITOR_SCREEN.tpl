@@ -2,6 +2,7 @@
 
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_ui}
+{$REQUIRE_JAVASCRIPT,dyn_comcode}
 {$REQUIRE_CSS,jquery_ui}
 
 {+START,IF,{$CONFIG_OPTION,editarea}}

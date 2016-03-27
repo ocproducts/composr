@@ -1,47 +1,60 @@
 {$,Toolbarish}
 
 {+START,IF,{INCLUDE_CSS_EDITING}}
-	<div style="display: none" id="selectors_{FILE_ID*}">
-		<div class="float_surrounder">
-			<div id="selectors_inner_{FILE_ID*}">
-				<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
+	<div class="template_editing_toolbar">
+		<h3>
+			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('c_{FILE_ID;^*}');"><img alt="{!EXPAND}: {$STRIP_TAGS,{!CSS_EDITING_TOOLS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link" href="#" onclick="return toggleable_tray('c_{FILE_ID;^*}');">{!CSS_EDITING_TOOLS}</a>
+		</h3>
+		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" id="c_{FILE_ID*}" aria-expanded="false">
+			<div class="css_editor_column">
+				<div class="css_editor_selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
+					<div id="selectors_inner_{FILE_ID*}">
+						<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
+					</div>
+
+					<section class="box"><div class="box_inner">
+						<h2>{!HELP}</h2>
+						<p>{!CSS_EDITOR_SELECTOR_TIPS}</p>
+					</div></section>
+				</div>
+
+				{+START,IF,{$EQ,{FILE},css/global.css}}{+START,IF,{$JS_ON}}
+					<section class="box"><div class="box_inner">
+						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
+						<ul>
+							<li>
+								<a onclick="editarea_do_search('css','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
+							</li>
+							<li>
+								<a onclick="editarea_do_search('css','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
+							</li>
+							<li>
+								<a onclick="editarea_do_search('css','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
+							</li>
+							{+START,IF,{$CONFIG_OPTION,fixed_width}}
+								<li>
+									<a onclick="editarea_do_search('css','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
+								</li>
+								<li>
+									<a onclick="editarea_do_search('css','logo_outer'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
+								</li>
+								<li>
+									<a onclick="editarea_do_search('css','#main_website #main_website_inner'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
+								</li>
+							{+END}
+						</ul>
+					</div></section>
+				{+END}{+END}
 			</div>
 
-			<div class="css_editor_selector_tips"><section class="box"><div class="box_inner"><h2>{!HELP}</h2><p>{!CSS_EDITOR_SELECTOR_TIPS}</p></div></section></div>
-
-			<div class="css_editor_selector_tips"><section class="box"><div class="box_inner">
-				{+START,IF,{$EQ,{FILE},global.css}}{+START,IF,{$JS_ON}}
-					<h2>{!QUICK_CSS_CHANGE_LINKS}:</h2>
-					<ul>
-						<li>
-							<a onclick="editarea_do_search('css','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
-						</li>
-						<li>
-							<a onclick="editarea_do_search('css','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
-						</li>
-						<li>
-							<a onclick="editarea_do_search('css','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
-						</li>
-						{+START,IF,{$CONFIG_OPTION,fixed_width}}
-							<li>
-								<a onclick="editarea_do_search('css','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
-							</li>
-							<li>
-								<a onclick="editarea_do_search('css','logo_outer'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
-							</li>
-							<li>
-								<a onclick="editarea_do_search('css','#main_website #main_website_inner'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
-							</li>
-						{+END}
-					</ul>
-				{+END}{+END}
-
+			<div class="css_editor_column"><section class="box"><div class="box_inner">
 				<h3>{!COMMON_CSS_PROPERTIES}:</h3>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: " title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Background Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Background Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -51,7 +64,7 @@
 								<th width="5%" align="left">CSS</th>
 							</tr>
 							<tr>
-								<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_background.asp">background</a></td>
+								<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/css3_pr_background.asp">background</a></td>
 								<td>Sets all the background properties in one declaration</td>
 								<td>1</td>
 							</tr>
@@ -79,10 +92,10 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Border Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Background Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Border Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -135,10 +148,10 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Dimension Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Dimension Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Dimension Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -148,13 +161,13 @@
 								<th width="5%" align="left">CSS</th>
 							</tr>
 							<tr>
-								<td><a target="_blank" title="height {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_height.asp">height</a></td>
-								<td>Sets the height of an element</td>
+								<td><a target="_blank" title="width {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_width.asp">width</a></td>
+								<td>Sets the width of an element</td>
 								<td>1</td>
 							</tr>
 							<tr>
-								<td><a target="_blank" title="max-height {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_max-height.asp">max-height</a></td>
-								<td>Sets the maximum height of an element</td>
+								<td><a target="_blank" title="min-width {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_min-width.asp">min-width</a></td>
+								<td>Sets the minimum width of an element</td>
 								<td>2</td>
 							</tr>
 							<tr>
@@ -163,28 +176,28 @@
 								<td>2</td>
 							</tr>
 							<tr>
+								<td><a target="_blank" title="height {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_height.asp">height</a></td>
+								<td>Sets the height of an element</td>
+								<td>1</td>
+							</tr>
+							<tr>
 								<td><a target="_blank" title="min-height {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_min-height.asp">min-height</a></td>
 								<td>Sets the minimum height of an element</td>
 								<td>2</td>
 							</tr>
 							<tr>
-								<td><a target="_blank" title="min-width {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_min-width.asp">min-width</a></td>
-								<td>Sets the minimum width of an element</td>
+								<td><a target="_blank" title="max-height {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_max-height.asp">max-height</a></td>
+								<td>Sets the maximum height of an element</td>
 								<td>2</td>
-							</tr>
-							<tr>
-								<td><a target="_blank" title="width {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_dim_width.asp">width</a></td>
-								<td>Sets the width of an element</td>
-								<td>1</td>
 							</tr>
 						</tbody></table>
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">List Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: List Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">List Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -207,10 +220,10 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Margin/Padding Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Margin/Padding Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Margin/Padding Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -273,10 +286,10 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Positioning Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Positioning Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Positioning Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -284,6 +297,31 @@
 								<th width="28%" align="left">Property</th>
 								<th width="67%" align="left">Description</th>
 								<th width="5%" align="left">CSS</th>
+							</tr>
+							<tr>
+								<td><a target="_blank" title="float {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_class_float.asp">float</a></td>
+								<td>Specifies whether or not a box should float</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td><a target="_blank" title="position {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_class_position.asp">position</a></td>
+								<td>Specifies the type of positioning for an element</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td><a target="_blank" title="left {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_left.asp">left</a></td>
+								<td>Sets the left margin edge for a positioned box</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td><a target="_blank" title="right {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_right.asp">right</a></td>
+								<td>Sets the right margin edge for a positioned box</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td><a target="_blank" title="top {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_top.asp">top</a></td>
+								<td>Sets the top margin edge for a positioned box</td>
+								<td>2</td>
 							</tr>
 							<tr>
 								<td><a target="_blank" title="bottom {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_bottom.asp">bottom</a></td>
@@ -301,33 +339,8 @@
 								<td>1</td>
 							</tr>
 							<tr>
-								<td><a target="_blank" title="float {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_class_float.asp">float</a></td>
-								<td>Specifies whether or not a box should float</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td><a target="_blank" title="left {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_left.asp">left</a></td>
-								<td>Sets the left margin edge for a positioned box</td>
-								<td>2</td>
-							</tr>
-							<tr>
 								<td><a target="_blank" title="overflow {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_overflow.asp">overflow</a></td>
 								<td>Specifies what happens if content overflows an element's box</td>
-								<td>2</td>
-							</tr>
-							<tr>
-								<td><a target="_blank" title="position {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_class_position.asp">position</a></td>
-								<td>Specifies the type of positioning for an element</td>
-								<td>2</td>
-							</tr>
-							<tr>
-								<td><a target="_blank" title="right {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_right.asp">right</a></td>
-								<td>Sets the right margin edge for a positioned box</td>
-								<td>2</td>
-							</tr>
-							<tr>
-								<td><a target="_blank" title="top {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_pos_top.asp">top</a></td>
-								<td>Sets the top margin edge for a positioned box</td>
 								<td>2</td>
 							</tr>
 							<tr>
@@ -344,10 +357,10 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="accordion_trayitem">
 					<h4 class="toggleable_tray_title">
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-						<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">Text/Font Properties</a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);"><img alt="{!EXPAND}: Text/Font Properties" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+						<a class="toggleable_tray_button" href="#" onclick="return accordion(this.parentNode.parentNode);">Text/Font Properties</a>
 					</h4>
 					<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 						<table class="columned_table results_table" cellspacing="0" cellpadding="0" border="1" width="100%">
@@ -420,9 +433,9 @@
 {+END}
 
 {+START,IF,{INCLUDE_TEMPCODE_EDITING}}
-	<div class="tempcode_editing_toolbar">
+	<div class="template_editing_toolbar">
 		<h3>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('b_{FILE_ID;^*}');"><img alt="{!EXPAND}: {!SYMBOLS_AND_DIRECTIVES}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray('b_{FILE_ID;^*}');"><img alt="{!EXPAND}: {$STRIP_TAGS,{!SYMBOLS_AND_DIRECTIVES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link" href="#" onclick="return toggleable_tray('b_{FILE_ID;^*}');">{!SYMBOLS_AND_DIRECTIVES}</a>
 		</h3>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" id="b_{FILE_ID*}" aria-expanded="false">
@@ -474,8 +487,8 @@
 {+START,IF_NON_EMPTY,{GUIDS}}
 	<div class="guids">
 		<h3>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
-			<a class="non_link" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">GUIDs</a>
+			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {$STRIP_TAGS,{!TEMPLATE_GUIDS}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="non_link" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!TEMPLATE_GUIDS}</a>
 		</h3>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
 			<div class="wide_table_wrap"><table class="columned_table autosized_table revision_box results_table wide_table">
@@ -516,7 +529,7 @@
 {+START,IF_NON_EMPTY,{RELATED}}
 	<div class="related">
 		<h3>
-			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
+			<a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);"><img alt="{!EXPAND}: {$STRIP_TAGS,{!RELATED_TEMPLATES}}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 			<a class="non_link" href="#" onclick="return toggleable_tray(this.parentNode.parentNode);">{!RELATED_TEMPLATES}</a>
 		</h3>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">

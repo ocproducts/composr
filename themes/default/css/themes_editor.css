@@ -80,6 +80,10 @@
 .file_unchanged {
 }
 
+.template_editing_toolbar {
+	margin-bottom: 1em;
+}
+
 .tpl_dropdown_row_a {
 	background-color: {$GET,area_zebra_background};
 }
@@ -92,37 +96,36 @@
 	padding: 0.3em;
 }
 
-.tempcode_editing_toolbar {
+.css_editor_selectors {
 	margin-bottom: 1em;
+}
+
+.css_editor_selectors>div ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+.css_editor_selectors>div li {
+	display: inline-block;
+	margin: 0.2em;
+	padding: 0.2em;
+	background-color: {$GET,area_background};
+	font-size: 0.9em;
+}
+
+.css_editor_column {
+	width: 50%;
+	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+	float: left;
+	font-size: 0.9em;
+	padding: 0 0.5em;
 }
 
 .main_editor {
 }
 
 .guids {
-}
-
-.css_editor_selector_tips {
-	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	float: left;
-	margin-top: 1em;
-	font-size: 0.9em;
-	padding: 0.5em;
-}
-
-#selectors_inner ul {
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
-#selectors_inner li {
-	display: inline-block;
-	margin: 0.2em;
-	padding: 0.2em;
-	background-color: {$GET,area_background};
-	font-size: 0.9em;
 }
 
 /* Theme images */
