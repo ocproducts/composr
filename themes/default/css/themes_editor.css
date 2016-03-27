@@ -114,12 +114,14 @@
 	font-size: 0.9em;
 }
 
-.css_editor_column {
-	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
-	float: left;
+.css_editor_lhs_column {
+}
+
+.css_editor_rhs_column {
+	width: 40em;
+	float: right;
 	font-size: 0.9em;
-	padding: 0 0.5em;
+	margin-left: 1em;
 }
 
 .main_editor {

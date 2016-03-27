@@ -398,6 +398,7 @@ function init__global2()
         // Load requirements for admins
         if (has_zone_access(get_member(), 'adminzone')) {
             $JAVASCRIPTS_DEFAULT['staff'] = true;
+            $JAVASCRIPTS_DEFAULT['themeing'] = true;
             $JAVASCRIPTS_DEFAULT['ajax'] = true;
             if (get_option('bottom_show_commandr_button', true) === '1') {
                 $JAVASCRIPTS_DEFAULT['button_commandr'] = true;

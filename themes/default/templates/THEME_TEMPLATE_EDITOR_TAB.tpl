@@ -7,48 +7,7 @@
 			<a class="non_link" href="#" onclick="return toggleable_tray('c_{FILE_ID;^*}');">{!CSS_EDITING_TOOLS}</a>
 		</h3>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" id="c_{FILE_ID*}" aria-expanded="false">
-			<div class="css_editor_column">
-				<div class="css_editor_selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
-					<div id="selectors_inner_{FILE_ID*}">
-						<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
-					</div>
-
-					<section class="box"><div class="box_inner">
-						<h2>{!HELP}</h2>
-						<p>{!CSS_EDITOR_SELECTOR_TIPS}</p>
-					</div></section>
-				</div>
-
-				{+START,IF,{$EQ,{FILE},css/global.css}}{+START,IF,{$JS_ON}}
-					<section class="box"><div class="box_inner">
-						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
-						<ul>
-							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
-							</li>
-							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
-							</li>
-							<li>
-								<a onclick="editarea_do_search('e_{FILE_ID;^/}','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
-							</li>
-							{+START,IF,{$CONFIG_OPTION,fixed_width}}
-								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
-								</li>
-								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','\n.logo_outer {'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
-								</li>
-								<li>
-									<a onclick="editarea_do_search('e_{FILE_ID;^/}','#main_website #main_website_inner {'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
-								</li>
-							{+END}
-						</ul>
-					</div></section>
-				{+END}{+END}
-			</div>
-
-			<div class="css_editor_column"><section class="box"><div class="box_inner">
+			<div class="css_editor_rhs_column"><section class="box"><div class="box_inner">
 				<h3>{!COMMON_CSS_PROPERTIES}:</h3>
 
 				<div class="accordion_trayitem">
@@ -428,6 +387,47 @@
 					</div>
 				</div>
 			</div></section></div>
+
+			<div class="css_editor_lhs_column">
+				<div class="css_editor_selectors" id="selectors_{FILE_ID*}" style="display: none"{$,Only becomes visible if it has an anchor page}>
+					<div id="selectors_inner_{FILE_ID*}">
+						<p class="lonely_label">{!SELECTORS_PARENT_PAGE}:</p>
+					</div>
+
+					<section class="box"><div class="box_inner">
+						<h2>{!HELP}</h2>
+						<p>{!CSS_EDITOR_SELECTOR_TIPS}</p>
+					</div></section>
+				</div>
+
+				{+START,IF,{$EQ,{FILE},css/global.css}}
+					<section class="box"><div class="box_inner">
+						<h3>{!QUICK_CSS_CHANGE_LINKS}:</h3>
+						<ul>
+							<li>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','font-family'); return false;" href="#">{!CHANGE_FONT}</a>
+							</li>
+							<li>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','inner_background'); return false;" href="#">{!CHANGE_INNER_BACKGROUND}</a>
+							</li>
+							<li>
+								<a onclick="editarea_do_search('e_{FILE_ID;^/}','block_background'); return false;" href="#">{!CHANGE_BLOCK_BACKGROUND}</a>
+							</li>
+							{+START,IF,{$CONFIG_OPTION,fixed_width}}
+								<li>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','outer_background'); return false;" href="#">{!CHANGE_OUTER_BACKGROUND}</a>
+								</li>
+								<li>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','\n.logo_outer {'); return false;" href="#">{!CHANGE_HEADER_IMAGE}</a>
+								</li>
+								<li>
+									<a onclick="editarea_do_search('e_{FILE_ID;^/}','#main_website #main_website_inner {'); return false;" href="#">{!CHANGE_FIXED_WIDTH}</a>
+								</li>
+							{+END}
+						</ul>
+					</div></section>
+				{+END}
+			</div>
 		</div>
 	</div>
 {+END}

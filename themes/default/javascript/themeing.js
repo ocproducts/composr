@@ -638,10 +638,8 @@ function css_equation_helper(file_id,theme)
 
 function load_contextual_css_editor(file,file_id)
 {
-	window.doing_css_for=file.replace('.css','');
-
 	var ui=document.getElementById('selectors_'+file_id);
-	ui.style.display='block';
+	ui.style.display='block'; // Un-hide it
 	var list=document.createElement('ul');
 	list.id='selector_list_'+file_id;
 	document.getElementById('selectors_inner_'+file_id).appendChild(list);
@@ -656,7 +654,7 @@ function load_contextual_css_editor(file,file_id)
 
 		var last_css=editarea_get_value(textarea_id);
 
-		window.css_recompiler_timer=window.setInterval(function() {
+		editor.css_recompiler_timer=window.setInterval(function() {
 			if ((window.opener) && (window.opener.document))
 			{
 				if (typeof editor.last_change=='undefined') return; // No change made at all
@@ -674,7 +672,7 @@ function load_contextual_css_editor(file,file_id)
 				if (new_css==last_css) return; // Not changed
 
 				var url='{$BASE_URL_NOHTTP;}/data/snippet.php?snippet=css_compile__text'+keep_stub();
-				do_ajax_request(url,receive_compiled_css,'css='+window.encodeURIComponent(new_css));
+				do_ajax_request(url,function(ajax_result_frame) { receive_compiled_css(ajax_result_frame,file); },'css='+window.encodeURIComponent(new_css));
 
 				last_css=new_css;
 			}
@@ -684,17 +682,23 @@ function load_contextual_css_editor(file,file_id)
 
 function set_up_parent_page_highlighting(file,file_id)
 {
-	if (typeof window.opener.find_active_selectors=='undefined') return;
+	if (typeof window.opener.find_active_selectors=='undefined') return; // themeing.js is loaded up for staff, so it should be there
 	window.opener.have_set_up_parent_page_highlighting=true;
 
-	var li,a,selector,elements,element,j;
-	var selectors=window.opener.find_active_selectors(window.doing_css_for,window.opener);
-	var list=document.getElementById('selector_list_'+file_id),cssText;
+	var doing_css_for=file.replace(/^css\//,'').replace('.css','');
+
+	var li,a,selector,elements,element,j,css_text;
+
+	var selectors=window.opener.find_active_selectors(doing_css_for,window.opener);
+
+	var list=document.getElementById('selector_list_'+file_id);
 	set_inner_html(list,'');
 
 	for (var i=0;i<selectors.length;i++)
 	{
 		selector=selectors[i].selectorText;
+
+		// Add to list of selectors
 		li=document.createElement('li');
 		a=document.createElement('a');
 		li.appendChild(a);
@@ -703,17 +707,18 @@ function set_up_parent_page_highlighting(file,file_id)
 		set_inner_html(a,escape_html(selector));
 		list.appendChild(li);
 
-		cssText=(typeof selectors[i].cssText=='undefined')?selectors[i].style.cssText:selectors[i].cssText;
-		if (cssText.indexOf('{')!=-1)
+		// Add tooltip so we can see what the CSS text is in when hovering the selector
+		css_text=(typeof selectors[i].cssText=='undefined')?selectors[i].style.cssText:selectors[i].cssText;
+		if (css_text.indexOf('{')!=-1)
 		{
-			cssText=cssText.replace(/ \{ /g,' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g,'<br />\n}').replace(/; /g,';<br />\n&nbsp;&nbsp;&nbsp;');
+			css_text=css_text.replace(/ \{ /g,' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g,'<br />\n}').replace(/; /g,';<br />\n&nbsp;&nbsp;&nbsp;');
 		} else // IE
 		{
-			cssText=cssText.toLowerCase().replace(/; /,';<br />\n');
+			css_text=css_text.toLowerCase().replace(/; /,';<br />\n');
 		}
 		li.onmouseout=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.deactivate_tooltip!='undefined') deactivate_tooltip(this); };
 		li.onmousemove=function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') reposition_tooltip(this,event); };
-		li.onmouseover=function(cssText) { return function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,cssText,'auto'); } } (cssText);
+		li.onmouseover=function(css_text) { return function(event) { if (typeof event=='undefined') event=window.event; if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,css_text,'auto'); } } (css_text);
 
 		// Jump-to
 		a.onclick=function(selector) { return function(event) {
@@ -762,7 +767,7 @@ function set_up_parent_page_highlighting(file,file_id)
 			add_event_listener_abstract(element,'mouseover',function(a,element) { return function(event) {
 				if (typeof event=='undefined') event=window.event;
 
-				if ((window) && (typeof window.dec_to_hex!='undefined') && (!event.ctrlKey))
+				if ((window) && (!event.ctrlKey))
 				{
 					var target=event.target || event.srcElement;
 					var target_distance=0;
@@ -861,8 +866,10 @@ function find_selectors_for(opener,selector)
 	return result;
 }
 
-function receive_compiled_css(ajax_result_frame,win)
+function receive_compiled_css(ajax_result_frame,file,win)
 {
+	var doing_css_for=file.replace(/^css\//,'').replace('.css','');
+
 	if ((typeof win=='undefined') || (!win)) var win=window.opener;
 
 	if (win)
@@ -873,7 +880,7 @@ function receive_compiled_css(ajax_result_frame,win)
 
 			// Remove old link tag
 			var e;
-			if (window.doing_css_for=='no_cache')
+			if (doing_css_for=='no_cache')
 			{
 				e=win.document.getElementById('inline_css');
 				if (e)
@@ -886,7 +893,7 @@ function receive_compiled_css(ajax_result_frame,win)
 				for (var i=0;i<links.length;i++)
 				{
 					e=links[i];
-					if ((e.type=='text/css') && (e.href.indexOf('/templates_cached/'+window.opener.cms_lang+'/'+window.doing_css_for)!=-1))
+					if ((e.type=='text/css') && (e.href.indexOf('/templates_cached/'+window.opener.cms_lang+'/'+doing_css_for)!=-1))
 					{
 						e.parentNode.removeChild(e);
 					}
@@ -894,10 +901,10 @@ function receive_compiled_css(ajax_result_frame,win)
 			}
 
 			// Create style tag for this
-			var style=win.document.getElementById('style_for_'+window.doing_css_for);
+			var style=win.document.getElementById('style_for_'+doing_css_for);
 			if (!style) style=win.document.createElement('style');
 			style.type='text/css';
-			style.id='style_for_'+window.doing_css_for;
+			style.id='style_for_'+doing_css_for;
 			if (style.styleSheet)
 			{
 				style.styleSheet.cssText=css;
@@ -913,7 +920,7 @@ function receive_compiled_css(ajax_result_frame,win)
 			{
 				if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
 				{
-					receive_compiled_css(ajax_result_frame,win.frames[i]);
+					receive_compiled_css(ajax_result_frame,file,win.frames[i]);
 				}
 			}
 		}
