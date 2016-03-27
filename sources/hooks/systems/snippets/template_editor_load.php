@@ -186,13 +186,15 @@ class Hook_snippet_template_editor_load
 
             $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns(null, $file_id);
 
-            $url_map = array(
-                'page' => $page,
-                'cache_blocks' => 0,
-                'keep_theme' => $theme,
-                // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
-            );
-            $screen_preview_url = build_url($url_map, $zone);
+            if ($live_preview_url === null) {
+                $url_map = array(
+                    'page' => $page,
+                    'cache_blocks' => 0,
+                    'keep_theme' => $theme,
+                    // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
+                );
+                $live_preview_url = build_url($url_map, $zone);
+            }
         }
 
         list($parameters, $directives, $misc_symbols, $programmatic_symbols, $abstraction_symbols, $arithmetical_symbols, $formatting_symbols, $logical_symbols) = $editing_toolbar_dropdowns;

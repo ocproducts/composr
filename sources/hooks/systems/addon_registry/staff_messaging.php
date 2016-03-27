@@ -189,6 +189,8 @@ class Hook_addon_registry_staff_messaging
      */
     public function tpl_preview__block_main_contact_us()
     {
+        require_javascript('posting');
+
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,

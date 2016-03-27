@@ -386,12 +386,41 @@ function template_editor_restore_revision(file,revision_id)
 	return false;
 }
 
-function template_editor_preview(file_id,url,button)
+function template_editor_preview(file_id,url,button,ask_for_url)
 {
+	if (typeof ask_for_url=='undefined') ask_for_url=false;
+
 	var has_editarea=editarea_is_loaded('e_'+file_id);
 	if (has_editarea) editarea_reverse_refresh('e_'+file_id);
 
+	if (document.getElementById('mobile_preview_'+file_id).checked)
+	{
+		url+=(url.indexOf('?')==-1)?'?':'&';
+		url+='keep_mobile=1';
+	}
+
+	if (ask_for_url)
+	{
+		window.fauxmodal_prompt(
+			'{!themes:URL_TO_PREVIEW_WITH;^}',
+			url,
+			function(url)
+			{
+				if (url!==null)
+				{
+					button.form.action=url;
+					button.form.submit();
+				}
+			},
+			'{!PREVIEW;^}'
+		);
+
+		return false;
+	}
+
 	button.form.action=url;
+
+	return true;
 }
 
 /* Editing */
@@ -734,6 +763,43 @@ function dec_to_hex(number)
 {
 	var hexbase='0123456789ABCDEF';
 	return hexbase.charAt((number>>4)&0xf)+hexbase.charAt(number&0xf);
+}
+
+function find_active_selectors(match,win)
+{
+	var test,selector,selectors=[],classes,i,j,result2;
+	try
+	{
+		for (i=0;i<win.document.styleSheets.length;i++)
+		{
+			try
+			{
+				if ((!match) || (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id=='style_for_'+match) || (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id=='style_for_'+match))) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/'+match)!=-1))
+				{
+					classes=win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
+					for (j=0;j<classes.length;j++)
+					{
+						selector=classes[j].selectorText;
+						test=win.document.querySelectorAll(selector);
+						if (test.length!=0) selectors.push(classes[j]);
+					}
+				}
+			}
+			catch (e) { }
+		}
+	}
+	catch (e) { }
+
+	for (i=0;i<win.frames.length;i++)
+	{
+		if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
+		{
+			result2=find_active_selectors(match,win.frames[i]);
+			for (var j=0;j<result2.length;j++) selectors.push(result2[j]);
+		}
+	}
+
+	return selectors;
 }
 
 function find_selectors_for(opener,selector)

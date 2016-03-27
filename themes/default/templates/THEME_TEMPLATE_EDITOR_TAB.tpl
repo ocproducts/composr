@@ -450,17 +450,22 @@
 {$,Buttons}
 
 <div class="float_surrounder buttons_group">
-	<input onclick="disable_button_just_clicked(this); template_editor_tab_save_content('{FILE;^*}'); return false;" accesskey="U" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
+	<input onclick="disable_button_just_clicked(this); template_editor_tab_save_content('{FILE;^*}'); return false;" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 
-	{+START,IF_PASSED,LIVE_PREVIEW_URL}
-		<!-- Preview in live rendering -->
-		<input onclick="template_editor_preview('{FILE_ID;*}','{LIVE_PREVIEW_URL;*}',this);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
-	{+END}
-	{+START,IF_NON_PASSED,LIVE_PREVIEW_URL}
+	{+START,SET,preview_buttons}
+		{+START,IF_PASSED,LIVE_PREVIEW_URL}
+			<!-- Preview in live rendering -->
+			<input onclick="return template_editor_preview('{FILE_ID;*}','{LIVE_PREVIEW_URL;*}',this,true);" class="button_screen tabs__preview" type="submit" value="{!LIVE_PREVIEW}" />
+		{+END}
 		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
 			<!-- Preview in screen preview (Lorem ipsum) -->
-			<input onclick="template_editor_preview('{FILE_ID;*}','{SCREEN_PREVIEW_URL;*}',this);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
+			<input onclick="return template_editor_preview('{FILE_ID;*}','{SCREEN_PREVIEW_URL;*}',this);" class="button_screen tabs__preview" type="submit" value="{!LOREM_PREVIEW}" />
 		{+END}
+	{+END}
+	{+START,IF_NON_EMPTY,{$TRIM,{$GET,preview_buttons}}}
+		{$GET,preview_buttons}
+
+		<label for="mobile_preview_{FILE_ID*}"><input type="checkbox" name="mobile_preview_{FILE_ID*}" id="mobile_preview_{FILE_ID*}" value="1" /> {!MOBILE_VERSION}</label>
 	{+END}
 </div>
 
