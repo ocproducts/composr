@@ -28,7 +28,7 @@
 		{$,Tree list}
 		<div class="template_editor_file_selector">
 			<div class="inner">
-				<input type="hidden" id="theme_files" name="theme_files" value="{DEFAULT_THEME_FILES_LOCATION*}" onchange="template_editor_add_tab_wrap();" />
+				<input type="hidden" id="theme_files" name="theme_files" value="{+START,IF_PASSED,DEFAULT_THEME_FILES_LOCATION}{DEFAULT_THEME_FILES_LOCATION*}{+END}" onchange="template_editor_add_tab_wrap();" />
 				<div id="tree_list__root_theme_files">
 					<!-- List put in here -->
 				</div>
@@ -41,7 +41,7 @@
 		<div class="template_editor_tabs">
 			<div class="float_surrounder">
 				<div class="float_surrounder">
-					<div class="tabs" role="tablist" id="template_editor_tab_headers"></div>
+					<div class="tabs spaced_out_tabs" role="tablist" id="template_editor_tab_headers"></div>
 				</div>
 				<div class="tab_surround" id="template_editor_tab_bodies"></div>
 			</div>

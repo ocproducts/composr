@@ -246,7 +246,21 @@ tree_list.prototype.render_tree=function(xml,html,element)
 				if (node.getAttribute('description')) description=escape_html('. '+node.getAttribute('description'));
 				description_in_use=escaped_title+': {!TREE_LIST_SELECT*;^}'+description+((node.getAttribute('serverid')=='')?(' ('+escape_html(node.getAttribute('serverid'))+')'):'');
 			}
-			set_inner_html(node_self,'<div><input class="ajax_tree_expand_icon"'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' type="image" alt="'+((!initially_expanded)?'{!EXPAND;^}':'{!CONTRACT;^}')+': '+escaped_title+'" title="'+((!initially_expanded)?'{!EXPAND;^}':'{!CONTRACT;^}')+'" id="'+this.name+'texp_c_'+node.getAttribute('id')+'" src="'+((!initially_expanded)?'{$IMG*;,1x/treefield/expand}':'{$IMG*;,1x/treefield/collapse}').replace(/^https?:/,window.location.protocol)+'" /> <img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="'+'{$IMG*;,1x/treefield/category}'.replace(/^https?:/,window.location.protocol)+'" srcset="'+'{$IMG*;,2x/treefield/category} 2x'.replace(/^https?:/,window.location.protocol)+'" /> <label id="'+this.name+'tsel_c_'+node.getAttribute('id')+'" for="'+this.name+'tsel_r_'+node.getAttribute('id')+'" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(this.childNodes[0].title),\'auto\');" class="ajax_tree_magic_button '+colour+'"><input '+(this.tabindex?('tabindex="'+this.tabindex+'" '):'')+'id="'+this.name+'tsel_r_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" title="'+description_in_use+'" />'+escaped_title+'</label> <span id="'+this.name+'extra_'+node.getAttribute('id')+'">'+extra+'</span></div>');
+			var img_url='{$IMG;,1x/treefield/category}'.replace(/^https?:/,window.location.protocol);
+			var img_url_2='{$IMG;,2x/treefield/category}'.replace(/^https?:/,window.location.protocol);
+			if (node.getAttribute('img_url'))
+			{
+				img_url=node.getAttribute('img_url');
+				img_url_2=node.getAttribute('img_url_2');
+			}
+			set_inner_html(node_self,' \
+				<div> \
+					<input class="ajax_tree_expand_icon"'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' type="image" alt="'+((!initially_expanded)?'{!EXPAND;^}':'{!CONTRACT;^}')+': '+escaped_title+'" title="'+((!initially_expanded)?'{!EXPAND;^}':'{!CONTRACT;^}')+'" id="'+this.name+'texp_c_'+node.getAttribute('id')+'" src="'+((!initially_expanded)?'{$IMG*;,1x/treefield/expand}':'{$IMG*;,1x/treefield/collapse}').replace(/^https?:/,window.location.protocol)+'" /> \
+					<img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="'+escape_html(img_url)+'" srcset="'+escape_html(img_url_2)+' 2x" /> \
+					<label id="'+this.name+'tsel_c_'+node.getAttribute('id')+'" for="'+this.name+'tsel_r_'+node.getAttribute('id')+'" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(this.childNodes[0].title),\'auto\');" class="ajax_tree_magic_button '+colour+'"><input '+(this.tabindex?('tabindex="'+this.tabindex+'" '):'')+'id="'+this.name+'tsel_r_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" title="'+description_in_use+'" />'+escaped_title+'</label> \
+					<span id="'+this.name+'extra_'+node.getAttribute('id')+'">'+extra+'</span> \
+				</div> \
+			');
 			var expand_button=node_self.getElementsByTagName('input')[0];
 			var _this=this;
 			expand_button.oncontextmenu=function() { return false; };
@@ -339,7 +353,14 @@ tree_list.prototype.render_tree=function(xml,html,element)
 
 			// Render self
 			initially_expanded=false;
-			set_inner_html(node_self,'<div><img alt="{!ENTRY;^}" src="'+'{$IMG*;,1x/treefield/entry}'.replace(/^https?:/,window.location.protocol)+'" srcset="'+'{$IMG*;,2x/treefield/entry} 2x'.replace(/^https?:/,window.location.protocol)+'" style="width: 14px; height: 14px" /> <label id="'+this.name+'tsel_e_'+node.getAttribute('id')+'" class="ajax_tree_magic_button '+colour+'" for="'+this.name+'tsel_s_'+node.getAttribute('id')+'" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(\''+(description_in_use.replace(/\n/g,'').replace(/'/g,'\\'+'\''))+'\'),\'800px\');"><input'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' id="'+this.name+'tsel_s_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" />'+escaped_title+'</label>'+extra+'</div>');
+			var img_url='{$IMG;,1x/treefield/entry}'.replace(/^https?:/,window.location.protocol);
+			var img_url_2='{$IMG;,2x/treefield/entry}'.replace(/^https?:/,window.location.protocol);
+			if (node.getAttribute('img_url'))
+			{
+				img_url=node.getAttribute('img_url');
+				img_url_2=node.getAttribute('img_url_2');
+			}
+			set_inner_html(node_self,'<div><img alt="{!ENTRY;^}" src="'+escape_html(img_url)+'" srcset="'+escape_html(img_url_2)+' 2x" style="width: 14px; height: 14px" /> <label id="'+this.name+'tsel_e_'+node.getAttribute('id')+'" class="ajax_tree_magic_button '+colour+'" for="'+this.name+'tsel_s_'+node.getAttribute('id')+'" onmouseover="if (typeof window.activate_tooltip!=\'undefined\') activate_tooltip(this,event,'+(node.getAttribute('description_html')?'':'escape_html')+'(\''+(description_in_use.replace(/\n/g,'').replace(/'/g,'\\'+'\''))+'\'),\'800px\');"><input'+(this.tabindex?(' tabindex="'+this.tabindex+'"'):'')+' id="'+this.name+'tsel_s_'+node.getAttribute('id')+'" style="position: absolute; left: -10000px" type="radio" name="_'+this.name+'" value="1" />'+escaped_title+'</label>'+extra+'</div>');
 			var a=node_self.getElementsByTagName('label')[0];
 			a.handle_selection=this.handle_selection;
 			a.childNodes[0].onfocus=function() { this.parentNode.style.outline='1px dotted'; };

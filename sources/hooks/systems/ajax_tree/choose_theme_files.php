@@ -128,13 +128,17 @@ class Hook_choose_theme_files
                                 ></category>';
                             }
                         } else {
+                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($template_file);
+
                             $out .= '
                             <entry
                                 id="' . xmlentities($this->get_next_id()) . '"
                                 serverid="' . xmlentities($template_file) . '"
-                                title="' . xmlentities($_template_file) . '"
+                                title="' . xmlentities($template_file_shortened) . '"
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
+                                img_url="' . xmlentities($img_url) . '"
+                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -187,13 +191,17 @@ class Hook_choose_theme_files
 
                             $description_html = $this->get_template_details_table($theme, $template, $template_file_path, $action_log_times);
 
+                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($template);
+
                             $out .= '
                             <entry
                                 id="' . xmlentities($this->get_next_id()) . '"
                                 serverid="' . xmlentities($template) . '"
-                                title="' . xmlentities(basename($template)) . '"
+                                title="' . xmlentities($template_file_shortened) . '"
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
+                                img_url="' . xmlentities($img_url) . '"
+                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -213,13 +221,17 @@ class Hook_choose_theme_files
 
                             $description_html = $this->get_template_details_table($theme, $rel, $template_file_path, $action_log_times);
 
+                            list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($rel);
+
                             $out .= '
                             <entry
                                 id="' . xmlentities($this->get_next_id()) . '"
                                 serverid="' . xmlentities($rel) . '"
-                                title="' . xmlentities(basename($rel)) . '"
+                                title="' . xmlentities($template_file_shortened) . '"
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
+                                img_url="' . xmlentities($img_url) . '"
+                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -249,6 +261,8 @@ class Hook_choose_theme_files
 
                             $description_html = $this->get_comcode_page_details_table($page, $zone, $path, $action_log_times);
 
+                            list($img_url, $img_url_2) = $this->get_template_file_icons($page . '.txt');
+
                             $out .= '
                             <entry
                                 id="' . xmlentities($this->get_next_id()) . '"
@@ -256,6 +270,8 @@ class Hook_choose_theme_files
                                 title="' . xmlentities($page) . '"
                                 selectable="true"
                                 description_html="' . xmlentities($description_html->evaluate()) . '"
+                                img_url="' . xmlentities($img_url) . '"
+                                img_url_2="' . xmlentities($img_url_2) . '"
                             ></entry>';
                         }
                     }
@@ -456,16 +472,63 @@ class Hook_choose_theme_files
 
         $tag_type = $has_children ? 'category' : 'entry';
 
+        list($img_url, $img_url_2, $template_file_shortened) = $this->get_template_file_icons($file);
+
+        if (is_null($img_url)) {
+            $image_xml = '';
+        } else {
+            $image_xml = '
+                img_url="' . xmlentities($img_url) . '"
+                img_url_2="' . xmlentities($img_url_2) . '"
+            ';
+        }
+
         return '
         <' . $tag_type . '
             id="' . xmlentities($this->get_next_id()) . '"
             serverid="' . xmlentities($file) . '"
-            title="' . xmlentities(basename($file)) . '"
+            title="' . xmlentities($template_file_shortened) . '"
             selectable="true"
             description_html="' . xmlentities($description_html->evaluate()) . '"
             has_children="' . ($has_children ? 'true' : 'false') . '"
             expanded="' . ($has_children ? 'true' : 'false') . '"
+            ' . $image_xml . '
         >' . $children . '</' . $tag_type . '>';
+    }
+
+    /**
+     * Find icon and labelling details for a node.
+     *
+     * @param $file ID_TEXT File
+     * @return array A triple: icon, retina icon, label
+     */
+    function get_template_file_icons($file)
+    {
+        $ext = get_file_extension(basename($file));
+
+        switch ($ext) {
+            case 'tpl':
+            case 'css':
+            case 'js':
+            case 'xml':
+                $img_url = find_theme_image('icons/16x16/filetypes/' . $ext);
+                $img_url_2 = find_theme_image('icons/32x32/filetypes/' . $ext);
+                break;
+
+            case 'txt':
+                $img_url = find_theme_image('icons/16x16/filetypes/page_' . $ext);
+                $img_url_2 = find_theme_image('icons/32x32/filetypes/page_' . $ext);
+                break;
+
+            default:
+                $img_url = null;
+                $img_url_2 = null;
+                break;
+        }
+
+        $template_file_shortened = basename($file, '.' . $ext);
+
+        return array($img_url, $img_url_2, $template_file_shortened);
     }
 
     /**

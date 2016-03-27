@@ -120,6 +120,9 @@ class Hook_snippet_template_editor_load
             }
 
             $guids = find_template_guids($file, $active_guid);
+            if (count($guids) > 0) {
+                $guids = array();
+            }
 
             $related = collapse_1d_complexity('rel_b', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_b'), array('rel_a' => $file), 'ORDER BY rel_b', 50));
             if (count($related) == 50) {

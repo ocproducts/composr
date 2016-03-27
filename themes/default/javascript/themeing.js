@@ -132,6 +132,37 @@ function template_editor_add_tab(file)
 
 		return false;
 	};
+	var ext=(tab_title.indexOf('.')!=-1)?tab_title.substring(tab_title.indexOf('.')+1,tab_title.length):'';
+	if (ext!='') tab_title=tab_title.substr(0,tab_title.length-4);
+	var icon_img=document.createElement('img');
+	if (ext=='tpl')
+	{
+		icon_img.src='{$IMG;,icons/16x16/filetypes/tpl}'.replace(/^https?:/,window.location.protocol);
+		icon_img.setAttribute('srcset','{$IMG;,icons/32x32/filetypes/tpl}'.replace(/^https?:/,window.location.protocol));
+	}
+	if (ext=='css')
+	{
+		icon_img.src='{$IMG;,icons/16x16/filetypes/css}'.replace(/^https?:/,window.location.protocol);
+		icon_img.setAttribute('srcset','{$IMG;,icons/32x32/filetypes/css}'.replace(/^https?:/,window.location.protocol));
+	}
+	if (ext=='js')
+	{
+		icon_img.src='{$IMG;,icons/16x16/filetypes/js}'.replace(/^https?:/,window.location.protocol);
+		icon_img.setAttribute('srcset','{$IMG;,icons/32x32/filetypes/js}'.replace(/^https?:/,window.location.protocol));
+	}
+	if (ext=='xml')
+	{
+		icon_img.src='{$IMG;,icons/16x16/filetypes/xml}'.replace(/^https?:/,window.location.protocol);
+		icon_img.setAttribute('srcset','{$IMG;,icons/32x32/filetypes/xml}'.replace(/^https?:/,window.location.protocol));
+	}
+	if (ext=='txt' || ext=='')
+	{
+		icon_img.src='{$IMG;,icons/16x16/filetypes/page_txt}'.replace(/^https?:/,window.location.protocol);
+		icon_img.setAttribute('srcset','{$IMG;,icons/32x32/filetypes/page_txt}'.replace(/^https?:/,window.location.protocol));
+	}
+	icon_img.style.width='16px';
+	header.appendChild(icon_img);
+	header.appendChild(document.createTextNode(' '));
 	var span=document.createElement('span');
 	span.innerText=tab_title;
 	header.appendChild(span);
@@ -216,7 +247,7 @@ function template_editor_loading_url(file,revision_id)
 function template_editor_show_tab(file_id)
 {
 	window.setTimeout(function() {
-		if (document.getElementById('t_'+file_id).className.indexOf('tab_active')==-1)
+		if (!document.getElementById('t_'+file_id) || document.getElementById('t_'+file_id).className.indexOf('tab_active')==-1)
 		{
 			// No longer visible
 			return;
