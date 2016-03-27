@@ -430,6 +430,17 @@ class Hook_choose_theme_files
      */
     private function build_screen_tree($theme, $node)
     {
+        $children = '';
+        $num_children = 0;
+        foreach ($node['children'] as $_child) {
+            $child = $this->build_screen_tree($theme, $_child);
+            if ($child != '') {
+                $children .= $child;
+                $num_children++;
+            }
+        }
+        $has_children = ($num_children > 0);
+
         if ($node['type'] == 'template') {
             $file = $node['subdir'] . '/' . $node['name'];
 
@@ -452,23 +463,12 @@ class Hook_choose_theme_files
 
             $description_html = $this->get_comcode_page_details_table($page, $zone, $file_path);
         } else {
-            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+            return $children;
         }
 
         if ($description_html === null) {
             return '';
         }
-
-        $children = '';
-        $num_children = 0;
-        foreach ($node['children'] as $_child) {
-            $child = $this->build_screen_tree($theme, $_child);
-            if ($child != '') {
-                $children .= $child;
-                $num_children++;
-            }
-        }
-        $has_children = ($num_children > 0);
 
         $tag_type = $has_children ? 'category' : 'entry';
 

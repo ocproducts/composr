@@ -16,6 +16,15 @@ function file_to_file_id(file)
 	return file.replace(/\//,'__').replace(/:/,'__').replace(/\./,'__');
 }
 
+function file_id_to_file(file_id)
+{
+	for (var file in window.template_editor_open_files)
+	{
+		if (file_to_file_id(file)==file_id) return file;
+	}
+	return null;
+}
+
 function template_editor_assign_unload_event()
 {
 	add_event_listener_abstract(window,'beforeunload',function(event) {
@@ -252,6 +261,9 @@ function template_editor_show_tab(file_id)
 			// No longer visible
 			return;
 		}
+
+		if (window.opener) // If anchored
+			highlight_template(window.opener,file_id_to_file(file_id));
 
 		$('#e_'+file_id.replace(/\./g,'\\.')+'_wrap').resizable({
 			resize: function(event,ui) {
@@ -618,17 +630,6 @@ function _get_parameter_parameters(definite_gets,parameter,arity,box,name,value,
 	}
 }
 
-function _walk_dom(node,func,depth)
-{
-	func(node,depth);
-	node=node.firstChild;
-	while (node)
-	{
-		_walk_dom(node,func,depth+1);
-		node=node.nextSibling;
-	}
-}
-
 function highlight_template(win,template_path)
 {
 	var start=invisible_output_encode('<'+template_path+'>');
@@ -644,15 +645,19 @@ function highlight_template(win,template_path)
 
 			var end_pos=node.data.indexOf(end);
 			if (end_pos!=-1 && (start_pos==-1 || start_pos<end_pos)) within_template=null;
-		} else
+		} else if (node.nodeType===1)
 		{
 			if (within_template!=null)
 			{
-				TODO
-			} else if (depth==within_template)
-			{
-				if (node.className.indexOf('glowing_node')==-1)
-					node.className+=' glowing_node';
+				if (depth==within_template)
+				{
+					if (node.className.indexOf('glowing_node')==-1)
+						node.className+=' glowing_node';
+				} else
+				{
+					if (node.className.indexOf('glowing_node')!=-1)
+						node.className=node.className.replace(/\s?glowing_node/,'');
+				}
 			} else
 			{
 				if (node.className.indexOf('glowing_node')!=-1)
@@ -686,6 +691,17 @@ function invisible_output_encode(string)
 	}
 
 	return ret;
+}
+
+function _walk_dom(node,func,depth)
+{
+	func(node,depth);
+	node=node.firstChild;
+	while (node)
+	{
+		_walk_dom(node,func,depth+1);
+		node=node.nextSibling;
+	}
 }
 
 /* CSS */

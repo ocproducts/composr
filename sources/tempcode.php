@@ -888,7 +888,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates') {
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename!='FORM_SCREEN_INPUT_HIDDEN' && $codename!='FORM_SCREEN_INPUT_HIDDEN_2') {
         $ret2 = new Tempcode();
         $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
         $ret2->attach($ret);
@@ -925,7 +925,7 @@ function invisible_output_encode($string)
             if ($utf8) {
                 if ($bit)
                 {
-                    $ret .= (hr(0xE2) . chr(0x80) . chr(0x8B); // http://www.fileformat.info/info/unicode/char/200B/index.htm (ZERO WIDTH SPACE)
+                    $ret .= chr(0xE2) . chr(0x80) . chr(0x8B); // http://www.fileformat.info/info/unicode/char/200B/index.htm (ZERO WIDTH SPACE)
                 } else
                 {
                     $ret .= chr(0xEF) . chr(0xBB) . chr(0xBF); // http://www.fileformat.info/info/unicode/char/feff/index.htm (ZERO WIDTH NO-BREAK SPACE)
@@ -938,10 +938,12 @@ function invisible_output_encode($string)
 
     // Possible for future...
     //  http://www.fileformat.info/info/unicode/char/fffe/index.htm (Unicode Noncharacter)
-    //  Also lots more in http://www.unicode.org/faq/private_use.html
-    //  And more https://en.wikipedia.org/wiki/Unicode_control_characters
-    //  And more https://en.wikipedia.org/wiki/Control_character
-    //  And more https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+    //  http://www.unicode.org/faq/private_use.html
+    //  https://en.wikipedia.org/wiki/Unicode_control_characters
+    //  https://en.wikipedia.org/wiki/Control_character
+    //  https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+    //  These all seem to have problems though. They're either explicitly visible spaces, show as unicode boxes (i.e. the no-font-character box), throw off lexical analysis, or at least they trigger non-empty element rules in CSS etc.
+    //   Null byte (0x00) seems okay, but it's likely browsers may remove it entirely.
 
     return $ret;
 }

@@ -76,6 +76,7 @@ tree_list.prototype.getElementByIdHack=function(id,type,ob,serverid)
 
 tree_list.prototype.response=function(ajax_result_frame,ajax_result,expanding_id)
 {
+	if (!ajax_result) return;
 	if (!window.fixup_node_positions) return;
 
 	ajax_result=careful_import_node(ajax_result);

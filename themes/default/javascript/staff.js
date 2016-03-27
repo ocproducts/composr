@@ -188,7 +188,10 @@ function staff_actions_select(ob)
 
 			window.setTimeout(function() { // Do a refresh with magic markers, in a comfortable few seconds
 				var old_url=window.location.href;
-				window.location.href=old_url+((old_url.indexOf('?')==-1)?'&':'?')+'&keep_template_magic_markers=1';
+				if (old_url.indexOf('keep_template_magic_markers=1')==-1)
+				{
+					window.location.href=old_url+((old_url.indexOf('?')==-1)?'&':'?')+'&keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
+				}
 			},10000);
 		} else
 		{

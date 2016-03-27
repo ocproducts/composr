@@ -75,8 +75,10 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $out->evaluate(); // False evaluation
     }
 
-    // FUDGE: Yuck. We have to after-the-fact make it wide, and empty lots of internal caching to reset the state.
+    // FUDGE: Yuck. We have to after-the-fact make it wide (as we needed the template tree to be collected in full), and empty lots of internal caching to reset the state.
     $GLOBALS['PANELS_CACHE'] = array();
+    $GLOBALS['IS_WIDE_HIGH_CACHE'] = 1;
+    $GLOBALS['IS_WIDE_CACHE'] = 1;
     $GLOBALS['TEMPCODE_SETGET'] = array();
     $GLOBALS['LOADED_TPL_CACHE'] = array();
     $GLOBALS['HELPER_PANEL_TEXT'] = null;
