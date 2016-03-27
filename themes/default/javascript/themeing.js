@@ -662,7 +662,7 @@ function load_contextual_css_editor(file,file_id)
 				if (typeof editor.last_change=='undefined') return; // No change made at all
 
 				var milliseconds_ago=(new Date()).getTime()-editor.last_change;
-				if (milliseconds_ago<3*1000) return; // Not changed recently enough (within last 3 seconds)
+				if (milliseconds_ago>3*1000) return; // Not changed recently enough (within last 3 seconds)
 
 				if (typeof window.opener.have_set_up_parent_page_highlighting=='undefined')
 				{
