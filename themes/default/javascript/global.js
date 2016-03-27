@@ -1970,6 +1970,22 @@ function convert_tooltip(element)
 					win.activate_tooltip(element,event,element.cms_tooltip_title,'auto','',null,false,false,false,false,win);
 				}
 			);
+
+			win.add_event_listener_abstract(
+				element,
+				'mousemove',
+				function(event) {
+					win.reposition_tooltip(element,event,false,false,null,false,win);
+				}
+			);
+
+			win.add_event_listener_abstract(
+				element,
+				'mouseout',
+				function(event) {
+					win.deactivate_tooltip(element);
+				}
+			);
 		}
 	}
 }
