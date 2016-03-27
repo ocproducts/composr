@@ -2132,6 +2132,11 @@ function ecv_TRIM($lang, $escaped, $param)
 
     if (isset($param[0])) {
         $value = $param[0];
+
+        if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES']) {
+            $value = strip_invisible_output_encoding($value);
+        }
+
         if ($value != '') {
             if (strpos($value, '<') === false && strpos($value, '&') === false) {
                 $value = trim($value);

@@ -60,9 +60,10 @@ function init__tempcode()
     $LOADED_TPL_CACHE = array();
     $KEEP_TPL_FUNCS = array();
 
-    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
+    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $INJECT_HIDDEN_TEMPLATE_NAMES, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
     $RECORD_TEMPLATES_USED = false;
     $RECORDED_TEMPLATES_USED = array();
+    $INJECT_HIDDEN_TEMPLATE_NAMES = (get_param_integer('keep_template_magic_markers', 0) == 1);
     /** The name of a template that was called to render the current screen (null: not rendering a screen), auto-populated within the template system. This is tracked during dev mode to confirm that each screen really does wrap itself in a proper screen template.
      *
      * @global ?ID_TEXT $SCREEN_TEMPLATE_CALLED
@@ -821,7 +822,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 
-    if (!isset($parameters)) { // Streamlined if no parameters involved
+    if (!isset($parameters) && !$GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES']) { // Streamlined if no parameters involved
         $out = new Tempcode();
 
         $out->codename = $codename;
@@ -887,7 +888,64 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates') {
+        $ret2 = new Tempcode();
+        $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
+        $ret2->attach($ret);
+        $ret2->attach(invisible_output_encode('</' . $directory . '/' . $codename . $suffix . '>'));
+        return $ret2;
+    }
+
     return $ret;
+}
+
+/**
+ * Prepare some invisible text to annotate the HTML output stream.
+ * It works using invisible unicode characters.
+ * It's a bit like having hidden messages in the “umm”s and “err”s in speech. If I said “it’s lovely err err umm outside, want to umm err err umm go for a walk”, it can be a hidden code.
+ *
+ * @param  string $string Input
+ * @return string Output
+ */
+function invisible_output_encode($string)
+{
+    $ret = '';
+
+    $utf8 = (get_charset() == 'utf-8');
+
+    $len = strlen($string);
+    for ($i = 0; $i < $len; $i++) {
+        $char = ord($string[$i]);
+
+        for ($_bit = 7; $_bit >= 0; $_bit--) {
+            $_bitmask = '1' . str_repeat('0', $_bit);
+            $bitmask = bindec($_bitmask);
+            $bit = ($char & $bitmask) != 0;
+            if ($utf8) {
+                $ret .= $bit ? (chr(0xE2) . chr(0x80) . chr(0x8B)) : (chr(0xEF) . chr(0xBB) . chr(0xBF));
+            } else {
+                $ret .= $bit ? '&#x200b;' : '&#xfeff;';
+            }
+        }
+    }
+
+    return $ret;
+}
+
+/**
+ * Strip out the invisible_output_encode encoding.
+ *
+ * @param  string $string Input
+ * @return string Output
+ */
+function strip_invisible_output_encoding($string)
+{
+    if (get_charset() == 'utf-8') {
+        $string = str_replace(array(chr(0xE2) . chr(0x80) . chr(0x8B), chr(0xEF) . chr(0xBB) . chr(0xBF)), array('', ''), $string);
+    } else {
+        $string = str_replace(array('&#x200b;', '&#xfeff;'), array('', ''), $string);
+    }
+    return $string;
 }
 
 /**

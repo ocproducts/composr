@@ -165,7 +165,7 @@ function staff_actions_select(ob)
 {
 	var form;
 
-	var is_form_submit=(ob.nodeName.toLowerCase()=='form');
+	var is_form_submit=(ob.nodeName.toLowerCase()=='form'); // If it already is a form submission, i.e. we don't need to trigger a form.submit() ourselves
 	if (is_form_submit)
 	{
 		form=ob;
@@ -185,6 +185,11 @@ function staff_actions_select(ob)
 		if (val=='templates')
 		{
 			window_options='width='+window.screen.availWidth+',height='+window.screen.availHeight+',scrollbars=yes';
+
+			window.setTimeout(function() { // Do a refresh with magic markers, in a comfortable few seconds
+				var old_url=window.location.href;
+				window.location.href=old_url+((old_url.indexOf('?')==-1)?'&':'?')+'&keep_template_magic_markers=1';
+			},10000);
 		} else
 		{
 			window_options='width=1020,height=700,scrollbars=yes';

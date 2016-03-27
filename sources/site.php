@@ -791,7 +791,7 @@ function do_site()
      */
     $KEEP_MARKERS = ($keep_markers == 1) || ($special_page_type == 'show_markers');
     if (($KEEP_MARKERS) && (!headers_sent())) {
-        header('Content-type: text/html; charset=' . get_charset());
+        @header('Content-type: text/html; charset=' . get_charset()); // Not XHTML compatible, so must set HTML charset
     }
     /** Whether we will be embedding edit links in the output.
      *
@@ -1686,7 +1686,8 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'p_order' => 0,
     );
 
-    if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0)) {
+    global $KEEP_MARKERS, $SHOW_EDIT_LINKS, $INJECT_HIDDEN_TEMPLATE_NAMES;
+    if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0) && !$KEEP_MARKERS && !$SHOW_EDIT_LINKS && !$INJECT_HIDDEN_TEMPLATE_NAMES) {
         global $SITE_INFO;
         $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
 
