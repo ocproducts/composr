@@ -42,7 +42,7 @@ class Hook_snippet_template_editor_load
         require_code('files2');
 
         $file = get_param_string('file');
-        $file_id = str_replace(array('/', ':'), array('__', '__'), $file);
+        $file_id = get_dynamic_file_parameter($file);
         $theme = get_param_string('theme');
         $active_guid = get_param_string('active_guid', null);
 
@@ -51,7 +51,8 @@ class Hook_snippet_template_editor_load
 
         $revisions = new Tempcode();
 
-        $preview_url = null;
+        $live_preview_url = get_param_string('live_preview_url', null);
+        $screen_preview_url = null;
 
         if (strpos($file, ':') === false) {
             // Template...
@@ -138,9 +139,10 @@ class Hook_snippet_template_editor_load
                     'arg' => '',
                     'keep_theme' => $theme,
                     'keep_wide_high' => 1,
+                    'keep_cache' => 0,
+                    // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
                 );
-                $_preview_url = build_url($url_map, get_module_zone('admin_themes'));
-                $preview_url = $_preview_url->evaluate();
+                $screen_preview_url = build_url($url_map, get_module_zone('admin_themes'));
             }
         } else {
             // Comcode page...
@@ -183,6 +185,14 @@ class Hook_snippet_template_editor_load
             $related = array();
 
             $editing_toolbar_dropdowns = $this->get_tempcode_editing_toolbar_dropdowns(null, $file_id);
+
+            $url_map = array(
+                'page' => $page,
+                'keep_theme' => $theme,
+                'keep_cache' => 0,
+                // NB: The 'template_preview_op' POST parameter will be set, which causes the live preview
+            );
+            $screen_preview_url = build_url($url_map, $zone);
         }
 
         list($parameters, $directives, $misc_symbols, $programmatic_symbols, $abstraction_symbols, $arithmetical_symbols, $formatting_symbols, $logical_symbols) = $editing_toolbar_dropdowns;
@@ -204,7 +214,8 @@ class Hook_snippet_template_editor_load
             'REVISIONS' => $revisions,
             'GUIDS' => $guids,
             'RELATED' => $related,
-            'PREVIEW_URL' => $preview_url,
+            'LIVE_PREVIEW_URL' => $live_preview_url,
+            'SCREEN_PREVIEW_URL' => $screen_preview_url,
 
             'INCLUDE_TEMPCODE_EDITING' => $include_tempcode_editing,
             'PARAMETERS' => $parameters,

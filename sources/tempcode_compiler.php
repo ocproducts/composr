@@ -822,7 +822,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  * A template has not been structurally cached, so compile it and store in the cache.
  *
  * @param  ID_TEXT $theme The theme the template is in the context of
- * @param  PATH $path The path to the template file
+ * @param  string $directory Subdirectory type to look in. Surrounded by '/', unlike with $directory parameters to most other functions (performance reasons)
  * @param  ID_TEXT $codename The codename of the template (e.g. foo)
  * @param  ID_TEXT $_codename The actual codename to use for the template (e.g. foo_mobile)
  * @param  LANGUAGE_NAME $lang The language the template is in the context of
@@ -832,14 +832,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
  *
  * @ignore
  */
-function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $theme_orig = null)
+function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix, $theme_orig = null)
 {
     if (is_null($theme_orig)) {
         $theme_orig = $theme;
     }
 
     $base_dir = get_custom_file_base() . '/themes/';
-    if (!is_file($base_dir . $theme . $path . $codename . $suffix)) {
+    if (!is_file($base_dir . $theme . $directory . $codename . $suffix)) {
         $base_dir = get_file_base() . '/themes/';
     }
 
@@ -851,9 +851,9 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     //$final_css_path = null;
 
     if (isset($FILE_ARRAY)) {
-        $template_contents = unixify_line_format(file_array_get('themes/' . $theme . $path . $codename . $suffix));
+        $template_contents = unixify_line_format(file_array_get('themes/' . $theme . $directory . $codename . $suffix));
     } else {
-        $_path = $base_dir . filter_naughty($theme . $path . $codename) . $suffix;
+        $_path = $base_dir . filter_naughty($theme . $directory . $codename) . $suffix;
         $tmp = fopen($_path, 'rb');
         @flock($tmp, LOCK_SH);
         $template_contents = unixify_line_format(file_get_contents($_path));
@@ -938,9 +938,11 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE) {
-        $test = post_param_string($codename, null);
-        if (!is_null($test)) {
-            $template_contents = post_param_string($test . '_new');
+        $_template_file = str_replace('_custom', '', trim($directory, '/')) . '/' . $codename . $suffix;
+        $preview_post_param_key = 'e_' . get_dynamic_file_parameter($_template_file);
+        $test = post_param_string($preview_post_param_key, null);
+        if ($test !== null) {
+            $template_contents = $test;
         }
     }
 

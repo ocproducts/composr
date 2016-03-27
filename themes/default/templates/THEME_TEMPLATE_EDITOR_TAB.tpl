@@ -452,8 +452,15 @@
 <div class="float_surrounder buttons_group">
 	<input onclick="disable_button_just_clicked(this); template_editor_tab_save_content('{FILE;^*}'); return false;" accesskey="U" class="button_screen buttons__save" type="submit" value="{!SAVE}" />
 
-	{+START,IF_PASSED,PREVIEW_URL}
-		<input onclick="this.form.target='_blank'; this.form.action='{PREVIEW_URL;*}';" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
+	{+START,IF_PASSED,LIVE_PREVIEW_URL}
+		<!-- Preview in live rendering -->
+		<input onclick="template_editor_preview('{FILE_ID;*}','{LIVE_PREVIEW_URL;*}',this);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
+	{+END}
+	{+START,IF_NON_PASSED,LIVE_PREVIEW_URL}
+		{+START,IF_PASSED,SCREEN_PREVIEW_URL}
+			<!-- Preview in screen preview (Lorem ipsum) -->
+			<input onclick="template_editor_preview('{FILE_ID;*}','{SCREEN_PREVIEW_URL;*}',this);" accesskey="p" class="button_screen tabs__preview" type="submit" value="{!PREVIEW}" />
+		{+END}
 	{+END}
 </div>
 

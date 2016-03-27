@@ -342,10 +342,10 @@ class Module_admin_themes
             return $this->_edit_image();
         }
         if ($type == 'screen_previews') {
-            return $this->list_screen_previews();
+            return $this->screen_previews();
         }
         if ($type == 'screen_preview') {
-            return $this->view_screen_preview();
+            return $this->screen_preview();
         }
         if ($type == 'tempcode_tester') {
             return $this->tempcode_tester();
@@ -822,14 +822,13 @@ class Module_admin_themes
         list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
 
         // Screen preview feature
-        $preview_url = get_param_string('preview_url', null);
+        $live_preview_url = get_param_string('live_preview_url', null);
 
         return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
             'TITLE' => $this->title,
             'FILES_TO_LOAD' => $files_to_load,
             'THEME' => $theme,
-            'POST_URL' => build_url(array('page' => '_SELF', 'type' => 'edit_templates'), '_SELF'),
-            'PREVIEW_URL' => $preview_url,
+            'LIVE_PREVIEW_URL' => $live_preview_url,
             'WARNING_DETAILS' => $warning_details,
             'PING_URL' => $ping_url,
             'ACTIVE_GUID' => $active_guid,
@@ -1155,7 +1154,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function list_screen_previews()
+    public function screen_previews()
     {
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(120);
@@ -1260,7 +1259,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function view_screen_preview()
+    public function screen_preview()
     {
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 

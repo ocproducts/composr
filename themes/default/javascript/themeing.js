@@ -13,7 +13,7 @@ e_	Editor textbox
 
 function file_to_file_id(file)
 {
-	return file.replace(/\//,'__').replace(/:/,'__');
+	return file.replace(/\//,'__').replace(/:/,'__').replace(/\./,'__');
 }
 
 function template_editor_assign_unload_event()
@@ -197,6 +197,10 @@ function template_editor_loading_url(file,revision_id)
 	{
 		url+='&active_guid='+window.encodeURIComponent(window.template_editor_active_guid);
 	}
+	if (typeof window.template_editor_live_preview_url!='undefined')
+	{
+		url+='&live_preview_url='+window.encodeURIComponent(window.template_editor_live_preview_url);
+	}
 	if (typeof revision_id!='undefined')
 	{
 		url+='&undo_revision='+window.encodeURIComponent(revision_id);
@@ -270,7 +274,9 @@ function template_editor_tab_save_content(file)
 	var url='template_editor_save';
 	url+='&file='+window.encodeURIComponent(file);
 	url+='&theme='+window.encodeURIComponent(window.template_editor_theme);
+
 	editarea_reverse_refresh('e_'+file_to_file_id(file));
+
 	var post='contents='+window.encodeURIComponent(get_file_textbox(file).value);
 	load_snippet(url,post,function(ajax_result) {
 		fauxmodal_alert(ajax_result.responseText,null,null,true);
@@ -373,6 +379,14 @@ function template_editor_restore_revision(file,revision_id)
 	});
 
 	return false;
+}
+
+function template_editor_preview(file_id,url,button)
+{
+	var has_editarea=editarea_is_loaded('e_'+file_id);
+	if (has_editarea) editarea_reverse_refresh('e_'+file_id);
+
+	button.form.action=url;
 }
 
 /* Editing */

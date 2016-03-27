@@ -18,7 +18,8 @@
 	{!TEMPLATE_EDITOR_ACCESSIBILITY_HELP}
 </noscript>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{POST_URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="#" target="_blank">
+	{$,Instruct Composr to pull in template data dynamically from the POST environment, i.e. do a live preview}
 	<input type="hidden" name="template_preview_op" value="1" />
 
 	{$INSERT_SPAMMER_BLACKHOLE}
@@ -52,6 +53,10 @@
 	window.template_editor_theme='{THEME;^/}';
 	{+START,IF_PASSED,ACTIVE_GUID}
 		window.template_editor_active_guid='{ACTIVE_GUID;^/}';
+	{+END}
+
+	{+START,IF_PASSED,LIVE_PREVIEW_URL}
+		window.template_editor_live_preview_url='{LIVE_PREVIEW_URL;^/}';
 	{+END}
 
 	add_event_listener_abstract(window,'load',function() {

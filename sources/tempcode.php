@@ -664,7 +664,7 @@ function kid_gloves_html_escaping_singular(&$param)
 function fill_template_preview_op_cache()
 {
     global $IS_TEMPLATE_PREVIEW_OP_CACHE;
-    $IS_TEMPLATE_PREVIEW_OP_CACHE = array_key_exists('template_preview_op', $_POST) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'view'));
+    $IS_TEMPLATE_PREVIEW_OP_CACHE = isset($_POST['template_preview_op']) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'screen_preview'));
 }
 
 /**

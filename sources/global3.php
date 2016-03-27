@@ -3294,3 +3294,17 @@ function send_http_output_ping()
 {
     echo ' ';
 }
+
+/**
+ * Get the conventional name of a parameter for a particular file identifier.
+ * HTTP POST parameters will have 'e_' prepended to this.
+ *
+ * @param ID_TEXT $file File identifier
+ * @return ID_TEXT Parameter name
+ *
+ * @ignore
+ */
+function get_dynamic_file_parameter($file)
+{
+    return str_replace(array('/', ':', '.'), array('__', '__', '__'), $file);
+}
