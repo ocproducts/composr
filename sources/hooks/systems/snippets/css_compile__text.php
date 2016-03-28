@@ -33,8 +33,12 @@ class Hook_snippet_css_compile__text
         if (has_actual_page_access(get_member(), 'admin_themes')) {
             safe_ini_set('ocproducts.xss_detect', '0');
 
+            $css = post_param_string('css');
+
             require_code('tempcode_compiler');
-            return template_to_tempcode(post_param_string('css'));
+            $ret = template_to_tempcode($css);
+
+            return $ret;
         }
         return new Tempcode();
     }

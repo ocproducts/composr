@@ -4344,7 +4344,7 @@ a[rel="lightbox"] {
 =========================
 */
 
-@-webkit-keyframes greenPulse {
+@keyframes greenPulse {
 	from { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
 	50% { background-color: #91bd09; {$BETA_CSS_PROPERTY,box-shadow: 0 0 18px #91bd09;} }
 	to { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }

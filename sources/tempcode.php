@@ -888,7 +888,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename!='FORM_SCREEN_INPUT_HIDDEN' && $codename!='FORM_SCREEN_INPUT_HIDDEN_2') {
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename!='GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename!='FORM_SCREEN_INPUT_HIDDEN' && $codename!='FORM_SCREEN_INPUT_HIDDEN_2') {
         $ret2 = new Tempcode();
         $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
         $ret2->attach($ret);
