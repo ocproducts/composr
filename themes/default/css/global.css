@@ -3815,7 +3815,7 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .tab {
 	float: left;
-	padding: 3px 7px 0 7px !important;
+	padding: 3px 6px 0 6px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;

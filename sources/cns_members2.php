@@ -214,7 +214,7 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
             if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                 $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
             } else {
-                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
+                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
             }
 
             $age = intval(date('Y')) - $year;
@@ -225,7 +225,7 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
                 $age--;
             }
         } else {
-            $dob = strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+            $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
         }
     }
 
