@@ -300,9 +300,12 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             $day = intval($matches[3]);
 
             $time = either_param_string($stub . '_time', null);
-            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)$#', $time, $matches) != 0)) {
+            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
+                if (strpos($time, 'PM') !== false) {
+                    $hour += 12;
+                }
             } else {
                 $hour = null;
                 $minute = null;
@@ -337,9 +340,12 @@ function post_param_date_components($stub, $year = null, $month = null, $day = n
             $day = intval($matches[3]);
 
             $time = post_param_string($stub . '_time', null);
-            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)$#', $time, $matches) != 0)) {
+            if ((!is_null($time)) && (preg_match('#^(\d\d):(\d\d)(:| |$)#', $time, $matches) != 0)) {
                 $hour = intval($matches[1]);
                 $minute = intval($matches[2]);
+                if (strpos($time, 'PM') !== false) {
+                    $hour += 12;
+                }
             } else {
                 $hour = null;
                 $minute = null;

@@ -594,8 +594,9 @@ function ecv_SET($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    global $TEMPCODE_SETGET;
+
     if (isset($param[1])) {
-        global $TEMPCODE_SETGET;
         if (isset($param[1]) && isset($param[1]->codename)/*faster than is_object*/) {
             $TEMPCODE_SETGET[$param[0]] = $param[1];
         } else {
@@ -603,6 +604,8 @@ function ecv_SET($lang, $escaped, $param)
             unset($param_copy[0]);
             $TEMPCODE_SETGET[$param[0]] = isset($param_copy[2]/*optimisation*/) ? implode(',', $param_copy) : $param_copy[1];
         }
+    } else {
+        $TEMPCODE_SETGET[$param[0]] = '';
     }
 
     if ($escaped != array()) {

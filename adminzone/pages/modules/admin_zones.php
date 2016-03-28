@@ -610,7 +610,9 @@ class Module_admin_zones
                 $base_url = 'http://' . $SITE_INFO['ZONE_MAPPING_' . $zone][0] . '/' . $SITE_INFO['ZONE_MAPPING_' . $zone][1];
             }
         }
-        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('ZONE_BASE_URL'), do_lang_tempcode('DESCRIPTION_ZONE_BASE_URL'), 'base_url', $base_url, false));
+        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+            $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('ZONE_BASE_URL'), do_lang_tempcode('DESCRIPTION_ZONE_BASE_URL'), 'base_url', $base_url, false));
+        }
 
         if ((!$in_zone_editor) && (!is_null($zone)) && (addon_installed('zone_logos'))) {
             // Logos

@@ -38,6 +38,7 @@ class Hook_config_notification_poll_frequency
             'explanation' => 'CONFIG_OPTION_notification_poll_frequency',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_notifications',
         );

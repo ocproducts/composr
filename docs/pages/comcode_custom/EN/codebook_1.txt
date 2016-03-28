@@ -1264,7 +1264,7 @@ On a similar note, when using user-input with the PHP [tt]preg_replace[/tt] func
 [title="4"]Kid-gloves modes[/title]
 
 It's a fact of life that novice coders don't know how to write secure code, and it's also a fact of life novice developers will be expected to write real-world production code. Composr contains many security features and abstractions to protect common types of vulnerability, however there are also additional protections included for novice developers.
-The additional protections may slow performance slightly, or cause some slight weird processing issues in rare events, but generally won't cause any problems. The protections automatically enable for any block or module in a [tt]*_custom[/tt] directory.
+The additional protections may slow performance slightly, or cause some slight weird processing issues in rare events, but generally won't cause any problems with simple code. The protections automatically enable for any block or module in a [tt]*_custom[/tt] directory.
 The protections may be turned off by a code call like:
 [code="PHP"]
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
@@ -1275,8 +1275,10 @@ This way Composr has the best of both worlds:
  - Newbie developers will be protected for the vast majority of cases.
 
 Saying [tt]I_UNDERSTAND_SQL_INJECTION[/tt] disables extra scanning of queries to ensure they are always made in the most secure way and that custom data within the queries is correctly escaped. The scanning slightly impacts performance.
-Saying [tt]I_UNDERSTAND_XSS[/tt] disables automatic escaping of template parameters and language string parameters (which can result in accidental double-escaping in output) and any input parameters that make it into the output of a mini-module/mini-block.
+Saying [tt]I_UNDERSTAND_XSS[/tt] disables automatic escaping of template parameters and language string parameters (which can result in accidental double-escaping in output) and any input parameters that make it into the output of a mini-module/mini-block. It is smart enough to know what was and was not already escaped (due to internal tracking), so double-escaping is rare.
 Saying [tt]I_UNDERSTAND_PATH_INJECTION[/tt] disables hack-attack errors from being generated if any URL parameter has ".." or null bytes in it.
+
+Think of these flags as a trade-off between safe code and correct functionality in all cases. Without the flags, code is safe but may not always run as expected -- with them, code is only safe if you know what you are doing, and will always run correctly.
 
 [title="4"]Input sanitisation, the right way[/title]
 

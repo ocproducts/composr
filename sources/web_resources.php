@@ -480,7 +480,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 /**
  * Get the environment needed for web resources.
  *
- * @param  ?ID_TEXT $_seed The seed colour (null: previous cached) (blank: none) (null: from what is cached)
+ * @param  ?ID_TEXT $_seed The seed colour (blank: none) (null: from what is cached)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
@@ -490,37 +490,52 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
  */
 function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, $_mobile = null)
 {
-    static $seed = null;
-    if ($_seed !== null || running_script('preview'/*may change seed in script code*/)) {
-        $_seed = '';
-        if (has_privilege(get_member(), 'view_profiling_modes')) {
-            $_seed = get_param_string('keep_theme_seed', '');
-        }
+    static $seed_cached = null;
+    if ($_seed !== null) {
         $seed = $_seed;
+    } elseif ($seed_cached === null || running_script('preview'/*may change seed in script code*/)) {
+        if (has_privilege(get_member(), 'view_profiling_modes')) {
+            $seed = get_param_string('keep_theme_seed', '');
+        } else {
+            $seed = '';
+        }
+        $seed_cached = $seed;
+    } else {
+        $seed = $seed_cached;
     }
 
-    static $minify = null;
+    static $minify_cached = null;
     if ($_minify !== null) {
         $minify = $_minify;
-    } elseif ($minify === null) {
-        $minify = (get_param_integer('keep_no_minify', 0) == 0);
-        if ($seed != '') {
+    } elseif ($minify_cached === null || $seed != '') {
+        if ($seed == '') {
+            $minify = (get_param_integer('keep_no_minify', 0) == 0);
+            $minify_cached = $minify;
+        } else {
             $minify = false;
         }
+    } else {
+        $minify = $minify_cached;
     }
 
-    static $https = null;
+    static $https_cached = null;
     if ($_https !== null) {
         $https = $_https;
-    } elseif ($https === null) {
+    } elseif ($https_cached === null) {
         $https = ((addon_installed('ssl')) && function_exists('is_page_https') && function_exists('get_zone_name') && ((tacit_https()) || is_page_https(get_zone_name(), get_page_name())));
+        $https_cached = $https;
+    } else {
+        $https = $https_cached;
     }
 
-    static $mobile = null;
+    static $mobile_cached = null;
     if ($_mobile !== null) {
         $mobile = $_mobile;
-    } elseif ($mobile === null) {
+    } elseif ($mobile_cached === null) {
         $mobile = is_mobile();
+        $mobile_cached = $mobile;
+    } else {
+        $mobile = $mobile_cached;
     }
 
 	return array($minify, $https, $mobile, $seed);

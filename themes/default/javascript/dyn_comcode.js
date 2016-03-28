@@ -5,7 +5,7 @@ function accordion(e)
 	var i,nodes=get_elements_by_class_name(e.parentNode.parentNode,'toggleable_tray');
 	for (i=0;i<nodes.length;i++)
 	{
-		if ((nodes[i].parentNode!=e) && (nodes[i].style.display!='none') && (nodes[i].className.indexOf('accordion_trayitem')!=-1))
+		if ((nodes[i].parentNode!=e) && (nodes[i].style.display!='none') && (nodes[i].parentNode.className.indexOf('accordion_trayitem')!=-1))
 		{
 			toggleable_tray(nodes[i].parentNode,true);
 		}

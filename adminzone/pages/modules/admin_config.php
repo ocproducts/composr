@@ -350,7 +350,7 @@ class Module_admin_config
 
         // Find all options in category
         $hooks = find_all_hooks('systems', 'config');
-        $rows = array();
+        $options = array();
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/config/' . filter_naughty($hook));
             $ob = object_factory('Hook_config_' . $hook);
@@ -363,7 +363,7 @@ class Module_admin_config
                         }
                         $option['ob'] = $ob;
                         $option['name'] = $hook;
-                        $rows[$hook] = $option;
+                        $options[$hook] = $option;
                     }
                 }
             }
@@ -371,24 +371,24 @@ class Module_admin_config
 
         // Add in special ones
         if ($category == 'SITE') {
-            $rows['timezone'] = array('name' => 'timezone', 'human_name' => 'TIME_ZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 1);
+            $options['timezone'] = array('name' => 'timezone', 'human_name' => 'TIME_ZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 1);
         }
         require_code('files');
         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));
         $post_max_size = (ini_get('post_max_size') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('post_max_size')));
 
         // Sort generally, categorise into groups, sort the groups
-        sort_maps_by($rows, 'order_in_category_group');
+        sort_maps_by($options, 'order_in_category_group');
         $all_known_groups = array();
-        foreach ($rows as $myrow) {
-            $_group = do_lang($myrow['group']);
+        foreach ($options as $option) {
+            $_group = do_lang($option['group']);
 
             $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', $_group)));
-            if ((array_key_exists($_group, $all_known_groups)) && ($all_known_groups[$_group] != $myrow['group'])) {
-                $_group = 'std_' . $myrow['group']; // If cat names translate to same things or are in non-latin characters like Cyrillic
+            if ((array_key_exists($_group, $all_known_groups)) && ($all_known_groups[$_group] != $option['group'])) {
+                $_group = 'std_' . $option['group']; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
 
-            $all_known_groups[$_group] = $myrow['group'];
+            $all_known_groups[$_group] = $option['group'];
         }
         $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', do_lang('ADVANCED'))));
         ksort($all_known_groups);
@@ -400,9 +400,9 @@ class Module_admin_config
         $groups = array();
         foreach ($all_known_groups as $group_codename) {
             $group_rows = array();
-            foreach ($rows as $myrow) {
-                if ($myrow['group'] == $group_codename) {
-                    $group_rows[] = $myrow;
+            foreach ($options as $option) {
+                if ($option['group'] == $group_codename) {
+                    $group_rows[] = $option;
                 }
             }
 
@@ -413,35 +413,35 @@ class Module_admin_config
         $groups_arr = array();
         require_code('form_templates');
         $_groups = array();
-        foreach ($groups as $group_codename => $rows) {
+        foreach ($groups as $group_codename => $options) {
             $out = '';
-            foreach ($rows as $myrow) {
-                $name = $myrow['name']; // Can't get from array key, as sorting nuked it
+            foreach ($options as $option) {
+                $name = $option['name']; // Can't get from array key, as sorting nuked it
 
                 // Language strings
-                $human_name = do_lang_tempcode($myrow['human_name']);
-                $_explanation = do_lang($myrow['explanation'], null, null, null, null, false);
+                $human_name = do_lang_tempcode($option['human_name']);
+                $_explanation = do_lang($option['explanation'], null, null, null, null, false);
                 if (is_null($_explanation)) {
-                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group'], null, null, null, null, false);
+                    $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group'], null, null, null, null, false);
                     if (is_null($_explanation)) {
                         // So an error shows
-                        $_explanation = do_lang($myrow['explanation']);
-                        $explanation = do_lang_tempcode($myrow['explanation']);
+                        $_explanation = do_lang($option['explanation']);
+                        $explanation = do_lang_tempcode($option['explanation']);
                     } else {
-                        $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $myrow['group']);
+                        $explanation = do_lang_tempcode('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group']);
                     }
                 } else {
-                    $explanation = do_lang_tempcode($myrow['explanation']);
+                    $explanation = do_lang_tempcode($option['explanation']);
                 }
 
-                if (isset($myrow['required'])) {
-                    $required = $myrow['required'];
+                if (isset($option['required'])) {
+                    $required = $option['required'];
                 } else {
-                    if ($myrow['type'] == 'integer') {
+                    if ($option['type'] == 'integer') {
                         $required = true;
-                    } elseif ($myrow['type'] == 'float') {
+                    } elseif ($option['type'] == 'float') {
                         $required = true;
-                    } elseif ($myrow['type'] == 'list') {
+                    } elseif ($option['type'] == 'list') {
                         $required = true;
                     } else {
                         $required = false;
@@ -449,7 +449,7 @@ class Module_admin_config
                 }
 
                 // Render field inputter
-                switch ($myrow['type']) {
+                switch ($option['type']) {
                     case 'special':
                         switch ($name) {
                             case 'timezone':
@@ -462,8 +462,8 @@ class Module_admin_config
                                 break;
 
                             default:
-                                $ob = $myrow['ob'];
-                                $out .= static_evaluate_tempcode($ob->field_inputter($name, $myrow, $human_name, $explanation));
+                                $ob = $option['ob'];
+                                $out .= static_evaluate_tempcode($ob->field_inputter($name, $option, $human_name, $explanation));
                                 break;
                         }
                         break;
@@ -500,7 +500,7 @@ class Module_admin_config
                             $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                         }
                         $_value = get_option($name);
-                        $values = explode('|', $myrow['list_options']);
+                        $values = explode('|', $option['list_options']);
                         foreach ($values as $value) {
                             $__value = str_replace(' ', '__', $value);
                             $_option_text = do_lang('CONFIG_OPTION_' . $name . '_VALUE_' . $__value, null, null, null, null, false);
@@ -578,7 +578,7 @@ class Module_admin_config
                             if (!$required) {
                                 $_list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
                             }
-                            $_list->attach(cns_create_selection_list_usergroups($tmp_value, $myrow['type'] == 'usergroup'));
+                            $_list->attach(cns_create_selection_list_usergroups($tmp_value, $option['type'] == 'usergroup'));
                             $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list));
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
@@ -586,7 +586,7 @@ class Module_admin_config
                         break;
 
                     default:
-                        fatal_exit('Invalid config option type: ' . $myrow['type'] . ' (for ' . $myrow['name'] . ')');
+                        fatal_exit('Invalid config option type: ' . $option['type'] . ' (for ' . $option['name'] . ')');
                 }
             }
 
@@ -685,7 +685,7 @@ class Module_admin_config
 
         // Find all options in category
         $hooks = find_all_hooks('systems', 'config');
-        $rows = array();
+        $options = array();
         foreach (array_keys($hooks) as $hook) {
             require_code('hooks/systems/config/' . filter_naughty($hook));
             $ob = object_factory('Hook_config_' . $hook);
@@ -694,7 +694,7 @@ class Module_admin_config
                 if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
                     if (!is_null($ob->get_default())) {
                         $option['ob'] = $ob;
-                        $rows[$hook] = $option;
+                        $options[$hook] = $option;
                     }
                 }
             }
@@ -702,18 +702,18 @@ class Module_admin_config
 
         // Add in special ones
         if ($category == 'SITE') {
-            $rows['timezone'] = array('shared_hosting_restricted' => 0, 'type' => 'special');
+            $options['timezone'] = array('shared_hosting_restricted' => 0, 'type' => 'special');
         }
 
         // Go through all options on the page, saving
-        foreach ($rows as $name => $myrow) {
+        foreach ($options as $name => $option) {
             // Save
-            if ($myrow['type'] == 'tick') {
+            if ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
-            } elseif ($myrow['type'] == 'date') {
+            } elseif ($option['type'] == 'date') {
                 $date_value = post_param_date($name);
                 $value = is_null($date_value) ? '' : strval($date_value);
-            } elseif ((($myrow['type'] == 'forum') || ($myrow['type'] == '?forum')) && (get_forum_type() == 'cns')) {
+            } elseif ((($option['type'] == 'forum') || ($option['type'] == '?forum')) && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => post_param_integer($name)));
@@ -721,7 +721,7 @@ class Module_admin_config
                 if (is_null($value)) {
                     $value = '';
                 }
-            } elseif (($myrow['type'] == 'forum_grouping') && (get_forum_type() == 'cns')) {
+            } elseif (($option['type'] == 'forum_grouping') && (get_forum_type() == 'cns')) {
                 $value = post_param_string($name);
                 if (is_numeric($value)) {
                     $value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'c_title', array('id' => post_param_integer($name)));
@@ -729,7 +729,7 @@ class Module_admin_config
                 if (is_null($value)) {
                     $value = '';
                 }
-            } elseif ((($myrow['type'] == 'usergroup') || ($myrow['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
+            } elseif ((($option['type'] == 'usergroup') || ($option['type'] == 'usergroup_not_guest')) && (get_forum_type() == 'cns')) {
                 $_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'g_name', array('id' => post_param_integer($name)));
                 if (is_null($_value)) {
                     $value = '';

@@ -55,7 +55,7 @@
 							<th width="5%" align="left">CSS</th>
 						</tr>
 						<tr>
-							<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_background.asp">background</a></td>
+							<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/css3_pr_background.asp">background</a></td>
 							<td>Sets all the background properties in one declaration</td>
 							<td>1</td>
 						</tr>

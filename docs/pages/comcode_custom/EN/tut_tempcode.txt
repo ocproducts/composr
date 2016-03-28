@@ -1814,7 +1814,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>NO_PREPROCESSING</td>
-			<td>Avoid preprocessing of anything inside the directive, and internal caching too. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
+			<td>Avoid preprocessing of anything inside the directive. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
 		</tr>
 	</tbody>
 </table>

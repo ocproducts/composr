@@ -47,7 +47,7 @@
 					<li><a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
 				{+END}
 				{+START,IF_NON_EMPTY,{CHATCODE_HELP}}
-					<li><a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!CHATCODE_HELP=} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP=}</a></li>
+					<li><a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>
 				{+END}
 			</ul>
 		{+END}
@@ -100,7 +100,7 @@
 			</p>
 
 			<p>
-				<input class="button_screen_item buttons__save" onclick="var form=this.form; window.fauxmodal_confirm('{!SAVE_COMPUTER_USING_COOKIE}',function(answer) { if (answer) form.submit(); }); return false;" type="submit" value="{!CHAT_CHANGE_OPTIONS=}" />
+				<input class="button_screen_item buttons__save" onclick="var form=this.form; window.fauxmodal_confirm('{!SAVE_COMPUTER_USING_COOKIE}',function(answer) { if (answer) form.submit(); }); return false;" type="submit" value="{$STRIP_TAGS,{!CHAT_CHANGE_OPTIONS}}" />
 			</p>
 		</div>
 

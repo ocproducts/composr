@@ -557,7 +557,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     $title = get_translated_text($PT_PAIR_CACHE_D[$category_id]['category']);
     $segments = array();
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, escape_html($title));
+        $segments[] = array($page_link, $title);
     }
 
     if ($PT_PAIR_CACHE_D[$category_id]['parent_id'] == $category_id) {

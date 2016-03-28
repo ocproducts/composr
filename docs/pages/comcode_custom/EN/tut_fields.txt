@@ -7,6 +7,9 @@ This tutorial describes all the different fields and their options.
 
 [title="2"]Text[/title]
 
+[b]A note about sorting:[/b]
+Note that text fields will sort using a text sort algorithm. For example, "10" comes before "3", because 1 is less than 3 and it compares characters left-to-right rather than as actual numbers. To get numeric sort you would need a number field type.
+
 [title="3"]short_trans[/title]
 
 {| 15em wide

@@ -34,7 +34,7 @@ class Hook_checklist_blog
             return array();
         }
 
-        if (get_option('blog_update_time') == '') {
+        if (get_option('blog_update_time') == '' || get_option('blog_update_time') == '0') {
             return array();
         }
 

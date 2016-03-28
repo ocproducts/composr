@@ -61,10 +61,6 @@ function load_breadcrumb_substitutions($segments)
     $done_one = false;
 
     foreach ($segments as $i => $segment) { // Loop by active breadcrumb segments
-        if (is_object($segment[1])) {
-            $segment[1] = $segment[1]->evaluate();
-        }
-
         if (!$done_one && $segment[0] !== '') {
             if ($segment[0] === null) {
                 list($segment_zone, $segment_attributes, $segment_hash) = array(null, null, null); // active page

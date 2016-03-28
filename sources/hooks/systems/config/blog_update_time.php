@@ -38,6 +38,7 @@ class Hook_config_blog_update_time
             'explanation' => 'CONFIG_OPTION_blog_update_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'news',
         );

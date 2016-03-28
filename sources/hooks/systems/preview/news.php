@@ -48,6 +48,12 @@ class Hook_preview_news
         $post_comcode = $post_bits['comcode'];
         $post_html = $post_bits['tempcode'];
 
+        if ($post_comcode != '') {
+            return array($post_html, $post_comcode); // Just preview the main article if there is one
+        }
+
+        // Otherwise we'll lay out all the Comcode fields in a boring way...
+
         $map_table_map = array();
         $map_table_map[post_param_string('label_for__title')] = escape_html(post_param_string('title'));
         $map_table_map[post_param_string('label_for__post')] = $post_html;
