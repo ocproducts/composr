@@ -1249,7 +1249,7 @@ function select_tab(id,tab,from_url,automated)
 		if (element)
 		{
 			if (element.className.indexOf('tab_active')!=-1)
-				element.className=element.className.replace(/ tab_active/g,'');
+				element.className=element.className.replace(/ ?tab_active/g,'');
 			if (tabs[i]==tab)	element.className+=' tab_active';
 		}
 	}

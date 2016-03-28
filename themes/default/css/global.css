@@ -3271,15 +3271,15 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	/*{+END}*/
 }
 .button_micro {
-	padding: 1px 3px 2px 3px;
+	padding: 4px 6px;
 	font-size: 12px;
-	margin: 1px 0.25em 0 0.25em; /* Push it up a bit due to confined space */
+	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
 	line-height: 0.9em;
 }
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
-	{$BETA_CSS_PROPERTY,border-radius: 4px;}
+	{$BETA_CSS_PROPERTY,border-radius: 1px;}
 }
 
 .button_screen, .button_screen_item, .button_micro, .toggleable_tray_button img {
@@ -3783,13 +3783,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	margin-top: 0;
 }
 
-/* Tighten up subtab display */
-.tab_surround .tab_surround {
-	background-image: none;
-	background-color: {$GET,main_background};
-	overflow: hidden; /* To stop margin collapsing bleeding backgrounds */
-}
-
 .tabs {
 	border-left: 0;
 	border-right: 0;
@@ -3815,14 +3808,14 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .tab {
 	float: left;
-	padding: 3px 6px 0 6px !important;
+	padding: 3px 8px 0 8px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
 	line-height: 1em;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		background-image: url('{$IMG;,tab}') !important;
+		background-image: url('{$IMG;,tabs/tab}') !important;
 	/*{+END}*/
 	/*{+START,IF,{$MOBILE}}*/
 		min-width: 107px; /* Allows 3 per row, neat alignment */
@@ -3842,7 +3835,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	display: inline-block;
 }
 
-.tab_active {
+.tab.tab_active {
 	text-shadow: 1px 0 1px {$GET,standard_border};
 	{$BETA_CSS_PROPERTY,opacity: 1.0 !important;}
 }
@@ -3895,6 +3888,13 @@ div[role="tabpanel"]>:last-child {
 }
 
 /* Sub-tabs */
+
+/* Tighten up subtab display */
+.tab_surround .tab_surround {
+	background-image: none;
+	background-color: {$GET,main_background};
+	overflow: hidden; /* To stop margin collapsing bleeding backgrounds */
+}
 
 .tabs .tabs {
 	margin-top: 0.5em;
