@@ -16,15 +16,15 @@
 	{HIDDEN}
 
 	{+START,IF,{$GT,{TABS},1}}
-		<div class="modern_subtabs">
-			<div class="modern_subtab_headers">
+		<div class="{$?,{$MOBILE},modern_tabs,modern_subtabs}">
+			<div class="{$?,{$MOBILE},modern_tab_headers,modern_subtab_headers}">
 				{+START,LOOP,TABS}
 					<div id="t_edit__{$LCASE,{TAB_TITLE|*}}"{+START,IF,{TAB_FIRST}} class="tab_active tab_first{+END}{+START,IF,{TAB_LAST}} tab_last{+END}">
 						<a aria-controls="g_edit__{$LCASE,{TAB_TITLE|*}}" role="tab" href="#" onclick="select_tab('g','edit__{$LCASE,{TAB_TITLE|*}}'); return false;">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}
 			</div>
-			<div class="modern_subtab_bodies">
+			<div class="{$?,{$MOBILE},modern_tab_bodies,modern_subtab_bodies}">
 	{+END}
 				{+START,LOOP,TABS}
 					{+START,IF,{$GT,{TABS},1}}

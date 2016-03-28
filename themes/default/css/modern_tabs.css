@@ -25,6 +25,12 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	overflow: hidden;
 }
 
+/*{+START,IF,{$MOBILE}}*/
+	.modern_tab_headers>div {
+		width: 50%;
+	}
+/*{+END}*/
+
 .modern_tab_headers>div:last-child {
 	float: none;
 }
@@ -41,26 +47,36 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern_tab_headers>div>a {
 	display: inline-block;
 	padding: 1em;
-	border-right: 1px solid #FFFFFF;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		border-right: 1px solid #FFFFFF;
+	/*{+END}*/
 	cursor: pointer;
 }
+
+/*{+START,IF,{$MOBILE}}*/
+	.modern_tab_headers>div>a {
+		display: block;
+	}
+/*{+END}*/
 
 .modern_tab_headers>div:last-child>a {
 	border-right: 0;
 }
 
-/*
-Enable instead of the below selector if you would rather icon goes above label for short widths. In this case you also need to get equal header widths via  style="width: { $DIV_FLOAT*,100,{ TABS}}%" on the header div.
-.modern_tab_headers>div>a>span {
-	min-width: 5em; / * To force uniform wrapping if not enough space * /
-	padding: 0.3em 0; / * Will only take effect if wrapped * /
-}*/
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*
+	Enable instead of the below selector if you would rather icon goes above label for short widths. In this case you also need to get equal header widths via  style="width: { $DIV_FLOAT*,100,{ TABS}}%" on the header div.
+	.modern_tab_headers>div>a>span {
+		min-width: 5em; / * To force uniform wrapping if not enough space * /
+		padding: 0.3em 0; / * Will only take effect if wrapped * /
+	}*/
 
-.modern_tab_headers>div>a>span {
-	min-width: 47px; /* Space things out - you may want to adjust this based on however many tabs you have */
-	display: inline-block;
-	padding-left: 3px;
-}
+	.modern_tab_headers>div>a>span {
+		min-width: 47px; /* Space things out - you may want to adjust this based on however many tabs you have */
+		display: inline-block;
+		padding-left: 3px;
+	}
+/*{+END}*/
 
 .modern_tab_headers>div>a, .modern_tab_headers>div>a:visited, .modern_tab_headers>div>a:active, .modern_tab_headers>div>a:hover {
 	text-decoration: none;
@@ -69,10 +85,26 @@ Enable instead of the below selector if you would rather icon goes above label f
 
 .modern_tab_bodies {
 	overflow: hidden;
-	padding: 1em 0.5em;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		padding: 1em 0.5em;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		padding: 3px;
+	/*{+END}*/
 }
 
 .modern_tab_bodies>div {
+}
+
+/* Sub tabs, nested */
+
+.modern_tabs .modern_tabs .modern_tab_headers {
+	overflow: hidden;
+	background: #6693D6;
+}
+
+.modern_tabs .modern_tabs .modern_tab_headers>div>a {
+	padding: 0.5em;
 }
 
 /* Sub tabs, which look entirely different as they go down in an lhs column */
