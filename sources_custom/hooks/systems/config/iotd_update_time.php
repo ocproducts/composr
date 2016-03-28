@@ -33,6 +33,7 @@ class Hook_config_iotd_update_time
             'explanation' => 'CONFIG_OPTION_iotd_update_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'iotds',
         );

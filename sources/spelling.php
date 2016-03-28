@@ -160,23 +160,27 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
     // Run checks
     $spell_link = _spellcheck_initialise($lang);
     if (function_exists('pspell_check')) { // pspell
-        foreach ($words as $word) {
-            if (!pspell_check($spell_link, $word)) {
-                $corrections = pspell_suggest($spell_link, $word);
-                $errors[cms_mb_strtolower($word)] = $corrections;
+        if (is_resource($spell_link)) {
+            foreach ($words as $word) {
+                if (!pspell_check($spell_link, $word)) {
+                    $corrections = pspell_suggest($spell_link, $word);
+                    $errors[cms_mb_strtolower($word)] = $corrections;
+                }
             }
         }
     } else { // enchant
         list($broker, $dict, $personal_dict) = $spell_link;
 
-        foreach ($words as $word) {
-            $corrections = array();
-            if (!enchant_dict_quick_check($dict, $word, $corrections)) {
-                $errors[cms_mb_strtolower($word)] = $corrections;
+        if (is_resource($dict)) {
+            foreach ($words as $word) {
+                $corrections = array();
+                if (!enchant_dict_quick_check($dict, $word, $corrections)) {
+                    $errors[cms_mb_strtolower($word)] = $corrections;
+                }
             }
-        }
 
-        enchant_broker_free($broker);
+            enchant_broker_free($broker);
+        }
     }
 
     return $errors;
@@ -192,19 +196,23 @@ function add_spellchecker_words($words)
     $spell_link = _spellcheck_initialise();
 
     if (function_exists('pspell_check')) { // pspell
-        foreach ($words as $word) {
-            pspell_add_to_personal($spell_link, $word);
-        }
+        if (is_resource($spell_link)) {
+            foreach ($words as $word) {
+                pspell_add_to_personal($spell_link, $word);
+            }
 
-        pspell_save_wordlist($spell_link);
+            pspell_save_wordlist($spell_link);
+        }
     } else {
         list($broker, $dict, $personal_dict) = $spell_link;
 
-        foreach ($words as $word) {
-            enchant_dict_add_to_personal($personal_dict, $word);
-        }
+        if (is_resource($dict)) {
+            foreach ($words as $word) {
+                enchant_dict_add_to_personal($personal_dict, $word);
+            }
 
-        enchant_broker_free($broker);
+            enchant_broker_free($broker);
+        }
     }
 }
 

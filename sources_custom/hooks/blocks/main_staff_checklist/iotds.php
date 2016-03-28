@@ -29,7 +29,7 @@ class Hook_checklist_iotds
             return array();
         }
 
-        if (get_option('iotd_update_time') == '') {
+        if (get_option('iotd_update_time') == '' || get_option('iotd_update_time') == '0') {
             return array();
         }
 

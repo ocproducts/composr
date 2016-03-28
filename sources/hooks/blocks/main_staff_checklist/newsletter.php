@@ -34,7 +34,7 @@ class Hook_checklist_newsletter
             return array();
         }
 
-        if (get_option('news_update_time', true) == '') {
+        if (get_option('news_update_time', true) == '' || get_option('news_update_time', true) == '0') {
             return array();
         }
         $limit_hours = intval(get_option('news_update_time', true));
