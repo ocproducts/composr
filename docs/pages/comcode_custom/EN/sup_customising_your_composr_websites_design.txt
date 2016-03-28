@@ -2,6 +2,8 @@
 
 How knowledgeable you are in CSS and HTML will determine how detailed a customisation you will be able to make. This tutorial aims to make it easier to find your way around the files you need to edit.
 
+[b]The themeing tools have been totaly redesigned since this tutorial was written. The new tools are used in a similar way, but much more powerful and stream-lined.[/b]
+
 [title="2"]The Theme Wizard[/title]
 
 [media width="150" description="Composr theme wizard" float="right"]data_custom/images/docs/sup_customising_your_composr_websites_design/13fcdc8b191c7abad8b5a613b9fcc229.png[/media]
