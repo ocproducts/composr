@@ -1292,6 +1292,7 @@ $s_total_sponsorship_amount = 'Total Sponsorship = %1$s';
 $s_divide_cost = '/ Cost';
 $s_cms_sponsor_first_message = 'At %1$d hours, this would cost %2$d support credits at budget priority %3$s [ convert to  %4$s ] ). If this is reached and sponsors have this much in their accounts, %5$s will prioritise the feature and release the code early in this tracker. If a feature is not sponsored then it may also be done anyway, but there is no guarantee that any features posted in the tracker are planned as %6$s is non-commercial and no roadmap is maintained.';
 $s_cms_sponsor_second_message = 'Full details about the <a href="$1">sponsorship process and terms</a>.';
+$s_cms_sponsorship_is_disabled = 'Sponsorship is temporarily disabled while we process a work back-log.';
 $s_amount_in_support_credits = 'Amount in support credits ';
 $s_current_credits_balance = '(you currently have %1$d balance, although you can enter any number here), or&hellip; ';
 $s_amount_in_main_currency = 'Amount in %1$s ';
