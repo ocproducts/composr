@@ -251,7 +251,7 @@ class Hook_notification_cns_topic extends Hook_Notification
             $members_new = array();
             foreach ($members as $member_id => $setting) {
                 $fields = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id);
-                $smart_topic_notification_enabled = ($fields['smart_topic_notification'] == '1');
+                $smart_topic_notification_enabled = (isset($fields['smart_topic_notification'])) && ($fields['smart_topic_notification'] == '1');
 
                 if ($smart_topic_notification_enabled) { // Maybe we don't send, based on identifying whether they have received a notification already since last reading the topic
                     $read_log_time = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_read_logs', 'l_time', array('l_member_id' => $member_id, 'l_topic_id' => intval($category)));
