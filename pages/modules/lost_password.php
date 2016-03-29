@@ -271,7 +271,12 @@ class Module_lost_password
             $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
-            $message = do_lang('MAIL_NEW_PASSWORD', comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate()));
+            if (get_option('one_per_email_address') == '1') {
+                $lang_string = 'MAIL_NEW_PASSWORD_EMAIL_LOGIN';
+            } else {
+                $lang_string = 'MAIL_NEW_PASSWORD';
+            }
+            $message = do_lang($lang_string, comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate(), comcode_escape($email)));
             require_code('mail');
             mail_wrap(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
         }
@@ -308,6 +313,6 @@ class Module_lost_password
         }
 
         // Email new password
-        return inform_screen($this->title, do_lang_tempcode('NEW_PASSWORD_MAILED', escape_html($email)));
+        return inform_screen($this->title, do_lang_tempcode('NEW_PASSWORD_MAILED', escape_html($email), escape_html($new_password)));
     }
 }
