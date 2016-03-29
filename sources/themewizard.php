@@ -782,8 +782,14 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                         $img = re_hue_image($path, $seed, $source_theme, false, $light_dark == 'dark');
                     } elseif ($show == 'quote_gradient') {
                         $img = generate_recoloured_image($path, '#072A66', $colours['dark_border'], '#C7D5EC', $colours['comcode_quote_left'], '#8CA7D2', $colours['comcode_quote_right'], 'horizontal');
+                    } elseif ($show == '1x/tabs/modern_subtab_active') {
+                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
+                    } elseif ($show == '2x/tabs/modern_subtab_active') {
+                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
+                    } elseif ($show == 'tabs/modern_subtab_header_column') {
+                        $img = generate_recoloured_image($path, '#FFFFFF', $colours['WB'], '#7F9AC5', $colours['box_title_background_2']);
                     } elseif ($show == 'menu_bullet') {
-                        $img = generate_recoloured_image($path, '#000000', $colours['a.link'], '#190406', $colours['a.link']);
+                        $img = generate_recoloured_image($path, '#190406', $colours['a.link'], '#190406', $colours['a.link']);
                     } elseif ($show == 'menu_bullet_current') {
                         $img = generate_recoloured_image($path, '#00A55A', $colours['a.hover'], '#00A55A', $colours['a.hover']);
                     } elseif ($show == 'menu_bullet_hover') {

@@ -10,17 +10,17 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 */
 
 .modern_tabs {
-	border: 1px solid #58697D;
-	background: #FFFFFF;
+	border: 1px solid {$GET,dark_border};
+	background: {$GET,WB};
 }
 
 .modern_tab_headers {
 	overflow: hidden;
-	background: #436BA8;
+	background: {$GET,box_title_background};
 }
 
 .modern_tab_headers>div {
-	color: #FFFFFF;
+	color: {$GET,WB};
 	float: left;
 	overflow: hidden;
 }
@@ -36,8 +36,8 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern_tab_headers>div.tab_active {
-	background: #FFFFFF;
-	color: #436BA8;
+	background: {$GET,WB};
+	color: {$GET,seed};
 }
 
 .modern_tab_headers>div * {
@@ -48,7 +48,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	display: inline-block;
 	padding: 1em;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border-right: 1px solid #FFFFFF;
+		border-right: 1px solid {$GET,WB};
 	/*{+END}*/
 	cursor: pointer;
 }
@@ -100,7 +100,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern_tabs .modern_tabs .modern_tab_headers {
 	overflow: hidden;
-	background: #6693D6;
+	background: {$GET,box_title_background_2};
 }
 
 .modern_tabs .modern_tabs .modern_tab_headers>div>a {
@@ -111,7 +111,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern_subtabs {
 	border: 0;
-	background: #EAEFF5 url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
+	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
 	overflow: hidden;
 }
 
@@ -122,7 +122,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 }
 
 .modern_subtab_headers>div {
-	color: #FFFFFF;
+	color: {$GET,WB};
 }
 .modern_subtab_headers>div:last-child {
 	border-bottom: 0;
@@ -147,10 +147,10 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern_subtab_headers>div>a {
 	padding: 1em 0 1em 30px;
 	margin-right: 8px; /* For modern_subtab_active to overlay into */
-	border-bottom: 1px solid #608BCD;
+	border-bottom: 1px solid {$GET,standard_border};
 	display: block;
 	cursor: pointer;
-	background: #6693D6 url('{$IMG;,1x/tabs/modern_subtab_chevron}') no-repeat 10px center;
+	background: url('{$IMG;,1x/tabs/modern_subtab_chevron}') no-repeat 10px center;
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
