@@ -122,6 +122,8 @@ To configure Stealr go to Admin Zone > Setup > Configuration > Point store optio
             'requires' => array(
                 'Cron',
                 'Conversr',
+                'points',
+                'pointstore',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

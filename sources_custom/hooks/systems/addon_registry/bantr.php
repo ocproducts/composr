@@ -114,6 +114,7 @@ The insulted member has to try and make the right reply, if they succeed then th
             'requires' => array(
                 'Cron',
                 'Conversr',
+                'points',
             ),
             'recommends' => array(),
             'conflicts_with' => array()
