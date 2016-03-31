@@ -232,6 +232,10 @@ function cns_find_birthdays($time = null)
 
     $birthdays = array();
     foreach ($rows as $row) {
+        if (!has_privilege($row['id'], 'appear_under_birthdays')) {
+            continue;
+        }
+
         $birthday = array('id' => $row['id'], 'username' => $row['m_username']);
         if ($row['m_reveal_age'] == 1) {
             $birthday['age'] = intval($year) - $row['m_dob_year'];

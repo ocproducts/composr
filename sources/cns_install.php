@@ -162,6 +162,7 @@ function uninstall_cns()
     delete_privilege('bypass_email_address_if_already_empty');
     delete_privilege('bypass_dob');
     delete_privilege('bypass_dob_if_already_empty');
+    delete_privilege('appear_under_birthdays');
 }
 
 /**
@@ -301,6 +302,9 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_since');
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_since', array('p_time', 'p_cache_forum_id')); // p_cache_forum_id is used to not count PT posts
+    }
+    if ((!is_null($upgrade_from)) && ($upgrade_from < 11.0)) {
+        add_privilege('FORUMS_AND_MEMBERS', 'appear_under_birthdays', true);
     }
 
     // If we have the forum installed to this db already, leave
