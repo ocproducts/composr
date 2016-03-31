@@ -279,7 +279,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 			{
 				if (links[i].onsubmit)
 				{
-					links[i].onsubmit=function(old_onsubmit) { return function(event) { return old_onsubmit.call(this.event)!==false && submit_func.call(this,event); } }(links[i].onsubmit);
+					links[i].onsubmit=function(old_onsubmit) { return function(event) { return old_onsubmit.call(this,event)!==false && submit_func.call(this,event); } }(links[i].onsubmit);
 				} else
 				{
 					links[i].onsubmit=submit_func;
@@ -307,7 +307,7 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 	var ajax_url=url;
 	if (new_block_params!='') ajax_url+='&block_map_sup='+window.encodeURIComponent(new_block_params);
 	if (typeof window.cms_theme!='undefined') ajax_url+='&utheme='+window.cms_theme;
-	if (typeof block_data_cache[ajax_url]!='undefined')
+	if (typeof block_data_cache[ajax_url]!='undefined' && post_params==null)
 	{
 		// Show results from cache
 		show_block_html(block_data_cache[ajax_url],target_div,append,inner);

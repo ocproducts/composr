@@ -485,9 +485,7 @@
 
 {REVISIONS}
 
-{+START,IF,{$NEQ,{$VALUE_OPTION,no_frames},2}}
-	<iframe name="save_frame" id="save_frame" title="{!SAVE_AND_STAY}" class="hidden_save_frame" src="{$BASE_URL*}/uploads/index.html">{!SAVE_AND_STAY}</iframe>
-{+END}
+<iframe name="save_frame" id="save_frame" title="{!SAVE_AND_STAY}" class="hidden_save_frame" src="{$BASE_URL*}/uploads/index.html">{!SAVE_AND_STAY}</iframe>
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
