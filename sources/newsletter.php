@@ -124,7 +124,7 @@ function basic_newsletter_join($email, $interest_level = 4, $language = null, $g
  * @param  ID_TEXT $mail_template The template used to show the email
  * @return Tempcode UI
  */
-function actual_send_newsletter($message, $subject, $language, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
+function send_newsletter($message, $subject, $language, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
 {
     require_lang('newsletter');
 

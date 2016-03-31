@@ -32,6 +32,10 @@ class Hook_cron_newsletter_drip_send
             return;
         }
 
+        if (get_option('newsletter_paused') == '1') {
+            return;
+        }
+
         if (get_value('newsletter_currently_dripping', null, true) === '1') {
             return;
         }

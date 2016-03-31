@@ -41,7 +41,15 @@ class Hook_task_send_newsletter
      */
     public function run($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template)
     {
+        $auto_pause = (get_option('newsletter_auto_pause') == '1');
+
+        if ($auto_pause) {
+            require_code('config2');
+            set_option('newsletter_paused', '1');
+        }
+
         require_code('newsletter');
+        require_lang('newsletter');
         require_code('mail');
 
         //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
@@ -53,6 +61,8 @@ class Hook_task_send_newsletter
         $needs_tempcode = mixed();
 
         $blocked = newsletter_block_list();
+
+        $count = 0;
 
         $start = 0;
         do {
@@ -96,7 +106,7 @@ class Hook_task_send_newsletter
                     $in_html = true;
                 }
 
-                if (!is_null($last_cron)) {
+                if ((!is_null($last_cron)) || (get_option('newsletter_paused') == '1')) {
                     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
                     if (is_null($test)) {
                         $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', array(
@@ -119,10 +129,25 @@ class Hook_task_send_newsletter
                 if (function_exists('gc_collect_cycles')) {
                     gc_collect_cycles(); // Stop problem with PHP leaking memory
                 }
+
+                $count++;
             }
             $start += 100;
         } while (array_key_exists(0, $addresses));
 
-        return array('text/html', do_lang_tempcode('SENDING_NEWSLETTER'));
+        if ($count == 0) {
+            return array('text/html', do_lang_tempcode('NEWSLETTER_NO_TARGET'));
+        }
+
+        if ($auto_pause) {
+            require_code('notifications');
+            $subject = do_lang('NEWSLETTER_PAUSED_SUBJECT');
+            $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'), null, false, false, true);
+            $message = do_lang('NEWSLETTER_PAUSED_BODY', escape_html($newsletter_manage_url->evaluate()));
+            dispatch_notification('newsletter_paused', 'newsletter_' . strval(time()), $subject, $message, null, null, 2, true);
+        }
+
+        $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'));
+        return array('text/html', do_lang_tempcode($auto_pause ? 'SENDING_NEWSLETTER_TO_QUEUE' : 'SENDING_NEWSLETTER', escape_html($newsletter_manage_url)));
     }
 }

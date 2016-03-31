@@ -198,7 +198,7 @@ class Hook_cron_newsletter_periodic
         $time = time();
 
         require_code('newsletter');
-        actual_send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
+        send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
 
         return $time;
     }

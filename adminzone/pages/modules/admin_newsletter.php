@@ -76,6 +76,10 @@ class Module_admin_newsletter extends Standard_crud_module
 
         set_helper_panel_tutorial('tut_newsletter');
 
+        if ($type == 'browse') {
+            set_helper_panel_text(comcode_lang_string('DOC_NEWSLETTER'));
+        }
+
         if ($type == 'confirm') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_NEWSLETTER')), array('_SELF:_SELF:new', do_lang_tempcode('NEWSLETTER_SEND'))));
             breadcrumb_set_self(do_lang_tempcode('CONFIRM'));
@@ -224,13 +228,29 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function browse()
     {
-        $num_in_queue = $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)');
-        if ($num_in_queue > 0) {
-            attach_message(do_lang_tempcode('NEWSLETTER_DRIP_SEND_QUEUE', escape_html(integer_format($num_in_queue))), 'inform');
+        if (post_param_integer('unpause', 0) == 1) {
+            require_code('config2');
+            set_option('newsletter_paused', '0');
         }
 
+        $num_in_queue = $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)');
+
+        $minutes_between_sends = intval(get_option('minutes_between_sends'));
+        $mails_per_send = intval(get_option('mails_per_send'));
+        $_eta = intval((floatval($num_in_queue) / floatval($mails_per_send)) * floatval($minutes_between_sends) * 60.0);
+        $eta = display_time_period($_eta);
+
+        $newsletter_intro = do_template('NEWSLETTER_STATUS_OVERVIEW', array(
+            'UPDATE_URL' => build_url(array('page' => '_SELF'), '_SELF'),
+            'NUM_IN_QUEUE' => integer_format($num_in_queue),
+            '_NUM_IN_QUEUE' => strval($num_in_queue),
+            'ETA' => $eta,
+            '_ETA' => strval($_eta),
+            'PAUSED' => (get_option('newsletter_paused') == '1'),
+        ));
+
         require_code('templates_donext');
-        return do_next_manager(get_screen_title('MANAGE_NEWSLETTER'), comcode_lang_string('DOC_NEWSLETTER'),
+        return do_next_manager(get_screen_title('MANAGE_NEWSLETTER'), $newsletter_intro,
             array_merge(array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_NEWSLETTER')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_NEWSLETTER')),
@@ -1420,17 +1440,22 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function confirm_send()
     {
+        // Read in details
         $message = post_param_string('message');
         $subject = post_param_string('subject');
         $lang = choose_language($this->title);
-
         $template = post_param_string('template', 'MAIL');
         $in_full = post_param_integer('in_full', 0);
-
         $html_only = post_param_integer('html_only', 0);
         $from_email = post_param_string('from_email', '');
         $from_name = post_param_string('from_name', '');
+        $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        if ($address == '') {
+            $address = get_option('staff_address');
+        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
 
+        // Read in CSV target
         $extra_post_data = array();
         require_code('uploads');
         $_csv_data = post_param_string('csv_data', null);
@@ -1456,6 +1481,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
         }
 
+        // Periodic save?
         if (post_param_integer('make_periodic', 0) == 1) {
             // We're making a periodic newsletter. Thus we need to pass this info
             // through to the next step
@@ -1465,26 +1491,20 @@ class Module_admin_newsletter extends Standard_crud_module
             $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
         }
 
-        $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-        if ($address == '') {
-            $address = get_option('staff_address');
-        }
-        $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
-
+        // HTML message
         $message = newsletter_variable_substitution($message, $subject, '', '', do_lang('EXAMPLE'), $address, 'test', '');
-
-        require_code('mail');
-
-        require_code('media_renderer');
-        push_media_mode(peek_media_mode() | MEDIA_LOWFI);
-        require_code('tempcode_compiler');
-        $in_html = false;
         if (strpos($message, '<html') !== false) {
-            $_preview = template_to_tempcode($message);
+            require_code('tempcode_compiler');
+            $html_version = template_to_tempcode($message);
+
             $in_html = true;
         } else {
+            require_code('media_renderer');
+            push_media_mode(peek_media_mode() | MEDIA_LOWFI);
             $comcode_version = comcode_to_tempcode($message, get_member(), true);
-            $_preview = do_template(
+            pop_media_mode();
+
+            $html_version = do_template(
                 'MAIL',
                 array(
                     '_GUID' => 'b081cf9104748b090f63b6898027985e',
@@ -1501,21 +1521,89 @@ class Module_admin_newsletter extends Standard_crud_module
                 'templates',
                 $GLOBALS['FORUM_DRIVER']->get_theme('')
             );
+
             $in_html = ($html_only == 1);
         }
-        $text_preview = ($html_only == 1) ? '' : comcode_to_clean_text(static_evaluate_tempcode(template_to_tempcode($message)));
-        require_code('mail');
-        $preview_subject = $subject;
+
+        // Text message
+        $text_version = ($html_only == 1) ? '' : comcode_to_clean_text(static_evaluate_tempcode(template_to_tempcode($message)));
+
+        // Subject line
+        $_full_subject = $subject;
         if (post_param_integer('make_periodic', 0) == 1) {
-            $preview_subject .= ' - ' . get_timezoned_date(time(), false, false, false, true);
+            $_full_subject .= ' - ' . get_timezoned_date(time(), false, false, false, true);
         }
-        $preview_subject = do_lang('NEWSLETTER_PREVIEW_SUBJECT', $preview_subject);
-        require_code('comcode_compiler');
-        $preview = do_template('NEWSLETTER_CONFIRM_WRAP', array('_GUID' => '02bd5a782620141f8589e647e2c6d90b', 'TEXT_PREVIEW' => $text_preview, 'PREVIEW' => $_preview, 'SUBJECT' => $subject));
-        pop_media_mode();
+        $full_subject = do_lang('NEWSLETTER_PREVIEW_SUBJECT', $_full_subject);
 
-        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html);
+        // Send e-mail
+        require_code('mail');
+        mail_wrap(
+            $full_subject,
+            ($html_only == 1) ? $html_version->evaluate() : $message,
+            array($address),
+            $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/,
+            $from_email,
+            $from_name,
+            3,
+            null,
+            true,
+            null,
+            true,
+            $in_html
+        );
 
+        // Spam check, if possible
+        $spam_report = null;
+        $spam_score = null;
+        global $LAST_MIME_MAIL_SENT;
+        if (!is_null($LAST_MIME_MAIL_SENT)) {
+            require_code('json');
+            $_spam_test = http_download_file(
+                'http://spamcheck.postmarkapp.com/filter',
+                null,
+                false,
+                false,
+                'Composr',
+                array(json_encode(array(
+                    'email' => $LAST_MIME_MAIL_SENT,
+                    'options' => 'long',
+                ))),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                6.0,
+                true,
+                null,
+                null,
+                null,
+                'application/json'
+            );
+            if ($_spam_test != '') {
+                $spam_test = @json_decode($_spam_test, true);
+                if ($spam_test !== null) {
+                    if ($spam_test['success']) {
+                        $spam_report = $spam_test['report'];
+                        $spam_score = $spam_test['score'];
+                    }
+                }
+            }
+        }
+
+        // Inline preview
+        $preview = do_template('NEWSLETTER_CONFIRM_WRAP', array(
+            '_GUID' => '02bd5a782620141f8589e647e2c6d90b',
+            'SUBJECT' => $full_subject,
+            'TEXT_PREVIEW' => $text_version,
+            'HTML_PREVIEW' => $html_version,
+            'SPAM_REPORT' => $spam_report,
+            'SPAM_SCORE' => is_null($spam_score) ? null : $spam_score,
+        ));
+
+        // Confirm screen
         require_code('templates_confirm_screen');
         return confirm_screen($this->title, $preview, 'send', get_param_string('old_type', 'new'), $extra_post_data);
     }
@@ -1615,7 +1703,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 foreach ($send_details as $key => $val) {
                     $send_details_string_exp .= '"' . str_replace("\n", '\n', addslashes($key)) . '"=>"' . str_replace("\n", '\n', addslashes($val)) . '",';
                 }
-                $schedule_code = ':require_code(\'newsletter\'); actual_send_newsletter("' . php_addslashes($message) . '","' . php_addslashes($subject) . '","' . php_addslashes($lang) . '",array(' . $send_details_string_exp . '),' . strval($html_only) . ',"' . php_addslashes($from_email) . '","' . php_addslashes($from_name) . '",' . strval($priority) . ',"' . php_addslashes($csv_data) . '","' . php_addslashes($template) . '");';
+                $schedule_code = ':require_code(\'newsletter\'); send_newsletter("' . php_addslashes($message) . '","' . php_addslashes($subject) . '","' . php_addslashes($lang) . '",array(' . $send_details_string_exp . '),' . strval($html_only) . ',"' . php_addslashes($from_email) . '","' . php_addslashes($from_name) . '",' . strval($priority) . ',"' . php_addslashes($csv_data) . '","' . php_addslashes($template) . '");';
                 $start_year = intval(date('Y', $schedule));
                 $start_month = intval(date('m', $schedule));
                 $start_day = intval(date('d', $schedule));
@@ -1630,7 +1718,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         log_it('NEWSLETTER_SEND');
 
-        return actual_send_newsletter($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $template);
+        return send_newsletter($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $template);
     }
 
     /**

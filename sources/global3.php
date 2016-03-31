@@ -225,7 +225,7 @@ function fix_permissions($path, $perms = null)
  * @param  boolean $trigger_error Whether to throw a Composr error, on error
  * @param  boolean $no_redirect Whether to block redirects (returns null when found)
  * @param  string $ua The user-agent to identify as
- * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none)
+ * @param  ?array $post_params An optional array of POST parameters to send; if this is null, a GET request is used (null: none). If $raw_post is set, it should be array($data)
  * @param  ?array $cookies An optional array of cookies to send (null: none)
  * @param  ?string $accept 'accept' header value (null: don't pass one)
  * @param  ?string $accept_charset 'accept-charset' header value (null: don't pass one)

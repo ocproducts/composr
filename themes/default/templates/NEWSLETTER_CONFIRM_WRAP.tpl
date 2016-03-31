@@ -5,12 +5,12 @@
 		<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="preview_frame" name="preview_frame" title="{!PREVIEW}" class="hidden_preview_frame" src="{$BASE_URL*}/uploads/index.html">{!PREVIEW}</iframe>
 
 		<noscript>
-			{PREVIEW*}
+			{HTML_PREVIEW*}
 		</noscript>
 
 		<script>// <![CDATA[
 			window.setTimeout(function() {
-				var adjusted_preview='{PREVIEW;^/}'.replace(/<!DOCTYPE[^>]*>/i,'').replace(/<html[^>]*>/i,'').replace(/<\/html>/i,'');
+				var adjusted_preview='{HTML_PREVIEW;^/}'.replace(/<!DOCTYPE[^>]*>/i,'').replace(/<html[^>]*>/i,'').replace(/<\/html>/i,'');
 				var de=window.frames['preview_frame'].document.documentElement;
 				var body=de.getElementsByTagName('body');
 				if (body.length==0)
@@ -39,6 +39,16 @@
 			<h2>{SUBJECT*} &ndash; {!TEXT_VERSION}</h2>
 
 			<div class="whitespace_visible">{TEXT_PREVIEW*}</div>
+		</div></div>
+	{+END}
+{+END}
+
+{+START,IF_PASSED,SPAM_REPORT}
+	{+START,IF_PASSED,SPAM_SCORE}
+		<div class="box box___newsletter_confirm_wrap"><div class="box_inner">
+			<h2>{!SPAM_SCORE,{SPAM_SCORE*}}</h2>
+
+			<div class="whitespace_visible">{SPAM_REPORT*}</div>
 		</div></div>
 	{+END}
 {+END}

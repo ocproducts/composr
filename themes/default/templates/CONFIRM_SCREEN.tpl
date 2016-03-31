@@ -5,9 +5,15 @@
 		{!CONFIRM_TEXT}
 	</p>
 
-	<div class="box box___confirm_screen"><div class="box_inner">
+	{+START,IF,{$IN_STR,{PREVIEW},class="box"}}
+		<div class="box box___confirm_screen"><div class="box_inner">
+			{PREVIEW}
+		</div></div>
+	{+END}
+
+	{+START,IF,{$NOT,{$IN_STR,{PREVIEW},class="box"}}}
 		{PREVIEW}
-	</div></div>
+	{+END}
 {+END}
 
 {+START,IF_PASSED,TEXT}

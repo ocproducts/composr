@@ -27,9 +27,10 @@ function init__mail()
 {
     require_lang('mail');
 
-    global $SENDING_MAIL, $EMAIL_ATTACHMENTS;
+    global $SENDING_MAIL, $EMAIL_ATTACHMENTS, $LAST_MIME_MAIL_SENT;
     $SENDING_MAIL = false;
     $EMAIL_ATTACHMENTS = array();
+    $LAST_MIME_MAIL_SENT = null;
 }
 
 /**
@@ -675,7 +676,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Our subject
     $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    $tightened_subject = $subject->evaluate($lang);
     $tightened_subject = str_replace(array("\r", "\n"), array('', ''), $tightened_subject);
 
     $regexp = '#^[\x' . dechex(32) . '-\x' . dechex(126) . ']*$#';
@@ -727,10 +728,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $LAX_COMCODE = $temp;
             $GLOBALS['NO_LINK_TITLES'] = false;
 
+            $message_html = null;
+            $html_evaluated = null;
+            $derive_css = true;
             $_html_content = $html_content->evaluate($lang);
             $_html_content = preg_replace('#(keep|for)_session=\w*#', 'filtered=1', $_html_content);
-            if (strpos($_html_content, '<html') !== false) {
-                $message_html = make_string_tempcode($_html_content);
+            $is_already_full_html = (stripos($_html_content, '<html') !== false);
+            if ($is_already_full_html) {
+                $html_evaluated = $_html_content;
+                $derive_css = (strpos($_html_content, '{CSS') !== false);
             } else {
                 $message_html = do_template($mail_template, array(
                     '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
@@ -741,16 +747,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'CONTENT' => $_html_content,
                 ), $lang, false, null, '.tpl', 'templates', $theme);
             }
-            require_css('email');
-            $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
-            $_css = $css->evaluate($lang);
-            if (!GOOGLE_APPENGINE) {
-                if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+            if ($derive_css) {
+                require_css('email');
+                $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
+                $_css = $css->evaluate($lang);
+                if (!GOOGLE_APPENGINE) {
+                    if (get_option('allow_ext_images') != '1') {
+                        $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    }
+                }
+                if ($message_html !== null) {
+                    $message_html->singular_bind('CSS', $_css);
+                    $html_evaluated = $message_html->evaluate($lang);
                 }
             }
-            $html_evaluated = $message_html->evaluate($lang);
-            $html_evaluated = str_replace('{CSS}', $_css, $html_evaluated);
 
             // Cleanup the Comcode a bit
             $message_plain = comcode_to_clean_text($message_raw);
@@ -814,7 +824,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
-        $_require_recipient_valid_since = date('D, j M Y H:i:s', $require_recipient_valid_since);
+        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
     }
     $headers .= 'MIME-Version: 1.0' . $line_term;
@@ -977,6 +987,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $sending_message .= $line_term . '--' . $boundary . '--' . $line_term;
     }
 
+    $GLOBALS['LAST_MIME_MAIL_SENT'] = gather_full_mime_message($line_term, $to_name, $to_email, 0, $tightened_subject, $headers, $sending_message);
+
     // Support for SMTP sockets rather than PHP mail()
     $error = null;
     if ((get_option('smtp_sockets_use') == '1') && (php_function_allowed('fsockopen'))) {
@@ -1044,24 +1056,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                             fwrite($socket, "DATA\r\n");
                             $rcv = fread($socket, 1024);
                             if (strtolower(substr($rcv, 0, 3)) == '354') {
-                                $attractive_date = strftime('%d %B %Y  %H:%M:%S', time());
-
-                                $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
-                                if (count($to_email) == 1) {
-                                    if ($_to_name == '') {
-                                        fwrite($socket, 'To: ' . $to_email[$i] . "\r\n");
-                                    } else {
-                                        fwrite($socket, 'To: ' . $_to_name . ' <' . $to_email[$i] . '>' . "\r\n");
-                                    }
-                                } else {
-                                    fwrite($socket, 'To: ' . $_to_name . "\r\n");
-                                }
-                                fwrite($socket, 'Subject: ' . $tightened_subject . "\r\n");
-                                fwrite($socket, 'Date: ' . $attractive_date . "\r\n");
-                                $headers = preg_replace('#^\.#m', '..', $headers);
-                                $sending_message = preg_replace('#^\.#m', '..', $sending_message);
-                                fwrite($socket, $headers . "\r\n");
-                                fwrite($socket, $sending_message);
+                                fwrite($socket, preg_replace('#^\.#m', '..', gather_full_mime_message($line_term, $to_name, $to_email, $i, $tightened_subject, $headers, $sending_message)));
                                 fwrite($socket, "\r\n.\r\n");
                                 $rcv = fread($socket, 1024);
                                 fwrite($socket, "QUIT\r\n");
@@ -1095,7 +1090,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     } else {
         $worked = false;
         foreach ($to_email as $i => $to) {
-            //exit($headers."\n".$sending_message);
             $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
             $additional = '';
@@ -1108,7 +1102,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $to_line = '"' . $_to_name . '" <' . $to . '>';
             }
-            //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
@@ -1143,6 +1136,42 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     $SENDING_MAIL = false;
     return null;
+}
+
+/**
+ * Download a URL, for use as an inline mail image.
+ *
+ * @param  string $line_term Line separator
+ * @param  mixed $to_name Recipient names (string or array)
+ * @param  mixed $to_email Recipient e-mails (string or array)
+ * @param  integer $i Position in recipients
+ * @param  string $tightened_subject Subject
+ * @param  string $headers Headers
+ * @param  string $sending_message Message body
+ * @return string The mime message
+ */
+function gather_full_mime_message($line_term, $to_name, $to_email, $i, $tightened_subject, $headers, $sending_message)
+{
+    $full_mime_message = '';
+
+    $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
+    if (count($to_email) == 1) {
+        if ($_to_name == '') {
+            $full_mime_message .= 'To: ' . $to_email[$i] . $line_term;
+        } else {
+            $full_mime_message .= 'To: ' . $_to_name . ' <' . $to_email[$i] . '>' . $line_term;
+        }
+    } else {
+        $full_mime_message .= 'To: ' . $_to_name . $line_term;
+    }
+
+    $full_mime_message .= 'Subject: ' . $tightened_subject . $line_term;
+
+    $full_mime_message .= $headers;
+
+    $full_mime_message .= $line_term . $sending_message;
+
+	return $full_mime_message;
 }
 
 /**

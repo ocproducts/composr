@@ -177,7 +177,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Our subject
     $_subject = do_template('MAIL_SUBJECT', array('_GUID' => '4c7eefb7296e7b7d4f3a4ef0eeeca658', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $subject = $_subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    $subject = $_subject->evaluate($lang);
 
     // Evaluate message. Needs doing early so we know if we have any headers
 
@@ -200,10 +200,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $LAX_COMCODE = $temp;
     $GLOBALS['NO_LINK_TITLES'] = false;
     if (!$in_html) {
+        $message_html = null;
+        $html_evaluated = null;
+        $derive_css = true;
         $_html_content = $html_content->evaluate($lang);
         $_html_content = preg_replace('#(keep|for)_session=\w*#', 'filtered=1', $_html_content);
-        if (strpos($_html_content, '<html') !== false) {
-            $message_html = make_string_tempcode($_html_content);
+        $is_already_full_html = (stripos($_html_content, '<html') !== false);
+        if ($is_already_full_html) {
+            $html_evaluated = $_html_content;
+            $derive_css = (strpos($_html_content, '{CSS') !== false);
         } else {
             $message_html = do_template($mail_template, array(
                 '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
@@ -214,13 +219,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 'CONTENT' => $_html_content,
             ), $lang, false, null, '.tpl', 'templates', $theme);
         }
-        $css = css_tempcode(true, true, $message_html->evaluate($lang), $theme);
-        $_css = $css->evaluate($lang);
-        if (get_option('allow_ext_images') != '1') {
-            $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+        if ($derive_css) {
+            require_css('email');
+            $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
+            $_css = $css->evaluate($lang);
+            if (get_option('allow_ext_images') != '1') {
+                $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+            }
+            if ($message_html !== null) {
+                $message_html->singular_bind('CSS', $_css);
+                $html_evaluated = $message_html->evaluate($lang);
+            }
         }
-        $html_evaluated = $message_html->evaluate($lang);
-        $html_evaluated = str_replace('{CSS}', $_css, $html_evaluated);
 
         // Cleanup the Comcode a bit
         $message_plain = comcode_to_clean_text($message_raw);

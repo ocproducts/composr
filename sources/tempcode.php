@@ -1697,7 +1697,7 @@ class Tempcode
      * Replace the named parameter with a specific value. Hardly used, but still important. Note that this will bind to all kinds of things that might not normally take named parameters, like symbols; this should not cause problems though.
      *
      * @param  string $parameter Named parameter
-     * @param  Tempcode $value Specific value
+     * @param  mixed $value Specific value
      */
     public function singular_bind($parameter, $value)
     {
