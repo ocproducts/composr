@@ -411,7 +411,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
         $headers = $message->getHeaders();
-        $_require_recipient_valid_since = date('D, j M Y H:i:s', $require_recipient_valid_since);
+        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers->addTextHeader('Require-Recipient-Valid-Since', $to_email[0] . '; ' . $_require_recipient_valid_since);
     }
 
