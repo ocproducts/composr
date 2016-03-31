@@ -932,7 +932,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     cms_profile_start_for('_do_template');
     $result = template_to_tempcode($template_contents, 0, false, $codename, $theme_orig, $lang);
     cms_profile_end_for('_do_template', $codename . $suffix);
-    if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (($suffix == '.tpl') || ($codename == 'no_cache'))) {
+    if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE)) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
         $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');
