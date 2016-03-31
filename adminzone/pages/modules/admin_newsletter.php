@@ -1139,6 +1139,11 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('lang', $lang));
 
+        $num_in_queue = $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)');
+        if ($num_in_queue > 0) {
+            attach_message(do_lang_tempcode('ALREADY_HAS_MAIL_IN_QUEUE'), 'notice');
+        }
+
         // Build up form...
         // ================
 

@@ -666,12 +666,16 @@ class DatabaseConnector
         $eis = $this->static_ob->db_empty_is_null();
 
         foreach ($map as $key => $value) {
-            if ($keys != '') {
-                $keys .= ', ';
-            }
-            $keys .= $key;
+            if (is_array($value)) {
+                $_value = $value;
+            } else {
+                if ($keys != '') {
+                    $keys .= ', ';
+                }
+                $keys .= $key;
 
-            $_value = (!is_array($value)) ? array($value) : $value;
+                $_value = array($value);
+            }
 
             $v = mixed();
             foreach ($_value as $i => $v) {
@@ -698,7 +702,7 @@ class DatabaseConnector
                         $values .= strval($v);
                     } elseif (is_float($v)) {
                         $values .= float_to_raw_string($v, 10);
-                    } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+                    } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                         $values .= $v; // Fudge, for all our known large unsigned integers
                     } else {
                         $values .= '\'' . $this->static_ob->db_escape_string($v) . '\'';

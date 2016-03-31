@@ -53,7 +53,7 @@ class Hook_cron_newsletter_drip_send
 
         set_value('last_newsletter_drip_send', strval($time), true);
 
-        $to_send = $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('*'), null, 'ORDER BY d_inject_time DESC', $mails_per_send);
+        $to_send = $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('*'), null, 'ORDER BY id DESC', $mails_per_send); // From disk-end, for maximum performance (truncating files to mark done is quicker?)
         if (count($to_send) != 0) {
             // These variables are for optimisation, we detect if we can avoid work on the loop iterations via looking at what happened on the first
             $needs_substitutions = mixed();
@@ -77,15 +77,23 @@ class Hook_cron_newsletter_drip_send
             // Send
             require_code('mail');
             foreach ($to_send as $mail) {
-                list($message_id, $forename, $surname, $username, $id, $hash) = $mail['d_message'];
+                $message_id = $mail['d_message_id'];
+                list($forename, $surname, $username, $id, $hash) = json_decode($mail['d_message_binding'], true);
 
                 // Load message
                 if (!isset($cached_messages[$message_id])) {
-                    $newsletter_archive_rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('lang', 'newsletter'), array('id' => $message_id), '', 1);
+                    $newsletter_archive_rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $message_id), '', 1);
                     $cached_messages[$message_id] = $newsletter_archive_rows[0];
                 }
-                $lang = $cached_messages[$message_id]['lang'];
-                $message = $cached_messages[$message_id]['newsletter'];
+                $message_row = $cached_messages[$message_id];
+                $lang = $message_row['lang'];
+                $message = $message_row['newsletter'];
+                $subject = $message_row['subject'];
+                $from_email = $message_row['from_email'];
+                $from_name = $message_row['from_name'];
+                $priority = $message_row['priority'];
+                $template = $message_row['template'];
+                $html_only = $message_row['html_only'];
 
                 // Variable substitution in body
                 if ($needs_substitutions === null || $needs_substitutions) {
@@ -99,7 +107,7 @@ class Hook_cron_newsletter_drip_send
                 }
                 $in_html = false;
                 if (strpos($message, '<html') === false) {
-                    if ($mail['d_html_only'] == 1) {
+                    if ($html_only == 1) {
                         $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
                         $newsletter_message_substituted = $_m->evaluate($lang);
                         $in_html = true;
@@ -119,7 +127,7 @@ class Hook_cron_newsletter_drip_send
                     $in_html = true;
                 }
 
-                mail_wrap($mail['d_subject'], $newsletter_message_substituted, array($mail['d_to_email']), array($mail['d_to_name']), $mail['d_from_email'], $mail['d_from_name'], $mail['d_priority'], null, true, null, true, $mail['d_html_only'] == 1, false, $mail['d_template'], true);
+                mail_wrap($subject, $newsletter_message_substituted, array($mail['d_to_email']), array($mail['d_to_name']), $from_email, $from_name, $priority, null, true, null, true, $html_only == 1, false, $template, true);
             }
         } else {
             set_value('newsletter_currently_dripping', '0', true);

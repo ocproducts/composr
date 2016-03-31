@@ -60,13 +60,28 @@ class Hook_task_send_newsletter
 
         $blocked = newsletter_block_list();
 
+        disable_php_memory_limit();
+
         $count = 0;
 
         $using_drip_queue = (!is_null($last_cron)) || (get_option('newsletter_paused') == '1');
 
+        $in_html = false;
+        if (strpos($message, '<html') === false) {
+            if ($html_only == 1) {
+                $in_html = true;
+            }
+        } else {
+            $in_html = true;
+        }
+
+        $max = 300;
+
+        $already_queued = collapse_2d_complexity('d_to_email', 'tmp', $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('d_to_email', '1 AS tmp'), array('d_message_id' => $message_id)));
+
         $start = 0;
         do {
-            list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, 100, false, $csv_data);
+            list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, $max, false, $csv_data);
 
             $insert_maps = array();
 
@@ -76,33 +91,20 @@ class Hook_task_send_newsletter
                     continue;
                 }
 
-                $in_html = false;
-                if (strpos($message, '<html') === false) {
-                    if ($html_only == 1) {
-                        $in_html = true;
-                    }
-                } else {
-                    $in_html = true;
-                }
-
                 if ($using_drip_queue) {
-                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
-                    if (is_null($test)) {
+                    if (!isset($already_queued[$email_address])) {
                         $insert_map = array(
                             'd_inject_time' => time(),
-                            'd_subject' => $subject,
-                            'd_message' => json_encode(array($message_id, $forenames[$i], $surnames[$i], $usernames[$i], $ids[$i], $hashes[$i])), // Assortment of message binding details, could grow as Composr evolves, so we'll use JSON
-                            'd_html_only' => $html_only,
+                            'd_message_id' => $message_id,
+                            'd_message_binding' => json_encode(array($forenames[$i], $surnames[$i], $usernames[$i], $ids[$i], $hashes[$i])), // Assortment of message binding details, could grow as Composr evolves, so we'll use JSON - and more efficient anyway, in terms of SQL performance (they don't need querying)
                             'd_to_email' => $email_address,
                             'd_to_name' => $usernames[$i],
-                            'd_from_email' => $from_email,
-                            'd_from_name' => $from_name,
-                            'd_priority' => $priority,
-                            'd_template' => $mail_template,
                         );
                         $insert_maps[] = $insert_map;
+
+                        $already_queued[$email_address] = 1;
                     }
-                } else {
+                } else { // Unlikely to use this code path, but we should support operation without CRON in those rare cases. Code path not optimised
                     $newsletter_message_substituted = newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
                     if (strpos($message, '<html') === false) {
                         if ($html_only == 1) {
@@ -116,15 +118,15 @@ class Hook_task_send_newsletter
                     }
 
                     mail_wrap($subject, $newsletter_message_substituted, array($email_address), array($usernames[$i]), $from_email, $from_name, $priority, null, true, null, true, $in_html, false, $mail_template);
-
-                    $count++;
                 }
+
+                $count++;
 
                 if (function_exists('gc_collect_cycles')) {
                     gc_collect_cycles(); // Stop problem with PHP leaking memory
                 }
             }
-            $start += 100;
+            $start += $max;
 
             if ($using_drip_queue) {
                 $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', $insert_maps);
