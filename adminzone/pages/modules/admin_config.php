@@ -93,6 +93,8 @@ class Module_admin_config
      */
     public function pre_run()
     {
+        require_all_lang();
+
         $type = get_param_string('type', 'browse');
 
         require_lang('config');
@@ -110,20 +112,28 @@ class Module_admin_config
 
             $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
             if (is_null($test)) {
-                warn_exit(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'));
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
+
+                $this->title = get_screen_title('CONFIGURATION');
+            } else {
+                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CONFIGURATION'))));
+                breadcrumb_set_self(do_lang_tempcode('CONFIG_CATEGORY_' . $category));
+
+                $this->title = get_screen_title(do_lang_tempcode('CONFIG_CATEGORY_' . $category), false);
             }
-
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('CONFIGURATION'))));
-            breadcrumb_set_self(do_lang_tempcode('CONFIG_CATEGORY_' . $category));
-
-            $this->title = get_screen_title(do_lang_tempcode('CONFIG_CATEGORY_' . $category), false);
 
             $this->category = $category;
         }
 
         if ($type == 'set') {
             $category = get_param_string('id', 'MAIN');
-            $this->title = get_screen_title(do_lang_tempcode('CONFIG_CATEGORY_' . $category), false);
+
+            $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
+            if (is_null($test)) {
+                $this->title = get_screen_title('CONFIGURATION');
+            } else {
+                $this->title = get_screen_title(do_lang_tempcode('CONFIG_CATEGORY_' . $category), false);
+            }
         }
 
         if ($type == 'base') {
@@ -174,7 +184,6 @@ class Module_admin_config
      */
     public function run()
     {
-        require_all_lang();
         require_code('config2');
 
         $type = get_param_string('type', 'browse');
@@ -293,14 +302,13 @@ class Module_admin_config
             $url = build_url(array('page' => '_SELF', 'type' => 'category', 'id' => $category), '_SELF');
 
             $_category_name = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
-            if (!$GLOBALS['SEMI_DEV_MODE']) {
-                if (is_null($_category_name)) {
-                    continue;
-                }
+            if (is_null($_category_name)) {
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
+
+                $category_name = make_string_tempcode($category);
             } else {
-                $_category_name = do_lang('CONFIG_CATEGORY_' . $category); // We want to see an error
+                $category_name = do_lang_tempcode('CONFIG_CATEGORY_' . $category);
             }
-            $category_name = do_lang_tempcode('CONFIG_CATEGORY_' . $category);
 
             $description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
 
