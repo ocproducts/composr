@@ -396,7 +396,17 @@ class LangFilter_EN extends LangFilter
                             break;
                     }
 
-                    $value = str_replace(array_keys($reps), array_values($reps), $value);
+                    for ($i = 0; $i < strlen($value); $i++) {
+                        foreach ($reps as $from => $to) {
+                            if (substr($value, $i, strlen($from)) == $from) {
+                                $value = substr($value, 0, $i) . $to . substr($value, $i + strlen($from));
+                                $i += strlen($to) - 1;
+                                continue 2;
+                            }
+                        }
+                    }
+                    //$value = str_replace(array_keys($reps), array_values($reps), $value); This doesn't work when a replacement itself might be replaced in a further iteration of $reps
+                    
                 }
             }
         }
