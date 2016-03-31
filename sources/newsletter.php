@@ -129,7 +129,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
     require_lang('newsletter');
 
     // Put in archive
-    $GLOBALS['SITE_DB']->query_insert('newsletter_archive', array('date_and_time' => time(), 'subject' => $subject, 'newsletter' => $message, 'language' => $language, 'importance_level' => 1));
+    $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', array('date_and_time' => time(), 'subject' => $subject, 'newsletter' => $message, 'language' => $language, 'importance_level' => 1), true);
 
     // Mark as done
     log_it('NEWSLETTER_SEND', $subject);
@@ -137,7 +137,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
 
     // Schedule the task
     require_code('tasks');
-    return call_user_func_array__long_task(do_lang('NEWSLETTER_SEND'), get_screen_title('NEWSLETTER_SEND'), 'send_newsletter', array($message, $subject, $language, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template), false, get_param_integer('keep_send_immediately', 0) == 1, false);
+    return call_user_func_array__long_task(do_lang('NEWSLETTER_SEND'), get_screen_title('NEWSLETTER_SEND'), 'send_newsletter', array($message_id, $message, $subject, $language, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template), false, get_param_integer('keep_send_immediately', 0) == 1, false);
 }
 
 /**
