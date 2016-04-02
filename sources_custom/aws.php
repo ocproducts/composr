@@ -98,26 +98,33 @@ function amazon_sns_topic_handler_script()
     }
 
     $type = $message['Type'];
-    if ($type == 'Notification') {
-        $message_body = json_decode($message['Message'], true);
-        $notification_type = $message_body['notificationType'];
-        if (($notification_type === 'Bounce') && (addon_installed('newsletter'))) {
-            require_code('newsletter');
+    switch ($type) {
+        case 'SubscriptionConfirmation':
+            http_download_file($message['SubscribeURL']);
+            break;
 
-            $bounces = array();
+        case 'Notification':
+            $message_body = json_decode($message['Message'], true);
+            $notification_type = $message_body['notificationType'];
+            if (($notification_type === 'Bounce') && (addon_installed('newsletter'))) {
+                require_code('newsletter');
 
-            $bounce = $message_body['bounce'];
+                $bounces = array();
 
-            $recipients = $bounce['bouncedRecipients'];
-            foreach ($recipients as $recipient) {
-                if ((isset($recipient['action'])) && ($recipient['action'] == 'delayed')) {
-                    // Don't consider this a bounce
+                $bounce = $message_body['bounce'];
+
+                $recipients = $bounce['bouncedRecipients'];
+                foreach ($recipients as $recipient) {
+                    if ((isset($recipient['action'])) && ($recipient['action'] == 'delayed')) {
+                        // Don't consider this a bounce
+                    }
+
+                    $bounces[] = $recipient['emailAddress'];
                 }
 
-                $bounces[] = $recipient['emailAddress'];
+                remove_email_bounces($bounces);
             }
-
-            remove_email_bounces($bounces);
+            break;
         }
     }
 }
