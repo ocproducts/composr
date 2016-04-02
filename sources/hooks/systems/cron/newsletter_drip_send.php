@@ -75,6 +75,7 @@ class Hook_cron_newsletter_drip_send
             $cached_messages = array();
 
             // Send
+            require_code('newsletter');
             require_code('mail');
             foreach ($to_send as $mail) {
                 $message_id = $mail['d_message_id'];
@@ -86,7 +87,7 @@ class Hook_cron_newsletter_drip_send
                     $cached_messages[$message_id] = $newsletter_archive_rows[0];
                 }
                 $message_row = $cached_messages[$message_id];
-                $lang = $message_row['lang'];
+                $lang = $message_row['language'];
                 $message = $message_row['newsletter'];
                 $subject = $message_row['subject'];
                 $from_email = $message_row['from_email'];

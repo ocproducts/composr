@@ -652,7 +652,7 @@ class DatabaseConnector
      * Insert a row.
      *
      * @param  string $table The table name
-     * @param  array $map The insertion map
+     * @param  array $map The insertion map. The map values may be arrays for a multi-insert, but if so they must all have the same arity. You must not pass an array of maps.
      * @param  boolean $ret Whether to return the auto-insert-id
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
@@ -666,16 +666,12 @@ class DatabaseConnector
         $eis = $this->static_ob->db_empty_is_null();
 
         foreach ($map as $key => $value) {
-            if (is_array($value)) {
-                $_value = $value;
-            } else {
-                if ($keys != '') {
-                    $keys .= ', ';
-                }
-                $keys .= $key;
-
-                $_value = array($value);
+            if ($keys != '') {
+                $keys .= ', ';
             }
+            $keys .= $key;
+
+            $_value = (!is_array($value)) ? array($value) : $value;
 
             $v = mixed();
             foreach ($_value as $i => $v) {

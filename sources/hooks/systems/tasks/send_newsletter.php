@@ -83,7 +83,13 @@ class Hook_task_send_newsletter
         do {
             list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, $max, false, $csv_data);
 
-            $insert_maps = array();
+            $insert_maps = array(
+                'd_inject_time' => array(),
+                'd_message_id' => array(),
+                'd_message_binding' => array(),
+                'd_to_email' => array(),
+                'd_to_name' => array(),
+            );
 
             // Send to all
             foreach ($addresses as $i => $email_address) {
@@ -100,7 +106,9 @@ class Hook_task_send_newsletter
                             'd_to_email' => $email_address,
                             'd_to_name' => $usernames[$i],
                         );
-                        $insert_maps[] = $insert_map;
+                        foreach ($insert_map as $key => $val) {
+                            $insert_maps[$key][] = $val;
+                        }
 
                         $already_queued[$email_address] = 1;
                     }
@@ -128,7 +136,7 @@ class Hook_task_send_newsletter
             }
             $start += $max;
 
-            if ($using_drip_queue) {
+            if ($using_drip_queue && count($insert_maps['d_to_email']) > 0) {
                 $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', $insert_maps);
             }
         } while (array_key_exists(0, $addresses));
