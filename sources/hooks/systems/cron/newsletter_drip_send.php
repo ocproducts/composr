@@ -127,7 +127,7 @@ class Hook_cron_newsletter_drip_send
                     $in_html = true;
                 }
 
-                mail_wrap($subject, $newsletter_message_substituted, array($mail['d_to_email']), array($mail['d_to_name']), $from_email, $from_name, $priority, null, true, null, true, $html_only == 1, false, $template, true);
+                mail_wrap($subject, $newsletter_message_substituted, array($mail['d_to_email']), array($mail['d_to_name']), $from_email, $from_name, $priority, null, true, null, true, $html_only == 1, false, $template, true, null, null, null, get_option('newsletter_smtp_sockets_use') == '1', get_option('newsletter_smtp_sockets_host'), intval(get_option('newsletter_smtp_sockets_port')), get_option('newsletter_smtp_sockets_username'), get_option('newsletter_smtp_sockets_password'), get_option('newsletter_smtp_from_address'), get_option('newsletter_enveloper_override') == '1', get_option('newsletter_allow_ext_images') == '1', get_option('newsletter_website_email'));
             }
         } else {
             set_value('newsletter_currently_dripping', '0', true);

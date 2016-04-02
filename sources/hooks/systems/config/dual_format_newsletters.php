@@ -38,6 +38,7 @@ class Hook_config_dual_format_newsletters
             'explanation' => 'CONFIG_OPTION_dual_format_newsletters',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 9,
 
             'addon' => 'newsletter',
         );

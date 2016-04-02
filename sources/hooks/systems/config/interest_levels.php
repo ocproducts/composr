@@ -38,6 +38,7 @@ class Hook_config_interest_levels
             'explanation' => 'CONFIG_OPTION_interest_levels',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'newsletter',
         );

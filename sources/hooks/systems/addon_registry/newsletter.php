@@ -159,6 +159,15 @@ class Hook_addon_registry_newsletter
             'sources/hooks/blocks/main_staff_checklist/newsletter_paused.php',
             'sources/hooks/systems/notifications/newsletter_paused.php',
             'themes/default/templates/NEWSLETTER_STATUS_OVERVIEW.tpl',
+            'sources/hooks/systems/config/newsletter_allow_ext_images.php',
+            'sources/hooks/systems/config/newsletter_enveloper_override.php',
+            'sources/hooks/systems/config/newsletter_smtp_from_address.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_host.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_password.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_port.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_use.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_username.php',
+            'sources/hooks/systems/config/newsletter_website_email.php',
         );
     }
 

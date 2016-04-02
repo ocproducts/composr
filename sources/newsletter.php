@@ -98,7 +98,7 @@ function basic_newsletter_join($email, $interest_level = 4, $language = null, $g
         $newsletter_url = build_url(array('page' => 'newsletter'), get_module_zone('newsletter'));
         $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name(), $newsletter_url->evaluate()), $language);
         require_code('mail');
-        mail_wrap(do_lang('NEWSLETTER_SIGNUP', null, null, null, $language), $message, array($email), null, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+        mail_wrap(do_lang('NEWSLETTER_SIGNUP', null, null, null, $language), $message, array($email), null, '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, null, get_option('newsletter_smtp_sockets_use') == '1', get_option('newsletter_smtp_sockets_host'), intval(get_option('newsletter_smtp_sockets_port')), get_option('newsletter_smtp_sockets_username'), get_option('newsletter_smtp_sockets_password'), get_option('newsletter_smtp_from_address'), get_option('newsletter_enveloper_override') == '1', get_option('newsletter_allow_ext_images') == '1', get_option('newsletter_website_email'));
     }
 
     // Set subscription
@@ -140,7 +140,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
         'template' => $mail_template,
         'html_only' => $html_only,
     );
-    $message_id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_archive', 'id', $archive_map, '', 1);
+    $message_id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_archive', 'id', $archive_map);
     if (is_null($message_id)) {
         $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', $archive_map + array('date_and_time' => time()), true);
     }

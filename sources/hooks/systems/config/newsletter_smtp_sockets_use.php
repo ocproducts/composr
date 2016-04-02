@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_newsletter_auto_pause
+class Hook_config_newsletter_smtp_sockets_use
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,15 @@ class Hook_config_newsletter_auto_pause
     public function get_details()
     {
         return array(
-            'human_name' => 'NEWSLETTER_AUTO_PAUSE',
+            'human_name' => 'ENABLED',
             'type' => 'tick',
             'category' => 'FEATURE',
             'group' => 'NEWSLETTER',
-            'explanation' => 'CONFIG_OPTION_newsletter_auto_pause',
-            'shared_hosting_restricted' => '0',
+            'explanation' => 'CONFIG_OPTION_smtp_sockets_use',
+            'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 1,
+            'order_in_category_group' => 20,
 
             'addon' => 'newsletter',
         );
@@ -51,6 +52,9 @@ class Hook_config_newsletter_auto_pause
      */
     public function get_default()
     {
+        if (!php_function_allowed('fsockopen')) {
+            return null;
+        }
         return '0';
     }
 }

@@ -38,6 +38,7 @@ class Hook_config_mails_per_send
             'explanation' => 'CONFIG_OPTION_mails_per_send',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 3,
 
             'addon' => 'newsletter',
         );

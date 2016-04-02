@@ -36,11 +36,48 @@
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
+ * @param  ?boolean $smtp_sockets_use Whether to use SMTP sockets (null: default configured)
+ * @param  ?string $smtp_sockets_host SMTP hostname (null: default configured)
+ * @param  ?integer $smtp_sockets_port SMTP port (null: default configured)
+ * @param  ?string $smtp_sockets_username SMTP username (null: default configured)
+ * @param  ?string $smtp_sockets_password SMTP password (null: default configured)
+ * @param  ?EMAIL $smtp_from_address SMTP from address (null: default configured)
+ * @param  ?boolean $enveloper_override Use envelope override option for sendmail (null: default configured)
+ * @param  ?boolean $allow_ext_images Allow external image references rather than embedding images (null: default configured)
+ * @param  ?EMAIL $website_email Website e-mail address (null: default configured)
  * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
  */
-function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = false, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
+function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = false, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null, $smtp_sockets_use = null, $smtp_sockets_host = null, $smtp_sockets_port = null, $smtp_sockets_username = null, $smtp_sockets_password = null, $smtp_from_address = null, $enveloper_override = null, $allow_ext_images = null, $website_email = null)
 {
-    if (get_option('smtp_sockets_use') == '0') {
+    if (is_null($smtp_sockets_use)) {
+        $smtp_sockets_use = (get_option('smtp_sockets_use') == '1');
+    }
+    if (is_null($smtp_sockets_host)) {
+        $smtp_sockets_host = get_option('smtp_sockets_host');
+    }
+    if (is_null($smtp_sockets_port)) {
+        $smtp_sockets_port = intval(get_option('smtp_sockets_port'));
+    }
+    if (is_null($smtp_sockets_username)) {
+        $smtp_sockets_username = get_option('smtp_sockets_username');
+    }
+    if (is_null($smtp_sockets_password)) {
+        $smtp_sockets_password = get_option('smtp_sockets_password');
+    }
+    if (is_null($smtp_from_address)) {
+        $smtp_from_address = get_option('smtp_from_address');
+    }
+    if (is_null($enveloper_override)) {
+        $enveloper_override = (get_option('enveloper_override') == '1');
+    }
+    if (is_null($allow_ext_images)) {
+        $allow_ext_images = (get_option('allow_ext_images') == '1');
+    }
+    if (is_null($website_email)) {
+        $website_email = get_option('website_email');
+    }
+
+    if (!$smtp_sockets_use) {
         return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since);
     }
 
@@ -182,11 +219,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Evaluate message. Needs doing early so we know if we have any headers
 
     // Misc settings
-    $website_email = get_option('website_email');
     if ($website_email == '') {
         $website_email = $from_email;
     }
-    $cc_address = $no_cc ? '' : get_option("cc_address");
+    $cc_address = $no_cc ? '' : get_option('cc_address');
 
     global $CID_IMG_ATTACHMENT;
     $CID_IMG_ATTACHMENT = array();
@@ -223,7 +259,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             require_css('email');
             $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
             $_css = $css->evaluate($lang);
-            if (get_option('allow_ext_images') != '1') {
+            if (!$allow_ext_images) {
                 $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
             }
             if ($message_html !== null) {
@@ -243,7 +279,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $charset = ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii');
 
     // CID attachments
-    if (get_option('allow_ext_images') != '1') {
+    if (!$allow_ext_images) {
         $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $matches = array();
         foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
@@ -368,11 +404,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     require_code('Swift-4.1.1/lib/swift_required');
 
     // Read in SMTP settings
-    $host = get_option('smtp_sockets_host');
-    $port = intval(get_option('smtp_sockets_port'));
-    $username = get_option('smtp_sockets_username');
-    $password = get_option('smtp_sockets_password');
-    $smtp_from_address = get_option('smtp_from_address');
+    $host = $smtp_sockets_host;
+    $port = $smtp_sockets_port;
+    $username = $smtp_sockets_username;
+    $password = $smtp_sockets_password;
     if ($smtp_from_address != '') {
         $from_email = $smtp_from_address;
     }

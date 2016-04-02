@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_newsletter_auto_pause
+class Hook_config_newsletter_website_email
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_newsletter_auto_pause
     public function get_details()
     {
         return array(
-            'human_name' => 'NEWSLETTER_AUTO_PAUSE',
-            'type' => 'tick',
+            'human_name' => 'WEBSITE_EMAIL',
+            'type' => 'line',
             'category' => 'FEATURE',
             'group' => 'NEWSLETTER',
-            'explanation' => 'CONFIG_OPTION_newsletter_auto_pause',
+            'explanation' => 'CONFIG_OPTION_website_email',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 11,
 
             'addon' => 'newsletter',
         );
@@ -51,6 +51,11 @@ class Hook_config_newsletter_auto_pause
      */
     public function get_default()
     {
-        return '0';
+        $staff_address = get_option('staff_address');
+        $website_email = 'website@' . get_domain();
+        if (substr($staff_address, -strlen(get_domain()) - 1) == '@' . get_domain()) {
+            $website_email = $staff_address;
+        }
+        return $website_email;
     }
 }

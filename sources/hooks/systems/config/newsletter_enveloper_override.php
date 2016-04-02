@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_newsletter_auto_pause
+class Hook_config_newsletter_enveloper_override
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_newsletter_auto_pause
     public function get_details()
     {
         return array(
-            'human_name' => 'NEWSLETTER_AUTO_PAUSE',
+            'human_name' => 'ENVELOPER_OVERRIDE',
             'type' => 'tick',
             'category' => 'FEATURE',
             'group' => 'NEWSLETTER',
-            'explanation' => 'CONFIG_OPTION_newsletter_auto_pause',
+            'explanation' => 'CONFIG_OPTION_enveloper_override',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 12,
 
             'addon' => 'newsletter',
         );
