@@ -406,7 +406,7 @@ class Module_cms_authors
         }
 
         require_code('form_templates');
-        $fields = form_input_list(do_lang_tempcode('NAME'), '', 'author', $authors, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('NAME'), '', 'author', $authors, null, true);
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');
         $submit_name = do_lang_tempcode('SETUP');
         $define_form = do_template('FORM', array('_GUID' => '1109c0cfdd598bf87134de1838709c39', 'TABINDEX' => strval(get_form_field_tabindex()), 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'GET' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));

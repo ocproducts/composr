@@ -968,7 +968,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
                     $bookables_list->attach(form_input_list_entry(strval($bookable['id']), false, get_translated_text($bookable['title'])));
                 }
 
-                $fields = form_input_list(do_lang_tempcode('BOOKABLE'), '', 'bookable_id', $bookables_list, null, true);
+                $fields = form_input_huge_list(do_lang_tempcode('BOOKABLE'), '', 'bookable_id', $bookables_list, null, true);
                 $post_url = get_self_url(false, false, null, false, true);
                 $submit_name = do_lang_tempcode('PROCEED');
                 $hidden = build_keep_post_fields();

@@ -145,7 +145,7 @@ class Module_admin_tickets
         if (!$list->is_empty()) {
             $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF', null, false, true);
             $submit_name = do_lang_tempcode('EDIT');
-            $fields = form_input_list(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_id', $list);
+            $fields = form_input_huge_list(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_id', $list);
 
             $tpl = do_template('FORM', array('_GUID' => '2d2e76f5cfc397a78688db72170918d4', 'TABINDEX' => strval(get_form_field_tabindex()), 'GET' => true, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $edit_url, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this_category', 'SUBMIT_NAME' => $submit_name));
         } else {

@@ -280,7 +280,7 @@ class Module_admin_import
             $text = do_lang_tempcode('IMPORT_SESSION_NEW_DELETE_CNS_SATELLITE');
             $sessions->attach(form_input_list_entry(strval(-2), false, $text));
         }
-        $fields = form_input_list(do_lang_tempcode('IMPORT_SESSION'), do_lang_tempcode('DESCRIPTION_IMPORT_SESSION'), 'session', $sessions, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('IMPORT_SESSION'), do_lang_tempcode('DESCRIPTION_IMPORT_SESSION'), 'session', $sessions, null, true);
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'session2', 'importer' => get_param_string('importer')), '_SELF');
 

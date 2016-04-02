@@ -7,9 +7,19 @@
 		<form action="{UPDATE_URL*}" method="post">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
-			<input type="hidden" name="unpause" value="1" />
+			<input type="hidden" name="set_pause" value="0" />
 
 			<input class="button_screen_item buttons__proceed" type="submit" value="{!UNPAUSE}" />
+		</form>
+	{+END}
+
+	{+START,IF,{$NOT,{PAUSED}}}
+		<form action="{UPDATE_URL*}" method="post">
+			{$INSERT_SPAMMER_BLACKHOLE}
+
+			<input type="hidden" name="set_pause" value="1" />
+
+			<input class="button_screen_item buttons__proceed" type="submit" value="{!PAUSE}" />
 		</form>
 	{+END}
 {+END}

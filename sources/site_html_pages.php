@@ -42,7 +42,7 @@ function load_html_page($string, $file_base = null, &$out = null)
     $html = file_get_contents($file_base . '/' . $string);
 
     // Post-processing
-    if (strpos($html, '<html') !== false) {
+    if (stripos($html, '<html') !== false) {
         $matches = array();
 
         // Fix links to anything in same dir, by assuming eithera Composr page in same zone -- or uploads/website_specific, or next to html files, or in root

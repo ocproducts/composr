@@ -129,8 +129,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
     require_lang('newsletter');
 
     // Put in archive
-    $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', array(
-        'date_and_time' => time(),
+    $archive_map = array(
         'subject' => $subject,
         'newsletter' => $message,
         'language' => $language,
@@ -140,7 +139,11 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
         'priority' => $priority,
         'template' => $mail_template,
         'html_only' => $html_only,
-    ), true);
+    );
+    $message_id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_archive', 'id', $archive_map, '', 1);
+    if (is_null($message_id)) {
+        $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', $archive_map + array('date_and_time' => time()), true);
+    }
 
     // Mark as done
     log_it('NEWSLETTER_SEND', $subject);

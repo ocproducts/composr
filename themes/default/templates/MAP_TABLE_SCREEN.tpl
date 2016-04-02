@@ -9,3 +9,9 @@
 		{FIELDS}
 	</tbody>
 </table></div>
+
+{+START,IF_PASSED,BUTTONS}
+	<div class="buttons_group">
+		{BUTTONS}
+	</div>
+{+END}

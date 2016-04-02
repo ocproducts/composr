@@ -97,7 +97,10 @@ class Hook_html_site
         foreach ($_themes as $theme => $theme_title) {
             $themes->attach(form_input_list_entry($theme, ($theme == $GLOBALS['FORUM_DRIVER']->get_theme()), $theme_title));
         }
-        $fields = form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('THEME_TO_SAVE_INTO'), 'theme', $themes, null, true);
+
+        $fields = new Tempcode();
+
+        $fields->attach(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('THEME_TO_SAVE_INTO'), 'theme', $themes, null, true));
 
         $fields->attach(form_input_tick(do_lang_tempcode('WHETHER_CONVERT_COMCODE'), do_lang_tempcode('DESCRIPTION_WHETHER_CONVERT_COMCODE'), 'convert_to_comcode', false));
 
