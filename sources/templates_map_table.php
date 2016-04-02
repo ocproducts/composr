@@ -27,7 +27,7 @@
  * @param  ?Tempcode $buttons Buttons to show (null: none)
  * @return Tempcode The generated view space
  */
-function map_table_screen($title, $fields, $text, $buttons = null)
+function map_table_screen($title, $fields, $text = null, $buttons = null)
 {
     $_fields = new Tempcode();
     foreach ($fields as $key => $val) {

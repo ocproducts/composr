@@ -159,10 +159,6 @@ class Module_newsletter
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
-            $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_message_id', array('d_message_id'));
-        }
-
-        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_to_email');
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_inject_time');
 
@@ -181,6 +177,10 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->add_table_field('newsletter_archive', 'priority', 'INTEGER');
             $GLOBALS['SITE_DB']->add_table_field('newsletter_archive', 'template', 'ID_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('newsletter_archive', 'html_only', 'BINARY');
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
+            $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_message_id', array('d_message_id'));
         }
     }
 
