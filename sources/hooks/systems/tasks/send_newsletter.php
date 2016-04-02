@@ -83,7 +83,7 @@ class Hook_task_send_newsletter
         do {
             list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, $max, false, $csv_data);
 
-            $insert_maps = array(
+            $insert_maps = array( // We will do very efficient mass-inserts (making index maintenance and disk access much more efficient)
                 'd_inject_time' => array(),
                 'd_message_id' => array(),
                 'd_message_binding' => array(),

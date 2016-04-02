@@ -386,6 +386,7 @@ class Hook_addon_registry_newsletter
                 'ETA' => placeholder_date(),
                 '_ETA' => placeholder_date_raw(),
                 'PAUSED' => true,
+                'QUEUE_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

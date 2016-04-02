@@ -90,11 +90,6 @@ class Module_admin_newsletter extends Standard_crud_module
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
-        if ($type == 'view') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_NEWSLETTER')), array('_SELF:_SELF:archive', do_lang_tempcode('NEWSLETTER_ARCHIVE'))));
-            breadcrumb_set_self(do_lang_tempcode('VIEW'));
-        }
-
         if ($type == 'import_subscribers') {
             if (either_param_integer('level', null) === 0) {
                 $this->title = get_screen_title('SOMETHING_NEWSLETTER_SUBSCRIBERS'); // Don't say import, so as to not confuse people given a pre-set link to unsubscribe people from
@@ -120,7 +115,12 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         if ($type == 'archive') {
-            $this->title = get_screen_title('NEWSLETTER_ARCHIVE');
+            $this->title = get_screen_title((get_param_integer('queued', 0) == 1) ? 'NEWSLETTER_QUEUE' : 'NEWSLETTER_ARCHIVE');
+        }
+
+        if ($type == 'view') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_NEWSLETTER')), array('_SELF:_SELF:archive', do_lang_tempcode('NEWSLETTER_ARCHIVE'))));
+            breadcrumb_set_self(do_lang_tempcode('VIEW'));
         }
 
         if (either_param_integer('csv', 0) == 1) {
@@ -241,6 +241,8 @@ class Module_admin_newsletter extends Standard_crud_module
         $_eta = intval((floatval($num_in_queue) / floatval($mails_per_send)) * floatval($minutes_between_sends) * 60.0);
         $eta = display_time_period($_eta);
 
+        $queue_url = build_url(array('page' => '_SELF', 'type' => 'archive', 'queued' => 1), '_SELF');
+
         $newsletter_intro = do_template('NEWSLETTER_STATUS_OVERVIEW', array(
             'UPDATE_URL' => build_url(array('page' => '_SELF'), '_SELF'),
             'NUM_IN_QUEUE' => integer_format($num_in_queue),
@@ -248,6 +250,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'ETA' => $eta,
             '_ETA' => strval($_eta),
             'PAUSED' => (get_option('newsletter_paused') == '1'),
+            'QUEUE_URL' => $queue_url,
         ));
 
         require_code('templates_donext');
@@ -1736,20 +1739,37 @@ class Module_admin_newsletter extends Standard_crud_module
             return $lang;
         }
 
+        $queued = (get_param_integer('queued', 0) == 1);
+
+        $where = '1=1';
+        if (multi_lang()) {
+            $where .= ' AND ' . db_string_equal_to('language', $lang);
+        }
+        $queued_sql = '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_drip_send WHERE d_message_id=a.id)';
+        if ($queued) {
+            $where .= ' AND ' . $queued_sql . '>0';
+        }
+        $sql = 'SELECT a.id,a.subject,a.date_and_time,' . $queued_sql . ' AS queued FROM ' . get_table_prefix() . 'newsletter_archive a WHERE ' . $where . ' ORDER BY date_and_time DESC';
+        $rows = $GLOBALS['SITE_DB']->query($sql);
+
         $newsletters = new Tempcode();
-        $where = multi_lang() ? array('language' => $lang) : null;
-        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('id', 'subject', 'date_and_time'), $where, 'ORDER BY date_and_time DESC');
         foreach ($rows as $newsletter) {
-            $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, $newsletter['subject']));
+            $newsletter_line = do_lang('NEWSLETTER_IN_ARCHIVE_LIST', $newsletter['subject'], get_timezoned_date($newsletter['date_and_time']), array(integer_format($newsletter['queued']), strval($newsletter['id'])));
+            $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, $newsletter_line));
         }
         if ($newsletters->is_empty()) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
+
         require_code('form_templates');
-        $fields = form_input_huge_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true);
+
+        $fields = new Tempcode();
+        $fields->attach(form_input_huge_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
+
         $hidden = form_input_hidden('lang', $lang);
 
         $submit_name = do_lang_tempcode('VIEW');
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'view'), '_SELF', null, false, true);
 
         return do_template('FORM_SCREEN', array('_GUID' => 'ee295e41dc86c4583c123e6e0e445380', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__view_archive', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
@@ -1763,6 +1783,12 @@ class Module_admin_newsletter extends Standard_crud_module
     public function view()
     {
         $id = get_param_integer('id');
+
+        if (post_param_integer('flush_queue', 0) == 1) {
+            $GLOBALS['SITE_DB']->query_delete('newsletter_drip_send', array('d_message_id' => $id));
+
+            attach_message(do_lang_tempcode('SUCCESS'), 'inform');
+        }
 
         $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $id), '', 1);
         if (!isset($rows[0])) {
@@ -1817,6 +1843,18 @@ class Module_admin_newsletter extends Standard_crud_module
         $html_only = $rows[0]['html_only'];
         $display_map['HTML_ONLY'] = ($html_only == 1) ? do_lang('YES') : do_lang('NO');
 
+        $queued = $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)', array('d_message_id' => $id));
+        $display_map['NUM_IN_SEND_QUEUE'] = integer_format($queued);
+
+        $buttons = new Tempcode();
+
+        if ($queued > 0) {
+            $dequeue_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF');
+            $hidden = new Tempcode();
+            $hidden->attach(form_input_hidden('flush_queue', '1'));
+            $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $dequeue_url, 'TITLE' => do_lang_tempcode('EMPTY_QUEUE'), 'IMG' => 'menu___generic_admin__delete', 'HIDDEN' => $hidden)));
+        }
+
         $copy_url = build_url(array('page' => '_SELF', 'type' => 'new'), '_SELF');
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('subject', $rows[0]['subject']));
@@ -1827,7 +1865,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden->attach(form_input_hidden('template', $rows[0]['template']));
         $hidden->attach(form_input_hidden('html_only', strval($rows[0]['html_only'])));
         $hidden->attach(form_input_hidden('message', $_message));
-        $buttons = do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons__send', 'HIDDEN' => $hidden));
+        $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons__send', 'HIDDEN' => $hidden)));
 
         $text = do_lang_tempcode('NEWSLETTER_WITH_SAMPLE_NAME');
 

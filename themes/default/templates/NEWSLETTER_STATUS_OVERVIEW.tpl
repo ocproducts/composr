@@ -2,7 +2,7 @@
 	<p>{!NEWSLETTER_DRIP_SEND_QUEUE,{NUM_IN_QUEUE*},{ETA*}}</p>
 
 	{+START,IF,{PAUSED}}
-		<p>{!CURRENTLY_PAUSED}</p>
+		<p>{!CURRENTLY_PAUSED,{QUEUE_URL*}}</p>
 
 		<form action="{UPDATE_URL*}" method="post">
 			{$INSERT_SPAMMER_BLACKHOLE}
