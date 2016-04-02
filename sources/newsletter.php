@@ -732,3 +732,38 @@ function delete_newsletter_subscriber($id)
         expunge_resource_fs_moniker('newsletter_subscriber', strval($id));
     }
 }
+
+/**
+ * Remove bounced addresses from the newsletter / turn off staff e-mails on member accounts.
+ *
+ * @param  array $bounces List of e-mail addresses
+ */
+function remove_email_bounces($bounces)
+{
+    if (count($bounces) == 0) {
+        return;
+    }
+
+    $delete_sql = '';
+    $delete_sql_members = '';
+
+    foreach ($bounces as $email_address) {
+        if ($delete_sql != '') {
+            $delete_sql .= ' OR ';
+            $delete_sql_members .= ' OR ';
+        }
+        $delete_sql .= db_string_equal_to('email', $email_address);
+        $delete_sql_members .= db_string_equal_to('m_email_address', $email_address);
+    }
+
+    $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribers WHERE ' . $delete_sql;
+    $GLOBALS['SITE_DB']->query($query);
+
+    $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $delete_sql;
+    $GLOBALS['SITE_DB']->query($query);
+
+    if (get_forum_type() == 'cns') {
+        $query = 'UPDATE ' . get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
+        $GLOBALS['FORUM_DB']->query($query);
+    }
+}

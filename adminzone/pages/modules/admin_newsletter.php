@@ -496,33 +496,18 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $title = get_screen_title('BOUNCE_FILTER');
 
-        $delete_sql = '';
-        $delete_sql_members = '';
+        $bounces = array();
 
         foreach (array_keys($_POST) as $key) {
             if (substr($key, 0, 6) == 'email_') {
-                if ($delete_sql != '') {
-                    $delete_sql .= ' OR ';
-                    $delete_sql_members .= ' OR ';
-                }
-                $delete_sql .= db_string_equal_to('email', post_param_string($key));
-                $delete_sql_members .= db_string_equal_to('m_email_address', post_param_string($key));
+                $bounces[] = post_param_string($key);
             }
         }
-        if ($delete_sql == '') {
+        if (count($bounces) == 0) {
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
-        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter WHERE ' . $delete_sql;
-        $GLOBALS['SITE_DB']->query($query);
-
-        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $delete_sql;
-        $GLOBALS['SITE_DB']->query($query);
-
-        if (get_forum_type() == 'cns') {
-            $query = 'UPDATE ' . get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
-            $GLOBALS['FORUM_DB']->query($query);
-        }
+        remove_email_bounces($bounces);
 
         return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
     }
