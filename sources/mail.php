@@ -1044,10 +1044,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 $new_connection = false;
             }
             if ($socket !== false) {
-                $base_url = parse_url(get_base_url());
-                $domain = $base_url['host'];
-
                 if ($new_connection) {
+                    $base_url = parse_url(get_base_url());
+                    $domain = $base_url['host'];
+
                     $rcv = fread($socket, 1024);
 
                     // Log in if necessary
