@@ -34,7 +34,7 @@ class Hook_config_newsletter_smtp_from_address
             'human_name' => 'EMAIL_ADDRESS',
             'type' => 'line',
             'category' => 'FEATURE',
-            'group' => 'NEWSLETTER',
+            'group' => 'NEWSLETTER_SMTP',
             'explanation' => 'CONFIG_OPTION_smtp_from_address',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
