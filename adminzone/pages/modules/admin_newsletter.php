@@ -1497,42 +1497,8 @@ class Module_admin_newsletter extends Standard_crud_module
             $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
         }
 
-        // HTML message
-        $message = newsletter_variable_substitution($message, $subject, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), $address, 'test', '');
-        if (stripos($message, '<html') !== false) {
-            require_code('tempcode_compiler');
-            $html_version = template_to_tempcode($message);
-
-            $in_html = true;
-        } else {
-            require_code('media_renderer');
-            push_media_mode(peek_media_mode() | MEDIA_LOWFI);
-            $comcode_version = comcode_to_tempcode($message, get_member(), true);
-            pop_media_mode();
-
-            $html_version = do_template(
-                'MAIL',
-                array(
-                    '_GUID' => 'b081cf9104748b090f63b6898027985e',
-                    'TITLE' => $subject,
-                    'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
-                    'LANG' => get_site_default_lang(),
-                    'LOGOURL' => get_logo_url(''),
-                    'CONTENT' => $comcode_version
-                ),
-                null,
-                false,
-                null,
-                '.tpl',
-                'templates',
-                $GLOBALS['FORUM_DRIVER']->get_theme('')
-            );
-
-            $in_html = ($html_only == 1);
-        }
-
-        // Text message
-        $text_version = ($html_only == 1) ? '' : comcode_to_clean_text(static_evaluate_tempcode(template_to_tempcode($message)));
+        // Render
+        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), $address, 'test', '');
 
         // Subject line
         $_full_subject = $subject;
@@ -1803,16 +1769,12 @@ class Module_admin_newsletter extends Standard_crud_module
         $subject = $rows[0]['subject'];
         $display_map['SUBJECT'] = $subject;
 
-        $_message = $rows[0]['newsletter'];
-        $message = newsletter_variable_substitution($_message, $subject, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'), 'test', '');
-        require_code('tempcode_compiler');
-        if (stripos($message, '<html') !== false) {
-            $html_version = template_to_tempcode($message);
-        } else {
-            $html_version = template_to_tempcode($message);
-            $html_version = comcode_to_tempcode($html_version->evaluate());
+        $message = $rows[0]['newsletter'];
+        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'), 'test', '');
+        $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $html_version));
+        if ($text_version != '') {
+            $display_map['TEXT_VERSION'] = $text_version;
         }
-        $display_map['MESSAGE'] = $html_version;
 
         $importance_level = integer_format($rows[0]['importance_level']);
         if (get_option('interest_levels') == '1') {
@@ -1829,7 +1791,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $from_name = $rows[0]['from_name'];
         $from_email = $rows[0]['from_email'];
         if ($from_name != '' && $from_email != '') {
-            $display_map['FROM'] = $from_name . ' <' . $from_email .'>';
+            $display_map['FROM'] = $from_name . ' <' . $from_email . '>';
         }
 
         $priority = $rows[0]['priority'];
@@ -1864,7 +1826,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $hidden->attach(form_input_hidden('priority', strval($rows[0]['priority'])));
         $hidden->attach(form_input_hidden('template', $rows[0]['template']));
         $hidden->attach(form_input_hidden('html_only', strval($rows[0]['html_only'])));
-        $hidden->attach(form_input_hidden('message', $_message));
+        $hidden->attach(form_input_hidden('message', $message));
         $buttons->attach(do_template('BUTTON_SCREEN', array('IMMEDIATE' => true, 'URL' => $copy_url, 'TITLE' => do_lang_tempcode('RESEND_NEWSLETTER'), 'IMG' => 'buttons__send', 'HIDDEN' => $hidden)));
 
         $text = do_lang_tempcode('NEWSLETTER_WITH_SAMPLE_NAME');

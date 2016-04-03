@@ -406,6 +406,63 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
 }
 
 /**
+ * Generate a newsletter preview in full HTML and full text.
+ *
+ * @param  string $message The message
+ * @param  string $subject The subject
+ * @param  boolean $html_only HTML only
+ * @param  string $forename Forename
+ * @param  string $surname Surname
+ * @param  string $name Name
+ * @param  string $address Address
+ * @param  string $sendid Send ID
+ * @param  string $hash Password hash
+ * @return array A triple: HTML version, Text version, Whether the e-mail has to be fully HTML
+ */
+function newsletter_preview($message, $subject, $html_only, $forename, $surname, $name, $address, $sendid, $hash)
+{
+    require_code('tempcode_compiler');
+
+    // HTML message
+    $message = newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $address, $sendid, $hash);
+    if (stripos($message, '<html') !== false) {
+        $html_version = template_to_tempcode($message);
+
+        $in_html = true;
+    } else {
+        require_code('media_renderer');
+        push_media_mode(peek_media_mode() | MEDIA_LOWFI);
+        $comcode_version = comcode_to_tempcode(static_evaluate_tempcode(template_to_tempcode($message)), get_member(), true);
+        pop_media_mode();
+
+        $html_version = do_template(
+            'MAIL',
+            array(
+                '_GUID' => 'b081cf9104748b090f63b6898027985e',
+                'TITLE' => $subject,
+                'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
+                'LANG' => get_site_default_lang(),
+                'LOGOURL' => get_logo_url(''),
+                'CONTENT' => $comcode_version
+            ),
+            null,
+            false,
+            null,
+            '.tpl',
+            'templates',
+            $GLOBALS['FORUM_DRIVER']->get_theme('')
+        );
+
+        $in_html = $html_only;
+    }
+
+    // Text message
+    $text_version = $html_only ? '' : comcode_to_clean_text(static_evaluate_tempcode(template_to_tempcode($message)));
+
+    return array($html_version, $text_version, $in_html);
+}
+
+/**
  * Work out newsletter block list.
  *
  * @return array List of blocked email addresses (actually a map)

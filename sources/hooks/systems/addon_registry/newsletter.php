@@ -168,6 +168,8 @@ class Hook_addon_registry_newsletter
             'sources/hooks/systems/config/newsletter_smtp_sockets_use.php',
             'sources/hooks/systems/config/newsletter_smtp_sockets_username.php',
             'sources/hooks/systems/config/newsletter_website_email.php',
+            'themes/default/javascript/newsletter.js',
+            'themes/default/templates/NEWSLETTER_PREVIEW.tpl',
         );
     }
 
@@ -186,6 +188,7 @@ class Hook_addon_registry_newsletter
             'templates/NEWSLETTER_SUBSCRIBERS_SCREEN.tpl' => 'administrative__newsletter_subscribers_screen',
             'text/NEWSLETTER_DEFAULT_FCOMCODE.txt' => 'newsletter_default',
             'templates/NEWSLETTER_CONFIRM_WRAP.tpl' => 'administrative__newsletter_confirm_wrap',
+            'templates/NEWSLETTER_PREVIEW.tpl' => 'administrative__newsletter_confirm_wrap',
             'templates/BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE.tpl' => 'block_main_newsletter_signup_done',
             'templates/BLOCK_MAIN_NEWSLETTER_SIGNUP.tpl' => 'block_main_newsletter_signup',
             'templates/PERIODIC_NEWSLETTER_REMOVE.tpl' => 'periodic_newsletter_remove',
