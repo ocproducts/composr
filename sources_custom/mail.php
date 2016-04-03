@@ -396,8 +396,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         ->setDate(time())
         ->setPriority($priority)
         ->setCharset($charset)
-        ->setBody($html_evaluated, 'text/html', $charset)
-        ->addPart($message_plain, 'text/plain', $charset);
+        ->setBody($html_evaluated, 'text/html', $charset);
+    if (!$in_html) {
+        $message->addPart($message_plain, 'text/plain', $charset);
+    }
 
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
