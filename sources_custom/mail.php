@@ -78,7 +78,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (!$smtp_sockets_use) {
-        return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since);
+        return non_overridden__mail_wrap($subject_line, $message_raw, $to_email, $to_name, $from_email, $from_name, $priority, $attachments, $no_cc, $as, $as_admin, $in_html, $coming_out_of_queue, $mail_template, $bypass_queue, $extra_cc_addresses, $extra_bcc_addresses, $require_recipient_valid_since, $smtp_sockets_use, $smtp_sockets_host, $smtp_sockets_port, $smtp_sockets_username, $smtp_sockets_password, $smtp_from_address, $enveloper_override, $allow_ext_images, $website_email);
     }
 
     if (running_script('stress_test_loader')) {
@@ -421,7 +421,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Create the Mailer using your created Transport
-    $mailer = Swift_Mailer::newInstance($transport);
+    static $mailer = null;
+    if ($mailer === null) {
+        $mailer = Swift_Mailer::newInstance($transport);
+    }
 
     // Create a message
     $to_array = array();
@@ -441,8 +444,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         ->setDate(time())
         ->setPriority($priority)
         ->setCharset($charset)
-        ->setBody($html_evaluated, 'text/html', $charset)
-        ->addPart($message_plain, 'text/plain', $charset);
+        ->setBody($html_evaluated, 'text/html', $charset);
+    if (!$in_html) {
+        $message->addPart($message_plain, 'text/plain', $charset);
+    }
 
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
