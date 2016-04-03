@@ -100,6 +100,8 @@ To configure SES we recommend you specifically set the newsletter configuration 
 5) SES is more likely to be on spam blacklists, so it makes sense to isolate its use to bulk e-mail only
 6) Putting your bulk e-mail through a separate queue will avoid clogging up the delivery of your other e-mails, which may be more time-sensitive
 
+To use SES via SMTP, you need to use TLS, which means you need the [tt]better_mail[/tt] addon.
+
 It is not optional that you have to remove bounced addresses from your newsletter: Amazon may penalise you if you don\'t. You therefore need to listen to the bounces that Amazon picks up.
 You need to:
 1) Set up an Amazon SNS topic
@@ -127,7 +129,7 @@ You need to:
     {
         return array(
             'requires' => array('PHP5.5', 'curl'),
-            'recommends' => array(),
+            'recommends' => array('better_mail'),
             'conflicts_with' => array()
         );
     }
