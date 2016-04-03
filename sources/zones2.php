@@ -247,8 +247,8 @@ function save_zone_base_url($zone, $base_url)
         fwrite($out, $config_file);
         @flock($out, LOCK_UN);
         fclose($out);
-        sync_file($path);
-        fix_permissions($path);
+        sync_file($config_path);
+        fix_permissions($config_path);
     }
 }
 

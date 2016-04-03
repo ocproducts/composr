@@ -77,7 +77,7 @@ class Hook_content_meta_aware_topic
             'view_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_topic:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
-            'add_url' => '',
+            'add_url' => null,
             'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => true,

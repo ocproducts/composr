@@ -58,6 +58,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 
     $summary = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
+    require_code('cns_groups2');
     $num_members = cns_get_group_members_raw_count($row['id']);
     $entry_details = do_lang_tempcode('GROUP_NUM_MEMBERS', escape_html(integer_format($num_members)));
 
