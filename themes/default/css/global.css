@@ -3760,6 +3760,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Fixes bugginess in Chrome */
 }
 
 /*
