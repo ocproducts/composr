@@ -283,9 +283,10 @@ function _symbol_thumbnail($param)
 /**
  * Get the maximum allowed image size, as set in the configuration.
  *
- * @return integer The maximum image size
+ * @param  boolean $consider_php_limits Whether to consider limitations in PHP's configuration
+ * @return integer The maximum image size, in bytes
  */
-function get_max_image_size()
+function get_max_image_size($consider_php_limits = true)
 {
     require_code('files');
     $a = php_return_bytes(ini_get('upload_max_filesize'));
@@ -296,17 +297,19 @@ function get_max_image_size()
     }
 
     $possibilities = array();
-    if ($a != 0) {
-        $possibilities[] = $a;
-    }
-    if ($b != 0) {
-        $possibilities[] = $b;
+    if ($consider_php_limits) {
+        if ($a != 0) {
+            $possibilities[] = $a;
+        }
+        if ($b != 0) {
+            $possibilities[] = $b;
+        }
     }
     if ($c != 0) {
         $possibilities[] = $c;
     }
 
-    return min($possibilities);
+    return (count($possibilities) == 0) ? (1024 * 1024 * 1024 * 1024) : min($possibilities);
 }
 
 /**

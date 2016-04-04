@@ -246,6 +246,8 @@ function usertime_to_utctime($timestamp = null, $member = null)
 
 /**
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
+ * %i is 'g' in date
+ * %k is 'S' in date
  *
  * @param  string $format The formatting string.
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required

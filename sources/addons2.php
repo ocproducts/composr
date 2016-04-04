@@ -584,14 +584,24 @@ function install_addon($file, $files = null)
 
         if ((is_null($files)) || (in_array($addon_file, $files))) {
             $matches = array();
-            if (preg_match('#(\w*)/index.php#', $addon_file, $matches) != 0) {
+            if (preg_match('#(\w*)/index\.php$#', $addon_file, $matches) != 0) {
                 $zone = $matches[1];
 
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $zone));
                 if (is_null($test)) {
+                    $map = array(
+                        'zone_name' => $zone,
+                        'zone_default_page' => ($zone == 'forum') ? 'forumview' : 'start',
+                        'zone_theme' => '-1',
+                        'zone_require_session' => 0,
+                    );
+                    $map += insert_lang('zone_title', titleify($zone), 1);
+                    $map += insert_lang('zone_header_text', '', 1);
+                    $GLOBALS['SITE_DB']->query_insert('zones', $map);
+
                     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
                     foreach (array_keys($groups) as $group_id) {
-                        $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id));
+                        $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true);
                     }
                 }
 

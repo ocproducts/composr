@@ -189,6 +189,11 @@ The following illustrates prices an agency may charge for different example leve
 | As above, but done to a further great scope.
 |}
 
+[title="2"]Upgrades[/title]
+
+Don't forget that it is important to keep web software such as your CMS updated. You can't just launch a project on one particular version and have it languish for years without upgrades -- this will create compatibility problems on new web browsers, and leave security holes open that have been discovered and publicly highlighted.
+You must therefore budget to have upgrades done, preferably about once per quarter.
+
 [title="2"]Rising costs (the cost of design and branding)[/title]
 
 The price range of the mid-market has drifted higher and higher over the years, as the web has matured with much greater expectations. In the early days a great website could be perhaps bought for $3,000 -- now a great website could not even be done within the mid-market and cost $100,000.

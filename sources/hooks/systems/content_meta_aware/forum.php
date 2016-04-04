@@ -73,7 +73,7 @@ class Hook_content_meta_aware_forum
             'view_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:admin_cns_forums:_edit_category:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
-            'add_url' => '',
+            'add_url' => has_actual_page_access(get_member(), 'admin_cns_forums') ? '_SEARCH:admin_cns_forums:add' : null,
             'archive_url' => $zone . ':forumview',
 
             'support_url_monikers' => true,

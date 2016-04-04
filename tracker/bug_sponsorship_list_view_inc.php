@@ -156,10 +156,11 @@
 	<tr class="row-1">
 		<td class="category" width="15%"><?php echo lang_get( 'sponsor_issue' ).lang_get('divide_cost');?></td>
 		<td>
+			<?php if (!is_null($cms_sponsorship_locked_until) && $cms_sponsorship_locked_until > time()) { ?>
+				<p><?php echo sprintf(lang_get('cms_sponsorship_is_disabled'), $cms_sc_site_url . '/contact/sponsor.htm'); ?></p>
+			<?php } else { ?>
 			<form method="post" action="bug_set_sponsorship.php">
-				<?php if ($hours!=0) { 
-				
-				?>
+				<?php if ($hours!=0) { ?>
 				<p><?php echo sprintf(lang_get('cms_sponsor_first_message'), number_format($f_hours), number_format($f_hours_by_credits), $cash_needed_string, $alternate_currencies_links, $cms_sc_business_name, $cms_sc_product_name);?></p>
 				<?php } ?>
 				<p><?php echo sprintf(lang_get('cms_sponsor_second_message'), $cms_sc_site_url . '/contact/sponsor.htm'); ?></p>
@@ -186,6 +187,7 @@
 				}
 				?>
 			</form>
+			<?php } ?>
 		</td>
 	</tr>
 <?php

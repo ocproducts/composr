@@ -38,7 +38,7 @@ function check_comcode($comcode, $source_member = null, $as_admin = false, $conn
     if ($attachment_possibility) {
         $has_one = false;
         foreach ($_POST as $key => $value) {
-            if (preg_match('#^hidFileID\_#i', $key) != 0) {
+            if (is_string($key) && preg_match('#^hidFileID\_#i', $key) != 0) {
                 require_code('uploads');
                 $has_one = is_plupload();
             }

@@ -814,7 +814,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
-        $_require_recipient_valid_since = date('D, j M Y H:i:s', $require_recipient_valid_since);
+        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
     }
     $headers .= 'MIME-Version: 1.0' . $line_term;
@@ -1044,8 +1044,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                             fwrite($socket, "DATA\r\n");
                             $rcv = fread($socket, 1024);
                             if (strtolower(substr($rcv, 0, 3)) == '354') {
-                                $attractive_date = strftime('%d %B %Y  %H:%M:%S', time());
-
                                 $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
                                 if (count($to_email) == 1) {
                                     if ($_to_name == '') {
@@ -1057,7 +1055,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                                     fwrite($socket, 'To: ' . $_to_name . "\r\n");
                                 }
                                 fwrite($socket, 'Subject: ' . $tightened_subject . "\r\n");
-                                fwrite($socket, 'Date: ' . $attractive_date . "\r\n");
                                 $headers = preg_replace('#^\.#m', '..', $headers);
                                 $sending_message = preg_replace('#^\.#m', '..', $sending_message);
                                 fwrite($socket, $headers . "\r\n");

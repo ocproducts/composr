@@ -81,11 +81,6 @@ class Hook_fields_content_link_multi
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        unset($field);
-        /*if (!is_null($required))
-        {
-            Nothing special for this hook
-        }*/
         return array('long_unescaped', $default, 'long');
     }
 

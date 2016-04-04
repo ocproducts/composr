@@ -105,7 +105,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -120,18 +120,20 @@ function javascript_enforce($j, $theme = null, $minify = null)
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         }
-
-        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $full_path]))) {
-            $SITE_INFO['dependency__' . $full_path] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $full_path);
-        }
     }
 
     if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
+        if (filesize($full_path) == 0) {
+            return '';
+        }
+
         require_code('css_and_js');
         js_compile($j, $js_cache_path, $minify);
     }
 
-    //if (@filesize($js_cache_path)==0/*@ for race condition*/) return '';      Optimisation isn't useful now
+    if (@intval(filesize($js_cache_path)) == 0/*@ for race condition*/) {
+        return '';
+    }
 
     return $js_cache_path;
 }

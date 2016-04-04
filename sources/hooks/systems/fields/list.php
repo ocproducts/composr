@@ -79,8 +79,8 @@ class Hook_fields_list
     {
         if ($required !== null) {
             if (($required) && ($default == '')) {
-                $default = preg_replace('#\|.*$#', '', $default);
-                $default = preg_replace('#=.*$#', '', $default);
+                $default = preg_replace('#\|.*$#', '', $field['cf_default']);
+                $default = preg_replace('#=.*$#', '', $field['cf_default']);
             }
         }
         return array('long_unescaped', $default, 'long');

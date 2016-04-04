@@ -227,7 +227,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $edit_page_link = $param[2]->evaluate();
                     $supports_comcode = (isset($param[4]) ? $param[3]->evaluate() : '0') == '1';
                     $explicit_editing_links = (isset($param[5]) ? $param[4]->evaluate() : '0') == '1';
-                    $has_permission = (isset($param[6]) ? $param[5]->evaluate() : null) === '1';
+                    $has_permission = (isset($param[6]) ? ($param[5]->evaluate() === '1') : null);
 
                     list($zone, $attributes,) = page_link_decode($edit_page_link);
                     if ($zone == '_SEARCH') {

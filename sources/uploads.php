@@ -346,9 +346,9 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     require_code('images');
     if ((($enforce_type & CMS_UPLOAD_VIDEO) != 0) || (($enforce_type & CMS_UPLOAD_AUDIO) != 0)) {
         require_code('files2');
-        $max_size = get_max_file_size();
+        $max_size = get_max_file_size(null, null, false);
     } else {
-        $max_size = get_max_image_size();
+        $max_size = get_max_image_size(false);
     }
     if (($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
@@ -506,12 +506,12 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
         if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size(false)) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size(false)))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size(false)))));
                 }
             }
 
@@ -554,7 +554,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         $out[1] = $thumb;
     } elseif ($make_thumbnail) {
         if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size(false)) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
