@@ -1566,7 +1566,7 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  Tempcode $content The list entries for our list
+ * @param  Tempcode $content The list entries for our list; you compose these via attaching together form_input_list_entry calls
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
  * @param  boolean $required Whether this is required
@@ -1588,13 +1588,84 @@ function form_input_list($pretty_name, $description, $name, $content, $tabindex 
 }
 
 /**
+ * Get the Tempcode for a huge listbox.
+ *
+ * @param  mixed $pretty_name A human intelligible name for this input field
+ * @param  mixed $description A description for this input field
+ * @param  ID_TEXT $name The name which this input field is for
+ * @param  Tempcode $content The list entries for our list; you compose these via attaching together form_input_list_entry calls
+ * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
+ * @param  boolean $required Whether this is required
+ * @param  ?integer $size Size of list (null: default)
+ * @return Tempcode The input field
+ */
+function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null)
+{
+    $tabindex = get_form_field_tabindex($tabindex);
+
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+
+    $_required = ($required) ? '_required' : '';
+
+    return do_template('FORM_SCREEN_INPUT_HUGE_LIST', array(
+        '_GUID' => 'b29dbbaf09bb5c36410e22feafa2f968',
+        'TABINDEX' => strval($tabindex),
+        'SIZE' => is_null($size) ? null : strval($size),
+        'REQUIRED' => $_required,
+        'PRETTY_NAME' => $pretty_name,
+        'DESCRIPTION' => $description,
+        'NAME' => $name,
+        'CONTENT' => $content,
+        'INLINE_LIST' => $inline_list,
+    ));
+}
+
+/**
+ * Get the Tempcode for a listbox with multiple selections.
+ *
+ * @param  mixed $pretty_name A human intelligible name for this input field
+ * @param  mixed $description A description for this input field
+ * @param  ID_TEXT $name The name which this input field is for
+ * @param  Tempcode $content The list entries for our list; you compose these via attaching together form_input_list_entry calls
+ * @param  ?integer $tabindex The tab index of the field (null: not specified)
+ * @param  integer $size How much space the list takes up
+ * @param  boolean $required Whether at least one must be selected
+ * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
+ * @param  ?mixed $custom_value Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)
+ * @return Tempcode The input field
+ */
+function form_input_multi_list($pretty_name, $description, $name, $content, $tabindex = null, $size = 5, $required = false, $custom_name = null, $custom_value = null)
+{
+    $tabindex = get_form_field_tabindex($tabindex);
+
+    require_css('widget_select2');
+    require_javascript('jquery');
+    require_javascript('select2');
+
+    $input = do_template('FORM_SCREEN_INPUT_MULTI_LIST', array(
+        '_GUID' => 'ed0739205c0bf5039e1d4fe2ddfc06da',
+        'TABINDEX' => strval($tabindex),
+        'SIZE' => strval($size),
+        'NAME' => $name,
+        'CONTENT' => $content,
+        'CUSTOM_ACCEPT_MULTIPLE' => is_array($custom_value),
+        'CUSTOM_NAME' => $custom_name,
+        'CUSTOM_VALUE' => is_null($custom_value) ? '' : $custom_value,
+    ));
+    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
+}
+
+/**
  * Get the Tempcode for a combo-box (listbox with free text input). Works best if HTML5 is available.
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
  * @param  string $default Current selection
- * @param  Tempcode $options The list entries for our list
+ * @param  Tempcode $options The list entries for our list; you compose these via attaching together form_input_list_entry calls
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is required
  * @return Tempcode The input field
@@ -1691,77 +1762,6 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
 }
 
 /**
- * Get the Tempcode for a huge listbox.
- *
- * @param  mixed $pretty_name A human intelligible name for this input field
- * @param  mixed $description A description for this input field
- * @param  ID_TEXT $name The name which this input field is for
- * @param  Tempcode $content The list entries for our list
- * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @param  boolean $inline_list Whether this is an inline displayed list as opposed to a dropdown
- * @param  boolean $required Whether this is required
- * @param  ?integer $size Size of list (null: default)
- * @return Tempcode The input field
- */
-function form_input_huge_list($pretty_name, $description, $name, $content, $tabindex = null, $inline_list = false, $required = true, $size = null)
-{
-    $tabindex = get_form_field_tabindex($tabindex);
-
-    require_css('widget_select2');
-    require_javascript('jquery');
-    require_javascript('select2');
-
-    $_required = ($required) ? '_required' : '';
-
-    return do_template('FORM_SCREEN_INPUT_HUGE_LIST', array(
-        '_GUID' => 'b29dbbaf09bb5c36410e22feafa2f968',
-        'TABINDEX' => strval($tabindex),
-        'SIZE' => is_null($size) ? null : strval($size),
-        'REQUIRED' => $_required,
-        'PRETTY_NAME' => $pretty_name,
-        'DESCRIPTION' => $description,
-        'NAME' => $name,
-        'CONTENT' => $content,
-        'INLINE_LIST' => $inline_list,
-    ));
-}
-
-/**
- * Get the Tempcode for a listbox with multiple selections.
- *
- * @param  mixed $pretty_name A human intelligible name for this input field
- * @param  mixed $description A description for this input field
- * @param  ID_TEXT $name The name which this input field is for
- * @param  Tempcode $content The list entries for our list
- * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @param  integer $size How much space the list takes up
- * @param  boolean $required Whether at least one must be selected
- * @param  ?ID_TEXT $custom_name Name for custom value to be entered to (null: no custom value allowed)
- * @param  ?mixed $custom_value Value for custom value, string (accept single value) or array (accept multiple values) (null: no custom value known)
- * @return Tempcode The input field
- */
-function form_input_multi_list($pretty_name, $description, $name, $content, $tabindex = null, $size = 5, $required = false, $custom_name = null, $custom_value = null)
-{
-    $tabindex = get_form_field_tabindex($tabindex);
-
-    require_css('widget_select2');
-    require_javascript('jquery');
-    require_javascript('select2');
-
-    $input = do_template('FORM_SCREEN_INPUT_MULTI_LIST', array(
-        '_GUID' => 'ed0739205c0bf5039e1d4fe2ddfc06da',
-        'TABINDEX' => strval($tabindex),
-        'SIZE' => strval($size),
-        'NAME' => $name,
-        'CONTENT' => $content,
-        'CUSTOM_ACCEPT_MULTIPLE' => is_array($custom_value),
-        'CUSTOM_NAME' => $custom_name,
-        'CUSTOM_VALUE' => is_null($custom_value) ? '' : $custom_value,
-    ));
-    return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
-}
-
-/**
  * Get the Tempcode for a complex input that chooses partials from a list ('all', 'all-except-these', or 'these').
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
@@ -1793,7 +1793,7 @@ function form_input_all_and_not($pretty_name, $description, $base, $list, $type 
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The name which this input field is for
- * @param  Tempcode $content The radio buttons for our radio group
+ * @param  Tempcode $content The radio buttons for our radio group; you compose these via attaching together form_input_radio_entry calls
  * @param  boolean $required Whether a radio selection is required
  * @param  boolean $picture_contents Whether this is a picture-based radio list
  * @param  string $selected_path Default value (only appropriate if has picture contents)

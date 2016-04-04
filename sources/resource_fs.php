@@ -186,10 +186,6 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  */
 function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
-    if (!is_null($label)) {
-        $label = cms_mb_substr($label, 0, 255);
-    }
-
     static $cache = array();
     if (is_null($new_guid)) {
         if (isset($cache[$resource_type][$resource_id])) {
@@ -210,6 +206,8 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
             return array(null, null, null);
         }
     }
+
+    $label = cms_mb_substr($label, 0, 255);
 
     $lookup = $definitely_new ? array() : $GLOBALS['SITE_DB']->query_select('alternative_ids', array('resource_moniker', 'resource_guid', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
     if (array_key_exists(0, $lookup)) {

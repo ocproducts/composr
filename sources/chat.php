@@ -1233,7 +1233,8 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
             $rows[$i]['username'] = do_lang('UNKNOWN');
         }
         $rows[$i]['date_and_time_nice'] = get_timezoned_date($rows[$i]['date_and_time']);
-        $message = get_translated_tempcode('chat_messages', $rows[$i], 'the_message');
+        $just_message_row = db_map_restrict($rows[$i], array('id', 'the_message'));
+        $message = get_translated_tempcode('chat_messages', $just_message_row, 'the_message');
 
         // Extra access check
         if ($room_id == -1) {

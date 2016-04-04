@@ -964,8 +964,8 @@ function ecv_METADATA($lang, $escaped, $param)
                 } else {
                     global $SEO_DESCRIPTION;
                     if (($SEO_DESCRIPTION === null) || ($SEO_DESCRIPTION == '')) {
-                        if (!empty($GLOBALS['METADATA']['description'])) {
-                            $value = strip_comcode($GLOBALS['METADATA']['description']);
+                        if (!empty($METADATA['description'])) {
+                            $value = strip_comcode($METADATA['description']);
                         } else {
                             $value = get_option('description');
                         }

@@ -953,7 +953,9 @@ class CMS_Topic
                 if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                     $matches = array();
                     if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $message_eval, $matches) != 0) {
-                        $GLOBALS['METADATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                        set_extra_request_metadata(array(
+                            'image' => html_entity_decode($matches[1], ENT_QUOTES, get_charset()),
+                        ));
                     }
                 }
             }

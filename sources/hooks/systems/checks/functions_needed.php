@@ -32,7 +32,9 @@ class Hook_check_functions_needed
     {
         $warning = array();
 
-        $needed_functions = <<<END
+        // These aren't all actually needed. But we can't reasonably expect developers to work if arbitrary stuff may be disabled:
+        // so we allow everything that we could reasonably assume will be there.
+        $baseline_functions = <<<END
             abs addslashes array_count_values array_diff array_flip array_key_exists array_keys
             array_intersect array_merge array_pop array_push array_reverse array_search array_shift
             array_slice array_splice array_unique array_values arsort asort base64_decode base64_encode
@@ -43,18 +45,7 @@ class Hook_check_functions_needed
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
             function_exists fwrite gd_info get_class get_html_translation_table get_magic_quotes_gpc getcwd
             getdate getenv gmdate gzclose gzopen gzwrite header headers_sent hexdec
-            htmlentities imagealphablending imagecolorallocate imagecolortransparent imagecopy
-            imagecopyresampled imagecopyresized imagecreate imagecreatefromstring imagecreatefrompng
-            imagecreatefromjpeg imagecreatetruecolor imagecolorat imagecolorsforindex
-            imagedestroy imagefill imagefontheight imagefontwidth imagejpeg imagepng imagesavealpha
-            imagesetpixel imagestring imagesx imagesy imagestringup imagettfbbox imagettftext imagetypes
-            imagearc imagefilledarc imagecopymergegray imageline imageellipse imagefilledellipse
-            imagechar imagefilledpolygon imagepolygon imagefilledrectangle imagerectangle imagefilltoborder
-            imagegammacorrect imageinterlace imageloadfont imagepalettecopy imagesetbrush
-            imagesetstyle imagesetthickness imagesettile imagetruecolortopalette
-            imagecharup imagecolorclosest imagecolorclosestalpha imagecolorclosesthwb
-            imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolorresolve
-            imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge is_float
+            htmlentities is_float
             implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
             is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file
             isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min is_writable
@@ -83,7 +74,7 @@ class Hook_check_functions_needed
             parse_ini_file parse_str is_executable memory_get_usage
             is_scalar is_subclass_of metaphone natcasesort natsort nl2br ob_get_length ob_gzhandler
             ob_implicit_flush ob_clean printf convert_cyr_string cosh count_chars
-            gethostbynamel getimagesize getlastmod fpassthru create_function
+            gethostbynamel getlastmod fpassthru create_function
             gettimeofday get_cfg_var get_magic_quotes_runtime get_meta_tags get_parent_class
             get_included_files get_resource_type gzcompress gzdeflate gzencode gzfile gzinflate
             gzuncompress hypot ignore_user_abort hebrev hebrevc array_intersect_assoc
@@ -92,20 +83,34 @@ class Hook_check_functions_needed
             array_combine array_diff_uassoc array_udiff array_uintersect_uassoc
             array_udiff_assoc array_udiff_uassoc array_walk_recursive array_uintersect_assoc
             array_uintersect str_split strpbrk substr_compare file_put_contents get_headers headers_list
-            http_build_query image_type_to_extension imagefilter scandir str_shuffle image_type_to_mime_type
+            http_build_query scandir str_shuffle
             ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1
             array_diff_key inet_pton array_product array_diff_ukey array_intersect_ukey
             inet_ntop fputcsv is_nan is_finite is_infinite ob_flush array_chunk array_fill
             var_export array_intersect_key end fileinode get_class_methods get_class_vars
             get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
-            imagecolorallocatealpha imageistruecolor key pi print set_exception_handler acos
+            key pi print set_exception_handler acos
+
+            imagecolorallocatealpha imageistruecolor imagealphablending imagecolorallocate imagecolortransparent imagecopy
+            imagecopyresampled imagecopyresized imagecreate imagecreatefromstring imagecreatefrompng
+            imagecreatefromjpeg imagecreatetruecolor imagecolorat imagecolorsforindex
+            imagedestroy imagefill imagefontheight imagefontwidth imagejpeg imagepng imagesavealpha
+            imagesetpixel imagestring imagesx imagesy imagestringup imagettfbbox imagettftext imagetypes
+            imagearc imagefilledarc imagecopymergegray imageline imageellipse imagefilledellipse
+            imagechar imagefilledpolygon imagepolygon imagefilledrectangle imagerectangle imagefilltoborder
+            imagegammacorrect imageinterlace imageloadfont imagepalettecopy imagesetbrush
+            imagesetstyle imagesetthickness imagesettile imagetruecolortopalette
+            imagecharup imagecolorclosest imagecolorclosestalpha imagecolorclosesthwb
+            imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolorresolve image_type_to_mime_type
+            imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge getimagesize image_type_to_extension imagefilter
 END;
-        foreach (preg_split('#\s+#', $needed_functions) as $function) {
+        foreach (preg_split('#\s+#', $baseline_functions) as $function) {
             if (trim($function) == '') {
                 continue;
             }
             if (!php_function_allowed($function)) {
-                $warning[] = do_lang_tempcode('DISABLED_FUNCTION', escape_html($function));
+                $ext = ((strpos($function, 'image') !== false) && (!function_exists('imagettfbbox'))); // GD/TTF is non-optional, but if it's not there it's likely due to extension being missing
+                $warning[] = do_lang_tempcode($ext ? 'NONPRESENT_EXTENSION_FUNCTION' : 'DISABLED_FUNCTION', escape_html($function));
             }
         }
 
