@@ -609,9 +609,10 @@ function get_upload_limit_config_url()
  *
  * @param  ?MEMBER $source_member Member we consider quota for (null: do not consider quota)
  * @param  ?object $connection Database connection to get quota from (null: site DB)
+ * @param  boolean $consider_php_limits Whether to consider limitations in PHP's configuration
  * @return integer The maximum allowed upload filesize, in bytes
  */
-function get_max_file_size($source_member = null, $connection = null)
+function get_max_file_size($source_member = null, $connection = null, $consider_php_limits = true)
 {
     $possibilities = array();
 
@@ -639,11 +640,13 @@ function get_max_file_size($source_member = null, $connection = null)
         $d = max(0, $daily_quota * 1024 * 1024 - $size_uploaded_today);
     }
 
-    if ($a != 0) {
-        $possibilities[] = $a;
-    }
-    if ($b != 0) {
-        $possibilities[] = $b;
+    if ($consider_php_limits) {
+        if ($a != 0) {
+            $possibilities[] = $a;
+        }
+        if ($b != 0) {
+            $possibilities[] = $b;
+        }
     }
     if ($c != 0) {
         $possibilities[] = $c;
@@ -652,7 +655,7 @@ function get_max_file_size($source_member = null, $connection = null)
         $possibilities[] = $d;
     }
 
-    return min($possibilities);
+    return (count($possibilities) == 0) ? (1024 * 1024 * 1024 * 1024) : min($possibilities);
 }
 
 /**

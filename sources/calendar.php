@@ -52,6 +52,7 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 
     return do_template('CALENDAR_EVENT_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '0eaa10d9fab32599ff095e1121d41c43',
+        'ID' => strval($row['id']),
         'TITLE' => get_translated_text($row['e_title']),
         'SUMMARY' => get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
         'URL' => $url,

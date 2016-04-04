@@ -119,8 +119,7 @@ class Module_authors
         $author = get_param_string('id', null);
         if (is_null($author)) {
             if (is_guest()) {
-                global $EXTRA_HEAD;
-                $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+                attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
             }
