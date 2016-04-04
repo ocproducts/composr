@@ -170,6 +170,7 @@ class Hook_addon_registry_newsletter
             'sources/hooks/systems/config/newsletter_website_email.php',
             'themes/default/javascript/newsletter.js',
             'themes/default/templates/NEWSLETTER_PREVIEW.tpl',
+            'sources/hooks/systems/preview/newsletter_whatsnew.php',
         );
     }
 

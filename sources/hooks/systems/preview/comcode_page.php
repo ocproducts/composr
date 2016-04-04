@@ -26,7 +26,7 @@ class Hook_preview_comcode_page
     /**
      * Find whether this preview hook applies.
      *
-     * @return array Quartet: Whether it applies, the attachment ID type, whether the forum DB is used [optional], list of fields to limit to [optional]
+     * @return array Quartet: Whether it applies, the attachment ID type (may be null), whether the forum DB is used [optional], list of fields to limit to [optional]
      */
     public function applies()
     {
@@ -37,7 +37,7 @@ class Hook_preview_comcode_page
     /**
      * Run function for preview hooks.
      *
-     * @return array A pair: The preview, the updated post Comcode
+     * @return array A pair: The preview, the updated post Comcode (may be null)
      */
     public function run()
     {

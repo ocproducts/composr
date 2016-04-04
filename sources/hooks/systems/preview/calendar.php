@@ -26,7 +26,7 @@ class Hook_preview_calendar
     /**
      * Find whether this preview hook applies.
      *
-     * @return array Triplet: Whether it applies, the attachment ID type, whether the forum DB is used [optional]
+     * @return array Triplet: Whether it applies, the attachment ID type (may be null), whether the forum DB is used [optional]
      */
     public function applies()
     {

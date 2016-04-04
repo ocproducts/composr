@@ -818,6 +818,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => $text,
             'FIELDS' => $fields,
+            'PREVIEW' => true,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'URL' => get_self_url(false, false, array('lang' => $lang, 'type' => 'whatsnew_2')),
@@ -832,7 +833,6 @@ class Module_admin_newsletter extends Standard_crud_module
     public function whatsnew_2()
     {
         require_code('form_templates');
-        require_code('global4');
 
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(180);
@@ -840,55 +840,11 @@ class Module_admin_newsletter extends Standard_crud_module
         send_http_output_ping();
         disable_php_memory_limit();
 
-        $fields = new Tempcode();
-
-        $lang = choose_language($this->title);
-
         $cutoff_time = post_param_date('cutoff');
+        $lang = choose_language($this->title);
+        $chosen_categories = newsletter_get_category_choices($cutoff_time, $lang);
 
-        $chosen_categories = '';
-
-        $_hooks = find_all_hooks('modules', 'admin_newsletter');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
-
-            $done = false;
-            if (method_exists($object, 'choose_categories')) {
-                list($cats, $_title) = $object->choose_categories($cutoff_time);
-                if (is_object($cats)) {
-                    $cats = $cats->evaluate($lang);
-                }
-                $matches = array();
-                $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches);
-                if ($num_matches < 1500) { /*reasonable limit*/
-                    for ($i = 0; $i < $num_matches; $i++) {
-                        $hook_result = $object->run($cutoff_time, $lang, $matches[1][$i]);
-                        if ($hook_result == array()) {
-                            continue;
-                        }
-                        list($hook_content, $_title) = $hook_result;
-                        if (!$hook_content->is_empty()) {
-                            $decoded = @html_entity_decode($matches[2][$i], ENT_QUOTES, get_charset());
-                            $chosen_categories .= $_title . ': ' . trim($decoded) . ' [' . $hook . '/' . $matches[1][$i] . "]\n";
-                        }
-                    }
-                    $done = true;
-                }
-            }
-            if (!$done) {
-                $new = $object->run($cutoff_time, $lang, '');
-                if ($new != array()) {
-                    list($hook_content, $_title) = $new;
-                    if (!$hook_content->is_empty()) {
-                        $chosen_categories .= $_title . ' [' . $hook . "]\n";
-                    }
-                }
-            }
-        }
+        $fields = new Tempcode();
         $fields->attach(form_input_huge(do_lang_tempcode('WHATSNEW_CATEGORIES_SELECT'), do_lang('DESCRIPTION_WHATSNEW_CATEGORIES_SELECT'), 'chosen_categories', $chosen_categories, true));
 
         $hidden = new Tempcode();
@@ -901,6 +857,7 @@ class Module_admin_newsletter extends Standard_crud_module
             'TITLE' => $this->title,
             'TEXT' => $text,
             'FIELDS' => $fields,
+            'PREVIEW' => true,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('NEXT'),
             'URL' => get_self_url(false, false, array('lang' => $lang, 'type' => 'whatsnew_3')),
@@ -914,8 +871,6 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function whatsnew_3()
     {
-        require_code('global4');
-
         // Handle requested periodic "What's new" newsletter maintenance
         // =============================================================
 
@@ -949,126 +904,9 @@ class Module_admin_newsletter extends Standard_crud_module
         $cutoff_time = post_param_date('cutoff');
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories');
-        $message = $this->_generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
+        $message = generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
 
-        return $this->send_gui($message);
-    }
-
-    /**
-     * Generate Comcode for a what's new newsletter.
-     *
-     * @param  LONG_TEXT $chosen_categories Category selection
-     * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
-     * @param  LANGUAGE_NAME $lang Language to send in
-     * @param  TIME $cutoff_time When to cut off content from
-     * @return Tempcode The Comcode, in template form
-     */
-    public function _generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
-    {
-        $_hooks = find_all_hooks('modules', 'admin_newsletter');
-
-        // Generate Comcode for content selected, drawing on hooks
-        $automatic = array();
-        $i = 0;
-        $catarr = explode("\n", $chosen_categories);
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
-            $found_one_match = false;
-            $last_find_id = mixed();
-            $last_cat_id = null;
-            $filter = '';
-            foreach ($catarr as $find_id => $line) {
-                $matches = array();
-                if (preg_match('#\[' . preg_quote($hook, '#') . '/(.*)\]#', $line, $matches) != 0) {
-                    $found_one_match = true;
-
-                    if ((!is_null($last_find_id)) && (($find_id != $last_find_id + 1)/* || ($last_cat_id>intval($matches[1]))*/)) {
-                        $last_cat_id = intval($matches[1]);
-
-                        $temp = $object->run(intval($cutoff_time), $lang, $filter);
-                        if ((is_null($temp)) || (count($temp) == 0)) {
-                            continue;
-                        }
-                        if (!$temp[0]->is_empty()) {
-                            $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
-                                '_GUID' => 'bd228cdeafacfffac2d8d98d5f2da565',
-                                'I' => strval($i + 1),
-                                'TITLE' => $temp[1],
-                                'CONTENT' => $temp[0],
-                                'THUMBNAIL' => array_key_exists(2, $temp) ? $temp[2] : ''
-                            ), null, false, null, '.txt', 'text');
-                            $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
-                            $i++;
-                        }
-
-                        $filter = $matches[1];
-                    } else {
-                        if ($filter != '') {
-                            $filter .= ',';
-                        }
-                        $filter .= $matches[1];
-                    }
-
-                    $last_find_id = $find_id;
-                }
-            }
-            if (!$found_one_match) {
-                $found = false;
-                foreach ($catarr as $find_id => $line) {
-                    if (strpos($line, '[' . $hook . ']') !== false) {
-                        $found = true;
-                        break;
-                    }
-                }
-                if (!$found) {
-                    continue;
-                }
-
-                $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-                if ((is_null($temp)) || (count($temp) == 0)) {
-                    continue;
-                }
-                if (!$temp[0]->is_empty()) {
-                    $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
-                        '_GUID' => '64c8870e7c75354c07b2e94f299cd38c',
-                        'I' => strval($i + 1),
-                        'TITLE' => $temp[1],
-                        'CONTENT' => $temp[0]
-                    ), null, false, null, '.txt', 'text');
-                    $automatic[$find_id] = $tmp->evaluate($lang); /*FUDGE*/
-                    $i++;
-                }
-            } elseif ($filter != '') {
-                $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-                if ((is_null($temp)) || (count($temp) == 0)) {
-                    continue;
-                }
-                if (!$temp[0]->is_empty()) {
-                    $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
-                        '_GUID' => '8d1e7f448d11853b675a0949b8a0c2c9',
-                        'I' => strval($i + 1),
-                        'TITLE' => $temp[1],
-                        'CONTENT' => $temp[0]
-                    ), null, false, null, '.txt', 'text');
-                    $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
-                    $i++;
-                }
-            }
-        }
-        ksort($automatic);
-        $_automatic = '';
-        foreach ($automatic as $tp) {
-            $_automatic .= $tp;
-        }
-        $completed = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
-
-        $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''), null, false, null, '.txt', 'text');
-
-        return $completed;
+        return $this->send_gui($message->evaluate());
     }
 
     /**
@@ -1494,11 +1332,11 @@ class Module_admin_newsletter extends Standard_crud_module
             $extra_post_data['make_periodic'] = '1';
 
             // Re-generate preview from latest chosen_categories
-            $message = $this->_generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
+            $message = generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
         }
 
         // Render
-        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), $address, 'test', '');
+        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), $address);
 
         // Subject line
         $_full_subject = $subject;
@@ -1770,7 +1608,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $display_map['SUBJECT'] = $subject;
 
         $message = $rows[0]['newsletter'];
-        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'), 'test', '');
+        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'));
         $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;

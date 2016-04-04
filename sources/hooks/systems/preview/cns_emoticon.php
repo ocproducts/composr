@@ -26,7 +26,7 @@ class Hook_preview_cns_emoticon
     /**
      * Find whether this preview hook applies.
      *
-     * @return array Triplet: Whether it applies, the attachment ID type, whether the forum DB is used [optional]
+     * @return array Triplet: Whether it applies, the attachment ID type (may be null), whether the forum DB is used [optional]
      */
     public function applies()
     {
@@ -37,7 +37,7 @@ class Hook_preview_cns_emoticon
     /**
      * Run function for preview hooks.
      *
-     * @return array A pair: The preview, the updated post Comcode
+     * @return array A pair: The preview, the updated post Comcode (may be null)
      */
     public function run()
     {
@@ -62,6 +62,6 @@ class Hook_preview_cns_emoticon
         require_code('images');
         $preview = do_image_thumb(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url, post_param_string('code'), true);
 
-        return array($preview, null);
+        return array($preview, null, false);
     }
 }

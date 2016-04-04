@@ -226,12 +226,28 @@ function preview_script()
     @header('X-XSS-Protection: 0');
 
     require_code('preview');
-    list($output, $validation, $keyword_density, $spelling) = build_preview(true);
+
+    $result = build_preview(true);
+    list($output, $validation, $keyword_density, $spelling, $has_device_preview_modes) = $result;
 
     if (get_param_integer('js_only', 0) == 0) {
-        $output = do_template('PREVIEW_SCRIPT', array('_GUID' => '97bd8909e8b9983a0bbf7ab68fab92f3', 'OUTPUT' => $output->evaluate(), 'WEBSTANDARDS' => $validation, 'KEYWORD_DENSITY' => $keyword_density, 'SPELLING' => $spelling, 'HIDDEN' => build_keep_post_fields()));
+        $output = do_template('PREVIEW_SCRIPT', array(
+            '_GUID' => '97bd8909e8b9983a0bbf7ab68fab92f3',
+            'OUTPUT' => $output->evaluate(),
+            'WEBSTANDARDS' => $validation,
+            'KEYWORD_DENSITY' => $keyword_density,
+            'SPELLING' => $spelling,
+            'HIDDEN' => build_keep_post_fields(),
+            'HAS_DEVICE_PREVIEW_MODES' => $has_device_preview_modes,
+        ));
 
-        $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '0a96e3b9be154e8b29bee5b1c1c7cc69', 'TITLE' => do_lang_tempcode('PREVIEW'), 'FRAME' => true, 'TARGET' => '_top', 'CONTENT' => $output));
+        $tpl = do_template('STANDALONE_HTML_WRAP', array(
+            '_GUID' => '0a96e3b9be154e8b29bee5b1c1c7cc69',
+            'TITLE' => do_lang_tempcode('PREVIEW'),
+            'FRAME' => true,
+            'TARGET' => '_top',
+            'CONTENT' => $output,
+        ));
     } else {
         $tpl = $output;
     }

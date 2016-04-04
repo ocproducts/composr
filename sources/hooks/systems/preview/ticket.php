@@ -26,11 +26,21 @@ class Hook_preview_ticket
     /**
      * Find whether this preview hook applies.
      *
-     * @return array Quartet: Whether it applies, the attachment ID type, whether the forum DB is used [optional], list of fields to limit to [optional]
+     * @return array Quartet: Whether it applies, the attachment ID type (may be null), whether the forum DB is used [optional], list of fields to limit to [optional]
      */
     public function applies()
     {
         $applies = (get_page_name() == 'tickets');
         return array($applies, 'cns_post', false, array('post'));
+    }
+
+    /**
+     * Run function for preview hooks.
+     *
+     * @return array A pair: The preview, the updated post Comcode (may be null)
+     */
+    public function run()
+    {
+        return array(null, null, false);
     }
 }
