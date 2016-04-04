@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    cns_forum
+ * @package    core_cns
  */
 
 /**
@@ -64,6 +64,7 @@ class Hook_content_meta_aware_topic
             'category_is_string' => false,
 
             'title_field' => 't_cache_first_title',
+            'title_field_post' => 'title',
             'title_field_dereference' => false,
             'title_field__resource_fs' => 't_cache_first_title',
             'title_field_dereference__resource_fs' => false,
@@ -76,6 +77,7 @@ class Hook_content_meta_aware_topic
 
             'view_page_link_pattern' => '_SEARCH:topicview:browse:_WILD',
             'edit_page_link_pattern' => '_SEARCH:topics:edit_topic:_WILD',
+            'edit_page_link_pattern_post' => '_SEARCH:topics:_edit_topic:_WILD',
             'view_category_page_link_pattern' => '_SEARCH:forumview:browse:_WILD',
             'add_url' => null,
             'archive_url' => $zone . ':forumview',

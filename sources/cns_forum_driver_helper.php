@@ -259,6 +259,9 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     }
 
     $post_query_select = 'p.p_title,top.id,p.p_poster,p.p_poster_name_if_guest,p.id AS p_id,p_post';
+    if (!multi_lang_content()) {
+        $post_query_select .= ',p_post__text_parsed,p_post__source_user';
+    }
     $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
     $post_query_sql = 'SELECT ' . $post_query_select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ';
     if (strpos(get_db_type(), 'mysql') !== false) {

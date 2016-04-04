@@ -620,7 +620,7 @@ class Module_tickets
                     'POST_WARNING' => '',
                     'COMMENT_TEXT' => '',
                     'GET_EMAIL' => is_guest(),
-                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'])),
+                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)),
                     'GET_TITLE' => $new,
                     'EM' => $em,
                     'DISPLAY' => 'block',
@@ -859,7 +859,7 @@ class Module_tickets
                     $body = substr($body, 0, strlen($body) - 2);
                 }
                 $new_post->attach('[email subject="Re: ' . comcode_escape(post_param_string('title')) . ' [' . get_site_name() . ']" body="' . comcode_escape($body) . '"]' . $email . '[/email]' . "\n\n");
-            } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'])) {
+            } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)) {
                 // Error if the e-mail address is required for this ticket type
                 warn_exit(do_lang_tempcode('ERROR_GUEST_EMAILS_MANDATORY'));
             }
