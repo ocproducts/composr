@@ -1236,6 +1236,7 @@ function get_html_trace()
         //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;  Hinders more than helps
         $file = '';
         $line = '';
+        $_value = mixed();
         $__value = mixed();
         foreach ($stage as $key => $__value) {
             if ($key == 'file') {

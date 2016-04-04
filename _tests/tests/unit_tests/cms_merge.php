@@ -24,7 +24,7 @@ class cms_merge_test_set extends cms_test_case
 
         require_code('database_relations');
 
-        $skip_flags = TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__NON_BUNDLED | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__MISC_NO_MERGE;
+        $skip_flags = TABLE_PURPOSE__FLUSHABLE | TABLE_PURPOSE__NON_BUNDLED | TABLE_PURPOSE__AUTOGEN_STATIC | TABLE_PURPOSE__MISC_NO_MERGE | TABLE_PURPOSE__NOT_KNOWN;
 
         $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
         foreach ($tables as $table) {
