@@ -40,6 +40,9 @@ class Hook_check_gd
         if (!function_exists('imagejpeg')) {
             $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_JPEG');
         }
+        if (!function_exists('imagettfbbox')) {
+            $warning[] = do_lang_tempcode('NO_GD_ON_SERVER_TTF');
+        }
         return $warning;
     }
 }
