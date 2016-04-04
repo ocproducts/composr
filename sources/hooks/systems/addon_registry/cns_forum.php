@@ -149,8 +149,6 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/notifications/cns_new_pt.php',
             'sources/hooks/systems/notifications/cns_topic.php',
             'sources/hooks/systems/content_meta_aware/forum.php',
-            'sources/hooks/systems/content_meta_aware/topic.php',
-            'sources/hooks/systems/content_meta_aware/post.php',
             'sources/hooks/systems/commandr_fs/forums.php',
             'sources/hooks/modules/admin_stats/cns_posting_rates.php',
             'sources/hooks/systems/sitemap/topic.php',

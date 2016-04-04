@@ -80,7 +80,7 @@ class Hook_content_meta_aware_wiki_page
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'wiki_page',
 
             'search_hook' => 'wiki_pages',
             'rss_hook' => 'wiki',

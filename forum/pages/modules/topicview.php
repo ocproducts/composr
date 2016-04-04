@@ -208,18 +208,24 @@ class Module_topicview
         if (!$threaded) {
             $jump_post_id = get_param_integer('post_id', null);
 
-            $GLOBALS['METADATA']['description'] = $topic_info['description'];
+            set_extra_request_metadata(array(
+                'description' => $topic_info['description'],
+            ));
             foreach ($topic_info['posts'] as $array_id => $_postdetails) {
                 if (($GLOBALS['METADATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
                     // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' metadata for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
                     $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Should we hard-code this?
-                    $GLOBALS['METADATA']['description'] = strip_html($truncated);
+                    set_extra_request_metadata(array(
+                        'description' => strip_html($truncated),
+                    ));
 
                     // Also scan for <img> tag, in case it was put in manually
                     if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                         $matches = array();
                         if (preg_match('#<img\s[^<>]*src="([^"]*)"#', is_object($_postdetails['post']) ? $_postdetails['post']->evaluate() : $_postdetails['post'], $matches) != 0) {
-                            $GLOBALS['METADATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                            set_extra_request_metadata(array(
+                                'image' => html_entity_decode($matches[1], ENT_QUOTES, get_charset()),
+                            ));
                         }
                     }
                 }
@@ -246,7 +252,9 @@ class Module_topicview
             // Render posts
             list($posts, $serialized_options, $hash) = $threaded_topic_ob->render_posts($num_to_show_limit, $max_thread_depth, $may_reply, $topic_info['first_poster'], array(), $topic_info['forum_id'], $topic_info['row'], null, false);
 
-            $GLOBALS['METADATA']['description'] = $threaded_topic_ob->topic_description;
+            set_extra_request_metadata(array(
+                'description' => $threaded_topic_ob->topic_description,
+            ));
 
             $this->posts = $posts;
             $this->serialized_options = $serialized_options;
@@ -465,7 +473,9 @@ class Module_topicview
                 }
 
                 if ((isset($GLOBALS['METADATA']['description'])) && ($GLOBALS['METADATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
-                    $GLOBALS['METADATA']['description'] = strip_html(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'));
+                    set_extra_request_metadata(array(
+                        'description' => strip_html(symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left')),
+                    ));
                 }
 
                 $rendered_post = do_template('CNS_TOPIC_POST', array(
