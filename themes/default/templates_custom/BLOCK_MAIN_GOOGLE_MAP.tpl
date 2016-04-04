@@ -144,7 +144,7 @@
 
 	<script>// <![CDATA[
 		add_event_listener_abstract(window,'load',function() {
-			google.load('maps','3',{callback: google_map_users_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
+			google.load('maps','3',{callback: google_map_initialize,other_params:''{+START,IF_NON_EMPTY,{REGION}},region:'{REGION;/}'{+END}});
 		});
 	//]]></script>
 
