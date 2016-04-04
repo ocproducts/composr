@@ -784,7 +784,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         $all_tables = collapse_1d_complexity('m_table', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_table')));
         foreach ($all_tables as $table_name) {
             if (!array_key_exists($table_name, $table_addons)) {
-                if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED | TABLE_PURPOSE__NOT_KNOWN)) {
                     warn_exit('Table ' . $table_name . ' in meta database could not be sourced.');
                 }
             }
@@ -799,7 +799,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
             if (!isset($index_addons[$universal_index_key])) {
                 if (!array_key_exists($table_name, $table_addons)) {
-                    if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED)) {
+                    if (!table_has_purpose_flag($table_name, TABLE_PURPOSE__NON_BUNDLED | TABLE_PURPOSE__NOT_KNOWN)) {
                         warn_exit('Index ' . $index_name . ' in meta database could not be sourced.');
                     }
                 } else {
@@ -811,7 +811,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
         $all_privileges = collapse_1d_complexity('the_name', $GLOBALS['SITE_DB']->query_select('privilege_list', array('the_name')));
         foreach ($all_privileges as $privilege_name) {
             if (!array_key_exists($privilege_name, $privilege_addons)) {
-                warn_exit('Privilege ' . $privilege_name . ' in meta database could not be sourced.');
+                attach_message('Privilege ' . $privilege_name . ' in meta database could not be sourced.', 'notice');
             }
         }
     }
