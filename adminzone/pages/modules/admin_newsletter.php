@@ -938,7 +938,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $chosen_categories = post_param_string('chosen_categories');
         $message = $this->_generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
 
-        return $this->send_gui($message);
+        return $this->send_gui($message->evaluate());
     }
 
     /**

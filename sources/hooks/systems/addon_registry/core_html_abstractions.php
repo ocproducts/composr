@@ -108,6 +108,7 @@ class Hook_addon_registry_core_html_abstractions
             'themes/default/templates/HYPERLINK_BUTTON.tpl',
             'themes/default/templates/HYPERLINK_EMAIL.tpl',
             'themes/default/templates/DIV.tpl',
+            'themes/default/templates/SPAN.tpl',
             'themes/default/templates/PARAGRAPH.tpl',
             'themes/default/templates/FLOATER.tpl',
             'themes/default/templates/BASIC_HTML_WRAP.tpl',
@@ -139,8 +140,9 @@ class Hook_addon_registry_core_html_abstractions
             'templates/HYPERLINK_BUTTON.tpl' => 'hyperlink_button',
             'templates/HYPERLINK_EMAIL.tpl' => 'hyperlink_email',
             'templates/HYPERLINK_TOOLTIP.tpl' => 'hyperlink_tooltip',
-            'templates/PARAGRAPH.tpl' => 'paragraph',
             'templates/DIV.tpl' => 'div',
+            'templates/SPAN.tpl' => 'span',
+            'templates/PARAGRAPH.tpl' => 'paragraph',
             'templates/WITH_WHITESPACE.tpl' => 'with_whitespace'
         );
     }
@@ -324,10 +326,26 @@ class Hook_addon_registry_core_html_abstractions
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__paragraph()
+    public function tpl_preview__div()
     {
         return array(
-            lorem_globalise(do_lorem_template('PARAGRAPH', array(
+            lorem_globalise(do_lorem_template('DIV', array(
+                'TEMPCODE' => lorem_phrase(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__span()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('SPAN', array(
                 'TEXT' => lorem_sentence_html(),
                 'CLASS' => lorem_phrase(),
             )), null, '', true)
@@ -341,11 +359,12 @@ class Hook_addon_registry_core_html_abstractions
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
-    public function tpl_preview__div()
+    public function tpl_preview__paragraph()
     {
         return array(
-            lorem_globalise(do_lorem_template('DIV', array(
-                'TEMPCODE' => lorem_phrase(),
+            lorem_globalise(do_lorem_template('PARAGRAPH', array(
+                'TEXT' => lorem_sentence_html(),
+                'CLASS' => lorem_phrase(),
             )), null, '', true)
         );
     }

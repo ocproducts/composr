@@ -154,7 +154,7 @@ class Hook_search_filedump extends FieldsSearchHook
                 if (!is_image($url)) {
                     $tpl = paragraph(hyperlink($url, $caption, true, true), 'dfdsfu09wl;f');
                     if ($file_breadcrumbs != array()) {
-                        $tpl->attach(paragraph(do_lang_tempcode('LOCATED_IN', breadcrumb_segments_to_tempcode($file_breadcrumbs))));
+                        $tpl->attach(paragraph(do_lang_tempcode('LOCATED_IN', breadcrumb_segments_to_tempcode($file_breadcrumbs)), '', 'breadcrumbs'));
                     }
 
                     $out[$i]['template'] = do_template('SIMPLE_PREVIEW_BOX', array(

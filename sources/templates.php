@@ -196,6 +196,30 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
 }
 
 /**
+ * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s)
+ *
+ * @param  Tempcode $tempcode The Tempcode to put into a div
+ * @param  string $guid GUID for call
+ * @return Tempcode The generated div with contents
+ */
+function div($tempcode, $guid = '', $class = null)
+{
+    return do_template('DIV', array('_GUID' => $guid, 'TEMPCODE' => $tempcode, 'CLASS' => $class));
+}
+
+/**
+ * Get the Tempcode for a span
+ *
+ * @param  Tempcode $tempcode The Tempcode to put into a span
+ * @param  string $guid GUID for call
+ * @return Tempcode The generated span with contents
+ */
+function span($tempcode, $guid = '', $class = null)
+{
+    return do_template('SPAN', array('_GUID' => $guid, 'TEMPCODE' => $tempcode, 'CLASS' => $class));
+}
+
+/**
  * Get the Tempcode for a paragraph. This function should only be used with escaped text strings that need to be put into a paragraph, not with sections of HTML. Remember, paragraphs are literally that, and should only be used with templates that don't assume that they are going to put the given parameters into paragraphs themselves.
  *
  * @param  mixed $text The text to put into the paragraph (string or Tempcode)
@@ -206,18 +230,6 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
 function paragraph($text, $guid = '', $class = null)
 {
     return do_template('PARAGRAPH', array('_GUID' => $guid, 'TEXT' => $text, 'CLASS' => $class));
-}
-
-/**
- * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s)
- *
- * @param  Tempcode $tempcode The Tempcode to put into a div
- * @param  string $guid GUID for call
- * @return Tempcode The generated div with contents
- */
-function div($tempcode, $guid = '')
-{
-    return do_template('DIV', array('_GUID' => '2b0459e48a6b6420b716e05f21a933ad', 'TEMPCODE' => $tempcode));
 }
 
 /**

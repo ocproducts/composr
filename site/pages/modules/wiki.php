@@ -711,7 +711,7 @@ class Module_wiki
         }
 
         $chain = is_null($id) ? wiki_derive_chain($page_id) : $_id;
-        $view_link = breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, get_translated_text($l), true));
+        $view_link = span(breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, get_translated_text($l), true)), '', 'breadcrumbs');
 
         $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
 
