@@ -35,18 +35,6 @@ class ecommerce_test_set extends cms_test_case
 
         require_lang('ecommerce');
 
-        $this->access_mapping = array(db_get_first_id() => 4);
-
-        require_code('adminzone/pages/modules/admin_ecommerce.php');
-        $this->admin_ecom = new Module_admin_ecommerce();
-
-        require_code('adminzone/pages/modules/admin_orders.php');
-        $this->admin_orders = new Module_admin_orders();
-        if (method_exists($this->admin_orders, 'pre_run')) {
-            $this->admin_orders->pre_run();
-        }
-        $this->admin_orders->run();
-
         $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
             'c_member' => get_member(),
             'session_id' => get_session_id(),
@@ -58,6 +46,18 @@ class ecommerce_test_set extends cms_test_case
             'purchase_through' => 'paypal',
             'tax_opted_out' => 0,
         ));
+
+        $this->access_mapping = array(db_get_first_id() => 4);
+
+        require_code('adminzone/pages/modules/admin_ecommerce.php');
+        $this->admin_ecom = new Module_admin_ecommerce();
+
+        require_code('adminzone/pages/modules/admin_orders.php');
+        $this->admin_orders = new Module_admin_orders();
+        if (method_exists($this->admin_orders, 'pre_run')) {
+            $this->admin_orders->pre_run();
+        }
+        $this->admin_orders->run();
     }
 
     public function testShowOrders()
