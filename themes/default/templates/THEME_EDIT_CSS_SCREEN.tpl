@@ -55,7 +55,7 @@
 							<th width="5%" align="left">CSS</th>
 						</tr>
 						<tr>
-							<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/pr_background.asp">background</a></td>
+							<td><a target="_blank" title="background {!LINK_NEW_WINDOW}" href="http://www.w3schools.com/cssref/css3_pr_background.asp">background</a></td>
 							<td>Sets all the background properties in one declaration</td>
 							<td>1</td>
 						</tr>
@@ -485,9 +485,7 @@
 
 {REVISIONS}
 
-{+START,IF,{$NEQ,{$VALUE_OPTION,no_frames},2}}
-	<iframe name="save_frame" id="save_frame" title="{!SAVE_AND_STAY}" class="hidden_save_frame" src="{$BASE_URL*}/uploads/index.html">{!SAVE_AND_STAY}</iframe>
-{+END}
+<iframe name="save_frame" id="save_frame" title="{!SAVE_AND_STAY}" class="hidden_save_frame" src="{$BASE_URL*}/uploads/index.html">{!SAVE_AND_STAY}</iframe>
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {

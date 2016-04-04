@@ -669,16 +669,16 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
                 continue;
             }
             $token_title = get_translated_text($title);
-            $segments[] = $links ? array($page_link, escape_html($token_title)) : array('', make_string_tempcode(escape_html($token_title)));
+            $segments[] = $links ? array($page_link, $token_title) : array('', $token_title);
         } else {
             if (is_null($current_title)) {
                 $_current_title = $GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'title', array('id' => $id));
                 $current_title = is_null($_current_title) ? do_lang('MISSING_RESOURCE', 'wiki_page') : get_translated_text($_current_title);
             }
             if ($final_link) {
-                $segments[] = array($page_link, escape_html($current_title));
+                $segments[] = array($page_link, $current_title);
             } else {
-                $segments[] = array('', escape_html($current_title));
+                $segments[] = array('', $current_title);
             }
         }
 

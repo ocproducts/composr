@@ -956,7 +956,7 @@ class Module_admin_setupwizard
             $addons_installed = find_installed_addons();
             $uninstalling = array();
             foreach ($addons_installed as $i => $addon_info) {
-                $addon_info += read_addon_info($addon_info['name']);
+                $addon_info += read_addon_info($addon_info['name'], true);
 
                 if (post_param_integer('addon_' . $addon_info['name'], 0) == 0 && $addon_info['name'] != 'core' && substr($addon_info['name'], 0, 5) != 'core_') {
                     $uninstalling[$addon_info['name']] = $addon_info;
@@ -993,6 +993,7 @@ class Module_admin_setupwizard
                     }
                 }
             } while ($cnt != count($uninstalling)); // Dependency chains can be complex, so loop until we're stopped finding anything changing
+
             if (!file_exists(get_file_base() . '/.git')) { // Only uninstall if we're not working from a git repository
                 foreach ($uninstalling as $addon_info) {
                     // Archive it off to exports/addons

@@ -227,7 +227,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $edit_page_link = $param[2]->evaluate();
                     $supports_comcode = (isset($param[4]) ? $param[3]->evaluate() : '0') == '1';
                     $explicit_editing_links = (isset($param[5]) ? $param[4]->evaluate() : '0') == '1';
-                    $has_permission = (isset($param[6]) ? $param[5]->evaluate() : null) === '1';
+                    $has_permission = (isset($param[6]) ? ($param[5]->evaluate() === '1') : null);
 
                     list($zone, $attributes,) = page_link_decode($edit_page_link);
                     if ($zone == '_SEARCH') {
@@ -594,8 +594,9 @@ function ecv_SET($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    global $TEMPCODE_SETGET;
+
     if (isset($param[1])) {
-        global $TEMPCODE_SETGET;
         if (isset($param[1]) && isset($param[1]->codename)/*faster than is_object*/) {
             $TEMPCODE_SETGET[$param[0]] = $param[1];
         } else {
@@ -603,6 +604,8 @@ function ecv_SET($lang, $escaped, $param)
             unset($param_copy[0]);
             $TEMPCODE_SETGET[$param[0]] = isset($param_copy[2]/*optimisation*/) ? implode(',', $param_copy) : $param_copy[1];
         }
+    } else {
+        $TEMPCODE_SETGET[$param[0]] = '';
     }
 
     if ($escaped != array()) {

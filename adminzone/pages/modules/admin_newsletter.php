@@ -492,7 +492,7 @@ class Module_admin_newsletter extends Standard_crud_module
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
-        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter WHERE ' . $delete_sql;
+        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribers WHERE ' . $delete_sql;
         $GLOBALS['SITE_DB']->query($query);
 
         $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $delete_sql;

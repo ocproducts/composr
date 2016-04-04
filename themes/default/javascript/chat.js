@@ -709,7 +709,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 				catch (e) {}
 			}
 			var post=document.getElementById('post');
-			if (post)
+			if (post && post.name=='message'/*The chat posting field is named message and IDd post*/)
 			{
 				try
 				{

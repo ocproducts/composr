@@ -271,13 +271,13 @@ class Module_admin_permissions
                 breadcrumb_set_self(do_lang_tempcode('CHOOSE'));
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS'))));
-                breadcrumb_set_self(($zone == '') ? do_lang('_WELCOME') : escape_html($zone));
+                breadcrumb_set_self(($zone == '') ? do_lang('_WELCOME') : $zone);
             }
         }
 
         if ($type == '_page') {
             $zone = post_param_string('zone');
-            breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS')), array('_SELF:_SELF:page:zone=' . $zone, ($zone == '') ? do_lang('_WELCOME') : escape_html($zone))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS')), array('_SELF:_SELF:page:zone=' . $zone, ($zone == '') ? do_lang('_WELCOME') : $zone)));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 

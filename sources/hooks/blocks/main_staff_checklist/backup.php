@@ -34,7 +34,7 @@ class Hook_checklist_backup
             return array();
         }
 
-        if (get_option('backup_time') == '') {
+        if (get_option('backup_time') == '' || get_option('backup_time') == '0') {
             return array();
         }
         $limit_hours = intval(get_option('backup_time'));

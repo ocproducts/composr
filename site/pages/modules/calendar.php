@@ -652,8 +652,7 @@ class Module_calendar
                 $future_no_follow = false;
             }
             if ($past_no_follow || $future_no_follow) {
-                global $EXTRA_HEAD;
-                $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+                attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
                 $GLOBALS['HTTP_STATUS_CODE'] = '401';
                 if (!headers_sent()) {
                     if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {

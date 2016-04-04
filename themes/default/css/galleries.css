@@ -245,6 +245,9 @@
 }
 
 .side_galleries_block_exp {
+	overflow: hidden;
+	display: block;
+	text-align: left;
 	font-weight: bold;
 	background: none;
 	color: {$GET,slightly_seeded_text};

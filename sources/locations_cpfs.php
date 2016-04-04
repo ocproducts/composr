@@ -81,7 +81,7 @@ function _autofill_geo_cpfs($row) {
     $changes = array();
 
     // GPS from address
-    if (!$has_latitude || !$has_longitude) {
+    if ((!$has_latitude || !$has_longitude) && (isset($latitude_field)) && (isset($longitude_field))) {
         if ($has_address) {
             $address_components = array();
             if ($has_street_address) {

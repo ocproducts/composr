@@ -123,10 +123,10 @@ function cns_read_in_member_profile($member_id, $lite = true)
                 if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                     $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                 } else {
-                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true, true);
+                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
                 }
             } else {
-                $dob = strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+                $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
             }
         }
         $out['birthdate'] = $dob;

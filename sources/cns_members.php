@@ -437,7 +437,7 @@ function cns_get_custom_field_mappings($member_id)
             $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_required', 'cf_default'));
             foreach ($all_fields_regardless as $field) {
                 $ob = get_fields_hook($field['cf_type']);
-                list(, $value, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, $field['cf_default'], $GLOBALS['FORUM_DB']);
+                list(, $value, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, '', $GLOBALS['FORUM_DB']);
 
                 $row['field_' . strval($field['id'])] = $value;
                 if (is_string($value)) { // Should not normally be needed, but the grabbing from cf_default further up is not converted yet

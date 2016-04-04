@@ -1451,6 +1451,7 @@ td>.box, .right>.box, .left>.box {
 	background-color: {$GET,box_title_background};
 	background-image: url('{$IMG_INLINE;,gradient}');
 	background-repeat: repeat-x;
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
 	color: {$GET,box_title_text};
 	text-align: center;
 	font-weight: bold;
@@ -3235,7 +3236,7 @@ input.magic_image_edit_link {
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
-	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
+	/*{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -3759,6 +3760,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Fixes bugginess in Chrome */
 }
 
 /*
@@ -3814,7 +3816,7 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .tab {
 	float: left;
-	padding: 3px 7px 0 7px !important;
+	padding: 3px 6px 0 6px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;

@@ -580,21 +580,6 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 }
                                 break;
                         }
-                        if ($preprocessable_bits_stack != array()/*A NO_PREPROCESSING directive is around us*/) { // Needs to be dynamic as NO_PREPROCESSING also implies avoid internal caching
-                            $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
-                            $_past_level_data = implode('.', $past_level_data);
-                            $unset_code = '';
-                            if (strpos($_past_level_data, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
-                                $reset_code = "eval(\\\$FULL_RESET_VAR_CODE);";
-                            } elseif (strpos($_past_level_data, '$bound') !== false) {
-                                $reset_code = "eval(\\\$RESET_VAR_CODE);";
-                            } else {
-                                $reset_code = '';
-                            }
-                            $funcdef = /*if (!isset(\$tpl_funcs['$myfunc']))\n\t*/
-                                "\$tpl_funcs['$myfunc']=\"$reset_code echo " . php_addslashes($_past_level_data) . ";\";\n";
-                            $past_level_data = array('new Tempcode(array(array(\'' . $myfunc . '\'=>"' . php_addslashes($funcdef) . '"),array(array(array("' . $myfunc . '",array(),' . strval(TC_KNOWN) . ',\'\',\'\')))))');
-                        }
                         switch ($directive_name) {
                             case 'COMMENT':
                                 break;
@@ -947,7 +932,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     cms_profile_start_for('_do_template');
     $result = template_to_tempcode($template_contents, 0, false, $codename, $theme_orig, $lang);
     cms_profile_end_for('_do_template', $codename . $suffix);
-    if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && (($suffix == '.tpl') || ($codename == 'no_cache'))) {
+    if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE)) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
         $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');

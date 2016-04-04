@@ -69,7 +69,7 @@ class Block_main_personal_galleries_list
         // Find galleries
         $galleries = new Tempcode();
         $query = ' FROM ' . get_table_prefix() . 'galleries';
-        $query .= ' WHERE name LIKE \'' . db_encode_like('member\_' . strval($member_id) . '\_%') . '\' OR g_owner=' . strval($member_id);
+        $query .= ' WHERE name LIKE \'' . db_encode_like('member\_' . strval($member_id) . '\_%') . '\'';// . ' OR g_owner=' . strval($member_id); g_owner may be set for boring stuff, so don't use for now
         $rows = $GLOBALS['SITE_DB']->query('SELECT *' . $query, $max, $start, false, true);
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*)' . $query, false, true);
 

@@ -1542,6 +1542,11 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
         decache('main_members');
     }
 
+    global $MEMBER_CACHE_FIELD_MAPPINGS;
+    if ((isset($MEMBER_CACHE_FIELD_MAPPINGS)) && (isset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]))) {
+        unset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]);
+    }
+
     return null;
 }
 

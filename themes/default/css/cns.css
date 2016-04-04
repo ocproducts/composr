@@ -930,8 +930,8 @@ hr.cns_sig_barrier {
 		display: none;
 	}
 
-	.cns_forum_buttons .cns_screen_buttons input[alt="{!MARK_READ}"],
-	.cns_topic_buttons .cns_screen_buttons input[alt="{!MARK_READ}"] {
+	.cns_forum_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"],
+	.cns_topic_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"] {
 		display: inline-block;
 	}
 {+END}

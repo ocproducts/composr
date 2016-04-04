@@ -67,12 +67,6 @@ class Hook_fields_codename
     {
         if (($default !== null) && (strtoupper($default) === 'RANDOM') && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
             $default = $this->get_field_random($field['id'], $default);
-        } else {
-            if ($required !== null) {
-                if (($required) && ($default == '')) {
-                    $default = 'default';
-                }
-            }
         }
         return array('short_text', $default, 'short');
     }

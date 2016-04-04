@@ -205,7 +205,11 @@ function actual_add_zone($zone, $title, $default_page = 'start', $header_text = 
  */
 function save_zone_base_url($zone, $base_url)
 {
-    $config_path = get_custom_file_base() . '/_config.php';
+    if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+        return;
+    }
+
+    $config_path = get_file_base() . '/_config.php';
     $tmp = fopen($config_path, 'rb');
     @flock($tmp, LOCK_SH);
     $config_file = file_get_contents($config_path);
@@ -243,8 +247,8 @@ function save_zone_base_url($zone, $base_url)
         fwrite($out, $config_file);
         @flock($out, LOCK_UN);
         fclose($out);
-        sync_file($path);
-        fix_permissions($path);
+        sync_file($config_path);
+        fix_permissions($config_path);
     }
 }
 

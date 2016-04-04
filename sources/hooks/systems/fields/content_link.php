@@ -83,10 +83,6 @@ class Hook_fields_content_link
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        /*if ($required !== null)
-        {
-            Nothing special for this hook
-        }*/
         return array('short_unescaped', $default, 'short');
     }
 

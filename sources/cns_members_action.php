@@ -328,7 +328,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default', 'cf_required'));
     foreach ($all_fields_regardless as $field) {
         $ob = get_fields_hook($field['cf_type']);
-        list(, $default, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, $field['cf_default'], $GLOBALS['FORUM_DB']);
+        list(, $default, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, '', $GLOBALS['FORUM_DB']);
 
         if (array_key_exists('field_' . strval($field['id']), $row)) {
             $value = $row['field_' . strval($field['id'])];

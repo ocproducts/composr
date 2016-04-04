@@ -878,7 +878,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
 
     $title = get_translated_text($PT_PAIR_CACHE_G[$gallery]['fullname']);
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, escape_html($title));
+        $segments[] = array($page_link, $title);
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
@@ -890,14 +890,24 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         if (!is_null($owner)) {
             $below = array();
 
-            foreach (array(array('_SEARCH:members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:members:view:' . strval($owner) . '#tab__galleries', do_lang_tempcode('cns:MEMBER_PROFILE', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true))))) as $bits) {
-                list($page_link, $title) = $bits;
+            $personal_gallery_breadcrumb_parts = array(
+                array(
+                    '_SEARCH:members:browse',
+                    do_lang_tempcode('MEMBERS')
+                ),
+                array(
+                    '_SEARCH:members:view:' . strval($owner) . '#tab__galleries',
+                    do_lang_tempcode('cns:MEMBER_ACCOUNT', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true)))
+                ),
+            );
+            foreach ($personal_gallery_breadcrumb_parts as $bits) {
+                list($page_link, $label) = $bits;
                 list($zone, $map, $hash) = page_link_decode($page_link);
                 if (get_page_name() == 'galleries') {
                     $map += propagate_filtercode();
                 }
                 $page_link = build_page_link($map, $zone, $hash);
-                $below[] = array($page_link, $title);
+                $below[] = array($page_link, $label);
             }
             return array_merge($below, $segments);
         }

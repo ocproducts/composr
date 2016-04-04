@@ -34,7 +34,7 @@ class Hook_content_meta_aware_banner_type
         return array(
             'support_custom_fields' => false,
 
-            'content_type_label' => 'banners:_BANNER_TYPE',
+            'content_type_label' => 'banners:BANNER_TYPE',
             'content_type_universal_label' => 'Banner type',
 
             'connection' => $GLOBALS['SITE_DB'],

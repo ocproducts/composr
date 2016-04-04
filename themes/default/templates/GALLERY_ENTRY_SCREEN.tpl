@@ -141,7 +141,7 @@
 	{+START,IF,{$NOT,{SLIDESHOW}}}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			<div itemprop="caption">
-				{DESCRIPTION}
+				{$PARAGRAPH,{DESCRIPTION}}
 			</div>
 		{+END}
 

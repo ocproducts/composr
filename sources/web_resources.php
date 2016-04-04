@@ -105,7 +105,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (@(filesize($js_cache_path) != 0)) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -120,18 +120,20 @@ function javascript_enforce($j, $theme = null, $minify = null)
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/themes/' . $theme . $found[1] . $j . $found[2];
         }
-
-        if (($j == 'javascript') && (!isset($SITE_INFO['dependency__' . $full_path]))) {
-            $SITE_INFO['dependency__' . $full_path] = str_replace('default/javascript/javascript.js', filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme()) . '/javascript_custom/custom_globals.js', $full_path);
-        }
     }
 
     if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
+        if (filesize($full_path) == 0) {
+            return '';
+        }
+
         require_code('css_and_js');
         js_compile($j, $js_cache_path, $minify);
     }
 
-    //if (@filesize($js_cache_path)==0/*@ for race condition*/) return '';      Optimisation isn't useful now
+    if (@intval(filesize($js_cache_path)) == 0/*@ for race condition*/) {
+        return '';
+    }
 
     return $js_cache_path;
 }
@@ -480,7 +482,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
 /**
  * Get the environment needed for web resources.
  *
- * @param  ?ID_TEXT $_seed The seed colour (null: previous cached) (blank: none) (null: from what is cached)
+ * @param  ?ID_TEXT $_seed The seed colour (blank: none) (null: from what is cached)
  * @param  ?boolean $_minify Whether minifying (null: from what is cached)
  * @param  ?boolean $_https Whether doing HTTPS (null: from what is cached)
  * @param  ?boolean $_mobile Whether operating in mobile mode (null: from what is cached)
@@ -490,37 +492,52 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
  */
 function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, $_mobile = null)
 {
-    static $seed = null;
-    if ($_seed !== null || running_script('preview'/*may change seed in script code*/)) {
-        $_seed = '';
-        if (has_privilege(get_member(), 'view_profiling_modes')) {
-            $_seed = get_param_string('keep_theme_seed', '');
-        }
+    static $seed_cached = null;
+    if ($_seed !== null) {
         $seed = $_seed;
+    } elseif ($seed_cached === null || running_script('preview'/*may change seed in script code*/)) {
+        if (has_privilege(get_member(), 'view_profiling_modes')) {
+            $seed = get_param_string('keep_theme_seed', '');
+        } else {
+            $seed = '';
+        }
+        $seed_cached = $seed;
+    } else {
+        $seed = $seed_cached;
     }
 
-    static $minify = null;
+    static $minify_cached = null;
     if ($_minify !== null) {
         $minify = $_minify;
-    } elseif ($minify === null) {
-        $minify = (get_param_integer('keep_no_minify', 0) == 0);
-        if ($seed != '') {
+    } elseif ($minify_cached === null || $seed != '') {
+        if ($seed == '') {
+            $minify = (get_param_integer('keep_no_minify', 0) == 0);
+            $minify_cached = $minify;
+        } else {
             $minify = false;
         }
+    } else {
+        $minify = $minify_cached;
     }
 
-    static $https = null;
+    static $https_cached = null;
     if ($_https !== null) {
         $https = $_https;
-    } elseif ($https === null) {
+    } elseif ($https_cached === null) {
         $https = ((addon_installed('ssl')) && function_exists('is_page_https') && function_exists('get_zone_name') && ((tacit_https()) || is_page_https(get_zone_name(), get_page_name())));
+        $https_cached = $https;
+    } else {
+        $https = $https_cached;
     }
 
-    static $mobile = null;
+    static $mobile_cached = null;
     if ($_mobile !== null) {
         $mobile = $_mobile;
-    } elseif ($mobile === null) {
+    } elseif ($mobile_cached === null) {
         $mobile = is_mobile();
+        $mobile_cached = $mobile;
+    } else {
+        $mobile = $mobile_cached;
     }
 
 	return array($minify, $https, $mobile, $seed);
