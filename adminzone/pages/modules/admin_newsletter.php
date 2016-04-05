@@ -906,16 +906,16 @@ class Module_admin_newsletter extends Standard_crud_module
         $chosen_categories = post_param_string('chosen_categories');
         $message = generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
 
-        return $this->send_gui($message->evaluate());
+        return $this->send_gui($message);
     }
 
     /**
      * The UI to send a newsletter.
      *
-     * @param  LONG_TEXT $_existing Default newsletter to put in
+     * @param  LONG_TEXT $_message Default newsletter to put in
      * @return Tempcode The UI
      */
-    public function send_gui($_existing = '')
+    public function send_gui($_message = '')
     {
         $blocked = newsletter_block_list();
         if (count($blocked) != 0) {
@@ -979,6 +979,7 @@ class Module_admin_newsletter extends Standard_crud_module
         // ================
 
         $fields = new Tempcode();
+
         require_code('form_templates');
 
         $default_subject = get_option('newsletter_title');
@@ -996,38 +997,9 @@ class Module_admin_newsletter extends Standard_crud_module
         $chosen_categories = post_param_string('chosen_categories', '');
 
         // Newsletter message (complex, as will depend if an automatic periodicial being made, meaning no message defined now)
-        $comcode_given = ($_existing != '') && (stripos($_existing, '<html') !== false);
-        $_existing = post_param_string('message', $_existing);
-        if ($_existing == '') {
-            $from_news = get_param_integer('from_news', -1);
-            if (($from_news != -1) && (addon_installed('news'))) {
-                $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $from_news), 'ORDER BY id DESC', 1);
-                if (!array_key_exists(0, $rows)) {
-                    require_lang('news');
-                    return warn_screen(get_screen_title('NEWS'), do_lang_tempcode('MISSING_RESOURCE'));
-                }
-                $myrow = $rows[0];
-
-                $_existing = get_translated_text($myrow['news_article'], null, $lang);
-                if ($_existing == '') {
-                    $_existing = get_translated_text($myrow['news'], null, $lang);
-                }
-            }
-            $existing = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f42', 'CONTENT' => $_existing, 'LANG' => $lang, 'SUBJECT' => $default_subject), null, false, null, '.txt', 'text');
-        } else {
-            $default = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f44', 'CONTENT' => $_existing, 'LANG' => $lang, 'SUBJECT' => $default_subject), null, false, null, '.txt', 'text');
-            if (stripos($default->evaluate(), '<html') !== false && strpos($_existing, '<html') === false) { // Our template contains HTML, so we need to pull in that HTML to the edit field (it's a full design email, not a simple encapsulation)
-                if ($comcode_given) {
-                    $default = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => comcode_to_tempcode($_existing), 'LANG' => $lang, 'SUBJECT' => $default_subject), null, false, null, '.txt', 'text');
-                }
-                $existing = $default;
-            } else {
-                $existing = make_string_tempcode($_existing);
-            }
-        }
+        list($message, $message_is_html) = get_full_newsletter_code($_message, $lang, $default_subject);
         if ($periodic_action == 'make' || $periodic_action == 'replace') {
-            // We are making a periodic newsletter. This means we need to pass
-            // through the chosen categories - add extra fields to the form
+            // We are making a periodic newsletter. This means we need to pass through the chosen categories - add extra fields to the form - and there's no direct editing
             if (!is_null($defaults)) {
                 $chosen_categories = $defaults['np_message'];
                 $in_full = $defaults['np_in_full'];
@@ -1049,14 +1021,16 @@ class Module_admin_newsletter extends Standard_crud_module
                 $hidden->attach(form_input_hidden('cutoff_minute', post_param_string('cutoff_minute')));
             }
 
-            $hidden->attach(form_input_hidden('message', $existing->evaluate()));
+            $hidden->attach(form_input_hidden('message', $message));
         } else {
             $hidden->attach(form_input_hidden('in_full', strval($in_full)));
 
-            if (strpos($existing->evaluate(), '<html') === false) {
-                $fields->attach(form_input_huge_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_MESSAGE_NEWSLETTER'), 'message', $existing->evaluate(), true));
+            if ($message_is_html) {
+                // Raw HTML format
+                $fields->attach(form_input_huge(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_MESSAGE_NEWSLETTER'), 'message', $message, true));
             } else {
-                $fields->attach(form_input_huge(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_MESSAGE_NEWSLETTER'), 'message', $existing->evaluate(), true));
+                // Comcode format
+                $fields->attach(form_input_huge_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_MESSAGE_NEWSLETTER'), 'message', $message, true));
             }
         }
 
@@ -1074,18 +1048,10 @@ class Module_admin_newsletter extends Standard_crud_module
             $from_name = post_param_string('from_name', $defaults['np_from_name']);
         }
         $fields->attach(form_input_line(do_lang_tempcode('FROM_NAME'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_FROM_NAME'), 'from_name', $from_name, true));
-        $_html_only = post_param_integer('html_only', null);
-        if (is_null($_html_only)) {
-            $html_only = (stripos($existing->evaluate(), '<html') !== false);
-            if (!is_null($defaults)) {
-                $html_only = $defaults['np_html_only'];
-            }
-        } else {
-            $html_only = ($_html_only == 1);
-        }
-        if (get_option('dual_format_newsletters') == '0') {
+        if (get_option('dual_format_newsletters') == '0' && !$message_is_html) {
             $hidden->attach(form_input_hidden('html_only', '1'));
         } else {
+            $html_only = (post_param_integer('html_only', is_null($defaults) ? 0 : $defaults['np_html_only']) == 1);
             $fields->attach(form_input_tick(do_lang_tempcode('HTML_ONLY'), do_lang_tempcode('DESCRIPTION_HTML_ONLY'), 'html_only', $html_only));
         }
         $l = new Tempcode();

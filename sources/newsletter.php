@@ -173,7 +173,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
  * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
  * @param  LANGUAGE_NAME $lang Language to send in
  * @param  TIME $cutoff_time When to cut off content from
- * @return Tempcode The Comcode, in template form
+ * @return string The Comcode
  */
 function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
 {
@@ -278,11 +278,93 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
     foreach ($automatic as $tp) {
         $_automatic .= $tp;
     }
-    $completed = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
+    $__message = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
+    $_message = $__message->evaluate($lang);
 
-    $completed = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f46', 'CONTENT' => $completed, 'LANG' => $lang, 'SUBJECT' => ''), null, false, null, '.txt', 'text');
+    $message = newsletter_wrap($_message, $lang);
+    $message = newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang);
 
-    return $completed;
+    return $message;
+}
+
+/**
+ * Convert what may be a snippet of a newsletter, into a full newsletter with wrapper.
+ * Find if it is HTML or Comcode.
+ * Supports reading one referenced from the GET environment via 'from_news' parameter.
+ * Supports reading one populated into the POST environment via 'message' parameter.
+ *
+ * @param  LONG_TEXT $_message A default newsletter message, with the newsletter wrapper assumed already-applied unless it's blank
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  string $default_subject The default subject for this newsletter
+ * @return array A pair: The newsletter message, Whether it is written in HTML
+ */
+function get_full_newsletter_code($_message, $lang, $default_subject)
+{
+    $_message = post_param_string('message', $_message);
+
+    if ($_message == '') {
+        // from_news GET parameter?
+        $from_news = get_param_integer('from_news', null);
+        if (($from_news !== null) && (addon_installed('news'))) {
+            $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $from_news), '', 1);
+            if (!array_key_exists(0, $rows)) {
+                require_lang('news');
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
+            $myrow = $rows[0];
+
+            $_message = get_translated_text($myrow['news_article'], null, $lang);
+            if ($_message == '') {
+                $_message = get_translated_text($myrow['news'], null, $lang);
+            }
+        }
+
+        $message = newsletter_wrap($_message, $lang, $default_subject);
+        $message = newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang, $default_subject);
+    } else {
+        $message = $_message;
+    }
+
+    $final_message_is_html = (strpos(trim($message), '<html') === 0);
+
+    return array($message, $final_message_is_html);
+}
+
+/**
+ * Apply the newsletter wrapper with a Comcode early parse, if we find the newsletter wrapper is sending us straight to HTML.
+ *
+ * @param  LONG_TEXT $_message The newsletter message without wrapper
+ * @param  LONG_TEXT $message The newsletter message with wrapper
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  SHORT_TEXT $subject The newsletter subject
+ * @return string The newsletter with wrapper, with Comcode pre-parsed
+ */
+function newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang, $subject = '')
+{
+    $original_message_is_html = (strpos(trim($_message), '<html') === 0);
+    $final_message_is_html = (strpos(trim($message), '<html') === 0);
+
+    if ($final_message_is_html && !$original_message_is_html) {
+        // Ah, can't allow Comcode through, as Comcode parser won't run after final send
+        $message = newsletter_wrap(static_evaluate_tempcode(comcode_to_tempcode($_message, get_member(), true)), $lang, $subject);
+    }
+
+    return $message;
+}
+
+/**
+ * Apply the newsletter wrapper.
+ *
+ * @param  LONG_TEXT $_message The newsletter message
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  SHORT_TEXT $subject The newsletter subject
+ * @return string The newsletter with wrapper
+ */
+function newsletter_wrap($_message, $lang, $subject = '')
+{
+    $message_wrapped = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f42', 'CONTENT' => $_message, 'LANG' => $lang, 'SUBJECT' => $subject), null, false, null, '.txt', 'text');
+    $message = $message_wrapped->evaluate($lang);
+    return $message;
 }
 
 /**
@@ -587,7 +669,7 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
  *
  * @param  string $message The message
  * @param  string $subject The subject
- * @param  boolean $html_only HTML only
+ * @param  boolean $html_only Send in HTML only
  * @param  string $forename Forename
  * @param  string $surname Surname
  * @param  string $name Name
@@ -602,14 +684,18 @@ function newsletter_preview($message, $subject, $html_only, $forename, $surname,
 
     // HTML message
     $message = newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $address, $sendid, $hash);
-    if (stripos($message, '<html') !== false) {
+    if (stripos(trim($message), '<html') === 0) {
+        // Is already full HTML (with maybe some Tempcode)
+
         $html_version = template_to_tempcode($message);
 
-        $in_html = true;
+        $html_only = true; // Force on, regardless
     } else {
+        // Is Comcode
+
         require_code('media_renderer');
         push_media_mode(peek_media_mode() | MEDIA_LOWFI);
-        $comcode_version = comcode_to_tempcode(static_evaluate_tempcode(template_to_tempcode($message)), get_member(), true);
+        $comcode_version = comcode_to_tempcode($message, get_member(), true);
         pop_media_mode();
 
         $html_version = do_template(
@@ -629,14 +715,12 @@ function newsletter_preview($message, $subject, $html_only, $forename, $surname,
             'templates',
             $GLOBALS['FORUM_DRIVER']->get_theme('')
         );
-
-        $in_html = $html_only;
     }
 
     // Text message
-    $text_version = $html_only ? '' : comcode_to_clean_text(static_evaluate_tempcode(template_to_tempcode($message)));
+    $text_version = $html_only ? '' : comcode_to_clean_text($message);
 
-    return array($html_version, $text_version, $in_html);
+    return array($html_version, $text_version, $html_only);
 }
 
 /**

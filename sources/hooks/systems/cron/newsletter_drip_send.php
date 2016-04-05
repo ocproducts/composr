@@ -107,7 +107,7 @@ class Hook_cron_newsletter_drip_send
                     $newsletter_message_substituted = $message;
                 }
                 $in_html = false;
-                if (strpos($message, '<html') === false) {
+                if (stripos(trim($message), '<html') === 0) {
                     if ($html_only == 1) {
                         $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
                         $newsletter_message_substituted = $_m->evaluate($lang);
