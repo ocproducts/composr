@@ -136,8 +136,8 @@ function newsletter_get_category_choices($cutoff_time, $lang)
                 $cats = $cats->evaluate($lang);
             }
             $matches = array();
-            $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches);
-            if ($num_matches < 1500) { /*reasonable limit*/
+            $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches); // HACKHACK: A bit of a fudge, but it works
+            if ($num_matches < 1500) { /*reasonable limit on how many categories to consider*/
                 for ($i = 0; $i < $num_matches; $i++) {
                     $hook_result = $object->run($cutoff_time, $lang, $matches[1][$i]);
                     if ($hook_result == array()) {
@@ -153,7 +153,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
             }
         }
         if (!$done) {
-            $new = $object->run($cutoff_time, $lang, '');
+            $new = $object->run($cutoff_time, $lang, '*');
             if ($new != array()) {
                 list($hook_content, $_title) = $new;
                 if (!$hook_content->is_empty()) {
@@ -242,7 +242,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
                 continue;
             }
 
-            $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
+            $temp = $object->run(intval($cutoff_time), $lang, '*', $in_full);
             if ((is_null($temp)) || (count($temp) == 0)) {
                 continue;
             }
