@@ -1048,7 +1048,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $from_name = post_param_string('from_name', $defaults['np_from_name']);
         }
         $fields->attach(form_input_line(do_lang_tempcode('FROM_NAME'), do_lang_tempcode('DESCRIPTION_NEWSLETTER_FROM_NAME'), 'from_name', $from_name, true));
-        if (get_option('dual_format_newsletters') == '0' && !$message_is_html) {
+        if (get_option('dual_format_newsletters') == '0' || $message_is_html) {
             $hidden->attach(form_input_hidden('html_only', '1'));
         } else {
             $html_only = (post_param_integer('html_only', is_null($defaults) ? 0 : $defaults['np_html_only']) == 1);

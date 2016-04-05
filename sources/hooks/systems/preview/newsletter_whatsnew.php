@@ -59,7 +59,7 @@ class Hook_preview_newsletter_whatsnew
             list($message) = get_full_newsletter_code($_message, $lang, do_lang('EXAMPLE'));
 
             list($_output) = newsletter_preview($message, do_lang('EXAMPLE'), true, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'));
-            $output = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $_output);
+            $output = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $_output));
         }
 
         return array($output, null, false);

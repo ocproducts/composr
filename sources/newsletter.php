@@ -346,7 +346,9 @@ function newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $messag
 
     if ($final_message_is_html && !$original_message_is_html) {
         // Ah, can't allow Comcode through, as Comcode parser won't run after final send
-        $message = newsletter_wrap(static_evaluate_tempcode(comcode_to_tempcode($_message, get_member(), true)), $lang, $subject);
+        $html = static_evaluate_tempcode(comcode_to_tempcode($_message, get_member(), true));
+        $tempcode_escaped_html = str_replace('{', '\{', $html);
+        $message = newsletter_wrap($tempcode_escaped_html, $lang, $subject);
     }
 
     return $message;
