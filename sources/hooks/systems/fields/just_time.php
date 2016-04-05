@@ -190,6 +190,10 @@ class Hook_fields_just_time
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
+        if (fractional_edit()) {
+            return STRING_MAGIC_NULL;
+        }
+
         $id = $field['id'];
         $stub = 'field_' . strval($id);
         return $this->input_from($stub);

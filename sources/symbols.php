@@ -233,7 +233,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($zone == '_SEARCH') {
                         $zone = get_module_zone($attributes['page']);
                     }
-                    if ((has_actual_page_access(get_member(), $attributes['page'], $zone)) && (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))) {
+                    if (
+                        (get_option('fractional_editing') == '1') &&
+                        (has_actual_page_access(get_member(), $attributes['page'], $zone)) && 
+                        (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))
+                    ) {
                         $keep = symbol_tempcode('KEEP');
                         $url = find_script('fractional_edit') . '?edit_param_name=' . urlencode($edit_param_name) . '&supports_comcode=' . ($supports_comcode ? '1' : '0') . '&zone=' . urlencode($zone) . $keep->evaluate();
                         if (count($attributes) > 0) {

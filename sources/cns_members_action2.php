@@ -1447,6 +1447,10 @@ function cns_delete_custom_field($id)
  */
 function cns_set_custom_field($member_id, $field, $value, $type = null, $defer = false)
 {
+    if ($value === STRING_MAGIC_NULL) {
+        return null;
+    }
+
     if (is_null($type)) {
         $type = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_type', array('id' => $field));
     }
