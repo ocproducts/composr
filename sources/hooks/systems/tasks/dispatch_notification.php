@@ -30,13 +30,15 @@ class Hook_task_dispatch_notification
      * @param  array $csss List of CSS files to require
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($dispatcher, $csss)
+    public function run($dispatcher, $csss = null)
     {
         require_code('notifications');
         require_lang('notifications');
 
-        foreach ($csss as $css) {
-            require_css($css);
+        if (!is_null($csss)) {
+            foreach ($csss as $css) {
+                require_css($css);
+            }
         }
 
         $dispatcher->dispatch();
