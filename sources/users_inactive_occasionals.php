@@ -166,7 +166,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         global $SESSION_CACHE;
         $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
-            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member));
+            $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member), '', true);
         }
         if (!is_null($test)) {
             require_code('temporal');

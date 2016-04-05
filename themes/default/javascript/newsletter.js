@@ -21,5 +21,8 @@ function newsletter_preview_into(frame_id,html)
 		}
 
 		resize_frame(frame_id,300);
-	}, 500);
+	},500);
+	window.setInteral(function() {
+		resize_frame(frame_id,300);
+	},1000);
 }
