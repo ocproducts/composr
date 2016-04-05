@@ -107,7 +107,7 @@ class Hook_cron_newsletter_drip_send
                     $newsletter_message_substituted = $message;
                 }
                 $in_html = false;
-                if (stripos(trim($message), '<html') === 0) { // HTML
+                if (stripos(trim($message), '<') === 0) { // HTML
                     if ($needs_tempcode === null || $needs_tempcode) {
                         require_code('tempcode_compiler');
                         $_m = template_to_tempcode($newsletter_message_substituted);

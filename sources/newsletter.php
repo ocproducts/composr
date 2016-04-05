@@ -325,7 +325,7 @@ function get_full_newsletter_code($_message, $lang, $default_subject)
         $message = $_message;
     }
 
-    $final_message_is_html = (strpos(trim($message), '<html') === 0);
+    $final_message_is_html = (strpos(trim($message), '<') === 0);
 
     return array($message, $final_message_is_html);
 }
@@ -341,8 +341,8 @@ function get_full_newsletter_code($_message, $lang, $default_subject)
  */
 function newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang, $subject = '')
 {
-    $original_message_is_html = (strpos(trim($_message), '<html') === 0);
-    $final_message_is_html = (strpos(trim($message), '<html') === 0);
+    $original_message_is_html = (strpos(trim($_message), '<') === 0);
+    $final_message_is_html = (strpos(trim($message), '<') === 0);
 
     if ($final_message_is_html && !$original_message_is_html) {
         // Ah, can't allow Comcode through, as Comcode parser won't run after final send
@@ -686,7 +686,7 @@ function newsletter_preview($message, $subject, $html_only, $forename, $surname,
 
     // HTML message
     $message = newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $address, $sendid, $hash);
-    if (stripos(trim($message), '<html') === 0) {
+    if (stripos(trim($message), '<') === 0) {
         // Is already full HTML (with maybe some Tempcode)
 
         $html_version = template_to_tempcode($message);

@@ -67,12 +67,12 @@ class Hook_task_send_newsletter
         $using_drip_queue = (!is_null($last_cron)) || (get_option('newsletter_paused') == '1');
 
         $in_html = false;
-        if (strpos($message, '<html') === false) {
+        if (stripos(trim($message), '<') === 0) {
+            $in_html = true;
+        } else {
             if ($html_only == 1) {
                 $in_html = true;
             }
-        } else {
-            $in_html = true;
         }
 
         $max = 300;
@@ -114,7 +114,7 @@ class Hook_task_send_newsletter
                     }
                 } else { // Unlikely to use this code path, but we should support operation without CRON in those rare cases. Code path not optimised
                     $newsletter_message_substituted = newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
-                    if (stripos(trim($message), '<html') === 0) { // HTML
+                    if (stripos(trim($message), '<') === 0) { // HTML
                         require_code('tempcode_compiler');
                         $_m = template_to_tempcode($newsletter_message_substituted);
                         $newsletter_message_substituted = $_m->evaluate($lang);
