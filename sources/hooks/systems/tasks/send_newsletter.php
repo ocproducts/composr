@@ -114,15 +114,15 @@ class Hook_task_send_newsletter
                     }
                 } else { // Unlikely to use this code path, but we should support operation without CRON in those rare cases. Code path not optimised
                     $newsletter_message_substituted = newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
-                    if (stripos(trim($message), '<html') === 0) {
+                    if (stripos(trim($message), '<html') === 0) { // HTML
+                        require_code('tempcode_compiler');
+                        $_m = template_to_tempcode($newsletter_message_substituted);
+                        $newsletter_message_substituted = $_m->evaluate($lang);
+                    } else { // Comcode
                         if ($html_only == 1) {
                             $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
                             $newsletter_message_substituted = $_m->evaluate($lang);
                         }
-                    } else {
-                        require_code('tempcode_compiler');
-                        $_m = template_to_tempcode($newsletter_message_substituted);
-                        $newsletter_message_substituted = $_m->evaluate($lang);
                     }
 
                     mail_wrap($subject, $newsletter_message_substituted, array($email_address), array($usernames[$i]), $from_email, $from_name, $priority, null, true, null, true, $in_html, false, $mail_template);

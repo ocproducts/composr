@@ -107,13 +107,7 @@ class Hook_cron_newsletter_drip_send
                     $newsletter_message_substituted = $message;
                 }
                 $in_html = false;
-                if (stripos(trim($message), '<html') === 0) {
-                    if ($html_only == 1) {
-                        $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
-                        $newsletter_message_substituted = $_m->evaluate($lang);
-                        $in_html = true;
-                    }
-                } else {
+                if (stripos(trim($message), '<html') === 0) { // HTML
                     if ($needs_tempcode === null || $needs_tempcode) {
                         require_code('tempcode_compiler');
                         $_m = template_to_tempcode($newsletter_message_substituted);
@@ -126,6 +120,12 @@ class Hook_cron_newsletter_drip_send
                         $newsletter_message_substituted = $temp;
                     }
                     $in_html = true;
+                } else { // Comcode
+                    if ($html_only == 1) {
+                        $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
+                        $newsletter_message_substituted = $_m->evaluate($lang);
+                        $in_html = true;
+                    }
                 }
 
                 mail_wrap($subject, $newsletter_message_substituted, array($mail['d_to_email']), array($mail['d_to_name']), $from_email, $from_name, $priority, null, true, null, true, $html_only == 1, false, $template, true, null, null, null, get_option('newsletter_smtp_sockets_use') == '1', get_option('newsletter_smtp_sockets_host'), intval(get_option('newsletter_smtp_sockets_port')), get_option('newsletter_smtp_sockets_username'), get_option('newsletter_smtp_sockets_password'), get_option('newsletter_smtp_from_address'), get_option('newsletter_enveloper_override') == '1', get_option('newsletter_allow_ext_images') == '1', get_option('newsletter_website_email'));
