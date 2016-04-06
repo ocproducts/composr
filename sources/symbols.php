@@ -377,7 +377,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($td == '') {
                         $td = 'templates';
                     }
-                    $theme = isset($param[3]) ? $param[3]->evaluate() : '';
+                    $theme = isset($param[4]) ? $param[3]->evaluate() : '';
                     if ($theme == '') {
                         $theme = null;
                     }
