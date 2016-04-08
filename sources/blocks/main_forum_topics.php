@@ -174,7 +174,7 @@ class Block_main_forum_topics
                         $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), null, false, false, false, 'first_unread');
                     }
                     $title = escape_html($topic['title']);
-                    $date = get_timezoned_date($topic[$date_key]);
+                    $date = get_timezoned_date_tempcode($topic[$date_key]);
                     $username = $topic[$username_key];
                     $member_id = array_key_exists($memberid_key, $topic) ? $topic[$memberid_key] : null;
                     if ((!is_null($forum_names_map)) && (!array_key_exists($topic['forum_id'], $forum_names_map))) {

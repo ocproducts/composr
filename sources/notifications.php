@@ -634,8 +634,13 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 
         if (($setting & $frequency) != 0) {
             if ($frequency == A_WEB_NOTIFICATION) {
-                if (($notification_code == 'cns_new_pt') && (get_option('pt_notifications_as_web') == '0')) {
-                    continue;
+                if (get_option('pt_notifications_as_web') == '0') {
+                    if (
+                        ($notification_code == 'cns_new_pt') ||
+                        ($notification_code == 'cns_topic' && is_numeric($code_category) && is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category)))))
+                    ) {
+                        continue;
+                    }
                 }
                 $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
                 if (!file_exists($path)) {

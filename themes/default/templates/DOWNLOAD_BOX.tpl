@@ -6,7 +6,7 @@
 
 		{+START,IF,{$NOT,{GIVE_CONTEXT}}}
 			{+START,IF_NON_EMPTY,{ID}}
-				<a href="{URL*}">{+START,FRACTIONAL_EDITABLE,{NAME},name,_SEARCH:cms_downloads:__edit:{ID}}{NAME*}{+END}</a>
+				<a href="{URL*}">{NAME*}</a>
 			{+END}
 			{+START,IF_EMPTY,{ID}}
 				{NAME*}

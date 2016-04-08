@@ -140,7 +140,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 
     $GLOBALS['FORUM_DB']->query_update('f_topics', $update, array('id' => $topic_id), '', 1);
 
-    if ((!is_null($title)) && ($title != '')) {
+    if ((!is_null($title)) && ($title != '') && (!is_null($forum_id))) {
         require_code('cns_posts_action2');
         cns_force_update_forum_caching($forum_id, 0, 0);
     }
@@ -162,8 +162,10 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         decache('_get_pts', null, $info[0]['t_pt_to']);
     }
 
-    require_code('sitemap_xml');
-    notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    if (!is_null($forum_id)) {
+        require_code('sitemap_xml');
+        notify_sitemap_node_edit('SEARCH:topicview:id=' . strval($topic_id), has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
+    }
 }
 
 /**

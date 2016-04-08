@@ -132,7 +132,7 @@ function js_compile($j, $js_cache_path, $minify = true)
             $content_type_ob = get_content_object($content_type);
             if ($content_type_ob !== null) {
                 $info = $content_type_ob->info();
-                if (!is_null($info['view_page_link_pattern'])) {
+                if (isset($info['view_page_link_pattern'])) {
                     list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
                     $url = build_url($attributes, $zone, null, false, false, true);
                     $url_patterns[$url->evaluate()] = array(
@@ -140,7 +140,7 @@ function js_compile($j, $js_cache_path, $minify = true)
                         'HOOK' => $content_type,
                     );
                 }
-                if (!is_null($info['edit_page_link_pattern'])) {
+                if (isset($info['edit_page_link_pattern'])) {
                     list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
                     $url = build_url($attributes, $zone, null, false, false, true);
                     $url_patterns[$url->evaluate()] = array(

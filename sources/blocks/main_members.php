@@ -445,11 +445,11 @@ class Block_main_members
                 }
 
                 if (get_option('use_lastondate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_last_visit_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_last_visit_time'], false));
                 }
 
                 if (get_option('use_joindate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_join_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_join_time'], false));
                 }
 
                 $results_entries->attach(results_entry($_entry, false));
@@ -503,6 +503,9 @@ class Block_main_members
                 break;
             }
         }
+
+        // Optimisation, as the member structure is much heavier than you'd think, due to lots of nested templates, including a member box tooltip for each member row in the results table
+        $results_table = apply_quick_caching($results_table);
 
         return do_template('BLOCK_MAIN_MEMBERS', array(
             '_GUID' => $guid,

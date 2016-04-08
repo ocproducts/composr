@@ -371,7 +371,7 @@ function fractional_edit_script()
 
     $supports_comcode = get_param_integer('supports_comcode', 0) == 1;
     $param_name = get_param_string('edit_param_name');
-    if (isset($_POST[$param_name . '__altered_rendered_output'])) {
+    if (isset($_POST[$param_name . '__altered_rendered_output'])) { // This will potentially be written into by module, as a better thing to render
         $edited = $_POST[$param_name . '__altered_rendered_output'];
     } else {
         $edited = post_param_string($param_name);

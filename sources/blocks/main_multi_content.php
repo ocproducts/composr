@@ -226,6 +226,9 @@ class Block_main_multi_content
 
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
+        if ($info['table'] == 'catalogue_entries') {
+            $where .= ' AND c_name NOT LIKE \'' . db_encode_like('_%') . '\'';
+        }
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
             $groups = '';

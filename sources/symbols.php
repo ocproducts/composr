@@ -233,7 +233,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($zone == '_SEARCH') {
                         $zone = get_module_zone($attributes['page']);
                     }
-                    if ((has_actual_page_access(get_member(), $attributes['page'], $zone)) && (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))) {
+                    if (
+                        (get_option('fractional_editing') == '1') &&
+                        (has_actual_page_access(get_member(), $attributes['page'], $zone)) && 
+                        (($has_permission === true) || (($has_permission === null) && (has_zone_access(get_member(), 'adminzone'))))
+                    ) {
                         $keep = symbol_tempcode('KEEP');
                         $url = find_script('fractional_edit') . '?edit_param_name=' . urlencode($edit_param_name) . '&supports_comcode=' . ($supports_comcode ? '1' : '0') . '&zone=' . urlencode($zone) . $keep->evaluate();
                         if (count($attributes) > 0) {
@@ -373,7 +377,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($td == '') {
                         $td = 'templates';
                     }
-                    $theme = isset($param[3]) ? $param[3]->evaluate() : '';
+                    $theme = isset($param[4]) ? $param[3]->evaluate() : '';
                     if ($theme == '') {
                         $theme = null;
                     }
@@ -3442,6 +3446,31 @@ function ecv_HAS_DELETE_PERMISSION($lang, $escaped, $param)
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_DATE_AND_TIME($lang, $escaped, $param)
+{
+    $use_contextual_dates = (isset($param[0]) && ($param[0] == '1'));
+    $verbose = (isset($param[1]) && ($param[1] == '1'));
+    $server_time = (isset($param[2]) && ($param[2] == '1'));
+    $time = ((isset($param[3])) && ($param[3] != '')) ? intval($param[3]) : time();
+    $member = isset($param[4]) ? intval($param[2]) : null;
+    $value = get_timezoned_date($time, true, $verbose, $server_time, !$use_contextual_dates, $member);
+
+    if ($escaped != array()) {
+        apply_tempcode_escaping($escaped, $value);
     }
     return $value;
 }

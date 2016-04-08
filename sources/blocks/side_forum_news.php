@@ -125,7 +125,7 @@ class Block_side_forum_news
                 foreach ($topics as $topic) {
                     $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
                     $title = $topic['title'];
-                    $date = get_timezoned_date($topic[$date_key], false);
+                    $date = get_timezoned_date_tempcode($topic[$date_key], false);
 
                     $news[] = array(
                         'REPLIES' => strval($topic['num']),

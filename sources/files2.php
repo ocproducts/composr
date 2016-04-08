@@ -1585,36 +1585,22 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                     if (preg_match("#HTTP/(\d*\.\d*) (\d*) #", $line, $matches) != 0) {
                         // 200=Ok
-                        // 301/302=Redirected: Not good, we should not be here
-                        // 401=Unauthorized
-                        // 403=Forbidden
+                        // 301/302/307=Redirected: Not good, we should not be here
+                        // 401/403=Unauthorized
                         // 404=Not found
-                        // 500=Internal server error
+                        // 400/500=Internal error
+                        // 405=Method not allowed
                         $HTTP_MESSAGE = $matches[2];
                         switch ($matches[2]) {
-                            case '302':
                             case '301':
+                            case '302':
+                            case '307':
                                 // We'll expect a location header
                                 break;
                             case '200':
                                 // Good
                                 break;
                             case '401':
-                                if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
-                                } else {
-                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
-                                }
-                                @fclose($mysock);
-                                $HTTP_DOWNLOAD_MIME_TYPE = 'security';
-                                $DOWNLOAD_LEVEL--;
-                                if ($put !== null) {
-                                    fclose($put);
-                                    if (!$put_no_delete) {
-                                        @unlink($put_path);
-                                    }
-                                }
-                                return null;
                             case '403':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));

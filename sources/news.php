@@ -121,7 +121,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         'NEWS' => $news,
         'ID' => strval($row['id']),
         'SUBMITTER' => strval($row['submitter']),
-        'DATE' => get_timezoned_date($row['date_and_time']),
+        'DATE' => get_timezoned_date_tempcode($row['date_and_time']),
         'DATE_RAW' => strval($row['date_and_time']),
         'FULL_URL' => $url,
         'NEWS_TITLE' => $title,

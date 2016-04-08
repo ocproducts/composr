@@ -151,7 +151,7 @@ class Block_main_image_fader_news
                 continue; // Invalid: empty text
             }
 
-            $date = get_timezoned_date($row['date_and_time']);
+            $date = get_timezoned_date_tempcode($row['date_and_time']);
             $date_raw = strval($row['date_and_time']);
 
             $author_url = (addon_installed('authors')) ? build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $row['author']), get_module_zone('authors')) : new Tempcode();
