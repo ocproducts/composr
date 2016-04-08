@@ -1228,7 +1228,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
                                             }
-                                            $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            if ($do_ip_forwarding) {
+                                                $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            }
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
                                                     curl_setopt($ch, CURLINFO_HEADER_OUT, true);

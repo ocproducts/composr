@@ -45,10 +45,11 @@ function transifex_push_script()
         exit('Must run this script on command line, for security reasons');
     }
 
+    @header('Content-type: text/plain; charset=' . get_charset());
+    safe_ini_set('ocproducts.xss_detect', '0');
+
     push_to_transifex();
 
-    header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
     echo 'Done';
 }
 
