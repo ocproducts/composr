@@ -515,28 +515,8 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
 
                 if ($ok) {
                     // Insert
-                    $GLOBALS['SITE_DB']->query_delete('url_id_monikers', array(    // It's possible we're re-activating/replacing a deprecated one
-                                                                                   'm_resource_page' => $page,
-                                                                                   'm_resource_type' => $type,
-                                                                                   'm_resource_id' => $_content_id,
-                                                                                   'm_moniker' => $url_moniker,
-                    ), '', 1);
-                    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array( // Deprecate old monikers
-                                                                                'm_deprecated' => 1,
-                    ), array(
-                        'm_resource_page' => $page,
-                        'm_resource_type' => $type,
-                        'm_resource_id' => $_content_id,
-                    ));
-                    $GLOBALS['SITE_DB']->query_insert('url_id_monikers', array(
-                        'm_resource_page' => $page,
-                        'm_resource_type' => $type,
-                        'm_resource_id' => $_content_id,
-                        'm_moniker' => $url_moniker,
-                        'm_moniker_reversed' => strrev($url_moniker),
-                        'm_deprecated' => 0,
-                        'm_manually_chosen' => 1,
-                    ));
+                    require_code('urls2');
+                    suggest_new_idmoniker_for($page, $type, $_content_id, ($content_type == 'comcode_page') ? $zone : '', $url_moniker, false, $url_moniker);
                 }
             }
         }
