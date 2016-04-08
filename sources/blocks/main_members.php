@@ -445,11 +445,11 @@ class Block_main_members
                 }
 
                 if (get_option('use_lastondate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_last_visit_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_last_visit_time'], false));
                 }
 
                 if (get_option('use_joindate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_join_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_join_time'], false));
                 }
 
                 $results_entries->attach(results_entry($_entry, false));

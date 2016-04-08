@@ -84,7 +84,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     } else {
         $view_url = new Tempcode();
     }
-    $date = get_timezoned_date($row['add_date'], false);
+    $date = get_timezoned_date_tempcode($row['add_date'], false);
     $date_raw = $row['add_date'];
 
     $breadcrumbs = $include_breadcrumbs ? breadcrumb_segments_to_tempcode(download_breadcrumbs($row['category_id'], is_null($root) ? get_param_integer('keep_download_root', null) : $root, false, $zone)) : new Tempcode();

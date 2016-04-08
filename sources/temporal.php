@@ -274,6 +274,22 @@ function cms_strftime($format, $timestamp = null)
 }
 
 /**
+ * Similar to get_timezoned_date, except works via Tempcode so is cache-safe for relative date display.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $include_time Whether to include the time in the output
+ * @return Tempcode Formatted time
+ */
+function get_timezoned_date_tempcode($timestamp, $include_time = true)
+{
+    if (!$include_time) {
+        return symbol_tempcode('DATE', array(strval($timestamp)));
+    }
+
+    return symbol_tempcode('DATE_AND_TIME', array(strval($timestamp)));
+}
+
+/**
  * Get a nice formatted date from the specified Unix timestamp.
  *
  * @param  TIME $timestamp Input timestamp

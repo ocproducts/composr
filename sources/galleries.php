@@ -217,7 +217,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
 
     // Basic details
     $_title = get_translated_text($myrow['fullname']);
-    $add_date = get_timezoned_date($myrow['add_date'], false);
+    $add_date = get_timezoned_date_tempcode($myrow['add_date'], false);
     $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
 
     // Member details
