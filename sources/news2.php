@@ -130,6 +130,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
     tidy_theme_img_code($img, $myrow['nc_img'], 'news_categories', 'nc_img');
 
     decache('main_news');
+    decache('main_image_fader_news');
     decache('side_news');
     decache('side_news_archive');
     decache('bottom_news');
@@ -392,6 +393,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
 
     if ($validated == 1) {
         decache('main_news');
+        decache('main_image_fader_news');
         decache('side_news');
         decache('side_news_archive');
         decache('bottom_news');
@@ -570,6 +572,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     seo_meta_set_for_explicit('news', strval($id), $meta_keywords, $meta_description);
 
     decache('main_news');
+    decache('main_image_fader_news');
     decache('side_news');
     decache('side_news_archive');
     decache('bottom_news');
@@ -667,6 +670,7 @@ function delete_news($id)
     seo_meta_erase_storage('news', strval($id));
 
     decache('main_news');
+    decache('main_image_fader_news');
     decache('side_news');
     decache('side_news_archive');
     decache('bottom_news');

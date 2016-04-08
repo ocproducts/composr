@@ -636,12 +636,23 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
  * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
  * @param  string $moniker_src String from which a moniker will be chosen (may not be blank).
  * @param  boolean $is_new Whether we are sure this is a new moniker (makes things more efficient, saves a query).
+ * @param  ?string $moniker Actual moniker to use (null: generate from $moniker_src). Usually this is left null.
  * @return string The chosen moniker.
  */
-function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_new = false)
+function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_new = false, $moniker = null)
 {
     if (get_option('url_monikers_enabled') == '0') {
         return '';
+    }
+
+    static $force_called = array();
+    $ref = $zone . ':' . $page . ':' . $type . ':' . $id;
+    if ($moniker !== null) {
+        $force_called[$ref] = $moniker;
+    } else {
+        if (isset($force_called[$ref])) {
+            return $force_called[$ref];
+        }
     }
 
     if (!$is_new) {
@@ -654,8 +665,10 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         $old = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
         if (!is_null($old)) {
             // See if it is same as current
-            $scope = _give_moniker_scope($page, $type, $id, $zone, '');
-            $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
+            if ($moniker === null) {
+                $scope = _give_moniker_scope($page, $type, $id, $zone, '');
+                $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
+            }
             if ($moniker == $old) {
                 return $old; // hmm, ok it can stay actually
             }
@@ -678,14 +691,16 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         }
     }
 
-    if (is_numeric($moniker_src)) {
-        $moniker = $id;
-    } else {
-        $scope = _give_moniker_scope($page, $type, $id, $zone, '');
-        $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, null, $scope);
+    if ($moniker === null) {
+        if (is_numeric($moniker_src)) {
+            $moniker = $id;
+        } else {
+            $scope = _give_moniker_scope($page, $type, $id, $zone, '');
+            $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, null, $scope);
 
-        if (($page == 'news') && ($type == 'view') && (get_value('google_news_urls') === '1')) {
-            $moniker .= '-' . str_pad($id, 3, '0', STR_PAD_LEFT);
+            if (($page == 'news') && ($type == 'view') && (get_value('google_news_urls') === '1')) {
+                $moniker .= '-' . str_pad($id, 3, '0', STR_PAD_LEFT);
+            }
         }
     }
 
@@ -705,6 +720,9 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         'm_deprecated' => 0,
         'm_manually_chosen' => 0,
     ));
+
+    global $LOADED_MONIKERS_CACHE;
+    $LOADED_MONIKERS_CACHE = array();
 
     return $moniker;
 }

@@ -277,6 +277,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/imap_password.php',
             'sources/hooks/systems/config/imap_port.php',
             'sources/hooks/systems/config/imap_username.php',
+            'sources/hooks/systems/config/fractional_editing.php',
             'sources/hooks/systems/addon_registry/core_configuration.php',
             'themes/default/templates/CONFIG_CATEGORY_SCREEN.tpl',
             'adminzone/pages/modules/admin_config.php',

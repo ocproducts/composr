@@ -1238,7 +1238,11 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
 
         // Extra access check
         if ($room_id == -1) {
-            $pm_message_deleted = (!array_key_exists($rows[$i]['room_id'], $rooms)) || (($rooms[$rows[$i]['room_id']]['is_im'] == 0) && (!check_chatroom_access($rooms[$rows[$i]['room_id']], true)));
+            $pm_message_deleted =
+                (!array_key_exists($rows[$i]['room_id'], $rooms)) ||
+                (($rooms[$rows[$i]['room_id']]['is_im'] == 0) && (!check_chatroom_access($rooms[$rows[$i]['room_id']], true))) ||
+                (($rooms[$rows[$i]['room_id']]['is_im'] == 1) && (!check_chatroom_access($rooms[$rows[$i]['room_id']], true, null, true)))
+                ;
         } else {
             $pm_message_deleted = false;
         }

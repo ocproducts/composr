@@ -394,6 +394,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 			{
 				room_id=messages[i].getAttribute('room_id');
 				current_room_id=room_id;
+				message_container=null;
 			} else
 			{
 				current_room_id=messages[i].getAttribute('room_id');

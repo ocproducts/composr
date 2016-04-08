@@ -165,9 +165,6 @@ class Hook_fields_integer
             return $this->get_field_auto_increment($id, $field['cf_default']);
         }
         $ret = post_param_string($tmp_name, $editing ? STRING_MAGIC_NULL : '');
-        if ($ret != STRING_MAGIC_NULL && $ret != '') {
-            $ret = str_pad($ret, 10, '0', STR_PAD_LEFT);
-        }
         return $ret;
     }
 

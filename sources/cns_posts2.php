@@ -125,7 +125,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
             '_GUID' => ($guid != '') ? $guid : 'cb1724a9d97f93e097cf49b50eeafa66',
             'LAST_EDIT_DATE_RAW' => is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']),
-            'LAST_EDIT_DATE' => get_timezoned_date($row['p_last_edit_time']),
+            'LAST_EDIT_DATE' => get_timezoned_date_tempcode($row['p_last_edit_time']),
             'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], false, true),
             'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
         ));
@@ -149,7 +149,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     $post_url = build_url($map, get_module_zone('topicview'));
     $post_url->attach('#post_' . strval($row['id']));
     $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
-    $post_date = get_timezoned_date($row['p_time']);
+    $post_date = get_timezoned_date_tempcode($row['p_time']);
     $post_date_raw = $row['p_time'];
     if ($use_post_title) {
         $post_title = $row['p_title'];

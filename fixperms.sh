@@ -3,7 +3,7 @@
 # NB: This script is not needed if you have suexec
 
 # Clear cache first, as we don't chmod cache files in this code
-sh fixperms.sh
+sh decache.sh
 
 # Reset to good start state first
 touch _config.php

@@ -5,7 +5,7 @@
 		</td>
 	{+END}
 	<td class="cns_forum_in_category_forum cns_column2">
-		<a class="field_name" href="{FORUM_URL*}">{+START,FRACTIONAL_EDITABLE,{FORUM_NAME},name,_SEARCH:admin_cns_forums:__edit:{ID}}{FORUM_NAME*}{+END}</a>
+		<a class="field_name" href="{FORUM_URL*}">{FORUM_NAME*}</a>
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}
 			<a class="horiz_field_sep associated_link suggested_link" rel="edit" href="{EDIT_URL*}" title="{!EDIT}: {FORUM_NAME*}">{!EDIT}</a>

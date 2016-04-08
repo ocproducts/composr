@@ -992,8 +992,8 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['VIEWS'] = strval($entry['ce_views']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
-    $map['ADD_DATE'] = get_timezoned_date($entry['ce_add_date']);
-    $map['EDIT_DATE'] = get_timezoned_date($entry['ce_edit_date']);
+    $map['ADD_DATE'] = get_timezoned_date_tempcode($entry['ce_add_date']);
+    $map['EDIT_DATE'] = get_timezoned_date_tempcode($entry['ce_edit_date']);
     $map['ID'] = strval($id);
     $map['CATALOGUE'] = $catalogue_name;
     $map['CATALOGUE_TITLE'] = array_key_exists('c_title', $catalogue) ? get_translated_text($catalogue['c_title']) : '';
@@ -1819,9 +1819,9 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     // Main rendering...
 
     $map['ENTRY'] = do_template('CATALOGUE_' . $tpl_set . '_FIELDMAP_ENTRY_WRAP', $map + array('ENTRY_SCREEN' => true, 'GIVE_CONTEXT' => false), null, false, 'CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP');
-    $map['ADD_DATE'] = get_timezoned_date($entry['ce_add_date']);
+    $map['ADD_DATE'] = get_timezoned_date_tempcode($entry['ce_add_date']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
-    $map['EDIT_DATE'] = ($entry['ce_edit_date'] === null) ? '' : get_timezoned_date($entry['ce_edit_date']);
+    $map['EDIT_DATE'] = ($entry['ce_edit_date'] === null) ? '' : get_timezoned_date_tempcode($entry['ce_edit_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
     $map['VIEWS'] = integer_format($entry['ce_views']);
     $title_to_use = do_lang_tempcode($catalogue_name . '__CATALOGUE_ENTRY', $map['FIELD_0']);
