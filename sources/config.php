@@ -187,9 +187,11 @@ function get_option($name, $missing_ok = false)
 
             $value = get_option($name, $missing_ok);
 
-            global $SMART_CACHE;
-            if ($SMART_CACHE !== null) {
-                $SMART_CACHE->append('CONFIG_OPTIONS', $name, $value);
+            if (!is_null($value)) {
+                global $SMART_CACHE;
+                if ($SMART_CACHE !== null) {
+                    $SMART_CACHE->append('CONFIG_OPTIONS', $name, $value);
+                }
             }
 
             return $value;
