@@ -200,6 +200,7 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
  *
  * @param  Tempcode $tempcode The Tempcode to put into a div
  * @param  string $guid GUID for call
+ * @param  ?string $class CSS classname (null: none)
  * @return Tempcode The generated div with contents
  */
 function div($tempcode, $guid = '', $class = null)
@@ -212,6 +213,7 @@ function div($tempcode, $guid = '', $class = null)
  *
  * @param  Tempcode $tempcode The Tempcode to put into a span
  * @param  string $guid GUID for call
+ * @param  ?string $class CSS classname (null: none)
  * @return Tempcode The generated span with contents
  */
 function span($tempcode, $guid = '', $class = null)
