@@ -346,7 +346,7 @@ class Hook_addon_registry_core_html_abstractions
     {
         return array(
             lorem_globalise(do_lorem_template('SPAN', array(
-                'TEXT' => lorem_sentence_html(),
+                'TEMPCODE' => lorem_sentence_html(),
                 'CLASS' => lorem_phrase(),
             )), null, '', true)
         );
