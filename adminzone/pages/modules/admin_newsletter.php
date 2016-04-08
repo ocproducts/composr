@@ -1302,7 +1302,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         // Render
-        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), $address);
+        list($html_version, $text_version, $in_html) = newsletter_preview($message, $subject, $html_only == 1);
 
         // Subject line
         $_full_subject = $subject;
@@ -1574,7 +1574,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $display_map['SUBJECT'] = $subject;
 
         $message = $rows[0]['newsletter'];
-        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1, do_lang('SAMPLE_FORENAME'), do_lang('SAMPLE_SURNAME'), do_lang('SAMPLE_NAME'), do_lang('SAMPLE_ADDRESS'));
+        list($html_version, $text_version) = newsletter_preview($message, $subject, $rows[0]['html_only'] == 1);
         $display_map['HTML_VERSION'] = do_template('NEWSLETTER_PREVIEW', array('HTML_PREVIEW' => $html_version));
         if ($text_version != '') {
             $display_map['TEXT_VERSION'] = $text_version;

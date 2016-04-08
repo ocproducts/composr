@@ -494,6 +494,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         foreach ($send_details as $_id => $is_on) {
             if ((is_string($_id)) && (substr($_id, 0, 1) == 'g') && ($is_on == 1)) {
                 $id = intval(substr($_id, 1));
+                $fields = 'm.id,m.m_email_address,m.m_username,m.m_pass_hash_salted';
                 $query = 'SELECT xxxxx  FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND g.gm_validated=1 WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND gm_group_id=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
                     $query .= ' AND m_allow_emails=1';
@@ -505,22 +506,22 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 }
                 $query .= ' AND m_is_perm_banned=0';
                 $query .= ' ORDER BY id';
-                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query), $max, $start, false, true);
+                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', $fields, $query), $max, $start, false, true);
                 if ($start == 0) {
                     $total['g' . strval($id)] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT (' . str_replace(' UNION ', ') + (', str_replace('xxxxx', 'COUNT(*)', $query)) . ')', false, true);
                 }
 
-                foreach ($_rows as $row) { // For each member
-                    if (!in_array($row['m_email_address'], $emails)) { // If not already added
+                foreach ($_rows as $_temp) { // For each member
+                    if (!in_array($_temp['m_email_address'], $emails)) { // If not already added
                         if (!$get_raw_rows) {
-                            $emails[] = $row['m_email_address'];
+                            $emails[] = $_temp['m_email_address'];
                             $forenames[] = '';
                             $surnames[] = '';
-                            $usernames[] = $row['m_username'];
-                            $ids[] = 'm' . strval($row['id']);
-                            $hashes[] = '';
+                            $usernames[] = $_temp['m_username'];
+                            $ids[] = 'm' . strval($_temp['id']);
+                            $hashes[] = ratchet_hash($_temp['m_pass_hash_salted'], 'xunsub');
                         } else {
-                            $raw_rows[] = $row;
+                            $raw_rows[] = $_temp;
                         }
                     }
                 }
@@ -534,7 +535,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 $query .= ' AND m_allow_emails=1';
             }
             $query .= ' AND m_is_perm_banned=0';
-            $_rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_email_address,m_username' . $query, $max, $start);
+            $_rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_email_address,m_username,m_pass_hash_salted' . $query, $max, $start);
             if ($start == 0) {
                 $total['-1'] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $query);
             }
@@ -546,7 +547,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                         $surnames[] = '';
                         $usernames[] = $_temp['m_username'];
                         $ids[] = 'm' . strval($_temp['id']);
-                        $hashes[] = '';
+                        $hashes[] = ratchet_hash($_temp['m_pass_hash_salted'], 'xunsub');
                     } else {
                         $raw_rows[] = $_temp;
                     }
@@ -635,10 +636,15 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
  */
 function newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $email_address, $sendid, $hash)
 {
+    $unsub_url = new Tempcode();
     if ($hash == '') {
         $unsub_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
     } else {
-        $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
+        if (substr($sendid, 0, 1) == 'm') {
+            $unsub_url = build_url(array('page' => 'members', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('members'), null, false, false, true);
+        } else {
+            $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
+        }
     }
 
     $member_id = mixed();
@@ -652,10 +658,11 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         'forename' => $forename,
         'surname' => $surname,
         'name' => $name,
-        'member_id' => is_null($member_id) ? '' : strval($member_id),
+        'member_id' => empty($member_id) ? '' : strval($member_id),
         'email_address' => $email_address,
         'sendid' => $sendid,
         'unsub_url' => $unsub_url,
+        'unsub_comcode' => do_lang(empty($member_id) ? 'NEWSLETTER_UNSUBSCRIBE_NEWSLETTER' : 'NEWSLETTER_UNSUBSCRIBE_MEMBER', $unsub_url->evaluate()),
     );
 
     foreach ($vars as $var => $sub) {
@@ -672,16 +679,44 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
  * @param  string $message The message
  * @param  string $subject The subject
  * @param  boolean $html_only Send in HTML only
- * @param  string $forename Forename
- * @param  string $surname Surname
- * @param  string $name Name
- * @param  string $address Address
- * @param  string $sendid Send ID
- * @param  string $hash Password hash
+ * @param  ?string $forename Forename (null: reasonable default)
+ * @param  ?string $surname Surname (null: reasonable default)
+ * @param  ?string $name Name (null: reasonable default)
+ * @param  ?string $address Address (null: reasonable default)
+ * @param  ?string $sendid Send ID (null: reasonable default)
+ * @param  ?string $hash Password hash (null: reasonable default)
  * @return array A triple: HTML version, Text version, Whether the e-mail has to be fully HTML
  */
-function newsletter_preview($message, $subject, $html_only, $forename, $surname, $name, $address, $sendid = 'test', $hash = '')
+function newsletter_preview($message, $subject, $html_only, $forename = null, $surname = null, $name = null, $address = null, $sendid = null, $hash = null)
 {
+    if (is_null($forename)) {
+        $forename = do_lang('SAMPLE_FORENAME');
+    }
+
+    if (is_null($surname)) {
+        $surname = do_lang('SAMPLE_SURNAME');
+    }
+
+    if (is_null($name)) {
+        $name = do_lang('SAMPLE_NAME');
+    }
+
+    if (is_null($address)) {
+        $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        if ($address == '') {
+            $address = do_lang('SAMPLE_ADDRESS');
+        }
+    }
+
+    if (is_null($sendid)) {
+        $sendid = 'm' . strval(get_member());
+    }
+
+    if (is_null($hash)) {
+        require_code('crypt');
+        $hash = ratchet_hash($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_pass_hash_salted'), 'xunsub');
+    }
+
     require_code('tempcode_compiler');
 
     // HTML message

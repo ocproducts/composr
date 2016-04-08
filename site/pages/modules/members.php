@@ -159,6 +159,10 @@ class Module_members
             require_css('cns_member_profiles');
         }
 
+        if ($type == 'unsub') {
+            $this->title = get_screen_title('newsletter:NEWSLETTER_UNSUBSCRIBED');
+        }
+
         return null;
     }
 
@@ -183,6 +187,9 @@ class Module_members
         }
         if ($type == 'view') {
             return $this->profile();
+        }
+        if ($type == 'unsub') {
+            return $this->newsletter_unsubscribe();
         }
 
         return new Tempcode();
@@ -215,5 +222,33 @@ class Module_members
 
         require_code('cns_profiles');
         return render_profile_tabset($this->title, $this->member_id_of, get_member(), $this->username);
+    }
+
+    /**
+     * The actualiser for unsubscribing from the newsletter.
+     *
+     * @return Tempcode The UI
+     */
+    public function newsletter_unsubscribe()
+    {
+        $id = get_param_integer('id');
+        $hash = get_param_string('hash');
+
+        $_subscriber = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $_subscriber)) {
+            fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+        $subscriber = $_subscriber[0];
+
+        require_code('crypt');
+        $needed_hash = ratchet_hash($subscriber['m_pass_hash_salted'], 'xunsub');
+
+        if ($hash != $needed_hash) {
+            warn_exit(do_lang_tempcode('COULD_NOT_UNSUBSCRIBE'));
+        }
+
+        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('id' => $id), '' ,1);
+
+        return inform_screen($this->title, do_lang_tempcode('newsletter:MEMBER_NEWSLETTER_UNSUBSCRIBED', escape_html(get_site_name())));
     }
 }
