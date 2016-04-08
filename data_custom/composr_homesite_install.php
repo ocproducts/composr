@@ -479,5 +479,9 @@ function composr_homesite_install()
         uninstall_addon($addon, $i == count($addons_to_remove) - 1);
     }
 
+    // Transifex
+    set_value('transifex_username', 'info@ocproducts.com', true);
+    set_value('transifex_password', 'TODO', true);
+
     echo 'Done';
 }
