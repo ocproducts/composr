@@ -1360,7 +1360,7 @@ class Module_admin_newsletter extends Standard_crud_module
             );
             if ($_spam_test != '') {
                 $spam_test = @json_decode($_spam_test, true);
-                if ($spam_test !== null) {
+                if ($spam_test !== null && isset($spam_test['success']) && isset($spam_test['report']) && isset($spam_test['score'])) {
                     if ($spam_test['success']) {
                         $spam_report = $spam_test['report'];
                         $spam_score = $spam_test['score'];
