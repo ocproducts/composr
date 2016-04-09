@@ -370,7 +370,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
 
     global $WANT_TEXT_ERRORS;
     if ($WANT_TEXT_ERRORS) {
-        header('Content-type: text/plain; charset=' . get_charset());
+        @header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
         debug_print_backtrace();
