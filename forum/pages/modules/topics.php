@@ -2557,7 +2557,7 @@ END;
         if ($add_poll == 1) {
             if (post_param_integer('add_poll', 0) == 1) {
                 // Show it worked / Refresh
-                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => 1), '_SELF');
+                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => is_null(post_param_date('schedule')) ? 1 : 0), '_SELF');
                 return redirect_screen($_title, $_url, do_lang_tempcode('SUCCESS'));
             }
         }
