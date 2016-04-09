@@ -173,7 +173,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
  * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
  * @param  LANGUAGE_NAME $lang Language to send in
  * @param  TIME $cutoff_time When to cut off content from
- * @return string The Comcode
+ * @return ?string The Comcode (null: no content)
  */
 function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
 {
@@ -273,6 +273,11 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
             }
         }
     }
+
+    if (count($automatic) == 0) {
+        return null;
+    }
+
     ksort($automatic);
     $_automatic = '';
     foreach ($automatic as $tp) {
