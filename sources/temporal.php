@@ -283,10 +283,10 @@ function cms_strftime($format, $timestamp = null)
 function get_timezoned_date_tempcode($timestamp, $include_time = true)
 {
     if (!$include_time) {
-        return symbol_tempcode('DATE', array(strval($timestamp)));
+        return symbol_tempcode('DATE', array('0', '0', '0', strval($timestamp)));
     }
 
-    return symbol_tempcode('DATE_AND_TIME', array(strval($timestamp)));
+    return symbol_tempcode('DATE_AND_TIME', array('0', '0', '0', strval($timestamp)));
 }
 
 /**

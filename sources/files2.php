@@ -1164,7 +1164,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            $ch = curl_init($_url);
+                                            $ch = curl_init($do_ip_forwarding ? $_url : $url);
                                             $curl_headers = array();
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
@@ -1228,7 +1228,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
                                             }
-                                            $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            if ($do_ip_forwarding) {
+                                                $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            }
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
                                                     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
