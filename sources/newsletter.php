@@ -658,6 +658,8 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         $name = $GLOBALS['FORUM_DRIVER']->get_displayname($name);
     }
 
+    require_lang('newsletter');
+
     $vars = array(
         'title' => $subject,
         'forename' => $forename,
