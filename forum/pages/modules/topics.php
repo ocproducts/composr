@@ -3244,10 +3244,7 @@ END;
         }
         $forum_id = $post_details[0]['p_cache_forum_id'];
 
-        $intended_solely_for = post_param_integer('intended_solely_for', -1);
-        if ($intended_solely_for == -1) {
-            $intended_solely_for = null;
-        }
+        $intended_solely_for = post_param_integer('intended_solely_for', null);
         $validated = post_param_integer('validated', 0);
         if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
@@ -3533,12 +3530,9 @@ END;
     public function _delete_topic() // Type
     {
         $topic_id = get_param_integer('id');
-        $post_target_topic_id = post_param_integer('select_topic_id', -1);
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = post_param_integer('manual_topic_id', -1);
-        }
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = null;
+        $post_target_topic_id = post_param_integer('select_topic_id', null);
+        if ($post_target_topic_id === null) {
+            $post_target_topic_id = post_param_integer('manual_topic_id', null);
         }
 
         require_code('cns_topics_action');

@@ -680,7 +680,7 @@ class Module_cms_calendar extends Standard_crud_module
      */
     public function get_event_parameters()
     {
-        $type = post_param_integer('type', INTEGER_MAGIC_NULL);
+        $type = post_param_integer('type', fractional_edit() ? INTEGER_MAGIC_NULL : false);
         if ((!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($type == db_get_first_id())) {
             access_denied('I_ERROR');
         }
@@ -689,7 +689,7 @@ class Module_cms_calendar extends Standard_crud_module
 
         $content = post_param_string('post', STRING_MAGIC_NULL);
 
-        $priority = post_param_integer('priority', INTEGER_MAGIC_NULL);
+        $priority = post_param_integer('priority', fractional_edit() ? INTEGER_MAGIC_NULL : 3);
 
         $recurrence = post_param_string('recurrence', STRING_MAGIC_NULL);
         if (($recurrence != 'none') && ($recurrence != STRING_MAGIC_NULL)) {
@@ -698,10 +698,7 @@ class Module_cms_calendar extends Standard_crud_module
                 $recurrence .= ' ' . $recurrence_pattern;
             }
         }
-        $recurrences = post_param_integer('recurrences', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($recurrences == -1) {
-            $recurrences = null;
-        }
+        $recurrences = post_param_integer('recurrences', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         $timezone = post_param_string('timezone', STRING_MAGIC_NULL);
         $do_timezone_conv = post_param_integer('do_timezone_conv', fractional_edit() ? INTEGER_MAGIC_NULL : 0);

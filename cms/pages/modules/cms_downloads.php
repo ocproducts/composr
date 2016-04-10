@@ -337,10 +337,7 @@ class Module_cms_downloads extends Standard_crud_module
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
         if ((is_null($id)) && (is_null($category_id))) {
-            $category_id = get_param_integer('cat', -1);
-            if ($category_id == -1) {
-                $category_id = null;
-            }
+            $category_id = get_param_integer('cat', null);
         }
 
         if (is_null($category_id)) {
@@ -545,15 +542,9 @@ class Module_cms_downloads extends Standard_crud_module
         $author = post_param_string('author', get_site_name());
         $url_redirect = post_param_string('url_redirect');
         $_out_mode_id = post_param_string('out_mode_id', '');
-        $out_mode_id = ($_out_mode_id == '') ? -1 : intval($_out_mode_id);
-        if ($out_mode_id == -1) {
-            $out_mode_id = null;
-        }
+        $out_mode_id = ($_out_mode_id == '') ? null : intval($_out_mode_id);
         $_licence = post_param_string('licence', '');
-        $licence = ($_licence == '') ? -1 : intval($_licence);
-        if ($licence == -1) {
-            $licence = null;
-        }
+        $licence = ($_licence == '') ? null : intval($_licence);
         $validated = post_param_integer('validated', 0);
         $additional_details = post_param_string('additional_details');
         $allow_trackbacks = post_param_integer('allow_trackbacks', 0);
@@ -636,16 +627,10 @@ class Module_cms_downloads extends Standard_crud_module
 
         $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
 
-        $category_id = post_param_integer('category_id', INTEGER_MAGIC_NULL);
+        $category_id = post_param_integer('category_id', fractional_edit() ? INTEGER_MAGIC_NULL : false);
         $name = post_param_string('name');
-        $out_mode_id = post_param_integer('out_mode_id', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($out_mode_id == -1) {
-            $out_mode_id = null;
-        }
-        $licence = post_param_integer('licence', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($licence == -1) {
-            $licence = null;
-        }
+        $out_mode_id = post_param_integer('out_mode_id', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $licence = post_param_integer('licence', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         if (!fractional_edit()) {
             $copy_to_server = post_param_integer('copy_to_server', 0);
@@ -675,7 +660,7 @@ class Module_cms_downloads extends Standard_crud_module
         $allow_rating = post_param_integer('allow_rating', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $allow_comments = post_param_integer('allow_comments', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
-        $file_size = post_param_integer('file_size', INTEGER_MAGIC_NULL);
+        $file_size = post_param_integer('file_size', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         $cost = post_param_integer('cost', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $submitter_gets_points = post_param_integer('submitter_gets_points', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $original_filename = post_param_string('original_filename', STRING_MAGIC_NULL);
@@ -1011,10 +996,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         $category = post_param_string('category');
 
-        $parent_id = post_param_integer('parent_id', INTEGER_MAGIC_NULL);
-        if ($parent_id == -1) {
-            $parent_id = null;
-        }
+        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         $description = post_param_string('description', STRING_MAGIC_NULL);
 

@@ -630,7 +630,7 @@ class Module_cms_news extends Standard_crud_module
 
         $news_article = post_param_string('post', STRING_MAGIC_NULL);
         if (post_param_string('main_news_category') != 'personal') {
-            $main_news_category = post_param_integer('main_news_category', INTEGER_MAGIC_NULL);
+            $main_news_category = post_param_integer('main_news_category', fractional_edit() ? INTEGER_MAGIC_NULL : false);
         } else {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

@@ -1373,19 +1373,13 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $title = post_param_string('title');
         $description = post_param_string('description');
         $notes = post_param_string('notes', '');
-        $parent_id = post_param_integer('parent_id', -1);
-        if ($parent_id == -1) {
-            $parent_id = null;
-        }
+        $parent_id = post_param_integer('parent_id', null);
         require_code('themes2');
         $rep_image = resize_rep_image(post_param_image('image', 'uploads/repimages', null, false));
 
         $move_days_lower = post_param_integer('move_days_lower', 30);
         $move_days_higher = post_param_integer('move_days_higher', 60);
-        $move_target = post_param_integer('move_target', -1);
-        if ($move_target == -1) {
-            $move_target = null;
-        }
+        $move_target = post_param_integer('move_target', null);
         if (!is_null($move_target)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {
                 access_denied('CATEGORY_ACCESS');
@@ -1431,14 +1425,11 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $title = post_param_string('title');
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
-        $parent_id = post_param_integer('parent_id', INTEGER_MAGIC_NULL);
+        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : false);
 
-        $move_days_lower = post_param_integer('move_days_lower', INTEGER_MAGIC_NULL);
-        $move_days_higher = post_param_integer('move_days_higher', INTEGER_MAGIC_NULL);
-        $move_target = post_param_integer('move_target', INTEGER_MAGIC_NULL);
-        if ($move_target == -1) {
-            $move_target = null;
-        }
+        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         if ((!is_null($move_target)) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {
                 access_denied('CATEGORY_ACCESS');
