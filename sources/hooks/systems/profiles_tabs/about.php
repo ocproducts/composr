@@ -353,7 +353,7 @@ class Hook_profiles_tabs_about
         if (((has_privilege($member_id_viewing, 'show_user_browsing')) || ($member_id_viewing == $member_id_of)) && (addon_installed('stats'))) {
             $last_stats = $GLOBALS['SITE_DB']->query_select('stats', array('browser', 'operating_system'), array('member_id' => $member_id_of), 'ORDER BY date_and_time DESC', 1);
             if (array_key_exists(0, $last_stats)) {
-                $user_agent = $last_stats[0]['browser'];
+                $user_agent = str_replace($last_stats[0]['operating_system'], '', $last_stats[0]['browser']);
                 $operating_system = $last_stats[0]['operating_system'];
             }
         }
