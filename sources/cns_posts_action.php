@@ -347,8 +347,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 if (!is_null($read_to_timestamp)) {
                     // Nothing unread since it was read?
                     if ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id), ' AND p_time>' . strval($read_to_timestamp) . ' AND id<>' . strval($post_id)) == 0) {
-                        $read_to_timestamp = time();
-                    } // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
+                        $read_to_timestamp = time(); // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
+                    }
                 }
                 cns_ping_topic_read($topic_id, $poster, $read_to_timestamp);
 

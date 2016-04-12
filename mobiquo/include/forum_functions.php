@@ -784,8 +784,8 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             }
 
             if (!is_image($attachment_row[0]['a_thumb_url'])) {
-                continue;
-            } // Can't deal with this
+                continue; // Can't deal with this
+            }
 
             $attachments[] = _get_attachment($attachment_row[0]);
         }
@@ -830,8 +830,8 @@ function _get_attachment($attachment_row)
     $url = find_script('attachment') . '?id=' . strval($attachment_row['id']);
 
     if (!is_image($attachment_row['a_url'])) {
-        $url = $thumb_url;
-    } // Can't deal with this
+        $url = $thumb_url; // Can't deal with this
+    }
 
     return array(
         'id' => $attachment_row['id'],

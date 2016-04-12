@@ -1445,6 +1445,10 @@ function get_param_string($name, $default = false, $no_security = false)
     require_code('input_filter');
     check_input_field_string($name, $ret);
 
+    if ($ret === false) { // Should not happen, but have seen in the wild via malicious bots sending corrupt URLs
+        $ret = $default;
+    }
+
     return $ret;
 }
 

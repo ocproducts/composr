@@ -656,8 +656,8 @@ class Module_calendar
                 $GLOBALS['HTTP_STATUS_CODE'] = '401';
                 if (!headers_sent()) {
                     if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                        header('HTTP/1.0 401 Unauthorized');
-                    } // Stop spiders ever storing the URL that caused this
+                        header('HTTP/1.0 401 Unauthorized'); // Stop spiders ever storing the URL that caused this
+                    }
                 }
                 access_denied('NOT_AS_GUEST_CALENDAR_PERFORMANCE');
             }

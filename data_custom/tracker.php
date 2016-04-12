@@ -34,7 +34,7 @@ if (!file_exists($FILE_BASE . DIRECTORY_SEPARATOR . 'sources' . DIRECTORY_SEPARA
 }
 require($FILE_BASE . '/sources/global.php');
 
-$GLOBALS['SITE_INFO']['block_mod_rewrite'] = '1';
+$GLOBALS['SITE_INFO']['block_url_schemes'] = '1';
 
 $content = do_block('main_mantis_tracker', $_GET);
 
