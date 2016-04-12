@@ -56,9 +56,9 @@ function check_input_field_string($name, &$val, $posted = false)
     $is_url = ($name == 'from') || ($name == 'preview_url') || ($name == 'redirect') || ($name == 'redirect_passon') || ($name == 'url');
     if ($is_url) {
         if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
-            if ($name == 'page') {
+            if ($name == 'page') { // Stop loops
                 $_GET[$name] = '';
-            } // Stop loops
+            }
             log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
         }
 

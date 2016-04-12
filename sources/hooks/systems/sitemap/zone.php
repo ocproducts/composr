@@ -317,6 +317,9 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
                     if (preg_match('#^redirect:#', $page_type) != 0) {
                         $details = $this->_request_page_details($page, $_zone);
+                        if ($details === false) {
+                            continue;
+                        }
                         $page_type = strtolower($details[0]);
                         $pages[$page] = $page_type;
                     }

@@ -920,9 +920,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $p_len = 1;
                                             while ($pos + $p_len < $len) {
                                                 $p_portion = substr($comcode, $pos - 1, $p_len);
-                                                if (substr_count(str_replace('{', ' { ', $p_portion), '{') == substr_count(str_replace('}', ' } ', $p_portion), '}')) {
+                                                if (substr_count(str_replace('{', ' { ', $p_portion), '{') == substr_count(str_replace('}', ' } ', $p_portion), '}')) { // str_replace is to workaround a Quercus bug #4494
                                                     break;
-                                                } // str_replace is to workaround a Quercus bug #4494
+                                                }
                                                 $p_len++;
                                             }
                                             $p_len--;

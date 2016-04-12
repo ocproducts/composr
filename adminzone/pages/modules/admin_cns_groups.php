@@ -613,14 +613,8 @@ class Module_admin_cns_groups extends Standard_crud_module
             $group_leader = INTEGER_MAGIC_NULL;
         }
 
-        $promotion_target = post_param_integer('promotion_target', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($promotion_target == -1) {
-            $promotion_target = null;
-        }
-        $promotion_threshold = post_param_integer('promotion_threshold', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($promotion_threshold == -1) {
-            $promotion_threshold = null;
-        }
+        $promotion_target = post_param_integer('promotion_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $promotion_threshold = post_param_integer('promotion_threshold', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         return array($group_leader, $promotion_target, $promotion_threshold);
     }
@@ -714,13 +708,13 @@ class Module_admin_cns_groups extends Standard_crud_module
             $promotion_target,
             $promotion_threshold,
             $group_leader,
-            post_param_integer('flood_control_submit_secs', INTEGER_MAGIC_NULL),
-            post_param_integer('flood_control_access_secs', INTEGER_MAGIC_NULL),
-            post_param_integer('max_daily_upload_mb', INTEGER_MAGIC_NULL),
-            post_param_integer('max_attachments_per_post', INTEGER_MAGIC_NULL),
+            post_param_integer('flood_control_submit_secs', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('flood_control_access_secs', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('max_daily_upload_mb', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('max_attachments_per_post', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('max_avatar_width', fractional_edit() ? INTEGER_MAGIC_NULL : 100),
             post_param_integer('max_avatar_height', fractional_edit() ? INTEGER_MAGIC_NULL : 100),
-            post_param_integer('max_post_length_comcode', INTEGER_MAGIC_NULL),
+            post_param_integer('max_post_length_comcode', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('max_sig_length_comcode', fractional_edit() ? INTEGER_MAGIC_NULL : 10000),
             post_param_integer('gift_points_base', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('gift_points_per_day', fractional_edit() ? INTEGER_MAGIC_NULL : 0),

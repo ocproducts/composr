@@ -95,7 +95,7 @@ function get_self_url_easy()
  * @param  boolean $root_if_posted Whether to direct to the default page if there was a POST request leading to where we are now (i.e. to avoid missing post fields when we go to this URL)
  * @param  ?array $extra_params A map of extra parameters for the URL (null: none)
  * @param  boolean $posted_too Whether to also keep POSTed data, in the GET request (useful if either_param_string is used to get the data instead of post_param_string - of course the POST data must be of the not--persistent-state-changing variety)
- * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
+ * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @return mixed The URL (Tempcode or string)
  */
 function get_self_url($evaluate = false, $root_if_posted = false, $extra_params = null, $posted_too = false, $avoid_remap = false)
@@ -161,10 +161,10 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
  * Encode a URL component in such a way that it won't get nuked by Apache %2F blocking security and url encoded '&' screwing. The get_param_string function will map it back. Hackerish but necessary.
  *
  * @param  URLPATH $url_part The URL to encode
- * @param  ?boolean $consider_rewrite Whether we have to consider mod_rewrite (null: don't know, look up)
+ * @param  ?boolean $consider_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode($url_part, $consider_rewrite = null)
+function cms_url_encode($url_part, $consider_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -172,10 +172,10 @@ function cms_url_encode($url_part, $consider_rewrite = null)
         return $url_part_encoded;
     }
 
-    if ($consider_rewrite === null) {
-        $consider_rewrite = can_try_mod_rewrite();
+    if ($consider_url_schemes === null) {
+        $consider_url_schemes = can_try_url_schemes();
     }
-    if ($consider_rewrite) { // These interfere with mod_rewrite processing because they get pre-decoded and make things ambiguous
+    if ($consider_url_schemes) { // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
         //$url_part = str_replace(':', '(colon)', $url_part); We'll ignore theoretical problem here- we won't expect there to be a need for encodings within redirect URL paths (params is fine, handles naturally)
         $url_part = str_replace(array('/', '&', '#'), array(':slash:', ':amp:', ':uhash:'), $url_part); // horrible but mod_rewrite does it so we need to
     }
@@ -187,10 +187,10 @@ function cms_url_encode($url_part, $consider_rewrite = null)
  * Encode a URL component, as per cms_url_encode but without slashes being encoded.
  *
  * @param  URLPATH $url_part The URL to encode
- * @param  ?boolean $consider_rewrite Whether we have to consider mod_rewrite (null: don't know, look up)
+ * @param  ?boolean $consider_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode_mini($url_part, $consider_rewrite = null)
+function cms_url_encode_mini($url_part, $consider_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -198,7 +198,7 @@ function cms_url_encode_mini($url_part, $consider_rewrite = null)
         return $url_part_encoded;
     }
 
-    return str_replace('%3Aslash%3A', '/', cms_url_encode($url_part, $consider_rewrite));
+    return str_replace('%3Aslash%3A', '/', cms_url_encode($url_part, $consider_url_schemes));
 }
 
 /**
@@ -209,7 +209,7 @@ function cms_url_encode_mini($url_part, $consider_rewrite = null)
  */
 function cms_url_decode_post_process($url_part)
 {
-    if ((strpos($url_part, ':') !== false) && (can_try_mod_rewrite())) {
+    if ((strpos($url_part, ':') !== false) && (can_try_url_schemes())) {
         $url_part = str_replace(array(':uhash:', ':amp:', ':slash:'), array('#', '&', '/'), $url_part);
         //$url_part = str_replace('(colon)', ':', $url_part);
     }
@@ -289,18 +289,18 @@ function is_page_https($zone, $page)
 }
 
 /**
- * Find if mod_rewrite is in use
+ * Find if a URL Scheme is in use
  *
- * @param  boolean $avoid_remap Whether to explicitly avoid using mod_rewrite. While it might seem weird to put this in as a function parameter, it removes duplicated logic checks in the code.
- * @return boolean Whether mod_rewrite is in use
+ * @param  boolean $avoid_remap Whether to explicitly avoid using URL Schemes. While it might seem weird to put this in as a function parameter, it removes duplicated logic checks in the code.
+ * @return boolean Whether a URL Scheme is in use
  */
-function can_try_mod_rewrite($avoid_remap = false)
+function can_try_url_schemes($avoid_remap = false)
 {
     if (!function_exists('get_option')) {
         return false;
     }
     $url_scheme = get_option('url_scheme');
-    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_url_scheme', 0) == 0) && ((empty($GLOBALS['SITE_INFO']['block_mod_rewrite'])) || ($GLOBALS['SITE_INFO']['block_mod_rewrite'] != '1')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
+    return (($url_scheme != 'RAW') && (get_param_integer('keep_no_url_scheme', 0) == 0) && ((empty($GLOBALS['SITE_INFO']['block_url_schemes'])) || ($GLOBALS['SITE_INFO']['block_url_schemes'] != '1')) && (!$avoid_remap)); // If we don't have the option on or are not using apache, return
 }
 
 /**
@@ -311,7 +311,7 @@ function can_try_mod_rewrite($avoid_remap = false)
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are true. (null: don't skip any)
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
- * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
+ * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return Tempcode The URL in Tempcode format.
@@ -470,7 +470,7 @@ function url_monikers_enabled()
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
- * @param  boolean $avoid_remap Whether to avoid mod_rewrite (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
+ * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return string The URL in string format.
@@ -592,9 +592,9 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         }
     }
 
-    // We either use mod_rewrite, or return a standard parameterisation
+    // We either use a URL Scheme, or return a standard parameterisation
     if (($USE_REWRITE_PARAMS_CACHE === null) || ($avoid_remap)) {
-        $use_rewrite_params = can_try_mod_rewrite($avoid_remap);
+        $use_rewrite_params = can_try_url_schemes($avoid_remap);
         if (!$avoid_remap) {
             $USE_REWRITE_PARAMS_CACHE = $use_rewrite_params;
         }
@@ -689,7 +689,7 @@ function _handle_array_var_append($key, $val, &$vars)
 }
 
 /**
- * Attempt to use mod_rewrite to improve this URL.
+ * Attempt to use a URL Scheme to improve this URL.
  *
  * @param  ID_TEXT $zone_name The name of the zone for this
  * @param  array $vars A map of variables to include in our URL

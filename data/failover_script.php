@@ -256,9 +256,9 @@ function set_failover_mode($new_mode)
     $orig_config_contents = $config_contents;
     $config_contents = preg_replace('#^(\$SITE_INFO\[\'failover_mode\'\]\s*=\s*\')[^\']+(\';)#m', '$1' . addslashes($new_mode) . '$2', $config_contents);
 
-    if ($orig_config_contents == $config_contents) {
+    if ($orig_config_contents == $config_contents) { // No change needed
         return;
-    } // No change needed
+    }
 
     file_put_contents($path, $config_contents, LOCK_EX);
 

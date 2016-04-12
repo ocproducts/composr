@@ -878,6 +878,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     if (is_null($add_date)) {
         $add_date = time();
     }
+
     if (is_null($submitter)) {
         $submitter = get_member();
     }
@@ -886,12 +887,15 @@ function add_download($category_id, $name, $url, $description, $author, $additio
         if (url_is_local($url)) {
             $file_size = @filesize(get_custom_file_base() . '/' . rawurldecode($url)) or $file_size = null;
         } else {
-            $file_size = @filesize($url) or $file_size = null;
+            http_download_file($url, 0, false);
+            $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];
         }
     }
+
     if (!addon_installed('unvalidated')) {
         $validated = 1;
     }
+
     $map = array(
         'download_data_mash' => '',
         'download_licence' => $licence,
@@ -1064,11 +1068,16 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     require_code('urls2');
     suggest_new_idmoniker_for('downloads', 'view', strval($id), '', $name);
 
-    if (($file_size == 0) || (url_is_local($url))) {
-        if (url_is_local($url)) {
-            $file_size = filesize(get_custom_file_base() . '/' . rawurldecode($url));
-        } else {
-            $file_size = @filesize($url) or $file_size = null;
+    if (fractional_edit()) {
+        $file_size = INTEGER_MAGIC_NULL;
+    } else {
+        if (($file_size == 0) || (url_is_local($url))) {
+            if (url_is_local($url)) {
+                $file_size = filesize(get_custom_file_base() . '/' . rawurldecode($url));
+            } else {
+                http_download_file($url, 0, false);
+                $file_size = $GLOBALS['HTTP_DOWNLOAD_SIZE'];
+            }
         }
     }
 
@@ -1084,9 +1093,11 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     require_code('files2');
     delete_upload('uploads/downloads', 'download_downloads', 'url', 'id', $id, $url);
 
-    require_code('tasks');
-    require_lang('downloads');
-    call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename), false, false, false);
+    if (!fractional_edit()) {
+        require_code('tasks');
+        require_lang('downloads');
+        call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, null, null, null, false), 'index_download', array($id, $url, $original_filename), false, false, false);
+    }
 
     if (!addon_installed('unvalidated')) {
         $validated = 1;
