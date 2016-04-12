@@ -1162,8 +1162,8 @@ function array_html_preg_replace($element, $array, $semihtml)
                         $subbed = preg_replace($pattern . 'A', $replacement, $segment);
                         $semihtml = $before . $subbed . $after;
                         if ($semihtml != $old_semihtml) {
-                            break 3;
-                        } // We need to start again now as the offsets have all changed
+                            break 3; // We need to start again now as the offsets have all changed
+                        }
                         break; // Ok, well at least we know we found our tag bound, so no more need to search
                     }
                 }

@@ -2140,8 +2140,8 @@ function ecv_TRIM($lang, $escaped, $param)
 function cms_trim($text, $try_hard = true)
 {
     if ((preg_match('#[<&]#', $text) == 0) && (memory_get_usage() > 1024 * 1024 * 40)) {
-        return trim($text);
-    } // Don't have enough memory
+        return trim($text); // Don't have enough memory
+    }
 
     if ($GLOBALS['XSS_DETECT']) {
         $is_escaped = ocp_is_escaped($text);

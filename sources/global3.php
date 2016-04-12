@@ -1561,8 +1561,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 $env_val = ($current_params === null) ? call_user_func_array($req_func, array($subparts[0], null)) : (isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : null);
                 if ($subparts[1] == '_WILD') {
                     if ($env_val !== null) {
-                        $subparts[1] = $env_val;
-                    } // null won't match to a wildcard
+                        $subparts[1] = $env_val; // null won't match to a wildcard
+                    }
                 } else {
                     if ($env_val === null) {
                         $env_val = $default;

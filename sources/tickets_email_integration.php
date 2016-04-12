@@ -161,11 +161,13 @@ function ticket_incoming_scan()
             }
             _imap_get_part($resource, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total);
 
-            if (!is_non_human_email($subject, $body, $full_header)) {
+            $email_from = (strlen($header->reply_toaddress) > 0) ? $header->reply_toaddress : $header->fromaddress;
+
+            if (!is_non_human_email($subject, $body, $full_header, $email_from)) {
                 imap_clearflag_full($resource, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 ticket_incoming_message(
-                    (strlen($header->reply_toaddress) > 0) ? $header->reply_toaddress : $header->fromaddress,
+                    $email_from,
                     $subject,
                     $body,
                     $attachments
@@ -285,10 +287,15 @@ function email_comcode_from_text($body)
  * @param  string $subject Subject line
  * @param  string $body Message body
  * @param  string $full_header Message headers
+ * @param  EMAIL $email_from From address
  * @return boolean Whether it should not be processed
  */
-function is_non_human_email($subject, $body, $full_header)
+function is_non_human_email($subject, $body, $full_header, $email_from)
 {
+    if ($email_from == get_option('ticket_email_from') || $email_from == get_option('staff_address') || $email_from == get_option('website_email')) {
+        return true;
+    }
+
     $full_header = "\r\n" . strtolower($full_header);
     if (strpos($full_header, "\r\nfrom: <>") !== false) {
         return true;

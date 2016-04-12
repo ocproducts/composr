@@ -1768,7 +1768,7 @@ class Module_topics
             $agreed = get_param_integer('agreed', 0);
             $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
             $just_member_row = db_map_restrict($member_row, array('id', 'm_pt_rules_text'));
-            $rules = get_translated_tempcode('f_members', $member_row, 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
+            $rules = get_translated_tempcode('f_members', $just_member_row, 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
             if (($agreed == 0) && (!$rules->is_empty())) {
                 $url = get_self_url(false, false, array('agreed' => '1'));
                 $title = get_screen_title('NEW_PRIVATE_TOPIC');
@@ -2557,7 +2557,7 @@ END;
         if ($add_poll == 1) {
             if (post_param_integer('add_poll', 0) == 1) {
                 // Show it worked / Refresh
-                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => 1), '_SELF');
+                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => is_null(post_param_date('schedule')) ? 1 : 0), '_SELF');
                 return redirect_screen($_title, $_url, do_lang_tempcode('SUCCESS'));
             }
         }
@@ -3244,10 +3244,7 @@ END;
         }
         $forum_id = $post_details[0]['p_cache_forum_id'];
 
-        $intended_solely_for = post_param_integer('intended_solely_for', -1);
-        if ($intended_solely_for == -1) {
-            $intended_solely_for = null;
-        }
+        $intended_solely_for = post_param_integer('intended_solely_for', null);
         $validated = post_param_integer('validated', 0);
         if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
@@ -3533,12 +3530,9 @@ END;
     public function _delete_topic() // Type
     {
         $topic_id = get_param_integer('id');
-        $post_target_topic_id = post_param_integer('select_topic_id', -1);
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = post_param_integer('manual_topic_id', -1);
-        }
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = null;
+        $post_target_topic_id = post_param_integer('select_topic_id', null);
+        if ($post_target_topic_id === null) {
+            $post_target_topic_id = post_param_integer('manual_topic_id', null);
         }
 
         require_code('cns_topics_action');

@@ -285,6 +285,10 @@ class Module_galleries
         inform_non_canonical_parameter('video_select');
 
         if ($type == 'image' || $type == 'video') {
+            if (get_param_integer('ajax', 0) == 1) {
+                header('Content-type: text/xml');
+            }
+
             if (get_param_integer('slideshow', 0) == 1) {
                 attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
             }
@@ -1082,10 +1086,6 @@ class Module_galleries
         }
         $root = $this->root;
 
-        if (get_param_integer('ajax', 0) == 1) {
-            header('Content-type: text/xml');
-        }
-
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
         if ((get_value('no_individual_gallery_view') === '1') && ($GLOBALS['SITE_DB']->query_select_value('galleries', 'flow_mode_interface', array('name' => $cat)) == '1')) {
@@ -1202,10 +1202,6 @@ class Module_galleries
             $category_name = $true_category_name;
         }
         $root = $this->root;
-
-        if (get_param_integer('ajax', 0) == 1) {
-            header('Content-type: text/xml');
-        }
 
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 

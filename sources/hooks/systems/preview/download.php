@@ -48,14 +48,8 @@ class Hook_preview_download
 
         $category_id = post_param_integer('category_id');
         $name = post_param_string('name');
-        $out_mode_id = post_param_integer('out_mode_id', -1);
-        if ($out_mode_id == -1) {
-            $out_mode_id = null;
-        }
-        $licence = post_param_integer('licence', -1);
-        if ($licence == -1) {
-            $licence = null;
-        }
+        $out_mode_id = post_param_integer('out_mode_id', null);
+        $licence = post_param_integer('licence', null);
 
         $description = post_param_string('description', '');
         $author = post_param_string('author', get_site_name());

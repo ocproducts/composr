@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,jquery}
 
 <div class="gallery_entry_screen" id="gallery_entry_screen" itemscope="itemscope" itemtype="http://schema.org/{+START,IF_PASSED,VIDEO}Video{+END}{+START,IF_NON_PASSED,VIDEO}Image{+END}Object">
 	{TITLE}
@@ -124,14 +125,14 @@
 		{+END}
 
 		{+START,IF,{SLIDESHOW}}
-			{+START,IF_NON_EMPTY,{E_TITLE}{COMMENTS}}
+			{+START,IF_NON_EMPTY,{E_TITLE}{COMMENT_DETAILS}}
 				<p itemprop="caption">
 					{+START,IF_NON_EMPTY,{E_TITLE}}
-						<strong>{E_TITLE*}</strong>{+START,IF_NON_EMPTY,{COMMENTS}} &ndash;{+END}
+						<strong>{E_TITLE*}</strong>{+START,IF_NON_EMPTY,{COMMENT_DETAILS}} &ndash;{+END}
 					{+END}
 
-					{+START,IF_NON_EMPTY,{COMMENTS}}
-						{COMMENTS}
+					{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
+						{COMMENT_DETAILS}
 					{+END}
 				</p>
 			{+END}

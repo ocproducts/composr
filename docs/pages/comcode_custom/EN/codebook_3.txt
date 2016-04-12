@@ -572,7 +572,7 @@ We have the following which are either unlikely to be useful, or potentially uns
 
 [title="4"]Hidden 'keep' parameters[/title]
 
-'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and short-URLs are not enabled, use a '?' instead of a '&'.
+'keep' parameters are placed inside URLs in order to give Composr some extra information when loading a page. Their URL-presence is automatically relayed/preserved in all Composr links within the page. To enable a 'keep' parameter, simply append [tt]&<name>=1[/tt] to the URL (replace '1' if appropriate, but usually we do use '1' to enable). If there are no parameters in the URL and URL Schemes are not enabled, use a '?' instead of a '&'.
 
 The 'keep' parameters available are:
  - [tt]keep_cache[/tt] -- set to '1' to temporarily enable caching or '0' to temporarily disable. You can also use [tt]cache[/tt] so it works on a per-page basis, with the exception of this not affecting the template and language caching.

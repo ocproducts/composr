@@ -369,8 +369,8 @@
 
 						{+START,IF_PASSED,USER_AGENT}
 							<tr>
-								<th class="de_th">{!USER_AGENT}:</th>
-								<td>{USER_AGENT*}</td>
+								<th class="de_th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
+								<td><abbr title="{USER_AGENT*}">{$PREG_REPLACE*, \([^\(\)]*\),,{$PREG_REPLACE,\.\d+,,{$REPLACE,({OPERATING_SYSTEM}),,{USER_AGENT}}}}</abbr></td>
 							</tr>
 						{+END}
 

@@ -63,9 +63,10 @@ class Hook_preview_block_comcode
         foreach ($parameters as $parameter) {
             $value = post_param_string($parameter, null);
             if (is_null($value)) {
+                // If not on form, continue, otherwise must be 0
                 if (post_param_integer('tick_on_form__' . $parameter, null) === null) {
                     continue;
-                } // If not on form, continue, otherwise must be 0
+                }
                 $value = '0';
             }
 

@@ -77,7 +77,7 @@ function init__site()
 
     // SEO redirection
     require_code('urls');
-    if (can_try_mod_rewrite()) {
+    if (can_try_url_schemes()) {
         $ruri = cms_srv('REQUEST_URI');
 
         $url_scheme = get_option('url_scheme');

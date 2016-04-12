@@ -328,8 +328,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
         $is_threaded = get_param_integer('threaded', (is_null($topic_info['f_is_threaded']) ? 0 : $topic_info['f_is_threaded']));
         if ($is_threaded != 1) {
-            $is_threaded = 0;
-        } // In case of invalid URLs causing inconsistent handling
+            $is_threaded = 0; // In case of invalid URLs causing inconsistent handling
+        }
 
         // Some general info
         $out = array(
