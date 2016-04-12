@@ -61,7 +61,7 @@ function unit_testing_run()
     echo '<ul>';
     //echo '<li><em><a href="?id=!">All</a></em></li>' . chr(10);             Better to use Chrome "Open all selected links" extension
     foreach ($sets as $set) {
-        echo '<li><a href="?id=' . escape_html($set) . '">' . escape_html($set) . '</a></li>' . "\n";
+        echo '<li><a href="?id=' . escape_html($set) . '&amp;close_if_passed=1">' . escape_html($set) . '</a></li>' . "\n";
     }
     echo '</ul>';
 

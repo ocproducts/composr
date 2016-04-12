@@ -97,6 +97,18 @@ class HtmlReporter extends SimpleReporter {
         print "<strong>" . strval($this->getFailCount()) . "</strong> fails and ";
         print "<strong>" . strval($this->getExceptionCount()) . "</strong> exceptions.";
         print "</div>\n";
+
+        if ($colour == "green" && !empty($_GET['close_if_passed'])) {
+            print "
+                <script>
+                    if (typeof window.history!='undefined' && typeof window.history.length!='undefined' && window.history.length==1)
+                    {
+                        window.close();
+                    }
+                </script>
+            ";
+        }
+
         print "</body>\n</html>\n";
     }
 
