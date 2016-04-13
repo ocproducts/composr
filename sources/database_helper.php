@@ -640,11 +640,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
     }
     $type = str_replace(array('*', '?'), array('', ''), $_type);
     $extra = (!is_null($new_name)) ? $new_name : $name;
-    $extra2 = '';
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
-        $extra2 = 'IGNORE ';
-    }
-    $query = 'ALTER ' . $extra2 . 'TABLE ' . $this_ref->table_prefix . $table_name;
+    $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' CHANGE ';
     if (strpos(get_db_type(), 'mysql') !== false) {
         $query .= '`' . $name . '`'; // In case we renamed due to change in keywords
