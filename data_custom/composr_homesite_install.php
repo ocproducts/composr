@@ -245,6 +245,7 @@ function composr_homesite_install()
     $cat_id = cns_make_forum('Introduce yourself', '', 1/*forum grouping*/, null, 1/*parent forum*/, 0/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
     set_global_category_access('forums', $cat_id);
     $deploying_forum_id = cns_make_forum('Deploying', '', 3/*forum grouping*/, null, 1/*parent forum*/, 1/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
+    set_global_category_access('forums', $deploying_forum_id);
     $cat_id = cns_make_forum('Designing', '', 3/*forum grouping*/, null, 1/*parent forum*/, 2/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
     set_global_category_access('forums', $cat_id);
     $cat_id = cns_make_forum('Developing', '', 3/*forum grouping*/, null, 1/*parent forum*/, 3/*position*/, 1/*increment*/, 0/*alpha order*/, '', '', '');
@@ -334,6 +335,8 @@ function composr_homesite_install()
 
     require_code('cns_groups_action');
     cns_make_group('Composr supporters', 0, 0, 0, 'I supposr Composr', '', null, null, null, null, null, null, null, null, null, null, null, null, 3/*gift points per day*/, 0, 0, 0, null, 1, 1/*open membership*/);
+
+    $GLOBALS['FORUM_DB']->query_update('f_groups', array('g_max_post_length_comcode' => 3000000));
 
     // Remove unneeded CPFs
     // --------------------
