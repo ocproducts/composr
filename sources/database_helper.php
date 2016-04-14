@@ -256,7 +256,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
             if (is_null($db_type)) {
-                $db_type = 'SHORT_TEXT';
+                $db_type = 'INTEGER';
                 if (running_script('install')) {
                     fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field . ').');
                 }

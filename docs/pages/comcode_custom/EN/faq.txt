@@ -289,8 +289,8 @@ You need to create [tt]php.ini[/tt] files that override your web-server's defaul
 This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
 [codebox="INI"]
 ; Composr needs uploads; many hosts leave these low
-post_max_size=16M
-upload_max_filesize=16M
+post_max_size=500M
+upload_max_filesize=500M
 
 ; Turn insecure things off
 allow_url_fopen=off

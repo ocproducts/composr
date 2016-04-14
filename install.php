@@ -2867,8 +2867,8 @@ END;
     if ($php_value_ok) {
         $clauses[] = <<<END
 # Composr needs uploads; many hosts leave these low
-php_value post_max_size "16M"
-php_value upload_max_filesize "16M"
+php_value post_max_size "500M"
+php_value upload_max_filesize "500M"
 END;
     }
 
