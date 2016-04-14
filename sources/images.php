@@ -1072,7 +1072,9 @@ function adjust_pic_orientation($img, $exif)
             }
 
             if ($deg != 0) {
-                $img = imagerotate($img, floatval($deg), 0);
+                $imgdest = imagerotate($img, floatval($deg), 0);
+                imagedestroy($img);
+                $img = $imgdest;
             }
 
             if ($mirror) {

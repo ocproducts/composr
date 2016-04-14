@@ -758,21 +758,23 @@ class Module_admin_version
             $max = 300;
             do {
                 $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
-                foreach ($keywords as $_keyword) {
-                    $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
-                    foreach ($_keywords as $keyword) {
-                        if (trim($keyword) == '') {
-                            continue;
-                        }
+                if (!is_null($keywords)) {
+                    foreach ($keywords as $_keyword) {
+                        $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
+                        foreach ($_keywords as $keyword) {
+                            if (trim($keyword) == '') {
+                                continue;
+                            }
 
-                        $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
-                            'meta_for_type' => $_keyword['meta_for_type'],
-                            'meta_for_id' => $_keyword['meta_for_id'],
-                        ) + insert_lang('meta_keyword', $keyword, 2));
+                            $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
+                                'meta_for_type' => $_keyword['meta_for_type'],
+                                'meta_for_id' => $_keyword['meta_for_id'],
+                            ) + insert_lang('meta_keyword', $keyword, 2));
+                        }
+                        delete_lang($_keyword['meta_keywords']);
                     }
-                    delete_lang($_keyword['meta_keywords']);
+                    $start += $max;
                 }
-                $start += $max;
             }
             while (count($keywords) > 0);
 

@@ -330,7 +330,11 @@ function get_db_type()
     if (!isset($SITE_INFO['db_type'])) {
         return is_dir(get_custom_file_base() . '/uploads/website_specific/' . get_db_site()) ? 'xml' : 'mysql';
     }
-    return $SITE_INFO['db_type'];
+    $ret = $SITE_INFO['db_type'];
+    if ($ret == 'mysql' && !function_exists('mysql_connect')) {
+        $ret = 'mysqli';
+    }
+    return $ret;
 }
 
 /**

@@ -256,7 +256,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
             if (is_null($db_type)) {
-                $db_type = 'SHORT_TEXT';
+                $db_type = 'INTEGER';
                 if (running_script('install')) {
                     fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field . ').');
                 }
@@ -640,11 +640,7 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
     }
     $type = str_replace(array('*', '?'), array('', ''), $_type);
     $extra = (!is_null($new_name)) ? $new_name : $name;
-    $extra2 = '';
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
-        $extra2 = 'IGNORE ';
-    }
-    $query = 'ALTER ' . $extra2 . 'TABLE ' . $this_ref->table_prefix . $table_name;
+    $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' CHANGE ';
     if (strpos(get_db_type(), 'mysql') !== false) {
         $query .= '`' . $name . '`'; // In case we renamed due to change in keywords

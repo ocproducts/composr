@@ -1117,6 +1117,9 @@ function load_moniker_hooks()
                 if ($ob_info === null) {
                     continue;
                 }
+                if (!isset($ob_info['view_page_link_pattern'])) {
+                    continue;
+                }
                 $ob_info['_hook'] = $hook;
                 $CONTENT_OBS[$ob_info['view_page_link_pattern']] = $ob_info;
 

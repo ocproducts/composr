@@ -67,9 +67,7 @@ function _multi_lang()
     }
 
     foreach ($_langs as $lang => $dir) {
-        if (/*optimisation*/
-        is_file((($dir == 'lang_custom') ? get_custom_file_base() : get_file_base()) . '/' . $dir . '/' . $lang . '/global.ini')
-        ) {
+        if (/*optimisation*/is_file((($dir == 'lang_custom') ? get_custom_file_base() : get_file_base()) . '/' . $dir . '/' . $lang . '/global.ini')) {
             $MULTI_LANG_CACHE = true;
             break;
         }

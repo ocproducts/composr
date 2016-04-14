@@ -574,9 +574,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
                         break;
                     case 'PREINVITED_TO_IM':
                     case 'JOIN_IM':
-                        if ((array_key_exists($event['e_room_id'], $room_check)) && (/*Check inviter not left*/
-                            check_chatroom_access($room_check[$event['e_room_id']], true, $event['e_member_id'], true)) && (check_chatroom_access($room_check[$event['e_room_id']], true, null, true))
-                        ) {
+                        if ((array_key_exists($event['e_room_id'], $room_check)) && (/*Check inviter not left*/check_chatroom_access($room_check[$event['e_room_id']], true, $event['e_member_id'], true)) && (check_chatroom_access($room_check[$event['e_room_id']], true, null, true))) {
                             $send_out = true;
                         }
                         break;

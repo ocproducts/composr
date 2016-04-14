@@ -99,7 +99,7 @@ class Text_Diff
      *                                    lines from a file.
      * @param array $to_lines An array of strings.
      */
-    function Text_Diff($engine, $params)
+    function __construct($engine, $params)
     {
         // Backward compatibility workaround.
         if (!is_string($engine)) {
@@ -587,7 +587,7 @@ class Text_Diff3_Op
     var $final2;
     var $orig;
 
-    function Text_Diff3_Op($orig = false, $final1 = false, $final2 = false)
+    function __construct($orig = false, $final1 = false, $final2 = false)
     {
         $this->orig = $orig ? $orig : array();
         $this->final1 = $final1 ? $final1 : array();
@@ -653,7 +653,7 @@ class Text_Diff3_Op_copy extends Text_Diff3_Op
 class Text_Diff3_BlockBuilder
 {
 
-    function Text_Diff3_BlockBuilder()
+    function __construct()
     {
         $this->_init();
     }
@@ -1413,7 +1413,7 @@ class Text_Diff_Renderer
     /**
      * Constructor.
      */
-    function Text_Diff_Renderer($params = array())
+    function __construct($params = array())
     {
         foreach ($params as $param => $value) {
             $v = '_' . $param;
