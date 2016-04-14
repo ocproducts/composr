@@ -740,7 +740,7 @@ function check($structure)
 
         $CURRENT_CLASS = $class['name'];
         foreach ($class['functions'] as $function) {
-            if ($function['name'] == $class['name']) {
+            if (strtolower($function['name']) == strtolower($class['name'])) {
                 log_warning('Use __construct for construct name, not \'' . $function['name'] . '\'', $function['offset']);
             }
 

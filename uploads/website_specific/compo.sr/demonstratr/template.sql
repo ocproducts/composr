@@ -12501,7 +12501,7 @@ insert into `cms_modules` values('Chris Graham','',null,'ocProducts','admin_perm
  ('Chris Graham','',null,'ocProducts','recommend','5'),
  ('Chris Graham','',null,'ocProducts','filedump','4'),
  ('Chris Graham','',null,'ocProducts','supermembers','2'),
- ('Chris Graham','',null,'ocProducts','admin_emaillog','2'),
+ ('Chris Graham','',null,'ocProducts','admin_email_log','2'),
  ('Chris Graham','',null,'ocProducts','admin_notifications','1'),
  ('Chris Graham','',null,'ocProducts','admin_realtime_rain','1'),
  ('Chris Graham','',null,'ocProducts','notifications','1'),

@@ -54,7 +54,7 @@ class PHPCrosswordClient
 	 * Constructor
 	 * @param string PHP Crossword server URL
 	 */
-	function PHPCrosswordClient($server_url)
+	function __construct($server_url)
 	{
 		$this->url = $server_url;
 	}
