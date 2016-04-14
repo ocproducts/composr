@@ -139,7 +139,7 @@ function get_ticket_type($ticket_type_id)
 {
     if (is_null($ticket_type_id)) {
         // LEGACY
-        return array('ticket_type' => null, 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
+        return array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', null, array('id' => $ticket_type_id), '', 1);

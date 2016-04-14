@@ -103,9 +103,7 @@ function _find_all_langs($even_empty_langs = false)
             while (false !== ($file = readdir($_dir))) {
                 if ((!isset($file[5])) && ($file[0] != '.') && (($file == 'EN') || (!should_ignore_file('lang_custom/' . $file, IGNORE_ACCESS_CONTROLLERS)))) {
                     if (is_dir(get_custom_file_base() . '/lang_custom/' . $file)) {
-                        if (($even_empty_langs) || (/*optimisation*/
-                            is_file(get_custom_file_base() . '/lang_custom/' . $file . '/global.ini'))
-                        ) {
+                        if (($even_empty_langs) || (/*optimisation*/is_file(get_custom_file_base() . '/lang_custom/' . $file . '/global.ini'))) {
                             $_langs[$file] = 'lang_custom';
                         } else {
                             $_dir2 = @opendir(get_custom_file_base() . '/lang_custom/' . $file);

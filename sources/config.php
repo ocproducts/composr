@@ -138,7 +138,7 @@ function load_config_options()
         if (running_script('install')) {
             $temp = array();
         } else {
-            if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
+            if ($GLOBALS['SITE_DB']->table_exists('config', true)) { // LEGACY: Has to use old naming from pre v10; also has to use $really, because of possibility of corrupt db_meta table
                 $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
                 if ($temp === null) {
                     critical_error('DATABASE_FAIL');

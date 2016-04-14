@@ -979,17 +979,17 @@ class Module_cms_galleries extends Standard_crud_module
     }
 
     /**
-     * Filter any uploaded image such that it is watermarked.
+     * Filter any uploaded image such that it is watermarked. Also has a side effect of fixing EXIF rotation.
      */
     public function handle_resizing_and_watermarking()
     {
-        if (((is_plupload(true)) && (array_key_exists('file', $_FILES))) || ((array_key_exists('file', $_FILES)) && (array_key_exists('tmp_name', $_FILES['file'])) && (function_exists('imagetypes')))) {
+        if (((is_plupload(true)) && (array_key_exists('image__upload', $_FILES))) || ((array_key_exists('image__upload', $_FILES)) && (array_key_exists('tmp_name', $_FILES['image__upload'])) && (function_exists('imagetypes')))) {
             // See if we need to resize the image
-            constrain_gallery_image_to_max_size($_FILES['file']['tmp_name'], $_FILES['file']['name'], intval(get_option('maximum_image_size')));
+            constrain_gallery_image_to_max_size($_FILES['image__upload']['tmp_name'], $_FILES['image__upload']['name'], intval(get_option('maximum_image_size')));
             // See if we need to do watermarking
             $watermark = post_param_integer('watermark', 0);
             if ($watermark == 1) {
-                watermark_gallery_image(post_param_string('cat'), $_FILES['file']['tmp_name'], $_FILES['file']['name']);
+                watermark_gallery_image(post_param_string('cat'), $_FILES['image__upload']['tmp_name'], $_FILES['image__upload']['name']);
             }
         }
     }
@@ -1305,7 +1305,7 @@ class Module_cms_galleries extends Standard_crud_module
         $url = post_param_image('image', 'uploads/galleries', null, true, false, $filename, $thumb_url);
 
         require_code('upload_syndication');
-        $url = handle_upload_syndication('file', $title, $description, $url, $filename, false);
+        $url = handle_upload_syndication('image__upload', $title, $description, $url, $filename, false);
 
         $this->donext_type = $cat;
 
@@ -1380,7 +1380,7 @@ class Module_cms_galleries extends Standard_crud_module
             $url = post_param_image('image', 'uploads/galleries', null, true, true, $filename, $thumb_url);
 
             require_code('upload_syndication');
-            $url = handle_upload_syndication('file', $title, $description, $url, $filename, false);
+            $url = handle_upload_syndication('image__upload', $title, $description, $url, $filename, false);
         } else {
             $url = STRING_MAGIC_NULL;
             $thumb_url = STRING_MAGIC_NULL;

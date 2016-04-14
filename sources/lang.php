@@ -438,10 +438,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
                 }
             }
         }
-        if ((!$support_smart_decaching) || ((is_file($cache_path)) && (is_file($lang_file)) && (@/*race conditions*/
-            filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/
-            filemtime($cache_path) > filemtime($lang_file_default)))
-        ) {
+        if ((!$support_smart_decaching) || ((is_file($cache_path)) && (is_file($lang_file)) && (@/*race conditions*/filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/filemtime($cache_path) > filemtime($lang_file_default)))) {
             if ($lang === null) {
                 $lang = user_lang();
             }
@@ -501,10 +498,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
             $lang_file_default = $lang_file;
         }
 
-        if ((is_file($cache_path)) && ((!is_file($lang_file)) || ((@/*race conditions*/
-           filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/
-           filemtime($cache_path) > filemtime($lang_file_default))))
-        ) {
+        if ((is_file($cache_path)) && ((!is_file($lang_file)) || ((@/*race conditions*/filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/filemtime($cache_path) > filemtime($lang_file_default))))) {
             $tmp = @file_get_contents($cache_path);
             if ($tmp != '') {
                 $unserialized = @unserialize($tmp);
@@ -656,58 +650,58 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
 
     if ($lang === null) {
         $lang = ($USER_LANG_CACHED === null) ? user_lang() : $USER_LANG_CACHED;
-    }// else // This else assumes we initially load all language files in the users language. Reasonable. EDIT: Actually, no it is not - the user_lang() initially is not accurate until Composr gets past a certain startup position
-    {
-        if ($GLOBALS['SEMI_DEV_MODE']) { // Special syntax for easily inlining language strings while coding
-            $pos = strpos($codename, '=');
-            if ($pos !== false) {
-                require_code('lang2');
-                inline_language_editing($codename, $lang);
+    }
+
+    if ($GLOBALS['SEMI_DEV_MODE']) { // Special syntax for easily inlining language strings while coding
+        $pos = strpos($codename, '=');
+        if ($pos !== false) {
+            require_code('lang2');
+            inline_language_editing($codename, $lang);
+        }
+    }
+
+    $there = isset($LANGUAGE_STRINGS_CACHE[$lang][$codename]);
+
+    if (!$there) {
+        $pos = strpos($codename, ':');
+        if ($pos !== false) {
+            $lang_file = substr($codename, 0, $pos);
+            $codename = substr($codename, $pos + 1);
+
+            $there = isset($LANGUAGE_STRINGS_CACHE[$lang][$codename]);
+            if (!$there) {
+                require_lang($lang_file, null, null, !$require_result);
             }
         }
 
         $there = isset($LANGUAGE_STRINGS_CACHE[$lang][$codename]);
+    }
 
-        if (!$there) {
-            $pos = strpos($codename, ':');
-            if ($pos !== false) {
-                $lang_file = substr($codename, 0, $pos);
-                $codename = substr($codename, $pos + 1);
+    if ($RECORD_LANG_STRINGS) {
+        global $RECORDED_LANG_STRINGS;
+        $RECORDED_LANG_STRINGS[$codename] = true;
+    }
 
-                $there = isset($LANGUAGE_STRINGS_CACHE[$lang][$codename]);
-                if (!$there) {
-                    require_lang($lang_file, null, null, !$require_result);
+    if ((!$there) && ((!isset($LANGUAGE_STRINGS_CACHE[$lang])) || (!array_key_exists($codename, $LANGUAGE_STRINGS_CACHE[$lang])))) {
+        if ($PAGE_CACHE_LAZY_LOAD) {
+            // We're still doing lazy load, so we'll turn off lazy load and do it properly. This code path will only ever run once
+            $PAGE_CACHE_LAZY_LOAD = false; // We can't be lazy any more, but we will keep growing our pool so hopefully CAN be lazy the next time
+            foreach ($PAGE_CACHE_LANGS_REQUESTED as $request) {
+                list($that_codename, $that_lang) = $request;
+                unset($LANG_REQUESTED_LANG[$that_lang][$that_codename]);
+                require_lang($that_codename, $that_lang, null, true);
+            }
+            $ret = _do_lang($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
+            if ($ret === null) {
+                $PAGE_CACHE_LANG_LOADED[$lang][$codename] = null;
+                if ($SMART_CACHE !== null) {
+                    $SMART_CACHE->append('lang_strings_' . $lang, $codename, null);
                 }
             }
-
-            $there = isset($LANGUAGE_STRINGS_CACHE[$lang][$codename]);
+            return $ret;
         }
 
-        if ($RECORD_LANG_STRINGS) {
-            global $RECORDED_LANG_STRINGS;
-            $RECORDED_LANG_STRINGS[$codename] = true;
-        }
-
-        if ((!$there) && ((!isset($LANGUAGE_STRINGS_CACHE[$lang])) || (!array_key_exists($codename, $LANGUAGE_STRINGS_CACHE[$lang])))) {
-            if ($PAGE_CACHE_LAZY_LOAD) {
-                $PAGE_CACHE_LAZY_LOAD = false; // We can't be lazy any more, but we will keep growing our pool so hopefully CAN be lazy the next time
-                foreach ($PAGE_CACHE_LANGS_REQUESTED as $request) {
-                    list($that_codename, $that_lang) = $request;
-                    unset($LANG_REQUESTED_LANG[$that_lang][$that_codename]);
-                    require_lang($that_codename, $that_lang, null, true);
-                }
-                $ret = _do_lang($codename, $parameter1, $parameter2, $parameter3, $lang, $require_result);
-                if ($ret === null) {
-                    $PAGE_CACHE_LANG_LOADED[$lang][$codename] = null;
-                    if ($SMART_CACHE !== null) {
-                        $SMART_CACHE->append('lang_strings_' . $lang, $codename, null);
-                    }
-                }
-                return $ret;
-            }
-
-            require_all_open_lang_files($lang);
-        }
+        require_all_open_lang_files($lang);
     }
 
     if ($lang == 'xxx') {
@@ -721,7 +715,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
             if ((!isset($PAGE_CACHE_LANG_LOADED[$lang][$codename])) && (isset($PAGE_CACHE_LANG_LOADED[fallback_lang()][$codename]))) {
                 $PAGE_CACHE_LANG_LOADED[$lang][$codename] = $ret; // Will have been cached into fallback_lang() from the nested do_lang call, we need to copy it into our cache bucket for this language
                 if ($SMART_CACHE !== null) {
-                    $SMART_CACHE->append('lang_strings_' . $lang, $codename, null);
+                    $SMART_CACHE->append('lang_strings_' . $lang, $codename, $ret);
                 }
             }
 

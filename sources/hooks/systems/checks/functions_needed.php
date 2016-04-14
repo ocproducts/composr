@@ -43,7 +43,7 @@ class Hook_check_functions_needed
             deg2rad error_reporting eval exit explode fclose feof fgets file file_exists
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
-            function_exists fwrite gd_info get_class get_html_translation_table get_magic_quotes_gpc getcwd
+            function_exists fwrite get_class get_html_translation_table get_magic_quotes_gpc getcwd
             getdate getenv gmdate gzclose gzopen gzwrite header headers_sent hexdec
             htmlentities is_float
             implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
@@ -90,20 +90,31 @@ class Hook_check_functions_needed
             var_export array_intersect_key end fileinode get_class_methods get_class_vars
             get_object_vars gethostbyname htmlspecialchars stat str_ireplace stripos
             key pi print set_exception_handler acos
-
-            imagecolorallocatealpha imageistruecolor imagealphablending imagecolorallocate imagecolortransparent imagecopy
-            imagecopyresampled imagecopyresized imagecreate imagecreatefromstring imagecreatefrompng
-            imagecreatefromjpeg imagecreatetruecolor imagecolorat imagecolorsforindex
-            imagedestroy imagefill imagefontheight imagefontwidth imagejpeg imagepng imagesavealpha
-            imagesetpixel imagestring imagesx imagesy imagestringup imagettfbbox imagettftext imagetypes
-            imagearc imagefilledarc imagecopymergegray imageline imageellipse imagefilledellipse
-            imagechar imagefilledpolygon imagepolygon imagefilledrectangle imagerectangle imagefilltoborder
-            imagegammacorrect imageinterlace imageloadfont imagepalettecopy imagesetbrush
-            imagesetstyle imagesetthickness imagesettile imagetruecolortopalette
-            imagecharup imagecolorclosest imagecolorclosestalpha imagecolorclosesthwb
-            imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolorresolve image_type_to_mime_type
-            imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge getimagesize image_type_to_extension imagefilter
 END;
+
+        if (function_exists('imagecreatefromstring')) {
+            $baseline_functions .= <<<END
+                imagecolorallocatealpha imageistruecolor imagealphablending imagecolorallocate imagecolortransparent imagecopy
+                imagecopyresampled imagecopyresized imagecreate imagecreatefrompng
+                imagecreatefromjpeg imagecreatetruecolor imagecolorat imagecolorsforindex
+                imagedestroy imagefill imagefontheight imagefontwidth imagesavealpha
+                imagesetpixel imagestring imagesx imagesy imagestringup imagettftext imagetypes
+                imagearc imagefilledarc imagecopymergegray imageline imageellipse imagefilledellipse
+                imagechar imagefilledpolygon imagepolygon imagefilledrectangle imagerectangle imagefilltoborder
+                imagegammacorrect imageinterlace imageloadfont imagepalettecopy imagesetbrush
+                imagesetstyle imagesetthickness imagesettile imagetruecolortopalette
+                imagecharup imagecolorclosest imagecolorclosestalpha imagecolorclosesthwb
+                imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolorresolve image_type_to_mime_type
+                imagecolorresolvealpha imagecolorset imagecolorstotal imagecopymerge getimagesize image_type_to_extension imagefilter
+                gd_info
+END;
+
+            // These ones are separately checked as extension checks
+            $notused = <<<END
+                imagecreatefromstring imagejpeg imagepng imagettfbbox
+END;
+        }
+
         foreach (preg_split('#\s+#', $baseline_functions) as $function) {
             if (trim($function) == '') {
                 continue;

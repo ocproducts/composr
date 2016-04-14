@@ -44,7 +44,7 @@ class Commandr_fs
     /**
      * Constructor function. Setup a virtual filesystem, but do nothing with it.
      */
-    public function commandr_fs()
+    public function __construct()
     {
         // Initialise a new virtual filesystem; setup the vfs array, and fetch the pwd from a cookie
 
