@@ -31,7 +31,11 @@ class phpstub_accuracy_test_set extends cms_test_case
         sort($declared_functions);
 
         $c = file_get_contents(get_file_base() . '/sources/hooks/systems/checks/functions_needed.php');
-        $c = preg_replace('#^.*<<<END(.*)END;.*$#s', '$1', $c);
+        $num_matches = preg_match_all('#<<<END(.*)END;#Us', $c, $matches);
+        $c = '';
+        for ($i = 0; $i < $num_matches; $i++) {
+            $c .= $matches[1][$i] . "\n";
+        }
         $c = str_replace("\n", ' ', $c);
         $c = trim(preg_replace('#\s+#', ' ', $c));
         $required_functions = explode(' ', $c);
@@ -45,7 +49,7 @@ class phpstub_accuracy_test_set extends cms_test_case
             $this->assertTrue(in_array($function, $declared_functions), 'Missing from phpstub.php? ' . $function);
         }
 
-        if (get_param_integer('dev_check', 0) == 1) {
+        if (get_param_integer('dev_check', 0) == 1) { // This extra switch let's us automatically find new functions in PHP we aren't coding for
             $will_never_define = array(
                 'zend_version',
                 'property_exists',

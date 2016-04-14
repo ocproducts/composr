@@ -32,7 +32,10 @@ class overused_globals_test_set extends cms_test_case
             if ((substr($file, -4) == '.php') && (($file == 'install.php') || (!should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)))) {
                 $done_for_file = array();
 
-                $contents = file_get_contents(get_file_base() . '/' . $file);
+                $contents = @file_get_contents(get_file_base() . '/' . $file);
+                if ($contents === false) {
+                    continue; // Probably a race condition between unit tests
+                }
                 if ($file != 'install.php') {
                     if (strpos($contents, '@chdir($FILE_BASE);') !== false) {
                         continue;
