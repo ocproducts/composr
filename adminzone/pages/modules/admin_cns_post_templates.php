@@ -139,7 +139,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_POST_TEMPLATE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_POST_TEMPLATE')),
-                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES')),
+                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES_PT')),
             ),
             do_lang('POST_TEMPLATES')
         );

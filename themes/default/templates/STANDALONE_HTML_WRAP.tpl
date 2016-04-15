@@ -48,7 +48,9 @@
 			{+END}
 		//]]></script>
 
-		{$EXTRA_FOOT}
+		{+START,IF_NON_PASSED,POPUP}
+			{$EXTRA_FOOT}
+		{+END}
 	</body>
 </html>
 

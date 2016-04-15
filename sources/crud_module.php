@@ -403,7 +403,6 @@ abstract class Standard_crud_module
 
         require_code('form_templates');
         require_code('feedback');
-        require_code('autosave');
         require_code('permissions2');
         require_code('users2');
 
