@@ -36,7 +36,7 @@ function init__catalogues2()
  */
 function catalogue_to_tree($catalogue_name)
 {
-    $new_root = actual_add_catalogue_category($catalogue_name, do_lang('ROOT'), '', '', null, '');
+    $new_root = actual_add_catalogue_category($catalogue_name, get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => $catalogue_name))), '', '', null, '');
     $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'catalogue_categories SET cc_parent_id=' . strval($new_root) . ' WHERE id<>' . strval($new_root) . ' AND ' . db_string_equal_to('c_name', $catalogue_name));
     $GLOBALS['SITE_DB']->query_update('catalogues', array('c_is_tree' => 1), array('c_name' => $catalogue_name), '', 1);
 }
@@ -558,6 +558,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
 
+    decache('main_cc_embed');
+
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         if (!is_array($title)) {
@@ -792,6 +794,8 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
     }
 
     log_it('EDIT_CATALOGUE_CATEGORY', strval($id), $title);
+
+    decache('main_cc_embed');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

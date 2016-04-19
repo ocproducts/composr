@@ -232,7 +232,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             }
 
             $where_clause .= ' AND ';
-            $where_clause .= 'r.c_name NOT LIKE \'\_%\''; // Don't want results drawn from the hidden custom-field catalogues
+            $where_clause .= 'r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\''; // Don't want results drawn from the hidden custom-field catalogues
 
             $join .= $privacy_join;
 

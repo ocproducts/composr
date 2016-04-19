@@ -797,6 +797,7 @@ class DatabaseConnector
 
             return 'SELECT ' . $select . ' FROM ' . $table . ' WHERE (' . $where . ') ' . $end;
         }
+        if (substr(ltrim($end), 0, 6) != 'WHERE ') $end = 'WHERE 1=1 ' . $end; // We force a WHERE so that code of ours that alters queries can work robustly
         return 'SELECT ' . $select . ' FROM ' . $table . ' ' . $end;
     }
 
@@ -1168,14 +1169,14 @@ class DatabaseConnector
                         $field_stripped = preg_replace('#.*\.#', '', $field);
 
                         $join = ' LEFT JOIN ' . $this->table_prefix . 'translate t_' . $field_stripped . ' ON t_' . $field_stripped . '.id=' . $field_prefix . $field;
-                        if (strpos($query, 't_' . $field_stripped . '.text_original') === false) {
-                            $join .= ' AND ' . db_string_equal_to('t_' . $field_stripped . '.language', $lang);
-                        }
+                        $join .= ' AND ' . db_string_equal_to('t_' . $field_stripped . '.language', $lang);
 
                         $_query = strtoupper($query);
                         $from_pos = strpos($_query, ' FROM ');
                         $where_pos = strpos($_query, ' WHERE ');
-                        if (($from_pos !== false) && (strpos(substr($_query, 0, $from_pos), '(SELECT') !== false)) {
+                        $from_in_subquery = ($from_pos !== false) && (strpos(substr($_query, 0, $from_pos), '(SELECT') !== false); // FROM clause seems to be in a subquery, so it's mroe robust for us to work backwards
+                        $where_in_subquery = ($where_pos !== false) && (strpos(substr($_query, 0, $where_pos), '(SELECT') !== false); // WHERE clause seems to be in a subquery, so it's mroe robust for us to work backwards
+                        if ($from_in_subquery || $where_in_subquery) {
                             $from_pos = strrpos($_query, ' FROM ');
                             $where_pos = strrpos($_query, ' WHERE ');
                         }

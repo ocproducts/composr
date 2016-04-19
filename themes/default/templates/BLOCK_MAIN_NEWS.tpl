@@ -22,7 +22,7 @@
 
 			{+START,IF_PASSED,PAGINATION}
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="float_surrounder ajax_block_wrapper_links">
+					<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 				{+END}

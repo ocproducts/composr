@@ -783,7 +783,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to add an entry.
+     * Standard CRUD-module UI to add a resource.
      *
      * @return Tempcode The UI
      */
@@ -965,7 +965,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI/actualiser to add an entry.
+     * Standard CRUD-module UI/actualiser to add a resource.
      *
      * @return Tempcode The UI
      */
@@ -1083,7 +1083,9 @@ abstract class Standard_crud_module
         $table = $table_raw . ' r';
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
-            $orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
+            $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
+            if (substr($orderer, -5) == ' DESC') $_orderer .= ' DESC';
+            $orderer = $_orderer;
         } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
             $orderer = 'r.' . $orderer;
         }
@@ -1141,7 +1143,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to choose an entry to edit.
+     * Standard CRUD-module UI to choose a resource to edit.
      *
      * @return Tempcode The UI
      */
@@ -1277,7 +1279,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to edit an entry.
+     * Standard CRUD-module UI to edit a resource.
      *
      * @return Tempcode The UI
      */
@@ -1519,7 +1521,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI/actualiser to edit an entry.
+     * Standard CRUD-module UI/actualiser to edit a resource.
      *
      * @return Tempcode The UI
      */

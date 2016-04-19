@@ -302,7 +302,7 @@ class Module_cms_catalogues extends Standard_crud_module
             'cc_id' => do_lang_tempcode('CATEGORY'),
             'ce_add_date' => do_lang_tempcode('ADDED'),
             'ce_views' => do_lang_tempcode('COUNT_VIEWS'),
-            'ce_submitter' => do_lang_tempcode('OWNER'),
+            'ce_submitter' => do_lang_tempcode('metadata:OWNER'),
         );
         if (addon_installed('unvalidated')) {
             $sortables['ce_validated'] = do_lang_tempcode('VALIDATED');
@@ -316,7 +316,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $fh[] = do_lang_tempcode('CATEGORY');
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
-        $fh[] = do_lang_tempcode('OWNER');
+        $fh[] = do_lang_tempcode('metadata:OWNER');
         if (addon_installed('unvalidated')) {
             $fh[] = do_lang_tempcode('VALIDATED');
         }
@@ -1425,10 +1425,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $title = post_param_string('title');
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
-        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : false);
+        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : null/*may be non-tree catalogue or root node*/);
 
-        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : null);
-        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be CRON disabled*/);
+        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be CRON disabled*/);
         $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         if ((!is_null($move_target)) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {

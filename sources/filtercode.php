@@ -607,6 +607,17 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         return array($clause, '', $filter_val);
     }
 
+    // Random
+    $matches = array('', $info['feedback_type_code']);
+    if (($filter_key == 'fixed_random') || (preg_match('#^fixed_random\_\_(.+)#', $filter_key, $matches) != 0)) {
+        if ($filter_key == 'fixed_random') {
+            $matches[1] .= '__' . $catalogue_name;
+        }
+        $clause = '(MOD(CAST(r.' . $info['id_field'] . ' AS SIGNED),' . date('d') . '))';
+        $extra_select[$filter_key] = ', ' . $clause . ' AS fixed_random_' . fix_id($matches[1]);
+        return array($clause, '', $filter_val);
+    }
+
     // Special case for SEO fields
     if ($filter_key == 'meta_description') {
         $seo_type_code = isset($info['seo_type_code']) ? $info['seo_type_code'] : '!!!ERROR!!!';
