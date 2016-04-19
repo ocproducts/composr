@@ -558,8 +558,6 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
 
-    decache('main_cc_embed');
-
     require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         if (!is_array($title)) {
@@ -887,6 +885,8 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     calculate_category_child_count_cache($old_parent_id);
 
     log_it('DELETE_CATALOGUE_CATEGORY', strval($id), $_title);
+
+    decache('main_cc_embed');
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');

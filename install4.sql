@@ -116,6 +116,9 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_aggregate_types', 'Chris Graham', 'ocProducts', '', NULL, 1);
 
 
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 3);
+
+
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('admin_awards', 'Chris Graham', 'ocProducts', '', NULL, 4);
 
 
@@ -326,6 +329,54 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('members', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('news', 'Chris Graham', 'ocProducts', '', NULL, 7);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 11);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('polls', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('purchase', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('quiz', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('search', 'Chris Graham', 'ocProducts', '', NULL, 5);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('shopping', 'Manuprathap', 'ocProducts', '', NULL, 7);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('staff', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('subscriptions', 'Chris Graham', 'ocProducts', '', NULL, 5);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('tickets', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('users_online', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('warnings', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 9);
+
+
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forumview', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
@@ -386,28 +437,10 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('filedump', 'Chris Graham', 'ocProducts', '', NULL, 4);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('news', 'Chris Graham', 'ocProducts', '', NULL, 7);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 11);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
-
-
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forums', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('join', 'Chris Graham', 'ocProducts', '', NULL, 2);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 3);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('lost_password', 'Chris Graham', 'ocProducts', '', NULL, 2);
@@ -417,24 +450,6 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('supermembers', 'Chris Graham', 'ocProducts', '', NULL, 2);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('polls', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('purchase', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('quiz', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('search', 'Chris Graham', 'ocProducts', '', NULL, 5);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('shopping', 'Manuprathap', 'ocProducts', '', NULL, 7);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('staff', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
 DROP TABLE IF EXISTS cms_news;
@@ -1218,15 +1233,6 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARC
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_title_videos', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
-
-
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
-
-
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
-
-
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_keyword_news', 0);
 
 
@@ -1290,6 +1296,24 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARC
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_title_comcode_page', 0);
 
 
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'view_others_tickets', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'support_operator', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('WIKI', 'wiki_manage_tree', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
+
+
 DROP TABLE IF EXISTS cms_pstore_customs;
 
 
@@ -1332,6 +1356,35 @@ CREATE TABLE cms_pstore_permissions (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_quiz_entries;
+
+
+
+CREATE TABLE cms_quiz_entries (
+     id integer unsigned auto_increment NOT NULL,
+     q_time integer unsigned NOT NULL,
+     q_member integer NOT NULL,
+     q_quiz integer NOT NULL,
+     q_results integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_entry_answer;
+
+
+
+CREATE TABLE cms_quiz_entry_answer (
+     id integer unsigned auto_increment NOT NULL,
+     q_entry integer NOT NULL,
+     q_question integer NOT NULL,
+     q_answer longtext NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_quiz_member_last_visit;
 
 
@@ -1343,6 +1396,53 @@ CREATE TABLE cms_quiz_member_last_visit (
      v_quiz_id integer NOT NULL,
 
     PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_question_answers;
+
+
+
+CREATE TABLE cms_quiz_question_answers (
+     id integer unsigned auto_increment NOT NULL,
+     q_question integer NOT NULL,
+     q_answer_text integer unsigned NOT NULL,
+     q_is_correct tinyint(1) NOT NULL,
+     q_order integer NOT NULL,
+     q_explanation integer unsigned NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_questions;
+
+
+
+CREATE TABLE cms_quiz_questions (
+     id integer unsigned auto_increment NOT NULL,
+     q_type varchar(80) NOT NULL,
+     q_quiz integer NOT NULL,
+     q_question_text integer unsigned NOT NULL,
+     q_question_extra_text integer unsigned NOT NULL,
+     q_order integer NOT NULL,
+     q_required tinyint(1) NOT NULL,
+     q_marked tinyint(1) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_winner;
+
+
+
+CREATE TABLE cms_quiz_winner (
+     q_quiz integer NOT NULL,
+     q_entry integer NOT NULL,
+     q_winner_level integer NOT NULL,
+
+    PRIMARY KEY (q_quiz, q_entry)
 ) engine=MyISAM;
 
 
@@ -1508,6 +1608,38 @@ CREATE TABLE cms_sales (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_searches_logged;
+
+
+
+CREATE TABLE cms_searches_logged (
+     id integer unsigned auto_increment NOT NULL,
+     s_member_id integer NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_primary varchar(255) NOT NULL,
+     s_auxillary longtext NOT NULL,
+     s_num_results integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_searches_saved;
+
+
+
+CREATE TABLE cms_searches_saved (
+     id integer unsigned auto_increment NOT NULL,
+     s_title varchar(255) NOT NULL,
+     s_member_id integer NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_primary varchar(255) NOT NULL,
+     s_auxillary longtext NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_seo_meta;
 
 
@@ -1561,6 +1693,107 @@ CREATE TABLE cms_sessions (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_shopping_cart;
+
+
+
+CREATE TABLE cms_shopping_cart (
+     id integer unsigned auto_increment NOT NULL,
+     session_id varchar(80) NOT NULL,
+     ordered_by integer NOT NULL,
+     product_id integer NOT NULL,
+     product_name varchar(255) NOT NULL,
+     product_code varchar(255) NOT NULL,
+     quantity integer NOT NULL,
+     price_pre_tax real NOT NULL,
+     price real NOT NULL,
+     product_description longtext NOT NULL,
+     product_type varchar(255) NOT NULL,
+     product_weight real NOT NULL,
+     is_deleted tinyint(1) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_logging;
+
+
+
+CREATE TABLE cms_shopping_logging (
+     id integer unsigned auto_increment NOT NULL,
+     e_member_id integer NOT NULL,
+     session_id varchar(80) NOT NULL,
+     ip varchar(40) NOT NULL,
+     last_action varchar(255) NOT NULL,
+     date_and_time integer unsigned NOT NULL,
+
+    PRIMARY KEY (id, e_member_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order;
+
+
+
+CREATE TABLE cms_shopping_order (
+     id integer unsigned auto_increment NOT NULL,
+     c_member integer NOT NULL,
+     session_id varchar(80) NOT NULL,
+     add_date integer unsigned NOT NULL,
+     tot_price real NOT NULL,
+     order_status varchar(80) NOT NULL,
+     notes longtext NOT NULL,
+     transaction_id varchar(255) NOT NULL,
+     purchase_through varchar(255) NOT NULL,
+     tax_opted_out tinyint(1) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order_addresses;
+
+
+
+CREATE TABLE cms_shopping_order_addresses (
+     id integer unsigned auto_increment NOT NULL,
+     order_id integer NULL,
+     address_name varchar(255) NOT NULL,
+     address_street longtext NOT NULL,
+     address_city varchar(255) NOT NULL,
+     address_state varchar(255) NOT NULL,
+     address_zip varchar(255) NOT NULL,
+     address_country varchar(255) NOT NULL,
+     receiver_email varchar(255) NOT NULL,
+     contact_phone varchar(255) NOT NULL,
+     first_name varchar(255) NOT NULL,
+     last_name varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order_details;
+
+
+
+CREATE TABLE cms_shopping_order_details (
+     id integer unsigned auto_increment NOT NULL,
+     order_id integer NULL,
+     p_id integer NULL,
+     p_name varchar(255) NOT NULL,
+     p_code varchar(255) NOT NULL,
+     p_type varchar(255) NOT NULL,
+     p_quantity integer NOT NULL,
+     p_price real NOT NULL,
+     included_tax real NOT NULL,
+     dispatch_status varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_sitemap_cache;
 
 
@@ -1610,37 +1843,37 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make \'favicon\' theme image', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make \'favicon\' theme image', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, 'Make \'webclipicon\' theme image', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, 'Make \'webclipicon\' theme image', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, 'Make/install custom theme', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, 'Make/install custom theme', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1461041288, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1460676456, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1461041288, 0, '', NULL);
 
 
 DROP TABLE IF EXISTS cms_staff_links;
@@ -1777,6 +2010,28 @@ CREATE TABLE cms_stats (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_subscriptions;
+
+
+
+CREATE TABLE cms_subscriptions (
+     id integer unsigned auto_increment NOT NULL,
+     s_type_code varchar(80) NOT NULL,
+     s_member_id integer NOT NULL,
+     s_state varchar(80) NOT NULL,
+     s_amount varchar(255) NOT NULL,
+     s_purchase_id varchar(80) NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_auto_fund_source varchar(80) NOT NULL,
+     s_auto_fund_key varchar(255) NOT NULL,
+     s_via varchar(80) NOT NULL,
+     s_length integer NOT NULL,
+     s_length_units varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_task_queue;
 
 
@@ -1795,7 +2050,7 @@ CREATE TABLE cms_task_queue (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '743119663bcc8', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '65b1ffd26bbfc', 0, 0);
 
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
@@ -1826,10 +2081,630 @@ CREATE TABLE cms_theme_images (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('favicon', 'default', 'favicon.ico', 'EN');
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('favicon', 'default', 'themes/default/images/favicon.ico', 'EN');
 
 
-INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('webclipicon', 'default', 'webclipicon.png', 'EN');
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('webclipicon', 'default', 'themes/default/images/webclipicon.ico', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('logo/standalone_logo', 'default', 'themes/default/images/EN/logo/standalone_logo.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('keyboard', 'default', 'themes/default/images/keyboard.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('outer_background', 'default', 'themes/default/images/outer_background.jpg', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('inner_background', 'default', 'themes/default/images/inner_background.jpg', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/14x14/action_link', 'default', 'themes/default/images/icons/14x14/action_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/cannot_show', 'default', 'themes/default/images/1x/cannot_show.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/cannot_show', 'default', 'themes/default/images/2x/cannot_show.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('block_background', 'default', 'themes/default/images/block_background.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('gradient', 'default', 'themes/default/images/gradient.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/boxless_title_leadin_rightcomp', 'default', 'themes/default/images/1x/boxless_title_leadin_rightcomp.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/boxless_title_leadin_leftcomp', 'default', 'themes/default/images/1x/boxless_title_leadin_leftcomp.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/boxless_title_leadin_rightcomp', 'default', 'themes/default/images/2x/boxless_title_leadin_rightcomp.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/boxless_title_leadin_leftcomp', 'default', 'themes/default/images/2x/boxless_title_leadin_leftcomp.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/28x28/action_link', 'default', 'themes/default/images/icons/28x28/action_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/tabs/settings', 'default', 'themes/default/images/icons/24x24/tabs/settings.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/tabs/settings', 'default', 'themes/default/images/icons/48x48/tabs/settings.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('banner_frame', 'default', 'themes/default/images/banner_frame.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/status/notice', 'default', 'themes/default/images/icons/24x24/status/notice.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/status/notice', 'default', 'themes/default/images/icons/48x48/status/notice.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('help_jumpout', 'default', 'themes/default/images/help_jumpout.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/box_arrow', 'default', 'themes/default/images/1x/box_arrow.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/box_arrow', 'default', 'themes/default/images/2x/box_arrow.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/pages/help', 'default', 'themes/default/images/icons/24x24/menu/pages/help.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/back', 'default', 'themes/default/images/icons/24x24/buttons/back.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/gotopage', 'default', 'themes/default/images/icons/24x24/buttons/gotopage.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/perpage', 'default', 'themes/default/images/icons/24x24/buttons/perpage.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/filter', 'default', 'themes/default/images/icons/24x24/buttons/filter.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/sort', 'default', 'themes/default/images/icons/24x24/buttons/sort.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/all', 'default', 'themes/default/images/icons/24x24/buttons/all.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/all2', 'default', 'themes/default/images/icons/24x24/buttons/all2.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/convert', 'default', 'themes/default/images/icons/24x24/buttons/convert.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/thumbnail', 'default', 'themes/default/images/icons/24x24/buttons/thumbnail.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/fullsize', 'default', 'themes/default/images/icons/24x24/buttons/fullsize.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/calculate', 'default', 'themes/default/images/icons/24x24/buttons/calculate.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/choose', 'default', 'themes/default/images/icons/24x24/buttons/choose.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/clear', 'default', 'themes/default/images/icons/24x24/buttons/clear.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/ignore', 'default', 'themes/default/images/icons/24x24/buttons/ignore.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/closed', 'default', 'themes/default/images/icons/24x24/buttons/closed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/enable_notifications', 'default', 'themes/default/images/icons/24x24/buttons/enable_notifications.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/disable_notifications', 'default', 'themes/default/images/icons/24x24/buttons/disable_notifications.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/edit', 'default', 'themes/default/images/icons/24x24/buttons/edit.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/more', 'default', 'themes/default/images/icons/24x24/buttons/more.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/move', 'default', 'themes/default/images/icons/24x24/buttons/move.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/no', 'default', 'themes/default/images/icons/24x24/buttons/no.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/yes', 'default', 'themes/default/images/icons/24x24/buttons/yes.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/proceed', 'default', 'themes/default/images/icons/24x24/buttons/proceed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/adminzone/tools/cleanup', 'default', 'themes/default/images/icons/24x24/menu/adminzone/tools/cleanup.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/copy', 'default', 'themes/default/images/icons/24x24/buttons/copy.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/skip', 'default', 'themes/default/images/icons/24x24/buttons/skip.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/cancel', 'default', 'themes/default/images/icons/24x24/buttons/cancel.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/previous', 'default', 'themes/default/images/icons/24x24/buttons/previous.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/previous_none', 'default', 'themes/default/images/icons/24x24/buttons/previous_none.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/next', 'default', 'themes/default/images/icons/24x24/buttons/next.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/next_none', 'default', 'themes/default/images/icons/24x24/buttons/next_none.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/new_comment', 'default', 'themes/default/images/icons/24x24/buttons/new_comment.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/new_reply', 'default', 'themes/default/images/icons/24x24/buttons/new_reply.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/redirect', 'default', 'themes/default/images/icons/24x24/buttons/redirect.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/report', 'default', 'themes/default/images/icons/24x24/buttons/report.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/undo', 'default', 'themes/default/images/icons/24x24/buttons/undo.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/revisions', 'default', 'themes/default/images/icons/24x24/buttons/revisions.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/save', 'default', 'themes/default/images/icons/24x24/buttons/save.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/save_and_stay', 'default', 'themes/default/images/icons/24x24/buttons/save_and_stay.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/search', 'default', 'themes/default/images/icons/24x24/buttons/search.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/send', 'default', 'themes/default/images/icons/24x24/buttons/send.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/upload', 'default', 'themes/default/images/icons/24x24/buttons/upload.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/adminzone/audit/unvalidated', 'default', 'themes/default/images/icons/24x24/menu/adminzone/audit/unvalidated.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/buttons/vote', 'default', 'themes/default/images/icons/24x24/buttons/vote.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/feedback/rate', 'default', 'themes/default/images/icons/24x24/feedback/rate.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/add_one', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/add_one.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/add_one_category', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/add_one_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/add_to_category', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/add_to_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/delete', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/delete.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/edit_one', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/edit_one.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/edit_one_category', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/edit_one_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/edit_this', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/edit_this.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/edit_this_category', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/edit_this_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/export', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/export.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/import', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/import.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/merge', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/merge.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/sync', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/sync.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/_generic_admin/view_archive', 'default', 'themes/default/images/icons/24x24/menu/_generic_admin/view_archive.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/site_meta/user_actions/join', 'default', 'themes/default/images/icons/24x24/menu/site_meta/user_actions/join.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/menu/site_meta/user_actions/login', 'default', 'themes/default/images/icons/24x24/menu/site_meta/user_actions/login.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/tabs/preview', 'default', 'themes/default/images/icons/24x24/tabs/preview.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/pages/help', 'default', 'themes/default/images/icons/48x48/menu/pages/help.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/back', 'default', 'themes/default/images/icons/48x48/buttons/back.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/gotopage', 'default', 'themes/default/images/icons/48x48/buttons/gotopage.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/perpage', 'default', 'themes/default/images/icons/48x48/buttons/perpage.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/filter', 'default', 'themes/default/images/icons/48x48/buttons/filter.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/sort', 'default', 'themes/default/images/icons/48x48/buttons/sort.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/all', 'default', 'themes/default/images/icons/48x48/buttons/all.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/all2', 'default', 'themes/default/images/icons/48x48/buttons/all2.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/convert', 'default', 'themes/default/images/icons/48x48/buttons/convert.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/thumbnail', 'default', 'themes/default/images/icons/48x48/buttons/thumbnail.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/fullsize', 'default', 'themes/default/images/icons/48x48/buttons/fullsize.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/calculate', 'default', 'themes/default/images/icons/48x48/buttons/calculate.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/choose', 'default', 'themes/default/images/icons/48x48/buttons/choose.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/clear', 'default', 'themes/default/images/icons/48x48/buttons/clear.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/ignore', 'default', 'themes/default/images/icons/48x48/buttons/ignore.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/closed', 'default', 'themes/default/images/icons/48x48/buttons/closed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/enable_notifications', 'default', 'themes/default/images/icons/48x48/buttons/enable_notifications.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/disable_notifications', 'default', 'themes/default/images/icons/48x48/buttons/disable_notifications.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/edit', 'default', 'themes/default/images/icons/48x48/buttons/edit.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/more', 'default', 'themes/default/images/icons/48x48/buttons/more.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/move', 'default', 'themes/default/images/icons/48x48/buttons/move.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/no', 'default', 'themes/default/images/icons/48x48/buttons/no.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/yes', 'default', 'themes/default/images/icons/48x48/buttons/yes.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/proceed', 'default', 'themes/default/images/icons/48x48/buttons/proceed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/copy', 'default', 'themes/default/images/icons/48x48/buttons/copy.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/skip', 'default', 'themes/default/images/icons/48x48/buttons/skip.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/cancel', 'default', 'themes/default/images/icons/48x48/buttons/cancel.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/previous', 'default', 'themes/default/images/icons/48x48/buttons/previous.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/previous_none', 'default', 'themes/default/images/icons/48x48/buttons/previous_none.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/next', 'default', 'themes/default/images/icons/48x48/buttons/next.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/next_none', 'default', 'themes/default/images/icons/48x48/buttons/next_none.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/new_comment', 'default', 'themes/default/images/icons/48x48/buttons/new_comment.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/new_reply', 'default', 'themes/default/images/icons/48x48/buttons/new_reply.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/redirect', 'default', 'themes/default/images/icons/48x48/buttons/redirect.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/report', 'default', 'themes/default/images/icons/48x48/buttons/report.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/undo', 'default', 'themes/default/images/icons/48x48/buttons/undo.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/revisions', 'default', 'themes/default/images/icons/48x48/buttons/revisions.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/save', 'default', 'themes/default/images/icons/48x48/buttons/save.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/save_and_stay', 'default', 'themes/default/images/icons/48x48/buttons/save_and_stay.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/search', 'default', 'themes/default/images/icons/48x48/buttons/search.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/send', 'default', 'themes/default/images/icons/48x48/buttons/send.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/upload', 'default', 'themes/default/images/icons/48x48/buttons/upload.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/adminzone/audit/unvalidated', 'default', 'themes/default/images/icons/48x48/menu/adminzone/audit/unvalidated.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/buttons/vote', 'default', 'themes/default/images/icons/48x48/buttons/vote.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/feedback/rate', 'default', 'themes/default/images/icons/48x48/feedback/rate.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/add_one', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/add_one.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/add_one_category', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/add_one_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/add_to_category', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/add_to_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/delete', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/delete.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/edit_one', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/edit_one.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/edit_one_category', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/edit_one_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/edit_this', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/edit_this.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/edit_this_category', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/edit_this_category.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/export', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/export.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/import', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/import.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/merge', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/merge.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/sync', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/sync.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/_generic_admin/view_archive', 'default', 'themes/default/images/icons/48x48/menu/_generic_admin/view_archive.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/site_meta/user_actions/join', 'default', 'themes/default/images/icons/48x48/menu/site_meta/user_actions/join.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/menu/site_meta/user_actions/login', 'default', 'themes/default/images/icons/48x48/menu/site_meta/user_actions/login.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/tabs/preview', 'default', 'themes/default/images/icons/48x48/tabs/preview.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('tab', 'default', 'themes/default/images/tab.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('quote_gradient', 'default', 'themes/default/images/quote_gradient.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/arrow_box', 'default', 'themes/default/images/1x/arrow_box.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('1x/arrow_box_hover', 'default', 'themes/default/images/1x/arrow_box_hover.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/14x14/wiki_link', 'default', 'themes/default/images/icons/14x14/wiki_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/14x14/wiki_link_hover', 'default', 'themes/default/images/icons/14x14/wiki_link_hover.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/arrow_box', 'default', 'themes/default/images/2x/arrow_box.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('2x/arrow_box_hover', 'default', 'themes/default/images/2x/arrow_box_hover.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/28x28/wiki_link', 'default', 'themes/default/images/icons/28x28/wiki_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/28x28/wiki_link_hover', 'default', 'themes/default/images/icons/28x28/wiki_link_hover.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('checklist/checklist1', 'default', 'themes/default/images/checklist/checklist1.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/external_link', 'default', 'themes/default/images/icons/16x16/filetypes/external_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/email_link', 'default', 'themes/default/images/icons/16x16/filetypes/email_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_pdf', 'default', 'themes/default/images/icons/16x16/filetypes/page_pdf.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_doc', 'default', 'themes/default/images/icons/16x16/filetypes/page_doc.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_xls', 'default', 'themes/default/images/icons/16x16/filetypes/page_xls.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_ppt', 'default', 'themes/default/images/icons/16x16/filetypes/page_ppt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_txt', 'default', 'themes/default/images/icons/16x16/filetypes/page_txt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_odt', 'default', 'themes/default/images/icons/16x16/filetypes/page_odt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_ods', 'default', 'themes/default/images/icons/16x16/filetypes/page_ods.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/feed', 'default', 'themes/default/images/icons/16x16/filetypes/feed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_torrent', 'default', 'themes/default/images/icons/16x16/filetypes/page_torrent.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_archive', 'default', 'themes/default/images/icons/16x16/filetypes/page_archive.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/16x16/filetypes/page_media', 'default', 'themes/default/images/icons/16x16/filetypes/page_media.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/external_link', 'default', 'themes/default/images/icons/32x32/filetypes/external_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/email_link', 'default', 'themes/default/images/icons/32x32/filetypes/email_link.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_pdf', 'default', 'themes/default/images/icons/32x32/filetypes/page_pdf.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_doc', 'default', 'themes/default/images/icons/32x32/filetypes/page_doc.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_xls', 'default', 'themes/default/images/icons/32x32/filetypes/page_xls.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_ppt', 'default', 'themes/default/images/icons/32x32/filetypes/page_ppt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_txt', 'default', 'themes/default/images/icons/32x32/filetypes/page_txt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_odt', 'default', 'themes/default/images/icons/32x32/filetypes/page_odt.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_ods', 'default', 'themes/default/images/icons/32x32/filetypes/page_ods.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/feed', 'default', 'themes/default/images/icons/32x32/filetypes/feed.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_torrent', 'default', 'themes/default/images/icons/32x32/filetypes/page_torrent.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_archive', 'default', 'themes/default/images/icons/32x32/filetypes/page_archive.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/32x32/filetypes/page_media', 'default', 'themes/default/images/icons/32x32/filetypes/page_media.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/links/print', 'default', 'themes/default/images/icons/24x24/links/print.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/links/print', 'default', 'themes/default/images/icons/48x48/links/print.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('background_image', 'default', 'themes/default/images/background_image.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/24x24/status/warn', 'default', 'themes/default/images/icons/24x24/status/warn.png', 'EN');
+
+
+INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('icons/48x48/status/warn', 'default', 'themes/default/images/icons/48x48/status/warn.png', 'EN');
+
+
+DROP TABLE IF EXISTS cms_ticket_extra_access;
+
+
+
+CREATE TABLE cms_ticket_extra_access (
+     ticket_id varchar(255) NOT NULL,
+     member_id integer NOT NULL,
+
+    PRIMARY KEY (ticket_id, member_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_ticket_known_emailers;
+
+
+
+CREATE TABLE cms_ticket_known_emailers (
+     email_address varchar(255) NOT NULL,
+     member_id integer NOT NULL,
+
+    PRIMARY KEY (email_address)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_ticket_types;
+
+
+
+CREATE TABLE cms_ticket_types (
+     id integer unsigned auto_increment NOT NULL,
+     ticket_type_name integer unsigned NOT NULL,
+     guest_emails_mandatory tinyint(1) NOT NULL,
+     search_faq tinyint(1) NOT NULL,
+     cache_lead_time integer unsigned NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (1, 'Other', 0, 0, NULL);
+
+
+INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (2, 'Complaint', 0, 0, NULL);
+
+
+DROP TABLE IF EXISTS cms_tickets;
+
+
+
+CREATE TABLE cms_tickets (
+     ticket_id varchar(255) NOT NULL,
+     topic_id integer NOT NULL,
+     forum_id integer NOT NULL,
+     ticket_type integer NOT NULL,
+
+    PRIMARY KEY (ticket_id)
+) engine=MyISAM;
 
 
 DROP TABLE IF EXISTS cms_trackbacks;
@@ -2023,19 +2898,22 @@ CREATE TABLE cms_values (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1460676414);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1461041277);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1460676414);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1461041277);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1460676420);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1461041279);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1460676420);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1461041279);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1460676420);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1461041279);
+
+
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('ran_once', '1', 1461041279);
 
 
 DROP TABLE IF EXISTS cms_values_elective;
@@ -2051,7 +2929,7 @@ CREATE TABLE cms_values_elective (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1460676415);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1461041278);
 
 
 DROP TABLE IF EXISTS cms_video_transcoding;
@@ -2111,6 +2989,60 @@ CREATE TABLE cms_webstandards_checked_once (
      hash varchar(255) NOT NULL,
 
     PRIMARY KEY (hash)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_wiki_children;
+
+
+
+CREATE TABLE cms_wiki_children (
+     parent_id integer NOT NULL,
+     child_id integer NOT NULL,
+     the_order integer NOT NULL,
+     title varchar(255) NOT NULL,
+
+    PRIMARY KEY (parent_id, child_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_wiki_pages;
+
+
+
+CREATE TABLE cms_wiki_pages (
+     id integer unsigned auto_increment NOT NULL,
+     title integer unsigned NOT NULL,
+     notes longtext NOT NULL,
+     description integer unsigned NOT NULL,
+     add_date integer unsigned NOT NULL,
+     edit_date integer unsigned NULL,
+     wiki_views integer NOT NULL,
+     hide_posts tinyint(1) NOT NULL,
+     submitter integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1461041288, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5715b8824f9697.30104457_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5715b8824f9697.30104457_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5715b8824f9697.30104457_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+
+
+DROP TABLE IF EXISTS cms_wiki_posts;
+
+
+
+CREATE TABLE cms_wiki_posts (
+     id integer unsigned auto_increment NOT NULL,
+     page_id integer NOT NULL,
+     the_message integer unsigned NOT NULL,
+     date_and_time integer unsigned NOT NULL,
+     validated tinyint(1) NOT NULL,
+     wiki_views integer NOT NULL,
+     member_id integer NOT NULL,
+     edit_date integer unsigned NULL,
+
+    PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
@@ -2918,9 +3850,6 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2);
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_16 (field_16(250));
-
-
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17(250));
 
 
@@ -2930,7 +3859,7 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18(250));
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_20 (field_20(250));
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_22 (field_22(250));
@@ -2948,10 +3877,10 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25(250));
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_27 (field_27(250));
-
-
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3(250));
@@ -2973,6 +3902,9 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5(250));
@@ -3008,43 +3940,46 @@ ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf14 (field_14);
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf15 (field_15);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf17 (field_17(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf18 (field_18(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf19 (field_19(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf16 (field_16);
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf21 (field_21);
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf23 (field_23(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf24 (field_24(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf27 (field_27);
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4);
@@ -3786,6 +4721,51 @@ ALTER TABLE cms_videos ADD INDEX v_validated (validated);
 
 
 ALTER TABLE cms_video_transcoding ADD INDEX t_local_id (t_local_id);
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description);
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title);
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title,description);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX sadd_date (add_date);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX sps (submitter);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX wiki_views (wiki_views);
+
+
+ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX cdate_and_time (date_and_time);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX posts_on_page (page_id);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX spos (member_id);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX svalidated (validated);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX wiki_views (wiki_views);
 
 
 ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text);

@@ -797,7 +797,9 @@ class DatabaseConnector
 
             return 'SELECT ' . $select . ' FROM ' . $table . ' WHERE (' . $where . ') ' . $end;
         }
-        if (substr(ltrim($end), 0, 6) != 'WHERE ') $end = 'WHERE 1=1 ' . $end; // We force a WHERE so that code of ours that alters queries can work robustly
+        if (substr(ltrim($end), 0, 6) != 'WHERE ') {
+            $end = 'WHERE 1=1 ' . $end; // We force a WHERE so that code of ours that alters queries can work robustly
+        }
         return 'SELECT ' . $select . ' FROM ' . $table . ' ' . $end;
     }
 

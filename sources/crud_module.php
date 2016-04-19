@@ -1084,7 +1084,9 @@ abstract class Standard_crud_module
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
             $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
-            if (substr($orderer, -5) == ' DESC') $_orderer .= ' DESC';
+            if (substr($orderer, -5) == ' DESC') {
+                $_orderer .= ' DESC';
+            }
             $orderer = $_orderer;
         } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
             $orderer = 'r.' . $orderer;
