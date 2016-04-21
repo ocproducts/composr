@@ -4098,6 +4098,7 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	font-size: 0.9em;
 	/*display: inline-block; Actually table works better, shows margins even when not floated*/
 	display: table;
+	border-collapse: separate;
 	max-width: 100%;
 	background: {$GET,WB};
 }
