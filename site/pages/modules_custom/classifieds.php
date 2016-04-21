@@ -167,7 +167,7 @@ class Module_classifieds
 
         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries e JOIN ' . get_table_prefix() . 'classifieds_prices c ON c.c_catalogue_name=e.c_name', array('e.*'), array('ce_submitter' => $member_id), 'GROUP BY e.id ORDER BY ce_add_date DESC');
         if (count($rows) == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'catalogue_entry'));
         }
 
         $ads = array();

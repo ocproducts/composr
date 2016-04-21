@@ -177,7 +177,7 @@ class Block_main_image_slider
             }
             return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8b92cd992508e55bfe4139b5c09475c2', 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('GALLERY'),
-                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'image'),
                 'ADD_NAME' => do_lang_tempcode('ADD_IMAGE'),
                 'SUBMIT_URL' => $submit_url,
             ));

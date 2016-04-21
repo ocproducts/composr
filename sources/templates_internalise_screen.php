@@ -52,6 +52,9 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
         if ((substr($key, 0, 5) == 'keep_') && (skippable_keep($key, $param))) {
             continue;
         }
+        if (substr($key, -6) == '_start') {
+            continue;
+        }
         if (get_magic_quotes_gpc()) {
             $param = stripslashes($param);
         }

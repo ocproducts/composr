@@ -875,7 +875,7 @@ class Module_admin_zones
             if ($no_rename) {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2fec0bddfe975b573da9bbd68ec16689', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS', 'zone'), 'delete', false));
         }
 
         $map = array('page' => '_SELF', 'type' => '__edit');

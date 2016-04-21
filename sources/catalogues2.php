@@ -554,6 +554,8 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
     }
     $id = $GLOBALS['SITE_DB']->query_insert('catalogue_categories', $map, true);
 
+    store_in_catalogue_cat_treecache($id, $parent_id); // *must* run before calculate_category_child_count_cache
+
     calculate_category_child_count_cache($parent_id);
 
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
@@ -566,8 +568,6 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
     } else {
         seo_meta_set_for_explicit('catalogue_category', strval($id), $meta_keywords, $meta_description);
     }
-
-    store_in_catalogue_cat_treecache($id, $parent_id);
 
     if (!is_null($parent_id)) {
         require_code('notifications2');
@@ -586,7 +586,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     require_code('sitemap_xml');
     notify_sitemap_node_add(
-        'SEARCH:catalogues:browse:' . strval($id),
+        'SEARCH:catalogues:category:' . strval($id),
         $add_date,
         null,
         is_null($parent_id) ? SITEMAP_IMPORTANCE_MEDIUM : SITEMAP_IMPORTANCE_LOW,
@@ -802,7 +802,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
 
     require_code('sitemap_xml');
     notify_sitemap_node_edit(
-        'SEARCH:catalogues:browse:' . strval($id),
+        'SEARCH:catalogues:category:' . strval($id),
         has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_catalogue', $rows[0]['c_name']) && has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'catalogues_category', strval($id))
     );
 }
@@ -811,7 +811,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
  * Delete a catalogue category.
  *
  * @param  AUTO_LINK $id The ID of the category
- * @param  boolean $deleting_all Whether we're deleting everything under the category; if FALSE we will actively reassign child categories to be directly under the root
+ * @param  boolean $deleting_all Whether we're deleting everything under the category; if FALSE we will actively reassign child categories and entries up a level (if tree) or deletes (if not tree)
  */
 function actual_delete_catalogue_category($id, $deleting_all = false)
 {
@@ -841,16 +841,19 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
             set_time_limit(0);
         }
 
-        // If we're in a tree
         if ($myrow['c_is_tree'] == 1) {
+            // If we're in a tree...
+
             $GLOBALS['SITE_DB']->query_update('catalogue_categories', array('cc_parent_id' => $myrow['cc_parent_id']), array('cc_parent_id' => $id));
             $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('cc_id' => $myrow['cc_parent_id']), array('cc_id' => $id));
         } else { // If we're not in a tree catalogue we can't move them, we have to delete
+            // If we're not in a tree...
+
             if (php_function_allowed('set_time_limit')) {
                 set_time_limit(0);
             }
 
-            $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('cc_parent_id' => $id)); // Does nothing, in theory
+            $GLOBALS['SITE_DB']->query_delete('catalogue_categories', array('cc_parent_id' => $id)); // Does nothing, in theory, as it's not a tree!
             $start = 0;
             do {
                 $entries = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('id'), array('cc_id' => $id), '', 500, $start);
@@ -894,7 +897,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
     }
 
     require_code('sitemap_xml');
-    notify_sitemap_node_delete('SEARCH:catalogues:browse:' . strval($id));
+    notify_sitemap_node_delete('SEARCH:catalogues:category:' . strval($id));
 }
 
 /**

@@ -727,7 +727,7 @@ abstract class Standard_crud_module
 
         $tree = create_selection_list_catalogues(null, false, true);
         if ($tree->is_empty()) {
-            return inform_screen($title, do_lang_tempcode('NO_ENTRIES'));
+            return inform_screen($title, do_lang_tempcode('NO_ENTRIES', 'catalogue'));
         }
 
         require_code('form_templates');
@@ -1181,7 +1181,7 @@ abstract class Standard_crud_module
         if (method_exists($this, 'create_selection_list_radio_entries')) { // For picture selection lists only
             $entries = $this->create_selection_list_radio_entries();
             if ($entries->is_empty()) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $fields = form_input_radio(do_lang_tempcode($this->select_name), $description, 'id', $entries, $this->no_blank_ids, true, '');
         } elseif ((method_exists($this, 'create_selection_list_ajax_tree')) && (($_fields = $this->create_selection_list_ajax_tree()) !== null)) {
@@ -1194,11 +1194,11 @@ abstract class Standard_crud_module
         } elseif (method_exists($this, 'create_selection_list_choose_table')) {
             list($test,) = $this->get_entry_rows();
             if (count($test) == 0) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $table_result = $this->create_selection_list_choose_table($map);
             if (is_null($table_result)) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $table = $table_result[0];
             $has_ordering = $table_result[1];
@@ -1239,7 +1239,7 @@ abstract class Standard_crud_module
             }
 
             if ($entries->is_empty()) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $fields = form_input_huge_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
         }
@@ -1391,7 +1391,14 @@ abstract class Standard_crud_module
         $action_fields = new Tempcode();
         if ($may_delete) {
             if (!$all_delete_fields_given) {
-                $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+                // HACKHACK: Improve with #1789
+                if ($this->content_type === 'catalogue_category' && $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues c JOIN ' . get_table_prefix() . 'catalogue_categories cc ON c.c_name=cc.c_name', 'c_is_tree', array('id' => $id)) == 0) {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS'), 'delete', false));
+                } elseif ($this->content_type === 'gallery') {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS'), 'delete', false));
+                } else {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+                }
             }
 
             if ((addon_installed('points')) && (!is_null($submitter)) && (!is_null($date_and_time))) {

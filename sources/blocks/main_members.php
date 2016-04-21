@@ -325,7 +325,7 @@ class Block_main_members
         {
             return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8', 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('RECENT', make_string_tempcode(integer_format($max)), do_lang_tempcode('MEMBERS')),
-                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'member'),
                 'ADD_NAME' => '',
                 'SUBMIT_URL' => '',
             ));

@@ -9,7 +9,7 @@
 {+END}
 {+START,IF_EMPTY,{AUTHORS}}
 	<p class="nothing_here">
-		{!NO_ENTRIES}
+		{!NO_ENTRIES,author}
 	</p>
 {+END}
 

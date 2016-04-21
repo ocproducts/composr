@@ -9,7 +9,7 @@
 		{+END}
 
 		{+START,IF_EMPTY,{DOWNLOADS}}
-			<p class="nothing_here">{!NO_ENTRIES}</p>
+			<p class="nothing_here">{!NO_ENTRIES,download}</p>
 		{+END}
 	{+END}
 {+END}
@@ -17,7 +17,7 @@
 	{$GET,SUB_CATEGORIES}
 {+END}
 {+START,IF_EMPTY,{$TRIM,{$GET,SUB_CATEGORIES}}}
-	<p class="nothing_here">{!NO_ENTRIES}</p>
+	<p class="nothing_here">{!NO_CATEGORIES,download_category}</p>
 {+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

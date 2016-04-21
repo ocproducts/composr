@@ -1968,6 +1968,11 @@ function get_os_string()
  */
 function cron_installed()
 {
+    $test = get_param_integer('keep_has_cron', null);
+    if ($test !== null) {
+        return $test == 1;
+    }
+
     if ($GLOBALS['DEV_MODE']) {
         return true;
     }

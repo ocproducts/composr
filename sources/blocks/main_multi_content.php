@@ -689,6 +689,7 @@ class Block_main_multi_content
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'CONTENT' => $rendered_content,
+            'CONTENT_TYPE' => $content_type,
             'CONTENT_DATA' => $content_data,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,

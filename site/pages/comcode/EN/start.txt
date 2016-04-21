@@ -10,8 +10,7 @@
 		[/surround]
 
 		[surround="fp_col_block right pale_box"]
-			{$SET,simple_image_fader,1}
-			[block failsafe="1"]main_image_fader[/block]
+			[block failsafe="1" block_id="small_version"]main_image_fader[/block]
 		[/surround]
 	[/surround]
 

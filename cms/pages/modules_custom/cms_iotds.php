@@ -206,7 +206,7 @@ class Module_cms_iotds extends Standard_crud_module
     {
         $count = $GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)');
         if ($count == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'iotd'));
         }
 
         $used = get_param_integer('used', 0);

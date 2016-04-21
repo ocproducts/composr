@@ -65,7 +65,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     if (!$simplified) {
         $types = create_selection_list_banner_types($b_type);
         if ($types->is_empty()) {
-            warn_exit(do_lang_tempcode('NO_CATEGORIES'));
+            warn_exit(do_lang_tempcode('NO_CATEGORIES', 'banner_type'));
         }
         $fields->attach(form_input_list(do_lang_tempcode('BANNER_TYPE'), do_lang_tempcode('_DESCRIPTION_BANNER_TYPE'), 'b_type', $types, null, false, false));
 

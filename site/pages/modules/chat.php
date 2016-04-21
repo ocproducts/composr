@@ -1088,7 +1088,7 @@ class Module_chat
         $posting_url = build_url(array('page' => '_SELF', 'type' => '_download_logs'), '_SELF', null, false, true);
 
         if (count($chatrooms) == 0) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+            inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => '6741ef01d1c6dd8d2de9be3290666db7', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $posting_name, 'URL' => $posting_url, 'TEXT' => ''));

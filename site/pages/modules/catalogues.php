@@ -544,7 +544,7 @@ class Module_catalogues
             if ($id === null) {
                 $id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => get_param_string('catalogue_name'), 'cc_parent_id' => null));
                 if (is_null($id)) {
-                    warn_exit(do_lang_tempcode('NO_CATEGORIES'));
+                    warn_exit(do_lang_tempcode('NO_CATEGORIES', 'catalogue_category'));
                 }
             }
 
@@ -879,7 +879,7 @@ class Module_catalogues
         unset($rows);
 
         if (count($cats) == 0) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+            inform_exit(do_lang_tempcode('NO_CATEGORIES', 'catalogue_category'));
         }
 
         ksort($cats);

@@ -22,7 +22,7 @@
 
 		{+START,IF_EMPTY,{ENTRIES}}
 			<p class="nothing_here">
-				{!NO_ENTRIES}
+				{!NO_ENTRIES,catalogue_entry}
 			</p>
 		{+END}
 

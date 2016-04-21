@@ -76,18 +76,18 @@ class Block_main_iotd
         } elseif (is_numeric($mode)) {
             $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('id' => intval($mode)), '', 1);
             if (!array_key_exists(0, $iotd)) {
-                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '55cff098a0ff91416e6c0e52228ca02d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '55cff098a0ff91416e6c0e52228ca02d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
             }
         } else {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)', array('used' => 1));
             if ($cnt == 0) {
-                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '3fe3dbbf8966b80cf3037f6dd914867d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+                return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '3fe3dbbf8966b80cf3037f6dd914867d', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
             }
             $at = mt_rand(0, $cnt - 1);
             $iotd = $GLOBALS['SITE_DB']->query_select('iotd', array('*'), array('used' => 1), '', 1, $at);
         }
         if (!array_key_exists(0, $iotd)) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '62baa388e068d4334f7a6c6093ead56a', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '62baa388e068d4334f7a6c6093ead56a', 'HIGH' => true, 'TITLE' => do_lang_tempcode('IOTD'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'iotd'), 'ADD_NAME' => do_lang_tempcode('ADD_IOTD'), 'SUBMIT_URL' => $submit_url));
         }
         $myrow = $iotd[0];
 

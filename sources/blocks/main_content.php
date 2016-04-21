@@ -251,7 +251,7 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '13f060922a5ab6c370f218b2ecc6fe9c',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
                     'ADD_NAME' => do_lang_tempcode('ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));

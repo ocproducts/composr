@@ -1079,9 +1079,11 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $db->dedupe_mode = false;
         } else {
             $_count_query_keywords_search = null;
+            $t_keyword_search_rows = array();
         }
     } else {
         $_count_query_keywords_search = null;
+        $t_keyword_search_rows = array();
     }
 
     $orig_table_clause = $table_clause;
@@ -1490,8 +1492,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
         }
     }
     $final_result_rows = $t_rows;
-    $GLOBALS['TOTAL_SEARCH_RESULTS'] += $t_count;
     array_splice($final_result_rows, $max * 2 + $start); // We return more than max in case our search hook does some extra in-code filtering (Catalogues, Comcode pages). It shouldn't really but sometimes it has to, and it certainly shouldn't filter more than 50%. Also so our overall ordering can be better.
+    if ((count($t_main_search_rows) < $max) && (count($t_keyword_search_rows) < $max)) {
+        $GLOBALS['TOTAL_SEARCH_RESULTS'] += min($t_count, count($final_result_rows));
+    } else {
+        $GLOBALS['TOTAL_SEARCH_RESULTS'] +=$t_count;
+    }
 
     return $final_result_rows;
 }

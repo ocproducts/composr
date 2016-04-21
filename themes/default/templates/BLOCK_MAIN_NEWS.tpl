@@ -7,7 +7,7 @@
 			{+END}{+END}
 
 			{+START,IF_EMPTY,{BRIEF}{CONTENT}}
-				<p class="nothing_here">{!NO_ENTRIES}</p>
+				<p class="nothing_here">{!NO_ENTRIES,news}</p>
 			{+END}
 
 			<div class="raw_ajax_grow_spot">

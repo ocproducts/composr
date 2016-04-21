@@ -3,7 +3,7 @@
 
 	<div>{$,So that the titles don't have box titling CSS}
 		{+START,IF_EMPTY,{DAYS}}
-			<p class="nothing_here">{!NO_ENTRIES}</p>
+			<p class="nothing_here">{!NO_ENTRIES,event}</p>
 		{+END}
 		{+START,LOOP,DAYS}
 			<h4 class="event_listing_day">{TIME*}</h4>
