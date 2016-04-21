@@ -1514,6 +1514,7 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MULTI_CONTENT', array(
                 'TYPE' => lorem_phrase(),
+                'CONTENT_TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
                 'RAW_AWARD_DATE' => placeholder_date(),
                 'AWARD_DATE' => placeholder_date(),

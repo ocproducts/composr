@@ -641,7 +641,7 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
         if (file_exists($path)) {
             require_code('files');
             deldir_contents($path);
-            rmdir($path);
+            @rmdir($path);
         }
     }
 

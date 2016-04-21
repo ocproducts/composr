@@ -43,10 +43,10 @@ These ZIP files contain only the actual image and video files, and not any meta 
 Composr supports members having their own galleries of images/videos.
 
 To enable this, you as admin need to:
-1) make sure members have permission to "Add image/video". You can check this from the Permissions Tree Editor at the "Module: galleries" node (probably under the Welcome or Site zone, depending on your set up). You can either assign this permission explicitly, or let it get inherited from the global "Submit mid-impact (medium visibility) content" privilege.
-2) and also permission to have personal categories. You can do this in the Permissions Tree Editor (as "have personal galleries"), or again by setting the privilege globally.
+1) make sure members have the privilege to "Add image/video". You can check this from the Permissions Tree Editor at the "Module: galleries" node (probably under the Welcome or Site zone, depending on your set up). You can either assign this permission explicitly for galleries, or let it get inherited from the global "Submit mid-impact (medium visibility) content" privilege.
+2) ...and also the privilege to have personal categories. You can do this in the Permissions Tree Editor (as "have personal galleries"), or again by setting the privilege globally.
 3) Make sure members have View Access to the Content Management zone. This can again be done in the Permissions Tree Editor, at "Zone: Content Management".
-4) Add/edit a gallery (the "Galleries home" gallery will do, if you want personal galleries to be created directly underneath this) to have the 'Personal category container' option ticked (checked). You can find this on the gallery add/edit form under 'Advanced'.
+4) Add/edit a gallery (the "Galleries home" gallery will do, if you want personal galleries to be created directly underneath this) to have the 'Personal category container' option ticked (checked). You can find this on the gallery add/edit form under 'Advanced'. If you do not find it the setting there it's because you disabled the "Enable member-gallery-containers" configuration option.
 5) On the same add/edit gallery form, make sure that the gallery you add/edit also has "Accept images" and "Accept videos" enabled (assuming you want to allow both images and videos). This is because the properties of this gallery will be transferred to new personal galleries underneath it.
 Now when members submit a new image/video, they will get the choice to create their personal gallery in the process, and further submissions can then also go into their personal gallery. If you want to add a quick link that members may use to submit images, add a link to [tt]cms:cms_galleries:add[/tt] to a menu using the menu editor.
 

@@ -677,12 +677,7 @@ class Module_tickets
             }
 
             // URL To add a new ticket
-            $map = array('page' => '_SELF', 'type' => 'ticket');
-            $default_ticket_type = $this->get_ticket_type_id();
-            if ($default_ticket_type !== null) {
-                $map['ticket_type_id'] = $default_ticket_type;
-            }
-            $add_ticket_url = build_url($map, '_SELF');
+            $add_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $default_ticket_type), '_SELF');
 
             // Link to edit ticket subject/type
             $edit_url = mixed();
@@ -956,7 +951,13 @@ class Module_tickets
         $results = sort_search_results($hook_results, array(), 'ASC');
         $out = build_search_results_interface($results, 0, $max, 'ASC');
 
-        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array('_GUID' => '427e28208e15494a8f126eb4fb2aa60c', 'TITLE' => $title, 'URL' => build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id), '_SELF'), 'POST_FIELDS' => build_keep_post_fields(), 'RESULTS' => $out));
+        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array(
+            '_GUID' => '427e28208e15494a8f126eb4fb2aa60c',
+            'TITLE' => $title,
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id), '_SELF'),
+            'POST_FIELDS' => build_keep_post_fields(),
+            'RESULTS' => $out,
+        ));
     }
 
     /**

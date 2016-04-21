@@ -28,7 +28,7 @@
 
 {+START,IF_EMPTY,{TOPIC_WRAPPER}{FORUM_GROUPINGS}}
 	<p class="nothing_here">
-		{!NO_ENTRIES}
+		{!NO_ENTRIES,topic}
 	</p>
 {+END}
 

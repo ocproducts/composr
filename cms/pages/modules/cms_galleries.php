@@ -1041,7 +1041,7 @@ class Module_cms_galleries extends Standard_crud_module
     public function create_selection_list_ajax_tree()
     {
         if ($GLOBALS['SITE_DB']->query_select_value('images', 'COUNT(*)') == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'image'));
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'images'), get_module_zone('search'));
@@ -1626,7 +1626,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
     public function create_selection_list_ajax_tree()
     {
         if ($GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)') == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'video'));
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'videos'), get_module_zone('search'));

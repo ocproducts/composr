@@ -61,7 +61,7 @@
 		{+END}
 
 		{+START,IF_EMPTY,{CONTENT}}
-			<p class="nothing_here">{!NO_ENTRIES}</p>
+			<p class="nothing_here">{!NO_ENTRIES,{CONTENT_TYPE}}</p>
 		{+END}
 
 		{$GET,links}
@@ -84,7 +84,7 @@
 				{+END}
 
 				{+START,IF_EMPTY,{CONTENT}}
-					<p class="nothing_here">{!NO_ENTRIES}</p>
+					<p class="nothing_here">{!NO_ENTRIES,{CONTENT_TYPE}}</p>
 				{+END}
 			</div>
 

@@ -28,6 +28,10 @@ function clear_cms_autosave()
         return;
     }
 
+    if (!function_exists('get_member')) {
+        return;
+    }
+
     foreach (array_keys($_COOKIE) as $key) {
         if (substr($key, 0, 13) == 'cms_autosave_') {
             if (strpos($key, get_page_name()) !== false || strpos($key, str_replace('_', '-', get_page_name())) !== false) {

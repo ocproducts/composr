@@ -1690,7 +1690,6 @@ function sync_file_move($old, $new)
 
 /**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
- * Roll on PHP6 that has a true internal UTF string model. For now, anyone who uses UTF will get some (albeit minor) imperfections from PHP's manipulations of the strings.
  *
  * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
  */

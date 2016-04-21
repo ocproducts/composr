@@ -71,7 +71,7 @@ class Hook_profiles_tabs_galleries
     {
         require_lang('galleries');
 
-        $title = ($this->find_num_personal_galleries($member_id_of) == 1) ? do_lang_tempcode('GALLERY') : do_lang_tempcode('GALLERIES');
+        $title = ($this->find_num_personal_galleries($member_id_of) <= 1) ? do_lang_tempcode('GALLERY') : do_lang_tempcode('GALLERIES');
 
         $order = 30;
 

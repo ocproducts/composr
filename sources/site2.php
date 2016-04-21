@@ -287,8 +287,8 @@ function page_not_found($codename, $zone)
             $possibility = strval($possibility); // e.g. '404' page has been converted to integer by PHP, grr
         }
 
-        $from = str_replace('cms_', '', str_replace('admin_', '', $possibility));
-        $to = str_replace('cms_', '', str_replace('admin_', '', $codename));
+        $from = str_replace(array('-', 'cms_', 'admin_'), array('_', '', ''), $possibility);
+        $to = str_replace(array('-', 'cms_', 'admin_'), array('_', '', ''), $codename);
         //$dist = levenshtein($from, $to);  If we use this, change > to < also
         //$threshold = 4;
         $dist = 0.0;

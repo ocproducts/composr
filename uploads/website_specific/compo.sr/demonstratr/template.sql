@@ -12511,7 +12511,6 @@ insert into `cms_modules` values('Chris Graham','',null,'ocProducts','admin_perm
  ('Chris Graham','',null,'ocProducts','admin_cns_multi_moderations','2'),
  ('Chris Graham','',null,'ocProducts','admin_content_reviews','1'),
  ('Chris Graham','',null,'ocProducts','admin_ecommerce_logs','1'),
- ('Chris Graham','',null,'ocProducts','admin_email_log','2'),
  ('Chris Graham','',null,'ocProducts','admin_group_member_timeouts','2'),
  ('Chris Graham','',null,'ocProducts','admin_ip_ban','5'),
  ('Chris Graham','',null,'ocProducts','admin_revisions','2'),

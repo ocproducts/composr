@@ -349,7 +349,7 @@ function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $ca
         $filter = null;
     }
     if ($entries === null) {
-        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, '', $direction);
+        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, $direction);
     } else { // Oh, we already have $entries
         $num_entries = count($entries);
         $in_db_sorting = false;
@@ -694,6 +694,8 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
             $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, $order_by, '', array(), 'r');
             if ($bits !== null) {
                 list($virtual_order_by,) = $bits;
+            } else {
+                $virtual_order_by = 'r.ce_add_date'; // Should not happen
             }
         } elseif (is_numeric($order_by)) { // Ah, so it's saying the nth field of this catalogue
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
@@ -993,7 +995,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
     $map['ADD_DATE'] = get_timezoned_date_tempcode($entry['ce_add_date']);
-    $map['EDIT_DATE'] = get_timezoned_date_tempcode($entry['ce_edit_date']);
+    $map['EDIT_DATE'] = is_null($entry['ce_edit_date']) ? new Tempcode() : get_timezoned_date_tempcode($entry['ce_edit_date']);
     $map['ID'] = strval($id);
     $map['CATALOGUE'] = $catalogue_name;
     $map['CATALOGUE_TITLE'] = array_key_exists('c_title', $catalogue) ? get_translated_text($catalogue['c_title']) : '';
@@ -1155,8 +1157,11 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
                 $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
             } else {
                 $just_row = db_map_restrict($temp, array('cv_value')) + array('ce_id' => is_array($entry_id) ? $entry_id['id'] : $entry_id, 'cf_id' => $field['id']);
+                if (multi_lang_content()) {
+                    $just_row['cv_value'] = intval($just_row['cv_value']);
+                }
                 $target['effective_value'] = get_translated_tempcode('catalogue_efv_' . $raw_type, $just_row, 'cv_value');
-                $target['effective_value_pure'] = get_translated_text($temp['cv_value']);
+                $target['effective_value_pure'] = get_translated_text($just_row['cv_value']);
             }
             break;
         case 'long_text':

@@ -101,7 +101,11 @@ class Block_main_content
             warn_exit(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'));
         }
         if ($title === null) {
-            $title = do_lang('RANDOM_CONTENT', do_lang($info['content_type_label']));
+            if ($content_id === null) {
+                $title = do_lang('RANDOM_CONTENT', do_lang($info['content_type_label']));
+            } else {
+                $title = do_lang($info['content_type_label']);
+            }
         }
         if (((!array_key_exists('id_field_numeric', $info)) || ($info['id_field_numeric'])) && ($content_id !== null) && (!is_numeric($content_id))) {
             list(, $resource_page, $resource_type) = explode(':', $info['view_page_link_pattern']);
@@ -247,7 +251,7 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '13f060922a5ab6c370f218b2ecc6fe9c',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
                     'ADD_NAME' => do_lang_tempcode('ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));

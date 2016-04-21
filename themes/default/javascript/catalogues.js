@@ -46,9 +46,6 @@ function catalogue_field_reindex_around(all_orderers,ob)
 			if (all_orderers[i]!=ob)
 			{
 				all_orderers[i].selectedIndex=next_index;
-				if (typeof $(all_orderers[i]).select2!='undefined') {
-					$(folder_list).all_orderers[i]();
-				}
 				next_index++;
 			}
 		}

@@ -506,11 +506,12 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 					{
 						if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
 						set_inner_html(tmp_element,'{!ACTIVE;^}');
-						document.getElementById('friend_img_'+member_id).className='friend_active';
+						var friend_img=document.getElementById('friend_img_'+member_id);
+						if (friend_img) friend_img.className='friend_active';
 						var alert_box_wrap=document.getElementById('alert_box_wrap');
-						alert_box_wrap.style.display='block';
+						if (alert_box_wrap) alert_box_wrap.style.display='block';
 						var alert_box=document.getElementById('alert_box');
-						set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
+						if (alert_box) set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
 						window.setTimeout(function() {
 							if (document.getElementById('alert_box')) // If the alert box is still there, remove it
 								alert_box_wrap.style.display='none';
@@ -604,27 +605,29 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 					break;
 
 				case 'DEINVOLVE_IM':
-					tmp_element=document.getElementById('participant__'+room_id+'__'+member_id);
+					var doc=document;
+					if (typeof opened_popups['room_'+room_id]!='undefined')
+					{
+						if (!opened_popups['room_'+room_id].document) break;
+						doc=opened_popups['room_'+room_id].document;
+					}
+
+					tmp_element=doc.getElementById('participant__'+room_id+'__'+member_id);
 					if ((tmp_element) && (tmp_element.parentNode))
 					{
 						var parent=tmp_element.parentNode;
-						if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
+						/*Actually prefer to let them go away it's cleaner if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
 						{
-							document.getElementById('post_'+room_id).force_invite=member_id;
+							tmp_element=doc.getElementById('post_'+room_id);
+							if (tmp_element) tmp_element.force_invite=member_id;
 
-							var doc=document;
-							if (typeof opened_popups['room_'+room_id]!='undefined')
-							{
-								if (!opened_popups['room_'+room_id].document) break;
-								doc=opened_popups['room_'+room_id].document;
-							}
 							tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
 							if (tmp_element)
 							{
 								if (get_inner_html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
 								set_inner_html(tmp_element,'{!INACTIVE;^}');
 							}
-						} else
+						} else*/
 						{
 							parent.removeChild(tmp_element);
 						}
@@ -1149,7 +1152,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 					// Set title
 					var dom_title=new_window.document.getElementsByTagName('title')[0];
 					if (dom_title!=null)
-						new_window.document.title=get_inner_html(dom_title); // For Safari
+						new_window.document.title=get_inner_html(dom_title).replace(/<.*?>/g,''); // For Safari
 
 				},500); /* Could be 60 except for Firefox which is slow */
 			}

@@ -22,7 +22,6 @@
 
 /**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
- * Roll on PHP6 that has a true internal UTF string model. For now, anyone who uses UTF will get some (albeit minor) imperfections from PHP's manipulations of the strings.
  *
  * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
  *
@@ -65,19 +64,35 @@ function _convert_data_encodings($known_utf8 = false)
             ini_set('default_charset', $charset);
             foreach ($_GET as $key => $val) {
                 if (is_string($val)) {
-                    $_GET[$key] = iconv($encoding, $charset . '//TRANSLIT', $val);
+                    $val = @iconv($encoding, $charset . '//TRANSLIT', $val);
+                    if ($val === false) {
+                        $val = @iconv($encoding, $charset . '//IGNORE', $val);
+                    }
+                    $_GET[$key] = $val;
                 } elseif (is_array($val)) {
                     foreach ($val as $i => $v) {
-                        $_GET[$key][$i] = iconv($encoding, $charset . '//TRANSLIT', $v);
+                        $v = @iconv($encoding, $charset . '//TRANSLIT', $v);
+                        if ($v === false) {
+                            $v = @iconv($encoding, $charset . '//IGNORE', $v);
+                        }
+                        $_GET[$key][$i] = $v;
                     }
                 }
             }
             foreach ($_POST as $key => $val) {
                 if (is_string($val)) {
-                    $_POST[$key] = iconv($encoding, $charset . '//TRANSLIT', $val);
+                    $val = @iconv($encoding, $charset . '//TRANSLIT', $val);
+                    if ($val === false) {
+                        $val = @iconv($encoding, $charset . '//IGNORE', $val);
+                    }
+                    $_POST[$key] = $val;
                 } elseif (is_array($val)) {
                     foreach ($val as $i => $v) {
-                        $_POST[$key][$i] = iconv($encoding, $charset . '//TRANSLIT', $v);
+                        $v = @iconv($encoding, $charset . '//TRANSLIT', $v);
+                        if ($v === false) {
+                            $v = @iconv($encoding, $charset . '//IGNORE', $v);
+                        }
+                        $_POST[$key][$i] = $v;
                     }
                 }
             }
@@ -238,7 +253,7 @@ function foxy_utf8_to_nce($data = '')
                 }
             }
         } elseif ((strtolower($input_charset) == 'utf-8') && (strtolower(substr('utf-8', 0, 3)) != 'utf')) {
-            $test = utf8_decode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
+            $test = @utf8_decode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
             if ($test !== false) {
                 $data = $test;
             } else {
@@ -477,9 +492,7 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
         $internal_charset = get_charset();
     }
 
-    if ((strtolower($input_charset) == 'utf-8') && /*test method works...*/
-        (will_be_unicode_neutered($data)) && (in_array(strtolower($internal_charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))
-    ) { // Preferred as it will sub entities where there's no equivalent character
+    if ((strtolower($input_charset) == 'utf-8') && /*test method works...*/(will_be_unicode_neutered($data)) && (in_array(strtolower($internal_charset), array('iso-8859-1', 'iso-8859-15', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs', 'shift_jis', 'euc-jp')))) { // Preferred as it will use sub entities where there's no equivalent character
         $test = entity_utf8_decode($data, $internal_charset);
         if ($test !== false) {
             return $test;
@@ -499,6 +512,9 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
     }
     if ((function_exists('iconv')) && ($VALID_ENCODING) && (get_value('disable_iconv') !== '1')) {
         $test = @iconv($input_charset, $internal_charset . '//TRANSLIT', $data);
+        if ($test === false) {
+            $test = @iconv($input_charset, $internal_charset . '//IGNORE', $data);
+        }
         if ($test !== false) {
             return $test;
         }
@@ -522,13 +538,13 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
         }
     }
     if ((strtolower($input_charset) == 'utf-8') && (strtolower(substr($internal_charset, 0, 3)) != 'utf')) {
-        $test = utf8_decode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
+        $test = @utf8_decode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
         if ($test !== false) {
             return $test;
         }
     }
     if ((strtolower($internal_charset) == 'utf-8') && (strtolower(substr($input_charset, 0, 3)) != 'utf')) {
-        $test = utf8_encode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
+        $test = @utf8_encode($data); // Imperfect as it assumes ISO-8859-1, but it's our last resort.
         if ($test !== false) {
             return $test;
         }

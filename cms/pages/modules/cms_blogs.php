@@ -299,7 +299,7 @@ class Module_cms_blogs extends Standard_crud_module
             }
         }
         if ($cats1->is_empty()) {
-            warn_exit(do_lang_tempcode('NO_CATEGORIES'));
+            warn_exit(do_lang_tempcode('NO_CATEGORIES', 'news_category'));
         }
         if (addon_installed('authors')) {
             $hidden->attach(form_input_hidden('author', $author));

@@ -305,7 +305,7 @@ class Module_cms_comcode_pages
             //do_lang_tempcode('PAGE_LINK'),
             do_lang_tempcode('ORDER'),
             do_lang_tempcode('PARENT_PAGE'),
-            //do_lang_tempcode('OWNER'),
+            //do_lang_tempcode('metadata:OWNER'),
             //do_lang_tempcode('ADDED'),
             //do_lang_tempcode('VALIDATED'),
             do_lang_tempcode('ACTIONS'),

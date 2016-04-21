@@ -294,7 +294,7 @@ class Module_awards
             if (has_category_access(get_member(), 'award', strval($id))) {
                 inform_exit(do_lang_tempcode('NO_ENTRIES_AWARDS', do_lang_tempcode($info['content_type_label'])));
             }
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'award_type'));
         }
 
         require_code('templates_pagination');
