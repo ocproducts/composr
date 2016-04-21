@@ -170,6 +170,7 @@ function improperly_filled_in($name, $posted, $array)
 {
     require_code('tempcode');
 
+    require_code('global3');
     set_http_status_code('400');
 
     if ($posted !== false) {
@@ -193,6 +194,7 @@ function improperly_filled_in($name, $posted, $array)
  */
 function improperly_filled_in_post($name)
 {
+    require_code('global3');
     set_http_status_code('400');
 
     if ((count($_POST) == 0) && (get_option('user_postsize_errors') == '1')) {
@@ -298,6 +300,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
     if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
+        require_code('global3');
         set_http_status_code('404');
         if (cms_srv('HTTP_REFERER') != '') {
             relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
@@ -367,6 +370,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     if (!is_null($tmp)) {
         $text = $tmp;
     }
+
+    require_code('global3');
 
     global $WANT_TEXT_ERRORS;
     if ($WANT_TEXT_ERRORS) {
@@ -527,6 +532,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
     if (!$silent) {
+        require_code('global3');
         set_http_status_code('403'); // Stop spiders ever storing the URL that caused this
     }
 
@@ -922,6 +928,7 @@ function _fatal_exit($text, $return = false)
     global $WANT_TEXT_ERRORS;
     if ($WANT_TEXT_ERRORS) {
         header('Content-type: text/plain; charset=' . get_charset());
+        require_code('global3');
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
         debug_print_backtrace();
@@ -1347,6 +1354,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
  */
 function _access_denied($class, $param, $force_login)
 {
+    require_code('global3');
     set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
 
     require_lang('permissions');
