@@ -502,7 +502,7 @@ class Module_news
         $select = $this->select;
         $select_and = $this->select_and;
 
-        $max = get_param_integer('module_mex', intval(get_option('news_entries_per_page')));
+        $max = get_param_integer('module_max', intval(get_option('news_entries_per_page')));
 
         // Get category contents
         $inline = get_param_integer('inline', 0) == 1;
