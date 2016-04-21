@@ -66,7 +66,7 @@ function actionlog_linkage($type, $a, $b, $_a, $_b)
         return array($_a, $_b);
     }
     if (($type == 'ADD_CATALOGUE_CATEGORY' || $type == 'EDIT_CATALOGUE_CATEGORY') && ($b != '')) {
-        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'browse', 'id' => (!is_numeric($a)) ? $b : $a), get_module_zone('catalogues'));
+        $tmp_url = build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => (!is_numeric($a)) ? $b : $a), get_module_zone('catalogues'));
         $_b = hyperlink($tmp_url, $_b, false, false, $type_str);
         return array($_a, $_b);
     }

@@ -91,7 +91,7 @@ function script_load_stuff_staff()
 	];
 	var cells=document.getElementsByTagName('td');
 	var links=[];
-	if (window.location.href.indexOf('/cms/')!=-1)
+	if (window.location.href.replace('{$BASE_URL_NOHTTP;}','').indexOf('/cms/')!=-1{+START,IF,{$DEV_MODE}} || true{+END})
 	{
 		for (var i=0;i<cells.length;i++)
 		{
@@ -142,10 +142,10 @@ function apply_comcode_tooltip(hook,id,link)
 			{
 				link.is_over=true;
 
-				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame,ajax_result) {
-					if (ajax_result)
+				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame) {
+					if (ajax_result_frame && ajax_result_frame.responseText)
 					{
-						link.rendered_tooltip=get_inner_html(ajax_result);
+						link.rendered_tooltip=ajax_result_frame.responseText;
 					}
 					if (typeof link.rendered_tooltip!='undefined')
 					{

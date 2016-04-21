@@ -302,7 +302,7 @@ class Module_cms_catalogues extends Standard_crud_module
             'cc_id' => do_lang_tempcode('CATEGORY'),
             'ce_add_date' => do_lang_tempcode('ADDED'),
             'ce_views' => do_lang_tempcode('COUNT_VIEWS'),
-            'ce_submitter' => do_lang_tempcode('OWNER'),
+            'ce_submitter' => do_lang_tempcode('metadata:OWNER'),
         );
         if (addon_installed('unvalidated')) {
             $sortables['ce_validated'] = do_lang_tempcode('VALIDATED');
@@ -316,7 +316,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $fh[] = do_lang_tempcode('CATEGORY');
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
-        $fh[] = do_lang_tempcode('OWNER');
+        $fh[] = do_lang_tempcode('metadata:OWNER');
         if (addon_installed('unvalidated')) {
             $fh[] = do_lang_tempcode('VALIDATED');
         }
@@ -388,7 +388,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $catalogue_name = get_param_string('catalogue_name');
 
         if ($GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'COUNT(*)', array('c_name' => $catalogue_name)) == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'catalogue_entry'));
         }
 
         $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $catalogue_name));
@@ -1284,10 +1284,9 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $total = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name));
         $fields->attach(get_order_field('catalogue_category', null, $order, $max, $total));
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => is_null($move_target), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
-        $list = new Tempcode();
-        $fields->attach(form_input_tree_list(do_lang_tempcode('EXPIRY_MOVE_TARGET'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_TARGET'), 'move_target', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), false, is_null($move_target) ? null : strval($move_target)));
         if (cron_installed()) {
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '745236e628a4d3da5355f07874433600', 'SECTION_HIDDEN' => is_null($move_target), 'TITLE' => do_lang_tempcode('CLASSIFIED_ADS'))));
+            $fields->attach(form_input_tree_list(do_lang_tempcode('EXPIRY_MOVE_TARGET'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_TARGET'), 'move_target', null, 'choose_catalogue_category', array('catalogue_name' => $catalogue_name), false, is_null($move_target) ? null : strval($move_target)));
             $fields->attach(form_input_integer(do_lang_tempcode('EXPIRY_MOVE_DAYS_LOWER'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_DAYS_LOWER'), 'move_days_lower', $move_days_lower, true));
             $fields->attach(form_input_integer(do_lang_tempcode('EXPIRY_MOVE_DAYS_HIGHER'), do_lang_tempcode('DESCRIPTION_EXPIRY_MOVE_DAYS_HIGHER'), 'move_days_higher', $move_days_higher, true));
         }
@@ -1425,10 +1424,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         $title = post_param_string('title');
         $description = post_param_string('description', STRING_MAGIC_NULL);
         $notes = post_param_string('notes', STRING_MAGIC_NULL);
-        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : false);
+        $parent_id = post_param_integer('parent_id', fractional_edit() ? INTEGER_MAGIC_NULL : null/*may be non-tree catalogue or root node*/);
 
-        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : null);
-        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $move_days_lower = post_param_integer('move_days_lower', fractional_edit() ? INTEGER_MAGIC_NULL : 30/*may be CRON disabled*/);
+        $move_days_higher = post_param_integer('move_days_higher', fractional_edit() ? INTEGER_MAGIC_NULL : 60/*may be CRON disabled*/);
         $move_target = post_param_integer('move_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
         if ((!is_null($move_target)) && ($move_target != INTEGER_MAGIC_NULL)) {
             if (!has_submit_permission('mid', get_member(), get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $catalogue_name) + ((get_value('disable_cat_cat_perms') !== '1') ? array('catalogues_category', $move_target) : array()))) {

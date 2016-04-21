@@ -272,7 +272,7 @@ class Module_cms_chat
             }
         }
         if ($fields->is_empty()) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+            inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
         $results_table = results_table(do_lang_tempcode('CHATROOMS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');

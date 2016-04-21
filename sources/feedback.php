@@ -190,7 +190,10 @@ function post_comment_script()
     prepare_for_known_ajax_response();
 
     // Read in context of what we're doing
-    $options = either_param_string('options');
+    if (!isset($_GET['options']) && !isset($_POST['options'])) {
+        post_param_string('options'); // Trigger an error
+    }
+    $options = isset($_POST['options']) ? $_POST['options'] : $_GET['options'];
     secure_serialized_data($options);
     $_options = @unserialize($options);
     if (!is_array($_options)) {

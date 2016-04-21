@@ -2798,6 +2798,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 					script_tag_dependencies['to_load'].push(this_node);
 					this_node.async=false;
 					this_node.onload=this_node.onreadystatechange=function() {
+						// Once this <script src="..."> has loaded, we need to execute any <script>...</script> code. So we need to tie into load state for this
 						if ((typeof this_node.readyState=='undefined') || (this_node.readyState=='complete') || (this_node.readyState=='loaded'))
 						{
 							var found=0,i;
@@ -3397,7 +3398,7 @@ function topic_reply(is_threaded,ob,id,replying_to_username,replying_to_post,rep
 	{
 		post.value='{!QUOTED_REPLY_MESSAGE;^}'.replace(/\\{1\\}/g,replying_to_username).replace(/\\{2\\}/g,replying_to_post_plain);
 		post.strip_on_focus=post.value;
-		post.style.color='gray';
+		post.className+=' field_input_non_filled';
 	} else
 	{
 		if (typeof post.strip_on_focus!='undefined' && post.value==post.strip_on_focus)

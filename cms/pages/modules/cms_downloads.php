@@ -296,7 +296,7 @@ class Module_cms_downloads extends Standard_crud_module
     public function create_selection_list_ajax_tree()
     {
         if ($GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)') == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'download'));
         }
 
         $search_url = build_url(array('page' => 'search', 'id' => 'downloads'), get_module_zone('search'));

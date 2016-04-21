@@ -84,7 +84,7 @@ class Block_side_rss
         if (!is_null($rss->error)) {
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
-            relay_error_notification(do_lang('ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
+            relay_error_notification(do_lang('rss:ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
             if (cron_installed()) {
                 if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                     return new Tempcode();

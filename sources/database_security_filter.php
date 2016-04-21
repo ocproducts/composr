@@ -114,7 +114,7 @@ function has_escaped_dynamic_sql($query)
                         }
                     }
                     if ((!$ok) && ($found_query_line)) {
-                        //@var_dump($_strings);exit($str); // Useful for debugging
+                        //@var_dump($_strings);@exit($str); // Useful for debugging
 
                         return false; // :-(.
                     }

@@ -409,6 +409,7 @@ class Hook_addon_registry_galleries
                         'IMAGES_FULL' => array(),
                         'HTML' => array(),
                         'MILL' => '3000',
+                        'BLOCK_ID' => placeholder_id(),
                     )
                 ), null, '', true),
         );

@@ -402,7 +402,7 @@ class Module_cms_authors
     {
         $authors = $this->create_selection_list_authors();
         if ($authors->is_empty()) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'author'));
         }
 
         require_code('form_templates');

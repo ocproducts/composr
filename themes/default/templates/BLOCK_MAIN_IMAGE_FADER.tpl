@@ -1,6 +1,6 @@
 {$SET,RAND_FADER_IMAGE,{$RAND}}
 
-{+START,IF,{$GET,simple_image_fader}}
+{+START,IF,{$EQ,{BLOCK_ID},small_version}}
 	<div class="box box___block_main_image_fader"><div class="box_inner">
 		<h2>{!MEDIA}</h2>
 
@@ -9,7 +9,7 @@
 		</div>
 	</div></div>
 {+END}
-{+START,IF,{$NOT,{$GET,simple_image_fader}}}
+{+START,IF,{$NEQ,{BLOCK_ID},small_version}}
 	<div class="gallery_tease_pic_wrap"><div class="gallery_tease_pic">
 		<div class="box box___gallery_tease_pic"><div class="box_inner">
 			<div class="float_surrounder">

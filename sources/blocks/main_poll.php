@@ -77,7 +77,7 @@ class Block_main_poll
             $rows = $GLOBALS['SITE_DB']->query_select('poll', array('*'), array('id' => $poll_id), '', 1);
         }
         if (!array_key_exists(0, $rows)) {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => 'fdc85bb2e14bdf00830347e52f25cdac', 'HIGH' => true, 'TITLE' => do_lang_tempcode('POLL'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES'), 'ADD_NAME' => do_lang_tempcode('ADD_POLL'), 'SUBMIT_URL' => $submit_url));
+            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => 'fdc85bb2e14bdf00830347e52f25cdac', 'HIGH' => true, 'TITLE' => do_lang_tempcode('POLL'), 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'poll'), 'ADD_NAME' => do_lang_tempcode('ADD_POLL'), 'SUBMIT_URL' => $submit_url));
         }
         $myrow = $rows[0];
         $poll_id = $myrow['id'];

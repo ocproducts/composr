@@ -543,7 +543,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
 
                 foreach ($reminders as $reminder) {
                     $GLOBALS['SITE_DB']->query_insert('calendar_jobs', array(
-                        'j_time' => usertime_to_utctime($recurrences[0][0]) - $reminder['n_seconds_before'],
+                        'j_time' => usertime_to_utctime($recurrences[0][0], $reminder['n_member_id']) - $reminder['n_seconds_before'],
                         'j_reminder_id' => $reminder['id'],
                         'j_member_id' => $reminder['n_member_id'],
                         'j_event_id' => $event['id']

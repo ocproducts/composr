@@ -5,7 +5,7 @@
 			{TOPICS}
 		{+END}
 		{+START,IF_EMPTY,{TOPICS}}
-			<p class="nothing_here">{!NO_ENTRIES}</p>
+			<p class="nothing_here">{!NO_ENTRIES,topic}</p>
 		{+END}
 
 		{+START,INCLUDE,AJAX_PAGINATION}ALLOW_INFINITE_SCROLL=1{+END}

@@ -2229,11 +2229,6 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	font-weight: bold;
 }
 
-.pagination_per_page {
-	float: {!en_right};
-	margin-{!en_left}: 1em;
-}
-
 .pagination_pages {
 	display: inline;
 }

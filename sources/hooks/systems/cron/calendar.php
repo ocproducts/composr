@@ -118,7 +118,7 @@ class Hook_cron_calendar
                 $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_jobs WHERE ' . $or_list, null, null, false, true);
             }
 
-            $start += 300;
+            //$start += 300;    No, we just deleted, so offsets would have changed
         } while (array_key_exists(0, $jobs));
     }
 }

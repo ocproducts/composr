@@ -422,7 +422,7 @@ class Module_cms_wiki
 
         if (has_delete_permission('cat_low', get_member(), null, null, array('wiki_page', $id)) && ($id != db_get_first_id())) {
             $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '189cb80853d73ea1f63d5b0463ef7a37', 'TITLE' => do_lang_tempcode('ACTIONS'))));
-            $fields2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+            $fields2->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS', 'wiki_page'), 'delete', false));
         }
 
         if (addon_installed('actionlog')) {

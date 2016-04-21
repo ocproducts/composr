@@ -1,5 +1,5 @@
 {+START,IF_EMPTY,{BANNERS}}
-	<p class="nothing_here">{!NO_ENTRIES}</p>
+	<p class="nothing_here">{!NO_ENTRIES,banner}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{BANNERS}}

@@ -76,7 +76,7 @@
 	{+END}
 	{+START,IF_EMPTY,{POSTS}}
 		<p class="nothing_here">
-			{!NO_ENTRIES}
+			{!NO_ENTRIES,post}
 		</p>
 	{+END}
 

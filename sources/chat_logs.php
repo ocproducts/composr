@@ -36,6 +36,7 @@ function chat_logs_script()
     }
 
     require_lang('chat');
+    require_code('chat');
 
     $room = get_param_integer('room', 1);
     $start = get_param_integer('start', 0);

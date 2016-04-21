@@ -47,7 +47,7 @@
 				<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>
 			{+END}
 			{+START,IF_EMPTY,{CHATROOMS}}
-				<p class="nothing_here">{!NO_CATEGORIES}</p>
+				<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
 			{+END}
 		</div>
 	</div>

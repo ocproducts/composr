@@ -211,15 +211,15 @@ function get_option($name, $missing_ok = false)
         require_code('config2');
         $value = get_default_option($name);
         if ($value === null) {
-            if ($missing_ok) {
-                return null;
+            if (!$missing_ok) {
+                if (function_exists('attach_message')) {
+                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+                } else {
+                    critical_error('PASSON', 'Missing option: ' . $name);
+                }
             }
 
-            if (function_exists('attach_message')) {
-                attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
-            } else {
-                critical_error('PASSON', 'Missing option: ' . $name);
-            }
+            return null;
         } else {
             set_option($name, $value, 0);
         }

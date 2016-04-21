@@ -213,7 +213,7 @@ class Module_cms_news extends Standard_crud_module
             'news_category' => do_lang_tempcode('MAIN_CATEGORY'),
             'date_and_time' => do_lang_tempcode('ADDED'),
             'news_views' => do_lang_tempcode('COUNT_VIEWS'),
-            'submitter' => do_lang_tempcode('OWNER'),
+            'submitter' => do_lang_tempcode('metadata:OWNER'),
         );
         if (addon_installed('unvalidated')) {
             $sortables['validated'] = do_lang_tempcode('VALIDATED');
@@ -228,7 +228,7 @@ class Module_cms_news extends Standard_crud_module
         if (addon_installed('unvalidated')) {
             $fh[] = do_lang_tempcode('VALIDATED');
         }
-        $fh[] = do_lang_tempcode('OWNER');
+        $fh[] = do_lang_tempcode('metadata:OWNER');
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 

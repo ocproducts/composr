@@ -556,7 +556,7 @@ function wiki_delete_page($page_id)
         foreach ($posts as $post) {
             wiki_delete_post($post['id']);
         }
-        $start += 500;
+        //$start += 500;    No, we just deleted, so offsets would have changed
     } while (array_key_exists(0, $posts));
 
     // Log revision
