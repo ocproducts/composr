@@ -313,8 +313,6 @@ class Module_calendar
                 }
             }
 
-            $just_event_row = db_map_restrict($event, array('id', 'e_content'));
-
             // Title and metadata
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
                 require_code('awards');
@@ -828,12 +826,19 @@ class Module_calendar
                 $found_stream = count($streams) - 1;
             }
 
-            $just_event_row = db_map_restrict($event, array('id', 'e_content'));
-
             // Fill in stream gaps as appropriate
             $_title = is_integer($event['e_title']) ? get_translated_text($event['e_title']) : $event['e_title'];
             $down = strval($to_h - $from_h);
-            $description = (intval($down) < 3) ? new Tempcode() : ((!is_string($event['e_content']) && !isset($event['e_content__text_parsed'])) ? get_translated_tempcode('calendar_events', $just_event_row, 'e_content') : $event['e_content']);
+            if (intval($down) < 3) {
+                $description = new Tempcode();
+            } else {
+                if ((!is_string($event['e_content'])) && (!isset($event['e_content__text_parsed']))) {
+                    $just_event_row = db_map_restrict($event, array('id', 'e_content'));
+                    $description = get_translated_tempcode('calendar_events', $just_event_row, 'e_content');
+                } else {
+                    $description = $event['e_content'];
+                }
+            }
             $priority_lang = do_lang_tempcode('PRIORITY_' . strval($event['e_priority']));
             $priority_icon = 'calendar/priority_' . strval($event['e_priority']);
             $streams[$found_stream][$from_h] = array('TPL' => 'CALENDAR_DAY_ENTRY', 'DESCRIPTION' => $description, 'DOWN' => $down, 'ID' => is_string($event['e_id']) ? $event['e_id'] : strval($event['e_id']), 'T_TITLE' => array_key_exists('t_title', $event) ? (is_string($event['t_title']) ? $event['t_title'] : get_translated_text($event['t_title'])) : 'RSS', 'PRIORITY' => strval($event['e_priority']), 'ICON' => $icon, 'TIME' => $date, 'TITLE' => $_title, 'URL' => $url, 'PRIORITY_LANG' => $priority_lang, 'PRIORITY_ICON' => $priority_icon, 'RECURRING' => $event['e_recurrence'] != 'none', 'VALIDATED' => $event['validated'] == 1);

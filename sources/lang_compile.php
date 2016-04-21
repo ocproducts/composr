@@ -359,7 +359,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
 
             if (isset($parts[1])) {
                 $key = $parts[0];
-                $value = rtrim(str_replace('\n', "\n", $parts[1]), $nl);
+                $value = str_replace('\n', "\n", rtrim($parts[1], $nl));
                 if ($apply_filter) {
                     $value = $LANG_FILTER_OB->compile_time($key, $value);
                 }

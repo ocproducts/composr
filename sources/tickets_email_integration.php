@@ -79,9 +79,9 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
     require_code('mail');
     $extended_message = '';
     $extended_message .= do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname));
-    $extended_message .= comcode_to_clean_text($message);
+    $extended_message .= $message;
 
-    mail($to_name . ' <' . $to_email . '>', $extended_subject, $extended_message, $headers);
+    mail($to_name . ' <' . $to_email . '>', $extended_subject, comcode_to_clean_text($extended_message), $headers);
 }
 
 /**

@@ -811,49 +811,73 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function member_group_query($groups, $max = null, $start = 0)
     {
-        $_groups = '';
-        foreach ($groups as $group) {
-            if ($_groups != '') {
-                $_groups .= ' OR ';
-            }
-            $_groups .= 'gm_group_id=' . strval($group);
-        }
-        if ($_groups == '') {
-            return array();
-        }
-        $a = $this->connection->query('SELECT u.* FROM ' . $this->connection->get_table_prefix() . 'f_group_members g JOIN ' . $this->connection->get_table_prefix() . 'f_members u ON u.id=g.gm_member_id WHERE (' . $_groups . ') AND gm_validated=1 ORDER BY g.gm_group_id ASC', $max, $start, false, true);
-        $_groups = '';
-        foreach ($groups as $group) {
-            if ($_groups != '') {
-                $_groups .= ' OR ';
-            }
-            $_groups .= 'm_primary_group=' . strval($group);
-        }
-        $b = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE ' . $_groups . ' ORDER BY m_primary_group ASC', $max, $start, false, true);
         $out = array();
-        foreach ($a as $x) {
-            if (!array_key_exists($x['id'], $out)) {
+
+        if (db_has_subqueries($this->connection->connection_read)) {
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ',';
+                }
+                $_groups .= strval($group);
+            }
+            if ($_groups == '') {
+                return array();
+            }
+            $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members m WHERE m_primary_group IN (' . $_groups . ') OR EXISTS(SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_group_members WHERE gm_group_id IN (' . $_groups . ') AND gm_member_id=m.id AND gm_validated=1) ORDER BY m_primary_group ASC,id ASC';
+            $a = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($a as $x) {
                 $out[$x['id']] = $x;
             }
-        }
-        foreach ($b as $x) {
-            if (!array_key_exists($x['id'], $out)) {
-                $out[$x['id']] = $x;
+        } else { // This can be removed in the future, when we reduce our ancient MySQL tolerance
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ' OR ';
+                }
+                $_groups .= 'gm_group_id=' . strval($group);
+            }
+            if ($_groups == '') {
+                return array();
+            }
+            $sql = 'SELECT u.* FROM ' . $this->connection->get_table_prefix() . 'f_group_members g JOIN ' . $this->connection->get_table_prefix() . 'f_members u ON u.id=g.gm_member_id WHERE (' . $_groups . ') AND gm_validated=1 ORDER BY g.gm_group_id ASC';
+            $a = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($a as $x) {
+                if (!array_key_exists($x['id'], $out)) {
+                    $out[$x['id']] = $x;
+                }
+            }
+
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ' OR ';
+                }
+                $_groups .= 'm_primary_group=' . strval($group);
+            }
+            $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE ' . $_groups . ' ORDER BY m_primary_group ASC';
+            $b = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($b as $x) {
+                if (!array_key_exists($x['id'], $out)) {
+                    $out[$x['id']] = $x;
+                }
             }
         }
 
         // Now implicit usergroup hooks
-        $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-            $ob = object_factory('Hook_implicit_usergroups_' . $hook);
-            $group_ids = $ob->get_bound_group_ids();
-            foreach ($group_ids as $group_id) {
-                if (in_array($group_id, $groups)) {
-                    $c = $ob->get_member_list($group_id);
-                    if (!is_null($c)) {
-                        foreach ($c as $member_id => $x) {
-                            $out[$member_id] = $x;
+        if ($start == 0) {
+            $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
+            foreach (array_keys($hooks) as $hook) {
+                require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
+                $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+                $group_ids = $ob->get_bound_group_ids();
+                foreach ($group_ids as $group_id) {
+                    if (in_array($group_id, $groups)) {
+                        $c = $ob->get_member_list($group_id);
+                        if (!is_null($c)) {
+                            foreach ($c as $member_id => $x) {
+                                $out[$member_id] = $x;
+                            }
                         }
                     }
                 }

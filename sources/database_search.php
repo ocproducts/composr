@@ -1496,7 +1496,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     if ((count($t_main_search_rows) < $max) && (count($t_keyword_search_rows) < $max)) {
         $GLOBALS['TOTAL_SEARCH_RESULTS'] += min($t_count, count($final_result_rows));
     } else {
-        $GLOBALS['TOTAL_SEARCH_RESULTS'] +=$t_count;
+        $GLOBALS['TOTAL_SEARCH_RESULTS'] += $t_count;
     }
 
     return $final_result_rows;
