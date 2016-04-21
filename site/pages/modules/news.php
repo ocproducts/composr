@@ -502,6 +502,8 @@ class Module_news
         $select = $this->select;
         $select_and = $this->select_and;
 
+        $max = get_param_integer('module_max', intval(get_option('news_entries_per_page')));
+
         // Get category contents
         $inline = get_param_integer('inline', 0) == 1;
         $content = do_block('main_news', array(
@@ -513,8 +515,8 @@ class Module_news
             'member_based' => ($blog === 1) ? '1' : '0',
             'zone' => '_SELF',
             'days' => '0',
-            'fallback_full' => $inline ? '0' : '10',
-            'fallback_archive' => $inline ? get_option('news_entries_per_page') : '0',
+            'fallback_full' => $inline ? '0' : strval($max),
+            'fallback_archive' => $inline ? strval($max) : '0',
             'no_links' => '1',
             'pagination' => '1',
             'attach_to_url_filter' => '1',
