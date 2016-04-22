@@ -12,7 +12,7 @@
 
 	{$SET,block_embedded_forms,1}
 	{+START,IF_NON_EMPTY,{RATING_FORM}}
-		<div{+START,IF,{HAS_RATINGS}} class="horiz_field_sep"{+END}>
+		<div{+START,IF,{$AND,{HAS_RATINGS},{LIKES},{$IS_NON_EMPTY,{ALL_RATING_CRITERIA}}}} class="horiz_field_sep"{+END}>
 			{RATING_FORM}
 		</div>
 	{+END}

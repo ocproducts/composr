@@ -187,8 +187,10 @@ class Module_calendar
             // Save in permissions for event type
             $types = $GLOBALS['SITE_DB']->query_select('calendar_types');
             foreach ($types as $type) {
-                require_code('permissions2');
-                set_global_category_access('calendar', $type['id']);
+                if ($type['id'] != db_get_first_id()) {
+                    require_code('permissions2');
+                    set_global_category_access('calendar', $type['id']);
+                }
             }
         }
 

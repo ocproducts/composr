@@ -285,10 +285,6 @@ class Module_galleries
         inform_non_canonical_parameter('video_select');
 
         if ($type == 'image' || $type == 'video') {
-            if (get_param_integer('ajax', 0) == 1) {
-                header('Content-type: text/xml');
-            }
-
             if (get_param_integer('slideshow', 0) == 1) {
                 attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
             }
@@ -1466,14 +1462,14 @@ class Module_galleries
     public function show_nav($category_name, $where, $join, $current_id, $first_id, $back_id, $next_id, $root, $x, $n, $current_type, $first_type, $back_type, $next_type, $slideshow, $wide_high, $start, $max, $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, $image_select, $video_select)
     {
         if (!is_null($back_id)) {
-            $slideshow_previous_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'wide_high' => 1, 'id' => $back_id, 'slideshow' => 1, 'ajax' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true); // Continues, but as slideshow
+            $slideshow_previous_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'wide_high' => 1, 'id' => $back_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true); // Continues, but as slideshow
             $back_url = build_url(array('page' => '_SELF', 'type' => $back_type, 'id' => $back_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true);
         } else {
             $slideshow_previous_url = new Tempcode();
             $back_url = new Tempcode();
         }
         if (!is_null($next_id)) {
-            $slideshow_next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'wide_high' => 1, 'id' => $next_id, 'slideshow' => 1, 'ajax' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true); // Continues, but as slideshow
+            $slideshow_next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'wide_high' => 1, 'id' => $next_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true); // Continues, but as slideshow
             $next_url = build_url(array('page' => '_SELF', 'type' => $next_type, 'id' => $next_id, 'slideshow' => ($slideshow == 0) ? null : $slideshow, 'wide_high' => ($wide_high == 0) ? null : $wide_high, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true);
         } else {
             $slideshow_next_url = new Tempcode();

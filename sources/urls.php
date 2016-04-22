@@ -57,6 +57,10 @@ function init__urls()
     global $SELF_URL_CACHED;
     $SELF_URL_CACHED = null;
 
+    global $HAS_NO_KEEP_CONTEXT, $NO_KEEP_CONTEXT_STACK;
+    $HAS_NO_KEEP_CONTEXT = false;
+    $NO_KEEP_CONTEXT_STACK = array();
+
     define('SELF_REDIRECT', '!--:)defUNLIKELY');
 }
 
@@ -217,6 +221,27 @@ function cms_url_decode_post_process($url_part)
 }
 
 /**
+ * Place a global marker as to whether we're skipping keep parameters.
+ *
+ * @param  boolean $setting Temporary setting
+ */
+function push_no_keep_context($setting = true)
+{
+    global $HAS_NO_KEEP_CONTEXT, $NO_KEEP_CONTEXT_STACK;
+    array_push($NO_KEEP_CONTEXT_STACK, $HAS_NO_KEEP_CONTEXT);
+    $HAS_NO_KEEP_CONTEXT = $setting;
+}
+
+/**
+ * Remove the global marker as to whether we're skipping keep parameters. Never call this more than you've called push_no_keep_context().
+ */
+function pop_no_keep_context()
+{
+    global $HAS_NO_KEEP_CONTEXT, $NO_KEEP_CONTEXT_STACK;
+    $HAS_NO_KEEP_CONTEXT = array_pop($NO_KEEP_CONTEXT_STACK);
+}
+
+/**
  * Find whether we can skip the normal preservation of a keep value, for whatever reason.
  *
  * @param  string $key Parameter name
@@ -225,7 +250,10 @@ function cms_url_decode_post_process($url_part)
  */
 function skippable_keep($key, $val)
 {
-    global $BOT_TYPE_CACHE;
+    global $BOT_TYPE_CACHE, $HAS_NO_KEEP_CONTEXT;
+    if ($HAS_NO_KEEP_CONTEXT) {
+        return true;
+    }
     if ($BOT_TYPE_CACHE === false) {
         get_bot_type();
     }

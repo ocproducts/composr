@@ -268,7 +268,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $move_down_entry_point = (count($entry_points) == 1) ? key($entry_points) : 'browse';
                             if (!isset($row[1])) {
                                 if (substr($struct['page_link'], -strlen(':' . $move_down_entry_point)) != ':' . $move_down_entry_point) {
-                                    $struct['page_link'] .= ':' . $move_down_entry_point;
+                                    if ($move_down_entry_point != 'browse') {
+                                        $struct['page_link'] .= ':' . $move_down_entry_point;
+                                    }
                                 }
                                 if (!isset($entry_points['browse'])) {
                                     $_title = $entry_points[$move_down_entry_point][0];

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_notification_member_calendar_changes extends Hook_notification__Staff
+class Hook_notification_member_calendar_changes extends Hook_notification
 {
     /**
      * Get a list of all the notification codes this hook can handle.

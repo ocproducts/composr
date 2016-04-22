@@ -24,7 +24,7 @@
 class Hook_sitemap_catalogue_category extends Hook_sitemap_content
 {
     protected $content_type = 'catalogue_category';
-    protected $screen_type = 'browse';
+    protected $screen_type = 'category';
 
     // If we have a different content type of entries, under this content type
     protected $entry_content_type = array('catalogue_entry');
@@ -88,7 +88,7 @@ class Hook_sitemap_catalogue_category extends Hook_sitemap_content
         }
 
         // Sometimes page groupings link direct to catalogue categories, so search for an icon
-        $row_x = $this->_load_row_from_page_groupings(null, $zone, 'catalogues', 'browse', $content_id);
+        $row_x = $this->_load_row_from_page_groupings(null, $zone, 'catalogues', 'category', $content_id);
         if ($row_x != array()) {
             if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) == 0) {
                 $struct['title'] = null;

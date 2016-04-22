@@ -45,7 +45,7 @@ class Hook_unvalidated_calendar
         $info['edit_module'] = 'cms_calendar';
         $info['edit_type'] = 'edit';
         $info['edit_identifier'] = 'id';
-        $info['title'] = do_lang_tempcode('EVENT');
+        $info['title'] = do_lang_tempcode('EVENTS');
 
         return $info;
     }

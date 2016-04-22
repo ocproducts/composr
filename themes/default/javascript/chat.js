@@ -523,7 +523,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 						}
 					} else if (!document.getElementById('chat_lobby_convos_tabs'))
 					{
-						create_overlay_event(skip_incoming_sound,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
+						create_overlay_event(/*skip_incoming_sound*/true,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
 					}
 
 					rooms=find_im_convo_room_ids();
