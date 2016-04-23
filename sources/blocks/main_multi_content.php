@@ -694,6 +694,7 @@ class Block_main_multi_content
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,
             'PAGINATION' => $pagination,
+            'ADD_STRING' => content_language_string($content_type, 'ADD'),
 
             'START' => strval($start),
             'MAX' => strval($max),

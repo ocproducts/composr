@@ -1524,6 +1524,7 @@ class Hook_addon_registry_core
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
                 'BLOCK_PARAMS' => '',
+                'ADD_STRING' => lorem_phrase(),
 
                 'START' => '0',
                 'MAX' => '10',

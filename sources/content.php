@@ -397,3 +397,28 @@ function append_content_select_for_id(&$select, $cma_info, $table_alias = null)
         $select[] = (($table_alias === null) ? '' : ($table_alias . '.')) . $id_field_part;
     }
 }
+
+/**
+ * Get an action language string for a particular content type based on a stub.
+ * If it can't get a match it'll just use the stub.
+ *
+ * @param  string $content_type The content type
+ * @param  string $string The language string stub (must itself be a valid language string)
+ * @param  Tempcode Tempcode of language string
+ */
+function content_language_string($content_type, $string)
+{
+    $object = get_content_object($content_type);
+    $info = $object->info();
+    $regexp = $info['actionlog_regexp'];
+
+    do_lang($info['content_type_label']); // This forces the language file to load if there is one, as it'll include the language file reference within content_type_label
+
+    $string_custom = str_replace('\w+', $string, $regexp);
+    $test = do_lang($string_custom, null, null, null, null, false);
+    if ($test !== null) {
+        $string = $string_custom;
+    }
+
+    return do_lang_tempcode($string);
+}

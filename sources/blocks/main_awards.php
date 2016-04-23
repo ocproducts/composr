@@ -120,7 +120,7 @@ class Block_main_awards
                     'HIGH' => false,
                     'TITLE' => $award_title,
                     'MESSAGE' => do_lang_tempcode('NO_AWARD'),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'ADD_NAME' => content_language_string($award_type_row['a_content_type'], 'ADD'),
                     'SUBMIT_URL' => str_replace('=!', '__ignore=1', $submit_url),
                 ));
             }

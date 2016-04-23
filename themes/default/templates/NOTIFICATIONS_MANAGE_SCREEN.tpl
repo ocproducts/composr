@@ -24,6 +24,6 @@
 		</p>
 	</form>
 	<script>// <![CDATA[
-		document.getElementById('sound_'+read_cookie('sound','on')).checked=true;
+		document.getElementById('sound_'+read_cookie('sound','off')).checked=true;
 	//]]></script>
 {+END}
