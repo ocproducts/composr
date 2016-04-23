@@ -3498,7 +3498,8 @@ function ecv2_THEME_WIZARD_COLOR($lang, $escaped, $param)
 function ecv2_SELF_PAGE_LINK($lang, $escaped, $param)
 {
     $value = '';
-    if (running_script('index') || running_script('iframe')) {
+    global $IN_SELF_ROUTING_SCRIPT;
+    if ($IN_SELF_ROUTING_SCRIPT) {
         $value = get_zone_name() . ':' . get_page_name();
         foreach ($_GET as $key => $val) {
             if ($key == 'page' || is_array($val) || substr($key, 0, 5) == 'keep_') {

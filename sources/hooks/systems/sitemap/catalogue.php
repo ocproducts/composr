@@ -185,10 +185,12 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                 $children = array();
 
                 // A-to-Z
-                $child_page_link = $zone . ':' . $page . ':atoz:catalogue_name=' . $content_id;
-                $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
-                if ($child_node !== null) {
-                    $children[] = $child_node;
+                if (($options & SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT) == 0) {
+                    $child_page_link = $zone . ':' . $page . ':atoz:catalogue_name=' . $content_id;
+                    $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
+                    if ($child_node !== null) {
+                        $children[] = $child_node;
+                    }
                 }
 
                 // Categories
@@ -203,7 +205,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                         $where = array('c_name' => $content_id, 'cc_parent_id' => null);
                         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), $where, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
                         foreach ($rows as $child_row) {
-                            $child_page_link = $zone . ':' . $page . ':browse:' . strval($child_row['id']);
+                            $child_page_link = $zone . ':' . $page . ':category:' . strval($child_row['id']);
                             $child_node = $child_hook_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);
                             if ($child_node !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {

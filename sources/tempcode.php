@@ -276,7 +276,25 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
             $funcdef .= "ecv(\\\$cl," . ($_escaping) . "," . ($_type) . ",\\\"" . ($_name) . "\\\",array(" . $_parameters . "));\";\n";
         }
 
-        $parameters = array();
+        switch ($_name) {
+            // Needs parameters for preprocessing, so we won't throw them out
+            case 'REQUIRE_CSS':
+            case 'REQUIRE_JAVASCRIPT':
+            case 'FACILITATE_AJAX_BLOCK_CALL':
+            case 'JS_TEMPCODE':
+            case 'CSS_TEMPCODE':
+            case 'SET':
+            case 'SET_TITLE':
+            case 'BLOCK':
+            case 'PAGE_LINK':
+            case 'LOAD_PAGE':
+            case 'LOAD_PANEL':
+                break;
+
+            default:
+                $parameters = array();
+                break;
+        }
     }
 
     $ret = new Tempcode(array(array($myfunc => $funcdef), array(array(array($myfunc, ($parameters === null) ? array() : $parameters, $type, $name, '')))));

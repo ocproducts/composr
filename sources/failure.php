@@ -1357,6 +1357,10 @@ function _access_denied($class, $param, $force_login)
     require_code('global3');
     set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
 
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
+        chat_null_exit();
+    }
+
     require_lang('permissions');
     require_lang('cns_config');
 

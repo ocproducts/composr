@@ -76,8 +76,8 @@ function init__caches()
      *
      * @global boolean $SMART_CACHE
      */
-    global $SMART_CACHE, $RELATIVE_PATH;
-    if (running_script('index') || running_script('iframe')) {
+    global $SMART_CACHE, $RELATIVE_PATH, $IN_SELF_ROUTING_SCRIPT;
+    if ($IN_SELF_ROUTING_SCRIPT) {
         $zone = $RELATIVE_PATH;
         $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
         $screen = get_param_string('type', 'browse');

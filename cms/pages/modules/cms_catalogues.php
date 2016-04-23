@@ -2023,6 +2023,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
         actual_edit_catalogue($old_name, $name, $title, $description, $display_type, $notes, $submit_points, $ecommerce, $send_view_reports, $default_review_freq, $metadata['add_time']);
 
+        if ($old_name != $name) {
+            unset($_GET['redirect']);
+        }
+
         if (addon_installed('content_reviews')) {
             content_review_set('catalogue', $name, $old_name);
         }

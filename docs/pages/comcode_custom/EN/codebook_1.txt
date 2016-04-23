@@ -67,6 +67,7 @@ Composr initialisation can be controlled by a few global variables in the entry-
  - [tt]$FORCE_INVISIBLE_GUEST[/tt] ([tt]true[/tt] will tell Composr to not use a member login)
  - [tt]$CSRF_TOKENS[/tt] ([tt]true[/tt] will tell Composr to check for a CSRF-token if reading any POST-data; so only use this if CSRF-tokens are being set in calls to the script!)
  - [tt]$STATIC_CACHE_ENABLED[/tt] ([tt]true[/tt] will tell Composr it can check the static cache for possible static-cached versions of the output)
+ - [tt]$IN_SELF_ROUTING_SCRIPT[/tt] ([tt]true[/tt] will tell Composr that standard Composr URLs can be routed through this script)
 
 We do use global variables in Composr, even though many frown on them. Composr is optimised to the bone in terms of performance and code size. We have a rule that if a global variable is used in more than a few places that variable must be documented clearly within the code.
 
@@ -97,6 +98,12 @@ If a user is installing an addon (from Admin Zone > Structure > Addons), it will
 If a user is uninstalling an addon, it will uninstall any modules/blocks within it.
 
 A user should upgrade an addon by installing it on top of itself. i.e. don't uninstall the old version, but install the new version on top. Composr detects not to do a fresh install by checking if it is already installed.
+
+[title="4"]Two addons altering the same file (special case)[/title]
+
+If you have two addons that are competing for overrides on the same file, there are two approaches to solve this:
+1) you'd write an override in such a way that both addons would package that same override, and you'd use [tt]if (addon_installed('...'))[/tt] to dynamically adjust how it runs depending on which of those are installed.
+2) you would improve the core code, e.g. with additional hook support, so that both addons could hook in (required github access).
 
 [title="3"]Modules[/title]
 

@@ -119,6 +119,13 @@ function init__global2()
     if (!isset($STATIC_CACHE_ENABLED)) {
         $STATIC_CACHE_ENABLED = false;
     }
+    /** Whether build_url requests point through the running script, as opposed to pointing to an index.php call.
+     *
+     * @global boolean $IN_SELF_ROUTING_SCRIPT
+     */
+    if (!isset($IN_SELF_ROUTING_SCRIPT)) {
+        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false*/;
+    }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;
     /** On the quick installer, this presents manifest information about files that exist in the virtual filesystem.
@@ -136,7 +143,7 @@ function init__global2()
     $BOOTSTRAPPING = true;
     $CHECKING_SAFEMODE = false;
 
-    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (get_param_integer('routine_refresh', 0) == 0)) { // Architecturally hackerish chat message precheck (for extra efficiency)
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat message precheck (for extra efficiency)
         require_code('chat_poller');
         chat_poller();
     }

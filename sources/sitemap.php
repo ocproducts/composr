@@ -973,7 +973,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     if (!$skip_children) {
                         $start = 0;
                         do {
-                            $rows = $cma_entry_info['connection']->query_select($table, array('*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
+                            $rows = $cma_entry_info['connection']->query_select($table, array('r.*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
                             $child_page = ($cma_entry_info['module'] == $cma_info['module']) ? $page : $cma_entry_info['module']; // assumed in same zone
                             foreach ($rows as $child_row) {
                                 $child_page_link = $zone . ':' . $child_page . ':' . $child_hook_ob->screen_type . ':' . ($cma_entry_info['id_field_numeric'] ? strval($child_row[$cma_entry_info['id_field']]) : $child_row[$cma_entry_info['id_field']]);
@@ -1027,7 +1027,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
                 $start = 0;
                 do {
-                    $rows = $cma_info['connection']->query_select($table, array('*'), $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
+                    $rows = $cma_info['connection']->query_select($table, array('r.*'), $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
                         if ($this->content_type == 'comcode_page') {
                             $child_page_link = $zone . ':' . $child_row['the_page'];

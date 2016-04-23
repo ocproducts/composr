@@ -378,26 +378,25 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
         // Templating
         $tpl_params = array(
-                          '_GUID' => 'x28e21cdbc38a3037d083f619bb311af',
-                          'CONTENT_URL' => $content_url,
-                          'CONTENT_TITLE' => $content_title,
-                          'ERROR' => $error,
-                          'CONTENT_TYPE' => $content_type,
-                          'ID' => $content_id,
-                          'URL' => $rate_url,
-                          'ALL_RATING_CRITERIA' => $all_rating_criteria,
-                          'OVERALL_NUM_RATINGS' => integer_format($overall_num_ratings),
-                          'OVERALL_RATING' => strval(intval($overall_rating / floatval(count($all_rating_criteria)))),
-                          'HAS_RATINGS' => $has_ratings,
-                          'SIMPLISTIC' => (count($all_rating_criteria) == 1),
-                          'LIKES' => $likes,
-                          'LIKED_BY' => $liked_by,
-                      ) + $all_rating_criteria[$content_type]/*so can assume single rating criteria if want and reference that directly*/
-        ;
+            '_GUID' => 'x28e21cdbc38a3037d083f619bb311af',
+            'CONTENT_URL' => $content_url,
+            'CONTENT_TITLE' => $content_title,
+            'ERROR' => $error,
+            'CONTENT_TYPE' => $content_type,
+            'ID' => $content_id,
+            'URL' => $rate_url,
+            'ALL_RATING_CRITERIA' => $all_rating_criteria,
+            'OVERALL_NUM_RATINGS' => integer_format($overall_num_ratings),
+            'OVERALL_RATING' => strval(intval($overall_rating / floatval(count($all_rating_criteria)))),
+            'HAS_RATINGS' => $has_ratings,
+            'SIMPLISTIC' => (count($all_rating_criteria) == 1),
+            'LIKES' => $likes,
+            'LIKED_BY' => $liked_by,
+        ) + $all_rating_criteria[$content_type]/*so can assume single rating criteria if want and reference that directly*/;
         $rating_form = do_template($form_tpl, $tpl_params);
         $ret = $tpl_params + array(
-                'RATING_FORM' => $rating_form,
-            );
+            'RATING_FORM' => $rating_form,
+        );
         $RATING_DETAILS_CACHE[$content_type][$content_id][$form_tpl] = $ret;
         return $ret;
     }
@@ -589,9 +588,9 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     $cma_ob = get_content_object($content_type);
                     $cma_content_row = content_get_row($content_id, $cma_ob->info());
                     if (!is_null($cma_content_row)) {
+                        push_no_keep_context();
                         $rendered = static_evaluate_tempcode($cma_ob->run($cma_content_row, '_SEARCH', true, true));
-                        $rendered = preg_replace('#keep_session=\w*#', 'filtered=1', $rendered);
-                        $rendered = preg_replace('#keep_devtest=\w*#', 'filtered=1', $rendered);
+                        pop_no_keep_context();
                     }
                 }
                 $mail = do_notification_lang('CONTENT_LIKED_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(comcode_escape(is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url), $rendered, comcode_escape($displayname), comcode_escape($username)));
@@ -616,8 +615,6 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     $_safe_content_url = is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url;
                     if ($_safe_content_url == '') {
                         $_safe_content_url = is_object($content_url) ? $content_url->evaluate() : $content_url;
-                        $_safe_content_url = preg_replace('#keep_session=\w*#', 'filtered=1', $_safe_content_url);
-                        $_safe_content_url = preg_replace('#keep_devtest=\w*#', 'filtered=1', $_safe_content_url);
                     }
                     $content_page_link = url_to_page_link($_safe_content_url);
                     require_code('activities');
@@ -909,8 +906,6 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
                 $_safe_content_url = is_object($safe_content_url) ? $safe_content_url->evaluate() : $safe_content_url;
                 if ($_safe_content_url == '') {
                     $_safe_content_url = is_object($content_url) ? $content_url->evaluate() : $content_url;
-                    $_safe_content_url = preg_replace('#keep_session=\w*#', 'filtered=1', $_safe_content_url);
-                    $_safe_content_url = preg_replace('#keep_devtest=\w*#', 'filtered=1', $_safe_content_url);
                 }
                 $content_page_link = url_to_page_link($_safe_content_url);
                 require_code('activities');

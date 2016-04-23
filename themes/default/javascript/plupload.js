@@ -13185,6 +13185,42 @@ function dispatch_for_page_type(page_type,name,file_name,posting_field_name,num_
 	}
 }
 
+function upload_dialog_completed(ob,files)
+{
+	document.getElementById(ob.settings.btn_submit_id).disabled=false;
+
+	var filename_field=document.getElementById(ob.settings.txtFileName);
+
+	if (filename_field.value!='-1')
+	{
+		set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
+		ob.stop();
+	}
+
+	var name,file;
+	var file_id_field=document.getElementById(ob.settings.hidFileID);
+	file_id_field.value='-1';
+	filename_field.value='';
+
+	for (var i=0;i<files.length;i++)
+	{
+		file=files[i];
+		if (filename_field.value!='') filename_field.value+=':';
+		filename_field.value+=file.name.replace(/:/g,',');
+		name=ob.settings.txtName;
+		window.setTimeout(function() { // In a timeout as file.has_error may not have been set yet
+			if ((typeof file.has_error=='undefined') || (!file.has_error))
+				dispatch_for_page_type(ob.settings.page_type,name,file.name,ob.settings.posting_field_name,files.length);
+		} ,0);
+
+		if (ob.settings.page_type.indexOf('_multi')==-1) break;
+	}
+
+	window.setTimeout(function() {
+		fire_fake_upload_field_change(name,'1'); // Will trigger start
+	},0 );
+}
+
 function fire_fake_upload_field_change(name,value)
 {
 	var element=document.getElementById(name);
@@ -13229,39 +13265,6 @@ function fire_fake_upload_field_change(name,value)
 			if (upload_button) upload_button.disabled=true;
 		}
 	}
-}
-
-function upload_dialog_completed(ob,files)
-{
-	document.getElementById(ob.settings.btn_submit_id).disabled=false;
-
-	var filename_field=document.getElementById(ob.settings.txtFileName);
-
-	if (filename_field.value!='-1')
-		set_inner_html(document.getElementById(ob.settings.progress_target),''); // Remove old progress indicators
-
-	var name,file;
-	var file_id_field=document.getElementById(ob.settings.hidFileID);
-	file_id_field.value='-1';
-	filename_field.value='';
-
-	for (var i=0;i<files.length;i++)
-	{
-		file=files[i];
-		if (filename_field.value!='') filename_field.value+=':';
-		filename_field.value+=file.name.replace(/:/g,',');
-		name=ob.settings.txtName;
-		window.setTimeout(function() { // In a timeout as file.has_error may not have been set yet
-			if ((typeof file.has_error=='undefined') || (!file.has_error))
-				dispatch_for_page_type(ob.settings.page_type,name,file.name,ob.settings.posting_field_name,files.length);
-		} ,0);
-
-		if (ob.settings.page_type.indexOf('_multi')==-1) break;
-	}
-
-	window.setTimeout(function() {
-		fire_fake_upload_field_change(name,'1'); // Will trigger start
-	},0 );
 }
 
 function upload_update_progress(ob,file)
@@ -13381,9 +13384,12 @@ function upload_queue_changed(ob)
 {
 	if ((ob.settings.page_type.indexOf('_multi')==-1) && (ob.files.length>1)) // In case widget has multi selection even though we disabled it
 	{
-		for (var i=1;i<ob.files.length;i++)
+		if (ob.files.length>1)
 		{
-			ob.removeFile(ob.files[i]);
+			for (var i=ob.files.length-2;i>=0;i--)
+			{
+				ob.removeFile(ob.files[i]);
+			}
 		}
 	}
 }

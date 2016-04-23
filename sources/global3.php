@@ -1513,7 +1513,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
-        if (!running_script('index') && !running_script('iframe')) {
+        global $IN_SELF_ROUTING_SCRIPT;
+        if (!$IN_SELF_ROUTING_SCRIPT) {
             return false;
         }
 
@@ -1588,7 +1589,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
  */
 function get_page_or_script_name()
 {
-    if (running_script('index') || running_script('iframe')) {
+    global $IN_SELF_ROUTING_SCRIPT;
+    if ($IN_SELF_ROUTING_SCRIPT) {
         return get_page_name();
     }
     return current_script();
@@ -3308,4 +3310,37 @@ function cms_profile_end_for($identifier, $specifics = null)
 function send_http_output_ping()
 {
     echo ' ';
+}
+
+/**
+ * Improve security by turning on a strict CSP that only allows stuff from partner sites and disables frames and forms
+ * Must be called before page output starts.
+ *
+ * @param  ?MEMBER $enable_more_open_html Allow more open HTML for a particular member ID. It still will use the HTML blacklist functionality (unless they have even higher access already), but will remove the more restrictive whitelist functionality. Use of set_high_security_csp here is further decreasing the risk from dangerous HTML, even though the risk should be very low anyway due to the blacklist filter.
+ */
+function set_high_security_csp($enable_more_open_html_for = null)
+{
+    require_code('input_filter');
+    $_partners = get_allowed_partner_sites();
+    if ($_partners == array()) {
+        $partners = '';
+    } else {
+        $partners = ' ' . implode(' ', $_partners);
+    }
+
+    $value = "";
+    $value .= "script-src 'self'{$partners}; "; // browser will check mime-type, so okay for self
+    $value .= "style-src 'self'{$partners}; "; // browser will check mime-type, so okay for self
+    $value .= "object-src 'none'; "; // browser may not check mime-type, so none
+    $value .= "frame-src 'none'; child-src 'none'; ";
+    $value .= "form-action 'self'; ";
+    $value .= "base-uri 'self'; ";
+
+    header('Content-Security-Policy:' . trim($value));
+
+    if ($enable_more_open_html_for !== null) {
+        global $PRIVILEGE_CACHE;
+        has_privilege($enable_more_open_html_for, 'allow_html'); // Force loading, so we can amend the cached value cleanly
+        $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = 1;
+    }
 }

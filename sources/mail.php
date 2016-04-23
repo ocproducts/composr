@@ -217,6 +217,10 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         return $message_plain;
     }
 
+    // Strip resource loader
+    $message_plain = preg_replace('#\[require_css(\s[^"\[\]]*)?\][^\[\]]*\[/require_css\]#', '', $message_plain);
+    $message_plain = preg_replace('#\[require_javascript(\s[^"\[\]]*)?\][^\[\]]*\[/require_javascript\]#', '', $message_plain);
+
     // If it is just HTML encapsulated in Comcode, force our best HTML to text conversion first
     $match = array();
     if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
@@ -562,6 +566,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
             }
         }
+
+        inject_web_resources_context_to_comcode($message_raw);
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
             'm_subject' => cms_mb_substr($subject_line, 0, 255),

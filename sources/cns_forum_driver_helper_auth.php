@@ -230,7 +230,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
 
     // Ok, authorised basically, but we need to see if this is a valid login IP
     if ((cns_get_best_group_property($this_ref->get_members_groups($row['id']), 'enquire_on_new_ips') == 1)) { // High security usergroup membership
-        global $SENT_OUT_VALIDATE_NOTICE;
+        global $SENT_OUT_VALIDATE_NOTICE, $IN_SELF_ROUTING_SCRIPT;
         $ip = get_ip_address(3);
         $test2 = $this_ref->connection->query_select_value_if_there('f_member_known_login_ips', 'i_val_code', array('i_member_id' => $row['id'], 'i_ip' => $ip));
         if (((is_null($test2)) || ($test2 != '')) && (!compare_ip_address($ip, $row['m_ip_address']))) {
@@ -249,7 +249,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 if ($email_address == '') {
                     $email_address = get_option('staff_address');
                 }
-                if ((running_script('index')) || (running_script('iframe'))) {
+                if ($IN_SELF_ROUTING_SCRIPT) {
                     mail_wrap(do_lang('IP_VERIFY_MAIL_SUBJECT', null, null, null, get_lang($row['id'])), $mail, array($email_address), $row['m_username'], '', '', 1, null, false, null, false, false, false, 'MAIL', false, null, null, $row['m_join_time']);
                 }
 

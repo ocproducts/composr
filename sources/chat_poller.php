@@ -45,15 +45,23 @@ function chat_poller()
         chat_room_prune($room_id);
         */
 
-        prepare_for_known_ajax_response();
-
-        header('Content-Type: application/xml');
-
-        //  encoding="' . get_charset() . '" not needed due to no data in it
-        $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
-
-        exit($output);
+        chat_null_exit();
     }
 
     touch(get_custom_file_base() . '/data_custom/modules/chat/chat_last_full_check.dat');
+}
+
+/**
+ * Exit the code saying "no messages".
+ */
+function chat_null_exit()
+{
+    prepare_for_known_ajax_response();
+
+    header('Content-Type: application/xml');
+
+    //  encoding="' . get_charset() . '" not needed due to no data in it
+    $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
+
+    exit($output);
 }
