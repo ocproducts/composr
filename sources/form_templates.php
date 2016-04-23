@@ -2004,7 +2004,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
  * @param  boolean $required Whether this is a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  integer $total_years_to_show The number of years to allow selection from (all into the future, as this field type is not meant for inputting past dates)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
@@ -2027,7 +2027,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
  * @param  boolean $required Whether this is not a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  ?integer $total_years_to_show The number of years to allow selection from (pass a negative number for selection of past years instead of future years) (null: no limit)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
@@ -2049,7 +2049,7 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  boolean $required Whether this is a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  ?integer $total_years_to_show The number of years to allow selection from (pass a negative number for selection of past years instead of future years) (null: no limit)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)

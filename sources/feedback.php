@@ -378,26 +378,25 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
 
         // Templating
         $tpl_params = array(
-                          '_GUID' => 'x28e21cdbc38a3037d083f619bb311af',
-                          'CONTENT_URL' => $content_url,
-                          'CONTENT_TITLE' => $content_title,
-                          'ERROR' => $error,
-                          'CONTENT_TYPE' => $content_type,
-                          'ID' => $content_id,
-                          'URL' => $rate_url,
-                          'ALL_RATING_CRITERIA' => $all_rating_criteria,
-                          'OVERALL_NUM_RATINGS' => integer_format($overall_num_ratings),
-                          'OVERALL_RATING' => strval(intval($overall_rating / floatval(count($all_rating_criteria)))),
-                          'HAS_RATINGS' => $has_ratings,
-                          'SIMPLISTIC' => (count($all_rating_criteria) == 1),
-                          'LIKES' => $likes,
-                          'LIKED_BY' => $liked_by,
-                      ) + $all_rating_criteria[$content_type]/*so can assume single rating criteria if want and reference that directly*/
-        ;
+            '_GUID' => 'x28e21cdbc38a3037d083f619bb311af',
+            'CONTENT_URL' => $content_url,
+            'CONTENT_TITLE' => $content_title,
+            'ERROR' => $error,
+            'CONTENT_TYPE' => $content_type,
+            'ID' => $content_id,
+            'URL' => $rate_url,
+            'ALL_RATING_CRITERIA' => $all_rating_criteria,
+            'OVERALL_NUM_RATINGS' => integer_format($overall_num_ratings),
+            'OVERALL_RATING' => strval(intval($overall_rating / floatval(count($all_rating_criteria)))),
+            'HAS_RATINGS' => $has_ratings,
+            'SIMPLISTIC' => (count($all_rating_criteria) == 1),
+            'LIKES' => $likes,
+            'LIKED_BY' => $liked_by,
+        ) + $all_rating_criteria[$content_type]/*so can assume single rating criteria if want and reference that directly*/;
         $rating_form = do_template($form_tpl, $tpl_params);
         $ret = $tpl_params + array(
-                'RATING_FORM' => $rating_form,
-            );
+            'RATING_FORM' => $rating_form,
+        );
         $RATING_DETAILS_CACHE[$content_type][$content_id][$form_tpl] = $ret;
         return $ret;
     }
