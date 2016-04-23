@@ -136,7 +136,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         $extra_params = array_merge($post_array, $extra_params);
     }
     $page = '_SELF';
-    if (($root_if_posted) && (count($_POST) != 0)) {
+    if (($root_if_posted) && (count($_POST) != 0) || !running_script('index')) {
         $page = '';
     }
     $params = array('page' => $page);
@@ -346,7 +346,7 @@ function can_try_url_schemes($avoid_remap = false)
  */
 function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
-    if (empty($vars['page'])) { // For SEO purposes we need to make sure we get the right URL
+    if (empty($vars['page']) && running_script('index')) { // For SEO purposes we need to make sure we get the right URL
         $vars['page'] = get_zone_default_page($zone_name);
         if ($vars['page'] === null) {
             $vars['page'] = 'start';
@@ -411,7 +411,7 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
 {
     $id = isset($vars['id']) ? $vars['id'] : null;
 
-    $page_link = $zone_name . ':' . /*urlencode not needed in reality, performance*/($vars['page']);
+    $page_link = $zone_name . ':' . /*urlencode not needed in reality, performance*/(isset($vars['page']) ? $vars['page'] : '');
     if ((isset($vars['type'])) || (array_key_exists('type', $vars))) {
         if (isset($vars['type']->codename/*faster than is_object*/)) {
             $page_link .= ':';
@@ -507,7 +507,7 @@ function url_monikers_enabled()
  */
 function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
-    global $HAS_KEEP_IN_URL_CACHE, $USE_REWRITE_PARAMS_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX;
+    global $HAS_KEEP_IN_URL_CACHE, $USE_REWRITE_PARAMS_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX, $IN_SELF_ROUTING_SCRIPT;
 
     $has_page = isset($vars['page']);
 
@@ -630,7 +630,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         $use_rewrite_params = $USE_REWRITE_PARAMS_CACHE;
     }
     $_what_is_running = $WHAT_IS_RUNNING_CACHE;
-    if ($_what_is_running != 'iframe' && $has_page) {
+    if (!$IN_SELF_ROUTING_SCRIPT && $has_page) {
         $_what_is_running = 'index';
     }
     $test_rewrite = null;

@@ -95,7 +95,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             break;
         }
     }
-    $hidden = build_keep_form_fields('_SELF', true, array($max_name, $start_name));
+    $hidden = build_keep_form_fields(running_script('index') ? '_SELF' : '', true, array($max_name, $start_name));
     $per_page = do_template('PAGINATION_PER_PAGE', array('_GUID' => '1993243727e58347d1544279c5eba496', 'HASH' => ($hash == '') ? null : $hash, 'HIDDEN' => $hidden, 'URL' => $get_url, 'MAX_NAME' => $max_name, 'SELECTORS' => $selectors));
     $GLOBALS['INCREMENTAL_ID_GENERATOR']++;
 
@@ -105,7 +105,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
         // Link to first
         if ($start > 0) {
-            $url_array = array('page' => '_SELF', $start_name => running_script('index') ? null : 0);
+            $url_array = array('page' => running_script('index') ? '_SELF' : null, $start_name => running_script('index') ? null : 0);
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
             $first = do_template('PAGINATION_CONTINUE_FIRST', array('_GUID' => 'f5e510da318af9b37c3a4b23face5ae3', 'TITLE' => $title, 'P' => strval(1), 'FIRST_URL' => $cat_url));
         } else {
@@ -114,7 +114,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
         // Link to previous
         if ($start > 0) {
-            $url_array = array('page' => '_SELF', $start_name => strval(max($start - $max, 0)));
+            $url_array = array('page' => running_script('index') ? '_SELF' : null, $start_name => strval(max($start - $max, 0)));
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
             $previous = do_template('PAGINATION_PREVIOUS_LINK', array('_GUID' => 'ec4d4da9677b5b9c8cea08676337c6eb', 'TITLE' => $title, 'P' => integer_format(intval($start / $max)), 'URL' => $cat_url));
         } else {
@@ -148,7 +148,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
         // Show the page number jump links
         for ($x = $from; $x < $to; $x++) {
-            $url_array = array('page' => '_SELF', $start_name => ($x == 0) ? null : strval($x * $max));
+            $url_array = array('page' => running_script('index') ? '_SELF' : null, $start_name => ($x == 0) ? null : strval($x * $max));
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
             if ($x * $max == $start) {
                 $parts->attach(do_template('PAGINATION_PAGE_NUMBER', array('_GUID' => '13cdaf548d5486fb8d8ae0d23b6a08ec', 'P' => strval($x + 1))));
@@ -170,7 +170,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
         // Link to next
         if (($start + $max) < $max_rows) {
-            $url_array = array('page' => '_SELF', $start_name => strval($start + $max));
+            $url_array = array('page' => running_script('index') ? '_SELF' : null, $start_name => strval($start + $max));
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
             $p = ($max == 0) ? 1.0 : ($start / $max + 2);
             $rel = null;
@@ -184,7 +184,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 
         // Link to last
         if ($start + $max < $max_rows) {
-            $url_array = array('page' => '_SELF', ($num_pages - 1 == 0) ? null : $start_name => strval(($num_pages - 1) * $max));
+            $url_array = array('page' => running_script('index') ? '_SELF' : null, ($num_pages - 1 == 0) ? null : $start_name => strval(($num_pages - 1) * $max));
             $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
             $last = do_template('PAGINATION_CONTINUE_LAST', array('_GUID' => '2934936df4ba90989e949a8ebe905522', 'TITLE' => $title, 'P' => strval($num_pages), 'LAST_URL' => $cat_url));
         } else {
@@ -211,7 +211,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
                 $list->attach(form_input_list_entry('', false, '...', false, true));
             }
             $dont_auto_keep = array();
-            $hidden = build_keep_form_fields('_SELF', true, $dont_auto_keep);
+            $hidden = build_keep_form_fields(running_script('index') ? '_SELF' : '', true, $dont_auto_keep);
             $pages_list = do_template('PAGINATION_LIST_PAGES', array('_GUID' => '9e1b394763619433f23b8ed95f5ac134', 'URL' => $get_url, 'HIDDEN' => $hidden, 'START_NAME' => $start_name, 'LIST' => $list));
         } else {
             $pages_list = new Tempcode();
@@ -239,21 +239,23 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
     }
 
     if (get_value('pagination_when_not_needed') === '1') {
-        return do_template('PAGINATION_WRAP', array('_GUID' => '451167645e67c7beabcafe11c78680db', 'TEXT_ID' => $title,
-                                                    'PER_PAGE' => $per_page,
-                                                    'FIRST' => '',
-                                                    'PREVIOUS' => '',
-                                                    'CONTINUES_LEFT' => '',
-                                                    'PARTS' => '',
-                                                    'CONTINUES_RIGHT' => '',
-                                                    'NEXT' => '',
-                                                    'LAST' => '',
-                                                    'PAGES_LIST' => '',
+        return do_template('PAGINATION_WRAP', array(
+            '_GUID' => '451167645e67c7beabcafe11c78680db',
+            'TEXT_ID' => $title,
+            'PER_PAGE' => $per_page,
+            'FIRST' => '',
+            'PREVIOUS' => '',
+            'CONTINUES_LEFT' => '',
+            'PARTS' => '',
+            'CONTINUES_RIGHT' => '',
+            'NEXT' => '',
+            'LAST' => '',
+            'PAGES_LIST' => '',
 
-                                                    'START' => strval($start),
-                                                    'MAX' => strval($max),
-                                                    'MAX_ROWS' => strval($max_rows),
-                                                    'NUM_PAGES' => strval(1),
+            'START' => strval($start),
+            'MAX' => strval($max),
+            'MAX_ROWS' => strval($max_rows),
+            'NUM_PAGES' => strval(1),
         ));
     }
 

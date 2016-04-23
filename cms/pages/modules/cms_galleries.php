@@ -2416,6 +2416,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
             true
         );
 
+        if ($id != $name) {
+            unset($_GET['redirect']);
+        }
+
         $this->new_id = $name;
 
         if (addon_installed('content_reviews')) {

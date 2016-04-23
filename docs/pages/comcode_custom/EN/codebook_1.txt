@@ -67,6 +67,7 @@ Composr initialisation can be controlled by a few global variables in the entry-
  - [tt]$FORCE_INVISIBLE_GUEST[/tt] ([tt]true[/tt] will tell Composr to not use a member login)
  - [tt]$CSRF_TOKENS[/tt] ([tt]true[/tt] will tell Composr to check for a CSRF-token if reading any POST-data; so only use this if CSRF-tokens are being set in calls to the script!)
  - [tt]$STATIC_CACHE_ENABLED[/tt] ([tt]true[/tt] will tell Composr it can check the static cache for possible static-cached versions of the output)
+ - [tt]$IN_SELF_ROUTING_SCRIPT[/tt] ([tt]true[/tt] will tell Composr that standard Composr URLs can be routed through this script)
 
 We do use global variables in Composr, even though many frown on them. Composr is optimised to the bone in terms of performance and code size. We have a rule that if a global variable is used in more than a few places that variable must be documented clearly within the code.
 

@@ -119,6 +119,13 @@ function init__global2()
     if (!isset($STATIC_CACHE_ENABLED)) {
         $STATIC_CACHE_ENABLED = false;
     }
+    /** Whether build_url requests point through the running script, as opposed to pointing to an index.php call.
+     *
+     * @global boolean $IN_SELF_ROUTING_SCRIPT
+     */
+    if (!isset($IN_SELF_ROUTING_SCRIPT)) {
+        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false*/;
+    }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;
     /** On the quick installer, this presents manifest information about files that exist in the virtual filesystem.

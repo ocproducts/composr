@@ -603,11 +603,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $html_errors = true;
                                     }
                                 } else { // Opening
-                                    if ($tag_match[2] == 'img')
-                                    {
-                                        @var_dump(substr($comcode,$pos,$close_pos-$pos));
-                                        exit();
-                                    }
                                     array_push($html_element_stack, $tag_match[2]);
                                 }
                             }

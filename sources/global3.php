@@ -1513,7 +1513,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
-        if (!running_script('index') && !running_script('iframe')) {
+        global $IN_SELF_ROUTING_SCRIPT;
+        if (!$IN_SELF_ROUTING_SCRIPT) {
             return false;
         }
 
@@ -1588,7 +1589,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
  */
 function get_page_or_script_name()
 {
-    if (running_script('index') || running_script('iframe')) {
+    global $IN_SELF_ROUTING_SCRIPT;
+    if ($IN_SELF_ROUTING_SCRIPT) {
         return get_page_name();
     }
     return current_script();
