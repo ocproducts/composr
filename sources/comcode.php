@@ -54,6 +54,7 @@ function init__comcode()
         'quote' => true, 'block' => true, 'semihtml' => true, 'html' => true, 'concept' => true, 'thumb' => true,
         'attachment' => true, 'attachment_safe' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true,
         'snapback' => true, 'post' => true, 'topic' => true, 'include' => true, 'random' => true, 'ticker' => true, 'jumping' => true, 'surround' => true, 'pulse' => true, 'shocker' => true,
+        'require_css' => true, 'require_javascript' => true,
     );
     //if (addon_installed('ecommerce')) {
     $VALID_COMCODE_TAGS['currency'] = true;

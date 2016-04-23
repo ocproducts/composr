@@ -622,6 +622,26 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $temp_tpl->attach($embed);
             break;
 
+        // Undocumented, used to inject dependencies in things like logged e-mail Comcode or notification Comcode, without needing access-restricted Tempcode
+        case 'require_css':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $css) {
+                    $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                }
+            }
+            break;
+        case 'require_javascript':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $javascript) {
+                    $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                }
+            }
+            break;
+
         case 'currency':
             if (addon_installed('ecommerce')) {
                 $bracket = (array_key_exists('bracket', $attributes) && ($attributes['bracket'] == '1'));

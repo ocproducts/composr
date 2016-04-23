@@ -66,6 +66,8 @@ class xss_test_set extends cms_test_case
         $parsed = strtolower(static_evaluate_tempcode(comcode_to_tempcode($comcode, $GLOBALS['FORUM_DRIVER']->get_guest_id())));
 
         $this->assertTrue(strpos($parsed, '<script') === false);
+
+        set_privilege(1, 'allow_html', false);
     }
 
     public function testInputFilter()

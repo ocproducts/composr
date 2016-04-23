@@ -734,3 +734,48 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
     return null;*/
 }
 
+/**
+ * Add some Comcode that does resource-inclusion for CSS and Javascript files that are currently loaded.
+ *
+ * @param  string $message_raw Comcode
+ */
+function inject_web_resources_context_to_comcode(&$message_raw)
+{
+    global $CSSS, $JAVASCRIPTS;
+
+    $_css_comcode = '';
+    foreach (array_keys($CSSS) as $i => $css) {
+        if ($css == 'global' || $css == 'no_cache') {
+            continue;
+        }
+
+        if ($_css_comcode != '') {
+            $_css_comcode .= ',';
+        }
+        $_css_comcode .= $css;
+    }
+    if ($_css_comcode == '') {
+        $css_comcode = '';
+    } else {
+        $css_comcode = '[require_css]' . $_css_comcode . '[/require_css]';
+    }
+
+    $_javascript_comcode = '';
+    foreach (array_keys($JAVASCRIPTS) as $i => $javascript) {
+        if ($javascript == 'global' || $javascript == 'custom_globals') {
+            continue;
+        }
+
+        if ($_javascript_comcode != '') {
+            $_javascript_comcode .= ',';
+        }
+        $_javascript_comcode .= $javascript;
+    }
+    if ($_javascript_comcode == '') {
+        $javascript_comcode = '';
+    } else {
+        $javascript_comcode = '[require_javascript]' . $_javascript_comcode . '[/require_javascript]';
+    }
+
+    $message_raw = $css_comcode . $javascript_comcode . $message_raw;
+}

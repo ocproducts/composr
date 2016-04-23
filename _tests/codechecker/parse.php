@@ -1027,7 +1027,7 @@ function _parse_expression_inner()
                 //log_special('functions', $next[1] . '/' . count($parameters));
             } else {
                 if (strtolower($next[1]) == $next[1]) {
-                    _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
+                    log_warning('Lower case constant, breaks convention. Likely a variable with a missing $');
                 }
                 $expression = array('CONSTANT', $next[1], $GLOBALS['I']);
             }
