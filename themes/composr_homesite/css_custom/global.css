@@ -935,7 +935,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	position: absolute;
 	top: -256000px;
 	left: 0;
-	visibility: hidden; /* So browser doesn't waste resources rendering */
+	opacity: 0; /* So browser doesn't waste resources rendering (cannot use visibility, Mac Voiceover will not pick up on it) */
 	display: block; /* stops browser bugs where it interacts with the layout flow incorrectly */
 }
 
@@ -958,10 +958,10 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
-	font-size: 13px !important;
-	padding-{!en_left}: 15px !important;
-	margin: 1.5em !important;
-	margin-{!en_left}: 10px !important;
+	font-size: 13px !important; /* px not em due to careful background positioning */
+	padding-{!en_left}: 15px;
+	margin: 1.5em;
+	margin-{!en_left}: 10px;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
 	background-position: {!en_left} 5px;
 	background-repeat: no-repeat;
@@ -1411,7 +1411,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	font-size: 15px;
 	margin: 0.5em 0;
 	font-family: Arial;
-	padding: 1px 0 2px 21px;
+	padding: 1px 0 2px 21px !important;
 	width: auto;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -1511,11 +1511,10 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	margin: 0 0.5em !important;
-	padding-top: 2px;
+	margin: 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
-	margin-top: -2px !important;
+	margin-top: -1px !important;
 }
 .toggleable_tray_button img {
 	width: 20px;
@@ -1758,6 +1757,7 @@ hr.spaced_rule {
 
 .inline_lined_up>* {
 	white-space: normal;
+	display: inline-block;
 }
 
 /* Something being shown for previewing, on its own so needs focus */
@@ -2057,7 +2057,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .pagination * {
 	vertical-align: middle;
 }
-.pagination .inline {
+.pagination .inline, .pagination nav {
 	display: inline-block;
 }
 
@@ -2077,7 +2077,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher .first-child {
 	border-left: 1px solid {$GET,standard_border};
 }
-.pagination a:hover, .results_launcher a:hover, .pagination a.button_depressed {
+.pagination a:hover, .results_launcher a:hover {
 	background-color: {$GET,area_hover_2_background} !important;
 }
 
@@ -2107,11 +2107,6 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .results_page_num {
 	font-weight: bold;
-}
-
-.pagination_per_page {
-	float: {!en_right};
-	margin-{!en_left}: 1em;
 }
 
 .pagination_pages {
@@ -2260,7 +2255,7 @@ div.wysiwyg_toolbar_color_finder {
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 }
 
-.ajax_loading {
+div.ajax_loading, p.ajax_loading {
 	padding: 2em;
 	text-align: center;
 }
@@ -2377,6 +2372,10 @@ div.wysiwyg_toolbar_color_finder {
 
 .post_action_link .RATING_INLINE_DYNAMIC {
 	padding-left: 2em;
+}
+
+.rating_inner img {
+	cursor: pointer;
 }
 
 .rating_error {
@@ -3126,7 +3125,7 @@ input.magic_image_edit_link {
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
-	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
+	/*{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -3154,7 +3153,7 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	background-position: 7px 3px !important;
 }
 .button_screen_item {
-	padding: 3px 33px 4px 7px;
+	padding: 3px 30px 4px 5px;
 	background-size: 18px 18px;
 	font-size: 13px;
 	/*{+START,IF,{$MOBILE}}*/
@@ -3177,6 +3176,10 @@ div .button_micro {
 	{$BETA_CSS_PROPERTY,opacity: 0.85;}
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
+}
+.buttons__previous_none, .buttons__next_none {
+	{$BETA_CSS_PROPERTY,opacity: 0.85 !important;}
+	cursor: not-allowed;
 }
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;}
@@ -3213,7 +3216,7 @@ div.proceed_button_left_2 {
 }
 
 .mass_select_marker {
-	padding: 0.5em;
+	padding: 0.2em;
 	float: {!en_right};
 	border: 1px solid {$GET,standard_border};
 	margin-{!en_left}: 2em;
@@ -3290,14 +3293,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__calculate {
 	background-image: url('{$IMG,icons/24x24/buttons/calculate}') !important;
 }
-.buttons__revisions {
-	background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
-}
 .buttons__choose {
 	background-image: url('{$IMG,icons/24x24/buttons/choose}') !important;
 }
 .buttons__clear {
 	background-image: url('{$IMG,icons/24x24/buttons/clear}') !important;
+}
+.buttons__ignore {
+	background-image: url('{$IMG,icons/24x24/buttons/ignore}') !important;
 }
 .buttons__closed {
 	background-image: url('{$IMG,icons/24x24/buttons/closed}') !important;
@@ -3362,9 +3365,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-.buttons__undo {
-	background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
-}
+{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	.buttons__undo {
+		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
+	}
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
+	}
+{+END}
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -3475,14 +3483,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__revisions {
-		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
-	}
 	.buttons__choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
 	}
 	.buttons__clear {
 		background-image: url('{$IMG,icons/48x48/buttons/clear}') !important;
+	}
+	.buttons__ignore {
+		background-image: url('{$IMG,icons/48x48/buttons/ignore}') !important;
 	}
 	.buttons__closed {
 		background-image: url('{$IMG,icons/48x48/buttons/closed}') !important;
@@ -3544,9 +3552,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	.buttons__undo {
-		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
-	}
+	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+		.buttons__undo {
+			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
+		}
+		.buttons__revisions {
+			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
+		}
+	{+END}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}
@@ -3641,6 +3654,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Fixes bugginess in Chrome */
 }
 
 /*
@@ -3696,7 +3710,7 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .tab {
 	float: left;
-	padding: 3px 7px 0 7px !important;
+	padding: 3px 6px 0 6px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
@@ -4280,7 +4294,7 @@ a[rel="lightbox"] {
 	}
 
 	a[href$=".rss"].user_link, body div a.feed_link {
-		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top; 
+		background: url('{$IMG;,icons/16x16/filetypes/feed}') no-repeat right top;
 		padding: 0 22px 5px 0;
 	}
 
@@ -4388,7 +4402,7 @@ a[rel="lightbox"] {
 /*{+START,IF,{$ADDON_INSTALLED,recommend}}*/
 	.print_icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
-		padding: 0 0 5px 22px !important;
+		padding: 0 0 5px 32px !important;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
