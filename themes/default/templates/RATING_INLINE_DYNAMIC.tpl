@@ -1,5 +1,5 @@
 {+START,IF,{$OR,{HAS_RATINGS},{$IS_NON_EMPTY,{$TRIM,{RATING_FORM}}}}}
-	<div class="RATING_INLINE_DYNAMIC" itemscope="itemscope" itemtype="http://schema.org/AggregateRating">
+	<div class="RATING_INLINE RATING_INLINE_DYNAMIC" itemscope="itemscope" itemtype="http://schema.org/AggregateRating">
 		{$,Show the current result (nothing shows if nobody voted yet)}
 		{+START,IF,{HAS_RATINGS}}
 			{$SET,i,0}
