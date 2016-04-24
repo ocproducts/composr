@@ -317,10 +317,19 @@ class LangFilter_EN extends LangFilter
         $preserved = array();
 
         foreach ($flags as $flag_i => $flag) {
-            if (preg_match('#^preserve=(.*)$#', '', $matches) != 0) {
+            if (preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
                 $preserve = $matches[1];
                 $preserved[$flag_i] = $matches[1];
                 $value = str_replace($preserve, 'preserve_' . strval($flag_i), $value);
+            }
+
+            // Putting in correct keypress for Mac users
+            if ($flag == 'platform_specific') {
+                if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
+                } else {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Option key', $value);
+                }
             }
 
             // Putting correct content type words to generic strings, with appropriate grammar...

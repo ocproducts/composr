@@ -187,11 +187,13 @@ function static_cache($mode)
     }
     foreach ($param_sets as $param) {
         $fast_cache_path = $_fast_cache_path;
-        if ($param['non_bot']) {
-            $fast_cache_path .= '__non-bot';
-        }
-        if ($param['no_js']) {
-            $fast_cache_path .= '__no-js';
+        if (!$param['failover_mode']) {
+            if ($param['non_bot']) {
+                $fast_cache_path .= '__non-bot';
+            }
+            if ($param['no_js']) {
+                $fast_cache_path .= '__no-js';
+            }
         }
         if ($param['mobile']) {
             $fast_cache_path .= '__mobile';

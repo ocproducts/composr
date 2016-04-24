@@ -3313,7 +3313,7 @@ function send_http_output_ping()
 }
 
 /**
- * Improve security by turning on a strict CSP that only allows stuff from partner sites and disables frames and forms
+ * Improve security by turning on a strict CSP that only allows stuff from partner sites and disables frames and forms.
  * Must be called before page output starts.
  *
  * @param  ?MEMBER $enable_more_open_html_for Allow more open HTML for a particular member ID (null: no member). It still will use the HTML blacklist functionality (unless they have even higher access already), but will remove the more restrictive whitelist functionality. Use of set_high_security_csp here is further decreasing the risk from dangerous HTML, even though the risk should be very low anyway due to the blacklist filter.
@@ -3326,6 +3326,8 @@ function set_high_security_csp($enable_more_open_html_for = null)
         $partners = '';
     } else {
         $partners = ' ' . implode(' ', $_partners);
+        $partners .= ' https://' . implode(' https://', $_partners);
+        $partners .= ' http://' . implode(' http://', $_partners);
     }
 
     $value = "";
@@ -3335,6 +3337,7 @@ function set_high_security_csp($enable_more_open_html_for = null)
     $value .= "frame-src 'none'; child-src 'none'; ";
     $value .= "form-action 'self'; ";
     $value .= "base-uri 'self'; ";
+    $value .= "frame-ancestors 'self'{$partners}; ";
 
     header('Content-Security-Policy:' . trim($value));
 
@@ -3343,4 +3346,33 @@ function set_high_security_csp($enable_more_open_html_for = null)
         has_privilege($enable_more_open_html_for, 'allow_html'); // Force loading, so we can amend the cached value cleanly
         $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = 1;
     }
+}
+
+/**
+ * Set a CSP header to not allow any frames to include us.
+ */
+function set_no_clickjacking_csp()
+{
+    require_code('input_filter');
+    $_partners = get_allowed_partner_sites();
+    if ($_partners == array()) {
+        $partners = '';
+    } else {
+        $partners = ' ' . implode(' ', $_partners);
+        $partners .= ' https://' . implode(' https://', $_partners);
+        $partners .= ' http://' . implode(' http://', $_partners);
+    }
+
+    $value = "";
+    $value .= "frame-ancestors 'self'{$partners}; ";
+
+    @header('Content-Security-Policy:' . trim($value));
+}
+
+/**
+ * Stop the web browser trying to save us, and breaking some requests in the process.
+ */
+function disable_browser_xss_detection()
+{
+    @header('X-XSS-Protection: 0');
 }

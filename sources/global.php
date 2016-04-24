@@ -616,9 +616,9 @@ if (count($SITE_INFO) == 0) {
 global $SITE_INFO;
 $rate_limiting = empty($SITE_INFO['rate_limiting']) ? false : ($SITE_INFO['rate_limiting'] == '1');
 if ($rate_limiting) {
-    if ((!empty($_SERVER['REMOTE_ADDR'])) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
+    if (((!empty($_SERVER['REMOTE_ADDR'])) || (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
         // Basic context
-        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
         $time = time();
 
         if (!(((!empty($_SERVER['SERVER_ADDR'])) && ($ip == $_SERVER['SERVER_ADDR'])) || ((!empty($_SERVER['LOCAL_ADDR'])) && ($ip == $_SERVER['LOCAL_ADDR'])))) {

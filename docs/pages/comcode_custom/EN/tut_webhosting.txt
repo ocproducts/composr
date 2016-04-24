@@ -262,6 +262,19 @@ So, the main take-away is:
 PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
+[title="2"]Failover mode[/title]
+
+You may configure a special failover mode via the [tt]config_editor[/tt] script. This mode serves cached versions of page if your server seems to be failing. It is not a perfect system because:
+1) it serves hits as guests
+2) it can only work if the static cache is populated
+3) it assumes that your server is only failing for performance/database reasons, not totally failed (however most failures in practice are like this)
+
+However, it's still a great system because it lets your site content continue to be available even under massive load.
+
+Failover can automatically fall into place based on a number of criteria.
+
+Note that the failover status messages ([tt]failover_message_place_after[/tt] and [tt]failover_message_place_before[/tt] options) are put in place at the caching stage, not dynamically. So you would need to empty the static cache if you change these messages to something else.
+
 [concepts
  1_key="Webhost"            1_value="A provider of Internet server facilities"
  2_key="Dedicated server"   2_value="A server that is not shared with others"

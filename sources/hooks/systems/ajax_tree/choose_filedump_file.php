@@ -59,10 +59,6 @@ class Hook_choose_filedump_file
             $files = get_directory_contents($full_path, '', false, false);
             natsort($files);
             foreach ($files as $f) {
-                if ($images_only && !is_image($f)) {
-                    continue;
-                }
-
                 $description = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => basename($f), 'path' => $id . '/'));
 
                 $entry_id = 'uploads/filedump/' . (($id == '') ? '' : (rawurlencode($id) . '/')) . rawurlencode($f);
@@ -78,6 +74,10 @@ class Hook_choose_filedump_file
                         }
                     }
                 } elseif (!$folder) {
+                    if ($images_only && !is_image($f)) {
+                        continue;
+                    }
+
                     if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f))) {
                         if ((is_null($description)) || (get_translated_text($description) == '')) {
                             $_description = '';

@@ -50,7 +50,7 @@ function init__form_templates()
         }
     }
 
-    @header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+    set_no_clickjacking_csp();
 }
 
 /**

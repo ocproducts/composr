@@ -149,7 +149,7 @@ function check_has_page_access()
     require_code('permissions');
     global $ZONE;
     if ($ZONE['zone_require_session'] == 1) {
-        header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+        set_no_clickjacking_csp();
     }
     if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login')) {
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
@@ -981,6 +981,7 @@ function save_static_caching($out, $mime_type = 'text/html')
         if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
             $url = static_cache_current_url();
             $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
+            $fast_cache_path_static_cache = $fast_cache_path;
             if ($bot_type === null) {
                 $fast_cache_path .= '__non-bot';
             }
@@ -989,6 +990,7 @@ function save_static_caching($out, $mime_type = 'text/html')
             }
             if (is_mobile()) {
                 $fast_cache_path .= '__mobile';
+                $fast_cache_path_static_cache = '__mobile';
             }
 
             if (is_object($out)) {
@@ -1016,7 +1018,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                 }
 
                 if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path . '__failover_mode' . $file_extension) || filemtime($fast_cache_path . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
+                    if (!is_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension) || filemtime($fast_cache_path_static_cache . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
                         // Add failover messages
                         if (!empty($SITE_INFO['failover_message_place_after'])) {
                             $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
@@ -1028,7 +1030,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                         // Disable all form controls
                         $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-                        write_static_cache_file($fast_cache_path . '__failover_mode' . $file_extension, $static_cache, false);
+                        write_static_cache_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension, $static_cache, false);
                     }
 
                     if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {

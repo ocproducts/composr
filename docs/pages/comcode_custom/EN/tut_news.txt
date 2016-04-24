@@ -19,7 +19,7 @@ You can manage news from Content Management > News. You'll find an add icon unde
 The add icon brings up the add screen, which is a standard form in Composr. It contains these fields:
  - [b]Title[/b]: this is the title (headline) that your news post will have
  - [b]Main category[/b]: This is the primary category that your news post will be listed in; it is special when compared to secondary categories as access to the primary news category is required for anyone to see or read the article
- - [b]Secondary category[/b]: In this space, you may choose additional categories for this post to be listed in. (hold ctrl to select more than one)
+ - [b]Secondary category[/b]: In this space, you may choose additional categories for this post to be listed in. (hold Ctrl to select more than one, or Option on a mac)
  - [b]Source[/b]: the primary source/author of this source. It may be you
  - [b]Allow rating[/b]: With this option ticked, your members will be able to rate your news
  - [b]Allow comments[/b]: With this option ticked, your members will be able to leave comments at the end of your news post

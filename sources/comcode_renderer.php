@@ -275,7 +275,7 @@ function _custom_comcode_import($connection)
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
     if (count($_POST) != 0) {
-        @header('X-XSS-Protection: 0');
+        disable_browser_xss_detection();
     }
 
     if (is_null($connection)) {

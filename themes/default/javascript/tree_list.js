@@ -279,7 +279,7 @@ tree_list.prototype.render_tree=function(xml,html,element)
 			a.childNodes[0].object=this;
 			a.object=this;
 			a.onmousedown=function(event) { // To disable selection of text when holding shift or control
-				if (event.ctrlKey || event.shiftKey)
+				if (event.ctrlKey || event.metaKey || event.shiftKey)
 				{
 					if (typeof event=='undefined') event=window.event;
 					if (typeof event.preventDefault!='undefined') event.preventDefault();
@@ -349,7 +349,7 @@ tree_list.prototype.render_tree=function(xml,html,element)
 			a.childNodes[0].object=this;
 			a.object=this;
 			a.onmousedown=function(event) { // To disable selection of text when holding shift or control
-				if (event.ctrlKey || event.shiftKey)
+				if (event.ctrlKey || event.metaKey || event.shiftKey)
 				{
 					if (typeof event=='undefined') event=window.event;
 					if (typeof event.preventDefault!='undefined') event.preventDefault();
