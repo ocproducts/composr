@@ -59,6 +59,9 @@ function init__minikernel()
     global $EXTERNAL_CALL;
     $EXTERNAL_CALL = false;
 
+    global $IN_SELF_ROUTING_SCRIPT;
+    $IN_SELF_ROUTING_SCRIPT = false;
+
     global $XSS_DETECT, $LAX_COMCODE;
     $XSS_DETECT = false;
     $LAX_COMCODE = false;
