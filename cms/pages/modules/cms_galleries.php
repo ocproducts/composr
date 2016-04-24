@@ -2519,7 +2519,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('GALLERIES')
+                do_lang_tempcode('GALLERIES'),
+                $video ? 'video' : 'image',
+                'gallery'
             );
         }
 
@@ -2564,7 +2566,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('GALLERIES')
+            do_lang_tempcode('GALLERIES'),
+            $video ? 'video' : 'image',
+            'gallery'
         );
     }
 }

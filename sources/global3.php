@@ -3316,7 +3316,7 @@ function send_http_output_ping()
  * Improve security by turning on a strict CSP that only allows stuff from partner sites and disables frames and forms
  * Must be called before page output starts.
  *
- * @param  ?MEMBER $enable_more_open_html Allow more open HTML for a particular member ID. It still will use the HTML blacklist functionality (unless they have even higher access already), but will remove the more restrictive whitelist functionality. Use of set_high_security_csp here is further decreasing the risk from dangerous HTML, even though the risk should be very low anyway due to the blacklist filter.
+ * @param  ?MEMBER $enable_more_open_html_for Allow more open HTML for a particular member ID (null: no member). It still will use the HTML blacklist functionality (unless they have even higher access already), but will remove the more restrictive whitelist functionality. Use of set_high_security_csp here is further decreasing the risk from dangerous HTML, even though the risk should be very low anyway due to the blacklist filter.
  */
 function set_high_security_csp($enable_more_open_html_for = null)
 {

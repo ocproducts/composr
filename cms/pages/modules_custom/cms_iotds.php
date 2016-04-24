@@ -30,6 +30,8 @@ class Module_cms_iotds extends Standard_crud_module
     public $permissions_require = 'mid';
     public $menu_label = 'IOTDS';
     public $table = 'iotd';
+    public $donext_entry_content_type = 'iotd';
+    public $donext_category_content_type = null;
 
     public $title;
 

@@ -31,6 +31,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public $orderer = 'cf_name';
     public $table = 'f_custom_fields';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'cpf';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

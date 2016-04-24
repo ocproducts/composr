@@ -330,10 +330,15 @@ class LangFilter_EN extends LangFilter
                 $param_num = intval($matches[2]);
                 if (!empty($parameters[$param_num - 1])) {
                     $content_type = is_object($parameters[$param_num - 1]) ? $parameters[$param_num - 1]->evaluate() : $parameters[$param_num - 1];
+
                     require_code('content');
                     $object = get_content_object($content_type);
                     if (is_null($object)) {
-                        $specific = do_lang($content_type, null, null, null, null, false);
+                        if (preg_match('#^\w+$#', $content_type) != 0) {
+                            $specific = do_lang($content_type, null, null, null, null, false);
+                        } else {
+                            $specific = $content_type;
+                        }
                         if (is_null($specific)) {
                             $specific = strtolower($content_type);
                         } else {

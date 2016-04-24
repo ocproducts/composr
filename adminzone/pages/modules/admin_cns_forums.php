@@ -38,6 +38,8 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $javascript = 'if (document.getElementById(\'delete\')) { var form=document.getElementById(\'delete\').form; var crf=function() { form.elements[\'target_forum\'].disabled=(!form.elements[\'delete\'].checked); form.elements[\'delete_topics\'].disabled=(!form.elements[\'delete\'].checked); }; crf(); form.elements[\'delete\'].onchange=crf; }';
     public $menu_label = 'SECTION_FORUMS';
     public $do_preview = null;
+    public $donext_entry_content_type = 'forum';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -168,7 +170,9 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_FORUMS'), comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_GROUPINGS'), null, true),
+        return do_next_manager(
+            get_screen_title('MANAGE_FORUMS'),
+            comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_GROUPINGS'), null, true),
             array_merge($menu_links, manage_custom_fields_donext_link('post'), manage_custom_fields_donext_link('topic'), manage_custom_fields_donext_link('forum')),
             do_lang('MANAGE_FORUMS')
         );

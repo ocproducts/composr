@@ -119,13 +119,13 @@ function get_content_object($content_type)
         return $cache[$content_type];
     }
 
-    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type);
+    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true);
     if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_code($path);
         $ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($content_type), true);
     } else {
         // Okay, maybe it's a resource type (more limited functionality).
-        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type);
+        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type, true);
         if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
             require_code('hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type));
             $ob = object_factory('Hook_resource_meta_aware_' . filter_naughty_harsh($content_type), true);
@@ -404,7 +404,7 @@ function append_content_select_for_id(&$select, $cma_info, $table_alias = null)
  *
  * @param  string $content_type The content type
  * @param  string $string The language string stub (must itself be a valid language string)
- * @param  Tempcode Tempcode of language string
+ * @return Tempcode Tempcode of language string
  */
 function content_language_string($content_type, $string)
 {

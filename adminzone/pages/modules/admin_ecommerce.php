@@ -32,6 +32,8 @@ class Module_admin_ecommerce extends Standard_crud_module
     public $table = 'f_usergroup_subs';
     public $orderer = 's_title';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'usergroup_subscription';
+    public $donext_category_content_type = null;
 
     public $javascript = "
         var _length_units=document.getElementById('length_units'),_length=document.getElementById('length');

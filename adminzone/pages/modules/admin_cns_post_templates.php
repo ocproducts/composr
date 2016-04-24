@@ -34,6 +34,8 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     public $menu_label = 'POST_TEMPLATES';
     public $table = 'f_post_templates';
     public $orderer = 't_title';
+    public $donext_entry_content_type = 'post_template';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

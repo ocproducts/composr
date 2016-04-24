@@ -38,6 +38,8 @@ class Module_admin_cns_groups extends Standard_crud_module
     public $menu_label = 'USERGROUPS';
     public $orderer = 'g_name';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'group';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

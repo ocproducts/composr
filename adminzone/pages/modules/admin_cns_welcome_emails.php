@@ -31,6 +31,8 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
     public $menu_label = 'WELCOME_EMAILS';
     public $orderer = 'w_name';
     public $title_is_multi_lang = false;
+    public $donext_entry_content_type = 'welcome_email';
+    public $donext_category_content_type = null;
 
     /**
      * Find details of the module.

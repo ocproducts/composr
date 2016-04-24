@@ -34,6 +34,8 @@ class Module_admin_cns_emoticons extends Standard_crud_module
     public $possibly_some_kind_of_upload = true;
     public $do_preview = null;
     public $menu_label = 'EMOTICONS';
+    public $donext_entry_content_type = 'emoticon';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.

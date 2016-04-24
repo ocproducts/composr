@@ -1593,7 +1593,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('EVENT_TYPES')
+                do_lang_tempcode('EVENT_TYPES'),
+                'event',
+                'calendar_type'
             );
         }
 
@@ -1617,7 +1619,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('EVENT_TYPES')
+            do_lang_tempcode('EVENT_TYPES'),
+            'event',
+            'calendar_type'
         );
     }
 }

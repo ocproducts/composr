@@ -873,6 +873,7 @@ class Module_admin_themes
                 $edit_this = array('_SELF', array('type' => 'edit_css', 'file' => str_replace('/css/', '/css_custom/', $file), 'theme' => $theme), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'choose_css', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('CSS');
+                $content_type = do_lang('CSS_FILE');
                 break;
 
             case 'templates':
@@ -880,6 +881,7 @@ class Module_admin_themes
                 $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => file_exists(get_custom_file_base() . '/' . str_replace('/templates/', '/templates_custom/', $file)) ? str_replace('/templates/', '/templates_custom/', $file) : $file, 'theme' => $theme), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
                 $section_title = do_lang_tempcode('TEMPLATES');
+                $content_type = do_lang('TEMPLATE');
                 break;
 
             case 'image':
@@ -887,6 +889,7 @@ class Module_admin_themes
                 $edit_this = array('_SELF', array('type' => 'edit_image', 'id' => $file, 'theme' => $theme, 'lang' => $lang), '_SELF');
                 $edit_one = array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF');
                 $section_title = do_lang_tempcode('THEME_IMAGES');
+                $content_type = do_lang('THEME_IMAGE');
                 break;
 
             default:
@@ -894,6 +897,7 @@ class Module_admin_themes
                 $edit_this = null;
                 $edit_one = null;
                 $section_title = null;
+                $content_type = null;
                 break;
         }
 
@@ -925,7 +929,9 @@ class Module_admin_themes
             ),
             do_lang('MANAGE_THEMES'),
             null,
-            $section_title
+            $section_title,
+            null,
+            $content_type
         );
     }
 
@@ -1171,6 +1177,9 @@ class Module_admin_themes
         require_code('revisions_engine_files');
         $revision_engine = new RevisionEngineFiles();
         $existing_path = $custom_path;
+        if (!file_exists($existing_path)) {
+            $existing_path = get_custom_file_base() . '/themes/default/css_custom/' . $file;
+        }
         if (!file_exists($existing_path)) {
             $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
         }

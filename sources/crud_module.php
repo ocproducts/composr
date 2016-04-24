@@ -95,6 +95,8 @@ abstract class Standard_crud_module
     public $posting_field_required = true;
     public $donext_type = null;
     public $donext_category_id = null;
+    public $donext_entry_content_type = null;
+    public $donext_category_content_type = null;
     public $cached_entry_rows = null;
     public $cached_max_rows = null;
     public $lang_type = null;
@@ -681,7 +683,9 @@ abstract class Standard_crud_module
             $this->extra_donext_whatever_title,
             null,
             $this->entries_title,
-            $this->categories_title
+            $this->categories_title,
+            $this->donext_entry_content_type,
+            $this->donext_category_content_type
         );
     }
 

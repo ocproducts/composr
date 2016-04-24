@@ -34,6 +34,8 @@ class Module_admin_awards extends Standard_crud_module
     public $table = 'award_types';
     public $orderer = 'a_title';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'award_type';
+    public $donext_category_content_type = null;
 
     /**
      * Find details of the module.

@@ -889,7 +889,9 @@ class Module_cms_banners_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('BANNER_TYPES')
+                do_lang_tempcode('BANNER_TYPES'),
+                'banner',
+                'banner_type'
             );
         }
 
@@ -914,7 +916,9 @@ class Module_cms_banners_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('BANNER_TYPES')
+            do_lang_tempcode('BANNER_TYPES'),
+            'banner',
+            'banner_type'
         );
     }
 }

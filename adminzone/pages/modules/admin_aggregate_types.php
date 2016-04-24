@@ -35,6 +35,8 @@ class Module_admin_aggregate_types extends Standard_crud_module
     public $add_one_label = null;
     public $edit_this_label = null;
     public $edit_one_label = null;
+    public $donext_entry_content_type = 'aggregate_type_instance';
+    public $donext_category_content_type = null;
 
     /**
      * Find details of the module.

@@ -32,6 +32,8 @@ class Module_admin_newsletter extends Standard_crud_module
     public $menu_label = 'NEWSLETTER';
     public $table = 'newsletters';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'newsletter';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
