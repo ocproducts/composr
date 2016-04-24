@@ -168,11 +168,13 @@ class Module_news
 
         $ret = array(
             'browse' => array('NEWS_ARCHIVE', 'menu/rich_content/news'),
-            'cat_select' => array('NEWS_CATEGORIES', 'menu/_generic_admin/view_archive'),
         );
         if ($has_blogs) {
+            $ret['cat_select'] = array('NEWS_CATEGORIES', 'menu/_generic_admin/view_archive');
             $ret['select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
             $ret['blog_select'] = array('BLOGS', 'tabs/member_account/blog');
+        } else {
+            $ret['select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
         }
         return $ret;
     }

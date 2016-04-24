@@ -1240,10 +1240,12 @@ function apply_quick_caching($_cache)
 
         $new_tempcode->attach($portion);
 
+        $has_escaping = (preg_match('#&\w+;#', $matches[0][$i][0]) != 0);
+
         if ($matches[0][$i][0][0] == '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
-            $keep = symbol_tempcode('KEEP', array('0'), array(ENTITY_ESCAPED));
+            $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
         } else { // All parameters are keep_*
-            $keep = symbol_tempcode('KEEP', array('1'), array(ENTITY_ESCAPED));
+            $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
         }
         $new_tempcode->attach($keep);
 
