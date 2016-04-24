@@ -120,10 +120,17 @@ function lang_load_runtime_processing()
         $LANG_RUNTIME_PROCESSING = persistent_cache_get('LANG_RUNTIME_PROCESSING');
     }
     if ($LANG_RUNTIME_PROCESSING === null) {
+        $needs_compiling = true;
+
         $path = get_custom_file_base() . '/caches/lang/_runtime_processing.lcd';
         if (is_file($path)) {
-            $LANG_RUNTIME_PROCESSING = unserialize(file_get_contents($path));
-        } else {
+            $LANG_RUNTIME_PROCESSING = @unserialize(file_get_contents($path));
+            if ($LANG_RUNTIME_PROCESSING !== false) {
+                $needs_compiling = false;
+            }
+        }
+
+        if ($needs_compiling) {
             require_code('lang_compile');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
             @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));

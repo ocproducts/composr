@@ -497,6 +497,9 @@ function semihtml_to_comcode($semihtml, $force = false)
         }
 
         $count = substr_count($semihtml, '[/') + substr_count($semihtml, '@') + substr_count($semihtml, '{') + substr_count($semihtml, '[[') + substr_count($semihtml, '<h1');
+        if (strpos($semihtml, '<a ') === false) {
+            $count += substr_count($semihtml, '://');
+        }
         if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }

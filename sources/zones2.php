@@ -465,9 +465,10 @@ function cleanup_block_name($block)
  * Gets parameters for a block
  *
  * @param  ID_TEXT $block The name of the block to get parameters for
+ * @param  boolean $include_standard_parameters Include parameters that apply to all blocks
  * @return array A list of parameters the block takes
  */
-function get_block_parameters($block)
+function get_block_parameters($block, $include_standard_parameters = false)
 {
     $block_path = _get_block_path($block);
     $info = extract_module_info($block_path);
@@ -481,14 +482,20 @@ function get_block_parameters($block)
             $params[$matches[1][$i]] = true;
         }
 
-        return array_diff(array_keys($params), array('cache'));
+        $parameters = array_diff(array_keys($params), array('cache'));
+    } else {
+        $parameters = empty($info['parameters']) ? array() : $info['parameters'];
     }
 
-    $ret = array_key_exists('parameters', $info) ? $info['parameters'] : array();
-    if (is_null($ret)) {
-        return array();
+    if ($include_standard_parameters) {
+        $parameters[] = 'failsafe';
+        $parameters[] = 'cache';
+        $parameters[] = 'quick_cache';
+        $parameters[] = 'defer';
+        $parameters[] = 'block_id';
     }
-    return $ret;
+
+    return $parameters;
 }
 
 /**

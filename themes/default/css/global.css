@@ -2169,6 +2169,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 1em 0;
 }
 
+.compacted_subbox_stream .pagination_spacing {
+	margin-left: 1em;
+}
+
 .pagination {
 	float: {!en_left};
 	/*	max-width: 540px; Looks bad on forumview */

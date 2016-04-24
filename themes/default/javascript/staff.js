@@ -374,6 +374,8 @@ function handle_image_mouse_over(event)
 
 function handle_image_mouse_out(event)
 {
+	if (typeof event=='undefined') event=window.event;
+
 	var target=event.target || event.srcElement;
 
 	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
