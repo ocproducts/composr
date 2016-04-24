@@ -68,7 +68,8 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     require_code('uploads');
     $field_file = $name . '__upload';
     $thumb_attach_name = $name . '__thumb__upload';
-    if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
+    is_plupload(true);
+    if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
         if ((substr($urls[0], 0, 8) != 'uploads/') && (is_null(http_download_file($urls[0], 0, false))) && (!is_null($GLOBALS['HTTP_MESSAGE_B']))) {
@@ -515,7 +516,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 }
             }
 
-            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $upload_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
+            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $thumb_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
             $thumb = $_thumb[0];
         } elseif (array_key_exists($thumb_specify_name, $_POST)) { // If we specified
             $_thumb = _get_specify_url($member_id, $thumb_specify_name, $thumb_folder, CMS_UPLOAD_IMAGE, $accept_errors);
@@ -563,7 +564,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 }
             }
 
-            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $upload_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
+            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $thumb_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
             $thumb = $_thumb[0];
         } elseif (array_key_exists($thumb_specify_name, $_POST)) {
             $_thumb = _get_specify_url($member_id, $thumb_specify_name, $thumb_folder, CMS_UPLOAD_IMAGE, $accept_errors);

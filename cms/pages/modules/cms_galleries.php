@@ -1990,7 +1990,6 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 $rows = $GLOBALS['SITE_DB']->query_select('videos', array('url', 'thumb_url'), array('id' => $id), '', 1);
                 $thumb_url = $rows[0]['thumb_url'];
             }
-
             if (($url == '') || ($thumb_url == '')) {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
