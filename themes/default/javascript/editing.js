@@ -845,7 +845,7 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 		{
 			var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
 			var result=result_tags[0];
-			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,'');
+			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,''); /* result is an XML-escaped string of HTML, so we get via looking at the node text */
 		} else
 		{
 			new_html = selected_html;

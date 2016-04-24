@@ -148,7 +148,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
 
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
-            if ($tag != 'staff_note') {
+            if ($tag == 'staff_note') {
                 return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
@@ -204,7 +204,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
         }
     }
-    $_embed = ($semihtml ? $embed->evaluate() : escape_html($embed->evaluate()));
+    $_embed = ($semihtml ? $embed->evaluate() : nl2br(escape_html($embed->evaluate())));
     $raw_comcode_start = '[' . $tag . $params_comcode . ']';
     $raw_comcode_end = '[/' . $tag . ']';
 
@@ -212,7 +212,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
         $method = wysiwyg_comcode_markup_style($tag, $attributes, $embed);
     }
 
-    if ($html_errors) {
+    if ($html_errors && $method != WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED) {
         if ($method != WYSIWYG_COMCODE__HTML) {
             $method = WYSIWYG_COMCODE__BUTTON;
         }
@@ -221,12 +221,12 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
     switch ($method) {
         case WYSIWYG_COMCODE__BUTTON:
             if ($tag == 'block') {
-                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($embed->evaluate()));
+                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($_embed));
             } else {
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
-            $raw_comcode = escape_html($raw_comcode_start) . escape_html($_embed) . escape_html($raw_comcode_end);
-            return '<input class="cms_keep_ui_controlled" size="45" title="' . $raw_comcode . '" type="button" value="' . $comcode_title . '" />';
+            $raw_comcode = $raw_comcode_start . $_embed . $raw_comcode_end;
+            return '<input class="cms_keep_ui_controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
@@ -249,14 +249,18 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
             switch ($method) {
-                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
-                    $out .= escape_html($embed->evaluate());
-                    break;
                 case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
-                    $out .= html_entity_decode($embed->evaluate(), ENT_QUOTES, get_charset());
+                    if ($semihtml) {
+                        $out .= html_entity_decode($_embed, ENT_QUOTES, get_charset());
+                    } else {
+                        $out .= $_embed;
+                    }
+                    break;
+                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                    $out .= $_embed;
                     break;
                 default:
-                    $out .= $embed->evaluate();
+                    $out .= $_embed;
                     break;
             }
             $out .= '</comcode-' . escape_html($tag) . '>';
