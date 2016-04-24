@@ -172,6 +172,9 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                 $test = find_theme_image('icons/24x24/menu/rich_content/catalogues/' . $content_id, true);
+                if ($test == '') {
+                    $test = find_theme_image('icons/24x24/menu/rich_content/catalogues/catalogues', true);
+                }
                 if ($test != '') {
                     $struct['extra_meta']['image'] = $test;
                 }

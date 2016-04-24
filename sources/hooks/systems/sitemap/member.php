@@ -129,6 +129,13 @@ class Hook_sitemap_member extends Hook_sitemap_content
                       'privilege_page' => null,
                   ) + $partial_struct;
 
+        if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
+            if (empty($struct['extra_meta']['image'])) {
+                $test = find_theme_image('cns_default_avatars/default', true);
+                $struct['extra_meta']['image'] = $test;
+            }
+        }
+
         if (!$this->_check_node_permissions($struct)) {
             return null;
         }
