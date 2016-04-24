@@ -96,8 +96,13 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $map = null;
+        if (get_forum_type() != 'cns' || !addon_installed('shopping')) {
+            $map = array('c_is_ecommerce' => 0);
+        }
+
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)');
+            $count = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)', $map);
             if ($count > $child_cutoff) {
                 return $nodes;
             }
@@ -105,7 +110,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), null, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), $map, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if (substr($row['c_name'], 0, 1) != '_') {
                     // Index

@@ -143,6 +143,10 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
                    'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
                ) + parent::get_entry_points();
