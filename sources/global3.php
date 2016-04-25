@@ -1151,7 +1151,8 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
         $locale['thousands_sep'] = ',';
     }
     $str = number_format($val, $decs_wanted, $locale['decimal_point'], $locale['thousands_sep']);
-    $decs_here = strlen($str) - strpos($str, '.') - 1;
+    $dot_pos = strpos($str, '.');
+    $decs_here = ($dot_pos === false) ? 0 : (strlen($str) - $dot_pos - 1);
     if ($decs_here < $decs_wanted) {
         for ($i = 0; $i < $decs_wanted - $decs_here; $i++) {
             $str .= '0';
