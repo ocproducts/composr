@@ -241,7 +241,7 @@ function zone_black_magic_filterer($path, $relative = false)
 {
     static $no_collapse_zones = null;
     if ($no_collapse_zones === null) {
-        $no_collapse_zones = (get_option('collapse_user_zones') != '1');
+        $no_collapse_zones = (get_option('collapse_user_zones') !== '1');
     }
     if ($no_collapse_zones) {
         return $path;
@@ -263,7 +263,7 @@ function zone_black_magic_filterer($path, $relative = false)
         $stripped = $path;
     } else {
         $cfb = get_custom_file_base();
-        if (substr($path, 0, strlen($cfb)) == $cfb) {
+        if (substr($path, 0, strlen($cfb)) === $cfb) {
             $stripped = substr($path, strlen($cfb) + 1);
         } else {
             $fb = get_file_base();
@@ -271,12 +271,12 @@ function zone_black_magic_filterer($path, $relative = false)
         }
     }
 
-    if ($stripped != '') {
-        if ($stripped[0] == '/') {
+    if ($stripped !== '') {
+        if ($stripped[0] === '/') {
             $stripped = substr($stripped, 1);
         }
 
-        if (($stripped[0] == 'p') && (substr($stripped, 0, 6) == 'pages/')) { // Ah, need to do some checks as we are looking in the welcome zone
+        if (($stripped[0] === 'p') && (substr($stripped, 0, 6) === 'pages/')) { // Ah, need to do some checks as we are looking in the welcome zone
             $full = $relative ? (get_file_base() . '/' . $path) : $path;
             if (!is_file($full)) {
                 $site_equiv = get_file_base() . '/site/' . $stripped;
@@ -343,18 +343,18 @@ function get_zone_name()
         $url_path = dirname(cms_srv('SCRIPT_NAME'));
         $host = preg_replace('#:\d+$#', '', cms_srv('HTTP_HOST'));
         foreach ($SITE_INFO as $key => $val) {
-            if (($key[0] == 'Z') && (substr($key, 0, 13) == 'ZONE_MAPPING_') && (is_array($val))) {
+            if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
                 $VIRTUALISED_ZONES_CACHE = true;
-                if (($host == $val[0]) && (preg_match('#^' . (($val[1] == '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
+                if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
                     return substr($key, 13);
                 }
             }
         }
-        if (($VIRTUALISED_ZONES_CACHE) && (substr($host, 0, 4) == 'www.')) {
+        if (($VIRTUALISED_ZONES_CACHE) && (substr($host, 0, 4) === 'www.')) {
             $host = substr($host, 4);
             foreach ($SITE_INFO as $key => $val) {
-                if (($key[0] == 'Z') && (substr($key, 0, 13) == 'ZONE_MAPPING_') && (is_array($val))) {
-                    if (($host == $val[0]) && (preg_match('#^' . (($val[1] == '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
+                if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
+                    if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
                         require_code('urls');
                         $GLOBALS['HTTP_STATUS_CODE'] = '301';
                         header('HTTP/1.0 301 Moved Permanently');
@@ -365,7 +365,7 @@ function get_zone_name()
             }
         }
     }
-    $real_zone = (($RELATIVE_PATH == 'data') || ($RELATIVE_PATH == 'data_custom')) ? get_param_string('zone', '') : $RELATIVE_PATH;
+    $real_zone = (($RELATIVE_PATH === 'data') || ($RELATIVE_PATH === 'data_custom')) ? get_param_string('zone', '') : $RELATIVE_PATH;
 
     return $real_zone;
 }
@@ -413,24 +413,24 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     $zone = $_zone;
 
     global $MODULES_ZONES_CACHE;
-    if ((isset($MODULES_ZONES_CACHE[$zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone][$type])) && ($type == 'modules')/*don't want to look at cached failure for different page type*/)) {
+    if ((isset($MODULES_ZONES_CACHE[$zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
         return $MODULES_ZONES_CACHE[$zone][$type][$module_name];
     }
 
     $error = false; // hack for now
 
-    if (($module_name == get_page_name()) && (running_script('index')) && ($module_name != 'login')) {
+    if (($module_name === get_page_name()) && (running_script('index')) && ($module_name !== 'login')) {
         $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
         return $zone;
     }
 
     if (get_value('allow_admin_in_other_zones') !== '1') {
-        if (($type == 'modules') && (substr($module_name, 0, 6) == 'admin_')) {
+        if (($type === 'modules') && ($module_name[0] === 'a') && (substr($module_name, 0, 6) === 'admin_')) {
             $zone = 'adminzone';
             $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             return $zone;
         }
-        if (($type == 'modules') && (substr($module_name, 0, 4) == 'cms_')) {
+        if (($type === 'modules') && ($module_name[0] === 'c') && (substr($module_name, 0, 4) === 'cms_')) {
             $zone = 'cms';
             $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             return $zone;
@@ -443,15 +443,15 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     if ($check_redirects && $REDIRECT_CACHE === null) {
         load_redirect_cache();
     }
-    $first_zones = array((substr($module_name, 0, 6) == 'admin_') ? 'adminzone' : $zone);
-    if ($zone != '') {
+    $first_zones = array((substr($module_name, 0, 6) === 'admin_') ? 'adminzone' : $zone);
+    if ($zone !== '') {
         $first_zones[] = '';
     }
-    if (($zone != 'site') && (get_option('collapse_user_zones') != '1')/* && (is_file(get_file_base().'/site/index.php'))*/) {
+    if (($zone !== 'site') && (get_option('collapse_user_zones') !== '1')/* && (is_file(get_file_base().'/site/index.php'))*/) {
         $first_zones[] = 'site';
     }
     foreach ($first_zones as $zone) {
-        if (($check_redirects) && ((isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 1) || (isset($REDIRECT_CACHE['*'][$module_name])) && ($REDIRECT_CACHE['*'][$module_name]['r_is_transparent'] == 1))) { // Only needs to actually look for redirections in first zones until end due to the way precedences work (we know the current zone will be in the first zones)
+        if (($check_redirects) && ((isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 1) || (isset($REDIRECT_CACHE['*'][$module_name])) && ($REDIRECT_CACHE['*'][$module_name]['r_is_transparent'] === 1))) { // Only needs to actually look for redirections in first zones until end due to the way precedences work (we know the current zone will be in the first zones)
             $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
@@ -462,7 +462,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
         if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
             || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
         ) {
-            if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] == $module_name)) {
+            if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
                 $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
             }
             $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
@@ -479,7 +479,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
             if ((is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
                 || (is_file(zone_black_magic_filterer(get_file_base() . '/' . $zone . '/pages/' . $type . '_custom/' . (($dir2 === null) ? '' : ($dir2 . '/')) . $module_name . '.' . $ftype)))
             ) {
-                if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] == $module_name)) {
+                if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 0) && ($REDIRECT_CACHE[$zone][$module_name]['r_to_page'] === $module_name)) {
                     $zone = $REDIRECT_CACHE[$zone][$module_name]['r_to_zone'];
                 }
                 $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
@@ -492,7 +492,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     }
 
     foreach ($zones as $zone) { // Okay, finally check for redirects
-        if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] == 1)) {
+        if (($check_redirects) && (isset($REDIRECT_CACHE[$zone][$module_name])) && ($REDIRECT_CACHE[$zone][$module_name]['r_is_transparent'] === 1)) {
             $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = $zone;
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('MODULES_ZONES', $MODULES_ZONES_CACHE);
@@ -960,19 +960,19 @@ function find_all_hooks($type, $entry)
     if ($dh !== false) {
         foreach ($dh as $file) {
             $basename = basename($file, '.php');
-            if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
+            if (($file[0] != '.') && ($file === $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                 $out[$basename] = 'sources';
             }
         }
     }
 
-    if ((!isset($GLOBALS['DOING_USERS_INIT'])) && ((!in_safe_mode()) || ($GLOBALS['RELATIVE_PATH'] == '_tests') && ($entry == 'addon_registry'))) { // The !isset is because of if the user init causes a DB query to load sessions which loads DB hooks which checks for safe mode which leads to a permissions check for safe mode and thus a failed user check (as sessions not loaded yet)
+    if ((!isset($GLOBALS['DOING_USERS_INIT'])) && ((!in_safe_mode()) || ($GLOBALS['RELATIVE_PATH'] === '_tests') && ($entry === 'addon_registry'))) { // The !isset is because of if the user init causes a DB query to load sessions which loads DB hooks which checks for safe mode which leads to a permissions check for safe mode and thus a failed user check (as sessions not loaded yet)
         $dir = get_file_base() . '/sources_custom/hooks/' . $type . '/' . $entry;
         $dh = @scandir($dir);
         if ($dh !== false) {
             foreach ($dh as $file) {
                 $basename = basename($file, '.php');
-                if (($file[0] != '.') && ($file == $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
+                if (($file[0] != '.') && ($file === $basename . '.php')/* && (preg_match('#^[\w\-]*$#', $basename) != 0) Let's trust - performance*/) {
                     $out[$basename] = 'sources_custom';
                 }
             }
@@ -1007,7 +1007,7 @@ function find_all_hooks($type, $entry)
 function block_cache_default($codename)
 {
     if (cron_installed()) {
-        if ($codename == 'side_rss' || $codename == 'main_rss') { // Special cases to stop external dependencies causing slowdowns
+        if ($codename === 'side_rss' || $codename === 'main_rss') { // Special cases to stop external dependencies causing slowdowns
             return '2';
         }
     }
@@ -1059,12 +1059,12 @@ function do_block($codename, $map = null, $ttl = null)
         push_output_state(false, true);
     }
 
-    $DO_NOT_CACHE_THIS = ($map['cache'] == '0');
+    $DO_NOT_CACHE_THIS = ($map['cache'] === '0');
 
     $object = mixed();
     if (has_caching_for('block')) {
         // See if the block may be cached (else cannot, or is yet unknown)
-        if ($map['cache'] == '0') {
+        if ($map['cache'] === '0') {
             $row = null;
         } else { // We may allow it to be cached but not store the cache signature, as it is too complex
             $row = get_block_info_row($codename, $map);
@@ -1078,7 +1078,7 @@ function do_block($codename, $map = null, $ttl = null)
                 if ($ttl === null) {
                     $ttl = $row['cache_ttl'];
                 }
-                $cache = get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl, true, $map['cache'] == '2', $map);
+                $cache = get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl, true, $map['cache'] === '2', $map);
                 if ($cache === null) {
                     $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                     $GLOBALS['NO_QUERY_LIMIT'] = true;
@@ -1103,7 +1103,7 @@ function do_block($codename, $map = null, $ttl = null)
                     }
                     $backup_langs_requested = $LANGS_REQUESTED;
                     $LANGS_REQUESTED = array();
-                    if ((isset($map['quick_cache'])) && ($map['quick_cache'] == '1')) { // because we know we will not do this often we can allow this to work as a vector for doing highly complex activity
+                    if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')) { // because we know we will not do this often we can allow this to work as a vector for doing highly complex activity
                         global $MEMORY_OVER_SPEED;
                         $MEMORY_OVER_SPEED = true; // Let this eat up some CPU in order to let it save RAM,
                         disable_php_memory_limit();
@@ -1125,17 +1125,17 @@ function do_block($codename, $map = null, $ttl = null)
                     $cache->evaluate(); // To force lang files to load, etc
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
-                        if ((isset($map['quick_cache'])) && ($map['quick_cache'] == '1')/* && (has_cookies())*/) {
+                        if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')/* && (has_cookies())*/) {
                             $cache = apply_quick_caching($cache);
                         }
                         require_code('temporal');
-                        $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-                        $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) != 0) ? get_member() : null;
-                        $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) != 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
-                        $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
-                        $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) != 0) ? get_users_timezone(get_member()) : '';
+                        $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
+                        $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
+                        $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
+                        $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
+                        $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
                         put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), array_keys($JAVASCRIPTS), array_keys($CSSS), true);
-                    } elseif (($ttl != -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
+                    } elseif (($ttl !== -1) && ($cache->is_empty())) { // Try again with no TTL, if we currently failed but did impose a TTL
                         $LANGS_REQUESTED += $backup_langs_requested;
                         if (!$GLOBALS['OUTPUT_STREAMING']) {
                             restore_output_state(false, true);
@@ -1197,11 +1197,11 @@ function do_block($codename, $map = null, $ttl = null)
 
                 require_code('caches2');
                 require_code('temporal');
-                $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) != 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
-                $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) != 0) ? get_member() : null;
-                $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) != 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
-                $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) != 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
-                $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) != 0) ? get_users_timezone(get_member()) : '';
+                $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
+                $member = (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0) ? get_member() : null;
+                $groups = (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
+                $is_bot = (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0) ? (is_null(get_bot_type()) ? 0 : 1) : null;
+                $timezone = (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0) ? get_users_timezone(get_member()) : '';
                 put_into_cache($codename, $info['ttl'], $cache_identifier, $staff_status, $member, $groups, $is_bot, $timezone, $cache, array_keys($LANGS_REQUESTED), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($JAVASCRIPTS), $GLOBALS['OUTPUT_STREAMING'] ? array() : array_keys($CSSS), true);
             }
         }
@@ -1240,9 +1240,9 @@ function apply_quick_caching($_cache)
 
         $new_tempcode->attach($portion);
 
-        $has_escaping = (preg_match('#&\w+;#', $matches[0][$i][0]) != 0);
+        $has_escaping = (preg_match('#&\w+;#', $matches[0][$i][0]) !== 0);
 
-        if ($matches[0][$i][0][0] == '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
+        if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
             $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
         } else { // All parameters are keep_*
             $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
@@ -1253,7 +1253,7 @@ function apply_quick_caching($_cache)
     }
 
     $portion = substr($cache, $prior_offset);
-    if ($portion != '') {
+    if ($portion !== '') {
         if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($cache)) {
             ocp_mark_as_escaped($portion);
         }
@@ -1353,7 +1353,7 @@ function do_block_hunt_file($codename, $map = null)
     $new_security_scope = false;
 
     global $REQUIRED_CODE;
-    if ((!in_safe_mode()) && (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] == 'sources_custom/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources_custom/blocks/' . $codename . '.php'))))) {
+    if ((!in_safe_mode()) && (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources_custom/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources_custom/blocks/' . $codename . '.php'))))) {
         if (!isset($REQUIRED_CODE['blocks/' . $codename])) {
             require_once($file_base . '/sources_custom/blocks/' . $codename . '.php');
         }
@@ -1367,7 +1367,7 @@ function do_block_hunt_file($codename, $map = null)
         }
 
         $new_security_scope = true;
-    } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] == 'sources/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/blocks/' . $codename . '.php')))) {
+    } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources/blocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/blocks/' . $codename . '.php')))) {
         if (!isset($REQUIRED_CODE['blocks/' . $codename])) {
             require_once($file_base . '/sources/blocks/' . $codename . '.php');
         }
@@ -1380,7 +1380,7 @@ function do_block_hunt_file($codename, $map = null)
             }
         }
     } else {
-        if ((!in_safe_mode()) && (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] == 'sources_custom/miniblocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources_custom/miniblocks/' . $codename . '.php'))))) {
+        if ((!in_safe_mode()) && (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources_custom/miniblocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources_custom/miniblocks/' . $codename . '.php'))))) {
             $object = static_evaluate_tempcode(_load_mini_code('sources_custom/miniblocks/' . $codename . '.php', $map));
 
             if (!isset($BLOCKS_AT_CACHE[$codename])) {
@@ -1391,7 +1391,7 @@ function do_block_hunt_file($codename, $map = null)
             }
 
             $new_security_scope = true;
-        } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] == 'sources/miniblocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/miniblocks/' . $codename . '.php')))) {
+        } elseif (((isset($BLOCKS_AT_CACHE[$codename])) && ($BLOCKS_AT_CACHE[$codename] === 'sources/miniblocks')) || ((!isset($BLOCKS_AT_CACHE[$codename])) && (is_file($file_base . '/sources/miniblocks/' . $codename . '.php')))) {
             $object = static_evaluate_tempcode(_load_mini_code('sources/miniblocks/' . $codename . '.php', $map));
 
             if (!isset($BLOCKS_AT_CACHE[$codename])) {
@@ -1400,7 +1400,7 @@ function do_block_hunt_file($codename, $map = null)
                     persistent_cache_set('BLOCKS_AT', $BLOCKS_AT_CACHE);
                 }
             }
-        } elseif (($map === null) || (!isset($map['failsafe'])) || ($map['failsafe'] != '1')) {
+        } elseif (($map === null) || (!isset($map['failsafe'])) || ($map['failsafe'] !== '1')) {
             $temp = do_template('WARNING_BOX', array('_GUID' => '09f1bd6e117693a85fb69bfb52ea1799', 'WARNING' => do_lang_tempcode('MISSING_BLOCK_FILE', escape_html($codename))));
             $object = $temp->evaluate();
         } else {
@@ -1452,7 +1452,7 @@ function get_block_info_row($codename, $map)
             }
         }
     }
-    if (($row === null) && (isset($map['quick_cache'])) && ($map['quick_cache'] == '1')) {
+    if (($row === null) && (isset($map['quick_cache'])) && ($map['quick_cache'] === '1')) {
         $row = array('cached_for' => $codename, 'cache_on' => 'array($map,$GLOBALS[\'FORUM_DRIVER\']->get_members_groups(get_member()))', 'cache_ttl' => 60);
     }
 
@@ -1602,7 +1602,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
     }
 
     global $SITE_INFO;
-    $prefer_direct_code_call = $prefer_direct_code_call || ((isset($SITE_INFO['prefer_direct_code_call'])) && ($SITE_INFO['prefer_direct_code_call'] == '1'));
+    $prefer_direct_code_call = $prefer_direct_code_call || ((isset($SITE_INFO['prefer_direct_code_call'])) && ($SITE_INFO['prefer_direct_code_call'] === '1'));
     if ((HHVM) || ($prefer_direct_code_call)) {
         global $CLASS_CACHE;
         if (isset($CLASS_CACHE[$path])) {
@@ -1618,12 +1618,12 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             }
             if ($class_name === null) {
                 $new_classes = HHVM ? array() : array_values(array_diff($classes_after, $classes_before));
-                if (count($new_classes) == 0) { // Ah, HHVM's AllVolatile is probably not enabled
+                if (count($new_classes) === 0) { // Ah, HHVM's AllVolatile is probably not enabled
                     $matches = array();
                     if ((running_script('install')) && (file_exists(preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path)))) {
                         $path = preg_replace('#(sources|modules|minimodules)_custom#', '${1}', $path);
                     }
-                    if (preg_match('#^\s*class (\w+)#m', file_get_contents($path), $matches) != 0) {
+                    if (preg_match('#^\s*class (\w+)#m', file_get_contents($path), $matches) !== 0) {
                         $new_classes = array($matches[1]);
                     }
                 }
@@ -1632,7 +1632,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
             }
             $CLASS_CACHE[$path] = $new_classes;
         }
-        if ((isset($new_classes[0])) && ($new_classes[0] == 'Standard_crud_module')) {
+        if ((isset($new_classes[0])) && ($new_classes[0] === 'Standard_crud_module')) {
             array_shift($new_classes);
         }
         if (isset($new_classes[0])) {
@@ -1678,7 +1678,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
     $pre = preg_replace('#(^|\n)function (\w+)\(.*#s', 'if (!function_exists(\'${1}\')) { ${0} }', $pre); // In case we end up extracting from this file more than once across multiple calls to extract_module_functions
     if ($params !== null) {
         foreach ($params as $param) {
-            if ($_params != '') {
+            if ($_params !== '') {
                 $_params .= ',';
             }
             if (is_string($param)) {
@@ -1699,7 +1699,7 @@ function extract_module_functions($path, $functions, $params = null, $prefer_dir
         if ($start === false) {
             $out[] = null;
         } else {
-            while ($file[$start - $spaces - 1] != "\n") {
+            while ($file[$start - $spaces - 1] !== "\n") {
                 $spaces++;
             }
             $spaces -= strlen(ltrim(substr($file, $start - $spaces, $spaces))); // Remove length of stuff like 'public ' in front of 'function'

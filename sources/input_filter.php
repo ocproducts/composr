@@ -43,20 +43,20 @@ function init__input_filter()
  */
 function check_input_field_string($name, &$val, $posted = false)
 {
-    if (preg_match('#^\w*$#', $val) != 0) {
+    if (preg_match('#^\w*$#', $val) !== 0) {
         return;
     }
 
     // Security for URL context (not only things that are specifically known URL parameters)
-    if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) != 0) && ($name != 'value')/*Don't want autosave triggering this*/) {
+    if ((preg_match('#^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#i', $val) !== 0) && ($name !== 'value')/*Don't want autosave triggering this*/) {
         log_hack_attack_and_exit('SCRIPT_URL_HACK_2', $val);
     }
 
     // Security check for known URL fields. Check for specific things, plus we know we can be pickier in general
-    $is_url = ($name == 'from') || ($name == 'preview_url') || ($name == 'redirect') || ($name == 'redirect_passon') || ($name == 'url');
+    $is_url = ($name === 'from') || ($name === 'preview_url') || ($name === 'redirect') || ($name === 'redirect_passon') || ($name === 'url');
     if ($is_url) {
-        if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) != 0) {
-            if ($name == 'page') { // Stop loops
+        if (preg_match('#\n|\000|<|(".*[=<>])|^\s*((((j\s*a\s*v\s*a\s*)|(v\s*b\s*))?s\s*c\s*r\s*i\s*p\s*t)|(d\s*a\s*t\s*a\s*))\s*:#mi', $val) !== 0) {
+            if ($name === 'page') { // Stop loops
                 $_GET[$name] = '';
             }
             log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
@@ -79,7 +79,7 @@ function check_input_field_string($name, &$val, $posted = false)
                 }
                 $ok = false;
                 foreach ($bus as $bu) {
-                    if (substr($_val, 0, strlen($bu)) == $bu) {
+                    if (substr($_val, 0, strlen($bu)) === $bu) {
                         $ok = true;
                         break;
                     }
@@ -99,7 +99,7 @@ function check_input_field_string($name, &$val, $posted = false)
         }
 
         // Additional checks for non-privileged users
-        if ((function_exists('has_privilege') || !$posted) && $name != 'page'/*Too early in boot if 'page'*/) {
+        if ((function_exists('has_privilege') || !$posted) && $name !== 'page'/*Too early in boot if 'page'*/) {
             if ($GLOBALS['FORCE_INPUT_FILTER_FOR_ALL'] || !$posted/*get parameters really shouldn't be so crazy so as for the filter to do anything!*/ || !has_privilege(get_member(), 'unfiltered_input')) {
                 hard_filter_input_data__html($val);
                 hard_filter_input_data__filesystem($val);
@@ -121,14 +121,14 @@ function check_posted_field($name, $val)
 
     $referer = cms_srv('HTTP_REFERER');
 
-    $is_true_referer = (substr($referer, 0, 7) == 'http://') || (substr($referer, 0, 8) == 'https://');
+    $is_true_referer = (substr($referer, 0, 7) === 'http://') || (substr($referer, 0, 8) === 'https://');
 
     if ($is_true_referer) {
         require_code('users_active_actions');
         cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
     }
 
-    if ((cms_srv('REQUEST_METHOD') == 'POST') && (!is_guest())) {
+    if ((cms_srv('REQUEST_METHOD') === 'POST') && (!is_guest())) {
         if ($is_true_referer) {
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
@@ -139,7 +139,7 @@ function check_posted_field($name, $val)
                     foreach ($allowed_partners as $partner) {
                         $partner = trim($partner);
 
-                        if (($partner != '') && ($canonical_referer_domain == $partner)) {
+                        if (($partner != '') && ($canonical_referer_domain === $partner)) {
                             $found = true;
                             break;
                         }
@@ -178,9 +178,9 @@ function strip_url_to_representative_domain($url)
  */
 function get_allowed_partner_sites()
 {
-    $allowed_partners = (trim(get_option('allowed_post_submitters')) == '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
+    $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
     foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
-        if (substr($key, 0, strlen('ZONE_MAPPING_')) == 'ZONE_MAPPING_') {
+        if (substr($key, 0, strlen('ZONE_MAPPING_')) === 'ZONE_MAPPING_') {
             $allowed_partners[] = $_val[0];
         }
     }

@@ -20,6 +20,10 @@ class Hook_upon_query_insults
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (!isset($GLOBALS['FORUM_DB'])) {
             return;
         }

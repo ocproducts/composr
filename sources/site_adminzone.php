@@ -39,7 +39,7 @@ function adminzone_special_cases($codename)
     }
     */
 
-    if ($codename == 'start') {
+    if ($codename == 'start' && get_option('site_closed') == '1'/*can be checked on PHP-info page after site is open*/) {
         // Various checks
         $hooks = find_all_hooks('systems', 'checks');
         $found_issues = false;

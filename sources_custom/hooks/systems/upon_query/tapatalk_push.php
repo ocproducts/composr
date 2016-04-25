@@ -20,7 +20,11 @@ class Hook_upon_query_tapatalk_push
 {
     public function run($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
-        if ((strpos($query, 'INTO ' . get_table_prefix() . 'f_posts ') !== false) && ($get_insert_id)) {
+        if ($query[0] == 'S') {
+            return;
+        }
+
+        if ((strpos($query, 'INTO ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts ') !== false) && ($get_insert_id)) {
             require_once(get_file_base() . '/mobiquo/lib/TapatalkPush.php');
             $push = new TapatalkPush();
             register_shutdown_function(array($push, 'do_push'), $ret);

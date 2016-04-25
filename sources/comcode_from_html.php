@@ -452,10 +452,19 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false)
 {
+    // Optimisations
+    $matches = array();
+    if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
+        return $matches[1];
+    }
+    if (preg_match('#^([^\[\]<>]*)$#', $semihtml) != 0) {
+        return $semihtml;
+    }
+
     $semihtml = trim($semihtml);
 
     // Optimisation, not long enough to clean up
-    if (cms_trim($semihtml, strlen($semihtml) < 30) == '') {
+    if (cms_trim($semihtml, strlen($semihtml) < 30) === '') {
         return '';
     }
 
@@ -487,7 +496,6 @@ function semihtml_to_comcode($semihtml, $force = false)
     // ---
 
     // Maybe we don't do a conversion?
-    $matches = array();
     if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege(get_member(), 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs

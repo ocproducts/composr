@@ -176,7 +176,7 @@ class Module_admin_phpinfo
 
         $t = microtime(true);
         for ($i = 0; $i < 10000; $i++) {
-            md5(uniqid(''));
+            md5(uniqid('', false));
         }
         $percentage = 100.0 * (0.055 / (microtime(true) - $t));
         $out .= '<p><strong>Normative performance</strong>: ' . float_format($percentage, 0) . '%</p>';

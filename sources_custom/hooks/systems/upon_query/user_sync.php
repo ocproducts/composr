@@ -20,11 +20,19 @@ class Hook_upon_query_user_sync
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (!function_exists('get_value')) {
             return; // Installer?
         }
 
         if (!$GLOBALS['VALUES_FULLY_LOADED']) {
+            return;
+        }
+
+        if (strpos($query, 'f_member') === false) {
             return;
         }
 

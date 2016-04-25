@@ -114,6 +114,9 @@ function html_to_comcode($html, $force = true)
 function apply_emoticons($text)
 {
     require_code('comcode_renderer');
+    if ($text == '' || strpos($text, '-') === false && strpos($text, ':') === false && strpos($text, '(') === false && strpos($text, ')') === false) {
+        return $text;
+    }
     return _apply_emoticons($text);
 }
 

@@ -723,7 +723,7 @@ function catch_fatal_errors()
  */
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
-    if (((error_reporting() & $errno) != 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
+    if (((error_reporting() & $errno) !== 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
         // Strip down path for security
         if (substr(str_replace(DIRECTORY_SEPARATOR, '/', $errfile), 0, strlen(get_file_base() . '/')) == str_replace(DIRECTORY_SEPARATOR, '/', get_file_base() . '/')) {
             $errfile = substr($errfile, strlen(get_file_base() . '/'));
@@ -860,7 +860,7 @@ function running_script($is_this_running)
     }
 
     // Do the stem compare
-    $answer = (current_script() == $is_this_running);
+    $answer = (current_script() === $is_this_running);
 
     // Cache and return result
     $RUNNING_SCRIPT_CACHE[$is_this_running] = $answer;
@@ -1006,7 +1006,7 @@ function get_forum_type()
     if (!isset($SITE_INFO['forum_type'])) {
         $SITE_INFO['forum_type'] = 'cns';
     }
-    if ($SITE_INFO['forum_type'] == 'ocf') {
+    if ($SITE_INFO['forum_type'] === 'ocf') {
         $SITE_INFO['forum_type'] = 'cns'; // LEGACY
     }
     return $SITE_INFO['forum_type'];
@@ -1026,14 +1026,14 @@ function get_forum_base_url($forum_base = false)
         $SITE_INFO['board_prefix'] = get_base_url();
     }
     $forum_type = get_forum_type();
-    if ($forum_type == 'none') {
+    if ($forum_type === 'none') {
         return '';
     }
-    $needs_forum_strip = (substr($SITE_INFO['board_prefix'], -6) == '/forum') && (substr(get_base_url(), -6) != '/forum');
-    if (($forum_type == 'cns') && (!$forum_base) && ($needs_forum_strip)) {
+    $needs_forum_strip = (substr($SITE_INFO['board_prefix'], -6) === '/forum') && (substr(get_base_url(), -6) !== '/forum');
+    if (($forum_type === 'cns') && (!$forum_base) && ($needs_forum_strip)) {
         return substr($SITE_INFO['board_prefix'], 0, strlen($SITE_INFO['board_prefix']) - 6);
     }
-    if (($forum_type == 'cns') && ($forum_base) && ($needs_forum_strip)) {
+    if (($forum_type === 'cns') && ($forum_base) && ($needs_forum_strip)) {
         return $SITE_INFO['board_prefix'] . '/forum';
     }
     return $SITE_INFO['board_prefix'];
@@ -1201,10 +1201,10 @@ function get_base_url($https = null, $zone_for = null)
     }
 
     if (($BASE_URL_HTTP_CACHE !== null) && (!$https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTP_CACHE . (($zone_for == '') ? '' : ('/' . $zone_for));
+        return $BASE_URL_HTTP_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
     if (($BASE_URL_HTTPS_CACHE !== null) && ($https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTPS_CACHE . (($zone_for == '') ? '' : ('/' . $zone_for));
+        return $BASE_URL_HTTPS_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
 
     global $SITE_INFO;
@@ -1212,7 +1212,7 @@ function get_base_url($https = null, $zone_for = null)
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
         $php_self = dirname(cms_srv('PHP_SELF'));
-        if (($GLOBALS['RELATIVE_PATH'] == '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
+        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
             $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
         } else {
             $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
@@ -1239,7 +1239,7 @@ function get_base_url($https = null, $zone_for = null)
             $domain = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][0];
             $path = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][1];
             $base_url = ((strpos($base_url, 'https://') === false) ? 'http://' : 'https://') . $domain;
-            if ($path != '') {
+            if ($path !== '') {
                 $base_url .= '/' . $path;
             }
             $found_mapping = true;
@@ -1257,7 +1257,7 @@ function get_base_url($https = null, $zone_for = null)
     }
 
     if (!$found_mapping) { // Scope inside the correct zone
-        $base_url .= (($zone_for == '') ? '' : ('/' . $zone_for));
+        $base_url .= (empty($zone_for) ? '' : ('/' . $zone_for));
     }
 
     // Done
@@ -1296,7 +1296,7 @@ function get_custom_base_url($https = null)
  */
 function get_complex_base_url($at)
 {
-    return ((get_forum_base_url() != get_base_url()) ? get_forum_base_url() : ((substr($at, 0, 22) == 'themes/default/images/') ? get_base_url() : get_custom_base_url()));
+    return ((get_forum_base_url() != get_base_url()) ? get_forum_base_url() : ((substr($at, 0, 22) === 'themes/default/images/') ? get_base_url() : get_custom_base_url()));
 }
 
 /**
@@ -1350,7 +1350,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     if ($ret === null) {
         return null;
     }
-    if ((trim($ret) == '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] != '0')) {
+    if ((trim($ret) === '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] !== '0')) {
         if ($default === null) {
             return null;
         }
@@ -1359,8 +1359,8 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         improperly_filled_in_post($name);
     }
 
-    if (($ret != '') && (addon_installed('wordfilter'))) {
-        if ($name != 'password') {
+    if (($ret !== '') && (addon_installed('wordfilter'))) {
+        if ($name !== 'password') {
             require_code('wordfilter');
             if ($ret !== $default) {
                 $ret = check_wordfilter($ret, $name);
@@ -1370,21 +1370,21 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     if ($ret !== null) {
         $ret = unixify_line_format($ret, null, $html);
 
-        if (post_param_integer($name . '_download_associated_media', 0) == 1) {
+        if (post_param_integer($name . '_download_associated_media', 0) === 1) {
             require_code('comcode_cleanup');
             download_associated_media($ret);
         }
     }
 
-    if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] == '1') && ($conv_from_wysiwyg)) {
-        if (trim($ret) == '') {
+    if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] === '1') && ($conv_from_wysiwyg)) {
+        if (trim($ret) === '') {
             $ret = '';
         } else {
             require_code('comcode_from_html');
             $ret = trim(semihtml_to_comcode($ret));
         }
     } else {
-        if ((substr($ret, 0, 10) == '[semihtml]') && (substr(trim($ret), -11) == '[/semihtml]')) {
+        if ((substr($ret, 0, 10) === '[semihtml]') && (substr(trim($ret), -11) === '[/semihtml]')) {
             $_ret = trim($ret);
             $_ret = substr($_ret, 10, strlen($_ret) - 11 - 10);
             if (strpos($_ret, '[semihtml') === false) {
@@ -1430,7 +1430,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
 function get_param_string($name, $default = false, $no_security = false)
 {
     $ret = __param($_GET, $name, $default);
-    if (($ret == '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] != '0')) {
+    if (($ret === '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] !== '0')) {
         // We didn't give some required input
         $GLOBALS['HTTP_STATUS_CODE'] = '400';
         if (!headers_sent()) {
@@ -1473,7 +1473,7 @@ function get_param_string($name, $default = false, $no_security = false)
  */
 function __param($array, $name, $default, $integer = false, $posted = false)
 {
-    if ((!isset($array[$name])) || (($integer) && ($array[$name] == ''))) {
+    if ((!isset($array[$name])) || (($integer) && ($array[$name] === ''))) {
         if ($default !== false) {
             return $default;
         }
@@ -1569,10 +1569,10 @@ function post_param_integer($name, $default = false)
         require_code('failure');
         $ret = _param_invalid($name, $ret, true);
     }
-    if ($ret == '0') {
+    if ($ret === '0') {
         return 0;
     }
-    if ($ret == '1') {
+    if ($ret === '1') {
         return 1;
     }
     $reti = intval($ret);
@@ -1594,18 +1594,18 @@ function post_param_integer($name, $default = false)
  */
 function get_param_integer($name, $default = false, $not_string_ok = false)
 {
-    $m_default = ($default === false) ? false : (isset($default) ? (($default == 0) ? '0' : strval($default)) : '');
+    $m_default = ($default === false) ? false : (isset($default) ? (($default === 0) ? '0' : strval($default)) : '');
     $ret = __param($_GET, $name, $m_default, true); // do not set $ret to mixed(), breaks bootstrapping
     if ((!isset($default)) && ($ret === '')) {
         return null;
     }
     if (!is_numeric($ret)) {
-        if (substr($ret, -1) == '/') {
+        if (substr($ret, -1) === '/') {
             $ret = substr($ret, 0, strlen($ret) - 1);
         }
         if (!is_numeric($ret)) { // Bizarre situation (bug in IIS?)
             $matches = array();
-            if (preg_match('#^(\d+)\#[\w]*$#', $ret, $matches) != 0) {
+            if (preg_match('#^(\d+)\#[\w]*$#', $ret, $matches) !== 0) {
                 $ret = $matches[1];
             } else {
                 if ($not_string_ok) {
@@ -1616,10 +1616,10 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
             }
         }
     }
-    if ($ret == '0') {
+    if ($ret === '0') {
         return 0;
     }
-    if ($ret == '1') {
+    if ($ret === '1') {
         return 1;
     }
     $reti = intval($ret);
@@ -1642,7 +1642,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
  */
 function unixify_line_format($in, $desired_charset = null, $html = false, $from_disk = false)
 {
-    if ($in == '') {
+    if ($in === '') {
         return $in;
     }
 

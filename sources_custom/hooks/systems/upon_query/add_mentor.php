@@ -20,6 +20,10 @@ class Hook_upon_query_add_mentor
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (get_mass_import_mode()) {
             return;
         }

@@ -49,7 +49,7 @@ class Database_Static_mysql extends Database_super_mysql
         // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
-            if ($this->last_select_db != $db_name) {
+            if ($this->last_select_db !== $db_name) {
                 mysql_select_db($db_name, $x);
                 $this->last_select_db = $db_name;
             }
@@ -167,6 +167,10 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
+            return $string; // No non-trivial characters
+        }
+
         $string = fix_bad_unicode($string);
 
         static $mres = null;
@@ -215,7 +219,7 @@ class Database_Static_mysql extends Database_super_mysql
             }
         }
 
-        if ($this->last_select_db != $db_name) {
+        if ($this->last_select_db !== $db_name) {
             mysql_select_db($db_name, $db);
             $this->last_select_db = $db_name;
         }
@@ -250,7 +254,7 @@ class Database_Static_mysql extends Database_super_mysql
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
                 $matches = array();
-                if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) != 0) {
+                if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
                     $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
                 }
 
@@ -266,12 +270,12 @@ class Database_Static_mysql extends Database_super_mysql
 
         $query = ltrim($query);
         $sub = substr($query, 0, 4);
-        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 
         if ($get_insert_id) {
-            if (($sub == 'UPDA') || ($sub == 'upda')) {
+            if (($sub === 'UPDA') || ($sub === 'upda')) {
                 return mysql_affected_rows($db);
             }
             $ins = mysql_insert_id($db);
@@ -321,7 +325,7 @@ class Database_Static_mysql extends Database_super_mysql
                         if (($v === null) || ($v === '')) { // Roadsend returns empty string instead of null
                             $newrow[$name] = null;
                         } else {
-                            if ($v == "\0" || $v == "\1") {
+                            if ($v === "\0" || $v === "\1") {
                                 $newrow[$name] = ord($v); // 0/1 char for BIT field
                             } else {
                                 $_v = intval($v);
@@ -336,7 +340,7 @@ class Database_Static_mysql extends Database_super_mysql
 
                     case 'unknown':
                         if (is_string($v)) {
-                            if ($v == "\0" || $v == "\1") {
+                            if ($v === "\0" || $v === "\1") {
                                 $newrow[$name] = ord($v); // 0/1 char for BIT field
                             } else {
                                 $newrow[$name] = intval($v);

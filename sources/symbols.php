@@ -64,9 +64,9 @@ function init__symbols()
 function ecv($lang, $escaped, $type, $name, $param)
 {
     // SYMBOLS...
-    if ($type == TC_SYMBOL) {
+    if ($type === TC_SYMBOL) {
         // Built-in
-        if ($name == '?') {
+        if ($name === '?') {
             $value = call_user_func('ecv_TERNARY', $lang, $escaped, $param);
         } elseif (function_exists('ecv_' . $name)) {
             $value = call_user_func('ecv_' . $name, $lang, $escaped, $param);
@@ -91,7 +91,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 $value = $EXTRA_SYMBOLS[$name]['ob']->run($param);
 
-                if ($escaped != array()) {
+                if ($escaped !== array()) {
                     if (is_object($value)) {
                         $value = $value->evaluate();
                     }
@@ -108,7 +108,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                         $value = strval($value);
                     }
 
-                    if ($escaped != array()) {
+                    if ($escaped !== array()) {
                         if (is_object($value)) {
                             $value = $value->evaluate();
                         }
@@ -133,7 +133,7 @@ function ecv($lang, $escaped, $type, $name, $param)
 
     // DIRECTIVES...
 
-    if ($type == TC_DIRECTIVE) {
+    if ($type === TC_DIRECTIVE) {
         $value = '';
         if ($GLOBALS['XSS_DETECT']) {
             ocp_mark_as_escaped($value);
@@ -225,12 +225,12 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $edit_text = $param[0]->evaluate();
                     $edit_param_name = $param[1]->evaluate();
                     $edit_page_link = $param[2]->evaluate();
-                    $supports_comcode = (isset($param[4]) ? $param[3]->evaluate() : '0') == '1';
-                    $explicit_editing_links = (isset($param[5]) ? $param[4]->evaluate() : '0') == '1';
+                    $supports_comcode = (isset($param[4]) ? $param[3]->evaluate() : '0') === '1';
+                    $explicit_editing_links = (isset($param[5]) ? $param[4]->evaluate() : '0') === '1';
                     $has_permission = (isset($param[6]) ? ($param[5]->evaluate() === '1') : null);
 
                     list($zone, $attributes,) = page_link_decode($edit_page_link);
-                    if ($zone == '_SEARCH') {
+                    if ($zone === '_SEARCH') {
                         $zone = get_module_zone($attributes['page']);
                     }
                     if (
@@ -268,7 +268,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     $set_val = '';
                     $i = 1;
                     while (isset($param[$i])) {
-                        if ($i != 1) {
+                        if ($i !== 1) {
                             $set_val .= ',';
                         }
                         $set_val .= $param[1]->evaluate();
@@ -486,7 +486,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 attach_message(do_lang_tempcode('UNKNOWN_DIRECTIVE', escape_html($name)), 'warn');
         }
 
-        if ($escaped != array()) {
+        if ($escaped !== array()) {
             apply_tempcode_escaping($escaped, $value);
         }
 
@@ -520,7 +520,7 @@ function ecv($lang, $escaped, $type, $name, $param)
         }
         return $value;
     }
-    if ($escaped != array() && $escaped != array(ENTITY_ESCAPED)) {
+    if ($escaped !== array() && $escaped !== array(ENTITY_ESCAPED)) {
         apply_tempcode_escaping(array_diff($escaped, array(ENTITY_ESCAPED)), $value); // Escape but without ENTITY_ESCAPED because we don't do that on language strings
     } elseif ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -575,7 +575,7 @@ function ecv_PAGE_LINK($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -612,7 +612,7 @@ function ecv_SET($lang, $escaped, $param)
         $TEMPCODE_SETGET[$param[0]] = '';
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -639,7 +639,7 @@ function ecv_GET($lang, $escaped, $param)
         global $TEMPCODE_SETGET;
         if (isset($TEMPCODE_SETGET[$param[0]])) {
             if (isset($TEMPCODE_SETGET[$param[0]]->codename)/*faster than is_object*/) {
-                if ((array_key_exists(1, $param)) && ($param[1] == '1')) { // no-cache
+                if ((array_key_exists(1, $param)) && ($param[1] === '1')) { // no-cache
                     $TEMPCODE_SETGET[$param[0]]->decache();
                     $value = $TEMPCODE_SETGET[$param[0]]->evaluate();
                     $TEMPCODE_SETGET[$param[0]]->decache();
@@ -648,7 +648,7 @@ function ecv_GET($lang, $escaped, $param)
                         $escaped = array(ENTITY_ESCAPED);
                     }
 
-                    if ($escaped != array()) {
+                    if ($escaped !== array()) {
                         apply_tempcode_escaping($escaped, $value);
                     }
                     return $value;
@@ -661,7 +661,7 @@ function ecv_GET($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -712,7 +712,7 @@ function ecv_TERNARY($lang, $escaped, $param)
         $value = ($param[0] == '1') ? $param[1] : (isset($param[2]) ? $param[2] : $value);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -737,13 +737,13 @@ function ecv_IMG($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-            $value = find_theme_image($param[0], ((isset($param[3])) && ($param[3] == '1')), false, (isset($param[2]) && $param[2] != '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] == '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
+            $value = find_theme_image($param[0], ((isset($param[3])) && ($param[3] === '1')), false, (isset($param[2]) && $param[2] !== '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] === '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -866,7 +866,7 @@ function ecv_REFRESH($lang, $escaped, $param)
     }
     $value = $refresh->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -907,7 +907,7 @@ function ecv_FEEDS($lang, $escaped, $param)
         $value = '';
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1043,7 +1043,7 @@ function ecv_METADATA($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1064,7 +1064,7 @@ function ecv_KEEP($lang, $escaped, $param)
     // What needs preserving in the URL
     $value = keep_symbol($param);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1080,13 +1080,13 @@ function keep_symbol($param)
 {
     $value = '';
     $get_vars = $_GET;
-    if ((isset($param[1])) && ($param[1] == '1') && (is_null(get_bot_type())) && (!isset($get_vars['keep_session']))) {
+    if ((isset($param[1])) && ($param[1] === '1') && (is_null(get_bot_type())) && (!isset($get_vars['keep_session']))) {
         $get_vars['keep_session'] = get_session_id();
     }
 
     if (count($get_vars) > 0) {
         $first = false;
-        if ((isset($param[0])) && ($param[0] == '1')) {
+        if ((isset($param[0])) && ($param[0] === '1')) {
             $first = true;
         }
         foreach ($get_vars as $key => $val) {
@@ -1098,7 +1098,7 @@ function keep_symbol($param)
                 $val = stripslashes($val);
             }
 
-            if ((substr($key, 0, 5) == 'keep_') && ((!skippable_keep($key, $val)) || (($key == 'keep_session') && (is_null(get_bot_type())) && (isset($param[1])) && ($param[1] == '1'))) && (is_string($val))) {
+            if ((substr($key, 0, 5) === 'keep_') && ((!skippable_keep($key, $val)) || (($key === 'keep_session') && (is_null(get_bot_type())) && (isset($param[1])) && ($param[1] === '1'))) && (is_string($val))) {
                 $value .= ($first ? '?' : '&') . urlencode($key) . '=' . cms_url_encode($val);
                 $first = false;
             }
@@ -1137,7 +1137,7 @@ function ecv_BROWSER($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1234,7 +1234,7 @@ function ecv_FACILITATE_AJAX_BLOCK_CALL($lang, $escaped, $param)
         $value = find_script('snippet') . '?snippet=block&auth_key=' . urlencode(strval($auth_key)) . '&block_map=' . urlencode($param[0]) . $keep->evaluate();
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1261,7 +1261,7 @@ function ecv__GET($lang, $escaped, $param)
         $value = get_param_string($param[0], isset($param[1]) ? $param[1] : '', true);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1299,7 +1299,7 @@ function ecv_STRIP_TAGS($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     if ($GLOBALS['XSS_DETECT']) {
@@ -1323,7 +1323,7 @@ function ecv_TRUNCATE_LEFT($lang, $escaped, $param)
 {
     $value = symbol_truncator($param, 'left');
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1343,7 +1343,7 @@ function ecv_TRUNCATE_SPREAD($lang, $escaped, $param)
 {
     $value = symbol_truncator($param, 'spread');
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1489,7 +1489,7 @@ function ecv_PARAGRAPH($lang, $escaped, $param)
         $value .= ($is_blocky_already ? '' : '<p>') . $param[0] . ($is_blocky_already ? '' : '</p>');
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1518,7 +1518,7 @@ function ecv_COMMA_LIST_GET($lang, $escaped, $param)
         $value = isset($values[$param[1]]) ? $values[$param[1]] : '';
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1539,7 +1539,7 @@ function ecv_IS_EMPTY($lang, $escaped, $param)
     $value = '1';
 
     if (isset($param[0])) {
-        $value = ($param[0] == '') ? '1' : '0';
+        $value = ($param[0] === '') ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1563,7 +1563,7 @@ function ecv_IS_NON_EMPTY($lang, $escaped, $param)
     $value = '0';
 
     if (isset($param[0])) {
-        $value = ($param[0] != '') ? '1' : '0';
+        $value = ($param[0] !== '') ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -1593,7 +1593,7 @@ function ecv_CDN_FILTER($lang, $escaped, $param)
         $value = cdn_filter($param[0]);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1630,7 +1630,7 @@ function ecv_LOAD_PANEL($lang, $escaped, $param)
     $sr = serialize($param);
     $value = array_key_exists($sr, $PANELS_CACHE) ? $PANELS_CACHE[$sr] : '';
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1676,7 +1676,7 @@ function ecv_ZONE($lang, $escaped, $param)
 {
     $value = get_zone_name();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1696,7 +1696,7 @@ function ecv_PAGE($lang, $escaped, $param)
 {
     $value = get_page_name();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1746,7 +1746,7 @@ function ecv_HEADER_TEXT($lang, $escaped, $param)
     }
     $value = trim($value);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1776,7 +1776,7 @@ function ecv_CANONICAL_URL($lang, $escaped, $param)
     }
     $value = $CANONICAL_URL;
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1876,7 +1876,7 @@ function ecv_LOGO_URL($lang, $escaped, $param)
 {
     $value = get_logo_url();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1902,7 +1902,7 @@ function ecv_HELPER_PANEL_TUTORIAL($lang, $escaped, $param)
     }
     $value = $GLOBALS['HELPER_PANEL_TUTORIAL'];
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1925,7 +1925,7 @@ function ecv_HELPER_PANEL_TEXT($lang, $escaped, $param)
     }
     $value = is_object($GLOBALS['HELPER_PANEL_TEXT']) ? $GLOBALS['HELPER_PANEL_TEXT']->evaluate() : $GLOBALS['HELPER_PANEL_TEXT'];
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1952,7 +1952,7 @@ function ecv_MESSAGES_TOP($lang, $escaped, $param)
         $value = static_evaluate_tempcode($GLOBALS['ATTACHED_MESSAGES']);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -1985,7 +1985,7 @@ function ecv_MESSAGES_BOTTOM($lang, $escaped, $param)
     }
     $value = $messages_bottom->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2012,7 +2012,7 @@ function ecv_LATE_MESSAGES($lang, $escaped, $param)
         $value = static_evaluate_tempcode($GLOBALS['LATE_ATTACHED_MESSAGES']);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2036,7 +2036,7 @@ function ecv_BREADCRUMBS($lang, $escaped, $param)
     }
     $value = static_evaluate_tempcode(breadcrumbs($show_self));
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2090,7 +2090,7 @@ function ecv_STAFF_ACTIONS($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2115,16 +2115,16 @@ function ecv_TRIM($lang, $escaped, $param)
 
     if (isset($param[0])) {
         $value = $param[0];
-        if ($value != '') {
+        if ($value !== '') {
             if (strpos($value, '<') === false && strpos($value, '&') === false) {
                 $value = trim($value);
             } else {
-                $value = cms_trim($param[0], !isset($param[1]) || $param[1] == '1');
+                $value = cms_trim($param[0], !isset($param[1]) || $param[1] === '1');
             }
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2139,7 +2139,7 @@ function ecv_TRIM($lang, $escaped, $param)
  */
 function cms_trim($text, $try_hard = true)
 {
-    if ((preg_match('#[<&]#', $text) == 0) && (memory_get_usage() > 1024 * 1024 * 40)) {
+    if ((preg_match('#[<&]#', $text) === 0) && (memory_get_usage() > 1024 * 1024 * 40)) {
         return trim($text); // Don't have enough memory
     }
 
@@ -2152,45 +2152,47 @@ function cms_trim($text, $try_hard = true)
     do {
         $before = $text;
         $c = substr($text, 0, 1);
-        if ($c == '<') {
-            if (strtolower(substr($text, 0, 6)) == '<br />') {
-                $text = substr($text, 6);
-            }
-            if (strtolower(substr($text, 0, 5)) == '<br/>') {
-                $text = substr($text, 5);
-            }
-            if (strtolower(substr($text, 0, 4)) == '<br>') {
-                $text = substr($text, 4);
+        if ($c === '<') {
+            if (strtolower(substr($text, 1, 1)) === 'b') {
+                if (strtolower(substr($text, 0, 6)) === '<br />') {
+                    $text = substr($text, 6);
+                }
+                if (strtolower(substr($text, 0, 5)) === '<br/>') {
+                    $text = substr($text, 5);
+                }
+                if (strtolower(substr($text, 0, 4)) === '<br>') {
+                    $text = substr($text, 4);
+                }
             }
         }
         elseif ($c == '&') {
-            if (strtolower(substr($text, 0, 6)) == '&nbsp;') {
+            if (strtolower(substr($text, 0, 6)) === '&nbsp;') {
                 $text = substr($text, 6);
             }
         }
         $text = ltrim($text);
-    } while (($try_hard) && ($before != $text));
+    } while (($try_hard) && ($before !== $text));
     do {
         $before = $text;
         $c = substr($text, -1, 1);
-        if ($c == '>') {
-            if (strtolower(substr($text, -6)) == '<br />') {
+        if ($c === '>') {
+            if (strtolower(substr($text, -6)) === '<br />') {
                 $text = substr($text, 0, -6);
             }
-            if (strtolower(substr($text, -5)) == '<br/>') {
+            if (strtolower(substr($text, -5)) === '<br/>') {
                 $text = substr($text, 0, -5);
             }
-            if (strtolower(substr($text, -4)) == '<br>') {
+            if (strtolower(substr($text, -4)) === '<br>') {
                 $text = substr($text, 0, -4);
             }
         }
         elseif ($c == ';') {
-            if (strtolower(substr($text, -6)) == '&nbsp;') {
+            if (strtolower(substr($text, -6)) === '&nbsp;') {
                 $text = substr($text, 0, -6);
             }
         }
         $text = rtrim($text);
-    } while (($try_hard) && ($before != $text));
+    } while (($try_hard) && ($before !== $text));
 
     if ($GLOBALS['XSS_DETECT']) {
         if ($is_escaped) {
@@ -2251,7 +2253,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2302,7 +2304,7 @@ function ecv_BANNER($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2322,7 +2324,7 @@ function ecv_AVATAR($lang, $escaped, $param)
 {
     $value = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url(isset($param[0]) ? intval($param[0]) : get_member());
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2441,7 +2443,7 @@ function ecv_MEMBER_PROFILE_URL($lang, $escaped, $param)
         $value = '';
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2465,7 +2467,7 @@ function ecv_USERNAME($lang, $escaped, $param)
         $value = do_lang('UNKNOWN');
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2492,7 +2494,7 @@ function ecv_DISPLAYED_USERNAME($lang, $escaped, $param)
         $value = get_displayname($param[0]);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2535,7 +2537,7 @@ function ecv_CYCLE($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2556,7 +2558,7 @@ function ecv_THUMBNAIL($lang, $escaped, $param)
     require_code('images');
     $value = _symbol_thumbnail($param);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2693,7 +2695,7 @@ function ecv_PHOTO($lang, $escaped, $param)
         $value = $GLOBALS['FORUM_DRIVER']->get_member_photo_url(intval($param[0]));
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2733,7 +2735,7 @@ function ecv_CNS_RANK_IMAGE($lang, $escaped, $param)
         $value = $rank_images->evaluate();
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2769,7 +2771,7 @@ function ecv_URL_FOR_GET_FORM($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2801,7 +2803,7 @@ function ecv_HIDDENS_FOR_GET_FORM($lang, $escaped, $param)
     }
     $value = $_value->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2886,7 +2888,7 @@ function ecv_MAKE_RELATIVE_DATE($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -2920,7 +2922,7 @@ function ecv_LOAD_PAGE($lang, $escaped, $param)
     $_value = $PAGES_CACHE[serialize($param)];
     $value = $_value->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3026,7 +3028,7 @@ function ecv_BLOCK($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3080,7 +3082,7 @@ function ecv_PREVIEW_URL($lang, $escaped, $param)
     $value .= '?page=' . get_page_name();
     $value .= '&type=' . get_param_string('type', '', true);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3123,7 +3125,7 @@ function ecv_FIND_SCRIPT_NOHTTP($lang, $escaped, $param)
     }
 
     $value = preg_replace('#^https?://[^/]+#', '', ecv_FIND_SCRIPT($lang, array(), $param));
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3150,7 +3152,7 @@ function ecv_FIND_SCRIPT($lang, $escaped, $param)
         $value = find_script($param[0], false, isset($param[1]) ? intval($param[1]) : 0);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3174,7 +3176,7 @@ function ecv_CSS_TEMPCODE($lang, $escaped, $param)
     $_value = css_tempcode();
     $value = $_value->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3198,7 +3200,7 @@ function ecv_JS_TEMPCODE($lang, $escaped, $param)
     $_value = javascript_tempcode(((isset($param[0])) && ($param[0]) != '') ? $param[0] : null);
     $value = $_value->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3219,7 +3221,7 @@ function ecv_PAGE_TITLE($lang, $escaped, $param)
     global $DISPLAYED_TITLE;
     $value = is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate();
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3247,7 +3249,7 @@ function ecv_EXTRA_HEAD($lang, $escaped, $param)
         $value = $_value->evaluate();
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3280,7 +3282,7 @@ function ecv_EXTRA_FOOT($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3344,7 +3346,7 @@ function ecv_SET_RAND($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3364,7 +3366,7 @@ function ecv_MEMBER_EMAIL($lang, $escaped, $param)
 {
     $value = $GLOBALS['FORUM_DRIVER']->get_member_email_address(isset($param[0]) ? intval($param[0]) : get_member());
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3469,7 +3471,7 @@ function ecv_DATE_AND_TIME($lang, $escaped, $param)
     $member = isset($param[4]) ? intval($param[2]) : null;
     $value = get_timezoned_date($time, true, $verbose, $server_time, !$use_contextual_dates, $member);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3487,14 +3489,14 @@ function ecv_DATE_AND_TIME($lang, $escaped, $param)
  */
 function ecv_DATE($lang, $escaped, $param)
 {
-    $use_contextual_dates = (isset($param[0]) && ($param[0] == '1'));
-    $verbose = (isset($param[1]) && ($param[1] == '1'));
-    $server_time = (isset($param[2]) && ($param[2] == '1'));
+    $use_contextual_dates = (isset($param[0]) && ($param[0] === '1'));
+    $verbose = (isset($param[1]) && ($param[1] === '1'));
+    $server_time = (isset($param[2]) && ($param[2] === '1'));
     $time = (!empty($param[3])) ? intval($param[3]) : time();
     $member = isset($param[4]) ? intval($param[2]) : null;
     $value = get_timezoned_date($time, false, $verbose, $server_time, !$use_contextual_dates, $member);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3513,12 +3515,12 @@ function ecv_DATE($lang, $escaped, $param)
 function ecv_TIME($lang, $escaped, $param)
 {
     $time = (!empty($param[0])) ? intval($param[0]) : time();
-    $use_contextual_dates = (isset($param[1]) && ($param[1] == '1'));
-    $server_time = (isset($param[2]) && ($param[2] == '1'));
+    $use_contextual_dates = (isset($param[1]) && ($param[1] === '1'));
+    $server_time = (isset($param[2]) && ($param[2] === '1'));
     $member = isset($param[3]) ? intval($param[3]) : null;
     $value = get_timezoned_time($time, !$use_contextual_dates, $member, $server_time);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3543,11 +3545,11 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
             $timestamp = intval(placeholder_date_raw());
         }
 
-        if ((!array_key_exists(2, $param)) || ($param[2] == '1')) {
+        if ((!array_key_exists(2, $param)) || ($param[2] === '1')) {
             $timestamp = utctime_to_usertime($timestamp);
         }
         $value = locale_filter(cms_strftime($param[0], $timestamp));
-        if ($value == $param[0]) {// If no conversion happened then the syntax must have been for 'date' not 'strftime'
+        if ($value === $param[0]) {// If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }
     } else {
@@ -3559,7 +3561,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3701,7 +3703,7 @@ function ecv_PREG_REPLACE($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3825,7 +3827,7 @@ function ecv_LCASE($lang, $escaped, $param)
         $value = cms_mb_strtolower($param[0]);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($param[0])) {
@@ -3860,7 +3862,7 @@ function ecv__POST($lang, $escaped, $param)
         $escaped = array(ENTITY_ESCAPED);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3891,7 +3893,7 @@ function ecv_REPLACE($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -3978,7 +3980,7 @@ function ecv_SUBSTR($lang, $escaped, $param)
         $value = cms_mb_substr($param[0], intval($param[1]), isset($param[2]) ? intval($param[2]) : strlen($param[0]));
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4011,7 +4013,7 @@ function ecv_ALTERNATOR_TRUNCATED($lang, $escaped, $param) // Alternate values a
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4045,7 +4047,7 @@ function ecv_EQ($lang, $escaped, $param)
             break;
         }
     }
-    $value = ($count != 0) ? '1' : '0';
+    $value = ($count !== 0) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -4080,7 +4082,7 @@ function ecv_NEQ($lang, $escaped, $param)
             $count++;
         }
     }
-    $value = ($count == 0) ? '1' : '0';
+    $value = ($count === 0) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -4155,12 +4157,12 @@ function ecv_AND($lang, $escaped, $param)
     $count = 0;
     $total = 0;
     foreach ($param as $test) {
-        if ($test == '1') {
+        if ($test === '1') {
             $count++;
         }
         $total++;
     }
-    $value = ($count == $total) ? '1' : '0';
+    $value = ($count === $total) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -4182,7 +4184,7 @@ function ecv_NOR($lang, $escaped, $param)
 {
     $count = 0;
     foreach ($param as $test) {
-        if ($test == '1') {
+        if ($test === '1') {
             $count++;
         }
     }
@@ -4208,11 +4210,11 @@ function ecv_NAND($lang, $escaped, $param)
 {
     $count = 0;
     foreach ($param as $test) {
-        if ($test == '1') {
+        if ($test === '1') {
             $count++;
         }
     }
-    $value = ($count == count($param)) ? '0' : '1';
+    $value = ($count === count($param)) ? '0' : '1';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -4279,7 +4281,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
     }
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4344,7 +4346,7 @@ function ecv_HONEYPOT_LINK($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4431,7 +4433,7 @@ function ecv_SELF_URL($lang, $escaped, $param)
     $avoid_remap = (isset($param[2])) && ($param[2] == '1');
     $value = get_self_url(true, $root_if_posted, $extra_params, $posted_too, $avoid_remap);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4461,7 +4463,7 @@ function ecv_REVIEW_STATUS($lang, $escaped, $param)
         }
     }
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4498,7 +4500,7 @@ function ecv_EXTEND_URL($lang, $escaped, $param)
     $append = isset($param[1]) ? $param[1] : '';
     extend_url($value, $append);
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;
@@ -4518,7 +4520,7 @@ function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
 {
     $value = ensure_protocol_suitability(isset($param[0]) ? $param[0] : '');
 
-    if ($escaped != array()) {
+    if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
     return $value;

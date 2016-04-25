@@ -50,7 +50,7 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
         $before = memory_get_usage();
     }
 
@@ -82,7 +82,7 @@ function require_code($codename, $light_exit = false)
         $has_custom = is_file($path_custom);
     }
 
-    if ((isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] == '1')) {
+    if ((isset($SITE_INFO['safe_mode'])) && ($SITE_INFO['safe_mode'] === '1')) {
         $has_custom = false;
     }
 
@@ -93,7 +93,7 @@ function require_code($codename, $light_exit = false)
         if (!isset($has_orig)) {
             $has_orig = is_file($path_orig);
         }
-        if (($path_custom != $path_orig) && ($has_orig)) {
+        if (($path_custom !== $path_orig) && ($has_orig)) {
             $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), file_get_contents($path_orig));
             $a = file_get_contents($path_custom);
 
@@ -121,10 +121,10 @@ function require_code($codename, $light_exit = false)
                     }
                 }
                 foreach ($classes_diff as $class) {
-                    if (substr(strtolower($class), 0, 6) == 'module') {
+                    if (substr(strtolower($class), 0, 6) === 'module') {
                         $class = ucfirst($class);
                     }
-                    if (substr(strtolower($class), 0, 4) == 'hook') {
+                    if (substr(strtolower($class), 0, 4) === 'hook') {
                         $class = ucfirst($class);
                     }
 
@@ -144,7 +144,7 @@ function require_code($codename, $light_exit = false)
                         $orig = $test;
                     }
                     $done_init = true;
-                    if ((count($functions_diff) == 1) && (count($classes_diff) == 0)) {
+                    if ((count($functions_diff) === 1) && (count($classes_diff) === 0)) {
                         $pure = false;
                     }
                 }
@@ -171,7 +171,7 @@ function require_code($codename, $light_exit = false)
                     safe_ini_set('display_errors', '0');
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
                     if (eval($orig) === false) {
-                        if ((!function_exists('fatal_exit')) || ($codename == 'failure')) {
+                        if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
                         }
                         fatal_exit(@strval($php_errormsg) . ' [sources/' . $codename . '.php]');
@@ -187,7 +187,7 @@ function require_code($codename, $light_exit = false)
                     safe_ini_set('display_errors', '0');
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
                     if (eval($orig) === false) {
-                        if ((!function_exists('fatal_exit')) || ($codename == 'failure')) {
+                        if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                             critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                         }
                         fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
@@ -205,7 +205,7 @@ function require_code($codename, $light_exit = false)
                 safe_ini_set('display_errors', '0');
                 $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
                 if (eval($orig) === false) {
-                    if ((!function_exists('fatal_exit')) || ($codename == 'failure')) {
+                    if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
                     }
                     fatal_exit(@strval($php_errormsg) . ' [sources_custom/' . $codename . '.php]');
@@ -219,7 +219,7 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
             print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
             flush();
         }
@@ -239,7 +239,7 @@ function require_code($codename, $light_exit = false)
                 $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
 
                 if (eval($orig) === false) {
-                    if ((!function_exists('fatal_exit')) || ($codename == 'failure')) {
+                    if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
                         critical_error('PASSON', @strval($php_errormsg) . ' [sources/' . $codename . '.php]');
                     }
                     fatal_exit(@strval($php_errormsg) . ' [sources/' . $codename . '.php]');
@@ -254,13 +254,13 @@ function require_code($codename, $light_exit = false)
             } else {
                 @include($path_orig);
             }
-            if ($php_errormsg == '') {
+            if ($php_errormsg === '') {
                 $worked = true;
             }
         }
 
         if ($worked) {
-            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                 print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
                 flush();
             }
@@ -281,7 +281,7 @@ function require_code($codename, $light_exit = false)
         warn_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)));
     }
     if (!function_exists('do_lang')) {
-        if ($codename == 'critical_errors') {
+        if ($codename === 'critical_errors') {
             exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The Composr critical error message file, sources/critical_errors.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
         }
         if ($php_errormsg != '') {
@@ -460,10 +460,10 @@ function filter_naughty($in, $preg = false)
  */
 function filter_naughty_harsh($in, $preg = false)
 {
-    if (preg_match('#^[\w\-]*$#', $in) != 0) {
+    if (preg_match('#^[\w\-]*$#', $in) !== 0) {
         return $in;
     }
-    if (preg_match('#^[\w\-]*/#', $in) != 0) {
+    if (preg_match('#^[\w\-]*/#', $in) !== 0) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE')); // Probably a relative URL underneath a URL Scheme short URL, should not really happen
     }
 

@@ -394,8 +394,8 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
     } else {
         foreach ($old_state as $var => $val) {
             if ((!$just_tempcode) || ($var == 'CYCLES') || ($var == 'TEMPCODE_SETGET')) {
-                $merge_array = (($merge_current) && (is_array($val)) && (array_key_exists($var, $mergeable_arrays)));
-                $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (array_key_exists($var, $mergeable_tempcode)));
+                $merge_array = (($merge_current) && (is_array($val)) && (isset($mergeable_arrays[$var])));
+                $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (isset($mergeable_tempcode[$var])));
                 $mergeable = $merge_array || $merge_tempcode;
                 if (($keep === array()) || (!in_array($var, $keep)) || ($mergeable)) {
                     if ($merge_array) {
@@ -746,9 +746,9 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $place = array($theme, '/' . $directory . '_custom/', $suffix);
         } elseif (is_file($prefix . $theme . '/' . $directory . '/' . $codename . $suffix)) {
             $place = array($theme, '/' . $directory . '/', $suffix);
-        } elseif (($CURRENT_SHARE_USER !== null) && ($theme != 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
+        } elseif (($CURRENT_SHARE_USER !== null) && ($theme !== 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
             $place = array($theme, '/' . $directory . '_custom/', $suffix);
-        } elseif (($CURRENT_SHARE_USER !== null) && ($theme != 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '/' . $codename . $suffix))) {
+        } elseif (($CURRENT_SHARE_USER !== null) && ($theme !== 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '/' . $codename . $suffix))) {
             $place = array($theme, '/' . $directory . '/', $suffix);
         } elseif (($CURRENT_SHARE_USER !== null) && (is_file(get_custom_file_base() . '/themes/default/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
             $place = array('default', '/' . $directory . '_custom/', $suffix);
@@ -765,7 +765,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
         if (($place === null) && (!$non_custom_only)) { // Get desperate, search in themes other than current and default
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
-                if ((substr($possible_theme, 0, 1) != '.') && ($possible_theme != 'default') && ($possible_theme != $theme) && ($possible_theme != 'map.ini') && ($possible_theme != 'index.html')) {
+                if ((substr($possible_theme, 0, 1) !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
                     $full_path = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
                     if (is_file($full_path)) {
                         $place = array($possible_theme, '/' . $directory . '_custom/', $suffix);
@@ -845,6 +845,10 @@ function fix_bad_unicode($input, $definitely_unicode = false)
 {
     // Fix bad unicode
     if (get_charset() == 'utf-8' || $definitely_unicode) {
+        if (preg_match('#[^x00-x7f]#', $input) == 0) {
+            return $input; // No non-ASCII characters
+        }
+
         $test_string = $input; // avoid being destructive
         $test_string = preg_replace('#[\x09\x0A\x0D\x20-\x7E]#', '', $test_string); // ASCII
         $test_string = preg_replace('#[\xC2-\xDF][\x80-\xBF]#', '', $test_string); // non-overlong 2-byte
@@ -854,7 +858,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
         $test_string = preg_replace('#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '', $test_string); // planes 1-3
         $test_string = preg_replace('#[\xF1-\xF3][\x80-\xBF]{3}#', '', $test_string); //  planes 4-15
         $test_string = preg_replace('#\xF4[\x80-\x8F][\x80-\xBF]{2}#', '', $test_string); // plane 16
-        if ($test_string != '') {// All unicode characters stripped, so if anything is remaining it must be some kind of corruption
+        if ($test_string !== '') {// All unicode characters stripped, so if anything is remaining it must be some kind of corruption
             $input = utf8_encode($input);
         }
     }
@@ -1347,7 +1351,7 @@ function _multi_sort($a, $b)
     global $M_SORT_KEY;
     $keys = explode(',', is_string($M_SORT_KEY) ? $M_SORT_KEY : strval($M_SORT_KEY));
     $first_key = $keys[0];
-    if ($first_key[0] == '!') {
+    if ($first_key[0] === '!') {
         $first_key = substr($first_key, 1);
     }
 
@@ -1356,7 +1360,7 @@ function _multi_sort($a, $b)
         do {
             $key = array_shift($keys);
 
-            $backwards = ($key[0] == '!');
+            $backwards = ($key[0] === '!');
             if ($backwards) {
                 $key = substr($key, 1);
             }
@@ -1378,19 +1382,19 @@ function _multi_sort($a, $b)
             } else {
                 $ret = strnatcasecmp($av, $bv);
             }
-        } while ((count($keys) != 0) && ($ret == 0));
+        } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;
     }
 
     do {
         $key = array_shift($keys);
-        if ($key[0] == '!') { // Flip around
+        if ($key[0] === '!') { // Flip around
             $key = substr($key, 1);
             $ret = ($a[$key] > $b[$key]) ? -1 : (($a[$key] == $b[$key]) ? 0 : 1);
         } else {
             $ret = ($a[$key] > $b[$key]) ? 1 : (($a[$key] == $b[$key]) ? 0 : -1);
         }
-    } while ((count($keys) != 0) && ($ret == 0));
+    } while ((count($keys) !== 0) && ($ret == 0));
     return $ret;
 }
 
@@ -1446,7 +1450,7 @@ function array_peek($array, $depth_down = 1)
  */
 function fix_id($param)
 {
-    if (preg_match('#^[A-Za-z][\w]*$#', $param) != 0) {
+    if (preg_match('#^[A-Za-z][\w]*$#', $param) !== 0) {
         return $param; // Optimisation
     }
 
@@ -1482,7 +1486,7 @@ function fix_id($param)
                 break;
             default:
                 $ascii = ord($char);
-                if ((($i != 0) && ($char == '_')) || (($ascii >= 48) && ($ascii <= 57)) || (($ascii >= 65) && ($ascii <= 90)) || (($ascii >= 97) && ($ascii <= 122))) {
+                if ((($i !== 0) && ($char === '_')) || (($ascii >= 48) && ($ascii <= 57)) || (($ascii >= 65) && ($ascii <= 90)) || (($ascii >= 97) && ($ascii <= 122))) {
                     $new .= $char;
                 } else {
                     $new .= '_' . strval($ascii) . '_';
@@ -1490,10 +1494,10 @@ function fix_id($param)
                 break;
         }
     }
-    if ($new == '') {
+    if ($new === '') {
         $new = 'zero_length';
     }
-    if ($new[0] == '_') {
+    if ($new[0] === '_') {
         $new = 'und_' . $new;
     }
     return $new;
@@ -1864,9 +1868,11 @@ function get_ip_address($amount = 4, $ip = null)
  */
 function normalise_ip_address($ip, $amount = null)
 {
+    $raw_ip = $ip;
+
     static $ip_cache = array();
-    if (isset($ip_cache[$ip][$amount])) {
-        return $ip_cache[$ip][$amount];
+    if (isset($ip_cache[$raw_ip][$amount])) {
+        return $ip_cache[$raw_ip][$amount];
     }
 
     // Bizarro-filter (found "in the wild")
@@ -1881,7 +1887,7 @@ function normalise_ip_address($ip, $amount = null)
     }
 
     if (!is_valid_ip($ip)) {
-        $ip_cache[$ip][$amount] = '';
+        $ip_cache[$raw_ip][$amount] = '';
         return '';
     }
 
@@ -1899,8 +1905,8 @@ function normalise_ip_address($ip, $amount = null)
                 $parts[$i] = '*';
             }
         }
-        $ip_cache[$ip][$amount] = implode(':', $parts);
-        return $ip_cache[$ip][$amount];
+        $ip_cache[$raw_ip][$amount] = implode(':', $parts);
+        return $ip_cache[$raw_ip][$amount];
     } else { // IPv4
         $parts = explode('.', $ip);
         for ($i = 0; $i < (is_null($amount) ? 4 : $amount); $i++) {
@@ -1913,8 +1919,8 @@ function normalise_ip_address($ip, $amount = null)
                 $parts[$i] = '*';
             }
         }
-        $ip_cache[$ip][$amount] = implode('.', $parts);
-        return $ip_cache[$ip][$amount];
+        $ip_cache[$raw_ip][$amount] = implode('.', $parts);
+        return $ip_cache[$raw_ip][$amount];
     }
 }
 

@@ -20,6 +20,10 @@ class Hook_upon_query_banner_click_points
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (strpos($query, 'INTO ' . get_table_prefix() . 'banner_clicks') !== false) {
             load_user_stuff();
             if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {

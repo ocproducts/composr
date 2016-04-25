@@ -371,7 +371,9 @@ function get_bound_content_entry($content_type, $id)
 {
     // Optimisation: don't keep up looking custom field linkage if we have no custom fields
     static $content_type_has_custom_fields_cache = null;
-    $content_type_has_custom_fields_cache = persistent_cache_get('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
+    if ($content_type_has_custom_fields_cache === null) {
+        $content_type_has_custom_fields_cache = persistent_cache_get('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
+    }
     if ($content_type_has_custom_fields_cache === null) {
         $content_type_has_custom_fields_cache = array();
     }
@@ -384,7 +386,6 @@ function get_bound_content_entry($content_type, $id)
     if (!$content_type_has_custom_fields_cache[$content_type]) {
         return;
     }
-
     return $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entry_linkage', 'catalogue_entry_id', array(
         'content_type' => $content_type,
         'content_id' => $id,

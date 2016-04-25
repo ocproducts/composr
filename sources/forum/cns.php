@@ -1567,7 +1567,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
 
         // Set last visit time session cookie if it doesn't exist
-        if ((!isset($_COOKIE['last_visit'])) && ($GLOBALS['FORUM_DRIVER']->get_guest_id() != $id)) {
+        if ((!isset($_COOKIE['last_visit'])) && (!is_guest($id))) {
             require_code('users_active_actions');
             $lvt = $this->get_member_row_field($id, 'm_last_visit_time');
             if (function_exists('cms_setcookie')) {// May be trying to check in safe mode when doing above require_code, so recurse
@@ -1590,6 +1590,9 @@ class Forum_driver_cns extends Forum_driver_base
             }
             if ($restrict_answer < 0) {
                 $restrict_answer = 0;
+            }
+            if (($restrict_answer == 0) && (is_guest($id))) {
+                return;
             }
             $last = $this->get_member_row_field($id, $restrict_setting);
             if ($last > time()) {

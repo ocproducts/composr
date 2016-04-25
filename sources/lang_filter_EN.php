@@ -412,7 +412,7 @@ class LangFilter_EN extends LangFilter
 
                     for ($i = 0; $i < strlen($value); $i++) {
                         foreach ($reps as $from => $to) {
-                            if (substr($value, $i, strlen($from)) == $from) {
+                            if ($value[$i] == $from[0] && substr($value, $i, strlen($from)) == $from) {
                                 $value = substr($value, 0, $i) . $to . substr($value, $i + strlen($from));
                                 $i += strlen($to) - 1;
                                 continue 2;

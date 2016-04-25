@@ -22,6 +22,10 @@ class Hook_upon_query_user_export
 
     public function run_pre($ob, $query, $max, $start, $fail_ok, $get_insert_id)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         $prefix = preg_quote(get_table_prefix(), '#');
 
         $matches = array();
@@ -48,11 +52,19 @@ class Hook_upon_query_user_export
 
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (!isset($GLOBALS['FORUM_DB'])) {
             return;
         }
 
         if (running_script('install')) {
+            return;
+        }
+
+        if (strpos($query, 'f_member') === false) {
             return;
         }
 

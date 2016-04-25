@@ -183,6 +183,10 @@ function _custom_comcode_import($connection)
     global $IN_MINIKERNEL_VERSION;
     global $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $TEXTUAL_TAGS, $IMPORTED_CUSTOM_COMCODE, $CUSTOM_COMCODE_REPLACE_TARGETS_CACHE;
 
+    if ($IMPORTED_CUSTOM_COMCODE) {
+        return;
+    }
+
     if (!$IN_MINIKERNEL_VERSION) {
         // From forum driver
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_custom_bbcode')) {
