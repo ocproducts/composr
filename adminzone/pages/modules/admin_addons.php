@@ -1007,7 +1007,7 @@ class Module_admin_addons
         }
         $field = form_input_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $_categories);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, true);
+        $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, false);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('LICENCE'), do_lang_tempcode('DESCRIPTION_ADDON_LICENCE'), 'licence', $licence, true);
         $fields .= $field->evaluate();
