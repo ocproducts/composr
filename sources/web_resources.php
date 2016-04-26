@@ -101,7 +101,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     $js_cache_path .= '.js';
 
     global $CACHE_TEMPLATES;
-    $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+    $support_smart_decaching = support_smart_decaching();
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
@@ -240,8 +240,7 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
             $j .= '_mobile';
         }
 
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
         $sup = ($support_smart_decaching && $temp != '' && !$GLOBALS['RECORD_TEMPLATES_USED']) ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
 
         $js->attach(do_template('JAVASCRIPT_NEED', array('_GUID' => 'b5886d9dfc4d528b7e1b0cd6f0eb1670', 'CODE' => $j, 'SUP' => $sup)));
@@ -325,7 +324,7 @@ function css_enforce($c, $theme = null, $minify = null)
     $css_cache_path .= '.css';
 
     global $CACHE_TEMPLATES;
-    $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+    $support_smart_decaching = support_smart_decaching();
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
@@ -471,8 +470,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
             $c .= '_mobile';
         }
         if (($temp != '') || (!$do_enforce)) {
-            global $SITE_INFO;
-            $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+            $support_smart_decaching = support_smart_decaching();
             $sup = ($support_smart_decaching && $temp != '') ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
             $css->attach(do_template('CSS_NEED', array('_GUID' => 'ed35fac857214000f69a1551cd483096', 'CODE' => $c, 'SUP' => $sup), user_lang(), false, null, '.tpl', 'templates', $theme));
         }
@@ -646,8 +644,7 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         $hash = $_value[1];
 
         // Regenerate hash if we support smart decaching, it might have changed and hence we need to do recompiling with a new hash OR this may be the first time ("???" is placeholder)
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
         if (($support_smart_decaching) || ($hash == '???')) {
             // Work out a hash (checksum) for cache busting on this merged file. Does it using an mtime has chain for performance (better than reading and hashing all the file contents)
             $old_hash = $hash;

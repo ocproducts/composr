@@ -212,7 +212,8 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         $path = $THEME_IMAGES_CACHE[$site][$id];
 
         // Decache if file has disappeared
-        if (($path !== '') && ((!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] !== '1')) && (url_is_local($path)) && ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_file_base() . '/' . rawurldecode($path))) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Missing image, so erase to re-search for it
+        $support_smart_decaching = support_smart_decaching();
+        if (($path !== '') && (!$support_smart_decaching) && (url_is_local($path)) && ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_file_base() . '/' . rawurldecode($path))) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Missing image, so erase to re-search for it
             unset($THEME_IMAGES_CACHE[$site][$id]);
             $ret = find_theme_image($id, $silent_fail, $leave_local, $theme, $lang, $db, $pure_only);
             if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
@@ -233,7 +234,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             $base_url = get_forum_base_url();
         } else {
             global $SITE_INFO;
-            $missing = (!$pure_only) && (((!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] !== '1')) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path))));
+            $missing = (!$pure_only) && ((!$support_smart_decaching) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path))));
             if ((substr($path, 0, 22) === 'themes/default/images/') || ($missing) || ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Not found, so throw away custom theme image and look in default theme images to restore default
                 if (($missing) && (!is_file(get_file_base() . '/' . rawurldecode($path)))) {
                     $ret = find_theme_image($id, $silent_fail, $leave_local, $theme, $lang, $db, true);

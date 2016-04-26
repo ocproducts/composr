@@ -4,7 +4,7 @@ Composr is very heavily optimised so that pages load as quickly as possible. Thi
 
 If you have need to be able to take particularly high load, professional developers are available for custom tuning.
 
-The tips of most importance are given in bold.
+The tips of most importance are given in [b]bold[/b].
 
 Performance tuning is multi-faceted, broadly fitting into:
  - Making all page requests faster
@@ -68,7 +68,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
 
  - [b]Use PHP7[/b], as PHP7 introduced massive speed improvements.
  - [b]Don't have addons installed that you don't need[/b]. Some may have general performance requirements, such as catalogues (adds custom fields checking to all content types) -- while others may just have general over-head in terms of sitemap generation, language string presence, moniker registration, and hook execution.
- - Enable the [b]disable_smart_decaching[/b] option (see below).
+ - Enable the [b]disable_smart_decaching[/b] option in the installation options. You can make it intelligent, by only allowing smart decaching if the FTP log was modified recently.
  - You can mark out parts of a complex Comcode layout as having [b][tt]quick_cache[/tt][/b] by moving the content into individual Comcode pages then using the [tt]main_include_module[/tt] block to insert it back, with the [tt]quick_cache[/tt] parameter turned on for that block.
  - The [b]defer-loading option block parameter[/b] is also useful, although it puts a requirement on JavaScript.
  - If you are using a particularly visually complex block (e.g. deep pop-out menus) then use the [tt]quick_cache[/tt] block parameter on it if possible.

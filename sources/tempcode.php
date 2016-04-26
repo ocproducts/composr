@@ -781,7 +781,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                 }
             } else {
                 global $SITE_INFO;
-                $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] !== '1');
+                $support_smart_decaching = support_smart_decaching();
                 if ($support_smart_decaching) {
                     if (get_custom_file_base() !== get_file_base()) {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];

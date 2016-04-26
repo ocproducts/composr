@@ -1682,8 +1682,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     );
 
     if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0)) {
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
 
         if (is_browser_decaching()) {
             $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index', 'cc_page_title'), array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()), '', 1, 0, false, array());

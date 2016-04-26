@@ -432,8 +432,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     }
 
     if ($PAGE_CACHE_LAZY_LOAD) {
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
         if ($support_smart_decaching) {
             $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
             $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';
@@ -554,14 +553,13 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
 {
-    global $SITE_INFO;
-    $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+    $support_smart_decaching = support_smart_decaching();
 
     if (is_null($lang)) {
         global $REQUIRED_ALL_LANG;
         if (array_key_exists($lang, $REQUIRED_ALL_LANG)) {
             if ($support_smart_decaching) {
-                unset($GLOBALS['SITE_INFO']['disable_smart_decaching']);
+                disable_smart_decaching_temporarily();
             }
             return;
         }
@@ -583,7 +581,7 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
     }
 
     if ($support_smart_decaching) {
-        unset($GLOBALS['SITE_INFO']['disable_smart_decaching']);
+        disable_smart_decaching_temporarily();
     }
 }
 

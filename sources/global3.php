@@ -3384,3 +3384,51 @@ function disable_browser_xss_detection()
 {
     @header('X-XSS-Protection: 0');
 }
+
+/**
+ * Whether smart decaching is enabled. It is slightly inefficient but makes site development easier for people.
+ *
+ * @return boolean If smart decaching is enabled
+ */
+function support_smart_decaching()
+{
+    static $has_in_url = null;
+    if ($has_in_url === null) {
+        $has_in_url = (get_param_integer('keep_smart_decaching', 0) == 1);
+    }
+    if ($has_in_url) {
+        return true;
+    }
+
+    global $SITE_INFO;
+    if (isset($SITE_INFO['disable_smart_decaching'])) {
+        if ($SITE_INFO['disable_smart_decaching'] == '1') {
+            return false;
+        }
+
+        static $has_temporary = null;
+        if ($has_temporary === null) {
+            $has_temporary = false;
+            $matches = array();
+            if (preg_match('#^(\d+):(.*)$#', $SITE_INFO['disable_smart_decaching'], $matches) != 0) {
+                $time = intval($matches[1]);
+                $path = $matches[2];
+                if (is_file($path) && filemtime($path) > time() - $time) {
+                    $has_temporary = true;
+                }
+            }
+        }
+        return $has_temporary;
+    }
+
+    return true; // By default it is on
+}
+
+/**
+ * For performance reasons disable smart decaching (it does a lot of file system checks).
+ */
+function disable_smart_decaching_temporarily()
+{
+    global $SITE_INFO;
+    $SITE_INFO['disable_smart_decaching'] = '1';
+}
