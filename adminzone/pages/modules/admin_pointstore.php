@@ -105,6 +105,9 @@ class Module_admin_pointstore
      */
     public function run()
     {
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+
         require_code('form_templates');
         require_css('points');
 

@@ -174,12 +174,8 @@ class Module_admin_phpinfo
             $out .= '<p><strong>PHP configured as</strong>: ' . escape_html(php_sapi_name()) . '</p>';
         }
 
-        $t = microtime(true);
-        for ($i = 0; $i < 10000; $i++) {
-            md5(uniqid('', false));
-        }
-        $percentage = 100.0 * (0.055 / (microtime(true) - $t));
-        $out .= '<p><strong>Normative performance</strong>: ' . float_format($percentage, 0) . '%</p>';
+        require_code('global4');
+        $out .= '<p><strong>Normative performance</strong>: ' . float_format(find_normative_performance(), 0) . '%</p>';
 
         if (php_function_allowed('shell_exec')) {
             $commands = array(

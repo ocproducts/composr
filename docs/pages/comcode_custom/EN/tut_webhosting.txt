@@ -90,6 +90,7 @@ Composr recommends:
   - ZIP
   - XML
   - cURL
+  - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache, or eAccelerator (PHP 5.4 and lower only)
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
  - A PHP memory limit of 64MB
  - At least 100MB of disk space

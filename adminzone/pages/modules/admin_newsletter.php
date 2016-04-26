@@ -477,6 +477,9 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $title = get_screen_title('BOUNCE_FILTER');
 
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+
         $delete_sql = '';
         $delete_sql_members = '';
 

@@ -18,6 +18,8 @@
  * @package    core
  */
 
+/*EXTRA FUNCTIONS: eaccelerator_.**/
+
 /**
  * Cache driver class.
  */
@@ -33,12 +35,7 @@ class Persistent_caching_eacceleratorcache
     public function load_objects_list()
     {
         if (is_null($this->objects_list)) {
-            if (function_exists('eaccelerator_get')) {
-                $this->objects_list = eaccelerator_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
-            }
-            if (function_exists('mmcache_get')) {
-                $this->objects_list = mmcache_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
-            }
+            $this->objects_list = eaccelerator_get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === null) {
                 $this->objects_list = array();
             }
@@ -55,13 +52,7 @@ class Persistent_caching_eacceleratorcache
      */
     public function get($key, $min_cache_date = null)
     {
-        if (function_exists('eaccelerator_get')) {
-            $data = eaccelerator_get($key);
-        } elseif (function_exists('mmcache_get')) {
-            $data = mmcache_get($key);
-        } else {
-            $data = null;
-        }
+        $data = eaccelerator_get($key);
         if (is_null($data)) {
             return null;
         }
@@ -85,18 +76,10 @@ class Persistent_caching_eacceleratorcache
         $objects_list = $this->load_objects_list();
         if (!array_key_exists($key, $objects_list)) {
             $objects_list[$key] = true;
-            if (function_exists('eaccelerator_put')) {
-                eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-            } elseif (function_exists('mmcache_put')) {
-                mmcache_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-            }
+            eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
         }
 
-        if (function_exists('eaccelerator_put')) {
-            eaccelerator_put($key, array(time(), serialize($data)), $expire_secs);
-        } elseif (function_exists('mmcache_put')) {
-            mmcache_put($key, array(time(), serialize($data)), $expire_secs);
-        }
+        eaccelerator_put($key, array(time(), serialize($data)), $expire_secs);
     }
 
     /**
@@ -109,17 +92,9 @@ class Persistent_caching_eacceleratorcache
         // Update list of persistent-objects
         $objects_list = $this->load_objects_list();
         unset($objects_list[$key]);
-        /*if (function_exists('eaccelerator_put')) {    Wasteful
-            eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-        } elseif (function_exists('mmcache_put')) {
-            mmcache_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-        }*/
+        //Wasteful eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
 
-        if (function_exists('eaccelerator_rm')) {
-            eaccelerator_rm($key);
-        } elseif (function_exists('mmcache_rm')) {
-            mmcache_rm($key);
-        }
+        eaccelerator_rm($key);
     }
 
     /**
@@ -128,21 +103,11 @@ class Persistent_caching_eacceleratorcache
     public function flush()
     {
         $objects_list = $this->load_objects_list();
-        if (function_exists('eaccelerator_rm')) {
-            foreach (array_keys($objects_list) as $obkey) {
-                eaccelerator_rm($obkey);
-            }
-        } elseif (function_exists('mmcache_rm')) {
-            foreach (array_keys($objects_list) as $obkey) {
-                mmcache_rm($obkey);
-            }
+        foreach (array_keys($objects_list) as $obkey) {
+            eaccelerator_rm($obkey);
         }
 
         $objects_list = array();
-        if (function_exists('eaccelerator_put')) {
-            eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-        } elseif (function_exists('mmcache_put')) {
-            mmcache_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
-        }
+        eaccelerator_put(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0);
     }
 }

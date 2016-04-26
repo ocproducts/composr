@@ -467,9 +467,10 @@ function cos($angle)
  * Count elements in a variable.
  *
  * @param  array $var Variable to count elements of.
+ * @param  integer $mode The count mode (COUNT_NORMAL or COUNT_RECURSIVE).
  * @return integer The count.
  */
-function count($var)
+function count($var, $mode = 0)
 {
     return 0;
 }

@@ -57,7 +57,7 @@ function init__caches()
         } elseif ((function_exists('apc_fetch')) && (($SITE_INFO['use_persistent_cache'] == 'apc') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/apc');
             $PERSISTENT_CACHE = new Persistent_caching_apccache();
-        } elseif (((function_exists('eaccelerator_put')) || (function_exists('mmcache_put'))) && (($SITE_INFO['use_persistent_cache'] == 'eaccelerator') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
+        } elseif ((function_exists('eaccelerator_put')) && (($SITE_INFO['use_persistent_cache'] == 'eaccelerator') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/eaccelerator');
             $PERSISTENT_CACHE = new Persistent_caching_eacceleratorcache();
         } elseif ((function_exists('xcache_get')) && (($SITE_INFO['use_persistent_cache'] == 'xcache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
@@ -70,6 +70,7 @@ function init__caches()
             require_code('persistent_caching/filesystem');
             $PERSISTENT_CACHE = new Persistent_caching_filecache();
         }
+        // NB: sources/hooks/systems/checks/persistent_cache.php also references some of this ^
     }
 
     /** The smart cache (self-learning cache).
