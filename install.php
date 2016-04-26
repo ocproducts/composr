@@ -3011,7 +3011,7 @@ order allow,deny
 allow from all
 END;
 
-    $base = dirname(cms_srv('SCRIPT_NAME'));
+    $base = str_replace('/', '\\', dirname(cms_srv('SCRIPT_NAME')));
     $clauses[] = <<<END
 <FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
 ErrorDocument 404 {$base}/index.php?page=404

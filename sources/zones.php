@@ -340,7 +340,7 @@ function get_zone_name()
     }
     if ($VIRTUALISED_ZONES_CACHE !== false) {
         $VIRTUALISED_ZONES_CACHE = false;
-        $url_path = dirname(cms_srv('SCRIPT_NAME'));
+        $url_path = str_replace('/', '\\', dirname(cms_srv('SCRIPT_NAME')));
         $host = preg_replace('#:\d+$#', '', cms_srv('HTTP_HOST'));
         foreach ($SITE_INFO as $key => $val) {
             if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
@@ -409,6 +409,10 @@ function load_redirect_cache()
  */
 function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype = 'php', $error = true, $check_redirects = true)
 {
+    if ($module_name === '') {
+        return null;
+    }
+
     $_zone = get_zone_name();
     $zone = $_zone;
 

@@ -50,6 +50,6 @@ class Hook_config_forum_in_portal
      */
     public function get_default()
     {
-        return ((has_no_forum()) || (get_forum_type() == 'cns')) ? null : '0';
+        return has_no_forum() ? null : '0';
     }
 }

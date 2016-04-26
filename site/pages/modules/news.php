@@ -170,11 +170,11 @@ class Module_news
             'browse' => array('NEWS_ARCHIVE', 'menu/rich_content/news'),
         );
         if ($has_blogs) {
-            $ret['cat_select'] = array('NEWS_CATEGORIES', 'menu/_generic_admin/view_archive');
-            $ret['select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
+            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/_generic_admin/view_archive');
             $ret['blog_select'] = array('BLOGS', 'tabs/member_account/blog');
+            $ret['select'] = array('NEWS_CATEGORIES', 'menu/rich_content/news');
         } else {
-            $ret['select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
+            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
         }
         return $ret;
     }
@@ -212,12 +212,12 @@ class Module_news
             $this->title = get_screen_title('JUST_NEWS_CATEGORIES');
         }
 
-        if ($type == 'select') {
-            $this->title = get_screen_title('NEWS_CATEGORIES');
-        }
-
         if ($type == 'blog_select') {
             $this->title = get_screen_title('BLOGS');
+        }
+
+        if ($type == 'select') {
+            $this->title = get_screen_title('NEWS_CATEGORIES');
         }
 
         if ($type == 'browse') {

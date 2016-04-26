@@ -1635,7 +1635,9 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
-    $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
+    if ($page !== '') {
+        $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
+    }
     $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;

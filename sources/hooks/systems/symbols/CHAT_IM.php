@@ -104,6 +104,11 @@ class Hook_symbol_CHAT_IM
                     'BLOCK_MEMBER_URL' => $block_member_url,
                 ));
 
+                if ($may_cache) {
+                    $im_area_template_c = apply_quick_caching($im_area_template_c);
+                    $im_participant_template = apply_quick_caching($im_participant_template);
+                }
+
                 $_value = do_template('CHAT_SITEWIDE_IM', array(
                     '_GUID' => '5ab0404b3dac4578e8b4be699bd43c95',
                     'IM_AREA_TEMPLATE' => $im_area_template_c,
@@ -112,8 +117,6 @@ class Hook_symbol_CHAT_IM
                 ));
 
                 if ($may_cache) {
-                    $_value = apply_quick_caching($_value);
-
                     persistent_cache_set('CHAT_IM', $_value);
                 }
             }

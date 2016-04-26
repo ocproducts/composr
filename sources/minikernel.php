@@ -560,7 +560,7 @@ function get_base_url($https = null, $zone_for = '')
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['base_url'])) {
-        $default_base_url = (tacit_https() ? 'https://' : 'http://') . cms_srv('HTTP_HOST') . str_replace('%2F', '/', rawurlencode(dirname(cms_srv('SCRIPT_NAME'))));
+        $default_base_url = (tacit_https() ? 'https://' : 'http://') . cms_srv('HTTP_HOST') . str_replace('%2F', '/', rawurlencode(str_replace('/', '\\', dirname(cms_srv('SCRIPT_NAME')))));
 
         $base_url = post_param_string('base_url', $default_base_url);
         if (substr($base_url, -1) == '/') {
