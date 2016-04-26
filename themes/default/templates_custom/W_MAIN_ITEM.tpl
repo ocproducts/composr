@@ -1,4 +1,4 @@
-<tr>
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
 	<td>
 		{+START,IF_NON_EMPTY,{PICTURE_URL}}<a title="{NAME*} {!LINK_NEW_WINDOW}" target="_blank" onclick="return open_link_as_overlay(this);" href="{PICTURE_URL*}">{+END}{NAME*}{+START,IF_NON_EMPTY,{PICTURE_URL}}</a>{+END}{AUX*} <span class="associated_details">({COUNT*})</span>
 	</td>

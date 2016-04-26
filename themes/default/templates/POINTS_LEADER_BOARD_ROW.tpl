@@ -1,4 +1,4 @@
-<tr>
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
 	<th>
 		<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>
 	</th>

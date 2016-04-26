@@ -1,4 +1,4 @@
-<tr>
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
 	<th>
 		{TEST} {$,Should not be escaped, as may have lists etc taken from inherited section}
 	</th>

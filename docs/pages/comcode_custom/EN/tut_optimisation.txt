@@ -65,6 +65,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Block unwanted bots you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there
  - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search tutorial[/page])
  - Enable the "Gzipped output" option.
+ - Don't have addons installed that you don't need. Some may have general performance requirements, such as catalogues (adds custom fields checking to all content types) -- while others may just have general over-head in terms of sitemap generation, language string presence, moniker registration, and hook execution.
 
 [title="2"]Persistent cache[/title]
 

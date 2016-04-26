@@ -1550,7 +1550,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Handle flood control for members.
+     * Handle flood control for members, and update member last visiting times.
      *
      * @param  MEMBER $id The member ID that just got detected
      */
