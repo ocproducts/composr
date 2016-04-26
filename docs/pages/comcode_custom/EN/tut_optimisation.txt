@@ -28,7 +28,7 @@ Limiting factors could be:
 [title="2"]Making PHP run faster[/title]
 
 Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
- - Zend Optimizer (this is bundled by default in PHP5.6 and higher, recommended)
+ - Zend OpCache (this is bundled by default in PHP5.6 and higher, recommended)
  - APC (free)
  - wincache (free, Windows only)
  - xcache (free)

@@ -168,7 +168,6 @@ function do_access($given_password)
         'db_forums_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the forum driver to tie in to.',
         'db_forums_user' => '<em>Database:</em> The database username for the forum driver to connect to the forum database with.',
         'db_forums_password' => '<em>Database:</em> The password for the forum database username.',
-        'use_persistent' => '<em>Database:</em> Whether to use persistent database connections (most shared webhosts do not like these to be used).',
         'database_charset' => '<em>Database:</em> The MySQL character set for the connection. Usually you can just leave this blank, but if MySQL\'s character set for your database has been overridden away from the server-default then you will need to set this to be equal to that same character set.',
         'skip_fulltext_sqlserver' => '<em>Database:</em> Whether you are using Microsoft SQL Server and want to disable full-text search support.',
 
@@ -179,7 +178,7 @@ function do_access($given_password)
         'cookie_path' => '<em>Cookies:</em> The URL path the cookeis are tied to. Only URLs branching from this may access the cookies. Either set it to the path portion of the base-URL, or a shortened path if cookies need to work with something elsewhere on the domain, or leave blank for auto-detection. <strong>It\'s best not to change this setting once your community is active, as it can cause logging-out problems.</strong>',
         'cookie_days' => '<em>Cookies:</em> The number of days to store login cookies for.',
 
-        'use_persistent_cache' => '<em>Performance:</em> Whether persistent memory caching is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available).',
+        'use_persistent_cache' => '<em>Performance:</em> If persistent memory caching is to be used (caches data in memory between requests using whatever appropriate PHP extensions are available). May be set to <kbd>1</kbd> or the name of a PHP file in <kbd>sources/persistent_caching</kbd> to force a specific method (e.g. <kbd>apc</kbd>).',
         'fast_spider_cache' => '<em>Performance:</em> The number of hours that the spider/bot cache lasts for (this sets both HTTP caching, and server retention of cached screens).',
         'any_guest_cached_too' => '<em>Performance:</em> Whether Guests are cached with the spider cache time too.',
         'self_learning_cache' => '<em>Performance:</em> Whether to allow pages to learn what resources they need, for efficient bulk loading of essentials while avoiding loading full resource sets upfront. Stores copies of some resources within the self-learning cache itself. If you disable this you should also disable the Composr "Output streaming" config option.',

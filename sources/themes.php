@@ -234,6 +234,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             $base_url = get_forum_base_url();
         } else {
             global $SITE_INFO;
+            $support_smart_decaching = support_smart_decaching();
             $missing = (!$pure_only) && ((!$support_smart_decaching) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path))));
             if ((substr($path, 0, 22) === 'themes/default/images/') || ($missing) || ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Not found, so throw away custom theme image and look in default theme images to restore default
                 if (($missing) && (!is_file(get_file_base() . '/' . rawurldecode($path)))) {

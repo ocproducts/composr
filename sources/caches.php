@@ -46,7 +46,7 @@ function init__caches()
      */
     $PERSISTENT_CACHE = null;
 
-    $use_persistent_cache = ((!empty($SITE_INFO['use_persistent_cache'])) && ($SITE_INFO['use_persistent_cache'] == '1')); // Default to off because badly configured caches can result in lots of very slow misses
+    $use_persistent_cache = (!empty($SITE_INFO['use_persistent_cache'])); // Default to off because badly configured caches can result in lots of very slow misses
     if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');
