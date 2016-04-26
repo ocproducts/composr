@@ -1089,7 +1089,7 @@ function keep_symbol($param)
         $gpc = get_magic_quotes_gpc();
     }
 
-    $first = !((isset($param[0])) && ($param[0] === '1'));
+    $first = ((isset($param[0])) && ($param[0] === '1'));
     foreach ($get_vars as $key => $val) {
         if (($gpc) && (is_string($val))) {
             $val = stripslashes($val);
