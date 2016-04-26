@@ -293,7 +293,7 @@ function inform_non_canonical_parameter($param)
 {
     global $NON_CANONICAL_PARAMS;
 
-    if (substr($param, 0, 1) == '#') {
+    if ($param[0] == '#') { // A regexp
         foreach (array_keys($_GET) as $key) {
             if (is_numeric($key)) {
                 $key = strval($key);
@@ -1495,7 +1495,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
 }
 
 /**
- * Take the specified parameters, and try to find a redirect for the corresponding page
+ * Take the specified parameters, and try to find a redirect for the corresponding page.
  *
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in

@@ -765,7 +765,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
         if (($place === null) && (!$non_custom_only)) { // Get desperate, search in themes other than current and default
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
-                if ((substr($possible_theme, 0, 1) !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
+                if (($possible_theme[0] !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
                     $full_path = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
                     if (is_file($full_path)) {
                         $place = array($possible_theme, '/' . $directory . '_custom/', $suffix);
@@ -1635,6 +1635,7 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
+    $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
     $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
@@ -1655,7 +1656,7 @@ function fix_page_name_dashing($zone, $page)
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
-        $test = _request_page($page, $zone);
+        $test = _request_page($page, $zone, null, null, true);
         if ($test === false) {
             $_page = str_replace('-', '_', $page);
             $test = _request_page($_page, $zone);

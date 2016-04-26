@@ -262,7 +262,7 @@ function ecv2_VALUE_OPTION($lang, $escaped, $param)
  */
 function ecv2_MOBILE($lang, $escaped, $param)
 {
-    $value = is_mobile(null, array_key_exists(0, $param) ? ($param[0] == '1') : false) ? '1' : '0';
+    $value = is_mobile(null, isset($param[0]) ? ($param[0] == '1') : false) ? '1' : '0';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);

@@ -443,7 +443,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     if ($check_redirects && $REDIRECT_CACHE === null) {
         load_redirect_cache();
     }
-    $first_zones = array((substr($module_name, 0, 6) === 'admin_') ? 'adminzone' : $zone);
+    $first_zones = array(($module_name[0] == 'a' && substr($module_name, 0, 6) === 'admin_') ? 'adminzone' : $zone);
     if ($zone !== '') {
         $first_zones[] = '';
     }

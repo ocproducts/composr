@@ -197,7 +197,7 @@ class LangFilter_EN extends LangFilter
             'unticking (unchecking)' => 'unticking',
         ); // pip pip
 
-        $this->vowels = array('a', 'e', 'i', 'o', 'u');
+        $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
     }
 
     /**
@@ -358,7 +358,7 @@ class LangFilter_EN extends LangFilter
                         $specific = strtolower(do_lang($info['content_type_label']));
                     }
 
-                    $is_vowel = in_array(substr($specific, 0, 1), $this->vowels);
+                    $is_vowel = $specific !== '' && isset($this->vowels[$specific[0]]);
                     $article_word = $is_vowel ? 'an' : 'a';
 
                     if (preg_match('#[^aeiou]y$#', $specific) != 0) {
@@ -410,7 +410,8 @@ class LangFilter_EN extends LangFilter
                             break;
                     }
 
-                    for ($i = 0; $i < strlen($value); $i++) {
+                    $strlen = strlen($value);
+                    for ($i = 0; $i < $strlen; $i++) {
                         foreach ($reps as $from => $to) {
                             if ($value[$i] == $from[0] && substr($value, $i, strlen($from)) == $from) {
                                 $value = substr($value, 0, $i) . $to . substr($value, $i + strlen($from));

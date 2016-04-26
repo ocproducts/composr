@@ -821,7 +821,7 @@ function has_submit_permission($range, $member, $ip, $page, $cats = null)
 
     $result = null;
 
-    if ((addon_installed('securitylogging')) && ((get_value('pinpoint_submitban_check') !== '1') || (get_zone_name() == 'cms'))) {
+    if ((addon_installed('securitylogging')) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ((get_value('pinpoint_submitban_check') !== '1') || (get_zone_name() == 'cms'))) {
         if ($USERSUBMITBAN_MEMBER_CACHE === null) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $member));
             $USERSUBMITBAN_MEMBER_CACHE = ($test !== null);

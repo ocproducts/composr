@@ -1202,7 +1202,7 @@ function find_id_moniker($url_parts, $zone)
         if (!function_exists('_request_page')) {
             return null; // In installer
         }
-        $page_place = _request_page($url_parts['page'], $zone);
+        $page_place = _request_page(str_replace('-', '_', $url_parts['page']), $zone);
         if ($page_place[0] == 'REDIRECT') {
             $url_parts['page'] = $page_place[1]['r_to_page'];
             $zone = $page_place[1]['r_to_zone'];
