@@ -280,7 +280,7 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 				}
 				catch (e) {}
 			}
-			do_ajax_request(maintain_theme_in_link(url)+window.top_window.keep_stub(false),func,'room_id='+window.encodeURIComponent(current_room_id)+'&message='+window.encodeURIComponent(message_text)+'&font='+window.encodeURIComponent(font_name)+'&colour='+window.encodeURIComponent(font_colour)+'&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false));
+			do_ajax_request(maintain_theme_in_link(url)+window.top_window.keep_stub(false),func,'room_id='+window.encodeURIComponent(current_room_id)+'&message='+window.encodeURIComponent(message_text)+'&font='+window.encodeURIComponent(font_name)+'&colour='+window.encodeURIComponent(font_colour)+'&message_id='+window.encodeURIComponent((window.top_window.last_message_id===null)?-1:window.top_window.last_message_id)+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false));
 		}
 
 		return false;
@@ -896,7 +896,7 @@ function _start_im(people,may_recycle)
 	div.className='loading_overlay';
 	set_inner_html(div,'{!LOADING;^}');
 	document.body.appendChild(div);
-	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
+	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent((window.top_window.last_message_id===null)?-1:window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
 		var responses=result.getElementsByTagName('result');
 		if (responses[0])
 		{

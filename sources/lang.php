@@ -817,7 +817,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
 
             return $ret;
         } elseif ($parameter1 !== null) {
-            $kg = !has_solemnly_declared(I_UNDERSTAND_XSS);
+            $kg = function_exists('has_solemnly_declared') && !has_solemnly_declared(I_UNDERSTAND_XSS);
             if ($kg) {
                 kid_gloves_html_escaping_singular($parameter1);
             }

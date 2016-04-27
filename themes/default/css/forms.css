@@ -760,6 +760,10 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin-bottom: 0;
 }
 
+.cke_widget_inline {
+	line-height: 1em !important;
+}
+
 /* Icons for our custom plugins (we specify ours this way for greatest flexibility) */
 
 .cke_button__composr_block_icon {

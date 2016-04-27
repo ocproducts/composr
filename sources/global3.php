@@ -3403,7 +3403,7 @@ function support_smart_decaching()
     }
 
     global $SITE_INFO;
-    if (isset($SITE_INFO['disable_smart_decaching'])) {
+    if (!empty($SITE_INFO['disable_smart_decaching'])) {
         if ($SITE_INFO['disable_smart_decaching'] == '1') {
             return false;
         }

@@ -151,7 +151,7 @@ function init__global2()
 
     if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat message precheck (for extra efficiency)
         require_code('chat_poller');
-        chat_poller();
+//        chat_poller();
     }
     if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') >= get_param_integer('time_barrier'))) {
         prepare_for_known_ajax_response();
