@@ -50,6 +50,11 @@ function get_effect_set($only_overridable = false)
  */
 function get_effect_settings($full_urls = false, $for_member = null, $all_members = false)
 {
+    static $cache = array();
+    if (isset($cache[$full_urls][$for_member][$all_members])) {
+        return $cache[$full_urls][$for_member][$all_members];
+    }
+
     $effects = get_effect_set(!is_null($for_member));
 
     global $EFFECT_SETTINGS_ROWS;
@@ -95,5 +100,8 @@ function get_effect_settings($full_urls = false, $for_member = null, $all_member
             'EFFECT_TITLE' => do_lang('CHAT_EFFECT_' . $base_effect_code),
         );
     }
+
+    $cache[$full_urls][$for_member][$all_members] = $effect_settings;
+
     return $effect_settings;
 }

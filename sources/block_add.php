@@ -235,12 +235,7 @@ function block_helper_script()
         }
 
         // Work out parameters involved, and their sets ("classes")
-        $parameters = get_block_parameters($block);
-        $parameters[] = 'failsafe';
-        $parameters[] = 'cache';
-        $parameters[] = 'quick_cache';
-        $parameters[] = 'defer';
-        $parameters[] = 'block_id';
+        $parameters = get_block_parameters($block, true);
         // NB: Also update sources/hooks/systems/preview/block_comcode.php
         if (!isset($defaults['cache'])) {
             $defaults['cache'] = block_cache_default($block);
@@ -475,11 +470,7 @@ function block_helper_script()
         $bparameters = '';
         $bparameters_tempcode = '';
         $block = trim(either_param_string('block'));
-        $parameters = get_block_parameters($block);
-        $parameters[] = 'failsafe';
-        $parameters[] = 'cache';
-        $parameters[] = 'block_id';
-        $parameters[] = 'quick_cache';
+        $parameters = get_block_parameters($block, true);
         if (in_array('param', $parameters)) {
             $_parameters = array('param');
             unset($parameters[array_search('param', $parameters)]);

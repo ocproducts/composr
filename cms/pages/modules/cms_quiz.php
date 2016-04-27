@@ -43,6 +43,8 @@ class Module_cms_quiz extends Standard_crud_module
     public $orderer_is_multi_lang = false;
 
     public $donext_type = null;
+    public $donext_entry_content_type = 'quiz';
+    public $donext_category_content_type = null;
 
     /**
      * Find privileges defined as overridable by this module.
@@ -67,8 +69,8 @@ class Module_cms_quiz extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
-                   'browse' => array('MANAGE_QUIZZES', 'menu/rich_content/quiz'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_QUIZZES', 'menu/rich_content/quiz'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');

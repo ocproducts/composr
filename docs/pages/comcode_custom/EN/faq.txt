@@ -523,7 +523,7 @@ There are many factors to cookie integration, and it is renowned to be problemat
 [title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
 
 You must correct it using the config editor script, available under Admin Zone > Setup > Configuration > Installation Options. The installer asked for this value, but many users (wrongly) do not change it from the default auto-detected value.
-Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. To do this, hold down Ctrl+Alt+Shift and reload a page from your Composr site in a browser, when logged into Composr as an administrator. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
+Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
 
 [title="3"]Why do I not have commenting boxes on my CMS?[/title]
 

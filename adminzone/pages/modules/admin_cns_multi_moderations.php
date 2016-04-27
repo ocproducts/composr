@@ -33,6 +33,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
     public $table = 'f_multi_moderations';
     public $orderer = 'mm_name';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'multi_moderation';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -54,8 +56,8 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('MULTI_MODERATIONS'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_multi_moderations', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/multi_moderations'),
-               ) + parent::get_entry_points();
+            'browse' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('MULTI_MODERATIONS'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_multi_moderations', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/multi_moderations'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

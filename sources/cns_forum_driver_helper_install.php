@@ -70,7 +70,7 @@ function _helper_install_specifics()
 {
     $a = array();
     $a['name'] = 'cns_table_prefix';
-    $a['default'] = 'cms_';
+    $a['default'] = function_exists('get_default_table_prefix') ? get_default_table_prefix() : 'cms_';
     $a['description'] = do_lang('MOST_DEFAULT');
     $a['title'] = do_lang('TABLE_PREFIX');
     $b = array();

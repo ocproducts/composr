@@ -145,7 +145,7 @@ class JSMin
 
             case 3: // Handle next being a regexp, jump through it (NB: $this->b will be left unhandled after this, and will be used on next 'action' call)
                 $this->b = $this->get();
-                if ($this->b == '/') {
+                if ($this->b === '/') {
                     $this->b = $this->next__bypass_comments($this->b);
                     //if (is_array($this->b)) return $this->b;
 
@@ -178,7 +178,7 @@ class JSMin
                         }
 
                         $this->b = $this->get();
-                        if ($this->b == '/') {
+                        if ($this->b === '/') {
                             $this->b = $this->next__bypass_comments($this->b);
                         }
                         //if (is_array($this->b)) return $this->b;
@@ -203,7 +203,7 @@ class JSMin
                 if (!isset($this->input[$ptr])) break;
                 $_c = $this->input[$ptr];
                 $o = ord($_c);
-                $alphanumeric = ($o >= 65 && $o <= 90 || $o >= 97 && $o <= 122 || $o >= 48 && $o <= 57 || $c == '\\' || $c == '_' || $c == '$' || $o > 126);
+                $alphanumeric = ($o >= 65 && $o <= 90 || $o >= 97 && $o <= 122 || $o >= 48 && $o <= 57 || $c === '\\' || $c === '_' || $c === '$' || $o > 126);
                 if (($alphanumeric) || ($c == '')) {
                     if ($c == '') {
                         $_o = $o;
@@ -239,7 +239,7 @@ class JSMin
             return false;
         }
         $o = ord($c);
-        return $o >= 65 && $o <= 90 || $o >= 97 && $o <= 122 || $o >= 48 && $o <= 57 || $c == '\\' || $c == '_' || $c == '$' || $o > 126;
+        return $o >= 65 && $o <= 90 || $o >= 97 && $o <= 122 || $o >= 48 && $o <= 57 || $c === '\\' || $c === '_' || $c === '$' || $o > 126;
     }
 
     /**

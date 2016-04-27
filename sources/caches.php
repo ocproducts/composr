@@ -46,7 +46,7 @@ function init__caches()
      */
     $PERSISTENT_CACHE = null;
 
-    $use_persistent_cache = ((!empty($SITE_INFO['use_persistent_cache'])) && ($SITE_INFO['use_persistent_cache'] == '1')); // Default to off because badly configured caches can result in lots of very slow misses
+    $use_persistent_cache = (!empty($SITE_INFO['use_persistent_cache'])); // Default to off because badly configured caches can result in lots of very slow misses
     if (($use_persistent_cache) && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
         if ((class_exists('Memcached')) && (($SITE_INFO['use_persistent_cache'] == 'memcached') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/memcached');
@@ -57,7 +57,7 @@ function init__caches()
         } elseif ((function_exists('apc_fetch')) && (($SITE_INFO['use_persistent_cache'] == 'apc') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/apc');
             $PERSISTENT_CACHE = new Persistent_caching_apccache();
-        } elseif (((function_exists('eaccelerator_put')) || (function_exists('mmcache_put'))) && (($SITE_INFO['use_persistent_cache'] == 'eaccelerator') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
+        } elseif ((function_exists('eaccelerator_put')) && (($SITE_INFO['use_persistent_cache'] == 'eaccelerator') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
             require_code('persistent_caching/eaccelerator');
             $PERSISTENT_CACHE = new Persistent_caching_eacceleratorcache();
         } elseif ((function_exists('xcache_get')) && (($SITE_INFO['use_persistent_cache'] == 'xcache') || ($SITE_INFO['use_persistent_cache'] == '1'))) {
@@ -70,6 +70,7 @@ function init__caches()
             require_code('persistent_caching/filesystem');
             $PERSISTENT_CACHE = new Persistent_caching_filecache();
         }
+        // NB: sources/hooks/systems/checks/persistent_cache.php also references some of this ^
     }
 
     /** The smart cache (self-learning cache).
@@ -487,7 +488,7 @@ function erase_persistent_cache()
     }
     $d = opendir($path);
     while (($e = readdir($d)) !== false) {
-        if (substr($e, -4) == '.htm') {
+        if ((substr($e, -4) == '.htm' || substr($e, -4) == '.xml') && (strpos($e, '__failover_mode') === false)) {
             // Ideally we'd lock while we delete, but it's not stable (and the workaround would be too slow for our efficiency context). So some people reading may get errors while we're clearing the cache. Fortunately this is a rare op to perform.
             @unlink(get_custom_file_base() . '/caches/guest_pages/' . $e);
         }
@@ -611,15 +612,15 @@ function _get_cache_entries($dets)
 
     $rets = array();
 
+    require_code('temporal');
+    $staff_status = $GLOBALS['FORUM_DRIVER']->is_staff(get_member());
+    $the_member = get_member();
+    $groups = implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))));
+    $is_bot = is_null(get_bot_type()) ? 0 : 1;
+    $timezone = get_users_timezone(get_member());
+
     // Bulk load
     if ($GLOBALS['PERSISTENT_CACHE'] === null) {
-        require_code('temporal');
-        $staff_status = $GLOBALS['FORUM_DRIVER']->is_staff(get_member());
-        $the_member = get_member();
-        $groups = implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))));
-        $is_bot = is_null(get_bot_type()) ? 0 : 1;
-        $timezone = get_users_timezone(get_member());
-
         $do_query = false;
 
         $sql = 'SELECT cached_for,identifier,the_value,date_and_time,dependencies FROM ' . get_table_prefix() . 'cache WHERE ';
@@ -662,7 +663,7 @@ function _get_cache_entries($dets)
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $lang = user_lang();
-            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme));
+            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $the_member, $groups, $is_bot, $timezone));
 
             if ($cache_row === null) { // No
                 if ($caching_via_cron) {

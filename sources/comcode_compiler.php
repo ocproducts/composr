@@ -148,7 +148,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
 
     if (isset($CODE_TAGS[$tag])) {
         if (!$html_errors) {
-            if ($tag != 'staff_note') {
+            if ($tag == 'staff_note') {
                 return WYSIWYG_COMCODE__XML_BLOCK_ESCAPED;
             } else {
                 return WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED;
@@ -204,7 +204,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
         }
     }
-    $_embed = ($semihtml ? $embed->evaluate() : escape_html($embed->evaluate()));
+    $_embed = ($semihtml ? $embed->evaluate() : nl2br(escape_html($embed->evaluate())));
     $raw_comcode_start = '[' . $tag . $params_comcode . ']';
     $raw_comcode_end = '[/' . $tag . ']';
 
@@ -212,7 +212,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
         $method = wysiwyg_comcode_markup_style($tag, $attributes, $embed);
     }
 
-    if ($html_errors) {
+    if ($html_errors && $method != WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED) {
         if ($method != WYSIWYG_COMCODE__HTML) {
             $method = WYSIWYG_COMCODE__BUTTON;
         }
@@ -221,12 +221,12 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
     switch ($method) {
         case WYSIWYG_COMCODE__BUTTON:
             if ($tag == 'block') {
-                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($embed->evaluate()));
+                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($_embed));
             } else {
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
-            $raw_comcode = escape_html($raw_comcode_start) . escape_html($_embed) . escape_html($raw_comcode_end);
-            return '<input class="cms_keep_ui_controlled" size="45" title="' . $raw_comcode . '" type="button" value="' . $comcode_title . '" />';
+            $raw_comcode = $raw_comcode_start . $_embed . $raw_comcode_end;
+            return '<input class="cms_keep_ui_controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
         case WYSIWYG_COMCODE__XML_INLINE:
@@ -249,14 +249,18 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             }
             $out .= '<comcode-' . escape_html($tag) . $params_html . '>';
             switch ($method) {
-                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
-                    $out .= escape_html($embed->evaluate());
-                    break;
                 case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
-                    $out .= html_entity_decode($embed->evaluate(), ENT_QUOTES, get_charset());
+                    if ($semihtml) {
+                        $out .= html_entity_decode($_embed, ENT_QUOTES, get_charset());
+                    } else {
+                        $out .= $_embed;
+                    }
+                    break;
+                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                    $out .= $_embed;
                     break;
                 default:
-                    $out .= $embed->evaluate();
+                    $out .= $_embed;
                     break;
             }
             $out .= '</comcode-' . escape_html($tag) . '>';
@@ -307,14 +311,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 {
     global $LAX_COMCODE;
     if ($LAX_COMCODE === null && function_exists('get_option')) {
-        $LAX_COMCODE = (get_option('lax_comcode') == '1');
+        $LAX_COMCODE = (get_option('lax_comcode') === '1');
     }
 
     global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
     $html_escape_1_strrep_inv = array('&' => true, '"' => true, '\'' => true, '<' => true, '>' => true);
 
-    $print_mode = get_param_integer('wide_print', 0) == 1;
+    $print_mode = get_param_integer('wide_print', 0) === 1;
 
     $preparse_hooks = find_all_hooks('systems', 'comcode_preparse');
     foreach (array_keys($preparse_hooks) as $preparse_hook) {
@@ -327,7 +331,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     }
 
     // Fix smart quote problems (may be added unintentionally by other software)
-    if (get_charset() == 'utf-8') {
+    if (get_charset() === 'utf-8') {
         $comcode = preg_replace('#=\xE2\x80\x9C(.*)\xE2\x80\x9D#U', '="$1"', $comcode);
     }
 
@@ -446,8 +450,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     // Our state
     $status = CCP_NO_MANS_LAND;
-    $lax = $GLOBALS['LAX_COMCODE'] || function_exists('get_member') && $source_member != get_member() || count($_POST) == 0; // if we don't want to produce errors for technically invalid Comcode
-    if ((!$lax) && (substr($comcode, 0, 10) == '[semihtml]')) {
+    $lax = $GLOBALS['LAX_COMCODE'] || function_exists('get_member') && $source_member != get_member() || count($_POST) === 0; // if we don't want to produce errors for technically invalid Comcode
+    if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
         $lax = true;
     }
     $tag_stack = array(); // Contains tuples of our parser state. Does NOT purely represent the most recent tag, it's a combination of the most recent tag and the characteristics of the second most recent tag
@@ -466,7 +470,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     if ($comcode_dangerous) {
         $stupidity_mode = get_param_string('stupidity_mode', '');
     }
-    if ($stupidity_mode == 'leet') {
+    if ($stupidity_mode === 'leet') {
         $LEET_FILTER = array(
             'B' => '8',
             'C' => '(',
@@ -510,9 +514,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         // State machine
         switch ($status) {
             case CCP_NO_MANS_LAND:
-                if ($next == '[') {
+                if ($next === '[') {
                     // Look ahead to make sure it's a valid tag. If it's not then it's considered normal user input, not a tag at all
-                    $dif = (($pos < $len) && ($comcode[$pos] == '/')) ? 1 : 0; // '0' if it's an opening tag, '1' if it's a closing tag
+                    $dif = (($pos < $len) && ($comcode[$pos] === '/')) ? 1 : 0; // '0' if it's an opening tag, '1' if it's a closing tag
                     $ahead = substr($comcode, $pos + $dif, MAX_COMCODE_TAG_LOOK_AHEAD_LENGTH);
                     $equal_pos = strpos($ahead, '=');
                     $space_pos = strpos($ahead, ' ');
@@ -537,14 +541,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     $use_pos = min($equal_pos, $space_pos, $end_pos, $lax_end_pos, $cl_pos);
 
                     $potential_tag = strtolower(substr($ahead, 0, $use_pos));
-                    if (($use_pos != 22) && ((!$in_semihtml) || ($dif == 1) || (($potential_tag != 'html') && ($potential_tag != 'semihtml'))) && ((!$in_html) || (($dif == 1) && ($potential_tag == 'html'))) && ((!$in_code_tag) || ((isset($CODE_TAGS[$potential_tag])) && ($potential_tag == $current_tag))) && ((!$structure_sweep) || ($potential_tag != 'contents'))) {
+                    if (($use_pos != 22) && ((!$in_semihtml) || ($dif === 1) || (($potential_tag != 'html') && ($potential_tag != 'semihtml'))) && ((!$in_html) || (($dif === 1) && ($potential_tag === 'html'))) && ((!$in_code_tag) || ((isset($CODE_TAGS[$potential_tag])) && ($potential_tag === $current_tag))) && ((!$structure_sweep) || ($potential_tag != 'contents'))) {
                         if ($in_code_tag) {
-                            if ($dif == 1) {
+                            if ($dif === 1) {
                                 $code_nest_stack--;
                             } else {
                                 $code_nest_stack++;
                             }
-                            $ok = ($code_nest_stack == -1);
+                            $ok = ($code_nest_stack === -1);
                         } else {
                             $ok = true;
                         }
@@ -575,7 +579,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
                         }
                     } else {
-                        if (($use_pos != 22) && ((($in_semihtml) || ($in_html)) && (($potential_tag == 'html') || ($potential_tag == 'semihtml'))) && (!$in_code_tag)) {
+                        if (($use_pos != 22) && ((($in_semihtml) || ($in_html)) && (($potential_tag === 'html') || ($potential_tag === 'semihtml'))) && (!$in_code_tag)) {
                             $ahc = strpos($ahead, ']');
                             if ($ahc !== false) {
                                 $pos += $ahc + 1;
@@ -585,18 +589,18 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     }
                 }
 
-                if ((($in_html) || ((($in_semihtml) && (!$in_code_tag)) && (($next == '<') || ($next == '>') || ($next == '"'))))) {
-                    if ($next == "\n") {
+                if ((($in_html) || ((($in_semihtml) && (!$in_code_tag)) && (($next === '<') || ($next === '>') || ($next === '"'))))) {
+                    if ($next === "\n") {
                         ++$NUM_COMCODE_LINES_PARSED;
                     }
 
-                    if (((!$comcode_dangerous_html) || ($semiparse_mode)) && ($next == '<')) {
+                    if (((!$comcode_dangerous_html) || ($semiparse_mode)) && ($next === '<')) {
                         $tag_match = array();
                         if (preg_match('#(/)?(\w+)#A', $comcode, $tag_match, 0, $pos) != 0) {
                             $close_pos = strpos($comcode, '>', $pos);
                             $slash_pos = ($close_pos === false) ? false : strrpos(substr($comcode, 0, $close_pos), '/');
                             if ($slash_pos === false || $close_pos === false || $slash_pos + 1 !== $close_pos) { // If not a self-closing tag
-                                if ($tag_match[1] == '/') { // Closing
+                                if ($tag_match[1] === '/') { // Closing
                                     if (array_peek($html_element_stack) === $tag_match[2]) {
                                         array_pop($html_element_stack);
                                     } else {
@@ -638,7 +642,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         }
                     }
 
-                    if ((isset($comcode[$pos])) && ($comcode[$pos] == '!') && (substr($comcode, $pos - 1, 4) == '<!--')) { // To stop shortcut interpretation
+                    if ((isset($comcode[$pos])) && ($comcode[$pos] === '!') && (substr($comcode, $pos - 1, 4) === '<!--')) { // To stop shortcut interpretation
                         $continuation .= '<!--';
                         $pos += 3;
                     } else {
@@ -659,7 +663,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         $found_list = false;
                         $old_list_indent = $list_indent;
                         $matches = array();
-                        if (($pos + 2 < $len) && (is_numeric($next)) && (((is_numeric($comcode[$pos])) && ($comcode[$pos + 1] == ')') && ($comcode[$pos + 2] == ' ')) || (($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' '))) && ((($list_type == '1') && ($list_indent != 0)) || (preg_match('#[^\n]*\n\d+\) #A', $comcode, $matches, 0, $pos + 1) != 0))) {
+                        if (($pos + 2 < $len) && (is_numeric($next)) && (((is_numeric($comcode[$pos])) && ($comcode[$pos + 1] === ')') && ($comcode[$pos + 2] === ' ')) || (($comcode[$pos] === ')') && ($comcode[$pos + 1] === ' '))) && ((($list_type === '1') && ($list_indent != 0)) || (preg_match('#[^\n]*\n\d+\) #A', $comcode, $matches, 0, $pos + 1) != 0))) {
                             if (($list_indent != 0) && ($list_type != '1')) {
                                 list($temp_tpl, $old_list_indent) = _close_open_lists($list_indent, $list_type);
                                 if ($GLOBALS['XSS_DETECT']) {
@@ -671,7 +675,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $found_list = true;
                             $scan_pos = $pos;
                             $list_type = '1';
-                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] == ')') && ($comcode[$pos + 1] == ' ') && ((($list_type == 'a') && ($list_indent != 0)) || (preg_match('#[^\n]*\n[a-z]+\) #A', $comcode, $matches, 0, $pos + 1) != 0))) {
+                        } elseif (($pos + 2 < $len) && (ord($next) >= ord('a')) && (ord($next) <= ord('z')) && ($comcode[$pos] === ')') && ($comcode[$pos + 1] === ' ') && ((($list_type === 'a') && ($list_indent != 0)) || (preg_match('#[^\n]*\n[a-z]+\) #A', $comcode, $matches, 0, $pos + 1) != 0))) {
                             if (($list_indent != 0) && ($list_type != 'a')) {
                                 list($temp_tpl, $old_list_indent) = _close_open_lists($list_indent, $list_type);
                                 if ($GLOBALS['XSS_DETECT']) {
@@ -683,7 +687,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $found_list = true;
                             $scan_pos = $pos;
                             $list_type = 'a';
-                        } elseif ($next == ' ') {
+                        } elseif ($next === ' ') {
                             if (($old_list_indent != 0) && ($list_type != 'ul')) {
                                 list($temp_tpl, $old_list_indent) = _close_open_lists($list_indent, $list_type);
                                 if ($GLOBALS['XSS_DETECT']) {
@@ -696,11 +700,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $list_indent = 0;
                             while ($scan_pos < $len) {
                                 $scan_next = $comcode[$scan_pos];
-                                if (($scan_next == '-') && ($scan_pos + 1 < $len) && ($comcode[$scan_pos + 1] == ' ')) {
+                                if (($scan_next === '-') && ($scan_pos + 1 < $len) && ($comcode[$scan_pos + 1] === ' ')) {
                                     $found_list = true;
                                     break;
                                 } else {
-                                    if ($scan_next == ' ') {
+                                    if ($scan_next === ' ') {
                                         ++$list_indent;
                                     } else {
                                         break;
@@ -722,13 +726,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $tag_output->attach($close_list);
                             $old_list_indent = 0;
 
-                            if (($next == '-') && (!$just_title)) {
+                            if (($next === '-') && (!$just_title)) {
                                 $scan_pos = $pos;
                                 $found_rule = true;
                                 while ($scan_pos < $len) {
                                     $scan_next = $comcode[$scan_pos];
                                     if ($scan_next != '-') {
-                                        if ($scan_next == "\n") {
+                                        if ($scan_next === "\n") {
                                             ++$NUM_COMCODE_LINES_PARSED;
                                             break;
                                         } else {
@@ -749,7 +753,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         }
 
                         // List handling
-                        if (($list_indent == $old_list_indent) && ($old_list_indent != 0)) {
+                        if (($list_indent === $old_list_indent) && ($old_list_indent != 0)) {
                             $temp_tpl = '</li>';
                             if ($GLOBALS['XSS_DETECT']) {
                                 ocp_mark_as_escaped($temp_tpl);
@@ -762,7 +766,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 ocp_mark_as_escaped($temp_tpl);
                             }
                             $tag_output->attach($temp_tpl);
-                            $temp_tpl = ($list_type == 'ul') ? '</ul>' : '</ol>';
+                            $temp_tpl = ($list_type === 'ul') ? '</ul>' : '</ol>';
                             if ($GLOBALS['XSS_DETECT']) {
                                 ocp_mark_as_escaped($temp_tpl);
                             }
@@ -828,11 +832,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         }
                     }
 
-                    if (($next == "\n") && ($white_space_area) && ($print_mode) && ($list_indent == 0)) { // We might need to put some queued up stuff here: when we print, we can't float thumbnails
+                    if (($next === "\n") && ($white_space_area) && ($print_mode) && ($list_indent === 0)) { // We might need to put some queued up stuff here: when we print, we can't float thumbnails
                         $tag_output->attach($queued_tempcode);
                         $queued_tempcode = new Tempcode();
                     }
-                    if (($next == "\n") && ($white_space_area) && (!$in_semihtml) && ((!$just_ended) || ($semiparse_mode))) { // Hard-new-lines
+                    if (($next === "\n") && ($white_space_area) && (!$in_semihtml) && ((!$just_ended) || ($semiparse_mode))) { // Hard-new-lines
                         ++$NUM_COMCODE_LINES_PARSED;
                         $line_starting = true;
                         if ($GLOBALS['XSS_DETECT']) {
@@ -842,7 +846,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         $continuation = '';
                         $just_new_line = true;
                         $none_wrap_length = 0;
-                        if (($list_indent == 0) && (!$just_ended)) {
+                        if (($list_indent === 0) && (!$just_ended)) {
                             $temp_tpl = '<br />';
                             if ($GLOBALS['XSS_DETECT']) {
                                 ocp_mark_as_escaped($temp_tpl);
@@ -850,16 +854,16 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $tag_output->attach($temp_tpl);
                         }
                     } else {
-                        $just_new_line = ($just_ended && $next == "\n"); // Only propagate new line signal if it was a real but non-hard-new-line (i.e. the above if clause did not fire)
-                        if (($next == ' ') && ($white_space_area) && (!$in_semihtml)) {
-                            if (($line_starting) || (($pos > 1) && ($comcode[$pos - 2] == ' '))) { // Hard spaces
+                        $just_new_line = ($just_ended && $next === "\n"); // Only propagate new line signal if it was a real but non-hard-new-line (i.e. the above if clause did not fire)
+                        if (($next === ' ') && ($white_space_area) && (!$in_semihtml)) {
+                            if (($line_starting) || (($pos > 1) && ($comcode[$pos - 2] === ' '))) { // Hard spaces
                                 $next = '&nbsp;';
                                 ++$none_wrap_length;
                             } else {
                                 $none_wrap_length = 0;
                             }
                             $continuation .= $next;
-                        } elseif (($next == "\t") && ($white_space_area) && (!$in_semihtml)) {
+                        } elseif (($next === "\t") && ($white_space_area) && (!$in_semihtml)) {
                             if ($GLOBALS['XSS_DETECT']) {
                                 ocp_mark_as_escaped($continuation);
                             }
@@ -870,10 +874,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $none_wrap_length += strlen($_tab_tpl);
                             $tag_output->attach($tab_tpl);
                         } else {
-                            if (($next == ' ') || ($next == "\t") || ($just_ended)) {
+                            if (($next === ' ') || ($next === "\t") || ($just_ended)) {
                                 $none_wrap_length = 0;
                             } else {
-                                if (($wrap_pos !== null) && ($none_wrap_length >= $wrap_pos) && ((get_charset() != 'utf-8') || (preg_replace(array('#[\x09\x0A\x0D\x20-\x7E]#', '#[\xC2-\xDF][\x80-\xBF]#', '#\xE0[\xA0-\xBF][\x80-\xBF]#', '#[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}#', '#\xED[\x80-\x9F][\x80-\xBF]#', '#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '#[\xF1-\xF3][\x80-\xBF]{3}#', '#\xF4[\x80-\x8F][\x80-\xBF]{2}#'), array('', '', '', '', '', '', '', ''), $continuation) == '')) && ($textual_area) && (!$in_semihtml)) {
+                                if (($wrap_pos !== null) && ($none_wrap_length >= $wrap_pos) && ((get_charset() != 'utf-8') || (preg_replace(array('#[\x09\x0A\x0D\x20-\x7E]#', '#[\xC2-\xDF][\x80-\xBF]#', '#\xE0[\xA0-\xBF][\x80-\xBF]#', '#[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}#', '#\xED[\x80-\x9F][\x80-\xBF]#', '#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '#[\xF1-\xF3][\x80-\xBF]{3}#', '#\xF4[\x80-\x8F][\x80-\xBF]{2}#'), array('', '', '', '', '', '', '', ''), $continuation) === '')) && ($textual_area) && (!$in_semihtml)) {
                                     if ($GLOBALS['XSS_DETECT']) {
                                         ocp_mark_as_escaped($continuation);
                                     }
@@ -895,19 +899,19 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $differented = false; // If somehow via lookahead we've changed this to HTML and thus won't use it in raw form
 
                             // Variable lookahead
-                            if ((!$in_code_tag) && (($next == '{') && (isset($comcode[$pos])) && (($comcode[$pos] == '$') || ($comcode[$pos] == '+') || ($comcode[$pos] == '!')))) {
+                            if ((!$in_code_tag) && (($next === '{') && (isset($comcode[$pos])) && (($comcode[$pos] === '$') || ($comcode[$pos] === '+') || ($comcode[$pos] === '!')))) {
                                 if ($comcode_dangerous) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] == '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
                                         $tag_output->attach($continuation);
                                         $continuation = '';
-                                        if ($comcode[$pos] == '+') {
+                                        if ($comcode[$pos] === '+') {
                                             $p_end = $pos + 5;
                                             while ($p_end < $len) {
                                                 $p_portion = substr($comcode, $pos - 1, $p_end - ($pos - 1) + 5);
-                                                if (substr_count($p_portion, '{+START') == substr_count($p_portion, '{+END')) {
+                                                if (substr_count($p_portion, '{+START') === substr_count($p_portion, '{+END')) {
                                                     break;
                                                 }
                                                 $p_end++;
@@ -915,7 +919,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $p_len = 1;
                                             while ($pos + $p_len < $len) {
                                                 $p_portion = substr($comcode, $pos - 1, $p_len);
-                                                if (substr_count(str_replace('{', ' { ', $p_portion), '{') == substr_count(str_replace('}', ' } ', $p_portion), '}')) { // str_replace is to workaround a Quercus bug #4494
+                                                if (substr_count(str_replace('{', ' { ', $p_portion), '{') === substr_count(str_replace('}', ' } ', $p_portion), '}')) { // str_replace is to workaround a Quercus bug #4494
                                                     break;
                                                 }
                                                 $p_len++;
@@ -930,7 +934,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $ret = new Tempcode();
 
                                                 require_code('xhtml');
-                                                if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) == preg_replace('#\s#', '', $p_portion)) {
+                                                if (!$html_errors && preg_replace('#\s#', '', xhtmlise_html($p_portion, true)) === preg_replace('#\s#', '', $p_portion)) {
                                                     $ret->attach('<tempcode params="' . escape_html($p_opener) . '">');
                                                     $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
                                                     $ret->attach($p_portion_comcode);
@@ -946,7 +950,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             } else {
                                                 require_code('tempcode_compiler');
                                                 $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer);
-                                                if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) == '{+START,CASES,') {
+                                                if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) === '{+START,CASES,') {
                                                     $ret->singular_bind('DIRECTIVE_EMBEDMENT', make_string_tempcode($p_portion));
                                                 } else {
                                                     $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
@@ -955,13 +959,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                                 $pos = $p_end + 6;
                                             }
-                                        } elseif ($comcode[$pos] == '!') {
+                                        } elseif ($comcode[$pos] === '!') {
                                             $p_len = $pos;
                                             $balance = 1;
                                             while (($p_len < $len) && ($balance != 0)) {
-                                                if ($comcode[$p_len] == '{') {
+                                                if ($comcode[$p_len] === '{') {
                                                     $balance++;
-                                                } elseif ($comcode[$p_len] == '}') {
+                                                } elseif ($comcode[$p_len] === '}') {
                                                     $balance--;
                                                 }
                                                 $p_len++;
@@ -982,9 +986,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $p_len = $pos;
                                             $balance = 1;
                                             while (($p_len < $len) && ($balance != 0)) {
-                                                if ($comcode[$p_len] == '{') {
+                                                if ($comcode[$p_len] === '{') {
                                                     $balance++;
-                                                } elseif ($comcode[$p_len] == '}') {
+                                                } elseif ($comcode[$p_len] === '}') {
                                                     $balance--;
                                                 }
                                                 $p_len++;
@@ -1002,7 +1006,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         }
                                     }
                                 } else {
-                                    if (($comcode[$pos] == '$') && ($pos < $len - 2) && ($comcode[$pos + 1] == ',') && (strpos($comcode, '}', $pos) !== false)) {
+                                    if (($comcode[$pos] === '$') && ($pos < $len - 2) && ($comcode[$pos + 1] === ',') && (strpos($comcode, '}', $pos) !== false)) {
                                         $pos = strpos($comcode, '}', $pos) + 1;
                                         $differented = true;
                                     }
@@ -1010,12 +1014,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
 
                             // Escaping of comcode tag starts lookahead
-                            if (($next == '\\') && (!$in_code_tag)) { // We are changing \[ to [ with the side-effect of blocking a tag start. To get \[ literal, we need the symbols \\[... and add extra \-pairs as needed. We are only dealing with \ and [ (update: and now {) here, it's not a further extended means of escaping.
-                                if (($pos != $len) && (($comcode[$pos] == '"') || ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
+                            if (($next === '\\') && (!$in_code_tag)) { // We are changing \[ to [ with the side-effect of blocking a tag start. To get \[ literal, we need the symbols \\[... and add extra \-pairs as needed. We are only dealing with \ and [ (update: and now {) here, it's not a further extended means of escaping.
+                                if (($pos != $len) && (($comcode[$pos] === '"') || ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;'))) {
                                     if ($semiparse_mode) {
                                         $continuation .= '\\';
                                     }
-                                    if ($comcode[$pos] == '"') {
+                                    if ($comcode[$pos] === '"') {
                                         $continuation .= '"';
                                         ++$pos;
                                     } else {
@@ -1023,21 +1027,21 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $pos += 6;
                                     }
                                     $differented = true;
-                                } elseif (($pos != $len) && ($comcode[$pos] == '[')) {
+                                } elseif (($pos != $len) && ($comcode[$pos] === '[')) {
                                     if ($semiparse_mode) {
                                         $continuation .= '\\';
                                     }
                                     $continuation .= '[';
                                     ++$pos;
                                     $differented = true;
-                                } elseif (($pos != $len) && ($comcode[$pos] == '{')) {
+                                } elseif (($pos != $len) && ($comcode[$pos] === '{')) {
                                     if ($semiparse_mode) {
                                         $continuation .= '\\';
                                     }
                                     $continuation .= '{';
                                     ++$pos;
                                     $differented = true;
-                                } elseif (($pos == $len) || ($comcode[$pos] == '\\')) {
+                                } elseif (($pos === $len) || ($comcode[$pos] === '\\')) {
                                     if ($semiparse_mode) {
                                         $continuation .= '\\';
                                     }
@@ -1057,8 +1061,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $emoticon = ' ' . $emoticon . ' ';
                                         }
 
-                                        if ($next == $emoticon[0]) { // optimisation
-                                            if (substr($comcode, $pos - 1, strlen($emoticon)) == $emoticon) {
+                                        if ($next === $emoticon[0]) { // optimisation
+                                            if (substr($comcode, $pos - 1, strlen($emoticon)) === $emoticon) {
                                                 if ($GLOBALS['XSS_DETECT']) {
                                                     ocp_mark_as_escaped($continuation);
                                                 }
@@ -1075,7 +1079,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             }
                             if (($not_white_space) && (!$in_code_tag) && (!$differented)) {
                                 // Wiki pages
-                                if (($pos < $len) && ($next == '[') && ($pos + 1 < $len) && ($comcode[$pos] == '[') && (!$semiparse_mode) && (addon_installed('wiki'))) {
+                                if (($pos < $len) && ($next === '[') && ($pos + 1 < $len) && ($comcode[$pos] === '[') && (!$semiparse_mode) && (addon_installed('wiki'))) {
                                     $matches = array();
                                     if (preg_match('#\[([^\[\]]*)\]\]#A', $comcode, $matches, 0, $pos) != 0) {
                                         $wiki_page_name = $matches[1];
@@ -1102,14 +1106,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
 
                                 // Usernames
-                                if (($pos < $len) && ((($next == '{') && ($pos + 1 < $len) && ($comcode[$pos] == '{')) || (($next == '@') && (($pos <= 1) || (trim($comcode[$pos - 2]) == '')) && (get_forum_type() == 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
+                                if (($pos < $len) && ((($next === '{') && ($pos + 1 < $len) && ($comcode[$pos] === '{')) || (($next === '@') && (($pos <= 1) || (trim($comcode[$pos - 2]) === '')) && (get_forum_type() === 'cns'))) && (!$in_code_tag) && (!$semiparse_mode)) {
                                     $matches = array();
-                                    $explicit_username = ($next == '{');
+                                    $explicit_username = ($next === '{');
                                     if (preg_match($explicit_username ? '#\{([^"{}&\'\$<>]+)\}\}#A' : '#(\w[^\n]*)#A', $comcode, $matches, 0, $pos) != 0) {
                                         $username = $matches[1];
 
                                         if ($explicit_username) {
-                                            if ($username[0] == '?') {
+                                            if ($username[0] === '?') {
                                                 $username_info = true;
                                                 $username = substr($username, 1);
                                             } else {
@@ -1154,7 +1158,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                             if (!is_guest($this_member_id)) {
                                                 $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($this_member_id, false, true);
-                                                if ((get_forum_type() == 'cns') && ($username_info)) {
+                                                if ((get_forum_type() === 'cns') && ($username_info)) {
                                                     require_lang('cns');
                                                     require_code('cns_members2');
                                                     //$details = render_member_box($this_member_id);
@@ -1189,13 +1193,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             // Shortcut lookahead
                             if (!$differented && !$in_code_tag) {
-                                if (($in_semihtml) && ($next == '-') && (substr($comcode, $pos - 1, 3) == '-->')) { // To stop shortcut interpretation
+                                if (($in_semihtml) && ($next === '-') && (substr($comcode, $pos - 1, 3) === '-->')) { // To stop shortcut interpretation
                                     $continuation .= '-->';
                                     $pos += 2;
                                     break;
                                 }
                                 foreach ($shortcuts as $code => $replacement) {
-                                    if (($next == $code[0]) && (isset($comcode[$pos])) && ($comcode[$pos] == $code[1]) && (substr($comcode, $pos - 1, strlen($code)) == $code)) {
+                                    if (($next === $code[0]) && (isset($comcode[$pos])) && ($comcode[$pos] === $code[1]) && (substr($comcode, $pos - 1, strlen($code)) === $code)) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
@@ -1214,7 +1218,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             // Table syntax
                             if (!$differented && !$in_code_tag) {
-                                if (($pos < $len) && ($comcode[$pos] == '|')) {
+                                if (($pos < $len) && ($comcode[$pos] === '|')) {
                                     $end_tbl = strpos($comcode, "\n" . '|}', $pos);
                                     if ($end_tbl !== false) {
                                         $end_fst_line_pos = strpos($comcode, "\n", $pos);
@@ -1252,16 +1256,16 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WRAP_START'));
 
                                                 // Do floated one (if float based)
-                                                $i_dir_1 = (($to_float == 1) ? 'left' : 'right');
+                                                $i_dir_1 = (($to_float === 1) ? 'left' : 'right');
                                                 $i_dir_2 = (($to_float != 1) ? 'left' : 'right');
                                                 if (preg_match('#(^|\s)wide($|\s)#', $caption) != 0) {
                                                     // Float based
                                                     $tag_output->attach(do_template('COMCODE_FAKE_TABLE_WIDE_START_CELL', array(
                                                         '_GUID' => 'ced8c3a142f74296a464b085ba6891c9',
-                                                        'WIDTH' => array_key_exists(($to_float == 1) ? 0 : (count($cells) - 1), $ratios) ? $ratios[($to_float == 1) ? 0 : (count($cells) - 1)] : ((count($cells) == 2) ? '0' : float_to_raw_string(97.0 / (floatval(count($cells)) / 2.0 - 1.0), 2) . '%'),
+                                                        'WIDTH' => array_key_exists(($to_float === 1) ? 0 : (count($cells) - 1), $ratios) ? $ratios[($to_float === 1) ? 0 : (count($cells) - 1)] : ((count($cells) === 2) ? '0' : float_to_raw_string(97.0 / (floatval(count($cells)) / 2.0 - 1.0), 2) . '%'),
                                                         'FLOAT' => $i_dir_1,
-                                                        'PADDING' => ($to_float == 1) ? '' : '-left',
-                                                        'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                        'PADDING' => ($to_float === 1) ? '' : '-left',
+                                                        'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                     )));
                                                 } else {
                                                     // Inline-block based
@@ -1269,8 +1273,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                         '_GUID' => '90be72fcbb6b9d8a312da0bee5b86cb3',
                                                         'WIDTH' => array_key_exists($to_float, $ratios) ? $ratios[$to_float] : '',
                                                         'FLOAT' => $i_dir_1,
-                                                        'PADDING' => ($to_float == 1) ? '' : '-left',
-                                                        'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2.0) / 2.0), 2),
+                                                        'PADDING' => ($to_float === 1) ? '' : '-left',
+                                                        'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2.0) / 2.0), 2),
                                                     )));
                                                 }
                                                 $tag_output->attach(comcode_to_tempcode(isset($cells[$to_float]) ? trim($cells[$to_float]) : '', $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
@@ -1279,7 +1283,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 // Do non-floated ones
                                                 $cell_i = 0;
                                                 foreach ($cells as $i => $cell) {
-                                                    if ($i % 2 == 1) {
+                                                    if ($i % 2 === 1) {
                                                         if ($i != $to_float) {
                                                             if (preg_match('#(^|\s)wide($|\s)#', $caption) != 0) {
                                                                 // Float based
@@ -1287,8 +1291,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                                     '_GUID' => '9bac42a1b62c5c9a2f758639fcb3bb2f',
                                                                     'WIDTH' => array_key_exists($cell_i, $ratios) ? $ratios[$cell_i] : (float_to_raw_string(97.0 / (floatval(count($cells)) / 2.0), 2) . '%'),
                                                                     'FLOAT' => $i_dir_1,
-                                                                    'PADDING' => (($to_float == 1) || ($cell_i != 0)) ? '-left' : '',
-                                                                    'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                                    'PADDING' => (($to_float === 1) || ($cell_i != 0)) ? '-left' : '',
+                                                                    'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                                 )));
                                                             } else {
                                                                 // Inline-block based
@@ -1296,8 +1300,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                                     '_GUID' => '0f15f9d5554635ed7ac154c9dc5c72b8',
                                                                     'WIDTH' => array_key_exists($cell_i, $ratios) ? $ratios[$cell_i] : '',
                                                                     'FLOAT' => $i_dir_1,
-                                                                    'PADDING' => (($to_float == 1) || ($cell_i != 0)) ? '-left' : '',
-                                                                    'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                                    'PADDING' => (($to_float === 1) || ($cell_i != 0)) ? '-left' : '',
+                                                                    'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(3.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                                 )));
                                                             }
                                                             $tag_output->attach(comcode_to_tempcode(trim($cell), $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member));
@@ -1324,9 +1328,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $caption_bits = explode(' ', $caption);
                                             $caption = '';
                                             foreach ($caption_bits as $caption_bit) {
-                                                if (($caption == '') && ($caption_bit == 'wide')) {
+                                                if (($caption === '') && ($caption_bit === 'wide')) {
                                                     $wide = true;
-                                                } elseif (($caption == '') && (preg_match('#^\d+(em|px)$#', $caption_bit) != 0)) {
+                                                } elseif (($caption === '') && (preg_match('#^\d+(em|px)$#', $caption_bit) != 0)) {
                                                     $column_sizes[] = $caption_bit;
                                                 } else {
                                                     if ($caption != '') {
@@ -1374,8 +1378,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                             'WIDTH' => array_key_exists($cell_i, $ratios) ? $ratios[$cell_i] : '',
                                                             'C_TYPE' => $c_type,
                                                             'MID' => $_mid,
-                                                            'PADDING' => ($cell_i == 0) ? '' : '-left',
-                                                            'PADDING_AMOUNT' => (count($cells) == 2) ? '0' : float_to_raw_string(5.0 / (floatval(count($cells) - 2) / 2.0), 2),
+                                                            'PADDING' => ($cell_i === 0) ? '' : '-left',
+                                                            'PADDING_AMOUNT' => (count($cells) === 2) ? '0' : float_to_raw_string(5.0 / (floatval(count($cells) - 2) / 2.0), 2),
                                                         )));
 
                                                         $cell_i++;
@@ -1405,7 +1409,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $rows = $GLOBALS['SITE_DB']->query($banner_sql, null, null, true);
                                         if (!is_null($rows)) {
                                             // Filter out what we don't have permission for
-                                            if (get_option('use_banner_permissions', true) == '1') {
+                                            if (get_option('use_banner_permissions', true) === '1') {
                                                 require_code('permissions');
                                                 $groups = _get_where_clause_groups($source_member);
                                                 if (!is_null($groups)) {
@@ -1435,8 +1439,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                     // Apply
                                     if ($ADVERTISING_BANNERS_CACHE !== null) {
                                         foreach ($ADVERTISING_BANNERS_CACHE as $ad_trigger => $ad_bits) {
-                                            if (strtolower($next) == strtolower($ad_trigger[0])) { // optimisation
-                                                if (strtolower(substr($comcode, $pos - 1, strlen($ad_trigger))) == strtolower($ad_trigger)) {
+                                            if (strtolower($next) === strtolower($ad_trigger[0])) { // optimisation
+                                                if (strtolower(substr($comcode, $pos - 1, strlen($ad_trigger))) === strtolower($ad_trigger)) {
                                                     $just_banner_row = db_map_restrict($ad_bits, array('name', 'caption'));
 
                                                     if ($GLOBALS['XSS_DETECT']) {
@@ -1458,8 +1462,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 // Search highlighting lookahead
                                 if ($highlight_bits !== null) {
                                     foreach ($highlight_bits as $highlight_bit) {
-                                        if (strtolower($next) == strtolower($highlight_bit[0])) { // optimisation
-                                            if (strtolower(substr($comcode, $pos - 1, strlen($highlight_bit))) == strtolower($highlight_bit)) {
+                                        if (strtolower($next) === strtolower($highlight_bit[0])) { // optimisation
+                                            if (strtolower(substr($comcode, $pos - 1, strlen($highlight_bit))) === strtolower($highlight_bit)) {
                                                 if ($GLOBALS['XSS_DETECT']) {
                                                     ocp_mark_as_escaped($continuation);
                                                 }
@@ -1484,7 +1488,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 $b = strrpos($until_now, '>');
                                 $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
                             }
-                            if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] == 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next == 'h') && ((substr($comcode, $pos - 1, strlen('http://')) == 'http://') || (substr($comcode, $pos - 1, strlen('https://')) == 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) == 'ftp://'))) {
+                            if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next === 'h') && ((substr($comcode, $pos - 1, strlen('http://')) === 'http://') || (substr($comcode, $pos - 1, strlen('https://')) === 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://'))) {
                                 // Find the full link portion in the upcoming Comcode
                                 $link_end_pos = strlen($comcode);
                                 foreach (array(' ', "\n", ']', '[', ')', '"', '>', '<', '}', '{', ".\n", ', ', '. ', "'",) as $link_terminator_str) {
@@ -1499,7 +1503,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 $auto_link = preg_replace('#([?&])(keep|for)_session=\w*#', '${1}', $auto_link);
 
                                 if (substr($auto_link, -3) != '://') { // If it's not just a hanging protocol
-                                    if (substr($auto_link, -1) == '.') { // Strip trailing dot (dots may be within, but not at the end)
+                                    if (substr($auto_link, -1) === '.') { // Strip trailing dot (dots may be within, but not at the end)
                                         $auto_link = substr($auto_link, 0, strlen($auto_link) - 1);
                                         $link_end_pos--;
                                     }
@@ -1541,24 +1545,24 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             if (!$differented) {
                                 if (($stupidity_mode != '') && ($textual_area)) {
-                                    if (($stupidity_mode == 'leet') && (mt_rand(0, 1) == 1)) {
+                                    if (($stupidity_mode === 'leet') && (mt_rand(0, 1) === 1)) {
                                         if (array_key_exists(strtoupper($next), $LEET_FILTER)) {
                                             $next = $LEET_FILTER[strtoupper($next)];
                                         }
-                                    } elseif (($stupidity_mode == 'bork') && (mt_rand(0, 60) == 1)) {
+                                    } elseif (($stupidity_mode === 'bork') && (mt_rand(0, 60) === 1)) {
                                         $next .= '-bork-bork-bork-';
                                     }
                                 }
                                 if ((!$in_separate_parse_section) && ((!$in_semihtml) || ((!$comcode_dangerous_html)/*If we don't support HTML and we haven't done the all_semihtml pre-filter at the top*/ && (!$is_all_semihtml)))) { // Display char. We try and support entities
-                                    if ($next == '&') {
+                                    if ($next === '&') {
                                         $matches = array();
                                         $entity = preg_match('#(\#)?([\w]*);#iA', $comcode, $matches, 0, $pos) != 0; // If it is a SAFE entity, use it
 
                                         if (($entity) && (!$in_code_tag)) {
-                                            if (($matches[1] == '') && (($in_semihtml) || (isset($ALLOWED_COMCODE_ENTITIES[$matches[2]])))) {
+                                            if (($matches[1] === '') && (($in_semihtml) || (isset($ALLOWED_COMCODE_ENTITIES[$matches[2]])))) {
                                                 $pos += strlen($matches[2]) + 1;
                                                 $continuation .= '&' . $matches[2] . ';';
-                                            } elseif ((is_numeric($matches[2])) && ($matches[1] == '#')) {
+                                            } elseif ((is_numeric($matches[2])) && ($matches[1] === '#')) {
                                                 $matched_entity = intval(base_convert($matches[2], 16, 10));
                                                 if (($matched_entity < 127) && (array_key_exists(chr($matched_entity), $POTENTIAL_JS_NAUGHTY_ARRAY))) {
                                                     $continuation .= '&amp;';
@@ -1585,12 +1589,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_NAME:
-                if ($next == '=') {
+                if ($next === '=') {
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
                     $current_attribute_name = 'param';
-                } elseif (trim($next) == '') {
+                } elseif (trim($next) === '') {
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
-                } elseif ($next == '[') {
+                } elseif ($next === '[') {
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_OPEN_ANOMALY'), $pos, $comcode, $check_only);
                     }
@@ -1598,7 +1602,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     $next = ']';
                     $pos--;
                 }
-                if ($next == ']') {
+                if ($next === ']') {
                     if ($close) {
                         if ($formatting_allowed) {
                             list($close_list, $list_indent) = _close_open_lists($list_indent, $list_type);
@@ -1608,8 +1612,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $tag_output->attach($close_list);
                         }
 
-                        if (count($tag_stack) == 0) {
-                            if ($current_tag == 'semihtml') { // Ignore, as people in WYSIWYG often incorrectly try and nest semihtml tags
+                        if (count($tag_stack) === 0) {
+                            if ($current_tag === 'semihtml') { // Ignore, as people in WYSIWYG often incorrectly try and nest semihtml tags
                                 $status = CCP_NO_MANS_LAND;
                                 break;
                             }
@@ -1622,11 +1626,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         }
                         $has_it = false;
                         foreach (array_reverse($tag_stack) as $t) {
-                            if ($t[0] == $current_tag) {
+                            if ($t[0] === $current_tag) {
                                 $has_it = true;
                                 break;
                             }
-                            if (($in_semihtml) && (($current_tag == 'html') || ($current_tag == 'semihtml'))) {// Only search one level for this
+                            if (($in_semihtml) && (($current_tag === 'html') || ($current_tag === 'semihtml'))) {// Only search one level for this
                                 break;
                             }
                         }
@@ -1648,7 +1652,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                     $comcode_dangerous = $_last[7];
                                     $comcode_dangerous_html = $_last[8];
 
-                                    if (count($tag_stack) == 0) { // Hmm, it was never open. So let's pretend this tag close never happened
+                                    if (count($tag_stack) === 0) { // Hmm, it was never open. So let's pretend this tag close never happened
                                         $status = CCP_NO_MANS_LAND;
                                         break 2;
                                     }
@@ -1693,22 +1697,22 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         $tag_output->attach($embed_output);
                         $just_ended = isset($BLOCK_TAGS[$current_tag]);
 
-                        if ($current_tag == 'title') {
-                            if ((strlen($comcode) > $pos + 1) && ($comcode[$pos] == "\n") && ($comcode[$pos + 1] == "\n")) { // Linux newline
+                        if ($current_tag === 'title') {
+                            if ((strlen($comcode) > $pos + 1) && ($comcode[$pos] === "\n") && ($comcode[$pos + 1] === "\n")) { // Linux newline
                                 $NUM_COMCODE_LINES_PARSED += 2;
                                 $pos += 2;
                                 $just_new_line = true;
                             }
                         }
 
-                        if ($current_tag == 'html') {
+                        if ($current_tag === 'html') {
                             $in_html = false;
-                        } elseif ($current_tag == 'semihtml') {
+                        } elseif ($current_tag === 'semihtml') {
                             $in_semihtml = false;
                         }
                         $status = CCP_NO_MANS_LAND;
                     } else {
-                        if ($current_tag == 'title') {
+                        if ($current_tag === 'title') {
                             $just_new_line = false;
                             list($close_list, $list_indent) = _close_open_lists($list_indent, $list_type);
                             if ($GLOBALS['XSS_DETECT']) {
@@ -1724,26 +1728,26 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                             $code_nest_stack = 0;
                         }
                     }
-                } elseif ($status == CCP_IN_TAG_NAME) {
+                } elseif ($status === CCP_IN_TAG_NAME) {
                     $current_tag .= strtolower($next);
                 }
                 break;
 
             case CCP_STARTING_TAG:
-                if ($next == '[') { // Can't actually occur though
+                if ($next === '[') { // Can't actually occur though
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_OPEN_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
                     $status = CCP_NO_MANS_LAND;
                     $pos--;
-                } elseif ($next == ']') { // Can't actual occur though
+                } elseif ($next === ']') { // Can't actual occur though
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_CLOSE_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
                     $status = CCP_NO_MANS_LAND;
-                } elseif ($next == '/') {
+                } elseif ($next === '/') {
                     $close = true;
                 } else {
                     $current_tag .= strtolower($next);
@@ -1752,8 +1756,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_BETWEEN_ATTRIBUTES:
-                if ($next == ']') {
-                    if ($current_tag == 'title') {
+                if ($next === ']') {
+                    if ($current_tag === 'title') {
                         $just_new_line = false;
                         list($close_list, $list_indent) = _close_open_lists($list_indent, $list_type);
                         if ($GLOBALS['XSS_DETECT']) {
@@ -1768,12 +1772,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     if ($in_code_tag) {
                         $code_nest_stack = 0;
                     }
-                } elseif ($next == '[') {
+                } elseif ($next === '[') {
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_OPEN_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
-                    if ($current_tag == 'title') {
+                    if ($current_tag === 'title') {
                         $just_new_line = false;
                         list($close_list, $list_indent) = _close_open_lists($list_indent, $list_type);
                         if ($GLOBALS['XSS_DETECT']) {
@@ -1797,14 +1801,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_ATTRIBUTE_NAME:
-                if ($next == '[') {
+                if ($next === '[') {
                     $status = CCP_NO_MANS_LAND;
                     $pos--;
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_OPEN_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
-                    if ($current_tag == 'title') {
+                    if ($current_tag === 'title') {
                         $just_new_line = false;
                         list($close_list, $list_indent) = _close_open_lists($list_indent, $list_type);
                         if ($GLOBALS['XSS_DETECT']) {
@@ -1819,8 +1823,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     if ($in_code_tag) {
                         $code_nest_stack = 0;
                     }
-                } elseif ($next == ']') {
-                    if (($attribute_map == array()) && (!$lax)) {
+                } elseif ($next === ']') {
+                    if (($attribute_map === array()) && (!$lax)) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_CLOSE_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
@@ -1836,7 +1840,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     if ($in_code_tag) {
                         $code_nest_stack = 0;
                     }
-                } elseif ($next == '=') {
+                } elseif ($next === '=') {
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
                 } elseif ($next != ' ') {
                     $current_attribute_name .= strtolower($next);
@@ -1846,17 +1850,17 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT:
-                if ($next == '=') {
+                if ($next === '=') {
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT;
                 } elseif (trim($next) != '') {
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_ATTRIBUTE_ERROR', $current_attribute_name, $current_tag), $pos, $comcode, $check_only);
                     }
 
-                    if ($next == '[') {
+                    if ($next === '[') {
                         $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                         $pos--;
-                    } elseif ($next == ']') {
+                    } elseif ($next === ']') {
                         $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                         $pos--;
                     }
@@ -1864,22 +1868,22 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT:
-                if ($next == '[') { // Can't actually occur though
+                if ($next === '[') { // Can't actually occur though
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_OPEN_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     $pos--;
-                } elseif ($next == ']') { // Can't actually occur though
+                } elseif ($next === ']') { // Can't actually occur though
                     if (!$lax) {
                         return comcode_parse_error($preparse_mode, array('CCP_TAG_CLOSE_ANOMALY'), $pos, $comcode, $check_only);
                     }
 
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     $pos--;
-                } elseif (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
-                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                } elseif (($next === '"') || (($in_semihtml) && ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;')) {
                         $pos += 5;
                     }
                     $status = CCP_IN_TAG_ATTRIBUTE_VALUE;
@@ -1891,13 +1895,13 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_ATTRIBUTE_VALUE_NO_QUOTE:
-                if ($next == ' ') {
+                if ($next === ' ') {
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
                     if ((isset($attribute_map[$current_attribute_name])) && (!$lax)) {
                         return comcode_parse_error($preparse_mode, array('CCP_DUPLICATE_ATTRIBUTES', $current_attribute_name, $current_tag), $pos, $comcode, $check_only);
                     }
                     $attribute_map[$current_attribute_name] = $current_attribute_value;
-                } elseif ($next == ']') {
+                } elseif ($next === ']') {
                     if ((isset($attribute_map[$current_attribute_name])) && (!$lax)) {
                         return comcode_parse_error($preparse_mode, array('CCP_DUPLICATE_ATTRIBUTES', $current_attribute_name, $current_tag), $pos, $comcode, $check_only);
                     }
@@ -1911,8 +1915,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                 break;
 
             case CCP_IN_TAG_ATTRIBUTE_VALUE:
-                if (($next == '"') || (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;'))) {
-                    if (($in_semihtml) && ($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                if (($next === '"') || (($in_semihtml) && ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;'))) {
+                    if (($in_semihtml) && ($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;')) {
                         $pos += 5;
                     }
                     $status = CCP_IN_TAG_BETWEEN_ATTRIBUTES;
@@ -1921,14 +1925,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     }
                     $attribute_map[$current_attribute_name] = $current_attribute_value;
                 } else {
-                    if ($next == '\\') {
-                        if ($comcode[$pos] == '"') {
+                    if ($next === '\\') {
+                        if ($comcode[$pos] === '"') {
                             $current_attribute_value .= '"';
                             ++$pos;
-                        } elseif (($comcode[$pos - 1] == '&') && (substr($comcode, $pos - 1, 6) == '&quot;')) {
+                        } elseif (($comcode[$pos - 1] === '&') && (substr($comcode, $pos - 1, 6) === '&quot;')) {
                             $current_attribute_value .= '&quot;';
                             $pos += 6;
-                        } elseif ($comcode[$pos] == '\\') {
+                        } elseif ($comcode[$pos] === '\\') {
                             $current_attribute_value .= '\\';
                             ++$pos;
                         } else {
@@ -2024,7 +2028,7 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
 
     $block_tag = isset($BLOCK_TAGS[$current_tag]);
 
-    if (($block_tag) && ($pos < $len) && ($comcode[$pos] == "\n")) {
+    if (($block_tag) && ($pos < $len) && ($comcode[$pos] === "\n")) {
         ++$pos;
         global $NUM_COMCODE_LINES_PARSED;
         ++$NUM_COMCODE_LINES_PARSED;
@@ -2034,7 +2038,7 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
     $textual_area = isset($TEXTUAL_TAGS[$current_tag]);
 
     $white_space_area = $textual_area;
-    if (((($current_tag == 'code') || ($current_tag == 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) == 'php') || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] == 'HTML') ? 'html5' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag == 'attachment') || ($current_tag == 'attachment_safe') || ($current_tag == 'menu')) {
+    if (((($current_tag === 'code') || ($current_tag === 'codebox')) && (isset($attribute_map['param'])) && ((strtolower($attribute_map['param']) === 'php') || (file_exists(get_file_base() . '/sources_custom/geshi/' . filter_naughty(($attribute_map['param'] === 'HTML') ? 'html5' : strtolower($attribute_map['param'])) . '.php')))) || ($current_tag === 'attachment') || ($current_tag === 'attachment_safe') || ($current_tag === 'menu')) {
         $in_separate_parse_section = true;
     } else {
         // Code tags are white space area, but not textual area
@@ -2049,20 +2053,20 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
 
     $formatting_allowed = (($textual_area ? 1 : 0) & ($block_tag ? 1 : 0)) != 0;
 
-    if ($current_tag == 'html') {
+    if ($current_tag === 'html') {
         $in_html = !$close;
-    } elseif ($current_tag == 'semihtml') {
+    } elseif ($current_tag === 'semihtml') {
         $in_semihtml = !$close;
     }
     $status = CCP_NO_MANS_LAND;
 
-    if (($current_tag == 'html') || ($current_tag == 'semihtml')) { // New state meaning we need to filter the contents
+    if (($current_tag === 'html') || ($current_tag === 'semihtml')) { // New state meaning we need to filter the contents
         if (($in_html) || ($in_semihtml)) {
             filter_html($as_admin, $source_member, $pos, $len, $comcode, $in_html, $in_semihtml);
         }
     }
 
-    if (($current_tag == 'quote') && (count($attribute_map) > 0)) {
+    if (($current_tag === 'quote') && (count($attribute_map) > 0)) {
         $comcode_dangerous = false;
         $comcode_dangerous_html = false;
     }
@@ -2126,7 +2130,7 @@ function _close_open_lists($list_indent, $list_type)
     $tag_output = '';
     for ($i = 0; $i < $list_indent; ++$i) { // Close any lists that exist
         $tag_output .= '</li>';
-        $temp_tpl = ($list_type == 'ul') ? '</ul>' : '</ol>';
+        $temp_tpl = ($list_type === 'ul') ? '</ul>' : '</ol>';
         $tag_output .= $temp_tpl;
     }
     $list_indent = 0;
@@ -2145,7 +2149,7 @@ function parse_single_comcode_tag($data, $tag = '\w+')
     $attributes = array();
     $_attributes = preg_replace('#^\[' . $tag . '\s*#', '', preg_replace('#\[/' . $tag . '\]$#Us', '', $data));
     if (($_attributes != '') && ($_attributes != $data/*if it matched*/)) {
-        if (substr($_attributes, 0, 1) == '=') {
+        if (substr($_attributes, 0, 1) === '=') {
             $_attributes = 'param' . $_attributes;
         }
         $current_attribute = '';
@@ -2154,22 +2158,22 @@ function parse_single_comcode_tag($data, $tag = '\w+')
         for ($i = 0; $i < strlen($_attributes); $i++) {
             $next = $_attributes[$i];
             if (!$in_attribute) {
-                if ($next == '=') {
+                if ($next === '=') {
                     $in_attribute = true;
-                    if (($i != strlen($_attributes) - 1) && ($_attributes[$i + 1] == '"')) {
+                    if (($i != strlen($_attributes) - 1) && ($_attributes[$i + 1] === '"')) {
                         $i++; // Skip opening "
                     }
                     $current_value = '';
-                } elseif ($next == ']') {
+                } elseif ($next === ']') {
                     $attributes[''] = substr($_attributes, $i + 1);
                     break;
                 } else {
                     $current_attribute .= $next;
                 }
             } else {
-                if ($next == '"') {
+                if ($next === '"') {
                     $in_attribute = false;
-                    if (($i != strlen($_attributes) - 1) && ($_attributes[$i + 1] == ' ')) {
+                    if (($i != strlen($_attributes) - 1) && ($_attributes[$i + 1] === ' ')) {
                         $i++; // Skip space
                     }
                     $attributes[$current_attribute] = str_replace(array('\\[', '\\]', '\\{', '\\}', '\\\''), array('[', ']', '{', '}', '\''), $current_value);

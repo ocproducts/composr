@@ -301,6 +301,7 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
             break;
 
         case 'page':
+        case 'comcode_page':
             $where = array('zone_name' => $node['permissions'][1]['zone_name'], 'page_name' => $node['permissions'][1]['page_name']);
             $negative_access = $GLOBALS['SITE_DB']->query_select('group_page_access', array('group_id'), $where);
             $negative_access = array_flip(collapse_1d_complexity('group_id', $negative_access));
@@ -556,8 +557,7 @@ function sitemap_script_saving()
                 } else {
                     $privilege_page = $page;
                 }
-
-                $overridable_privileges = _get_overridable_privileges_for_privilege_page($privilege_page);
+                $overridable_privileges = ($node['content_type'] == 'comcode_page') ? array() : _get_overridable_privileges_for_privilege_page($privilege_page);
 
                 // Insertion
                 foreach ($groups as $group => $group_name) { // For all usergroups

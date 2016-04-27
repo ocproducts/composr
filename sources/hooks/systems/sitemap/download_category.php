@@ -126,13 +126,13 @@ class Hook_sitemap_download_category extends Hook_sitemap_content
         }
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
-                      'sitemap_refreshfreq' => 'weekly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
+            'sitemap_refreshfreq' => 'weekly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_downloads', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_downloads')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_downloads', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_downloads')),
+        ) + $partial_struct;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

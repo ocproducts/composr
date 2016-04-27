@@ -106,9 +106,11 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  ?Tempcode $intro Introductory text (null: none)
  * @param  ?Tempcode $entries_title Entries section title (null: default, Entries)
  * @param  ?Tempcode $categories_title Categories section title (null: default, Categories)
+ * @param  ?string $entry_content_type Entry content type (null: unknown)
+ * @param  ?string $category_content_type Category content type (null: unknown)
  * @return Tempcode The do next manager
  */
-function do_next_manager($title, $text, $main = null, $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_to_category = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = null, $category_extras = null, $additional_extras = null, $additional_title = null, $intro = null, $entries_title = null, $categories_title = null)
+function do_next_manager($title, $text, $main = null, $main_title = null, $url_add_one = null, $url_edit_this = null, $url_edit_one = null, $url_view_this = null, $url_view_archive = null, $url_add_to_category = null, $url_add_one_category = null, $url_edit_one_category = null, $url_edit_this_category = null, $url_view_this_category = null, $entry_extras = null, $category_extras = null, $additional_extras = null, $additional_title = null, $intro = null, $entries_title = null, $categories_title = null, $entry_content_type = null, $category_content_type = null)
 {
     if (is_null($intro)) {
         $intro = new Tempcode();
@@ -130,7 +132,7 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
 
     // Main section stuff (the "Main" section is not always shown - it is shown when the do-next screen is being used as a traditional menu, not as a followup-action screen)
     if (!is_null($main)) {
-        $sections->attach(_do_next_section($main, make_string_tempcode($main_title)));
+        $sections->attach(_do_next_section($main, make_string_tempcode($main_title), $entry_content_type, $category_content_type));
     }
 
     $current_page_type = get_param_string('type', '');
@@ -197,7 +199,7 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
     if (!is_null($entry_extras)) {
         $entry_passed_2 = array_merge($entry_passed_2, $entry_extras);
     }
-    $sections->attach(_do_next_section($entry_passed_2, is_null($entries_title) ? do_lang_tempcode('ENTRIES') : $entries_title));
+    $sections->attach(_do_next_section($entry_passed_2, is_null($entries_title) ? do_lang_tempcode('ENTRIES') : $entries_title, $entry_content_type, $category_content_type));
 
     // Category stuff
     $category_passed = array(
@@ -254,11 +256,11 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
     if (!is_null($category_extras)) {
         $category_passed_2 = array_merge($category_passed_2, $category_extras);
     }
-    $sections->attach(_do_next_section($category_passed_2, is_null($categories_title) ? do_lang_tempcode('CATEGORIES') : $categories_title));
+    $sections->attach(_do_next_section($category_passed_2, is_null($categories_title) ? do_lang_tempcode('CATEGORIES') : $categories_title, $entry_content_type, $category_content_type));
 
     // Additional section stuff
     if (!is_null($additional_extras)) {
-        $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title)));
+        $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title), $entry_content_type, $category_content_type));
     }
 
     if ((is_null($main)) && (get_option('global_donext_icons') == '1')) { // What-next
@@ -268,7 +270,7 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
             array('menu/cms/cms', array(null, array(), 'cms')),
             array('menu/adminzone/adminzone', array(null, array(), 'adminzone')),
         );
-        $sections->attach(_do_next_section($disjunct_items, do_lang_tempcode('GLOBAL_NAVIGATION')));
+        $sections->attach(_do_next_section($disjunct_items, do_lang_tempcode('GLOBAL_NAVIGATION'), $entry_content_type, $category_content_type));
         $question = do_lang_tempcode('WHERE_NEXT');
     } else { // Where-next
         $question = do_lang_tempcode('WHAT_NEXT');
@@ -304,11 +306,13 @@ function do_next_manager($title, $text, $main = null, $main_title = null, $url_a
  *
  * @param  array $list A list of items (each item is a pair or a triple: <option,url[,field name=do_lang(option)]> ; url is a pair or a triple or a quarto also: <page,map[,zone[,warning]]>)
  * @param  Tempcode $title The title for the section
+ * @param  ?string $entry_content_type Entry content type (null: unknown)
+ * @param  ?string $category_content_type Category content type (null: unknown)
  * @return Tempcode The do next manager section
  *
  * @ignore
  */
-function _do_next_section($list, $title)
+function _do_next_section($list, $title, $entry_content_type = null, $category_content_type = null)
 {
     if (count($list) == 0) {
         return new Tempcode();
@@ -348,7 +352,11 @@ function _do_next_section($list, $title)
             $page = get_page_name();
         }
 
-        $description = (array_key_exists(2, $_option) && (!is_null($_option[2]))) ? $_option[2] : do_lang_tempcode('NEXT_ITEM_' . basename($option));
+        if (array_key_exists(2, $_option) && (!is_null($_option[2]))) {
+            $description = $_option[2];
+        } else {
+            $description = do_lang_tempcode('NEXT_ITEM_' . basename($option), (strpos($option, 'category') !== false) ? $category_content_type : $entry_content_type);
+        }
         $url = (is_null($page)) ? build_url(array_merge($url_map[1], array('page' => '')), $zone) : build_url(array_merge(array('page' => $page), $url_map[1]), $zone);
         $doc = array_key_exists(3, $_option) ? $_option[3] : '';
         if ((is_string($doc)) && ($doc != '')) {

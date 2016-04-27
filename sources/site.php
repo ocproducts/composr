@@ -149,7 +149,7 @@ function check_has_page_access()
     require_code('permissions');
     global $ZONE;
     if ($ZONE['zone_require_session'] == 1) {
-        header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+        set_no_clickjacking_csp();
     }
     if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login')) {
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
@@ -293,7 +293,7 @@ function inform_non_canonical_parameter($param)
 {
     global $NON_CANONICAL_PARAMS;
 
-    if (substr($param, 0, 1) == '#') {
+    if ($param[0] == '#') { // A regexp
         foreach (array_keys($_GET) as $key) {
             if (is_numeric($key)) {
                 $key = strval($key);
@@ -981,6 +981,7 @@ function save_static_caching($out, $mime_type = 'text/html')
         if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
             $url = static_cache_current_url();
             $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
+            $fast_cache_path_static_cache = $fast_cache_path;
             if ($bot_type === null) {
                 $fast_cache_path .= '__non-bot';
             }
@@ -989,6 +990,7 @@ function save_static_caching($out, $mime_type = 'text/html')
             }
             if (is_mobile()) {
                 $fast_cache_path .= '__mobile';
+                $fast_cache_path_static_cache = '__mobile';
             }
 
             if (is_object($out)) {
@@ -1016,7 +1018,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                 }
 
                 if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path . '__failover_mode' . $file_extension) || filemtime($fast_cache_path . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
+                    if (!is_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension) || filemtime($fast_cache_path_static_cache . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
                         // Add failover messages
                         if (!empty($SITE_INFO['failover_message_place_after'])) {
                             $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
@@ -1028,7 +1030,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                         // Disable all form controls
                         $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-                        write_static_cache_file($fast_cache_path . '__failover_mode' . $file_extension, $static_cache, false);
+                        write_static_cache_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension, $static_cache, false);
                     }
 
                     if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
@@ -1493,7 +1495,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
 }
 
 /**
- * Take the specified parameters, and try to find a redirect for the corresponding page
+ * Take the specified parameters, and try to find a redirect for the corresponding page.
  *
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
@@ -1680,8 +1682,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     );
 
     if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0)) {
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
 
         if (is_browser_decaching()) {
             $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index', 'cc_page_title'), array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()), '', 1, 0, false, array());

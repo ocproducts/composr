@@ -188,7 +188,7 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 	return false;
 }
 
-function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too,scroll_to_top)
+function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,extra_params,append,forms_too,scroll_to_top)
 {
 	if (typeof look_for=='undefined') look_for=[];
 	if (typeof extra_params=='undefined') extra_params=[];
@@ -196,8 +196,13 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 	if (typeof forms_too=='undefined') forms_too=false;
 	if (typeof scroll_to_top=='undefined') scroll_to_top=true;
 
-	var _link_wrappers=get_elements_by_class_name(block,'ajax_block_wrapper_links');
-	if (_link_wrappers.length==0) _link_wrappers=[block];
+	var block_pos_y=find_pos_y(block_element,true);
+	if (block_pos_y>get_window_scroll_y()) {
+		scroll_to_top=false;
+	}
+
+	var _link_wrappers=get_elements_by_class_name(block_element,'ajax_block_wrapper_links');
+	if (_link_wrappers.length==0) _link_wrappers=[block_element];
 	var links=[];
 	for (var i=0;i<_link_wrappers.length;i++)
 	{
@@ -263,8 +268,12 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 					}
 				}
 
+				if (typeof window.history.pushState!='undefined') history.pushState(null,document.title,href);
+
+				clear_out_tooltips(null);
+
 				// Make AJAX block call
-				return call_block(url_stem+url_stub,'',block,append,function() { if (scroll_to_top) window.scrollTo(0,0); },false,post_params);
+				return call_block(url_stem+url_stub,'',block_element,append,function() { if (scroll_to_top) window.scrollTo(0,block_pos_y); },false,post_params);
 			};
 			if (links[i].nodeName.toLowerCase()=='a')
 			{

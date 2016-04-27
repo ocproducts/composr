@@ -194,6 +194,7 @@ class Module_admin
             //  approve (for IPs)
             //  confirm (for newsletter subscriptions)
             array('theme', 'skin', 'style'),
+            array('basket', 'cart'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
             array('lost password', 'forgot password', 'forgotten password', 'reset password'),

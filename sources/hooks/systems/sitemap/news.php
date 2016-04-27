@@ -67,13 +67,13 @@ class Hook_sitemap_news extends Hook_sitemap_content
         list($content_id, $row, $partial_struct) = $_;
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_HIGH,
-                      'sitemap_refreshfreq' => 'monthly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_HIGH,
+            'sitemap_refreshfreq' => 'monthly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_news', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_news')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_news', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_news')),
+        ) + $partial_struct;
 
         if (($meta_gather & SITEMAP_GATHER_CATEGORIES) != 0) {
             $categories = array();

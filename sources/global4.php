@@ -559,3 +559,23 @@ function generate_guid()
         substr($hash, 20, 12)
     );
 }
+
+/**
+ * Find a percentage performance figure relative to a Late 2014 iMac (at the time of writing this is the lead developers main machine).
+ *
+ * @return float Performance figure
+ */
+function find_normative_performance()
+{
+    static $percentage = null;
+    if ($percentage !== null) {
+        return $percentage;
+    }
+
+    $t = microtime(true);
+    for ($i = 0; $i < 10000; $i++) {
+        md5(uniqid('', false)); // Some fairly heavy crunching
+    }
+    $percentage = 100.0 * (0.055 / (microtime(true) - $t));
+    return $percentage;
+}

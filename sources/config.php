@@ -244,7 +244,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Non-translated
-    if ($option['c_needs_dereference'] == 0) {
+    if ($option['c_needs_dereference'] === 0) {
         $value = $option['c_value'];
         $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
@@ -291,7 +291,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
         return $default;
     }
 
-    if (array_key_exists($name, $VALUE_OPTIONS_CACHE)) {
+    if (isset($VALUE_OPTIONS_CACHE[$name])) {
         return $VALUE_OPTIONS_CACHE[$name]['the_value'];
     }
 

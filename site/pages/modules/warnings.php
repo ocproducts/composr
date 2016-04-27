@@ -56,8 +56,19 @@ class Module_warnings extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         if ($be_deferential) {
             return null;
+        }
+
+        if ($check_perms) {
+            cns_require_all_forum_stuff();
+            if (!cns_may_warn_members()) {
+                return null;
+            }
         }
 
         return (!$check_perms || !is_guest($member_id)) ? (parent::get_entry_points()) : array();

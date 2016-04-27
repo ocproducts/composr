@@ -36,6 +36,8 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
     public $javascript = 'if (document.getElementById(\'delete\')) { var form=document.getElementById(\'delete\').form; var crf=function() { form.elements[\'target_forum_grouping\'].disabled=(!form.elements[\'delete\'].checked); }; crf(); form.elements[\'delete\'].onchange=crf; }';
     public $orderer = 'c_title';
     public $title_is_multi_lang = false;
+    public $donext_entry_content_type = 'forum_grouping';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -57,9 +59,9 @@ class Module_admin_cns_forum_groupings extends Standard_crud_module
         }
 
         $ret = array(
-                   'browse' => array('FORUM_GROUPINGS', 'menu/_generic_admin/view_this_category'),
-                   'edit' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_FORUM_GROUPING'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'COUNT(*)', null, '', true))))), 'menu/_generic_admin/view_this_category'),
-               ) + parent::get_entry_points();
+            'browse' => array('FORUM_GROUPINGS', 'menu/_generic_admin/view_this_category'),
+            'edit' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_FORUM_GROUPING'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'COUNT(*)', null, '', true))))), 'menu/_generic_admin/view_this_category'),
+        ) + parent::get_entry_points();
 
         return $ret;
     }

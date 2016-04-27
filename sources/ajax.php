@@ -564,6 +564,13 @@ function snippet_script()
 {
     prepare_for_known_ajax_response();
 
+    global $RELATIVE_PATH, $ZONE;
+    $test = get_module_zone(get_page_name());
+    if ($test !== null) {
+        $RELATIVE_PATH = $test;
+        $ZONE = null;
+    }
+
     header('Content-Type: text/plain; charset=' . get_charset());
     convert_data_encodings(true);
     $hook = filter_naughty_harsh(get_param_string('snippet'));

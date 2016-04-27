@@ -38,7 +38,7 @@ To edit permissions in Composr you can either use:
 Access the Permissions Tree Editor from:
 Admin Zone > Security > Permissions Tree Editor
 
-Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the ctrl/shift keys.
+Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the Ctrl/Shift keys (Option/Shift keys on a mac).
 
 The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 [/surround]

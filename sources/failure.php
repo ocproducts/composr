@@ -59,7 +59,7 @@ function suggest_fatalistic()
         if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
-        } elseif (count($_FILES) == 0) {
+        } elseif (count($_FILES) == 0 || function_exists('is_plupload') && is_plupload()) {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $p = build_keep_post_fields();
             $p->attach(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));

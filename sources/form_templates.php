@@ -50,7 +50,7 @@ function init__form_templates()
         }
     }
 
-    @header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+    set_no_clickjacking_csp();
 }
 
 /**
@@ -90,15 +90,35 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         return;
     }
 
-    foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
-        if ((is_numeric(ini_get($setting))) && (intval(ini_get($setting)) < $count)) {
+    static $max_values = null;
+    if ($max_values === null) {
+        $max_values = array();
+        foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
+            if (is_numeric(ini_get($setting))) {
+                $max_values[] = intval(ini_get($setting));
+            }
+        }
+    }
+
+    foreach ($max_values as $max_value) {
+        if ($max_value < $count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }
     }
 
-    foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
-        if ((is_numeric(ini_get($setting))) && (intval(ini_get($setting)) < $name_length_count)) {
+    static $max_length_values = null;
+    if ($max_length_values === null) {
+        $max_length_values = array();
+        foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
+            if (is_numeric(ini_get($setting))) {
+                $max_length_values[] = intval(ini_get($setting));
+            }
+        }
+    }
+
+    foreach ($max_length_values as $max_length_value) {
+        if ($max_length_value < $name_length_count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }
@@ -153,7 +173,7 @@ function take_param_int_modeavg($setting, $db_property, $table, $default)
     }
 
     $db = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
-    $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
+    $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . $db->get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
     if (!is_null($val)) {
         return $val;
     }

@@ -89,8 +89,8 @@ class Module_cms_tutorials extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('tutorials:TUTORIALS', 'menu/pages/help'),
-               ) + parent::get_entry_points();
+            'browse' => array('tutorials:TUTORIALS', 'menu/pages/help'),
+        ) + parent::get_entry_points();
     }
 
     /**
@@ -144,7 +144,7 @@ class Module_cms_tutorials extends Standard_crud_module
 
         $hidden = new Tempcode();
 
-        $fields->attach(form_input_url('URL', 'The direct URL to the tutorial (be it on a private website, on YouTube, etc).', 'url', $url, true));
+        $fields->attach(form_input_url('URL', 'The direct URL to the tutorial (be it on a private website, on the forum, on YouTube, etc).', 'url', $url, true));
 
         $fields->attach(form_input_line('Title', 'The title to the tutorial.', 'title', $title, true));
 

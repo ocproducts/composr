@@ -90,6 +90,7 @@ Composr recommends:
   - ZIP
   - XML
   - cURL
+  - APC (PHP 5.6 or lower only), or Memcache, or Memcached, or Wincache, or eAccelerator (PHP 5.4 and lower only)
  - A PHP environment with Safe Mode disabled, but [tt]open_basedir[/tt] enabled -- or a suEXEC/IIS server (explained further down)
  - A PHP memory limit of 64MB
  - At least 100MB of disk space
@@ -262,6 +263,19 @@ So, the main take-away is:
 PHP-Info can be reached from:
 Admin Zone > Tools > PHP-Info / Server Checks
 
+[title="2"]Failover mode[/title]
+
+You may configure a special failover mode via the [tt]config_editor[/tt] script. This mode serves cached versions of page if your server seems to be failing. It is not a perfect system because:
+1) it serves hits as guests
+2) it can only work if the static cache is populated
+3) it assumes that your server is only failing for performance/database reasons, not totally failed (however most failures in practice are like this)
+
+However, it's still a great system because it lets your site content continue to be available even under massive load.
+
+Failover can automatically fall into place based on a number of criteria.
+
+Note that the failover status messages ([tt]failover_message_place_after[/tt] and [tt]failover_message_place_before[/tt] options) are put in place at the caching stage, not dynamically. So you would need to empty the static cache if you change these messages to something else.
+
 [concepts
  1_key="Webhost"            1_value="A provider of Internet server facilities"
  2_key="Dedicated server"   2_value="A server that is not shared with others"
@@ -280,5 +294,6 @@ Admin Zone > Tools > PHP-Info / Server Checks
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
+ - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
 
 {$SET,tutorial_tags,Webhosting,phpinfo,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]

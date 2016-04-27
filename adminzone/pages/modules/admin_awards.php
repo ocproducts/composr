@@ -34,6 +34,8 @@ class Module_admin_awards extends Standard_crud_module
     public $table = 'award_types';
     public $orderer = 'a_title';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'award_type';
+    public $donext_category_content_type = null;
 
     /**
      * Find details of the module.
@@ -115,8 +117,8 @@ class Module_admin_awards extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('MANAGE_AWARDS', 'menu/adminzone/setup/awards'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_AWARDS', 'menu/adminzone/setup/awards'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

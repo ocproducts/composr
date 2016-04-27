@@ -162,7 +162,7 @@ class Hook_fields_content_link_multi
         require_code('content');
         $ob = get_content_object($type);
         $info = $ob->info();
-        $db = $GLOBALS[(substr($type, 0, 4) == 'cns_') ? 'FORUM_DB' : 'SITE_DB'];
+        $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
         if ($type == 'comcode_page') {

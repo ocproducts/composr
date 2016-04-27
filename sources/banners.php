@@ -299,23 +299,27 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
 
         // Are we allowed to show fallback banners?
         $show_fallbacks = true;
-        foreach ($rows as $counter => $myrow) {
-            if ($myrow['the_type'] == BANNER_CAMPAIGN) {
-                $show_fallbacks = false;
+        if (count($rows) > 1) {
+            foreach ($rows as $counter => $myrow) {
+                if ($myrow['the_type'] == BANNER_CAMPAIGN) {
+                    $show_fallbacks = false;
+                }
             }
         }
 
         // Remove ones already shown on this page-view
         static $shown_already = array(); // NB: Holds shown ones for any banner types, not specifically the restraints we are working on here. This could be true if you have multiple banner spots: count($shown_already)>count($rows)
-        if (!running_script('banner')) {
-            $old_rows = $rows;
-            foreach ($rows as $counter => $myrow) {
-                if (array_key_exists($myrow['name'], $shown_already)) {
-                    unset($rows[$counter]);
+        if ($shown_already !== array()) {
+            if (!running_script('banner')) {
+                $old_rows = $rows;
+                foreach ($rows as $counter => $myrow) {
+                    if (array_key_exists($myrow['name'], $shown_already)) {
+                        unset($rows[$counter]);
+                    }
                 }
-            }
-            if (count($rows) == 0) {
-                $rows = $old_rows;
+                if (count($rows) == 0) {
+                    $rows = $old_rows;
+                }
             }
         }
 
@@ -351,11 +355,15 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         // Choose which banner to show from the results
-        $rand = mt_rand(0, $tally);
-        for ($i = 0; $i < $counter - 1; $i++) {
-            if ($rand >= (isset($bound[$i - 1]) ? $bound[$i - 1] : 0) && $rand < $bound[$i]) {
-                break;
+        if (count($rows) > 1) {
+            $rand = mt_rand(0, $tally);
+            for ($i = 0; $i < $counter - 1; $i++) {
+                if ($rand >= (isset($bound[$i - 1]) ? $bound[$i - 1] : 0) && $rand < $bound[$i]) {
+                    break;
+                }
             }
+        } else {
+            $i = 0;
         }
 
         $name = $rows[$i]['name'];

@@ -487,7 +487,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$IS_IN_GROUP,1-3}</td>
-			<td>Find whether the current member is in a usergroup (parameters together constitute an [concept]Selectcode[/concept] list, except if the last is primary or secondary then this specifies that the check be limited to checking such usergroup membership).</td>
+			<td>Find whether the current member is in a usergroup (parameters together constitute an [/html][concept]Selectcode[/concept][html] list, except if the last is primary or secondary then this specifies that the check be limited to checking such usergroup membership).</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CPF_VALUE,Some Custom Field}</td>
@@ -975,7 +975,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$PAGE_LINK,site:about}</td>
-			<td>Link to a page, using [concept]page-link[/concept] syntax (e.g. "_SELF:pagename:type:1")</td>
+			<td>Link to a page, using [/html][concept]page-link[/concept][html] syntax (e.g. "_SELF:pagename:type:1")</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$ADDON_INSTALLED,galleries}</td>

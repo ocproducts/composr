@@ -389,7 +389,14 @@ class Module_cms_authors
             /* SPECIALLY TYPED 'LINKS' */
             array(
                 has_privilege(get_member(), 'delete_midrange_content', 'cms_authors') ? array('menu/_generic_admin/merge', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('MERGE_AUTHORS')) : null
-            )
+            ),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            'author'
         );
     }
 

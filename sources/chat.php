@@ -1625,5 +1625,6 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
 function get_chat_sound_tpl()
 {
     require_code('chat_sounds');
-    return do_template('CHAT_SOUND', array('_GUID' => '102c9574a2563143683970595df74011', 'SOUND_EFFECTS' => get_effect_settings(true, null, true)));
+    $sound_effects = get_effect_settings(true, null, true);
+    return do_template('CHAT_SOUND', array('_GUID' => '102c9574a2563143683970595df74011', 'SOUND_EFFECTS' => $sound_effects));
 }

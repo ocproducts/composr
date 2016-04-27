@@ -86,7 +86,7 @@ The next 3 options are three select boxes which allow you to:
 [*] Whether a customer can choose more than one supplement or whether they can only choose one from the list
 [*] Whether a customer can leave notes against the supplement
 [/list]
-The sort order is the order the supplement will appear in the list of supplements. Next choose the bookable the supplements appear to. You can select multiple by holding the CTRL button as you click them.
+The sort order is the order the supplement will appear in the list of supplements. Next choose the bookable the supplements appear to. You can select multiple by holding the Ctrl key as you click them (Option key on a mac).
 
 [title="3"]Add a bookable black out[/title]
 

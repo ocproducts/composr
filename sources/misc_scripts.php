@@ -223,7 +223,7 @@ function simple_tracker_script()
  */
 function preview_script()
 {
-    @header('X-XSS-Protection: 0');
+    disable_browser_xss_detection();
 
     require_code('preview');
     list($output, $validation, $keyword_density, $spelling) = build_preview(true);
@@ -345,7 +345,7 @@ function iframe_script()
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
     if ($zones[0]['zone_require_session'] == 1) {
-        header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+        set_no_clickjacking_csp();
     }
     if (($zones[0]['zone_name'] != '') && (get_value('windows_auth_is_enabled') !== '1') && ((get_session_id() == '') || (!$GLOBALS['SESSION_CONFIRMED_CACHE'])) && (!is_guest()) && ($zones[0]['zone_require_session'] == 1)) {
         access_denied('ZONE_ACCESS_SESSION');
