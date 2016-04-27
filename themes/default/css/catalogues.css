@@ -50,6 +50,10 @@
 	text-align: center;
 }
 
+.display_type_GRID .box .ratings {
+	min-height: 20px;
+}
+
 /* Catalogue product entry screen */
 
 .catalogue_fields_table {

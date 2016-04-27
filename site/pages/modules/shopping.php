@@ -171,6 +171,10 @@ class Module_shopping
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('SHOPPING', 'menu/rich_content/ecommerce/shopping_cart'),
         );

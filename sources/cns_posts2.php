@@ -179,7 +179,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     // Feedback
     require_code('feedback');
     actualise_rating(true, 'post', strval($row['id']), get_self_url(), $row['p_title']);
-    $rating = display_rating(get_self_url(), $row['p_title'], 'post', strval($row['id']), 'RATING_INLINE_DYNAMIC', $row['p_poster']);
+    $rating = display_rating(get_self_url(), $row['p_title'], 'post', strval($row['id']), $give_context ? 'RATING_INLINE_STATIC' : 'RATING_INLINE_DYNAMIC', $row['p_poster']);
 
     // Render
     $map = array(
@@ -213,12 +213,12 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         'PREVIEWING' => true,
         'RATING' => $rating,
     );
+    $_post = do_template('CNS_TOPIC_POST', $map);
     $tpl = do_template('CNS_POST_BOX', array(
-                                           '_GUID' => ($guid != '') ? $guid : '9456f4fe4b8fb1bf34f606fcb2bcc9d7',
-                                           'GIVE_CONTEXT' => $give_context,
-                                           'BREADCRUMBS' => $breadcrumbs,
-                                           'POST' => do_template('CNS_TOPIC_POST', $map)
-                                       ) + $map + array('ACTUAL_POST' => $post));
+        '_GUID' => ($guid != '') ? $guid : '9456f4fe4b8fb1bf34f606fcb2bcc9d7',
+        'BREADCRUMBS' => $breadcrumbs,
+        'POST' => $_post,
+    ) + $map + array('ACTUAL_POST' => $post));
 
     if ($give_context) {
         $poster = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['p_poster']);

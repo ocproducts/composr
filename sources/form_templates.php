@@ -50,7 +50,7 @@ function init__form_templates()
         }
     }
 
-    @header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+    set_no_clickjacking_csp();
 }
 
 /**
@@ -90,15 +90,35 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         return;
     }
 
-    foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
-        if ((is_numeric(ini_get($setting))) && (intval(ini_get($setting)) < $count)) {
+    static $max_values = null;
+    if ($max_values === null) {
+        $max_values = array();
+        foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
+            if (is_numeric(ini_get($setting))) {
+                $max_values[] = intval(ini_get($setting));
+            }
+        }
+    }
+
+    foreach ($max_values as $max_value) {
+        if ($max_value < $count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }
     }
 
-    foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
-        if ((is_numeric(ini_get($setting))) && (intval(ini_get($setting)) < $name_length_count)) {
+    static $max_length_values = null;
+    if ($max_length_values === null) {
+        $max_length_values = array();
+        foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
+            if (is_numeric(ini_get($setting))) {
+                $max_length_values[] = intval(ini_get($setting));
+            }
+        }
+    }
+
+    foreach ($max_length_values as $max_length_value) {
+        if ($max_length_value < $name_length_count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }
@@ -153,7 +173,7 @@ function take_param_int_modeavg($setting, $db_property, $table, $default)
     }
 
     $db = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
-    $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
+    $val = $db->query_value_if_there('SELECT ' . $db_property . ',count(' . $db_property . ') AS qty FROM ' . $db->get_table_prefix() . $table . ' GROUP BY ' . $db_property . ' ORDER BY qty DESC', false, true); // We need the mode here, not the mean
     if (!is_null($val)) {
         return $val;
     }
@@ -2004,7 +2024,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
  * @param  boolean $required Whether this is a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  integer $total_years_to_show The number of years to allow selection from (all into the future, as this field type is not meant for inputting past dates)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
@@ -2027,7 +2047,7 @@ function form_input_date__scheduler($pretty_name, $description, $name, $required
  * @param  boolean $required Whether this is not a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  ?integer $total_years_to_show The number of years to allow selection from (pass a negative number for selection of past years instead of future years) (null: no limit)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
@@ -2049,7 +2069,7 @@ function form_input_date($pretty_name, $description, $name, $required, $null_def
  * @param  boolean $required Whether this is a required field
  * @param  boolean $null_default Whether this field is empty by default
  * @param  boolean $do_time Whether to input time for this field also
- * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now)
+ * @param  ?mixed $default_time The default timestamp to use (either TIME or array of time components) (null: now) [ignored if $null_default is set]
  * @param  ?integer $total_years_to_show The number of years to allow selection from (pass a negative number for selection of past years instead of future years) (null: no limit)
  * @param  ?integer $year_start The year to start from (null: this year)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)

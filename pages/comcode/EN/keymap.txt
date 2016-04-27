@@ -55,7 +55,7 @@ For best performance, please set JAWS to read Title text. To do this, do the fol
 [*] Press ("C") for the Configuration manager and press enter.
 [*] Press Alt+S to open the ("User options submenu").
 [*] Use your up and down arrow keys to navigate to the ("HTML Options Settings") dialog and press enter.
-[*] Press CTRL+Tab till you get to the ("HTML options") page.
+[*] Press Ctrl+Tab till you get to the ("HTML options") page.
 [*] Tab to "Text Link Options" and press up arrow to the "Use Title" radio button, and press the Tab key to get to the "Ok" button, and press spacebar or enter.
 [*] You should now be back in the configuration manager. Press Alt+F4 to save your settings, and you will be returned back to the website.
 [/list]

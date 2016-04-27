@@ -239,21 +239,23 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
     }
 
     if (get_value('pagination_when_not_needed') === '1') {
-        return do_template('PAGINATION_WRAP', array('_GUID' => '451167645e67c7beabcafe11c78680db', 'TEXT_ID' => $title,
-                                                    'PER_PAGE' => $per_page,
-                                                    'FIRST' => '',
-                                                    'PREVIOUS' => '',
-                                                    'CONTINUES_LEFT' => '',
-                                                    'PARTS' => '',
-                                                    'CONTINUES_RIGHT' => '',
-                                                    'NEXT' => '',
-                                                    'LAST' => '',
-                                                    'PAGES_LIST' => '',
+        return do_template('PAGINATION_WRAP', array(
+            '_GUID' => '451167645e67c7beabcafe11c78680db',
+            'TEXT_ID' => $title,
+            'PER_PAGE' => $per_page,
+            'FIRST' => '',
+            'PREVIOUS' => '',
+            'CONTINUES_LEFT' => '',
+            'PARTS' => '',
+            'CONTINUES_RIGHT' => '',
+            'NEXT' => '',
+            'LAST' => '',
+            'PAGES_LIST' => '',
 
-                                                    'START' => strval($start),
-                                                    'MAX' => strval($max),
-                                                    'MAX_ROWS' => strval($max_rows),
-                                                    'NUM_PAGES' => strval(1),
+            'START' => strval($start),
+            'MAX' => strval($max),
+            'MAX_ROWS' => strval($max_rows),
+            'NUM_PAGES' => strval(1),
         ));
     }
 
@@ -273,7 +275,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
 function _build_pagination_cat_url($url_array, $post_array, $hash)
 {
     $url_array = array_merge($url_array, $post_array);
-    $cat_url = build_url($url_array, '_SELF', null, true, false, false, $hash);
+    $cat_url = build_url($url_array, '_SELF', array('auth_key' => true, 'block_map' => true, 'snippet' => true, 'utheme' => true), true, false, false, $hash);
 
     return $cat_url;
 }

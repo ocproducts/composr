@@ -222,7 +222,7 @@ class Database_super_mysql
         foreach ($fields as $name => $type) {
             if ($type[0] == '*') { // Is a key
                 $type = substr($type, 1);
-                if ($keys != '') {
+                if ($keys !== '') {
                     $keys .= ', ';
                 }
                 $keys .= $name;

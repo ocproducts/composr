@@ -100,10 +100,12 @@ class Module_topicview
         }
 
         if (!is_null($id)) {
-            $notification_where_map = array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member());
-            $notification_id = $GLOBALS['SITE_DB']->query_select_value_if_there('digestives_tin', 'id', $notification_where_map);
-            if ($notification_id !== null) {
-                $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('id' => $notification_id));
+            $notification_where_map = array('d_notification_code' => 'cns_topic', 'd_code_category' => strval($id), 'd_to_member_id' => get_member(), 'd_read' => 0);
+            $notification_ids = $GLOBALS['SITE_DB']->query_select('digestives_tin', array('id'), $notification_where_map);
+            if ($notification_ids !== array()) {
+                foreach ($notification_ids as $notification_id) {
+                    $GLOBALS['SITE_DB']->query_update('digestives_tin', array('d_read' => 1), array('id' => $notification_id['id']));
+                }
                 decache('_get_notifications', null, get_member());
             }
         }

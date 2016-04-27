@@ -62,8 +62,8 @@ class Module_cms_calendar extends Standard_crud_module
         $this->cat_crud_module = class_exists('Mx_cms_calendar_cat') ? new Mx_cms_calendar_cat() : new Module_cms_calendar_cat();
 
         $ret = array(
-                   'browse' => array('MANAGE_CALENDARS', 'menu/rich_content/calendar'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_CALENDARS', 'menu/rich_content/calendar'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');
@@ -1593,7 +1593,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('EVENT_TYPES')
+                do_lang_tempcode('EVENT_TYPES'),
+                'event',
+                'calendar_type'
             );
         }
 
@@ -1617,7 +1619,9 @@ class Module_cms_calendar_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('EVENT_TYPES')
+            do_lang_tempcode('EVENT_TYPES'),
+            'event',
+            'calendar_type'
         );
     }
 }

@@ -183,6 +183,10 @@ function _custom_comcode_import($connection)
     global $IN_MINIKERNEL_VERSION;
     global $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $TEXTUAL_TAGS, $IMPORTED_CUSTOM_COMCODE, $CUSTOM_COMCODE_REPLACE_TARGETS_CACHE;
 
+    if ($IMPORTED_CUSTOM_COMCODE) {
+        return;
+    }
+
     if (!$IN_MINIKERNEL_VERSION) {
         // From forum driver
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_custom_bbcode')) {
@@ -275,7 +279,7 @@ function _custom_comcode_import($connection)
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
     if (count($_POST) != 0) {
-        @header('X-XSS-Protection: 0');
+        disable_browser_xss_detection();
     }
 
     if (is_null($connection)) {
@@ -620,6 +624,26 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     switch ($tag) {
         case 'no_parse':
             $temp_tpl->attach($embed);
+            break;
+
+        // Undocumented, used to inject dependencies in things like logged e-mail Comcode or notification Comcode, without needing access-restricted Tempcode
+        case 'require_css':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $css) {
+                    $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                }
+            }
+            break;
+        case 'require_javascript':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $javascript) {
+                    $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                }
+            }
             break;
 
         case 'currency':

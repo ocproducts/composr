@@ -387,7 +387,9 @@ class Module_admin_cns_members
             null,
             null,
             null,
-            do_lang_tempcode('MEMBERS')
+            do_lang_tempcode('MEMBERS'),
+            null,
+            'member'
         );
     }
 

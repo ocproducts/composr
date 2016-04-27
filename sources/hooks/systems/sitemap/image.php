@@ -71,13 +71,13 @@ class Hook_sitemap_image extends Hook_sitemap_content
         }
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
-                      'sitemap_refreshfreq' => 'yearly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
+            'sitemap_refreshfreq' => 'yearly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_galleries')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $content_id), get_module_zone('cms_galleries')),
+        ) + $partial_struct;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

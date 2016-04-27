@@ -197,7 +197,7 @@ class LangFilter_EN extends LangFilter
             'unticking (unchecking)' => 'unticking',
         ); // pip pip
 
-        $this->vowels = array('a', 'e', 'i', 'o', 'u');
+        $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
     }
 
     /**
@@ -317,10 +317,19 @@ class LangFilter_EN extends LangFilter
         $preserved = array();
 
         foreach ($flags as $flag_i => $flag) {
-            if (preg_match('#^preserve=(.*)$#', '', $matches) != 0) {
+            if (preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
                 $preserve = $matches[1];
                 $preserved[$flag_i] = $matches[1];
                 $value = str_replace($preserve, 'preserve_' . strval($flag_i), $value);
+            }
+
+            // Putting in correct keypress for Mac users
+            if ($flag == 'platform_specific') {
+                if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
+                } else {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Option key', $value);
+                }
             }
 
             // Putting correct content type words to generic strings, with appropriate grammar...
@@ -330,10 +339,15 @@ class LangFilter_EN extends LangFilter
                 $param_num = intval($matches[2]);
                 if (!empty($parameters[$param_num - 1])) {
                     $content_type = is_object($parameters[$param_num - 1]) ? $parameters[$param_num - 1]->evaluate() : $parameters[$param_num - 1];
+
                     require_code('content');
                     $object = get_content_object($content_type);
                     if (is_null($object)) {
-                        $specific = do_lang($content_type, null, null, null, null, false);
+                        if (preg_match('#^\w+$#', $content_type) != 0) {
+                            $specific = do_lang($content_type, null, null, null, null, false);
+                        } else {
+                            $specific = $content_type;
+                        }
                         if (is_null($specific)) {
                             $specific = strtolower($content_type);
                         } else {
@@ -344,7 +358,7 @@ class LangFilter_EN extends LangFilter
                         $specific = strtolower(do_lang($info['content_type_label']));
                     }
 
-                    $is_vowel = in_array(substr($specific, 0, 1), $this->vowels);
+                    $is_vowel = $specific !== '' && isset($this->vowels[$specific[0]]);
                     $article_word = $is_vowel ? 'an' : 'a';
 
                     if (preg_match('#[^aeiou]y$#', $specific) != 0) {
@@ -396,10 +410,12 @@ class LangFilter_EN extends LangFilter
                             break;
                     }
 
-                    for ($i = 0; $i < strlen($value); $i++) {
+                    $strlen = strlen($value);
+                    for ($i = 0; $i < $strlen; $i++) {
                         foreach ($reps as $from => $to) {
-                            if (substr($value, $i, strlen($from)) == $from) {
+                            if ($value[$i] == $from[0] && substr($value, $i, strlen($from)) == $from) {
                                 $value = substr($value, 0, $i) . $to . substr($value, $i + strlen($from));
+                                $strlen = strlen($value);
                                 $i += strlen($to) - 1;
                                 continue 2;
                             }

@@ -1990,7 +1990,6 @@ class Module_cms_galleries_alt extends Standard_crud_module
                 $rows = $GLOBALS['SITE_DB']->query_select('videos', array('url', 'thumb_url'), array('id' => $id), '', 1);
                 $thumb_url = $rows[0]['thumb_url'];
             }
-
             if (($url == '') || ($thumb_url == '')) {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
@@ -2416,6 +2415,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
             true
         );
 
+        if ($id != $name) {
+            unset($_GET['redirect']);
+        }
+
         $this->new_id = $name;
 
         if (addon_installed('content_reviews')) {
@@ -2515,7 +2518,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('GALLERIES')
+                do_lang_tempcode('GALLERIES'),
+                $video ? 'video' : 'image',
+                'gallery'
             );
         }
 
@@ -2560,7 +2565,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('GALLERIES')
+            do_lang_tempcode('GALLERIES'),
+            $video ? 'video' : 'image',
+            'gallery'
         );
     }
 }

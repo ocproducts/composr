@@ -54,6 +54,7 @@ function init__comcode()
         'quote' => true, 'block' => true, 'semihtml' => true, 'html' => true, 'concept' => true, 'thumb' => true,
         'attachment' => true, 'attachment_safe' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true,
         'snapback' => true, 'post' => true, 'topic' => true, 'include' => true, 'random' => true, 'ticker' => true, 'jumping' => true, 'surround' => true, 'pulse' => true, 'shocker' => true,
+        'require_css' => true, 'require_javascript' => true,
     );
     //if (addon_installed('ecommerce')) {
     $VALID_COMCODE_TAGS['currency'] = true;
@@ -67,12 +68,12 @@ function init__comcode()
 
     define('WYSIWYG_COMCODE__BUTTON', 1);
     define('WYSIWYG_COMCODE__XML_BLOCK', 2);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', 3);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', 4);
-    define('WYSIWYG_COMCODE__XML_INLINE', 5);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', 6);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', 7);
-    define('WYSIWYG_COMCODE__HTML', 8);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+    define('WYSIWYG_COMCODE__XML_INLINE', 16);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+    define('WYSIWYG_COMCODE__HTML', 128);
 }
 
 /**
@@ -113,6 +114,9 @@ function html_to_comcode($html, $force = true)
 function apply_emoticons($text)
 {
     require_code('comcode_renderer');
+    if ($text == '' || strpos($text, '-') === false && strpos($text, ':') === false && strpos($text, '(') === false && strpos($text, ')') === false) {
+        return $text;
+    }
     return _apply_emoticons($text);
 }
 

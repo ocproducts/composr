@@ -252,7 +252,7 @@ class Block_main_content
                     'HIGH' => true,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
             }
@@ -288,7 +288,7 @@ class Block_main_content
                     'HIGH' => true,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', $content_type),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
             }

@@ -123,11 +123,18 @@ class Hook_sitemap_member extends Hook_sitemap_content
         list($content_id, $row, $partial_struct) = $_;
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
-                      'sitemap_refreshfreq' => 'monthly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
+            'sitemap_refreshfreq' => 'monthly',
 
-                      'privilege_page' => null,
-                  ) + $partial_struct;
+            'privilege_page' => null,
+        ) + $partial_struct;
+
+        if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
+            if (empty($struct['extra_meta']['image'])) {
+                $test = find_theme_image('cns_default_avatars/default', true);
+                $struct['extra_meta']['image'] = $test;
+            }
+        }
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

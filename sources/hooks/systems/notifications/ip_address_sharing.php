@@ -24,6 +24,18 @@
 class Hook_notification_ip_address_sharing extends Hook_notification__Staff
 {
     /**
+     * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).
+     *
+     * @param  ID_TEXT $notification_code Notification code
+     * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
+     * @return integer Initial setting
+     */
+    public function get_initial_setting($notification_code, $category = null)
+    {
+        return A_NA;
+    }
+
+    /**
      * Get a list of all the notification codes this hook can handle.
      * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
      *

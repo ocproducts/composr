@@ -884,7 +884,7 @@ class Module_catalogues
 
         ksort($cats);
         foreach ($cats as $letter => $entries) {
-            list($entry_buildup) = get_catalogue_category_entry_buildup(null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, null, $root, null, true, $entries);
+            list($entry_buildup) = render_catalogue_category_entry_buildup(null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, null, $root, null, true, $entries);
 
             $category_buildup->attach(do_template('CATALOGUE_CATEGORY_HEADING', array('_GUID' => '633d73ad882c9f28524ad27120b77b78', 'LETTER' => is_integer($letter) ? strval($letter) : $letter, 'ENTRIES' => escape_html($entry_buildup)), null, false, 'CATALOGUE_CATEGORY_HEADING'));
         }

@@ -125,7 +125,7 @@ function display_alert(notification)
 	// Play sound, if requested
 	var sound=notification.getAttribute('sound');
 	if (!sound) sound=(window.parseInt(notification.getAttribute('priority'))<3)?'on':'off';
-	if (read_cookie('sound')==='off') sound='off';
+	if (read_cookie('sound','off')==='off') sound='off';
 	if (sound=='on')
 	{
 		if (typeof window.soundManager!='undefined')

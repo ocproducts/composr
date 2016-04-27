@@ -119,13 +119,13 @@ function get_content_object($content_type)
         return $cache[$content_type];
     }
 
-    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type);
+    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true);
     if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_code($path);
         $ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($content_type), true);
     } else {
         // Okay, maybe it's a resource type (more limited functionality).
-        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type);
+        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type, true);
         if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
             require_code('hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type));
             $ob = object_factory('Hook_resource_meta_aware_' . filter_naughty_harsh($content_type), true);
@@ -396,4 +396,29 @@ function append_content_select_for_id(&$select, $cma_info, $table_alias = null)
     foreach (is_array($cma_info['id_field']) ? $cma_info['id_field'] : array($cma_info['id_field']) as $id_field_part) {
         $select[] = (($table_alias === null) ? '' : ($table_alias . '.')) . $id_field_part;
     }
+}
+
+/**
+ * Get an action language string for a particular content type based on a stub.
+ * If it can't get a match it'll just use the stub.
+ *
+ * @param  string $content_type The content type
+ * @param  string $string The language string stub (must itself be a valid language string)
+ * @return Tempcode Tempcode of language string
+ */
+function content_language_string($content_type, $string)
+{
+    $object = get_content_object($content_type);
+    $info = $object->info();
+    $regexp = $info['actionlog_regexp'];
+
+    do_lang($info['content_type_label']); // This forces the language file to load if there is one, as it'll include the language file reference within content_type_label
+
+    $string_custom = str_replace('\w+', $string, $regexp);
+    $test = do_lang($string_custom, null, null, null, null, false);
+    if ($test !== null) {
+        $string = $string_custom;
+    }
+
+    return do_lang_tempcode($string);
 }

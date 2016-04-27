@@ -95,6 +95,8 @@ abstract class Standard_crud_module
     public $posting_field_required = true;
     public $donext_type = null;
     public $donext_category_id = null;
+    public $donext_entry_content_type = null;
+    public $donext_category_content_type = null;
     public $cached_entry_rows = null;
     public $cached_max_rows = null;
     public $lang_type = null;
@@ -681,7 +683,9 @@ abstract class Standard_crud_module
             $this->extra_donext_whatever_title,
             null,
             $this->entries_title,
-            $this->categories_title
+            $this->categories_title,
+            $this->donext_entry_content_type,
+            $this->donext_category_content_type
         );
     }
 
@@ -921,46 +925,46 @@ abstract class Standard_crud_module
 
             $fields->attach($fields2);
             return do_template('CATALOGUE_ADDING_SCREEN', array(
-                                                              '_GUID' => 'adf73fdfccb387640340f15d5d6dae54' . get_class($this),
-                                                              'HIDDEN' => $hidden,
-                                                              'TITLE' => $this->title,
-                                                              'TEXT' => $this->add_text,
-                                                              'URL' => $post_url,
-                                                              'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                                                              'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
-                                                              'SUBMIT_NAME' => $submit_name,
-                                                              'JAVASCRIPT' => $this->javascript,
-                                                          ) + $extra_tpl_params);
+                '_GUID' => 'adf73fdfccb387640340f15d5d6dae54' . get_class($this),
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+            ) + $extra_tpl_params);
         } elseif (!is_null($this->posting_form_title)) {
             $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $posting_form_tabindex, $this->posting_field_required);
             return do_template('POSTING_SCREEN', array(
-                                                     '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
-                                                     'TITLE' => $this->title,
-                                                     'PREVIEW' => $this->do_preview,
-                                                     'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                     'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
-                                                     'JAVASCRIPT' => $this->javascript,
-                                                     'SUPPORT_AUTOSAVE' => true,
-                                                 ) + $extra_tpl_params);
+                '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
+                'TITLE' => $this->title,
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'TEXT' => $this->add_text,
+                'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
             return do_template('FORM_SCREEN', array(
-                                                  '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
-                                                  'PREVIEW' => $this->do_preview,
-                                                  'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                  'HIDDEN' => $hidden,
-                                                  'TITLE' => $this->title,
-                                                  'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
-                                                  'TEXT' => $this->add_text,
-                                                  'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                  'SUBMIT_ICON' => $submit_icon,
-                                                  'SUBMIT_NAME' => $submit_name,
-                                                  'JAVASCRIPT' => $this->javascript,
-                                                  'SUPPORT_AUTOSAVE' => true,
-                                              ) + $extra_tpl_params);
+                '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => $submit_icon,
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         }
     }
 
@@ -1475,18 +1479,18 @@ abstract class Standard_crud_module
 
             $fields->attach($fields2);
             return do_template('CATALOGUE_EDITING_SCREEN', array(
-                                                               '_GUID' => '584d7dc7c2c13939626102374f13f508' . get_class($this),
-                                                               'HIDDEN' => $hidden,
-                                                               'TITLE' => $this->title,
-                                                               'TEXT' => $this->add_text,
-                                                               'URL' => $post_url,
-                                                               'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
-                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                                                               'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
-                                                               'SUBMIT_NAME' => $submit_name,
-                                                               'JAVASCRIPT' => $this->javascript,
-                                                           ) + $extra_tpl_params);
+                '_GUID' => '584d7dc7c2c13939626102374f13f508' . get_class($this),
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
+                'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+            ) + $extra_tpl_params);
         }
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
@@ -1496,36 +1500,36 @@ abstract class Standard_crud_module
         if (!is_null($this->posting_form_title)) {
             $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $this->posting_form_tabindex, $this->posting_field_required);
             return do_template('POSTING_SCREEN', array(
-                                                     '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
-                                                     'PREVIEW' => $this->do_preview,
-                                                     'TITLE' => $this->title,
-                                                     'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                     'PING_URL' => $ping_url,
-                                                     'WARNING_DETAILS' => $warning_details,
-                                                     'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
-                                                     'JAVASCRIPT' => $this->javascript,
-                                                     'SUPPORT_AUTOSAVE' => true,
-                                                 ) + $extra_tpl_params);
+                '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'TITLE' => $this->title,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'PING_URL' => $ping_url,
+                'WARNING_DETAILS' => $warning_details,
+                'TEXT' => $this->add_text,
+                'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
             return do_template('FORM_SCREEN', array(
-                                                  '_GUID' => '2d70be34595a16c6f170d966b894bfe2' . get_class($this),
-                                                  'PREVIEW' => $this->do_preview,
-                                                  'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                  'TITLE' => $this->title,
-                                                  'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
-                                                  'PING_URL' => $ping_url,
-                                                  'WARNING_DETAILS' => $warning_details,
-                                                  'HIDDEN' => $hidden,
-                                                  'TEXT' => $this->edit_text,
-                                                  'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                  'SUBMIT_ICON' => $submit_icon,
-                                                  'SUBMIT_NAME' => $submit_name,
-                                                  'JAVASCRIPT' => $this->javascript,
-                                                  'SUPPORT_AUTOSAVE' => true,
-                                              ) + $extra_tpl_params);
+                '_GUID' => '2d70be34595a16c6f170d966b894bfe2' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'TITLE' => $this->title,
+                'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
+                'PING_URL' => $ping_url,
+                'WARNING_DETAILS' => $warning_details,
+                'HIDDEN' => $hidden,
+                'TEXT' => $this->edit_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => $submit_icon,
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         }
     }
 

@@ -80,14 +80,17 @@ function reinstall_addon_soft($addon, $ini_info = null)
     require_code('config2');
     require_code('files2');
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
-    $ob = object_factory('Hook_addon_registry_' . $addon);
+    $hook_path = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+    if (is_file(get_file_base() . '/sources/' . $hook_path . '.php') || is_file(get_file_base() . '/sources_custom/' . $hook_path . '.php')) {
+        require_code($hook_path);
+        $ob = object_factory('Hook_addon_registry_' . $addon);
 
-    if (method_exists($ob, 'uninstall')) {
-        $ob->uninstall();
-    }
-    if (method_exists($ob, 'install')) {
-        $ob->install();
+        if (method_exists($ob, 'uninstall')) {
+            $ob->uninstall();
+        }
+        if (method_exists($ob, 'install')) {
+            $ob->install();
+        }
     }
 
     $addon_info = read_addon_info($addon, false, null, $ini_info);

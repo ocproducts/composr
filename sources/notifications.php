@@ -650,6 +650,8 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                 @file_put_contents($path . '/latest.dat', strval(time()));
             }
 
+            inject_web_resources_context_to_comcode($message);
+
             $map = array(
                 'd_subject' => $subject,
                 'd_from_member_id' => $from_member_id,

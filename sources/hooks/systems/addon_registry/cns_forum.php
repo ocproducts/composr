@@ -624,12 +624,12 @@ class Hook_addon_registry_cns_forum
 
         return array(
             lorem_globalise(do_lorem_template('CNS_POST_BOX', array(
-                                                                  'GIVE_CONTEXT' => true,
-                                                                  'ID' => placeholder_id(),
-                                                                  'POST' => $post,
-                                                                  'URL' => placeholder_url(),
-                                                                  'BREADCRUMBS' => lorem_phrase(),
-                                                              ) + $map + array('ACTUAL_POST' => $post)), null, '', true)
+                'GIVE_CONTEXT' => true,
+                'ID' => placeholder_id(),
+                'POST' => $post,
+                'URL' => placeholder_url(),
+                'BREADCRUMBS' => lorem_phrase(),
+            ) + $map + array('ACTUAL_POST' => $post)), null, '', true)
         );
     }
 

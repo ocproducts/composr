@@ -56,8 +56,8 @@ class Module_cms_banners extends Standard_crud_module
         $this->cat_crud_module = class_exists('Mx_cms_banners_cat') ? new Mx_cms_banners_cat() : new Module_cms_banners_cat();
 
         return array(
-                   'browse' => array('MANAGE_BANNERS', 'menu/cms/banners'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_BANNERS', 'menu/cms/banners'),
+        ) + parent::get_entry_points();
     }
 
     /**
@@ -487,6 +487,10 @@ class Module_cms_banners extends Standard_crud_module
 
         edit_banner($id, $new_id, $url, $title_text, post_param_string('caption'), $direct_code, post_param_integer('campaignremaining', 0), fixup_protocolless_urls(post_param_string('site_url')), post_param_integer('importancemodulus'), post_param_string('notes', ''), post_param_integer('the_type', 1), post_param_date('expiry_date'), $metadata['submitter'], $validated, $b_type, $b_types, $regions, $metadata['edit_time'], $metadata['add_time'], true);
 
+        if ($id != $new_id) {
+            unset($_GET['redirect']);
+        }
+
         $this->new_id = post_param_string('name');
 
         if (get_option('use_banner_permissions') == '1') {
@@ -885,7 +889,9 @@ class Module_cms_banners_cat extends Standard_crud_module
                 null,
                 null,
                 null,
-                do_lang_tempcode('BANNER_TYPES')
+                do_lang_tempcode('BANNER_TYPES'),
+                'banner',
+                'banner_type'
             );
         }
 
@@ -910,7 +916,9 @@ class Module_cms_banners_cat extends Standard_crud_module
             null,
             null,
             null,
-            do_lang_tempcode('BANNER_TYPES')
+            do_lang_tempcode('BANNER_TYPES'),
+            'banner',
+            'banner_type'
         );
     }
 }

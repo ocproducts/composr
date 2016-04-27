@@ -41,7 +41,7 @@ class Hook_unvalidated_comcode_pages
         $info['edit_module'] = 'cms_comcode_pages';
         $info['edit_type'] = '_edit';
         $info['edit_identifier'] = 'page_link';
-        $info['title'] = do_lang_tempcode('COMCODE_PAGE');
+        $info['title'] = do_lang_tempcode('COMCODE_PAGES');
 
         return $info;
     }

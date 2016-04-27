@@ -176,9 +176,50 @@ function script_load_stuff()
 		set_font_size(font_size);
 	}
 
-	// Fix Flashes own cleanup code so if the SWFMovie was removed from the page
-	// it doesn't display errors.
-	window["__flash__removeCallback"]=function (instance, name) {
+	/*
+	// Fake onmouseout events for DOM elements removed (fixes issues with stuck tooltips)
+	if (typeof window.MutationObserver!='undefined')
+	{
+		var observer=new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type=='childList')
+				{
+					var node,child_node,i,j,k;
+					for (i=0;i<mutation.removedNodes.length;i++)
+					{
+						node=mutation.removedNodes[i];
+						if (node.onmouseout) node.onmouseout();
+						if (typeof node.getElementsByTagName!='undefined')
+						{
+							var child_nodes=node.getElementsByTagName('*');
+							for (j=0;j<child_nodes.length;j++)
+							{
+								child_node=child_nodes[j];
+								if (child_node.onmouseout)
+								{
+									child_node.onmouseout.call(child_node);
+								}
+								if (typeof child_node.simulated_events!='undefined' && typeof child_node.simulated_events.mouseout!='undefined')
+								{
+									for (k=0;k<child_node.simulated_events.mouseout.length;k++)
+									{
+										child_node.simulated_events.mouseout[k].call(child_node);
+									}
+								}
+							}
+						}
+					}
+				}
+			});
+		});
+		observer.observe(document.body,{childList: true,subtree: true});
+	}
+
+	^ Disabled this because it is not reliable and possibly non-performant. Instead we will manually call clear_out_tooltips(null); at appropriate places.
+	*/
+
+	// Fix Flashes own cleanup code so if the SWFMovie was removed from the page it doesn't display errors.
+	window["__flash__removeCallback"]=function(instance, name) {
 		try {
 			if (instance) {
 				instance[name]=null;
@@ -2057,7 +2098,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	// Add in move/leave events if needed
 	if (!have_links)
 	{
-		if (!ac.onmouseout) ac.onmouseout=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac); };
+		if (!ac.onmouseout) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
 		if (!ac.onmousemove) ac.onmousemove=function(event) { if (!event) var event=window.event; win.reposition_tooltip(ac,event,false,false,null,false,win); };
 	} else
 	{

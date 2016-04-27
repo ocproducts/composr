@@ -20,21 +20,22 @@
 }
 
 /* Fiddling to make the 'no entries' poll block have a decent and matching height */
+/* Currently commented out as IOTDs are not a bundled addon, and the default layout isn't really needing this - could be useful for some layouts still though */
 
 .fp_col_block .box___block_main_content, /* This is a fudge to make the content block balance this height, if the content block and poll shown at same time. You are likely want to change the blocks referenced here or the sizing, depending on your requirements */
 .fp_col_block .box___block_no_entries_image_space_of_space_the_space_day,
 .fp_col_block .box___poll_box,
 .fp_col_block .box___block_no_entries_poll {
-	min-height: 335px;
+	/*min-height: 335px;*/
 }
 .fp_col_block  .box___block_no_entries_image_space_of_space_the_space_day h3,
 .fp_col_block  .box___block_no_entries_poll h3 {
-	margin-bottom: 8em;
+	/*margin-bottom: 8em;*/
 }
 
 .boxless_space .fp_col_block .box___block_main_content,
 .boxless_space .box___block_no_entries_image_of_the_day,
 .boxless_space .fp_col_block .box___poll_box,
 .boxless_space .fp_col_block .box___block_no_entries_poll {
-	min-height: 0; /* boxless spaces don't need a min height */
+	/*min-height: 0;* /* boxless spaces don't need a min height */
 }

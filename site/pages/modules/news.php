@@ -168,11 +168,13 @@ class Module_news
 
         $ret = array(
             'browse' => array('NEWS_ARCHIVE', 'menu/rich_content/news'),
-            'cat_select' => array('NEWS_CATEGORIES', 'menu/_generic_admin/view_archive'),
         );
         if ($has_blogs) {
-            $ret['select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
+            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/_generic_admin/view_archive');
             $ret['blog_select'] = array('BLOGS', 'tabs/member_account/blog');
+            $ret['select'] = array('NEWS_CATEGORIES', 'menu/rich_content/news');
+        } else {
+            $ret['cat_select'] = array('JUST_NEWS_CATEGORIES', 'menu/rich_content/news');
         }
         return $ret;
     }
@@ -210,12 +212,12 @@ class Module_news
             $this->title = get_screen_title('JUST_NEWS_CATEGORIES');
         }
 
-        if ($type == 'select') {
-            $this->title = get_screen_title('NEWS_CATEGORIES');
-        }
-
         if ($type == 'blog_select') {
             $this->title = get_screen_title('BLOGS');
+        }
+
+        if ($type == 'select') {
+            $this->title = get_screen_title('NEWS_CATEGORIES');
         }
 
         if ($type == 'browse') {
@@ -502,6 +504,8 @@ class Module_news
         $select = $this->select;
         $select_and = $this->select_and;
 
+        $max = get_param_integer('module_max', intval(get_option('news_entries_per_page')));
+
         // Get category contents
         $inline = get_param_integer('inline', 0) == 1;
         $content = do_block('main_news', array(
@@ -513,8 +517,8 @@ class Module_news
             'member_based' => ($blog === 1) ? '1' : '0',
             'zone' => '_SELF',
             'days' => '0',
-            'fallback_full' => $inline ? '0' : '10',
-            'fallback_archive' => $inline ? get_option('news_entries_per_page') : '0',
+            'fallback_full' => $inline ? '0' : strval($max),
+            'fallback_archive' => $inline ? strval($max) : '0',
             'no_links' => '1',
             'pagination' => '1',
             'attach_to_url_filter' => '1',

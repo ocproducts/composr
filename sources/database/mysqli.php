@@ -58,7 +58,7 @@ class Database_Static_mysqli extends Database_super_mysql
         // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
-            if ($this->last_select_db[1] != $db_name) {
+            if ($this->last_select_db[1] !== $db_name) {
                 mysqli_select_db($this->cache_db[$x], $db_name);
                 $this->last_select_db = array($this->cache_db[$x], $db_name);
             }
@@ -208,7 +208,7 @@ class Database_Static_mysqli extends Database_super_mysql
             }
         }
 
-        if ($this->last_select_db[1] != $db_name) {
+        if ($this->last_select_db[1] !== $db_name) {
             mysqli_select_db($db, $db_name);
             $this->last_select_db = array($db, $db_name);
         }
@@ -239,7 +239,7 @@ class Database_Static_mysqli extends Database_super_mysql
             }
             if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
                 $matches = array();
-                if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) != 0) {
+                if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
                     $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
                 }
 
@@ -255,12 +255,12 @@ class Database_Static_mysqli extends Database_super_mysql
 
         $sub = substr(ltrim($query), 0, 7);
         $sub = substr($query, 0, 4);
-        if (($results !== true) && (($sub == '(SEL') || ($sub == 'SELE') || ($sub == 'sele') || ($sub == 'CHEC') || ($sub == 'EXPL') || ($sub == 'REPA') || ($sub == 'DESC') || ($sub == 'SHOW')) && ($results !== false)) {
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 
         if ($get_insert_id) {
-            if (strtoupper(substr($query, 0, 7)) == 'UPDATE ') {
+            if (strtoupper(substr($query, 0, 7)) === 'UPDATE ') {
                 return mysqli_affected_rows($db);
             }
             $ins = mysqli_insert_id($db);
@@ -305,14 +305,14 @@ class Database_Static_mysqli extends Database_super_mysql
                         $newrow[$name] = null;
                     } else {
                         $_v = intval($v);
-                        if (strval($_v) != $v) {
+                        if (strval($_v) !== $v) {
                             $newrow[$name] = floatval($v);
                         } else {
                             $newrow[$name] = $_v;
                         }
                     }
                 } elseif (($type === 16) || ($type === 'bit')) {
-                    if ((strlen($v) == 1) && (ord($v[0]) <= 1)) {
+                    if ((strlen($v) === 1) && (ord($v[0]) <= 1)) {
                         $newrow[$name] = ord($v); // 0/1 char for BIT field
                     } else {
                         $newrow[$name] = intval($v);

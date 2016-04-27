@@ -128,13 +128,13 @@ class Block_main_cc_embed
                 }
             }
         } else {
-            $display_type = $catalogue['c_display_type'];
+            $display_type = get_param_integer('keep_cat_display_type', $catalogue['c_display_type']);
         }
 
         // Get entries
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
         $viewing_member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : mixed();
-        list($entry_buildup, $sorting, , $max_rows) = get_catalogue_category_entry_buildup(is_null($select) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
+        list($entry_buildup, $sorting, , $max_rows) = render_catalogue_category_entry_buildup(is_null($select) ? $category_id : null, $catalogue_name, $catalogue, 'CATEGORY', $tpl_set, $max, $start, $select, $root, $display_type, true, null, $filter, $sort, $block_id . '_order', $viewing_member_id);
 
         // Sorting and pagination
         if (!$do_sorting) {

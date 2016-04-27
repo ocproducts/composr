@@ -79,7 +79,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
 
     // Make sure the JavaScript exists
     if ($theme === null) {
-        $theme = filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme());
+        $theme = @method_exists($GLOBALS['FORUM_DRIVER'], 'get_theme') ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
     }
     $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
     if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] != '1')) {
@@ -101,11 +101,11 @@ function javascript_enforce($j, $theme = null, $minify = null)
     $js_cache_path .= '.js';
 
     global $CACHE_TEMPLATES;
-    $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+    $support_smart_decaching = support_smart_decaching();
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = (is_file($js_cache_path)) && ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -173,12 +173,12 @@ function javascript_tempcode($position = null)
     }
 
     $bottom_ones = array(
-                       'staff' => true,
-                       'button_commandr' => true,
-                       'button_realtime_rain' => true,
-                       'fractional_edit' => true,
-                       'transitions' => true,
-                   ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
+        'staff' => true,
+        'button_commandr' => true,
+        'button_realtime_rain' => true,
+        'fractional_edit' => true,
+        'transitions' => true,
+    ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
     foreach ($JAVASCRIPTS as $j => $do_enforce) {
         if ($do_enforce === null) {
             continue; // Has already been included in a merger
@@ -240,8 +240,7 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
             $j .= '_mobile';
         }
 
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
         $sup = ($support_smart_decaching && $temp != '' && !$GLOBALS['RECORD_TEMPLATES_USED']) ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
 
         $js->attach(do_template('JAVASCRIPT_NEED', array('_GUID' => 'b5886d9dfc4d528b7e1b0cd6f0eb1670', 'CODE' => $j, 'SUP' => $sup)));
@@ -325,11 +324,11 @@ function css_enforce($c, $theme = null, $minify = null)
     $css_cache_path .= '.css';
 
     global $CACHE_TEMPLATES;
-    $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+    $support_smart_decaching = support_smart_decaching();
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = (is_file($css_cache_path)) && ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -471,8 +470,7 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
             $c .= '_mobile';
         }
         if (($temp != '') || (!$do_enforce)) {
-            global $SITE_INFO;
-            $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+            $support_smart_decaching = support_smart_decaching();
             $sup = ($support_smart_decaching && $temp != '') ? strval(filemtime($temp)) : null; // Tweaks caching so that upgrades work without needing emptying browser cache; only runs if smart decaching is on because otherwise we won't have the mtime and don't want to introduce an extra filesystem hit
             $css->attach(do_template('CSS_NEED', array('_GUID' => 'ed35fac857214000f69a1551cd483096', 'CODE' => $c, 'SUP' => $sup), user_lang(), false, null, '.tpl', 'templates', $theme));
         }
@@ -646,8 +644,7 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
         $hash = $_value[1];
 
         // Regenerate hash if we support smart decaching, it might have changed and hence we need to do recompiling with a new hash OR this may be the first time ("???" is placeholder)
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
         if (($support_smart_decaching) || ($hash == '???')) {
             // Work out a hash (checksum) for cache busting on this merged file. Does it using an mtime has chain for performance (better than reading and hashing all the file contents)
             $old_hash = $hash;
@@ -734,3 +731,48 @@ function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
     return null;*/
 }
 
+/**
+ * Add some Comcode that does resource-inclusion for CSS and Javascript files that are currently loaded.
+ *
+ * @param  string $message_raw Comcode
+ */
+function inject_web_resources_context_to_comcode(&$message_raw)
+{
+    global $CSSS, $JAVASCRIPTS;
+
+    $_css_comcode = '';
+    foreach (array_keys($CSSS) as $i => $css) {
+        if ($css == 'global' || $css == 'no_cache') {
+            continue;
+        }
+
+        if ($_css_comcode != '') {
+            $_css_comcode .= ',';
+        }
+        $_css_comcode .= $css;
+    }
+    if ($_css_comcode == '') {
+        $css_comcode = '';
+    } else {
+        $css_comcode = '[require_css]' . $_css_comcode . '[/require_css]';
+    }
+
+    $_javascript_comcode = '';
+    foreach (array_keys($JAVASCRIPTS) as $i => $javascript) {
+        if ($javascript == 'global' || $javascript == 'custom_globals') {
+            continue;
+        }
+
+        if ($_javascript_comcode != '') {
+            $_javascript_comcode .= ',';
+        }
+        $_javascript_comcode .= $javascript;
+    }
+    if ($_javascript_comcode == '') {
+        $javascript_comcode = '';
+    } else {
+        $javascript_comcode = '[require_javascript]' . $_javascript_comcode . '[/require_javascript]';
+    }
+
+    $message_raw = $css_comcode . $javascript_comcode . $message_raw;
+}
