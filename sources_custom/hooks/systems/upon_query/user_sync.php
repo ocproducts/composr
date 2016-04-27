@@ -37,7 +37,7 @@ class Hook_upon_query_user_sync
         }
 
         if (get_value('user_sync_enabled') === '1') {
-            $prefix = preg_quote(get_table_prefix(), '#');
+            $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 
             $matches = array();
             if (

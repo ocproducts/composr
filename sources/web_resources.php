@@ -105,7 +105,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = (is_file($js_cache_path)) && ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }
@@ -173,12 +173,12 @@ function javascript_tempcode($position = null)
     }
 
     $bottom_ones = array(
-                       'staff' => true,
-                       'button_commandr' => true,
-                       'button_realtime_rain' => true,
-                       'fractional_edit' => true,
-                       'transitions' => true,
-                   ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
+        'staff' => true,
+        'button_commandr' => true,
+        'button_realtime_rain' => true,
+        'fractional_edit' => true,
+        'transitions' => true,
+    ) + $JAVASCRIPT_BOTTOM; // These are all framework ones that add niceities
     foreach ($JAVASCRIPTS as $j => $do_enforce) {
         if ($do_enforce === null) {
             continue; // Has already been included in a merger
@@ -328,7 +328,7 @@ function css_enforce($c, $theme = null, $minify = null)
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(true);
     }
-    $is_cached = ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
+    $is_cached = (is_file($css_cache_path)) && ($CACHE_TEMPLATES || !running_script('index')/*must cache for non-index to stop getting blanked out in depended sub-script output generation and hence causing concurrency issues*/) && (!is_browser_decaching()) && ((!in_safe_mode()) || (isset($GLOBALS['SITE_INFO']['safe_mode'])));
     if (GOOGLE_APPENGINE) {
         gae_optimistic_cache(false);
     }

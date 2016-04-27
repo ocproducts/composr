@@ -57,8 +57,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
 
         $ret = array(
-                   'browse' => array('MANAGE_FORUMS', 'menu/social/forum/forums'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_FORUMS', 'menu/social/forum/forums'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             $ret['_SEARCH:admin_cns_forum_groupings:add'] = array('ADD_FORUM_GROUPING', 'menu/_generic_admin/add_one_category');

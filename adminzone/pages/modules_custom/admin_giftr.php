@@ -148,8 +148,8 @@ class Module_admin_giftr extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

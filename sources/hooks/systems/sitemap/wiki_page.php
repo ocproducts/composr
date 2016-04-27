@@ -116,13 +116,13 @@ class Hook_sitemap_wiki_page extends Hook_sitemap_content
         list($content_id, $row, $partial_struct) = $_;
 
         $struct = array(
-                      'sitemap_priority' => ($content_id == strval(db_get_first_id())) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM,
-                      'sitemap_refreshfreq' => 'weekly',
+            'sitemap_priority' => ($content_id == strval(db_get_first_id())) ? SITEMAP_IMPORTANCE_HIGH : SITEMAP_IMPORTANCE_MEDIUM,
+            'sitemap_refreshfreq' => 'weekly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_wiki', 'type' => '_edit_page', 'id' => $content_id), get_module_zone('cms_wiki')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_wiki', 'type' => '_edit_page', 'id' => $content_id), get_module_zone('cms_wiki')),
+        ) + $partial_struct;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

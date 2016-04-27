@@ -57,8 +57,8 @@ class Module_admin_cns_groups extends Standard_crud_module
         }
 
         $ret = array(
-                   'browse' => array('MANAGE_USERGROUPS', 'menu/social/groups'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_USERGROUPS', 'menu/social/groups'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');
@@ -238,7 +238,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('OPEN_MEMBERSHIP'), do_lang_tempcode('OPEN_MEMBERSHIP_DESCRIPTION'), 'open_membership', $open_membership == 1));
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4ec20b3b67c70e1d4136432ae4fd56b6', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('RANK'))));
         if (addon_installed('points')) {
-            $promotion_target_groups = form_input_list_entry('-1', false, do_lang_tempcode('NA_EM'));
+            $promotion_target_groups = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
             foreach ($rows as $group) {
                 if (($group['id'] != $id) && ($group['id'] != db_get_first_id())) {
                     $promotion_target_groups->attach(form_input_list_entry(strval($group['id']), ($group['id'] == $promotion_target), get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
@@ -325,13 +325,13 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         // Take permissions from
         $permissions_from_groups = new Tempcode();
-        $permissions_from_groups = form_input_list_entry('-1', false, do_lang_tempcode('NA_EM'));
+        $permissions_from_groups = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         foreach ($rows as $group) {
             if ($group['id'] != $id) {
                 $permissions_from_groups->attach(form_input_list_entry(strval($group['id']), false, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
             }
         }
-        $fields->attach(form_input_list(do_lang_tempcode('DEFAULT_PERMISSIONS_FROM'), do_lang_tempcode(is_null($id) ? 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM_NEW' : 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM'), 'absorb', $permissions_from_groups));
+        $fields->attach(form_input_list(do_lang_tempcode('DEFAULT_PERMISSIONS_FROM'), do_lang_tempcode(is_null($id) ? 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM_NEW' : 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM'), 'absorb', $permissions_from_groups, null, false, false));
 
         $this->appended_actions_already = true;
 
@@ -641,8 +641,8 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $this->copy_members_into($id);
 
-        $absorb = post_param_integer('absorb', -1);
-        if ($absorb != -1) {
+        $absorb = post_param_integer('absorb', null);
+        if ($absorb !== null) {
             cns_group_absorb_privileges_of($id, $absorb);
         }
 
@@ -742,8 +742,8 @@ class Module_admin_cns_groups extends Standard_crud_module
         }
 
         if (!fractional_edit()) {
-            $absorb = post_param_integer('absorb', -1);
-            if ($absorb != -1) {
+            $absorb = post_param_integer('absorb', null);
+            if ($absorb !== null) {
                 cns_group_absorb_privileges_of(intval($id), $absorb);
             }
 

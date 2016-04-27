@@ -114,8 +114,8 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array('WELCOME_EMAILS', 'menu/adminzone/setup/welcome_emails'),
-               ) + parent::get_entry_points();
+            'browse' => array('WELCOME_EMAILS', 'menu/adminzone/setup/welcome_emails'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

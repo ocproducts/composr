@@ -1672,7 +1672,7 @@ class Module_admin_themes
 
             $guids = array();
             $file_bits = explode('/', $file);
-            $clean_file = str_replace('.tpl', '', $file_bits[count($file_bits) - 1]);
+            $clean_file = str_replace('.' . get_file_extension($file), '', $file_bits[count($file_bits) - 1]);
             $_guids = @unserialize(@file_get_contents(get_file_base() . '/data/guids.dat'));
             if (($_guids !== false) && (array_key_exists($clean_file, $_guids))) {
                 foreach ($_guids[$clean_file] as $_guid) {
@@ -1692,7 +1692,7 @@ class Module_admin_themes
             $template_editors->attach(do_template('TEMPLATE_EDIT_SCREEN_EDITOR', array(
                 '_GUID' => '9d3b75215c34c2b4b366118605b4cd59',
                 'PREVIEW_URL' => $preview_url,
-                'CODENAME' => str_replace('.tpl', '', $codename),
+                'CODENAME' => str_replace('.' . get_file_extension($file), '', $codename),
                 'I' => $i,
                 'DISPLAY' => $display,
                 'GUIDS' => $guids,
@@ -1722,7 +1722,7 @@ class Module_admin_themes
             set_short_title($files_seen[0]);
         }
 
-        if ($template_editors->is_empty()) {
+        if ($template_editors->is_empty_shell()) {
             warn_exit(do_lang_tempcode('NO_TEMPLATES_SELECTED'));
         }
 
@@ -1803,7 +1803,7 @@ class Module_admin_themes
                 if (!file_exists($existing_path)) {
                     $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
                 }
-                $revision_engine->add_revision(dirname($full_path), basename($_file, '.tpl'), 'tpl', file_get_contents($existing_path), filemtime($existing_path));
+                $revision_engine->add_revision(dirname($full_path), basename($_file, '.' . get_file_extension($_file)), get_file_extension($_file), file_get_contents($existing_path), filemtime($existing_path));
             }
 
             // Save

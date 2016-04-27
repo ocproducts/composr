@@ -635,8 +635,8 @@ class Module_admin_permissions
                 $id = substr($key, 5);
                 if ((substr($id, 0, 4) == 'new_') || (!array_key_exists(intval($id), $mkeylang))) {
                     $GLOBALS['SITE_DB']->query_insert('match_key_messages', array(
-                                                                                'k_match_key' => $val
-                                                                            ) + insert_lang_comcode('k_message', post_param_string('msg_' . $id), 2));
+                        'k_match_key' => $val
+                    ) + insert_lang_comcode('k_message', post_param_string('msg_' . $id), 2));
                 } else {
                     $map = array(
                         'k_match_key' => $val

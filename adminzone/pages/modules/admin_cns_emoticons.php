@@ -53,8 +53,8 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array('EMOTICONS', 'menu/adminzone/style/emoticons'),
-               ) + parent::get_entry_points();
+            'browse' => array('EMOTICONS', 'menu/adminzone/style/emoticons'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

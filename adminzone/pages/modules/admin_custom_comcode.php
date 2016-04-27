@@ -81,8 +81,8 @@ class Module_admin_custom_comcode extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('CUSTOM_COMCODE', 'menu/adminzone/setup/custom_comcode'),
-               ) + parent::get_entry_points();
+            'browse' => array('CUSTOM_COMCODE', 'menu/adminzone/setup/custom_comcode'),
+        ) + parent::get_entry_points();
     }
 
     /**

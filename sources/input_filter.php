@@ -178,15 +178,21 @@ function strip_url_to_representative_domain($url)
  */
 function get_allowed_partner_sites()
 {
-    $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
+    if (function_exists('get_option')) {
+        $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
+    } else {
+        $allowed_partners = array();
+    }
     foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
         if (substr($key, 0, strlen('ZONE_MAPPING_')) === 'ZONE_MAPPING_') {
             $allowed_partners[] = $_val[0];
         }
     }
-    $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
-    if (get_custom_base_url() != get_base_url()) {
-        $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
+    if (function_exists('get_option')) { // If bootstrapping has gone far enough
+        $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
+        if (get_custom_base_url() != get_base_url()) {
+            $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
+        }
     }
     return $allowed_partners;
 }

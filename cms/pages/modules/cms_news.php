@@ -57,8 +57,8 @@ class Module_cms_news extends Standard_crud_module
         $this->cat_crud_module = class_exists('Mx_cms_news_cat') ? new Mx_cms_news_cat() : new Module_cms_news_cat();
 
         $ret = array(
-                   'browse' => array('MANAGE_NEWS', 'menu/rich_content/news'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_NEWS', 'menu/rich_content/news'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');

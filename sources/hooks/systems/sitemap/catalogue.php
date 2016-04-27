@@ -164,13 +164,13 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
         $this->_make_zone_concrete($zone, $page_link);
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
-                      'sitemap_refreshfreq' => 'weekly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
+            'sitemap_refreshfreq' => 'weekly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_catalogues', 'type' => '_edit_catalogue', 'id' => $content_id), get_module_zone('cms_catalogues')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_catalogues', 'type' => '_edit_catalogue', 'id' => $content_id), get_module_zone('cms_catalogues')),
+        ) + $partial_struct;
 
         if (strpos($page_link, ':index:') !== false) {
             $struct['extra_meta']['description'] = null;

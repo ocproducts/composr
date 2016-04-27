@@ -52,8 +52,8 @@ class Module_cms_polls extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
-                   'browse' => array('MANAGE_POLLS', 'menu/social/polls'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_POLLS', 'menu/social/polls'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');

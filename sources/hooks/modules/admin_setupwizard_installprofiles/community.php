@@ -93,11 +93,11 @@ class Hook_admin_setupwizard_installprofiles_community
             ),
             'PANEL_LEFT' => array(),
             'PANEL_RIGHT' => array(
-                                 'side_users_online',
-                                 'side_stats',
-                                 'side_calendar',
-                                 'side_shoutbox',
-                             ) + ((get_option('sitewide_im', true) === '1') ? array('side_friends') : array()),
+                'side_users_online',
+                'side_stats',
+                'side_calendar',
+                'side_shoutbox',
+            ) + ((get_option('sitewide_im', true) === '1') ? array('side_friends') : array()),
         );
     }
 

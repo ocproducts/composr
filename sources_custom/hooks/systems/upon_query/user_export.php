@@ -26,7 +26,7 @@ class Hook_upon_query_user_export
             return;
         }
 
-        $prefix = preg_quote(get_table_prefix(), '#');
+        $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 
         $matches = array();
         if (

@@ -120,13 +120,13 @@ class Hook_sitemap_chat extends Hook_sitemap_content
         list($content_id, $row, $partial_struct) = $_;
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
-                      'sitemap_refreshfreq' => 'never',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
+            'sitemap_refreshfreq' => 'never',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'admin_chat', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_chat')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'admin_chat', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_chat')),
+        ) + $partial_struct;
 
         $struct['extra_meta']['image'] = find_theme_image('icons/24x24/menu/social/chat/chat');
         $struct['extra_meta']['image_2x'] = find_theme_image('icons/48x48/menu/social/chat/chat');

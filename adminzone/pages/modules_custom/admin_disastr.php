@@ -121,8 +121,8 @@ class Module_admin_disastr extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array('MANAGE_DISEASES', 'menu/disastr_log'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_DISEASES', 'menu/disastr_log'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

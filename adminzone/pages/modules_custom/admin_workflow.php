@@ -126,8 +126,8 @@ class Module_admin_workflow extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('MANAGE_WORKFLOWS', 'menu/workflows'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_WORKFLOWS', 'menu/workflows'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

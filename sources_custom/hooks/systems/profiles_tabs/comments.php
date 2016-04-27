@@ -74,8 +74,8 @@ class Hook_profiles_tabs_comments
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notifications_enabled', 'id', $main_map);
         if (is_null($test)) {
             $GLOBALS['SITE_DB']->query_insert('notifications_enabled', array(
-                                                                           'l_setting' => _find_member_statistical_notification_type($member_id_of, 'comment_posted'),
-                                                                       ) + $main_map);
+                'l_setting' => _find_member_statistical_notification_type($member_id_of, 'comment_posted'),
+            ) + $main_map);
         }
 
         $content = do_template('CNS_MEMBER_PROFILE_COMMENTS', array('_GUID' => '5ce1949e4fa0d247631f52f48698df4e', 'MEMBER_ID' => strval($member_id_of), 'FORUM_NAME' => $forum_name));

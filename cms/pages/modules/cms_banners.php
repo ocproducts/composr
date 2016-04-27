@@ -56,8 +56,8 @@ class Module_cms_banners extends Standard_crud_module
         $this->cat_crud_module = class_exists('Mx_cms_banners_cat') ? new Mx_cms_banners_cat() : new Module_cms_banners_cat();
 
         return array(
-                   'browse' => array('MANAGE_BANNERS', 'menu/cms/banners'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_BANNERS', 'menu/cms/banners'),
+        ) + parent::get_entry_points();
     }
 
     /**

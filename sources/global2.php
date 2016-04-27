@@ -143,6 +143,12 @@ function init__global2()
     $BOOTSTRAPPING = true;
     $CHECKING_SAFEMODE = false;
 
+    // Set cross-domain headers (COR)
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        require_code('ajax');
+        cor_prepare();
+    }
+
     if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat message precheck (for extra efficiency)
         require_code('chat_poller');
         chat_poller();
@@ -342,12 +348,6 @@ function init__global2()
         }
     }
     require_code('urls'); // URL building is crucial
-
-    // Set cross-domain headers (COR)
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        require_code('ajax');
-        cor_prepare();
-    }
 
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
