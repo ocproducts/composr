@@ -26,6 +26,18 @@ class Hook_upon_query_user_export
             return;
         }
 
+        if (!isset($GLOBALS['FORUM_DB'])) {
+            return;
+        }
+
+        if (running_script('install')) {
+            return;
+        }
+
+        if (strpos($query, 'f_member') === false) {
+            return;
+        }
+
         $prefix = preg_quote($GLOBALS['FORUM_DB']->get_table_prefix(), '#');
 
         $matches = array();

@@ -28,7 +28,7 @@ class authors_test_set extends cms_test_case
 
         add_author('author2', 'www.yahoo.com', 3, 'welcome', 'drama', '', '');
 
-        $this->assertTrue('author1' == $GLOBALS['FORUM_DB']->query_select_value('authors', 'author', array('author' => 'author1')));
+        $this->assertTrue('author1' == $GLOBALS['SITE_DB']->query_select_value('authors', 'author', array('author' => 'author1')));
     }
 
     public function testMergeauthors()

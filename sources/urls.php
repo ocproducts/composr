@@ -28,8 +28,8 @@ function init__urls()
     global $HTTPS_PAGES_CACHE;
     $HTTPS_PAGES_CACHE = null;
 
-    global $USE_REWRITE_PARAMS_CACHE;
-    $USE_REWRITE_PARAMS_CACHE = null;
+    global $CAN_TRY_URL_SCHEMES_CACHE;
+    $CAN_TRY_URL_SCHEMES_CACHE = null;
 
     global $HAS_KEEP_IN_URL_CACHE;
     $HAS_KEEP_IN_URL_CACHE = null;
@@ -165,10 +165,10 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
  * Encode a URL component in such a way that it won't get nuked by Apache %2F blocking security and url encoded '&' screwing. The get_param_string function will map it back. Hackerish but necessary.
  *
  * @param  URLPATH $url_part The URL to encode
- * @param  ?boolean $consider_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
+ * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode($url_part, $consider_url_schemes = null)
+function cms_url_encode($url_part, $can_try_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -176,10 +176,10 @@ function cms_url_encode($url_part, $consider_url_schemes = null)
         return $url_part_encoded;
     }
 
-    if ($consider_url_schemes === null) {
-        $consider_url_schemes = can_try_url_schemes();
+    if ($can_try_url_schemes === null) {
+        $can_try_url_schemes = can_try_url_schemes();
     }
-    if ($consider_url_schemes) { // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
+    if ($can_try_url_schemes) { // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
         //$url_part = str_replace(':', '(colon)', $url_part); We'll ignore theoretical problem here- we won't expect there to be a need for encodings within redirect URL paths (params is fine, handles naturally)
         $url_part = str_replace(array('/', '&', '#'), array(':slash:', ':amp:', ':uhash:'), $url_part); // horrible but mod_rewrite does it so we need to
     }
@@ -191,10 +191,10 @@ function cms_url_encode($url_part, $consider_url_schemes = null)
  * Encode a URL component, as per cms_url_encode but without slashes being encoded.
  *
  * @param  URLPATH $url_part The URL to encode
- * @param  ?boolean $consider_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
+ * @param  ?boolean $can_try_url_schemes Whether we have to consider URL Schemes (null: don't know, look up)
  * @return URLPATH The encoded result
  */
-function cms_url_encode_mini($url_part, $consider_url_schemes = null)
+function cms_url_encode_mini($url_part, $can_try_url_schemes = null)
 {
     // Slipstream for 99.99% of data
     $url_part_encoded = urlencode($url_part);
@@ -202,7 +202,7 @@ function cms_url_encode_mini($url_part, $consider_url_schemes = null)
         return $url_part_encoded;
     }
 
-    return str_replace('%3Aslash%3A', '/', cms_url_encode($url_part, $consider_url_schemes));
+    return str_replace('%3Aslash%3A', '/', cms_url_encode($url_part, $can_try_url_schemes));
 }
 
 /**
@@ -507,7 +507,7 @@ function url_monikers_enabled()
  */
 function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
-    global $HAS_KEEP_IN_URL_CACHE, $USE_REWRITE_PARAMS_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX, $IN_SELF_ROUTING_SCRIPT;
+    global $HAS_KEEP_IN_URL_CACHE, $CAN_TRY_URL_SCHEMES_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX, $IN_SELF_ROUTING_SCRIPT;
 
     $has_page = isset($vars['page']);
 
@@ -621,13 +621,13 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     }
 
     // We either use a URL Scheme, or return a standard parameterisation
-    if (($USE_REWRITE_PARAMS_CACHE === null) || ($avoid_remap)) {
-        $use_rewrite_params = can_try_url_schemes($avoid_remap);
+    if (($CAN_TRY_URL_SCHEMES_CACHE === null) || ($avoid_remap)) {
+        $can_try_url_schemes = can_try_url_schemes($avoid_remap);
         if (!$avoid_remap) {
-            $USE_REWRITE_PARAMS_CACHE = $use_rewrite_params;
+            $CAN_TRY_URL_SCHEMES_CACHE = $can_try_url_schemes;
         }
     } else {
-        $use_rewrite_params = $USE_REWRITE_PARAMS_CACHE;
+        $can_try_url_schemes = $CAN_TRY_URL_SCHEMES_CACHE;
     }
     $_what_is_running = $WHAT_IS_RUNNING_CACHE;
     if (!$IN_SELF_ROUTING_SCRIPT && $has_page) {
@@ -635,7 +635,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
     }
     $test_rewrite = null;
     $self_page = ((!$has_page) || ((function_exists('get_zone_name')) && (get_zone_name() === $zone_name) && (($vars['page'] === '_SELF') || ($vars['page'] === get_page_name())))) && ((!isset($vars['type'])) || ($vars['type'] === get_param_string('type', 'browse'))) && ($hash !== '#_top') && (!$KNOWN_AJAX);
-    if ($use_rewrite_params) {
+    if ($can_try_url_schemes) {
         if ((!$self_page) || ($_what_is_running === 'index')) {
             $test_rewrite = _url_rewrite_params($zone_name, $vars, count($keep_actual) > 0);
         }

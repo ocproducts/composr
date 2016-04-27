@@ -116,7 +116,7 @@ class Hook_ecommerce_cart_orders
                     $order['tot_price'],
                     'handle_product_orders',
                     array(),
-                    do_lang('CART_ORDER',strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
+                    do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
                     get_option('currency'),
                 );
             }

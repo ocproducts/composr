@@ -29,7 +29,7 @@ class auth_test_set extends cms_test_case
 
     public function testNoBackdoor()
     {
-        $this->assertTrue(!isset($GLOBALS['SITE_INFO']['backdoor_ip']), 'Backdoor to IP address present, may break other tests');
+        $this->assertTrue(empty($GLOBALS['SITE_INFO']['backdoor_ip']), 'Backdoor to IP address present, may break other tests');
     }
 
     public function testBadPasswordDoesFail()

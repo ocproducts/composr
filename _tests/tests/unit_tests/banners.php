@@ -43,7 +43,7 @@ class banners_test_set extends cms_test_case
     public function testAddBannerTypes()
     {
         // Test the benner was actually created
-        $this->assertTrue(100 == $GLOBALS['FORUM_DB']->query_select_value('banner_types', 't_image_width', array('id' => $this->banner_type)));
+        $this->assertTrue(100 == $GLOBALS['SITE_DB']->query_select_value('banner_types', 't_image_width', array('id' => $this->banner_type)));
     }
 
     public function testEditbannerType()
@@ -52,7 +52,7 @@ class banners_test_set extends cms_test_case
         edit_banner_type($this->banner_type, $this->banner_type, 0, 200, 100, 100, 0);
 
         //Test the width is updated to 200 for the banner "Welcome"
-        $this->assertTrue(200 == $GLOBALS['FORUM_DB']->query_select_value('banner_types', 't_image_width', array('id' => $this->banner_type)));
+        $this->assertTrue(200 == $GLOBALS['SITE_DB']->query_select_value('banner_types', 't_image_width', array('id' => $this->banner_type)));
     }
 
     public function testAddbanner()
@@ -60,7 +60,7 @@ class banners_test_set extends cms_test_case
         add_banner($this->banner_name, get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png', 'Good morning', 'Welcome', '', 10, get_brand_base_url(), 3, 'test notes', BANNER_PERMANENT, 1329153480, get_member(), 1, $this->banner_type);
 
         //make sure the banner is created with given name
-        $this->assertTrue(get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png' == $GLOBALS['FORUM_DB']->query_select_value('banners', 'img_url', array('name' => $this->banner_name)));
+        $this->assertTrue(get_brand_base_url() . '/themes/default/images/EN/logo/standalone_logo.png' == $GLOBALS['SITE_DB']->query_select_value('banners', 'img_url', array('name' => $this->banner_name)));
     }
 
     public function testDeleteitems()

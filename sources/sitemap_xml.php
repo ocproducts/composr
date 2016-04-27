@@ -253,7 +253,7 @@ function build_sitemap_cache_table()
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS | SITEMAP_GEN_CONSIDER_VALIDATION,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );

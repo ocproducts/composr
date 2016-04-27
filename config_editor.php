@@ -168,6 +168,7 @@ function do_access($given_password)
         'db_forums_host' => '<em>Database:</em> The database hosting computer name (usually localhost) for the forum driver to tie in to.',
         'db_forums_user' => '<em>Database:</em> The database username for the forum driver to connect to the forum database with.',
         'db_forums_password' => '<em>Database:</em> The password for the forum database username.',
+        'use_persistent' => '<em>Database:</em> Whether to use persistent database connections (most shared webhosts do not like these to be used).',
         'database_charset' => '<em>Database:</em> The MySQL character set for the connection. Usually you can just leave this blank, but if MySQL\'s character set for your database has been overridden away from the server-default then you will need to set this to be equal to that same character set.',
         'skip_fulltext_sqlserver' => '<em>Database:</em> Whether you are using Microsoft SQL Server and want to disable full-text search support.',
 

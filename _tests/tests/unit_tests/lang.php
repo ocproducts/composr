@@ -54,7 +54,7 @@ class lang_test_set extends cms_test_case
             'site/pages/comcode/EN',
             'docs/pages/comcode_custom/EN',
         );
-        if (git_repos() == 'composr_homesite') {
+        if (function_exists('git_repos') && git_repos() == 'composr_homesite') {
             $dirs = array_merge($dirs, array(
                 'text_custom',
                 'text_custom/EN',

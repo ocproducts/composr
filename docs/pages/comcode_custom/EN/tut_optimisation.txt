@@ -28,7 +28,7 @@ Limiting factors could be:
 [title="2"]Making PHP run faster[/title]
 
 Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
- - Zend OpCache (this is bundled by default in PHP5.6 and higher, recommended)
+ - Zend OpCache (this is bundled by default in PHP 5.6 and higher, recommended)
  - APC (free)
  - wincache (free, Windows only)
  - xcache (free)
@@ -66,7 +66,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
 
 [title="2"]General tips[/title]
 
- - [b]Use PHP7[/b], as PHP7 introduced massive speed improvements.
+ - [b]Use PHP 7[/b], as PHP 7 introduced massive speed improvements.
  - [b]Don't have addons installed that you don't need[/b]. Some may have general performance requirements, such as catalogues (adds custom fields checking to all content types) -- while others may just have general over-head in terms of sitemap generation, language string presence, moniker registration, and hook execution.
  - Enable the [b]disable_smart_decaching[/b] option in the installation options. You can make it intelligent, by only allowing smart decaching if the FTP log was modified recently.
  - You can mark out parts of a complex Comcode layout as having [b][tt]quick_cache[/tt][/b] by moving the content into individual Comcode pages then using the [tt]main_include_module[/tt] block to insert it back, with the [tt]quick_cache[/tt] parameter turned on for that block.
@@ -450,7 +450,7 @@ Alternatively, you could do a similar thing using rewrite rules in [tt].htaccess
 
 [title="2"]Facebook's HHVM[/title]
 
-[i]HHVM is not officially supported, as it is fast evolving and sometimes has bugs.[/i] It should work though. Support can be provided individually upon commercial demand. As PHP7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution.
+[i]HHVM is not officially supported, as it is fast evolving and sometimes has bugs.[/i] It should work though. Support can be provided individually upon commercial demand. As PHP 7 improved performance a lot over the previous official PHP releases, HHVM is not as interesting as it once was, as HHVM is a very heavyweight solution.
 
 Facebook released an alternative implementation of PHP that works as a JIT virtual machine instead of an interpreter. It more than doubles performance, and is set to improve further as it is developed.
 This is not suitable for most people for the following reasons:

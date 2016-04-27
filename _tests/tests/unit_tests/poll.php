@@ -30,7 +30,7 @@ class poll_test_set extends cms_test_case
 
         $this->poll_id = add_poll('Who are you ?', 'a', 'b', 'c');
 
-        $this->assertTrue('Who are you ?' == get_translated_text($GLOBALS['FORUM_DB']->query_select_value('poll', 'question', array('id' => $this->poll_id))));
+        $this->assertTrue('Who are you ?' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('poll', 'question', array('id' => $this->poll_id))));
     }
 
     public function testPollVote()
@@ -47,7 +47,7 @@ class poll_test_set extends cms_test_case
     {
         edit_poll($this->poll_id, 'Who am I?', 'a', 'b', 'c', '', '', '', '', '', '', '', 3, 1, 1, 1, '');
 
-        $this->assertTrue('Who am I?' == get_translated_text($GLOBALS['FORUM_DB']->query_select_value('poll', 'question', array('id' => $this->poll_id))));
+        $this->assertTrue('Who am I?' == get_translated_text($GLOBALS['SITE_DB']->query_select_value('poll', 'question', array('id' => $this->poll_id))));
     }
 
     public function tearDown()
