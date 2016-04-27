@@ -22,7 +22,6 @@ class Module_admin_giftr extends Standard_crud_module
 {
     public $lang_type = 'GIFT';
     public $select_name = 'NAME';
-    public $content_type = 'group';
     public $possibly_some_kind_of_upload = true;
     public $output_of_action_is_confirmation = true;
     public $menu_label = 'GIFTR_TITLE';

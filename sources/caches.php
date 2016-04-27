@@ -612,15 +612,15 @@ function _get_cache_entries($dets)
 
     $rets = array();
 
+    require_code('temporal');
+    $staff_status = $GLOBALS['FORUM_DRIVER']->is_staff(get_member());
+    $the_member = get_member();
+    $groups = implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))));
+    $is_bot = is_null(get_bot_type()) ? 0 : 1;
+    $timezone = get_users_timezone(get_member());
+
     // Bulk load
     if ($GLOBALS['PERSISTENT_CACHE'] === null) {
-        require_code('temporal');
-        $staff_status = $GLOBALS['FORUM_DRIVER']->is_staff(get_member());
-        $the_member = get_member();
-        $groups = implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))));
-        $is_bot = is_null(get_bot_type()) ? 0 : 1;
-        $timezone = get_users_timezone(get_member());
-
         $do_query = false;
 
         $sql = 'SELECT cached_for,identifier,the_value,date_and_time,dependencies FROM ' . get_table_prefix() . 'cache WHERE ';
@@ -663,7 +663,7 @@ function _get_cache_entries($dets)
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $lang = user_lang();
-            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme));
+            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $the_member, $groups, $is_bot, $timezone));
 
             if ($cache_row === null) { // No
                 if ($caching_via_cron) {
