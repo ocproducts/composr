@@ -297,7 +297,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
 
         $pos = 0;
         foreach ($_csv_data as $i => $csv_line) {
-            if (($i <= 1) && (count($csv_line) >= 1) && (isset($csv_line[0])) && (strpos($csv_line[0], '@') === false) && (isset($csv_line[1])) && (strpos($csv_line[1], '@') === false)) {
+            if (($i <= 0) && (count($csv_line) >= 1) && (isset($csv_line[0])) && (strpos($csv_line[0], '@') === false) && (isset($csv_line[1])) && (strpos($csv_line[1], '@') === false)) {
                 foreach ($csv_line as $j => $val) {
                     if (in_array(strtolower($val), array('e-mail', 'email', 'email address', 'e-mail address'))) {
                         $email_index = $j;

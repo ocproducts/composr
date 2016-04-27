@@ -1519,7 +1519,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $preview = do_template('NEWSLETTER_CONFIRM_WRAP', array('_GUID' => '02bd5a782620141f8589e647e2c6d90b', 'TEXT_PREVIEW' => $text_preview, 'PREVIEW' => $_preview, 'SUBJECT' => $subject));
         pop_media_mode();
 
-        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html);
+        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html, true);
 
         require_code('templates_confirm_screen');
         return confirm_screen($this->title, $preview, 'send', get_param_string('old_type', 'new'), $extra_post_data);
