@@ -454,7 +454,7 @@ class ADOPDOStatement {
 	var $_stmt;
 	var $_connectionID;
 	
-	function ADOPDOStatement($stmt,$connection)
+	function __construct($stmt,$connection)
 	{
 		$this->_stmt = $stmt;
 		$this->_connectionID = $connection;

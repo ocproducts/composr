@@ -1119,7 +1119,7 @@ class Mock {
      *    Factory for mock object classes.
      *    @access public
      */
-    function Mock() {
+    function __construct() {
         trigger_error('Mock factory methods are static.');
     }
 

@@ -17,7 +17,7 @@
 class getid3_midi
 {
 
-	function getid3_midi(&$fd, &$ThisFileInfo, $scanwholefile=true) {
+	function __construct(&$fd, &$ThisFileInfo, $scanwholefile=true) {
 
 		// shortcut
 		$ThisFileInfo['midi']['raw'] = array();

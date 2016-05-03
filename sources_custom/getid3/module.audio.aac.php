@@ -18,7 +18,7 @@ class getid3_aac
 {
 
 	// new combined constructor
-	function getid3_aac(&$fd, &$ThisFileInfo, $option) {
+	function __construct(&$fd, &$ThisFileInfo, $option) {
 
 		if ($option === 'adif') {
 			$this->getAACADIFheaderFilepointer($fd, $ThisFileInfo);

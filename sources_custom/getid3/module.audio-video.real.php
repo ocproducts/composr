@@ -18,7 +18,7 @@ getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio-video.riff.php', 
 class getid3_real
 {
 
-	function getid3_real(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['fileformat']       = 'real';
 		$ThisFileInfo['bitrate']          = 0;
 		$ThisFileInfo['playtime_seconds'] = 0;

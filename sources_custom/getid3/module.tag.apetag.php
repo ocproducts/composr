@@ -16,7 +16,7 @@
 class getid3_apetag
 {
 
-	function getid3_apetag(&$fd, &$ThisFileInfo, $overrideendoffset=0) {
+	function __construct(&$fd, &$ThisFileInfo, $overrideendoffset=0) {
 
 		if ($ThisFileInfo['filesize'] >= pow(2, 31)) {
 			$ThisFileInfo['warning'][] = 'Unable to check for APEtags because file is larger than 2GB';

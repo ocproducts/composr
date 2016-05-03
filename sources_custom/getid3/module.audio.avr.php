@@ -17,7 +17,7 @@
 class getid3_avr
 {
 
-	function getid3_avr(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		// http://cui.unige.ch/OSG/info/AudioFormats/ap11.html
 		// http://www.btinternet.com/~AnthonyJ/Atari/programming/avr_format.html

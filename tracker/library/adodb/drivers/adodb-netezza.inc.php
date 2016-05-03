@@ -139,7 +139,7 @@ class ADORecordSet_netezza extends ADORecordSet_postgres64
 	var $databaseType = "netezza";
 	var $canSeek = true;
 	
-	function ADORecordSet_netezza($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if ($mode === false) { 
 			global $ADODB_FETCH_MODE;

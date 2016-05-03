@@ -17,7 +17,7 @@
 class getid3_ac3
 {
 
-	function getid3_ac3(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		///AH
 		$ThisFileInfo['ac3']['raw']['bsi'] = array();

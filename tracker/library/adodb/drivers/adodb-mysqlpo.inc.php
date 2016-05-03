@@ -72,7 +72,7 @@ class ADODB_mysqlt extends ADODB_mysql {
 class ADORecordSet_mysqlt extends ADORecordSet_mysql{	
 	var $databaseType = "mysqlt";
 	
-	function ADORecordSet_mysqlt($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if ($mode === false) { 
 			global $ADODB_FETCH_MODE;
@@ -109,7 +109,7 @@ class ADORecordSet_mysqlt extends ADORecordSet_mysql{
 
 class ADORecordSet_ext_mysqlt extends ADORecordSet_mysqlt {	
 
-	function ADORecordSet_ext_mysqlt($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if ($mode === false) { 
 			global $ADODB_FETCH_MODE;

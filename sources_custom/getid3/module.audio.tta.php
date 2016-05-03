@@ -17,7 +17,7 @@
 class getid3_tta
 {
 
-	function getid3_tta(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		$ThisFileInfo['fileformat']            = 'tta';
 		$ThisFileInfo['audio']['dataformat']   = 'tta';

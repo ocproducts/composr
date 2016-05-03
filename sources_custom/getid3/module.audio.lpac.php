@@ -18,7 +18,7 @@ getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio-video.riff.php', 
 class getid3_lpac
 {
 
-	function getid3_lpac(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$LPACheader = fread($fd, 14);

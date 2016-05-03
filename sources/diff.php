@@ -360,7 +360,7 @@ class Text_Diff_Op
 class Text_Diff_Op_copy extends Text_Diff_Op
 {
 
-    function Text_Diff_Op_copy($orig, $final = false)
+    function __construct($orig, $final = false)
     {
         if (!is_array($final)) {
             $final = $orig;
@@ -385,7 +385,7 @@ class Text_Diff_Op_copy extends Text_Diff_Op
 class Text_Diff_Op_delete extends Text_Diff_Op
 {
 
-    function Text_Diff_Op_delete($lines)
+    function __construct($lines)
     {
         $this->orig = $lines;
         $this->final = false;
@@ -407,7 +407,7 @@ class Text_Diff_Op_delete extends Text_Diff_Op
 class Text_Diff_Op_add extends Text_Diff_Op
 {
 
-    function Text_Diff_Op_add($lines)
+    function __construct($lines)
     {
         $this->final = $lines;
         $this->orig = false;
@@ -429,7 +429,7 @@ class Text_Diff_Op_add extends Text_Diff_Op
 class Text_Diff_Op_change extends Text_Diff_Op
 {
 
-    function Text_Diff_Op_change($orig, $final)
+    function __construct($orig, $final)
     {
         $this->orig = $orig;
         $this->final = $final;
@@ -626,7 +626,7 @@ class Text_Diff3_Op
 class Text_Diff3_Op_copy extends Text_Diff3_Op
 {
 
-    function Text_Diff3_Op_Copy($lines = false)
+    function __construct($lines = false)
     {
         $this->orig = $lines ? $lines : array();
         $this->final1 =& $this->orig;

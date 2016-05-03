@@ -17,7 +17,7 @@
 class getid3_au
 {
 
-	function getid3_au(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$AUheader  = fread($fd, 8);

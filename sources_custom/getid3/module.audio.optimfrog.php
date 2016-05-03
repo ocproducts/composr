@@ -18,7 +18,7 @@ getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio-video.riff.php', 
 class getid3_optimfrog
 {
 
-	function getid3_optimfrog(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['fileformat']            = 'ofr';
 		$ThisFileInfo['audio']['dataformat']   = 'ofr';
 		$ThisFileInfo['audio']['bitrate_mode'] = 'vbr';

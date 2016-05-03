@@ -17,7 +17,7 @@
 class getid3_exe
 {
 
-	function getid3_exe(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$EXEheader = fread($fd, 28);

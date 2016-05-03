@@ -17,7 +17,7 @@
 class getid3_bmp
 {
 
-	function getid3_bmp(&$fd, &$ThisFileInfo, $ExtractPalette=false, $ExtractData=false) {
+	function __construct(&$fd, &$ThisFileInfo, $ExtractPalette=false, $ExtractData=false) {
 
 	    // shortcuts
 	    $ThisFileInfo['bmp']['header']['raw'] = array();

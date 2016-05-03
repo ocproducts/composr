@@ -136,7 +136,7 @@ class SimpleAuthenticator {
      *    Clears the realms.
      *    @access public
      */
-    function SimpleAuthenticator() {
+    function __construct() {
         $this->restartSession();
     }
     

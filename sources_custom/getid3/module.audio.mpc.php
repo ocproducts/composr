@@ -17,7 +17,7 @@
 class getid3_mpc
 {
 
-	function getid3_mpc(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['mpc']['header'] = array();
 		$thisfile_mpc_header           = &$ThisFileInfo['mpc']['header'];
 

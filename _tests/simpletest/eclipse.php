@@ -273,7 +273,7 @@ class EclipseReporter extends SimpleScorer {
  *  @subpackage Eclipse
  */
 class EclipseInvoker extends SimpleInvokerDecorator{
-    function EclipseInvoker(&$invoker, &$listener) {
+    function __construct(&$invoker, &$listener) {
         $this->_listener = &$listener;
         $this->SimpleInvokerDecorator($invoker);
     }

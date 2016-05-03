@@ -728,7 +728,7 @@ class SimpleSaxListener {
      *    Sets the document to write to.
      *    @access public
      */
-    function SimpleSaxListener() {
+    function __construct() {
     }
     
     /**

@@ -19,7 +19,7 @@ class getid3_svg
 {
 
 
-	function getid3_svg(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 
 		// I'm making this up, please modify as appropriate

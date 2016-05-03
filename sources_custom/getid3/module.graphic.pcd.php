@@ -16,7 +16,7 @@
 
 class getid3_pcd
 {
-	function getid3_pcd(&$fd, &$ThisFileInfo, $ExtractData=0) {
+	function __construct(&$fd, &$ThisFileInfo, $ExtractData=0) {
 		$ThisFileInfo['fileformat']          = 'pcd';
 		$ThisFileInfo['video']['dataformat'] = 'pcd';
 		$ThisFileInfo['video']['lossless']   = false;

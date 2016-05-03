@@ -110,7 +110,7 @@ class ADODB_sybase_ase extends ADODB_sybase {
 
 class adorecordset_sybase_ase extends ADORecordset_sybase {
 var $databaseType = "sybase_ase";
-function ADORecordset_sybase_ase($id,$mode=false)
+function __construct($id,$mode=false)
 	{
 		$this->ADORecordSet_sybase($id,$mode);
 	}

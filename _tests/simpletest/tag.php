@@ -885,7 +885,7 @@ class SimpleOptionTag extends SimpleWidget {
     /**
      *    Stashes the attributes.
      */
-    function SimpleOptionTag($attributes) {
+    function __construct($attributes) {
         $this->SimpleWidget('option', $attributes);
     }
     

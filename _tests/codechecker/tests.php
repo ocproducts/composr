@@ -70,7 +70,7 @@ class foobar
 {
     var \$i;
 
-    function foobar(\$a)
+    function __construct(\$a)
     {
         echo \$a;
     }
@@ -550,7 +550,7 @@ interface D extends A, C
 }
 class Foo implements A
 {
-    public function foo(\$bar)
+    public function __construct(\$bar)
     {
         // Do nothing
     }
