@@ -415,8 +415,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         $GLOBALS['MSN_DB'] = null;
     }
 
-    global $EXITING;
-    if ((running_script('upgrader')) || (!function_exists('get_screen_title'))) {
+    global $EXITING, $MICRO_BOOTUP;
+    if ((running_script('upgrader')) || (!function_exists('get_screen_title')) || ($MICRO_BOOTUP)) {
         critical_error('PASSON', is_object($text) ? $text->evaluate() : $text);
     }
 
