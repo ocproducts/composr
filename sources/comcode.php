@@ -149,6 +149,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
         $wrap_pos = 100000;
     }
 
+    // Optimised code path (still has to support emoticons though, as those are arbitrary)
     $attachments = (count($_FILES) != 0);
     foreach ($_POST as $key => $value) {
         if (is_integer($key)) {
@@ -165,6 +166,8 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
         }
         return make_string_tempcode(apply_emoticons(escape_html($comcode)));
     }
+
+    // Full code path...
 
     require_code('comcode_renderer');
     $long = (strlen($comcode) > 1000);

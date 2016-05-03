@@ -237,7 +237,12 @@ class Hook_sitemap_page extends Hook_sitemap_base
 
                 if (!is_null($functions[0])) {
                     $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
-                    if ((!is_null($entry_points)) && (count($entry_points) > 0)) {
+
+                    if (is_null($entry_points)) {
+                        return null;
+                    }
+
+                    if (count($entry_points) > 0) {
                         $struct['has_possible_children'] = true;
 
                         $entry_point_sitemap_ob = $this->_get_sitemap_object('entry_point');

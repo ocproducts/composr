@@ -596,7 +596,7 @@ function step_3()
     $dbs_found = 0;
     foreach (array_keys($databases) as $database) {
         if (GOOGLE_APPENGINE) {
-            if ($database != 'mysql') {
+            if ($database != 'mysql' && $database != 'mysqli') {
                 continue;
             }
         }
@@ -616,10 +616,10 @@ function step_3()
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
-        if ($database == 'mysql') {
+        if ($database == 'mysqli') {
             $selected = true;
         }
-        if (($database == 'mysqli') && (!function_exists('mysql_connect'))) {
+        if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
             $selected = true;
         }
         if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
@@ -2309,6 +2309,9 @@ function step_10()
         closedir($_dir);
     }
 
+    require_code('caches3');
+    erase_cached_templates();
+
     return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'CURRENT_STEP' => '10', 'FINAL' => $final, 'LOG' => $log));
 }
 
@@ -3011,7 +3014,7 @@ order allow,deny
 allow from all
 END;
 
-    $base = str_replace('/', '\\', dirname(cms_srv('SCRIPT_NAME')));
+    $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
     $clauses[] = <<<END
 <FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
 ErrorDocument 404 {$base}/index.php?page=404

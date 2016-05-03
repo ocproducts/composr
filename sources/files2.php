@@ -1592,6 +1592,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                         // 404=Not found
                         // 400/500=Internal error
                         // 405=Method not allowed
+
                         $HTTP_MESSAGE = $matches[2];
                         switch ($matches[2]) {
                             case '301':

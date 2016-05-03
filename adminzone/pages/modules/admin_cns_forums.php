@@ -538,7 +538,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     {
         require_code('cns_forums_action2');
 
-        $parent_forum = post_param_integer('parent_forum', -1);
+        $parent_forum = post_param_integer('parent_forum');
         $name = post_param_string('name');
 
         $metadata = actual_metadata_get_fields('forum', null);
@@ -607,7 +607,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_string('name'),
             post_param_string('description', STRING_MAGIC_NULL),
             post_param_integer('forum_grouping_id', fractional_edit() ? INTEGER_MAGIC_NULL : false),
-            post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : false),
+            post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : null/*root forum*/),
             fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(),
             post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
