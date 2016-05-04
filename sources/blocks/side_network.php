@@ -68,9 +68,9 @@ class Block_side_network
 
             $data = http_download_file($netlinks, null, false);
             if (is_null($data)) {
-                $if_network = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($netlinks));
+                $if_network = is_null($GLOBALS['HTTP_MESSAGE_B']) ? $GLOBALS['HTTP_MESSAGE'] : $GLOBALS['HTTP_MESSAGE_B'];
             } else {
-                $if_network = make_string_tempcode(convert_to_internal_encoding($data));
+                $if_network = convert_to_internal_encoding($data);
             }
             return do_template('BLOCK_SIDE_NETWORK', array('_GUID' => '5fe8867b9f69670ad61e6c78b956fab2', 'CONTENT' => $if_network));
         }

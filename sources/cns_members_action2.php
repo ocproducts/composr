@@ -768,7 +768,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $value = remove_magic_encryption_marker($value);
             }
 
-            if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
+            if (!member_field_is_required($member_id, 'required_cpfs', $value) && $custom_field['cf_type'] != 'tick'/*HACKHACK*/) {
                 $custom_field['cf_required'] = 0;
             }
         } else {

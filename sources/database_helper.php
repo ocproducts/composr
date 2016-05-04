@@ -412,7 +412,7 @@ function _helper_rename_table($this_ref, $old, $new)
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $name The field name
  * @param  ID_TEXT $_type The field type
- * @param  ?mixed $default The default value (null: no default)
+ * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
  * @ignore
  */
 function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default = null)

@@ -1530,7 +1530,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $_type The field type
-     * @param  ?mixed $default The default value (null: no default)
+     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
      */
     public function add_table_field($table_name, $name, $_type, $default = null)
     {

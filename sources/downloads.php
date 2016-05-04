@@ -74,7 +74,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     // Details
     $file_size = $row['file_size'];
     $file_size = ($file_size > 0) ? clean_file_size($file_size) : do_lang('UNKNOWN');
-    $description = (!is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
+    $description = (is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
     if (array_key_exists('id', $row)) {
         $map = array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']);
         if (!is_null($root)) {

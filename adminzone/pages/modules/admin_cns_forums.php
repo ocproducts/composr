@@ -413,9 +413,9 @@ class Module_admin_cns_forums extends Standard_crud_module
         $all = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_parent_forum', 'f_forum_grouping_id'));
         $ordering = array();
         foreach ($all as $forum) {
-            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), -1);
-            $order = post_param_integer('order_' . strval($forum['id']), -1);
-            if (($cat_order != -1) && ($order != -1)) { // Should only be -1 if since deleted
+            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), null);
+            $order = post_param_integer('order_' . strval($forum['id']), null);
+            if (($cat_order !== null) && ($order !== null)) { // Should only be null if since created
                 if (!array_key_exists($forum['f_parent_forum'], $ordering)) {
                     $ordering[$forum['f_parent_forum']] = array();
                 }
