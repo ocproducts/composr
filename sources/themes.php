@@ -49,9 +49,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 {
     global $THEME_IMAGES_CACHE, $USER_LANG_CACHED, $THEME_IMAGES_SMART_CACHE_LOAD, $RECORD_THEME_IMAGES_CACHE, $SMART_CACHE, $SITE_INFO;
 
-    $id = strval($id);
-
-    if ($id === '') {
+    if (empty($id)) {
         return ''; // $id should be non-empty
     }
 

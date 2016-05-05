@@ -316,7 +316,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         } else {
             $data = http_download_file($url);
         }
-        $img = imagecreatefromstring($data);
+        $img = @imagecreatefromstring($data);
         if ($img === false) {
             warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)));
         }

@@ -729,6 +729,7 @@ class Module_galleries
         } else {
             $warning_details = new Tempcode();
         }
+
         switch ($probe_type) {
             case 'video':
                 if (is_null($row)) {
@@ -747,6 +748,8 @@ class Module_galleries
                     }
                     $row = $rows[0];
                 }
+
+                $just_row = db_map_restrict($row, array('id', 'description'));
 
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('galleries', $cat)))) {
                     $entry_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => $row['id']), get_module_zone('cms_galleries'));
@@ -772,7 +775,7 @@ class Module_galleries
                     'EDIT_URL' => $entry_edit_url,
                     'MAIN' => true,
                     'RATING_DETAILS' => $entry_rating_details,
-                    'DESCRIPTION' => get_translated_tempcode('videos', $row, 'description'),
+                    'DESCRIPTION' => get_translated_tempcode('videos', $just_row, 'description'),
                     'CAT' => $cat,
                     'THUMB_URL' => $url,
                     'FULL_URL' => $full_url,
@@ -807,6 +810,8 @@ class Module_galleries
                     $row = $rows[0];
                 }
 
+                $just_row = db_map_restrict($row, array('id', 'description'));
+
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('galleries', $cat)))) {
                     $entry_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit', 'id' => $row['id']), get_module_zone('cms_galleries'));
                 }
@@ -836,7 +841,7 @@ class Module_galleries
                     'EDIT_URL' => $entry_edit_url,
                     'MAIN' => true,
                     'RATING_DETAILS' => $entry_rating_details,
-                    'DESCRIPTION' => get_translated_tempcode('images', $row, 'description'),
+                    'DESCRIPTION' => get_translated_tempcode('images', $just_row, 'description'),
                     'FILE_SIZE' => $file_size,
                     'CAT' => $cat,
                     'THUMB_URL' => $thumb_url,
@@ -894,8 +899,10 @@ class Module_galleries
                 continue;
             }
 
+            $just_row = db_map_restrict($row, array('id', 'description'));
+
             $entry_title = get_translated_text($row['title']);
-            $entry_description = get_translated_tempcode($type . 's', $row, 'description');
+            $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');
 
             $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
             $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');

@@ -145,7 +145,9 @@ class Hook_admin_stats_cns_posting_rates
                     $date = date('Y/m/d', $row['p_time']);
                 }
             }
-            $posting_rates[$date]++;
+            if (isset($posting_rates[$date])) {
+                $posting_rates[$date]++;
+            }
         }
 
         $start = 0;

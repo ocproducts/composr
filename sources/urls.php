@@ -136,8 +136,10 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         $extra_params = array_merge($post_array, $extra_params);
     }
     $page = '_SELF';
+    $zone = '_SELF';
     if (($root_if_posted) && (count($_POST) !== 0) || !running_script('index')) {
         $page = '';
+        $zone = 'site';
     }
     $params = array('page' => $page);
     $skip = array();
@@ -149,7 +151,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         }
     }
 
-    $url = build_url($params, '_SELF', $skip, true, $avoid_remap);
+    $url = build_url($params, $zone, $skip, true, $avoid_remap);
     if ($evaluate) {
         $ret = $url->evaluate();
         if ($cacheable) {

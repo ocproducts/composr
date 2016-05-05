@@ -98,7 +98,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $map = null;
         if (get_forum_type() != 'cns' || !addon_installed('shopping')) {
-            $map = array('c_is_ecommerce' => 0);
+            $map = array('c_ecommerce' => 0);
         }
 
         if ($child_cutoff !== null) {
