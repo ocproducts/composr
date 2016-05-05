@@ -83,6 +83,10 @@ class Hook_sitemap_catalogue_category extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'cms_catalogues', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_catalogues')),
         ) + $partial_struct;
 
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_is_tree', array('c_name' => $content_id)) == 1) {
+            $struct['extra_meta']['is_a_category_tree_root'] = true;
+        }
+
         if (!$this->_check_node_permissions($struct)) {
             return null;
         }

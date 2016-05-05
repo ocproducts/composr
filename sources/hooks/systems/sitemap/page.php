@@ -355,7 +355,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $virtual_child_nodes = array();
                         }
                         foreach ($virtual_child_nodes as $child_node) {
-                            if ((count($virtual_child_nodes) == 1) && (preg_match('#^' . preg_quote($page_link, '#') . ':browse(:[^:=]*$|$)#', $child_node['page_link']) != 0) && (!$require_permission_support) && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0)) {
+                            if ((count($virtual_child_nodes) == 1) && (preg_match('#^' . preg_quote($page_link, '#') . ':browse(:[^:=]*$|$)#', $child_node['page_link']) != 0) && (!$require_permission_support) && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) && (empty($child_node['extra_meta']['is_a_category_tree_root']))) {
                                 // Put as container instead
                                 if ($child_node['extra_meta']['image'] == '') {
                                     $child_node['extra_meta']['image'] = $struct['extra_meta']['image'];
