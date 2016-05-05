@@ -70,7 +70,7 @@ class Block_side_personal_stats
         } else {
             $title = do_lang_tempcode('NOT_LOGGED_IN');
 
-            if (count($_POST) > 0 || (get_page_name() == 'join') || (get_page_name() == 'login')) {
+            if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login')) {
                 $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
             } else {
                 $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);

@@ -1909,7 +1909,6 @@ function normalise_ip_address($ip, $amount = null)
             }
         }
         $ip_cache[$raw_ip][$amount] = implode(':', $parts);
-        return $ip_cache[$raw_ip][$amount];
     } else { // IPv4
         $parts = explode('.', $ip);
         for ($i = 0; $i < (is_null($amount) ? 4 : $amount); $i++) {
@@ -1923,8 +1922,8 @@ function normalise_ip_address($ip, $amount = null)
             }
         }
         $ip_cache[$raw_ip][$amount] = implode('.', $parts);
-        return $ip_cache[$raw_ip][$amount];
     }
+    return $ip_cache[$raw_ip][$amount];
 }
 
 /**
@@ -3433,4 +3432,27 @@ function disable_smart_decaching_temporarily()
 {
     global $SITE_INFO;
     $SITE_INFO['disable_smart_decaching'] = '1';
+}
+
+/**
+ * Find if the current request has POST fields worth considering/propagating. Very standard framework fields will be ignored.
+ *
+ * @return boolean Whether it does
+ */
+function has_interesting_post_fields()
+{
+    $post = $_POST;
+    $to_ignore = array(
+        'csrf_token',
+        'y' . md5(get_site_name() . ': antispam'),
+        'login_username',
+        'password',
+        'remember_me',
+        'redirect',
+        'redirect_passon',
+    );
+    foreach ($to_ignore as $field) {
+        unset($post[$field]);
+    }
+    return (count($post) !== 0);
 }

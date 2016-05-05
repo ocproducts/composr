@@ -238,7 +238,7 @@ function closed_site()
 
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
-        if (count($_POST) > 0) {
+        if (has_interesting_post_fields()) {
             $_redirect = build_url(array('page' => ''), '', array('keep_session' => 1));
         } else {
             $_redirect = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1), true);

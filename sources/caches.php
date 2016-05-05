@@ -150,7 +150,8 @@ class Self_learning_cache
             @mkdir($dir, 0777);
             fix_permissions($dir);
         }
-        $this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
+        //$this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd'; Windows has a 260 character path limit, so we can't do it this way
+        $this->path = $dir . '/' . filter_naughty(md5($bucket_name)) . '.gcd';
         $this->load();
     }
 

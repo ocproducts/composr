@@ -46,7 +46,7 @@ class Hook_profiles_tabs_comments
 
         $order = 25;
 
-        if ($leave_to_ajax_if_possible && count($_POST) == 0) {
+        if ($leave_to_ajax_if_possible && !has_interesting_post_fields()) {
             return array($title, null, $order, 'feedback/comment');
         }
 

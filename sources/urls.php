@@ -137,9 +137,10 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     }
     $page = '_SELF';
     $zone = '_SELF';
-    if (($root_if_posted) && (count($_POST) !== 0) || !running_script('index')) {
+    if (($root_if_posted) && (has_interesting_post_fields()) || !running_script('index')) {
         $page = '';
         $zone = 'site';
+        unset($extra_params['page']);
     }
     $params = array('page' => $page);
     $skip = array();

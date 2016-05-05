@@ -450,7 +450,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     // Our state
     $status = CCP_NO_MANS_LAND;
-    $lax = $GLOBALS['LAX_COMCODE'] || function_exists('get_member') && $source_member != get_member() || count($_POST) === 0; // if we don't want to produce errors for technically invalid Comcode
+    $lax = $GLOBALS['LAX_COMCODE'] || function_exists('get_member') && $source_member != get_member() || !has_interesting_post_fields(); // if we don't want to produce errors for technically invalid Comcode
     if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
         $lax = true;
     }
