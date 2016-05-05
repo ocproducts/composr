@@ -116,7 +116,7 @@ Member profiles contain information on the member, including:
  - Whether they are banned
  - Their join date
  - Their primary usergroup
- - The most recent web browser they have used (only viewable by those with privileges)
+ - The most recent web browser they have used (only viewable by those with privileges, and only if the stats addon is installed with data having been collected)
 
 [media width="150" description="Viewing a member profile" float="right"]data_custom/images/docs/tut_members/members_profile.png[/media]
 Member profiles contain many links to other Composr pages that relate to that member, with additional links presented to staff and the member themselves. As Composr can be a very user-centric system, there are a lot of links presented here and this makes member profile screens a very convenient convergence of features.
