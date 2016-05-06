@@ -1669,7 +1669,7 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             log_warning('Divide by zero un-handled', $c_pos);
         }
     }
-    if ($e[0] == 'UNARY_IF') {
+    if ($e[0] == 'TERNARY_IF') {
         if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
             $function_guard .= ',' . $e[1][2][0][1][1] . ',';
         }

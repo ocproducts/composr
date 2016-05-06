@@ -685,7 +685,7 @@ class Block_main_multi_content
 
         return do_template('BLOCK_MAIN_MULTI_CONTENT', array(
             '_GUID' => ($guid != '') ? $guid : '9035934bc9b25f57eb8d23bf100b5796',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'CONTENT' => $rendered_content,
@@ -700,6 +700,7 @@ class Block_main_multi_content
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 

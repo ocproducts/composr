@@ -189,7 +189,7 @@ class Block_main_activities
 
         return do_template('BLOCK_MAIN_ACTIVITIES', array(
             '_GUID' => 'b4de219116e1b8107553ee588717e2c9',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'MODE' => $mode,
             'MEMBER_IDS' => implode(',', $member_ids),
             'CONTENT' => $content,
@@ -201,6 +201,7 @@ class Block_main_activities
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 }

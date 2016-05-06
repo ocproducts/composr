@@ -369,7 +369,7 @@ class Block_main_gallery_embed
             'VIDEO_FILTER' => $map['video_filter'],
             'DAYS' => $_days,
             'SORT' => $sort,
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'PAGINATION' => $pagination,
             'TITLE' => $title,
             'CAT' => $cat_raw,
@@ -382,6 +382,7 @@ class Block_main_gallery_embed
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 }

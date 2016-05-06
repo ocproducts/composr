@@ -2941,6 +2941,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 function set_outer_html(element,target_html)
 {
 	var p=element.parentNode;
+	var ref=element.nextSibling;
 	p.removeChild(element);
 
 	set_inner_html(element,target_html,false,true);
@@ -2950,7 +2951,7 @@ function set_outer_html(element,target_html)
 	{
 		ci=c[0];
 		element.removeChild(ci);
-		p.appendChild(ci);
+		p.insertBefore(ci,ref);
 	}
 }
 

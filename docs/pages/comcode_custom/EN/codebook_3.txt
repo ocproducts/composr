@@ -633,6 +633,7 @@ The 'keep' parameters available are:
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
  - [tt]keep_has_cron[/tt] -- set this to '1' or '0' to override UI adaptations to CRON being on or not (e.g. to enable scheduling options as if CRON was on, even if they won't run)
  - [tt]keep_smart_decaching[/tt] -- set this to '1' for smart decaching to be enabled, even if disabled in [tt]_config.php[/tt] (it is on by default, so you may want to use this flag if you disabled it but want to ease your development workflow)
+ - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

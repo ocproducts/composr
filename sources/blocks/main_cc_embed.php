@@ -178,7 +178,7 @@ class Block_main_cc_embed
         // Render
         return do_template('CATALOGUE_' . $tpl_set . '_CATEGORY_EMBED', array(
             '_GUID' => 'dfdsfdsfsd3ffsdfsd',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'DISPLAY_TYPE' => $display_type_str,
             'ROOT' => is_null($root) ? '' : strval($root),
             'CATALOGUE' => $catalogue_name,

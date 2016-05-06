@@ -114,7 +114,7 @@ class Block_main_personal_galleries_list
 
         return do_template('BLOCK_MAIN_PERSONAL_GALLERIES_LIST', array(
             '_GUID' => '90b11d3c01ff551be42a0472d27dd207',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'GALLERIES' => $galleries,
             'PAGINATION' => $pagination,
             'MEMBER_ID' => strval($member_id),
@@ -126,6 +126,7 @@ class Block_main_personal_galleries_list
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 

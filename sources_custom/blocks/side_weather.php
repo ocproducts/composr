@@ -242,7 +242,7 @@ class Block_side_weather
             'PREPARED_DATE' => $prepared_date,
             'DATES' => $dates,
             'TEMPERATURE_UNIT' => $temperature_unit,
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
         ));
     }
 }

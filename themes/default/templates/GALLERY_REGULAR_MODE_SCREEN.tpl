@@ -52,7 +52,6 @@
 		2_ICON=menu/cms/galleries/add_one_video
 		3_URL={$?,{$OR,{$NOT,{$HAS_PRIVILEGE,may_download_gallery}},{$IS_EMPTY,{ENTRIES}}},,{$FIND_SCRIPT*,download_gallery}?cat={CAT*}{$KEEP*,0,1}}
 		3_TITLE={!DOWNLOAD_GALLERY_CONTENTS}
-		3_CLASS=archive_link
 		3_ICON=links/download_as_archive
 		4_URL={ADD_GALLERY_URL*}
 		4_TITLE={!ADD_GALLERY}
