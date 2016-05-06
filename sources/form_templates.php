@@ -95,12 +95,11 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         $max_values = array();
         foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
             if (is_numeric(ini_get($setting))) {
-                $max_values[] = intval(ini_get($setting));
+                $max_values[$setting] = intval(ini_get($setting));
             }
         }
     }
-
-    foreach ($max_values as $max_value) {
+    foreach ($max_values as $setting => $max_value) {
         if ($max_value < $count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
@@ -112,12 +111,11 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         $max_length_values = array();
         foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
             if (is_numeric(ini_get($setting))) {
-                $max_length_values[] = intval(ini_get($setting));
+                $max_length_values[$setting] = intval(ini_get($setting));
             }
         }
     }
-
-    foreach ($max_length_values as $max_length_value) {
+    foreach ($max_length_values as $setting => $max_length_value) {
         if ($max_length_value < $name_length_count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;

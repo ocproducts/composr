@@ -535,11 +535,11 @@ class Module_galleries
         // Flow mode puts emphasis on subgalleries, rather than entries; it is subgalleries that there are a lot of, rather than entries
         $myrow['flow_mode_interface'] = get_param_integer('flow_mode_interface', $myrow['flow_mode_interface']); // Allow override via URL
         if ($myrow['flow_mode_interface'] == 1) {
-            $max = get_param_integer('gallery_entries_max', get_default_gallery_max());
+            $max = get_param_integer('module_max', get_default_gallery_max());
             if ($max < 1) {
                 $max = 1;
             }
-            $start = get_param_integer('gallery_entries_start', 0);
+            $start = get_param_integer('module_start', 0);
         } else {
             $max = null;
             $start = null;
@@ -1144,7 +1144,7 @@ class Module_galleries
         $add_date = get_timezoned_date($myrow['add_date']);
         $edit_date = is_null($myrow['edit_date']) ? '' : get_timezoned_date($myrow['edit_date']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('gallery_entries_start', 0), get_param_integer('gallery_entries_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1264,7 +1264,7 @@ class Module_galleries
         // Video HTML
         $video = show_gallery_video_media($url, $thumb_url, $myrow['video_width'], $myrow['video_height'], $myrow['video_length'], $myrow['submitter']);
 
-        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('gallery_entries_start', 0), get_param_integer('gallery_entries_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
+        list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'video', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
 
         $member_id = get_member_id_from_gallery_name($cat, null, true);
         if (get_forum_type() == 'cns') {
@@ -1485,7 +1485,7 @@ class Module_galleries
 
         // Link to show more. Preserve info about where we were
         $slideshow_url = build_url(array('page' => '_SELF', 'type' => $first_type, 'wide_high' => 1, 'id' => $first_id, 'slideshow' => 1, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF', null, true);
-        $more_url = is_null($cat) ? null : build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'gallery_entries_start' => ($start == 0) ? null : $start, 'gallery_entries_max' => ($max == get_default_gallery_max()) ? null : $max, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF');
+        $more_url = is_null($cat) ? null : build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'module_start' => ($start == 0) ? null : $start, 'module_max' => ($max == get_default_gallery_max()) ? null : $max, 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select) + propagate_filtercode(), '_SELF');
 
         // Only one entry?
         if ($n == 1) {
