@@ -567,7 +567,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             }
         }
 
-        inject_web_resources_context_to_comcode($message_raw);
+        if (!$in_html) {
+            inject_web_resources_context_to_comcode($message_raw);
+        }
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
             'm_subject' => cms_mb_substr($subject_line, 0, 255),

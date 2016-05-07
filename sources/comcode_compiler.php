@@ -187,13 +187,15 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
  * @param  string $tag The Comcode tag
  * @param  array $attributes The parameters
  * @param  Tempcode $embed The contents of the tag
- * @param  boolean $semihtml Whether we are in semihtml mode
+ * @param  boolean $semihtml Whether we are in semihtml mode. We are always in semi-parse mode
  * @param  ?integer $method Display method (null: auto-detect)
  * @param  boolean $html_errors Whether HTML structure errors have been spotted so far (limits how $semiparse_mode rendering works)
  * @return ?string The HTML (null: render as native HTML)
  */
 function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $method = null, $html_errors = false)
 {
+    $semihtml = true; // It's effectively always on as we pre-escaped during semi-parse mode
+
     $params_comcode = '';
     foreach ($attributes as $key => $val) {
         if (is_integer($key)) {
@@ -204,7 +206,6 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             $params_comcode .= ' ' . $key . '="' . comcode_escape($val) . '"';
         }
     }
-    $_embed = ($semihtml ? $embed->evaluate() : nl2br(escape_html($embed->evaluate())));
     $raw_comcode_start = '[' . $tag . $params_comcode . ']';
     $raw_comcode_end = '[/' . $tag . ']';
 
@@ -220,12 +221,19 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
 
     switch ($method) {
         case WYSIWYG_COMCODE__BUTTON:
+            if ($semihtml) {
+                $_embed_visual = html_entity_decode(strip_tags($embed->evaluate()), ENT_QUOTES, get_charset());
+                $_embed_inner = $embed->evaluate();
+            } else {
+                $_embed_visual = $embed->evaluate();
+                $_embed_inner = $embed->evaluate();
+            }
             if ($tag == 'block') {
-                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($_embed));
+                $comcode_title = do_lang('comcode:COMCODE_EDITABLE_BLOCK', escape_html($_embed_visual));
             } else {
                 $comcode_title = do_lang('comcode:COMCODE_EDITABLE_TAG', escape_html($tag));
             }
-            $raw_comcode = $raw_comcode_start . $_embed . $raw_comcode_end;
+            $raw_comcode = $raw_comcode_start . $_embed_inner . $raw_comcode_end;
             return '<input class="cms_keep_ui_controlled" size="45" title="' . escape_html($raw_comcode) . '" type="button" value="' . $comcode_title . '" />';
 
         case WYSIWYG_COMCODE__XML_BLOCK:
@@ -251,25 +259,37 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             switch ($method) {
                 case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
                     if ($semihtml) {
-                        $out .= html_entity_decode($_embed, ENT_QUOTES, get_charset());
+                        $_embed = html_entity_decode($embed->evaluate(), ENT_QUOTES, get_charset());
                     } else {
-                        $out .= $_embed;
+                        $_embed = $embed->evaluate();
                     }
-                    break;
-                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
                     $out .= $_embed;
                     break;
+                case WYSIWYG_COMCODE__XML_BLOCK_ESCAPED:
+                case WYSIWYG_COMCODE__XML_BLOCK:
+                case WYSIWYG_COMCODE__XML_INLINE:
                 default:
+                    if ($semihtml) {
+                        $_embed = $embed->evaluate();
+                    } else {
+                        $_embed = nl2br(escape_html($embed->evaluate()));
+                    }
                     $out .= $_embed;
                     break;
             }
             $out .= '</comcode-' . escape_html($tag) . '>';
+
             if ($method == WYSIWYG_COMCODE__XML_INLINE) {
                 $out .= '&#8203;';
             }
             return $out;
 
         case WYSIWYG_COMCODE__STANDOUT_BLOCK:
+            if ($semihtml) {
+                $_embed = $embed->evaluate();
+            } else {
+                $_embed = nl2br(escape_html($embed->evaluate()));
+            }
             $out = '';
             $out .= '<kbd title="' . escape_html($tag) . '" class="cms_keep_block">';
             $out .= escape_html($raw_comcode_start) . $_embed . escape_html($raw_comcode_end);
@@ -277,11 +297,19 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             return $out;
 
         case WYSIWYG_COMCODE__STANDOUT_INLINE:
+            if ($semihtml) {
+                $_embed = $embed->evaluate();
+            } else {
+                $_embed = nl2br(escape_html($embed->evaluate()));
+            }
             $out = '';
             $out .= '&#8203;<kbd title="' . escape_html($tag) . '" class="cms_keep">';
             $out .= escape_html($raw_comcode_start) . $_embed . escape_html($raw_comcode_end);
             $out .= '</kbd>&#8203;';
             return $out;
+
+        case WYSIWYG_COMCODE__HTML:
+            return null; // Render as native HTML
     }
 
     return null;
@@ -598,6 +626,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                         $tag_match = array();
                         if (preg_match('#(/)?(\w+)#A', $comcode, $tag_match, 0, $pos) != 0) {
                             $close_pos = strpos($comcode, '>', $pos);
+                            $slash_pos = mixed();
                             $slash_pos = ($close_pos === false) ? false : strrpos(substr($comcode, 0, $close_pos), '/');
                             if ($slash_pos === false || $close_pos === false || $slash_pos + 1 !== $close_pos) { // If not a self-closing tag
                                 if ($tag_match[1] === '/') { // Closing

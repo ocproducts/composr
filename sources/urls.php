@@ -108,7 +108,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         $extra_params = array();
     }
 
-    global $SELF_URL_CACHED;
+    global $SELF_URL_CACHED, $IN_SELF_ROUTING_SCRIPT;
     $cacheable = ($evaluate) && (!$root_if_posted) && ($extra_params === array()) && (!$posted_too) && (!$avoid_remap);
     if (($cacheable) && ($SELF_URL_CACHED !== null)) {
         return $SELF_URL_CACHED;
@@ -137,7 +137,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     }
     $page = '_SELF';
     $zone = '_SELF';
-    if (($root_if_posted) && (has_interesting_post_fields()) || !running_script('index')) {
+    if (($root_if_posted) && (has_interesting_post_fields()) || !$IN_SELF_ROUTING_SCRIPT) {
         $page = '';
         $zone = 'site';
         unset($extra_params['page']);

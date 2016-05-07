@@ -334,6 +334,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
+
     $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));

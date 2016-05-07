@@ -339,6 +339,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/authors.php',
             '_tests/tests/unit_tests/awards.php',
             '_tests/tests/unit_tests/banners.php',
+            '_tests/tests/unit_tests/comcode_wysiwyg.php',
             '_tests/tests/unit_tests/_bash_parser.php',
             '_tests/tests/unit_tests/bookmark.php',
             '_tests/tests/unit_tests/bump_member_group_timeout.php',

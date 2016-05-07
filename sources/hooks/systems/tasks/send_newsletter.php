@@ -81,7 +81,7 @@ class Hook_task_send_newsletter
                         $comcode_version = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
 
                         $newsletter_message_substituted = do_template(
-                            'MAIL',
+                            $mail_template,
                             array(
                                 'TITLE' => $subject,
                                 'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
