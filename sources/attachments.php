@@ -69,7 +69,8 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         $url_safe = get_custom_base_url() . '/' . $url_safe;
     }
     $url = mixed();
-    if ($tag == 'attachment') {
+    $is_dat = (substr($url_safe, -4) == '.dat');
+    if ($tag == 'attachment' || $is_dat) {
         $url = new Tempcode();
 
         $url->attach(find_script('attachment') . '?id=' . urlencode(strval($attachment_row['id'])));
