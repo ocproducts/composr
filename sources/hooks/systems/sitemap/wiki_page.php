@@ -124,6 +124,8 @@ class Hook_sitemap_wiki_page extends Hook_sitemap_content
             'edit_url' => build_url(array('page' => 'cms_wiki', 'type' => '_edit_page', 'id' => $content_id), get_module_zone('cms_wiki')),
         ) + $partial_struct;
 
+        $struct['extra_meta']['is_a_category_tree_root'] = true;
+
         if (!$this->_check_node_permissions($struct)) {
             return null;
         }

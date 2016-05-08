@@ -220,6 +220,10 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
     }
     $cma_info = $cma_ob->info();
 
+    if ($cma_info === null) {
+        return array(null, null, null, null, null, null);
+    }
+
     $db = $cma_info['connection'];
 
     $content_row = content_get_row($content_id, $cma_info);
