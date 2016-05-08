@@ -63,7 +63,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
             // Remove them from the group
 
             if (is_null($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)))) {
-                if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                if ((method_exists($GLOBALS['FORUM_DRIVER'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                     $GLOBALS['FORUM_DRIVER']->remove_member_from_group($member_id, $new_group);
                 } else {
                     if ($myrow['s_uses_primary'] == 1) {
@@ -87,7 +87,7 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
         if (!$test) {
             // Add them to the group
 
-            if ((method_exists($GLOBALS['FORUM_DRIVER'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+            if ((method_exists($GLOBALS['FORUM_DRIVER'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                 $GLOBALS['FORUM_DRIVER']->add_member_to_group($member_id, $new_group);
             } else {
                 if ($myrow['s_uses_primary'] == 1) {
@@ -195,7 +195,7 @@ class Hook_ecommerce_usergroup
      */
     public function get_products($site_lang = false)
     {
-        if ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') != '1')) {
+        if ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) {
             return array();
         }
 
