@@ -204,9 +204,6 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
                 foreach ($rewrite_rule_set as $rewrite_rule) {
                     list($rule, $to, $_flags, $enabled) = $rewrite_rule;
                     $_flags = implode(',', $_flags);
-                    if ($type == 'IIRF') {
-                        $_flags = str_replace('QSA', 'U', $_flags);
-                    }
                     $rules_txt .= ($enabled ? '' : '#') . 'RewriteRule ' . $rule . ' ' . $to . ' [' . $_flags . ']' . "\n";
                 }
             }
