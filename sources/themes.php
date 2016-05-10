@@ -49,8 +49,10 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 {
     global $THEME_IMAGES_CACHE, $USER_LANG_CACHED, $THEME_IMAGES_SMART_CACHE_LOAD, $RECORD_THEME_IMAGES_CACHE, $SMART_CACHE, $SITE_INFO;
 
-    if (empty($id)) {
-        return ''; // $id should be non-empty
+    if (!$GLOBALS['DEV_MODE']) {
+        if (empty($id)) {
+            return ''; // $id should be non-empty
+        }
     }
 
     if (($id[0] === 'c') && (substr($id, 0, 4) === 'cns_') && (is_file(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs

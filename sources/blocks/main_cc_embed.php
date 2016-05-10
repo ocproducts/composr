@@ -175,6 +175,8 @@ class Block_main_cc_embed
             $cart_link = show_cart_link();
         }
 
+        $entry_buildup = apply_quick_caching($entry_buildup);
+
         // Render
         return do_template('CATALOGUE_' . $tpl_set . '_CATEGORY_EMBED', array(
             '_GUID' => 'dfdsfdsfsd3ffsdfsd',
