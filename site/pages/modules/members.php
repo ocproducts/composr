@@ -77,6 +77,12 @@ class Module_members
     {
         $type = get_param_string('type', 'browse');
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        } else {
+            cns_require_all_forum_stuff();
+        }
+        require_css('cns');
         require_lang('cns');
 
         if ($type == 'browse') {
@@ -169,13 +175,6 @@ class Module_members
      */
     public function run()
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
-        require_css('cns');
-
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
