@@ -1356,8 +1356,15 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
+
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
+
+    if (substr(get_db_type(), 0, 5) == 'mysql') {
+        $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
+    }
+    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
+
     $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
     if ($indices_count < 60) { // Could be 64 but trying to be careful here...
         if ($index) {
