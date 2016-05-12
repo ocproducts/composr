@@ -5,7 +5,7 @@ class TestDoxReporter extends SimpleReporter
     var $_test_case_pattern = '/^TestOf(.*)$/';
 
     function __construct($test_case_pattern = '/^TestOf(.*)$/') {
-        parent::SimpleScorer();
+        parent::__construct();
         $this->_test_case_pattern = empty($test_case_pattern) ? '/^(.*)$/' : $test_case_pattern;
     }
 

@@ -294,7 +294,7 @@ class Text_MappedDiff extends Text_Diff
      * @param array $mapped_to_lines This array should have the same number
      *                                            of elements as $to_lines.
      */
-    function Text_MappedDiff($from_lines, $to_lines,
+    function __construct($from_lines, $to_lines,
                              $mapped_from_lines, $mapped_to_lines)
     {
 //		assert(count($from_lines)==count($mapped_from_lines));
@@ -467,7 +467,7 @@ class Text_Diff3 extends Text_Diff
      * @param array $final1 The first version to compare to.
      * @param array $final2 The second version to compare to.
      */
-    function Text_Diff3($orig, $final1, $final2)
+    function __construct($orig, $final1, $final2)
     {
         $engine = new Text_Diff_Engine_native();
 

@@ -877,12 +877,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         } catch (InvalidArgumentException $e) {
             $error = $e->getMessage();
 
-            if (get_param_integer('keep_hide_mail_failure', 0) == 0) {
-                require_code('site');
-                attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
-            } else {
-                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))));
-            }
+            require_code('site');
+            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
         }
 
         $SENDING_MAIL = false;

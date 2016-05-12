@@ -46,7 +46,7 @@ class PHP_Crossword_Cell
 	 * @param int $x
 	 * @param int $y
 	 */
-    function PHP_Crossword_Cell($x, $y)
+    function __construct($x, $y)
     {
         $this->x = (int)$x;
         $this->y = (int)$y;
