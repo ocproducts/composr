@@ -717,7 +717,7 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Always false
+ * @return boolean Bubble on to default PHP handler (i.e. output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
  *
  * @ignore
  */
@@ -751,15 +751,15 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
                 $type = 'warning';
                 $syslog_type = LOG_WARNING;
                 break;
-            //case E_STRICT: (constant not defined in all php versions)
-            //case E_DEPRECATED: (constant not defined in all php versions)
-            //case E_USER_DEPRECATED: (constant not defined in all php versions)
             case E_USER_NOTICE:
             case E_NOTICE:
                 $type = 'notice';
                 $syslog_type = LOG_NOTICE;
                 break;
-            default: // We don't know the error type so it's probably best to continue (could be a problem with something getting deprecated)
+            //case E_STRICT: (constant not defined in all php versions)
+            //case E_DEPRECATED: (constant not defined in all php versions)
+            //case E_USER_DEPRECATED: (constant not defined in all php versions)
+            default: // We don't know the error type, or we know it's incredibly minor, so it's probably best to continue - PHP will output it for staff or if display_php_errors is on
                 return false;
         }
 
