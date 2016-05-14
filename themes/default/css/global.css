@@ -1531,7 +1531,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: {!en_left};
 	font-size: 15px;
-	margin: 0.5em 0;
+	margin: 0.5em 0 !important;
 	font-family: Arial;
 	padding: 1px 0 2px 21px !important;
 	width: auto;
@@ -1539,7 +1539,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	text-transform: uppercase;
 	{$BETA_CSS_PROPERTY,border-radius: 0;}
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
@@ -1548,7 +1549,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}

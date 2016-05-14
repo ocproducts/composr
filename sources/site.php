@@ -1959,7 +1959,7 @@ function log_stats($string, $pg_time)
         return;
     }
 
-    if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '1')) {
+    if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
         return;
     }
 
