@@ -166,6 +166,7 @@ function vote_in_poll($poll_id, $cast, $myrow = null, $member_id = null, $ip = n
                 '',
                 1
             );
+            persistent_cache_delete('POLL');
 
             $GLOBALS['SITE_DB']->query_insert('poll_votes', array(
                 'v_poll_id' => $poll_id,

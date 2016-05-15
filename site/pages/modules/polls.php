@@ -292,6 +292,7 @@ class Module_polls
             $myrow['poll_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('poll')) {
                 $GLOBALS['SITE_DB']->query_update('poll', array('poll_views' => $myrow['poll_views']), array('id' => $id), '', 1, null, false, true);
+                persistent_cache_delete('POLL');
             }
         }
 
