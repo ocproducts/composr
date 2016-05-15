@@ -40,7 +40,7 @@ class Hook_symbol_COMCODE_TAGS
 
         global $VALID_COMCODE_TAGS;
         foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
-            if (($wanted === null) || ((wysiwyg_comcode_markup_style($tag) & $wanted) != 0)) {
+            if (($wanted === null) || ((wysiwyg_comcode_markup_style($tag, null, null, false, $wanted != WYSIWYG_COMCODE__HTML) & $wanted) != 0)) {
                 if ($out != '') {
                     $out .= ',';
                 }

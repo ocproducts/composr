@@ -44,7 +44,7 @@ function init__comcode_compiler()
     global $REVERSIBLE_TAGS;
     $REVERSIBLE_TAGS = array(
         'surround' => true, 'cite' => true, 'ins' => true, 'del' => true, 'dfn' => true, 'address' => true, 'abbr' => true, 'acronym' => true, 'list' => true, 'highlight' => true, 'indent' => true, 'b' => true, 'i' => true, 'u' => true, 's' => true, 'sup' => true, 'sub' => true,
-        'title' => true, 'size' => true, 'color' => true, 'font' => true, 'tt' => true, 'img' => array('rollover', 'refresh_time'), 'url' => true, 'email' => true,
+        'title' => array('sub'), 'size' => true, 'color' => true, 'font' => true, 'tt' => true, 'img' => array('rollover', 'refresh_time'), 'url' => true, 'email' => true,
         'semihtml' => true, 'html' => true, 'align' => true, 'left' => true, 'center' => true, 'right' => true, 'var' => true, 'samp' => true, 'q' => true,
         'page' => true, 'thumb' => true, 'attachment_safe' => true,
     );
@@ -103,9 +103,10 @@ function init__comcode_compiler()
  * @param  ?array $attributes The parameters (null: don't consider)
  * @param  ?Tempcode $embed The contents of the tag (null: don't consider)
  * @param  boolean $html_errors Whether HTML structure errors have been spotted so far (limits how $semiparse_mode rendering works)
+ * @param  boolean $conservative Don't add things to WYSIWYG_COMCODE__HTML that may not be in some situations
  * @return integer The Comcode integration style
  */
-function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $html_errors = false)
+function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $html_errors = false, $conservative = false)
 {
     global $BUTTON_EDITED_TAGS, $TEXTUAL_TAGS_WYSIWYG, $BLOCK_TAGS, $REVERSIBLE_TAGS, $CODE_TAGS;
 
@@ -120,14 +121,14 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
             }
         }
 
-        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (($attributes === null) || (array_intersect(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
+        if ((isset($REVERSIBLE_TAGS[$tag])) && (is_array($REVERSIBLE_TAGS[$tag])) && (!$conservative) && (($attributes === null) || (array_intersect(array_keys($attributes), $REVERSIBLE_TAGS[$tag]) == array()))) {
             if (!$html_errors) {
                 return WYSIWYG_COMCODE__HTML;
             }
         }
     }
 
-    if ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe') {
+    if ($tag == 'media' || $tag == 'flash' || $tag == 'attachment' || $tag == 'attachment_safe' || $tag == 'title') {
         if (($attributes !== null) && ((!array_key_exists('wysiwyg_editable', $attributes)) || ($attributes['wysiwyg_editable'] == '0'))) {
             $_button_edited_tags[$tag] = true;
         } else {

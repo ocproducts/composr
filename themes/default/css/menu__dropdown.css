@@ -110,10 +110,6 @@ For example:
 	font-weight: normal;
 	border-bottom: 1px solid {$GET,standard_border};
 	min-height: 20px;
-
-	/* We do want wrapping for this, as menu labels could be longer than the available space between the start of the dropdown label and the edge of the fixed width */
-	max-width: 18em;
-	white-space: normal;
 }
 
 .menu_type__dropdown .nlevel .menu_spacer {

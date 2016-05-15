@@ -3549,6 +3549,33 @@ function set_up_change_monitor(id)
 	});
 }
 
+/* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
+function play_self_audio_link(ob)
+{
+	if (browser_matches('gecko') || true/*actually it works well generally*/)
+	{
+		require_javascript('sound',window.SoundManager);
+
+		var timer=window.setInterval(function() {
+			if (typeof window.soundManager=='undefined') return;
+
+			window.clearInterval(timer);
+
+			window.soundManager.setup({
+				url: get_base_url()+'/data',
+				debugMode: false,
+				onready: function() {
+					var sound_object=window.soundManager.createSound({url: ob.href});
+					if (sound_object) sound_object.play();
+				}
+			});
+		},50);
+
+		return false;
+	}
+	return null;
+}
+
 /* Used by MASS_SELECT_MARKER.tpl */
 function prepare_mass_select_marker(set,type,id,checked)
 {
