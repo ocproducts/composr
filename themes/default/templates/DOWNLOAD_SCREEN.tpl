@@ -61,7 +61,10 @@
 						<tr>
 							{+START,IF_NON_EMPTY,{AUTHOR_URL}}
 								<th class="de_th metadata_title">{!BY}</th>
-								<td><a rel="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a></td>
+								<td>
+									<a rel="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
+									{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
+								</td>
 							{+END}
 
 							{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}

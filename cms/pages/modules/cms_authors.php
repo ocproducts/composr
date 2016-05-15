@@ -228,7 +228,7 @@ class Module_cms_authors
         }
 
         if (is_null($handle)) {
-            $handle = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
+            $handle = get_author_id_from_name($author);
             if (!is_null($handle)) {
                 $handle = strval($handle);
             }

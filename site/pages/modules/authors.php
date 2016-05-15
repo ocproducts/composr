@@ -47,6 +47,8 @@ class Module_authors
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('authors');
+
+        delete_privilege('set_own_author_profile');
     }
 
     /**
@@ -80,6 +82,8 @@ class Module_authors
         if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
+
+        add_privilege('SUBMISSION', 'set_own_author_profile');
     }
 
     /**
@@ -153,7 +157,7 @@ class Module_authors
             } else {
                 $message = do_lang_tempcode('NO_SUCH_AUTHOR', escape_html($author));
             }
-            $details = array('author' => $author, 'url' => '', 'member_id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($author), 'description' => null, 'skills' => null,);
+            $details = array('author' => $author, 'url' => '', 'member_id' => get_author_id_from_name($author), 'description' => null, 'skills' => null,);
         } else {
             $details = $rows[0];
         }
