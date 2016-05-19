@@ -13571,7 +13571,7 @@ function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_fie
 	settings.container=main_div.id;
 	settings.runtimes='html5';
 
-	ob=get_uploader_object(settings);
+	ob=get_uploader_object(settings); // This will attach the new event
 
 	file_id_field.plupload_object=ob;
 }
