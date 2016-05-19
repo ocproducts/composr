@@ -65,15 +65,6 @@ function init__comcode()
     $POTENTIAL_JS_NAUGHTY_ARRAY = array('d' => true, /*'a' => true, 't' => true, 'a' => true,*/
                                         'j' => true, 'a' => true, 'v' => true, 's' => true, 'c' => true, 'r' => true, 'i' => true, 'p' => true, 't' => true, 'J' => true, 'A' => true, 'V' => true, 'S' => true, 'C' => true, 'R' => true, 'I' => true, 'P' => true, 'T' => true, ' ' => true, "\t" => true, "\n" => true, "\r" => true, ':' => true, '/' => true, '*' => true, '\\' => true);
     $POTENTIAL_JS_NAUGHTY_ARRAY[chr(0)] = true;
-
-    define('WYSIWYG_COMCODE__BUTTON', 1);
-    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
-    define('WYSIWYG_COMCODE__XML_INLINE', 16);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
-    define('WYSIWYG_COMCODE__HTML', 128);
 }
 
 /**

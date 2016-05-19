@@ -141,6 +141,16 @@ function init__global3()
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
     $KNOWN_TRUE_HTML = array();
+
+    // Would normally put these in sources/comcode.php, but some of our templating references these constants
+    define('WYSIWYG_COMCODE__BUTTON', 1);
+    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+    define('WYSIWYG_COMCODE__XML_INLINE', 16);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+    define('WYSIWYG_COMCODE__HTML', 128);
 }
 
 /**
