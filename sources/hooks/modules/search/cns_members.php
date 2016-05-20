@@ -74,8 +74,6 @@ class Hook_search_cns_members extends FieldsSearchHook
     {
         require_code('cns_members');
 
-        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields')));
-
         $fields = array();
         if (has_privilege(get_member(), 'view_profiles')) {
             $rows = cns_get_all_custom_fields_match(null, has_privilege(get_member(), 'view_any_profile_field') ? null : 1, has_privilege(get_member(), 'view_any_profile_field') ? null : 1);
@@ -224,7 +222,14 @@ class Hook_search_cns_members extends FieldsSearchHook
                     $temp = '?=' . float_to_raw_string(floatval($param));
                 } elseif ($storage_type == 'list') {
                     $temp = db_string_equal_to('?', $param);
-                } elseif ((array_key_exists('field_' . strval($row['id']), $indexes)) && (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($param))) {
+                } elseif (
+                    (array_key_exists('field_' . strval($row['id']), $indexes)) &&
+                    ($indexes['field_' . strval($row['id'])][0] == '#') &&
+                    (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) &&
+                    (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) &&
+                    ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) &&
+                    (!is_under_radar($param))
+                ) {
                     $temp = db_full_text_assemble('"' . $param . '"', true);
                 } else {
                     list($temp,) = db_like_assemble($param);
