@@ -1366,7 +1366,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
 
     require_code('cns_members_action');
-    build_cpf_indices($id, $index, $_type);
+    build_cpf_indices($id, $index, $type, $_type);
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
 

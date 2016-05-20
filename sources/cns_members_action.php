@@ -616,7 +616,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type, $_default);
 
-    build_cpf_indices($id, $index, $_type);
+    build_cpf_indices($id, $index, $type, $_type);
 
     log_it('ADD_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
