@@ -616,19 +616,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type, $_default);
 
-    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
-    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
-        if ($index) {
-            if ($_type != 'LONG_TEXT') {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-            if (strpos($_type, '_TEXT') !== false) {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
-            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-        }
-    }
+    build_cpf_indices($id, $index, $_type);
 
     log_it('ADD_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
@@ -648,4 +636,29 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
     return $id;
+}
+
+/**
+ * Make custom profile field indices.
+ *
+ * @param  AUTO_LINK $id CPF ID.
+ * @param  boolean $index Whether an index is needed for search purposes (there may be other reasons though).
+ * @param  ID_TEXT $type CPF type.
+ * @param  ID_TEXT $_type Underlying field type.
+ */
+function build_cpf_indices($id, $index, $type, $_type)
+{
+    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
+    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
+        if ($index) {
+            if ($_type != 'LONG_TEXT') {
+                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+            }
+            if (strpos($_type, '_TEXT') !== false) {
+                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+            }
+        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
+            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+        }
+    }
 }
