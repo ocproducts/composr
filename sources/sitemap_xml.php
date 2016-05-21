@@ -129,6 +129,10 @@ function rebuild_sitemap_set($set_number, $last_time)
     fwrite($sitemaps_out_file, $blob);
     fclose($sitemaps_out_file);
     @unlink($sitemaps_out_path);
+    if (!file_exists(dirname($sitemaps_out_path))) {
+        require_code('files2');
+        make_missing_directory(dirname($sitemaps_out_path));
+    }
     rename($sitemaps_out_temppath, $sitemaps_out_path);
     sync_file($sitemaps_out_path);
     fix_permissions($sitemaps_out_path);
