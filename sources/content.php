@@ -424,5 +424,6 @@ function content_language_string($content_type, $string)
         $string = $string_custom;
     }
 
-    return do_lang_tempcode($string);
+    //return do_lang_tempcode($string); // Assumes that the lang string stays memory resident, but our probing only guarantees it's resident NOW
+    return protect_from_escaping($test); // But this should work as the string is rolled into the Tempcode permanently
 }
