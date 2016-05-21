@@ -74,19 +74,16 @@ class Hook_sitemap_wiki_page extends Hook_sitemap_content
             }
         }
 
-        $start = 0;
-        do {
-            $rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => db_get_first_id()), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
-            foreach ($rows as $row) {
-                $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':' . strval($row['id']);
-                $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
-                if (($callback === null || $return_anyway) && ($node !== null)) {
-                    $nodes[] = $node;
-                }
-            }
+        $rows = $GLOBALS['SITE_DB']->query_select('wiki_pages', array('*'), array('id' => db_get_first_id()), '', 1);
+        if (isset($rows[0])) {
+            $row = $rows[0];
 
-            $start += SITEMAP_MAX_ROWS_PER_LOOP;
-        } while (count($rows) == SITEMAP_MAX_ROWS_PER_LOOP);
+            $child_page_link = $zone . ':' . $page . ':' . $this->screen_type;
+            $node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
+            if (($callback === null || $return_anyway) && ($node !== null)) {
+                $nodes[] = $node;
+            }
+        }
 
         return $nodes;
     }

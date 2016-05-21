@@ -165,7 +165,6 @@ body .menu_type__dropdown .nlevel .has_img>a, body .menu_type__dropdown .nlevel.
 
 .menu_type__dropdown .nlevel .has_img>img {
 	width: 20px;
-	float: left; /* So that wrapping alignment is neat */
 }
 
 
@@ -174,5 +173,5 @@ body .menu_type__dropdown .nlevel .has_img>a, body .menu_type__dropdown .nlevel.
 }
 
 .menu_type__dropdown img {
-	margin-right: 0.5em;
+	margin-right: 0.2em;
 }

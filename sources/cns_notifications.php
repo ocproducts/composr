@@ -268,6 +268,9 @@ function generate_notifications($member_id)
         $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
     }
 
-    $notifications_cache[$cache_identifier] = array($notifications, $num_unread_pps);
+    if ($do_caching) {
+        $notifications_cache[$cache_identifier] = array($notifications, $num_unread_pps);
+    }
+
     return array($notifications, $num_unread_pps);
 }
