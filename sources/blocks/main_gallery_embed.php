@@ -346,7 +346,7 @@ class Block_main_gallery_embed
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
                     'HIGH' => false,
-                    'TITLE' => do_lang_tempcode('GALLERY'),
+                    'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                     'ADD_NAME' => $add_name,
                     'SUBMIT_URL' => $submit_url,

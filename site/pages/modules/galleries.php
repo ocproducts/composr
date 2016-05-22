@@ -527,7 +527,7 @@ class Module_galleries
             $edit_url = new Tempcode();
         }
         if ((!$implied_existence) && (has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('cat_mid', get_member(), get_ip_address(), 'cms_galleries'))) {
-            $add_gallery_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_category', 'cat' => $cat), get_module_zone('cms_galleries'));
+            $add_gallery_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_category', 'parent_id' => $cat), get_module_zone('cms_galleries'));
         } else {
             $add_gallery_url = new Tempcode();
         }

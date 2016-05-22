@@ -96,7 +96,7 @@ class Block_main_personal_galleries_list
                 }
             } else { // Or invite them to explicitly add a gallery (they can add images/videos from their existing gallery now)
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('cat_mid', get_member(), get_ip_address(), 'cms_galleries'))) {
-                    $add_gallery_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_category', 'cat' => $rows[0]['name']), get_module_zone('cms_galleries'));
+                    $add_gallery_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_category', 'parent_id' => $rows[0]['name']), get_module_zone('cms_galleries'));
                 }
                 if (count($rows) == 1) {
                     if ($rows[0]['accept_images'] == 1) {

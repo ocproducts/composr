@@ -522,9 +522,9 @@ function has_caching_for($type)
 
     $setting = (get_option('is_on_' . $type . '_cache') == '1');
 
-    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
+    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('keep_cache_' . $type . 's', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
 
-    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0) && (get_param_integer('keep_cache_' . $type . 's', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0);
 
     return ($setting || $positive) && (strpos(get_param_string('special_page_type', ''), 't') === false) && $not_negative;
 }
