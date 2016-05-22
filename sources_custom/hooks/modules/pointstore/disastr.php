@@ -56,7 +56,6 @@ class Hook_pointstore_disastr
 
         $member_id = get_member();
         $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
-        $counter = 0;
         foreach ($rows as $disease) {
             $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), '_SEARCH');
             $cure_url = $_cure_url->evaluate();
@@ -88,27 +87,17 @@ class Hook_pointstore_disastr
             }
 
             if ($get_immunization || $get_cure) {
-                if (is_file(get_custom_file_base() . '/' . $disease['image'])) {
-                    if ($get_cure) {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%"><a href="' . escape_html($cure_url) . '">' . escape_html($disease['cure']) . '</a> costs ' . escape_html(integer_format($disease['cure_price'])) . ' points</td><td width="33%">-</td></tr>';
-                        $counter++;
-                    } else {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td><td>' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%"><a href="' . escape_html($immunization_url) . '">' . escape_html($disease['immunisation']) . '</a> costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points</td></tr>';
-                        $counter++;
-                    }
-                } else {
-                    if ($get_cure) {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%"><a href="' . escape_html($cure_url) . '">' . escape_html($disease['cure']) . '</a> costs ' . escape_html(integer_format($disease['cure_price'])) . ' points</td><td width="33%">-</td></tr>';
-                        $counter++;
-                    } else {
-                        $fields .= '<tr style="border: 1px solid #ccc; background-color: #D4E0F1;"><td colspan="2">' . escape_html($disease['name']) . '</td><td width="33%">-</td><td width="33%"><a href="' . escape_html($immunization_url) . '">' . escape_html($disease['immunisation']) . '</a> costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points</td></tr>';
-                        $counter++;
-                    }
-                }
+                $fields .= '
+                <tr style="border: 1px solid #ccc; background-color: #D4E0F1;">
+                    <td width="45"><img width="45" src="' . escape_html(get_custom_base_url() . '/' . $disease['image']) . '" /></td>
+                    <td>' . escape_html($disease['name']) . '</td>
+                    <td width="33%">' . ($get_cure ? ('<a href="' . escape_html($cure_url) . '">' . escape_html($disease['cure']) . '</a> costs ' . escape_html(integer_format($disease['cure_price'])) . ' points') : (do_lang('NA_EM') . ' (you\'re not infected)')) . '</td>
+                    <td width="33%">' . (!$get_cure ? ('<a href="' . escape_html($immunization_url) . '">' . escape_html($disease['immunisation']) . '</a> costs ' . escape_html(integer_format($disease['immunisation_price'])) . ' points') : (do_lang('NA_EM') . ' (you\'re already infected)')) . '</td>
+                </tr>';
             }
         }
 
-        if ($counter == 0) {
+        if (count($rows) == 0) {
             $fields .= '<tr><td colspan="4">' . do_lang('NO_ENTRIES_TO_DISPLAY') . '</td></tr>';
         }
         $fields .= '</table>';
