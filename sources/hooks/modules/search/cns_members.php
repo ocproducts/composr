@@ -324,6 +324,10 @@ class Hook_search_cns_members extends FieldsSearchHook
      */
     public function render($row)
     {
+        if (is_null($row['id'])) {
+            return new Tempcode(); // Should not happen, some weird DB corruption probably
+        }
+
         require_code('cns_members');
         if (get_param_integer('option__emails_only', 0) == 1) {
             $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['id'], false, $row['m_username'], false);

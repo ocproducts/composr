@@ -99,6 +99,10 @@ abstract class FieldsSearchHook
      */
     protected function _get_search_parameterisation_advanced($catalogue_name, $table_alias = 'r')
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $where_clause = '';
 
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));

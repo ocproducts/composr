@@ -471,7 +471,7 @@ function get_db_forums_password()
 /**
  * Find whether we are on a multi-site-network.
  *
- * @param  ?object $db The DB connection to check against (null: main active site database)
+ * @param  ?object $db The DB connection to check against (null: site's main active forum database)
  * @return boolean Whether we are
  */
 function is_on_multi_site_network($db = null)
