@@ -928,7 +928,7 @@ class Module_tickets
         }
 
         // Get the ID of the default FAQ catalogue
-        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
+        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
         if (is_null($catalogue_id)) {
             return null;
         }

@@ -44,7 +44,7 @@ class Hook_task_find_orphaned_lang_strings
         $_all_ids = $GLOBALS['SITE_DB']->query_select('translate', array('DISTINCT id'));
         $all_ids = array();
         foreach ($_all_ids as $id) {
-            $all_ids[$id['id']] = 1;
+            $all_ids[$id['id']] = true;
         }
 
         $ids_seen_so_far = array();
@@ -81,7 +81,7 @@ class Hook_task_find_orphaned_lang_strings
                         }
                     }
 
-                    $missing_lang_strings[$id] = 1;
+                    $missing_lang_strings[$id] = true;
                 } elseif (array_key_exists($id, $ids_seen_so_far)) {
                     $looked_up = get_translated_text($id);
                     if ($fix) {
@@ -94,7 +94,7 @@ class Hook_task_find_orphaned_lang_strings
                     $fused_lang_strings[$id] = $looked_up;
                 }
                 if ($langidfield['m_name'] != 't_cache_first_post') {// 'if..!=' is for special exception for one that may be re-used in a cache position
-                    $ids_seen_so_far[$id] = 1;
+                    $ids_seen_so_far[$id] = true;
                 }
             }
         }
