@@ -91,9 +91,10 @@ function init__lang()
     }
 
     global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
-    if (((is_file(get_file_base() . '/sources/lang_filter_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . user_lang() . '.php'))) && (!in_safe_mode())) {
-        require_code('lang_filter_' . user_lang());
-        $LANG_FILTER_OB = object_factory('LangFilter_' . user_lang());
+    $lang_stripped = preg_replace('#[\-\_].*$#', '', user_lang());
+    if (((is_file(get_file_base() . '/sources/lang_filter_' . $lang_stripped . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . $lang_stripped . '.php'))) && (!in_safe_mode())) {
+        require_code('lang_filter_' . $lang_stripped);
+        $LANG_FILTER_OB = object_factory('LangFilter_' . $lang_stripped);
     } else {
         $LANG_FILTER_OB = new LangFilter();
     }
@@ -1314,9 +1315,10 @@ class LangFilter
      *
      * @param  ?string $key Language string ID (null: not a language string)
      * @param  string $value String value
+     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
      * @return string The suffix
      */
-    public function compile_time($key, $value)
+    public function compile_time($key, $value, $lang = null)
     {
         return $value;
     }

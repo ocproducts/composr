@@ -71,7 +71,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
     if ((@is_array($FILE_ARRAY)) && (file_array_exists('lang/' . $lang . '/' . $codename . '.ini'))) {
         $lang_file = 'lang/' . $lang . '/' . $codename . '.ini';
         $file = file_array_get($lang_file);
-        _get_lang_file_map($file, $load_target, 'strings', true);
+        _get_lang_file_map($file, $load_target, 'strings', true, true, $lang);
         $bad = true;
     } else {
         $bad = true;
@@ -80,7 +80,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
         // Load originals
         $lang_file = get_file_base() . '/lang/' . $lang . '/' . filter_naughty($codename) . '.ini';
         if (file_exists($lang_file)) { // Non-custom, Proper language
-            _get_lang_file_map($lang_file, $load_target, 'strings', false);
+            _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
         }
 
@@ -92,7 +92,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
             }
         }
         if (($type !== 'lang') && (file_exists($lang_file))) {
-            _get_lang_file_map($lang_file, $load_target, 'strings', false);
+            _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
             $dirty = true; // Tainted from the official pack, so can't store server wide
         }
@@ -209,7 +209,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
     }
 
     require_code('lang_compile');
-    _get_lang_file_map($b, $entries, $section);
+    _get_lang_file_map($b, $entries, $section, false, true, $lang);
     return $entries;
 }
 
@@ -241,7 +241,7 @@ function get_lang_file_map($lang, $file, $non_custom = false)
     }
 
     $target = array();
-    _get_lang_file_map($a, $target);
+    _get_lang_file_map($a, $target, 'strings', false, true, $lang);
     return $target;
 }
 
@@ -253,10 +253,11 @@ function get_lang_file_map($lang, $file, $non_custom = false)
  * @param  string $section The section to get
  * @param  boolean $given_whole_file Whether $b is in fact not a path, but the actual file contents
  * @param  boolean $apply_filter Apply the language pack filter
+ * @param  ?LANGUAGE_NAME $lang Language (null: current language)
  *
  * @ignore
  */
-function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true)
+function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true, $lang = null)
 {
     if (!$given_whole_file) {
         if (!file_exists($b)) {
@@ -361,7 +362,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                 $key = $parts[0];
                 $value = str_replace('\n', "\n", rtrim($parts[1], $nl));
                 if ($apply_filter) {
-                    $value = $LANG_FILTER_OB->compile_time($key, $value);
+                    $value = $LANG_FILTER_OB->compile_time($key, $value, $lang);
                 }
                 $entries[$key] = $value;
             }

@@ -362,7 +362,7 @@ class Module_admin_zones
 
                     if (strpos($full_path, '_custom/') === false) {
                         global $LANG_FILTER_OB;
-                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode, $lang);
                     }
 
                     $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, null, true);

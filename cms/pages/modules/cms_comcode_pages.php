@@ -619,7 +619,7 @@ class Module_cms_comcode_pages
 
                 if (strpos($file_path, '_custom/') === false) {
                     global $LANG_FILTER_OB;
-                    $contents = $LANG_FILTER_OB->compile_time(null, $contents);
+                    $contents = $LANG_FILTER_OB->compile_time(null, $contents, $lang);
                 }
 
                 $comcode_page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $file), '', 1);
