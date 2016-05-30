@@ -2432,7 +2432,7 @@ function handle_conflict_resolution($id = null, $only_staff = false)
     }
 
     require_javascript('ajax');
-    $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', substr(get_page_name(), 0, 80)) . ' AND ' . db_string_equal_to('the_type', substr(get_param_string('type', 'browse'), 0, 80))) . ' AND ' . db_string_equal_to('the_id', substr($id, 0, 80)) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
+    $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', substr(get_page_name(), 0, 80)) . ' AND ' . db_string_equal_to('the_type', substr(get_param_string('type', 'browse'), 0, 80)) . ' AND ' . db_string_equal_to('the_id', substr($id, 0, 80)) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
     if ((array_key_exists(0, $last_edit_screen_time)) && ($last_edit_screen_time[0]['the_time'] > time() - 20)) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($last_edit_screen_time[0]['the_member']);
         if (is_null($username)) {
