@@ -38,7 +38,7 @@ class Hook_config_error_handling_notices
             'explanation' => 'CONFIG_OPTION_error_handling_notices',
             'shared_hosting_restricted' => '0',
             'list_options' => 'SKIP|LOG|ATTACH|FATAL',
-            'order' => 2,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );

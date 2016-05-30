@@ -38,6 +38,7 @@ class Hook_config_display_php_errors
             'explanation' => 'CONFIG_OPTION_display_php_errors',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
         );
