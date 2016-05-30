@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_display_php_errors
+class Hook_config_error_handling_database_strict
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,14 @@ class Hook_config_display_php_errors
     public function get_details()
     {
         return array(
-            'human_name' => 'DISPLAY_PHP_ERRORS',
+            'human_name' => 'ERROR_HANDLING_DATABASE_STRICT',
             'type' => 'tick',
             'category' => 'SITE',
             'group' => 'ERROR_HANDLING',
-            'explanation' => 'CONFIG_OPTION_display_php_errors',
+            'explanation' => 'CONFIG_OPTION_error_handling_database_strict',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order' => 0,
 
             'addon' => 'core_configuration',
         );
@@ -50,6 +51,6 @@ class Hook_config_display_php_errors
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }
