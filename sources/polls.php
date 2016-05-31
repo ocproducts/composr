@@ -31,6 +31,10 @@
  */
 function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {
+    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('polls');
 
     $just_poll_row = db_map_restrict($myrow, array('id', 'question', 'option1', 'option2', 'option3', 'option4', 'option5', 'option6', 'option7', 'option8', 'option9', 'option10'));

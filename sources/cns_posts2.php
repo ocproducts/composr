@@ -31,6 +31,10 @@
  */
 function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
     require_css('cns');
 

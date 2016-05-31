@@ -29,6 +29,10 @@
  */
 function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('authors');
 
     $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $row['author']), $zone);

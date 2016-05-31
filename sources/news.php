@@ -53,6 +53,10 @@ function get_news_category_image_url($nc_img)
  */
 function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('news');
     require_css('news');
 
@@ -148,6 +152,10 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
  */
 function render_news_category_box($row, $zone = '_SEARCH', $give_context = true, $attach_to_url_filter = false, $blogs = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('news');
 
     // URL

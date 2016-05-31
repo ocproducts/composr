@@ -49,6 +49,10 @@ function init__cns_groups()
  */
 function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
 
     $url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $row['id']), get_module_zone('groups'));

@@ -95,6 +95,10 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  */
 function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
+    if (is_null($poster_details)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
     require_css('cns');
 

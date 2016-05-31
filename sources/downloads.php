@@ -61,6 +61,10 @@ function download_licence_script()
  */
 function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zone = null, $text_summary = null, $give_context = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('downloads');
     require_css('downloads');
     require_code('files');
@@ -186,6 +190,10 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
  */
 function render_download_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('downloads');
 
     $map = array('page' => 'downloads', 'type' => 'browse', 'id' => ($row['id'] == db_get_first_id()) ? null : $row['id']);

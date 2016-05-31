@@ -43,6 +43,10 @@ function init__calendar()
  */
 function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_css('calendar');
     require_lang('calendar');
 
@@ -71,6 +75,10 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  */
 function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('calendar');
 
     $map = array('page' => 'calendar', 'type' => 'browse');

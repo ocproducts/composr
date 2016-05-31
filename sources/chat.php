@@ -48,6 +48,10 @@ function init__chat()
  */
 function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('chat');
 
     $url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $row['id']), $zone);

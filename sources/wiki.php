@@ -35,6 +35,10 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  */
 function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('wiki');
 
     $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
@@ -80,6 +84,10 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  */
 function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('wiki');
 
     $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));

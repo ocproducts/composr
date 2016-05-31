@@ -48,6 +48,10 @@ function init__galleries()
  */
 function render_image_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
     require_code('images');
@@ -119,6 +123,10 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function render_video_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
     require_code('images');
@@ -197,6 +205,10 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_appropriate = false, $zone = '_SEARCH', $quit_if_empty = true, $preview = false, $give_context = true, $include_breadcrumbs = true, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
 

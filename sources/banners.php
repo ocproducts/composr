@@ -80,6 +80,10 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
  */
 function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('banners');
 
     $just_banner_row = db_map_restrict($row, array('name', 'caption'));
@@ -115,6 +119,10 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
  */
 function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('banners');
 
     $url = new Tempcode();
