@@ -773,18 +773,18 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Headers
+    $headers = '';
     $website_email = get_option('website_email');
-    if ($website_email == '') {
-        $website_email = $from_email;
-    }
-    if (get_option('use_true_from') == '0') {
-        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
-    } else {
-        $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
-    }
+    if ($website_email != '') {
+        if (get_option('use_true_from') == '0') {
+            $headers .= 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
+        } else {
+            $headers .= 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
+        }
+        $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
+        $headers .= 'X-Sender: <' . $website_email . '>' . $line_term;
+    } // else maybe server won't let us set it due to whitelist security, and we must let it use it's default (i.e. accountname@hostname)
     $headers .= 'Reply-To: <' . $from_email . '>' . $line_term;
-    $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
-    $headers .= 'X-Sender: <' . $website_email . '>' . $line_term;
     $cc_address = $no_cc ? '' : get_option('cc_address');
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
@@ -1103,7 +1103,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
             $additional = '';
-            if (get_option('enveloper_override') == '1') {
+            if (get_option('enveloper_override') == '1' && $website_email != '') {
                 $additional = '-f ' . $website_email;
             }
             $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.

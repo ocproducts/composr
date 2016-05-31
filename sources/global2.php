@@ -151,7 +151,7 @@ function init__global2()
 
     if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat message precheck (for extra efficiency)
         require_code('chat_poller');
-//        chat_poller();
+        chat_poller();
     }
     if ((running_script('notifications')) && (@filemtime(get_custom_file_base() . '/data_custom/modules/web_notifications/latest.dat') >= get_param_integer('time_barrier'))) {
         prepare_for_known_ajax_response();
@@ -717,68 +717,90 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Bubble on to default PHP handler (i.e. output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
+ * @return boolean Do NOT bubble on to default PHP handler (i.e. if set to false it will output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
  *
  * @ignore
  */
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
     if (((error_reporting() & $errno) !== 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
+        // Work out the simplified error type and how to handle it
+        switch ($errno) {
+            case E_RECOVERABLE_ERROR:
+            case E_USER_ERROR:
+            case E_CORE_ERROR:
+            case E_COMPILE_ERROR:
+            case E_ERROR:
+            case E_PARSE:
+                $type = 'error';
+                $syslog_type = LOG_ERR;
+                $handling_method = 'FATAL';
+                break;
+
+            case -123: // Hacked in for the memtrack extension, which was buggy
+            case E_USER_WARNING:
+            case E_CORE_WARNING:
+            case E_COMPILE_WARNING:
+            case E_WARNING:
+                $type = 'warning';
+                $syslog_type = LOG_WARNING;
+                $handling_method = 'FATAL';
+                break;
+
+            case E_USER_NOTICE:
+            case E_NOTICE:
+                $type = 'notice';
+                $syslog_type = LOG_NOTICE;
+                $handling_method = 'ATTACH';
+                break;
+
+            case E_STRICT:
+            case E_USER_DEPRECATED:
+            case E_DEPRECATED:
+            default:
+                $type = 'deprecated';
+                $syslog_type = LOG_INFO;
+                $handling_method = 'SKIP';
+                break;
+        }
+        if (function_exists('get_option')) {
+            $handling_method = get_option('error_handling_' . $type . 's');
+        }
+
+        // It's incredibly minor, so it's probably best to continue - PHP will output it for staff or if display_php_errors is on
+        if ($handling_method == 'SKIP') {
+            return false;
+        }
+
+        // So error suppress works again
+        $GLOBALS['DYING_BADLY'] = false;
+
         // Strip down path for security
         if (substr(str_replace(DIRECTORY_SEPARATOR, '/', $errfile), 0, strlen(get_file_base() . '/')) == str_replace(DIRECTORY_SEPARATOR, '/', get_file_base() . '/')) {
             $errfile = substr($errfile, strlen(get_file_base() . '/'));
         }
 
-        // Work out the error type
-        if (!defined('E_RECOVERABLE_ERROR')) {
-            define('E_RECOVERABLE_ERROR', 4096);
-        }
-        switch ($errno) {
-            case E_RECOVERABLE_ERROR: // constant not defined in all php versions but we defined it
-            case E_USER_ERROR:
-            case E_PARSE:
-            case E_CORE_ERROR:
-            case E_COMPILE_ERROR:
-            case E_ERROR:
-                $type = 'error';
-                $syslog_type = LOG_ERR;
-                break;
-            case -123: // Hacked in for the memtrack extension, which was buggy
-            case E_CORE_WARNING:
-            case E_COMPILE_WARNING:
-            case E_USER_WARNING:
-            case E_WARNING:
-                $type = 'warning';
-                $syslog_type = LOG_WARNING;
-                break;
-            case E_USER_NOTICE:
-            case E_NOTICE:
-                $type = 'notice';
-                $syslog_type = LOG_NOTICE;
-                break;
-            //case E_STRICT: (constant not defined in all php versions)
-            //case E_DEPRECATED: (constant not defined in all php versions)
-            //case E_USER_DEPRECATED: (constant not defined in all php versions)
-            default: // We don't know the error type, or we know it's incredibly minor, so it's probably best to continue - PHP will output it for staff or if display_php_errors is on
-                return false;
-        }
-
-        $GLOBALS['DYING_BADLY'] = false; // So error suppress works again
+        // Special handling for memory errors
         if (strpos($errstr, 'Allowed memory') !== false) {
             global $REQUIRED_CODE;
             if (!array_key_exists('failure', $REQUIRED_CODE)) {
                 $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(); // We really want to know the URL where this is happening (normal PHP error logging does not include it)!
+
                 if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
                     syslog($syslog_type, $php_error_label);
                 }
+
                 if (php_function_allowed('error_log')) {
                     @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
                 }
+
                 critical_error('EMERGENCY', $errstr . escape_html(' [' . $errfile . ' at ' . strval($errline) . ']'));
             }
         }
+
+        // Handle the error
         require_code('failure');
-        _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type);
+        _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method);
     }
 
     return false;

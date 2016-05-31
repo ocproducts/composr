@@ -46,6 +46,15 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
+        if (!function_exists('mysql_connect')) {
+            $error = 'The MySQL PHP extension not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
+            if ($fail_ok) {
+                echo $error . "\n";
+                return null;
+            }
+            critical_error('PASSON', $error);
+        }
+
         // Potential caching
         $x = serialize(array($db_name, $db_host));
         if (array_key_exists($x, $this->cache_db)) {
@@ -55,15 +64,6 @@ class Database_Static_mysql extends Database_super_mysql
             }
 
             return array($x, $db_name);
-        }
-
-        if (!function_exists('mysql_connect')) {
-            $error = 'The MySQL PHP extension not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
-            if ($fail_ok) {
-                echo $error . "\n";
-                return null;
-            }
-            critical_error('PASSON', $error);
         }
 
         $db = $persistent ? @mysql_pconnect($db_host, $db_user, $db_password) : @mysql_connect($db_host, $db_user, $db_password, true);
@@ -91,72 +91,19 @@ class Database_Static_mysql extends Database_super_mysql
         }
         $this->last_select_db = $db_name;
 
-        global $SITE_INFO;
-        if (empty($SITE_INFO['database_charset'])) {
-            $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
+        $init_queries = $this->get_init_queries();
+        foreach ($init_queries as $init_query) {
+            @mysql_query($init_query, $db);
         }
+
+        global $SITE_INFO;
         if (function_exists('mysql_set_charset')) {
             mysql_set_charset($SITE_INFO['database_charset'], $db);
         } else {
             @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db);
         }
-        @mysql_query('SET WAIT_TIMEOUT=28800', $db);
-        @mysql_query('SET SQL_BIG_SELECTS=1', $db);
-        if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
-            @mysql_query('SET sql_mode=\'STRICT_ALL_TABLES\'', $db);
-        } else {
-            @mysql_query('SET sql_mode=\'MYSQL40\'', $db);
-        }
-        // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
 
         return array($db, $db_name);
-    }
-
-    /**
-     * Find whether full-text-search is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_full_text($db)
-    {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Find whether subquery support is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_subqueries($db)
-    {
-        return true;
-    }
-
-    /**
-     * Find whether collate support is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_collate_settings($db)
-    {
-        return true;
-    }
-
-    /**
-     * Find whether full-text-boolean-search is present
-     *
-     * @return boolean Whether it is
-     */
-    public function db_has_full_text_boolean()
-    {
-        return true;
     }
 
     /**
@@ -201,22 +148,8 @@ class Database_Static_mysql extends Database_super_mysql
     {
         list($db, $db_name) = $db_parts;
 
-        if (isset($query[500000])) { // Let's hope we can fail on this, because it's a huge query. We can only allow it if MySQL can.
-            $test_result = $this->db_query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $db_parts, null, null, true);
-
-            if (!is_array($test_result)) {
-                return null;
-            }
-            if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
-
-                if ($get_insert_id) {
-                    fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
-                } else {
-                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))), 'warn');
-                }
-                return null;
-            }
+        if (!$this->db_query_may_run($query, $db_parts, $get_insert_id)) {
+            return null;
         }
 
         if ($this->last_select_db !== $db_name) {
@@ -249,23 +182,8 @@ class Database_Static_mysql extends Database_super_mysql
                 return $ret;
             }
 
-            if (function_exists('ocp_mark_as_escaped')) {
-                ocp_mark_as_escaped($err);
-            }
-            if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
-                $matches = array();
-                if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
-                    $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
-                }
-
-                if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
-                    fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
-                }
-                fatal_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
-            } else {
-                echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']') . "<br />\n";
-                return null;
-            }
+            $this->handle_failed_query($query, $err, $db_parts);
+            return null;
         }
 
         $query = ltrim($query);

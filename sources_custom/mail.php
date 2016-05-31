@@ -183,10 +183,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Misc settings
     $website_email = get_option('website_email');
-    if ($website_email == '') {
-        $website_email = $from_email;
-    }
-    $cc_address = $no_cc ? '' : get_option("cc_address");
+    $cc_address = $no_cc ? '' : get_option('cc_address');
 
     global $CID_IMG_ATTACHMENT;
     $CID_IMG_ATTACHMENT = array();
@@ -389,8 +386,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $to_array[$_to_email] = is_array($to_name) ? $to_name[$i] : $to_name;
         }
     }
-    $message = Swift_Message::newInstance($subject)
-        ->setFrom(array($website_email => $from_name))
+    $message = Swift_Message::newInstance($subject);
+    if ($website_email != '') {
+        if (get_option('use_true_from') == '0') {
+            $message->setFrom(array($website_email => $from_name))
+        } else {
+            $message->setFrom(array($from_email => $from_name))
+        }
+    }
+    $message
         ->setReplyTo(array($from_email => $from_name))
         ->setTo($to_array)
         ->setDate(time())

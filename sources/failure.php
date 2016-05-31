@@ -218,16 +218,21 @@ function improperly_filled_in_post($name)
  * Called by 'composr_error_handler'. Composr error handler (hooked into PHP error system).
  *
  * @param  ID_TEXT $type Error type indicator (tiny human-readable text string)
+ * @set error warning notice deprecated
  * @param  integer $errno The error code-number
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
  * @param  integer $syslog_type The syslog type (used by GAE logging)
+ * @param  string $handling_method How to handle the error
+ * @set LOG ATTACH FATAL
  * @ignore
  */
-function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type)
+function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method)
 {
-    if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) {
+    $fatal = (!$GLOBALS['SUPPRESS_ERROR_DEATH']) && ($handling_method == 'fatal'); 
+
+    if ($fatal) {
         // Turn off MSN, as this increases stability
         if ((array_key_exists('MSN_DB', $GLOBALS)) && (!is_null($GLOBALS['MSN_DB']))) {
             $GLOBALS['FORUM_DB'] = $GLOBALS['MSN_DB'];
@@ -240,10 +245,10 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
     // Generate error message
     $outx = '<strong>' . strtoupper($type) . '</strong> [' . strval($errno) . '] ' . $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . '<br />' . "\n";
     if (class_exists('Tempcode')) {
-        if ($GLOBALS['SUPPRESS_ERROR_DEATH']) {
-            $trace = new Tempcode();
-        } else {
+        if ($fatal) {
             $trace = get_html_trace();
+        } else {
+            $trace = new Tempcode();
         }
         $out = $outx . $trace->evaluate();
     } else {
@@ -266,7 +271,8 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
         }
     }
 
-    if (!$GLOBALS['SUPPRESS_ERROR_DEATH']) { // Don't display - die as normal
+    // Display in appropriate way
+    if ($fatal) {
         $error_str = 'PHP ' . strtoupper($type) . ' [' . strval($errno) . '] ' . $errstr . ' in ' . $errfile . ' on line ' . strval($errline);
 
         if (throwing_errors()) {
@@ -279,9 +285,9 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
 
         safe_ini_set('display_errors', '0');
         fatal_exit($error_str);
-    } else {
+    } elseif ($attach) {
         require_code('site');
-        attach_message(protect_from_escaping($out), 'warn'); // Display
+        attach_message(protect_from_escaping($out), 'warn'/*any level of unexpected coding-level error is a 'warning' in Composr*/);
     }
 }
 

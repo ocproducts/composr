@@ -88,6 +88,17 @@ function init__config()
             exit();
         }
     }
+
+    // Some option(s) that have immediate effect...
+
+    if (get_option('error_handling_database_strict') == '0') {
+        if ((is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
+            $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(false), null, null, true);
+        }
+        if ((is_object($GLOBALS['FORUM_DB']->connection_read)) && ($GLOBALS['FORUM_DB']->connection_read != $GLOBALS['SITE_DB']->connection_read) && (method_exists($GLOBALS['FORUM_DB']->connection_read, 'strict_mode_query'))) {
+            $GLOBALS['FORUM_DB']->query($GLOBALS['FORUM_DB']->connection_read->strict_mode_query(false), null, null, true);
+        }
+    }
 }
 
 /**

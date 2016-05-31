@@ -533,8 +533,17 @@ if (!GOOGLE_APPENGINE) {
     safe_ini_set('include_path', '');
     safe_ini_set('allow_url_fopen', '0');
 }
+if (!defined('E_STRICT')) { // LEGACY
+    define('E_STRICT', 2048);
+}
+if (!defined('E_RECOVERABLE_ERROR')) { // LEGACY
+    define('E_RECOVERABLE_ERROR', 4096);
+}
 if (!defined('E_DEPRECATED')) { // LEGACY
-    define('E_DEPRECATED', 0);
+    define('E_DEPRECATED', 8192);
+}
+if (!defined('E_USER_DEPRECATED')) { // LEGACY
+    define('E_USER_DEPRECATED', 16384);
 }
 if (!defined('ENT_SUBSTITUTE')) { // LEGACY
     define('ENT_SUBSTITUTE', 0);
@@ -546,7 +555,7 @@ safe_ini_set('suhosin.executor.eval.whitelist', '');
 safe_ini_set('suhosin.executor.func.whitelist', '');
 safe_ini_set('auto_detect_line_endings', '0');
 safe_ini_set('default_socket_timeout', '60');
-if (function_exists('set_magic_quotes_runtime')) {
+if (function_exists('set_magic_quotes_runtime')) { // LEGACY
     @set_magic_quotes_runtime(0); // @'d because it's deprecated and PHP 5.3 may give an error
 }
 safe_ini_set('html_errors', '1');

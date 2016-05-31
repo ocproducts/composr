@@ -26,6 +26,95 @@
 class Database_super_mysql
 {
     /**
+     * Get queries needed to initialise the DB connection.
+     *
+     * @return array List of queries
+     */
+    protected function get_init_queries()
+    {
+        global $SITE_INFO;
+        if (empty($SITE_INFO['database_charset'])) {
+            $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
+        }
+
+        $queries = array();
+
+        $queries[] = 'SET WAIT_TIMEOUT=28800';
+
+        $queries[] = 'SET SQL_BIG_SELECTS=1';
+
+        $queries[] = $this->strict_mode_query(true);
+        // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
+
+        return $queries;
+    }
+
+    /**
+     * Get a strict mode set query. Takes into account configuration also.
+     *
+     * @param boolean $setting Whether it is on (may be overridden be configuration)
+     * @return string The query
+     */
+    public function strict_mode_query($setting)
+    {
+        if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
+            $query = 'SET sql_mode=\'STRICT_ALL_TABLES\'';
+        } else {
+            $query = 'SET sql_mode=\'MYSQL40\'';
+        }
+        // NB: Can add ,ONLY_FULL_GROUP_BY for testing on what other DBs will do, but can_arbitrary_groupby() would need to be made to return false
+
+        return $query;
+    }
+
+    /**
+     * Find whether full-text-search is present
+     *
+     * @param  array $db A DB connection
+     * @return boolean Whether it is
+     */
+    public function db_has_full_text($db)
+    {
+        if ($this->using_innodb()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Find whether subquery support is present
+     *
+     * @param  array $db A DB connection
+     * @return boolean Whether it is
+     */
+    public function db_has_subqueries($db)
+    {
+        return true;
+    }
+
+    /**
+     * Find whether collate support is present
+     *
+     * @param  array $db A DB connection
+     * @return boolean Whether it is
+     */
+    public function db_has_collate_settings($db)
+    {
+        return true;
+    }
+
+    /**
+     * Find whether full-text-boolean-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_has_full_text_boolean()
+    {
+        return true;
+    }
+
+    /**
      * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
      *
      * @return boolean Whether it can
@@ -33,6 +122,64 @@ class Database_super_mysql
     public function can_arbitrary_groupby()
     {
         return true;
+    }
+
+    /**
+     * Find if a database query may run, showing errors if it cannot
+     *
+     * @param  string $query The complete SQL query
+     * @param  array $db_parts A DB connection
+     * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
+     * @return boolean Whether it can
+     */
+    protected function db_query_may_run($query, $db_parts, $get_insert_id)
+    {
+        if (isset($query[500000])) { // Let's hope we can fail on this, because it's a huge query. We can only allow it if MySQL can.
+            $test_result = $this->db_query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $db_parts, null, null, true);
+
+            if (!is_array($test_result)) {
+                return false;
+            }
+            if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
+                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+
+                if ($get_insert_id) {
+                    fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
+                } else {
+                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))), 'warn');
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Handle messaging for a failed query.
+     *
+     * @param  string $query The complete SQL query
+     * @param  string $err The error message
+     * @param  array $db_parts A DB connection
+     */
+    protected function handle_failed_query($query, $err, $db_parts)
+    {
+        if (function_exists('ocp_mark_as_escaped')) {
+            ocp_mark_as_escaped($err);
+        }
+        if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
+            $matches = array();
+            if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
+                $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
+            }
+
+            if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
+                fatal_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
+            }
+            fatal_exit(do_lang_tempcode('QUERY_FAILED', escape_html($query), ($err)));
+        } else {
+            echo htmlentities('Database query failed: ' . $query . ' [') . ($err) . htmlentities(']') . "<br />\n";
+        }
     }
 
     /**
