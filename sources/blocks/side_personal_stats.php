@@ -53,6 +53,10 @@ class Block_side_personal_stats
 
         $member_id = get_member();
 
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
+
         if (!is_guest($member_id)) {
             $avatar_url = '';
             if (!has_no_forum()) {

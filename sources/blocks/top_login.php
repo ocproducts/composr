@@ -66,6 +66,10 @@ class Block_top_login
             return new Tempcode();
         }
 
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
+
         require_css('personal_stats');
 
         $title = do_lang_tempcode('NOT_LOGGED_IN');

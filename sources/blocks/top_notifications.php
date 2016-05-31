@@ -57,6 +57,10 @@ class Block_top_notifications
             return new Tempcode();
         }
 
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
+
         $max = isset($map['max']) ? intval($map['max']) : 5;
 
         require_code('notification_poller');
