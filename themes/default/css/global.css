@@ -1635,7 +1635,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	margin: 0 0.3em !important;
+	margin: 0 0 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
 	margin-top: -1px !important;
