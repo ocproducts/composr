@@ -54,10 +54,10 @@ public function cloudinary_transfer_upload($attach_name, $upload_folder, $filena
         }
     } catch (Exception $e) {
         if ($accept_errors) {
-            attach_message($e->getMessage(), 'warn');
+            attach_message($e->getMessage(), 'warn', false, true);
             return false;
         }
-        warn_exit($e->getMessage());
+        warn_exit($e->getMessage(), false, true);
     }
 
     if (strpos(get_base_url(), 'https://') === false) {

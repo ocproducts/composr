@@ -58,7 +58,7 @@ function semi_dev_mode_startup()
 
         if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (is_null(get_param_string('keep_devtest', null)))) {
             $_GET['keep_devtest'] = '1';
-            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
+            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
             $_GET['keep_devtest'] = '1';
         }
@@ -166,7 +166,7 @@ function restrictify()
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
-    if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
+    if ((is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
         $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(true), null, null, true);
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {

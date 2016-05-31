@@ -61,7 +61,7 @@ try {
 } catch (VimeoAPIException $e) {
 
     require_lang('gallery_syndication_vimeo');
-    attach_message(do_lang_tempcode('VIMEO_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name())), 'warn');
+    attach_message(do_lang_tempcode('VIMEO_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name())), 'warn', false, true);
     $out = do_lang_tempcode('SOME_ERRORS_OCCURRED');
     $ok = false;
 }

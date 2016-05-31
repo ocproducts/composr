@@ -2043,7 +2043,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     break;
                 }
                 if (fwrite($myfile, $file) < strlen($file)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 fclose($myfile);
                 fix_permissions($path);

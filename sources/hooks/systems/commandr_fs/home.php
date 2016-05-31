@@ -77,7 +77,7 @@ class Hook_commandr_fs_home
         }
 
         if ((is_dir($path)) && (!file_exists($path . '/' . $new_dir_name))) {
-            $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $new_dir_name)));
+            $ret = @mkdir($path . '/' . $new_dir_name, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $new_dir_name)), false, true);
             fix_permissions($path . '/' . $new_dir_name);
             sync_file($path . '/' . $new_dir_name);
             return $ret;
@@ -106,7 +106,7 @@ class Hook_commandr_fs_home
         if ((is_dir($path)) && (file_exists($path . '/' . $dir_name))) {
             require_code('files');
             deldir_contents($path . '/' . $dir_name);
-            $ret = @rmdir($path . '/' . $dir_name) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $dir_name)));
+            $ret = @rmdir($path . '/' . $dir_name) or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path . '/' . $dir_name)), false, true);
             sync_file($path . '/' . $dir_name);
             return true;
         } else {
@@ -187,7 +187,7 @@ class Hook_commandr_fs_home
             $output = fwrite($fh, $contents);
             fclose($fh);
             if ($output < strlen($contents)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fix_permissions($path . '/' . $file_name);
             sync_file($path . '/' . $file_name);

@@ -197,7 +197,7 @@ class Module_admin_debrand
         }
         $km = post_param_string('keyboard_map');
         if (fwrite($myfile, $km) < strlen($km)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions($keyboard_map_path);
@@ -215,7 +215,7 @@ class Module_admin_debrand
             intelligent_write_error($adminguide_path);
         }
         if (fwrite($myfile, $adminguide) < strlen($adminguide)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions($adminguide_path);
@@ -229,7 +229,7 @@ class Module_admin_debrand
                 intelligent_write_error($start_path);
             }
             if (fwrite($myfile, $start) < strlen($start)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             fix_permissions($start_path);
@@ -262,7 +262,7 @@ class Module_admin_debrand
             intelligent_write_error($save_header_path);
         }
         if (fwrite($myfile, $header_tpl) < strlen($header_tpl)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions($save_header_path);

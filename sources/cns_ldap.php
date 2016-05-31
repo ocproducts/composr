@@ -229,8 +229,7 @@ function cns_ldap_bind()
                 require_code('site');
                 $extended_error = '';
                 ldap_get_option($LDAP_CONNECTION, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
-                attach_message(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION) . '; ' . $extended_error . ' -- (initial connection bind)'), 'warn');
-                fatal_exit(ldap_error($LDAP_CONNECTION));
+                fatal_exit(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION) . '; ' . $extended_error . ' -- (initial connection bind)'), 'warn', false, true);
             }
         }
     } else {
@@ -251,10 +250,7 @@ function cns_ldap_bind()
             if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) || $GLOBALS['IS_ACTUALLY_ADMIN']) {
                 $message .= ' -- for binding (initial connection bind) with ' . $login;
             }
-            attach_message(make_string_tempcode($message), 'warn');
-            if (get_param_integer('keep_ldap_debug', 0) == 1) {
-                fatal_exit(ldap_error($LDAP_CONNECTION));
-            }
+            attach_message(make_string_tempcode($message), 'warn', false, true);
         }
     }
 }
@@ -277,10 +273,7 @@ function cns_is_on_ldap($cn)
         if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) || $GLOBALS['IS_ACTUALLY_ADMIN']) {
             $message .= ' -- for ' . $query . ' under ' . $path;
         }
-        attach_message(make_string_tempcode($message), 'warn');
-        if (get_param_integer('keep_ldap_debug', 0) == 1) {
-            fatal_exit(ldap_error($LDAP_CONNECTION));
-        }
+        attach_message(make_string_tempcode($message), 'warn', false, true);
         return false;
     }
     $entries = ldap_get_entries($LDAP_CONNECTION, $results);
@@ -303,10 +296,7 @@ function cns_get_ldap_hash($cn)
     $results = @ldap_search($LDAP_CONNECTION, member_search_qualifier() . get_option('ldap_base_dn'), '(&(objectclass=' . get_member_class() . ')(' . member_property() . '=' . cms_ldap_escape($cn) . '))', array('userpassword'));
     if ($results === false) {
         require_code('site');
-        attach_message(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION)), 'warn');
-        if (get_param_integer('keep_ldap_debug', 0) == 1) {
-            fatal_exit(ldap_error($LDAP_CONNECTION));
-        }
+        attach_message(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION)), 'warn', false, true);
         return null;
     }
     $entries = ldap_get_entries($LDAP_CONNECTION, $results);
@@ -316,7 +306,7 @@ function cns_get_ldap_hash($cn)
     }
     if (!array_key_exists('userpassword', $entries[0])) {
         require_code('site');
-        attach_message(do_lang_tempcode('LDAP_CANNOT_CHECK_PASSWORDS'), 'warn');
+        attach_message(do_lang_tempcode('LDAP_CANNOT_CHECK_PASSWORDS'), 'warn', false, true);
         return uniqid('', true);
     }
     $pass = $entries[0]['userpassword'][0];
@@ -434,8 +424,7 @@ function cns_ldap_authorise_login($cn, $password)
             if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) || $GLOBALS['IS_ACTUALLY_ADMIN']) {
                 $message .= ' -- for binding (active login) with ' . $login;
             }
-            attach_message(make_string_tempcode($message), 'warn');
-            fatal_exit(ldap_error($LDAP_CONNECTION));
+            fatal_exit(make_string_tempcode($message));
         }
     }
 
@@ -487,10 +476,7 @@ function cns_get_all_ldap_groups()
     $results = @ldap_search($LDAP_CONNECTION, group_search_qualifier() . get_option('ldap_base_dn'), 'objectclass=' . get_group_class(), array(group_property())); // We do ldap_search as Active Directory can be fussy when looking at large sets, like all members
     if ($results === false) {
         require_code('site');
-        attach_message((is_null($LDAP_CONNECTION) ? do_lang_tempcode('LDAP_DISABLED') : (protect_from_escaping('LDAP: ' . ldap_error($LDAP_CONNECTION)))), 'warn');
-        if (get_param_integer('keep_ldap_debug', 0) == 1) {
-            fatal_exit(ldap_error($LDAP_CONNECTION));
-        }
+        attach_message((is_null($LDAP_CONNECTION) ? do_lang_tempcode('LDAP_DISABLED') : (protect_from_escaping('LDAP: ' . ldap_error($LDAP_CONNECTION)))), 'warn', false, true);
         return array();
     }
     $entries = ldap_get_entries($LDAP_CONNECTION, $results);

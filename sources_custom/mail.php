@@ -389,9 +389,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $message = Swift_Message::newInstance($subject);
     if ($website_email != '') {
         if (get_option('use_true_from') == '0') {
-            $message->setFrom(array($website_email => $from_name))
+            $message->setFrom(array($website_email => $from_name));
         } else {
-            $message->setFrom(array($from_email => $from_name))
+            $message->setFrom(array($from_email => $from_name));
         }
     }
     $message
@@ -457,10 +457,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     cms_profile_end_for('mail_wrap', $subject_line);
 
     // Return / Error handling
-    $SENDING_MAIL = false;
     if ($error != '') {
         require_code('site');
-        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
     }
+    $SENDING_MAIL = false;
     return null;
 }

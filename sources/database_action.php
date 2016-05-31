@@ -170,8 +170,7 @@ function get_false_permissions()
         array('_COMCODE', 'use_very_dangerous_comcode'),
         array('STAFF_ACTIONS', 'access_closed_site'),
         array('STAFF_ACTIONS', 'bypass_bandwidth_restriction'),
-        array('STAFF_ACTIONS', 'see_php_errors'),
-        array('STAFF_ACTIONS', 'see_stack_dump'),
+        array('STAFF_ACTIONS', 'see_stack_trace'),
         array('STAFF_ACTIONS', 'view_profiling_modes'),
         array('STAFF_ACTIONS', 'access_overrun_site'),
         array('SUBMISSION', 'bypass_validation_highrange_content'),
@@ -240,6 +239,7 @@ function get_true_permissions()
         array('VOTE', 'vote_in_polls'),
         array('GENERAL_SETTINGS', 'jump_to_unvalidated'),
         array('_COMCODE', 'reuse_others_attachments'),
+        array('GENERAL_SETTINGS', 'see_php_errors'),
     );
 }
 

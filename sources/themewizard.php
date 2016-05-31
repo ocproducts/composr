@@ -318,7 +318,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         }
         $img = @imagecreatefromstring($data);
         if ($img === false) {
-            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)));
+            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($url)), false, true);
         }
         $imgs[$id] = $img;
     }
@@ -557,7 +557,7 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                     if ($changed_from_default_theme) {
                         $fp = @fopen($saveat, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
                         if (fwrite($fp, $output) < strlen($output)) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                         fclose($fp);
                         fix_permissions($saveat);
@@ -770,7 +770,7 @@ function calculate_theme($seed, $source_theme, $algorithm, $show = 'colours', $d
                     $needed = array('washed_out', 'area_background', 'lgrad', 'dgrad', 'dark_border', 'comcode_quote_left', 'comcode_quote_right', 'a.link', 'a.hover', 'a.link__dark', 'a.hover__dark', 'special_borderer', 'cnsredirectindicator', 'cnspostindicator', 'slightly_seeded_text', 'special_middle',);
                     foreach ($needed as $colour_needed) {
                         if (!array_key_exists($colour_needed, $colours)) {
-                            warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($colour_needed)));
+                            warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($colour_needed)), false, true);
                         }
                     }
 
@@ -899,7 +899,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
                 }
                 $_landscape .= $x[2];
             }
-            warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($_landscape)));
+            warn_exit(do_lang_tempcode('UNRESOLVABLE_COLOURS', escape_html($_landscape)), false, true);
         }
     }
 
@@ -1403,7 +1403,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
             }
         }
         if ($_image === false) {
-            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)));
+            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
         $_image = $path;
@@ -1577,7 +1577,7 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
             $_image = @imagecreatefrompng($path);
         }
         if ($_image === false) {
-            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)));
+            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($path)), false, true);
         }
     } else {
         $_image = $path;

@@ -79,7 +79,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
         if ($missing_blank) {
             return '';
         }
-        warn_exit(do_lang_tempcode('MISSING_TEXT_FILE', escape_html($codename)));
+        warn_exit(do_lang_tempcode('MISSING_TEXT_FILE', escape_html($codename)), false, true);
     }
     @flock($tmp, LOCK_SH);
     $in = @file_get_contents($path);
@@ -124,7 +124,7 @@ function write_text_file($codename, $lang, $out)
         ftruncate($myfile, 0);
     }
     if (fwrite($myfile, $out) < strlen($out)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     @flock($myfile, LOCK_UN);
     fclose($myfile);
@@ -138,7 +138,7 @@ function write_text_file($codename, $lang, $out)
         intelligent_write_error($path);
     }
     if (fwrite($myfile, $out) < strlen($out)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     fclose($myfile);
     fix_permissions($path);

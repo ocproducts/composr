@@ -467,7 +467,7 @@ class Forum_driver_wowbb extends Forum_driver_base
         }
         $forum_id = $this->forum_id_from_name($forum_name);
         if (is_null($forum_id)) {
-            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)));
+            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
 
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);

@@ -408,7 +408,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
         }
         $xml = post_param_string('xml');
         if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml');

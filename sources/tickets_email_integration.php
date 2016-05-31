@@ -183,7 +183,7 @@ function ticket_incoming_scan()
 
         $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
         if (!$cli && get_param_integer('no_fatal_cron_errors', 0) != 1) {
-            warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
+            warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
         }
     }
 }
@@ -624,7 +624,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         $_ticket_type_id = 1; // These will be returned by reference
         $posts = get_ticket_posts($existing_ticket, $_forum, $_topic_id, $_ticket_type_id);
         if (!is_array($posts)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'));
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'ticket'), false, true);
         }
         $__title = do_lang('UNKNOWN');
         foreach ($posts as $ticket_post) {

@@ -223,8 +223,8 @@ function get_option($name, $missing_ok = false)
         $value = get_default_option($name);
         if ($value === null) {
             if (!$missing_ok) {
-                if (function_exists('attach_message')) {
-                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+                if (function_exists('do_lang')) {
+                    trigger_error(do_lang('MISSING_OPTION', escape_html($name)));
                 } else {
                     critical_error('PASSON', 'Missing option: ' . $name);
                 }

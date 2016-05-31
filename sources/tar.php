@@ -36,7 +36,7 @@ function tar_open($path, $mode)
         $myfile = @fopen($path, $mode);
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'), false, true);
             } else {
                 intelligent_write_error($path);
             }
@@ -52,7 +52,7 @@ function tar_open($path, $mode)
         $chunk = pack('a1024', '');
         if (!is_null($myfile)) {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
         $resource['directory'] = array();
@@ -86,7 +86,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             if ($tolerate_errors) {
                 return null;
             }
-            warn_exit(do_lang_tempcode('CORRUPT_TAR'));
+            warn_exit(do_lang_tempcode('CORRUPT_TAR'), false, true);
         }
 
         $offset = ftell($myfile);
@@ -95,7 +95,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             if ($tolerate_errors) {
                 return null;
             }
-            warn_exit(do_lang_tempcode('CORRUPT_TAR'));
+            warn_exit(do_lang_tempcode('CORRUPT_TAR'), false, true);
         }
         if (ord(substr($header, 0, 1)) == 0) {
             $finished = true;
@@ -128,7 +128,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
                 if ($tolerate_errors) {
                     return null;
                 }
-                warn_exit(do_lang_tempcode('CORRUPT_TAR'));
+                warn_exit(do_lang_tempcode('CORRUPT_TAR'), false, true);
             }
 
             //if ($is_ok) {
@@ -189,7 +189,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
     } else {
@@ -206,7 +206,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
                     if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                     }
                     continue;
                 }
@@ -220,7 +220,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         if ((($mtime > $threshold || $ctime > $threshold)) && ((is_null($max_size)) || (filesize($full) < $max_size * 1024 * 1024))) {
                             tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true);
                             if (!is_null($logfile) && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
-                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                             }
                         }
                         /* We don't store all this stuff, it's not in Composr's remit
@@ -270,7 +270,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
         $dh = @opendir($_full);
         if ($dh === false) {
             if (fwrite($logfile, 'Could not access ' . $_full . ' [case 2]' . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
     } else {
@@ -291,7 +291,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                 $full = ($path == '') ? $_subpath : ($path . '/' . $_subpath);
                 if (!is_readable($full)) {
                     if (fwrite($logfile, 'Could not access ' . $full . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                     }
                     continue;
                 }
@@ -303,7 +303,7 @@ function tar_add_folder(&$resource, $logfile, $path, $max_size = null, $subpath 
                     if ((($full != $resource['full']) && ((is_null($max_size)) || (filesize($full) < $max_size * 1024 * 1024))) && ((is_null($avoid_backing_up)) || (!array_key_exists($_subpath, $avoid_backing_up)))) {
                         tar_add_file($resource, $_subpath, $full, fileperms($full), filemtime($full), true);
                         if (!is_null($logfile) && fwrite($logfile, 'Backed up file ' . $_subpath . ' (' . clean_file_size(filesize($full)) . ')' . "\n") == 0) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
                 }
@@ -411,7 +411,7 @@ function tar_extract_to_folder(&$resource, $path, $use_afm = false, $files = nul
                     intelligent_write_error(get_custom_file_base() . '/' . $path . $file['path']);
                 }
                 if (fwrite($myfile, $data['data']) < strlen($data['data'])) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 $full_path = get_custom_file_base() . '/' . $path . $file['path'];
                 @chmod($full_path, $data['mode']);
@@ -473,7 +473,7 @@ function tar_get_file(&$resource, $path, $tolerate_errors = false, $write_data_t
 
                     if (!is_null($write_data_to)) {
                         if (fwrite($outfile, $data) < strlen($data)) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
 
                         $data = '';
@@ -533,7 +533,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
                 if ($return_on_errors) {
                     return $offset + 512;
                 }
-                warn_exit(do_lang_tempcode('FILE_IN_ARCHIVE_TWICE', escape_html($target_path)));
+                warn_exit(do_lang_tempcode('FILE_IN_ARCHIVE_TWICE', escape_html($target_path)), false, true);
             }
         }
 
@@ -602,7 +602,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
         echo $chunk;
     } else {
         if (fwrite($myfile, $chunk) < strlen($chunk)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
     }
 
@@ -615,7 +615,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
                 echo $in;
             } else {
                 if (fwrite($myfile, $in) < strlen($in)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
             }
         }
@@ -626,7 +626,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
                 echo pack('a' . strval($extra_to_write), '');
             } else {
                 if (fwrite($myfile, pack('a' . strval($extra_to_write), '')) == 0) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
             }
         }
@@ -636,7 +636,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
             echo $chunk;
         } else {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
     }
@@ -675,7 +675,7 @@ function tar_close($resource)
         } else {
             $chunk = pack('a1024', '');
             if (fwrite($resource['myfile'], $chunk) < strlen($chunk)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
 
             fclose($resource['myfile']);

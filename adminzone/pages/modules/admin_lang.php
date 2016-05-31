@@ -777,14 +777,14 @@ class Module_admin_lang
         fwrite($myfile, "[descriptions]\n");
         foreach ($descriptions as $key => $description) {
             if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
         fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
         fwrite($myfile, "[runtime_processing]\n");
         foreach ($runtime_processing as $key => $flag) {
             if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
         fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
@@ -796,7 +796,7 @@ class Module_admin_lang
             }
             if (($val !== null) && ((!array_key_exists($key, $for_base_lang)) || (str_replace("\n", '\n', $val) != $for_base_lang[$key]))) {
                 if (fwrite($myfile, $key . '=' . str_replace("\n", '\n', $val) . "\n") == 0) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
             }
         }
@@ -869,14 +869,14 @@ class Module_admin_lang
                 fwrite($myfile, "[descriptions]\n");
                 foreach ($descriptions as $key => $description) {
                     if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                     }
                 }
                 fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 fwrite($myfile, "[runtime_processing]\n");
                 foreach ($runtime_processing as $key => $flag) {
                     if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                     }
                 }
                 fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line

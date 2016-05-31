@@ -146,7 +146,7 @@ class Database_super_mysql
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
                 } else {
-                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))), 'warn');
+                    attach_message(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html(substr($query, 0, 300)) . '...', escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))), 'warn', false, true);
                 }
                 return false;
             }

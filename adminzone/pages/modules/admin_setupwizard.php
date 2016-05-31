@@ -916,7 +916,7 @@ class Module_admin_setupwizard
             fwrite($myfile, 'description=' . do_lang('NA') . "\n");
             fwrite($myfile, 'seed=' . post_param_string('seed_hex') . "\n");
             if (fwrite($myfile, 'author=Composr' . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             sync_file(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
@@ -1072,7 +1072,7 @@ class Module_admin_setupwizard
             $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/rules.txt');
             $rf = $this->get_rules_file(post_param_string('rules'));
             if (fwrite($myfile, $rf) < strlen($rf)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             fix_permissions($full_path);
@@ -1103,7 +1103,7 @@ class Module_admin_setupwizard
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['start']) == 0) {
                         if ($zone_pages['start'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
                     fclose($myfile);
@@ -1120,7 +1120,7 @@ class Module_admin_setupwizard
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['left']) == 0) {
                         if ($zone_pages['left'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
                     fclose($myfile);
@@ -1137,7 +1137,7 @@ class Module_admin_setupwizard
                 if ($myfile !== false) {
                     if (fwrite($myfile, $zone_pages['right']) == 0) {
                         if ($zone_pages['right'] != '') {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }
                     fclose($myfile);

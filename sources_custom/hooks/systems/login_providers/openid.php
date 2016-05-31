@@ -156,13 +156,13 @@ class Hook_login_provider_openid
                 } else {
                     require_code('site');
                     require_code('site2');
-                    attach_message('An unknown error occurred during OpenID login.', 'warn');
+                    attach_message('An unknown error occurred during OpenID login.', 'warn', false, true);
                 }
             }
         } catch (ErrorException $e) {
             require_code('site');
             require_code('site2');
-            attach_message($e->getMessage(), 'warn');
+            attach_message($e->getMessage(), 'warn', false, true);
         }
 
         return $member;

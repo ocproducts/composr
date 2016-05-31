@@ -591,7 +591,7 @@ class Hook_wowbb
         $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . '.dat';
         $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . '.dat')));
         if (fwrite($myfile, $data) < strlen($data)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions($path);

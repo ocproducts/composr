@@ -64,7 +64,7 @@ function get_nested_csv_structure()
 
             $myfile = @fopen(get_file_base() . '/private_data/' . $csv_filename, 'rb');
             if ($myfile === false) {
-                warn_exit('The CSV file "' . $csv_filename . '" could not be opened.');
+                warn_exit('The CSV file "' . $csv_filename . '" could not be opened.', false, true);
             }
 
             $header_row = fgetcsv($myfile, 10000);
@@ -102,7 +102,7 @@ function get_nested_csv_structure()
 
                 $csv_files[$csv_filename] = $csv_file;
             } else {
-                warn_exit('No header row found for "' . $csv_filename . '".');
+                warn_exit('No header row found for "' . $csv_filename . '".', false, true);
             }
 
             fclose($myfile);
@@ -132,38 +132,38 @@ function get_nested_csv_structure()
 
                 if (!array_key_exists($csv_filename, $csv_files)) { // Check referenced filename exists
                     if (!file_exists(get_custom_file_base() . '/private_data')) {
-                        attach_message('Missing private_data directory for CSV file storage.', 'warn');
+                        attach_message('Missing private_data directory for CSV file storage.', 'warn', false, true);
                         break;
                     }
 
-                    attach_message('Specified CSV file, ' . $csv_filename . ', not found for "' . $custom_field['trans_name'] . '".', 'warn');
+                    attach_message('Specified CSV file, ' . $csv_filename . ', not found for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                     continue;
                 }
                 if (!in_array($csv_heading, $csv_files[$csv_filename]['headings'])) { // Check referenced heading exists
-                    attach_message('Specified heading,' . $csv_heading . ' , not found in CSV file for "' . $custom_field['trans_name'] . '".', 'warn');
+                    attach_message('Specified heading,' . $csv_heading . ' , not found in CSV file for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                     continue;
                 }
                 if ((!is_null($csv_parent_filename)) && (!is_null($csv_parent_heading))) {
                     if (!array_key_exists($csv_parent_filename, $csv_files)) { // Check referenced filename exists
-                        attach_message('Specified parent CSV file, ' . $csv_parent_filename . ', not found for "' . $custom_field['trans_name'] . '".', 'warn');
+                        attach_message('Specified parent CSV file, ' . $csv_parent_filename . ', not found for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                         $csv_parent_filename = null;
                         $csv_parent_heading = null;
                     }
                     if (!in_array($csv_parent_heading, $csv_files[$csv_parent_filename]['headings'])) { // Check referenced heading exists
-                        attach_message('Specified parent heading not found in CSV file for "' . $custom_field['trans_name'] . '".', 'warn');
+                        attach_message('Specified parent heading not found in CSV file for "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                         $csv_parent_filename = null;
                         $csv_parent_heading = null;
                     }
                 }
 
                 if (isset($cpf_fields[$csv_heading])) {
-                    attach_message('Specified heading,' . $csv_heading . ' ,used for more than one field.', 'warn');
+                    attach_message('Specified heading,' . $csv_heading . ' ,used for more than one field.', 'warn', false, true);
                     continue;
                 }
 
                 if ($csv_parent_filename === null || $csv_parent_heading === null) {
                     if ($csv_parent_filename !== null || $csv_parent_heading !== null) {
-                        attach_message('Must supply parent CSV filename and parent heading or neither, in "' . $custom_field['trans_name'] . '".', 'warn');
+                        attach_message('Must supply parent CSV filename and parent heading or neither, in "' . $custom_field['trans_name'] . '".', 'warn', false, true);
                         $csv_parent_filename = null;
                         $csv_parent_heading = null;
                     }

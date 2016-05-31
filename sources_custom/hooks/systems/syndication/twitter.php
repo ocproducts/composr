@@ -61,7 +61,7 @@ class Hook_syndication_twitter
         $response = $twitter->oAuthAccessToken(get_param_string('oauth_token'), get_param_string('oauth_verifier'));
 
         if (!isset($response['oauth_token'])) {
-            attach_message(do_lang_tempcode('TWITTER_OAUTH_FAIL', escape_html($response['message'])), 'warn');
+            attach_message(do_lang_tempcode('TWITTER_OAUTH_FAIL', escape_html($response['message'])), 'warn', false, true);
             return false;
         }
 
@@ -159,7 +159,7 @@ class Hook_syndication_twitter
         try {
             $twitter->statusesUpdate($chopped_message);
         } catch (TwitterException $e) {
-            attach_message($e->getMessage(), 'warn');
+            attach_message($e->getMessage(), 'warn', false, true);
             return false;
         }
 

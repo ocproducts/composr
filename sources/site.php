@@ -317,9 +317,10 @@ function inform_non_canonical_parameter($param)
  * @param  ID_TEXT $type The template to use
  * @set    inform notice warn
  * @param  boolean $put_in_helper_panel Whether to put into the helper panel instead of the normal header area
+ * @param  boolean $log_error Whether to log the error
  * @return string Blank string so it can be chained in the Tempcode compiler. You will rarely want to use this return value. It's kind of a failsafe.
  */
-function attach_message($message, $type = 'inform', $put_in_helper_panel = false)
+function attach_message($message, $type = 'inform', $put_in_helper_panel = false, $log_error = false)
 {
     if ((error_reporting() == 0) && ($type == 'warn')) {
         return ''; // Suppressing errors
@@ -343,6 +344,25 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
     $ATTACH_MESSAGE_CALLED++;
     if ($ATTACH_MESSAGE_CALLED > 5) {
         critical_error('EMERGENCY', is_object($message) ? $message->evaluate() : escape_html($message));
+    }
+
+    if ($log_error) {
+        require_code('urls');
+        $php_error_label = (is_object($message) ? $message->evaluate() : $message) . ' @ ' . get_self_url_easy();
+        $may_log_error = ((!running_script('cron_bridge')) || (@filemtime(get_custom_file_base() . '/data_custom/errorlog.php') < time() - 60 * 5));
+
+        if ($may_log_error) {
+            if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
+                syslog(LOG_ERR, $php_error_label);
+            }
+            if (php_function_allowed('error_log')) {
+                @error_log('Composr: ' . $php_error_label, 0);
+            }
+
+            require_code('failure');
+            $trace = get_html_trace();
+            relay_error_notification((is_object($message) ? $message->evaluate() : $message) . '[html]' . $trace->evaluate() . '[/html]');
+        }
     }
 
     if (($type == 'warn') && (strlen(is_object($message) ? $message->evaluate() : $message) < 130)) {
@@ -1123,7 +1143,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     $REQUEST_PAGE_NEST_LEVEL++;
     if ($REQUEST_PAGE_NEST_LEVEL > 20) {
         $REQUEST_PAGE_NEST_LEVEL = 0;
-        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn');
+        attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html($codename), escape_html(do_lang('PAGE'))), 'warn', false, true);
         return null;
     }
 

@@ -42,7 +42,7 @@ class Hook_task_install_geolocation_data
         $path = get_file_base() . '/data/modules/admin_stats/IP_Country.txt';
         $file = @fopen($path, GOOGLE_APPENGINE ? 'rb' : 'rt');
         if ($file === false) {
-            warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)));
+            warn_exit(do_lang_tempcode('READ_ERROR', escape_html($path)), false, true);
         }
         $to_insert = array('begin_num' => array(), 'end_num' => array(), 'country' => array());
         while (!feof($file)) {

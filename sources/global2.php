@@ -365,12 +365,7 @@ function init__global2()
         }
     }
 
-    // Our logging
-    if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP) && ((get_option('display_php_errors') == '1') || (running_script('upgrader')) || (has_privilege(get_member(), 'see_php_errors')))) {
-        safe_ini_set('display_errors', '1');
-    } elseif (!$DEV_MODE) {
-        safe_ini_set('display_errors', '0');
-    }
+    safe_ini_set('display_errors', '0');
 
     // G-zip?
     $page = get_param_string('page', ''); // Not get_page_name for bootstrap order reasons
@@ -717,7 +712,7 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Do NOT bubble on to default PHP handler (i.e. if set to false it will output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
+ * @return boolean Mark error handled, so PHP's native error handling code does not execute
  *
  * @ignore
  */
@@ -767,9 +762,9 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
             $handling_method = get_option('error_handling_' . $type . 's');
         }
 
-        // It's incredibly minor, so it's probably best to continue - PHP will output it for staff or if display_php_errors is on
+        // It's incredibly minor, so it's probably best to continue
         if ($handling_method == 'SKIP') {
-            return false;
+            return true; // No bubbling back to PHP
         }
 
         // So error suppress works again
@@ -789,7 +784,6 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
                 if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
                     syslog($syslog_type, $php_error_label);
                 }
-
                 if (php_function_allowed('error_log')) {
                     @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
                 }
@@ -801,9 +795,10 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
         // Handle the error
         require_code('failure');
         _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method);
+        return true; // No bubbling back to PHP
     }
 
-    return false;
+    return false; // Bubbles back to PHP, which will do nothing if "@" was used
 }
 
 /**
@@ -828,7 +823,7 @@ function is_browser_decaching()
         $config_file = rtrim(str_replace('define(\'DO_PLANNED_DECACHE\', true);', '', $config_file)) . "\n\n";
         if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file, LOCK_EX) < strlen($config_file)) {
             file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file_orig, LOCK_EX);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         return true;
     }
@@ -907,13 +902,14 @@ function inform_exit($text, $support_match_key_messages = null)
  *
  * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported
+ * @param  boolean $log_error Whether to log the error
  * @return mixed Never returns (i.e. exits)
  */
-function warn_exit($text, $support_match_key_messages = false)
+function warn_exit($text, $support_match_key_messages = false, $log_error = false)
 {
     require_code('failure');
     suggest_fatalistic();
-    _generic_exit($text, 'WARN_SCREEN', $support_match_key_messages);
+    _generic_exit($text, 'WARN_SCREEN', $support_match_key_messages, $log_error);
     if (running_script('cron_bridge')) {
         relay_error_notification(is_object($text) ? $text->evaluate() : escape_html($text), false, 'error_occurred_cron');
     }
@@ -929,7 +925,7 @@ function warn_exit($text, $support_match_key_messages = false)
 function fatal_exit($text)
 {
     require_code('failure');
-    _fatal_exit($text);
+    _generic_exit($text, 'FATAL_SCREEN', false, true);
 }
 
 /**

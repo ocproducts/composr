@@ -168,7 +168,6 @@ function require_code($codename, $light_exit = false)
                 // Note we load the original and then the override. This is so function_exists can be used in the overrides (as we can't support the re-definition) OR in the case of Mx_ class derivation, so that the base class is loaded first.
 
                 if (isset($_GET['keep_show_parse_errors'])) {
-                    safe_ini_set('display_errors', '0');
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_orig)));
                     if (eval($orig) === false) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
@@ -184,7 +183,6 @@ function require_code($codename, $light_exit = false)
                     }
                 }
                 if (isset($_GET['keep_show_parse_errors'])) {
-                    safe_ini_set('display_errors', '0');
                     $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
                     if (eval($orig) === false) {
                         if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
@@ -202,7 +200,6 @@ function require_code($codename, $light_exit = false)
             }
         } else {
             if (isset($_GET['keep_show_parse_errors'])) {
-                safe_ini_set('display_errors', '0');
                 $orig = str_replace('?' . '>', '', str_replace('<' . '?php', '', file_get_contents($path_custom)));
                 if (eval($orig) === false) {
                     if ((!function_exists('fatal_exit')) || ($codename === 'failure')) {
@@ -235,7 +232,6 @@ function require_code($codename, $light_exit = false)
         if (isset($_GET['keep_show_parse_errors'])) {
             $contents = @file_get_contents($path_orig);
             if ($contents !== false) {
-                safe_ini_set('display_errors', '0');
                 $orig = str_replace(array('?' . '>', '<' . '?php'), array('', ''), $contents);
 
                 if (eval($orig) === false) {
@@ -283,7 +279,7 @@ function require_code($codename, $light_exit = false)
         }
     }
     if ($light_exit) {
-        warn_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)));
+        warn_exit(do_lang_tempcode('MISSING_SOURCE_FILE', escape_html($codename), escape_html($path_orig)), false, true);
     }
     if (!function_exists('do_lang')) {
         if ($codename === 'critical_errors') {

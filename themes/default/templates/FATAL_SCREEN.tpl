@@ -1,7 +1,7 @@
 {TITLE}
 
 <p role="alert">
-	{MESSAGE*}
+	{TEXT*}
 </p>
 
 {+START,IF,{$_GET,keep_fatalistic}}
@@ -25,6 +25,16 @@
 	<p>
 		{!STACK_TRACE_DENIED_ERROR_NOTIFICATION}
 	</p>
+{+END}
+
+{+START,IF,{$NOR,{$_GET,keep_fatalistic},{$EQ,{$PAGE},admin_config}}}
+	{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_config}}
+		<hr class="spaced_rule" />
+
+		<ul class="actions_list">
+			<li><a href="{$PAGE_LINK*,adminzone:admin_config:category:SITE#group_ERROR_HANDLING}">{!CHANGE_ERROR_HANDLING_SETTINGS}</a></li>
+		</ul>
+	{+END}
 {+END}
 
 <script>// <![CDATA[

@@ -118,7 +118,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     if (!is_integer($forum_name)) {
         $forum_id = $this_ref->forum_id_from_name($forum_name);
         if (is_null($forum_id)) {
-            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)));
+            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
     } else {
         $forum_id = (integer)$forum_name;

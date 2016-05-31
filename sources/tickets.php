@@ -153,7 +153,7 @@ function get_ticket_forum_id($member_id = null, $ticket_type_id = null, $create 
         if ($silent_error_handling) {
             return null;
         }
-        warn_exit(do_lang_tempcode('NO_FORUM'));
+        warn_exit(do_lang_tempcode('NO_FORUM'), false, true);
     }
 
     // Only the root ticket forum is supported for non-Conversr installations

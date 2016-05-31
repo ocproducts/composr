@@ -878,7 +878,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $error = $e->getMessage();
 
             require_code('site');
-            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
         }
 
         $SENDING_MAIL = false;
@@ -1136,9 +1136,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (!$worked) {
-        $SENDING_MAIL = false;
         require_code('site');
-        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
     }
 
     $SENDING_MAIL = false;

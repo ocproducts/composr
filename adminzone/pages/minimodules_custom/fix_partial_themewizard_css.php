@@ -100,7 +100,7 @@ while (($sheet = readdir($dh)) !== false) {
         if ($output != $before) {
             $fp = @fopen($saveat, 'wb') or intelligent_write_error($saveat);
             if (fwrite($fp, $output) < strlen($output)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($fp);
             fix_permissions($saveat);

@@ -117,7 +117,7 @@ class Hook_upload_syndication_photobucket
             $api->loadTokenFromResponse();
         } catch (PBAPI_Exception $e) {
             require_lang('video_syndication_photobucket');
-            attach_message(do_lang_tempcode('PHOTOBUCKET_ERROR', escape_html($e->getCode()), escape_html($e->getMessage()), escape_html(get_site_name())), 'warn');
+            attach_message(do_lang_tempcode('PHOTOBUCKET_ERROR', escape_html($e->getCode()), escape_html($e->getMessage()), escape_html(get_site_name())), 'warn', false, true);
 
             // Tidy out old incomplete request tokens
             if (is_null(get_value_newer_than('photobucket_oauth_key__' . strval(get_member()), time() - 60 * 60, true))) {
@@ -219,7 +219,7 @@ class Hook_upload_syndication_photobucket
 
             return $response['url'];
         } catch (PBAPI_Exception $e2) {
-            attach_message(do_lang_tempcode('PHOTOBUCKET_ERROR', escape_html($e2->getCode()), escape_html($e2->getMessage()), escape_html(get_site_name())), 'warn');
+            attach_message(do_lang_tempcode('PHOTOBUCKET_ERROR', escape_html($e2->getCode()), escape_html($e2->getMessage()), escape_html(get_site_name())), 'warn', false, true);
         }
 
         return null;

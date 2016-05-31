@@ -84,10 +84,10 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
         $result = $client->submit($udata, array('add' => $add));
         if ($trigger_error) {
             if (is_object($result)) {
-                attach_message('dnsbl.tornevall.org: ' . $result->getMessage(), 'warn');
+                attach_message('dnsbl.tornevall.org: ' . $result->getMessage(), 'warn', false, true);
             }
             if (isset($result['error'])) {
-                attach_message('dnsbl.tornevall.org: ' . $result['error']['message'], 'warn');
+                attach_message('dnsbl.tornevall.org: ' . $result['error']['message'], 'warn', false, true);
             }
         }
 
@@ -119,7 +119,7 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
         }
         $result = http_download_file($url, null, $trigger_error);
         if (($trigger_error) && ($result != '')) {
-            attach_message($result . ' [ ' . $url . ' ]', 'warn');
+            attach_message($result . ' [ ' . $url . ' ]', 'warn', false, true);
         }
 
         $did_something = true;

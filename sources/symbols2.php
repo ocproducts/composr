@@ -2647,7 +2647,7 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
         $value = (preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]) != 0) ? '1' : '0';
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
         if (isset($php_errormsg)) {
-            attach_message($php_errormsg, 'warn');
+            attach_message($php_errormsg, 'warn', false, true);
         }
     }
 
@@ -3815,8 +3815,7 @@ function ecv2_LOOP(&$value, $lang, $escaped, $param)
 {
     if (isset($param[0])) {
         if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
-            require_code('site');
-            attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), 'warn');
+            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'));
             return;
         }
 

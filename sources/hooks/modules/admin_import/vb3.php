@@ -884,7 +884,7 @@ class Hook_vb3
             $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : '');
             $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : ''))));
             if (fwrite($myfile, $data) < strlen($data)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             fix_permissions($path);
@@ -907,7 +907,7 @@ class Hook_vb3
                 $path = get_custom_file_base() . '/uploads/' . $sections . '_thumbs/' . $thumb_filename;
                 $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '_thumbs/' . $thumb_filename)));
                 if (fwrite($myfile, $thumbnail_data) < strlen($thumbnail_data)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 fclose($myfile);
                 $thumb_url = 'uploads/' . $sections . '/' . $thumb_filename;

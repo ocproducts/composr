@@ -281,7 +281,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
             $myfile = zip_open($file['tmp_name']);
             if (is_integer($myfile)) {
                 require_code('failure');
-                warn_exit(zip_error($myfile, $mzip));
+                warn_exit(zip_error($myfile, $mzip), false, true);
             }
             $dir = array();
             while (($zip_entry = zip_read($myfile)) !== false) {
@@ -347,7 +347,7 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                         $more = zip_entry_read($entry['zip_entry']);
                         if ($more !== false) {
                             if (fwrite($out_file, $more) < strlen($more)) {
-                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                             }
                         }
                     } while (($more !== false) && ($more != ''));

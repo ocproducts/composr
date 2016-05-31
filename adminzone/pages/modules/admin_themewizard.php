@@ -346,7 +346,7 @@ class Module_admin_themewizard
         fwrite($myfile, 'description=' . do_lang('NA') . "\n");
         fwrite($myfile, 'seed=' . $seed . "\n");
         if (fwrite($myfile, 'author=' . $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         sync_file('themes/' . filter_naughty($themename) . '/theme.ini');

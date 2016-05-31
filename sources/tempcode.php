@@ -198,7 +198,7 @@ function missing_template_parameter($origin)
     if (strtolower($template_name) != $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
-    attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name == '') ? '???' : $template_name), 'warn');
+    trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name == '') ? '???' : $template_name));
     return '';
 }
 
@@ -1051,7 +1051,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 if ($REQUEST_BLOCK_NEST_LEVEL > 40) { // 100 caused xdebug error, but Composr will have some overhead in both error handler and other code to get to here. We want xdebug error to not show, but of course to provide the same benefits as that error.
                     $REQUEST_BLOCK_NEST_LEVEL = 0;
                     $BLOCKS_CACHE[serialize($param)] = do_lang_tempcode('INTERNAL_ERROR');
-                    attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html(is_string($param[0]) ? $param[0] : 'block'), escape_html(do_lang('BLOCK'))), 'warn');
+                    attach_message(do_lang_tempcode('STOPPED_RECURSIVE_RESOURCE_INCLUDE', escape_html(is_string($param[0]) ? $param[0] : 'block'), escape_html(do_lang('BLOCK'))), 'warn', false, true);
                     return;
                 }
 
@@ -1704,7 +1704,8 @@ class Tempcode
             } elseif ($p_type === 'boolean') {
                 $parameters[$key] = $parameter ? '1' : '0';
             } elseif (($p_type !== 'array') && ($p_type !== 'NULL')) {
-                critical_error('PASSON', do_lang('NO_INTEGERS_TEMPLATE', escape_html($key)));
+                trigger_error(do_lang('NO_INTEGERS_TEMPLATE', escape_html($key)), E_USER_NOTICE);
+                $parameters[$key] = @strval($parameter);
             }
         }
 

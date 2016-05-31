@@ -113,14 +113,14 @@ class Hook_syndication_facebook
         }
 
         if (!is_null(get_param_string('error_reason', null))) { // oauth happened and ERROR!
-            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(get_param_string('error_reason'))), 'warn');
+            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(get_param_string('error_reason'))), 'warn', false, true);
             return false;
         }
 
         // oauth apparently worked
         $access_token = $FACEBOOK_CONNECT->getAccessToken();
         if (is_null($access_token)) { // Actually it didn't
-            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(do_lang('UNKNOWN'))), 'warn');
+            attach_message(do_lang_tempcode('FACEBOOK_OAUTH_FAIL', escape_html(do_lang('UNKNOWN'))), 'warn', false, true);
             return false;
         }
 
@@ -264,7 +264,7 @@ class Hook_syndication_facebook
             }
 
             if (!$silent_warn) {
-                attach_message($e->getMessage(), 'warn');
+                attach_message($e->getMessage(), 'warn', false, true);
             }
         }
 

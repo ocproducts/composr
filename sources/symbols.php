@@ -121,8 +121,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                         ocp_mark_as_escaped($value);
                     }
                     if (!running_script('install')) {
-                        require_code('site');
-                        attach_message(do_lang_tempcode('MISSING_SYMBOL', escape_html($name)), 'warn');
+                        trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)));
                     }
                 }
             }
@@ -482,8 +481,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 break;
 
             default:
-                require_code('site');
-                attach_message(do_lang_tempcode('UNKNOWN_DIRECTIVE', escape_html($name)), 'warn');
+                trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)));
         }
 
         if ($escaped !== array()) {
@@ -511,8 +509,7 @@ function ecv($lang, $escaped, $type, $name, $param)
     }
     $value = $dle ? do_lang($name, $a, $b, $c, $lang, false) : escape_html($name . ':' . (($a !== null) ? $a : '') . ',' . (($b !== null) ? $b : ''));
     if ($value === null) {
-        require_code('site');
-        attach_message(do_lang_tempcode('MISSING_LANG_STRING', escape_html($name)), 'warn');
+        trigger_error(do_lang('MISSING_LANG_STRING', escape_html($name)));
 
         $value = '';
         if ($GLOBALS['XSS_DETECT']) {
@@ -3691,7 +3688,7 @@ function ecv_PREG_REPLACE($lang, $escaped, $param)
         $value = preg_replace('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[3]) ? str_replace('e', '', $param[3]) : ''), $param[1], $param[2]);
         $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
         if (isset($php_errormsg)) {
-            attach_message($php_errormsg, 'warn');
+            attach_message($php_errormsg, 'warn', false, true);
         }
 
         if ($GLOBALS['XSS_DETECT'] && ocp_is_escaped($param[0])) {

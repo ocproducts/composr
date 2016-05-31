@@ -259,7 +259,7 @@ class Hook_video_syndication_youtube
             $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
-            attach_message($error_msg, 'warn');
+            attach_message($error_msg, 'warn', false, true);
             return null;
         }
 
@@ -311,7 +311,7 @@ class Hook_video_syndication_youtube
             $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
-            attach_message($error_msg, 'warn');
+            attach_message($error_msg, 'warn', false, true);
             return null;
         }
     }
@@ -337,7 +337,7 @@ class Hook_video_syndication_youtube
             $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
-            attach_message($error_msg, 'warn');
+            attach_message($error_msg, 'warn', false, true);
             return false;
         }
         return true;
@@ -365,7 +365,7 @@ class Hook_video_syndication_youtube
             $error_msg = do_lang_tempcode('YOUTUBE_ERROR', escape_html(strval($e->getCode())), $e->getMessage(), escape_html(get_site_name()));
             require_code('failure');
             relay_error_notification($error_msg->evaluate());
-            attach_message($error_msg, 'warn');
+            attach_message($error_msg, 'warn', false, true);
             return false;
         }
 

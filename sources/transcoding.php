@@ -100,9 +100,9 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                     't_output_filename' => $transcoded_filename,
                 ));
             } else {
-                attach_message(do_lang_tempcode('TRANSCODING_ERROR'), 'warn');
+                attach_message(do_lang_tempcode('TRANSCODING_ERROR'), 'warn', false, true);
                 if ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
-                    attach_message('Full response: ' . $response, 'inform');
+                    attach_message('Full response: ' . $response, 'inform', false, true);
                 }
             }
 

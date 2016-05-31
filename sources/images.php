@@ -660,11 +660,11 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     }
     if ($from_file === false) {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)));
+            warn_exit(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), false, true);
         }
         require_code('site');
         if (get_value('no_cannot_access_url_messages') !== '1') {
-            attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn');
+            attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn', false, true);
         }
         return false;
     }
@@ -672,10 +672,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     $source = @imagecreatefromstring($from_file);
     if ($source === false) {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($from)));
+            warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), false, true);
         }
         require_code('site');
-        attach_message(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), 'warn');
+        attach_message(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), 'warn', false, true);
         return false;
     }
 
@@ -971,10 +971,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $test = @imagepng($dest, $to, 9);
         if (!$test) {
             if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)));
+                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
             }
             require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
+            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
             return false;
         } else {
             require_code('images_png');
@@ -986,10 +986,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $test = @imagejpeg($dest, $to, intval(get_option('jpeg_quality')));
         if (!$test) {
             if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)));
+                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
             }
             require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
+            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
             return false;
         } else {
             fix_permissions($to);
@@ -999,10 +999,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $test = @imagegif($dest, $to);
         if (!$test) {
             if ($exit_on_error) {
-                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)));
+                warn_exit(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), false, true);
             }
             require_code('site');
-            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
+            attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn', false, true);
             return false;
         } else {
             fix_permissions($to);
@@ -1010,10 +1010,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         }
     } else {
         if ($exit_on_error) {
-            warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)));
+            warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), false, true);
         }
         require_code('site');
-        attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn');
+        attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn', false, true);
         return false;
     }
 

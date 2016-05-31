@@ -633,10 +633,10 @@ class Module_admin_themes
             ftruncate($myfile, 0);
         }
         if (fwrite($myfile, 'title=' . post_param_string('title') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         if (fwrite($myfile, 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         foreach ($before as $key => $val) {
             if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
@@ -644,13 +644,13 @@ class Module_admin_themes
             }
         }
         if (fwrite($myfile, 'author=' . post_param_string('author') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         if (fwrite($myfile, 'mobile_pages=' . post_param_string('mobile_pages') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         if (fwrite($myfile, 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
@@ -681,7 +681,7 @@ class Module_admin_themes
         }
         foreach ($new_map as $key => $val) {
             if (fwrite($myfile, $key . '=' . $val . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         }
         @flock($myfile, LOCK_UN);
@@ -1197,7 +1197,7 @@ class Module_admin_themes
         if (fwrite($myfile, $css) < strlen($css)) {
             fclose($myfile);
             unlink($custom_path);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
@@ -1216,7 +1216,7 @@ class Module_admin_themes
             }
             $hash = file_get_contents($base_path);
             if (fwrite($myfile, $hash) < strlen($hash)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             @flock($myfile, LOCK_UN);
             fclose($myfile);
@@ -1833,7 +1833,7 @@ class Module_admin_themes
                 if (fwrite($myfile, $new) < strlen($new)) {
                     fclose($myfile);
                     unlink($full_path);
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);
@@ -1852,7 +1852,7 @@ class Module_admin_themes
                     }
                     $hash = file_get_contents(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'));
                     if (fwrite($myfile, $hash) < strlen($hash)) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                     }
                     @flock($myfile, LOCK_UN);
                     fclose($myfile);

@@ -55,7 +55,7 @@ function init__failure()
  */
 function suggest_fatalistic()
 {
-    if ((may_see_stack_dumps()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
+    if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
         if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
@@ -230,7 +230,7 @@ function improperly_filled_in_post($name)
  */
 function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method)
 {
-    $fatal = (!$GLOBALS['SUPPRESS_ERROR_DEATH']) && ($handling_method == 'fatal'); 
+    $fatal = (!$GLOBALS['SUPPRESS_ERROR_DEATH']) && ($handling_method == 'FATAL'); 
 
     if ($fatal) {
         // Turn off MSN, as this increases stability
@@ -239,8 +239,6 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
             $GLOBALS['MSN_DB'] = null;
         }
     }
-
-    $errstr = _sanitise_error_msg($errstr);
 
     // Generate error message
     $outx = '<strong>' . strtoupper($type) . '</strong> [' . strval($errno) . '] ' . $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . '<br />' . "\n";
@@ -255,20 +253,37 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
         $out = $outx;
     }
 
-    // Put into error log
-    if (get_param_integer('keep_fatalistic', 0) == 0) {
-        require_code('urls');
-        $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy();
-        /*$log.="\n";
-        ob_start();
-        debug_print_backtrace(); Does not work consistently, sometimes just kills PHP
-        $log.=ob_get_clean();*/
+    require_code('urls');
+    $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy();
+    $may_log_error = ((!running_script('cron_bridge')) || (@filemtime(get_custom_file_base() . '/data_custom/errorlog.php') < time() - 60 * 5));
+
+    if ($may_log_error) {
+        // Put into error log
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog($syslog_type, $php_error_label);
         }
         if (php_function_allowed('error_log')) {
             @error_log('PHP ' . ucwords($type) . ': ' . $php_error_label, 0);
         }
+
+        // Send error mail
+        $trace = get_html_trace();
+        relay_error_notification($php_error_label . '[html]' . $trace->evaluate() . '[/html]');
+    }
+
+    // Apply security to filter what is shown
+    $errstr = _sanitise_error_msg($errstr);
+    switch ($errno) {
+        case E_USER_ERROR:
+        case E_USER_WARNING:
+        case E_USER_NOTICE:
+            break;
+
+        default:
+            if (!has_privilege(get_member(), 'see_php_errors')) {
+                $errstr = do_lang('INTERNAL_ERROR');
+            }
+            break;
     }
 
     // Display in appropriate way
@@ -283,9 +298,8 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
             critical_error('EMERGENCY', escape_html($error_str));
         }
 
-        safe_ini_set('display_errors', '0');
-        fatal_exit($error_str);
-    } elseif ($attach) {
+        _generic_exit($error_str, 'FATAL_SCREEN', false, false);
+    } elseif ($handling_method == 'ATTACH') {
         require_code('site');
         attach_message(protect_from_escaping($out), 'warn'/*any level of unexpected coding-level error is a 'warning' in Composr*/);
     }
@@ -304,12 +318,12 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
  */
 function _warn_screen($title, $text, $provide_back = true, $support_match_key_messages = false)
 {
-    $tmp = _look_for_match_key_message(is_object($text) ? $text->evaluate() : $text, !$support_match_key_messages);
+    $text_eval = is_object($text) ? $text->evaluate() : $text;
+
+    $tmp = _look_for_match_key_message($text_eval, !$support_match_key_messages);
     if (!is_null($tmp)) {
         $text = $tmp;
     }
-
-    $text_eval = is_object($text) ? $text->evaluate() : $text;
 
     if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
         require_code('global3');
@@ -320,7 +334,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
     }
 
     if (get_param_integer('keep_fatalistic', 0) == 1) {
-        fatal_exit($text);
+        _generic_exit($text, 'FATAL_SCREEN', false, false);
     }
 
     return do_template('WARN_SCREEN', array('_GUID' => 'a762a7ac8cd08623a0ed6413d9250d97', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'TEXT' => $text, 'PROVIDE_BACK' => $provide_back));
@@ -346,16 +360,25 @@ function _sanitise_error_msg($text)
  * @param  mixed $text The error message (string or Tempcode)
  * @param  ID_TEXT $template Name of the terminal page template
  * @param  boolean $support_match_key_messages ?Whether match key messages / redirects should be supported (null: detect)
+ * @param  boolean $log_error Whether to log the error
  * @return mixed Never returns (i.e. exits)
  * @ignore
  */
-function _generic_exit($text, $template, $support_match_key_messages = false)
+function _generic_exit($text, $template, $support_match_key_messages = false, $log_error = false)
 {
+    if (($template != 'FATAL_SCREEN') && ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr')))) {
+        _generic_exit($text, 'FATAL_SCREEN', false, $log_error);
+    }
+ 
     if (throwing_errors()) {
         throw new CMSException($text);
     }
 
     @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+
+    if ($template == 'FATAL_SCREEN') {
+        set_http_status_code('500');
+    }
 
     if (is_object($text)) {
         $text = $text->evaluate();
@@ -364,7 +387,54 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     } else {
         $text = _sanitise_error_msg($text);
     }
+
+    if (has_privilege(get_member(), 'see_php_errors')) {
+        if ($template == 'FATAL_SCREEN') {
+            // Supplement error message with some useful info
+            if ((function_exists('cms_version_pretty')) && (function_exists('cms_srv'))) {
+                $sup = ' (version: ' . cms_version_pretty() . ', PHP version: ' . PHP_VERSION . ', URL: ' . get_self_url_easy() . ')';
+            } else {
+                $sup = '';
+            }
+            if (is_object($text)) {
+                if ($text->pure_lang) {
+                    $sup = escape_html($sup);
+                }
+                $text->attach($sup);
+            } else {
+                $text .= $sup;
+            }
+        }
+    }
+
     $text_eval = is_object($text) ? $text->evaluate() : $text;
+
+    if (has_privilege(get_member(), 'see_php_errors')) {
+        if (!headers_sent()) {
+            require_code('firephp');
+            if (function_exists('fb')) {
+                fb($template . ': ' . $text_eval);
+            }
+        }
+    }
+
+    if ($log_error) {
+        require_code('urls');
+        $php_error_label = $text_eval . ' @ ' . get_self_url_easy();
+        $may_log_error = ((!running_script('cron_bridge')) || (@filemtime(get_custom_file_base() . '/data_custom/errorlog.php') < time() - 60 * 5));
+
+        if ($may_log_error) {
+            if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
+                syslog(LOG_ERR, $php_error_label);
+            }
+            if (php_function_allowed('error_log')) {
+                @error_log('Composr: ' . $php_error_label, 0);
+            }
+
+            $trace = get_html_trace();
+            relay_error_notification($text_eval . '[html]' . $trace->evaluate() . '[/html]');
+        }
+    }
 
     global $RUNNING_TASK;
     if ($RUNNING_TASK) {
@@ -394,14 +464,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         exit((is_object($text) ? strip_html($text->evaluate()) : $text) . "\n");
     }
 
-    if ((get_param_integer('keep_fatalistic', 0) == 1) || (running_script('commandr'))) {
-        fatal_exit($text);
-    }
-
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
-
-    //$x = @ob_get_contents(); @ob_end_clean(); //if (is_string($x)) @print($x);      Disabled as causes weird crashes
 
     if ($GLOBALS['HTTP_STATUS_CODE'] == '200') {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
@@ -428,17 +492,14 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
     }
 
     global $EXITING, $MICRO_BOOTUP;
-    if ((running_script('upgrader')) || (!function_exists('get_screen_title')) || ($MICRO_BOOTUP)) {
-        critical_error('PASSON', is_object($text) ? $text->evaluate() : $text);
-    }
-
-    if (($EXITING >= 1) || (!function_exists('get_member'))) {
-        critical_error('EMERGENCY', is_object($text) ? $text->evaluate() : escape_html($text));
+    if (($EXITING >= 1) || (!function_exists('get_member')) || (!function_exists('get_screen_title')) || (running_script('upgrader')) || (!class_exists('Tempcode')) || ($MICRO_BOOTUP)) {
+        if (($EXITING == 2) && (function_exists('may_see_stack_traces')) && (may_see_stack_traces()) && ($GLOBALS['HAS_SET_ERROR_HANDLER'])) {
+            die_html_trace($text_eval);
+        } else { // Failed even in die_html_trace
+            critical_error('EMERGENCY', $text_eval);
+        }
     }
     $EXITING++;
-    if (!function_exists('do_header')) {
-        require_code('site');
-    }
 
     if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
@@ -454,7 +515,28 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         $title = get_screen_title(($template == 'INFORM_SCREEN') ? 'MESSAGE' : 'ERROR_OCCURRED');
     }
 
-    $middle = do_template($template, array('TITLE' => $title, 'TEXT' => $text, 'PROVIDE_BACK' => true));
+    if ($template == 'FATAL_SCREEN') {
+        $webservice_result = get_webservice_result($text);
+        $may_see_trace = may_see_stack_traces();
+        if ($may_see_trace) {
+            $trace = get_html_trace();
+        } else {
+            $trace = new Tempcode();
+        }
+    } else {
+        $webservice_result = mixed();
+        $may_see_trace = mixed();
+        $trace = mixed();
+    }
+
+    $middle = do_template($template, array(
+        'TITLE' => $title,
+        'TEXT' => $text,
+        'PROVIDE_BACK' => true,
+        'WEBSERVICE_RESULT' => $webservice_result,
+        'MAY_SEE_TRACE' => $may_see_trace,
+        'TRACE' => $trace,
+    ));
     $echo = globalise($middle, null, '', true);
     $echo->evaluate_echo(null, true);
     exit();
@@ -787,7 +869,7 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
             $contents = str_replace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $original_contents);
             if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $contents, LOCK_EX) < strlen($contents)) {
                 file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $original_contents, LOCK_EX);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             sync_file(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
         }
@@ -819,7 +901,7 @@ function remove_ip_ban($ip)
             $contents = str_replace("\r" . 'deny from ' . $ip_cleaned . "\r", "\r", $contents); // Just in case
             $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
             if (fwrite($myfile, $contents) < strlen($contents)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             sync_file('.htaccess');
@@ -908,119 +990,6 @@ function get_webservice_result($error_message)
 }
 
 /**
- * Do a fatal exit, echo the header (if possible) and an error message, followed by a debugging back-trace.
- * It also adds an entry to the error log, for reference.
- *
- * @param  mixed $text The error message (string or Tempcode)
- * @param  boolean $return Whether to return
- * @return mixed Never returns (i.e. exits)
- * @ignore
- */
-function _fatal_exit($text, $return = false)
-{
-    if (is_object($text)) {
-        $text = $text->evaluate();
-        $text = _sanitise_error_msg($text);
-        $text = protect_from_escaping($text);
-    } else {
-        $text = _sanitise_error_msg($text);
-    }
-
-    if (throwing_errors()) {
-        throw new CMSException($text);
-    }
-
-    if (!headers_sent()) {
-        require_code('firephp');
-        if (function_exists('fb')) {
-            fb('Error: ' . (is_object($text) ? $text->evaluate() : $text));
-        }
-    }
-
-    global $WANT_TEXT_ERRORS;
-    if ($WANT_TEXT_ERRORS) {
-        header('Content-type: text/plain; charset=' . get_charset());
-        require_code('global3');
-        set_http_status_code('500');
-        safe_ini_set('ocproducts.xss_detect', '0');
-        debug_print_backtrace();
-        exit(is_object($text) ? strip_html($text->evaluate()) : $text);
-    }
-
-    set_http_status_code('500');
-    if (!headers_sent()) {
-        header('Content-type: text/html; charset=' . get_charset());
-        header('Content-Disposition: inline');
-    }
-
-    if ((array_key_exists('MSN_DB', $GLOBALS)) && (!is_null($GLOBALS['MSN_DB']))) {
-        $GLOBALS['FORUM_DB'] = $GLOBALS['MSN_DB'];
-        $GLOBALS['MSN_DB'] = null;
-    }
-
-    // Supplement error message with some useful info
-    if ((function_exists('cms_version_pretty')) && (function_exists('cms_srv'))) {
-        $sup = ' (version: ' . cms_version_pretty() . ', PHP version: ' . PHP_VERSION . ', URL: ' . cms_srv('REQUEST_URI') . ')';
-    } else {
-        $sup = '';
-    }
-    if (is_object($text)) {
-        if ($text->pure_lang) {
-            $sup = escape_html($sup);
-        }
-        $text->attach($sup);
-    } else {
-        $text .= $sup;
-    }
-
-    // To break any looping of errors
-    global $EXITING;
-    $EXITING++;
-    if (($EXITING > 1) || (running_script('upgrader')) || (!class_exists('Tempcode'))) {
-        if (($EXITING == 2) && (function_exists('may_see_stack_dumps')) && (may_see_stack_dumps()) && ($GLOBALS['HAS_SET_ERROR_HANDLER'])) {
-            die_html_trace(is_object($text) ? $text->evaluate() : escape_html($text));
-        } else { // Failed even in die_html_trace
-            critical_error('EMERGENCY', is_object($text) ? $text->evaluate() : escape_html($text));
-        }
-    }
-
-    $may_see_trace = may_see_stack_dumps();
-    if ($may_see_trace) {
-        $trace = get_html_trace();
-    } else {
-        $trace = new Tempcode();
-    }
-
-    $title = get_screen_title('ERROR_OCCURRED');
-
-    if (get_param_integer('keep_fatalistic', 0) == 0) {
-        require_code('urls');
-        $php_error_label = (is_object($text) ? $text->evaluate() : $text) . ' @ ' . get_self_url_easy();
-        if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
-            syslog(LOG_ERR, $php_error_label);
-        }
-        if (php_function_allowed('error_log')) {
-            @error_log('Composr: ' . $php_error_label, 0);
-        }
-    }
-
-    $error_tpl = do_template('FATAL_SCREEN', array('_GUID' => '9fdc6d093bdb685a0eda6bb56988a8c5', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => $may_see_trace));
-    $echo = globalise($error_tpl, null, '', true);
-    $echo->evaluate_echo(null, true);
-
-    if (get_param_integer('keep_fatalistic', 0) == 0) {
-        if (!may_see_stack_dumps()) {
-            $trace = get_html_trace();
-        }
-        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $trace->evaluate() . '[/html]');
-    }
-
-    if (!$return) {
-        exit();
-    }
-}
-
-/**
  * Relay an error message, if appropriate, to e-mail listeners (sometimes ocProducts, and site staff).
  *
  * @param  string $text A error message (in HTML)
@@ -1029,6 +998,14 @@ function _fatal_exit($text, $return = false)
  */
 function relay_error_notification($text, $ocproducts = true, $notification_type = 'error_occurred')
 {
+    if (isset($GLOBALS['SENDING_MAIL']) && $GLOBALS['SENDING_MAIL']) {
+        return;
+    }
+
+    if (!function_exists('require_lang')) {
+        return;
+    }
+
     // Make sure we don't send too many error emails
     if ((function_exists('get_value')) && (!$GLOBALS['BOOTSTRAPPING']) && (array_key_exists('SITE_DB', $GLOBALS)) && (!is_null($GLOBALS['SITE_DB']))) {
         $num = intval(get_value('num_error_mails_' . date('Y-m-d'), null, true)) + 1;
@@ -1038,10 +1015,6 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
         set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
-    }
-
-    if (!function_exists('require_lang')) {
-        return;
     }
 
     require_code('urls');
@@ -1123,11 +1096,11 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 }
 
 /**
- * Find whether the current user may see stack dumps.
+ * Find whether the current user may see stack traces.
  *
- * @return boolean Whether the current user may see stack dumps
+ * @return boolean Whether the current user may see stack traces
  */
-function may_see_stack_dumps()
+function may_see_stack_traces()
 {
     if (!is_null($GLOBALS['CURRENT_SHARE_USER'])) {
         return true; // Demonstratr exception
@@ -1148,7 +1121,7 @@ function may_see_stack_dumps()
         return true;
     }
 
-    return ($GLOBALS['DEV_MODE']) || (has_privilege(get_member(), 'see_stack_dump'));
+    return ($GLOBALS['DEV_MODE']) || (has_privilege(get_member(), 'see_stack_trace'));
 }
 
 /**
