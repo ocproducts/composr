@@ -178,7 +178,7 @@ You may also wish to create a non-public forum called 'Website support tickets' 
 
 Most websites prefer to have a short and memorable Internet address, direct to their front page. In order to achieve this, you will need to pay for control of a domain name. A very large number of companies will provide these domains, and the facility to bind these names to your web-server, for a very low fee.
 
-It is important to note that domain names are licensed on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
+It is important to note that domain names are licenced on a temporary basis, and therefore you will need to renew your domain names. The length of the licence varies, but is typically between 1 and 5 years.
 
 [title="2"]Ongoing maintenance responsibilities[/title]
 
