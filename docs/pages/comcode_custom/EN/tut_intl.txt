@@ -372,7 +372,7 @@ This affects:
 
 The solution to '1' is to upload [tt]Courier New Bold Italic.ttf[/tt] from your own computer to [tt]data_custom/fonts/Courier New Bold Italic.ttf[/tt]. We would distribute this file with Composr, except we don't have a licence to; however if you have a copy of Windows or Mac OS you should have your own licenced copy of this file.
 
-The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Vera.ttf[/tt]. This works for most the Verdana font only, which is the default used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
+The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]data_custom/fonts/Vera.ttf[/tt]. This works for the Verdana font only, which is the default used during the Setup Wizard; if you are using the Logo Wizard manually then you may just want to upload all your fonts to [tt]data_custom/fonts[/tt] and pick one of those you uploaded.
 
 [title="2"]Exporting language packs[/title]
 
