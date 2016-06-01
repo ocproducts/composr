@@ -1,3 +1,4 @@
+{$,If may rate}
 {+START,IF_EMPTY,{ERROR}}
 	{+START,IF,{$JS_ON}}
 		{$REQUIRE_JAVASCRIPT,ajax}

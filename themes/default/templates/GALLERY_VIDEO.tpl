@@ -33,7 +33,7 @@
 					</tr>
 				{+END}
 
-				{$SET,rating,{$RATING,videos,{ID},1}}
+				{$SET,rating,{$RATING,videos,{ID},1,{SUBMITTER}}}
 				{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
 					<tr>
 						<th class="de_th metadata_title">{!RATING}</th>

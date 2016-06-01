@@ -2082,16 +2082,20 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .tooltip {
 	font-size: 1em;
-	padding: 0.5em;
-	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
-	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+}
+.tooltip_ownlayout {
+	padding: 0.5em;
+	border: 1px solid {$GET,point_of_interest_border};
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
+}
+.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+	background-color: {$GET,area_faded_background};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
 .tooltip .box {
 	margin: 0;

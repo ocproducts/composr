@@ -880,7 +880,7 @@ class CMS_Topic
                 if (!$is_spacer_post) {
                     if (!is_guest($post['member'])) {
                         require_code('cns_members2');
-                        $poster_details = render_member_box($post, false, $hooks, $hook_objects, false, null, false);
+                        $poster_details = render_member_box($post['member'], false, $hooks, $hook_objects, false, null, false);
                     } else {
                         $custom_fields = new Tempcode();
                         if ((array_key_exists('ip_address', $post)) && (addon_installed('cns_forum'))) {

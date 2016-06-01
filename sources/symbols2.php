@@ -2400,7 +2400,14 @@ function ecv2_RATING($lang, $escaped, $param)
 
             require_code('feedback');
             $display_tpl = array_key_exists(5, $param) ? $param[5] : 'RATING_FORM';
-            $rating = get_rating_simple_array(array_key_exists(3, $param) ? $param[3] : get_self_url(true), array_key_exists(4, $param) ? $param[4] : (is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate()), $param[0], $param[1], 'RATING_FORM', array_key_exists(2, $param) ? $param[2] : null);
+            $rating = get_rating_simple_array(
+                array_key_exists(3, $param) ? $param[3] : get_self_url(true), // content_url
+                array_key_exists(4, $param) ? $param[4] : (is_null($DISPLAYED_TITLE) ? '' : $DISPLAYED_TITLE->evaluate()), // content_title
+                $param[0], // content_type
+                $param[1], // content_id
+                'RATING_FORM', // form_tpl
+                array_key_exists(2, $param) ? intval($param[2]) : null // submitter
+            );
             if ($rating !== null) {
                 if (array_key_exists(5, $param)) {
                     $value = static_evaluate_tempcode(do_template($display_tpl, $rating));

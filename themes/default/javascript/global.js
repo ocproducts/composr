@@ -2140,7 +2140,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		tooltip_element=win.document.createElement('div');
 		tooltip_element.role='tooltip';
 		tooltip_element.style.display='none';
-		tooltip_element.className='tooltip boxless_space'+(have_links?' have_links':'');
+		tooltip_element.className='tooltip '+((tooltip.indexOf('results_table')==-1)?'tooltip_ownlayout':'tooltip_nolayout')+' boxless_space'+(have_links?' have_links':'');
 		if (ac.className.substr(0,3)=='tt_')
 		{
 			tooltip_element.className+=' '+ac.className;

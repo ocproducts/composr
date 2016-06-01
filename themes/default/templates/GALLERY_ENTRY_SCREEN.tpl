@@ -45,10 +45,13 @@
 					</tr>
 
 					{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-						<tr>
-							<th class="de_th metadata_title">{!RATING}</th>
-							<td>{$RATING,{MEDIA_TYPE},{ID},,,,RATING_INLINE_DYNAMIC}</td>
-						</tr>
+						{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
+						{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
+							<tr>
+								<th class="de_th metadata_title">{!RATING}</th>
+								<td>{$GET,rating}</td>
+							</tr>
+						{+END}
 					{+END}
 
 					{+START,IF_NON_EMPTY,{EDIT_DATE}}

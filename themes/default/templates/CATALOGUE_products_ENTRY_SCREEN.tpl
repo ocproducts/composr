@@ -6,9 +6,10 @@
 	{WARNINGS}
 
 	<div class="cart_info">
-		{+START,IF_NON_EMPTY,{$TRIM,{$RATING,catalogues__{CATALOGUE},{ID},,,,RATING_INLINE_DYNAMIC}}}
+		{$SET,rating,{$RATING,catalogues__{CATALOGUE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
+		{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
 			<div class="rating_part">
-				<span class="field_name">{!RATING}:</span> {$RATING,catalogues__{CATALOGUE},{ID},,,,RATING_INLINE_DYNAMIC}
+				<span class="field_name">{!RATING}:</span> {$GET,rating}
 			</div>
 		{+END}
 
