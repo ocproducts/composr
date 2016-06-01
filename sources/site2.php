@@ -178,8 +178,10 @@ function assign_refresh($url, $multiplier = 0.0)
         return;
     }
 
+    global $FORCE_META_REFRESH;
+
     // Redirect via meta tag in standard Composr output
-    if ($must_show_message) {
+    if ($must_show_message || $FORCE_META_REFRESH) {
         global $REFRESH_URL;
         $REFRESH_URL[0] = $url;
         $REFRESH_URL[1] = 2.5 * $multiplier;
@@ -187,7 +189,6 @@ function assign_refresh($url, $multiplier = 0.0)
     }
 
     // HTTP redirect
-    global $FORCE_META_REFRESH;
     if ((running_script('index')) && (!$FORCE_META_REFRESH)) {
         header('Location: ' . $url);
         if (strpos($url, '#') === false) {

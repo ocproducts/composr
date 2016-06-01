@@ -469,6 +469,7 @@ function staff_unload_action()
 {
 	undo_staff_unload_action();
 
+	// If clicking a download link then don't show the animation
 	if (document.activeElement && typeof document.activeElement.href!='undefined' && document.activeElement.href!=null)
 	{
 		var url=document.activeElement.href.replace(/.*:\/\/[^\/:]+/,'');
@@ -476,6 +477,13 @@ function staff_unload_action()
 			return;
 	}
 
+	// If doing a meta refresh then don't show the animation
+	if ((typeof document.querySelector!='undefined') && document.querySelector('meta[http-equiv="Refresh"]'))
+	{
+		return;
+	}
+
+	// Show the animation
 	var bi=document.getElementById('main_website_inner');
 	if (bi)
 	{
@@ -496,6 +504,7 @@ function staff_unload_action()
 	window.setTimeout( function() { if (document.getElementById('loading_image')) document.getElementById('loading_image').src+=''; } , 100); // Stupid workaround for Google Chrome not loading an image on unload even if in cache
 	document.body.appendChild(div);
 
+	// Allow unloading of the animation
 	add_event_listener_abstract(window,'pageshow',undo_staff_unload_action);
 	add_event_listener_abstract(window,'keydown',undo_staff_unload_action);
 	add_event_listener_abstract(window,'click',undo_staff_unload_action);
