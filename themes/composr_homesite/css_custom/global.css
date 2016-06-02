@@ -1,14 +1,13 @@
 /* Basic / common styles */
 
 {+START,IF,{$MOBILE}}
-	.website_body_actual { zoom:0.5; }
+	.website_body_actual { margin:0; {$BETA_CSS_PROPERTY,transform: scale(0.5);} {$BETA_CSS_PROPERTY,transform-origin: 0 0;} }
 
 	.website_body { position:relative; width:640px; background:url('{$IMG;,composr_homesite/mobile/body-bg}') no-repeat left top; margin:0; padding:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
 
 	/*Top*/
 	header { margin:0; padding:25px 0 0 0; overflow:hidden; background:url('{$IMG;,composr_homesite/mobile/colored-line}') repeat-x 0 0; }
 	.logo { margin: 0 0 0 40px !important; float:left; width:320px; height:120px; }
-	.headRCol { font-size:18px; }
 	.headRCol>ul { float:right;overflow:hidden; margin:0; padding:0; list-style-type:none; }
 	.headRCol>ul>li { height:22px; float:left; margin-right:20px; }
 	.headRCol>ul>li:last-child { width:80px; }
