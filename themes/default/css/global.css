@@ -3858,6 +3858,13 @@ a.tab, a.tab:visited, a.tab:hover {
 	/*{+END}*/
 }
 
+a.tab>img+span {
+	padding-top: 0;
+}
+a.tab>span {
+	padding-top: 3px;
+}
+
 /*{+START,IF,{$MOBILE}}*/
 	.tab_surround .tab {
 		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */

@@ -157,7 +157,10 @@ class Hook_syndication_facebook
 
         if (get_page_name() != 'facebook_oauth') { // Take member back to page that implicitly shows their results
             require_code('site2');
-            smart_redirect(str_replace('&syndicate_start__facebook=1', '', str_replace('oauth_in_progress=1&', 'oauth_in_progress=0&', $oauth_url->evaluate())));
+            $target_url = $oauth_url->evaluate();
+            $target_url = preg_replace('#oauth_in_progress=\d+#', '', $target_url);
+            $target_url = preg_replace('#syndicate_start__facebook=\d+#', '', $target_url);
+            smart_redirect($target_url);
         }
 
         return true;
@@ -262,6 +265,8 @@ class Hook_syndication_facebook
             if ((!is_null($member_id)) && (!has_interesting_post_fields()) && (running_script('index')) && (!headers_sent())) {
                 $this->auth_set($member_id, get_self_url());
             }
+
+            header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
 
             if (!$silent_warn) {
                 attach_message($e->getMessage(), 'warn');
