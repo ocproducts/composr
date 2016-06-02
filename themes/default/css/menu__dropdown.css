@@ -27,7 +27,7 @@ For example:
 		font-size: 0.9em;
 	/*{+END}*/
 	/*{+START,IF,{$NEQ,{$LANG},EN}}*/
-		font-size: 0.72em;
+		font-size: 0.85em;
 	/*{+END}*/
 	padding: 0.5em 0.25em;
 }
