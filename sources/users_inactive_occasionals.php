@@ -133,7 +133,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         $new_session = $restored_session;
         $prior_session_row = $SESSION_CACHE[$new_session];
         $new_session_row = array(
-            'the_title' => '',
+            'the_title' => $prior_session_row['the_title'],
             'the_zone' => get_zone_name(),
             'the_page' => get_page_name(),
             'the_type' => cms_mb_substr(get_param_string('type', ''), 0, 80),
@@ -153,7 +153,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     }
 
     if ($big_change) { // Only update the persistent cache for non-trivial changes.
-        if (get_option('session_prudence') == '0') {// With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
+        if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -311,6 +311,11 @@ function try_su_login($member)
             $FLOOD_CONTROL_ONCE = false;
             $GLOBALS['FORUM_DRIVER']->cns_flood_control($member);
             $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => 1), array('the_session' => get_session_id()), '', 1);
+
+            if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
+                $SESSION_CACHE[get_session_id()] = array('session_invisible' => 1) + $new_session_row;
+                persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
+            }
         }
     }
 

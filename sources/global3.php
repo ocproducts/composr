@@ -916,6 +916,10 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
     }
 
     if (function_exists('iconv_substr')) {
+        if ($in == '' || strlen($in) == $from)
+        {
+            return ''; // Workaround PHP bug (https://bugs.php.net/bug.php?id=72320)
+        }
         return @iconv_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
     if (function_exists('mb_substr')) {

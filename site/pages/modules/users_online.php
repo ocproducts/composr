@@ -104,7 +104,6 @@ class Module_users_online
         }
 
         $rows = array();
-        $members = array_reverse($members);
         sort_maps_by($members, 'last_activity');
         $members = array_reverse($members);
         foreach ($members as $row) {

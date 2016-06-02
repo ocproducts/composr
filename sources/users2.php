@@ -50,6 +50,8 @@ function get_users_online($longer_time, $filter, &$count)
         return array();
     }
 
+    $max_to_show = 200;
+
     $users_online_time_seconds = intval($longer_time ? (60.0 * 60.0 * floatval(get_option('session_expiry_time'))) : (60.0 * floatval(get_option('users_online_time'))));
     $cutoff = time() - $users_online_time_seconds;
 
@@ -61,10 +63,13 @@ function get_users_online($longer_time, $filter, &$count)
         if (!is_null($filter)) {
             return $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff) . ' AND member_id=' . strval($filter), 1);
         }
-        if (count($SESSION_CACHE) > 200) {
+        if (count($SESSION_CACHE) > $max_to_show) {
             return null;
         }
     }
+
+    sort_maps_by($SESSION_CACHE, 'last_activity'); // There may be multiple, and we need the latest to come out of the algorithm on top
+
     $members = array();
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $members_online = 0;
@@ -78,8 +83,8 @@ function get_users_online($longer_time, $filter, &$count)
                 $count++;
                 $members[] = $row;
                 $members_online++;
-                if ($members_online == 200) { // This is silly, don't display any
-                    if (!is_null($filter)) {// Unless we are filtering
+                if ($members_online == $max_to_show + 1) { // This is silly, don't display any
+                    if (!is_null($filter)) { // Unless we are filtering
                         return $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions WHERE last_activity>' . strval($cutoff) . ' AND member_id=' . strval($filter), 1);
                     }
                     return null;
