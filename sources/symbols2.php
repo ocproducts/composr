@@ -1892,7 +1892,11 @@ function ecv2_SUPPORTS_FRACTIONAL_EDITABLE($lang, $escaped, $param)
  */
 function ecv2_HAS_FORUM($lang, $escaped, $param)
 {
-    $value = has_no_forum() ? '0' : '1';
+    if ((isset($param[0])) && ($param[0] == '1')) {
+        $value = (get_forum_type() == 'none') ? '0' : '1';
+    } else {
+        $value = has_no_forum() ? '0' : '1';
+    }
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);

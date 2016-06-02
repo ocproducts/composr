@@ -127,7 +127,7 @@ class Module_points
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if (get_forum_type() == 'cns') {
+        if (get_forum_type() == 'cns' || get_forum_type() == 'none') {
             return array();
         }
         $ret = array(
@@ -203,6 +203,10 @@ class Module_points
      */
     public function run()
     {
+        if (get_forum_type() == 'none') {
+            warn_exit(do_lang_tempcode('NO_FORUM_INSTALLED'));
+        }
+
         require_code('points');
         require_css('points');
 

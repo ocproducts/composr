@@ -53,10 +53,6 @@ class Block_top_personal_stats
             return new Tempcode();
         }
 
-        if (get_forum_type() == 'none') {
-            return new Tempcode();
-        }
-
         require_css('personal_stats');
         require_javascript('notification_poller');
 

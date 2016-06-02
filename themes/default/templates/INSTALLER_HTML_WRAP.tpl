@@ -166,7 +166,7 @@
 
 	<body id="installer_body" class="website_body" onload="install_stage_load();">
 		<div class="installer_main">
-			<img alt="Composr" src="{LOGO_URL*}" />
+			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>
 
 		<script>// <![CDATA[

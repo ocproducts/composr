@@ -52,6 +52,10 @@ class Module_supermembers
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() == 'none') {
+            return array();
+        }
+
         return array(
             '!' => array('SUPER_MEMBERS', 'menu/collaboration/supermembers'),
         );
