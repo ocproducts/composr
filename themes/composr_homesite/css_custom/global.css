@@ -1,6 +1,8 @@
 /* Basic / common styles */
 
 {+START,IF,{$MOBILE}}
+	.website_body_actual { zoom:0.5; }
+
 	.website_body { position:relative; width:640px; background:url('{$IMG;,composr_homesite/mobile/body-bg}') no-repeat left top; margin:0; padding:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
 
 	/*Top*/

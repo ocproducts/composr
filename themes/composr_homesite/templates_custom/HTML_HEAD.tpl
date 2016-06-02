@@ -28,7 +28,7 @@
 {$,iPhone/Android/etc should know they have an optimised design heading to them}
 {+START,IF,{$MOBILE}}
 	{+START,IF,{$NOT,{$_GET,overlay}}}
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=320, initial-scale=1" />
 	{+END}
 	{+START,IF,{$_GET,overlay}}
 		<meta name="viewport" content="width=640, initial-scale=1, user-scalable=yes" />
