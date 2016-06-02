@@ -11,7 +11,7 @@
 	/*Round buttons*/
 	.roundButPart { font-size:16px; list-style-type:none; overflow:hidden; padding:0; margin:30px 0 20px 0; }
 	.roundButPart li { width:33%; float:left; }
-	.roundBut { width:118px; height:130px; background:url('{$IMG;,composr_homesite/mobile/round-but}') no-repeat center 0; display:block; text-align:center; padding:60px 32px 0 32px; color:#333; font-weight:bold; font-size:1.20em; margin:0 auto; }
+	.roundBut { width:118px; height:130px; background:url('{$IMG;,composr_homesite/mobile/round-but}') no-repeat center 0; display:block; text-align:center; padding:60px 32px 0 32px; color:#333; font-weight:bold; font-size:20px; margin:0 auto; }
 	.roundBut .txtUpper { text-transform:uppercase; }
 	.roundBut:hover { text-decoration:none; }
 
