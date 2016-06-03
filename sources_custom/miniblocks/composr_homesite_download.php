@@ -99,7 +99,7 @@ function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
     require_code('version2');
     $t = get_translated_text($myrow['name']);
     $t = preg_replace('# \(.*#', '', $t);
-    $version = get_version_dotted__from_anything($t);
+    $version = get_version_pretty__from_dotted(get_version_dotted__from_anything($t));
 
     require_code('files');
     $filesize = clean_file_size($myrow['file_size']);
