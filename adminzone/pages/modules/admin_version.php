@@ -877,6 +877,10 @@ class Module_admin_version
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'userguide_comcode',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'userguide_comcode',
@@ -889,6 +893,10 @@ class Module_admin_version
                 'p_order' => 0,
             ));
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => '',
+                'the_page' => 'keymap',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => '',
                 'the_page' => 'keymap',

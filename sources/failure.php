@@ -155,7 +155,13 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
+
+    if (!url_monikers_enabled() && $name == 'id') {
+        warn_exit(do_lang_tempcode('javascript:NOT_INTEGER_URL_MONIKERS')); // Complaining about non-integers is just confusing
+    }
+
     warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
+
     return '';
 }
 
@@ -415,8 +421,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         $GLOBALS['MSN_DB'] = null;
     }
 
-    global $EXITING;
-    if ((running_script('upgrader')) || (!function_exists('get_screen_title'))) {
+    global $EXITING, $MICRO_BOOTUP;
+    if ((running_script('upgrader')) || (!function_exists('get_screen_title')) || ($MICRO_BOOTUP)) {
         critical_error('PASSON', is_object($text) ? $text->evaluate() : $text);
     }
 

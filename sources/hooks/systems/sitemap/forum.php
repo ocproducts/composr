@@ -186,6 +186,9 @@ class Hook_sitemap_forum extends Hook_sitemap_content
             'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
         ) + $struct['extra_meta'];
 
+
+        $struct['extra_meta']['is_a_category_tree_root'] = true;
+
         if (!$this->_check_node_permissions($struct)) {
             return null;
         }

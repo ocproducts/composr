@@ -62,6 +62,7 @@ class Hook_admin_setupwizard_installprofiles_minimalistic
                 'search',
                 'supermembers',
                 'staff',
+                'staff_messaging',
                 'stats',
                 'stats_block',
                 'syndication',

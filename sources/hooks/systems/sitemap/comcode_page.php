@@ -203,6 +203,7 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
                 $end = strpos($page_contents, '[/title]', $start);
                 $_title = substr($page_contents, $start, $end - $start);
                 if ($_title != '') {
+                    require_code('comcode');
                     $struct['title'] = comcode_to_tempcode($_title, null, true);
                 }
             }

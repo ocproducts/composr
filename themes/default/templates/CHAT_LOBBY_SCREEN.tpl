@@ -1,6 +1,8 @@
 {TITLE}
 
-{MESSAGE}
+{+START,IF,{$HAS_FORUM,1}}
+	{MESSAGE}
+{+END}
 
 <p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 

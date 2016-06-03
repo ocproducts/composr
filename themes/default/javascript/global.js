@@ -469,6 +469,7 @@ function staff_unload_action()
 {
 	undo_staff_unload_action();
 
+	// If clicking a download link then don't show the animation
 	if (document.activeElement && typeof document.activeElement.href!='undefined' && document.activeElement.href!=null)
 	{
 		var url=document.activeElement.href.replace(/.*:\/\/[^\/:]+/,'');
@@ -476,6 +477,13 @@ function staff_unload_action()
 			return;
 	}
 
+	// If doing a meta refresh then don't show the animation
+	if ((typeof document.querySelector!='undefined') && document.querySelector('meta[http-equiv="Refresh"]'))
+	{
+		return;
+	}
+
+	// Show the animation
 	var bi=document.getElementById('main_website_inner');
 	if (bi)
 	{
@@ -496,6 +504,7 @@ function staff_unload_action()
 	window.setTimeout( function() { if (document.getElementById('loading_image')) document.getElementById('loading_image').src+=''; } , 100); // Stupid workaround for Google Chrome not loading an image on unload even if in cache
 	document.body.appendChild(div);
 
+	// Allow unloading of the animation
 	add_event_listener_abstract(window,'pageshow',undo_staff_unload_action);
 	add_event_listener_abstract(window,'keydown',undo_staff_unload_action);
 	add_event_listener_abstract(window,'click',undo_staff_unload_action);
@@ -2131,7 +2140,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		tooltip_element=win.document.createElement('div');
 		tooltip_element.role='tooltip';
 		tooltip_element.style.display='none';
-		tooltip_element.className='tooltip boxless_space'+(have_links?' have_links':'');
+		tooltip_element.className='tooltip '+((tooltip.indexOf('results_table')==-1)?'tooltip_ownlayout':'tooltip_nolayout')+' boxless_space'+(have_links?' have_links':'');
 		if (ac.className.substr(0,3)=='tt_')
 		{
 			tooltip_element.className+=' '+ac.className;
@@ -2941,6 +2950,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 function set_outer_html(element,target_html)
 {
 	var p=element.parentNode;
+	var ref=element.nextSibling;
 	p.removeChild(element);
 
 	set_inner_html(element,target_html,false,true);
@@ -2950,7 +2960,7 @@ function set_outer_html(element,target_html)
 	{
 		ci=c[0];
 		element.removeChild(ci);
-		p.appendChild(ci);
+		p.insertBefore(ci,ref);
 	}
 }
 
@@ -3546,6 +3556,33 @@ function set_up_change_monitor(id)
 			if (ch) _set_up_change_monitor(ch.parentNode);
 		}
 	});
+}
+
+/* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
+function play_self_audio_link(ob)
+{
+	if (browser_matches('gecko') || true/*actually it works well generally*/)
+	{
+		require_javascript('sound',window.SoundManager);
+
+		var timer=window.setInterval(function() {
+			if (typeof window.soundManager=='undefined') return;
+
+			window.clearInterval(timer);
+
+			window.soundManager.setup({
+				url: get_base_url()+'/data',
+				debugMode: false,
+				onready: function() {
+					var sound_object=window.soundManager.createSound({url: ob.href});
+					if (sound_object) sound_object.play();
+				}
+			});
+		},50);
+
+		return false;
+	}
+	return null;
 }
 
 /* Used by MASS_SELECT_MARKER.tpl */

@@ -38,7 +38,7 @@ class Hook_config_allowed_post_submitters
             'explanation' => 'CONFIG_OPTION_allowed_post_submitters',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order' => 0,
+            'order_in_category_group' => 0,
 
             'addon' => 'core_configuration',
         );

@@ -286,6 +286,9 @@ class Module_filedump
                 @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($full_path), escape_html(dirname($full_path))));
                 fix_permissions($full_path);
                 sync_file($full_path);
+                file_put_contents($full_path . '/index.html', '');
+                fix_permissions($full_path . '/index.html');
+                sync_file($full_path . '/index.html');
             }
         }
 
@@ -1198,10 +1201,13 @@ class Module_filedump
             warn_exit(do_lang_tempcode('FOLDER_OVERWRITE_ERROR'));
         }
 
-        $path = get_custom_file_base() . '/uploads/filedump' . $place . $name;
-        @mkdir($path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($place), escape_html(dirname($place))));
-        fix_permissions($path);
-        sync_file($path);
+        $full_path = get_custom_file_base() . '/uploads/filedump' . $place . $name;
+        @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($place), escape_html(dirname($place))));
+        fix_permissions($full_path);
+        sync_file($full_path);
+        file_put_contents($full_path . '/index.html', '');
+        fix_permissions($full_path . '/index.html');
+        sync_file($full_path . '/index.html');
 
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'place' => $place), '_SELF');
 

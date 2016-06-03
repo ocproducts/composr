@@ -187,7 +187,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('encryption');
         require_lang('fields');
 
-        if (substr($name, 0, 4) != 'cms_') {
+        $allow_full_edit = (get_param_integer('keep_all_cpfs', 0) == 1);
+
+        if (substr($name, 0, 4) != 'cms_' || $allow_full_edit) {
             $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         } else {
             $hidden->attach(form_input_hidden('name', $name));
@@ -199,21 +201,21 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_VIEW'), do_lang_tempcode('DESCRIPTION_OWNER_VIEW'), 'owner_view', $owner_view == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_SET'), do_lang_tempcode('DESCRIPTION_OWNER_SET'), 'owner_set', $owner_set == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('PUBLIC_VIEW'), do_lang_tempcode('DESCRIPTION_PUBLIC_VIEW'), 'public_view', $public_view == 1));
-        if (($locked == 0) && (is_encryption_enabled()) && ($name == '')) {
+        if ((($locked == 0) || ($allow_full_edit)) && (is_encryption_enabled()) && ($name == '')) {
             require_lang('encryption');
             $fields->attach(form_input_tick(do_lang_tempcode('ENCRYPTED'), do_lang_tempcode('DESCRIPTION_ENCRYPTED'), 'encrypted', $encrypted == 1));
         }
 
         require_code('fields');
         $type_list = create_selection_list_field_type($type, $name != '');
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
         } else {
             $hidden->attach(form_input_hidden('type', $type));
         }
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
         } else {
             $hidden->attach(form_input_hidden('required', strval($required)));
@@ -227,7 +229,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $groups = new Tempcode();
             //$groups = form_input_list_entry('-1', false, do_lang_tempcode('_ALL'));
             foreach ($rows as $group) {

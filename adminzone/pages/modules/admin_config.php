@@ -632,7 +632,16 @@ class Module_admin_config
         }
 
         // Make sure we haven't locked ourselves out due to URL Scheme support
-        if ((post_param_string('url_scheme', 'RAW') != 'RAW') && (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) || ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules()))) || (http_download_file(get_base_url() . '/sitemap.htm', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404'))) {
+        if (
+            (post_param_string('url_scheme', 'RAW') != 'RAW') &&
+            (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') &&
+            (
+                (!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) ||
+                (strpos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||
+                ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules()))) ||
+                (http_download_file(get_base_url() . '/sitemap.htm', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404')
+            )
+        ) {
             warn_exit(do_lang_tempcode('BEFORE_MOD_REWRITE'));
         }
 

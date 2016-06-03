@@ -471,7 +471,7 @@ function get_db_forums_password()
 /**
  * Find whether we are on a multi-site-network.
  *
- * @param  ?object $db The DB connection to check against (null: main active site database)
+ * @param  ?object $db The DB connection to check against (null: site's main active forum database)
  * @return boolean Whether we are
  */
 function is_on_multi_site_network($db = null)
@@ -1530,7 +1530,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $_type The field type
-     * @param  ?mixed $default The default value (null: no default)
+     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
      */
     public function add_table_field($table_name, $name, $_type, $default = null)
     {

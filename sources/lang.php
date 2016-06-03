@@ -91,9 +91,10 @@ function init__lang()
     }
 
     global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
-    if (((is_file(get_file_base() . '/sources/lang_filter_' . user_lang() . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . user_lang() . '.php'))) && (!in_safe_mode())) {
-        require_code('lang_filter_' . user_lang());
-        $LANG_FILTER_OB = object_factory('LangFilter_' . user_lang());
+    $lang_stripped = preg_replace('#[\-\_].*$#', '', user_lang());
+    if (((is_file(get_file_base() . '/sources/lang_filter_' . $lang_stripped . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . $lang_stripped . '.php'))) && (!in_safe_mode())) {
+        require_code('lang_filter_' . $lang_stripped);
+        $LANG_FILTER_OB = object_factory('LangFilter_' . $lang_stripped);
     } else {
         $LANG_FILTER_OB = new LangFilter();
     }
@@ -174,20 +175,28 @@ function fallback_lang()
  */
 function user_lang()
 {
+    // Quick exit: Cache
     global $USER_LANG_CACHED;
     if ($USER_LANG_CACHED !== null) {
         return $USER_LANG_CACHED;
     }
+
     global $MEMBER_CACHED, $USER_LANG_LOOP, $IN_MINIKERNEL_VERSION;
 
+    // Quick exit: Mini-kernel is very simple
     if ($IN_MINIKERNEL_VERSION) {
         return get_site_default_lang();
-    } elseif ((function_exists('get_option')) && (get_option('allow_international') != '1')) {
-        $USER_LANG_CACHED = get_lang();
+    }
+
+    // Quick exit: No Internationalisation enabled
+    if ((function_exists('get_option')) && (get_option('allow_international') != '1')) {
+        $USER_LANG_CACHED = get_site_default_lang();
         return $USER_LANG_CACHED;
     }
 
-    // In URL?
+    // ---
+
+    // In URL somehow?
     $lang = '';
     $special_page_type = get_param_string('special_page_type', '');
     if ($special_page_type != '' && substr($special_page_type, 0, 5) == 'lang_') {
@@ -204,49 +213,79 @@ function user_lang()
         }
     }
 
+    // Still booting up somehow, so we need to do a non-cache exit
     if ((!function_exists('get_member')) || ($USER_LANG_LOOP) || ($MEMBER_CACHED === null)) {
+        // Quick exit: Cache
         global $USER_LANG_EARLY_CACHED;
         if ($USER_LANG_EARLY_CACHED !== null) {
             return $USER_LANG_EARLY_CACHED;
         }
 
+        // Quick exit: Was from URL
         if (($lang != '') && (does_lang_exist($lang))) {
-            return $lang;
+            $USER_LANG_EARLY_CACHED = $lang;
+            return $USER_LANG_EARLY_CACHED;
         }
 
+        // In browser?
         if ((array_key_exists('GET_OPTION_LOOP', $GLOBALS)) && (!$GLOBALS['GET_OPTION_LOOP']) && (function_exists('get_option')) && (get_option('detect_lang_browser') == '1')) {
-            // In browser?
             $lang = get_lang_browser();
-            if ($lang !== null) {
-                $USER_LANG_EARLY_CACHED = $lang;
-                return $lang;
+            if ($lang === null) {
+                $lang = '';
             }
         }
 
-        $lang = get_site_default_lang();
+        // Ok, just the default
+        if ($lang == '') {
+            $lang = get_site_default_lang();
+        }
+
+        // Return
         $USER_LANG_EARLY_CACHED = $lang;
-        return $lang; // Booting up and we don't know the user yet
+        return $USER_LANG_EARLY_CACHED;
     }
+
+    // Mark that we're processing, to avoid loops (see above handler for loop avoidance)
     $USER_LANG_LOOP = true;
 
-    // In URL?
-    if (($lang != '') && (does_lang_exist($lang))) {
-        $USER_LANG_CACHED = $lang;
-    } else {
-        if (((get_forum_type() == 'cns') || (get_option('detect_lang_forum') == '1') || (get_option('detect_lang_browser') == '1')) && ((!$GLOBALS['DEV_MODE']) || (get_site_default_lang() != 'Gibb'))) {
-            // In forum?
-            if (($USER_LANG_CACHED === null) && (get_option('detect_lang_forum') == '1')) {
-                $USER_LANG_CACHED = get_lang_member(get_member());
+    // In member or browser?
+    if (($lang == '') || (!does_lang_exist($lang))) {
+        if (
+            (
+                (get_forum_type() == 'cns') ||
+                (get_option('detect_lang_forum') == '1') ||
+                (get_option('detect_lang_browser') == '1')
+            ) && 
+            (
+                (!$GLOBALS['DEV_MODE']) ||
+                (get_site_default_lang() != 'Gibb')
+            )
+        ) {
+            // In member?
+            if (($lang == '') && (get_option('detect_lang_forum') == '1')) {
+                $lang = get_lang_member(get_member());
+                if ($lang === null) {
+                    $lang = '';
+                }
             }
-            if (($USER_LANG_CACHED === null) && (get_option('detect_lang_browser') == '1')) {
-                $USER_LANG_CACHED = get_lang_browser();
+
+            // In browser?
+            if (($lang == '') && (get_option('detect_lang_browser') == '1')) {
+                $lang = get_lang_browser();
+                if ($lang === null) {
+                    $lang = '';
+                }
             }
         }
     }
 
-    if ($USER_LANG_CACHED === null) {
-        $USER_LANG_CACHED = get_site_default_lang();
+    // Ok, just the default
+    if ($lang == '') {
+        $lang = get_site_default_lang();
     }
+
+    // Return
+    $USER_LANG_CACHED = $lang;
     $USER_LANG_LOOP = false;
     return $USER_LANG_CACHED;
 }
@@ -384,7 +423,7 @@ function get_lang_member($member)
  * @param  ?MEMBER $member The member ID (null: site default language, although better just to call get_site_default_lang directly)
  * @return LANGUAGE_NAME The current language
  */
-function get_lang($member = null)
+function get_lang($member)
 {
     if ($member !== null) {
         if ($member == get_member()) {
@@ -817,7 +856,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
 
             return $ret;
         } elseif ($parameter1 !== null) {
-            $kg = !has_solemnly_declared(I_UNDERSTAND_XSS);
+            $kg = function_exists('has_solemnly_declared') && !has_solemnly_declared(I_UNDERSTAND_XSS);
             if ($kg) {
                 kid_gloves_html_escaping_singular($parameter1);
             }
@@ -1314,9 +1353,10 @@ class LangFilter
      *
      * @param  ?string $key Language string ID (null: not a language string)
      * @param  string $value String value
+     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
      * @return string The suffix
      */
-    public function compile_time($key, $value)
+    public function compile_time($key, $value, $lang = null)
     {
         return $value;
     }

@@ -459,7 +459,7 @@ class Block_main_news
 
         return do_template('BLOCK_MAIN_NEWS', array(
             '_GUID' => '01f5fbd2b0c7c8f249023ecb4254366e',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'BLOG' => $blogs === 1,
             'TITLE' => $_title,
             'CONTENT' => $news_text,
@@ -470,7 +470,6 @@ class Block_main_news
             'RSS_URL' => $rss_url,
             'ATOM_URL' => $atom_url,
             'PAGINATION' => $pagination,
-
             'START' => strval($start),
             'MAX' => strval($fallback_full + $fallback_archive),
             'START_PARAM' => $block_id . '_start',

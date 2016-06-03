@@ -34,7 +34,7 @@ function get_mime_types($as_admin)
 
         // Documents
         'pdf' => 'application/pdf',
-        'rtf' => 'text/richtext',
+        'rtf' => 'text/rtf',
         'ps' => 'application/postscript',
         'html' => $as_admin ? 'text/html' : 'application/octet-stream',
         'htm' => $as_admin ? 'text/html' : 'application/octet-stream',

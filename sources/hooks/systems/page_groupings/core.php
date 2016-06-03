@@ -109,6 +109,7 @@ class Hook_page_groupings_core
             //(get_comcode_zone('sitemap', false) === null || get_option('bottom_show_sitemap_button') == '1') ? null : array('site_meta', 'tool_buttons/sitemap', array('sitemap', array(), get_comcode_zone('sitemap')), do_lang_tempcode('SITEMAP')),   Redundant, menu itself is a sitemap
             // userguide_comcode is child of help_page
             (get_forum_type() == 'none' || !is_guest($member_id)) ? null : array('site_meta', 'menu/site_meta/user_actions/login', array('login', array(), ''), do_lang_tempcode('_LOGIN')),
+            (get_forum_type() != 'none' || is_guest($member_id)) ? null : array('site_meta', 'tool_buttons/notifications', array('notifications', array(), get_module_zone('notifications')), do_lang_tempcode('notifications:NOTIFICATIONS')),
             //(get_forum_type() == 'none' || is_guest($member_id)) ? null : array('site_meta', 'menu/site_meta/user_actions/logout', array('login', array(), ''), do_lang_tempcode('LOGOUT')), Don't show an immediate action, don't want accidental preloading
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/join', array('join', array(), get_module_zone('join')), do_lang_tempcode('_JOIN')),
             (get_forum_type() != 'cns') ? null : array('site_meta', 'menu/site_meta/user_actions/lost_password', array('lost_password', array(), get_module_zone('lost_password')), do_lang_tempcode('cns:LOST_PASSWORD')),

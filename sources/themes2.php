@@ -940,7 +940,7 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         return; // Still being used
     }
 
-    $path = find_theme_image($old, true, true);
+    $path = ($old == '') ? null : find_theme_image($old, true, true);
     if ((is_null($path)) || ($path == '')) {
         return;
     }

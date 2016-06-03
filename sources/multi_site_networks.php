@@ -47,6 +47,7 @@ function do_netlink($redir_url = '')
         return new Tempcode();
     }
     $content = new Tempcode();
+    $has_selected = false;
     foreach ($lines as $line) {
         $parts = explode('=', $line, 2);
         if (count($parts) != 2) {
@@ -57,8 +58,17 @@ function do_netlink($redir_url = '')
 
         // Are we looking at the source site in the network?
         $selected = (strtolower($url) == strtolower(get_param_string('source', '')));
+        if ($selected) {
+            $has_selected = true;
+        }
 
         $content->attach(form_input_list_entry(base64_encode($url), $selected, $name));
+    }
+    if (!$has_selected) {
+        $content_temp = new Tempcode();
+        $content_temp->attach(form_input_list_entry('', true, ''));
+        $content_temp->attach($content);
+        $content = $content_temp;
     }
 
     return do_template('NETLINK', array('_GUID' => '180321222dc5dc99a231597c803f0726', 'CONTENT' => $content));

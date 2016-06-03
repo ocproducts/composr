@@ -154,13 +154,8 @@ function dload_script()
 
     // Filename
     $full = $myrow['url'];
-    $breakdown = @pathinfo($full) or warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', $full));
-    //$filename = $breakdown['basename'];
-    if (!array_key_exists('extension', $breakdown)) {
-        $extension = '';
-    } else {
-        $extension = strtolower($breakdown['extension']);
-    }
+    require_code('files');
+    $extension = strtolower(get_file_extension($full));
     if (url_is_local($full)) {
         $_full = get_custom_file_base() . '/' . rawurldecode(/*filter_naughty*/($full));
     } else {
@@ -171,9 +166,10 @@ function dload_script()
     if ((strpos($myrow['original_filename'], "\n") !== false) || (strpos($myrow['original_filename'], "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    if (get_option('immediate_downloads') == '1') {
-        require_code('mime_types');
-        header('Content-Type: ' . get_mime_type(get_file_extension($myrow['original_filename']), false) . '; authoritative=true;');
+    require_code('mime_types');
+    $mime_type = get_mime_type(get_file_extension($myrow['original_filename']), false);
+    if (get_option('immediate_downloads') == '1' && $mime_type != 'application/octet-stream') {
+        header('Content-Type: ' . $mime_type . '; authoritative=true;');
         header('Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($myrow['original_filename']))) . '"');
     } else {
         header('Content-Type: application/octet-stream' . '; authoritative=true;');

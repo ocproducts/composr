@@ -36,9 +36,13 @@ class Hook_page_groupings_wiki
             return array();
         }
 
+        if (is_null($member_id)) {
+            $member_id = get_member();
+        }
+
         return array(
             array('cms', 'menu/rich_content/wiki', array('cms_wiki', array('type' => 'browse'), get_module_zone('cms_wiki')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('wiki:WIKI'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value_if_there('wiki_pages', 'COUNT(*)', null, '', true))))), 'wiki:DOC_WIKI'),
-            array(addon_installed('collaboration_zone') ? 'collaboration' : 'rich_content', 'menu/rich_content/wiki', array('wiki', array(), get_module_zone('wiki')), do_lang_tempcode('wiki:WIKI')),
+            array((addon_installed('collaboration_zone') && has_zone_access($member_id, 'collaboration'))? 'collaboration' : 'rich_content', 'menu/rich_content/wiki', array('wiki', array('type' => 'browse'), get_module_zone('wiki')), do_lang_tempcode('wiki:WIKI')),
         );
     }
 }

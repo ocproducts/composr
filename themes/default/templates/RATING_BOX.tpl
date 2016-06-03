@@ -26,9 +26,11 @@
 			{+END}
 		{+END}
 
-		<div class="rating_form">
-			{RATING_FORM}
-		</div>
+		{+START,IF_NON_EMPTY,{$TRIM,{RATING_FORM}}}
+			<div class="rating_form">
+				{RATING_FORM}
+			</div>
+		{+END}
 	</div></section>
 </div>
 

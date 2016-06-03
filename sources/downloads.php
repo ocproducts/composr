@@ -61,6 +61,10 @@ function download_licence_script()
  */
 function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zone = null, $text_summary = null, $give_context = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('downloads');
     require_css('downloads');
     require_code('files');
@@ -74,7 +78,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
     // Details
     $file_size = $row['file_size'];
     $file_size = ($file_size > 0) ? clean_file_size($file_size) : do_lang('UNKNOWN');
-    $description = (!is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
+    $description = (is_string($row['description']) && !isset($row['description__text_parsed'])) ? comcode_to_tempcode($row['description']) : get_translated_tempcode('download_downloads', $just_download_row, 'description');
     if (array_key_exists('id', $row)) {
         $map = array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']);
         if (!is_null($root)) {
@@ -186,6 +190,10 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
  */
 function render_download_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('downloads');
 
     $map = array('page' => 'downloads', 'type' => 'browse', 'id' => ($row['id'] == db_get_first_id()) ? null : $row['id']);

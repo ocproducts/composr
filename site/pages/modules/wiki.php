@@ -488,8 +488,7 @@ class Module_wiki
                     $myrow['hide_posts'] = 1;
                 }
 
-                $_child_title = $myrow['title'];
-                $child_title = get_translated_text($_child_title);
+                $child_title = $myrow['title'];
 
                 $child_description = get_translated_text($myrow['description']);
 

@@ -621,7 +621,7 @@ class Module_shopping
             attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
             // Process transaction
-            if (count($_POST) != 0) {
+            if (has_interesting_post_fields()) {
                 $order_id = handle_transaction_script();
 
                 $product_object = find_product(do_lang('CART_ORDER', $order_id));

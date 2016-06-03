@@ -12,7 +12,7 @@
 			{+START,IF_NON_EMPTY,{AUTHOR_URL}}
 				<li>
 					<span class="field_name">{!AUTHOR}:</span> <a rel="author" itemprop="author" href="{AUTHOR_URL*}" title="{!AUTHOR}: {AUTHOR*}">{AUTHOR*}</a>
-					{+START,INCLUDE,MEMBER_TOOLTIP}{+END}
+					{+START,INCLUDE,MEMBER_TOOLTIP}SUBMITTER={$AUTHOR_MEMBER,{AUTHOR}}{+END}
 				</li>
 			{+END}
 			{+START,IF_EMPTY,{AUTHOR_URL}}{+START,IF_NON_EMPTY,{$USERNAME,{SUBMITTER},1}}

@@ -747,7 +747,7 @@ class Module_cms_blogs extends Standard_crud_module
             }
 
             require_code('tasks');
-            $ret = call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_rss', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss_url, $rss));
+            $ret = call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_rss', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss));
 
             return $ret;
         } elseif (get_param_string('method') == 'db') { // Importing directly from wordpress DB

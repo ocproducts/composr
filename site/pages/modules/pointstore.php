@@ -132,6 +132,10 @@ class Module_pointstore
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() == 'none') {
+            return array();
+        }
+
         if (!$check_perms || !is_guest($member_id)) {
             return array(
                 '!' => array('POINTSTORE', 'menu/social/pointstore'),
@@ -180,6 +184,10 @@ class Module_pointstore
         // Not logged in
         if (is_guest()) {
             access_denied('NOT_AS_GUEST');
+        }
+
+        if (get_forum_type() == 'none') {
+            warn_exit(do_lang_tempcode('NO_FORUM_INSTALLED'));
         }
 
         if ($hook != '') {

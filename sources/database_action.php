@@ -235,7 +235,6 @@ function get_true_permissions()
         array('SUBMISSION', 'submit_midrange_content'),
         array('SUBMISSION', 'submit_lowrange_content'),
         array('SUBMISSION', 'bypass_validation_lowrange_content'),
-        array('SUBMISSION', 'set_own_author_profile'),
         array('_FEEDBACK', 'rate'),
         array('_FEEDBACK', 'comment'),
         array('VOTE', 'vote_in_polls'),

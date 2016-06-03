@@ -592,7 +592,7 @@ class Forum_driver_cns extends Forum_driver_base
     protected function _join_url()
     {
         $page = '_SELF';
-        if (count($_POST) != 0) {
+        if (has_interesting_post_fields()) {
             $page = '';
         }
         $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
@@ -1579,7 +1579,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
 
         // Do some flood control
-        $submitting = ((count($_POST) > 0) && (get_param_string('type', null) !== 'edit') && (get_param_string('type', null) !== 'edit_category') && (!running_script('preview')));
+        $submitting = ((has_interesting_post_fields()) && (get_param_string('type', null) !== 'edit') && (get_param_string('type', null) !== 'edit_category') && (!running_script('preview')));
         if (get_value('no_flood_control') !== '1') {
             $restrict = $submitting ? 'flood_control_submit_secs' : 'flood_control_access_secs';
             $restrict_setting = $submitting ? 'm_last_submit_time' : 'm_last_visit_time';

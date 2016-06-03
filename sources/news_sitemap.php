@@ -25,7 +25,11 @@ function build_news_sitemap()
 {
     require_code('xml');
 
-    $path = get_file_base() . '/data_custom/sitemaps/news_sitemap.xml';
+    $path = get_custom_file_base() . '/data_custom/sitemaps/news_sitemap.xml';
+    if (!file_exists(dirname($path))) {
+        require_code('files2');
+        make_missing_directory(dirname($path));
+    }
 
     cms_profile_start_for('build_news_sitemap');
 

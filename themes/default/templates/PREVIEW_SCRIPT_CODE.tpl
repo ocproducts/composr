@@ -7,6 +7,9 @@
 	var old_comcode=main_window.get_textbox(post);
 	main_window.set_textbox(post,'{NEW_POST_VALUE;^/}'.replace(/&#111;/g,'o').replace(/&#79;/g,'O'),'{NEW_POST_VALUE_HTML;^/}');
 
+	// Turn main post editing back on
+	if (typeof wysiwyg_set_readonly!='undefined') wysiwyg_set_readonly('post',false);
+
 	// Remove attachment uploads
 	var inputs=post.form.elements,upload_button;
 	var i,done_one=false;

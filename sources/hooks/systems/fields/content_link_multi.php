@@ -179,7 +179,7 @@ class Hook_fields_content_link_multi
             if (is_null($info['title_field'])) {
                 $text = $id;
             } else {
-                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']]) : $row[$info['title_field']];
+                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']], $info['connection']) : $row[$info['title_field']];
             }
             $_list[$id] = $text;
         }

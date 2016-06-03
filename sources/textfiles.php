@@ -89,7 +89,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
 
     if (strpos($path, '_custom/') === false) {
         global $LANG_FILTER_OB;
-        $in = $LANG_FILTER_OB->compile_time(null, $in);
+        $in = $LANG_FILTER_OB->compile_time(null, $in, $lang);
     }
 
     return $in;

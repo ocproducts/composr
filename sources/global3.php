@@ -141,6 +141,16 @@ function init__global3()
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
     $KNOWN_TRUE_HTML = array();
+
+    // Would normally put these in sources/comcode.php, but some of our templating references these constants
+    define('WYSIWYG_COMCODE__BUTTON', 1);
+    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+    define('WYSIWYG_COMCODE__XML_INLINE', 16);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+    define('WYSIWYG_COMCODE__HTML', 128);
 }
 
 /**
@@ -906,6 +916,10 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
     }
 
     if (function_exists('iconv_substr')) {
+        if ($in == '' || strlen($in) == $from)
+        {
+            return ''; // Workaround PHP bug (https://bugs.php.net/bug.php?id=72320)
+        }
         return @iconv_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
     if (function_exists('mb_substr')) {
@@ -1909,7 +1923,6 @@ function normalise_ip_address($ip, $amount = null)
             }
         }
         $ip_cache[$raw_ip][$amount] = implode(':', $parts);
-        return $ip_cache[$raw_ip][$amount];
     } else { // IPv4
         $parts = explode('.', $ip);
         for ($i = 0; $i < (is_null($amount) ? 4 : $amount); $i++) {
@@ -1923,8 +1936,8 @@ function normalise_ip_address($ip, $amount = null)
             }
         }
         $ip_cache[$raw_ip][$amount] = implode('.', $parts);
-        return $ip_cache[$raw_ip][$amount];
     }
+    return $ip_cache[$raw_ip][$amount];
 }
 
 /**
@@ -3403,7 +3416,7 @@ function support_smart_decaching()
     }
 
     global $SITE_INFO;
-    if (isset($SITE_INFO['disable_smart_decaching'])) {
+    if (!empty($SITE_INFO['disable_smart_decaching'])) {
         if ($SITE_INFO['disable_smart_decaching'] == '1') {
             return false;
         }
@@ -3433,4 +3446,27 @@ function disable_smart_decaching_temporarily()
 {
     global $SITE_INFO;
     $SITE_INFO['disable_smart_decaching'] = '1';
+}
+
+/**
+ * Find if the current request has POST fields worth considering/propagating. Very standard framework fields will be ignored.
+ *
+ * @return boolean Whether it does
+ */
+function has_interesting_post_fields()
+{
+    $post = $_POST;
+    $to_ignore = array(
+        'csrf_token',
+        'y' . md5(get_site_name() . ': antispam'),
+        'login_username',
+        'password',
+        'remember_me',
+        'redirect',
+        'redirect_passon',
+    );
+    foreach ($to_ignore as $field) {
+        unset($post[$field]);
+    }
+    return (count($post) !== 0);
 }

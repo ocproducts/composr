@@ -944,6 +944,8 @@ class Hook_addon_registry_core_cns
             'USER_AGENT' => lorem_phrase(),
             'OPERATING_SYSTEM' => lorem_phrase(),
             'DOB' => lorem_phrase(),
+            '_DOB' => placeholder_date_raw(),
+            '_DOB_CENSORED' => placeholder_date_raw(),
             'IP_ADDRESS' => lorem_phrase(),
             'COUNT_POSTS' => placeholder_number(),
             'COUNT_POINTS' => placeholder_number(),

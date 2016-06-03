@@ -768,7 +768,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $value = remove_magic_encryption_marker($value);
             }
 
-            if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
+            if (!member_field_is_required($member_id, 'required_cpfs', $value) && $custom_field['cf_type'] != 'tick'/*HACKHACK*/) {
                 $custom_field['cf_required'] = 0;
             }
         } else {
@@ -1356,21 +1356,17 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
+
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
-    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
-    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
-        if ($index) {
-            if ($_type != 'LONG_TEXT') {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-            if (strpos($_type, '_TEXT') !== false) {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
-            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-        }
+
+    if (substr(get_db_type(), 0, 5) == 'mysql') {
+        $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
     }
+    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
+
+    require_code('cns_members_action');
+    build_cpf_indices($id, $index, $type, $_type);
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
 

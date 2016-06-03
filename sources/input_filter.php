@@ -85,7 +85,11 @@ function check_input_field_string($name, &$val, $posted = false)
                     }
                 }
                 if (!$ok) {
-                    $val = get_base_url(false);
+                    if (function_exists('build_url')) {
+                        $val = static_evaluate_tempcode(build_url(array('page' => ''), 'site'));
+                    } else {
+                        $val = get_base_url(false);
+                    }
                 }
             }
         }

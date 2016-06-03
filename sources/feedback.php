@@ -107,12 +107,12 @@ function get_details_behind_feedback_code($content_type, $content_id)
 {
     require_code('content');
 
-    $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
-    if ($content_type != '') {
+    $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
+    if ($real_content_type != '') {
         require_code('content');
-        $cma_ob = get_content_object($content_type);
+        $cma_ob = get_content_object($real_content_type);
         $info = $cma_ob->info();
-        list($content_title, $submitter_id, $cma_info, , $content_url, $content_url_email_safe) = content_get_details($content_type, $content_id);
+        list($content_title, $submitter_id, $cma_info, , $content_url, $content_url_email_safe) = content_get_details($real_content_type, $content_id);
         return array($content_title, $submitter_id, $content_url, $content_url_email_safe, $cma_info);
     }
 
@@ -565,7 +565,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                 $content_title = do_lang('POST_IN', $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_cache_first_title', array('id' => $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_topic_id', array('id' => intval($content_id))))));
             }
 
-            $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
+            $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
             if ((!is_null($submitter)) && (!is_guest($submitter))) {
                 // Give points
@@ -583,9 +583,9 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
                 $subject = do_lang('CONTENT_LIKED_NOTIFICATION_MAIL_SUBJECT', get_site_name(), ($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title, array($displayname, $username));
                 $rendered = '';
-                if ($content_type != '') {
+                if ($real_content_type != '') {
                     require_code('content');
-                    $cma_ob = get_content_object($content_type);
+                    $cma_ob = get_content_object($real_content_type);
                     $cma_content_row = content_get_row($content_id, $cma_ob->info());
                     if (!is_null($cma_content_row)) {
                         push_no_keep_context();
@@ -598,10 +598,9 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
             }
 
             $privacy_ok = true;
-            $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
             if ((addon_installed('content_privacy')) && ($real_content_type != '')) {
                 require_code('content_privacy');
-                $privacy_ok = has_privacy_access($content_type, $content_id, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+                $privacy_ok = has_privacy_access($real_content_type, $content_id, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             }
             if ($privacy_ok) {
                 // Put on activity wall / whatever
@@ -621,7 +620,7 @@ function actualise_specific_rating($rating, $page_name, $member_id, $content_typ
                     if ($content_title == '') {
                         syndicate_described_activity($activity_type . '_UNTITLED', cms_mb_strtolower($content_type_title), $content_type_title, '', $content_page_link, '', '', convert_composr_type_codes('feedback_type_code', $content_type, 'addon_name'), 1, null, false, $submitter);
                     } else {
-                        if ($content_type_title == $content_type) {
+                        if ($content_type_title == $real_content_type) {
                             $activity_type .= '_UNTYPED';
                         }
                         syndicate_described_activity($activity_type, $content_title, cms_mb_strtolower($content_type_title), $content_type_title, $content_page_link, '', '', convert_composr_type_codes('feedback_type_code', $content_type, 'addon_name'), 1, null, false, $submitter);
@@ -858,9 +857,9 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
     }
 
     if ((!$private) && ($post != '')) {
-        $content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
+        $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
 
-        $content_type_title = $content_type;
+        $content_type_title = $real_content_type;
         if (!is_null($cma_info)) {
             $content_type_title = do_lang($cma_info['content_type_label']);
         }
@@ -874,7 +873,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         $message_raw = do_notification_lang('NEW_COMMENT_BODY', comcode_escape(get_site_name()), comcode_escape(($content_title == '') ? cms_mb_strtolower($content_type_title) : $content_title), array(($post_title == '') ? do_lang('NO_SUBJECT') : $post_title, post_param_string('post'), comcode_escape($content_url_flat), comcode_escape($displayname), strval(get_member()), comcode_escape($username)), get_site_default_lang());
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
-            $privacy_limits = privacy_limits_for($content_type, $content_id);
+            $privacy_limits = privacy_limits_for($real_content_type, $content_id);
         } else {
             $privacy_limits = array();
         }
@@ -889,14 +888,12 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
         }
 
         $privacy_ok = true;
-        $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
         if ((addon_installed('content_privacy')) && ($real_content_type != '')) {
             require_code('content_privacy');
-            $privacy_ok = has_privacy_access($content_type, $content_id, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $privacy_ok = has_privacy_access($real_content_type, $content_id, $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
         if ($privacy_ok) {
             // Activity
-            $real_content_type = convert_composr_type_codes('feedback_type_code', $content_type, 'content_type');
             require_code('users2');
             if (may_view_content_behind(get_modal_user(), $real_content_type, $content_id, 'feedback_type_code')) {
                 if (is_null($submitter)) {
@@ -912,7 +909,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
                 if ($content_title == '') {
                     syndicate_described_activity($activity_type . '_UNTITLED', cms_mb_strtolower($content_type_title), $content_type_title, '', $content_page_link, '', '', convert_composr_type_codes('feedback_type_code', $content_type, 'addon_name'), 1, null, false, $submitter);
                 } else {
-                    if ($content_type_title == $content_type) {
+                    if ($content_type_title == $real_content_type) {
                         $activity_type .= '_UNTYPED';
                     }
                     syndicate_described_activity($activity_type, $content_title, cms_mb_strtolower($content_type_title), $content_type_title, $content_page_link, '', '', convert_composr_type_codes('feedback_type_code', $content_type, 'addon_name'), 1, null, false, $submitter);

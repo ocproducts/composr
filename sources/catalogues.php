@@ -80,6 +80,10 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
  */
 function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
     require_css('catalogues');
 
@@ -119,6 +123,10 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
  */
 function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
 
     $just_category_row = db_map_restrict($row, array('id', 'cc_description'));
@@ -196,6 +204,10 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
  */
 function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
 
     $just_catalogue_row = db_map_restrict($row, array('c_name', 'c_description'));

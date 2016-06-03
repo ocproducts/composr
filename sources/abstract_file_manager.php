@@ -225,7 +225,7 @@ function _ftp_info($light_fail = false)
         return $AFM_FTP_CONN;
     }
 
-    if (((get_value('uses_ftp') == '1') && (!running_script('upgrader'))) || (post_param_integer('uses_ftp', 0) == 1)) {
+    if (((get_value('uses_ftp') === '1') && (!running_script('upgrader'))) || (post_param_integer('uses_ftp', 0) == 1)) {
         require_lang('installer');
 
         $conn = false;

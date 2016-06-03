@@ -140,7 +140,7 @@ class Module_admin_unvalidated
                 $content = do_template('FORM', array('_GUID' => '51dcee39273a0fee29569190344f2e41', 'SKIP_REQUIRED' => true, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('EDIT'), 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
             }
 
-            $out[$info['title']] = do_template('UNVALIDATED_SECTION', array('_GUID' => '838240008e190b9cbaa0280fbddd6baf', 'TITLE' => $info['title'], 'CONTENT' => $content));
+            $out[$info['title']->evaluate()] = do_template('UNVALIDATED_SECTION', array('_GUID' => '838240008e190b9cbaa0280fbddd6baf', 'TITLE' => $info['title'], 'CONTENT' => $content));
         }
 
         ksort($out);

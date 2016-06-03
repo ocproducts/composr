@@ -47,6 +47,7 @@
 
 .screen_actions .facebook_like {
 	margin-right: 0;
+	min-width: 90px; /* Facebook is absolute'ing out of its space so we need to reserve extra space */
 }
 
 .screen_actions .print {

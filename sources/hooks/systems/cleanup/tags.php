@@ -66,10 +66,14 @@ class Hook_cleanup_tags
                 $orphaned = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB']->query($sql);
                 if (count($orphaned) != 0) {
                     foreach ($orphaned as $o) {
-                        delete_lang($o['meta_keywords']);
+                        $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords', array('meta_keyword'), array('meta_for_type' => $o['meta_for_type'], 'meta_for_id' => $o['meta_for_id']));
+                        foreach ($keywords as $k) {
+                            delete_lang($k['meta_keyword']);
+                        }
+                        $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('meta_for_type' => $o['meta_for_type'], 'meta_for_id' => $o['meta_for_id']));
+
                         delete_lang($o['meta_description']);
                         $GLOBALS['SITE_DB']->query_delete('seo_meta', array('meta_for_type' => $o['meta_for_type'], 'meta_for_id' => $o['meta_for_id']), '', 1);
-                        $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('meta_for_type' => $o['meta_for_type'], 'meta_for_id' => $o['meta_for_id']));
                     }
                 }
             }

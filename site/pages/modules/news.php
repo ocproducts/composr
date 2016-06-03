@@ -100,7 +100,7 @@ class Module_news
                 'id' => '*AUTO',
                 'nc_title' => 'SHORT_TRANS',
                 'nc_owner' => '?MEMBER',
-                'nc_img' => 'ID_TEXT',
+                'nc_img' => 'URLPATH',
                 'notes' => 'LONG_TEXT'
             ));
             $GLOBALS['SITE_DB']->create_index('news_categories', 'ncs', array('nc_owner'));
@@ -150,6 +150,8 @@ class Module_news
 
             add_privilege('SEARCH', 'autocomplete_keyword_news', false);
             add_privilege('SEARCH', 'autocomplete_title_news', false);
+
+            $GLOBALS['SITE_DB']->alter_table_field('news_categories', 'nc_img', 'URLPATH');
         }
     }
 

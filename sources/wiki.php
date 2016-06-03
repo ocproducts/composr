@@ -35,6 +35,10 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
  */
 function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('wiki');
 
     $just_wiki_post_row = db_map_restrict($row, array('id', 'the_message'));
@@ -80,6 +84,10 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
  */
 function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('wiki');
 
     $just_wiki_page_row = db_map_restrict($row, array('id', 'description'));
@@ -409,7 +417,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member = null
         require_code('attachments2');
         $GLOBALS['SITE_DB']->query_update('wiki_pages', insert_lang_comcode_attachments('description', 2, $description, 'wiki_page', strval($page_id), null, false, $member), array('id' => $page_id), '', 1);
     } else {
-        $map += insert_lang_comcode('description', $description, 2);
+        $map = insert_lang_comcode('description', $description, 2) + $map;
         $page_id = $GLOBALS['SITE_DB']->query_insert('wiki_pages', $map, true);
     }
 
@@ -623,7 +631,11 @@ function get_param_wiki_chain($parameter_name, $default_value = null)
             $id = intval($part);
         } else {
             $url_moniker_where = array('m_resource_page' => 'wiki', 'm_moniker' => $part);
-            $id = intval($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'm_resource_id', $url_moniker_where));
+            $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $url_moniker_where);
+            if (is_null($_id)) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
+            $id = intval($_id);
         }
     }
     return array($id, $chain);

@@ -244,7 +244,7 @@ class Module_admin_cns_groups extends Standard_crud_module
                     $promotion_target_groups->attach(form_input_list_entry(strval($group['id']), ($group['id'] == $promotion_target), get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
                 }
             }
-            $fields->attach(form_input_list(do_lang_tempcode('PROMOTION_TARGET'), do_lang_tempcode('DESCRIPTION_PROMOTION_TARGET'), 'promotion_target', $promotion_target_groups));
+            $fields->attach(form_input_list(do_lang_tempcode('PROMOTION_TARGET'), do_lang_tempcode('DESCRIPTION_PROMOTION_TARGET'), 'promotion_target', $promotion_target_groups, null, false, false));
             $fields->attach(form_input_integer(do_lang_tempcode('PROMOTION_THRESHOLD'), do_lang_tempcode('DESCRIPTION_PROMOTION_THRESHOLD'), 'promotion_threshold', $promotion_threshold, false));
         }
 

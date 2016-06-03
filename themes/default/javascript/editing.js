@@ -174,6 +174,9 @@ function disable_wysiwyg(forms,so,so2,discard)
 				textarea.disabled=false;
 				textarea.readOnly=false;
 
+				if (typeof window.rebuild_attachment_button_for_next!='undefined')
+					rebuild_attachment_button_for_next(id,'attachment_upload_button');
+
 				// Unload editor
 				var wysiwyg_data=window.wysiwyg_editors[id].getData();
 				try
@@ -219,6 +222,33 @@ function disable_wysiwyg(forms,so,so2,discard)
 	if (so2) so2.style.display='none';
 
 	window.wysiwyg_on=function() { return false; };
+}
+
+window.wysiwyg_readonly_timer={};
+function wysiwyg_set_readonly(name,readonly)
+{
+	if (typeof window.wysiwyg_editors[name]=='undefined')
+	{
+		return;
+	}
+
+	var editor=window.wysiwyg_editors[name];
+   editor.document.$.body.readOnly=readonly;
+   editor.document.$.body.contentEditable=!readonly;
+   editor.document.$.body.designMode=readonly?'off':'on';
+
+	// In case it sticks as read only we need a timer to put it back. But only if not already back.
+	if (typeof window.wysiwyg_readonly_timer[name]!='undefined' && window.wysiwyg_readonly_timer[name])
+	{
+		window.clearTimeout(window.wysiwyg_readonly_timer[name]);
+		window.wysiwyg_readonly_timer[name]=null;
+	}
+	if (readonly)
+	{
+		window.wysiwyg_readonly_timer[name]=window.setTimeout(function() {
+			wysiwyg_set_readonly(name,false);
+		},5000);
+	}
 }
 
 // Initialising the HTML editor if requested later (i.e. toggling it to on)

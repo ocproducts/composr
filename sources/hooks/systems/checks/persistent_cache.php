@@ -41,7 +41,7 @@ class Hook_check_persistent_cache
                 (!function_exists('xcache_get')) &&
                 (!function_exists('wincache_ucache_get'))
             ) {
-                $warning[] = do_lang_tempcode('NO_PERSISTENT_CACHE_SUPPORT');
+                //$warning[] = do_lang_tempcode('NO_PERSISTENT_CACHE_SUPPORT'); Actually you can use the filesystem cache
             }
         }
 

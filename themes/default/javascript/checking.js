@@ -323,6 +323,9 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 		}
 	}*/
 
+	// Turn main post editing back off
+	if (typeof wysiwyg_set_readonly!='undefined') wysiwyg_set_readonly('post',true);
+
 	return true;
 }
 

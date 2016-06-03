@@ -34,9 +34,16 @@ function enter_chat_lobby()
     require_javascript('chat');
     require_javascript('sound');
 
+    chat_room_prune(null);
+
     if ((!array_key_exists(get_member(), get_chatters_in_room(null))) && (!is_invisible())) {
         $GLOBALS['SITE_DB']->query_insert('chat_active', array('member_id' => get_member(), 'date_and_time' => time(), 'room_id' => null));
 
+        // Remove old active/inactive events for this member
+        $GLOBALS['SITE_DB']->query_delete('chat_events', array('e_member_id' => get_member(), 'e_type_code' => 'BECOME_ACTIVE', 'e_room_id' => null));
+        $GLOBALS['SITE_DB']->query_delete('chat_events', array('e_member_id' => get_member(), 'e_type_code' => 'BECOME_INACTIVE', 'e_room_id' => null));
+
+        // Create new BECOME_ACTIVE event
         $GLOBALS['SITE_DB']->query_insert('chat_events', array(
             'e_type_code' => 'BECOME_ACTIVE',
             'e_member_id' => get_member(),

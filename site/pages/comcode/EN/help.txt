@@ -1,8 +1,8 @@
 [title="1" sub="{$SITE_NAME} help"]Help[/title]
 
-[title="2"]{$?,{$IS_GUEST},Logging-in,Your login}[/title]
+{+START,IF,{$HAS_FORUM,1}}[title="2"]{$?,{$IS_GUEST},Logging-in,Your login}[/title]
 
-{$?,{$IS_GUEST},You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to,With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
+{$?,{$IS_GUEST},{$COMCODE,You need to [page=":login"]log in[/page] to {$SITE_NAME} in order to},With your login you} get full access to our features, to interact with other members, to manage your profile, and to be able to manage{+START,IF,{$ADDON_INSTALLED,points}} (and get points for){+END} the content you submit.
 
 {+START,IF,{$ADDON_INSTALLED,points}}[title="2"]Points[/title]
 
@@ -18,8 +18,7 @@ Occasionally upon giving a gift, you will be awarded points yourself, as a rando
 
 Members of staff have the ability to give any number of points they like to people, including huge numbers, or even negative numbers. Please the staff and you could be awarded massively in points; abuse our systems and you could be penalised.
 
-Please have fun with the system and use your gift-points well.
-{+END}
+Please have fun with the system and use your gift-points well.{+END}
 {+START,IF,{$ADDON_INSTALLED,pointstore}}[title="2"]The Point Store[/title]
 
 {$ANCHOR,POINTSTORE}The [page="_SEARCH:pointstore"]Point Store[/page] contains all the items you can buy using your points. You can then select some and buy them.
@@ -29,8 +28,7 @@ The items that are purchasable may include:
  - Banner advertisements, and upgrades. Through this you may advertise something of your own that ordinarily the staff would not allocate advertising space for.
  - E-mail addresses. You may be able to purchase forwarding and POP3 e-mail addresses
 
-Products that require manual setup will usually only be charged for upon activation, not at point of sale.
-{+END}
+Products that require manual setup will usually only be charged for upon activation, not at point of sale.{+END}
 {+START,IF,{$AND,{$ADDON_INSTALLED,news},{$HAS_ACTUAL_PAGE_ACCESS,cms_news}}}[title="2"]News/Blogs[/title]
 
 {$ANCHOR,ADD_NEWS}[page="_SEARCH:cms_news:add"]The add news page[/page] allows you to add your news to {$SITE_NAME}. For most members, this will put the news into a validation queue and inform the staff of the submission.
@@ -39,7 +37,14 @@ Products that require manual setup will usually only be charged for upon activat
 {+START,IF,{$AND,{$ADDON_INSTALLED,galleries},{$HAS_ACTUAL_PAGE_ACCESS,cms_galleries}}}[title="2"]Galleries[/title]
 
 {$ANCHOR,ADD_MEDIA}The [page="_SEARCH:cms_galleries:add"]add image[/page]/[page="_SEARCH:cms_galleries:add_other"]add video[/page] pages allow you to add your media to {$SITE_NAME}. For most members, this will put the images into a validation queue and inform the staff of the submission.
-{+END}
+{+END}{+END}{+START,IF,{$ADDON_INSTALLED,wiki}}[title="2"]Wiki+[/title]
+
+Wiki+ is a system that allows users to post content into a database of posts. This system is similar to that of a forum, however rather than having a structure of forums and user created topics, it has a staff-managed hierarchical structure of pages.
+
+The system can be used for all kinds of things, such as posting reference material indexed hierarchically by category, organising ideas indexed by topic, or discussing TV programmes indexed by episode name.
+
+The staff will make clear how the Wiki+ system is employed on this website.{+END}
+
 [title="2"]Other things to do[/title]
 
 Other features we have include:
@@ -52,14 +57,5 @@ Other features we have include:
 [/list]
 
 You may see submission links on the menus, and in other places. Submitting any kind of entry will be a similar process to submitting news: your entry will likely be put in a validation queue.
-
-{+START,IF,{$ADDON_INSTALLED,wiki}}[title="2"]Wiki+[/title]
-
-Wiki+ is a system that allows users to post content into a database of posts. This system is similar to that of a forum, however rather than having a structure of forums and user created topics, it has a staff-managed hierarchical structure of pages.
-
-The system can be used for all kinds of things, such as posting reference material indexed hierarchically by category, organising ideas indexed by topic, or discussing TV programmes indexed by episode name.
-
-The staff will make clear how the Wiki+ system is employed on this website.
-{+END}
 
 [block]main_comcode_page_children[/block]

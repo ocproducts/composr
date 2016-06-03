@@ -38,7 +38,7 @@ class Hook_config_security_token_exceptions
             'explanation' => 'CONFIG_OPTION_security_token_exceptions',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order' => 1,
+            'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
         );

@@ -55,9 +55,6 @@ class Module_users_online
             return null;
         }
 
-        if (get_option('session_prudence') == '1') {
-            return array();
-        }
         return array(
             '!' => array('USERS_ONLINE', 'menu/social/users_online'),
         );
@@ -107,7 +104,6 @@ class Module_users_online
         }
 
         $rows = array();
-        $members = array_reverse($members);
         sort_maps_by($members, 'last_activity');
         $members = array_reverse($members);
         foreach ($members as $row) {

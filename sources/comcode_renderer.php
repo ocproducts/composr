@@ -209,11 +209,12 @@ function _custom_comcode_import($connection)
         // From Custom Comcode
         $tags = array();
         if (addon_installed('custom_comcode')) {
-            if (($GLOBALS['FORUM_DB'] != $connection) && (!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
-                $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
-            }
-            if (is_forum_db($connection)) {
-                $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+            if (is_on_multi_site_network()) {
+                if (is_forum_db($connection)) {
+                    $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+                } elseif ((!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
+                    $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+                }
             }
             $tags = array_merge($tags, $connection->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
         }
@@ -278,7 +279,7 @@ function _custom_comcode_import($connection)
  */
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
-    if (count($_POST) != 0) {
+    if (has_interesting_post_fields()) {
         disable_browser_xss_detection();
     }
 
@@ -352,7 +353,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         }
     }
     if (!$check_only) {
-        if (((get_mass_import_mode()) || (count($_POST) == 0) || (!$posted)) && (!$preparse_mode)) {
+        if (((get_mass_import_mode()) || (!has_interesting_post_fields()) || (!$posted)) && (!$preparse_mode)) {
             $line = substr_count(substr($comcode, 0, $pos), "\n") + 1;
             $out = do_template('COMCODE_CRITICAL_PARSE_ERROR', array('_GUID' => '29da9dc5c6b9a527cb055b7da35bb6b8', 'LINE' => integer_format($line), 'MESSAGE' => $message, 'SOURCE' => $comcode)); // Won't parse, but we can't help it, so we will skip on
             return $out;

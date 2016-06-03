@@ -29,6 +29,10 @@
  */
 function render_author_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('authors');
 
     $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $row['author']), $zone);
@@ -112,6 +116,9 @@ function authors_script()
 function get_author_id_from_name($author)
 {
     $handle = $GLOBALS['SITE_DB']->query_select_value_if_there('authors', 'member_id', array('author' => $author));
+    if (is_null($handle)) {
+        $handle = $GLOBALS['FORUM_DRIVER']->get_member_from_username($author);
+    }
     return $handle;
 }
 
