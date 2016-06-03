@@ -313,6 +313,7 @@ function try_su_login($member)
             $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => 1), array('the_session' => get_session_id()), '', 1);
 
             if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
+                global $SESSION_CACHE;
                 $SESSION_CACHE[get_session_id()] = array('session_invisible' => 1) + $new_session_row;
                 persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
             }

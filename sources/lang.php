@@ -281,7 +281,7 @@ function user_lang()
 
     // Ok, just the default
     if ($lang == '') {
-        $USER_LANG_CACHED = get_site_default_lang();
+        $lang = get_site_default_lang();
     }
 
     // Return

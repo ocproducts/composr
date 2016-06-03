@@ -124,7 +124,7 @@ function give_award($award_id, $content_id, $time = null)
 /**
  * Get all the award selection fields for a content type and content ID
  *
- * @param  ID_TEXT $content_type The content type
+ * @param  mixed $content_type The content type
  * @param  ?ID_TEXT $id The content ID (null: not added yet - therefore can't be holding the award yet)
  * @return Tempcode The fields
  */

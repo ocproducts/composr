@@ -81,7 +81,7 @@ class Hook_rss_catalogues
         foreach ($rows as $row) {
             if ((count($_categories) == 300) && (!array_key_exists($row['cc_id'], $categories))) {
                 $val = $GLOBALS['SITE_DB']->query('SELECT id,c_name,cc_title FROM ' . get_table_prefix() . 'catalogue_categories WHERE id=' . strval($row['cc_id']) . ' AND (' . $filters_1 . ')');
-                if (array_key_exists(0,$val)) {
+                if (array_key_exists(0, $val)) {
                     $categories[$row['cc_id']] = $val[0];
                     $categories[$row['cc_id']]['_title'] = get_translated_text($val[0]['cc_title']);
                 }
