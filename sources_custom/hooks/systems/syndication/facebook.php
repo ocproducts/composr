@@ -25,6 +25,10 @@ class Hook_syndication_facebook
 
     public function is_available()
     {
+        if (get_option('facebook_syndicate') == '0') {
+            return false;
+        }
+
         $appapikey = get_option('facebook_appid');
         $appsecret = get_option('facebook_secret_code');
         if (($appapikey == '') || ($appsecret == '')) {
@@ -241,7 +245,7 @@ class Hook_syndication_facebook
         // Send message
         $appid = get_option('facebook_appid');
         $appsecret = get_option('facebook_secret_code');
-        $fb = new cmsFacebook(array('appId' => $appid, 'secret' => $appsecret));
+        $fb = new Facebook(array('appId' => $appid, 'secret' => $appsecret));
         $fb->setAccessToken($token);
 
         $attachment = array('description' => $message);
