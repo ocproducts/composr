@@ -38,11 +38,16 @@
 {+START,IF_PASSED,BLEEDINGQUICK_VERSION}{+START,IF_PASSED,BLEEDINGQUICK_FILESIZE}{+START,IF_PASSED,BLEEDINGQUICK_URL}
 	<div class="dlHolder">
 		<div class="dlHead">
-			Bleeding edge <span>Unstable</span>
+			{+START,IF,{$IN_STR,{BLEEDINGQUICK_VERSION},RC}}
+				Future track <span>Fairly polished</span>
+			{+END}
+			{+START,IF,{$NOT,{$IN_STR,{BLEEDINGQUICK_VERSION},RC}}}
+				Bleeding edge <span>Unstable</span>
+			{+END}
 		</div>
 
 		<div class="dlBody">
-			<p>Are you able to {$?,{$IN_STR,{BLEEDINGQUICK_VERSION},alpha},alpha,beta}-test the new version: v{BLEEDINGQUICK_VERSION*}?<br />
+			<p>Are you able to {$?,{$IN_STR,{BLEEDINGQUICK_VERSION},alpha},alpha,{$?,{$IN_STR,{BLEEDINGQUICK_VERSION},RC},release,beta}}-test the new version: v{BLEEDINGQUICK_VERSION*}?<br />
 			It {$?,{$IN_STR,{BLEEDINGQUICK_VERSION},alpha},<strong>will not be stable</strong> like,<strong>may not be as stable</strong> as} our main version{+START,IF_PASSED,QUICK_VERSION} (v{QUICK_VERSION*}){+END}.</p>
 
 			<div class="sept"></div>
