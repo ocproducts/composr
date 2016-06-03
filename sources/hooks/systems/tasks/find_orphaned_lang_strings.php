@@ -74,7 +74,7 @@ class Hook_task_find_orphaned_lang_strings
                 }
 
                 if (!array_key_exists($id, $all_ids)) {
-                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_lang_strings)))) {
+                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_lang_strings)/*not fixed already*/))) {
                         $new_id = insert_lang($langidfield['m_name'], '', 2, null, false, $id);
                         if ($id[$langidfield['m_name']] != $new_id) {
                             $GLOBALS['SITE_DB']->query_update($langidfield['m_table'], $new_id, $of, '', 1);
