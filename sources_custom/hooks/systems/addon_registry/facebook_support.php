@@ -122,7 +122,7 @@ Please be aware that this addon overrides some common templates to add Facebook 
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array('PHP sessions', 'PHP CuRL extension'),
             'recommends' => array('activity_feed'),
             'conflicts_with' => array()
         );
