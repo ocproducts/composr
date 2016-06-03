@@ -56,7 +56,7 @@ if (!defined('ADODB_SYBASE_SQLANYWHERE')){
   	var $databaseType = "sqlanywhere";	
 	var $hasInsertID = true;
 	
-	function ADODB_sqlanywhere()
+	function __construct()
 	{
 		$this->ADODB_odbc();
 	}

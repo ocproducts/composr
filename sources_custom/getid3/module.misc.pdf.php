@@ -17,7 +17,7 @@
 class getid3_pdf
 {
 
-	function getid3_pdf(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		$ThisFileInfo['fileformat'] = 'pdf';
 

@@ -89,7 +89,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if (get_value('unofficial_ecommerce') != '1') {
+        if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
                 return null;
             }
@@ -146,7 +146,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         require_code('ecommerce');
         require_code('ecommerce2');
 
-        if (get_value('unofficial_ecommerce') != '1') {
+        if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
                 warn_exit(do_lang_tempcode('NO_CNS'));
             }
@@ -177,8 +177,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         require_code('templates_donext');
         return do_next_manager($this->title, comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
             array(
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') != '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') != '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
             ),
             do_lang('CUSTOM_PRODUCT_USERGROUP')
         );

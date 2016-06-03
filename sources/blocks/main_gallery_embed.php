@@ -346,7 +346,7 @@ class Block_main_gallery_embed
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
                     'HIGH' => false,
-                    'TITLE' => do_lang_tempcode('GALLERY'),
+                    'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                     'ADD_NAME' => $add_name,
                     'SUBMIT_URL' => $submit_url,
@@ -369,7 +369,7 @@ class Block_main_gallery_embed
             'VIDEO_FILTER' => $map['video_filter'],
             'DAYS' => $_days,
             'SORT' => $sort,
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'PAGINATION' => $pagination,
             'TITLE' => $title,
             'CAT' => $cat_raw,
@@ -382,6 +382,7 @@ class Block_main_gallery_embed
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 }

@@ -585,7 +585,6 @@ The 'keep' parameters available are:
  - [tt]keep_mobile[/tt] -- set to '1' to pretend you're using a PDA
  - [tt]keep_has_js[/tt] -- set to '1' to force Composr to think you have JavaScript (useful if the has-JS cookie isn't saving yet you need to use a JS-based interface)
  - [tt]keep_ldap_debug[/tt] -- set to '1' to forcefully show LDAP errors, when suppressing them might normally be wise due to over-sensitivity
- - [tt]keep_hide_mail_failure[/tt] -- set to '1' if you want to avoid showing e-mailing errors
  - [tt]keep_huge[/tt] -- set to '1' if you want to override the precautionary filesize check used by the JS lint
  - [tt]keep_show_query[/tt] -- set to '1' if you want the SQL query used by a search to be echoed out
  - [tt]keep_just_show_query[/tt] -- set to '1' if you want Composr to echo out the query as above, but then to exit before running it
@@ -633,6 +632,7 @@ The 'keep' parameters available are:
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
  - [tt]keep_has_cron[/tt] -- set this to '1' or '0' to override UI adaptations to CRON being on or not (e.g. to enable scheduling options as if CRON was on, even if they won't run)
  - [tt]keep_smart_decaching[/tt] -- set this to '1' for smart decaching to be enabled, even if disabled in [tt]_config.php[/tt] (it is on by default, so you may want to use this flag if you disabled it but want to ease your development workflow)
+ - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr

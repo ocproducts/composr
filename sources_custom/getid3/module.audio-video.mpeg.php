@@ -28,7 +28,7 @@ define('GETID3_MPEG_AUDIO_START',           "\x00\x00\x01\xC0");
 class getid3_mpeg
 {
 
-	function getid3_mpeg(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		if ($ThisFileInfo['avdataend'] <= $ThisFileInfo['avdataoffset']) {
 			$ThisFileInfo['error'][] = '"avdataend" ('.$ThisFileInfo['avdataend'].') is unexpectedly less-than-or-equal-to "avdataoffset" ('.$ThisFileInfo['avdataoffset'].')';
 			return false;

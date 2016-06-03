@@ -17,7 +17,7 @@
 class getid3_par2
 {
 
-	function getid3_par2(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		$ThisFileInfo['fileformat'] = 'par2';
 

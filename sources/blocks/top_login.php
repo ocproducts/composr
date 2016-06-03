@@ -66,12 +66,16 @@ class Block_top_login
             return new Tempcode();
         }
 
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
+
         require_css('personal_stats');
 
         $title = do_lang_tempcode('NOT_LOGGED_IN');
 
         if ((get_page_name() != 'join') && (get_page_name() != 'login')) {
-            if (count($_POST) > 0) {
+            if (has_interesting_post_fields()) {
                 $_this_url = build_url(array('page' => ''), '', array('keep_session' => 1, 'redirect' => 1));
             } else {
                 $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);

@@ -26,7 +26,7 @@ if (use_composr_toolbar)
 	toolbar.push(['composr_block','composr_comcode',precision_editing?'composr_page':null,'composr_quote',precision_editing?'composr_box':null,'composr_code']);
 
 var editor_settings={
-	skin: 'kama', // TODO: Put back to moono
+	skin: 'kama',
 	enterMode : window.CKEDITOR.ENTER_BR,
 	uiColor : wysiwyg_color,
 	ocpTheme : '{$THEME;}',

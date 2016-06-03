@@ -150,7 +150,8 @@ class Self_learning_cache
             @mkdir($dir, 0777);
             fix_permissions($dir);
         }
-        $this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd';
+        //$this->path = $dir . '/' . filter_naughty(str_replace(array('/', '\\', ':'), array('__', '__', '__'), $bucket_name)) . '.gcd'; Windows has a 260 character path limit, so we can't do it this way
+        $this->path = $dir . '/' . filter_naughty(md5($bucket_name)) . '.gcd';
         $this->load();
     }
 
@@ -496,6 +497,8 @@ function erase_persistent_cache()
     closedir($d);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', LOCK_EX);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', LOCK_EX);
+    fix_permissions('data_custom/failover_rewritemap.txt');
+    fix_permissions('data_custom/failover_rewritemap__mobile.txt');
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {
@@ -519,9 +522,9 @@ function has_caching_for($type)
 
     $setting = (get_option('is_on_' . $type . '_cache') == '1');
 
-    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
+    $positive = (get_param_integer('keep_cache', 0) == 1) || (get_param_integer('cache', 0) == 1) || (get_param_integer('keep_cache_' . $type . 's', 0) == 1) || (get_param_integer('cache_' . $type . 's', 0) == 1);
 
-    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0) && (get_param_integer('cache', null) !== 0);
+    $not_negative = (get_param_integer('keep_cache', null) !== 0) && (get_param_integer('cache', null) !== 0) && (get_param_integer('keep_cache_' . $type . 's', null) !== 0) && (get_param_integer('cache_' . $type . 's', null) !== 0);
 
     return ($setting || $positive) && (strpos(get_param_string('special_page_type', ''), 't') === false) && $not_negative;
 }

@@ -3,9 +3,9 @@
 
 	{HIDDEN}
 	<div class="pagination_per_page">
-		<div class="accessibility_hidden"><label for="r_{$GET*,RAND_PAGINATION_PER_PAGE}">{!PER_PAGE}: {$GET*,TEXT_ID}</label></div>
+		<div class="accessibility_hidden"><label for="r_{$GET*,RAND_PAGINATION_PER_PAGE}">{!PER_PAGE}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}</label></div>
 		<select id="r_{$GET*,RAND_PAGINATION_PER_PAGE}" name="{MAX_NAME*}">
 			{SELECTORS}
-		</select><input onclick="disable_button_just_clicked(this);" class="button_micro buttons__filter" type="submit" title="{!PER_PAGE}: {$GET*,TEXT_ID}" value="{!PER_PAGE}" />
+		</select><input onclick="disable_button_just_clicked(this);" class="button_micro buttons__filter" type="submit" title="{!PER_PAGE}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}" value="{!PER_PAGE}" />
 	</div>
 </form>

@@ -257,7 +257,7 @@ class Block_main_content
                 ));
             }
 
-            $rows = $info['connection']->query('SELECT * ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
+            $rows = $info['connection']->query('SELECT *,r.' . $info['id_field'] . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
             $award_content_row = $rows[0];
 
             // Get content ID

@@ -124,6 +124,7 @@
 		{+START,IF,{$PREG_MATCH,^new_\d+$,{TAG_CONTENTS}}}
 			var field='file{$SUBSTR;/,{TAG_CONTENTS},4}';
 			var upload_element=target_window.document.getElementById(field);
+			if (!upload_element) upload_element=target_window.document.getElementById('hidFileID_'+field);
 			if ((typeof upload_element.plupload_object!='undefined') && (is_wysiwyg))
 			{
 				var ob=upload_element.plupload_object;

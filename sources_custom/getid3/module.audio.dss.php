@@ -17,7 +17,7 @@
 class getid3_dss
 {
 
-	function getid3_dss(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$DSSheader  = fread($fd, 1256);

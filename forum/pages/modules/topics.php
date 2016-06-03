@@ -1715,8 +1715,7 @@ class Module_topics
         // Awards?
         if (addon_installed('awards')) {
             require_code('awards');
-            $specialisation2->attach(get_award_fields('topic'));
-            $specialisation2->attach(get_award_fields('post'));
+            $specialisation2->attach(get_award_fields(array('topic', 'post')));
         }
 
         // Render form
@@ -2590,7 +2589,11 @@ END;
     public function mark_read_topic() // Type
     {
         $topic_id = get_param_integer('id');
-        $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
+        $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
+        if (is_null($forum_id)) 
+        {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
 
         cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
         if ((is_null($forum_id)) || (get_param_integer('ajax', 0) == 1)) {
@@ -4043,7 +4046,7 @@ END;
      */
     public function topic_history() // Type
     {
-        $title = get_screen_title('REVISIONS');
+        $title = get_screen_title('actionlog:REVISIONS');
 
         // We should be somewhere else entirely - it's just our moderator action list took us here
         $url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'topic,post', 'category_id' => get_param_integer('id')), get_module_zone('admin_revisions'));

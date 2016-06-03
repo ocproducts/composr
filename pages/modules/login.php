@@ -235,7 +235,7 @@ class Module_login
         }
 
         // Lost password link
-        if (get_forum_type() == 'cns' && count($_POST) == 0) {
+        if (get_forum_type() == 'cns' && !has_interesting_post_fields()) {
             require_lang('cns');
             $forgotten_link = build_url(array('page' => 'lost_password', 'wide_high' => get_param_integer('wide_high', null)), get_module_zone('lost_password'));
             $extra = do_lang_tempcode('cns:IF_FORGOTTEN_PASSWORD', escape_html($forgotten_link->evaluate()));
@@ -272,7 +272,7 @@ class Module_login
         if (!is_null($id)) {
             $url = enforce_sessioned_url(either_param_string('redirect')); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
 
-            if (count($_POST) <= 4) { // Only the login username, password, remember-me and redirect
+            if (!has_interesting_post_fields()) {
                 require_code('site2');
                 assign_refresh($url, 0.0);
                 $post = new Tempcode();

@@ -17,7 +17,7 @@
 class getid3_lyrics3
 {
 
-	function getid3_lyrics3(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		// http://www.volweb.cz/str/tags.htm
 
 		if ($ThisFileInfo['filesize'] >= pow(2, 31)) {

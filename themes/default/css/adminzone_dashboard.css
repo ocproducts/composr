@@ -79,6 +79,10 @@ a.top_left_toggleicon:hover {
 	font-size: 0.9em;
 }
 
+#recur_interval {
+	width: 3em;
+}
+
 /* Tips */
 
 .tips_wrap {

@@ -37,7 +37,7 @@ class Hook_fields_integer
     {
         $type = '_INTEGER';
         $extra = '';
-        $display = get_translated_text($field['cf_name']);
+        $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
 
         $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
         if ($range_search) {

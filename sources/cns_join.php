@@ -200,8 +200,8 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
  * @param  boolean $intro_message_if_enabled Whether to ask for intro messages (if enabled at all)
  * @param  boolean $invites_if_enabled Whether to check for invites (if enabled at all)
  * @param  boolean $one_per_email_address_if_enabled Whether to check email-address restrictions (if enabled at all)
- * @param  boolean $confirm_if_enabled Whether to require staff confirmation (if enabled at all)
- * @param  boolean $validate_if_enabled Whether to force email address validation (if enabled at all)
+ * @param  boolean $email_validation_if_enabled Whether to require email address validation (if enabled at all)
+ * @param  boolean $staff_validation_if_enabled Whether to force staff validation (if enabled at all)
  * @param  boolean $coppa_if_enabled Whether to do COPPA checks (if enabled at all)
  * @param  boolean $instant_login Whether to instantly log the user in
  * @param  ?ID_TEXT $username Username (null: read from environment)
@@ -210,7 +210,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
  * @param  ?array $actual_custom_fields Custom fields to save (null: read from environment)
  * @return array A tuple: Messages to show, member ID of new member
  */
-function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true, $confirm_if_enabled = true, $validate_if_enabled = true, $coppa_if_enabled = true, $instant_login = true, $username = null, $email_address = null, $password = null, $actual_custom_fields = null)
+function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true, $email_validation_if_enabled = true, $staff_validation_if_enabled = true, $coppa_if_enabled = true, $instant_login = true, $username = null, $email_address = null, $password = null, $actual_custom_fields = null)
 {
     cns_require_all_forum_stuff();
 
@@ -338,20 +338,20 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     // Add member
-    $skip_confirm = (get_option('email_confirm_join') == '0');
-    if (!$confirm_if_enabled) {
-        $skip_confirm = true;
+    $email_validation = (get_option('email_confirm_join') == '1');
+    if (!$email_validation_if_enabled) {
+        $email_validation = false;
     }
-    $validated_email_confirm_code = $skip_confirm ? '' : strval(mt_rand(1, mt_getrandmax()));
-    $require_new_member_validation = get_option('require_new_member_validation') == '1';
-    if (!$validate_if_enabled) {
-        $require_new_member_validation = false;
+    $validated_email_confirm_code = $email_validation ? strval(mt_rand(1, mt_getrandmax())) : '';
+    $staff_validation = (get_option('require_new_member_validation') == '1');
+    if (!$staff_validation_if_enabled) {
+        $staff_validation = false;
     }
     $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     if (!$coppa_if_enabled) {
         $coppa = false;
     }
-    $validated = ($require_new_member_validation || $coppa) ? 0 : 1;
+    $validated = ($staff_validation || $coppa) ? 0 : 1;
     if (is_null($member_id)) {
         $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), time(), '', null, '', 0, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', '', '', 1, (get_option('allow_auto_notifications') == '0') ? 0 : 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), $validated_email_confirm_code, true, '', '');
     } else {
@@ -359,7 +359,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     // Send confirm mail
-    if (!$skip_confirm) {
+    if ($email_validation) {
         $zone = get_module_zone('join');
         $_url = build_url(array('page' => 'join', 'type' => 'step4', 'email' => $email_address, 'code' => $validated_email_confirm_code), $zone, null, false, false, true);
         $url = $_url->evaluate();
@@ -392,7 +392,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     // Send 'validate this member' notification
-    if ($require_new_member_validation) {
+    if ($staff_validation) {
         require_code('notifications');
         $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, true, 'tab__edit');
         $validation_url = $_validation_url->evaluate();
@@ -438,16 +438,16 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Alert user to situation
     $message = new Tempcode();
     if ($coppa) {
-        if (!$skip_confirm) {
+        if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
         }
         $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_COPPA'));
-    } elseif ($require_new_member_validation) {
-        if (!$skip_confirm) {
+    } elseif ($staff_validation) {
+        if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
         }
         $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_VALIDATED', escape_html(get_custom_base_url())));
-    } elseif ($skip_confirm) {
+    } elseif (!$email_validation) {
         if (($instant_login) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) { // Automatic instant log in
             require_code('users_active_actions');
             handle_active_login($username); // The auto-login simulates a real login, i.e. actually checks the password from the form against the real account. So no security hole when "re-registering" a real user
@@ -458,7 +458,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }
     } else {
-        if (!$skip_confirm) {
+        if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
         }
         $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_INSTANT'));

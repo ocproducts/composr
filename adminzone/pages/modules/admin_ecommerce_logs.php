@@ -53,9 +53,9 @@ class Module_admin_ecommerce_logs
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if (get_value('unofficial_ecommerce') != '1') {
+        if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
-                warn_exit(do_lang_tempcode('NO_CNS'));
+                return null;
             }
         }
 
@@ -159,7 +159,7 @@ class Module_admin_ecommerce_logs
         require_code('ecommerce');
         require_code('ecommerce2');
 
-        if (get_value('unofficial_ecommerce') != '1') {
+        if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
                 warn_exit(do_lang_tempcode('NO_CNS'));
             }

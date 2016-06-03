@@ -27,8 +27,21 @@
 		<p onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,description}','50%');">
 			{PRETTY_NAME}
 		</p>
-		<p onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{FILE_LIST;^*}'.replace(/\n/g,'\n&lt;br /&gt;'),'50%');">
-			{FILENAME*}
+		{+START,SET,FILE_LIST}
+			<p class="lonely_label">{!FILES}:</p>
+			<ul>
+				{+START,LOOP,FILE_LIST}
+					<li>{_loop_var*}</li>
+				{+END}
+			</ul>
+		{+END}
+		<p onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,FILE_LIST}','50%');">
+			{+START,IF_PASSED,FILENAME}
+				{FILENAME*}
+			{+END}
+			{+START,IF_NON_PASSED,FILENAME}
+				{!HOVER_FOR_CONTENTS}
+			{+END}
 		</p>
 	</td>
 	<td>

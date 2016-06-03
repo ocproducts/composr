@@ -219,7 +219,7 @@ class ADORecordset_oracle extends ADORecordSet {
 	var $databaseType = "oracle";
 	var $bind = false;
 
-	function ADORecordset_oracle($queryID,$mode=false)
+	function __construct($queryID,$mode=false)
 	{
 		
 		if ($mode === false) { 

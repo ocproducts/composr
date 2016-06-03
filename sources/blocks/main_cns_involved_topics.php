@@ -151,13 +151,16 @@ class Block_main_cns_involved_topics
             }
         }
 
-        return do_template('BLOCK_MAIN_CNS_INVOLVED_TOPICS', array('_GUID' => '3f1025f5d3391d43afbdfa292721aa09', 'BLOCK_PARAMS' => block_params_arr_to_str($map),
-                                                                   'TOPICS' => $topics,
+        return do_template('BLOCK_MAIN_CNS_INVOLVED_TOPICS', array(
+            '_GUID' => '3f1025f5d3391d43afbdfa292721aa09',
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
+            'TOPICS' => $topics,
 
-                                                                   'START' => strval($start),
-                                                                   'MAX' => strval($max),
-                                                                   'START_PARAM' => $block_id . '_start',
-                                                                   'MAX_PARAM' => $block_id . '_max',
+            'START' => strval($start),
+            'MAX' => strval($max),
+            'START_PARAM' => $block_id . '_start',
+            'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 }

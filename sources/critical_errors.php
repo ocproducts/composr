@@ -100,7 +100,7 @@ if (!function_exists('critical_error')) {
                 $error = 'This is a less-critical error that has been elevated for quick dismissal due to high server load.</div>' . "\n" . '<div style="padding-left: 50px">' . $relay;
                 break;
             case 'EMERGENCY':
-                $error = 'This is an error that has been elevated to critical error status because it occurred during the primary error mechanism reporting system itself (possibly due to it occuring within the standard output framework). It may be masking a secondary error that occurred before this, but was never output - if so, it is likely strongly related to this one, thus fixing this will fix the other.</div>' . "\n" . '<div style="padding-left: 50px">' . $relay;
+                $error = 'This is an error that has been elevated to critical error status because it occurred during the primary error mechanism reporting system itself (possibly due to it occurring within the standard output framework). It may be masking a secondary error that occurred before this, but was never output - if so, it is likely strongly related to this one, thus fixing this will fix the other.</div>' . "\n" . '<div style="padding-left: 50px">' . $relay;
                 break;
             case 'RELAY':
                 $error = 'This is a relayed critical error, which means that this less-critical error has occurred during startup, and thus halted startup.</div>' . "\n" . '<div style="padding-left: 50px">' . $relay;

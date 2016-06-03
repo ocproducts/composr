@@ -446,7 +446,7 @@ class Module_admin_themes
                 if (!$zone_list_free_choices->is_empty()) {
                     $zone_list_free_choices->attach(do_lang_tempcode('LIST_SEP'));
                 }
-                $zone_list_free_choices->attach($zone['zone_name']);
+                $zone_list_free_choices->attach(($zone['zone_name'] == '') ? do_lang('_WELCOME') : $zone['zone_name']);
 
                 $free_choices++;
             }

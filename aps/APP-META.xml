@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://apstandard.com/ns/1" packaged="2016-04-21T16:28:27+00:00" version="1.2">
+<application xmlns="http://apstandard.com/ns/1" packaged="2016-05-12T15:36:34+00:00" version="1.2">
   <id>http://compo.sr/</id>
   <name>Composr</name>
-  <version>10.RC7</version>
+  <version>10.RC9</version>
   <release>1</release>
   <homepage>http://compo.sr/</homepage>
   <vendor>
@@ -31,6 +31,12 @@
       </description>
     </screenshot>
     <changelog>
+      <version release="1" version="10.RC9">
+        <entry>Composr 10.RC9 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC9</entry>
+      </version>
+      <version release="1" version="10.RC8">
+        <entry>Composr 10.RC8 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC8</entry>
+      </version>
       <version release="1" version="10.RC7">
         <entry>Composr 10.RC7 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC7</entry>
       </version>

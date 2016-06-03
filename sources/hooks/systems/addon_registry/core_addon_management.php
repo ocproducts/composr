@@ -185,7 +185,7 @@ class Hook_addon_registry_core_addon_management
 
             $add_ons->attach(do_lorem_template('ADDON_SCREEN_ADDON', array(
                 'DESCRIPTION' => lorem_paragraph_html(),
-                'FILE_LIST' => lorem_paragraph_html(),
+                'FILE_LIST' => array(lorem_phrase()),
                 'COLOUR' => 'orange',
                 'STATUS' => $status,
                 'NAME' => $value,

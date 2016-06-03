@@ -374,6 +374,9 @@ iframe {
 ::selection {
 	background: {$GET,yellow_highlight_background};
 }
+comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
+	background: {$GET,green_highlight_text};
+}
 
 /* Stop Chrome breaking our datalist display with an arrow */
 input.input_username::-webkit-calendar-picker-indicator {
@@ -1528,7 +1531,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: {!en_left};
 	font-size: 15px;
-	margin: 0.5em 0;
+	margin: 0.5em 0 !important;
 	font-family: Arial;
 	padding: 1px 0 2px 21px !important;
 	width: auto;
@@ -1536,7 +1539,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	text-transform: uppercase;
 	{$BETA_CSS_PROPERTY,border-radius: 0;}
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
@@ -1545,7 +1549,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
@@ -1630,10 +1635,10 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	margin: 0 0.3em !important;
+	margin: 0 0 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
-	margin-top: -1px !important;
+	margin: -2px 0.4em 0 0.4em !important;
 }
 .toggleable_tray_button img {
 	width: 20px;
@@ -2077,16 +2082,20 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .tooltip {
 	font-size: 1em;
-	padding: 0.5em;
-	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
-	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+}
+.tooltip_ownlayout {
+	padding: 0.5em;
+	border: 1px solid {$GET,point_of_interest_border};
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
+}
+.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+	background-color: {$GET,area_faded_background};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
 .tooltip .box {
 	margin: 0;
@@ -3847,6 +3856,13 @@ a.tab, a.tab:visited, a.tab:hover {
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
 	/*{+END}*/
+}
+
+a.tab>img+span {
+	padding-top: 0;
+}
+a.tab>span {
+	padding-top: 3px;
 }
 
 /*{+START,IF,{$MOBILE}}*/

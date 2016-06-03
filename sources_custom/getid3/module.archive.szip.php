@@ -17,7 +17,7 @@
 class getid3_szip
 {
 
-	function getid3_szip(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$SZIPHeader = fread($fd, 6);

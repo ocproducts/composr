@@ -81,7 +81,7 @@ function notifications_ui($member_id_of)
 
     $lockdown = collapse_2d_complexity('l_notification_code', 'l_setting', $GLOBALS['SITE_DB']->query_select('notification_lockdown', array('*')));
 
-    $cnt_post = count($_POST);
+    $has_interesting_post_fields = !has_interesting_post_fields();
 
     $notification_sections = array();
     $hooks = find_all_hooks('systems', 'notifications');
@@ -119,7 +119,7 @@ function notifications_ui($member_id_of)
                 foreach ($_notification_types as $possible => $ntype) {
                     $available = (($possible & $allowed_setting) != 0);
 
-                    if ($cnt_post != 0) {
+                    if ($has_interesting_post_fields) {
                         $checked = post_param_integer('notification_' . $notification_code . '_' . $ntype, 0);
                     } else {
                         $checked = (($possible & $current_setting) != 0) ? 1 : 0;
@@ -171,7 +171,7 @@ function notifications_ui($member_id_of)
     }
 
     // Save via form post
-    if (count($_POST) != 0) {
+    if (has_interesting_post_fields()) {
         foreach ($notification_sections as $notification_section) {
             foreach ($notification_section['NOTIFICATION_CODES'] as $notification_code) {
                 $new_setting = A_NA;
@@ -275,7 +275,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
 
     $notification_category = get_param_string('id', null);
     if (is_null($notification_category)) {
-        if (count($_POST) != 0) { // If we've just saved via form POST
+        if (has_interesting_post_fields()) { // If we've just saved via form POST
             enable_notifications($notification_code, null, null, A_NA); // Make it clear we've overridden the general value by doing this
 
             foreach (array_keys($_POST) as $key) {
@@ -427,7 +427,7 @@ function _notifications_build_category_tree($_notification_types, $notification_
 
             $available = (($possible & $allowed_setting) != 0);
 
-            if (count($_POST) != 0) {
+            if (has_interesting_post_fields()) {
                 $checked = post_param_integer('notification_' . $notification_category . '_' . $ntype, 0);
             } else {
                 $checked = (($possible & $current_setting) != 0) ? 1 : 0;

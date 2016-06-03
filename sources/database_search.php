@@ -1723,7 +1723,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
         if ($content_where != '') {
             $content_where .= ' AND ';
         }
-        $content_where .= '(' . implode($boolean_operator, $include_where) . ')';
+        $content_where .= '(' . implode($boolean_operator, $body_where) . ')';
     }
     if ($include_where != array()) {
         if ($content_where != '') {

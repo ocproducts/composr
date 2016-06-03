@@ -33,7 +33,7 @@ class Hook_fields_float
     {
         $type = '_FLOAT';
         $extra = '';
-        $display = get_translated_text($field['cf_name']);
+        $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
 
         $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
         if ($range_search) {
@@ -97,7 +97,7 @@ class Hook_fields_float
     {
         require_lang('locations');
 
-        $_cf_name = get_translated_text($field['cf_name']);
+        $_cf_name = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
         if (($_cf_name == do_lang('LATITUDE')) || ($_cf_name == do_lang('LONGITUDE')) || ($_cf_name == 'cms_latitude') || ($_cf_name == 'cms_longitude')) {
             if (is_object($ev)) {
                 if ($ev->evaluate() == do_lang('NA_EM')) {
@@ -208,7 +208,7 @@ class Hook_fields_float
         $id = $field['id'];
         $tmp_name = 'field_' . strval($id);
         $default = STRING_MAGIC_NULL;
-        $_cf_name = get_translated_text($field['cf_name']);
+        $_cf_name = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
         if ($_cf_name == do_lang('LATITUDE') || $_cf_name == 'cms_latitude') {
             $default = post_param_string('latitude', STRING_MAGIC_NULL);
         }

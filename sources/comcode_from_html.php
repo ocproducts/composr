@@ -495,7 +495,7 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // ---
 
-    // Maybe we don't do a conversion?
+    // Maybe we don't do a conversion? If possible we want to avoid it because conversions are messy.
     if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege(get_member(), 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
@@ -504,16 +504,35 @@ function semihtml_to_comcode($semihtml, $force = false)
             $semihtml = convert_html_headers_to_titles($semihtml);
         }
 
-        $count = substr_count($semihtml, '[/') + substr_count($semihtml, '@') + substr_count($semihtml, '{') + substr_count($semihtml, '[[') + substr_count($semihtml, '<h1');
+        // Is it really simple? It is if $count is zero (i.e. nothing fancy)...
+
+        $count = 0;
+        $count += substr_count($semihtml, '[/');
+        $count += substr_count($semihtml, '@');
+        $count += substr_count($semihtml, '{');
+        $count += substr_count($semihtml, '[[');
+        $count += substr_count($semihtml, '<h1');
+        $_emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons();
+        foreach (array_keys($_emoticons) as $emoticon_code) {
+            $count += substr_count($semihtml, $emoticon_code);
+        }
         if (strpos($semihtml, '<a ') === false) {
             $count += substr_count($semihtml, '://');
         }
-        if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
+
+        // Yes, so just dump it inside html (maximum purity of parsing)...
+
+        if ($count == 0) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }
+
+        // No, but maybe we can chop it around a bit...
+
         if (strpos($semihtml, 'data:') === false) {
             $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
-            if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
+
+            // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml'). Good purity of parsing
+            if ($count2 == $count) {
                 if ($semihtml != '') {
                     $semihtml = '[html]' . $semihtml . '[/html]';
                 }
@@ -525,11 +544,15 @@ function semihtml_to_comcode($semihtml, $force = false)
                 return $semihtml;
             }
         }
+
+        // Semihtml then...
+
         if ($semihtml != '') {
             $semihtml = '[semihtml]' . $semihtml . '[/semihtml]';
         }
         $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[title]${1}[/title]', $semihtml);
         $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[title]${1}[/title]', $semihtml);
+
         return $semihtml;
     }
 

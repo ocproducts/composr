@@ -156,7 +156,7 @@ function get_resource_fs_record($resource_type, $resource_id)
 function get_resource_commandr_fs_object($resource_type)
 {
     $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
-    if (is_null($fs_hook)) {
+    if (empty($fs_hook)) {
         return null;
     }
 
@@ -979,6 +979,9 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
     list($moniker, $guid, $label) = generate_resource_fs_moniker($resource_type, $resource_id);
 
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($resource_fs_ob)) {
+        return null;
+    }
     $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
     if (is_null($subpath)) {
         $subpath = '';

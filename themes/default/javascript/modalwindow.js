@@ -87,7 +87,7 @@ function open_link_as_overlay(ob,width,height,target)
 	{
 		if (typeof is_video=='undefined') is_video=false;
 		var has_full_button=(typeof a.childNodes[0]=='undefined') || (a.href!==a.childNodes[0].src);
-		_open_image_into_lightbox(a.href,a.title,null,null,has_full_button,is_video);
+		_open_image_into_lightbox(a.href,(typeof a.cms_tooltip_title!='undefined')?a.cms_tooltip_title:a.title,null,null,has_full_button,is_video);
 	}
 
 	function _open_image_into_lightbox(initial_img_url,description,x,n,has_full_button,is_video)

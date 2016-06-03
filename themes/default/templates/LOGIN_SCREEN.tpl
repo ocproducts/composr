@@ -3,9 +3,11 @@
 {$SET,login_screen,1}
 
 <div class="login_page">
-	<div class="box box___login_screen"><div class="box_inner">
-		{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
-	</div></div>
+	{+START,IF,{$HAS_FORUM,1}}
+		<div class="box box___login_screen"><div class="box_inner">
+			{!LOGIN_TEXT,<a href="{JOIN_URL*}"><strong>{!JOIN_HERE}</strong></a>}
+		</div></div>
+	{+END}
 
 	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on" target="_top">
 		<div>

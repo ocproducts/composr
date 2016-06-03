@@ -54,12 +54,13 @@ function captcha_script()
     // Audio version
     if ($mode == 'audio') {
         header('Content-Type: audio/x-wav');
+        header('Content-Disposition: inline; filename="captcha.wav"');
+        //header('Content-Disposition: attachment; filename="captcha.wav"');  Useful for testing
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
             return;
         }
 
-        //header('Content-Disposition: attachment; filename="securityvoice.wav"');  Useful for testing
         $data = '';
         for ($i = 0; $i < strlen($code_needed); $i++) {
             $char = strtolower($code_needed[$i]);
@@ -77,7 +78,7 @@ function captcha_script()
             $_data = fread($myfile, filesize($file_path));
             for ($j = 0; $j < strlen($_data); $j++) {
                 if (get_option('captcha_noise') == '1') {
-                    $amp_mod = mt_rand(-4, 4);
+                    $amp_mod = mt_rand(-2, 2);
                     $_data[$j] = chr(min(255, max(0, ord($_data[$j]) + $amp_mod)));
                 }
                 if (get_option('captcha_noise') == '1') {

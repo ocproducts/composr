@@ -234,17 +234,17 @@ function actual_add_catalogue_field($c_name, $name, $description = '', $type = '
 
             list($raw_type, $default, $_type) = $ob->get_field_value_row_bits($map + array('id' => $cf_id), $required == 1, $default);
 
-            $map = array('cf_id' => $cf_id, 'ce_id' => $entry);
+            $entry_map = array('cf_id' => $cf_id, 'ce_id' => $entry);
             if (strpos($_type, '_trans') !== false) {
-                $map += insert_lang_comcode('cv_value', is_null($default) ? '' : $default, 3);
+                $entry_map += insert_lang_comcode('cv_value', is_null($default) ? '' : $default, 3);
             } elseif ($_type == 'float') {
-                $map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : floatval($default);
+                $entry_map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : floatval($default);
             } elseif ($_type == 'integer') {
-                $map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : intval($default);
+                $entry_map['cv_value'] = ((is_null($default)) || ($default == '')) ? null : intval($default);
             } else {
-                $map['cv_value'] = ((is_null($default)) || ($type == 'list')) ? '' : $default;
+                $entry_map['cv_value'] = ((is_null($default)) || ($type == 'list')) ? '' : $default;
             }
-            $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $_type, $map);
+            $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $_type, $entry_map);
         }
 
         $start += 300;

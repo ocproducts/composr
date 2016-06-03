@@ -17,7 +17,7 @@
 class getid3_shorten
 {
 
-	function getid3_shorten(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 

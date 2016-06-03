@@ -41,6 +41,10 @@ function init__zones2()
  */
 function render_comcode_page_box($row, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     $map = array('page' => $row['the_page']);
     if (!is_null($root)) {
         $map['keep_page_root'] = $root;

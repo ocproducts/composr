@@ -26,16 +26,20 @@ class Hook_task_find_orphaned_lang_strings
     /**
      * Run the task hook.
      *
+     * @param ?string $table The table to limit to (null: no limit)
+     * @param boolean $fix Whether to fix issues
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run()
+    public function run($table = null, $fix = true)
     {
         require_lang('cleanup');
+        require_code('json');
 
         $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
 
         // When a language string isn't there
         $missing_lang_strings = array();
+        $missing_lang_strings_zero = array();
         // When a language string isn't used
         $orphaned_lang_strings = array();
         // When a language string is used more than once
@@ -44,14 +48,17 @@ class Hook_task_find_orphaned_lang_strings
         $_all_ids = $GLOBALS['SITE_DB']->query_select('translate', array('DISTINCT id'));
         $all_ids = array();
         foreach ($_all_ids as $id) {
-            $all_ids[$id['id']] = 1;
+            $all_ids[$id['id']] = true;
         }
 
         $ids_seen_so_far = array();
 
-        $fix = true;
+        $where = array();
+        if ($table !== null) {
+            $where['m_table'] = $table;
+        }
 
-        $all_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
+        $all_fields = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'), $where);
 
         $langidfields = array();
         foreach ($all_fields as $f) {
@@ -74,14 +81,15 @@ class Hook_task_find_orphaned_lang_strings
                 }
 
                 if (!array_key_exists($id, $all_ids)) {
-                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_lang_strings)))) {
+                    if (($fix) && (($id == 0) || (!array_key_exists($id, $missing_lang_strings)/*not fixed already*/))) {
                         $new_id = insert_lang($langidfield['m_name'], '', 2, null, false, $id);
                         if ($id[$langidfield['m_name']] != $new_id) {
                             $GLOBALS['SITE_DB']->query_update($langidfield['m_table'], $new_id, $of, '', 1);
                         }
                     }
 
-                    $missing_lang_strings[$id] = 1;
+                    $missing_lang_strings[$id] = true;
+                    $missing_lang_strings_zero[json_encode($of)] = true;
                 } elseif (array_key_exists($id, $ids_seen_so_far)) {
                     $looked_up = get_translated_text($id);
                     if ($fix) {
@@ -94,20 +102,24 @@ class Hook_task_find_orphaned_lang_strings
                     $fused_lang_strings[$id] = $looked_up;
                 }
                 if ($langidfield['m_name'] != 't_cache_first_post') {// 'if..!=' is for special exception for one that may be re-used in a cache position
-                    $ids_seen_so_far[$id] = 1;
+                    $ids_seen_so_far[$id] = true;
                 }
             }
         }
-        $orphaned_lang_strings = array_diff(array_keys($all_ids), array_keys($ids_seen_so_far));
-        if ($fix) {
-            foreach ($orphaned_lang_strings as $id) {
-                delete_lang($id);
+
+        if ($table === null) {
+            $orphaned_lang_strings = array_diff(array_keys($all_ids), array_keys($ids_seen_so_far));
+            if ($fix) {
+                foreach ($orphaned_lang_strings as $id) {
+                    delete_lang($id);
+                }
             }
         }
 
         $ret = do_template('BROKEN_LANG_STRINGS', array(
             '_GUID' => '318fcbe81e1e4324350114c3def020dd',
             'MISSING_LANG_STRINGS' => array_keys($missing_lang_strings),
+            'MISSING_LANG_STRINGS_ZERO' => array_keys($missing_lang_strings_zero),
             'FUSED_LANG_STRINGS' => $fused_lang_strings,
             'ORPHANED_LANG_STRINGS' => $orphaned_lang_strings,
         ));

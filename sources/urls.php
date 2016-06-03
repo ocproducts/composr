@@ -108,7 +108,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         $extra_params = array();
     }
 
-    global $SELF_URL_CACHED;
+    global $SELF_URL_CACHED, $IN_SELF_ROUTING_SCRIPT;
     $cacheable = ($evaluate) && (!$root_if_posted) && ($extra_params === array()) && (!$posted_too) && (!$avoid_remap);
     if (($cacheable) && ($SELF_URL_CACHED !== null)) {
         return $SELF_URL_CACHED;
@@ -136,8 +136,11 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         $extra_params = array_merge($post_array, $extra_params);
     }
     $page = '_SELF';
-    if (($root_if_posted) && (count($_POST) !== 0) || !running_script('index')) {
+    $zone = '_SELF';
+    if (($root_if_posted) && (has_interesting_post_fields()) || !$IN_SELF_ROUTING_SCRIPT) {
         $page = '';
+        $zone = 'site';
+        unset($extra_params['page']);
     }
     $params = array('page' => $page);
     $skip = array();
@@ -149,7 +152,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
         }
     }
 
-    $url = build_url($params, '_SELF', $skip, true, $avoid_remap);
+    $url = build_url($params, $zone, $skip, true, $avoid_remap);
     if ($evaluate) {
         $ret = $url->evaluate();
         if ($cacheable) {
@@ -634,7 +637,7 @@ function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $av
         $_what_is_running = 'index';
     }
     $test_rewrite = null;
-    $self_page = ((!$has_page) || ((function_exists('get_zone_name')) && (get_zone_name() === $zone_name) && (($vars['page'] === '_SELF') || ($vars['page'] === get_page_name())))) && ((!isset($vars['type'])) || ($vars['type'] === get_param_string('type', 'browse'))) && ($hash !== '#_top') && (!$KNOWN_AJAX);
+    $self_page = ((!$has_page) || ((function_exists('get_zone_name')) && (get_zone_name() === $zone_name) && (($vars['page'] === '_SELF') || ($vars['page'] === get_page_name())))) && ((!isset($vars['type'])) || ($vars['type'] === get_param_string('type', 'browse', true))) && ($hash !== '#_top') && (!$KNOWN_AJAX);
     if ($can_try_url_schemes) {
         if ((!$self_page) || ($_what_is_running === 'index')) {
             $test_rewrite = _url_rewrite_params($zone_name, $vars, count($keep_actual) > 0);

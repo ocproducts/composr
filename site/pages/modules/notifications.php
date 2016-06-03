@@ -108,6 +108,10 @@ class Module_notifications
      */
     public function run()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         require_code('notifications2');
 
         $type = get_param_string('type', 'browse');

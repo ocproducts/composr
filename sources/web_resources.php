@@ -494,7 +494,7 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
     if ($_seed !== null) {
         $seed = $_seed;
     } elseif ($seed_cached === null || running_script('preview'/*may change seed in script code*/)) {
-        if (has_privilege(get_member(), 'view_profiling_modes')) {
+        if (function_exists('has_privilege') && has_privilege(get_member(), 'view_profiling_modes')) {
             $seed = get_param_string('keep_theme_seed', '');
         } else {
             $seed = '';

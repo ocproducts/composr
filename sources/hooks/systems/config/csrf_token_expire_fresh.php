@@ -38,7 +38,7 @@ class Hook_config_csrf_token_expire_fresh
             'explanation' => 'CONFIG_OPTION_csrf_token_expire_fresh',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order' => 3,
+            'order_in_category_group' => 3,
 
             'addon' => 'core_configuration',
         );

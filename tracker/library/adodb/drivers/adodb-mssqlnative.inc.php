@@ -816,7 +816,7 @@ class ADORecordset_mssqlnative extends ADORecordSet {
 
 
 class ADORecordSet_array_mssqlnative extends ADORecordSet_array {
-	function ADORecordSet_array_mssqlnative($id=-1,$mode=false) 
+	function __construct($id=-1,$mode=false) 
 	{
 		$this->ADORecordSet_array($id,$mode);
 	}

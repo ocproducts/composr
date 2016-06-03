@@ -95,12 +95,11 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         $max_values = array();
         foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
             if (is_numeric(ini_get($setting))) {
-                $max_values[] = intval(ini_get($setting));
+                $max_values[$setting] = intval(ini_get($setting));
             }
         }
     }
-
-    foreach ($max_values as $max_value) {
+    foreach ($max_values as $setting => $max_value) {
         if ($max_value < $count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
@@ -112,12 +111,11 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         $max_length_values = array();
         foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
             if (is_numeric(ini_get($setting))) {
-                $max_length_values[] = intval(ini_get($setting));
+                $max_length_values[$setting] = intval(ini_get($setting));
             }
         }
     }
-
-    foreach ($max_length_values as $max_length_value) {
+    foreach ($max_length_values as $setting => $max_length_value) {
         if ($max_length_value < $name_length_count) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
@@ -336,6 +334,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $tabindex = get_form_field_tabindex($tabindex);
 
     $post = filter_form_field_default(is_object($submit_name) ? $submit_name->evaluate() : $submit_name, $post);
+
     $required = filter_form_field_required('post', $required);
 
     check_suhosin_request_size(strlen($post));
@@ -2433,7 +2432,7 @@ function handle_conflict_resolution($id = null, $only_staff = false)
     }
 
     require_javascript('ajax');
-    $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', get_page_name()) . ' AND ' . db_string_equal_to('the_type', get_param_string('type', 'browse')) . ' AND ' . db_string_equal_to('the_id', $id) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
+    $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', cms_mb_substr(get_page_name(), 0, 80)) . ' AND ' . db_string_equal_to('the_type', cms_mb_substr(get_param_string('type', 'browse'), 0, 80)) . ' AND ' . db_string_equal_to('the_id', cms_mb_substr($id, 0, 80)) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
     if ((array_key_exists(0, $last_edit_screen_time)) && ($last_edit_screen_time[0]['the_time'] > time() - 20)) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($last_edit_screen_time[0]['the_member']);
         if (is_null($username)) {

@@ -3,7 +3,7 @@
 	<div id="{$GET*,wrapper_id}" class="box_wrapper">
 		<section class="box box___block_main_news"><div class="box_inner compacted_subbox_stream">
 			{+START,IF,{$NOT,{BLOG}}}{+START,IF_NON_EMPTY,{TITLE}}
-				<h3>{TITLE}</h3>
+				<h2>{TITLE}</h2>
 			{+END}{+END}
 
 			{+START,IF_EMPTY,{BRIEF}{CONTENT}}

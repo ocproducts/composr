@@ -21,7 +21,7 @@ class ADODB_borland_ibase extends ADODB_ibase {
 	var $databaseType = "borland_ibase";	
 	
 	
-	function ADODB_borland_ibase()
+	function __construct()
 	{
 		$this->ADODB_ibase();
 	}

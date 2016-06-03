@@ -205,12 +205,17 @@ class LangFilter_EN extends LangFilter
      *
      * @param  ?string $key Language string ID (null: not a language string)
      * @param  string $value String value
+     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
      * @return string The suffix
      */
-    public function compile_time($key, $value)
+    public function compile_time($key, $value, $lang = null)
     {
+        if ($lang === null) {
+            $lang = user_lang();
+        }
+
         // American <> British
-        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1');
+        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1') || ($lang == 'EN_US');
         if ($is_american) {
             // NB: Below you will see there are exceptions, typically when the base word already naturally ends with "se" on the end, it uses "s" not "z"
 

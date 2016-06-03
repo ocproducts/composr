@@ -17,7 +17,7 @@
 class getid3_gif
 {
 
-	function getid3_gif(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['fileformat']                  = 'gif';
 		$ThisFileInfo['video']['dataformat']         = 'gif';
 		$ThisFileInfo['video']['lossless']           = true;

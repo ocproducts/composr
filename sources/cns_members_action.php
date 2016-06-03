@@ -328,7 +328,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_default', 'cf_required'));
     foreach ($all_fields_regardless as $field) {
         $ob = get_fields_hook($field['cf_type']);
-        list(, $default, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, '', $GLOBALS['FORUM_DB']);
+        list(, $default, $storage_type) = $ob->get_field_value_row_bits($field, $field['cf_required'] == 1, $field['cf_default'], $GLOBALS['FORUM_DB']);
 
         if (array_key_exists('field_' . strval($field['id']), $row)) {
             $value = $row['field_' . strval($field['id'])];
@@ -469,10 +469,13 @@ function cns_make_boiler_custom_field($type)
  *
  * @param  ID_TEXT $type The field type.
  * @param  BINARY $encrypted Whether the field is encrypted.
- * @return array A pair: the DB field type, whether to index.
+ * @param  ?string $_default The default value to use (null: none / null default).
+ * @return array A tuple: the DB field type, whether to index, the default (in correct data type).
  */
-function get_cpf_storage_for($type, $encrypted = 0)
+function get_cpf_storage_for($type, $encrypted = 0, $_default = null)
 {
+    $default = mixed();
+
     require_code('fields');
     $ob = get_fields_hook($type);
     list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $type, 'cf_default' => ''));
@@ -480,18 +483,26 @@ function get_cpf_storage_for($type, $encrypted = 0)
     switch ($storage_type) {
         case 'short_trans':
             $_type = 'SHORT_TRANS__COMCODE';
+            $default = empty($_default) ? '' : $_default;
             break;
         case 'long_trans':
             $_type = 'LONG_TRANS__COMCODE';
+            $default = empty($_default) ? '' : $_default;
             break;
         case 'long':
             $_type = 'LONG_TEXT';
+            $default = empty($_default) ? '' : $_default;
             break;
         case 'integer':
             $_type = '?INTEGER';
+            $default = (is_null($_default) || $_default == '') ? null : intval($_default);
             break;
         case 'float':
             $_type = '?REAL';
+            $default = (is_null($_default) || $_default == '') ? null : floatval($_default);
+            break;
+        default:
+            $default = empty($_default) ? '' : $_default;
             break;
     }
 
@@ -516,7 +527,7 @@ function get_cpf_storage_for($type, $encrypted = 0)
             break;
     }
 
-    return array($_type, $index);
+    return array($_type, $index, $default);
 }
 
 /**
@@ -599,25 +610,13 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         $id = $GLOBALS['FORUM_DB']->query_insert('f_custom_fields', $map, true); // Still upgrading, cf_encrypted does not exist yet
     }
 
-    list($_type, $index) = get_cpf_storage_for($type, $encrypted);
+    list($_type, $index, $_default) = get_cpf_storage_for($type, $encrypted, $default);
 
     require_code('database_action');
 
-    $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Default will be made explicit when we insert rows
+    $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type, $_default);
 
-    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
-    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
-        if ($index) {
-            if ($_type != 'LONG_TEXT') {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-            if (strpos($_type, '_TEXT') !== false) {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
-            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-        }
-    }
+    build_cpf_indices($id, $index, $type, $_type);
 
     log_it('ADD_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
@@ -637,4 +636,29 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
     return $id;
+}
+
+/**
+ * Make custom profile field indices.
+ *
+ * @param  AUTO_LINK $id CPF ID.
+ * @param  boolean $index Whether an index is needed for search purposes (there may be other reasons though).
+ * @param  ID_TEXT $type CPF type.
+ * @param  ID_TEXT $_type Underlying field type.
+ */
+function build_cpf_indices($id, $index, $type, $_type)
+{
+    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
+    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
+        if ($index) {
+            if ($_type != 'LONG_TEXT') {
+                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+            }
+            if (strpos($_type, '_TEXT') !== false) {
+                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+            }
+        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
+            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
+        }
+    }
 }

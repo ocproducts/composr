@@ -54,7 +54,8 @@ class Hook_symbol_CHAT_IM
 
             $_value = null;
             if ($may_cache) {
-                $_value = persistent_cache_get('CHAT_IM');
+                $cache_identifier = serialize(array());
+                $_value = get_cache_entry('_chat_im', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL);
             }
 
             if ($_value === null) {
@@ -117,7 +118,8 @@ class Hook_symbol_CHAT_IM
                 ));
 
                 if ($may_cache) {
-                    persistent_cache_set('CHAT_IM', $_value);
+                    require_code('caches2');
+                    put_into_cache('_chat_im', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', $_value);
                 }
             }
 

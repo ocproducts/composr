@@ -1592,6 +1592,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                         // 404=Not found
                         // 400/500=Internal error
                         // 405=Method not allowed
+
                         $HTTP_MESSAGE = $matches[2];
                         switch ($matches[2]) {
                             case '301':
@@ -1622,6 +1623,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '404':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                 }
                                 @fclose($mysock);
                                 $DOWNLOAD_LEVEL--;
@@ -1636,6 +1639,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '500':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                 }
                                 @fclose($mysock);
                                 $DOWNLOAD_LEVEL--;
@@ -1660,7 +1665,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 }
                             default:
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url)));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2]));
                                 }
                         }
                     }

@@ -29,6 +29,10 @@ The 'view an author' screen will display the author profile, as well as download
 The Admin Zone provides a module for merging authors. This feature is provided as it is likely that different users will refer to authors with slightly different names at the point of submission.
 [/surround]
 
+[title="2"]A note about security[/title]
+
+If you grant members the Conversr "Change own username" privilege (or equivalent in a 3rd party forum driver), then you may want to deny access to the "Set own author profile" privilege to regular members, as otherwise members could hijack any non-member-associated author accounts to renaming their account to match the name of that account.
+
 [concepts
  1_key="Author"   1_value="Someone who specifically authors content, as opposed to someone who may merely have submitted it"
 ]Concepts[/concepts]

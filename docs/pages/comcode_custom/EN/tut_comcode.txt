@@ -395,13 +395,41 @@ Be careful when placing attachment tags in a Comcode spot that does not support 
 [/box]
 [/surround]
 
-[concepts
- 0_key="Mark-up language" 0_value="A language designed so that text may be laid out by surrounding special elements around portions of the text to define meta-properties (such as font)"
- 1_key="Comcode"          1_value="Composr's mark-up language for the creation of formatted text and inclusion of dynamic elements"
- 2_key="Attachment"       2_value="A file attached to Comcode via a 'posting page' supporting Comcode field; attachments have special support for rich media"
- 3_key="Semi-HTML"        3_value="HTML and Comcode mixed freely together"
- 4_key="WYSIWYG"          4_value="What-You-See-Is-What-You-Get: the name of the type of interactive editing interface used for formatting text in many programs, including modern word processors"
-]Concepts[/concepts]
+[title="3"]Image media rendering[/title]
+
+There are a number of different options for displaying attachments, so it can be a bit puzzling as to how a simple image attachment may display the image description you supply. This table will show you the defaults as defined by the [tt]MEDIA_IMAGE_WEBSAFE.tpl[/tt] template:
+
+{|
+! Thumbnail option
+! Framed option
+! Description within Comcode
+! "Click to expand" shows
+! Description within overlay
+|-
+| On
+| Off
+| Tooltip on full-screen link & Alt-text (i.e. invisible)
+| No
+| Yes
+|-
+| On
+| On
+| Written inside frame & Alt-text (i.e. invisible)
+| Yes
+| No
+|-
+| Off
+| On
+| Written inside frame & Alt-text (i.e. invisible)
+| No
+| N/A
+|-
+| Off
+| Off
+| Alt-text (i.e. invisible)
+| No
+| N/A
+|}
 
 [title="2"]oEmbed[/title]
 
@@ -421,6 +449,14 @@ Auto-save can protect you if your computer crashes, if your Internet connection 
 You will be prompted whether to restore when going back into the content posting UI you didn't finish the save from.
 
 Note that the auto-save assumes that you are not switching browsers, as it stores flags indicating the presence of recovery data by using cookies in the browser.
+
+[concepts
+ 0_key="Mark-up language" 0_value="A language designed so that text may be laid out by surrounding special elements around portions of the text to define meta-properties (such as font)"
+ 1_key="Comcode"          1_value="Composr's mark-up language for the creation of formatted text and inclusion of dynamic elements"
+ 2_key="Attachment"       2_value="A file attached to Comcode via a 'posting page' supporting Comcode field; attachments have special support for rich media"
+ 3_key="Semi-HTML"        3_value="HTML and Comcode mixed freely together"
+ 4_key="WYSIWYG"          4_value="What-You-See-Is-What-You-Get: the name of the type of interactive editing interface used for formatting text in many programs, including modern word processors"
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

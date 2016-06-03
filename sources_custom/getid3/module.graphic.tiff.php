@@ -17,7 +17,7 @@
 class getid3_tiff
 {
 
-	function getid3_tiff(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$TIFFheader = fread($fd, 4);

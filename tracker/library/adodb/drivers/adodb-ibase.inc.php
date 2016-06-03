@@ -730,7 +730,7 @@ class ADORecordset_ibase extends ADORecordSet
 	var $bind=false;
 	var $_cacheType;
 	
-	function ADORecordset_ibase($id,$mode=false)
+	function __construct($id,$mode=false)
 	{
 	global $ADODB_FETCH_MODE;
 	

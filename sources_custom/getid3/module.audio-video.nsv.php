@@ -17,7 +17,7 @@
 class getid3_nsv
 {
 
-	function getid3_nsv(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$NSVheader = fread($fd, 4);

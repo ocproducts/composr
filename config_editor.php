@@ -333,7 +333,7 @@ function do_set()
                     $val = $given_password;
                 }
                 if (function_exists('password_hash')) { // PHP5.5+
-                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
+                    $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
                 } else {
                     $val = '!' . md5($val . 'cms');
                 }

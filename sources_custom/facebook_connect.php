@@ -26,34 +26,11 @@ function init__facebook_connect()
     // Initialise Facebook Connect
     require_code('facebook/facebook');
 
-    class CMSFacebook extends BaseFacebook // We don't want any persistence - we store in normal Composr sessions/member rows
-    {
-        protected function setPersistentData($key, $value)
-        {
-        }
-
-        protected function getPersistentData($key, $default = false)
-        {
-        }
-
-        protected function clearPersistentData($key)
-        {
-        }
-
-        protected function clearAllPersistentData()
-        {
-        }
-
-        protected function constructSessionVariableName($key)
-        {
-        }
-    }
-
     global $FACEBOOK_CONNECT;
     $FACEBOOK_CONNECT = mixed();
     $appid = get_option('facebook_appid');
     $appsecret = get_option('facebook_secret_code');
-    $FACEBOOK_CONNECT = new CMSFacebook(array('appId' => $appid, 'secret' => $appsecret));
+    $FACEBOOK_CONNECT = new Facebook(array('appId' => $appid, 'secret' => $appsecret));
 }
 
 // This is only called if we know we have a user logged into Facebook, who has authorised to our app

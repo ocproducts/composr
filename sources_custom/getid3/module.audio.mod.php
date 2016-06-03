@@ -18,7 +18,7 @@ class getid3_mod
 {
 
 	// new combined constructor
-	function getid3_mod(&$fd, &$ThisFileInfo, $option) {
+	function __construct(&$fd, &$ThisFileInfo, $option) {
 
 		if ($option === 'mod') {
 			$this->getMODheaderFilepointer($fd, $ThisFileInfo);

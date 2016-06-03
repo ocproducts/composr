@@ -682,7 +682,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
     $i = 0;
 
     // Output header
-    if (count($_POST) == 0) {
+    if (!has_interesting_post_fields()) {
         if (get_param_integer('keep_markers', 0) == 1) {
             $messy_url = new Tempcode();
         } else {

@@ -70,7 +70,6 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
                 'a_page_link_3' => $a_page_link_3,
                 'a_time' => time(),
                 'a_addon' => $a_addon,
-                'a_is_public' => $a_is_public
             );
         $stored_id = $GLOBALS['SITE_DB']->query_insert('activities', $row, true);
 
@@ -78,7 +77,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
         log_newest_activity($stored_id, 1000, true/*We do want to force it, IDs can get out of sync on dev sites*/);
 
         // External places
-        if (($a_is_public == 1) && (!$GLOBALS['IS_ACTUALLY_ADMIN']/*SU means oauth'd user is not intended user*/)) {
+        if (($a_is_public == 1) && (($a_language_string_code == 'RAW_DUMP') || (!$GLOBALS['IS_ACTUALLY_ADMIN']/*SU means oauth'd user is not intended user*/))) {
             $dests = find_all_hooks('systems', 'syndication');
             foreach (array_keys($dests) as $hook) {
                 require_code('hooks/systems/syndication/' . $hook);

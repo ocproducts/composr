@@ -608,7 +608,7 @@ class ADORecordSet_mysql extends ADORecordSet{
 	var $databaseType = "mysql";
 	var $canSeek = true;
 	
-	function ADORecordSet_mysql($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if ($mode === false) { 
 			global $ADODB_FETCH_MODE;
@@ -765,7 +765,7 @@ class ADORecordSet_mysql extends ADORecordSet{
 }
 
 class ADORecordSet_ext_mysql extends ADORecordSet_mysql {	
-	function ADORecordSet_ext_mysql($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if ($mode === false) { 
 			global $ADODB_FETCH_MODE;

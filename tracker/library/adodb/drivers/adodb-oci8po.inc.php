@@ -78,7 +78,7 @@ class ADORecordset_oci8po extends ADORecordset_oci8 {
 
 	var $databaseType = 'oci8po';
 	
-	function ADORecordset_oci8po($queryID,$mode=false)
+	function __construct($queryID,$mode=false)
 	{
 		$this->ADORecordset_oci8($queryID,$mode);
 	}

@@ -67,12 +67,12 @@ class Module_chat
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => 'site',
             'the_page' => 'userguide_chatcode',
-        ));
+        ), '', 1);
 
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => 'site',
             'the_page' => 'popup_blockers',
-        ));
+        ), '', 1);
     }
 
     /**
@@ -206,6 +206,10 @@ class Module_chat
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'userguide_chatcode',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'userguide_chatcode',
@@ -218,6 +222,10 @@ class Module_chat
                 'p_order' => 0,
             ));
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'popup_blockers',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'popup_blockers',

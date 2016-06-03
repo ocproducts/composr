@@ -340,7 +340,7 @@ class Module_cms_galleries extends Standard_crud_module
             $supported .= ', zip';
         }
         $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html($supported), escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images') . ',' . $supported)));
-        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', get_option('gallery_media_title_required') == '1'));
+        $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
         if (function_exists('imagepng')) {
@@ -2204,9 +2204,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
         }
         $gallery_mode_is = get_option('gallery_mode_is');
         if (($name != '') && ($flow_mode_interface != (($gallery_mode_is == 'flow') ? 1 : 0))) {
-            $gallery_mode_is = ''; // Continue current
+            $gallery_mode_is = 'choice'; // Continue current
         }
-        if ($gallery_mode_is != '') {
+        if ($gallery_mode_is != 'choice') {
             $hidden->attach(form_input_hidden('flow_mode_interface', ($gallery_mode_is == 'flow') ? '1' : '0'));
         } else {
             $fields->attach(form_input_tick(do_lang_tempcode('FLOW_MODE_INTERFACE'), do_lang_tempcode('DESCRIPTION_FLOW_MODE_INTERFACE'), 'flow_mode_interface', $flow_mode_interface == 1));

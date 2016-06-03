@@ -3,7 +3,7 @@
 [box float="right" width="160px"]
 Our official [acronym="Integrated Development Environment, an advanced code editing suite"]IDE[/acronym] is PhpStorm:
 [url="https://www.jetbrains.com/phpstorm/"][img]data_custom/images/docs/codebook/phpstorm.png[/img][/url]
-Major core contributors to Composr can get a free license to aid development.
+Major core contributors to Composr can get a free licence to aid development.
 [/box]
 The Code Book contains documentation to teach experienced developers how to program for Composr. This page of the Codebook is mostly for sign-posting to the deeper pages of the book.
 

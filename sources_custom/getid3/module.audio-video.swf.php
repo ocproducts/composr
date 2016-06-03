@@ -17,7 +17,7 @@
 class getid3_swf
 {
 
-	function getid3_swf(&$fd, &$ThisFileInfo, $ReturnAllTagData=false) {
+	function __construct(&$fd, &$ThisFileInfo, $ReturnAllTagData=false) {
 //$start_time = microtime(true);
 		$ThisFileInfo['fileformat']          = 'swf';
 		$ThisFileInfo['video']['dataformat'] = 'swf';

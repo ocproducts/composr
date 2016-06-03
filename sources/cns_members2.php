@@ -95,6 +95,10 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  */
 function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
+    if (is_null($poster_details)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
     require_css('cns');
 
@@ -172,6 +176,9 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
     $custom_fields = new Tempcode();
     foreach ($poster_details['custom_fields'] as $name => $value) {
         if (($value !== null) && ($value !== '')) {
+            if (is_integer($name)) {
+                $name = strval($name);
+            }
             $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '10b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
         }
     }
@@ -179,6 +186,9 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
     if (isset($poster_details['custom_fields_full'])) {
         foreach ($poster_details['custom_fields_full'] as $name => $value) {
             if (($value !== null) && ($value !== '')) {
+                if (is_integer($name)) {
+                    $name = strval($name);
+                }
                 $custom_fields_full->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '20b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
             }
         }
@@ -231,6 +241,10 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
 
     if ($extra_fields !== null) {
         foreach ($extra_fields as $key => $val) {
+            if (is_integer($key)) {
+                $key = strval($key);
+            }
+
             $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => ($val))));
         }
     }

@@ -114,6 +114,8 @@ class Module_admin_revisions
      */
     public function pre_run()
     {
+        require_lang('actionlog');
+
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
@@ -141,8 +143,6 @@ class Module_admin_revisions
         check_privilege('view_revisions');
 
         require_css('adminzone');
-
-        require_lang('actionlog');
 
         $type = get_param_string('type', 'browse');
 

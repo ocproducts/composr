@@ -16,7 +16,7 @@
 
 class getid3_bonk
 {
-	function getid3_bonk(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		// shortcut
 		$ThisFileInfo['bonk'] = array();

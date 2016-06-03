@@ -26,7 +26,7 @@ foreach ($GUIDarray as $GUIDname => $hexstringvalue) {
 class getid3_asf
 {
 
-	function getid3_asf(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		// Shortcuts
 		$thisfile_audio = &$ThisFileInfo['audio'];

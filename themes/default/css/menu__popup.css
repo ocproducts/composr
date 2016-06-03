@@ -83,14 +83,17 @@
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_type__popup .current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_current}');
+		background-size: 5px 6px;
 	}
 
 	.menu_type__popup .non_current a {
 		background-image: url('{$IMG;,2x/menus/menu_bullet}');
+		background-size: 5px 6px;
 	}
 
 	.menu_type__popup .non_current a:hover {
 		background-image: url('{$IMG;,2x/menus/menu_bullet_hover}');
+		background-size: 5px 6px;
 	}
 }
 

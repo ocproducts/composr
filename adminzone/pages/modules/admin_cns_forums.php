@@ -413,9 +413,9 @@ class Module_admin_cns_forums extends Standard_crud_module
         $all = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_parent_forum', 'f_forum_grouping_id'));
         $ordering = array();
         foreach ($all as $forum) {
-            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), -1);
-            $order = post_param_integer('order_' . strval($forum['id']), -1);
-            if (($cat_order != -1) && ($order != -1)) { // Should only be -1 if since deleted
+            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), null);
+            $order = post_param_integer('order_' . strval($forum['id']), null);
+            if (($cat_order !== null) && ($order !== null)) { // Should only be null if since created
                 if (!array_key_exists($forum['f_parent_forum'], $ordering)) {
                     $ordering[$forum['f_parent_forum']] = array();
                 }
@@ -538,7 +538,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     {
         require_code('cns_forums_action2');
 
-        $parent_forum = post_param_integer('parent_forum', -1);
+        $parent_forum = post_param_integer('parent_forum');
         $name = post_param_string('name');
 
         $metadata = actual_metadata_get_fields('forum', null);
@@ -607,7 +607,7 @@ class Module_admin_cns_forums extends Standard_crud_module
             post_param_string('name'),
             post_param_string('description', STRING_MAGIC_NULL),
             post_param_integer('forum_grouping_id', fractional_edit() ? INTEGER_MAGIC_NULL : false),
-            post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : false),
+            post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : null/*root forum*/),
             fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(),
             post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0),

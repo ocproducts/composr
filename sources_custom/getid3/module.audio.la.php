@@ -18,7 +18,7 @@ getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio-video.riff.php', 
 class getid3_la
 {
 
-	function getid3_la(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$offset = 0;
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$rawdata = fread($fd, GETID3_FREAD_BUFFER_SIZE);

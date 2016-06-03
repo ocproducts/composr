@@ -2,10 +2,10 @@
 
 <script>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
-		internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS;/}{+END}',document.getElementById('{$GET;,wrapper_id}'),['[^_]*_start','[^_]*_max'], { });
+		internalise_ajax_block_wrapper_links('{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS;/}{+END}&page={$PAGE&}',document.getElementById('{$GET;,wrapper_id}'),['[^_]*_start','[^_]*_max'], { });
 
 		{$,Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results}
-		{+START,IF,{ALLOW_INFINITE_SCROLL}}
+		{+START,IF,{$AND,{ALLOW_INFINITE_SCROLL},{$NEQ,{$_GET,keep_infinite_scroll},0}}}
 			{+START,IF,{$CONFIG_OPTION,infinite_scrolling}}
 				var infinite_scrolling_{$GET%,wrapper_id}=function (event) {
 					var url_stem='{$FACILITATE_AJAX_BLOCK_CALL;,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS;/}{+END}';

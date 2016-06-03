@@ -49,7 +49,7 @@ class Module_recommend
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => '',
             'the_page' => 'recommend_help',
-        ));
+        ), '', 1);
     }
 
     /**
@@ -64,6 +64,10 @@ class Module_recommend
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => '',
+                'the_page' => 'recommend_help',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => '',
                 'the_page' => 'recommend_help',

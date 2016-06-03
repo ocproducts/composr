@@ -230,7 +230,9 @@ function get_member($quick_only = false)
             $member = $member_row['member_id'];
 
             if (($member !== null) && ((time() - $member_row['last_activity']) > 10)) { // Performance optimisation. Pointless re-storing the last_activity if less than 3 seconds have passed!
-                //$GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time(), 'the_zone' => get_zone_name(), 'the_page' => get_page_name()), array('the_session' => $session), '', 1);  Done in get_screen_title now
+                if (!running_script('index')) { // For 'index' it happens in get_screen_title, as screen meta-information is used
+                    $GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time()), array('the_session' => $session), '', 1);
+                }
                 $SESSION_CACHE[$session]['last_activity'] = time();
                 if (get_option('session_prudence') == '0') {
                     persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);

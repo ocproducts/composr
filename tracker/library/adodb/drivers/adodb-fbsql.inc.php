@@ -162,7 +162,7 @@ class ADORecordSet_fbsql extends ADORecordSet{
 	var $databaseType = "fbsql";
 	var $canSeek = true;
 	
-	function ADORecordSet_fbsql($queryID,$mode=false) 
+	function __construct($queryID,$mode=false) 
 	{
 		if (!$mode) { 
 			global $ADODB_FETCH_MODE;

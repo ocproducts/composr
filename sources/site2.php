@@ -146,6 +146,10 @@ function get_page_warning_details($zone, $codename, $edit_url)
  */
 function assign_refresh($url, $multiplier = 0.0)
 {
+    if ($url == '') {
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     // URL clean up
     if (is_object($url)) {
         $url = $url->evaluate();
@@ -178,8 +182,10 @@ function assign_refresh($url, $multiplier = 0.0)
         return;
     }
 
+    global $FORCE_META_REFRESH;
+
     // Redirect via meta tag in standard Composr output
-    if ($must_show_message) {
+    if ($must_show_message || $FORCE_META_REFRESH) {
         global $REFRESH_URL;
         $REFRESH_URL[0] = $url;
         $REFRESH_URL[1] = 2.5 * $multiplier;
@@ -187,7 +193,6 @@ function assign_refresh($url, $multiplier = 0.0)
     }
 
     // HTTP redirect
-    global $FORCE_META_REFRESH;
     if ((running_script('index')) && (!$FORCE_META_REFRESH)) {
         header('Location: ' . $url);
         if (strpos($url, '#') === false) {
@@ -238,7 +243,7 @@ function closed_site()
 
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
-        if (count($_POST) > 0) {
+        if (has_interesting_post_fields()) {
             $_redirect = build_url(array('page' => ''), '', array('keep_session' => 1));
         } else {
             $_redirect = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1), true);

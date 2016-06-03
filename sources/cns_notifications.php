@@ -175,17 +175,16 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
  */
 function generate_notifications($member_id)
 {
-    $cache_identifier = serialize(array());
-
     static $notifications_cache = null;
-    if (isset($notifications_cache[$cache_identifier])) {
-        return $notifications_cache[$cache_identifier];
+    if (isset($notifications_cache[$member_id])) {
+        return $notifications_cache[$member_id];
     }
 
     $do_caching = has_caching_for('block');
 
     $notifications = mixed();
     if ($do_caching) {
+        $cache_identifier = serialize(array());
         $_notifications = get_cache_entry('_new_pp', $cache_identifier, CACHE_AGAINST_MEMBER, 10000);
 
         if (!is_null($_notifications)) {
@@ -269,6 +268,9 @@ function generate_notifications($member_id)
         $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
     }
 
-    $notifications_cache[$cache_identifier] = array($notifications, $num_unread_pps);
+    if ($do_caching) {
+        $notifications_cache[$cache_identifier] = array($notifications, $num_unread_pps);
+    }
+
     return array($notifications, $num_unread_pps);
 }
