@@ -42,7 +42,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         if ($ext != 'html' && $ext != 'htm') {
             header('Content-type: ' . get_mime_type($ext, true));
         } else {
-            header('Content-type: text/html; charset=UTF-8');
+            header('Content-type: text/html; charset=utf-8');
         }
         if (($ext != 'html') && ($ext != 'htm')) {
             header('Content-Disposition: attachment; filename="' . str_replace(chr(13), '', str_replace(chr(10), '', addslashes($filename))) . '"');

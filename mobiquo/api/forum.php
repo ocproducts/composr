@@ -122,7 +122,7 @@ function get_config_func($raw_params)
         'no_refresh_on_post' => '1',
         'soft_delete' => '0',
         'system' => $brand_name,
-        'charset' => 'UTF-8', // Keep it simple and compatible with different clients. Will always convert to UTF-8
+        'charset' => 'utf-8', // Keep it simple and compatible with different clients. Will always convert to utf-8
         'timezone' => get_site_timezone(),
         'disable_bbcode' => '0',
 

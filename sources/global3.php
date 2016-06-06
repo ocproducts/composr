@@ -987,7 +987,7 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
-    if (strtoupper(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtoupper($in);
     }
 

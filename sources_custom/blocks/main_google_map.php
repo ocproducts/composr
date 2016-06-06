@@ -189,7 +189,7 @@ class Block_main_google_map
             if (isset($CAT_FIELDS_CACHE[$catalogue_name])) {
                 $fields = $CAT_FIELDS_CACHE[$catalogue_name];
             } else {
-                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             }
             $CAT_FIELDS_CACHE[$catalogue_name] = $fields;
             $_latitude_key = 'FIELD_1';

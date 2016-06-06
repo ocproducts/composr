@@ -1697,7 +1697,7 @@ function sync_file_move($old, $new)
 /**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
  *
- * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
+ * @param  boolean $known_utf8 Whether we know we are working in utf-8. This is the case for AJAX calls.
  */
 function convert_data_encodings($known_utf8 = false)
 {

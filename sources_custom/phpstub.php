@@ -933,7 +933,7 @@ function get_object_vars($object)
  * @param  string $charset The character set to use
  * @return array The translation table.
  */
-function get_html_translation_table($table, $quote_style = ENT_COMPAT, $charset = 'UTF-8')
+function get_html_translation_table($table, $quote_style = ENT_COMPAT, $charset = 'utf-8')
 {
     return array();
 }
@@ -3445,7 +3445,7 @@ function usort(&$array, $cmp_function)
 }
 
 /**
- * Converts a string with ISO-8859-1 characters encoded with UTF-8 to single-byte ISO-8859-1.
+ * Converts a string with ISO-8859-1 characters encoded with utf-8 to single-byte ISO-8859-1.
  *
  * @param  string $data Subject.
  * @return string Result.
@@ -3456,7 +3456,7 @@ function utf8_decode($data)
 }
 
 /**
- * Encodes an ISO-8859-1 string to UTF-8.
+ * Encodes an ISO-8859-1 string to utf-8.
  *
  * @param  string $data Subject.
  * @return string Result.

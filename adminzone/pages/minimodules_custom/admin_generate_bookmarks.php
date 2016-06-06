@@ -39,7 +39,7 @@ echo <<<END
 <!-- This is an automatically generated file.
      It will be read and overwritten.
      DO NOT EDIT! -->
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <TITLE>Bookmarks</TITLE>
 <H1>Bookmarks Menu</H1>
 <DL><p>

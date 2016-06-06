@@ -23,7 +23,7 @@
 /**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
  *
- * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
+ * @param  boolean $known_utf8 Whether we know we are working in utf-8. This is the case for AJAX calls.
  *
  * @ignore
  */
@@ -55,7 +55,7 @@ function _convert_data_encodings($known_utf8 = false)
 
         $done_something = true;
     } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
-        $encoding = $known_utf8 ? 'UTF-8' : $charset;
+        $encoding = $known_utf8 ? 'utf-8' : $charset;
         if (!function_exists('iconv_set_encoding') || @iconv_set_encoding('input_encoding', $encoding)) {
             if (function_exists('iconv_set_encoding')) {
                 @iconv_set_encoding('output_encoding', $charset);
@@ -108,7 +108,7 @@ function _convert_data_encodings($known_utf8 = false)
         }
 
         if ($VALID_ENCODING) {
-            $encoding = $known_utf8 ? 'UTF-8' : '';
+            $encoding = $known_utf8 ? 'utf-8' : '';
             if ((function_exists('mb_http_input')) && ($encoding == '')) {
                 if (count($_POST) != 0) {
                     $encoding = mb_http_input('P');
@@ -123,7 +123,7 @@ function _convert_data_encodings($known_utf8 = false)
                     $encoding = '';
                 }
                 if ((function_exists('mb_detect_encoding')) && ($encoding == '') && (cms_srv('REQUEST_URI') != '')) {
-                    $encoding = mb_detect_encoding(urldecode(cms_srv('REQUEST_URI')), $charset . ',UTF-8,ISO-8859-1');
+                    $encoding = mb_detect_encoding(urldecode(cms_srv('REQUEST_URI')), $charset . ',utf-8,ISO-8859-1');
                     if ((!is_string($encoding)) || ($encoding == 'pass')) {
                         $encoding = '';
                     }
@@ -310,7 +310,7 @@ function foxy_utf8_to_nce($data = '')
             }
             // build NCE-Code
             $html .= '&#' . strval($new_val) . ';';
-            // Skip additional UTF-8-Bytes
+            // Skip additional utf-8-Bytes
             $str_pos = $str_pos + $str_off;
         } else {
             $html .= chr($old_val);
@@ -451,7 +451,7 @@ function do_environment_utf8_conversion($from_charset)
  */
 function will_be_unicode_neutered($data)
 {
-    $data = @htmlentities($data, ENT_COMPAT, 'UTF-8');
+    $data = @htmlentities($data, ENT_COMPAT, 'utf-8');
     if ($data == '') {
         return false; // Some servers fail at the first step
     }
@@ -562,7 +562,7 @@ function convert_to_internal_encoding($data, $input_charset = null, $internal_ch
  */
 function entity_utf8_decode($data, $internal_charset)
 {
-    $encoded = htmlentities($data, ENT_COMPAT, 'UTF-8'); // Only works on some servers, which is why we test the utility of it before running this function. NB: It is fine that this will double encode any pre-existing entities- as the double encoding will trivially be undone again later (amp can always decode to a lower ascii character)
+    $encoded = htmlentities($data, ENT_COMPAT, 'utf-8'); // Only works on some servers, which is why we test the utility of it before running this function. NB: It is fine that this will double encode any pre-existing entities- as the double encoding will trivially be undone again later (amp can always decode to a lower ascii character)
     if ((strlen($encoded) == 0) && ($data != '')) {
         $encoded = htmlentities($data, ENT_COMPAT);
     }

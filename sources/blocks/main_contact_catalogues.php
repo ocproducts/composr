@@ -74,7 +74,7 @@ class Block_main_contact_catalogues
             $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_name'); // Random/arbitrary (first one that comes out of the DB)
         }
 
-        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         require_code('fields');
 
         $subject = array_key_exists('subject', $map) ? $map['subject'] : '';

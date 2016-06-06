@@ -811,6 +811,9 @@ abstract class Standard_crud_module
         if (get_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = get_param_string('catalogue_name');
         }
+        if (get_param_string('type', '') == 'add_catalogue') {
+            $map['type'] = '_add_catalogue';
+        }
         if (!is_null(get_param_string('auto__add_one', null))) {
             $map['auto__add_one'] = get_param_string('auto__add_one');
         }
@@ -1300,6 +1303,9 @@ abstract class Standard_crud_module
         if (get_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = get_param_string('catalogue_name');
         }
+        if (get_param_string('type', '') == '_edit_catalogue') {
+            $map['type'] = '__edit_catalogue';
+        }
         if (!is_null(get_param_string('redirect', null))) {
             $map['redirect'] = get_param_string('redirect');
         }
@@ -1448,7 +1454,7 @@ abstract class Standard_crud_module
             // Existing fields
             $field_count = 0;
             $c_name = get_param_string('id', false, true);
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             $fields_existing = new Tempcode();
             foreach ($rows as $i => $myrow) {
                 $name = get_translated_text($myrow['cf_name']);

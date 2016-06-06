@@ -46,11 +46,6 @@
 	</div>
 </div>
 
-{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,post,{ID}}}
-{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}
-	{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry},1}
-{+END}
-
 <div>
 	<div class="cns_topic_post_member_details" role="note">
 		{+START,IF_NON_EMPTY,{POSTER}}
@@ -97,6 +92,11 @@
 
 			{POST}
 		</div>
+
+		{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,post,{ID}}}
+		{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}
+			{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry},1}
+		{+END}
 
 		{LAST_EDITED}
 
