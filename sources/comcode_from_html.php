@@ -1013,8 +1013,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</p>', '</p>' . "\n", $semihtml);
     $semihtml = str_replace('[/align]', '[/align]' . "\n", $semihtml);
 
-    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/
-           ($semihtml) . '[/semihtml]';
+    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/($semihtml) . '[/semihtml]';
 }
 
 /**

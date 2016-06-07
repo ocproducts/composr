@@ -347,7 +347,12 @@ function has_keep_parameters()
     }
 
     foreach (array_keys($_GET) as $key) {
-        if (isset($key[0]) && $key[0] == 'k' && substr($key, 0, 5) == 'keep_' && $key != 'keep_devtest' && $key != 'keep_show_loading'/*If testing memory use we don't want this to trigger it as it breaks the test*/) {
+        if (
+            isset($key[0]) &&
+            $key[0] == 'k' &&
+            substr($key, 0, 5) == 'keep_'
+            //&& $key != 'keep_devtest' && $key != 'keep_show_loading'/*If testing memory use we don't want this to trigger it as it breaks the test*/
+        ) {
             $answer = true;
             return $answer;
         }
