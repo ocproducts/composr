@@ -681,7 +681,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've double converted. Ideally we would have parsed a direct stream of HTML. But we could not do that for security reasons.
+                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
                     $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
                     $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true); // Re-parse (with full security)
