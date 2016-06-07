@@ -333,6 +333,10 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
 
     global $ATTACH_MESSAGE_CALLED, $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW, $LATE_ATTACHED_MESSAGES;
 
+    if (!isset($ATTACH_MESSAGE_CALLED)) {
+        return ''; // Still starting up
+    }
+
     foreach ($ATTACHED_MESSAGES_RAW as $last) {
         if (array(strip_tags(is_object($last[0]) ? $last[0]->evaluate() : $last[0]), $last[1]) == array(strip_tags(is_object($message) ? $message->evaluate() : $message), $type)) {
             $am_looping = false;
@@ -1717,6 +1721,11 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                     }
                 }
                 if ((!$support_smart_decaching) || ((($comcode_page_row['p_edit_date'] !== null) && ($comcode_page_row['p_edit_date'] >= $mtime)) || (($comcode_page_row['p_edit_date'] === null) && ($comcode_page_row['p_add_date'] !== null) && ($comcode_page_row['p_add_date'] >= $mtime)))) { // Make sure it has not been edited since last edited or created
+                    // Optimised path for empty panels when no super-fast persistent cache
+                    if ($support_smart_decaching/*only should do an fstat if this is enabled*/ && ($being_included || $is_panel) && $GLOBALS['PERSISTENT_CACHE'] === null && filesize($file_base . '/' . $string) == 0) {
+                        return new Tempcode();
+                    }
+
                     $just_comcode_page_row = db_map_restrict($comcode_page_row, array('the_page', 'the_zone', 'the_theme', 'string_index'));
                     $db_set = get_translated_tempcode('cached_comcode_pages', $just_comcode_page_row, 'string_index', null, user_lang(), true, true/*,true*/);
                 } else {
@@ -1776,7 +1785,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     }
     $LAST_COMCODE_PARSED_TITLE = $title_to_use;
 
-    if (($html->is_empty_shell()) && ($being_included)) {
+    if (($html->is_empty_shell()) && ($being_included || $is_panel)) {
         return $html;
     }
 
@@ -1820,10 +1829,6 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         $GLOBALS['TEMPCODE_CURRENT_PAGE_OUTPUTTING'] = $out;
 
         $out->evaluate_echo(null, true);
-    }
-
-    if (($html->is_empty_shell()) && ($is_panel)) {
-        return $html;
     }
 
     global $SCREEN_TEMPLATE_CALLED;

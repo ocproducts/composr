@@ -1232,6 +1232,8 @@ function apply_quick_caching($_cache)
     $new_tempcode = new Tempcode();
     $prior_offset = 0;
 
+    $has_keep_parameters = has_keep_parameters();
+
     $matches = array();
     $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
     for ($i = 0; $i < $num_matches; $i++) {
@@ -1246,12 +1248,14 @@ function apply_quick_caching($_cache)
 
         $has_escaping = (preg_match('#&\w+;#', $matches[0][$i][0]) !== 0);
 
-        if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
-            $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
-        } else { // All parameters are keep_*
-            $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+        if ($has_keep_parameters) {
+            if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
+                $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+            } else { // All parameters are keep_*
+                $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+            }
+            $new_tempcode->attach($keep);
         }
-        $new_tempcode->attach($keep);
 
         $prior_offset = $new_offset + strlen($matches[0][$i][0]);
     }

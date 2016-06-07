@@ -298,6 +298,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         case '+':
                             $escaped[] = PURE_STRING; // A performance marker
                             break;
+
                         // This is used as a hint to not preprocess
                         case '-':
                             // NB: we're out of ASCII symbols now. We want to avoid []()<>" brackets, whitespace characters, and control codes, and others are used for Tempcode grammar or are valid identifier characters.

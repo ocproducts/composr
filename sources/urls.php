@@ -335,6 +335,28 @@ function can_try_url_schemes($avoid_remap = false)
 }
 
 /**
+ * Find if keep_ parameters are in use
+ *
+ * @return boolean Whether they are
+ */
+function has_keep_parameters()
+{
+    static $answer = null;
+    if ($answer !== null) {
+        return $answer;
+    }
+
+    foreach (array_keys($_GET) as $key) {
+        if (isset($key[0]) && $key[0] == 'k' && substr($key, 0, 5) == 'keep_' && $key != 'keep_devtest' && $key != 'keep_show_loading'/*If testing memory use we don't want this to trigger it as it breaks the test*/) {
+            $answer = true;
+            return $answer;
+        }
+    }
+    $answer = false;
+    return $answer;
+}
+
+/**
  * Build and return a proper URL, from the $vars array.
  * Note: URL parameters should always be in lower case (one of the coding standards)
  *
