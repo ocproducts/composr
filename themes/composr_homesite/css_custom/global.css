@@ -89,7 +89,7 @@ img, img a { border:none; outline:none; }
 	.headRCol>ul>li:last-child>a { background-image:none; }
 
 	.headEmail { clear:both; float:right; padding-left:40px; padding-top:3px; padding-bottom:13px; height:24px; background-image:url('{$IMG;,composr_homesite/email_icon}'); background-repeat:no-repeat; background-position:0px 0px; font-size:14px; color:#525E66; }
-	.headEmail a { color:#B57D10; }
+	.headEmail a { color:#AB7B1F; }
 
 
 	/* Our search button, plus make Google Site Search look the same */
@@ -120,11 +120,11 @@ img, img a { border:none; outline:none; }
 	.dropMenu li { float:left; background-image:url('{$IMG;,composr_homesite/top-nav-seperator}'); background-position:top right; background-repeat:no-repeat; }
 	.dropMenu li:last-child { background-image:none; }
 	.dropMenu li a { padding:0px 21px; line-height:64px; display:block; color:#fff; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold; }
-	.dropMenu li a:hover { color:#661721; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; text-decoration:none; }
-	.dropMenu li a.active { color:#661721; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
-	.dropMenu li:hover { position:relative; text-shadow:1px 1px #FFCC33; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
-	.dropMenu li:hover ul { left:0px; top:64px; background:#DA7C25; padding:0px; {$BETA_CSS_PROPERTY,border-radius:6px 0px 6px 6px;} padding-bottom:10px; }
-	.dropMenu li:hover ul li a { padding:5px; display:block; width:168px; text-indent:15px; background-color:#E5922D; color:#661721; line-height:32px; }
+	.dropMenu li a:hover { color:#520F18; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; text-decoration:none; }
+	.dropMenu li a.active { color:#520F18; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
+	.dropMenu li:hover { position:relative; text-shadow:0 1px #FFCC33; background-image:url('{$IMG;,composr_homesite/top-nav-active-bg}'); background-position:0px 0px; background-repeat:repeat-x; }
+	.dropMenu li:hover ul { left:0px; top:64px; background:#E4A960; padding:0px; {$BETA_CSS_PROPERTY,border-radius:6px 0px 6px 6px;} padding-bottom:10px; }
+	.dropMenu li:hover ul li a { padding:5px; display:block; width:168px; text-indent:15px; background-color:#E4A960; color:#520F18; line-height:32px; }
 	.dropMenu li:hover ul li a:hover { background:#DA7C25; text-shadow:none; color:#FFF; }
 {+END}
 
@@ -492,7 +492,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#d1c5b6,point_of_interest_border,50% dark_border + 50% WB}
 
 /* Backgrounds (quiet a variety, as we need to be able to stack them, to have both hover and active effects, to have zebra striping, and various other levels of perceived focus) */
-{$THEME_WIZARD_COLOR,#fef5eb,area_background,11% seed + 89% WB}
+{$THEME_WIZARD_COLOR,#FFFAF5,area_background,11% seed + 89% WB}
 {$THEME_WIZARD_COLOR,#fdf2e4,area_2_background,15% seed + 85% WB}
 {$THEME_WIZARD_COLOR,#fef7ef,area_3_background,60% area_2_background + 40% WB}
 {$THEME_WIZARD_COLOR,#fcedda,area_4_background,20% seed + 80% WB}
@@ -2465,7 +2465,7 @@ div.ajax_loading, p.ajax_loading {
 }
 
 div .post_buttons>*, div .buttons_group_faded>* {
-	{$BETA_CSS_PROPERTY,opacity: 0.1;} display: inline-block;/*Needed for IE8*/
+	{$BETA_CSS_PROPERTY,opacity: 0.25;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition-property : opacity;}
 	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
@@ -3122,7 +3122,7 @@ input.magic_image_edit_link {
 	margin: 0.25em;
 	{$BETA_CSS_PROPERTY,box-shadow: 0 0 5px {$GET,standard_border};}
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
-	background-color: {$GET,lgrad};
+	background-color: #DA7700;
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;

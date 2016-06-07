@@ -90,7 +90,7 @@
 .palBox ul li.bx8 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-752px 0px; }
 .palBox ul li.bx9 { background-image:url('{$IMG;,composr_homesite/start/palette-icons}'); background-repeat:no-repeat; background-position:-859px 0px; margin-right:0px; }
 
-.palBox ul li a { display:block; }
+.palBox ul li a { display:block; height:100%; }
 {+START,IF,{$NOT,{$MOBILE}}}
 	.palBox ul li { {$BETA_CSS_PROPERTY,transition:margin 0.5s ease-out;} }
 	.palBox ul li:hover { cursor:pointer; margin-top:-10px; }
