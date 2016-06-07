@@ -1119,10 +1119,12 @@ function addon_installed($addon, $non_bundled_too = false)
             $answer = true;
         }
     }
+
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
     }
+
     return $answer;
 }
 
