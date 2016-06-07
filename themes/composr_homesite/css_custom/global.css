@@ -3926,8 +3926,12 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	overflow: auto;
 }
 
+/* Allow pre tags to work when mixed in, as people do this when pasting */
+pre .comcode_code_wrap {
+	white-space: normal;
+}
 pre .comcode_code_inner {
-	white-space: inherit;
+	white-space: pre;
 }
 
 .comcode_code_scroll {
