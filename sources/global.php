@@ -219,9 +219,13 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
-            print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-            flush();
+        if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
+            if (function_exists('attach_message')) {
+                attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+            } else {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                flush();
+            }
         }
 
         if (!$done_init) {
@@ -260,9 +264,13 @@ function require_code($codename, $light_exit = false)
         }
 
         if ($worked) {
-            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
-                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                flush();
+            if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
+                if (function_exists('attach_message')) {
+                    attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                } else {
+                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                    flush();
+                }
             }
 
             $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);

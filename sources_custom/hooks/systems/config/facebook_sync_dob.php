@@ -33,6 +33,7 @@ class Hook_config_facebook_sync_dob
             'explanation' => 'CONFIG_OPTION_facebook_sync_dob',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'facebook',
         );

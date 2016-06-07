@@ -191,6 +191,7 @@ Please be aware that this addon overrides some common templates to add Facebook 
             'sources_custom/hooks/systems/config/facebook_appid.php',
             'sources_custom/hooks/systems/config/facebook_secret_code.php',
             'sources_custom/hooks/systems/config/facebook_uid.php',
+            'sources_custom/hooks/systems/config/facebook_syndicate.php',
             'sources_custom/hooks/systems/config/facebook_auto_syndicate.php',
             'sources_custom/hooks/systems/config/facebook_member_syndicate_to_page.php',
             'sources_custom/hooks/systems/config/facebook_sync_avatar.php',

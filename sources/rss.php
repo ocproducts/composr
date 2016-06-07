@@ -101,14 +101,14 @@ class CMS_RSS
                 }
             }
             // Weed out if isn't supported
-            if ((is_null($GLOBALS['HTTP_CHARSET'])) || (!in_array(strtoupper($GLOBALS['HTTP_CHARSET']), array('ISO-8859-1', 'US-ASCII', 'UTF-8')))) {
-                $GLOBALS['HTTP_CHARSET'] = 'UTF-8';
+            if ((is_null($GLOBALS['HTTP_CHARSET'])) || (!in_array(strtoupper($GLOBALS['HTTP_CHARSET']), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
+                $GLOBALS['HTTP_CHARSET'] = 'utf-8';
             }
 
             // Our internal charset
             $parser_charset = get_charset();
-            if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'UTF-8'))) {
-                $parser_charset = 'UTF-8';
+            if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'utf-8'))) {
+                $parser_charset = 'utf-8';
             }
 
             // Create and setup our parser
@@ -141,7 +141,7 @@ class CMS_RSS
                 if (($extra_data != '') && (strpos($data, $extra_data) === false)) {
                     $data = $extra_data . $data;
                 }
-                if ((strtoupper($GLOBALS['HTTP_CHARSET']) == 'ISO-8859-1') || (strtoupper($GLOBALS['HTTP_CHARSET']) == 'UTF-8')) { // Hack to fix bad use of entities (we can't encode them all above)
+                if ((strtoupper($GLOBALS['HTTP_CHARSET']) == 'ISO-8859-1') || (strtolower($GLOBALS['HTTP_CHARSET']) == 'utf-8')) { // Hack to fix bad use of entities (we can't encode them all above)
                     $data = convert_bad_entities($data, $GLOBALS['HTTP_CHARSET']);
                 }
                 $convert_bad_entities = true;

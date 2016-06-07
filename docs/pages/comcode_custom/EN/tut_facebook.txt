@@ -342,6 +342,8 @@ You can (in theory) have content automatically syndicate to Facebook in 2 ways:
 1) Site level: All News & Calendar events, to the configured Facebook page/group/user
 2) Personal: Activity, to the wall of individual members
 
+This only applies if the 'Facebook activity syndication' option is enabled (it's not by default).
+
 [title="3"]Site level[/title]
 
 You will get syndication options on the news add/edit and calendar event add/edit forms. These will syndicate the news/event to the Facebook page/group/user associated with the site.
@@ -367,7 +369,7 @@ Personal syndication requires the non-bundled Activity Feed addon to be installe
 If "Activity Feed" is installed then members have a choice whether to automatically syndicate all their activities.
 The member's set this choice (i.e. enable/disable syndication) via their activity feed settings (on the activity tab of their account).
 Whether member's logged in with Facebook automatically syndicate or not is determined via the "Automatically enable syndication" configuration option.
-Personal syndication works for member's not logged in with Facebook as well, but it needs a separate authorisation on their activity feed settings.
+Personal syndication works for member's not logged in with Facebook as well, but it needs a separate authorisation on their activity feed settings -- and will then turn the account into a Facebook account also.
 
 Typically the syndication goes to the user's Facebook account, but it can go the site's Facebook page if the following conditions are all met:
 1) the "Option to syndicate to a Facebook page" option is set

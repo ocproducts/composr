@@ -987,7 +987,7 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
-    if (strtoupper(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtoupper($in);
     }
 
@@ -1119,10 +1119,12 @@ function addon_installed($addon, $non_bundled_too = false)
             $answer = true;
         }
     }
+
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
     }
+
     return $answer;
 }
 

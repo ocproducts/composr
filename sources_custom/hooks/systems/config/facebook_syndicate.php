@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_facebook_auto_syndicate
+class Hook_config_facebook_syndicate
 {
     /**
      * Gets the details relating to the config option.
@@ -26,14 +26,14 @@ class Hook_config_facebook_auto_syndicate
     public function get_details()
     {
         return array(
-            'human_name' => 'FACEBOOK_AUTO_SYNDICATE',
+            'human_name' => 'FACEBOOK_SYNDICATE',
             'type' => 'tick',
             'category' => 'COMPOSR_APIS',
             'group' => 'FACEBOOK_SYNDICATION',
-            'explanation' => 'CONFIG_OPTION_facebook_auto_syndicate',
+            'explanation' => 'CONFIG_OPTION_facebook_syndicate',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 10,
+            'order_in_category_group' => 9,
 
             'addon' => 'facebook',
         );

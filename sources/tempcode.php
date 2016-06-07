@@ -1067,17 +1067,21 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
 
                 if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                    require_code('files');
                     $before = memory_get_usage();
                 }
                 if (isset($block_parms['block'])) {
                     $b_value = do_block($block_parms['block'], $block_parms);
                     if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                        require_code('files');
-                        @ob_end_flush();
-                        @ob_end_flush();
-                        @ob_end_flush();
-                        print('<!-- block: ' . htmlentities($block_parms['block']) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . integer_format(memory_get_usage()) . ') -->' . "\n");
-                        flush();
+                        if (function_exists('attach_message')) {
+                            attach_message('block: ' . $block_parms['block'] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . integer_format(memory_get_usage()) . ')', 'inform');
+                        } else {
+                            @ob_end_flush();
+                            @ob_end_flush();
+                            @ob_end_flush();
+                            print('<!-- block: ' . htmlentities($block_parms['block']) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(integer_format(memory_get_usage())) . ') -->' . "\n");
+                            flush();
+                        }
                     }
 
                     if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
@@ -1159,16 +1163,20 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $wide = is_wide();
                     if ((($wide == 0) || (($wide_high == 0) && (($param[0] == 'bottom') || ($param[0] == 'top')))) && ((get_option('site_closed') == '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
                         if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                            require_code('files');
                             $before = memory_get_usage();
                         }
                         $tp_value = request_page('panel_' . $param[0], false, array_key_exists(1, $param) ? $param[1] : null, null);
                         if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                            require_code('files');
-                            @ob_end_flush();
-                            @ob_end_flush();
-                            @ob_end_flush();
-                            print('<!-- panel: ' . htmlentities('panel_' . $param[0]) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                            flush();
+                            if (function_exists('attach_message')) {
+                                attach_message('panel: ' . 'panel_' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                            } else {
+                                @ob_end_flush();
+                                @ob_end_flush();
+                                @ob_end_flush();
+                                print('<!-- panel: ' . htmlentities('panel_' . $param[0]) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                                flush();
+                            }
                         }
 
                         $tp_value->handle_symbol_preprocessing();
@@ -1238,6 +1246,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $virtual_state = (array_key_exists(3, $param)) && ($param[3] == '1');
 
                 if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                    require_code('files');
                     $before = memory_get_usage();
                 }
 
@@ -1268,12 +1277,15 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
 
                 if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                    require_code('files');
-                    @ob_end_flush();
-                    @ob_end_flush();
-                    @ob_end_flush();
-                    print('<!-- page: ' . htmlentities($param[0]) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                    flush();
+                    if (function_exists('attach_message')) {
+                        attach_message('page: ' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                    } else {
+                        @ob_end_flush();
+                        @ob_end_flush();
+                        @ob_end_flush();
+                        print('<!-- page: ' . htmlentities($param[0]) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                        flush();
+                    }
                 }
                 if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
                     $children[] = array(':page: ' . $param[0], isset($tp_value->children) ? $tp_value->children : array(), isset($tp_value->fresh) ? $tp_value->fresh : false);

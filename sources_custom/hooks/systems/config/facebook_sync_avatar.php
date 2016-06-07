@@ -33,6 +33,7 @@ class Hook_config_facebook_sync_avatar
             'explanation' => 'CONFIG_OPTION_facebook_sync_avatar',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'facebook',
         );

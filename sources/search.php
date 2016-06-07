@@ -105,7 +105,7 @@ abstract class FieldsSearchHook
 
         $where_clause = '';
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         if (count($fields) == 0) {
             return null;
         }

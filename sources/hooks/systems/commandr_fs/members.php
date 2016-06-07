@@ -121,7 +121,7 @@ class Hook_commandr_fs_members
             foreach (array_keys($member_custom_fields) as $_i) {
                 $i = intval(substr($_i, strlen('field_')));
                 $cpf_value = $member_custom_fields['field_' . strval($i)];
-                $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)), $GLOBALS['FORUM_DB']);
+                $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)));
                 $listing[] = array(
                     $cpf_name,
                     COMMANDR_FS_FILE,

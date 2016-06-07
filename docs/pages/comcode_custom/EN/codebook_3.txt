@@ -607,7 +607,8 @@ The 'keep' parameters available are:
  - [tt]keep_su_online[/tt] -- set this to '1' if you want the user [tt]keep_su[/tt] is used with to also show as online, and for their last online/submit statuses to be updated
  - [tt]keep_su_strict[/tt] -- set this to '1' if to strictly masquerade as another user rather than to allow a few exceptions like the display of stack traces
  - [tt]keep_no_minify[/tt] -- set this to '1' if you want to use a JavaScript debugger and hence do not want the JS to be minified (unreadable)
- - [tt]keep_show_loading[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as server-side scripts load
+ - [tt]keep_show_loading[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as major server-side dependency files load
+ - [tt]keep_show_loading_code[/tt] -- set this to '1' if you want comments inside the HTML source showing memory usage taken up as server-side PHP scripts load
  - [tt]keep_avoid_memory_limit[/tt] -- do not put on a memory limit (admins only); using this will also add in the option to remove paginations, for those with the remove_page_split privilege
  - [tt]keep_memory_over_speed[/tt] -- use less memory for Tempcode
  - [tt]keep_no_query_limit[/tt] -- do not place a query limit during development mode

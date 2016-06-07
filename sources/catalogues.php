@@ -959,7 +959,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
 
         // If the field should be shown, show it
         if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH')) || ($force_view_all)) {
-            if (($field['cf_visible'] == 1) || ($i == 0)) {
+            if ($field['cf_visible'] == 1) {
                 if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/) || ($force_view_all)) {
                     $f = array('ENTRYID' => strval($id), 'CATALOGUE' => $catalogue_name, 'TYPE' => $field['cf_type'], 'FIELD' => $field_name, 'FIELDID' => $str_i, '_FIELDID' => $str_id, 'FIELDTYPE' => $field_type, 'VALUE_PLAIN' => $ev, 'VALUE' => $use_ev);
                     if (!$no_catalogue_field_assembly_fieldmaps__this) {
@@ -981,7 +981,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
                         }
                     }
                 }
-            } else {
+            } elseif ($i != 0) {
                 $all_visible = false;
             }
             //$fields_1d[]=$field;

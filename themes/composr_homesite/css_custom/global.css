@@ -3926,6 +3926,10 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	overflow: auto;
 }
 
+pre .comcode_code_inner {
+	white-space: inherit;
+}
+
 .comcode_code_scroll {
 	max-height: 300px;
 }

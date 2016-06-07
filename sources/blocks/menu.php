@@ -141,7 +141,8 @@ function block_menu__cache_on($map)
 
     $url_type = get_param_string('type', 'browse');
 
-    return array(
+    $ret = array(
+        has_keep_parameters(),
         ((substr($menu, 0, 1) != '_') && (substr($menu, 0, 3) != '!!!') && (has_actual_page_access(get_member(), 'admin_menus'))),
         $zone,
         $page,
@@ -153,4 +154,6 @@ function block_menu__cache_on($map)
         array_key_exists('silent_failure', $map) ? $map['silent_failure'] : '0',
         array_key_exists('tray_status', $map) ? $map['tray_status'] : '',
     );
+
+    return $ret;
 }
