@@ -617,9 +617,9 @@ if (count($SITE_INFO) == 0) {
 }
 if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
-        critical_error('INFO.PHP');
+        critical_error('_CONFIG.PHP');
     }
-    critical_error('INFO.PHP_CORRUPTED');
+    critical_error('_CONFIG.PHP_CORRUPTED');
 }
 
 // Rate limiter, to stop aggressive bots
