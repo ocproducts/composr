@@ -866,8 +866,7 @@ abstract class Standard_crud_module
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
             require_code('fields');
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'd55b3a9fc65c8586498489f55ca2f1b8', 'TITLE' => do_lang_tempcode('MORE'))));
-            append_form_custom_fields($this->content_type, null, $fields, $hidden);
+            append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
 
         // Awards?
@@ -1378,8 +1377,7 @@ abstract class Standard_crud_module
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
             require_code('fields');
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3431365db07e3ecd6f9f4d8cf51ff396', 'TITLE' => do_lang_tempcode('MORE'))));
-            append_form_custom_fields($this->content_type, $id, $fields, $hidden);
+            append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
 
         // Awards?

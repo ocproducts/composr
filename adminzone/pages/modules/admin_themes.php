@@ -1525,29 +1525,30 @@ class Module_admin_themes
 
             // The file we're LOADING from for edit
             $ext = get_file_extension($file);
+            if ($ext == '') {
+                $ext = ltrim(get_param_string('suffix', '.tpl'), '.');
+                $file .= '.' . $ext;
+            }
             $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
-            if (is_null($_default_load_path[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-            }
-            $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
-            $full_path = get_custom_file_base() . '/' . $default_load_path;
-            if (!is_file($full_path)) {
-                $full_path = get_file_base() . '/' . $default_load_path;
-            }
-            if (file_exists($full_path)) {
-                $contents = file_get_contents($full_path);
-            } else {
-                $contents = '';
-            }
+            $contents = '';
+            $revisions = new Tempcode();
+            if (!is_null($_default_load_path[0])) {
+                $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
+                $full_path = get_custom_file_base() . '/' . $default_load_path;
+                if (!is_file($full_path)) {
+                    $full_path = get_file_base() . '/' . $default_load_path;
+                }
+                if (file_exists($full_path)) {
+                    $contents = file_get_contents($full_path);
+                }
 
-            // Revisions
-            if (addon_installed('actionlog')) {
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                $revision_loaded = mixed();
-                $revisions = $revision_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
-            } else {
-                $revisions = new Tempcode();
+                // Revisions
+                if (addon_installed('actionlog')) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    $revision_loaded = mixed();
+                    $revisions = $revision_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
+                }
             }
 
             // Old contents (for very easy compare to base file in default theme)

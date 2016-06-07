@@ -25,10 +25,6 @@
  */
 function init__uploads()
 {
-    if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
-    }
-
     if (!defined('CMS_UPLOAD_ANYTHING')) {
         define('CMS_UPLOAD_IMAGE', 1);
         define('CMS_UPLOAD_VIDEO', 2);

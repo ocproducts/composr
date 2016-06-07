@@ -176,6 +176,13 @@ class Module_cms_catalogues extends Standard_crud_module
             }
         }
 
+        if ($type == 'edit_other' || $type == '_edit_other') {
+            $content_type = $this->alt_crud_module->tied_to_content_type(get_param_string('id', null));
+            if ($content_type !== null) {
+                $this->alt_crud_module->title = get_screen_title('EDIT_CATALOGUE_FOR_CONTENT_TYPE', true, array(escape_html($content_type)));
+            }
+        }
+
         return $ret;
     }
 
