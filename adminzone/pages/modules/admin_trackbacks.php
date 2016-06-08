@@ -155,6 +155,7 @@ class Module_admin_trackbacks
                                 break;
                             }
                             require_code('failure');
+                            require_code('failure_spammers');
                             add_ip_ban($trackback_ip, do_lang('TRACKBACK_SPAM'));
                             syndicate_spammer_report($trackback_ip, '', '', do_lang('TRACKBACK_SPAM'), true);
                         }

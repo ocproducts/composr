@@ -498,6 +498,7 @@ class CMSModerationWrite
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($user_id);
 
         require_code('failure');
+        require_code('failure_spammers');
         syndicate_spammer_report($ip, $username, $email, '', false);
 
         require_code('cns_general_action2');

@@ -446,6 +446,7 @@ class Module_admin_ip_ban
         }
 
         require_code('failure');
+        require_code('failure_spammers');
         syndicate_spammer_report($ip, is_guest($member_id) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), get_param_string('reason'), true);
         log_it('SYNDICATED_IP_BAN', $ip);
 

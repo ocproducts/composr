@@ -1743,7 +1743,7 @@ class Module_admin_newsletter extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $num_readers = $GLOBALS['SITE_DB']->query_select_value('newsletter n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id', 'COUNT(*)', array('code_confirm' => 0));
+            $num_readers = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id', 'COUNT(*)', array('code_confirm' => 0));
 
             $fields->attach(results_entry(array(get_translated_text($row['title']), integer_format($num_readers), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
