@@ -208,10 +208,12 @@ function get_option($name, $missing_ok = false)
         $value = get_default_option($name);
 
         if ($value === null) {
-            if (function_exists('attach_message')) {
-                attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
-            } else {
-                critical_error('PASSON', 'Missing option: ' . $name);
+            if (!$missing_ok) {
+                if (function_exists('attach_message')) {
+                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+                } else {
+                    critical_error('PASSON', 'Missing option: ' . $name);
+                }
             }
 
             $GET_OPTION_LOOP = false;
