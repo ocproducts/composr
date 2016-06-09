@@ -128,6 +128,7 @@ class Hook_addon_registry_newsletter
             'themes/default/templates/NEWSLETTER_SUBSCRIBERS_SCREEN.tpl',
             'adminzone/pages/modules/admin_newsletter.php',
             'lang/EN/newsletter.ini',
+            'sources/hooks/systems/config/newsletter_update_time.php',
             'sources/hooks/systems/commandr_fs/newsletters.php',
             'sources/hooks/systems/commandr_fs/periodic_newsletters.php',
             'sources/hooks/systems/commandr_fs/newsletter_subscribers.php',

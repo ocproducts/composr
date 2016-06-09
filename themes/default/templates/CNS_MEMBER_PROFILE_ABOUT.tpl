@@ -133,7 +133,7 @@
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 													{+START,IF_PASSED,EDITABILITY}
 														{$SET,edit_type,{EDIT_TYPE}}
-														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+														{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
 													{+END}
 													{+START,IF_NON_PASSED,EDITABILITY}
 														{VALUE}
@@ -192,13 +192,13 @@
 											<span>
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 													{+START,IF,{$EQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
-														{$COUNTRY_CODE_TO_NAME,{VALUE}}
+														{$COUNTRY_CODE_TO_NAME,{RAW_VALUE}}
 													{+END}
 
 													{+START,IF,{$NEQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
 														{+START,IF_PASSED,EDITABILITY}
 															{$SET,edit_type,{EDIT_TYPE}}
-															{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+															{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
 														{+END}
 														{+START,IF_NON_PASSED,EDITABILITY}
 															{VALUE}

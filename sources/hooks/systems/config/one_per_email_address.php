@@ -38,6 +38,7 @@ class Hook_config_one_per_email_address
             'explanation' => 'CONFIG_OPTION_one_per_email_address',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'core_cns',
         );

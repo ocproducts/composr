@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    newsletter
  */
 
 /**
  * Hook class.
  */
-class Hook_config_average_gamble_multiplier
+class Hook_config_newsletter_update_time
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_average_gamble_multiplier
     public function get_details()
     {
         return array(
-            'human_name' => 'AVERAGE_GAMBLE_MULTIPLIER',
+            'human_name' => 'NEWSLETTER_REGULARITY',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
-            'group' => 'GAMBLING',
-            'explanation' => 'CONFIG_OPTION_average_gamble_multiplier',
+            'category' => 'ADMIN',
+            'group' => 'CHECK_LIST',
+            'explanation' => 'CONFIG_OPTION_newletter_update_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'required' => false,
 
-            'addon' => 'pointstore',
+            'addon' => 'newsletter',
         );
     }
 
@@ -51,6 +51,6 @@ class Hook_config_average_gamble_multiplier
      */
     public function get_default()
     {
-        return '85';
+        return '168';
     }
 }

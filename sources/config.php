@@ -201,28 +201,25 @@ function get_option($name, $missing_ok = false)
             return ''; // Upgrade scenario, probably can't do this robustly
         }
 
-        if ($missing_ok) {
-            return null;
-        }
-
         global $GET_OPTION_LOOP;
         $GET_OPTION_LOOP = true;
 
         require_code('config2');
         $value = get_default_option($name);
+
         if ($value === null) {
-            if (!$missing_ok) {
-                if (function_exists('attach_message')) {
-                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
-                } else {
-                    critical_error('PASSON', 'Missing option: ' . $name);
-                }
+            if (function_exists('attach_message')) {
+                attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+            } else {
+                critical_error('PASSON', 'Missing option: ' . $name);
             }
 
+            $GET_OPTION_LOOP = false;
+
             return null;
-        } else {
-            set_option($name, $value, 0);
         }
+
+        set_option($name, $value, 0);
 
         $GET_OPTION_LOOP = false;
     }

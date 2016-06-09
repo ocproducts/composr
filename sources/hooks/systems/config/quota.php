@@ -38,6 +38,7 @@ class Hook_config_quota
             'explanation' => 'CONFIG_OPTION_quota',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'pointstore',
         );

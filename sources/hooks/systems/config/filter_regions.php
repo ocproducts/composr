@@ -38,7 +38,7 @@ class Hook_config_filter_regions
             'explanation' => 'CONFIG_OPTION_filter_regions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 40,
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

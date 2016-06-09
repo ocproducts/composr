@@ -1241,6 +1241,8 @@ function put_value_in_stack_trace($value)
  */
 function get_html_trace()
 {
+    require_code('templates');
+
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
     $trace = array();

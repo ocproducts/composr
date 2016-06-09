@@ -2012,7 +2012,7 @@ function get_webpage_meta_details($url)
         }
 
         $GLOBALS['SITE_DB']->query_insert('url_title_cache', $meta_details, false, true); // 'true' to stop race conditions
-    } else {
+    } elseif (is_array($result)) {
         $meta_details['t_mime_type'] = $result[1];
     }
 

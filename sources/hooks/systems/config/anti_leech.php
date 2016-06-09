@@ -38,6 +38,7 @@ class Hook_config_anti_leech
             'explanation' => 'CONFIG_OPTION_anti_leech',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
         );

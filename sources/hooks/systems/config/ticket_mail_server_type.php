@@ -38,6 +38,7 @@ class Hook_config_ticket_mail_server_type
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_type',
             'shared_hosting_restricted' => '0',
             'list_options' => 'pop3|pop3s|imap|imaps',
+            'order_in_category_group' => 5,
 
             'addon' => 'tickets',
         );

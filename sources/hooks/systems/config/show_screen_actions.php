@@ -38,6 +38,7 @@ class Hook_config_show_screen_actions
             'explanation' => 'CONFIG_OPTION_show_screen_actions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

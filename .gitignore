@@ -8,6 +8,8 @@ test_a
 /safe_mode_temp/subs.inc
 /sources_custom/user_sync__customise.php
 /www.pid
+/_critical_error.html
+/critical_errors
 .DS_Store
 /.ftaccess
 /.ftpquota

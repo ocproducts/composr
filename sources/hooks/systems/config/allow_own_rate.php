@@ -38,6 +38,7 @@ class Hook_config_allow_own_rate
             'explanation' => 'CONFIG_OPTION_allow_own_rate',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'core_feedback_features',
         );

@@ -38,6 +38,7 @@ class Hook_config_auto_submit_sitemap
             'explanation' => 'CONFIG_OPTION_auto_submit_sitemap',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
         );

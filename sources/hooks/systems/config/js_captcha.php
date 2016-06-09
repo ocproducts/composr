@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    captcha
  */
 
 /**
  * Hook class.
  */
-class Hook_config_average_gamble_multiplier
+class Hook_config_js_captcha
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_average_gamble_multiplier
     public function get_details()
     {
         return array(
-            'human_name' => 'AVERAGE_GAMBLE_MULTIPLIER',
-            'type' => 'integer',
-            'category' => 'POINTSTORE',
-            'group' => 'GAMBLING',
-            'explanation' => 'CONFIG_OPTION_average_gamble_multiplier',
+            'human_name' => 'JS_CAPTCHA',
+            'type' => 'tick',
+            'category' => 'SECURITY',
+            'group' => 'CAPTCHA',
+            'explanation' => 'CONFIG_OPTION_js_captcha',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 5,
 
-            'addon' => 'pointstore',
+            'addon' => 'captcha',
         );
     }
 
@@ -51,6 +51,6 @@ class Hook_config_average_gamble_multiplier
      */
     public function get_default()
     {
-        return '85';
+        return '1';
     }
 }

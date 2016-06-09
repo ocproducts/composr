@@ -202,7 +202,7 @@ class Module_login
         $passion = new Tempcode(); // Hidden fields
 
         // Where we will be redirected to after login, for GET requests (POST requests are handled further in the code)
-        $redirect_default = get_self_url(false, true); // The default is to go back to where we are after login. Note that this is not necessarily the URL to the login module, as login screens happen on top of screens you're not allowed to access. If it is the URL to the login module, we'll realise this later in this code. This URL is coded to not redirect to root if we have $_POST, because we relay $_POST values and have intelligence (via $passion).
+        $redirect_default = get_self_url(true); // The default is to go back to where we are after login. Note that this is not necessarily the URL to the login module, as login screens happen on top of screens you're not allowed to access. If it is the URL to the login module, we'll realise this later in this code. This URL is coded to not redirect to root if we have $_POST, because we relay $_POST values and have intelligence (via $passion).
         $redirect = get_param_string('redirect', $redirect_default); // ... but often the login screen's URL tells us where to go back to
         $unhelpful_redirect = false;
         $unhelpful_url_stubs = array(

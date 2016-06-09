@@ -38,6 +38,7 @@ class Hook_config_password_reset_process
             'explanation' => 'CONFIG_OPTION_password_reset_process',
             'shared_hosting_restricted' => '0',
             'list_options' => 'emailed|temporary|ultra',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_cns',
         );

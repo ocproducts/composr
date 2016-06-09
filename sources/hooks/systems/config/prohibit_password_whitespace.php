@@ -38,6 +38,7 @@ class Hook_config_prohibit_password_whitespace
             'explanation' => 'CONFIG_OPTION_prohibit_password_whitespace',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 10,
 
             'addon' => 'core_cns',
         );

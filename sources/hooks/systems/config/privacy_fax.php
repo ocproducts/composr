@@ -38,6 +38,7 @@ class Hook_config_privacy_fax
             'explanation' => 'CONFIG_OPTION_privacy_fax',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'core_cns',
         );
