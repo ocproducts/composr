@@ -38,6 +38,7 @@ class Hook_config_spam_block_threshold
             'explanation' => 'CONFIG_OPTION_spam_block_threshold',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
         );

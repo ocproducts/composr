@@ -38,6 +38,7 @@ class Hook_config_maximum_users
             'explanation' => 'CONFIG_OPTION_maximum_users',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

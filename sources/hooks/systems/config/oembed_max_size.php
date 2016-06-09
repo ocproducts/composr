@@ -38,6 +38,7 @@ class Hook_config_oembed_max_size
             'explanation' => 'CONFIG_OPTION_oembed_max_size',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'core_rich_media',
         );

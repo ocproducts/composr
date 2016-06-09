@@ -395,6 +395,8 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'lang_custom' => '.*',
             'file_backups' => 'exports',
             'theme.ini' => 'themes/[^/]*',
+            '_critical_error.html' => '',
+            'critical_errors' => '',
         );
     }
 

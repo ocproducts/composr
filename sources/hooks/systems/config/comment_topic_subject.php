@@ -38,6 +38,7 @@ class Hook_config_comment_topic_subject
             'explanation' => 'CONFIG_OPTION_comment_topic_subject',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_feedback_features',
         );

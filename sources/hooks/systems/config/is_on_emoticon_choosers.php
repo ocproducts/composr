@@ -38,6 +38,7 @@ class Hook_config_is_on_emoticon_choosers
             'explanation' => 'CONFIG_OPTION_is_on_emoticon_choosers',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 3,
 
             'addon' => 'core_configuration',
         );

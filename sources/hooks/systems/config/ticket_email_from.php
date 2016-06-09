@@ -38,6 +38,7 @@ class Hook_config_ticket_email_from
             'explanation' => 'CONFIG_OPTION_ticket_email_from',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'tickets',
         );

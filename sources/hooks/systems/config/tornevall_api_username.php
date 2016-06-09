@@ -38,6 +38,7 @@ class Hook_config_tornevall_api_username
             'explanation' => 'CONFIG_OPTION_tornevall_api_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 15,
 
             'addon' => 'core_configuration',
         );

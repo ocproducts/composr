@@ -38,6 +38,7 @@ class Hook_config_smtp_from_address
             'explanation' => 'CONFIG_OPTION_smtp_from_address',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'core_configuration',
         );

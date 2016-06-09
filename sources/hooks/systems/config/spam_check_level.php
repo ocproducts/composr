@@ -38,6 +38,7 @@ class Hook_config_spam_check_level
             'explanation' => 'CONFIG_OPTION_spam_check_level',
             'shared_hosting_restricted' => '0',
             'list_options' => 'EVERYTHING|ACTIONS|GUESTACTIONS|JOINING|NEVER',
+            'order_in_category_group' => 11,
 
             'addon' => 'core_configuration',
         );

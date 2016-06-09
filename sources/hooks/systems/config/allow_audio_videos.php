@@ -38,6 +38,7 @@ class Hook_config_allow_audio_videos
             'explanation' => 'CONFIG_OPTION_allow_audio_videos',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_topic_pin
             'explanation' => 'CONFIG_OPTION_topic_pin',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'pointstore',
         );

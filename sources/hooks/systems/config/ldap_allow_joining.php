@@ -38,6 +38,7 @@ class Hook_config_ldap_allow_joining
             'explanation' => 'CONFIG_OPTION_ldap_allow_joining',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 15,
 
             'addon' => 'ldap',
         );

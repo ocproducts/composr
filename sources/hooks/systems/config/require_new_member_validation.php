@@ -38,6 +38,7 @@ class Hook_config_require_new_member_validation
             'explanation' => 'CONFIG_OPTION_require_new_member_validation',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_cns',
         );

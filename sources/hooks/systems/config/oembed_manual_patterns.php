@@ -38,6 +38,7 @@ class Hook_config_oembed_manual_patterns
             'explanation' => 'CONFIG_OPTION_oembed_manual_patterns',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_rich_media',
         );

@@ -38,7 +38,7 @@ class Hook_config_max_thread_depth
             'explanation' => 'CONFIG_OPTION_max_thread_depth',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 6,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_feedback_features',
         );

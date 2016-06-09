@@ -38,6 +38,7 @@ class Hook_config_ticket_mail_server_port
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_port',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 7,
 
             'addon' => 'tickets',
         );

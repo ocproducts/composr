@@ -38,6 +38,7 @@ class Hook_config_use_contextual_dates
             'explanation' => 'CONFIG_OPTION_use_contextual_dates',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
         );

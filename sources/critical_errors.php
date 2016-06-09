@@ -234,7 +234,7 @@ END;
 
         $contents = ob_get_contents();
         $dir = get_custom_file_base() . '/critical_errors';
-        if ((is_dir($dir)) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']))) {
+        if ((is_dir($dir)) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']) || (!empty($_GET['keep_no_dev_mode'])))) {
             $code = uniqid('', true);
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();

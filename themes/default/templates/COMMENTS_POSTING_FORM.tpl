@@ -3,7 +3,9 @@
 		{+START,IF,{USE_CAPTCHA}}
 			<div class="comments_captcha">
 				<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-					<p><label for="captcha">{!DESCRIPTION_CAPTCHA_2,<a onclick="return play_self_audio_link(this);" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}</label></p>
+					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
+						<p><label for="captcha">{!DESCRIPTION_CAPTCHA_2,<a onclick="return play_self_audio_link(this);" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}</label></p>
+					{+END}
 					{+START,IF,{$CONFIG_OPTION,css_captcha}}
 						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
 					{+END}
@@ -228,7 +230,14 @@
 								{+END}
 
 								{+START,IF,{$MOBILE}}
-									{$GET,CAPTCHA}
+									{+START,IF,{$CONFIG_OPTION,js_captcha}}
+										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
+
+										<script>document.write('{$GET;^/,CAPTCHA}');</script>
+									{+END}
+									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+										{$GET,CAPTCHA}
+									{+END}
 								{+END}
 							</td>
 						</tr>
@@ -239,7 +248,14 @@
 
 				<div class="comments_posting_form_end">
 					{+START,IF,{$NOT,{$MOBILE}}}
-						{$GET,CAPTCHA}
+						{+START,IF,{$CONFIG_OPTION,js_captcha}}
+							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
+
+							<script>document.write('{$GET;^/,CAPTCHA}');</script>
+						{+END}
+						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+							{$GET,CAPTCHA}
+						{+END}
 					{+END}
 
 					<div class="proceed_button buttons_group">
