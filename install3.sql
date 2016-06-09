@@ -68,7 +68,7 @@ CREATE TABLE cms_f_posts (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nThe website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1464964869, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_57519705da32f6.67721927_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_57519705da32f6.67721927_1\\\";s:627:\\\"\\$tpl_funcs[\'string_attach_57519705da32f6.67721927_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"The website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nThe website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1465441688, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd987958c0.11129415_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd987958c0.11129415_1\\\";s:627:\\\"\\$tpl_funcs[\'string_attach_5758dd987958c0.11129415_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"The website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_read_logs;
@@ -149,48 +149,7 @@ CREATE TABLE cms_f_topics (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1464964869, 'Welcome to the forums', '', 'System', 1, 1, 1464964869, 'Welcome to the forums', 'System', 1, 1, '', 1);
-
-
-DROP TABLE IF EXISTS cms_f_usergroup_sub_mails;
-
-
-
-CREATE TABLE cms_f_usergroup_sub_mails (
-     id integer unsigned auto_increment NOT NULL,
-     m_usergroup_sub_id integer NOT NULL,
-     m_ref_point varchar(80) NOT NULL,
-     m_ref_point_offset integer NOT NULL,
-     m_subject longtext NOT NULL,
-     m_body longtext NOT NULL,
-
-    PRIMARY KEY (id)
-) engine=MyISAM;
-
-
-DROP TABLE IF EXISTS cms_f_usergroup_subs;
-
-
-
-CREATE TABLE cms_f_usergroup_subs (
-     id integer unsigned auto_increment NOT NULL,
-     s_title longtext NOT NULL,
-     s_description longtext NOT NULL,
-     s_cost varchar(255) NOT NULL,
-     s_length integer NOT NULL,
-     s_length_units varchar(255) NOT NULL,
-     s_auto_recur tinyint(1) NOT NULL,
-     s_group_id integer NOT NULL,
-     s_enabled tinyint(1) NOT NULL,
-     s_mail_start longtext NOT NULL,
-     s_mail_end longtext NOT NULL,
-     s_mail_uhoh longtext NOT NULL,
-     s_uses_primary tinyint(1) NOT NULL,
-     s_description__text_parsed longtext NOT NULL,
-     s_description__source_user integer DEFAULT 1 NOT NULL,
-
-    PRIMARY KEY (id)
-) engine=MyISAM;
+INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1465441688, 'Welcome to the forums', '', 'System', 1, 1, 1465441688, 'Welcome to the forums', 'System', 1, 1, '', 1);
 
 
 DROP TABLE IF EXISTS cms_f_warnings;
@@ -311,7 +270,7 @@ CREATE TABLE cms_galleries (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1464964881, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5751970c517a26.64946455_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5751970c517a26.64946455_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5751970c517a26.64946455_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5751970c517a26.64946455_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5751970c517a26.64946455_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5751970c517a26.64946455_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1465441700, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_gifts;
@@ -1190,87 +1149,6 @@ INSERT INTO cms_group_category_access (module_the_name, category_name, group_id)
 
 
 INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('news', '7', 10);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 1);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 3);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 4);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 5);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 6);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 7);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 8);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 9);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 10);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 1);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 3);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 4);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 5);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 6);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 7);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 8);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 9);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 10);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 1);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 3);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 4);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 5);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 6);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 7);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 8);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 9);
-
-
-INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 10);
 
 
 DROP TABLE IF EXISTS cms_group_page_access;
@@ -3270,6 +3148,48 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'change_newsletter_subscriptions', '', '', '', 1);
 
 
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (4, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (5, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (6, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (7, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (8, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (9, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
+
+
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'use_points', '', '', '', 1);
 
 
@@ -3400,66 +3320,6 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 
 
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_title_comcode_page', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (4, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (5, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (6, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (7, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (8, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (9, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
 
 
 DROP TABLE IF EXISTS cms_group_zone_access;
