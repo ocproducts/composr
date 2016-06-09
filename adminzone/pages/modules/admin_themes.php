@@ -252,7 +252,7 @@ class Module_admin_themes
                 }
             } else {
                 $id = get_param_string('id');
-                $theme = get_param_string('theme');
+                $theme = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme(''));
             }
 
             set_short_title($id);
