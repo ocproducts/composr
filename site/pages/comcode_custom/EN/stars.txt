@@ -127,7 +127,6 @@
 
 		<tr class="cmn-str-row">
 			<td class="blk1">
-				<img alt="Photo of Philip Withnall" width="100" src="{$IMG*,composr_homesite/stars/philip}" />
 			</td>
 
 			<td class="blk2">
