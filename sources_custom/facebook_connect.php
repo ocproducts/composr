@@ -83,7 +83,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         $photo_url = $photo_url['data']['url'];
     }
     if ($photo_url != '') {
-        $photo_url = 'http://graph.facebook.com/' . strval($facebook_uid) . '/picture?type=large'; // In case URL changes
+        $photo_url = 'https://graph.facebook.com/' . strval($facebook_uid) . '/picture?type=large'; // In case URL changes
     }
     $avatar_url = ($photo_url == '') ? mixed() : $photo_url;
     $photo_thumb_url = '';

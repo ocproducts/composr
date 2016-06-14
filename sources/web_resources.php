@@ -40,6 +40,10 @@ function require_javascript($javascript)
 {
     global $JAVASCRIPTS, $SMART_CACHE, $JS_OUTPUT_STARTED_LIST, $JAVASCRIPT_BOTTOM;
 
+    if (empty($javascript)) {
+        return;
+    }
+
     $JAVASCRIPTS[$javascript] = true;
 
     if (array_key_exists($javascript, $JS_OUTPUT_STARTED_LIST)) {
@@ -257,6 +261,10 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
 function require_css($css)
 {
     global $CSSS, $SMART_CACHE, $CSS_OUTPUT_STARTED_LIST, $CSS_OUTPUT_STARTED;
+
+    if (empty($css)) {
+        return;
+    }
 
     $CSSS[$css] = true;
 

@@ -633,7 +633,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($_embed != '') {
                 $temp_tpl = new Tempcode();
                 foreach (explode(',', $_embed) as $css) {
-                    $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                    if ($css != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                    }
                 }
             }
             break;
@@ -642,7 +644,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($_embed != '') {
                 $temp_tpl = new Tempcode();
                 foreach (explode(',', $_embed) as $javascript) {
-                    $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                    if ($javascript != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                    }
                 }
             }
             break;
