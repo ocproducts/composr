@@ -140,6 +140,7 @@ class Hook_addon_registry_core_zone_editor
             'FIELD_NAME' => lorem_word(),
             'TITLE' => lorem_word(),
             'B' => 'block',
+            'IS_POSTING_FIELD' => false,
         ));
 
         $editor = array();

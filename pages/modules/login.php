@@ -208,7 +208,12 @@ class Module_login
         $unhelpful_url_stubs = array(
             static_evaluate_tempcode(build_url(array('page' => 'login'), '', null, false, false, true)),
             static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '', null, false, false, true)),
             static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '_SELF', null, false, false, true)),
         );
         foreach ($unhelpful_url_stubs as $unhelpful_url_stub) {
             if (substr($redirect, 0, strlen($unhelpful_url_stub)) == $unhelpful_url_stub) {

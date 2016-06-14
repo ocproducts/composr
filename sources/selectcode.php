@@ -137,9 +137,10 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
     }
 
     if ($parent_spec__table_name === null) {
-        if (($parent_spec__parent_name !== null) || ($category_field_name !== null) || ($parent_spec__field_name !== null)) {
+        if (($parent_spec__parent_name !== null) || ($parent_spec__field_name !== null)) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
+        $category_field_name = null;
     }
 
     $out_or = '';

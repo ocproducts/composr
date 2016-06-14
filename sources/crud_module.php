@@ -240,11 +240,14 @@ abstract class Standard_crud_module
                 $doing = 'ADD_' . $this->lang_type;
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -265,11 +268,14 @@ abstract class Standard_crud_module
                 }
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -285,11 +291,14 @@ abstract class Standard_crud_module
                 $doing = 'EDIT_' . $this->lang_type;
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -308,11 +317,14 @@ abstract class Standard_crud_module
                 }
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -328,11 +340,14 @@ abstract class Standard_crud_module
                 if (($delete == 1) || ($delete == 2)) { //1=partial,2=full,...=unknown,thus handled as an edit
                     $doing = 'DELETE_' . $this->lang_type;
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_DELETE', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_DELETE_CATEGORY', escape_html($catalogue_title));
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                        if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
+                            if ($this->type_code == '') {
+                                $doing = do_lang('CATALOGUE_GENERIC_DELETE', escape_html($catalogue_title));
+                            } elseif ($this->type_code == 'category') {
+                                $doing = do_lang('CATALOGUE_GENERIC_DELETE_CATEGORY', escape_html($catalogue_title));
+                            }
                         }
                     }
 
@@ -341,11 +356,14 @@ abstract class Standard_crud_module
                     $doing = 'EDIT_' . $this->lang_type;
 
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                        if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
+                            if ($this->type_code == '') {
+                                $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                            } elseif ($this->type_code == 'category') {
+                                $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                            }
                         }
                     }
 

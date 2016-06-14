@@ -1098,14 +1098,16 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'REQUIRE_JAVASCRIPT':
-            $param = $seq_part[3];
-            foreach ($param as $i => $p) {
-                if (is_object($p)) {
-                    $param[$i] = $p->evaluate();
+            if (isset($param[0])) {
+                $param = $seq_part[3];
+                foreach ($param as $i => $p) {
+                    if (is_object($p)) {
+                        $param[$i] = $p->evaluate();
+                    }
                 }
-            }
 
-            require_javascript($param[0]);
+                require_javascript($param[0]);
+            }
             return;
 
         case 'FACILITATE_AJAX_BLOCK_CALL':
@@ -1115,14 +1117,16 @@ function handle_symbol_preprocessing($seq_part, &$children)
         case 'CSS_INHERIT':
 
         case 'REQUIRE_CSS':
-            $param = $seq_part[3];
-            foreach ($param as $i => $p) {
-                if (is_object($p)) {
-                    $param[$i] = $p->evaluate();
+            if (isset($param[0])) {
+                $param = $seq_part[3];
+                foreach ($param as $i => $p) {
+                    if (is_object($p)) {
+                        $param[$i] = $p->evaluate();
+                    }
                 }
-            }
 
-            require_css($param[0]);
+                require_css($param[0]);
+            }
             return;
 
         case 'TRIM':

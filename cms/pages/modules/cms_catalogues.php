@@ -1660,7 +1660,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
             $fields->attach(form_input_tick(do_lang_tempcode('IS_TREE'), do_lang_tempcode('DESCRIPTION_IS_TREE'), 'is_tree', $is_tree == 1));
             if ($name == '') {
-                $fields->attach(form_input_line(do_lang_tempcode('AUTO_FILL'), do_lang_tempcode('DESCRIPTION_AUTO_FILL'), 'auto_fill', '', false, null, 10000));
+                $fields->attach(form_input_line(do_lang_tempcode('AUTO_FILL'), do_lang_tempcode('DESCRIPTION_AUTO_FILL'), 'auto_fill', '', false, null, pow(2, 31) - 1));
             }
 
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'd7f7e0da078bdfaab0b3387d200d57a4', 'SECTION_HIDDEN' => $notes == '' && $submit_points == 0 && $send_view_reports == 'never', 'TITLE' => do_lang_tempcode('ADVANCED'))));
@@ -1745,7 +1745,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FIELD_NAME'), $prefix . 'name', $name, ($name != '') || $first_field)); // If this is gonna be a new field that might not be filled in, don't make them fill it in
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_FIELD_DESCRIPTION'), $prefix . 'description', $description, false));
-        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, 10000));
+        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, pow(2, 31) - 1));
 
         require_code('fields');
         require_lang('fields');

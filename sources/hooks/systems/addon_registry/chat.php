@@ -633,6 +633,7 @@ class Hook_addon_registry_chat
                 'FIELD_NAME' => 'post',
                 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button),
                 'B' => $button,
+                'IS_POSTING_FIELD' => false,
             )));
         }
 
