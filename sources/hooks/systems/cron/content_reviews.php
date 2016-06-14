@@ -50,7 +50,7 @@ class Hook_cron_content_reviews
             // Get title / check not deleted, cleanup if is
             list($title, $submitter) = content_get_details($content_type, $content_id);
             if (is_null($title)) {
-                $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_id, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
+                $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_type, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
                 continue;
             }
 

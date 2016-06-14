@@ -127,7 +127,7 @@ function javascript_enforce($j, $theme = null, $minify = null)
     }
 
     if ((($support_smart_decaching) && ((@(filemtime($js_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time())) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($js_cache_path)))) || (@filemtime(get_file_base() . '/_config.php') > @filemtime($js_cache_path)))) || (!$is_cached)) {
-        if (filesize($full_path) == 0) {
+        if (@filesize($full_path) == 0) {
             return '';
         }
 
@@ -357,7 +357,7 @@ function css_enforce($c, $theme = null, $minify = null)
     }
 
     if (((!$is_cached) || (($support_smart_decaching) && ((@(filemtime($css_cache_path) < filemtime($full_path)) && (@filemtime($full_path) < time()) || ((!empty($SITE_INFO['dependency__' . $full_path])) && (!dependencies_are_good(explode(',', $SITE_INFO['dependency__' . $full_path]), filemtime($css_cache_path))))))))) {
-        if (filesize($full_path) == 0) {
+        if (@filesize($full_path) == 0) {
             return '';
         }
 

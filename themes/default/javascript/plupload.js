@@ -13553,11 +13553,13 @@ function prepare_simplified_file_input(page_type,name,_btn_submit_id,posting_fie
 
 	// We need to clear out events on the upload button, attaching a new event for this upload
 	var button=document.getElementById(attachment_upload_button);
-	var new_button=button.cloneNode(true);
-	var button_parent=button.parentNode;
-	button_parent.removeChild(button);
-	button_parent.appendChild(new_button);
-	button=new_button;
+	if (button)
+	{
+		var new_button=button.cloneNode(true);
+		var button_parent=button.parentNode;
+		button_parent.removeChild(button);
+		button_parent.appendChild(new_button);
+	}
 
 	// Remove shiv code from old instances too
 	var shivs=get_elements_by_class_name(main_div,'moxie-shim-html5');

@@ -242,6 +242,7 @@ abstract class Standard_crud_module
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                     $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                     if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
                         if ($this->type_code == '') {
                             $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
                         } elseif ($this->type_code == 'category') {
@@ -269,6 +270,7 @@ abstract class Standard_crud_module
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                     $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                     if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
                         if ($this->type_code == '') {
                             $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
                         } elseif ($this->type_code == 'category') {
@@ -291,6 +293,7 @@ abstract class Standard_crud_module
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                     $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                     if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
                         if ($this->type_code == '') {
                             $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
                         } elseif ($this->type_code == 'category') {
@@ -339,6 +342,7 @@ abstract class Standard_crud_module
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                         $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                         if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
                             if ($this->type_code == '') {
                                 $doing = do_lang('CATALOGUE_GENERIC_DELETE', escape_html($catalogue_title));
                             } elseif ($this->type_code == 'category') {
@@ -354,6 +358,7 @@ abstract class Standard_crud_module
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
                         $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
                         if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
                             if ($this->type_code == '') {
                                 $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
                             } elseif ($this->type_code == 'category') {
