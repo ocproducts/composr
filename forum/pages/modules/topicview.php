@@ -593,6 +593,7 @@ class Module_topicview
                         }
 
                         require_lang('tickets');
+                        require_css('tickets');
                         $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'intended_solely_for' => $GLOBALS['FORUM_DRIVER']->get_guest_id());
                         $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
                         if (($test != -1) && ($test != 0)) {
