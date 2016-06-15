@@ -424,6 +424,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/tempcode.php',
             '_tests/tests/unit_tests/template_previews.php',
             '_tests/tests/unit_tests/ticket_type.php',
+            '_tests/tests/unit_tests/_find_broken_screen_links.php',
             '_tests/tests/unit_tests/user.php',
             '_tests/tests/unit_tests/user_banunban.php',
             '_tests/tests/unit_tests/usergroup.php',

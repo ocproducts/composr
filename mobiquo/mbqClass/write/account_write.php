@@ -343,10 +343,10 @@ class CMSAccountWrite
         log_it('RESET_PASSWORD', strval($member), strval($code));
 
         // Send confirm mail
-        $zone = get_module_zone('lostpassword');
-        $_url = build_url(array('page' => 'lostpassword', 'type' => 'step3', 'code' => $code, 'member' => $member), $zone, null, false, false, true);
+        $zone = get_module_zone('lost_password');
+        $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member), $zone, null, false, false, true);
         $url = $_url->evaluate();
-        $_url_simple = build_url(array('page' => 'lostpassword', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
+        $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
         $url_simple = $_url_simple->evaluate();
         $message = do_lang('RESET_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($url), $url_simple, strval($member), strval($code)), get_lang($member));
         require_code('mail');

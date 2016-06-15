@@ -32,7 +32,7 @@ class standard_dir_files_test_set extends cms_test_case
         $this->do_dir(get_file_base());
     }
 
-    public function do_dir($dir)
+    private function do_dir($dir)
     {
         $contents = 0;
 

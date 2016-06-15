@@ -889,7 +889,7 @@ class Module_cms_news_cat extends Standard_crud_module
             $total += $GLOBALS['SITE_DB']->query_select_value('news_category_entries', 'COUNT(*)', array('news_entry_category' => $row['id']));
 
             $fields->attach(results_entry(array(
-                protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'archive', 'filter' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true)),
+                protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'browse', 'filter' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true)),
                 protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(get_news_category_image_url($row['nc_img'])) . '" />')), // XHTMLXHTML
                 integer_format($total),
                 protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))

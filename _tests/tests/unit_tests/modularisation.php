@@ -111,7 +111,7 @@ class modularisation_test_set extends cms_test_case
         }
     }
 
-    public function do_dir($dir = '')
+    private function do_dir($dir = '')
     {
         global $GFILE_ARRAY;
 

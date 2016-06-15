@@ -57,7 +57,7 @@ $password_given = post_param_string('password', null);
 if ($password_given === null) {
     call_user_func_array('server__public__' . get_param_string('call'), $parameters);
 } else {
-    require_code('global4');
+    require_code('crypt');
     if (!check_master_password($password_given)) {
         exit('Access Denied');
     }

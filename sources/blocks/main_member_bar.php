@@ -123,7 +123,7 @@ class Block_main_member_bar
                 'JOIN_URL' => $join_url,
                 'FULL_LOGIN_URL' => $full_link,
                 'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
-                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
+                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered'), get_module_zone('vforums')),
             ));
         }
 
