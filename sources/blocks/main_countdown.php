@@ -57,18 +57,17 @@ class Block_main_countdown
         $tailing = array_key_exists('tailing', $map) ? intval($map['tailing']) : 4;
 
         // Counting from/to what?
-        $target = mixed();
-        $target = array_key_exists('param', $map) ? $map['param'] : '';
-        if ($target == '') {
-            $target = '25th December';
+        $_target = array_key_exists('param', $map) ? $map['param'] : '';
+        if ($_target == '') {
+            $_target = '25th December';
         }
-        if (!is_numeric($target)) {
-            $target = strtotime($target);
+        if (is_numeric($_target)) {
+            $target = intval($_target); // Let's accept either a timestamp or human strings that PHP's 'strtotime' can understand
+        } else {
+            $target = @strtotime($_target);
             if ($target === false) {
                 return paragraph(do_lang_tempcode('OUT_OF_BOUNDS_TIME'), '', 'red_alert');
             }
-        } else {
-            $target = intval($target); // Let's accept either a timestamp or human strings that PHP's 'strtotime' can understand
         }
 
         // Work out our numbers

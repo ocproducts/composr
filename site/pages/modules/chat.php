@@ -631,7 +631,7 @@ class Module_chat
             //$_buttons[] = 'html'; Bloat
         }
         foreach ($_buttons as $button) {
-            $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+            $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
         }
 
         if (!is_guest()) {
@@ -653,7 +653,7 @@ class Module_chat
             'i',
         );
         foreach ($_micro_buttons as $button) {
-            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => '3ced1e569e0c6feaeadbc09f7f89e7ee', 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => '3ced1e569e0c6feaeadbc09f7f89e7ee', 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
         }
 
         $user_colour = ((array_key_exists(0, $prefs)) && ($prefs[0] != '')) ? $prefs[0] : get_option('chat_default_post_colour');

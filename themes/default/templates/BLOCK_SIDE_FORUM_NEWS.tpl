@@ -9,7 +9,7 @@
 			{+START,LOOP,NEWS}
 				<div class="box box___block_side_forum_news_summary"><div class="box_inner">
 					<p class="tiny_paragraph">
-						<a title="{$STRIP_TAGS,{NEWS_TITLE}} {!LINK_NEW_WINDOW}" rel="external" target="_blank" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
+						<a title="{$STRIP_TAGS,{NEWS_TITLE}}" href="{FULL_URL*}">{$TRUNCATE_LEFT,{NEWS_TITLE},30,0,1}</a>
 					</p>
 
 					<div role="note">

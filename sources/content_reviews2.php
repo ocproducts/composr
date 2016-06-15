@@ -238,4 +238,6 @@ function schedule_content_review($content_type, $content_id, $review_freq, $next
         'display_review_status' => $display_review_status,
         'last_reviewed_time' => time(),
     ));
+
+    decache('main_staff_checklist');
 }

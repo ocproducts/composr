@@ -38,6 +38,7 @@ class Hook_config_quota_url
             'explanation' => 'CONFIG_OPTION_quota_url',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'pointstore',
         );

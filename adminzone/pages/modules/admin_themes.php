@@ -252,7 +252,7 @@ class Module_admin_themes
                 }
             } else {
                 $id = get_param_string('id');
-                $theme = get_param_string('theme');
+                $theme = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme(''));
             }
 
             set_short_title($id);
@@ -1525,29 +1525,30 @@ class Module_admin_themes
 
             // The file we're LOADING from for edit
             $ext = get_file_extension($file);
+            if ($ext == '') {
+                $ext = ltrim(get_param_string('suffix', '.tpl'), '.');
+                $file .= '.' . $ext;
+            }
             $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
-            if (is_null($_default_load_path[0])) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-            }
-            $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
-            $full_path = get_custom_file_base() . '/' . $default_load_path;
-            if (!is_file($full_path)) {
-                $full_path = get_file_base() . '/' . $default_load_path;
-            }
-            if (file_exists($full_path)) {
-                $contents = file_get_contents($full_path);
-            } else {
-                $contents = '';
-            }
+            $contents = '';
+            $revisions = new Tempcode();
+            if (!is_null($_default_load_path[0])) {
+                $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
+                $full_path = get_custom_file_base() . '/' . $default_load_path;
+                if (!is_file($full_path)) {
+                    $full_path = get_file_base() . '/' . $default_load_path;
+                }
+                if (file_exists($full_path)) {
+                    $contents = file_get_contents($full_path);
+                }
 
-            // Revisions
-            if (addon_installed('actionlog')) {
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                $revision_loaded = mixed();
-                $revisions = $revision_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
-            } else {
-                $revisions = new Tempcode();
+                // Revisions
+                if (addon_installed('actionlog')) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    $revision_loaded = mixed();
+                    $revisions = $revision_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
+                }
             }
 
             // Old contents (for very easy compare to base file in default theme)
@@ -2162,9 +2163,9 @@ class Module_admin_themes
         } else {
             // Remove old file first so we can re-use the filepath
             is_plupload(true);
-            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file'])))) || (post_param_string('path', '') != '')) {
+            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('path', '') != '')) {
                 $old_url = find_theme_image($old_id, true, true, $theme, ($lang == '') ? null : $lang);
-                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']))) || $old_url != post_param_string('path', ''))) {
+                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
                     if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
                         if (($lang != '') && (!is_null($lang))) {

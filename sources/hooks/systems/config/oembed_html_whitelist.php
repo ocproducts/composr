@@ -38,6 +38,7 @@ class Hook_config_oembed_html_whitelist
             'explanation' => 'CONFIG_OPTION_oembed_html_whitelist',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'core_rich_media',
         );

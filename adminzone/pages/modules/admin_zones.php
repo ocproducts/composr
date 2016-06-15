@@ -392,9 +392,9 @@ class Module_admin_zones
                 $settings = null;
                 $comcode_editor = new Tempcode();
                 $button = 'block';
-                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
                 $button = 'comcode';
-                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
             }
 
             $preview = (substr($page_info[0], 0, 6) == 'MODULE') ? null : request_page($for, false, $id, null, true);

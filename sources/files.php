@@ -375,6 +375,13 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         );
     }
 
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_EXTREMELY_SCATTERED) != 0) {
+        $ignore_filenames_and_dir_names += array(
+            '_critical_error.html' => '',
+            'critical_errors' => '',
+        );
+    }
+
     if (($bitmask & IGNORE_ACCESS_CONTROLLERS) != 0) {
         $ignore_filenames_and_dir_names = array(
             '.htaccess' => '.*',

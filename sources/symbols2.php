@@ -1750,10 +1750,9 @@ function ecv2_GROUP_ID($lang, $escaped, $param)
 {
     $value = '';
 
-    if (isset($param[0])) {
-        $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(isset($param[1]) ? intval($param[1]) : get_member());
-        $value = array_key_exists(intval($param[0]), $groups) ? strval($groups[intval($param[0])]) : '';
-    }
+    $i = isset($param[0]) ? intval($param[0]) : 0;
+    $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(isset($param[1]) ? intval($param[1]) : get_member());
+    $value = array_key_exists($i, $groups) ? strval($groups[$i]) : '';
 
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
@@ -1778,12 +1777,11 @@ function ecv2_GROUP_NAME($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
-    if (isset($param[0])) {
-        $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(isset($param[1]) ? intval($param[1]) : get_member());
-        if (array_key_exists(intval($param[0]), $groups)) {
-            $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
-            $value = $all_usergroups[$groups[intval($param[0])]];
-        }
+    $groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(isset($param[1]) ? intval($param[1]) : get_member());
+    $i = isset($param[0]) ? intval($param[0]) : 0;
+    if (array_key_exists($i, $groups)) {
+        $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();
+        $value = $all_usergroups[$groups[$i]];
     }
 
     if ($escaped !== array()) {

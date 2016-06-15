@@ -1241,6 +1241,8 @@ function put_value_in_stack_trace($value)
  */
 function get_html_trace()
 {
+    require_code('templates');
+
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
     $trace = array();
@@ -1424,7 +1426,7 @@ function _access_denied($class, $param, $force_login)
 
         @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
-        $redirect = get_self_url(true, true, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;
         $_GET['page'] = 'login';
         $_GET['type'] = 'browse';

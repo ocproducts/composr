@@ -11,7 +11,7 @@
 		{+START,LOOP,TOPICS}
 			<div class="box box___block_main_forum_topics_topic"><div class="box_inner">
 				<p class="tiny_paragraph">
-					<a title="{$STRIP_TAGS,{TITLE}} {!LINK_NEW_WINDOW}" rel="external" target="_blank" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30,0,1}</a>
+					<a title="{$STRIP_TAGS,{TITLE}}" href="{TOPIC_URL*}">{$TRUNCATE_LEFT,{TITLE},30,0,1}</a>
 				</p>
 
 				<div role="note">

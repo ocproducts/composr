@@ -1052,7 +1052,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
                 $parent_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('galleries', 'fullname', array('name' => $gallery['parent_id'])));
                 if (get_translated_text($gallery['fullname']) == do_lang('PERSONAL_GALLERY_OF', $old_username, $parent_title)) {
                     $new_fullname = do_lang('PERSONAL_GALLERY_OF', $username, $parent_title);
-                    $GLOBALS['SITE_DB']->query_update('galleries', lang_remap_comcode('fullname', $gallery['fullname'], $new_fullname, $GLOBALS['FORUM_DB']), array('name' => $gallery['name']), '', 1);
+                    $GLOBALS['SITE_DB']->query_update('galleries', lang_remap_comcode('fullname', $gallery['fullname'], $new_fullname), array('name' => $gallery['name']), '', 1);
                 }
             }
         }

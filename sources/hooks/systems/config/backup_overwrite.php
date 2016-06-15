@@ -38,6 +38,7 @@ class Hook_config_backup_overwrite
             'explanation' => 'CONFIG_OPTION_backup_overwrite',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 6,
 
             'addon' => 'backup',
         );

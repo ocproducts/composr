@@ -356,8 +356,8 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
 
     $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
-    $comcode_editor = get_comcode_editor();
-    $comcode_editor_small = get_comcode_editor('post', true);
+    $comcode_editor = get_comcode_editor('post', false, true);
+    $comcode_editor_small = get_comcode_editor('post', true, true);
 
     $w = (!$avoid_wysiwyg) && (has_js()) && (browser_matches('wysiwyg', $post) && (strpos($post, '{$,page hint: no_wysiwyg}') === false));
 
@@ -409,9 +409,10 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
  *
  * @param  string $field_name The name of the field the editor is working for
  * @param  boolean $cut_down Whether to make a cut-down version
+ * @param  boolean $is_posting_field Whether this is for a posting field (i.e. has attachment support)
  * @return Tempcode The Comcode editor
  */
-function get_comcode_editor($field_name = 'post', $cut_down = false)
+function get_comcode_editor($field_name = 'post', $cut_down = false, $is_posting_field = false)
 {
     require_lang('comcode');
 
@@ -461,6 +462,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
             'FIELD_NAME' => $field_name,
             'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button),
             'B' => $button,
+            'IS_POSTING_FIELD' => $is_posting_field,
         )));
     }
 
@@ -476,6 +478,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
                 'FIELD_NAME' => $field_name,
                 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button['t']),
                 'B' => $button['t'],
+                'IS_POSTING_FIELD' => $is_posting_field,
             )));
         }
     }
@@ -484,6 +487,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false)
         'POSTING_FIELD' => $field_name,
         'BUTTONS' => $buttons,
         'MICRO_BUTTONS' => $micro_buttons,
+        'IS_POSTING_FIELD' => $is_posting_field,
     ));
 }
 

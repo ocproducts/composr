@@ -38,6 +38,7 @@ class Hook_config_spam_cache_time
             'explanation' => 'CONFIG_OPTION_spam_cache_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',
         );

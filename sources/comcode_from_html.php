@@ -623,7 +623,6 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('text-autospace:none', '', $semihtml);
     $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = str_replace("\n", ' ', $semihtml);
     // Clean some whitespace (they have a special Comcode meaning, but no special HTML meaning)
     $inline_elements = array(
         'font', 's', 'u', 'strike', 'span', 'abbr', 'acronym', 'cite',
@@ -635,9 +634,9 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#\s+(</(' . implode('|', $inline_elements) . ')>)#', '</CDATA__space>${1}', $semihtml);
     $semihtml = preg_replace('#([^\>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
     $semihtml = preg_replace('#(</(' . implode('|', $inline_elements) . ')>)\s+#', '${1}</CDATA__space>', $semihtml);
-    $semihtml = preg_replace('#>\s+#', '>', $semihtml);
-    $semihtml = preg_replace('#\s+<#', '<', $semihtml);
-    $semihtml = preg_replace('#\s+#', ' ', $semihtml);
+    $semihtml = preg_replace('#>\s+#', '>', $semihtml); // NB: Only non-inline, due to above CDATA__space
+    $semihtml = preg_replace('#\s+<#', '<', $semihtml); // ditto
+    $semihtml = preg_replace('#(\s)\s*#', '${1}', $semihtml);
 
     // Clean redundant CSS syntax
     do
@@ -1013,8 +1012,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</p>', '</p>' . "\n", $semihtml);
     $semihtml = str_replace('[/align]', '[/align]' . "\n", $semihtml);
 
-    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/
-           ($semihtml) . '[/semihtml]';
+    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/($semihtml) . '[/semihtml]';
 }
 
 /**

@@ -1,3 +1,4 @@
+<!-- form_table_field_spacer (don't remove this comment when templating) -->
 <tr class="form_table_field_spacer">
 	<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell vertical_alignment">
 		{+START,IF_PASSED,TITLE}

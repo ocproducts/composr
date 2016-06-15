@@ -148,6 +148,8 @@ class Hook_addon_registry_captcha
             'sources/hooks/systems/config/css_captcha.php',
             'sources/hooks/systems/config/captcha_noise.php',
             'sources/hooks/systems/config/captcha_on_feedback.php',
+            'sources/hooks/systems/config/audio_captcha.php',
+            'sources/hooks/systems/config/js_captcha.php',
         );
     }
 
@@ -182,7 +184,7 @@ class Hook_addon_registry_captcha
         ));
         $captcha = do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
-            'SKIP_LABEL' => false,
+            'SKIP_LABEL' => true,
             'NAME' => 'captcha',
             'PRETTY_NAME' => lorem_phrase(),
             'DESCRIPTION' => lorem_sentence_html(),

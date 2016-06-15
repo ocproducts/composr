@@ -120,5 +120,5 @@
 }
 
 .notification_code th {
-	text-align: left;
+	text-align: left !important;
 }

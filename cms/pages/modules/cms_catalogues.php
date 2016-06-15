@@ -176,6 +176,13 @@ class Module_cms_catalogues extends Standard_crud_module
             }
         }
 
+        if ($type == 'edit_other' || $type == '_edit_other') {
+            $content_type = $this->alt_crud_module->tied_to_content_type(get_param_string('id', null));
+            if ($content_type !== null) {
+                $this->alt_crud_module->title = get_screen_title('EDIT_CATALOGUE_FOR_CONTENT_TYPE', true, array(escape_html($content_type)));
+            }
+        }
+
         return $ret;
     }
 
@@ -467,7 +474,7 @@ class Module_cms_catalogues extends Standard_crud_module
         if (!is_null($id)) {
             $special_fields = get_catalogue_entry_field_values($catalogue_name, $id);
         } else {
-            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         }
 
         $field_groups = array();
@@ -673,7 +680,7 @@ class Module_cms_catalogues extends Standard_crud_module
     public function get_set_field_map($catalogue_name, $submitter, $editing_id = null)
     {
         // Get field values
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         $map = array();
         require_code('fields');
         require_code('catalogues');
@@ -1653,7 +1660,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
             $fields->attach(form_input_tick(do_lang_tempcode('IS_TREE'), do_lang_tempcode('DESCRIPTION_IS_TREE'), 'is_tree', $is_tree == 1));
             if ($name == '') {
-                $fields->attach(form_input_line(do_lang_tempcode('AUTO_FILL'), do_lang_tempcode('DESCRIPTION_AUTO_FILL'), 'auto_fill', '', false, null, 10000));
+                $fields->attach(form_input_line(do_lang_tempcode('AUTO_FILL'), do_lang_tempcode('DESCRIPTION_AUTO_FILL'), 'auto_fill', '', false, null, pow(2, 31) - 1));
             }
 
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'd7f7e0da078bdfaab0b3387d200d57a4', 'SECTION_HIDDEN' => $notes == '' && $submit_points == 0 && $send_view_reports == 'never', 'TITLE' => do_lang_tempcode('ADVANCED'))));
@@ -1738,7 +1745,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FIELD_NAME'), $prefix . 'name', $name, ($name != '') || $first_field)); // If this is gonna be a new field that might not be filled in, don't make them fill it in
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_FIELD_DESCRIPTION'), $prefix . 'description', $description, false));
-        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, 10000));
+        $fields->attach(form_input_line(do_lang_tempcode('DEFAULT_VALUE'), do_lang_tempcode('DESCRIPTION_FIELD_DEFAULT'), $prefix . 'default', $default, false, null, pow(2, 31) - 1));
 
         require_code('fields');
         require_lang('fields');

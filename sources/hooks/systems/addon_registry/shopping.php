@@ -645,6 +645,14 @@ class Hook_addon_registry_shopping
                     'TRACKBACK_DETAILS' => lorem_phrase(),
                     'RATING_DETAILS' => lorem_phrase(),
                     'COMMENT_DETAILS' => lorem_phrase(),
+                    'ADD_DATE' => placeholder_date(),
+                    'ADD_DATE_RAW' => placeholder_date_raw(),
+                    'EDIT_DATE_RAW' => placeholder_date_raw(),
+                    'VIEWS' => placeholder_number(),
+                    'TAGS' => array(),
+                    'CATALOGUE' => 'products',
+                    'SUBMITTER' => placeholder_id(),
+                    'FIELD_1' => lorem_word(),
                 )), null, '', true)
         );
     }

@@ -98,14 +98,14 @@ function xmlentities($string, $charset = null)
 function convert_bad_entities($data, $charset = 'ISO-8859-1')
 {
     if (defined('ENT_HTML401')) { // PHP5.4+, we must explicitly give the charset, but when we do it helps us
-        if ((strtoupper($charset) != 'ISO-8859-1') && (strtoupper($charset) != 'UTF-8')) {
+        if ((strtoupper($charset) != 'ISO-8859-1') && (strtolower($charset) != 'utf-8')) {
             $charset = 'ISO-8859-1';
         }
         $table = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT | ENT_HTML401, $charset));
     } else {
         $table = array_flip(get_html_translation_table(HTML_ENTITIES));
 
-        if (strtoupper($charset) == 'UTF-8') {
+        if (strtolower($charset) == 'utf-8') {
             foreach ($table as $x => $y) {
                 $table[$x] = utf8_encode($y);
             }
@@ -154,8 +154,8 @@ class CMS_simple_xml_reader
 
         // Our internal charset
         $parser_charset = get_charset();
-        if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'UTF-8'))) {
-            $parser_charset = 'UTF-8';
+        if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'utf-8'))) {
+            $parser_charset = 'utf-8';
         }
 
         // Create and setup our parser

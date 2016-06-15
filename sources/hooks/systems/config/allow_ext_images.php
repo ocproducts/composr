@@ -38,6 +38,7 @@ class Hook_config_allow_ext_images
             'explanation' => 'CONFIG_OPTION_allow_ext_images',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_enable_ecards
             'explanation' => 'CONFIG_OPTION_enable_ecards',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 3,
 
             'addon' => 'galleries',
         );

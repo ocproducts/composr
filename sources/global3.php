@@ -868,7 +868,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
         $test_string = preg_replace('#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '', $test_string); // planes 1-3
         $test_string = preg_replace('#[\xF1-\xF3][\x80-\xBF]{3}#', '', $test_string); //  planes 4-15
         $test_string = preg_replace('#\xF4[\x80-\x8F][\x80-\xBF]{2}#', '', $test_string); // plane 16
-        if ($test_string !== '') {// All unicode characters stripped, so if anything is remaining it must be some kind of corruption
+        if ($test_string !== '') { // All ASCII/unicode characters stripped, so if anything is remaining it must be some kind of corruption
             $input = utf8_encode($input);
         }
     }
@@ -911,15 +911,16 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
         $amount = cms_mb_strlen($in, $force) - $from;
     }
 
+    if ($in == '' || strlen($in) == $from)
+    {
+        return ''; // Workaround PHP bug/inconsistency (https://bugs.php.net/bug.php?id=72320)
+    }
+
     if ((!$force) && (get_charset() != 'utf-8')) {
         return substr($in, $from, $amount);
     }
 
     if (function_exists('iconv_substr')) {
-        if ($in == '' || strlen($in) == $from)
-        {
-            return ''; // Workaround PHP bug (https://bugs.php.net/bug.php?id=72320)
-        }
         return @iconv_substr($in, $from, $amount, $force ? 'utf-8' : get_charset());
     }
     if (function_exists('mb_substr')) {
@@ -986,7 +987,7 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
-    if (strtoupper(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtoupper($in);
     }
 
@@ -1118,10 +1119,12 @@ function addon_installed($addon, $non_bundled_too = false)
             $answer = true;
         }
     }
+
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
     }
+
     return $answer;
 }
 

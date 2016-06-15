@@ -54,7 +54,9 @@ class Hook_notification_download extends Hook_Notification
         $page_links = get_downloads_tree(null, is_null($id) ? null : intval($id), null, null, null, 5);
         $filtered = array();
         foreach ($page_links as $p) {
-            $filtered[] = $p;
+            if (strval($p['id']) !== $id) {
+                $filtered[] = $p;
+            }
         }
         return $filtered;
     }

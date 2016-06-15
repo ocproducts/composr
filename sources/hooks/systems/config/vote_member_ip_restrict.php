@@ -38,6 +38,7 @@ class Hook_config_vote_member_ip_restrict
             'explanation' => 'CONFIG_OPTION_vote_member_ip_restrict',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );

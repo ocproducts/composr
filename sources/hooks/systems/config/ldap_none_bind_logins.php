@@ -38,6 +38,7 @@ class Hook_config_ldap_none_bind_logins
             'explanation' => 'CONFIG_OPTION_ldap_none_bind_logins',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 10,
 
             'addon' => 'ldap',
         );

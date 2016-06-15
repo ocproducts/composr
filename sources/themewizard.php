@@ -1294,15 +1294,21 @@ function theme_wizard_colours_to_sheet($sheet, $landscape, $source_theme, $algor
 {
     $theme = filter_naughty($source_theme);
 
-    if (file_exists(get_file_base() . '/themes/' . $theme . '/css_custom/' . filter_naughty($sheet))) {
-        $contents = unixify_line_format(file_get_contents(get_file_base() . '/themes/' . $theme . '/css_custom/' . filter_naughty($sheet)));
-    } elseif (file_exists(get_file_base() . '/themes/' . $theme . '/css/' . filter_naughty($sheet))) {
-        $contents = unixify_line_format(file_get_contents(get_file_base() . '/themes/' . $theme . '/css/' . filter_naughty($sheet)));
-    } elseif (file_exists(get_file_base() . '/themes/default/css_custom/' . filter_naughty($sheet))) {
-        $contents = unixify_line_format(file_get_contents(get_file_base() . '/themes/default/css_custom/' . filter_naughty($sheet)));
-    } else {
-        $contents = unixify_line_format(file_get_contents(get_file_base() . '/themes/default/css/' . filter_naughty($sheet)));
+    $path = get_file_base() . '/themes/' . $theme . '/css_custom/' . filter_naughty($sheet);
+    if (!file_exists($path)) {
+        $path = get_file_base() . '/themes/' . $theme . '/css/' . filter_naughty($sheet);
     }
+    if (!file_exists($path)) {
+        $path = get_file_base() . '/themes/default/css_custom/' . filter_naughty($sheet);
+    }
+    if (!file_exists($path)) {
+        $path = get_file_base() . '/themes/default/css/' . filter_naughty($sheet);
+    }
+    if (!file_exists($path)) {
+        return ''; // Probably a dynamic theme wizard call after an addon was removed
+    }
+
+    $contents = unixify_line_format(file_get_contents($path));
 
     return theme_wizard_colours_to_css($contents, $landscape, $source_theme, $algorithm, $seed);
 }

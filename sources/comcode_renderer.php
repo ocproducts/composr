@@ -633,7 +633,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($_embed != '') {
                 $temp_tpl = new Tempcode();
                 foreach (explode(',', $_embed) as $css) {
-                    $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                    if ($css != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                    }
                 }
             }
             break;
@@ -642,7 +644,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($_embed != '') {
                 $temp_tpl = new Tempcode();
                 foreach (explode(',', $_embed) as $javascript) {
-                    $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                    if ($javascript != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                    }
                 }
             }
             break;
@@ -681,7 +685,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've double converted. Ideally we would have parsed a direct stream of HTML. But we could not do that for security reasons.
+                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
                     $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
                     $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true); // Re-parse (with full security)

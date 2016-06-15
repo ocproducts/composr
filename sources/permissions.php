@@ -758,9 +758,11 @@ function has_privilege($member, $permission, $page = null, $cats = null)
         $where .= ' OR ' . db_string_equal_to('privilege', $privilege_needed);
     }
     $where .= ')';
-    $perhaps = $GLOBALS['SITE_DB']->query('SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ')' . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, null, false, true);
+    $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ')' . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
+    $perhaps = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
     if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
-        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query('SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, null, false, true));
+        $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
+        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
     }
     $PRIVILEGE_CACHE[$member] = array();
     foreach ($perhaps as $p) {

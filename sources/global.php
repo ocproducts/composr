@@ -219,9 +219,13 @@ function require_code($codename, $light_exit = false)
             }
         }
 
-        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
-            print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-            flush();
+        if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
+            if (function_exists('attach_message')) {
+                attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+            } else {
+                print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                flush();
+            }
         }
 
         if (!$done_init) {
@@ -260,9 +264,13 @@ function require_code($codename, $light_exit = false)
         }
 
         if ($worked) {
-            if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
-                print('<!-- require_code: ' . htmlentities($codename) . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                flush();
+            if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
+                if (function_exists('attach_message')) {
+                    attach_message('require_code: ' . $codename . ' (' . number_format(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                } else {
+                    print('<!-- require_code: ' . htmlentities($codename) . ' (' . htmlentities(number_format(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                    flush();
+                }
             }
 
             $init_func = 'init__' . str_replace(array('/', '.php'), array('__', ''), $codename);
@@ -609,9 +617,9 @@ if (count($SITE_INFO) == 0) {
 }
 if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) || (filesize($FILE_BASE . '/_config.php') == 0)) {
-        critical_error('INFO.PHP');
+        critical_error('_CONFIG.PHP');
     }
-    critical_error('INFO.PHP_CORRUPTED');
+    critical_error('_CONFIG.PHP_CORRUPTED');
 }
 
 // Rate limiter, to stop aggressive bots

@@ -175,7 +175,7 @@ class Block_main_news
             }
         } else {
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                set_time_limit(100);
             }
             $start = 0;
             do {

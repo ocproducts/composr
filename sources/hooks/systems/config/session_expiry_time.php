@@ -38,6 +38,7 @@ class Hook_config_session_expiry_time
             'explanation' => 'CONFIG_OPTION_session_expiry_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );

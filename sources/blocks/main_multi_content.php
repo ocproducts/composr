@@ -227,7 +227,7 @@ class Block_main_multi_content
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
         if ($info['table'] == 'catalogue_entries') {
-            $where .= ' AND c_name NOT LIKE \'' . db_encode_like('_%') . '\'';
+            $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('_%') . '\'';
         }
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
@@ -395,7 +395,9 @@ class Block_main_multi_content
                             }
                         }
                         if ($sort_combos != array()) {
-                            $order_by = 'GREATEST(';
+                            if (count($sort_combos) != 1) {
+                                $order_by = 'GREATEST(';
+                            }
                             foreach ($sort_combos as $i => $sort_combo) {
                                 if ($i != 0) {
                                     $order_by .= ',';
@@ -409,7 +411,9 @@ class Block_main_multi_content
                                 $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
                                 $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
                             }
-                            $order_by .= ')';
+                            if (count($sort_combos) != 1) {
+                                $order_by .= ')';
+                            }
 
                             if ($sort == 'recent_contents DESC') {
                                 $order_by .= ' DESC';
@@ -468,9 +472,6 @@ class Block_main_multi_content
                         $sort_order = preg_replace('#^.* #', '', $sort);
 
                         $sql = 'SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ';
-                        if (isset($info['order_field'])) {
-                            $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
-                        }
                         if ((array_key_exists('title_field', $info)) && (strpos($info['title_field'], ':') === false)) {
                             if ($info['title_field_dereference']) {
                                 $sql .= $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order;
@@ -478,7 +479,11 @@ class Block_main_multi_content
                                 $sql .= 'r.' . $info['title_field'] . ' ' . $sort_order;
                             }
                         } else {
-                            $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
+                            if (isset($info['order_field'])) {
+                                $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
+                            } else {
+                                $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
+                            }
                         }
                         $rows = $info['connection']->query($sql, $max, $start, false, true, $lang_fields);
                         break;

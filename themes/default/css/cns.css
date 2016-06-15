@@ -214,11 +214,20 @@ div.cns_table_footer>div>div {
 .cns_topic {
 	display: table;
 }
+.cns_topic>* {
+	display: none; /*needed in case of unclosed <b> tags inside causing <b></b> throughout rest of document, due to HTML5 parse rules*/
+}
 .cns_topic>div {
 	display: table-row-group;
 }
+.cns_topic>div>* {
+	display: none; /*^ ditto*/
+}
 .cns_topic>div>div {
 	display: table-row;
+}
+.cns_topic>div>div>* {
+	display: none; /*^ ditto*/
 }
 .cns_topic>div>div>div {
 	display: table-cell;

@@ -1791,6 +1791,7 @@ class Hook_addon_registry_core_form_interfaces
                 'FIELD_NAME' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'B' => $button,
+                'IS_POSTING_FIELD' => true,
             )));
         }
 
@@ -1809,6 +1810,7 @@ class Hook_addon_registry_core_form_interfaces
                 'FIELD_NAME' => lorem_word(),
                 'TITLE' => lorem_phrase(),
                 'B' => $button['t'],
+                'IS_POSTING_FIELD' => true,
             )));
         }
 
@@ -1816,6 +1818,7 @@ class Hook_addon_registry_core_form_interfaces
             'POSTING_FIELD' => lorem_word(),
             'BUTTONS' => $buttons,
             'MICRO_BUTTONS' => $micro_buttons,
+            'IS_POSTING_FIELD' => true,
         ));
 
         return array(

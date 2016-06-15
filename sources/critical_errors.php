@@ -80,6 +80,8 @@ if (!function_exists('critical_error')) {
 
         $error = 'Unknown critical error type: this should not happen, so please report this to ocProducts.';
 
+        $may_show_footer = true;
+
         switch ($code) {
             case 'MISSING_SOURCE':
                 $error = 'A source-code (' . $relay . ') file is missing/corrupt/incompatible.';
@@ -89,9 +91,11 @@ if (!function_exists('critical_error')) {
                 break;
             case 'YOU_ARE_BANNED':
                 $error = 'The member you are masquerading as has been banned. We cannot finish initialising the virtualised environment for this reason.';
+                $may_show_footer = false;
                 break;
             case 'BANNED':
                 $error = 'The IP address you are accessing this website from (' . get_ip_address() . ') has been banished from this website. If you believe this is a mistake, contact the staff to have it resolved (typically, postmaster@' . get_domain() . ' will be able to reach them).</div>' . "\n" . '<div>If you are yourself staff, you should be able to unban yourself by editing the <kbd>banned_ip</kbd> table in a database administation tool, by removing rows that qualify against yourself. This error is raised to a critical error to reduce the chance of this IP address being able to further consume server resources.';
+                $may_show_footer = false;
                 break;
             case 'TEST':
                 $error = 'This is a test error.';
@@ -111,7 +115,7 @@ if (!function_exists('critical_error')) {
             case 'DATABASE_FAIL':
                 $error = 'The website\'s first database query (checking the page request is not from a banned IP address or reading the site configuration) has failed. This almost always means that the database is not set up correctly, which in turns means that either backend database configuration has changed (perhaps the database has been emptied), or the configuration file (_config.php) has been incorrectly altered (perhaps to point to an empty database), or you have moved servers and not updated your _config.php settings properly or placed your database. It could also mean that the <kbd>' . get_table_prefix() . 'banned_ip</kbd> table or <kbd>' . get_table_prefix() . 'config</kbd> table alone is missing or corrupt, but this is unlikely. As this is an error due to the website\'s environment being externally altered by unknown means, the website cannot continue to function or solve the problem itself.';
                 break;
-            case 'INFO.PHP':
+            case '_CONFIG.PHP':
                 $install_url = 'install.php';
                 if (!file_exists($install_url)) {
                     $install_url = '../install.php';
@@ -123,7 +127,7 @@ if (!function_exists('critical_error')) {
                 }
                 $error = 'The top-level configuration file (_config.php) is either not-present or empty. This file is created upon installation, and the likely cause of this error is that ' . $likely;
                 break;
-            case 'INFO.PHP_CORRUPTED':
+            case '_CONFIG.PHP_CORRUPTED':
                 $error = 'The top-level configuration file (_config.php) appears to be corrupt. Perhaps it was incorrectly uploaded, or a typo was made. It must be valid PHP code.';
                 break;
             case 'CRIT_LANG':
@@ -222,13 +226,15 @@ END;
         }
         flush();
         echo $extra, "\n";
-        echo '<p>Details here are intended only for the website/system-administrator, not for regular website users.<br />&raquo; <strong>If you are a regular website user, please let the website staff deal with this problem.</strong></p>' . "\n" . '<p class="associated_details">Depending on the error, and only if the website installation finished, you may need to <a href="#" onclick="if (!window.confirm(\'Are you staff on this site?\')) return false; this.href=\'' . htmlentities($edit_url) . '\';">edit the installation options</a> (the <kbd>_config.php</kbd> file).</p>' . "\n" . '<p class="associated_details">ocProducts maintains full documentation for all procedures and tools. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p>' . "\n" . '<hr />' . "\n" . '<p style="font-size: 0.8em"><a href="http://compo.sr/">Composr</a> is a <abbr title="Content Management System">CMS</abbr> for building websites, developed by ocProducts.</p>' . "\n";
+        if ($may_show_footer) {
+            echo '<p>Details here are intended only for the website/system-administrator, not for regular website users.<br />&raquo; <strong>If you are a regular website user, please let the website staff deal with this problem.</strong></p>' . "\n" . '<p class="associated_details">Depending on the error, and only if the website installation finished, you may need to <a href="#" onclick="if (!window.confirm(\'Are you staff on this site?\')) return false; this.href=\'' . htmlentities($edit_url) . '\';">edit the installation options</a> (the <kbd>_config.php</kbd> file).</p>' . "\n" . '<p class="associated_details">ocProducts maintains full documentation for all procedures and tools. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p>' . "\n" . '<hr />' . "\n" . '<p style="font-size: 0.8em"><a href="http://compo.sr/">Composr</a> is a <abbr title="Content Management System">CMS</abbr> for building websites, developed by ocProducts.</p>' . "\n";
+        }
         echo '</div></body>' . "\n" . '</html>';
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
         $contents = ob_get_contents();
         $dir = get_custom_file_base() . '/critical_errors';
-        if ((is_dir($dir)) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']))) {
+        if ((is_dir($dir)) && ((!isset($GLOBALS['SEMI_DEV_MODE'])) || (!$GLOBALS['SEMI_DEV_MODE']) || (!empty($_GET['keep_no_dev_mode'])))) {
             $code = uniqid('', true);
             file_put_contents($dir . '/' . $code . '.log', $contents);
             ob_end_clean();

@@ -38,6 +38,7 @@ class Hook_config_enable_markup_webstandards
             'explanation' => 'CONFIG_OPTION_enable_markup_webstandards',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

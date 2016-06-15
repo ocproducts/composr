@@ -38,6 +38,7 @@ class Hook_config_simplify_wysiwyg_by_permissions
             'explanation' => 'CONFIG_OPTION_simplify_wysiwyg_by_permissions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 7,
 
             'addon' => 'core_feedback_features',
         );

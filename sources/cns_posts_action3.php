@@ -236,6 +236,10 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
  */
 function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = true, $cleanup = true)
 {
+    if (count($posts) == 0) {
+        return false;
+    }
+
     // Info about source
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_pt_from', 't_pt_to'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $info)) {

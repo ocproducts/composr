@@ -38,6 +38,7 @@ class Hook_config_average_gamble_multiplier
             'explanation' => 'CONFIG_OPTION_average_gamble_multiplier',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'pointstore',
         );

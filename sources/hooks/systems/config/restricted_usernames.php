@@ -38,6 +38,7 @@ class Hook_config_restricted_usernames
             'explanation' => 'CONFIG_OPTION_restricted_usernames',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 12,
 
             'addon' => 'core_cns',
         );
