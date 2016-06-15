@@ -34,7 +34,9 @@
 {+START,IF,{$CONFIG_OPTION,js_captcha}}
 	<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
-	<script>document.write('{$GET;^/,CAPTCHA}');</script>
+	<script>// <![CDATA[
+		document.write('{$GET;^/,CAPTCHA}');
+	//]]></script>
 {+END}
 {+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 	{$GET,CAPTCHA}

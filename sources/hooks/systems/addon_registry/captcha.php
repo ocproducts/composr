@@ -184,7 +184,7 @@ class Hook_addon_registry_captcha
         ));
         $captcha = do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
-            'SKIP_LABEL' => false,
+            'SKIP_LABEL' => true,
             'NAME' => 'captcha',
             'PRETTY_NAME' => lorem_phrase(),
             'DESCRIPTION' => lorem_sentence_html(),

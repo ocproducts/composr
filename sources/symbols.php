@@ -262,19 +262,19 @@ function ecv($lang, $escaped, $type, $name, $param)
 
             case 'SET':
                 if (isset($param[1])) {
+                    unset($param['vars']);
                     global $TEMPCODE_SETGET;
-
-                    $var = $param[0]->evaluate();
-                    $set_val = '';
-                    $i = 1;
-                    while (isset($param[$i])) {
-                        if ($i !== 1) {
-                            $set_val .= ',';
+                    if (count($param) == 2) {
+                        $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = $param[1];
+                    } else {
+                        $param_copy = array();
+                        foreach ($param as $i => $x) {
+                            if ($i !== 0) {
+                                $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
+                            }
                         }
-                        $set_val .= $param[1]->evaluate();
-                        $i++;
+                        $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
                     }
-                    $TEMPCODE_SETGET[$var] = $set_val;
                 }
                 break;
 
@@ -605,7 +605,7 @@ function ecv_SET($lang, $escaped, $param)
     global $TEMPCODE_SETGET;
 
     if (isset($param[1])) {
-        if (isset($param[1]) && isset($param[1]->codename)/*faster than is_object*/) {
+        if ((count($param) == 2) || (isset($param[1]) && isset($param[1]->codename)/*faster than is_object*/)) {
             $TEMPCODE_SETGET[$param[0]] = $param[1];
         } else {
             $param_copy = $param;
@@ -643,7 +643,7 @@ function ecv_GET($lang, $escaped, $param)
         global $TEMPCODE_SETGET;
         if (isset($TEMPCODE_SETGET[$param[0]])) {
             if (isset($TEMPCODE_SETGET[$param[0]]->codename)/*faster than is_object*/) {
-                if ((array_key_exists(1, $param)) && ($param[1] === '1')) { // no-cache
+                if ((array_key_exists(1, $param)) && (((is_string($param[1])) && ($param[1] == '1')) || ((is_object($param[1])) && ($param[1]->evaluate() == '1')))) { // no-cache
                     $TEMPCODE_SETGET[$param[0]]->decache();
                     $value = $TEMPCODE_SETGET[$param[0]]->evaluate();
                     $TEMPCODE_SETGET[$param[0]]->decache();

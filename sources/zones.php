@@ -864,7 +864,7 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
             continue;
         }
 
-        $zone['_zone_title'] = get_translated_text($zone['zone_title']);
+        $zone['_zone_title'] = function_exists('get_translated_text') ? get_translated_text($zone['zone_title']) : $zone['zone_name'];
 
         if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $zone['zone_name'] . '/index.php'))) {
             $zones[] = $zone['zone_name'];

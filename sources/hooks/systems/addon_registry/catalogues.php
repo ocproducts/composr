@@ -370,6 +370,7 @@ class Hook_addon_registry_catalogues
             'EDIT_URL' => placeholder_url(),
             'RATING' => new Tempcode(),
             'ALLOW_RATING' => false,
+            'GIVE_CONTEXT' => false,
         ));
 
         foreach (placeholder_array(2) as $v) {
@@ -709,6 +710,7 @@ class Hook_addon_registry_catalogues
             'EDIT_URL' => placeholder_url(),
             'RATING' => new Tempcode(),
             'ALLOW_RATING' => false,
+            'GIVE_CONTEXT' => false,
         ));
 
         return array(

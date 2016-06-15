@@ -219,8 +219,8 @@ function init__webstandards()
         'head' => array('html'),
         'param' => array('script', 'object'),
         //'link' => array('head', 'link'),  Composr will dynamically optimise things to tend towards correctness, so can't enable this rule
+        //'style' => array('head'), "
         'li' => array('ul', 'ol', 'dd', 'menu', 'dt', 'dl', 'dir'),
-        'style' => array('head'),
         'tbody' => array('table'),
         'tfoot' => array('table'),
         'thead' => array('table'),
