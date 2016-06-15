@@ -110,6 +110,8 @@ class Hook_addon_registry_filedump
             'sources/hooks/modules/admin_import_types/filedump.php',
             'themes/default/templates/FILEDUMP_SCREEN.tpl',
             'themes/default/templates/FILEDUMP_EMBED_SCREEN.tpl',
+            'themes/default/templates/FILEDUMP_FOOTER.tpl',
+            'themes/default/templates/FILEDUMP_SEARCH.tpl',
             'uploads/filedump/index.html',
             'cms/pages/modules/filedump.php',
             'lang/EN/filedump.ini',
@@ -133,6 +135,8 @@ class Hook_addon_registry_filedump
     {
         return array(
             'templates/FILEDUMP_SCREEN.tpl' => 'filedump_screen',
+            'templates/FILEDUMP_FOOTER.tpl' => 'filedump_screen',
+            'templates/FILEDUMP_SEARCH.tpl' => 'filedump_screen',
             'templates/FILEDUMP_EMBED_SCREEN.tpl' => 'filedump_embed_screen',
         );
     }

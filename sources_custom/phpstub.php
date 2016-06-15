@@ -3909,9 +3909,9 @@ function pi()
 /**
  * Exponential expression.
  *
- * @param  float $base Base.
- * @param  float $exp Exponent.
- * @return float Result.
+ * @param  mixed $base Base (integer or float).
+ * @param  mixed $exp Exponent (integer or float).
+ * @return mixed Result (integer or float).
  */
 function pow($base, $exp)
 {

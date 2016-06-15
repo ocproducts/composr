@@ -34,361 +34,361 @@ CREATE TABLE cms_addons (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('actionlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Audit-trail functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('actionlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Audit-trail functionality.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('aggregate_types', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Define complex aggregate types in XML, and spawn them.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('aggregate_types', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Define complex aggregate types in XML, and spawn them.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('apache_config_files', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sample .htaccess files to help achieve optimal configuration on the Apache web server.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('apache_config_files', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sample .htaccess files to help achieve optimal configuration on the Apache web server.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('authors', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Certain kinds of content can have authors instead of submitters (e.g. \'ocProducts\'). The authors may be independently described and searched under.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('authors', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Certain kinds of content can have authors instead of submitters (e.g. \'ocProducts\'). The authors may be independently described and searched under.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('awards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Pick out content for featuring.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('awards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Pick out content for featuring.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('backup', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Perform incremental or full backups of files and the database. Supports scheduling.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('backup', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Perform incremental or full backups of files and the database. Supports scheduling.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('banners', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('banners', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced banner system, with support for multiple banner rotations, commercial banner campaigns, and webring-style systems. Support for graphical, text, and flash banners. Hotword activation support.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('bookmarks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to bookmark screens of the website. As the bookmarks are tied to their member profile they can access them from any computer they can log in on.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('bookmarks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to bookmark screens of the website. As the bookmarks are tied to their member profile they can access them from any computer they can log in on.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('breadcrumbs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced breadcrumb editing.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('breadcrumbs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced breadcrumb editing.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('calendar', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced community calendar.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('calendar', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'An advanced community calendar.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('captcha', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Stop spam-bots from performing actions on the website.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('captcha', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Stop spam-bots from performing actions on the website.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('catalogues', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Describe your own custom data record types (by choosing and configuring fields) and populate with records. Supports tree structures, and most standard Composr features (e.g. ratings).', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('catalogues', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Describe your own custom data record types (by choosing and configuring fields) and populate with records. Supports tree structures, and most standard Composr features (e.g. ratings).', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('chat', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Chatrooms and instant messaging.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('chat', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Chatrooms and instant messaging.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cartoon_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr (sketched characters)', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cartoon_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr (sketched characters)', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_clubs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Clubs for members, each of which comes with a forum.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_clubs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Clubs for members, each of which comes with a forum.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_contact_member', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Off-site e-mailing of members (more private, and may be used by guests).', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_contact_member', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Off-site e-mailing of members (more private, and may be used by guests).', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cpfs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_cpfs', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Custom profile fields, so members may save additional details. If this is uninstalled any existing custom profile fields will remain in the system.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_forum', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Conversr forum- a modern advanced forum for members to interact on.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_forum', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Conversr forum- a modern advanced forum for members to interact on.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member avatars.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member avatars.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_photos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member photos.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_photos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member photos.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_titles', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member titles.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_member_titles', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member titles.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_multi_moderations', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-moderations for the Conversr forum.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_multi_moderations', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-moderations for the Conversr forum.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_post_templates', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post templates for the Conversr forum.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_post_templates', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post templates for the Conversr forum.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_reported_posts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post reporting with the Conversr forum.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_reported_posts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Post reporting with the Conversr forum.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_signatures', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member signatures.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_signatures', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member signatures.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_thematic_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_thematic_avatars', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A selection of avatars for Conversr', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_warnings', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member warnings and punishment.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('cns_warnings', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Member warnings and punishment.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('code_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'For programmers- A simple editor for editing Composr code files, with support for override support and saving via FTP.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('code_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'For programmers- A simple editor for editing Composr code files, with support for override support and saving via FTP.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('collaboration_zone', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaboration Zone.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('collaboration_zone', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaboration Zone.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('commandr', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A command-line environment for managing your website, designed for Linux/Unix lovers.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('commandr', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A command-line environment for managing your website, designed for Linux/Unix lovers.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_privacy', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allows users to specify privacy level for their content.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_privacy', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allows users to specify privacy level for their content.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_reviews', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Regularly review content for accuracy.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('content_reviews', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Regularly review content for accuracy.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core Composr code)', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core Composr code)', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_components', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_components', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465958031);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_abstract_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_addon_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Install or uninstall addons.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_addon_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Install or uninstall addons.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_adminzone_dashboard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The dashboard tools shown in the Admin Zone.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_adminzone_dashboard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The dashboard tools shown in the Admin Zone.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cleanup_tools', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Behind-the-scenes maintenance tasks.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cleanup_tools', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Behind-the-scenes maintenance tasks.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cns', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Composr member/usergroup system.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_cns', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The Composr member/usergroup system.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_comcode_pages', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage new pages on the website, known as Comcode pages.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_comcode_pages', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage new pages on the website, known as Comcode pages.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_configuration', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Set configuration options.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_configuration', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Set configuration options.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_database_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different kinds of database software.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_database_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different kinds of database software.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_feedback_features', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features for user interaction with content.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_feedback_features', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features for user interaction with content.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core fields API)', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Core fields API)', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_form_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for forms.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_form_interfaces', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for forms.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_forum_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different forum/member systems.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_forum_drivers', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The code layer that binds the software to one of various different forum/member systems.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_graphic_text', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for imagery.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_graphic_text', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality for imagery.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_html_abstractions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_html_abstractions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_language_editing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Translate the software, or just change what it says for stylistic reasons.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_language_editing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Translate the software, or just change what it says for stylistic reasons.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_menus', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Edit menus.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_menus', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Edit menus.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_notifications', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sends out action-triggered notifications to members listening to them.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_notifications', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Sends out action-triggered notifications to members listening to them.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_permission_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage permissions.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_permission_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage permissions.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_primary_layout', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_primary_layout', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Core rendering functionality.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_rich_media', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Comcode and attachments.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_rich_media', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Comcode and attachments.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_themeing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Themeing the website, via CSS, HTML, and images.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_themeing', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Themeing the website, via CSS, HTML, and images.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_upgrader', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The upgrader code.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_upgrader', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The upgrader code.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_webstandards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Web Standards checking tools.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_webstandards', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Web Standards checking tools.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_zone_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage zones (sub-sites).', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('core_zone_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage zones (sub-sites).', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('counting_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks for hit counters, and count-downs.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('counting_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks for hit counters, and count-downs.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('custom_comcode', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Create new Comcode tags.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('custom_comcode', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Create new Comcode tags.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('debrand', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow easy debranding of the website software.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('debrand', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow easy debranding of the website software.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('downloads', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Host a downloads directory.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('downloads', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Host a downloads directory.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ecommerce', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'eCommerce infrastructure, with support for digital purchase and usergroup subscriptions. Accounting functionality.', 1465441691);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ecommerce', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'eCommerce infrastructure, with support for digital purchase and usergroup subscriptions. Accounting functionality.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('errorlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log of errors that have happened on the website.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('errorlog', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log of errors that have happened on the website.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('failover', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced system to detect if the site goes down, and provide an automatic fallback.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('failover', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced system to detect if the site goes down, and provide an automatic fallback.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('filedump', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'File/media library, for use in attachments or for general ad-hoc sharing.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('filedump', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'File/media library, for use in attachments or for general ad-hoc sharing.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('forum_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to draw forum posts and topics into the main website.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('forum_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to draw forum posts and topics into the main website.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('galleries', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Galleries, including support for video galleries, and member personal galleries.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('galleries', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Galleries, including support for video galleries, and member personal galleries.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('google_appengine', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for deploying to Google App Engine (for developers).', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('google_appengine', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for deploying to Google App Engine (for developers).', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('help_page', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A simple website help page. Note that removing this will not remove the menu link automatically.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('help_page', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A simple website help page. Note that removing this will not remove the menu link automatically.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('hphp_buildkit', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Scripts for supporting Facebook\'s HHVM.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('hphp_buildkit', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Scripts for supporting Facebook\'s HHVM.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('import', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('import', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Switch to Composr from other software. This addon provides the architecture for importing, and a number of prewritten importers.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('installer', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('installer', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The installer files (can be removed immediately after installing; in fact Composr makes you remove install.php manually).', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('language_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to allow visitors to choose their language.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('language_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to allow visitors to choose their language.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ldap', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for integrating Conversr with an LDAP server, so usergroup and members can be the same as those already on the network', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ldap', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for integrating Conversr with an LDAP server, so usergroup and members can be the same as those already on the network', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('linux_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Bash shell scripts to help configure permissions on Linux/Unix servers.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('linux_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Bash shell scripts to help configure permissions on Linux/Unix servers.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('match_key_permissions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Match-key-permissions allow advanced setting of permissions on a screen-by-screen basis.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('match_key_permissions', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Match-key-permissions allow advanced setting of permissions on a screen-by-screen basis.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('msn', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features to support multi-site-networks (networks of linked sites that usually share a common member system).', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('msn', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Features to support multi-site-networks (networks of linked sites that usually share a common member system).', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'News and blogging.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'News and blogging.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news_shared', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Common files needed for RSS and News addons)', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('news_shared', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', '(Common files needed for RSS and News addons)', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('newsletter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for users to join newsletters, and for the staff to send out newsletters to subscribers, and to specific usergroups.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('newsletter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for users to join newsletters, and for the staff to send out newsletters to subscribers, and to specific usergroups.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('page_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage pages on the website.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('page_management', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage pages on the website.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('phpinfo', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Access PHP configurational information from inside Composr.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('phpinfo', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Access PHP configurational information from inside Composr.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('points', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to accumulate points via a number of configurable activities, as well as exchange points with each other. Points act as a ranking system as well as a virtual currency.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('points', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to accumulate points via a number of configurable activities, as well as exchange points with each other. Points act as a ranking system as well as a virtual currency.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('pointstore', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provide a number of virtual products to your members in exchange for the points they have accumulated by their activity', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('pointstore', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provide a number of virtual products to your members in exchange for the points they have accumulated by their activity', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('polls', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A poll (voting) system.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('polls', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A poll (voting) system.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('printer_friendly_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to provide a link for the current screen to be turned into it\'s printer-friendly equivalent.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('printer_friendly_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to provide a link for the current screen to be turned into it\'s printer-friendly equivalent.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('quizzes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Construct competitions, surveys, and tests, for members to perform. Highly configurable, and comes with administrative tools to handle the results.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('quizzes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Construct competitions, surveys, and tests, for members to perform. Highly configurable, and comes with administrative tools to handle the results.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('random_quotes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to display random quotes on your website, and an administrative tool to choose them.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('random_quotes', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to display random quotes on your website, and an administrative tool to choose them.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('realtime_rain', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Real-time/historic display of website activity.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('realtime_rain', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Real-time/historic display of website activity.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('recommend', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to easily recommend the website to others.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('recommend', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Allow members to easily recommend the website to others.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('redirects_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage redirects between pages.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('redirects_editor', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Manage redirects between pages.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('rootkit_detector', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A tool to help power-user webmasters identify if a \"rootkit\" has been placed on the server.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('rootkit_detector', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A tool to help power-user webmasters identify if a \"rootkit\" has been placed on the server.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('search', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-content search engine.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('search', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Multi-content search engine.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('securitylogging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log/display security alerts.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('securitylogging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Log/display security alerts.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('setupwizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Quick-start setup wizard.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('setupwizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Quick-start setup wizard.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('shopping', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Online store functionality.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('shopping', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Online store functionality.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('sms', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('sms', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ssl', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose which pages of your website run over HTTPS (SSL). Requires an SSL certificate to be installed on the webserver, and a dedicated IP address.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('ssl', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose which pages of your website run over HTTPS (SSL). Requires an SSL certificate to be installed on the webserver, and a dedicated IP address.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose and display a selection of staff from the super-administator/super-moderator usergroups. This is useful for multi-site networks, where members with privileges may not be considered staff on all websites on the network.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Choose and display a selection of staff from the super-administator/super-moderator usergroups. This is useful for multi-site networks, where members with privileges may not be considered staff on all websites on the network.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff_messaging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('staff_messaging', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Blocks to allow visitors to contact the staff, either via e-mail, or via a special administrative interface which the staff may use to comment on the messages and assign task ownership.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show advanced graphs (analytics) and dumps of raw data relating to your website activity.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show advanced graphs (analytics) and dumps of raw data relating to your website activity.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show a selection of your website statistics to your visitors.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('stats_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show a selection of your website statistics to your visitors.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('supermember_directory', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show a list of all members in the configured \"Super member\" usergroup. Useful for communities that need to provide a list of VIPs.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('supermember_directory', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show a list of all members in the configured \"Super member\" usergroup. Useful for communities that need to provide a list of VIPs.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Syndicate RSS/Atom feeds of your content.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Syndicate RSS/Atom feeds of your content.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show RSS and Atom feeds from other websites.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('syndication_blocks', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Show RSS and Atom feeds from other websites.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('textbased_persistent_caching', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A persistent data cache, using disk files for data storage.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('textbased_persistent_caching', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A persistent data cache, using disk files for data storage.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('themewizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromographic equations built into Composr.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('themewizard', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Automatically generate your own colour schemes using the default theme as a base. Uses the sophisticated chromographic equations built into Composr.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('tickets', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A support ticket system.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('tickets', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A support ticket system.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('uninstaller', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The uninstaller.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('uninstaller', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'The uninstaller.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('unvalidated', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Subject member\'s to validation (approval) of their content submissions, and enable/disable content.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('unvalidated', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Subject member\'s to validation (approval) of their content submissions, and enable/disable content.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('users_online_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show which users who are currently visiting the website, and birthdays.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('users_online_block', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A block to show which users who are currently visiting the website, and birthdays.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('welcome_emails', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Welcome e-mails for new members.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('welcome_emails', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Welcome e-mails for new members.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wiki', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wiki', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Collaborative/encyclopaedic database interface. A wiki-like community database with rich media capabilities.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('windows_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A .bat script to help configure permissions on Windows servers.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('windows_helper_scripts', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'A .bat script to help configure permissions on Windows servers.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wordfilter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Block rude/offensive/inappropriate words.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('wordfilter', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Block rude/offensive/inappropriate words.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('xml_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced form field filtering.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('xml_fields', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Advanced form field filtering.', 1465958032);
 
 
-INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('zone_logos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for having different logos for individual zones.', 1465441692);
+INSERT INTO cms_addons (addon_name, addon_author, addon_organisation, addon_version, addon_category, addon_copyright_attribution, addon_licence, addon_description, addon_install_time) VALUES ('zone_logos', 'Core Team', 'ocProducts', '10', 'Uncategorised/Alpha', '', '(Unstated)', 'Support for having different logos for individual zones.', 1465958032);
 
 
 DROP TABLE IF EXISTS cms_addons_dependencies;
@@ -14515,4591 +14515,4597 @@ INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4676, 'filedump'
 INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4677, 'filedump', 'themes/default/templates/FILEDUMP_EMBED_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4678, 'filedump', 'uploads/filedump/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4678, 'filedump', 'themes/default/templates/FILEDUMP_FOOTER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4679, 'filedump', 'cms/pages/modules/filedump.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4679, 'filedump', 'themes/default/templates/FILEDUMP_SEARCH.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4680, 'filedump', 'lang/EN/filedump.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4680, 'filedump', 'uploads/filedump/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4681, 'filedump', 'sources/hooks/systems/config/is_on_folder_create.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4681, 'filedump', 'cms/pages/modules/filedump.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4682, 'filedump', 'sources/hooks/modules/search/filedump.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4682, 'filedump', 'lang/EN/filedump.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4683, 'filedump', 'sources/hooks/systems/rss/filedump.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4683, 'filedump', 'sources/hooks/systems/config/is_on_folder_create.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4684, 'filedump', 'sources/hooks/systems/commandr_fs/home.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4684, 'filedump', 'sources/hooks/modules/search/filedump.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4685, 'filedump', 'uploads/filedump/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4685, 'filedump', 'sources/hooks/systems/rss/filedump.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4686, 'filedump', 'themes/default/css/filedump.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4686, 'filedump', 'sources/hooks/systems/commandr_fs/home.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4687, 'filedump', 'sources/filedump.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4687, 'filedump', 'uploads/filedump/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4688, 'filedump', 'sources/hooks/systems/commandr_fs/filedump.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4688, 'filedump', 'themes/default/css/filedump.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4689, 'forum_blocks', 'themes/default/templates/BLOCK_MAIN_FORUM_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4689, 'filedump', 'sources/filedump.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4690, 'forum_blocks', 'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4690, 'filedump', 'sources/hooks/systems/commandr_fs/filedump.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4691, 'forum_blocks', 'themes/default/templates/BLOCK_SIDE_FORUM_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4691, 'forum_blocks', 'themes/default/templates/BLOCK_MAIN_FORUM_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4692, 'forum_blocks', 'sources/blocks/bottom_forum_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4692, 'forum_blocks', 'themes/default/templates/BLOCK_MAIN_FORUM_TOPICS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4693, 'forum_blocks', 'sources/blocks/main_forum_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4693, 'forum_blocks', 'themes/default/templates/BLOCK_SIDE_FORUM_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4694, 'forum_blocks', 'sources/blocks/main_forum_topics.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4694, 'forum_blocks', 'sources/blocks/bottom_forum_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4695, 'forum_blocks', 'sources/blocks/side_forum_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4695, 'forum_blocks', 'sources/blocks/main_forum_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4696, 'forum_blocks', 'sources/hooks/systems/addon_registry/forum_blocks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4696, 'forum_blocks', 'sources/blocks/main_forum_topics.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4697, 'forum_blocks', 'sources/hooks/modules/admin_setupwizard/forum_blocks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4697, 'forum_blocks', 'sources/blocks/side_forum_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4698, 'galleries', 'themes/default/images/icons/24x24/menu/rich_content/galleries.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4698, 'forum_blocks', 'sources/hooks/systems/addon_registry/forum_blocks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4699, 'galleries', 'themes/default/images/icons/48x48/menu/rich_content/galleries.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4699, 'forum_blocks', 'sources/hooks/modules/admin_setupwizard/forum_blocks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4700, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/add_one_image.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4700, 'galleries', 'themes/default/images/icons/24x24/menu/rich_content/galleries.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4701, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/add_one_video.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4701, 'galleries', 'themes/default/images/icons/48x48/menu/rich_content/galleries.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4702, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_image.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4702, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/add_one_image.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4703, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_video.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4703, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/add_one_video.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4704, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/add_one_image.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4704, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_image.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4705, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/add_one_video.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4705, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/edit_one_video.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4706, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_image.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4706, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/add_one_image.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4707, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_video.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4707, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/add_one_video.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4708, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4708, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_image.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4709, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4709, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/edit_one_video.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4710, 'galleries', 'themes/default/images/icons/24x24/buttons/slideshow.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4710, 'galleries', 'themes/default/images/icons/24x24/menu/cms/galleries/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4711, 'galleries', 'themes/default/images/icons/48x48/buttons/slideshow.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4711, 'galleries', 'themes/default/images/icons/48x48/menu/cms/galleries/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4712, 'galleries', 'data/zencoder_receive.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4712, 'galleries', 'themes/default/images/icons/24x24/buttons/slideshow.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4713, 'galleries', 'sources/hooks/systems/notifications/gallery_entry.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4713, 'galleries', 'themes/default/images/icons/48x48/buttons/slideshow.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4714, 'galleries', 'sources/hooks/systems/snippets/exists_gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4714, 'galleries', 'data/zencoder_receive.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4715, 'galleries', 'sources/hooks/modules/admin_setupwizard_installprofiles/portfolio.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4715, 'galleries', 'sources/hooks/systems/notifications/gallery_entry.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4716, 'galleries', 'sources/hooks/systems/config/audio_bitrate.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4716, 'galleries', 'sources/hooks/systems/snippets/exists_gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4717, 'galleries', 'sources/hooks/systems/config/gallery_media_title_required.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4717, 'galleries', 'sources/hooks/modules/admin_setupwizard_installprofiles/portfolio.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4718, 'galleries', 'sources/hooks/systems/config/default_video_height.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4718, 'galleries', 'sources/hooks/systems/config/audio_bitrate.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4719, 'galleries', 'sources/hooks/systems/config/default_video_width.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4719, 'galleries', 'sources/hooks/systems/config/gallery_media_title_required.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4720, 'galleries', 'sources/hooks/systems/config/ffmpeg_path.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4720, 'galleries', 'sources/hooks/systems/config/default_video_height.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4721, 'galleries', 'sources/hooks/systems/config/transcoding_zencoder_api_key.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4721, 'galleries', 'sources/hooks/systems/config/default_video_width.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4722, 'galleries', 'sources/hooks/systems/config/transcoding_zencoder_ftp_path.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4722, 'galleries', 'sources/hooks/systems/config/ffmpeg_path.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4723, 'galleries', 'sources/hooks/systems/config/transcoding_server.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4723, 'galleries', 'sources/hooks/systems/config/transcoding_zencoder_api_key.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4724, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4724, 'galleries', 'sources/hooks/systems/config/transcoding_zencoder_ftp_path.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4725, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_images.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4725, 'galleries', 'sources/hooks/systems/config/transcoding_server.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4726, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_videos.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4726, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4727, 'galleries', 'sources/hooks/systems/config/gallery_name_order.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4727, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_images.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4728, 'galleries', 'sources/hooks/systems/config/gallery_selectors.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4728, 'galleries', 'sources/hooks/systems/config/galleries_show_stats_count_videos.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4729, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_images_high.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4729, 'galleries', 'sources/hooks/systems/config/gallery_name_order.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4730, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_images_low.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4730, 'galleries', 'sources/hooks/systems/config/gallery_selectors.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4731, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_videos_high.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4731, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_images_high.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4732, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_videos_low.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4732, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_images_low.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4733, 'galleries', 'sources/hooks/systems/config/maximum_image_size.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4733, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_videos_high.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4734, 'galleries', 'sources/hooks/systems/config/points_ADD_IMAGE.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4734, 'galleries', 'sources/hooks/systems/config/max_personal_gallery_videos_low.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4735, 'galleries', 'sources/hooks/systems/config/points_ADD_VIDEO.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4735, 'galleries', 'sources/hooks/systems/config/maximum_image_size.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4736, 'galleries', 'sources/hooks/systems/config/reverse_thumb_order.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4736, 'galleries', 'sources/hooks/systems/config/points_ADD_IMAGE.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4737, 'galleries', 'sources/hooks/systems/config/show_empty_galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4737, 'galleries', 'sources/hooks/systems/config/points_ADD_VIDEO.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4738, 'galleries', 'sources/hooks/systems/config/show_gallery_counts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4738, 'galleries', 'sources/hooks/systems/config/reverse_thumb_order.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4739, 'galleries', 'sources/hooks/systems/config/video_bitrate.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4739, 'galleries', 'sources/hooks/systems/config/show_empty_galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4740, 'galleries', 'sources/hooks/systems/config/video_height_setting.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4740, 'galleries', 'sources/hooks/systems/config/show_gallery_counts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4741, 'galleries', 'sources/hooks/systems/config/video_width_setting.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4741, 'galleries', 'sources/hooks/systems/config/video_bitrate.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4742, 'galleries', 'sources/hooks/systems/content_meta_aware/image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4742, 'galleries', 'sources/hooks/systems/config/video_height_setting.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4743, 'galleries', 'sources/hooks/systems/content_meta_aware/video.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4743, 'galleries', 'sources/hooks/systems/config/video_width_setting.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4744, 'galleries', 'sources/hooks/systems/content_meta_aware/gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4744, 'galleries', 'sources/hooks/systems/content_meta_aware/image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4745, 'galleries', 'sources/hooks/systems/commandr_fs/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4745, 'galleries', 'sources/hooks/systems/content_meta_aware/video.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4746, 'galleries', 'sources/hooks/systems/meta/image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4746, 'galleries', 'sources/hooks/systems/content_meta_aware/gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4747, 'galleries', 'sources/hooks/systems/meta/video.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4747, 'galleries', 'sources/hooks/systems/commandr_fs/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4748, 'galleries', 'sources/hooks/systems/meta/gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4748, 'galleries', 'sources/hooks/systems/meta/image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4749, 'galleries', 'sources/hooks/blocks/side_stats/stats_galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4749, 'galleries', 'sources/hooks/systems/meta/video.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4750, 'galleries', 'sources/hooks/systems/addon_registry/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4750, 'galleries', 'sources/hooks/systems/meta/gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4751, 'galleries', 'sources/hooks/modules/admin_import_types/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4751, 'galleries', 'sources/hooks/blocks/side_stats/stats_galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4752, 'galleries', 'sources/hooks/systems/symbols/GALLERY_VIDEO_FOR_URL.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4752, 'galleries', 'sources/hooks/systems/addon_registry/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4753, 'galleries', 'sources/hooks/systems/profiles_tabs/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4753, 'galleries', 'sources/hooks/modules/admin_import_types/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4754, 'galleries', 'sources/hooks/systems/sitemap/gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4754, 'galleries', 'sources/hooks/systems/symbols/GALLERY_VIDEO_FOR_URL.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4755, 'galleries', 'sources/hooks/systems/sitemap/image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4755, 'galleries', 'sources/hooks/systems/profiles_tabs/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4756, 'galleries', 'sources/hooks/systems/sitemap/video.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4756, 'galleries', 'sources/hooks/systems/sitemap/gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4757, 'galleries', 'themes/default/templates/GALLERY_POPULAR.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4757, 'galleries', 'sources/hooks/systems/sitemap/image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4758, 'galleries', 'themes/default/templates/GALLERY_ENTRY_WRAP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4758, 'galleries', 'sources/hooks/systems/sitemap/video.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4759, 'galleries', 'themes/default/templates/BLOCK_MAIN_GALLERY_EMBED.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4759, 'galleries', 'themes/default/templates/GALLERY_POPULAR.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4760, 'galleries', 'themes/default/templates/GALLERY_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4760, 'galleries', 'themes/default/templates/GALLERY_ENTRY_WRAP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4761, 'galleries', 'themes/default/templates/GALLERY_IMAGE_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4761, 'galleries', 'themes/default/templates/BLOCK_MAIN_GALLERY_EMBED.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4762, 'galleries', 'themes/default/templates/GALLERY_VIDEO_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4762, 'galleries', 'themes/default/templates/GALLERY_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4763, 'galleries', 'themes/default/templates/GALLERY_ENTRY_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4763, 'galleries', 'themes/default/templates/GALLERY_IMAGE_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4764, 'galleries', 'themes/default/templates/GALLERY_FLOW_ENTRY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4764, 'galleries', 'themes/default/templates/GALLERY_VIDEO_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4765, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4765, 'galleries', 'themes/default/templates/GALLERY_ENTRY_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4766, 'galleries', 'themes/default/templates/GALLERY_ENTRY_LIST_LINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4766, 'galleries', 'themes/default/templates/GALLERY_FLOW_ENTRY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4767, 'galleries', 'themes/default/templates/GALLERY_NAV.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4767, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4768, 'galleries', 'themes/default/templates/GALLERY_IMAGE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4768, 'galleries', 'themes/default/templates/GALLERY_ENTRY_LIST_LINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4769, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_IMAGE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4769, 'galleries', 'themes/default/templates/GALLERY_NAV.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4770, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_VIDEO.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4770, 'galleries', 'themes/default/templates/GALLERY_IMAGE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4771, 'galleries', 'themes/default/templates/GALLERY_VIDEO.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4771, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_IMAGE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4772, 'galleries', 'themes/default/templates/GALLERY_VIDEO_INFO.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4772, 'galleries', 'themes/default/templates/GALLERY_FLOW_MODE_VIDEO.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4773, 'galleries', 'themes/default/templates/GALLERY_REGULAR_MODE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4773, 'galleries', 'themes/default/templates/GALLERY_VIDEO.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4774, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4774, 'galleries', 'themes/default/templates/GALLERY_VIDEO_INFO.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4775, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4775, 'galleries', 'themes/default/templates/GALLERY_REGULAR_MODE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4776, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE_CONTAINER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4776, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4777, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE_DEPTH.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4777, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4778, 'galleries', 'themes/default/templates/BLOCK_MAIN_IMAGE_FADER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4778, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE_CONTAINER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4779, 'galleries', 'themes/default/templates/GALLERY_IMPORT_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4779, 'galleries', 'themes/default/templates/BLOCK_SIDE_GALLERIES_LINE_DEPTH.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4780, 'galleries', 'uploads/galleries/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4780, 'galleries', 'themes/default/templates/BLOCK_MAIN_IMAGE_FADER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4781, 'galleries', 'uploads/galleries_thumbs/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4781, 'galleries', 'themes/default/templates/GALLERY_IMPORT_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4782, 'galleries', 'uploads/repimages/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4782, 'galleries', 'uploads/galleries/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4783, 'galleries', 'uploads/watermarks/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4783, 'galleries', 'uploads/galleries_thumbs/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4784, 'galleries', 'themes/default/css/galleries.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4784, 'galleries', 'uploads/repimages/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4785, 'galleries', 'cms/pages/modules/cms_galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4785, 'galleries', 'uploads/watermarks/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4786, 'galleries', 'lang/EN/galleries.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4786, 'galleries', 'themes/default/css/galleries.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4787, 'galleries', 'site/pages/modules/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4787, 'galleries', 'cms/pages/modules/cms_galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4788, 'galleries', 'sources/blocks/side_galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4788, 'galleries', 'lang/EN/galleries.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4789, 'galleries', 'uploads/galleries/pre_transcoding/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4789, 'galleries', 'site/pages/modules/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4790, 'galleries', 'sources/transcoding.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4790, 'galleries', 'sources/blocks/side_galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4791, 'galleries', 'sources/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4791, 'galleries', 'uploads/galleries/pre_transcoding/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4792, 'galleries', 'sources/galleries2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4792, 'galleries', 'sources/transcoding.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4793, 'galleries', 'sources/galleries3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4793, 'galleries', 'sources/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4794, 'galleries', 'sources/hooks/modules/admin_import/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4794, 'galleries', 'sources/galleries2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4795, 'galleries', 'sources/hooks/modules/admin_newsletter/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4795, 'galleries', 'sources/galleries3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4796, 'galleries', 'sources/hooks/modules/admin_setupwizard/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4796, 'galleries', 'sources/hooks/modules/admin_import/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4797, 'galleries', 'sources/hooks/modules/galleries_users/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4797, 'galleries', 'sources/hooks/modules/admin_newsletter/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4798, 'galleries', 'sources_custom/hooks/modules/galleries_users/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4798, 'galleries', 'sources/hooks/modules/admin_setupwizard/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4799, 'galleries', 'sources/hooks/modules/galleries_users/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4799, 'galleries', 'sources/hooks/modules/galleries_users/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4800, 'galleries', 'sources_custom/hooks/modules/galleries_users/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4800, 'galleries', 'sources_custom/hooks/modules/galleries_users/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4801, 'galleries', 'sources/hooks/modules/search/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4801, 'galleries', 'sources/hooks/modules/galleries_users/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4802, 'galleries', 'sources/hooks/systems/page_groupings/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4802, 'galleries', 'sources_custom/hooks/modules/galleries_users/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4803, 'galleries', 'sources/hooks/systems/module_permissions/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4803, 'galleries', 'sources/hooks/modules/search/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4804, 'galleries', 'sources/hooks/systems/rss/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4804, 'galleries', 'sources/hooks/systems/page_groupings/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4805, 'galleries', 'sources/hooks/modules/admin_unvalidated/videos.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4805, 'galleries', 'sources/hooks/systems/module_permissions/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4806, 'galleries', 'sources/hooks/modules/search/videos.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4806, 'galleries', 'sources/hooks/systems/rss/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4807, 'galleries', 'sources/hooks/systems/ajax_tree/choose_video.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4807, 'galleries', 'sources/hooks/modules/admin_unvalidated/videos.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4808, 'galleries', 'sources/hooks/systems/preview/video.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4808, 'galleries', 'sources/hooks/modules/search/videos.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4809, 'galleries', 'sources/hooks/systems/trackback/videos.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4809, 'galleries', 'sources/hooks/systems/ajax_tree/choose_video.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4810, 'galleries', 'sources/hooks/modules/admin_unvalidated/images.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4810, 'galleries', 'sources/hooks/systems/preview/video.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4811, 'galleries', 'sources/hooks/modules/search/images.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4811, 'galleries', 'sources/hooks/systems/trackback/videos.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4812, 'galleries', 'sources/hooks/systems/trackback/images.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4812, 'galleries', 'sources/hooks/modules/admin_unvalidated/images.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4813, 'galleries', 'sources/hooks/systems/ajax_tree/choose_gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4813, 'galleries', 'sources/hooks/modules/search/images.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4814, 'galleries', 'sources/hooks/systems/ajax_tree/choose_image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4814, 'galleries', 'sources/hooks/systems/trackback/images.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4815, 'galleries', 'site/download_gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4815, 'galleries', 'sources/hooks/systems/ajax_tree/choose_gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4816, 'galleries', 'sources/hooks/systems/preview/image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4816, 'galleries', 'sources/hooks/systems/ajax_tree/choose_image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4817, 'galleries', 'sources/blocks/main_gallery_embed.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4817, 'galleries', 'site/download_gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4818, 'galleries', 'sources/blocks/main_image_fader.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4818, 'galleries', 'sources/hooks/systems/preview/image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4819, 'galleries', 'sources/blocks/main_personal_galleries_list.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4819, 'galleries', 'sources/blocks/main_gallery_embed.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4820, 'galleries', 'themes/default/templates/BLOCK_MAIN_PERSONAL_GALLERIES_LIST.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4820, 'galleries', 'sources/blocks/main_image_fader.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4821, 'galleries', 'uploads/galleries/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4821, 'galleries', 'sources/blocks/main_personal_galleries_list.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4822, 'galleries', 'uploads/galleries_thumbs/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4822, 'galleries', 'themes/default/templates/BLOCK_MAIN_PERSONAL_GALLERIES_LIST.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4823, 'galleries', 'uploads/repimages/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4823, 'galleries', 'uploads/galleries/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4824, 'galleries', 'uploads/watermarks/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4824, 'galleries', 'uploads/galleries_thumbs/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4825, 'galleries', 'themes/default/images/audio_thumb.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4825, 'galleries', 'uploads/repimages/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4826, 'galleries', 'themes/default/images/video_thumb.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4826, 'galleries', 'uploads/watermarks/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4827, 'galleries', 'themes/default/javascript/galleries.js');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4827, 'galleries', 'themes/default/images/audio_thumb.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4828, 'galleries', 'themes/default/templates/CNS_MEMBER_PROFILE_GALLERIES.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4828, 'galleries', 'themes/default/images/video_thumb.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4829, 'galleries', 'sources/hooks/systems/block_ui_renderers/galleries.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4829, 'galleries', 'themes/default/javascript/galleries.js');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4830, 'galleries', 'sources/hooks/systems/config/galleries_default_sort_order.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4830, 'galleries', 'themes/default/templates/CNS_MEMBER_PROFILE_GALLERIES.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4831, 'galleries', 'sources/hooks/systems/config/galleries_subcat_narrowin.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4831, 'galleries', 'sources/hooks/systems/block_ui_renderers/galleries.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4832, 'galleries', 'sources/hooks/systems/config/gallery_entries_flow_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4832, 'galleries', 'sources/hooks/systems/config/galleries_default_sort_order.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4833, 'galleries', 'sources/hooks/systems/config/gallery_entries_regular_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4833, 'galleries', 'sources/hooks/systems/config/galleries_subcat_narrowin.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4834, 'galleries', 'sources/hooks/systems/config/gallery_feedback_fields.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4834, 'galleries', 'sources/hooks/systems/config/gallery_entries_flow_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4835, 'galleries', 'sources/hooks/systems/config/gallery_member_synced.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4835, 'galleries', 'sources/hooks/systems/config/gallery_entries_regular_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4836, 'galleries', 'sources/hooks/systems/config/gallery_mode_is.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4836, 'galleries', 'sources/hooks/systems/config/gallery_feedback_fields.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4837, 'galleries', 'sources/hooks/systems/config/gallery_permissions.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4837, 'galleries', 'sources/hooks/systems/config/gallery_member_synced.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4838, 'galleries', 'sources/hooks/systems/config/gallery_rep_image.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4838, 'galleries', 'sources/hooks/systems/config/gallery_mode_is.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4839, 'galleries', 'sources/hooks/systems/config/gallery_watermarks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4839, 'galleries', 'sources/hooks/systems/config/gallery_permissions.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4840, 'galleries', 'sources/hooks/systems/config/subgallery_link_limit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4840, 'galleries', 'sources/hooks/systems/config/gallery_rep_image.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4841, 'galleries', 'sources/hooks/systems/config/personal_under_members.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4841, 'galleries', 'sources/hooks/systems/config/gallery_watermarks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4842, 'galleries', 'sources/hooks/systems/config/manual_gallery_codename.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4842, 'galleries', 'sources/hooks/systems/config/subgallery_link_limit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4843, 'galleries', 'sources/hooks/systems/config/manual_gallery_media_types.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4843, 'galleries', 'sources/hooks/systems/config/personal_under_members.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4844, 'galleries', 'sources/hooks/systems/config/manual_gallery_parent.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4844, 'galleries', 'sources/hooks/systems/config/manual_gallery_codename.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4845, 'galleries', 'sources/hooks/systems/config/enable_ecards.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4845, 'galleries', 'sources/hooks/systems/config/manual_gallery_media_types.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4846, 'galleries', 'sources/hooks/systems/tasks/download_gallery.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4846, 'galleries', 'sources/hooks/systems/config/manual_gallery_parent.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4847, 'google_appengine', 'sources/hooks/systems/addon_registry/google_appengine.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4847, 'galleries', 'sources/hooks/systems/config/enable_ecards.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4848, 'google_appengine', 'app.yaml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4848, 'galleries', 'sources/hooks/systems/tasks/download_gallery.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4849, 'google_appengine', 'data/modules/google_appengine/cron.yaml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4849, 'google_appengine', 'sources/hooks/systems/addon_registry/google_appengine.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4850, 'google_appengine', 'data/modules/google_appengine/dos.yaml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4850, 'google_appengine', 'app.yaml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4851, 'google_appengine', 'data/modules/google_appengine/queue.yaml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4851, 'google_appengine', 'data/modules/google_appengine/cron.yaml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4852, 'google_appengine', 'data/modules/google_appengine/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4852, 'google_appengine', 'data/modules/google_appengine/dos.yaml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4853, 'google_appengine', 'data/modules/google_appengine/php.gae.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4853, 'google_appengine', 'data/modules/google_appengine/queue.yaml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4854, 'google_appengine', 'data/modules/google_appengine/cloud_storage_proxy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4854, 'google_appengine', 'data/modules/google_appengine/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4855, 'google_appengine', 'data_custom/modules/google_appengine/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4855, 'google_appengine', 'data/modules/google_appengine/php.gae.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4856, 'google_appengine', 'sources/google_appengine.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4856, 'google_appengine', 'data/modules/google_appengine/cloud_storage_proxy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4857, 'help_page', 'sources/hooks/systems/addon_registry/help_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4857, 'google_appengine', 'data_custom/modules/google_appengine/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4858, 'help_page', 'site/pages/comcode/EN/help.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4858, 'google_appengine', 'sources/google_appengine.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4859, 'help_page', 'sources/hooks/systems/page_groupings/help_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4859, 'help_page', 'sources/hooks/systems/addon_registry/help_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4860, 'hphp_buildkit', 'sources/hooks/systems/addon_registry/hphp_buildkit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4860, 'help_page', 'site/pages/comcode/EN/help.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4861, 'hphp_buildkit', 'hphp.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4861, 'help_page', 'sources/hooks/systems/page_groupings/help_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4862, 'hphp_buildkit', 'hphp_debug.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4862, 'hphp_buildkit', 'sources/hooks/systems/addon_registry/hphp_buildkit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4863, 'hphp_buildkit', 'cms.hdf');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4863, 'hphp_buildkit', 'hphp.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4864, 'import', 'themes/default/css/importing.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4864, 'hphp_buildkit', 'hphp_debug.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4865, 'import', 'sources/hooks/modules/admin_import/html_site.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4865, 'hphp_buildkit', 'cms.hdf');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4866, 'import', 'sources/hooks/modules/admin_import/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4866, 'import', 'themes/default/css/importing.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4867, 'import', 'sources_custom/hooks/modules/admin_import/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4867, 'import', 'sources/hooks/modules/admin_import/html_site.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4868, 'import', 'sources/hooks/modules/admin_import/shared/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4868, 'import', 'sources/hooks/modules/admin_import/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4869, 'import', 'sources/hooks/modules/admin_import/shared/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4869, 'import', 'sources_custom/hooks/modules/admin_import/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4870, 'import', 'sources/hooks/systems/addon_registry/import.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4870, 'import', 'sources/hooks/modules/admin_import/shared/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4871, 'import', 'sources/hooks/modules/admin_import_types/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4871, 'import', 'sources/hooks/modules/admin_import/shared/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4872, 'import', 'sources_custom/hooks/modules/admin_import_types/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4872, 'import', 'sources/hooks/systems/addon_registry/import.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4873, 'import', 'sources/hooks/modules/admin_import_types/core.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4873, 'import', 'sources/hooks/modules/admin_import_types/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4874, 'import', 'sources/hooks/modules/admin_import_types/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4874, 'import', 'sources_custom/hooks/modules/admin_import_types/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4875, 'import', 'sources_custom/hooks/modules/admin_import_types/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4875, 'import', 'sources/hooks/modules/admin_import_types/core.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4876, 'import', 'themes/default/templates/IMPORT_ACTION_LINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4876, 'import', 'sources/hooks/modules/admin_import_types/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4877, 'import', 'themes/default/templates/IMPORT_ACTION_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4877, 'import', 'sources_custom/hooks/modules/admin_import_types/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4878, 'import', 'themes/default/templates/IMPORT_MESSAGE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4878, 'import', 'themes/default/templates/IMPORT_ACTION_LINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4879, 'import', 'themes/default/text/IMPORT_PHPNUKE_FCOMCODEPAGE.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4879, 'import', 'themes/default/templates/IMPORT_ACTION_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4880, 'import', 'themes/default/text/IMPORT_MKPORTAL_FCOMCODEPAGE.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4880, 'import', 'themes/default/templates/IMPORT_MESSAGE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4881, 'import', 'adminzone/pages/modules/admin_import.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4881, 'import', 'themes/default/text/IMPORT_PHPNUKE_FCOMCODEPAGE.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4882, 'import', 'lang/EN/import.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4882, 'import', 'themes/default/text/IMPORT_MKPORTAL_FCOMCODEPAGE.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4883, 'import', 'sources/hooks/modules/admin_import/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4883, 'import', 'adminzone/pages/modules/admin_import.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4884, 'import', 'sources_custom/hooks/modules/admin_import/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4884, 'import', 'lang/EN/import.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4885, 'import', 'sources/hooks/modules/admin_import/ipb1.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4885, 'import', 'sources/hooks/modules/admin_import/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4886, 'import', 'sources/hooks/modules/admin_import/ipb2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4886, 'import', 'sources_custom/hooks/modules/admin_import/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4887, 'import', 'sources/hooks/modules/admin_import/cms_merge.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4887, 'import', 'sources/hooks/modules/admin_import/ipb1.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4888, 'import', 'sources/hooks/modules/admin_import/phpbb2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4888, 'import', 'sources/hooks/modules/admin_import/ipb2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4889, 'import', 'sources/hooks/modules/admin_import/shared/ipb.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4889, 'import', 'sources/hooks/modules/admin_import/cms_merge.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4890, 'import', 'sources/hooks/modules/admin_import/vb3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4890, 'import', 'sources/hooks/modules/admin_import/phpbb2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4891, 'import', 'sources/hooks/modules/admin_import/mybb.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4891, 'import', 'sources/hooks/modules/admin_import/shared/ipb.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4892, 'import', 'sources/hooks/modules/admin_import/wowbb.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4892, 'import', 'sources/hooks/modules/admin_import/vb3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4893, 'import', 'sources/hooks/modules/admin_import/phpbb3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4893, 'import', 'sources/hooks/modules/admin_import/mybb.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4894, 'import', 'sources/hooks/modules/admin_import/aef.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4894, 'import', 'sources/hooks/modules/admin_import/wowbb.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4895, 'import', 'sources/hooks/modules/admin_import/smf.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4895, 'import', 'sources/hooks/modules/admin_import/phpbb3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4896, 'import', 'sources/hooks/modules/admin_import/smf2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4896, 'import', 'sources/hooks/modules/admin_import/aef.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4897, 'import', 'sources/hooks/systems/page_groupings/import.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4897, 'import', 'sources/hooks/modules/admin_import/smf.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4898, 'import', 'sources/hooks/modules/admin_import/wordpress.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4898, 'import', 'sources/hooks/modules/admin_import/smf2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4899, 'import', 'sources/hooks/systems/cns_auth/wordpress.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4899, 'import', 'sources/hooks/systems/page_groupings/import.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4900, 'import', 'sources/import.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4900, 'import', 'sources/hooks/modules/admin_import/wordpress.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4901, 'import', 'sources/hooks/systems/commandr_commands/continue_import.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4901, 'import', 'sources/hooks/systems/cns_auth/wordpress.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4902, 'installer', 'sources/hooks/systems/addon_registry/installer.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4902, 'import', 'sources/import.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4903, 'installer', 'themes/default/templates/INSTALLER_FORUM_CHOICE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4903, 'import', 'sources/hooks/systems/commandr_commands/continue_import.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4904, 'installer', 'themes/default/templates/INSTALLER_FORUM_CHOICE_VERSION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4904, 'installer', 'sources/hooks/systems/addon_registry/installer.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4905, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4905, 'installer', 'themes/default/templates/INSTALLER_FORUM_CHOICE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4906, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION_HIDE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4906, 'installer', 'themes/default/templates/INSTALLER_FORUM_CHOICE_VERSION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4907, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION_OPTION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4907, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4908, 'installer', 'themes/default/templates/INSTALLER_HTML_WRAP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4908, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION_HIDE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4909, 'installer', 'themes/default/templates/INSTALLER_WARNING_LONG.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4909, 'installer', 'themes/default/templates/INSTALLER_STEP_4_SECTION_OPTION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4910, 'installer', 'themes/default/templates/INSTALLER_DONE_SOMETHING.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4910, 'installer', 'themes/default/templates/INSTALLER_HTML_WRAP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4911, 'installer', 'themes/default/templates/INSTALLER_INPUT_LINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4911, 'installer', 'themes/default/templates/INSTALLER_WARNING_LONG.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4912, 'installer', 'themes/default/templates/INSTALLER_INPUT_PASSWORD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4912, 'installer', 'themes/default/templates/INSTALLER_DONE_SOMETHING.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4913, 'installer', 'themes/default/templates/INSTALLER_INPUT_TICK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4913, 'installer', 'themes/default/templates/INSTALLER_INPUT_LINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4914, 'installer', 'themes/default/templates/INSTALLER_STEP_1.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4914, 'installer', 'themes/default/templates/INSTALLER_INPUT_PASSWORD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4915, 'installer', 'themes/default/templates/INSTALLER_STEP_2.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4915, 'installer', 'themes/default/templates/INSTALLER_INPUT_TICK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4916, 'installer', 'themes/default/templates/INSTALLER_STEP_3.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4916, 'installer', 'themes/default/templates/INSTALLER_STEP_1.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4917, 'installer', 'themes/default/templates/INSTALLER_STEP_4.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4917, 'installer', 'themes/default/templates/INSTALLER_STEP_2.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4918, 'installer', 'themes/default/templates/INSTALLER_STEP_LOG.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4918, 'installer', 'themes/default/templates/INSTALLER_STEP_3.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4919, 'installer', 'themes/default/templates/INSTALLER_STEP_10.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4919, 'installer', 'themes/default/templates/INSTALLER_STEP_4.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4920, 'installer', 'themes/default/templates/INSTALLER_WARNING.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4920, 'installer', 'themes/default/templates/INSTALLER_STEP_LOG.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4921, 'installer', 'themes/default/templates/INSTALLER_NOTICE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4921, 'installer', 'themes/default/templates/INSTALLER_STEP_10.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4922, 'language_block', 'sources/hooks/systems/addon_registry/language_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4922, 'installer', 'themes/default/templates/INSTALLER_WARNING.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4923, 'language_block', 'themes/default/templates/BLOCK_SIDE_LANGUAGE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4923, 'installer', 'themes/default/templates/INSTALLER_NOTICE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4924, 'language_block', 'sources/blocks/side_language.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4924, 'language_block', 'sources/hooks/systems/addon_registry/language_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4925, 'ldap', 'themes/default/images/icons/24x24/menu/adminzone/security/ldap.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4925, 'language_block', 'themes/default/templates/BLOCK_SIDE_LANGUAGE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4926, 'ldap', 'themes/default/images/icons/48x48/menu/adminzone/security/ldap.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4926, 'language_block', 'sources/blocks/side_language.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4927, 'ldap', 'sources/hooks/systems/config/ldap_allow_joining.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4927, 'ldap', 'themes/default/images/icons/24x24/menu/adminzone/security/ldap.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4928, 'ldap', 'sources/hooks/systems/config/ldap_base_dn.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4928, 'ldap', 'themes/default/images/icons/48x48/menu/adminzone/security/ldap.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4929, 'ldap', 'sources/hooks/systems/config/ldap_bind_password.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4929, 'ldap', 'sources/hooks/systems/config/ldap_allow_joining.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4930, 'ldap', 'sources/hooks/systems/config/ldap_bind_rdn.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4930, 'ldap', 'sources/hooks/systems/config/ldap_base_dn.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4931, 'ldap', 'sources/hooks/systems/config/ldap_group_class.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4931, 'ldap', 'sources/hooks/systems/config/ldap_bind_password.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4932, 'ldap', 'sources/hooks/systems/config/ldap_group_search_qualifier.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4932, 'ldap', 'sources/hooks/systems/config/ldap_bind_rdn.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4933, 'ldap', 'sources/hooks/systems/config/ldap_hostname.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4933, 'ldap', 'sources/hooks/systems/config/ldap_group_class.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4934, 'ldap', 'sources/hooks/systems/config/ldap_is_enabled.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4934, 'ldap', 'sources/hooks/systems/config/ldap_group_search_qualifier.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4935, 'ldap', 'sources/hooks/systems/config/ldap_is_windows.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4935, 'ldap', 'sources/hooks/systems/config/ldap_hostname.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4936, 'ldap', 'sources/hooks/systems/config/ldap_login_qualifier.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4936, 'ldap', 'sources/hooks/systems/config/ldap_is_enabled.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4937, 'ldap', 'sources/hooks/systems/config/ldap_member_class.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4937, 'ldap', 'sources/hooks/systems/config/ldap_is_windows.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4938, 'ldap', 'sources/hooks/systems/config/ldap_member_property.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4938, 'ldap', 'sources/hooks/systems/config/ldap_login_qualifier.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4939, 'ldap', 'sources/hooks/systems/config/ldap_member_search_qualifier.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4939, 'ldap', 'sources/hooks/systems/config/ldap_member_class.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4940, 'ldap', 'sources/hooks/systems/config/ldap_none_bind_logins.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4940, 'ldap', 'sources/hooks/systems/config/ldap_member_property.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4941, 'ldap', 'sources/hooks/systems/config/ldap_version.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4941, 'ldap', 'sources/hooks/systems/config/ldap_member_search_qualifier.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4942, 'ldap', 'sources/hooks/systems/addon_registry/ldap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4942, 'ldap', 'sources/hooks/systems/config/ldap_none_bind_logins.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4943, 'ldap', 'themes/default/templates/CNS_LDAP_LIST_ENTRY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4943, 'ldap', 'sources/hooks/systems/config/ldap_version.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4944, 'ldap', 'themes/default/templates/CNS_LDAP_SYNC_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4944, 'ldap', 'sources/hooks/systems/addon_registry/ldap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4945, 'ldap', 'adminzone/pages/modules/admin_cns_ldap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4945, 'ldap', 'themes/default/templates/CNS_LDAP_LIST_ENTRY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4946, 'ldap', 'sources/cns_ldap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4946, 'ldap', 'themes/default/templates/CNS_LDAP_SYNC_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4947, 'ldap', 'sources/hooks/systems/page_groupings/ldap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4947, 'ldap', 'adminzone/pages/modules/admin_cns_ldap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4948, 'linux_helper_scripts', 'sources/hooks/systems/addon_registry/linux_helper_scripts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4948, 'ldap', 'sources/cns_ldap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4949, 'linux_helper_scripts', 'decache.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4949, 'ldap', 'sources/hooks/systems/page_groupings/ldap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4950, 'linux_helper_scripts', 'fixperms.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4950, 'linux_helper_scripts', 'sources/hooks/systems/addon_registry/linux_helper_scripts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4951, 'linux_helper_scripts', 'themechanges.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4951, 'linux_helper_scripts', 'decache.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4952, 'linux_helper_scripts', 'recentchanges.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4952, 'linux_helper_scripts', 'fixperms.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4953, 'linux_helper_scripts', 'db_init.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4953, 'linux_helper_scripts', 'themechanges.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4954, 'linux_helper_scripts', 'db_export.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4954, 'linux_helper_scripts', 'recentchanges.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4955, 'linux_helper_scripts', 'db_import.sh');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4955, 'linux_helper_scripts', 'db_init.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4956, 'match_key_permissions', 'themes/default/images/icons/24x24/menu/adminzone/security/permissions/match_keys.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4956, 'linux_helper_scripts', 'db_export.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4957, 'match_key_permissions', 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4957, 'linux_helper_scripts', 'db_import.sh');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4958, 'match_key_permissions', 'sources/hooks/systems/commandr_fs_extended_config/match_key_messages.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4958, 'match_key_permissions', 'themes/default/images/icons/24x24/menu/adminzone/security/permissions/match_keys.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4959, 'match_key_permissions', 'sources/hooks/systems/addon_registry/match_key_permissions.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4959, 'match_key_permissions', 'themes/default/images/icons/48x48/menu/adminzone/security/permissions/match_keys.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4960, 'msn', 'themes/default/images/icons/24x24/menu/adminzone/structure/multi_site_network.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4960, 'match_key_permissions', 'sources/hooks/systems/commandr_fs_extended_config/match_key_messages.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4961, 'msn', 'themes/default/images/icons/48x48/menu/adminzone/structure/multi_site_network.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4961, 'match_key_permissions', 'sources/hooks/systems/addon_registry/match_key_permissions.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4962, 'msn', 'sources/hooks/systems/config/network_links.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4962, 'msn', 'themes/default/images/icons/24x24/menu/adminzone/structure/multi_site_network.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4963, 'msn', 'sources/hooks/systems/addon_registry/msn.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4963, 'msn', 'themes/default/images/icons/48x48/menu/adminzone/structure/multi_site_network.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4964, 'msn', 'sources/hooks/blocks/main_notes/msn.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4964, 'msn', 'sources/hooks/systems/config/network_links.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4965, 'msn', 'themes/default/templates/BLOCK_SIDE_NETWORK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4965, 'msn', 'sources/hooks/systems/addon_registry/msn.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4966, 'msn', 'themes/default/templates/NETLINK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4966, 'msn', 'sources/hooks/blocks/main_notes/msn.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4967, 'msn', 'adminzone/pages/comcode/EN/netlink.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4967, 'msn', 'themes/default/templates/BLOCK_SIDE_NETWORK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4968, 'msn', 'text/netlink.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4968, 'msn', 'themes/default/templates/NETLINK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4969, 'msn', 'data/netlink.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4969, 'msn', 'adminzone/pages/comcode/EN/netlink.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4970, 'msn', 'sources/hooks/systems/page_groupings/msn.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4970, 'msn', 'text/netlink.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4971, 'msn', 'sources/multi_site_networks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4971, 'msn', 'data/netlink.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4972, 'msn', 'sources/blocks/side_network.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4972, 'msn', 'sources/hooks/systems/page_groupings/msn.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4973, 'news', 'themes/default/images/icons/24x24/menu/rich_content/news.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4973, 'msn', 'sources/multi_site_networks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4974, 'news', 'themes/default/images/icons/24x24/tabs/member_account/blog.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4974, 'msn', 'sources/blocks/side_network.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4975, 'news', 'themes/default/images/icons/48x48/menu/rich_content/news.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4975, 'news', 'themes/default/images/icons/24x24/menu/rich_content/news.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4976, 'news', 'themes/default/images/icons/48x48/tabs/member_account/blog.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4976, 'news', 'themes/default/images/icons/24x24/tabs/member_account/blog.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4977, 'news', 'sources/hooks/systems/notifications/news_entry.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4977, 'news', 'themes/default/images/icons/48x48/menu/rich_content/news.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4978, 'news', 'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4978, 'news', 'themes/default/images/icons/48x48/tabs/member_account/blog.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4979, 'news', 'sources/hooks/systems/realtime_rain/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4979, 'news', 'sources/hooks/systems/notifications/news_entry.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4980, 'news', 'sources/hooks/systems/content_meta_aware/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4980, 'news', 'sources/hooks/modules/admin_setupwizard_installprofiles/blog.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4981, 'news', 'sources/hooks/systems/content_meta_aware/news_category.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4981, 'news', 'sources/hooks/systems/realtime_rain/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4982, 'news', 'sources/hooks/systems/commandr_fs/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4982, 'news', 'sources/hooks/systems/content_meta_aware/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4983, 'news', 'sources/hooks/systems/meta/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4983, 'news', 'sources/hooks/systems/content_meta_aware/news_category.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4984, 'news', 'sources/hooks/blocks/side_stats/stats_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4984, 'news', 'sources/hooks/systems/commandr_fs/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4985, 'news', 'sources/hooks/systems/addon_registry/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4985, 'news', 'sources/hooks/systems/meta/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4986, 'news', 'sources/hooks/modules/admin_import_types/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4986, 'news', 'sources/hooks/blocks/side_stats/stats_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4987, 'news', 'sources/hooks/systems/config/blog_update_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4987, 'news', 'sources/hooks/systems/addon_registry/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4988, 'news', 'sources/hooks/systems/config/news_show_stats_count_blogs.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4988, 'news', 'sources/hooks/modules/admin_import_types/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4989, 'news', 'sources/hooks/systems/config/news_show_stats_count_total_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4989, 'news', 'sources/hooks/systems/config/blog_update_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4990, 'news', 'sources/hooks/systems/config/news_update_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4990, 'news', 'sources/hooks/systems/config/news_show_stats_count_blogs.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4991, 'news', 'sources/hooks/systems/config/ping_url.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4991, 'news', 'sources/hooks/systems/config/news_show_stats_count_total_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4992, 'news', 'sources/hooks/systems/config/points_ADD_NEWS.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4992, 'news', 'sources/hooks/systems/config/news_update_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4993, 'news', 'sources/hooks/systems/profiles_tabs/blog.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4993, 'news', 'sources/hooks/systems/config/ping_url.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4994, 'news', 'sources/hooks/systems/sitemap/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4994, 'news', 'sources/hooks/systems/config/points_ADD_NEWS.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4995, 'news', 'sources/hooks/systems/sitemap/news_category.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4995, 'news', 'sources/hooks/systems/profiles_tabs/blog.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4996, 'news', 'themes/default/templates/NEWS_ARCHIVE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4996, 'news', 'sources/hooks/systems/sitemap/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4997, 'news', 'themes/default/templates/NEWS_ENTRY_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4997, 'news', 'sources/hooks/systems/sitemap/news_category.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4998, 'news', 'themes/default/templates/BLOCK_BOTTOM_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4998, 'news', 'themes/default/templates/NEWS_ARCHIVE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4999, 'news', 'themes/default/templates/BLOCK_MAIN_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (4999, 'news', 'themes/default/templates/NEWS_ENTRY_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5000, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_ARCHIVE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5000, 'news', 'themes/default/templates/BLOCK_BOTTOM_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5001, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5001, 'news', 'themes/default/templates/BLOCK_MAIN_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5002, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5002, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_ARCHIVE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5003, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5003, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5004, 'news', 'themes/default/templates/NEWS_CHICKLETS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5004, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5005, 'news', 'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5005, 'news', 'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5006, 'news', 'themes/default/images/newscats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5006, 'news', 'themes/default/templates/NEWS_CHICKLETS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5007, 'news', 'themes/default/images/newscats/art.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5007, 'news', 'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5008, 'news', 'themes/default/images/newscats/business.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5008, 'news', 'themes/default/images/newscats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5009, 'news', 'themes/default/images/newscats/community.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5009, 'news', 'themes/default/images/newscats/art.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5010, 'news', 'themes/default/images/newscats/difficulties.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5010, 'news', 'themes/default/images/newscats/business.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5011, 'news', 'themes/default/images/newscats/entertainment.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5011, 'news', 'themes/default/images/newscats/community.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5012, 'news', 'themes/default/images/newscats/general.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5012, 'news', 'themes/default/images/newscats/difficulties.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5013, 'news', 'themes/default/images/newscats/technology.jpg');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5013, 'news', 'themes/default/images/newscats/entertainment.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5014, 'news', 'cms/pages/modules/cms_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5014, 'news', 'themes/default/images/newscats/general.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5015, 'news', 'cms/pages/modules/cms_blogs.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5015, 'news', 'themes/default/images/newscats/technology.jpg');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5016, 'news', 'site/pages/modules/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5016, 'news', 'cms/pages/modules/cms_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5017, 'news', 'sources/blocks/bottom_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5017, 'news', 'cms/pages/modules/cms_blogs.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5018, 'news', 'sources/blocks/main_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5018, 'news', 'site/pages/modules/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5019, 'news', 'sources/blocks/side_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5019, 'news', 'sources/blocks/bottom_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5020, 'news', 'sources/blocks/side_news_archive.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5020, 'news', 'sources/blocks/main_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5021, 'news', 'sources/blocks/side_news_categories.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5021, 'news', 'sources/blocks/side_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5022, 'news', 'sources/hooks/blocks/main_staff_checklist/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5022, 'news', 'sources/blocks/side_news_archive.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5023, 'news', 'sources/hooks/modules/admin_setupwizard/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5023, 'news', 'sources/blocks/side_news_categories.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5024, 'news', 'sources/hooks/modules/admin_unvalidated/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5024, 'news', 'sources/hooks/blocks/main_staff_checklist/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5025, 'news', 'sources/hooks/modules/members/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5025, 'news', 'sources/hooks/modules/admin_setupwizard/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5026, 'news', 'sources/hooks/modules/search/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5026, 'news', 'sources/hooks/modules/admin_unvalidated/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5027, 'news', 'sources/hooks/systems/attachments/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5027, 'news', 'sources/hooks/modules/members/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5028, 'news', 'sources/hooks/systems/page_groupings/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5028, 'news', 'sources/hooks/modules/search/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5029, 'news', 'sources/hooks/systems/module_permissions/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5029, 'news', 'sources/hooks/systems/attachments/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5030, 'news', 'sources/hooks/systems/preview/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5030, 'news', 'sources/hooks/systems/page_groupings/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5031, 'news', 'sources/hooks/systems/rss/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5031, 'news', 'sources/hooks/systems/module_permissions/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5032, 'news', 'sources/hooks/systems/trackback/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5032, 'news', 'sources/hooks/systems/preview/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5033, 'news', 'sources/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5033, 'news', 'sources/hooks/systems/rss/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5034, 'news', 'sources/news2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5034, 'news', 'sources/hooks/systems/trackback/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5035, 'news', 'sources/hooks/modules/admin_import/rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5035, 'news', 'sources/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5036, 'news', 'sources/hooks/modules/admin_newsletter/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5036, 'news', 'sources/news2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5037, 'news', 'sources/hooks/blocks/main_staff_checklist/blog.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5037, 'news', 'sources/hooks/modules/admin_import/rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5038, 'news', 'themes/default/templates/CNS_MEMBER_PROFILE_BLOG.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5038, 'news', 'sources/hooks/modules/admin_newsletter/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5039, 'news', 'sources/hooks/systems/block_ui_renderers/news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5039, 'news', 'sources/hooks/blocks/main_staff_checklist/blog.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5040, 'news', 'sources/hooks/systems/config/news_categories_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5040, 'news', 'themes/default/templates/CNS_MEMBER_PROFILE_BLOG.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5041, 'news', 'sources/hooks/systems/config/news_entries_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5041, 'news', 'sources/hooks/systems/block_ui_renderers/news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5042, 'news', 'sources/hooks/systems/config/enable_secondary_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5042, 'news', 'sources/hooks/systems/config/news_categories_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5043, 'news', 'themes/default/templates/BLOCK_MAIN_IMAGE_FADER_NEWS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5043, 'news', 'sources/hooks/systems/config/news_entries_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5044, 'news', 'sources/blocks/main_image_fader_news.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5044, 'news', 'sources/hooks/systems/config/enable_secondary_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5045, 'news', 'sources/news_sitemap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5045, 'news', 'themes/default/templates/BLOCK_MAIN_IMAGE_FADER_NEWS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5046, 'news', 'sources/hooks/systems/tasks/import_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5046, 'news', 'sources/blocks/main_image_fader_news.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5047, 'news', 'sources/hooks/systems/tasks/import_wordpress.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5047, 'news', 'sources/news_sitemap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5048, 'news_shared', 'sources/hooks/systems/addon_registry/news_shared.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5048, 'news', 'sources/hooks/systems/tasks/import_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5049, 'news_shared', 'themes/default/templates/NEWS_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5049, 'news', 'sources/hooks/systems/tasks/import_wordpress.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5050, 'news_shared', 'themes/default/templates/NEWS_BRIEF.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5050, 'news_shared', 'sources/hooks/systems/addon_registry/news_shared.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5051, 'news_shared', 'themes/default/css/news.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5051, 'news_shared', 'themes/default/templates/NEWS_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5052, 'news_shared', 'lang/EN/news.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5052, 'news_shared', 'themes/default/templates/NEWS_BRIEF.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5053, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/import_subscribers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5053, 'news_shared', 'themes/default/css/news.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5054, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/newsletter_email_bounce.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5054, 'news_shared', 'lang/EN/news.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5055, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/newsletter_from_changes.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5055, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/import_subscribers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5056, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/subscribers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5056, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/newsletter_email_bounce.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5057, 'newsletter', 'themes/default/images/icons/24x24/menu/site_meta/newsletters.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5057, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/newsletter_from_changes.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5058, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/import_subscribers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5058, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/subscribers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5059, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_email_bounce.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5059, 'newsletter', 'themes/default/images/icons/24x24/menu/site_meta/newsletters.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5060, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_from_changes.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5060, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/import_subscribers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5061, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/subscribers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5061, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_email_bounce.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5062, 'newsletter', 'themes/default/images/icons/48x48/menu/site_meta/newsletters.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5062, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/newsletter_from_changes.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5063, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5063, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/subscribers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5064, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5064, 'newsletter', 'themes/default/images/icons/48x48/menu/site_meta/newsletters.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5065, 'newsletter', 'sources/hooks/systems/block_ui_renderers/newsletters.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5065, 'newsletter', 'themes/default/images/icons/24x24/menu/adminzone/tools/newsletter/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5066, 'newsletter', 'sources/hooks/modules/admin_setupwizard/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5066, 'newsletter', 'themes/default/images/icons/48x48/menu/adminzone/tools/newsletter/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5067, 'newsletter', 'sources/hooks/systems/tasks/import_newsletter_subscribers.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5067, 'newsletter', 'sources/hooks/systems/block_ui_renderers/newsletters.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5068, 'newsletter', 'sources/hooks/systems/config/interest_levels.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5068, 'newsletter', 'sources/hooks/modules/admin_setupwizard/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5069, 'newsletter', 'sources/hooks/systems/config/newsletter_text.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5069, 'newsletter', 'sources/hooks/systems/tasks/import_newsletter_subscribers.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5070, 'newsletter', 'sources/hooks/systems/config/newsletter_title.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5070, 'newsletter', 'sources/hooks/systems/config/interest_levels.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5071, 'newsletter', 'sources/hooks/systems/addon_registry/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5071, 'newsletter', 'sources/hooks/systems/config/newsletter_text.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5072, 'newsletter', 'sources/hooks/systems/cron/newsletter_drip_send.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5072, 'newsletter', 'sources/hooks/systems/config/newsletter_title.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5073, 'newsletter', 'sources/hooks/systems/cron/newsletter_periodic.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5073, 'newsletter', 'sources/hooks/systems/addon_registry/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5074, 'newsletter', 'sources/hooks/modules/admin_import_types/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5074, 'newsletter', 'sources/hooks/systems/cron/newsletter_drip_send.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5075, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5075, 'newsletter', 'sources/hooks/systems/cron/newsletter_periodic.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5076, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_SECTION_FCOMCODE.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5076, 'newsletter', 'sources/hooks/modules/admin_import_types/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5077, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_FCOMCODE.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5077, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5078, 'newsletter', 'themes/default/templates/NEWSLETTER_CONFIRM_WRAP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5078, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_SECTION_FCOMCODE.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5079, 'newsletter', 'themes/default/templates/NEWSLETTER_SUBSCRIBER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5079, 'newsletter', 'themes/default/text/NEWSLETTER_WHATSNEW_FCOMCODE.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5080, 'newsletter', 'themes/default/templates/NEWSLETTER_SUBSCRIBERS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5080, 'newsletter', 'themes/default/templates/NEWSLETTER_CONFIRM_WRAP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5081, 'newsletter', 'adminzone/pages/modules/admin_newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5081, 'newsletter', 'themes/default/templates/NEWSLETTER_SUBSCRIBER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5082, 'newsletter', 'lang/EN/newsletter.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5082, 'newsletter', 'themes/default/templates/NEWSLETTER_SUBSCRIBERS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5083, 'newsletter', 'sources/hooks/systems/config/newsletter_update_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5083, 'newsletter', 'adminzone/pages/modules/admin_newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5084, 'newsletter', 'sources/hooks/systems/commandr_fs/newsletters.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5084, 'newsletter', 'lang/EN/newsletter.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5085, 'newsletter', 'sources/hooks/systems/commandr_fs/periodic_newsletters.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5085, 'newsletter', 'sources/hooks/systems/config/newsletter_update_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5086, 'newsletter', 'sources/hooks/systems/commandr_fs/newsletter_subscribers.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5086, 'newsletter', 'sources/hooks/systems/commandr_fs/newsletters.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5087, 'newsletter', 'sources/hooks/systems/resource_meta_aware/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5087, 'newsletter', 'sources/hooks/systems/commandr_fs/periodic_newsletters.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5088, 'newsletter', 'sources/hooks/systems/resource_meta_aware/periodic_newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5088, 'newsletter', 'sources/hooks/systems/commandr_fs/newsletter_subscribers.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5089, 'newsletter', 'sources/hooks/systems/resource_meta_aware/newsletter_subscriber.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5089, 'newsletter', 'sources/hooks/systems/resource_meta_aware/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5090, 'newsletter', 'site/pages/modules/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5090, 'newsletter', 'sources/hooks/systems/resource_meta_aware/periodic_newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5091, 'newsletter', 'sources/blocks/main_newsletter_signup.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5091, 'newsletter', 'sources/hooks/systems/resource_meta_aware/newsletter_subscriber.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5092, 'newsletter', 'sources/hooks/modules/admin_import/newsletter_subscribers.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5092, 'newsletter', 'site/pages/modules/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5093, 'newsletter', 'sources/hooks/blocks/main_staff_checklist/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5093, 'newsletter', 'sources/blocks/main_newsletter_signup.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5094, 'newsletter', 'sources/hooks/modules/admin_newsletter/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5094, 'newsletter', 'sources/hooks/modules/admin_import/newsletter_subscribers.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5095, 'newsletter', 'sources_custom/hooks/modules/admin_newsletter/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5095, 'newsletter', 'sources/hooks/blocks/main_staff_checklist/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5096, 'newsletter', 'sources/hooks/systems/page_groupings/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5096, 'newsletter', 'sources/hooks/modules/admin_newsletter/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5097, 'newsletter', 'sources/newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5097, 'newsletter', 'sources_custom/hooks/modules/admin_newsletter/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5098, 'newsletter', 'sources/hooks/systems/config/max_newsletter_whatsnew.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5098, 'newsletter', 'sources/hooks/systems/page_groupings/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5099, 'newsletter', 'sources/hooks/modules/admin_newsletter/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5099, 'newsletter', 'sources/newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5100, 'newsletter', 'sources_custom/hooks/modules/admin_newsletter/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5100, 'newsletter', 'sources/hooks/systems/config/max_newsletter_whatsnew.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5101, 'newsletter', 'themes/default/css/newsletter.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5101, 'newsletter', 'sources/hooks/modules/admin_newsletter/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5102, 'newsletter', 'themes/default/templates/BLOCK_MAIN_NEWSLETTER_SIGNUP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5102, 'newsletter', 'sources_custom/hooks/modules/admin_newsletter/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5103, 'newsletter', 'themes/default/templates/BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5103, 'newsletter', 'themes/default/css/newsletter.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5104, 'newsletter', 'sources/hooks/systems/config/dual_format_newsletters.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5104, 'newsletter', 'themes/default/templates/BLOCK_MAIN_NEWSLETTER_SIGNUP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5105, 'newsletter', 'sources/hooks/systems/config/mails_per_send.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5105, 'newsletter', 'themes/default/templates/BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5106, 'newsletter', 'sources/hooks/systems/config/minutes_between_sends.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5106, 'newsletter', 'sources/hooks/systems/config/dual_format_newsletters.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5107, 'newsletter', 'themes/default/templates/PERIODIC_NEWSLETTER_REMOVE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5107, 'newsletter', 'sources/hooks/systems/config/mails_per_send.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5108, 'newsletter', 'sources/hooks/systems/tasks/send_newsletter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5108, 'newsletter', 'sources/hooks/systems/config/minutes_between_sends.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5109, 'newsletter', 'data/incoming_bounced_email.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5109, 'newsletter', 'themes/default/templates/PERIODIC_NEWSLETTER_REMOVE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5110, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_delete.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5110, 'newsletter', 'sources/hooks/systems/tasks/send_newsletter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5111, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_delete.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5111, 'newsletter', 'data/incoming_bounced_email.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5112, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_move.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5112, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_delete.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5113, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_move.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5113, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_delete.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5114, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/sitemap_editor.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5114, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/page_move.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5115, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5115, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/page_move.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5116, 'page_management', 'sources/hooks/systems/addon_registry/page_management.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5116, 'page_management', 'themes/default/images/icons/24x24/menu/adminzone/structure/sitemap/sitemap_editor.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5117, 'page_management', 'themes/default/templates/WEBSTANDARDS_CHECK_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5117, 'page_management', 'themes/default/images/icons/48x48/menu/adminzone/structure/sitemap/sitemap_editor.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5118, 'page_management', 'themes/default/templates/WEBSTANDARDS_CHECK_ERROR.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5118, 'page_management', 'sources/hooks/systems/addon_registry/page_management.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5119, 'page_management', 'adminzone/pages/modules/admin_sitemap.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5119, 'page_management', 'themes/default/templates/WEBSTANDARDS_CHECK_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5120, 'page_management', 'themes/default/javascript/sitemap_editor.js');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5120, 'page_management', 'themes/default/templates/WEBSTANDARDS_CHECK_ERROR.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5121, 'page_management', 'themes/default/templates/SITEMAP_EDITOR_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5121, 'page_management', 'adminzone/pages/modules/admin_sitemap.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5122, 'phpinfo', 'themes/default/images/icons/24x24/menu/adminzone/tools/phpinfo.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5122, 'page_management', 'themes/default/javascript/sitemap_editor.js');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5123, 'phpinfo', 'themes/default/images/icons/48x48/menu/adminzone/tools/phpinfo.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5123, 'page_management', 'themes/default/templates/SITEMAP_EDITOR_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5124, 'phpinfo', 'themes/default/css/phpinfo.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5124, 'phpinfo', 'themes/default/images/icons/24x24/menu/adminzone/tools/phpinfo.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5125, 'phpinfo', 'sources/hooks/systems/page_groupings/phpinfo.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5125, 'phpinfo', 'themes/default/images/icons/48x48/menu/adminzone/tools/phpinfo.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5126, 'phpinfo', 'sources/hooks/systems/addon_registry/phpinfo.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5126, 'phpinfo', 'themes/default/css/phpinfo.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5127, 'phpinfo', 'adminzone/pages/modules/admin_phpinfo.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5127, 'phpinfo', 'sources/hooks/systems/page_groupings/phpinfo.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5128, 'points', 'themes/default/images/icons/24x24/menu/social/points.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5128, 'phpinfo', 'sources/hooks/systems/addon_registry/phpinfo.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5129, 'points', 'themes/default/images/icons/48x48/menu/social/points.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5129, 'phpinfo', 'adminzone/pages/modules/admin_phpinfo.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5130, 'points', 'themes/default/images/icons/24x24/menu/adminzone/audit/points_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5130, 'points', 'themes/default/images/icons/24x24/menu/social/points.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5131, 'points', 'themes/default/images/icons/24x24/menu/social/leader_board.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5131, 'points', 'themes/default/images/icons/48x48/menu/social/points.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5132, 'points', 'themes/default/images/icons/48x48/menu/adminzone/audit/points_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5132, 'points', 'themes/default/images/icons/24x24/menu/adminzone/audit/points_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5133, 'points', 'themes/default/images/icons/48x48/menu/social/leader_board.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5133, 'points', 'themes/default/images/icons/24x24/menu/social/leader_board.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5134, 'points', 'themes/default/images/icons/24x24/buttons/points.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5134, 'points', 'themes/default/images/icons/48x48/menu/adminzone/audit/points_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5135, 'points', 'themes/default/images/icons/48x48/buttons/points.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5135, 'points', 'themes/default/images/icons/48x48/menu/social/leader_board.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5136, 'points', 'themes/default/templates/POINTS_PROFILE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5136, 'points', 'themes/default/images/icons/24x24/buttons/points.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5137, 'points', 'sources/hooks/systems/notifications/received_points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5137, 'points', 'themes/default/images/icons/48x48/buttons/points.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5138, 'points', 'sources/hooks/systems/notifications/receive_points_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5138, 'points', 'themes/default/templates/POINTS_PROFILE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5139, 'points', 'sources/hooks/systems/config/leader_board_start_date.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5139, 'points', 'sources/hooks/systems/notifications/received_points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5140, 'points', 'sources/hooks/systems/config/leader_board_show_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5140, 'points', 'sources/hooks/systems/notifications/receive_points_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5141, 'points', 'sources/hooks/systems/config/leader_board_size.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5141, 'points', 'sources/hooks/systems/config/leader_board_start_date.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5142, 'points', 'sources/hooks/systems/config/points_joining.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5142, 'points', 'sources/hooks/systems/config/leader_board_show_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5143, 'points', 'sources/hooks/systems/config/points_per_daily_visit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5143, 'points', 'sources/hooks/systems/config/leader_board_size.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5144, 'points', 'sources/hooks/systems/config/points_per_day.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5144, 'points', 'sources/hooks/systems/config/points_joining.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5145, 'points', 'sources/hooks/systems/config/points_posting.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5145, 'points', 'sources/hooks/systems/config/points_per_daily_visit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5146, 'points', 'sources/hooks/systems/config/points_rating.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5146, 'points', 'sources/hooks/systems/config/points_per_day.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5147, 'points', 'sources/hooks/systems/config/points_show_personal_stats_gift_points_left.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5147, 'points', 'sources/hooks/systems/config/points_posting.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5148, 'points', 'sources/hooks/systems/config/points_show_personal_stats_gift_points_used.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5148, 'points', 'sources/hooks/systems/config/points_rating.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5149, 'points', 'sources/hooks/systems/config/points_show_personal_stats_points_left.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5149, 'points', 'sources/hooks/systems/config/points_show_personal_stats_gift_points_left.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5150, 'points', 'sources/hooks/systems/config/points_show_personal_stats_points_used.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5150, 'points', 'sources/hooks/systems/config/points_show_personal_stats_gift_points_used.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5151, 'points', 'sources/hooks/systems/config/points_show_personal_stats_total_points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5151, 'points', 'sources/hooks/systems/config/points_show_personal_stats_points_left.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5152, 'points', 'sources/hooks/systems/config/points_voting.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5152, 'points', 'sources/hooks/systems/config/points_show_personal_stats_points_used.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5153, 'points', 'sources/hooks/systems/realtime_rain/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5153, 'points', 'sources/hooks/systems/config/points_show_personal_stats_total_points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5154, 'points', 'sources/hooks/modules/admin_setupwizard/leader_board.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5154, 'points', 'sources/hooks/systems/config/points_voting.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5155, 'points', 'sources/hooks/systems/addon_registry/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5155, 'points', 'sources/hooks/systems/realtime_rain/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5156, 'points', 'sources/hooks/modules/admin_import_types/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5156, 'points', 'sources/hooks/modules/admin_setupwizard/leader_board.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5157, 'points', 'sources/hooks/systems/profiles_tabs/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5157, 'points', 'sources/hooks/systems/addon_registry/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5158, 'points', 'sources/points3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5158, 'points', 'sources/hooks/modules/admin_import_types/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5159, 'points', 'themes/default/templates/POINTS_GIVE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5159, 'points', 'sources/hooks/systems/profiles_tabs/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5160, 'points', 'themes/default/templates/POINTS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5160, 'points', 'sources/points3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5161, 'points', 'themes/default/templates/POINTS_SEARCH_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5161, 'points', 'themes/default/templates/POINTS_GIVE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5162, 'points', 'themes/default/templates/POINTS_SEARCH_RESULT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5162, 'points', 'themes/default/templates/POINTS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5163, 'points', 'themes/default/templates/POINTS_LEADER_BOARD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5163, 'points', 'themes/default/templates/POINTS_SEARCH_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5164, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5164, 'points', 'themes/default/templates/POINTS_SEARCH_RESULT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5165, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_ROW.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5165, 'points', 'themes/default/templates/POINTS_LEADER_BOARD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5166, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_WEEK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5166, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5167, 'points', 'adminzone/pages/modules/admin_points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5167, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_ROW.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5168, 'points', 'themes/default/css/points.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5168, 'points', 'themes/default/templates/POINTS_LEADER_BOARD_WEEK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5169, 'points', 'lang/EN/points.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5169, 'points', 'adminzone/pages/modules/admin_points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5170, 'points', 'site/pages/modules/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5170, 'points', 'themes/default/css/points.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5171, 'points', 'sources/hooks/blocks/main_staff_checklist/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5171, 'points', 'lang/EN/points.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5172, 'points', 'sources/hooks/systems/page_groupings/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5172, 'points', 'site/pages/modules/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5173, 'points', 'sources/hooks/systems/cns_cpf_filter/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5173, 'points', 'sources/hooks/blocks/main_staff_checklist/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5174, 'points', 'sources/hooks/systems/rss/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5174, 'points', 'sources/hooks/systems/page_groupings/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5175, 'points', 'sources/points.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5175, 'points', 'sources/hooks/systems/cns_cpf_filter/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5176, 'points', 'sources/points2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5176, 'points', 'sources/hooks/systems/rss/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5177, 'points', 'sources/hooks/systems/commandr_commands/give.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5177, 'points', 'sources/points.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5178, 'points', 'site/pages/modules/leader_board.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5178, 'points', 'sources/points2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5179, 'points', 'sources/blocks/main_leader_board.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5179, 'points', 'sources/hooks/systems/commandr_commands/give.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5180, 'points', 'sources/hooks/systems/cron/leader_board.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5180, 'points', 'site/pages/modules/leader_board.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5181, 'points', 'sources/leader_board.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5181, 'points', 'sources/blocks/main_leader_board.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5182, 'points', 'lang/EN/leader_board.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5182, 'points', 'sources/hooks/systems/cron/leader_board.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5183, 'points', 'sources/hooks/systems/config/points_per_currency_unit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5183, 'points', 'sources/leader_board.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5184, 'points', 'sources/hooks/systems/config/point_logs_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5184, 'points', 'lang/EN/leader_board.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5185, 'points', 'sources/hooks/systems/config/points_if_liked.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5185, 'points', 'sources/hooks/systems/config/points_per_currency_unit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5186, 'points', 'sources/hooks/systems/config/gift_reward_amount.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5186, 'points', 'sources/hooks/systems/config/point_logs_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5187, 'points', 'sources/hooks/systems/config/gift_reward_chance.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5187, 'points', 'sources/hooks/systems/config/points_if_liked.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5188, 'points', 'sources/hooks/systems/tasks/export_points_log.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5188, 'points', 'sources/hooks/systems/config/gift_reward_amount.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5189, 'points', 'sources/hooks/systems/commandr_fs_extended_member/point_charges.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5189, 'points', 'sources/hooks/systems/config/gift_reward_chance.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5190, 'points', 'sources/hooks/systems/commandr_fs_extended_member/point_gifts_given.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5190, 'points', 'sources/hooks/systems/tasks/export_points_log.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5191, 'pointstore', 'themes/default/images/icons/24x24/menu/social/pointstore.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5191, 'points', 'sources/hooks/systems/commandr_fs_extended_member/point_charges.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5192, 'pointstore', 'themes/default/images/icons/48x48/menu/social/pointstore.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5192, 'points', 'sources/hooks/systems/commandr_fs_extended_member/point_gifts_given.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5193, 'pointstore', 'themes/default/images/icons/24x24/menu/adminzone/audit/pointstore_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5193, 'pointstore', 'themes/default/images/icons/24x24/menu/social/pointstore.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5194, 'pointstore', 'themes/default/images/icons/48x48/menu/adminzone/audit/pointstore_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5194, 'pointstore', 'themes/default/images/icons/48x48/menu/social/pointstore.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5195, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_custom.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5195, 'pointstore', 'themes/default/images/icons/24x24/menu/adminzone/audit/pointstore_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5196, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_forwarding.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5196, 'pointstore', 'themes/default/images/icons/48x48/menu/adminzone/audit/pointstore_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5197, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_pop3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5197, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_custom.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5198, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_quota.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5198, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_forwarding.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5199, 'pointstore', 'sources/hooks/systems/config/average_gamble_multiplier.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5199, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_pop3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5200, 'pointstore', 'sources/hooks/systems/config/banner_hit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5200, 'pointstore', 'sources/hooks/systems/notifications/pointstore_request_quota.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5201, 'pointstore', 'sources/hooks/systems/config/banner_imp.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5201, 'pointstore', 'sources/hooks/systems/config/average_gamble_multiplier.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5202, 'pointstore', 'sources/hooks/systems/config/banner_setup.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5202, 'pointstore', 'sources/hooks/systems/config/banner_hit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5203, 'pointstore', 'sources/hooks/systems/config/forw_url.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5203, 'pointstore', 'sources/hooks/systems/config/banner_imp.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5204, 'pointstore', 'sources/hooks/systems/config/highlight_name.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5204, 'pointstore', 'sources/hooks/systems/config/banner_setup.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5205, 'pointstore', 'sources/hooks/systems/config/initial_banner_hits.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5205, 'pointstore', 'sources/hooks/systems/config/forw_url.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5206, 'pointstore', 'sources/hooks/systems/config/initial_quota.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5206, 'pointstore', 'sources/hooks/systems/config/highlight_name.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5207, 'pointstore', 'sources/hooks/systems/config/is_on_banner_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5207, 'pointstore', 'sources/hooks/systems/config/initial_banner_hits.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5208, 'pointstore', 'sources/hooks/systems/config/is_on_forw_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5208, 'pointstore', 'sources/hooks/systems/config/initial_quota.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5209, 'pointstore', 'sources/hooks/systems/config/is_on_gambling_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5209, 'pointstore', 'sources/hooks/systems/config/is_on_banner_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5210, 'pointstore', 'sources/hooks/systems/config/is_on_highlight_name_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5210, 'pointstore', 'sources/hooks/systems/config/is_on_forw_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5211, 'pointstore', 'sources/hooks/systems/config/is_on_pop3_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5211, 'pointstore', 'sources/hooks/systems/config/is_on_gambling_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5212, 'pointstore', 'sources/hooks/systems/config/is_on_topic_pin_buy.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5212, 'pointstore', 'sources/hooks/systems/config/is_on_highlight_name_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5213, 'pointstore', 'sources/hooks/systems/config/mail_server.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5213, 'pointstore', 'sources/hooks/systems/config/is_on_pop3_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5214, 'pointstore', 'sources/hooks/systems/config/max_quota.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5214, 'pointstore', 'sources/hooks/systems/config/is_on_topic_pin_buy.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5215, 'pointstore', 'sources/hooks/systems/config/maximum_gamble_amount.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5215, 'pointstore', 'sources/hooks/systems/config/mail_server.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5216, 'pointstore', 'sources/hooks/systems/config/maximum_gamble_multiplier.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5216, 'pointstore', 'sources/hooks/systems/config/max_quota.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5217, 'pointstore', 'sources/hooks/systems/config/minimum_gamble_amount.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5217, 'pointstore', 'sources/hooks/systems/config/maximum_gamble_amount.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5218, 'pointstore', 'sources/hooks/systems/config/pop_url.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5218, 'pointstore', 'sources/hooks/systems/config/maximum_gamble_multiplier.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5219, 'pointstore', 'sources/hooks/systems/config/quota.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5219, 'pointstore', 'sources/hooks/systems/config/minimum_gamble_amount.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5220, 'pointstore', 'sources/hooks/systems/config/quota_url.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5220, 'pointstore', 'sources/hooks/systems/config/pop_url.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5221, 'pointstore', 'sources/hooks/systems/config/topic_pin.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5221, 'pointstore', 'sources/hooks/systems/config/quota.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5222, 'pointstore', 'sources/hooks/systems/addon_registry/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5222, 'pointstore', 'sources/hooks/systems/config/quota_url.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5223, 'pointstore', 'sources/hooks/modules/admin_import_types/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5223, 'pointstore', 'sources/hooks/systems/config/topic_pin.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5224, 'pointstore', 'sources/hooks/systems/cron/topic_pin.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5224, 'pointstore', 'sources/hooks/systems/addon_registry/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5225, 'pointstore', 'sources/hooks/systems/config/topic_pin_max_days.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5225, 'pointstore', 'sources/hooks/modules/admin_import_types/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5226, 'pointstore', 'themes/default/templates/POINTSTORE_PRICES_FORM_WRAP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5226, 'pointstore', 'sources/hooks/systems/cron/topic_pin.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5227, 'pointstore', 'themes/default/templates/POINTSTORE_CUSTOM.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5227, 'pointstore', 'sources/hooks/systems/config/topic_pin_max_days.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5228, 'pointstore', 'themes/default/templates/POINTSTORE_CUSTOM_ITEM_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5228, 'pointstore', 'themes/default/templates/POINTSTORE_PRICES_FORM_WRAP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5229, 'pointstore', 'themes/default/templates/POINTSTORE_GAMBLING.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5229, 'pointstore', 'themes/default/templates/POINTSTORE_CUSTOM.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5230, 'pointstore', 'themes/default/templates/POINTSTORE_HIGHLIGHT_NAME.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5230, 'pointstore', 'themes/default/templates/POINTSTORE_CUSTOM_ITEM_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5231, 'pointstore', 'themes/default/templates/POINTSTORE_HIGHLIGHT_NAME_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5231, 'pointstore', 'themes/default/templates/POINTSTORE_GAMBLING.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5232, 'pointstore', 'themes/default/templates/POINTSTORE_PERMISSION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5232, 'pointstore', 'themes/default/templates/POINTSTORE_HIGHLIGHT_NAME.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5233, 'pointstore', 'themes/default/templates/POINTSTORE_TOPIC_PIN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5233, 'pointstore', 'themes/default/templates/POINTSTORE_HIGHLIGHT_NAME_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5234, 'pointstore', 'themes/default/templates/POINTSTORE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5234, 'pointstore', 'themes/default/templates/POINTSTORE_PERMISSION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5235, 'pointstore', 'themes/default/templates/POINTSTORE_CONFIRM_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5235, 'pointstore', 'themes/default/templates/POINTSTORE_TOPIC_PIN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5236, 'pointstore', 'themes/default/text/POINTSTORE_FORWARDER_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5236, 'pointstore', 'themes/default/templates/POINTSTORE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5237, 'pointstore', 'themes/default/templates/POINTSTORE_LOG_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5237, 'pointstore', 'themes/default/templates/POINTSTORE_CONFIRM_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5238, 'pointstore', 'themes/default/text/POINTSTORE_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5238, 'pointstore', 'themes/default/text/POINTSTORE_FORWARDER_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5239, 'pointstore', 'themes/default/templates/POINTSTORE_MFORWARDING_LINK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5239, 'pointstore', 'themes/default/templates/POINTSTORE_LOG_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5240, 'pointstore', 'themes/default/templates/POINTSTORE_MPOP3_LINK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5240, 'pointstore', 'themes/default/text/POINTSTORE_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5241, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5241, 'pointstore', 'themes/default/templates/POINTSTORE_MFORWARDING_LINK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5242, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_ACTIVATE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5242, 'pointstore', 'themes/default/templates/POINTSTORE_MPOP3_LINK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5243, 'pointstore', 'themes/default/text/POINTSTORE_POP3_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5243, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5244, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_QUOTA.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5244, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_ACTIVATE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5245, 'pointstore', 'themes/default/templates/POINTSTORE_PRICE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5245, 'pointstore', 'themes/default/text/POINTSTORE_POP3_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5246, 'pointstore', 'themes/default/templates/POINTSTORE_QUOTA.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5246, 'pointstore', 'themes/default/templates/POINTSTORE_POP3_QUOTA.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5247, 'pointstore', 'themes/default/text/POINTSTORE_QUOTA_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5247, 'pointstore', 'themes/default/templates/POINTSTORE_PRICE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5248, 'pointstore', 'adminzone/pages/modules/admin_pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5248, 'pointstore', 'themes/default/templates/POINTSTORE_QUOTA.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5249, 'pointstore', 'lang/EN/pointstore.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5249, 'pointstore', 'themes/default/text/POINTSTORE_QUOTA_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5250, 'pointstore', 'site/pages/modules/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5250, 'pointstore', 'adminzone/pages/modules/admin_pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5251, 'pointstore', 'sources/hooks/blocks/main_staff_checklist/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5251, 'pointstore', 'lang/EN/pointstore.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5252, 'pointstore', 'sources/hooks/modules/pointstore/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5252, 'pointstore', 'site/pages/modules/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5253, 'pointstore', 'sources_custom/hooks/modules/pointstore/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5253, 'pointstore', 'sources/hooks/blocks/main_staff_checklist/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5254, 'pointstore', 'sources/hooks/modules/pointstore/custom.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5254, 'pointstore', 'sources/hooks/modules/pointstore/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5255, 'pointstore', 'sources/hooks/modules/pointstore/forwarding.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5255, 'pointstore', 'sources_custom/hooks/modules/pointstore/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5256, 'pointstore', 'sources/hooks/modules/pointstore/gambling.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5256, 'pointstore', 'sources/hooks/modules/pointstore/custom.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5257, 'pointstore', 'sources/hooks/modules/pointstore/highlight_name.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5257, 'pointstore', 'sources/hooks/modules/pointstore/forwarding.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5258, 'pointstore', 'sources/hooks/modules/pointstore/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5258, 'pointstore', 'sources/hooks/modules/pointstore/gambling.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5259, 'pointstore', 'sources_custom/hooks/modules/pointstore/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5259, 'pointstore', 'sources/hooks/modules/pointstore/highlight_name.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5260, 'pointstore', 'sources/hooks/modules/pointstore/permission.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5260, 'pointstore', 'sources/hooks/modules/pointstore/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5261, 'pointstore', 'sources/hooks/modules/pointstore/pop3.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5261, 'pointstore', 'sources_custom/hooks/modules/pointstore/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5262, 'pointstore', 'sources/hooks/modules/pointstore/topic_pin.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5262, 'pointstore', 'sources/hooks/modules/pointstore/permission.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5263, 'pointstore', 'sources/hooks/systems/page_groupings/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5263, 'pointstore', 'sources/hooks/modules/pointstore/pop3.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5264, 'pointstore', 'sources/pointstore.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5264, 'pointstore', 'sources/hooks/modules/pointstore/topic_pin.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5265, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_customs.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5265, 'pointstore', 'sources/hooks/systems/page_groupings/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5266, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_permissions.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5266, 'pointstore', 'sources/pointstore.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5267, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_prices.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5267, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_customs.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5268, 'polls', 'themes/default/images/icons/24x24/menu/social/polls.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5268, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_permissions.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5269, 'polls', 'themes/default/images/icons/48x48/menu/social/polls.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5269, 'pointstore', 'sources/hooks/systems/commandr_fs_extended_config/pstore_prices.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5270, 'polls', 'sources/polls2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5270, 'polls', 'themes/default/images/icons/24x24/menu/social/polls.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5271, 'polls', 'sources/hooks/systems/block_ui_renderers/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5271, 'polls', 'themes/default/images/icons/48x48/menu/social/polls.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5272, 'polls', 'sources/hooks/systems/notifications/poll_chosen.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5272, 'polls', 'sources/polls2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5273, 'polls', 'sources/hooks/systems/config/points_ADD_POLL.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5273, 'polls', 'sources/hooks/systems/block_ui_renderers/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5274, 'polls', 'sources/hooks/systems/config/points_CHOOSE_POLL.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5274, 'polls', 'sources/hooks/systems/notifications/poll_chosen.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5275, 'polls', 'sources/hooks/systems/config/poll_update_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5275, 'polls', 'sources/hooks/systems/config/points_ADD_POLL.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5276, 'polls', 'sources/hooks/systems/realtime_rain/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5276, 'polls', 'sources/hooks/systems/config/points_CHOOSE_POLL.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5277, 'polls', 'themes/default/templates/BLOCK_MAIN_POLL.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5277, 'polls', 'sources/hooks/systems/config/poll_update_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5278, 'polls', 'sources/hooks/systems/content_meta_aware/poll.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5278, 'polls', 'sources/hooks/systems/realtime_rain/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5279, 'polls', 'sources/hooks/systems/commandr_fs/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5279, 'polls', 'themes/default/templates/BLOCK_MAIN_POLL.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5280, 'polls', 'sources/hooks/systems/addon_registry/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5280, 'polls', 'sources/hooks/systems/content_meta_aware/poll.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5281, 'polls', 'sources/hooks/systems/preview/poll.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5281, 'polls', 'sources/hooks/systems/commandr_fs/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5282, 'polls', 'sources/hooks/modules/admin_setupwizard/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5282, 'polls', 'sources/hooks/systems/addon_registry/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5283, 'polls', 'sources/hooks/modules/admin_import_types/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5283, 'polls', 'sources/hooks/systems/preview/poll.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5284, 'polls', 'sources/hooks/systems/sitemap/poll.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5284, 'polls', 'sources/hooks/modules/admin_setupwizard/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5285, 'polls', 'themes/default/templates/POLL_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5285, 'polls', 'sources/hooks/modules/admin_import_types/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5286, 'polls', 'themes/default/templates/POLL_ANSWER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5286, 'polls', 'sources/hooks/systems/sitemap/poll.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5287, 'polls', 'themes/default/templates/POLL_ANSWER_RESULT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5287, 'polls', 'themes/default/templates/POLL_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5288, 'polls', 'themes/default/templates/POLL_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5288, 'polls', 'themes/default/templates/POLL_ANSWER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5289, 'polls', 'themes/default/templates/POLL_LIST_ENTRY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5289, 'polls', 'themes/default/templates/POLL_ANSWER_RESULT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5290, 'polls', 'themes/default/templates/POLL_RSS_SUMMARY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5290, 'polls', 'themes/default/templates/POLL_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5291, 'polls', 'themes/default/css/polls.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5291, 'polls', 'themes/default/templates/POLL_LIST_ENTRY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5292, 'polls', 'cms/pages/modules/cms_polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5292, 'polls', 'themes/default/templates/POLL_RSS_SUMMARY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5293, 'polls', 'lang/EN/polls.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5293, 'polls', 'themes/default/css/polls.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5294, 'polls', 'site/pages/modules/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5294, 'polls', 'cms/pages/modules/cms_polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5295, 'polls', 'sources/hooks/blocks/main_staff_checklist/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5295, 'polls', 'lang/EN/polls.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5296, 'polls', 'sources/hooks/modules/search/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5296, 'polls', 'site/pages/modules/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5297, 'polls', 'sources/hooks/systems/page_groupings/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5297, 'polls', 'sources/hooks/blocks/main_staff_checklist/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5298, 'polls', 'sources/hooks/systems/rss/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5298, 'polls', 'sources/hooks/modules/search/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5299, 'polls', 'sources/hooks/systems/trackback/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5299, 'polls', 'sources/hooks/systems/page_groupings/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5300, 'polls', 'sources/polls.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5300, 'polls', 'sources/hooks/systems/rss/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5301, 'polls', 'sources/blocks/main_poll.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5301, 'polls', 'sources/hooks/systems/trackback/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5302, 'printer_friendly_block', 'themes/default/templates/BLOCK_SIDE_PRINTER_FRIENDLY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5302, 'polls', 'sources/polls.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5303, 'printer_friendly_block', 'sources/blocks/side_printer_friendly.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5303, 'polls', 'sources/blocks/main_poll.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5304, 'printer_friendly_block', 'sources/hooks/systems/addon_registry/printer_friendly_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5304, 'printer_friendly_block', 'themes/default/templates/BLOCK_SIDE_PRINTER_FRIENDLY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5305, 'printer_friendly_block', 'sources/hooks/modules/admin_setupwizard/printer_friendly_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5305, 'printer_friendly_block', 'sources/blocks/side_printer_friendly.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5306, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/find_winners.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5306, 'printer_friendly_block', 'sources/hooks/systems/addon_registry/printer_friendly_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5307, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/quiz_results.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5307, 'printer_friendly_block', 'sources/hooks/modules/admin_setupwizard/printer_friendly_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5308, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/find_winners.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5308, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/find_winners.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5309, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/quiz_results.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5309, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/quiz_results.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5310, 'quizzes', 'themes/default/images/icons/24x24/menu/rich_content/quiz.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5310, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/find_winners.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5311, 'quizzes', 'themes/default/images/icons/48x48/menu/rich_content/quiz.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5311, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/quiz_results.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5312, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5312, 'quizzes', 'themes/default/images/icons/24x24/menu/rich_content/quiz.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5313, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5313, 'quizzes', 'themes/default/images/icons/48x48/menu/rich_content/quiz.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5314, 'quizzes', 'sources/hooks/systems/notifications/quiz_results.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5314, 'quizzes', 'themes/default/images/icons/24x24/menu/cms/quiz/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5315, 'quizzes', 'sources/hooks/systems/config/points_ADD_QUIZ.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5315, 'quizzes', 'themes/default/images/icons/48x48/menu/cms/quiz/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5316, 'quizzes', 'sources/hooks/systems/config/quiz_show_stats_count_total_open.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5316, 'quizzes', 'sources/hooks/systems/notifications/quiz_results.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5317, 'quizzes', 'sources/hooks/systems/meta/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5317, 'quizzes', 'sources/hooks/systems/config/points_ADD_QUIZ.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5318, 'quizzes', 'sources/hooks/blocks/side_stats/stats_quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5318, 'quizzes', 'sources/hooks/systems/config/quiz_show_stats_count_total_open.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5319, 'quizzes', 'themes/default/templates/QUIZ_ARCHIVE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5319, 'quizzes', 'sources/hooks/systems/meta/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5320, 'quizzes', 'themes/default/text/QUIZ_SURVEY_ANSWERS_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5320, 'quizzes', 'sources/hooks/blocks/side_stats/stats_quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5321, 'quizzes', 'themes/default/text/QUIZ_TEST_ANSWERS_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5321, 'quizzes', 'themes/default/templates/QUIZ_ARCHIVE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5322, 'quizzes', 'sources/hooks/systems/content_meta_aware/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5322, 'quizzes', 'themes/default/text/QUIZ_SURVEY_ANSWERS_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5323, 'quizzes', 'sources/hooks/systems/commandr_fs/quizzes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5323, 'quizzes', 'themes/default/text/QUIZ_TEST_ANSWERS_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5324, 'quizzes', 'sources/hooks/systems/addon_registry/quizzes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5324, 'quizzes', 'sources/hooks/systems/content_meta_aware/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5325, 'quizzes', 'sources/hooks/modules/admin_import_types/quizzes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5325, 'quizzes', 'sources/hooks/systems/commandr_fs/quizzes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5326, 'quizzes', 'themes/default/templates/QUIZ_BOX.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5326, 'quizzes', 'sources/hooks/systems/addon_registry/quizzes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5327, 'quizzes', 'themes/default/templates/QUIZ_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5327, 'quizzes', 'sources/hooks/modules/admin_import_types/quizzes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5328, 'quizzes', 'themes/default/templates/QUIZ_RESULTS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5328, 'quizzes', 'themes/default/templates/QUIZ_BOX.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5329, 'quizzes', 'themes/default/templates/QUIZ_DONE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5329, 'quizzes', 'themes/default/templates/QUIZ_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5330, 'quizzes', 'themes/default/templates/QUIZ_RESULT_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5330, 'quizzes', 'themes/default/templates/QUIZ_RESULTS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5331, 'quizzes', 'themes/default/templates/QUIZ_RESULTS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5331, 'quizzes', 'themes/default/templates/QUIZ_DONE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5332, 'quizzes', 'themes/default/templates/MEMBER_QUIZ_ENTRIES.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5332, 'quizzes', 'themes/default/templates/QUIZ_RESULT_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5333, 'quizzes', 'adminzone/pages/modules/admin_quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5333, 'quizzes', 'themes/default/templates/QUIZ_RESULTS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5334, 'quizzes', 'cms/pages/modules/cms_quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5334, 'quizzes', 'themes/default/templates/MEMBER_QUIZ_ENTRIES.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5335, 'quizzes', 'lang/EN/quiz.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5335, 'quizzes', 'adminzone/pages/modules/admin_quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5336, 'quizzes', 'site/pages/modules/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5336, 'quizzes', 'cms/pages/modules/cms_quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5337, 'quizzes', 'sources/hooks/systems/sitemap/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5337, 'quizzes', 'lang/EN/quiz.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5338, 'quizzes', 'sources/hooks/modules/admin_newsletter/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5338, 'quizzes', 'site/pages/modules/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5339, 'quizzes', 'sources/hooks/modules/admin_unvalidated/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5339, 'quizzes', 'sources/hooks/systems/sitemap/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5340, 'quizzes', 'sources/hooks/modules/search/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5340, 'quizzes', 'sources/hooks/modules/admin_newsletter/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5341, 'quizzes', 'sources/hooks/modules/members/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5341, 'quizzes', 'sources/hooks/modules/admin_unvalidated/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5342, 'quizzes', 'sources/hooks/systems/page_groupings/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5342, 'quizzes', 'sources/hooks/modules/search/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5343, 'quizzes', 'sources/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5343, 'quizzes', 'sources/hooks/modules/members/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5344, 'quizzes', 'sources/quiz2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5344, 'quizzes', 'sources/hooks/systems/page_groupings/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5345, 'quizzes', 'sources/hooks/systems/preview/quiz.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5345, 'quizzes', 'sources/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5346, 'quizzes', 'themes/default/css/quizzes.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5346, 'quizzes', 'sources/quiz2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5347, 'random_quotes', 'themes/default/images/icons/24x24/menu/adminzone/style/quotes.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5347, 'quizzes', 'sources/hooks/systems/preview/quiz.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5348, 'random_quotes', 'themes/default/images/icons/48x48/menu/adminzone/style/quotes.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5348, 'quizzes', 'themes/default/css/quizzes.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5349, 'random_quotes', 'sources/hooks/blocks/main_notes/quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5349, 'random_quotes', 'themes/default/images/icons/24x24/menu/adminzone/style/quotes.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5350, 'random_quotes', 'sources/hooks/modules/admin_import_types/quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5350, 'random_quotes', 'themes/default/images/icons/48x48/menu/adminzone/style/quotes.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5351, 'random_quotes', 'sources/hooks/modules/admin_setupwizard/random_quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5351, 'random_quotes', 'sources/hooks/blocks/main_notes/quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5352, 'random_quotes', 'sources/hooks/systems/addon_registry/random_quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5352, 'random_quotes', 'sources/hooks/modules/admin_import_types/quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5353, 'random_quotes', 'themes/default/templates/BLOCK_MAIN_QUOTES.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5353, 'random_quotes', 'sources/hooks/modules/admin_setupwizard/random_quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5354, 'random_quotes', 'adminzone/pages/comcode/EN/quotes.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5354, 'random_quotes', 'sources/hooks/systems/addon_registry/random_quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5355, 'random_quotes', 'text/EN/quotes.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5355, 'random_quotes', 'themes/default/templates/BLOCK_MAIN_QUOTES.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5356, 'random_quotes', 'lang/EN/quotes.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5356, 'random_quotes', 'adminzone/pages/comcode/EN/quotes.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5357, 'random_quotes', 'sources/blocks/main_quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5357, 'random_quotes', 'text/EN/quotes.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5358, 'random_quotes', 'sources/hooks/systems/page_groupings/quotes.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5358, 'random_quotes', 'lang/EN/quotes.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5359, 'random_quotes', 'themes/default/css/random_quotes.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5359, 'random_quotes', 'sources/blocks/main_quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5360, 'realtime_rain', 'themes/default/images/icons/24x24/menu/adminzone/audit/realtime_rain.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5360, 'random_quotes', 'sources/hooks/systems/page_groupings/quotes.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5361, 'realtime_rain', 'themes/default/images/icons/48x48/menu/adminzone/audit/realtime_rain.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5361, 'random_quotes', 'themes/default/css/random_quotes.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5362, 'realtime_rain', 'themes/default/images/icons/24x24/tool_buttons/realtime_rain_off.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5362, 'realtime_rain', 'themes/default/images/icons/24x24/menu/adminzone/audit/realtime_rain.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5363, 'realtime_rain', 'themes/default/images/icons/24x24/tool_buttons/realtime_rain_on.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5363, 'realtime_rain', 'themes/default/images/icons/48x48/menu/adminzone/audit/realtime_rain.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5364, 'realtime_rain', 'themes/default/images/icons/48x48/tool_buttons/realtime_rain_off.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5364, 'realtime_rain', 'themes/default/images/icons/24x24/tool_buttons/realtime_rain_off.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5365, 'realtime_rain', 'themes/default/images/icons/48x48/tool_buttons/realtime_rain_on.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5365, 'realtime_rain', 'themes/default/images/icons/24x24/tool_buttons/realtime_rain_on.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5366, 'realtime_rain', 'adminzone/pages/modules/admin_realtime_rain.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5366, 'realtime_rain', 'themes/default/images/icons/48x48/tool_buttons/realtime_rain_off.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5367, 'realtime_rain', 'sources/realtime_rain.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5367, 'realtime_rain', 'themes/default/images/icons/48x48/tool_buttons/realtime_rain_on.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5368, 'realtime_rain', 'data/realtime_rain.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5368, 'realtime_rain', 'adminzone/pages/modules/admin_realtime_rain.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5369, 'realtime_rain', 'sources/hooks/systems/snippets/realtime_rain_load.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5369, 'realtime_rain', 'sources/realtime_rain.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5370, 'realtime_rain', 'sources/hooks/systems/page_groupings/realtime_rain.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5370, 'realtime_rain', 'data/realtime_rain.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5371, 'realtime_rain', 'themes/default/css/realtime_rain.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5371, 'realtime_rain', 'sources/hooks/systems/snippets/realtime_rain_load.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5372, 'realtime_rain', 'themes/default/templates/REALTIME_RAIN_OVERLAY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5372, 'realtime_rain', 'sources/hooks/systems/page_groupings/realtime_rain.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5373, 'realtime_rain', 'themes/default/templates/REALTIME_RAIN_BUBBLE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5373, 'realtime_rain', 'themes/default/css/realtime_rain.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5374, 'realtime_rain', 'themes/default/javascript/realtime_rain.js');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5374, 'realtime_rain', 'themes/default/templates/REALTIME_RAIN_OVERLAY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5375, 'realtime_rain', 'themes/default/javascript/button_realtime_rain.js');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5375, 'realtime_rain', 'themes/default/templates/REALTIME_RAIN_BUBBLE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5376, 'realtime_rain', 'lang/EN/realtime_rain.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5376, 'realtime_rain', 'themes/default/javascript/realtime_rain.js');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5377, 'realtime_rain', 'themes/default/images/realtime_rain/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5377, 'realtime_rain', 'themes/default/javascript/button_realtime_rain.js');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5378, 'realtime_rain', 'sources/hooks/systems/realtime_rain/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5378, 'realtime_rain', 'lang/EN/realtime_rain.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5379, 'realtime_rain', 'sources_custom/hooks/systems/realtime_rain/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5379, 'realtime_rain', 'themes/default/images/realtime_rain/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5380, 'realtime_rain', 'sources/hooks/systems/realtime_rain/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5380, 'realtime_rain', 'sources/hooks/systems/realtime_rain/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5381, 'realtime_rain', 'sources_custom/hooks/systems/realtime_rain/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5381, 'realtime_rain', 'sources_custom/hooks/systems/realtime_rain/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5382, 'realtime_rain', 'sources/hooks/systems/addon_registry/realtime_rain.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5382, 'realtime_rain', 'sources/hooks/systems/realtime_rain/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5383, 'realtime_rain', 'sources/hooks/systems/config/bottom_show_realtime_rain_button.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5383, 'realtime_rain', 'sources_custom/hooks/systems/realtime_rain/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5384, 'realtime_rain', 'themes/default/images/realtime_rain/email-icon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5384, 'realtime_rain', 'sources/hooks/systems/addon_registry/realtime_rain.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5385, 'realtime_rain', 'themes/default/images/realtime_rain/news-icon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5385, 'realtime_rain', 'sources/hooks/systems/config/bottom_show_realtime_rain_button.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5386, 'realtime_rain', 'themes/default/images/realtime_rain/phone-icon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5386, 'realtime_rain', 'themes/default/images/realtime_rain/email-icon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5387, 'realtime_rain', 'themes/default/images/realtime_rain/searchengine-icon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5387, 'realtime_rain', 'themes/default/images/realtime_rain/news-icon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5388, 'realtime_rain', 'themes/default/images/realtime_rain/news-bg.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5388, 'realtime_rain', 'themes/default/images/realtime_rain/phone-icon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5389, 'realtime_rain', 'themes/default/images/realtime_rain/news-bot.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5389, 'realtime_rain', 'themes/default/images/realtime_rain/searchengine-icon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5390, 'realtime_rain', 'themes/default/images/realtime_rain/news-header.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5390, 'realtime_rain', 'themes/default/images/realtime_rain/news-bg.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5391, 'realtime_rain', 'themes/default/images/realtime_rain/news-out.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5391, 'realtime_rain', 'themes/default/images/realtime_rain/news-bot.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5392, 'realtime_rain', 'themes/default/images/realtime_rain/news-top.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5392, 'realtime_rain', 'themes/default/images/realtime_rain/news-header.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5393, 'realtime_rain', 'themes/default/images/realtime_rain/next.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5393, 'realtime_rain', 'themes/default/images/realtime_rain/news-out.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5394, 'realtime_rain', 'themes/default/images/realtime_rain/pause-but.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5394, 'realtime_rain', 'themes/default/images/realtime_rain/news-top.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5395, 'realtime_rain', 'themes/default/images/realtime_rain/pre.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5395, 'realtime_rain', 'themes/default/images/realtime_rain/next.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5396, 'realtime_rain', 'themes/default/images/realtime_rain/realtime-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5396, 'realtime_rain', 'themes/default/images/realtime_rain/pause-but.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5397, 'realtime_rain', 'themes/default/images/realtime_rain/time-line.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5397, 'realtime_rain', 'themes/default/images/realtime_rain/pre.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5398, 'realtime_rain', 'themes/default/images/realtime_rain/timer-bg.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5398, 'realtime_rain', 'themes/default/images/realtime_rain/realtime-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5399, 'realtime_rain', 'themes/default/images/realtime_rain/actionlog-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5399, 'realtime_rain', 'themes/default/images/realtime_rain/time-line.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5400, 'realtime_rain', 'themes/default/images/realtime_rain/actionlog-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5400, 'realtime_rain', 'themes/default/images/realtime_rain/timer-bg.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5401, 'realtime_rain', 'themes/default/images/realtime_rain/banners-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5401, 'realtime_rain', 'themes/default/images/realtime_rain/actionlog-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5402, 'realtime_rain', 'themes/default/images/realtime_rain/banners-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5402, 'realtime_rain', 'themes/default/images/realtime_rain/actionlog-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5403, 'realtime_rain', 'themes/default/images/realtime_rain/calendar-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5403, 'realtime_rain', 'themes/default/images/realtime_rain/banners-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5404, 'realtime_rain', 'themes/default/images/realtime_rain/calendar-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5404, 'realtime_rain', 'themes/default/images/realtime_rain/banners-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5405, 'realtime_rain', 'themes/default/images/realtime_rain/chat-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5405, 'realtime_rain', 'themes/default/images/realtime_rain/calendar-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5406, 'realtime_rain', 'themes/default/images/realtime_rain/chat-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5406, 'realtime_rain', 'themes/default/images/realtime_rain/calendar-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5407, 'realtime_rain', 'themes/default/images/realtime_rain/ecommerce-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5407, 'realtime_rain', 'themes/default/images/realtime_rain/chat-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5408, 'realtime_rain', 'themes/default/images/realtime_rain/ecommerce-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5408, 'realtime_rain', 'themes/default/images/realtime_rain/chat-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5409, 'realtime_rain', 'themes/default/images/realtime_rain/join-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5409, 'realtime_rain', 'themes/default/images/realtime_rain/ecommerce-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5410, 'realtime_rain', 'themes/default/images/realtime_rain/join-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5410, 'realtime_rain', 'themes/default/images/realtime_rain/ecommerce-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5411, 'realtime_rain', 'themes/default/images/realtime_rain/news-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5411, 'realtime_rain', 'themes/default/images/realtime_rain/join-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5412, 'realtime_rain', 'themes/default/images/realtime_rain/news-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5412, 'realtime_rain', 'themes/default/images/realtime_rain/join-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5413, 'realtime_rain', 'themes/default/images/realtime_rain/point_charges-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5413, 'realtime_rain', 'themes/default/images/realtime_rain/news-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5414, 'realtime_rain', 'themes/default/images/realtime_rain/point_charges-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5414, 'realtime_rain', 'themes/default/images/realtime_rain/news-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5415, 'realtime_rain', 'themes/default/images/realtime_rain/point_gifts-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5415, 'realtime_rain', 'themes/default/images/realtime_rain/point_charges-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5416, 'realtime_rain', 'themes/default/images/realtime_rain/point_gifts-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5416, 'realtime_rain', 'themes/default/images/realtime_rain/point_charges-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5417, 'realtime_rain', 'themes/default/images/realtime_rain/polls-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5417, 'realtime_rain', 'themes/default/images/realtime_rain/point_gifts-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5418, 'realtime_rain', 'themes/default/images/realtime_rain/polls-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5418, 'realtime_rain', 'themes/default/images/realtime_rain/point_gifts-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5419, 'realtime_rain', 'themes/default/images/realtime_rain/post-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5419, 'realtime_rain', 'themes/default/images/realtime_rain/polls-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5420, 'realtime_rain', 'themes/default/images/realtime_rain/post-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5420, 'realtime_rain', 'themes/default/images/realtime_rain/polls-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5421, 'realtime_rain', 'themes/default/images/realtime_rain/recommend-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5421, 'realtime_rain', 'themes/default/images/realtime_rain/post-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5422, 'realtime_rain', 'themes/default/images/realtime_rain/recommend-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5422, 'realtime_rain', 'themes/default/images/realtime_rain/post-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5423, 'realtime_rain', 'themes/default/images/realtime_rain/search-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5423, 'realtime_rain', 'themes/default/images/realtime_rain/recommend-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5424, 'realtime_rain', 'themes/default/images/realtime_rain/search-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5424, 'realtime_rain', 'themes/default/images/realtime_rain/recommend-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5425, 'realtime_rain', 'themes/default/images/realtime_rain/security-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5425, 'realtime_rain', 'themes/default/images/realtime_rain/search-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5426, 'realtime_rain', 'themes/default/images/realtime_rain/security-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5426, 'realtime_rain', 'themes/default/images/realtime_rain/search-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5427, 'realtime_rain', 'themes/default/images/realtime_rain/stats-avatar.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5427, 'realtime_rain', 'themes/default/images/realtime_rain/security-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5428, 'realtime_rain', 'themes/default/images/realtime_rain/stats-bubble.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5428, 'realtime_rain', 'themes/default/images/realtime_rain/security-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5429, 'realtime_rain', 'themes/default/images/realtime_rain/sun-effect.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5429, 'realtime_rain', 'themes/default/images/realtime_rain/stats-avatar.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5430, 'realtime_rain', 'themes/default/images/realtime_rain/halo-effect.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5430, 'realtime_rain', 'themes/default/images/realtime_rain/stats-bubble.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5431, 'realtime_rain', 'themes/default/images/realtime_rain/horns-effect.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5431, 'realtime_rain', 'themes/default/images/realtime_rain/sun-effect.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5432, 'realtime_rain', 'themes/default/images/realtime_rain/shadow-effect.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5432, 'realtime_rain', 'themes/default/images/realtime_rain/halo-effect.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5433, 'realtime_rain', 'themes/default/images/flags/AD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5433, 'realtime_rain', 'themes/default/images/realtime_rain/horns-effect.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5434, 'realtime_rain', 'themes/default/images/flags/AE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5434, 'realtime_rain', 'themes/default/images/realtime_rain/shadow-effect.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5435, 'realtime_rain', 'themes/default/images/flags/AF.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5435, 'realtime_rain', 'themes/default/images/flags/AD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5436, 'realtime_rain', 'themes/default/images/flags/AG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5436, 'realtime_rain', 'themes/default/images/flags/AE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5437, 'realtime_rain', 'themes/default/images/flags/AL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5437, 'realtime_rain', 'themes/default/images/flags/AF.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5438, 'realtime_rain', 'themes/default/images/flags/AM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5438, 'realtime_rain', 'themes/default/images/flags/AG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5439, 'realtime_rain', 'themes/default/images/flags/AO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5439, 'realtime_rain', 'themes/default/images/flags/AL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5440, 'realtime_rain', 'themes/default/images/flags/AR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5440, 'realtime_rain', 'themes/default/images/flags/AM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5441, 'realtime_rain', 'themes/default/images/flags/AT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5441, 'realtime_rain', 'themes/default/images/flags/AO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5442, 'realtime_rain', 'themes/default/images/flags/AU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5442, 'realtime_rain', 'themes/default/images/flags/AR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5443, 'realtime_rain', 'themes/default/images/flags/AZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5443, 'realtime_rain', 'themes/default/images/flags/AT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5444, 'realtime_rain', 'themes/default/images/flags/BA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5444, 'realtime_rain', 'themes/default/images/flags/AU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5445, 'realtime_rain', 'themes/default/images/flags/BB.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5445, 'realtime_rain', 'themes/default/images/flags/AZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5446, 'realtime_rain', 'themes/default/images/flags/BD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5446, 'realtime_rain', 'themes/default/images/flags/BA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5447, 'realtime_rain', 'themes/default/images/flags/BE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5447, 'realtime_rain', 'themes/default/images/flags/BB.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5448, 'realtime_rain', 'themes/default/images/flags/BF.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5448, 'realtime_rain', 'themes/default/images/flags/BD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5449, 'realtime_rain', 'themes/default/images/flags/BG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5449, 'realtime_rain', 'themes/default/images/flags/BE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5450, 'realtime_rain', 'themes/default/images/flags/BH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5450, 'realtime_rain', 'themes/default/images/flags/BF.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5451, 'realtime_rain', 'themes/default/images/flags/BI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5451, 'realtime_rain', 'themes/default/images/flags/BG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5452, 'realtime_rain', 'themes/default/images/flags/BJ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5452, 'realtime_rain', 'themes/default/images/flags/BH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5453, 'realtime_rain', 'themes/default/images/flags/BN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5453, 'realtime_rain', 'themes/default/images/flags/BI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5454, 'realtime_rain', 'themes/default/images/flags/BO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5454, 'realtime_rain', 'themes/default/images/flags/BJ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5455, 'realtime_rain', 'themes/default/images/flags/BR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5455, 'realtime_rain', 'themes/default/images/flags/BN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5456, 'realtime_rain', 'themes/default/images/flags/BS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5456, 'realtime_rain', 'themes/default/images/flags/BO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5457, 'realtime_rain', 'themes/default/images/flags/BT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5457, 'realtime_rain', 'themes/default/images/flags/BR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5458, 'realtime_rain', 'themes/default/images/flags/BW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5458, 'realtime_rain', 'themes/default/images/flags/BS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5459, 'realtime_rain', 'themes/default/images/flags/BY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5459, 'realtime_rain', 'themes/default/images/flags/BT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5460, 'realtime_rain', 'themes/default/images/flags/BZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5460, 'realtime_rain', 'themes/default/images/flags/BW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5461, 'realtime_rain', 'themes/default/images/flags/CA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5461, 'realtime_rain', 'themes/default/images/flags/BY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5462, 'realtime_rain', 'themes/default/images/flags/CD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5462, 'realtime_rain', 'themes/default/images/flags/BZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5463, 'realtime_rain', 'themes/default/images/flags/CF.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5463, 'realtime_rain', 'themes/default/images/flags/CA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5464, 'realtime_rain', 'themes/default/images/flags/CH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5464, 'realtime_rain', 'themes/default/images/flags/CD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5465, 'realtime_rain', 'themes/default/images/flags/CI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5465, 'realtime_rain', 'themes/default/images/flags/CF.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5466, 'realtime_rain', 'themes/default/images/flags/CL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5466, 'realtime_rain', 'themes/default/images/flags/CH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5467, 'realtime_rain', 'themes/default/images/flags/CM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5467, 'realtime_rain', 'themes/default/images/flags/CI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5468, 'realtime_rain', 'themes/default/images/flags/CN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5468, 'realtime_rain', 'themes/default/images/flags/CL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5469, 'realtime_rain', 'themes/default/images/flags/CO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5469, 'realtime_rain', 'themes/default/images/flags/CM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5470, 'realtime_rain', 'themes/default/images/flags/CR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5470, 'realtime_rain', 'themes/default/images/flags/CN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5471, 'realtime_rain', 'themes/default/images/flags/CU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5471, 'realtime_rain', 'themes/default/images/flags/CO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5472, 'realtime_rain', 'themes/default/images/flags/CV.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5472, 'realtime_rain', 'themes/default/images/flags/CR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5473, 'realtime_rain', 'themes/default/images/flags/CY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5473, 'realtime_rain', 'themes/default/images/flags/CU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5474, 'realtime_rain', 'themes/default/images/flags/CZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5474, 'realtime_rain', 'themes/default/images/flags/CV.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5475, 'realtime_rain', 'themes/default/images/flags/DE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5475, 'realtime_rain', 'themes/default/images/flags/CY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5476, 'realtime_rain', 'themes/default/images/flags/DJ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5476, 'realtime_rain', 'themes/default/images/flags/CZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5477, 'realtime_rain', 'themes/default/images/flags/DK.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5477, 'realtime_rain', 'themes/default/images/flags/DE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5478, 'realtime_rain', 'themes/default/images/flags/DM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5478, 'realtime_rain', 'themes/default/images/flags/DJ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5479, 'realtime_rain', 'themes/default/images/flags/DO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5479, 'realtime_rain', 'themes/default/images/flags/DK.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5480, 'realtime_rain', 'themes/default/images/flags/DZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5480, 'realtime_rain', 'themes/default/images/flags/DM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5481, 'realtime_rain', 'themes/default/images/flags/EC.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5481, 'realtime_rain', 'themes/default/images/flags/DO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5482, 'realtime_rain', 'themes/default/images/flags/EE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5482, 'realtime_rain', 'themes/default/images/flags/DZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5483, 'realtime_rain', 'themes/default/images/flags/EG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5483, 'realtime_rain', 'themes/default/images/flags/EC.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5484, 'realtime_rain', 'themes/default/images/flags/EH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5484, 'realtime_rain', 'themes/default/images/flags/EE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5485, 'realtime_rain', 'themes/default/images/flags/ER.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5485, 'realtime_rain', 'themes/default/images/flags/EG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5486, 'realtime_rain', 'themes/default/images/flags/ES.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5486, 'realtime_rain', 'themes/default/images/flags/EH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5487, 'realtime_rain', 'themes/default/images/flags/ET.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5487, 'realtime_rain', 'themes/default/images/flags/ER.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5488, 'realtime_rain', 'themes/default/images/flags/FI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5488, 'realtime_rain', 'themes/default/images/flags/ES.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5489, 'realtime_rain', 'themes/default/images/flags/FJ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5489, 'realtime_rain', 'themes/default/images/flags/ET.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5490, 'realtime_rain', 'themes/default/images/flags/FM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5490, 'realtime_rain', 'themes/default/images/flags/FI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5491, 'realtime_rain', 'themes/default/images/flags/FR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5491, 'realtime_rain', 'themes/default/images/flags/FJ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5492, 'realtime_rain', 'themes/default/images/flags/GA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5492, 'realtime_rain', 'themes/default/images/flags/FM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5493, 'realtime_rain', 'themes/default/images/flags/GB.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5493, 'realtime_rain', 'themes/default/images/flags/FR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5494, 'realtime_rain', 'themes/default/images/flags/GD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5494, 'realtime_rain', 'themes/default/images/flags/GA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5495, 'realtime_rain', 'themes/default/images/flags/GE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5495, 'realtime_rain', 'themes/default/images/flags/GB.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5496, 'realtime_rain', 'themes/default/images/flags/GH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5496, 'realtime_rain', 'themes/default/images/flags/GD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5497, 'realtime_rain', 'themes/default/images/flags/GI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5497, 'realtime_rain', 'themes/default/images/flags/GE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5498, 'realtime_rain', 'themes/default/images/flags/GL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5498, 'realtime_rain', 'themes/default/images/flags/GH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5499, 'realtime_rain', 'themes/default/images/flags/GM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5499, 'realtime_rain', 'themes/default/images/flags/GI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5500, 'realtime_rain', 'themes/default/images/flags/GN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5500, 'realtime_rain', 'themes/default/images/flags/GL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5501, 'realtime_rain', 'themes/default/images/flags/GP.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5501, 'realtime_rain', 'themes/default/images/flags/GM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5502, 'realtime_rain', 'themes/default/images/flags/GQ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5502, 'realtime_rain', 'themes/default/images/flags/GN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5503, 'realtime_rain', 'themes/default/images/flags/GR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5503, 'realtime_rain', 'themes/default/images/flags/GP.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5504, 'realtime_rain', 'themes/default/images/flags/GT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5504, 'realtime_rain', 'themes/default/images/flags/GQ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5505, 'realtime_rain', 'themes/default/images/flags/GW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5505, 'realtime_rain', 'themes/default/images/flags/GR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5506, 'realtime_rain', 'themes/default/images/flags/GY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5506, 'realtime_rain', 'themes/default/images/flags/GT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5507, 'realtime_rain', 'themes/default/images/flags/HN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5507, 'realtime_rain', 'themes/default/images/flags/GW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5508, 'realtime_rain', 'themes/default/images/flags/HR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5508, 'realtime_rain', 'themes/default/images/flags/GY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5509, 'realtime_rain', 'themes/default/images/flags/HT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5509, 'realtime_rain', 'themes/default/images/flags/HN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5510, 'realtime_rain', 'themes/default/images/flags/HU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5510, 'realtime_rain', 'themes/default/images/flags/HR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5511, 'realtime_rain', 'themes/default/images/flags/ID.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5511, 'realtime_rain', 'themes/default/images/flags/HT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5512, 'realtime_rain', 'themes/default/images/flags/IE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5512, 'realtime_rain', 'themes/default/images/flags/HU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5513, 'realtime_rain', 'themes/default/images/flags/IL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5513, 'realtime_rain', 'themes/default/images/flags/ID.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5514, 'realtime_rain', 'themes/default/images/flags/IN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5514, 'realtime_rain', 'themes/default/images/flags/IE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5515, 'realtime_rain', 'themes/default/images/flags/IQ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5515, 'realtime_rain', 'themes/default/images/flags/IL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5516, 'realtime_rain', 'themes/default/images/flags/IR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5516, 'realtime_rain', 'themes/default/images/flags/IN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5517, 'realtime_rain', 'themes/default/images/flags/IS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5517, 'realtime_rain', 'themes/default/images/flags/IQ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5518, 'realtime_rain', 'themes/default/images/flags/IT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5518, 'realtime_rain', 'themes/default/images/flags/IR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5519, 'realtime_rain', 'themes/default/images/flags/JM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5519, 'realtime_rain', 'themes/default/images/flags/IS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5520, 'realtime_rain', 'themes/default/images/flags/JO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5520, 'realtime_rain', 'themes/default/images/flags/IT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5521, 'realtime_rain', 'themes/default/images/flags/JP.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5521, 'realtime_rain', 'themes/default/images/flags/JM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5522, 'realtime_rain', 'themes/default/images/flags/KE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5522, 'realtime_rain', 'themes/default/images/flags/JO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5523, 'realtime_rain', 'themes/default/images/flags/KG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5523, 'realtime_rain', 'themes/default/images/flags/JP.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5524, 'realtime_rain', 'themes/default/images/flags/KH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5524, 'realtime_rain', 'themes/default/images/flags/KE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5525, 'realtime_rain', 'themes/default/images/flags/KI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5525, 'realtime_rain', 'themes/default/images/flags/KG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5526, 'realtime_rain', 'themes/default/images/flags/KM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5526, 'realtime_rain', 'themes/default/images/flags/KH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5527, 'realtime_rain', 'themes/default/images/flags/KN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5527, 'realtime_rain', 'themes/default/images/flags/KI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5528, 'realtime_rain', 'themes/default/images/flags/KP.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5528, 'realtime_rain', 'themes/default/images/flags/KM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5529, 'realtime_rain', 'themes/default/images/flags/KR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5529, 'realtime_rain', 'themes/default/images/flags/KN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5530, 'realtime_rain', 'themes/default/images/flags/KW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5530, 'realtime_rain', 'themes/default/images/flags/KP.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5531, 'realtime_rain', 'themes/default/images/flags/KZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5531, 'realtime_rain', 'themes/default/images/flags/KR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5532, 'realtime_rain', 'themes/default/images/flags/LA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5532, 'realtime_rain', 'themes/default/images/flags/KW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5533, 'realtime_rain', 'themes/default/images/flags/LB.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5533, 'realtime_rain', 'themes/default/images/flags/KZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5534, 'realtime_rain', 'themes/default/images/flags/LC.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5534, 'realtime_rain', 'themes/default/images/flags/LA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5535, 'realtime_rain', 'themes/default/images/flags/LI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5535, 'realtime_rain', 'themes/default/images/flags/LB.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5536, 'realtime_rain', 'themes/default/images/flags/LK.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5536, 'realtime_rain', 'themes/default/images/flags/LC.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5537, 'realtime_rain', 'themes/default/images/flags/LR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5537, 'realtime_rain', 'themes/default/images/flags/LI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5538, 'realtime_rain', 'themes/default/images/flags/LS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5538, 'realtime_rain', 'themes/default/images/flags/LK.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5539, 'realtime_rain', 'themes/default/images/flags/LT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5539, 'realtime_rain', 'themes/default/images/flags/LR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5540, 'realtime_rain', 'themes/default/images/flags/LU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5540, 'realtime_rain', 'themes/default/images/flags/LS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5541, 'realtime_rain', 'themes/default/images/flags/LV.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5541, 'realtime_rain', 'themes/default/images/flags/LT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5542, 'realtime_rain', 'themes/default/images/flags/LY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5542, 'realtime_rain', 'themes/default/images/flags/LU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5543, 'realtime_rain', 'themes/default/images/flags/MA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5543, 'realtime_rain', 'themes/default/images/flags/LV.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5544, 'realtime_rain', 'themes/default/images/flags/MC.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5544, 'realtime_rain', 'themes/default/images/flags/LY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5545, 'realtime_rain', 'themes/default/images/flags/MD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5545, 'realtime_rain', 'themes/default/images/flags/MA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5546, 'realtime_rain', 'themes/default/images/flags/ME.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5546, 'realtime_rain', 'themes/default/images/flags/MC.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5547, 'realtime_rain', 'themes/default/images/flags/MG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5547, 'realtime_rain', 'themes/default/images/flags/MD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5548, 'realtime_rain', 'themes/default/images/flags/MH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5548, 'realtime_rain', 'themes/default/images/flags/ME.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5549, 'realtime_rain', 'themes/default/images/flags/MK.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5549, 'realtime_rain', 'themes/default/images/flags/MG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5550, 'realtime_rain', 'themes/default/images/flags/ML.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5550, 'realtime_rain', 'themes/default/images/flags/MH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5551, 'realtime_rain', 'themes/default/images/flags/MM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5551, 'realtime_rain', 'themes/default/images/flags/MK.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5552, 'realtime_rain', 'themes/default/images/flags/MN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5552, 'realtime_rain', 'themes/default/images/flags/ML.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5553, 'realtime_rain', 'themes/default/images/flags/MQ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5553, 'realtime_rain', 'themes/default/images/flags/MM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5554, 'realtime_rain', 'themes/default/images/flags/MR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5554, 'realtime_rain', 'themes/default/images/flags/MN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5555, 'realtime_rain', 'themes/default/images/flags/MT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5555, 'realtime_rain', 'themes/default/images/flags/MQ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5556, 'realtime_rain', 'themes/default/images/flags/MU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5556, 'realtime_rain', 'themes/default/images/flags/MR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5557, 'realtime_rain', 'themes/default/images/flags/MV.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5557, 'realtime_rain', 'themes/default/images/flags/MT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5558, 'realtime_rain', 'themes/default/images/flags/MW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5558, 'realtime_rain', 'themes/default/images/flags/MU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5559, 'realtime_rain', 'themes/default/images/flags/MX.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5559, 'realtime_rain', 'themes/default/images/flags/MV.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5560, 'realtime_rain', 'themes/default/images/flags/MY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5560, 'realtime_rain', 'themes/default/images/flags/MW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5561, 'realtime_rain', 'themes/default/images/flags/MZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5561, 'realtime_rain', 'themes/default/images/flags/MX.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5562, 'realtime_rain', 'themes/default/images/flags/NA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5562, 'realtime_rain', 'themes/default/images/flags/MY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5563, 'realtime_rain', 'themes/default/images/flags/NE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5563, 'realtime_rain', 'themes/default/images/flags/MZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5564, 'realtime_rain', 'themes/default/images/flags/NG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5564, 'realtime_rain', 'themes/default/images/flags/NA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5565, 'realtime_rain', 'themes/default/images/flags/NI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5565, 'realtime_rain', 'themes/default/images/flags/NE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5566, 'realtime_rain', 'themes/default/images/flags/NL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5566, 'realtime_rain', 'themes/default/images/flags/NG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5567, 'realtime_rain', 'themes/default/images/flags/NO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5567, 'realtime_rain', 'themes/default/images/flags/NI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5568, 'realtime_rain', 'themes/default/images/flags/NP.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5568, 'realtime_rain', 'themes/default/images/flags/NL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5569, 'realtime_rain', 'themes/default/images/flags/NR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5569, 'realtime_rain', 'themes/default/images/flags/NO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5570, 'realtime_rain', 'themes/default/images/flags/NZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5570, 'realtime_rain', 'themes/default/images/flags/NP.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5571, 'realtime_rain', 'themes/default/images/flags/OM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5571, 'realtime_rain', 'themes/default/images/flags/NR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5572, 'realtime_rain', 'themes/default/images/flags/PA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5572, 'realtime_rain', 'themes/default/images/flags/NZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5573, 'realtime_rain', 'themes/default/images/flags/PE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5573, 'realtime_rain', 'themes/default/images/flags/OM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5574, 'realtime_rain', 'themes/default/images/flags/PF.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5574, 'realtime_rain', 'themes/default/images/flags/PA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5575, 'realtime_rain', 'themes/default/images/flags/PG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5575, 'realtime_rain', 'themes/default/images/flags/PE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5576, 'realtime_rain', 'themes/default/images/flags/PH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5576, 'realtime_rain', 'themes/default/images/flags/PF.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5577, 'realtime_rain', 'themes/default/images/flags/PK.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5577, 'realtime_rain', 'themes/default/images/flags/PG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5578, 'realtime_rain', 'themes/default/images/flags/PL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5578, 'realtime_rain', 'themes/default/images/flags/PH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5579, 'realtime_rain', 'themes/default/images/flags/PR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5579, 'realtime_rain', 'themes/default/images/flags/PK.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5580, 'realtime_rain', 'themes/default/images/flags/PS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5580, 'realtime_rain', 'themes/default/images/flags/PL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5581, 'realtime_rain', 'themes/default/images/flags/PT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5581, 'realtime_rain', 'themes/default/images/flags/PR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5582, 'realtime_rain', 'themes/default/images/flags/PW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5582, 'realtime_rain', 'themes/default/images/flags/PS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5583, 'realtime_rain', 'themes/default/images/flags/PY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5583, 'realtime_rain', 'themes/default/images/flags/PT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5584, 'realtime_rain', 'themes/default/images/flags/QA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5584, 'realtime_rain', 'themes/default/images/flags/PW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5585, 'realtime_rain', 'themes/default/images/flags/RO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5585, 'realtime_rain', 'themes/default/images/flags/PY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5586, 'realtime_rain', 'themes/default/images/flags/RS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5586, 'realtime_rain', 'themes/default/images/flags/QA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5587, 'realtime_rain', 'themes/default/images/flags/RU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5587, 'realtime_rain', 'themes/default/images/flags/RO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5588, 'realtime_rain', 'themes/default/images/flags/RW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5588, 'realtime_rain', 'themes/default/images/flags/RS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5589, 'realtime_rain', 'themes/default/images/flags/SA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5589, 'realtime_rain', 'themes/default/images/flags/RU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5590, 'realtime_rain', 'themes/default/images/flags/SB.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5590, 'realtime_rain', 'themes/default/images/flags/RW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5591, 'realtime_rain', 'themes/default/images/flags/SC.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5591, 'realtime_rain', 'themes/default/images/flags/SA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5592, 'realtime_rain', 'themes/default/images/flags/SD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5592, 'realtime_rain', 'themes/default/images/flags/SB.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5593, 'realtime_rain', 'themes/default/images/flags/SE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5593, 'realtime_rain', 'themes/default/images/flags/SC.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5594, 'realtime_rain', 'themes/default/images/flags/SG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5594, 'realtime_rain', 'themes/default/images/flags/SD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5595, 'realtime_rain', 'themes/default/images/flags/SI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5595, 'realtime_rain', 'themes/default/images/flags/SE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5596, 'realtime_rain', 'themes/default/images/flags/SK.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5596, 'realtime_rain', 'themes/default/images/flags/SG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5597, 'realtime_rain', 'themes/default/images/flags/SL.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5597, 'realtime_rain', 'themes/default/images/flags/SI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5598, 'realtime_rain', 'themes/default/images/flags/SM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5598, 'realtime_rain', 'themes/default/images/flags/SK.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5599, 'realtime_rain', 'themes/default/images/flags/SN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5599, 'realtime_rain', 'themes/default/images/flags/SL.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5600, 'realtime_rain', 'themes/default/images/flags/SO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5600, 'realtime_rain', 'themes/default/images/flags/SM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5601, 'realtime_rain', 'themes/default/images/flags/SR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5601, 'realtime_rain', 'themes/default/images/flags/SN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5602, 'realtime_rain', 'themes/default/images/flags/ST.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5602, 'realtime_rain', 'themes/default/images/flags/SO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5603, 'realtime_rain', 'themes/default/images/flags/SV.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5603, 'realtime_rain', 'themes/default/images/flags/SR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5604, 'realtime_rain', 'themes/default/images/flags/SY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5604, 'realtime_rain', 'themes/default/images/flags/ST.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5605, 'realtime_rain', 'themes/default/images/flags/SZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5605, 'realtime_rain', 'themes/default/images/flags/SV.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5606, 'realtime_rain', 'themes/default/images/flags/TD.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5606, 'realtime_rain', 'themes/default/images/flags/SY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5607, 'realtime_rain', 'themes/default/images/flags/TG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5607, 'realtime_rain', 'themes/default/images/flags/SZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5608, 'realtime_rain', 'themes/default/images/flags/TH.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5608, 'realtime_rain', 'themes/default/images/flags/TD.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5609, 'realtime_rain', 'themes/default/images/flags/TJ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5609, 'realtime_rain', 'themes/default/images/flags/TG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5610, 'realtime_rain', 'themes/default/images/flags/TM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5610, 'realtime_rain', 'themes/default/images/flags/TH.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5611, 'realtime_rain', 'themes/default/images/flags/TN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5611, 'realtime_rain', 'themes/default/images/flags/TJ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5612, 'realtime_rain', 'themes/default/images/flags/TO.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5612, 'realtime_rain', 'themes/default/images/flags/TM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5613, 'realtime_rain', 'themes/default/images/flags/TP.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5613, 'realtime_rain', 'themes/default/images/flags/TN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5614, 'realtime_rain', 'themes/default/images/flags/TR.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5614, 'realtime_rain', 'themes/default/images/flags/TO.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5615, 'realtime_rain', 'themes/default/images/flags/TT.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5615, 'realtime_rain', 'themes/default/images/flags/TP.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5616, 'realtime_rain', 'themes/default/images/flags/TV.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5616, 'realtime_rain', 'themes/default/images/flags/TR.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5617, 'realtime_rain', 'themes/default/images/flags/TW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5617, 'realtime_rain', 'themes/default/images/flags/TT.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5618, 'realtime_rain', 'themes/default/images/flags/TZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5618, 'realtime_rain', 'themes/default/images/flags/TV.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5619, 'realtime_rain', 'themes/default/images/flags/UA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5619, 'realtime_rain', 'themes/default/images/flags/TW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5620, 'realtime_rain', 'themes/default/images/flags/UG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5620, 'realtime_rain', 'themes/default/images/flags/TZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5621, 'realtime_rain', 'themes/default/images/flags/US.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5621, 'realtime_rain', 'themes/default/images/flags/UA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5622, 'realtime_rain', 'themes/default/images/flags/UY.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5622, 'realtime_rain', 'themes/default/images/flags/UG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5623, 'realtime_rain', 'themes/default/images/flags/UZ.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5623, 'realtime_rain', 'themes/default/images/flags/US.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5624, 'realtime_rain', 'themes/default/images/flags/VA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5624, 'realtime_rain', 'themes/default/images/flags/UY.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5625, 'realtime_rain', 'themes/default/images/flags/VC.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5625, 'realtime_rain', 'themes/default/images/flags/UZ.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5626, 'realtime_rain', 'themes/default/images/flags/VE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5626, 'realtime_rain', 'themes/default/images/flags/VA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5627, 'realtime_rain', 'themes/default/images/flags/VG.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5627, 'realtime_rain', 'themes/default/images/flags/VC.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5628, 'realtime_rain', 'themes/default/images/flags/VI.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5628, 'realtime_rain', 'themes/default/images/flags/VE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5629, 'realtime_rain', 'themes/default/images/flags/VN.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5629, 'realtime_rain', 'themes/default/images/flags/VG.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5630, 'realtime_rain', 'themes/default/images/flags/VU.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5630, 'realtime_rain', 'themes/default/images/flags/VI.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5631, 'realtime_rain', 'themes/default/images/flags/WS.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5631, 'realtime_rain', 'themes/default/images/flags/VN.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5632, 'realtime_rain', 'themes/default/images/flags/YE.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5632, 'realtime_rain', 'themes/default/images/flags/VU.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5633, 'realtime_rain', 'themes/default/images/flags/ZA.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5633, 'realtime_rain', 'themes/default/images/flags/WS.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5634, 'realtime_rain', 'themes/default/images/flags/ZM.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5634, 'realtime_rain', 'themes/default/images/flags/YE.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5635, 'realtime_rain', 'themes/default/images/flags/ZW.gif');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5635, 'realtime_rain', 'themes/default/images/flags/ZA.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5636, 'realtime_rain', 'themes/default/images/flags/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5636, 'realtime_rain', 'themes/default/images/flags/ZM.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5637, 'recommend', 'themes/default/images/icons/24x24/menu/site_meta/recommend.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5637, 'realtime_rain', 'themes/default/images/flags/ZW.gif');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5638, 'recommend', 'themes/default/images/icons/48x48/menu/site_meta/recommend.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5638, 'realtime_rain', 'themes/default/images/flags/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5639, 'recommend', 'themes/default/images/icons/24x24/links/digg.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5639, 'recommend', 'themes/default/images/icons/24x24/menu/site_meta/recommend.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5640, 'recommend', 'themes/default/images/icons/24x24/links/facebook.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5640, 'recommend', 'themes/default/images/icons/48x48/menu/site_meta/recommend.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5641, 'recommend', 'themes/default/images/icons/24x24/links/stumbleupon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5641, 'recommend', 'themes/default/images/icons/24x24/links/digg.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5642, 'recommend', 'themes/default/images/icons/24x24/links/twitter.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5642, 'recommend', 'themes/default/images/icons/24x24/links/facebook.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5643, 'recommend', 'themes/default/images/icons/24x24/links/favorites.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5643, 'recommend', 'themes/default/images/icons/24x24/links/stumbleupon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5644, 'recommend', 'themes/default/images/icons/48x48/links/digg.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5644, 'recommend', 'themes/default/images/icons/24x24/links/twitter.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5645, 'recommend', 'themes/default/images/icons/48x48/links/facebook.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5645, 'recommend', 'themes/default/images/icons/24x24/links/favorites.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5646, 'recommend', 'themes/default/images/icons/48x48/links/stumbleupon.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5646, 'recommend', 'themes/default/images/icons/48x48/links/digg.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5647, 'recommend', 'themes/default/images/icons/48x48/links/twitter.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5647, 'recommend', 'themes/default/images/icons/48x48/links/facebook.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5648, 'recommend', 'themes/default/images/icons/48x48/links/favorites.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5648, 'recommend', 'themes/default/images/icons/48x48/links/stumbleupon.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5649, 'recommend', 'sources/hooks/systems/config/points_RECOMMEND_SITE.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5649, 'recommend', 'themes/default/images/icons/48x48/links/twitter.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5650, 'recommend', 'sources/hooks/systems/realtime_rain/recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5650, 'recommend', 'themes/default/images/icons/48x48/links/favorites.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5651, 'recommend', 'sources/hooks/systems/addon_registry/recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5651, 'recommend', 'sources/hooks/systems/config/points_RECOMMEND_SITE.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5652, 'recommend', 'lang/EN/recommend.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5652, 'recommend', 'sources/hooks/systems/realtime_rain/recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5653, 'recommend', 'pages/modules/recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5653, 'recommend', 'sources/hooks/systems/addon_registry/recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5654, 'recommend', 'pages/comcode/EN/recommend_help.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5654, 'recommend', 'lang/EN/recommend.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5655, 'recommend', 'sources/recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5655, 'recommend', 'pages/modules/recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5656, 'recommend', 'sources/blocks/main_screen_actions.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5656, 'recommend', 'pages/comcode/EN/recommend_help.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5657, 'recommend', 'themes/default/css/screen_actions.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5657, 'recommend', 'sources/recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5658, 'recommend', 'themes/default/templates/BLOCK_MAIN_SCREEN_ACTIONS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5658, 'recommend', 'sources/blocks/main_screen_actions.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5659, 'recommend', 'sources/hooks/systems/config/enable_csv_recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5659, 'recommend', 'themes/default/css/screen_actions.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5660, 'recommend', 'sources/hooks/systems/page_groupings/recommend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5660, 'recommend', 'themes/default/templates/BLOCK_MAIN_SCREEN_ACTIONS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5661, 'recommend', 'themes/default/css/recommend.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5661, 'recommend', 'sources/hooks/systems/config/enable_csv_recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5662, 'redirects_editor', 'themes/default/images/icons/24x24/menu/adminzone/structure/redirects.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5662, 'recommend', 'sources/hooks/systems/page_groupings/recommend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5663, 'redirects_editor', 'themes/default/images/icons/48x48/menu/adminzone/structure/redirects.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5663, 'recommend', 'themes/default/css/recommend.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5664, 'redirects_editor', 'sources/hooks/systems/addon_registry/redirects_editor.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5664, 'redirects_editor', 'themes/default/images/icons/24x24/menu/adminzone/structure/redirects.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5665, 'redirects_editor', 'sources/hooks/systems/commandr_fs_extended_config/redirects.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5665, 'redirects_editor', 'themes/default/images/icons/48x48/menu/adminzone/structure/redirects.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5666, 'redirects_editor', 'themes/default/templates/REDIRECTE_TABLE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5666, 'redirects_editor', 'sources/hooks/systems/addon_registry/redirects_editor.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5667, 'redirects_editor', 'themes/default/templates/REDIRECTE_TABLE_REDIRECT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5667, 'redirects_editor', 'sources/hooks/systems/commandr_fs_extended_config/redirects.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5668, 'redirects_editor', 'adminzone/pages/modules/admin_redirects.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5668, 'redirects_editor', 'themes/default/templates/REDIRECTE_TABLE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5669, 'redirects_editor', 'lang/EN/redirects.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5669, 'redirects_editor', 'themes/default/templates/REDIRECTE_TABLE_REDIRECT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5670, 'redirects_editor', 'themes/default/css/redirects_editor.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5670, 'redirects_editor', 'adminzone/pages/modules/admin_redirects.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5671, 'rootkit_detector', 'sources/hooks/systems/addon_registry/rootkit_detector.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5671, 'redirects_editor', 'lang/EN/redirects.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5672, 'rootkit_detector', 'rootkit_detection.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5672, 'redirects_editor', 'themes/default/css/redirects_editor.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5673, 'search', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/search.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5673, 'rootkit_detector', 'sources/hooks/systems/addon_registry/rootkit_detector.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5674, 'search', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/search.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5674, 'rootkit_detector', 'rootkit_detection.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5675, 'search', 'sources/hooks/systems/realtime_rain/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5675, 'search', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/search.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5676, 'search', 'themes/default/templates/TAGS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5676, 'search', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/search.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5677, 'search', 'sources/blocks/side_tag_cloud.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5677, 'search', 'sources/hooks/systems/realtime_rain/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5678, 'search', 'sources/hooks/systems/sitemap/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5678, 'search', 'themes/default/templates/TAGS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5679, 'search', 'themes/default/templates/BLOCK_SIDE_TAG_CLOUD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5679, 'search', 'sources/blocks/side_tag_cloud.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5680, 'search', 'themes/default/templates/SEARCH_RESULT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5680, 'search', 'sources/hooks/systems/sitemap/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5681, 'search', 'themes/default/templates/SEARCH_RESULT_TABLE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5681, 'search', 'themes/default/templates/BLOCK_SIDE_TAG_CLOUD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5682, 'search', 'sources/hooks/systems/addon_registry/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5682, 'search', 'themes/default/templates/SEARCH_RESULT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5683, 'search', 'sources/hooks/modules/admin_stats/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5683, 'search', 'themes/default/templates/SEARCH_RESULT_TABLE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5684, 'search', 'sources/hooks/modules/admin_setupwizard/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5684, 'search', 'sources/hooks/systems/addon_registry/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5685, 'search', 'themes/default/templates/SEARCH_ADVANCED.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5685, 'search', 'sources/hooks/modules/admin_stats/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5686, 'search', 'themes/default/templates/BLOCK_MAIN_SEARCH.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5686, 'search', 'sources/hooks/modules/admin_setupwizard/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5687, 'search', 'themes/default/templates/BLOCK_TOP_SEARCH.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5687, 'search', 'themes/default/templates/SEARCH_ADVANCED.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5688, 'search', 'themes/default/templates/SEARCH_DOMAINS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5688, 'search', 'themes/default/templates/BLOCK_MAIN_SEARCH.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5689, 'search', 'themes/default/templates/SEARCH_FORM_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5689, 'search', 'themes/default/templates/BLOCK_TOP_SEARCH.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5690, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5690, 'search', 'themes/default/templates/SEARCH_DOMAINS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5691, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5691, 'search', 'themes/default/templates/SEARCH_FORM_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5692, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_LIST.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5692, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5693, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_MULTI_LIST.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5693, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5694, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5694, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_LIST.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5695, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TICK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5695, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_MULTI_LIST.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5696, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_FLOAT.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5696, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5697, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_INTEGER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5697, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_TICK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5698, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_DATE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5698, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_FLOAT.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5699, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_DATE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5699, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_INTEGER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5700, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_TIME.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5700, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_DATE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5701, 'search', 'themes/default/css/search.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5701, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_DATE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5702, 'search', 'lang/EN/search.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5702, 'search', 'themes/default/templates/SEARCH_FOR_SEARCH_DOMAIN_OPTION_JUST_TIME.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5703, 'search', 'site/pages/modules/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5703, 'search', 'themes/default/css/search.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5704, 'search', 'sources/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5704, 'search', 'lang/EN/search.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5705, 'search', 'sources/blocks/main_search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5705, 'search', 'site/pages/modules/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5706, 'search', 'sources/blocks/top_search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5706, 'search', 'sources/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5707, 'search', 'sources/hooks/modules/search/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5707, 'search', 'sources/blocks/main_search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5708, 'search', 'sources_custom/hooks/modules/search/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5708, 'search', 'sources/blocks/top_search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5709, 'search', 'sources/hooks/modules/search/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5709, 'search', 'sources/hooks/modules/search/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5710, 'search', 'sources_custom/hooks/modules/search/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5710, 'search', 'sources_custom/hooks/modules/search/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5711, 'search', 'themes/default/xml/OPENSEARCH.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5711, 'search', 'sources/hooks/modules/search/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5712, 'search', 'data/opensearch.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5712, 'search', 'sources_custom/hooks/modules/search/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5713, 'search', 'sources/hooks/systems/config/search_results_per_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5713, 'search', 'themes/default/xml/OPENSEARCH.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5714, 'search', 'sources/hooks/systems/config/search_with_date_range.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5714, 'search', 'data/opensearch.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5715, 'search', 'sources/hooks/systems/config/enable_boolean_search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5715, 'search', 'sources/hooks/systems/config/search_results_per_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5716, 'search', 'sources/hooks/systems/page_groupings/search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5716, 'search', 'sources/hooks/systems/config/search_with_date_range.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5717, 'search', 'sources/hooks/systems/config/minimum_autocomplete_length.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5717, 'search', 'sources/hooks/systems/config/enable_boolean_search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5718, 'search', 'sources/hooks/systems/config/maximum_autocomplete_suggestions.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5718, 'search', 'sources/hooks/systems/page_groupings/search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5719, 'search', 'sources/hooks/systems/config/minimum_autocomplete_past_search.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5719, 'search', 'sources/hooks/systems/config/minimum_autocomplete_length.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5720, 'search', 'sources/hooks/systems/commandr_fs_extended_member/searches_saved.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5720, 'search', 'sources/hooks/systems/config/maximum_autocomplete_suggestions.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5721, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/audit/security_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5721, 'search', 'sources/hooks/systems/config/minimum_autocomplete_past_search.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5722, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5722, 'search', 'sources/hooks/systems/commandr_fs_extended_member/searches_saved.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5723, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/tools/users/investigate_user.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5723, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/audit/security_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5724, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/tools/users/investigate_user.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5724, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/audit/security_log.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5725, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/security/ip_ban.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5725, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/tools/users/investigate_user.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5726, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/security/ip_ban.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5726, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/tools/users/investigate_user.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5727, 'securitylogging', 'sources/hooks/systems/realtime_rain/security.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5727, 'securitylogging', 'themes/default/images/icons/24x24/menu/adminzone/security/ip_ban.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5728, 'securitylogging', 'sources/hooks/systems/addon_registry/securitylogging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5728, 'securitylogging', 'themes/default/images/icons/48x48/menu/adminzone/security/ip_ban.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5729, 'securitylogging', 'themes/default/templates/SECURITY_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5729, 'securitylogging', 'sources/hooks/systems/realtime_rain/security.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5730, 'securitylogging', 'themes/default/templates/SECURITY_ALERT_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5730, 'securitylogging', 'sources/hooks/systems/addon_registry/securitylogging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5731, 'securitylogging', 'adminzone/pages/modules/admin_security.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5731, 'securitylogging', 'themes/default/templates/SECURITY_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5732, 'securitylogging', 'themes/default/text/HACK_ATTEMPT_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5732, 'securitylogging', 'themes/default/templates/SECURITY_ALERT_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5733, 'securitylogging', 'adminzone/pages/modules/admin_ip_ban.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5733, 'securitylogging', 'adminzone/pages/modules/admin_security.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5734, 'securitylogging', 'lang/EN/lookup.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5734, 'securitylogging', 'themes/default/text/HACK_ATTEMPT_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5735, 'securitylogging', 'lang/EN/security.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5735, 'securitylogging', 'adminzone/pages/modules/admin_ip_ban.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5736, 'securitylogging', 'lang/EN/submitban.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5736, 'securitylogging', 'lang/EN/lookup.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5737, 'securitylogging', 'adminzone/pages/modules/admin_lookup.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5737, 'securitylogging', 'lang/EN/security.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5738, 'securitylogging', 'sources/lookup.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5738, 'securitylogging', 'lang/EN/submitban.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5739, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_member/banned_from_submitting.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5739, 'securitylogging', 'adminzone/pages/modules/admin_lookup.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5740, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_config/ip_banned.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5740, 'securitylogging', 'sources/lookup.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5741, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_config/ip_unbannable.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5741, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_member/banned_from_submitting.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5742, 'setupwizard', 'themes/default/images/icons/24x24/menu/adminzone/setup/setupwizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5742, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_config/ip_banned.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5743, 'setupwizard', 'themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5743, 'securitylogging', 'sources/hooks/systems/commandr_fs_extended_config/ip_unbannable.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5744, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5744, 'setupwizard', 'themes/default/images/icons/24x24/menu/adminzone/setup/setupwizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5745, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard_installprofiles/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5745, 'setupwizard', 'themes/default/images/icons/48x48/menu/adminzone/setup/setupwizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5746, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5746, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5747, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard_installprofiles/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5747, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard_installprofiles/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5748, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/community.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5748, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5749, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/infosite.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5749, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard_installprofiles/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5750, 'setupwizard', 'themes/default/templates/SETUPWIZARD_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5750, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/community.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5751, 'setupwizard', 'themes/default/templates/SETUPWIZARD_2.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5751, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/infosite.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5752, 'setupwizard', 'themes/default/templates/SETUPWIZARD_7.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5752, 'setupwizard', 'themes/default/templates/SETUPWIZARD_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5753, 'setupwizard', 'themes/default/templates/SETUPWIZARD_BLOCK_PREVIEW.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5753, 'setupwizard', 'themes/default/templates/SETUPWIZARD_2.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5754, 'setupwizard', 'sources/hooks/systems/addon_registry/setupwizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5754, 'setupwizard', 'themes/default/templates/SETUPWIZARD_7.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5755, 'setupwizard', 'sources/setupwizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5755, 'setupwizard', 'themes/default/templates/SETUPWIZARD_BLOCK_PREVIEW.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5756, 'setupwizard', 'sources/hooks/systems/preview/setupwizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5756, 'setupwizard', 'sources/hooks/systems/addon_registry/setupwizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5757, 'setupwizard', 'sources/hooks/systems/preview/setupwizard_blocks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5757, 'setupwizard', 'sources/setupwizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5758, 'setupwizard', 'adminzone/pages/modules/admin_setupwizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5758, 'setupwizard', 'sources/hooks/systems/preview/setupwizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5759, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5759, 'setupwizard', 'sources/hooks/systems/preview/setupwizard_blocks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5760, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5760, 'setupwizard', 'adminzone/pages/modules/admin_setupwizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5761, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5761, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5762, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5762, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5763, 'setupwizard', 'sources/hooks/systems/page_groupings/setupwizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5763, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5764, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/core.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5764, 'setupwizard', 'sources_custom/hooks/modules/admin_setupwizard/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5765, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/minimalistic.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5765, 'setupwizard', 'sources/hooks/systems/page_groupings/setupwizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5766, 'setupwizard', 'themes/default/css/setupwizard.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5766, 'setupwizard', 'sources/hooks/modules/admin_setupwizard/core.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5767, 'shopping', 'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5767, 'setupwizard', 'sources/hooks/modules/admin_setupwizard_installprofiles/minimalistic.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5768, 'shopping', 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5768, 'setupwizard', 'themes/default/css/setupwizard.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5769, 'shopping', 'themes/default/images/icons/24x24/menu/rich_content/ecommerce/orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5769, 'shopping', 'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5770, 'shopping', 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5770, 'shopping', 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5771, 'shopping', 'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/undispatched_orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5771, 'shopping', 'themes/default/images/icons/24x24/menu/rich_content/ecommerce/orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5772, 'shopping', 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/undispatched_orders.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5772, 'shopping', 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5773, 'shopping', 'themes/default/images/icons/24x24/menu/rich_content/ecommerce/shopping_cart.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5773, 'shopping', 'themes/default/images/icons/24x24/menu/adminzone/audit/ecommerce/undispatched_orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5774, 'shopping', 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5774, 'shopping', 'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/undispatched_orders.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5775, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_add.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5775, 'shopping', 'themes/default/images/icons/24x24/menu/rich_content/ecommerce/shopping_cart.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5776, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_checkout.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5776, 'shopping', 'themes/default/images/icons/48x48/menu/rich_content/ecommerce/shopping_cart.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5777, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_empty.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5777, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_add.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5778, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_update.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5778, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_checkout.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5779, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_view.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5779, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_empty.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5780, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_add.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5780, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_update.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5781, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_checkout.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5781, 'shopping', 'themes/default/images/icons/24x24/buttons/cart_view.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5782, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_empty.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5782, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_add.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5783, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_update.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5783, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_checkout.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5784, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_view.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5784, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_empty.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5785, 'shopping', 'sources/hooks/systems/notifications/order_dispatched.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5785, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_update.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5786, 'shopping', 'sources/hooks/systems/notifications/new_order.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5786, 'shopping', 'themes/default/images/icons/48x48/buttons/cart_view.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5787, 'shopping', 'sources/hooks/systems/notifications/low_stock.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5787, 'shopping', 'sources/hooks/systems/notifications/order_dispatched.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5788, 'shopping', 'sources/hooks/modules/admin_setupwizard_installprofiles/shopping.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5788, 'shopping', 'sources/hooks/systems/notifications/new_order.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5789, 'shopping', 'sources/hooks/systems/config/allow_opting_out_of_tax.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5789, 'shopping', 'sources/hooks/systems/notifications/low_stock.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5790, 'shopping', 'sources/hooks/systems/config/shipping_cost_factor.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5790, 'shopping', 'sources/hooks/modules/admin_setupwizard_installprofiles/shopping.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5791, 'shopping', 'sources/hooks/systems/config/cart_hold_hours.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5791, 'shopping', 'sources/hooks/systems/config/allow_opting_out_of_tax.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5792, 'shopping', 'sources/hooks/systems/ecommerce/catalogue_items.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5792, 'shopping', 'sources/hooks/systems/config/shipping_cost_factor.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5793, 'shopping', 'sources/hooks/systems/ecommerce/cart_orders.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5793, 'shopping', 'sources/hooks/systems/config/cart_hold_hours.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5794, 'shopping', 'sources/hooks/blocks/main_staff_checklist/ecommerce_orders.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5794, 'shopping', 'sources/hooks/systems/ecommerce/catalogue_items.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5795, 'shopping', 'sources/shopping.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5795, 'shopping', 'sources/hooks/systems/ecommerce/cart_orders.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5796, 'shopping', 'site/pages/modules/shopping.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5796, 'shopping', 'sources/hooks/blocks/main_staff_checklist/ecommerce_orders.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5797, 'shopping', 'themes/default/templates/CATALOGUE_products_CATEGORY_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5797, 'shopping', 'sources/shopping.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5798, 'shopping', 'themes/default/templates/CATALOGUE_products_CATEGORY_EMBED.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5798, 'shopping', 'site/pages/modules/shopping.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5799, 'shopping', 'themes/default/templates/CATALOGUE_products_ENTRY_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5799, 'shopping', 'themes/default/templates/CATALOGUE_products_CATEGORY_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5800, 'shopping', 'themes/default/templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5800, 'shopping', 'themes/default/templates/CATALOGUE_products_CATEGORY_EMBED.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5801, 'shopping', 'themes/default/templates/CATALOGUE_products_FIELDMAP_ENTRY_FIELD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5801, 'shopping', 'themes/default/templates/CATALOGUE_products_ENTRY_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5802, 'shopping', 'themes/default/templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5802, 'shopping', 'themes/default/templates/CATALOGUE_products_GRID_ENTRY_FIELD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5803, 'shopping', 'themes/default/templates/RESULTS_products_TABLE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5803, 'shopping', 'themes/default/templates/CATALOGUE_products_FIELDMAP_ENTRY_FIELD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5804, 'shopping', 'themes/default/javascript/shopping.js');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5804, 'shopping', 'themes/default/templates/CATALOGUE_products_GRID_ENTRY_WRAP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5805, 'shopping', 'themes/default/templates/CATALOGUE_ENTRY_CART_BUTTONS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5805, 'shopping', 'themes/default/templates/RESULTS_products_TABLE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5806, 'shopping', 'adminzone/pages/modules/admin_orders.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5806, 'shopping', 'themes/default/javascript/shopping.js');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5807, 'shopping', 'lang/EN/shopping.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5807, 'shopping', 'themes/default/templates/CATALOGUE_ENTRY_CART_BUTTONS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5808, 'shopping', 'sources/hooks/systems/addon_registry/shopping.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5808, 'shopping', 'adminzone/pages/modules/admin_orders.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5809, 'shopping', 'sources/hooks/systems/cns_cpf_filter/shopping_cart.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5809, 'shopping', 'lang/EN/shopping.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5810, 'shopping', 'themes/default/css/shopping.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5810, 'shopping', 'sources/hooks/systems/addon_registry/shopping.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5811, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDER_ACTIONS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5811, 'shopping', 'sources/hooks/systems/cns_cpf_filter/shopping_cart.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5812, 'shopping', 'themes/default/templates/ECOM_CART_LINK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5812, 'shopping', 'themes/default/css/shopping.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5813, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDERS_DETAILS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5813, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDER_ACTIONS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5814, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDERS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5814, 'shopping', 'themes/default/templates/ECOM_CART_LINK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5815, 'shopping', 'themes/default/templates/ECOM_ORDERS_DETAILS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5815, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDERS_DETAILS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5816, 'shopping', 'themes/default/templates/ECOM_ORDERS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5816, 'shopping', 'themes/default/templates/ECOM_ADMIN_ORDERS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5817, 'shopping', 'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5817, 'shopping', 'themes/default/templates/ECOM_ORDERS_DETAILS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5818, 'shopping', 'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5818, 'shopping', 'themes/default/templates/ECOM_ORDERS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5819, 'shopping', 'themes/default/templates/ECOM_ITEM_DETAILS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5819, 'shopping', 'themes/default/templates/ECOM_SHIPPING_ADDRESS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5820, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5820, 'shopping', 'themes/default/templates/ECOM_CART_BUTTON_VIA_PAYPAL.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5821, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5821, 'shopping', 'themes/default/templates/ECOM_ITEM_DETAILS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5822, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5822, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_PROCEED.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5823, 'shopping', 'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5823, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_STAGE_PAY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5824, 'shopping', 'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5824, 'shopping', 'themes/default/templates/ECOM_SHOPPING_CART_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5825, 'shopping', 'themes/default/templates/RESULTS_cart_TABLE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5825, 'shopping', 'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5826, 'shopping', 'themes/default/templates/RESULTS_TABLE_cart_ENTRY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5826, 'shopping', 'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5827, 'shopping', 'themes/default/templates/RESULTS_TABLE_cart_FIELD.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5827, 'shopping', 'themes/default/templates/RESULTS_cart_TABLE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5828, 'sms', 'sources/hooks/systems/addon_registry/sms.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5828, 'shopping', 'themes/default/templates/RESULTS_TABLE_cart_ENTRY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5829, 'sms', 'sources/sms.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5829, 'shopping', 'themes/default/templates/RESULTS_TABLE_cart_FIELD.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5830, 'sms', 'lang/EN/sms.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5830, 'sms', 'sources/hooks/systems/addon_registry/sms.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5831, 'sms', 'sources/hooks/systems/config/sms_password.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5831, 'sms', 'sources/sms.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5832, 'sms', 'sources/hooks/systems/config/sms_username.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5832, 'sms', 'lang/EN/sms.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5833, 'sms', 'sources/hooks/systems/config/sms_low_limit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5833, 'sms', 'sources/hooks/systems/config/sms_password.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5834, 'sms', 'sources/hooks/systems/config/sms_high_limit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5834, 'sms', 'sources/hooks/systems/config/sms_username.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5835, 'sms', 'sources/hooks/systems/config/sms_low_trigger_limit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5835, 'sms', 'sources/hooks/systems/config/sms_low_limit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5836, 'sms', 'sources/hooks/systems/config/sms_high_trigger_limit.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5836, 'sms', 'sources/hooks/systems/config/sms_high_limit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5837, 'sms', 'sources/hooks/systems/config/sms_api_id.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5837, 'sms', 'sources/hooks/systems/config/sms_low_trigger_limit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5838, 'sms', 'sources/hooks/systems/cns_cpf_filter/sms.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5838, 'sms', 'sources/hooks/systems/config/sms_high_trigger_limit.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5839, 'sms', 'data/sms.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5839, 'sms', 'sources/hooks/systems/config/sms_api_id.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5840, 'ssl', 'themes/default/images/icons/24x24/menu/adminzone/security/ssl.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5840, 'sms', 'sources/hooks/systems/cns_cpf_filter/sms.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5841, 'ssl', 'themes/default/images/icons/48x48/menu/adminzone/security/ssl.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5841, 'sms', 'data/sms.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5842, 'ssl', 'sources/hooks/systems/addon_registry/ssl.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5842, 'ssl', 'themes/default/images/icons/24x24/menu/adminzone/security/ssl.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5843, 'ssl', 'themes/default/templates/SSL_CONFIGURATION_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5843, 'ssl', 'themes/default/images/icons/48x48/menu/adminzone/security/ssl.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5844, 'ssl', 'adminzone/pages/modules/admin_ssl.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5844, 'ssl', 'sources/hooks/systems/addon_registry/ssl.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5845, 'ssl', 'sources/hooks/systems/page_groupings/ssl.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5845, 'ssl', 'themes/default/templates/SSL_CONFIGURATION_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5846, 'ssl', 'lang/EN/ssl.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5846, 'ssl', 'adminzone/pages/modules/admin_ssl.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5847, 'ssl', 'sources/hooks/systems/commandr_fs_extended_config/https_settings.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5847, 'ssl', 'sources/hooks/systems/page_groupings/ssl.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5848, 'staff', 'themes/default/images/icons/24x24/menu/site_meta/staff.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5848, 'ssl', 'lang/EN/ssl.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5849, 'staff', 'themes/default/images/icons/48x48/menu/site_meta/staff.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5849, 'ssl', 'sources/hooks/systems/commandr_fs_extended_config/https_settings.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5850, 'staff', 'sources/hooks/systems/config/is_on_staff_filter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5850, 'staff', 'themes/default/images/icons/24x24/menu/site_meta/staff.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5851, 'staff', 'sources/hooks/systems/config/is_on_sync_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5851, 'staff', 'themes/default/images/icons/48x48/menu/site_meta/staff.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5852, 'staff', 'sources/hooks/systems/config/staff_text.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5852, 'staff', 'sources/hooks/systems/config/is_on_staff_filter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5853, 'staff', 'sources/hooks/systems/addon_registry/staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5853, 'staff', 'sources/hooks/systems/config/is_on_sync_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5854, 'staff', 'sources/hooks/systems/page_groupings/staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5854, 'staff', 'sources/hooks/systems/config/staff_text.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5855, 'staff', 'themes/default/templates/STAFF_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5855, 'staff', 'sources/hooks/systems/addon_registry/staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5856, 'staff', 'themes/default/templates/STAFF_EDIT_WRAPPER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5856, 'staff', 'sources/hooks/systems/page_groupings/staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5857, 'staff', 'themes/default/templates/STAFF_ADMIN_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5857, 'staff', 'themes/default/templates/STAFF_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5858, 'staff', 'adminzone/pages/modules/admin_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5858, 'staff', 'themes/default/templates/STAFF_EDIT_WRAPPER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5859, 'staff', 'site/pages/modules/staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5859, 'staff', 'themes/default/templates/STAFF_ADMIN_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5860, 'staff', 'lang/EN/staff.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5860, 'staff', 'adminzone/pages/modules/admin_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5861, 'staff', 'sources/hooks/systems/cns_cpf_filter/staff_filter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5861, 'staff', 'site/pages/modules/staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5862, 'staff_messaging', 'themes/default/images/icons/24x24/menu/adminzone/audit/messaging.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5862, 'staff', 'lang/EN/staff.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5863, 'staff_messaging', 'themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5863, 'staff', 'sources/hooks/systems/cns_cpf_filter/staff_filter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5864, 'staff_messaging', 'themes/default/images/icons/24x24/menu/site_meta/contact_us.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5864, 'staff_messaging', 'themes/default/images/icons/24x24/menu/adminzone/audit/messaging.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5865, 'staff_messaging', 'themes/default/images/icons/48x48/menu/site_meta/contact_us.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5865, 'staff_messaging', 'themes/default/images/icons/48x48/menu/adminzone/audit/messaging.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5866, 'staff_messaging', 'sources/hooks/blocks/main_staff_checklist/messaging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5866, 'staff_messaging', 'themes/default/images/icons/24x24/menu/site_meta/contact_us.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5867, 'staff_messaging', 'sources/hooks/systems/config/messaging_forum_name.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5867, 'staff_messaging', 'themes/default/images/icons/48x48/menu/site_meta/contact_us.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5868, 'staff_messaging', 'sources/hooks/systems/addon_registry/staff_messaging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5868, 'staff_messaging', 'sources/hooks/blocks/main_staff_checklist/messaging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5869, 'staff_messaging', 'sources/hooks/systems/page_groupings/messaging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5869, 'staff_messaging', 'sources/hooks/systems/config/messaging_forum_name.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5870, 'staff_messaging', 'themes/default/templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5870, 'staff_messaging', 'sources/hooks/systems/addon_registry/staff_messaging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5871, 'staff_messaging', 'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5871, 'staff_messaging', 'sources/hooks/systems/page_groupings/messaging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5872, 'staff_messaging', 'adminzone/pages/modules/admin_messaging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5872, 'staff_messaging', 'themes/default/templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5873, 'staff_messaging', 'themes/default/templates/MESSAGING_MESSAGE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5873, 'staff_messaging', 'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5874, 'staff_messaging', 'themes/default/css/messaging.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5874, 'staff_messaging', 'adminzone/pages/modules/admin_messaging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5875, 'staff_messaging', 'sources/hooks/systems/notifications/messaging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5875, 'staff_messaging', 'themes/default/templates/MESSAGING_MESSAGE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5876, 'staff_messaging', 'lang/EN/messaging.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5876, 'staff_messaging', 'themes/default/css/messaging.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5877, 'staff_messaging', 'data/form_to_email.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5877, 'staff_messaging', 'sources/hooks/systems/notifications/messaging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5878, 'staff_messaging', 'sources/blocks/main_contact_simple.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5878, 'staff_messaging', 'lang/EN/messaging.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5879, 'staff_messaging', 'sources/blocks/main_contact_us.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5879, 'staff_messaging', 'data/form_to_email.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5880, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/statistics.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5880, 'staff_messaging', 'sources/blocks/main_contact_simple.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5881, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5881, 'staff_messaging', 'sources/blocks/main_contact_us.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5882, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/clear_stats.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5882, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/statistics.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5883, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/geolocate.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5883, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/statistics.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5884, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/load_times.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5884, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/clear_stats.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5885, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/page_views.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5885, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/geolocate.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5886, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/submits.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5886, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/load_times.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5887, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_keywords.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5887, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/page_views.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5888, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_referrers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5888, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/submits.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5889, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/users_online.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5889, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_keywords.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5890, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/clear_stats.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5890, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/top_referrers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5891, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/geolocate.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5891, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/users_online.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5892, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/load_times.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5892, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/clear_stats.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5893, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/page_views.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5893, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/geolocate.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5894, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/submits.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5894, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/load_times.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5895, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_keywords.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5895, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/page_views.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5896, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_referrers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5896, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/submits.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5897, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/users_online.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5897, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_keywords.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5898, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5898, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/top_referrers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5899, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5899, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/users_online.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5900, 'stats', 'sources/hooks/modules/admin_setupwizard/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5900, 'stats', 'themes/default/images/icons/24x24/menu/adminzone/audit/statistics/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5901, 'stats', 'sources/hooks/systems/config/stats_store_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5901, 'stats', 'themes/default/images/icons/48x48/menu/adminzone/audit/statistics/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5902, 'stats', 'sources/hooks/systems/config/super_logging.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5902, 'stats', 'sources/hooks/modules/admin_setupwizard/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5903, 'stats', 'sources/hooks/systems/realtime_rain/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5903, 'stats', 'sources/hooks/systems/config/stats_store_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5904, 'stats', 'data/modules/admin_cleanup/page_stats.php.pre');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5904, 'stats', 'sources/hooks/systems/config/super_logging.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5905, 'stats', 'sources/hooks/systems/cleanup/page_stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5905, 'stats', 'sources/hooks/systems/realtime_rain/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5906, 'stats', 'sources/hooks/systems/cron/stats_clean.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5906, 'stats', 'data/modules/admin_cleanup/page_stats.php.pre');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5907, 'stats', 'sources/hooks/systems/page_groupings/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5907, 'stats', 'sources/hooks/systems/cleanup/page_stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5908, 'stats', 'sources/hooks/systems/non_active_urls/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5908, 'stats', 'sources/hooks/systems/cron/stats_clean.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5909, 'stats', 'sources/hooks/systems/addon_registry/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5909, 'stats', 'sources/hooks/systems/page_groupings/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5910, 'stats', 'sources/hooks/modules/admin_import_types/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5910, 'stats', 'sources/hooks/systems/non_active_urls/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5911, 'stats', 'sources/hooks/modules/admin_stats/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5911, 'stats', 'sources/hooks/systems/addon_registry/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5912, 'stats', 'sources_custom/hooks/modules/admin_stats/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5912, 'stats', 'sources/hooks/modules/admin_import_types/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5913, 'stats', 'sources/hooks/modules/admin_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5913, 'stats', 'sources/hooks/modules/admin_stats/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5914, 'stats', 'sources_custom/hooks/modules/admin_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5914, 'stats', 'sources_custom/hooks/modules/admin_stats/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5915, 'stats', 'themes/default/templates/STATS_GRAPH.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5915, 'stats', 'sources/hooks/modules/admin_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5916, 'stats', 'themes/default/templates/STATS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5916, 'stats', 'sources_custom/hooks/modules/admin_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5917, 'stats', 'themes/default/templates/STATS_SCREEN_ISCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5917, 'stats', 'themes/default/templates/STATS_GRAPH.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5918, 'stats', 'themes/default/templates/STATS_OVERVIEW_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5918, 'stats', 'themes/default/templates/STATS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5919, 'stats', 'adminzone/pages/modules/admin_stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5919, 'stats', 'themes/default/templates/STATS_SCREEN_ISCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5920, 'stats', 'themes/default/css/stats.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5920, 'stats', 'themes/default/templates/STATS_OVERVIEW_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5921, 'stats', 'themes/default/css/svg.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5921, 'stats', 'adminzone/pages/modules/admin_stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5922, 'stats', 'data/modules/admin_stats/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5922, 'stats', 'themes/default/css/stats.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5923, 'stats', 'data/modules/admin_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5923, 'stats', 'themes/default/css/svg.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5924, 'stats', 'data/modules/admin_stats/IP_Country.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5924, 'stats', 'data/modules/admin_stats/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5925, 'stats', 'data_custom/modules/admin_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5925, 'stats', 'data/modules/admin_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5926, 'stats', 'lang/EN/stats.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5926, 'stats', 'data/modules/admin_stats/IP_Country.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5927, 'stats', 'sources/hooks/systems/cleanup/stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5927, 'stats', 'data_custom/modules/admin_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5928, 'stats', 'sources/svg.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5928, 'stats', 'lang/EN/stats.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5929, 'stats', 'sources/hooks/systems/config/bot_stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5929, 'stats', 'sources/hooks/systems/cleanup/stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5930, 'stats', 'sources/hooks/systems/tasks/install_geolocation_data.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5930, 'stats', 'sources/svg.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5931, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_this_month.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5931, 'stats', 'sources/hooks/systems/config/bot_stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5932, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_this_week.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5932, 'stats', 'sources/hooks/systems/tasks/install_geolocation_data.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5933, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_today.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5933, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_this_month.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5934, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5934, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_this_week.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5935, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online_forum.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5935, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_page_views_today.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5936, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online_record.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5936, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5937, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5937, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online_forum.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5938, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_this_month.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5938, 'stats_block', 'sources/hooks/systems/config/activity_show_stats_count_users_online_record.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5939, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_this_week.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5939, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5940, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_today.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5940, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_this_month.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5941, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_this_month.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5941, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_this_week.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5942, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_this_week.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5942, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_active_today.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5943, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_today.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5943, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_this_month.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5944, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5944, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_this_week.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5945, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_posts_today.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5945, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_members_new_today.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5946, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_topics.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5946, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5947, 'stats_block', 'sources/hooks/systems/addon_registry/stats_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5947, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_posts_today.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5948, 'stats_block', 'sources/hooks/modules/admin_setupwizard/stats_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5948, 'stats_block', 'sources/hooks/systems/config/forum_show_stats_count_topics.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5949, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS_SECTION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5949, 'stats_block', 'sources/hooks/systems/addon_registry/stats_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5950, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS_SUBLINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5950, 'stats_block', 'sources/hooks/modules/admin_setupwizard/stats_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5951, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5951, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS_SECTION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5952, 'stats_block', 'sources/blocks/side_stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5952, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS_SUBLINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5953, 'stats_block', 'sources/hooks/blocks/side_stats/stats_forum.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5953, 'stats_block', 'themes/default/templates/BLOCK_SIDE_STATS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5954, 'stats_block', 'sources/hooks/blocks/side_stats/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5954, 'stats_block', 'sources/blocks/side_stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5955, 'stats_block', 'sources_custom/hooks/blocks/side_stats/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5955, 'stats_block', 'sources/hooks/blocks/side_stats/stats_forum.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5956, 'stats_block', 'sources/hooks/blocks/side_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5956, 'stats_block', 'sources/hooks/blocks/side_stats/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5957, 'stats_block', 'sources_custom/hooks/blocks/side_stats/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5957, 'stats_block', 'sources_custom/hooks/blocks/side_stats/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5958, 'supermember_directory', 'themes/default/images/icons/24x24/menu/collaboration/supermembers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5958, 'stats_block', 'sources/hooks/blocks/side_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5959, 'supermember_directory', 'themes/default/images/icons/48x48/menu/collaboration/supermembers.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5959, 'stats_block', 'sources_custom/hooks/blocks/side_stats/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5960, 'supermember_directory', 'sources/hooks/systems/config/supermembers_text.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5960, 'supermember_directory', 'themes/default/images/icons/24x24/menu/collaboration/supermembers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5961, 'supermember_directory', 'sources/hooks/systems/addon_registry/supermember_directory.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5961, 'supermember_directory', 'themes/default/images/icons/48x48/menu/collaboration/supermembers.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5962, 'supermember_directory', 'lang/EN/supermembers.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5962, 'supermember_directory', 'sources/hooks/systems/config/supermembers_text.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5963, 'supermember_directory', 'themes/default/templates/SUPERMEMBERS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5963, 'supermember_directory', 'sources/hooks/systems/addon_registry/supermember_directory.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5964, 'supermember_directory', 'themes/default/templates/SUPERMEMBERS_SCREEN_GROUP.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5964, 'supermember_directory', 'lang/EN/supermembers.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5965, 'supermember_directory', 'collaboration/pages/modules/supermembers.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5965, 'supermember_directory', 'themes/default/templates/SUPERMEMBERS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5966, 'supermember_directory', 'sources/hooks/systems/page_groupings/supermember_directory.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5966, 'supermember_directory', 'themes/default/templates/SUPERMEMBERS_SCREEN_GROUP.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5967, 'syndication', 'sources/hooks/systems/addon_registry/syndication.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5967, 'supermember_directory', 'collaboration/pages/modules/supermembers.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5968, 'syndication', 'themes/default/templates/RSS_HEADER.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5968, 'supermember_directory', 'sources/hooks/systems/page_groupings/supermember_directory.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5969, 'syndication', 'themes/default/xml/ATOM_ENTRY.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5969, 'syndication', 'sources/hooks/systems/addon_registry/syndication.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5970, 'syndication', 'themes/default/xml/ATOM_WRAPPER.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5970, 'syndication', 'themes/default/templates/RSS_HEADER.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5971, 'syndication', 'themes/default/xml/RSS_CLOUD.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5971, 'syndication', 'themes/default/xml/ATOM_ENTRY.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5972, 'syndication', 'themes/default/xml/RSS_ENTRY.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5972, 'syndication', 'themes/default/xml/ATOM_WRAPPER.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5973, 'syndication', 'themes/default/xml/RSS_ENTRY_COMMENTS.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5973, 'syndication', 'themes/default/xml/RSS_CLOUD.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5974, 'syndication', 'themes/default/xml/RSS_WRAPPER.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5974, 'syndication', 'themes/default/xml/RSS_ENTRY.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5975, 'syndication', 'themes/default/xml/ATOM_XSLT.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5975, 'syndication', 'themes/default/xml/RSS_ENTRY_COMMENTS.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5976, 'syndication', 'themes/default/xml/RSS_ABBR.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5976, 'syndication', 'themes/default/xml/RSS_WRAPPER.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5977, 'syndication', 'themes/default/xml/RSS_XSLT.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5977, 'syndication', 'themes/default/xml/ATOM_XSLT.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5978, 'syndication', 'themes/default/xml/OPML_WRAPPER.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5978, 'syndication', 'themes/default/xml/RSS_ABBR.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5979, 'syndication', 'themes/default/xml/OPML_XSLT.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5979, 'syndication', 'themes/default/xml/RSS_XSLT.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5980, 'syndication', 'backend.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5980, 'syndication', 'themes/default/xml/OPML_WRAPPER.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5981, 'syndication', 'data/backend_cloud.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5981, 'syndication', 'themes/default/xml/OPML_XSLT.xml');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5982, 'syndication', 'sources/rss2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5982, 'syndication', 'backend.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5983, 'syndication', 'sources/hooks/systems/rss/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5983, 'syndication', 'data/backend_cloud.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5984, 'syndication', 'sources_custom/hooks/systems/rss/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5984, 'syndication', 'sources/rss2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5985, 'syndication', 'sources/hooks/systems/rss/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5985, 'syndication', 'sources/hooks/systems/rss/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5986, 'syndication', 'sources_custom/hooks/systems/rss/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5986, 'syndication', 'sources_custom/hooks/systems/rss/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5987, 'syndication', 'sources/hooks/systems/non_active_urls/news_rss_cloud.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5987, 'syndication', 'sources/hooks/systems/rss/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5988, 'syndication_blocks', 'sources/hooks/systems/notifications/error_occurred_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5988, 'syndication', 'sources_custom/hooks/systems/rss/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5989, 'syndication_blocks', 'sources/hooks/systems/config/is_on_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5989, 'syndication', 'sources/hooks/systems/non_active_urls/news_rss_cloud.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5990, 'syndication_blocks', 'sources/hooks/systems/config/is_rss_advertised.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5990, 'syndication_blocks', 'sources/hooks/systems/notifications/error_occurred_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5991, 'syndication_blocks', 'sources/hooks/systems/config/rss_update_time.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5991, 'syndication_blocks', 'sources/hooks/systems/config/is_on_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5992, 'syndication_blocks', 'themes/default/templates/BLOCK_MAIN_RSS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5992, 'syndication_blocks', 'sources/hooks/systems/config/is_rss_advertised.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5993, 'syndication_blocks', 'themes/default/templates/BLOCK_MAIN_RSS_SUMMARY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5993, 'syndication_blocks', 'sources/hooks/systems/config/rss_update_time.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5994, 'syndication_blocks', 'themes/default/templates/BLOCK_SIDE_RSS.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5994, 'syndication_blocks', 'themes/default/templates/BLOCK_MAIN_RSS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5995, 'syndication_blocks', 'themes/default/templates/BLOCK_SIDE_RSS_SUMMARY.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5995, 'syndication_blocks', 'themes/default/templates/BLOCK_MAIN_RSS_SUMMARY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5996, 'syndication_blocks', 'themes/default/css/rss.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5996, 'syndication_blocks', 'themes/default/templates/BLOCK_SIDE_RSS.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5997, 'syndication_blocks', 'sources/blocks/bottom_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5997, 'syndication_blocks', 'themes/default/templates/BLOCK_SIDE_RSS_SUMMARY.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5998, 'syndication_blocks', 'sources/blocks/main_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5998, 'syndication_blocks', 'themes/default/css/rss.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5999, 'syndication_blocks', 'sources/blocks/side_rss.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (5999, 'syndication_blocks', 'sources/blocks/bottom_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6000, 'syndication_blocks', 'sources/hooks/systems/commandr_commands/feed_display.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6000, 'syndication_blocks', 'sources/blocks/main_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6001, 'syndication_blocks', 'sources/hooks/systems/addon_registry/syndication_blocks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6001, 'syndication_blocks', 'sources/blocks/side_rss.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6002, 'syndication_blocks', 'sources/hooks/modules/admin_setupwizard/syndication_blocks.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6002, 'syndication_blocks', 'sources/hooks/systems/commandr_commands/feed_display.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6003, 'textbased_persistent_caching', 'sources/hooks/systems/addon_registry/textbased_persistent_caching.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6003, 'syndication_blocks', 'sources/hooks/systems/addon_registry/syndication_blocks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6004, 'textbased_persistent_caching', 'caches/persistent/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6004, 'syndication_blocks', 'sources/hooks/modules/admin_setupwizard/syndication_blocks.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6005, 'textbased_persistent_caching', 'caches/persistent/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6005, 'textbased_persistent_caching', 'sources/hooks/systems/addon_registry/textbased_persistent_caching.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6006, 'themewizard', 'themes/default/images/icons/24x24/menu/adminzone/style/themes/logowizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6006, 'textbased_persistent_caching', 'caches/persistent/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6007, 'themewizard', 'themes/default/images/icons/24x24/menu/adminzone/style/themes/themewizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6007, 'textbased_persistent_caching', 'caches/persistent/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6008, 'themewizard', 'themes/default/images/icons/48x48/menu/adminzone/style/themes/logowizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6008, 'themewizard', 'themes/default/images/icons/24x24/menu/adminzone/style/themes/logowizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6009, 'themewizard', 'themes/default/images/icons/48x48/menu/adminzone/style/themes/themewizard.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6009, 'themewizard', 'themes/default/images/icons/24x24/menu/adminzone/style/themes/themewizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6010, 'themewizard', 'sources/hooks/systems/commandr_commands/themewizard_find_color.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6010, 'themewizard', 'themes/default/images/icons/48x48/menu/adminzone/style/themes/logowizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6011, 'themewizard', 'sources/hooks/systems/commandr_commands/themewizard_compute_equation.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6011, 'themewizard', 'themes/default/images/icons/48x48/menu/adminzone/style/themes/themewizard.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6012, 'themewizard', 'sources/hooks/modules/admin_themewizard/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6012, 'themewizard', 'sources/hooks/systems/commandr_commands/themewizard_find_color.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6013, 'themewizard', 'sources_custom/hooks/modules/admin_themewizard/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6013, 'themewizard', 'sources/hooks/systems/commandr_commands/themewizard_compute_equation.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6014, 'themewizard', 'sources/hooks/systems/snippets/themewizard_equation.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6014, 'themewizard', 'sources/hooks/modules/admin_themewizard/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6015, 'themewizard', 'sources/hooks/modules/admin_themewizard/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6015, 'themewizard', 'sources_custom/hooks/modules/admin_themewizard/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6016, 'themewizard', 'sources_custom/hooks/modules/admin_themewizard/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6016, 'themewizard', 'sources/hooks/systems/snippets/themewizard_equation.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6017, 'themewizard', 'sources/hooks/systems/addon_registry/themewizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6017, 'themewizard', 'sources/hooks/modules/admin_themewizard/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6018, 'themewizard', 'sources/themewizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6018, 'themewizard', 'sources_custom/hooks/modules/admin_themewizard/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6019, 'themewizard', 'adminzone/pages/modules/admin_themewizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6019, 'themewizard', 'sources/hooks/systems/addon_registry/themewizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6020, 'themewizard', 'themes/default/templates/THEMEWIZARD_2_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6020, 'themewizard', 'sources/themewizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6021, 'themewizard', 'themes/default/templates/THEMEWIZARD_2_PREVIEW.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6021, 'themewizard', 'adminzone/pages/modules/admin_themewizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6022, 'themewizard', 'adminzone/themewizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6022, 'themewizard', 'themes/default/templates/THEMEWIZARD_2_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6023, 'themewizard', 'sources/hooks/systems/page_groupings/themewizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6023, 'themewizard', 'themes/default/templates/THEMEWIZARD_2_PREVIEW.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6024, 'themewizard', 'themes/default/templates/LOGOWIZARD_2.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6024, 'themewizard', 'adminzone/themewizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6025, 'themewizard', 'adminzone/logowizard.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6025, 'themewizard', 'sources/hooks/systems/page_groupings/themewizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6026, 'themewizard', 'themes/default/images/logo/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6026, 'themewizard', 'themes/default/templates/LOGOWIZARD_2.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6027, 'themewizard', 'themes/default/images/logo/default_logos/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6027, 'themewizard', 'adminzone/logowizard.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6028, 'themewizard', 'themes/default/images/logo/default_logos/logo1.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6028, 'themewizard', 'themes/default/images/logo/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6029, 'themewizard', 'themes/default/images/logo/default_logos/logo2.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6029, 'themewizard', 'themes/default/images/logo/default_logos/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6030, 'themewizard', 'themes/default/images/logo/default_logos/logo3.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6030, 'themewizard', 'themes/default/images/logo/default_logos/logo1.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6031, 'themewizard', 'themes/default/images/logo/default_logos/logo4.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6031, 'themewizard', 'themes/default/images/logo/default_logos/logo2.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6032, 'themewizard', 'themes/default/images/logo/default_logos/logo5.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6032, 'themewizard', 'themes/default/images/logo/default_logos/logo3.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6033, 'themewizard', 'themes/default/images/logo/default_logos/logo6.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6033, 'themewizard', 'themes/default/images/logo/default_logos/logo4.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6034, 'themewizard', 'themes/default/images/logo/default_logos/logo7.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6034, 'themewizard', 'themes/default/images/logo/default_logos/logo5.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6035, 'themewizard', 'themes/default/images/logo/default_logos/logo8.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6035, 'themewizard', 'themes/default/images/logo/default_logos/logo6.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6036, 'themewizard', 'themes/default/images/logo/default_logos/logo9.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6036, 'themewizard', 'themes/default/images/logo/default_logos/logo7.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6037, 'themewizard', 'themes/default/images/logo/default_logos/logo10.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6037, 'themewizard', 'themes/default/images/logo/default_logos/logo8.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6038, 'themewizard', 'themes/default/images/logo/default_logos/logo11.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6038, 'themewizard', 'themes/default/images/logo/default_logos/logo9.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6039, 'themewizard', 'themes/default/images/logo/default_logos/logo12.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6039, 'themewizard', 'themes/default/images/logo/default_logos/logo10.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6040, 'themewizard', 'themes/default/images/logo/default_backgrounds/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6040, 'themewizard', 'themes/default/images/logo/default_logos/logo11.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6041, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner1.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6041, 'themewizard', 'themes/default/images/logo/default_logos/logo12.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6042, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner2.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6042, 'themewizard', 'themes/default/images/logo/default_backgrounds/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6043, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3A.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6043, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner1.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6044, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3B.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6044, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner2.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6045, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3C.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6045, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3A.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6046, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner4.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6046, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3B.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6047, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner5.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6047, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner3C.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6048, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner6.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6048, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner4.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6049, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner7A.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6049, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner5.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6050, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner7B.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6050, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner6.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6051, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner8A.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6051, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner7A.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6052, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner8B.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6052, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner7B.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6053, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner9.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6053, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner8A.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6054, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner10.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6054, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner8B.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6055, 'tickets', 'themes/default/images/icons/24x24/menu/site_meta/tickets.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6055, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner9.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6056, 'tickets', 'themes/default/images/icons/48x48/menu/site_meta/tickets.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6056, 'themewizard', 'themes/default/images/logo/default_backgrounds/banner10.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6057, 'tickets', 'themes/default/images/icons/24x24/buttons/add_ticket.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6057, 'tickets', 'themes/default/images/icons/24x24/menu/site_meta/tickets.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6058, 'tickets', 'themes/default/images/icons/48x48/buttons/add_ticket.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6058, 'tickets', 'themes/default/images/icons/48x48/menu/site_meta/tickets.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6059, 'tickets', 'themes/default/images/icons/24x24/buttons/new_reply_staff_only.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6059, 'tickets', 'themes/default/images/icons/24x24/buttons/add_ticket.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6060, 'tickets', 'themes/default/images/icons/48x48/buttons/new_reply_staff_only.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6060, 'tickets', 'themes/default/images/icons/48x48/buttons/add_ticket.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6061, 'tickets', 'sources/hooks/systems/resource_meta_aware/ticket_type.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6061, 'tickets', 'themes/default/images/icons/24x24/buttons/new_reply_staff_only.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6062, 'tickets', 'sources/hooks/systems/commandr_fs/ticket_types.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6062, 'tickets', 'themes/default/images/icons/48x48/buttons/new_reply_staff_only.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6063, 'tickets', 'sources/hooks/systems/addon_registry/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6063, 'tickets', 'sources/hooks/systems/resource_meta_aware/ticket_type.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6064, 'tickets', 'sources/hooks/modules/admin_import_types/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6064, 'tickets', 'sources/hooks/systems/commandr_fs/ticket_types.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6065, 'tickets', 'themes/default/templates/SUPPORT_TICKET_TYPE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6065, 'tickets', 'sources/hooks/systems/addon_registry/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6066, 'tickets', 'themes/default/templates/SUPPORT_TICKET_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6066, 'tickets', 'sources/hooks/modules/admin_import_types/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6067, 'tickets', 'themes/default/templates/SUPPORT_TICKETS_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6067, 'tickets', 'themes/default/templates/SUPPORT_TICKET_TYPE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6068, 'tickets', 'themes/default/templates/SUPPORT_TICKET_LINK.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6068, 'tickets', 'themes/default/templates/SUPPORT_TICKET_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6069, 'tickets', 'themes/default/templates/SUPPORT_TICKETS_SEARCH_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6069, 'tickets', 'themes/default/templates/SUPPORT_TICKETS_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6070, 'tickets', 'adminzone/pages/modules/admin_tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6070, 'tickets', 'themes/default/templates/SUPPORT_TICKET_LINK.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6071, 'tickets', 'themes/default/css/tickets.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6071, 'tickets', 'themes/default/templates/SUPPORT_TICKETS_SEARCH_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6072, 'tickets', 'lang/EN/tickets.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6072, 'tickets', 'adminzone/pages/modules/admin_tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6073, 'tickets', 'site/pages/modules/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6073, 'tickets', 'themes/default/css/tickets.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6074, 'tickets', 'sources/hooks/systems/change_detection/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6074, 'tickets', 'lang/EN/tickets.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6075, 'tickets', 'sources/hooks/systems/page_groupings/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6075, 'tickets', 'site/pages/modules/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6076, 'tickets', 'sources/hooks/systems/module_permissions/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6076, 'tickets', 'sources/hooks/systems/change_detection/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6077, 'tickets', 'sources/hooks/systems/rss/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6077, 'tickets', 'sources/hooks/systems/page_groupings/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6078, 'tickets', 'sources/hooks/systems/cron/ticket_type_lead_times.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6078, 'tickets', 'sources/hooks/systems/module_permissions/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6079, 'tickets', 'sources/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6079, 'tickets', 'sources/hooks/systems/rss/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6080, 'tickets', 'sources/tickets2.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6080, 'tickets', 'sources/hooks/systems/cron/ticket_type_lead_times.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6081, 'tickets', 'sources/hooks/systems/preview/ticket.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6081, 'tickets', 'sources/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6082, 'tickets', 'sources/hooks/blocks/main_staff_checklist/tickets.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6082, 'tickets', 'sources/tickets2.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6083, 'tickets', 'sources/hooks/systems/notifications/ticket_reply.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6083, 'tickets', 'sources/hooks/systems/preview/ticket.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6084, 'tickets', 'sources/hooks/systems/notifications/ticket_new_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6084, 'tickets', 'sources/hooks/blocks/main_staff_checklist/tickets.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6085, 'tickets', 'sources/hooks/systems/notifications/ticket_reply_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6085, 'tickets', 'sources/hooks/systems/notifications/ticket_reply.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6086, 'tickets', 'sources/hooks/systems/notifications/ticket_assigned_staff.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6086, 'tickets', 'sources/hooks/systems/notifications/ticket_new_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6087, 'tickets', 'sources/tickets_email_integration.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6087, 'tickets', 'sources/hooks/systems/notifications/ticket_reply_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6088, 'tickets', 'sources/hooks/systems/cron/tickets_email_integration.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6088, 'tickets', 'sources/hooks/systems/notifications/ticket_assigned_staff.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6089, 'tickets', 'sources/hooks/systems/config/ticket_forum_name.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6089, 'tickets', 'sources/tickets_email_integration.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6090, 'tickets', 'sources/hooks/systems/config/ticket_member_forums.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6090, 'tickets', 'sources/hooks/systems/cron/tickets_email_integration.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6091, 'tickets', 'sources/hooks/systems/config/ticket_text.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6091, 'tickets', 'sources/hooks/systems/config/ticket_forum_name.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6092, 'tickets', 'sources/hooks/systems/config/ticket_type_forums.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6092, 'tickets', 'sources/hooks/systems/config/ticket_member_forums.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6093, 'tickets', 'sources/hooks/systems/config/ticket_mail_on.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6093, 'tickets', 'sources/hooks/systems/config/ticket_text.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6094, 'tickets', 'sources/hooks/systems/config/ticket_email_from.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6094, 'tickets', 'sources/hooks/systems/config/ticket_type_forums.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6095, 'tickets', 'sources/hooks/systems/config/ticket_mail_server.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6095, 'tickets', 'sources/hooks/systems/config/ticket_mail_on.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6096, 'tickets', 'sources/hooks/systems/config/ticket_mail_server_port.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6096, 'tickets', 'sources/hooks/systems/config/ticket_email_from.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6097, 'tickets', 'sources/hooks/systems/config/ticket_mail_server_type.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6097, 'tickets', 'sources/hooks/systems/config/ticket_mail_server.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6098, 'tickets', 'sources/hooks/systems/config/ticket_mail_username.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6098, 'tickets', 'sources/hooks/systems/config/ticket_mail_server_port.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6099, 'tickets', 'sources/hooks/systems/config/ticket_mail_password.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6099, 'tickets', 'sources/hooks/systems/config/ticket_mail_server_type.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6100, 'tickets', 'sources/hooks/systems/config/support_operator.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6100, 'tickets', 'sources/hooks/systems/config/ticket_mail_username.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6101, 'tickets', 'sources/hooks/systems/config/ticket_auto_assign.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6101, 'tickets', 'sources/hooks/systems/config/ticket_mail_password.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6102, 'tickets', 'data/incoming_ticket_email.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6102, 'tickets', 'sources/hooks/systems/config/support_operator.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6103, 'tickets', 'sources/hooks/systems/commandr_fs_extended_member/ticket_known_emailers.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6103, 'tickets', 'sources/hooks/systems/config/ticket_auto_assign.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6104, 'uninstaller', 'sources/hooks/systems/addon_registry/uninstaller.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6104, 'tickets', 'data/incoming_ticket_email.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6105, 'uninstaller', 'uninstall.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6105, 'tickets', 'sources/hooks/systems/commandr_fs_extended_member/ticket_known_emailers.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6106, 'uninstaller', 'themes/default/templates/UNINSTALL_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6106, 'uninstaller', 'sources/hooks/systems/addon_registry/uninstaller.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6107, 'unvalidated', 'themes/default/images/icons/24x24/menu/adminzone/audit/unvalidated.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6107, 'uninstaller', 'uninstall.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6108, 'unvalidated', 'themes/default/images/icons/48x48/menu/adminzone/audit/unvalidated.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6108, 'uninstaller', 'themes/default/templates/UNINSTALL_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6109, 'unvalidated', 'sources/hooks/systems/notifications/content_validated.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6109, 'unvalidated', 'themes/default/images/icons/24x24/menu/adminzone/audit/unvalidated.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6110, 'unvalidated', 'sources/hooks/systems/notifications/needs_validation.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6110, 'unvalidated', 'themes/default/images/icons/48x48/menu/adminzone/audit/unvalidated.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6111, 'unvalidated', 'sources/hooks/systems/addon_registry/unvalidated.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6111, 'unvalidated', 'sources/hooks/systems/notifications/content_validated.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6112, 'unvalidated', 'themes/default/templates/UNVALIDATED_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6112, 'unvalidated', 'sources/hooks/systems/notifications/needs_validation.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6113, 'unvalidated', 'themes/default/templates/UNVALIDATED_SECTION.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6113, 'unvalidated', 'sources/hooks/systems/addon_registry/unvalidated.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6114, 'unvalidated', 'themes/default/text/VALIDATION_REQUEST_MAIL.txt');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6114, 'unvalidated', 'themes/default/templates/UNVALIDATED_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6115, 'unvalidated', 'adminzone/pages/modules/admin_unvalidated.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6115, 'unvalidated', 'themes/default/templates/UNVALIDATED_SECTION.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6116, 'unvalidated', 'lang/EN/unvalidated.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6116, 'unvalidated', 'themes/default/text/VALIDATION_REQUEST_MAIL.txt');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6117, 'unvalidated', 'sources/hooks/blocks/main_staff_checklist/unvalidated.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6117, 'unvalidated', 'adminzone/pages/modules/admin_unvalidated.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6118, 'unvalidated', 'sources/hooks/modules/admin_unvalidated/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6118, 'unvalidated', 'lang/EN/unvalidated.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6119, 'unvalidated', 'sources_custom/hooks/modules/admin_unvalidated/.htaccess');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6119, 'unvalidated', 'sources/hooks/blocks/main_staff_checklist/unvalidated.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6120, 'unvalidated', 'sources/hooks/modules/admin_unvalidated/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6120, 'unvalidated', 'sources/hooks/modules/admin_unvalidated/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6121, 'unvalidated', 'sources_custom/hooks/modules/admin_unvalidated/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6121, 'unvalidated', 'sources_custom/hooks/modules/admin_unvalidated/.htaccess');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6122, 'unvalidated', 'sources/hooks/systems/page_groupings/unvalidated.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6122, 'unvalidated', 'sources/hooks/modules/admin_unvalidated/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6123, 'users_online_block', 'sources/hooks/systems/config/usersonline_show_birthdays.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6123, 'unvalidated', 'sources_custom/hooks/modules/admin_unvalidated/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6124, 'users_online_block', 'sources/hooks/systems/config/usersonline_show_newest_member.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6124, 'unvalidated', 'sources/hooks/systems/page_groupings/unvalidated.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6125, 'users_online_block', 'sources/hooks/systems/addon_registry/users_online_block.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6125, 'users_online_block', 'sources/hooks/systems/config/usersonline_show_birthdays.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6126, 'users_online_block', 'themes/default/templates/BLOCK_SIDE_USERS_ONLINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6126, 'users_online_block', 'sources/hooks/systems/config/usersonline_show_newest_member.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6127, 'users_online_block', 'sources/blocks/side_users_online.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6127, 'users_online_block', 'sources/hooks/systems/addon_registry/users_online_block.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6128, 'welcome_emails', 'themes/default/images/icons/24x24/menu/adminzone/setup/welcome_emails.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6128, 'users_online_block', 'themes/default/templates/BLOCK_SIDE_USERS_ONLINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6129, 'welcome_emails', 'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6129, 'users_online_block', 'sources/blocks/side_users_online.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6130, 'welcome_emails', 'sources/hooks/systems/addon_registry/welcome_emails.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6130, 'welcome_emails', 'themes/default/images/icons/24x24/menu/adminzone/setup/welcome_emails.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6131, 'welcome_emails', 'adminzone/pages/modules/admin_cns_welcome_emails.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6131, 'welcome_emails', 'themes/default/images/icons/48x48/menu/adminzone/setup/welcome_emails.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6132, 'welcome_emails', 'lang/EN/cns_welcome_emails.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6132, 'welcome_emails', 'sources/hooks/systems/addon_registry/welcome_emails.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6133, 'welcome_emails', 'sources/hooks/systems/cron/cns_welcome_emails.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6133, 'welcome_emails', 'adminzone/pages/modules/admin_cns_welcome_emails.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6134, 'welcome_emails', 'sources/hooks/systems/preview/cns_welcome_email.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6134, 'welcome_emails', 'lang/EN/cns_welcome_emails.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6135, 'welcome_emails', 'sources/hooks/systems/commandr_fs/welcome_emails.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6135, 'welcome_emails', 'sources/hooks/systems/cron/cns_welcome_emails.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6136, 'welcome_emails', 'sources/hooks/systems/resource_meta_aware/welcome_email.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6136, 'welcome_emails', 'sources/hooks/systems/preview/cns_welcome_email.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6137, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6137, 'welcome_emails', 'sources/hooks/systems/commandr_fs/welcome_emails.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6138, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki/random_page.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6138, 'welcome_emails', 'sources/hooks/systems/resource_meta_aware/welcome_email.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6139, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6139, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6140, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki/random_page.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6140, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki/random_page.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6141, 'wiki', 'themes/default/images/icons/24x24/buttons/edit_tree.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6141, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6142, 'wiki', 'themes/default/images/icons/48x48/buttons/edit_tree.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6142, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki/random_page.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6143, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6143, 'wiki', 'themes/default/images/icons/24x24/buttons/edit_tree.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6144, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki/index.html');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6144, 'wiki', 'themes/default/images/icons/48x48/buttons/edit_tree.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6145, 'wiki', 'sources/hooks/systems/sitemap/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6145, 'wiki', 'themes/default/images/icons/24x24/menu/rich_content/wiki/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6146, 'wiki', 'sources/hooks/systems/content_meta_aware/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6146, 'wiki', 'themes/default/images/icons/48x48/menu/rich_content/wiki/index.html');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6147, 'wiki', 'sources/hooks/systems/content_meta_aware/wiki_post.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6147, 'wiki', 'sources/hooks/systems/sitemap/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6148, 'wiki', 'sources/hooks/systems/commandr_fs/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6148, 'wiki', 'sources/hooks/systems/content_meta_aware/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6149, 'wiki', 'sources/hooks/systems/config/wiki_show_stats_count_pages.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6149, 'wiki', 'sources/hooks/systems/content_meta_aware/wiki_post.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6150, 'wiki', 'sources/hooks/systems/config/wiki_show_stats_count_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6150, 'wiki', 'sources/hooks/systems/commandr_fs/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6151, 'wiki', 'sources/hooks/systems/config/points_wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6151, 'wiki', 'sources/hooks/systems/config/wiki_show_stats_count_pages.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6152, 'wiki', 'sources/hooks/systems/config/wiki_enable_children.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6152, 'wiki', 'sources/hooks/systems/config/wiki_show_stats_count_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6153, 'wiki', 'sources/hooks/systems/config/wiki_enable_content_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6153, 'wiki', 'sources/hooks/systems/config/points_wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6154, 'wiki', 'sources/hooks/systems/meta/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6154, 'wiki', 'sources/hooks/systems/config/wiki_enable_children.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6155, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_files.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6155, 'wiki', 'sources/hooks/systems/config/wiki_enable_content_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6156, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_pages.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6156, 'wiki', 'sources/hooks/systems/meta/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6157, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6157, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_files.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6158, 'wiki', 'sources/hooks/systems/cns_cpf_filter/points_wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6158, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_pages.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6159, 'wiki', 'sources/hooks/systems/addon_registry/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6159, 'wiki', 'sources/hooks/systems/disposable_values/num_wiki_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6160, 'wiki', 'sources/hooks/modules/admin_themewizard/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6160, 'wiki', 'sources/hooks/systems/cns_cpf_filter/points_wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6161, 'wiki', 'sources/hooks/modules/admin_import_types/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6161, 'wiki', 'sources/hooks/systems/addon_registry/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6162, 'wiki', 'themes/default/templates/WIKI_LIST_TREE_LINE.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6162, 'wiki', 'sources/hooks/modules/admin_themewizard/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6163, 'wiki', 'themes/default/templates/WIKI_MANAGE_TREE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6163, 'wiki', 'sources/hooks/modules/admin_import_types/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6164, 'wiki', 'themes/default/templates/WIKI_PAGE_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6164, 'wiki', 'themes/default/templates/WIKI_LIST_TREE_LINE.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6165, 'wiki', 'themes/default/templates/WIKI_POST.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6165, 'wiki', 'themes/default/templates/WIKI_MANAGE_TREE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6166, 'wiki', 'themes/default/templates/WIKI_POSTING_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6166, 'wiki', 'themes/default/templates/WIKI_PAGE_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6167, 'wiki', 'themes/default/templates/WIKI_RATING.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6167, 'wiki', 'themes/default/templates/WIKI_POST.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6168, 'wiki', 'themes/default/templates/WIKI_RATING_FORM.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6168, 'wiki', 'themes/default/templates/WIKI_POSTING_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6169, 'wiki', 'themes/default/css/wiki.css');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6169, 'wiki', 'themes/default/templates/WIKI_RATING.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6170, 'wiki', 'sources/hooks/systems/ajax_tree/choose_wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6170, 'wiki', 'themes/default/templates/WIKI_RATING_FORM.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6171, 'wiki', 'cms/pages/modules/cms_wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6171, 'wiki', 'themes/default/css/wiki.css');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6172, 'wiki', 'lang/EN/wiki.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6172, 'wiki', 'sources/hooks/systems/ajax_tree/choose_wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6173, 'wiki', 'site/pages/modules/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6173, 'wiki', 'cms/pages/modules/cms_wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6174, 'wiki', 'sources/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6174, 'wiki', 'lang/EN/wiki.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6175, 'wiki', 'sources/wiki_stats.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6175, 'wiki', 'site/pages/modules/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6176, 'wiki', 'sources/hooks/blocks/main_staff_checklist/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6176, 'wiki', 'sources/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6177, 'wiki', 'sources/hooks/blocks/side_stats/stats_wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6177, 'wiki', 'sources/wiki_stats.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6178, 'wiki', 'sources/hooks/modules/admin_newsletter/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6178, 'wiki', 'sources/hooks/blocks/main_staff_checklist/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6179, 'wiki', 'sources/hooks/modules/admin_unvalidated/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6179, 'wiki', 'sources/hooks/blocks/side_stats/stats_wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6180, 'wiki', 'sources/hooks/modules/search/wiki_pages.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6180, 'wiki', 'sources/hooks/modules/admin_newsletter/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6181, 'wiki', 'sources/hooks/modules/search/wiki_posts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6181, 'wiki', 'sources/hooks/modules/admin_unvalidated/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6182, 'wiki', 'sources/hooks/systems/attachments/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6182, 'wiki', 'sources/hooks/modules/search/wiki_pages.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6183, 'wiki', 'sources/hooks/systems/attachments/wiki_post.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6183, 'wiki', 'sources/hooks/modules/search/wiki_posts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6184, 'wiki', 'sources/hooks/systems/page_groupings/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6184, 'wiki', 'sources/hooks/systems/attachments/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6185, 'wiki', 'sources/hooks/systems/preview/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6185, 'wiki', 'sources/hooks/systems/attachments/wiki_post.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6186, 'wiki', 'sources/hooks/systems/preview/wiki_post.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6186, 'wiki', 'sources/hooks/systems/page_groupings/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6187, 'wiki', 'sources/hooks/systems/rss/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6187, 'wiki', 'sources/hooks/systems/preview/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6188, 'wiki', 'sources/hooks/systems/module_permissions/wiki_page.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6188, 'wiki', 'sources/hooks/systems/preview/wiki_post.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6189, 'wiki', 'sources/hooks/systems/notifications/wiki.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6189, 'wiki', 'sources/hooks/systems/rss/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6190, 'windows_helper_scripts', 'sources/hooks/systems/addon_registry/windows_helper_scripts.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6190, 'wiki', 'sources/hooks/systems/module_permissions/wiki_page.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6191, 'windows_helper_scripts', 'fixperms.bat');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6191, 'wiki', 'sources/hooks/systems/notifications/wiki.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6192, 'wordfilter', 'themes/default/images/icons/24x24/menu/adminzone/security/wordfilter.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6192, 'windows_helper_scripts', 'sources/hooks/systems/addon_registry/windows_helper_scripts.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6193, 'wordfilter', 'themes/default/images/icons/48x48/menu/adminzone/security/wordfilter.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6193, 'windows_helper_scripts', 'fixperms.bat');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6194, 'wordfilter', 'sources/hooks/systems/addon_registry/wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6194, 'wordfilter', 'themes/default/images/icons/24x24/menu/adminzone/security/wordfilter.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6195, 'wordfilter', 'sources/hooks/systems/page_groupings/wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6195, 'wordfilter', 'themes/default/images/icons/48x48/menu/adminzone/security/wordfilter.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6196, 'wordfilter', 'lang/EN/wordfilter.ini');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6196, 'wordfilter', 'sources/hooks/systems/addon_registry/wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6197, 'wordfilter', 'themes/default/templates/WORDFILTER_SCREEN.tpl');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6197, 'wordfilter', 'sources/hooks/systems/page_groupings/wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6198, 'wordfilter', 'adminzone/pages/modules/admin_wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6198, 'wordfilter', 'lang/EN/wordfilter.ini');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6199, 'wordfilter', 'sources/hooks/modules/admin_setupwizard/wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6199, 'wordfilter', 'themes/default/templates/WORDFILTER_SCREEN.tpl');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6200, 'wordfilter', 'sources/hooks/modules/admin_import_types/wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6200, 'wordfilter', 'adminzone/pages/modules/admin_wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6201, 'wordfilter', 'sources/hooks/systems/commandr_fs_extended_config/wordfilter.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6201, 'wordfilter', 'sources/hooks/modules/admin_setupwizard/wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6202, 'xml_fields', 'themes/default/images/icons/24x24/menu/adminzone/setup/xml_fields.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6202, 'wordfilter', 'sources/hooks/modules/admin_import_types/wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6203, 'xml_fields', 'themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.png');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6203, 'wordfilter', 'sources/hooks/systems/commandr_fs_extended_config/wordfilter.php');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6204, 'xml_fields', 'data/xml_config/fields.xml');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6204, 'xml_fields', 'themes/default/images/icons/24x24/menu/adminzone/setup/xml_fields.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6205, 'xml_fields', 'sources/hooks/systems/addon_registry/xml_fields.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6205, 'xml_fields', 'themes/default/images/icons/48x48/menu/adminzone/setup/xml_fields.png');
 
 
-INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6206, 'zone_logos', 'sources/hooks/systems/addon_registry/zone_logos.php');
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6206, 'xml_fields', 'data/xml_config/fields.xml');
+
+
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6207, 'xml_fields', 'sources/hooks/systems/addon_registry/xml_fields.php');
+
+
+INSERT INTO cms_addons_files (id, addon_name, filename) VALUES (6208, 'zone_logos', 'sources/hooks/systems/addon_registry/zone_logos.php');
 
 
 DROP TABLE IF EXISTS cms_aggregate_type_instances;
@@ -19235,7 +19241,7 @@ CREATE TABLE cms_award_types (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_award_types (id, a_title, a_description, a_points, a_content_type, a_hide_awardee, a_update_time_hours, a_description__text_parsed, a_description__source_user) VALUES (1, 'Download of the week', 'The best downloads in the download system, chosen every week.', 0, 'download', 1, 168, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9a857d99.88652234_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9a857d99.88652234_1\\\";s:129:\\\"\\$tpl_funcs[\'string_attach_5758dd9a857d99.88652234_1\']=\\\"echo \\\\\\\"The best downloads in the download system, chosen every week.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_award_types (id, a_title, a_description, a_points, a_content_type, a_hide_awardee, a_update_time_hours, a_description__text_parsed, a_description__source_user) VALUES (1, 'Download of the week', 'The best downloads in the download system, chosen every week.', 0, 'download', 1, 168, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8f02e4e0.60347766_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8f02e4e0.60347766_1\\\";s:129:\\\"\\$tpl_funcs[\'string_attach_5760be8f02e4e0.60347766_1\']=\\\"echo \\\\\\\"The best downloads in the download system, chosen every week.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_banned_ip;
@@ -19319,10 +19325,10 @@ CREATE TABLE cms_banners (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('advertise_here', NULL, 1, 'data/images/advertise_here.png', 2, '', 'Advertise here!', '', 0, 'http://localhost/composr/index.php?page=advertise', 0, 0, 0, 0, 10, 'Provided as a default. This is a fallback banner (it shows when others are not available).', 1, 1465441692, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_1\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_1\']=\\\"echo \\\\\\\"Advertise here!\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('advertise_here', NULL, 1, 'data/images/advertise_here.png', 2, '', 'Advertise here!', '', 0, 'http://localhost/composr/index.php?page=advertise', 0, 0, 0, 0, 10, 'Provided as a default. This is a fallback banner (it shows when others are not available).', 1, 1465958033, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_1\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_1\']=\\\"echo \\\\\\\"Advertise here!\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('donate', NULL, 1, 'data/images/donate.png', 0, '', 'Please donate to keep this site alive', '', 0, 'http://localhost/composr/index.php?page=donate', 0, 0, 0, 0, 30, 'Provided as a default.', 1, 1465441692, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_2\\\";s:105:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_2\']=\\\"echo \\\\\\\"Please donate to keep this site alive\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_banners (name, expiry_date, submitter, img_url, the_type, b_title_text, caption, b_direct_code, campaign_remaining, site_url, hits_from, views_from, hits_to, views_to, importance_modulus, notes, validated, add_date, edit_date, b_type, caption__text_parsed, caption__source_user) VALUES ('donate', NULL, 1, 'data/images/donate.png', 0, '', 'Please donate to keep this site alive', '', 0, 'http://localhost/composr/index.php?page=donate', 0, 0, 0, 0, 30, 'Provided as a default.', 1, 1465958033, NULL, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_2\\\";s:105:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_2\']=\\\"echo \\\\\\\"Please donate to keep this site alive\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_banners_types;
@@ -19750,28 +19756,28 @@ CREATE TABLE cms_calendar_types (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (1, '(System command)', 'calendar/system_command', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_3\\\";s:84:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_3\']=\\\"echo \\\\\\\"(System command)\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (1, '(System command)', 'calendar/system_command', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_3\\\";s:84:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_3\']=\\\"echo \\\\\\\"(System command)\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (2, 'General', 'calendar/general', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_4\\\";s:75:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_4\']=\\\"echo \\\\\\\"General\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (2, 'General', 'calendar/general', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_4\\\";s:75:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_4\']=\\\"echo \\\\\\\"General\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (3, 'Birthday', 'calendar/birthday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_5\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_5\']=\\\"echo \\\\\\\"Birthday\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (3, 'Birthday', 'calendar/birthday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_5\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_5\']=\\\"echo \\\\\\\"Birthday\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (4, 'Public holiday', 'calendar/public_holiday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_6\\\";s:82:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_6\']=\\\"echo \\\\\\\"Public holiday\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (4, 'Public holiday', 'calendar/public_holiday', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_6\\\";s:82:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_6\']=\\\"echo \\\\\\\"Public holiday\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (5, 'Vacation', 'calendar/vacation', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_7\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_7\']=\\\"echo \\\\\\\"Vacation\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (5, 'Vacation', 'calendar/vacation', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_7\\\";s:76:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_7\']=\\\"echo \\\\\\\"Vacation\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (6, 'Appointment', 'calendar/appointment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_8\\\";s:79:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_8\']=\\\"echo \\\\\\\"Appointment\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (6, 'Appointment', 'calendar/appointment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_8\\\";s:79:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_8\']=\\\"echo \\\\\\\"Appointment\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (7, 'Task', 'calendar/commitment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9cb33402.02112760_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9cb33402.02112760_9\\\";s:72:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_9\']=\\\"echo \\\\\\\"Task\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (7, 'Task', 'calendar/commitment', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be91227633.61397001_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be91227633.61397001_9\\\";s:72:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_9\']=\\\"echo \\\\\\\"Task\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (8, 'Anniversary', 'calendar/anniversary', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_10\\\";s:80:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_10\']=\\\"echo \\\\\\\"Anniversary\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_calendar_types (id, t_title, t_logo, t_external_feed, t_title__text_parsed, t_title__source_user) VALUES (8, 'Anniversary', 'calendar/anniversary', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_10\\\";s:80:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_10\']=\\\"echo \\\\\\\"Anniversary\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_captchas;
@@ -19823,19 +19829,19 @@ CREATE TABLE cms_catalogue_categories (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (1, 'projects', 'Super-member projects', 'These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.', '', '', 1465441693, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_12\\\";s:197:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_12\']=\\\"echo \\\\\\\"These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (1, 'projects', 'Super-member projects', 'These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.', '', '', 1465958034, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_12\\\";s:197:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_12\']=\\\"echo \\\\\\\"These are projects listed by super-members, designed to: advertise project existence, detail current progress, and solicit help.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (2, 'links', 'Links home', '', '', '', 1465441693, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (2, 'links', 'Links home', '', '', '', 1465958034, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (3, 'faqs', 'Frequently Asked Questions', 'If you have questions that are not covered in our FAQ, please post them in an appropriate forum.', '', '', 1465441693, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_16\\\";s:165:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_16\']=\\\"echo \\\\\\\"If you have questions that are not covered in our FAQ, please post them in an appropriate forum.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (3, 'faqs', 'Frequently Asked Questions', 'If you have questions that are not covered in our FAQ, please post them in an appropriate forum.', '', '', 1465958034, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_16\\\";s:165:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_16\']=\\\"echo \\\\\\\"If you have questions that are not covered in our FAQ, please post them in an appropriate forum.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (4, 'contacts', 'Contacts', '', '', '', 1465441693, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (4, 'contacts', 'Contacts', '', '', '', 1465958034, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (5, 'products', 'Products home', '', '', '', 1465441693, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogue_categories (id, c_name, cc_title, cc_description, rep_image, cc_notes, cc_add_date, cc_parent_id, cc_move_target, cc_move_days_lower, cc_move_days_higher, cc_order, cc_description__text_parsed, cc_description__source_user) VALUES (5, 'products', 'Products home', '', '', '', 1465958034, NULL, NULL, 30, 60, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_catalogue_childcountcache;
@@ -20119,19 +20125,19 @@ CREATE TABLE cms_catalogues (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('projects', 'Super-member projects', '', 0, 0, '', 1465441693, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('projects', 'Super-member projects', '', 0, 0, '', 1465958034, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('links', 'Links', 'Warning: these sites are outside our control.', 2, 1, '', 1465441693, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_13\\\";s:114:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_13\']=\\\"echo \\\\\\\"Warning: these sites are outside our control.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('links', 'Links', 'Warning: these sites are outside our control.', 2, 1, '', 1465958034, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_13\\\";s:114:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_13\']=\\\"echo \\\\\\\"Warning: these sites are outside our control.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('faqs', 'Frequently Asked Questions', '', 0, 0, '', 1465441693, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('faqs', 'Frequently Asked Questions', '', 0, 0, '', 1465958034, 0, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('contacts', 'Contacts', '', 0, 0, '', 1465441693, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('contacts', 'Contacts', '', 0, 0, '', 1465958034, 30, 0, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('products', 'Products', 'These are products for sale from this website.', 3, 1, '', 1465441693, 0, 1, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_19\\\";s:115:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_19\']=\\\"echo \\\\\\\"These are products for sale from this website.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_catalogues (c_name, c_title, c_description, c_display_type, c_is_tree, c_notes, c_add_date, c_submit_points, c_ecommerce, c_default_review_freq, c_send_view_reports, c_description__text_parsed, c_description__source_user) VALUES ('products', 'Products', 'These are products for sale from this website.', 3, 1, '', 1465958034, 0, 1, NULL, 'never', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_19\\\";s:115:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_19\']=\\\"echo \\\\\\\"These are products for sale from this website.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_chargelog;
@@ -20282,19 +20288,19 @@ CREATE TABLE cms_comcode_pages (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_comcode', 'help', 1, NULL, 1465441690, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_comcode', 'help', 1, NULL, 1465958030, 2, 0, 0);
 
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'keymap', 'help', 1, NULL, 1465441690, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'keymap', 'help', 1, NULL, 1465958030, 2, 0, 0);
 
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_chatcode', 'help', 1, NULL, 1465441694, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'userguide_chatcode', 'help', 1, NULL, 1465958034, 2, 0, 0);
 
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'popup_blockers', 'help', 1, NULL, 1465441694, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('site', 'popup_blockers', 'help', 1, NULL, 1465958034, 2, 0, 0);
 
 
-INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'recommend_help', 'recommend', 1, NULL, 1465441706, 2, 0, 0);
+INSERT INTO cms_comcode_pages (the_zone, the_page, p_parent_page, p_validated, p_edit_date, p_add_date, p_submitter, p_show_as_edit, p_order) VALUES ('', 'recommend_help', 'recommend', 1, NULL, 1465958038, 2, 0, 0);
 
 
 DROP TABLE IF EXISTS cms_commandrchat;
@@ -23776,21 +23782,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscriber
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribers', 'n_surname', 'SHORT_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'name', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'URLPATH');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'description', 'SHORT_TRANS');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'the_member', 'MEMBER');
-
-
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_archive', 'id', '*AUTO');
 
 
@@ -23818,30 +23809,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'title'
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletters', 'description', 'LONG_TRANS');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_member', '*MEMBER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_points', 'INTEGER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'date_and_time', '*TIME');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'content_id', '*ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'block_cache_id', '*ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'run_period', 'INTEGER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'running_now', 'BINARY');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'last_update', 'TIME');
-
-
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'newsletter_id', '*AUTO_LINK');
 
 
@@ -23849,27 +23816,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe'
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_subscribe', 'email', '*SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'the_type', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_a', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_b', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'member_id', 'MEMBER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'ip', 'IP');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'date_and_time', 'TIME');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_drip_send', 'id', '*AUTO');
@@ -23950,24 +23896,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic',
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('newsletter_periodic', 'np_last_sent', 'TIME');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_title', 'LONG_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'add_date', 'TIME');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_interval', 'INTEGER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_every', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_is_done', '?TIME');
-
-
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'id', '*AUTO');
 
 
@@ -23981,18 +23909,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'reason',
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('chargelog', 'date_and_time', 'TIME');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link', 'URLPATH');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link_title', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link_desc', 'LONG_TEXT');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'id', '*AUTO');
@@ -24016,21 +23932,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'reason', 'SH
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('gifts', 'anonymous', 'BINARY');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed', 't_member', '*MEMBER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed', 't_tip', '*ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_url', 'URLPATH');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_name', 'SHORT_TEXT');
-
-
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_11', '?INTEGER');
 
 
@@ -24041,18 +23942,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_field
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_14', '?INTEGER');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'id', '*AUTO');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'failed_account', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'date_and_time', 'TIME');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'ip', 'IP');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_15', '?INTEGER');
@@ -24106,12 +23995,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_c
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_customs', 'c_one_per_member', 'BINARY');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_16', 'LONG_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_17', 'SHORT_TEXT');
-
-
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'id', '*AUTO');
 
 
@@ -24152,12 +24035,6 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('pstore_permissions', 'p_category', 'ID_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_18', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_19', 'SHORT_TEXT');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'id', '*AUTO');
@@ -24259,22 +24136,7 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'poll_views', 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll', 'edit_date', '?TIME');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_20', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_21', 'LONG_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_22', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_23', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_24', 'SHORT_TEXT');
-
-
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_25', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_16', '?INTEGER');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('poll_votes', 'id', '*AUTO');
@@ -24325,28 +24187,28 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('trans_expecting', 'e_length_units', 'ID_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_26', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_17', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_18', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_28', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_19', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_29', '?INTEGER');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_20', '?INTEGER');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_30', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_21', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_31', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_22', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_32', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_23', 'LONG_TEXT');
 
 
-INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_33', 'LONG_TEXT');
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_24', 'LONG_TEXT');
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('transactions', 'id', '*ID_TEXT');
@@ -24536,6 +24398,543 @@ INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', '
 
 
 INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('quiz_entry_answer', 'q_answer', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 's_title', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 's_member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 's_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 's_primary', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_saved', 's_auxillary', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_primary', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_auxillary', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('searches_logged', 's_num_results', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'session_id', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'ordered_by', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_id', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_code', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'quantity', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'price_pre_tax', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'price', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_description', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_type', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'product_weight', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_cart', 'is_deleted', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'c_member', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'session_id', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'add_date', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'tot_price', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'order_status', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'notes', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'transaction_id', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'purchase_through', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order', 'tax_opted_out', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'order_id', '?AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_id', '?AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_code', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_type', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_quantity', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'p_price', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'included_tax', 'REAL');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_details', 'dispatch_status', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'e_member_id', '*MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'session_id', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'ip', 'IP');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'last_action', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_logging', 'date_and_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'order_id', '?AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_street', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_city', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_state', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_zip', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'address_country', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'receiver_email', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'contact_phone', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'first_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('shopping_order_addresses', 'last_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_25', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_26', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_type_code', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_state', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_amount', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_purchase_id', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_auto_fund_source', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_auto_fund_key', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_via', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_length', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('subscriptions', 's_length_units', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_title', 'SHORT_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_description', 'LONG_TRANS__COMCODE');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_cost', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_length', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_length_units', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_auto_recur', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_group_id', 'GROUP');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_enabled', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_start', 'LONG_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_end', 'LONG_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_mail_uhoh', 'LONG_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_subs', 's_uses_primary', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_usergroup_sub_id', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_ref_point_offset', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_subject', 'SHORT_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_usergroup_sub_mails', 'm_body', 'LONG_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_known_emailers', 'email_address', '*SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_known_emailers', 'member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_extra_access', 'ticket_id', '*SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_extra_access', 'member_id', '*MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_id', '*SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'topic_id', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'forum_id', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('tickets', 'ticket_type', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'ticket_type_name', 'SHORT_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'guest_emails_mandatory', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'search_faq', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('ticket_types', 'cache_lead_time', '?TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'parent_id', '*AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'child_id', '*AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'the_order', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_children', 'title', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'title', 'SHORT_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'notes', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'description', 'LONG_TRANS__COMCODE');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'add_date', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'edit_date', '?TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'wiki_views', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'hide_posts', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_pages', 'submitter', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'page_id', 'AUTO_LINK');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'the_message', 'LONG_TRANS__COMCODE');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'date_and_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'validated', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'wiki_views', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('wiki_posts', 'edit_date', '?TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_27', '?INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'name', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'path', 'URLPATH');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'description', 'SHORT_TRANS');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('filedump', 'the_member', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_member', '*MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'lb_points', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('leader_board', 'date_and_time', '*TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'content_id', '*ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'block_cache_id', '*ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'run_period', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'running_now', 'BINARY');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('feature_lifetime_monitor', 'last_update', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'the_type', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_a', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'param_b', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'member_id', 'MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'ip', 'IP');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('actionlogs', 'date_and_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_title', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'add_date', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_interval', 'INTEGER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'recur_every', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_checklist_cus_tasks', 'task_is_done', '?TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link', 'URLPATH');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link_title', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_links', 'link_desc', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed', 't_member', '*MEMBER');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_tips_dismissed', 't_tip', '*ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_url', 'URLPATH');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('staff_website_monitoring', 'site_name', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'id', '*AUTO');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'failed_account', 'ID_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'date_and_time', 'TIME');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('failedlogins', 'ip', 'IP');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_28', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_29', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_30', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_31', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_32', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_33', 'LONG_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_34', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_35', 'SHORT_TEXT');
+
+
+INSERT INTO cms_db_meta (m_table, m_name, m_type) VALUES ('f_member_custom_fields', 'field_36', 'SHORT_TEXT');
 
 
 DROP TABLE IF EXISTS cms_db_meta_indices;
@@ -25178,9 +25577,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#field_4', 'field_4');
 
 
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_16', 'field_16');
-
-
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_17', 'field_17');
 
 
@@ -25188,9 +25584,6 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_19', 'field_19');
-
-
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_20', 'field_20');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_21', 'field_21');
@@ -25205,13 +25598,16 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_24', 'field_24');
 
 
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_25', 'field_25');
+
+
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_26', 'field_26');
 
 
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_27', 'field_27');
-
-
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_28', 'field_28');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_29', 'field_29');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_3', 'field_3');
@@ -25227,6 +25623,15 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_33', 'field_33');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_34', 'field_34');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_35', 'field_35');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_36', 'field_36');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', '#mcf_ft_5', 'field_5');
@@ -25262,13 +25667,7 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf15', 'field_15');
 
 
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf17', 'field_17');
-
-
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf18', 'field_18');
-
-
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf19', 'field_19');
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf16', 'field_16');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf2', 'field_2');
@@ -25277,22 +25676,37 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_cu
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf20', 'field_20');
 
 
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf22', 'field_22');
-
-
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf23', 'field_23');
-
-
-INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf24', 'field_24');
-
-
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf25', 'field_25');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf26', 'field_26');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf27', 'field_27');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf29', 'field_29');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf3', 'field_3');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf30', 'field_30');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf31', 'field_31');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf32', 'field_32');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf34', 'field_34');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf35', 'field_35');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf36', 'field_36');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_member_custom_fields', 'mcf4', 'field_4');
@@ -25434,6 +25848,27 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_topics', 'unread_forums', 't_forum_id,t_cache_last_time');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_description', 's_description');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_end', 's_mail_end');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_start', 's_mail_start');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_mail_uhoh', 's_mail_uhoh');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_subs', '#s_title', 's_title');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_body', 'm_body');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_usergroup_sub_mails', '#m_subject', 'm_subject');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('f_warnings', 'warningsmemberid', 'w_member_id');
@@ -25823,6 +26258,12 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions',
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('revisions', 'moderatorlog_link', 'r_moderatorlog_id');
 
 
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('searches_logged', '#past_search_ft', 's_primary');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('searches_logged', 'past_search', 's_primary');
+
+
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('seo_meta', '#meta_description', 'meta_description');
 
 
@@ -25848,6 +26289,39 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sessions', 
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sessions', 'userat', 'the_zone,the_page,the_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'ordered_by', 'ordered_by');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'product_id', 'product_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_cart', 'session_id', 'session_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_logging', 'calculate_bandwidth', 'date_and_time');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'finddispatchable', 'order_status');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'soadd_date', 'add_date');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'soc_member', 'c_member');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order', 'sosession_id', 'session_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_addresses', 'order_id', 'order_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'order_id', 'order_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('shopping_order_details', 'p_id', 'p_id');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('sitemap_cache', 'is_deleted', 'is_deleted');
@@ -25896,6 +26370,9 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('stats', 're
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('theme_images', 'theme', 'theme,lang');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('ticket_types', '#ticket_type_name', 'ticket_type_name');
 
 
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('trackbacks', 'trackback_for_id', 'trackback_for_id');
@@ -25973,6 +26450,51 @@ INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('videos', 'v
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('video_transcoding', 't_local_id', 't_local_id');
 
 
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#description', 'description');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#title', 'title');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', '#wiki_search__combined', 'title,description');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', 'ftjoin_spd', 'description');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', 'ftjoin_spt', 'title');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', 'sadd_date', 'add_date');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', 'sps', 'submitter');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_pages', 'wiki_views', 'wiki_views');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', '#the_message', 'the_message');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'cdate_and_time', 'date_and_time');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'ftjoin_spm', 'the_message');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'posts_on_page', 'page_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'spos', 'member_id');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'svalidated', 'validated');
+
+
+INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('wiki_posts', 'wiki_views', 'wiki_views');
+
+
 INSERT INTO cms_db_meta_indices (i_table, i_name, i_fields) VALUES ('zones', '#zone_header_text', 'zone_header_text');
 
 
@@ -26035,7 +26557,7 @@ CREATE TABLE cms_download_categories (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1465441694, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_download_categories (id, category, parent_id, add_date, notes, description, rep_image, description__text_parsed, description__source_user) VALUES (1, 'Downloads home', NULL, 1465958034, '', '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_download_downloads;
@@ -26209,58 +26731,67 @@ INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_defa
 INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (15, 1, 'cms_points_gained_visiting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 14, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (16, 0, 'cms_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 15, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (16, 1, 'cms_points_gained_voting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 15, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (17, 0, 'cms_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 16, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (17, 0, 'cms_currency', '', '|AED|AFA|ALL|AMD|ANG|AOK|AON|ARA|ARP|ARS|AUD|AWG|AZM|BAM|BBD|BDT|BGL|BHD|BIF|BMD|BND|BOB|BOP|BRC|BRL|BRR|BSD|BTN|BWP|BYR|BZD|CAD|CDZ|CHF|CLF|CLP|CNY|COP|CRC|CSD|CUP|CVE|CYP|CZK|DJF|DKK|DOP|DZD|EEK|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GHC|GIP|GMD|GNS|GQE|GTQ|GWP|GYD|HKD|HNL|HRD|HRK|HTG|HUF|IDR|ILS|INR|IQD|IRR|ISK|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LSM|LTL|LVL|LYD|MAD|MDL|MGF|MKD|MLF|MMK|MNT|MOP|MRO|MTL|MUR|MVR|MWK|MXN|MYR|MZM|NAD|NGN|NIC|NOK|NPR|NZD|OMR|PAB|PEI|PEN|PGK|PHP|PKR|PLN|PYG|QAR|ROL|RUB|RWF|SAR|SBD|SCR|SDD|SDP|SEK|SGD|SHP|SIT|SKK|SLL|SOS|SRG|STD|SUR|SVC|SYP|SZL|THB|TJR|TMM|TND|TOP|TPE|TRL|TTD|TWD|TZS|UAH|UAK|UGS|USD|UYU|UZS|VEB|VND|VUV|WST|XAF|XCD|XOF|XPF|YDD|YER|ZAL|ZAR|ZMK|ZWD', 0, 0, 1, 'list', 0, 0, 0, 16, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (18, 0, 'cms_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 17, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (18, 0, 'cms_payment_cardholder_name', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 17, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (19, 0, 'cms_state', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 18, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (19, 0, 'cms_payment_type', '', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa', 0, 0, 1, 'list', 0, 0, 0, 18, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (20, 0, 'cms_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 19, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (20, 0, 'cms_payment_card_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 19, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (21, 0, 'cms_country', '', '|AF=Afghanistan|AL=Albania|DZ=Algeria|AS=American Samoa|AD=Andorra|AO=Angola|AI=Anguilla|AQ=Antarctica|AG=Antigua and Barbuda|AR=Argentina|AM=Armenia|AW=Aruba|AU=Australia|AT=Austria|AZ=Azerbaijan|BS=Bahamas|BH=Bahrain|BD=Bangladesh|BB=Barbados|BY=Belarus|BE=Belgium|BZ=Belize|BJ=Benin|BM=Bermuda|BT=Bhutan|BO=Bolivia|BA=Bosnia and Herzegovina|BW=Botswana|BV=Bouvet Island|BR=Brazil|IO=British Indian Ocean Territory|VG=British Virgin Islands|BN=Brunei|BG=Bulgaria|BF=Burkina Faso|BI=Burundi|KH=Cambodia|CM=Cameroon|CA=Canada|CV=Cape Verde|KY=Cayman Islands|CF=Central African Republic|TD=Chad|CL=Chile|CN=China|CX=Christmas Island|CC=Cocos [Keeling] Islands|CO=Colombia|KM=Comoros|CG=Congo|CD=Congo (Dem. Rep.)|CK=Cook Islands|CR=Costa Rica|HR=Croatia|CU=Cuba|CY=Cyprus|CZ=Czech Republic|DK=Denmark|DJ=Djibouti|DM=Dominica|DO=Dominican Republic|DD=East Germany|TL=East Timor|EC=Ecuador|EG=Egypt|SV=El Salvador|GQ=Equatorial Guinea|ER=Eritrea|EE=Estonia|ET=Ethiopia|FK=Falkland Islands|FO=Faroe Islands|FJ=Fiji Islands|FI=Finland|FR=France|GF=French Guiana|PF=French Polynesia|TF=French Southern Territories|GA=Gabon|GM=Gambia|GE=Georgia|DE=Germany|GH=Ghana|GI=Gibraltar|GR=Greece|GL=Greenland|GD=Grenada|GP=Guadeloupe|GU=Guam|GT=Guatemala|GG=Guernsey and Alderney|GN=Guinea|GW=Guinea-Bissau|GY=Guyana|HT=Haiti|HM=Heard Island and McDonald Islands|HN=Honduras|HK=Hong Kong SAR China|HU=Hungary|IS=Iceland|IN=India|ID=Indonesia|IR=Iran|IQ=Iraq|IE=Ireland|IM=Isle of Man|IL=Israel|IT=Italy|CI=Ivory Coast|JM=Jamaica|JP=Japan|JE=Jersey|JO=Jordan|KZ=Kazakhstan|KE=Kenya|KI=Kiribati|KP=Korea (North)|KR=Korea (South)|XK=Kosovo|KW=Kuwait|KG=Kyrgyzstan|LA=Laos|LV=Latvia|LB=Lebanon|LS=Lesotho|LR=Liberia|LY=Libya|LI=Liechtenstein|LT=Lithuania|LU=Luxembourg|MO=Macau SAR China|MK=Macedonia|MG=Madagascar|MW=Malawi|MY=Malaysia|MV=Maldives|ML=Mali|MT=Malta|MH=Marshall Islands|MQ=Martinique|MR=Mauritania|MU=Mauritius|YT=Mayotte|FX=Metropolitan France|MX=Mexico|FM=Micronesia|MD=Moldova|MC=Monaco|MN=Mongolia|ME=Montenegro|MS=Montserrat|MA=Morocco|MZ=Mozambique|MM=Myanmar|NA=Namibia|NR=Nauru|NP=Nepal|NL=Netherlands|AN=Netherlands Antilles|NT=Neutral Zone|NC=New Caledonia|NZ=New Zealand|NI=Nicaragua|NE=Niger|NG=Nigeria|NU=Niue|NF=Norfolk Island|MP=Northern Mariana Islands|NO=Norway|OM=Oman|PK=Pakistan|PW=Palau|PS=Palestine|PA=Panama|PG=Papua New Guinea|PY=Paraguay|YD=People\'s Democratic Republic of Yemen|PE=Peru|PH=Philippines|PN=Pitcairn Islands|PL=Poland|PT=Portugal|PR=Puerto Rico|QA=Qatar|RO=Romania|RU=Russia|RW=Rwanda|RE=Réunion|BL=Saint Barthélemy|SH=Saint Helena|KN=Saint Kitts and Nevis|LC=Saint Lucia|MF=Saint Martin|PM=Saint Pierre and Miquelon|VC=Saint Vincent and The Grenadines|WS=Samoa|SM=San Marino|SA=Saudi Arabia|SN=Senegal|RS=Serbia|CS=Serbia and Montenegro|SC=Seychelles|SL=Sierra Leone|SG=Singapore|SK=Slovakia|SI=Slovenia|SB=Solomon Islands|SO=Somalia|ZA=South Africa|GS=South Georgia and the South Sandwich Islands|ES=Spain|LK=Sri Lanka|SD=Sudan|SR=Suriname|SJ=Svalbard and Jan Mayen|SZ=Swaziland|SE=Sweden|CH=Switzerland|SY=Syria|ST=São Tomé and Príncipe|TW=Taiwan|TJ=Tajikistan|TZ=Tanzania|TH=Thailand|TG=Togo|TK=Tokelau|TO=Tonga|TT=Trinidad and Tobago|TN=Tunisia|TR=Turkey|TM=Turkmenistan|TC=Turks and Caicos Islands|TV=Tuvalu|UG=Uganda|UA=Ukraine|SU=Union of Soviet Socialist Republics|AE=United Arab Emirates|GB=United Kingdom|UM=United States Minor Outlying Islands|US=United States of America|UY=Uruguay|UZ=Uzbekistan|VU=Vanuatu|VA=Vatican City|VE=Venezuela|VN=Vietnam|VI=Virgin Islands of the United States|WF=Wallis and Futuna|EH=Western Sahara|YE=Yemen|ZM=Zambia|ZW=Zimbabwe|AX=Åland Islands', 0, 0, 1, 'list', 0, 0, 0, 20, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (21, 0, 'cms_payment_card_start_date', '', 'mm/yy', 0, 0, 1, 'short_text', 0, 0, 0, 20, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (22, 0, 'cms_firstname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 21, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (22, 0, 'cms_payment_card_expiry_date', '', 'mm/yy', 0, 0, 1, 'short_text', 0, 0, 0, 21, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (23, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 22, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (23, 0, 'cms_payment_card_issue_number', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 22, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (24, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 23, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (24, 0, 'cms_payment_card_cv2', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 23, '', 1, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (25, 1, 'cms_points_gained_voting', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 24, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (25, 1, 'cms_sites', '', '', 0, 0, 0, 'short_text', 0, 0, 0, 24, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (26, 0, 'cms_currency', '', '|AED|AFA|ALL|AMD|ANG|AOK|AON|ARA|ARP|ARS|AUD|AWG|AZM|BAM|BBD|BDT|BGL|BHD|BIF|BMD|BND|BOB|BOP|BRC|BRL|BRR|BSD|BTN|BWP|BYR|BZD|CAD|CDZ|CHF|CLF|CLP|CNY|COP|CRC|CSD|CUP|CVE|CYP|CZK|DJF|DKK|DOP|DZD|EEK|EGP|ERN|ETB|EUR|FJD|FKP|GBP|GEL|GHC|GIP|GMD|GNS|GQE|GTQ|GWP|GYD|HKD|HNL|HRD|HRK|HTG|HUF|IDR|ILS|INR|IQD|IRR|ISK|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|KZT|LAK|LBP|LKR|LRD|LSL|LSM|LTL|LVL|LYD|MAD|MDL|MGF|MKD|MLF|MMK|MNT|MOP|MRO|MTL|MUR|MVR|MWK|MXN|MYR|MZM|NAD|NGN|NIC|NOK|NPR|NZD|OMR|PAB|PEI|PEN|PGK|PHP|PKR|PLN|PYG|QAR|ROL|RUB|RWF|SAR|SBD|SCR|SDD|SDP|SEK|SGD|SHP|SIT|SKK|SLL|SOS|SRG|STD|SUR|SVC|SYP|SZL|THB|TJR|TMM|TND|TOP|TPE|TRL|TTD|TWD|TZS|UAH|UAK|UGS|USD|UYU|UZS|VEB|VND|VUV|WST|XAF|XCD|XOF|XPF|YDD|YER|ZAL|ZAR|ZMK|ZWD', 0, 0, 1, 'list', 0, 0, 0, 25, '', 0, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (26, 0, 'cms_role', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 25, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (27, 0, 'cms_payment_cardholder_name', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 26, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (27, 1, 'cms_points_gained_wiki', '', '0', 0, 0, 0, 'integer', 0, 0, 0, 26, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (28, 0, 'cms_payment_type', '', 'American Express|Delta|Diners Card|JCB|Master Card|Solo|Switch|Visa', 0, 0, 1, 'list', 0, 0, 0, 27, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (28, 0, 'cms_street_address', '', '', 0, 0, 1, 'long_text', 0, 0, 0, 27, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (29, 0, 'cms_payment_card_number', '', '', 0, 0, 1, 'integer', 0, 0, 0, 28, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (29, 0, 'cms_city', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 28, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (30, 0, 'cms_payment_card_start_date', '', 'mm/yy', 0, 0, 1, 'short_text', 0, 0, 0, 29, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (30, 0, 'cms_county', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 29, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (31, 0, 'cms_payment_card_expiry_date', '', 'mm/yy', 0, 0, 1, 'short_text', 0, 0, 0, 30, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (31, 0, 'cms_state', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 30, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (32, 0, 'cms_payment_card_issue_number', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 31, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (32, 0, 'cms_post_code', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 31, '', 0, 0, '');
 
 
-INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (33, 0, 'cms_payment_card_cv2', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 32, '', 1, 0, '');
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (33, 0, 'cms_country', '', '|AF=Afghanistan|AL=Albania|DZ=Algeria|AS=American Samoa|AD=Andorra|AO=Angola|AI=Anguilla|AQ=Antarctica|AG=Antigua and Barbuda|AR=Argentina|AM=Armenia|AW=Aruba|AU=Australia|AT=Austria|AZ=Azerbaijan|BS=Bahamas|BH=Bahrain|BD=Bangladesh|BB=Barbados|BY=Belarus|BE=Belgium|BZ=Belize|BJ=Benin|BM=Bermuda|BT=Bhutan|BO=Bolivia|BA=Bosnia and Herzegovina|BW=Botswana|BV=Bouvet Island|BR=Brazil|IO=British Indian Ocean Territory|VG=British Virgin Islands|BN=Brunei|BG=Bulgaria|BF=Burkina Faso|BI=Burundi|KH=Cambodia|CM=Cameroon|CA=Canada|CV=Cape Verde|KY=Cayman Islands|CF=Central African Republic|TD=Chad|CL=Chile|CN=China|CX=Christmas Island|CC=Cocos [Keeling] Islands|CO=Colombia|KM=Comoros|CG=Congo|CD=Congo (Dem. Rep.)|CK=Cook Islands|CR=Costa Rica|HR=Croatia|CU=Cuba|CY=Cyprus|CZ=Czech Republic|DK=Denmark|DJ=Djibouti|DM=Dominica|DO=Dominican Republic|DD=East Germany|TL=East Timor|EC=Ecuador|EG=Egypt|SV=El Salvador|GQ=Equatorial Guinea|ER=Eritrea|EE=Estonia|ET=Ethiopia|FK=Falkland Islands|FO=Faroe Islands|FJ=Fiji Islands|FI=Finland|FR=France|GF=French Guiana|PF=French Polynesia|TF=French Southern Territories|GA=Gabon|GM=Gambia|GE=Georgia|DE=Germany|GH=Ghana|GI=Gibraltar|GR=Greece|GL=Greenland|GD=Grenada|GP=Guadeloupe|GU=Guam|GT=Guatemala|GG=Guernsey and Alderney|GN=Guinea|GW=Guinea-Bissau|GY=Guyana|HT=Haiti|HM=Heard Island and McDonald Islands|HN=Honduras|HK=Hong Kong SAR China|HU=Hungary|IS=Iceland|IN=India|ID=Indonesia|IR=Iran|IQ=Iraq|IE=Ireland|IM=Isle of Man|IL=Israel|IT=Italy|CI=Ivory Coast|JM=Jamaica|JP=Japan|JE=Jersey|JO=Jordan|KZ=Kazakhstan|KE=Kenya|KI=Kiribati|KP=Korea (North)|KR=Korea (South)|XK=Kosovo|KW=Kuwait|KG=Kyrgyzstan|LA=Laos|LV=Latvia|LB=Lebanon|LS=Lesotho|LR=Liberia|LY=Libya|LI=Liechtenstein|LT=Lithuania|LU=Luxembourg|MO=Macau SAR China|MK=Macedonia|MG=Madagascar|MW=Malawi|MY=Malaysia|MV=Maldives|ML=Mali|MT=Malta|MH=Marshall Islands|MQ=Martinique|MR=Mauritania|MU=Mauritius|YT=Mayotte|FX=Metropolitan France|MX=Mexico|FM=Micronesia|MD=Moldova|MC=Monaco|MN=Mongolia|ME=Montenegro|MS=Montserrat|MA=Morocco|MZ=Mozambique|MM=Myanmar|NA=Namibia|NR=Nauru|NP=Nepal|NL=Netherlands|AN=Netherlands Antilles|NT=Neutral Zone|NC=New Caledonia|NZ=New Zealand|NI=Nicaragua|NE=Niger|NG=Nigeria|NU=Niue|NF=Norfolk Island|MP=Northern Mariana Islands|NO=Norway|OM=Oman|PK=Pakistan|PW=Palau|PS=Palestine|PA=Panama|PG=Papua New Guinea|PY=Paraguay|YD=People\'s Democratic Republic of Yemen|PE=Peru|PH=Philippines|PN=Pitcairn Islands|PL=Poland|PT=Portugal|PR=Puerto Rico|QA=Qatar|RO=Romania|RU=Russia|RW=Rwanda|RE=Réunion|BL=Saint Barthélemy|SH=Saint Helena|KN=Saint Kitts and Nevis|LC=Saint Lucia|MF=Saint Martin|PM=Saint Pierre and Miquelon|VC=Saint Vincent and The Grenadines|WS=Samoa|SM=San Marino|SA=Saudi Arabia|SN=Senegal|RS=Serbia|CS=Serbia and Montenegro|SC=Seychelles|SL=Sierra Leone|SG=Singapore|SK=Slovakia|SI=Slovenia|SB=Solomon Islands|SO=Somalia|ZA=South Africa|GS=South Georgia and the South Sandwich Islands|ES=Spain|LK=Sri Lanka|SD=Sudan|SR=Suriname|SJ=Svalbard and Jan Mayen|SZ=Swaziland|SE=Sweden|CH=Switzerland|SY=Syria|ST=São Tomé and Príncipe|TW=Taiwan|TJ=Tajikistan|TZ=Tanzania|TH=Thailand|TG=Togo|TK=Tokelau|TO=Tonga|TT=Trinidad and Tobago|TN=Tunisia|TR=Turkey|TM=Turkmenistan|TC=Turks and Caicos Islands|TV=Tuvalu|UG=Uganda|UA=Ukraine|SU=Union of Soviet Socialist Republics|AE=United Arab Emirates|GB=United Kingdom|UM=United States Minor Outlying Islands|US=United States of America|UY=Uruguay|UZ=Uzbekistan|VU=Vanuatu|VA=Vatican City|VE=Venezuela|VN=Vietnam|VI=Virgin Islands of the United States|WF=Wallis and Futuna|EH=Western Sahara|YE=Yemen|ZM=Zambia|ZW=Zimbabwe|AX=Åland Islands', 0, 0, 1, 'list', 0, 0, 0, 32, '', 0, 0, '');
+
+
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (34, 0, 'cms_firstname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 33, '', 0, 0, '');
+
+
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (35, 0, 'cms_lastname', '', '', 0, 0, 1, 'short_text', 0, 0, 0, 34, '', 0, 0, '');
+
+
+INSERT INTO cms_f_custom_fields (id, cf_locked, cf_name, cf_description, cf_default, cf_public_view, cf_owner_view, cf_owner_set, cf_type, cf_required, cf_show_in_posts, cf_show_in_post_previews, cf_order, cf_only_group, cf_encrypted, cf_show_on_join_form, cf_options) VALUES (36, 0, 'cms_mobile_phone_number', 'This should be the mobile phone number in international format, devoid of any national or international outgoing access codes. For instance, a typical UK (44) number might be nationally known as \'01234 123456\', but internationally and without outgoing access codes would be \'441234123456\'.', '', 0, 0, 1, 'short_text', 0, 0, 0, 35, '', 0, 0, '');
 
 
 DROP TABLE IF EXISTS cms_f_emoticons;
@@ -26523,28 +27054,28 @@ CREATE TABLE cms_f_forums (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (1, 'Forum home', '', NULL, NULL, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_1\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_1\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (2, 'General chat', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_4\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_4\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_4\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (3, 'Reported posts forum', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_5\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_5\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_5\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_6\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_6\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_6\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (4, 'Trash', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_7\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_7\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_7\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_8\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_8\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_8\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd97d99fb9.59335212_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd97d99fb9.59335212_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (5, 'Website comment topics', '', 1, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 1, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8bdd1608.34665015_9\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8bdd1608.34665015_9\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_9\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_10\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_10\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_10\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (6, 'Website support tickets', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_11\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_11\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_11\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_12\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_12\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_12\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1465441688, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (7, 'Staff', '', 2, 1, 1, 0, 1, '', '', 1, 1, 1, 'Welcome to the forums', 1465958028, 'System', 1, 7, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_13\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_13\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_13\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_14\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_14\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_14\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9a857d99.88652234_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9a857d99.88652234_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd9a857d99.88652234_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd9a857d99.88652234_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd9a857d99.88652234_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5758dd9a857d99.88652234_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_forums (id, f_name, f_description, f_forum_grouping_id, f_parent_forum, f_position, f_order_sub_alpha, f_post_count_increment, f_intro_question, f_intro_answer, f_cache_num_topics, f_cache_num_posts, f_cache_last_topic_id, f_cache_last_title, f_cache_last_time, f_cache_last_username, f_cache_last_member_id, f_cache_last_forum_id, f_redirection, f_order, f_is_threaded, f_allows_anonymous_posts, f_description__text_parsed, f_description__source_user, f_intro_question__text_parsed, f_intro_question__source_user) VALUES (8, 'Website \"Contact Us\" messages', '', 2, 1, 1, 0, 1, '', '', 0, 0, NULL, '', NULL, '', NULL, NULL, '', 'last_post', 0, 0, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8f02e4e0.60347766_2\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8f02e4e0.60347766_2\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8f02e4e0.60347766_2\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8f02e4e0.60347766_3\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8f02e4e0.60347766_3\\\";s:68:\\\"\\$tpl_funcs[\'string_attach_5760be8f02e4e0.60347766_3\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_group_join_log;
@@ -26706,15 +27237,27 @@ CREATE TABLE cms_f_member_custom_fields (
      field_13 integer NULL,
      field_14 integer NULL,
      field_15 integer NULL,
-     field_16 longtext NOT NULL,
-     field_17 varchar(255) NOT NULL,
-     field_18 varchar(255) NOT NULL,
-     field_19 varchar(255) NOT NULL,
-     field_20 varchar(255) NOT NULL,
+     field_16 integer NULL,
+     field_17 longtext NOT NULL,
+     field_18 longtext NOT NULL,
+     field_19 longtext NOT NULL,
+     field_20 integer NULL,
      field_21 longtext NOT NULL,
-     field_22 varchar(255) NOT NULL,
-     field_23 varchar(255) NOT NULL,
-     field_24 varchar(255) NOT NULL,
+     field_22 longtext NOT NULL,
+     field_23 longtext NOT NULL,
+     field_24 longtext NOT NULL,
+     field_25 varchar(255) NOT NULL,
+     field_26 varchar(255) NOT NULL,
+     field_27 integer NULL,
+     field_28 longtext NOT NULL,
+     field_29 varchar(255) NOT NULL,
+     field_30 varchar(255) NOT NULL,
+     field_31 varchar(255) NOT NULL,
+     field_32 varchar(255) NOT NULL,
+     field_33 longtext NOT NULL,
+     field_34 varchar(255) NOT NULL,
+     field_35 varchar(255) NOT NULL,
+     field_36 varchar(255) NOT NULL,
      field_1__text_parsed longtext NOT NULL,
      field_1__source_user integer DEFAULT 1 NOT NULL,
      field_2__text_parsed longtext NOT NULL,
@@ -26726,13 +27269,13 @@ CREATE TABLE cms_f_member_custom_fields (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0, '', '', '', NULL, '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_17\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_17\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_17\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_18\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_18\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_18\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_19\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_19\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_19\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0, '', '', '', NULL, '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (2, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_23\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_23\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
 
 
-INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0, '', '', '', NULL, '', '', '', '');
+INSERT INTO cms_f_member_custom_fields (mf_member_id, field_1, field_1__text_parsed, field_1__source_user, field_2, field_2__text_parsed, field_2__source_user, field_3, field_4, field_4__text_parsed, field_4__source_user, field_5, field_6, field_7, field_8, field_9, field_10, field_11, field_12, field_13, field_14, field_15, field_16, field_17, field_18, field_19, field_20, field_21, field_22, field_23, field_24, field_25, field_26, field_27, field_28, field_29, field_30, field_31, field_32, field_33, field_34, field_35, field_36) VALUES (3, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_27\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_27\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_27\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_28\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_28\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_28\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_29\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_29\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_29\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', NULL, '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '');
 
 
 DROP TABLE IF EXISTS cms_f_member_known_login_ips;
@@ -26804,13 +27347,13 @@ CREATE TABLE cms_f_members (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1465441688, 'UTC', 1, 1465441688, 1465441688, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (1, 'Guest', '', '', '', '', 1, '', 0, 0, 1465958028, 'UTC', 1, 1465958028, 1465958028, '', 0, 1, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_15\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_15\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_15\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_16\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_16\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_16\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1465441688, 'UTC', 2, 1465441688, 1465441688, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (2, 'admin', '', '', '', 'themes/default/images/cns_default_avatars/default_set/cool_flare.png', 1, '', 0, 0, 1465958028, 'UTC', 2, 1465958028, 1465958028, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 1, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_20\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_20\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_20\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_21\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_21\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_21\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
-INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1465441688, 'UTC', 9, 1465441688, 1465441688, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd97d99fb9.59335212_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd97d99fb9.59335212_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd97d99fb9.59335212_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_members (id, m_username, m_pass_hash_salted, m_pass_salt, m_theme, m_avatar_url, m_validated, m_validated_email_confirm_code, m_cache_num_posts, m_cache_warnings, m_join_time, m_timezone_offset, m_primary_group, m_last_visit_time, m_last_submit_time, m_signature, m_is_perm_banned, m_preview_posts, m_dob_day, m_dob_month, m_dob_year, m_reveal_age, m_email_address, m_title, m_photo_url, m_photo_thumb_url, m_views_signatures, m_auto_monitor_contrib_content, m_language, m_ip_address, m_allow_emails, m_allow_emails_from_staff, m_highlighted_name, m_pt_allow, m_pt_rules_text, m_max_email_attach_size_mb, m_password_change_code, m_password_compat_scheme, m_on_probation_until, m_profile_views, m_total_sessions, m_auto_mark_read, m_signature__text_parsed, m_signature__source_user, m_pt_rules_text__text_parsed, m_pt_rules_text__source_user) VALUES (3, 'test', '', '', '', '', 1, '', 0, 0, 1465958028, 'UTC', 9, 1465958028, 1465958028, '', 0, 0, NULL, NULL, NULL, 1, '', '', '', '', 1, 0, '', '127.0.0.1', 1, 1, 0, '*', '', 5, '', 'plain', NULL, 0, 0, 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_25\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_25\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_25\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be8bdd1608.34665015_26\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be8bdd1608.34665015_26\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be8bdd1608.34665015_26\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_moderator_logs;
@@ -26966,7 +27509,7 @@ CREATE TABLE cms_f_posts (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nThe website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1465441688, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5758dd987958c0.11129415_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5758dd987958c0.11129415_1\\\";s:627:\\\"\\$tpl_funcs[\'string_attach_5758dd987958c0.11129415_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"The website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_f_posts (id, p_title, p_post, p_ip_address, p_time, p_poster, p_intended_solely_for, p_poster_name_if_guest, p_validated, p_topic_id, p_cache_forum_id, p_last_edit_time, p_last_edit_by, p_is_emphasised, p_skip_sig, p_parent_id, p_post__text_parsed, p_post__source_user) VALUES (1, 'Welcome to the forums', 'This is the inbuilt forum system (known as Conversr).\n\nA forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\n\nThe website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.', '127.0.0.1', 1465958028, 1, NULL, 'System', 1, 1, 7, NULL, NULL, 0, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:39:\\\"string_attach_5760be8ca2bc74.96557547_1\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:7:\\\"(mixed)\\\";i:3;N;i:4;a:1:{s:39:\\\"string_attach_5760be8ca2bc74.96557547_1\\\";s:627:\\\"\\$tpl_funcs[\'string_attach_5760be8ca2bc74.96557547_1\']=\\\"echo \\\\\\\"This is the inbuilt forum system (known as Conversr).\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"A forum system is a tool for communication between members; it consists of posts, organised into topics: each topic is a line of conversation.\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"<br />\\\\\\\"; echo \\\\\\\"The website software provides support for a number of different forum systems, and each forum handles authentication of members: Conversr is the built-in forum, which provides seamless integration between the main website, the forums, and the inbuilt member accounts system.\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_f_read_logs;
@@ -27047,7 +27590,48 @@ CREATE TABLE cms_f_topics (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1465441688, 'Welcome to the forums', '', 'System', 1, 1, 1465441688, 'Welcome to the forums', 'System', 1, 1, '', 1);
+INSERT INTO cms_f_topics (id, t_pinned, t_sunk, t_cascading, t_forum_id, t_pt_from, t_pt_to, t_pt_from_category, t_pt_to_category, t_description, t_description_link, t_emoticon, t_num_views, t_validated, t_is_open, t_poll_id, t_cache_first_post_id, t_cache_first_time, t_cache_first_title, t_cache_first_post, t_cache_first_username, t_cache_first_member_id, t_cache_last_post_id, t_cache_last_time, t_cache_last_title, t_cache_last_username, t_cache_last_member_id, t_cache_num_posts, t_cache_first_post__text_parsed, t_cache_first_post__source_user) VALUES (1, 0, 0, 0, 7, NULL, NULL, '', '', '', '', '', 0, 1, 1, NULL, 1, 1465958028, 'Welcome to the forums', '', 'System', 1, 1, 1465958028, 'Welcome to the forums', 'System', 1, 1, '', 1);
+
+
+DROP TABLE IF EXISTS cms_f_usergroup_sub_mails;
+
+
+
+CREATE TABLE cms_f_usergroup_sub_mails (
+     id integer unsigned auto_increment NOT NULL,
+     m_usergroup_sub_id integer NOT NULL,
+     m_ref_point varchar(80) NOT NULL,
+     m_ref_point_offset integer NOT NULL,
+     m_subject longtext NOT NULL,
+     m_body longtext NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_f_usergroup_subs;
+
+
+
+CREATE TABLE cms_f_usergroup_subs (
+     id integer unsigned auto_increment NOT NULL,
+     s_title longtext NOT NULL,
+     s_description longtext NOT NULL,
+     s_cost varchar(255) NOT NULL,
+     s_length integer NOT NULL,
+     s_length_units varchar(255) NOT NULL,
+     s_auto_recur tinyint(1) NOT NULL,
+     s_group_id integer NOT NULL,
+     s_enabled tinyint(1) NOT NULL,
+     s_mail_start longtext NOT NULL,
+     s_mail_end longtext NOT NULL,
+     s_mail_uhoh longtext NOT NULL,
+     s_uses_primary tinyint(1) NOT NULL,
+     s_description__text_parsed longtext NOT NULL,
+     s_description__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
 
 
 DROP TABLE IF EXISTS cms_f_warnings;
@@ -27168,7 +27752,7 @@ CREATE TABLE cms_galleries (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1465441700, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5758dd9cb33402.02112760_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5758dd9cb33402.02112760_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5758dd9cb33402.02112760_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+INSERT INTO cms_galleries (name, description, fullname, add_date, rep_image, parent_id, watermark_top_left, watermark_top_right, watermark_bottom_left, watermark_bottom_right, accept_images, accept_videos, allow_rating, allow_comments, notes, is_member_synched, flow_mode_interface, gallery_views, g_owner, description__text_parsed, description__source_user, fullname__text_parsed, fullname__source_user) VALUES ('root', '', 'Galleries home', 1465958035, '', '', '', '', '', '', 1, 1, 1, 1, '', 0, 1, 0, NULL, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_22\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_22\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_22\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_23\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_23\\\";s:83:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_23\']=\\\"echo \\\\\\\"Galleries home\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
 
 
 DROP TABLE IF EXISTS cms_gifts;
@@ -28047,6 +28631,87 @@ INSERT INTO cms_group_category_access (module_the_name, category_name, group_id)
 
 
 INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('news', '7', 10);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 1);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 3);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 4);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 5);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 6);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 7);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 8);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 9);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '1', 10);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 1);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 3);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 4);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 5);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 6);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 7);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 8);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 9);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('tickets', '2', 10);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 1);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 3);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 4);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 5);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 6);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 7);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 8);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 9);
+
+
+INSERT INTO cms_group_category_access (module_the_name, category_name, group_id) VALUES ('wiki_page', '1', 10);
 
 
 DROP TABLE IF EXISTS cms_group_page_access;
@@ -30046,48 +30711,6 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'change_newsletter_subscriptions', '', '', '', 1);
 
 
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (4, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (5, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (6, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (7, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (8, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (9, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
-
-
-INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
-
-
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'use_points', '', '', '', 1);
 
 
@@ -30218,6 +30841,66 @@ INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name
 
 
 INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'autocomplete_title_comcode_page', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'view_others_tickets', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'view_others_tickets', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'support_operator', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'support_operator', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'wiki_manage_tree', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'wiki_manage_tree', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (1, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (4, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (5, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (6, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (7, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (8, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (9, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (10, 'upload_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (2, 'delete_anything_filedump', '', '', '', 1);
+
+
+INSERT INTO cms_group_privileges (group_id, privilege, the_page, module_the_name, category_name, the_value) VALUES (3, 'delete_anything_filedump', '', '', '', 1);
 
 
 DROP TABLE IF EXISTS cms_group_zone_access;
@@ -30950,6 +31633,51 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('news', 'Chris Graham', 'ocProducts', '', NULL, 7);
 
 
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 11);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('polls', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('purchase', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('quiz', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('search', 'Chris Graham', 'ocProducts', '', NULL, 5);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('shopping', 'Manuprathap', 'ocProducts', '', NULL, 7);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('staff', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('subscriptions', 'Chris Graham', 'ocProducts', '', NULL, 5);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('tickets', 'Chris Graham', 'ocProducts', '', NULL, 6);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('users_online', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('warnings', 'Chris Graham', 'ocProducts', '', NULL, 2);
+
+
+INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('wiki', 'Chris Graham', 'ocProducts', '', NULL, 9);
+
+
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forumview', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
@@ -31010,19 +31738,10 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('filedump', 'Chris Graham', 'ocProducts', '', NULL, 4);
 
 
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('newsletter', 'Chris Graham', 'ocProducts', '', NULL, 11);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('notifications', 'Chris Graham', 'ocProducts', '', NULL, 1);
-
-
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('forums', 'Chris Graham', 'ocProducts', '', NULL, 2);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('join', 'Chris Graham', 'ocProducts', '', NULL, 2);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('points', 'Chris Graham', 'ocProducts', '', NULL, 8);
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('login', 'Chris Graham', 'ocProducts', '', NULL, 3);
@@ -31035,21 +31754,6 @@ INSERT INTO cms_modules (module_the_name, module_author, module_organisation, mo
 
 
 INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('supermembers', 'Chris Graham', 'ocProducts', '', NULL, 2);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('pointstore', 'Allen Ellis', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('polls', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('purchase', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('quiz', 'Chris Graham', 'ocProducts', '', NULL, 6);
-
-
-INSERT INTO cms_modules (module_the_name, module_author, module_organisation, module_hacked_by, module_hack_version, module_version) VALUES ('search', 'Chris Graham', 'ocProducts', '', NULL, 5);
 
 
 DROP TABLE IF EXISTS cms_news;
@@ -31347,6 +32051,21 @@ CREATE TABLE cms_poll (
      option9__source_user integer DEFAULT 1 NOT NULL,
      option10__text_parsed longtext NOT NULL,
      option10__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_poll_votes;
+
+
+
+CREATE TABLE cms_poll_votes (
+     id integer unsigned auto_increment NOT NULL,
+     v_poll_id integer NOT NULL,
+     v_voter_id integer NULL,
+     v_voter_ip varchar(40) NOT NULL,
+     v_vote_for tinyint NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -31855,15 +32574,6 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARC
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('NEWSLETTER', 'change_newsletter_subscriptions', 0);
 
 
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
-
-
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
-
-
-INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
-
-
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('POINTS', 'use_points', 1);
 
 
@@ -31918,6 +32628,24 @@ INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARC
 INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SEARCH', 'autocomplete_title_comcode_page', 0);
 
 
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'view_others_tickets', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('SUPPORT_TICKETS', 'support_operator', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('WIKI', 'wiki_manage_tree', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_anything_filedump', 0);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'upload_filedump', 1);
+
+
+INSERT INTO cms_privilege_list (p_section, the_name, the_default) VALUES ('FILEDUMP', 'delete_anything_filedump', 0);
+
+
 DROP TABLE IF EXISTS cms_pstore_customs;
 
 
@@ -31959,6 +32687,139 @@ CREATE TABLE cms_pstore_permissions (
      p_category varchar(80) NOT NULL,
      p_description__text_parsed longtext NOT NULL,
      p_description__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_entries;
+
+
+
+CREATE TABLE cms_quiz_entries (
+     id integer unsigned auto_increment NOT NULL,
+     q_time integer unsigned NOT NULL,
+     q_member integer NOT NULL,
+     q_quiz integer NOT NULL,
+     q_results integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_entry_answer;
+
+
+
+CREATE TABLE cms_quiz_entry_answer (
+     id integer unsigned auto_increment NOT NULL,
+     q_entry integer NOT NULL,
+     q_question integer NOT NULL,
+     q_answer longtext NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_member_last_visit;
+
+
+
+CREATE TABLE cms_quiz_member_last_visit (
+     id integer unsigned auto_increment NOT NULL,
+     v_time integer unsigned NOT NULL,
+     v_member_id integer NOT NULL,
+     v_quiz_id integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_question_answers;
+
+
+
+CREATE TABLE cms_quiz_question_answers (
+     id integer unsigned auto_increment NOT NULL,
+     q_question integer NOT NULL,
+     q_answer_text longtext NOT NULL,
+     q_is_correct tinyint(1) NOT NULL,
+     q_order integer NOT NULL,
+     q_explanation longtext NOT NULL,
+     q_answer_text__text_parsed longtext NOT NULL,
+     q_answer_text__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_questions;
+
+
+
+CREATE TABLE cms_quiz_questions (
+     id integer unsigned auto_increment NOT NULL,
+     q_type varchar(80) NOT NULL,
+     q_quiz integer NOT NULL,
+     q_question_text longtext NOT NULL,
+     q_question_extra_text longtext NOT NULL,
+     q_order integer NOT NULL,
+     q_required tinyint(1) NOT NULL,
+     q_marked tinyint(1) NOT NULL,
+     q_question_text__text_parsed longtext NOT NULL,
+     q_question_text__source_user integer DEFAULT 1 NOT NULL,
+     q_question_extra_text__text_parsed longtext NOT NULL,
+     q_question_extra_text__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quiz_winner;
+
+
+
+CREATE TABLE cms_quiz_winner (
+     q_quiz integer NOT NULL,
+     q_entry integer NOT NULL,
+     q_winner_level integer NOT NULL,
+
+    PRIMARY KEY (q_quiz, q_entry)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_quizzes;
+
+
+
+CREATE TABLE cms_quizzes (
+     id integer unsigned auto_increment NOT NULL,
+     q_timeout integer NULL,
+     q_name longtext NOT NULL,
+     q_start_text longtext NOT NULL,
+     q_end_text longtext NOT NULL,
+     q_notes longtext NOT NULL,
+     q_percentage integer NOT NULL,
+     q_open_time integer unsigned NOT NULL,
+     q_close_time integer unsigned NULL,
+     q_num_winners integer NOT NULL,
+     q_redo_time integer NULL,
+     q_type varchar(80) NOT NULL,
+     q_add_date integer unsigned NOT NULL,
+     q_validated tinyint(1) NOT NULL,
+     q_submitter integer NOT NULL,
+     q_points_for_passing integer NOT NULL,
+     q_tied_newsletter integer NULL,
+     q_end_text_fail longtext NOT NULL,
+     q_reveal_answers tinyint(1) NOT NULL,
+     q_shuffle_questions tinyint(1) NOT NULL,
+     q_shuffle_answers tinyint(1) NOT NULL,
+     q_start_text__text_parsed longtext NOT NULL,
+     q_start_text__source_user integer DEFAULT 1 NOT NULL,
+     q_end_text__text_parsed longtext NOT NULL,
+     q_end_text__source_user integer DEFAULT 1 NOT NULL,
+     q_end_text_fail__text_parsed longtext NOT NULL,
+     q_end_text_fail__source_user integer DEFAULT 1 NOT NULL,
 
     PRIMARY KEY (id)
 ) engine=MyISAM;
@@ -32083,6 +32944,38 @@ CREATE TABLE cms_sales (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_searches_logged;
+
+
+
+CREATE TABLE cms_searches_logged (
+     id integer unsigned auto_increment NOT NULL,
+     s_member_id integer NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_primary varchar(255) NOT NULL,
+     s_auxillary longtext NOT NULL,
+     s_num_results integer NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_searches_saved;
+
+
+
+CREATE TABLE cms_searches_saved (
+     id integer unsigned auto_increment NOT NULL,
+     s_title varchar(255) NOT NULL,
+     s_member_id integer NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_primary varchar(255) NOT NULL,
+     s_auxillary longtext NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_seo_meta;
 
 
@@ -32136,6 +33029,107 @@ CREATE TABLE cms_sessions (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_shopping_cart;
+
+
+
+CREATE TABLE cms_shopping_cart (
+     id integer unsigned auto_increment NOT NULL,
+     session_id varchar(80) NOT NULL,
+     ordered_by integer NOT NULL,
+     product_id integer NOT NULL,
+     product_name varchar(255) NOT NULL,
+     product_code varchar(255) NOT NULL,
+     quantity integer NOT NULL,
+     price_pre_tax real NOT NULL,
+     price real NOT NULL,
+     product_description longtext NOT NULL,
+     product_type varchar(255) NOT NULL,
+     product_weight real NOT NULL,
+     is_deleted tinyint(1) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_logging;
+
+
+
+CREATE TABLE cms_shopping_logging (
+     id integer unsigned auto_increment NOT NULL,
+     e_member_id integer NOT NULL,
+     session_id varchar(80) NOT NULL,
+     ip varchar(40) NOT NULL,
+     last_action varchar(255) NOT NULL,
+     date_and_time integer unsigned NOT NULL,
+
+    PRIMARY KEY (id, e_member_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order;
+
+
+
+CREATE TABLE cms_shopping_order (
+     id integer unsigned auto_increment NOT NULL,
+     c_member integer NOT NULL,
+     session_id varchar(80) NOT NULL,
+     add_date integer unsigned NOT NULL,
+     tot_price real NOT NULL,
+     order_status varchar(80) NOT NULL,
+     notes longtext NOT NULL,
+     transaction_id varchar(255) NOT NULL,
+     purchase_through varchar(255) NOT NULL,
+     tax_opted_out tinyint(1) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order_addresses;
+
+
+
+CREATE TABLE cms_shopping_order_addresses (
+     id integer unsigned auto_increment NOT NULL,
+     order_id integer NULL,
+     address_name varchar(255) NOT NULL,
+     address_street longtext NOT NULL,
+     address_city varchar(255) NOT NULL,
+     address_state varchar(255) NOT NULL,
+     address_zip varchar(255) NOT NULL,
+     address_country varchar(255) NOT NULL,
+     receiver_email varchar(255) NOT NULL,
+     contact_phone varchar(255) NOT NULL,
+     first_name varchar(255) NOT NULL,
+     last_name varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_shopping_order_details;
+
+
+
+CREATE TABLE cms_shopping_order_details (
+     id integer unsigned auto_increment NOT NULL,
+     order_id integer NULL,
+     p_id integer NULL,
+     p_name varchar(255) NOT NULL,
+     p_code varchar(255) NOT NULL,
+     p_type varchar(255) NOT NULL,
+     p_quantity integer NOT NULL,
+     p_price real NOT NULL,
+     included_tax real NOT NULL,
+     dispatch_status varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_sitemap_cache;
 
 
@@ -32185,40 +33179,40 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"http://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1465958038, 0, '', NULL);
 
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (12, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1465441705, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (12, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1465958038, 0, '', NULL);
 
 
 DROP TABLE IF EXISTS cms_staff_links;
@@ -32355,6 +33349,28 @@ CREATE TABLE cms_stats (
 ) engine=MyISAM;
 
 
+DROP TABLE IF EXISTS cms_subscriptions;
+
+
+
+CREATE TABLE cms_subscriptions (
+     id integer unsigned auto_increment NOT NULL,
+     s_type_code varchar(80) NOT NULL,
+     s_member_id integer NOT NULL,
+     s_state varchar(80) NOT NULL,
+     s_amount varchar(255) NOT NULL,
+     s_purchase_id varchar(80) NOT NULL,
+     s_time integer unsigned NOT NULL,
+     s_auto_fund_source varchar(80) NOT NULL,
+     s_auto_fund_key varchar(255) NOT NULL,
+     s_via varchar(80) NOT NULL,
+     s_length integer NOT NULL,
+     s_length_units varchar(255) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_task_queue;
 
 
@@ -32373,7 +33389,7 @@ CREATE TABLE cms_task_queue (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, 'd9e3a7f8b26e5', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '22ed03f5f4398', 0, 0);
 
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
@@ -32410,6 +33426,65 @@ INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('favicon', 'default
 INSERT INTO cms_theme_images (id, theme, path, lang) VALUES ('webclipicon', 'default', 'webclipicon.png', 'EN');
 
 
+DROP TABLE IF EXISTS cms_ticket_extra_access;
+
+
+
+CREATE TABLE cms_ticket_extra_access (
+     ticket_id varchar(255) NOT NULL,
+     member_id integer NOT NULL,
+
+    PRIMARY KEY (ticket_id, member_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_ticket_known_emailers;
+
+
+
+CREATE TABLE cms_ticket_known_emailers (
+     email_address varchar(255) NOT NULL,
+     member_id integer NOT NULL,
+
+    PRIMARY KEY (email_address)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_ticket_types;
+
+
+
+CREATE TABLE cms_ticket_types (
+     id integer unsigned auto_increment NOT NULL,
+     ticket_type_name longtext NOT NULL,
+     guest_emails_mandatory tinyint(1) NOT NULL,
+     search_faq tinyint(1) NOT NULL,
+     cache_lead_time integer unsigned NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (1, 'Other', 0, 0, NULL);
+
+
+INSERT INTO cms_ticket_types (id, ticket_type_name, guest_emails_mandatory, search_faq, cache_lead_time) VALUES (2, 'Complaint', 0, 0, NULL);
+
+
+DROP TABLE IF EXISTS cms_tickets;
+
+
+
+CREATE TABLE cms_tickets (
+     ticket_id varchar(255) NOT NULL,
+     topic_id integer NOT NULL,
+     forum_id integer NOT NULL,
+     ticket_type integer NOT NULL,
+
+    PRIMARY KEY (ticket_id)
+) engine=MyISAM;
+
+
 DROP TABLE IF EXISTS cms_trackbacks;
 
 
@@ -32426,6 +33501,49 @@ CREATE TABLE cms_trackbacks (
      trackback_name varchar(255) NOT NULL,
 
     PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_trans_expecting;
+
+
+
+CREATE TABLE cms_trans_expecting (
+     id varchar(80) NOT NULL,
+     e_purchase_id varchar(80) NOT NULL,
+     e_item_name varchar(255) NOT NULL,
+     e_member_id integer NOT NULL,
+     e_amount varchar(255) NOT NULL,
+     e_currency varchar(80) NOT NULL,
+     e_ip_address varchar(40) NOT NULL,
+     e_session_id varchar(80) NOT NULL,
+     e_time integer unsigned NOT NULL,
+     e_length integer NULL,
+     e_length_units varchar(80) NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_transactions;
+
+
+
+CREATE TABLE cms_transactions (
+     id varchar(80) NOT NULL,
+     t_type_code varchar(80) NOT NULL,
+     t_purchase_id varchar(80) NOT NULL,
+     t_status varchar(255) NOT NULL,
+     t_reason varchar(255) NOT NULL,
+     t_amount varchar(255) NOT NULL,
+     t_currency varchar(80) NOT NULL,
+     t_parent_txn_id varchar(80) NOT NULL,
+     t_time integer unsigned NOT NULL,
+     t_pending_reason varchar(255) NOT NULL,
+     t_memo longtext NOT NULL,
+     t_via varchar(80) NOT NULL,
+
+    PRIMARY KEY (id, t_time)
 ) engine=MyISAM;
 
 
@@ -32558,10 +33676,10 @@ CREATE TABLE cms_values (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1465441688);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1465958029);
 
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1465441688);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1465958029);
 
 
 DROP TABLE IF EXISTS cms_values_elective;
@@ -32577,7 +33695,7 @@ CREATE TABLE cms_values_elective (
 ) engine=MyISAM;
 
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1465441689);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1465958029);
 
 
 DROP TABLE IF EXISTS cms_video_transcoding;
@@ -32639,6 +33757,64 @@ CREATE TABLE cms_webstandards_checked_once (
      hash varchar(255) NOT NULL,
 
     PRIMARY KEY (hash)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_wiki_children;
+
+
+
+CREATE TABLE cms_wiki_children (
+     parent_id integer NOT NULL,
+     child_id integer NOT NULL,
+     the_order integer NOT NULL,
+     title varchar(255) NOT NULL,
+
+    PRIMARY KEY (parent_id, child_id)
+) engine=MyISAM;
+
+
+DROP TABLE IF EXISTS cms_wiki_pages;
+
+
+
+CREATE TABLE cms_wiki_pages (
+     id integer unsigned auto_increment NOT NULL,
+     title longtext NOT NULL,
+     notes longtext NOT NULL,
+     description longtext NOT NULL,
+     add_date integer unsigned NOT NULL,
+     edit_date integer unsigned NULL,
+     wiki_views integer NOT NULL,
+     hide_posts tinyint(1) NOT NULL,
+     submitter integer NOT NULL,
+     description__text_parsed longtext NOT NULL,
+     description__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
+) engine=MyISAM;
+
+
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1465958038, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5760be91227633.61397001_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5760be91227633.61397001_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5760be91227633.61397001_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");\n', 1);
+
+
+DROP TABLE IF EXISTS cms_wiki_posts;
+
+
+
+CREATE TABLE cms_wiki_posts (
+     id integer unsigned auto_increment NOT NULL,
+     page_id integer NOT NULL,
+     the_message longtext NOT NULL,
+     date_and_time integer unsigned NOT NULL,
+     validated tinyint(1) NOT NULL,
+     wiki_views integer NOT NULL,
+     member_id integer NOT NULL,
+     edit_date integer unsigned NULL,
+     the_message__text_parsed longtext NOT NULL,
+     the_message__source_user integer DEFAULT 1 NOT NULL,
+
+    PRIMARY KEY (id)
 ) engine=MyISAM;
 
 
@@ -33446,9 +34622,6 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_2 (field_2(250));
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT field_4 (field_4(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_16 (field_16(250));
-
-
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_17 (field_17(250));
 
 
@@ -33456,9 +34629,6 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_18 (field_18(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_19 (field_19(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_20 (field_20(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_21 (field_21(250));
@@ -33473,13 +34643,16 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_23 (field_23(250));
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_24 (field_24(250));
 
 
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_25 (field_25(250));
+
+
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_26 (field_26(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_27 (field_27(250));
-
-
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_28 (field_28(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_29 (field_29(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_3 (field_3(250));
@@ -33495,6 +34668,15 @@ ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_32 (field_32(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_33 (field_33(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_34 (field_34(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_35 (field_35(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_36 (field_36(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD FULLTEXT mcf_ft_5 (field_5(250));
@@ -33530,37 +34712,46 @@ ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf14 (field_14);
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf15 (field_15);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf17 (field_17(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf18 (field_18(250));
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf19 (field_19(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf16 (field_16);
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf2 (field_2(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf20 (field_20);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf22 (field_22(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf23 (field_23(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf26 (field_26(250));
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf24 (field_24(250));
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf27 (field_27);
 
 
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf25 (field_25);
-
-
-ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29);
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf29 (field_29(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf3 (field_3(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf30 (field_30(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf31 (field_31(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf32 (field_32(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf34 (field_34(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf35 (field_35(250));
+
+
+ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf36 (field_36(250));
 
 
 ALTER TABLE cms_f_member_custom_fields ADD INDEX mcf4 (field_4(250));
@@ -33702,6 +34893,27 @@ ALTER TABLE cms_f_topics ADD INDEX t_validated (t_validated);
 
 
 ALTER TABLE cms_f_topics ADD INDEX unread_forums (t_forum_id,t_cache_last_time);
+
+
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_description (s_description(250));
+
+
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_end (s_mail_end(250));
+
+
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_start (s_mail_start(250));
+
+
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_mail_uhoh (s_mail_uhoh(250));
+
+
+ALTER TABLE cms_f_usergroup_subs ADD FULLTEXT s_title (s_title(250));
+
+
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_body (m_body(250));
+
+
+ALTER TABLE cms_f_usergroup_sub_mails ADD FULLTEXT m_subject (m_subject(250));
 
 
 ALTER TABLE cms_f_warnings ADD INDEX warningsmemberid (w_member_id);
@@ -34133,6 +35345,9 @@ ALTER TABLE cms_shopping_cart ADD INDEX product_id (product_id);
 ALTER TABLE cms_shopping_cart ADD INDEX session_id (session_id);
 
 
+ALTER TABLE cms_shopping_logging ADD INDEX calculate_bandwidth (date_and_time);
+
+
 ALTER TABLE cms_shopping_order ADD INDEX finddispatchable (order_status);
 
 
@@ -34143,6 +35358,15 @@ ALTER TABLE cms_shopping_order ADD INDEX soc_member (c_member);
 
 
 ALTER TABLE cms_shopping_order ADD INDEX sosession_id (session_id);
+
+
+ALTER TABLE cms_shopping_order_addresses ADD INDEX order_id (order_id);
+
+
+ALTER TABLE cms_shopping_order_details ADD INDEX order_id (order_id);
+
+
+ALTER TABLE cms_shopping_order_details ADD INDEX p_id (p_id);
 
 
 ALTER TABLE cms_sitemap_cache ADD INDEX is_deleted (is_deleted);
@@ -34191,6 +35415,9 @@ ALTER TABLE cms_stats ADD INDEX referer (referer(250));
 
 
 ALTER TABLE cms_theme_images ADD INDEX theme (theme,lang);
+
+
+ALTER TABLE cms_ticket_types ADD FULLTEXT ticket_type_name (ticket_type_name(250));
 
 
 ALTER TABLE cms_trackbacks ADD INDEX trackback_for_id (trackback_for_id);
@@ -34266,6 +35493,51 @@ ALTER TABLE cms_videos ADD INDEX v_validated (validated);
 
 
 ALTER TABLE cms_video_transcoding ADD INDEX t_local_id (t_local_id);
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT description (description(250));
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT title (title(250));
+
+
+ALTER TABLE cms_wiki_pages ADD FULLTEXT wiki_search__combined (title(250),description(250));
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spd (description(250));
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX ftjoin_spt (title(250));
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX sadd_date (add_date);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX sps (submitter);
+
+
+ALTER TABLE cms_wiki_pages ADD INDEX wiki_views (wiki_views);
+
+
+ALTER TABLE cms_wiki_posts ADD FULLTEXT the_message (the_message(250));
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX cdate_and_time (date_and_time);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX ftjoin_spm (the_message(250));
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX posts_on_page (page_id);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX spos (member_id);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX svalidated (validated);
+
+
+ALTER TABLE cms_wiki_posts ADD INDEX wiki_views (wiki_views);
 
 
 ALTER TABLE cms_zones ADD FULLTEXT zone_header_text (zone_header_text(250));

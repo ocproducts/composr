@@ -1009,13 +1009,17 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
             if (isset($param[1])) {
                 global $TEMPCODE_SETGET;
-                $param_copy = array();
-                foreach ($param as $i => $x) {
-                    if ($i !== 0) {
-                        $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
+                if (count($param) == 2) {
+                    $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = $param[1];
+                } else {
+                    $param_copy = array();
+                    foreach ($param as $i => $x) {
+                        if ($i !== 0) {
+                            $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
+                        }
                     }
+                    $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
                 }
-                $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
                 if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (is_object($param[1]))) {
                     $children[] = array(':set: ' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]), isset($param[1]->children) ? $param[1]->children : array(), isset($param[1]->fresh) ? $param[1]->fresh : false);
                 }
