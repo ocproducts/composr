@@ -185,6 +185,7 @@ class Module_admin
             array('social', 'forum'),
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
+            array('masthead', 'header'),
             array('news', 'blogs', 'press release'),
             array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approve', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'verify', 'publish'/*, 'screened'*/), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
