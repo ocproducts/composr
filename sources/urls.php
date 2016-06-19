@@ -1162,11 +1162,22 @@ function load_moniker_hooks()
             return;
         }
 
+        $no_monikers_in = array( // FUDGE: Optimisation, not ideal! But it saves file loading and memory
+            'author' => true,
+            'banner' => true,
+            'banner_type' => true,
+            'calendar_type' => true,
+            'catalogue' => true,
+            'post' => true,
+            'wiki_page' => true,
+            'wiki_post' => true,
+        );
+
         $CONTENT_OBS = array();
         $hooks = find_all_hooks('systems', 'content_meta_aware');
         foreach ($hooks as $hook => $sources_dir) {
-            if ($hook == 'banner' || $hook == 'banner_type' || $hook == 'catalogue' || $hook == 'post') {
-                continue; // FUDGE: Optimisation, not ideal!
+            if (isset($no_monikers_in[$hook])) {
+                continue;
             }
 
             $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), null, false, 'Hook_content_meta_aware_' . $hook);
