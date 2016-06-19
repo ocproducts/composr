@@ -2,7 +2,7 @@
 {+START,IF,{$EQ,{$PAGE},forumview}}
 	{+START,IF,{$EQ,{$_GET,type},pt}}
 		<div class="cns_search_box">
-			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_own_pt,1}}" method="get">
+			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_own_pt,1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_own_pt,1}}
 
 				<div class="vertical_alignment">
@@ -13,7 +13,7 @@
 	{+END}
 	{+START,IF,{$NEQ,{$_GET,type},pt}}
 		<div class="cns_search_box">
-			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}" method="get">
+			<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK*,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_posts:search_under={$_GET,id},1}}
 
 				<div class="vertical_alignment">
@@ -27,7 +27,7 @@
 {$,Topic search}
 {+START,IF,{$EQ,{$PAGE},topicview}}
 	<div class="cns_search_box">
-		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}" method="get">
+		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results:cns_within_topic:search_under={$_GET,id}}}
 
 			<div class="vertical_alignment">
@@ -40,7 +40,7 @@
 {$,General search}
 {+START,IF,{$NEQ,{$PAGE},forumview,topicview}}
 	<div class="cns_search_box">
-		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results}}" method="get">
+		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,_SEARCH:search:results}}" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,_SEARCH:search:results}}
 
 			<div class="vertical_alignment">

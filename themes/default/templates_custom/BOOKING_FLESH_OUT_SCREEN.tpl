@@ -52,7 +52,7 @@
 	<p>{!_BOOKING_FLESH_OUT}</p>
 {+END}
 
-<form action="{POST_URL*}" method="post">
+<form action="{POST_URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -77,7 +77,7 @@
 </form>
 
 {+START,IF,{$JS_ON}}
-	<form action="{BACK_URL*}" method="post">
+	<form action="{BACK_URL*}" method="post" autocomplete="off">
 		<div>
 			{HIDDEN}
 			<input type="image" title="{!NEXT_ITEM_BACK}" alt="{!NEXT_ITEM_BACK}" src="{$IMG*,icons/48x48/menu/_generic_admin/back}" / /></p>

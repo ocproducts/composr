@@ -4,7 +4,7 @@
 	{!LDAP_INTRO}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

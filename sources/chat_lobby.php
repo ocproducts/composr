@@ -120,12 +120,14 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
         $friends = array_merge($friends_offline, $friends_online);
     }
 
-    return do_template('CHAT_FRIENDS', array('_GUID' => '57397daa0c000ea589e3a7a5fd323110', 'FRIENDS' => $friends,
-                                             'FRIENDS_ONLINE' => $friends_online,
-                                             'FRIENDS_OFFLINE' => $friends_offline,
-                                             'CAN_IM' => $can_im,
-                                             'ONLINE_URL' => $online_url,
-                                             'SIMPLER' => $simpler,
+    return do_template('CHAT_FRIENDS', array(
+        '_GUID' => '57397daa0c000ea589e3a7a5fd323110',
+        'FRIENDS' => $friends,
+        'FRIENDS_ONLINE' => $friends_online,
+        'FRIENDS_OFFLINE' => $friends_offline,
+        'CAN_IM' => $can_im,
+        'ONLINE_URL' => $online_url,
+        'SIMPLER' => $simpler,
     ));
 }
 

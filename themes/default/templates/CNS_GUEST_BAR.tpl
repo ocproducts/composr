@@ -8,7 +8,7 @@
 	<div class="toggleable_tray">
 		<div class="cns_information_bar float_surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
-				<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="autocomplete inline">
+				<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" class="inline" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>

@@ -22,7 +22,7 @@
 		</div>
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="not_too_tall_addons">

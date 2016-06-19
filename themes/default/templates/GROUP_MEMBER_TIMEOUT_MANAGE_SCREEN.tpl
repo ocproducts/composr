@@ -12,7 +12,7 @@
 	{!DOC_MANAGE_GROUP_MEMBER_TIMEOUTS}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide_table_wrap"><table class="columned_table results_table wide_table autosized_table">

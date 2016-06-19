@@ -10,7 +10,7 @@
 	{!DESCRIPTION_BANNED_ADDRESSES_B}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p class="lonely_label"><label for="bans">{!BANNED_ADDRESSES}:</label></p>

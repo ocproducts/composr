@@ -1553,12 +1553,14 @@ function handle_tray_cookie_setting(id)
 }
 
 /* Animate the loading of a frame */
-function animate_frame_load(pf,frame,leave_gap_top)
+function animate_frame_load(pf,frame,leave_gap_top,leave_height)
 {
 	if (!pf) return;
 	if (typeof leave_gap_top=='undefined') leave_gap_top=0;
+	if (typeof leave_height=='undefined') leave_height=false;
 
-	pf.style.height=window.top.get_window_height()+'px'; // Enough to stop jumping around
+	if (!leave_height)
+		pf.style.height=window.top.get_window_height()+'px'; // Enough to stop jumping around
 
 	illustrate_frame_load(pf,frame);
 

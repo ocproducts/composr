@@ -7,7 +7,7 @@
 <nav>
 	<ul class="actions_list">
 		<li class="actions_list_strong">
-			<form title="{!PRIMARY_PAGE_FORM}" class="inline" method="post" action="{NEXT_URL*}">
+			<form title="{!PRIMARY_PAGE_FORM}" class="inline" method="post" action="{NEXT_URL*}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="inline">

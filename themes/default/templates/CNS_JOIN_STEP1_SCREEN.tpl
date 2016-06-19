@@ -10,7 +10,7 @@
 	</div>
 </div></div>
 
-<form title="{!PRIMARY_PAGE_FORM}" class="cns_join_1" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" class="cns_join_1" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<p>

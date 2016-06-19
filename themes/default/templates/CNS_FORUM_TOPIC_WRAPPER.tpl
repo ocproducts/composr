@@ -77,7 +77,7 @@
 				<span class="field_name">
 					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
 				</span>
-				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline">
+				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline" autocomplete="off">
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
@@ -89,7 +89,7 @@
 				</form>
 
 				{+START,IF,{MAY_CHANGE_MAX}}
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get">
+					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},forum_max}
 
 						<div class="inline">
@@ -105,7 +105,7 @@
 						</div>
 					</form>
 
-					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get">
+					<form title="{!PER_PAGE}" class="inline" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}{+START,IF,{$EQ,{TYPE},pt}}#tab__pts{+END}" method="get" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},max}
 
 						<div class="inline">

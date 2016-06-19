@@ -4,7 +4,7 @@
 	{!TEST_ADVICE}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" id="test_form">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" id="test_form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="testing_sections">

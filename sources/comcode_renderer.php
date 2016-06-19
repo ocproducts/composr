@@ -1892,7 +1892,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $width = array_key_exists('width', $attributes) ? $attributes['width'] : '';
             $height = array_key_exists('height', $attributes) ? $attributes['height'] : '';
 
-            $temp_tpl = do_template('COMCODE_MEDIA_SET', array('_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa', 'WIDTH' => $width,
+            $temp_tpl = do_template('COMCODE_MEDIA_SET', array(
+                '_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa',
+                'WIDTH' => $width,
                 'HEIGHT' => $height,
                 'MEDIA' => $embed,
             ));

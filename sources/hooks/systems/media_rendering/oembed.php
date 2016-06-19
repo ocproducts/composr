@@ -348,13 +348,15 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                 }
 
                 // embed.ly and Wordpress may show thumbnail details within a "link" type
-                return do_template('MEDIA_WEBPAGE_SEMANTIC', array('_GUID' => '58ab7a83f5671bcfd9587ca8d589441c', 'TITLE' => array_key_exists('title', $attributes) ? $attributes['title'] : '', // not official, but embed.ly has it
-                                                                   'META_TITLE' => array_key_exists('title', $data) ? $data['title'] : '', // not official, but embed.ly has it
-                                                                   'DESCRIPTION' => array_key_exists('description', $data) ? $data['description'] : '',
-                                                                   'IMAGE_URL' => $data['thumbnail_url'],
-                                                                   'URL' => $url,
-                                                                   'WIDTH' => ((array_key_exists('thumbnail_width', $attributes)) && ($attributes['thumbnail_width'] != '')) ? $attributes['thumbnail_width'] : get_option('thumb_width'),
-                                                                   'HEIGHT' => ((array_key_exists('thumbnail_height', $attributes)) && ($attributes['thumbnail_height'] != '')) ? $attributes['thumbnail_height'] : get_option('thumb_width'),
+                return do_template('MEDIA_WEBPAGE_SEMANTIC', array(
+                    '_GUID' => '58ab7a83f5671bcfd9587ca8d589441c',
+                    'TITLE' => array_key_exists('title', $attributes) ? $attributes['title'] : '', // not official, but embed.ly has it
+                    'META_TITLE' => array_key_exists('title', $data) ? $data['title'] : '', // not official, but embed.ly has it
+                    'DESCRIPTION' => array_key_exists('description', $data) ? $data['description'] : '',
+                    'IMAGE_URL' => $data['thumbnail_url'],
+                    'URL' => $url,
+                    'WIDTH' => ((array_key_exists('thumbnail_width', $attributes)) && ($attributes['thumbnail_width'] != '')) ? $attributes['thumbnail_width'] : get_option('thumb_width'),
+                    'HEIGHT' => ((array_key_exists('thumbnail_height', $attributes)) && ($attributes['thumbnail_height'] != '')) ? $attributes['thumbnail_height'] : get_option('thumb_width'),
                 ));
         }
 

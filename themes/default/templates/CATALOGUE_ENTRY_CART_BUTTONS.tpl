@@ -2,7 +2,7 @@
 	<div class="add_to_cart">
 		{+START,IF_NON_EMPTY,{ACTION_URL}}
 			<div class="purchase_buy">
-				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}">
+				<form title="{!ADD_TO_CART}" method="post" action="{ACTION_URL*}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<input class="button_screen_item buttons__cart_add"{+START,IF,{OUT_OF_STOCK}} onclick="window.fauxmodal_alert('{!OUT_OF_STOCK;}'); return false;"{+END} type="submit" value="{!ADD_TO_CART}" />
@@ -16,7 +16,7 @@
 		{+START,SET,commented_out}
 			{+START,IF_NON_EMPTY,{PURCHASE_ACTION_URL}}
 				<div class="purchase_buy">
-					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}">
+					<form title="{!BUY_NOW}" method="post" enctype="multipart/form-data" action="{PURCHASE_ACTION_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<input class="button_screen_item buttons__cart_checkout" type="submit" value="{!BUY_NOW}" />

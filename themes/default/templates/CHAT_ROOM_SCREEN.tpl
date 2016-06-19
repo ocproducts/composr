@@ -11,7 +11,7 @@
 <div class="chat_posting_area">
 	<div class="float_surrounder">
 		<div class="left">
-			<form autocomplete="off" title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" style="display: inline;">
+			<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div style="display: inline;">
@@ -23,7 +23,7 @@
 			</form>
 		</div>
 		<div class="left">
-			<form autocomplete="off" title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" style="display: inline;">
+			<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<input type="button" class="button_micro buttons__send" onclick="return chat_post(event,{CHATROOM_ID*},'post',document.getElementById('font_name').options[document.getElementById('font_name').selectedIndex].value,document.getElementById('text_colour').value);" value="{SUBMIT_VALUE*}" />
@@ -62,7 +62,7 @@
 	{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>
 </p></div>
 
-<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}">
+<form title="{$STRIP_TAGS,{!CHAT_OPTIONS_DESCRIPTION}}" class="below_main_chat_window" onsubmit="return check_chat_options(this);" method="post" action="{OPTIONS_URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="box box___chat_screen_options box_prominent"><div class="box_inner">

@@ -27,7 +27,7 @@
 			{CUSTOM_TASKS}
 		</div>
 
-		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);">
+		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="right">

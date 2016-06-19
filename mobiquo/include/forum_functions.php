@@ -676,7 +676,9 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         }
     }
 
-    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array('_GUID' => 'ef6a156778d1bcaf9228c8bddef938fc', 'CONTENT' => $content,
+    $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array(
+        '_GUID' => 'ef6a156778d1bcaf9228c8bddef938fc',
+        'CONTENT' => $content,
         'WHISPER_USERNAME' => $whisper_username,
         'HAS_POLL' => $has_poll,
         'POST_ID' => strval($post['id']),

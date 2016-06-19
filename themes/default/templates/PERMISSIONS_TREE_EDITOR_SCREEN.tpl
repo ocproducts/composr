@@ -27,7 +27,7 @@
 				<!-- onmouseover="fade_icons_out();" onmouseout="fade_icons_in();" firefox too buggy -->
 				<div class="pte_icon_box">
 					<div class="box box___permissions_tree_editor_screen"><div class="box_inner">
-						<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post">
+						<form title="{!CHOOSE} {!USERGROUP}" action="index.php" method="post" autocomplete="off">
 							<img alt="" src="{$IMG*,pte_view_help}" /><strong><label for="group">{!PERMISSIONS_TREE_EDITOR_ICON_LABEL}:</label></strong>
 							<select id="group" name="group" onclick="this.onchange(event);" onchange="update_group_displayer(this)">
 								{GROUPS}
@@ -37,7 +37,7 @@
 					</div></div>
 				</div>
 
-				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post">
+				<form title="{!PRIMARY_PAGE_FORM}" action="index.php" method="post" autocomplete="off">
 					<div class="accessibility_hidden"><label for="tree_list">{!ENTRY}</label></div>
 					<input onchange="update_permission_box(this)" style="display: none" type="text" id="tree_list" name="tree_list" value="{$_GET*,id}" />
 				</form>
@@ -68,7 +68,7 @@
 			{!PERMISSION_INHERITANCE_HOVER}
 		</p>
 
-		<form id="permissions_form" title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php">
+		<form id="permissions_form" title="{!PRIMARY_PAGE_FORM}" method="post" action="index.php" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="float_surrounder">

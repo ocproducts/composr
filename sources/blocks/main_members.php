@@ -325,7 +325,9 @@ class Block_main_members
 
         /*if (count($rows)==0)   We let our template control no-result output
         {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8', 'HIGH' => false,
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8',
+                'HIGH' => false,
                 'TITLE' => do_lang_tempcode('RECENT', make_string_tempcode(integer_format($max)), do_lang_tempcode('MEMBERS')),
                 'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'member'),
                 'ADD_NAME' => '',
@@ -423,7 +425,9 @@ class Block_main_members
             foreach ($rows as $row) {
                 $_entry = array();
 
-                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array('_GUID' => '868074cc21dcdf4427e93ce78e8f5637', 'ID' => strval($row['id']),
+                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array(
+                    '_GUID' => '868074cc21dcdf4427e93ce78e8f5637',
+                    'ID' => strval($row['id']),
                     'USERNAME' => $row['m_username'],
                     'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, true),
                     'AVATAR_URL' => addon_installed('cns_member_avatars') ? $row['m_avatar_url'] : $row['m_photo_thumb_url'],

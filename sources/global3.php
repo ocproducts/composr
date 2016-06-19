@@ -479,7 +479,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         if (headers_sent()) {
-            $global = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd579b62182a0f815e0ead1daa5904793', 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+            $global = do_template('STANDALONE_HTML_WRAP', array(
+                '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
+                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
                 'FRAME' => false,
                 'TARGET' => '_self',
                 'CONTENT' => $middle,

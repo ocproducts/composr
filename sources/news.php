@@ -345,7 +345,7 @@ function create_selection_list_news($it, $only_owned = null, $editable_filter = 
         if (!has_category_access(get_member(), 'news', strval($myrow['news_category']))) {
             continue;
         }
-        if (($editable_filter) && (!has_edit_permission('high', get_member(), $myrow['submitter'], 'cms_news', array('news', $myrow['news_category'])))) {
+        if (($editable_filter) && (!has_edit_permission($only_in_blog ? 'mid' : 'high', get_member(), $myrow['submitter'], $only_in_blog ? 'cms_blogs' : 'cms_news', array('news', $myrow['news_category'])))) {
             continue;
         }
 

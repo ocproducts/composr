@@ -137,7 +137,9 @@ class Hook_ccbill
             'e_length_units' => '',
         ));
 
-        return do_template('ECOM_BUTTON_VIA_CCBILL', array('_GUID' => '24a0560541cedd4c45898f4d19e99249', 'TYPE_CODE' => strval($type_code),
+        return do_template('ECOM_BUTTON_VIA_CCBILL', array(
+            '_GUID' => '24a0560541cedd4c45898f4d19e99249',
+            'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
             'PURCHASE_ID' => strval($purchase_id),
             'AMOUNT' => float_to_raw_string($amount),
@@ -213,7 +215,9 @@ class Hook_ccbill
             'e_length_units' => $length_units,
         ));
 
-        return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array('_GUID' => 'f8c174f38ae06536833f1510027ba233', 'TYPE_CODE' => strval($type_code),
+        return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
+            '_GUID' => 'f8c174f38ae06536833f1510027ba233',
+            'TYPE_CODE' => strval($type_code),
             'ITEM_NAME' => strval($item_name),
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,

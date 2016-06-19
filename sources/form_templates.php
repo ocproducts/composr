@@ -2236,7 +2236,9 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
     $default_height = ($_default_height == '') ? null : intval($_default_height);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array('_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35', 'TABINDEX' => strval($tabindex),
+    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array(
+        '_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35',
+        'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME_WIDTH' => $name_width,
         'DEFAULT_WIDTH' => is_null($default_width) ? '' : strval($default_width),

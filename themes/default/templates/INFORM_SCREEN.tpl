@@ -11,7 +11,7 @@
 </div>
 
 {+START,IF_PASSED,BACK_URL}
-	<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post">
+	<form class="back_button" title="{!NEXT_ITEM_BACK}" action="{BACK_URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

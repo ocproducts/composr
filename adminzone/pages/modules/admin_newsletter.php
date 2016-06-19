@@ -888,7 +888,9 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $text = do_lang_tempcode('SELECT_CATEGORIES_WANTED');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'bacc372b7338d8e1103facc05ae4598f', 'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'bacc372b7338d8e1103facc05ae4598f',
+            'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
             'TEXT' => $text,

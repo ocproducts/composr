@@ -191,7 +191,9 @@ class Hook_members_quiz
             $delete_url = build_url(array('page' => 'admin_quiz', 'type' => 'delete_quiz_results'), get_module_zone('admin_quiz'));
         }
 
-        return array(do_template('MEMBER_QUIZ_ENTRIES', array('_GUID' => '3143daff524b1e8e8de090d445e20b28', 'CATEGORIES' => $categories,
+        return array(do_template('MEMBER_QUIZ_ENTRIES', array(
+            '_GUID' => '3143daff524b1e8e8de090d445e20b28',
+            'CATEGORIES' => $categories,
             'MEMBER_ID' => strval($member_id),
             'SORTING' => $sorting,
             'DELETE_URL' => $delete_url,

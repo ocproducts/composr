@@ -218,20 +218,22 @@ function get_web_notifications($max = null, $start = 0)
                 break;
         }
 
-        $rendered = do_template('NOTIFICATION_WEB', array('_GUID' => '314db5380aecd610c7ad2a013743f614', 'ID' => strval($row['id']),
-                                                          'SUBJECT' => $row['d_subject'],
-                                                          'MESSAGE' => $_message,
-                                                          'FROM_USERNAME' => $username,
-                                                          'FROM_MEMBER_ID' => strval($member_id),
-                                                          'URL' => $url,
-                                                          'FROM_URL' => $from_url,
-                                                          'FROM_AVATAR_URL' => $avatar_url,
-                                                          'PRIORITY' => strval($row['d_priority']),
-                                                          'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
-                                                          'DATE_WRITTEN_TIME' => get_timezoned_time($row['d_date_and_time']),
-                                                          'NOTIFICATION_CODE' => $row['d_notification_code'],
-                                                          'CODE_CATEGORY' => $row['d_code_category'],
-                                                          'HAS_READ' => ($row['d_read'] == 1),
+        $rendered = do_template('NOTIFICATION_WEB', array(
+            '_GUID' => '314db5380aecd610c7ad2a013743f614',
+            'ID' => strval($row['id']),
+            'SUBJECT' => $row['d_subject'],
+            'MESSAGE' => $_message,
+            'FROM_USERNAME' => $username,
+            'FROM_MEMBER_ID' => strval($member_id),
+            'URL' => $url,
+            'FROM_URL' => $from_url,
+            'FROM_AVATAR_URL' => $avatar_url,
+            'PRIORITY' => strval($row['d_priority']),
+            'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
+            'DATE_WRITTEN_TIME' => get_timezoned_date($row['d_date_and_time']),
+            'NOTIFICATION_CODE' => $row['d_notification_code'],
+            'CODE_CATEGORY' => $row['d_code_category'],
+            'HAS_READ' => ($row['d_read'] == 1),
         ));
         $out->attach($rendered);
     }
@@ -266,18 +268,20 @@ function web_notification_to_xml($row)
 
     $_message = get_translated_tempcode('digestives_tin', $row, 'd_message');
 
-    $rendered = do_template('NOTIFICATION_WEB_DESKTOP', array('_GUID' => '1641fa5c5b62421ae535680859e89636', 'ID' => strval($row['id']),
-                                                              'SUBJECT' => $row['d_subject'],
-                                                              'MESSAGE' => $_message,
-                                                              'FROM_USERNAME' => $username,
-                                                              'FROM_MEMBER_ID' => strval($member_id),
-                                                              'FROM_URL' => $from_url,
-                                                              'FROM_AVATAR_URL' => $avatar_url,
-                                                              'PRIORITY' => strval($row['d_priority']),
-                                                              'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
-                                                              'DATE_WRITTEN_TIME' => get_timezoned_time($row['d_date_and_time']),
-                                                              'NOTIFICATION_CODE' => $row['d_notification_code'],
-                                                              'CODE_CATEGORY' => $row['d_code_category'],
+    $rendered = do_template('NOTIFICATION_WEB_DESKTOP', array(
+        '_GUID' => '1641fa5c5b62421ae535680859e89636',
+        'ID' => strval($row['id']),
+        'SUBJECT' => $row['d_subject'],
+        'MESSAGE' => $_message,
+        'FROM_USERNAME' => $username,
+        'FROM_MEMBER_ID' => strval($member_id),
+        'FROM_URL' => $from_url,
+        'FROM_AVATAR_URL' => $avatar_url,
+        'PRIORITY' => strval($row['d_priority']),
+        'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
+        'DATE_WRITTEN_TIME' => get_timezoned_date($row['d_date_and_time']),
+        'NOTIFICATION_CODE' => $row['d_notification_code'],
+        'CODE_CATEGORY' => $row['d_code_category'],
     ));
 
     //sound="' . (($row['d_priority'] < 3) ? 'on' : 'off') . '"
@@ -293,7 +297,7 @@ function web_notification_to_xml($row)
             from_avatar_url="' . escape_html($avatar_url) . '"
             priority="' . escape_html(strval($row['d_priority'])) . '"
             date_timestamp="' . escape_html(strval($row['d_date_and_time'])) . '"
-            date_written_time="' . escape_html(get_timezoned_time($row['d_date_and_time'])) . '"
+            date_written_time="' . escape_html(get_timezoned_date($row['d_date_and_time'])) . '"
             notification_code="' . escape_html($row['d_notification_code']) . '"
             code_category="' . escape_html($row['d_code_category']) . '"
             sound="on"
@@ -404,7 +408,7 @@ function pt_to_xml($row)
         'URL' => $url,
         'FROM_AVATAR_URL' => $avatar_url,
         'DATE_TIMESTAMP' => strval($row['p_time']),
-        'DATE_WRITTEN_TIME' => get_timezoned_time($row['p_time']),
+        'DATE_WRITTEN_TIME' => get_timezoned_date($row['p_time']),
     ));
 
     return '
@@ -418,7 +422,7 @@ function pt_to_xml($row)
             url="' . escape_html($url) . '"
             from_avatar_url="' . escape_html($avatar_url) . '"
             date_timestamp="' . escape_html(strval($row['p_time'])) . '"
-            date_written_time="' . escape_html(get_timezoned_time($row['p_time'])) . '"
+            date_written_time="' . escape_html(get_timezoned_date($row['p_time'])) . '"
             sound="on"
         />
     ';

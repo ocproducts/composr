@@ -396,7 +396,7 @@ class Block_main_news
         $is_on_rss = is_null($_is_on_rss) ? 0 : intval($_is_on_rss); // Set to zero if we don't want to show RSS links
         $submit_url = new Tempcode();
         $management_page = ($blogs === 1) ? 'cms_blogs' : 'cms_news';
-        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, $management_page, null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), $management_page))) {
+        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, $management_page, null, null)) && (has_submit_permission(($blogs === 1) ? 'mid' : 'high', get_member(), get_ip_address(), $management_page))) {
             $map2 = array('page' => $management_page, 'type' => 'add', 'redirect' => SELF_REDIRECT);
             if (is_numeric($select)) {
                 $map2['cat'] = $select; // select news cat by default, if we are only showing one news cat in this block

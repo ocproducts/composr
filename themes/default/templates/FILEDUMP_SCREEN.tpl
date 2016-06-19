@@ -28,7 +28,7 @@
 				//]]></script>
 			{+END}
 
-			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);">
+			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{+START,IF_NON_EMPTY,{THUMBNAILS}}
@@ -78,7 +78,7 @@
 
 			{+START,INCLUDE,FILEDUMP_SEARCH}I=2{+END}
 
-			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);">
+			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{+START,IF_NON_EMPTY,{LISTING}}

@@ -1,5 +1,5 @@
 <div class="float_surrounder">
-	<form title="{!FILTER}" class="right" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" method="get">
+	<form title="{!FILTER}" class="right" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}" method="get" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL},seconds_back}
 
 		<p>
