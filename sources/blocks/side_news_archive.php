@@ -68,10 +68,14 @@ class Block_side_news_archive
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $select = array_key_exists('select', $map) ? $map['select'] : '*';
 
-        require_code('selectcode');
-        $selects_1 = selectcode_to_sqlfragment($select, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        if ($select == '*') {
+            require_code('selectcode');
+            $selects_1 = selectcode_to_sqlfragment($select, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        } else {
+            $q_filter = '1=1';
+        }
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT p.id,p.date_and_time FROM ' . get_table_prefix() . 'news p LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id WHERE ' . $q_filter . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND validated=1' : '') . (can_arbitrary_groupby() ? ' GROUP BY p.id' : '') . ' ORDER BY date_and_time DESC');
         $rows = remove_duplicate_rows($rows, 'id');

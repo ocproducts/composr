@@ -36,13 +36,13 @@ class Hook_block_ui_renderers_banners
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {
         if (($parameter == 'param') && (in_array($block, array('main_banner_wave', 'main_top_sites')))) { // banner type list
-            require_code('banners');
+            require_code('banners2');
             $list = create_selection_list_banner_types($default);
             return form_input_list(titleify($parameter), escape_html($description), $parameter, $list, null, false, false);
         }
 
         if (($parameter == 'name') && (in_array($block, array('main_banner_wave')))) { // banner list
-            require_code('banners');
+            require_code('banners2');
             $list = new Tempcode();
             $list->attach(form_input_list_entry('', false));
             $list->attach(create_selection_list_banners($default));

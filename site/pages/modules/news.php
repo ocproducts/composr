@@ -430,9 +430,13 @@ class Module_news
         $start = get_param_integer('news_categories_start', 0);
         $max = get_param_integer('news_categories_max', intval(get_option('news_categories_per_page')));
 
-        require_code('selectcode');
         $select = get_param_string('select', '*');
-        $where = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if ($select == '*') {
+            $where = '1=1';
+        } else {
+            require_code('selectcode');
+            $where = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        }
 
         if (is_null($blogs)) {
             $map = array();

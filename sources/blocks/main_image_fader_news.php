@@ -85,8 +85,12 @@ class Block_main_image_fader_news
             $main_title = protect_from_escaping(escape_html($_title));
         }
 
-        require_code('selectcode');
-        $select_sql = selectcode_to_sqlfragment($cat, 'r.news_category', 'news_categories', null, 'r.news_category', 'id');
+        if ($cat == '*') {
+            $select_sql = '1=1';
+        } else {
+            require_code('selectcode');
+            $select_sql = selectcode_to_sqlfragment($cat, 'r.news_category', 'news_categories', null, 'r.news_category', 'id');
+        }
 
         $q_filter = '';
         if ($blogs === 0) {

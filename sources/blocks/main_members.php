@@ -104,7 +104,6 @@ class Block_main_members
         require_code('cns_members');
         require_code('cns_groups');
         require_code('cns_members2');
-        require_code('selectcode');
 
         require_css('cns_member_directory');
         require_lang('cns_member_directory');
@@ -180,7 +179,10 @@ class Block_main_members
         $where .= $filter_extra_where;
 
         $select = array_key_exists('select', $map) ? $map['select'] : '*';
-        $where .= ' AND (' . selectcode_to_sqlfragment($select, 'id') . ')';
+        if ($select != '*') {
+            require_code('selectcode');
+            $where .= ' AND (' . selectcode_to_sqlfragment($select, 'id') . ')';
+        }
 
         if ($usergroup != '') {
             $where .= ' AND (1=0';

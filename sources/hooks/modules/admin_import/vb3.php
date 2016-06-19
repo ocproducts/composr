@@ -1172,6 +1172,8 @@ class Hook_vb3
         require_code('custom_comcode');
         require_code('comcode_compiler');
 
+        init_valid_comcode_tags();
+
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'bbcode');
         foreach ($rows as $row) {
             if (import_check_if_imported('custom_comcode', strval($row['bbcodeid']))) {

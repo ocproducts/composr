@@ -18,7 +18,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 if (!isset($map['id'])) {
     $map['id'] = strval(db_get_first_id());
 }
-$id = intval($map['id']);
+$id = $map['id'];
 
 require_code('images');
 require_code('downloads');
@@ -28,7 +28,7 @@ require_css('carousels');
 
 $subdownloads = new Tempcode();
 require_code('selectcode');
-$filter_where = selectcode_to_sqlfragment(strval($id) . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
+$filter_where = selectcode_to_sqlfragment($id . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
 $all_rows = $GLOBALS['SITE_DB']->query('SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . $filter_where, 20, null, false, true, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
 shuffle($all_rows);
 foreach ($all_rows as $d_row) {

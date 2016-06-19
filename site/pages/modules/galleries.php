@@ -1345,11 +1345,15 @@ class Module_galleries
             $where .= ' AND add_date>=' . strval(time() - intval($days) * 60 * 60 * 24);
         }
 
-        require_code('selectcode');
-        $image_select_sql = selectcode_to_sqlfragment($image_select, 'r.id');
-        $where_images = $where . ' AND ' . $image_select_sql;
-        $video_select_sql = selectcode_to_sqlfragment($video_select, 'r.id');
-        $where_videos = $where . ' AND ' . $video_select_sql;
+        $where_images = $where;
+        $where_videos = $where;
+        if ($image_select != '*' || $video_select != '*') {
+            require_code('selectcode');
+            $image_select_sql = selectcode_to_sqlfragment($image_select, 'r.id');
+            $where_images .= ' AND ' . $image_select_sql;
+            $video_select_sql = selectcode_to_sqlfragment($video_select, 'r.id');
+            $where_videos .= ' AND ' . $video_select_sql;
+        }
 
         $extra_join_image = '';
         $extra_join_video = '';

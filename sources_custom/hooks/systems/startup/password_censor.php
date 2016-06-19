@@ -20,9 +20,9 @@ class Hook_startup_password_censor
 {
     public function run()
     {
-        require_code('password_censor');
         foreach ($_POST as $key => $val) {
             if ((is_string($val)) && (strpos($val, '[encrypt') !== false)) {
+                require_code('password_censor');
                 $_POST[$key] = _password_censor(post_param_string($key), PASSWORD_CENSOR__PRE_SCAN);
             }
         }

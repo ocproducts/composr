@@ -259,6 +259,8 @@ function hard_filter_input_data__html(&$val)
 {
     require_code('comcode');
 
+    init_potential_js_naughty_array();
+
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
 
     // Null vector

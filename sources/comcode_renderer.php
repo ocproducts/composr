@@ -128,6 +128,8 @@ function do_emoticon($imgcode)
  */
 function check_naughty_javascript_url($source_member, $url, $as_admin)
 {
+    init_potential_js_naughty_array();
+
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
 
     if ((!$as_admin) && (!has_privilege($source_member, 'use_very_dangerous_comcode'))) {
@@ -180,6 +182,8 @@ function check_naughty_javascript_url($source_member, $url, $as_admin)
  */
 function _custom_comcode_import($connection)
 {
+    init_valid_comcode_tags();
+
     global $IN_MINIKERNEL_VERSION;
     global $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $TEXTUAL_TAGS, $IMPORTED_CUSTOM_COMCODE, $CUSTOM_COMCODE_REPLACE_TARGETS_CACHE;
 

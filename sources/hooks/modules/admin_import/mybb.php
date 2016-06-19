@@ -1139,6 +1139,8 @@ class Hook_mybb
         require_code('custom_comcode');
         require_code('comcode_compiler');
 
+        init_valid_comcode_tags();
+
         $rows = $db->query_select('mycode');
         foreach ($rows as $row) {
             if (import_check_if_imported('custom_comcode', strval($row['cid']))) {

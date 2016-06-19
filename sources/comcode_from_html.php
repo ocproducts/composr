@@ -359,6 +359,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags
+    init_valid_comcode_tags();
     require_code('comcode_renderer');
     _custom_comcode_import($GLOBALS['SITE_DB']);
     global $VALID_COMCODE_TAGS;

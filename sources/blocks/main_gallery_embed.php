@@ -81,10 +81,14 @@ class Block_main_gallery_embed
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
-        require_code('selectcode');
         $cat = array_key_exists('param', $map) ? $map['param'] : 'root';
         $cat_raw = trim($cat, '>*');
-        $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        if ($cat == 'root') {
+            $cat_select = db_string_equal_to('cat', $cat);
+        } else {
+            require_code('selectcode');
+            $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        }
 
         $title = array_key_exists('title', $map) ? $map['title'] : '';
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
@@ -98,11 +102,17 @@ class Block_main_gallery_embed
         if (!array_key_exists('select', $map)) {
             $map['select'] = '*';
         }
-        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
+        if ($map['select'] != '*') {
+            require_code('selectcode');
+            $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
+        }
         if (!array_key_exists('video_select', $map)) {
             $map['video_select'] = '*';
         }
-        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
+        if ($map['video_select'] != '*') {
+            require_code('selectcode');
+            $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
+        }
 
         // Day filtering
         $_days = array_key_exists('days', $map) ? $map['days'] : '';

@@ -121,7 +121,7 @@ class Hook_content_meta_aware_banner_type
      */
     public function run($row, $zone, $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
     {
-        require_code('banners');
+        require_code('banners2');
 
         return render_banner_type_box($row, $zone, $give_context, $guid);
     }

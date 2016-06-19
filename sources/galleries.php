@@ -587,7 +587,7 @@ function create_selection_list_gallery_tree($it = null, $filter = null, $must_ac
  * @param  string $breadcrumbs The parent breadcrumbs at this point of the recursion
  * @param  ?array $gallery_info The database row for the $gallery gallery (null: get it from the DB)
  * @param  boolean $do_stats Whether to include video/image statistics in the returned tree
- * @param  ?string $filter A function name to filter galleries with (null: no filter)
+ * @param  ?string $filter A function name to filter galleries with OR a Selectcode string (null: no filter)
  * @param  boolean $must_accept_images Whether displayed galleries must support images
  * @param  boolean $must_accept_videos Whether displayed galleries must support videos
  * @param  boolean $purity Whether to NOT show member galleries that do not exist yet

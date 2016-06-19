@@ -343,6 +343,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         $LAX_COMCODE = (get_option('lax_comcode') === '1');
     }
 
+    init_valid_comcode_tags();
+    init_potential_js_naughty_array();
+
     global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
     $html_escape_1_strrep_inv = array('&' => true, '"' => true, '\'' => true, '<' => true, '>' => true);
@@ -2118,6 +2121,8 @@ function _opened_tag($as_admin, $source_member, $attribute_map, $current_tag, $p
 function filter_html($as_admin, $source_member, $pos, &$len, &$comcode, $in_html, $in_semihtml)
 {
     if ((!$as_admin) && (!has_privilege($source_member, 'use_very_dangerous_comcode'))) {
+        init_potential_js_naughty_array();
+
         global $POTENTIAL_JS_NAUGHTY_ARRAY;
 
         $comcode = preg_replace('#(\\\\)+(\[/(html|semihtml)\])#', '\2', $comcode); // Stops sneaky trying to trick the end of the HTML tag to hack this function

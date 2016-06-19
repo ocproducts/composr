@@ -34,6 +34,8 @@ class Hook_symbol_COMCODE_TAGS
         require_code('comcode_renderer');
         _custom_comcode_import($GLOBALS['SITE_DB']);
 
+        init_valid_comcode_tags();
+
         $out = '';
 
         $wanted = isset($param[0]) ? intval($param[0]) : null;

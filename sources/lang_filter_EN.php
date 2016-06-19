@@ -29,9 +29,6 @@ For other language packs you can copy this file to the obvious new name. This is
  */
 class LangFilter_EN extends LangFilter
 {
-    private $make_uncle_sam_happy;
-    private $the_sun_never_sets_on_the_british_empire;
-
     private $vowels;
 
     /**
@@ -39,9 +36,26 @@ class LangFilter_EN extends LangFilter
      */
     public function __construct()
     {
+        $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
+    }
+
+    /**
+     * Do a compile-time filter.
+     *
+     * @param  ?string $key Language string ID (null: not a language string)
+     * @param  string $value String value
+     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
+     * @return string The suffix
+     */
+    public function compile_time($key, $value, $lang = null)
+    {
+        if ($lang === null) {
+            $lang = user_lang();
+        }
+
         // Broken into sets. We don't need to include "d"/"s"/"r" suffixes because the base word is a stem of that. But "ing" suffixes mean removing a letter so are needed. Some completely standard long stem transfers are done as universal replaces elsewhere.
         // All words are stem bound, but not tail bound.
-        $this->make_uncle_sam_happy = array(
+        static $make_uncle_sam_happy = array(
             // Spelling...
 
             'analyse' => 'analyze',
@@ -188,7 +202,7 @@ class LangFilter_EN extends LangFilter
             //'bill' => 'invoice', not needed and likely to be substring
         );
 
-        $this->the_sun_never_sets_on_the_british_empire = array( // Tally ho
+        static $the_sun_never_sets_on_the_british_empire = array( // Tally ho
             'tick (check)' => 'tick',
             'untick (uncheck)' => 'untick',
             'ticked (checked)' => 'ticked',
@@ -196,23 +210,6 @@ class LangFilter_EN extends LangFilter
             'ticking (checking)' => 'ticking',
             'unticking (unchecking)' => 'unticking',
         ); // pip pip
-
-        $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
-    }
-
-    /**
-     * Do a compile-time filter.
-     *
-     * @param  ?string $key Language string ID (null: not a language string)
-     * @param  string $value String value
-     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
-     * @return string The suffix
-     */
-    public function compile_time($key, $value, $lang = null)
-    {
-        if ($lang === null) {
-            $lang = user_lang();
-        }
 
         // American <> British
         $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1') || ($lang == 'EN_US');
@@ -235,9 +232,9 @@ class LangFilter_EN extends LangFilter
             $value = str_replace('sational', 'zational', $value);
             $value = str_replace('senzational', 'sensational', $value); // Exception, put this back
 
-            $remapping = $this->make_uncle_sam_happy;
+            $remapping = $make_uncle_sam_happy;
         } else {
-            $remapping = $this->the_sun_never_sets_on_the_british_empire;
+            $remapping = $the_sun_never_sets_on_the_british_empire;
         }
 
         // Put in correct brand name
