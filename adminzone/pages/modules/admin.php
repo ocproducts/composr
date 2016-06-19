@@ -643,8 +643,7 @@ class Module_admin
                                     }
                                 }
                                 if (strpos($type, ':') !== false) {
-                                    list($zone, $attributes, $hash) = page_link_decode($type);
-                                    $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+                                    $_url = page_link_to_tempcode_url($type);
                                 } else {
                                     $_url = build_url(array('page' => $page, 'type' => $type), $zone);
                                 }

@@ -109,9 +109,9 @@ class Hook_fields_content_link
         list($title, , $info) = content_get_details($type, $ev);
 
         $page_link = str_replace('_WILD', $ev, $info['view_page_link_pattern']);
-        list($zone, $map) = page_link_decode($page_link);
+        $url = page_link_to_tempcode_url($page_link);
 
-        return hyperlink(build_url($map, $zone), $title, false, true);
+        return hyperlink($url, $title, false, true);
     }
 
     // ======================

@@ -542,8 +542,7 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
-            list($zone, $attributes, $hash) = page_link_decode($entry_point);
-            $url = build_url($attributes, $zone, null, false, false, $hash);
+            $url = page_link_to_tempcode_url($entry_point);
 
             $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }

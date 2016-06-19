@@ -447,6 +447,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/chmod_consistency.php',
             '_tests/tests/unit_tests/external_code_considerations.php',
             '_tests/tests/unit_tests/tutorials_codebox.php',
+            '_tests/tests/unit_tests/_performance.php',
             '_tests/tests/regression_tests/input_filter_post_block.php',
         );
     }

@@ -18,6 +18,25 @@
  * @package    core
  */
 
+/*
+Conversions...
+
+Page-link -> Structs : page_link_decode
+Page-link -> Tempcode : (none)
+Page-link -> URL : page_link_to_url
+Structs -> Page-link : build_page_link
+Structs -> Tempcode : build_url
+Structs -> URL : _build_url
+Tempcode -> Page-link : (none)
+Tempcode -> Structs : (none)
+Tempcode -> URL : static_evaluate_tempcode
+URL -> Page-link : url_to_page_link
+URL -> Structs : parse_url
+URL -> Tempcode : N/A
+
+(Structs aren't consistent, and just refer to some kind of PHP data structure involving arrays)
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -1126,6 +1145,36 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
 {
     require_code('urls2');
     return _url_to_page_link($url, $abs_only, $perfect_only);
+}
+
+/**
+ * Given a URL or page-link, return an absolute URL.
+ *
+ * @param  string $url URL or page-link
+ * @return URLPATH URL
+ */
+function page_link_to_url($url)
+{
+    $parts = array();
+    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
+        list($zone, $map, $hash) = page_link_decode($url);
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
+    } else {
+        $url = qualify_url($url, get_base_url());
+    }
+    return $url;
+}
+
+/**
+ * Given a page-link, return an absolute URL.
+ *
+ * @param  string $page_link Page-link
+ * @return URLPATH URL
+ */
+function page_link_to_tempcode_url($page_link)
+{
+    list($zone, $map, $hash) = page_link_decode($page_link);
+    return build_url($map, $zone, array(), false, false, false, $hash);
 }
 
 /**

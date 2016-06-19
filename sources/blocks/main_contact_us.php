@@ -102,8 +102,7 @@ class Block_main_contact_us
 
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
             if ($redirect != '') {
-                require_code('urls2');
-                $redirect = page_link_as_url($redirect);
+                $redirect = page_link_to_url($redirect);
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
             }

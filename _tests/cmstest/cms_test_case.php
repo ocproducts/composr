@@ -43,8 +43,7 @@ class cms_test_case extends WebTestCase
     {
         $parts = array();
         if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
-            list($zone_name, $vars, $hash) = page_link_decode($url);
-            $real_url = static_evaluate_tempcode(build_url($vars, $zone_name, null, false, false, false, $hash));
+            $real_url = page_link_to_url($url);
 
             $ret = parent::get($real_url, $parameters);
         } else {
