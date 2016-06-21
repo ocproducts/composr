@@ -512,7 +512,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  * @param  array $topic The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views).
  * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
  * @param  boolean $pt Whether the topic is a Private Topic.
- * @param  ?string $show_forum The forum name (null: do not show the forum name).
+ * @param  ?object $show_forum The forum name (null: do not show the forum name).
  * @return Tempcode The topic row.
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
@@ -607,7 +607,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     // Tpl
     $post = $topic['first_post'];
     if (!is_null($show_forum)) {
-        $hover = do_lang_tempcode('FORUM_AND_TIME_HOVER', escape_html($show_forum), escape_html(get_timezoned_date($topic['first_time'])));
+        $hover = do_lang_tempcode('FORUM_AND_TIME_HOVER', $show_forum, protect_from_escaping(escape_html(get_timezoned_date($topic['first_time']))));
         $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($topic['forum_id'], null, null, false));
     } else {
         $hover = protect_from_escaping(is_null($topic['first_time']) ? '' : escape_html(get_timezoned_date($topic['first_time'])));

@@ -66,7 +66,7 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
             foreach ($rows as $row) {
                 $id = $row[$info['id_field']];
                 $feedback_id = $feedback_code . '_' . (is_string($id) ? $id : strval($id));
-                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_id);
+                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_id, do_lang('COMMENT'));
                 if (!is_null($topic_id)) {
                     $topics[] = $topic_id;
                 }

@@ -675,7 +675,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Get the forum ID from a forum name.
      *
      * @param  SHORT_TEXT $forum_name The forum name
-     * @return integer The forum ID
+     * @return ?integer The forum ID (null: not found)
      */
     public function forum_id_from_name($forum_name)
     {
@@ -703,9 +703,10 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @param  string $forum The forum name / ID
      * @param  SHORT_TEXT $topic_identifier The topic identifier
+     * @param  ?string $topic_identifier_encapsulation_prefix This is put together with the topic identifier to make a more-human-readable topic title or topic description (hopefully the latter and a $content_title title, but only if the forum supports descriptions). Set this to improve performance (null: unknown)
      * @return ?integer The topic ID (null: not found)
      */
-    public function find_topic_id_for_topic_identifier($forum, $topic_identifier)
+    public function find_topic_id_for_topic_identifier($forum, $topic_identifier, $topic_identifier_encapsulation_prefix = null)
     {
         $key = serialize(array($forum, $topic_identifier));
 
@@ -732,8 +733,16 @@ class Forum_driver_cns extends Forum_driver_base
             return null;
         }
 
-        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND (' . db_string_equal_to('t_description', $topic_identifier) . ' OR t_description LIKE \'%: #' . db_encode_like($topic_identifier) . '\'';
-        $query .= ' OR t_cache_first_title LIKE \'% (#' . db_encode_like($topic_identifier) . ')\''; // LEGACY
+        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND ';
+        $query .= '(';
+        if ($topic_identifier_encapsulation_prefix === null) {
+            $query .= db_string_equal_to('t_description', $topic_identifier);
+            $query .= ' OR t_description LIKE \'%: #' . db_encode_like($topic_identifier) . '\'';
+            $query .= ' OR t_cache_first_title LIKE \'% (#' . db_encode_like($topic_identifier) . ')\''; // LEGACY
+        } else {
+            $query .= db_string_equal_to('t_description', $topic_identifier);
+            $query .= ' OR ' . db_string_equal_to('t_description', $topic_identifier_encapsulation_prefix . ': ' . $topic_identifier);
+        }
         $query .= ')';
 
         $_result = $this->connection->query($query, 1, null, false, true);

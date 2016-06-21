@@ -188,10 +188,12 @@ class Module_vforums
     public function unanswered_topics()
     {
         $title = do_lang_tempcode('UNANSWERED_TOPICS');
-        $condition = array('(t_cache_num_posts=1 OR t_cache_num_posts<5 AND (SELECT COUNT(DISTINCT p2.p_poster) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 WHERE p2.p_topic_id=top.id)=1)');
+        $condition = array(
+            '(t_cache_num_posts=1 OR t_cache_num_posts<5 AND (SELECT COUNT(DISTINCT p2.p_poster) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 WHERE p2.p_topic_id=top.id)=1) AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * 14), // Extra limit, otherwise query can take forever
+        );
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true);
+        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top FORCE INDEX (unread_forums)');
     }
 
     /**
@@ -349,7 +351,7 @@ class Module_vforums
             }
             $pinned = in_array('pinned', $topic['modifiers']);
             $forum_id = array_key_exists('forum_id', $topic) ? $topic['forum_id'] : null;
-            $_forum_name = array_key_exists($forum_id, $forum_name_map) ? $forum_name_map[$forum_id] : do_lang_tempcode('PRIVATE_TOPICS');
+            $_forum_name = array_key_exists($forum_id, $forum_name_map) ? make_string_tempcode(escape_html($forum_name_map[$forum_id])) : do_lang_tempcode('PRIVATE_TOPICS');
             $topics->attach(cns_render_topic($topic, true, false, $_forum_name));
         }
         if (!$topics->is_empty()) {

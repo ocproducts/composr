@@ -159,7 +159,7 @@ function output_ical()
             $start = 0;
             do {
                 $count = 0;
-                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, 'events_' . strval($event['id'])), $count, 1000, $start);
+                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, 'events_' . strval($event['id']), do_lang('COMMENT')), $count, 1000, $start);
                 if (is_array($_comments)) {
                     foreach ($_comments as $comment) {
                         if ($comment['title'] != '') {

@@ -184,7 +184,7 @@ class CMSSearchRead
                 $search_sql = '1=1';
             }
             $sql = '
-				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
+				FROM ' . $table_prefix . 'f_posts p' . (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)') . '
 				JOIN ' . $table_prefix . 'translate trans ON trans.id=p.p_post
 				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
 				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
@@ -195,7 +195,7 @@ class CMSSearchRead
                 $search_sql = '1=1';
             }
             $sql = '
-				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
+				FROM ' . $table_prefix . 'f_posts p' . (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)') . '
 				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
 				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
 				WHERE ' . $search_sql;

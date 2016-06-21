@@ -364,6 +364,7 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'recentmessages', array('m_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'queued', array('m_queued'));
+            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'combo', array('m_date_and_time', 'm_queued')); // Used for number-sent-within querying
 
             $GLOBALS['SITE_DB']->create_table('link_tracker', array(
                 'id' => '*AUTO',

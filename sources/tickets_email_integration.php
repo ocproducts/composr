@@ -467,7 +467,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
             $existing_ticket = $matches[2];
 
             // Validate
-            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket);
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket, do_lang('SUPPORT_TICKET'));
             if (is_null($topic_id)) {
                 $existing_ticket = null; // Invalid
             }
