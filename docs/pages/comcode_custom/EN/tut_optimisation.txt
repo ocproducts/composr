@@ -280,6 +280,12 @@ If you have really large databases then two issues come into play:
 1) Composr will start doing sensible changes to site behaviour to stop things grinding to a halt
 2) You might start worrying about databases being too large for a single database server and need to implement 'sharding'
 
+You may also want to switch tables to InnoDB instead of MyISAM. If you do this then run this command in Commandr too:
+[code]
+:set_value('slow_counts', '1');
+[/code]
+This works around that InnoDB can't do quick row counts in tables, so implements an approximation for certain table counts.
+
 [title="3"]Composr adaptations[/title]
 
 Composr has been tested up to a million of the following:

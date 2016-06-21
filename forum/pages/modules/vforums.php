@@ -210,7 +210,7 @@ class Module_vforums
         $title = do_lang_tempcode('INVOLVED_TOPICS');
         $condition = array('pos.p_poster=' . strval(get_member()));
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id');
+        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos FORCE INDEX (posts_by) LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id');
     }
 
     /**

@@ -72,7 +72,11 @@ class Hook_sitemap_member extends Hook_sitemap_content
         $consider_validation = (($options & SITEMAP_GEN_CONSIDER_VALIDATION) != 0);
 
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)', $consider_validation ? array('m_validated' => 1) : null);
+            if ($consider_validation) {
+                $count = $GLOBALS['FORUM_DRIVER']->get_members();
+            } else {
+                $count = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)');
+            }
             if ($count > $child_cutoff) {
                 return $nodes;
             }
