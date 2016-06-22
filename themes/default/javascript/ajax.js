@@ -267,7 +267,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 					}
 				}
 
-				if (typeof window.history.pushState!='undefined') history.pushState(null,document.title,href);
+				if (typeof window.history.pushState!='undefined') history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=\w+/,''));
 
 				clear_out_tooltips(null);
 

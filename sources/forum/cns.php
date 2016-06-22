@@ -1245,7 +1245,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
             } else {
                 $where = array('m_validated_email_confirm_code' => '');
                 if (addon_installed('unvalidated')) {
@@ -1272,7 +1272,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
             } else {
                 $where = array();
                 if (addon_installed('unvalidated')) {
@@ -1299,7 +1299,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
             } else {
                 $where = '';
                 if (addon_installed('unvalidated')) {

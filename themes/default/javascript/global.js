@@ -229,6 +229,15 @@ function script_load_stuff()
 		}
 	};
 
+	// If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
+	window.onpopstate = function(event) {
+		window.setTimeout(function() {
+			if (window.location.hash=='') {
+				window.location.reload();
+			}
+		},0);
+	}
+
 	if (typeof window.script_load_stuff_b!='undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
 	window.page_loaded=true;

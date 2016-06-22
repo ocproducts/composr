@@ -552,28 +552,28 @@ class Module_topicview
                 require_code('users');
 
                 if (($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_auto_mark_read') != 1) && (get_option('enable_mark_topic_unread') === '1') && !cns_has_read_topic($id)) {
-                    $test = get_param_integer('threaded', -1);
                     $redirect_map = array('page' => 'topicview', 'id' => $id);
-                    if ($test != -1) {
-                        $redirect_map['threaded'] = $test;
+                    $test_threaded = get_param_integer('threaded', null);
+                    if ($test_threaded !== null) {
+                        $redirect_map['threaded'] = $test_threaded;
                     }
                     $redirect = build_url($redirect_map, get_module_zone('topicview'));
                     $map = array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $id, 'redirect' => $redirect->evaluate());
-                    if ($test != -1) {
-                        $map['threaded'] = $test;
+                    if ($test_threaded !== null) {
+                        $map['threaded'] = $test_threaded;
                     }
                     $mark_read_url = build_url($map, get_module_zone('topics'));
                     $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_READ'), 'url' => $mark_read_url, 'img' => 'buttons__mark_read_topic');
                 } else {
                     if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
                         $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
-                        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                        if (($test != -1) && ($test != 0)) {
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
-                        $test = get_param_integer('threaded', -1);
-                        if ($test != -1) {
-                            $map['threaded'] = $test;
+                        $test_threaded = get_param_integer('threaded', null);
+                        if ($test_threaded !== null) {
+                            $map['threaded'] = $test_threaded;
                         }
                         $mark_unread_url = build_url($map, get_module_zone('topics'));
                         $button_array[] = array('immediate' => true, 'title' => do_lang_tempcode('MARK_UNREAD'), 'url' => $mark_unread_url, 'img' => 'buttons__mark_unread_topic');
@@ -595,13 +595,13 @@ class Module_topicview
                         require_lang('tickets');
                         require_css('tickets');
                         $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'intended_solely_for' => $GLOBALS['FORUM_DRIVER']->get_guest_id());
-                        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                        if (($test != -1) && ($test != 0)) {
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
-                        $test = get_param_integer('threaded', -1);
-                        if ($test != -1) {
-                            $map['threaded'] = $test;
+                        $test_threaded = get_param_integer('threaded', null);
+                        if ($test_threaded !== null) {
+                            $map['threaded'] = $test_threaded;
                         }
                         $new_post_url = build_url($map, get_module_zone('topics'));
                         $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode('TICKET_STAFF_ONLY_REPLY'), 'url' => $new_post_url, 'img' => 'buttons__new_reply_staff_only');
@@ -611,13 +611,13 @@ class Module_topicview
                 if (!$reply_prevented) {
                     if ($topic_info['is_threaded'] == 0) { // For threaded ones (i.e. not this) we want to encourage people to click the reply button by a post
                         $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id);
-                        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                        if (($test != -1) && ($test != 0)) {
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
-                        $test = get_param_integer('threaded', -1);
-                        if ($test != -1) {
-                            $map['threaded'] = $test;
+                        $test_threaded = get_param_integer('threaded', null);
+                        if ($test_threaded !== null) {
+                            $map['threaded'] = $test_threaded;
                         }
                         $new_post_url = build_url($map, get_module_zone('topics'));
                         $button_array[] = array('immediate' => false, 'rel' => 'add', 'title' => do_lang_tempcode($topic_info['is_open'] ? '_REPLY' : 'CLOSED'), 'url' => $new_post_url, 'img' => $topic_info['is_open'] ? 'buttons__new_reply' : 'buttons__closed');
@@ -628,13 +628,13 @@ class Module_topicview
             } // Maybe we can let them edit their last post instead?
             elseif (((is_null($topic_info['forum_id'])) || (has_privilege(get_member(), 'submit_lowrange_content', 'topics', array('forums', $topic_info['forum_id'])))) && ($topic_info['last_poster'] == get_member()) && (!is_guest()) && (cns_may_edit_post_by($topic_info['last_post_id'], $topic_info['last_time'], get_member(), $topic_info['forum_id'], null, $topic_info['is_open'] == 0))) {
                 $map = array('page' => 'topics', 'type' => 'edit_post', 'id' => $topic_info['last_post_id']);
-                $test = get_param_integer('kfs' . strval($topic_info['forum_id']), -1);
-                if (($test != -1) && ($test != 0)) {
+                $test = get_param_string('kfs' . strval($topic_info['forum_id']), null);
+                if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . strval($topic_info['forum_id'])] = $test;
                 }
-                $test = get_param_integer('threaded', -1);
-                if ($test != -1) {
-                    $map['threaded'] = $test;
+                $test_threaded = get_param_integer('threaded', null);
+                if ($test_threaded !== null) {
+                    $map['threaded'] = $test_threaded;
                 }
                 $new_post_url = build_url($map, get_module_zone('topics'));
                 $button_array[] = array('immediate' => false, 'rel' => 'edit', 'title' => do_lang_tempcode('LAST_POST'), 'url' => $new_post_url, 'img' => 'buttons__edit');
@@ -675,13 +675,13 @@ class Module_topicview
                         } else {
                             require_lang('polls');
                             $map = array('page' => 'topicview', 'id' => $id, 'view_poll_results' => 1, 'topic_start' => ($start == 0) ? null : $start, 'topic_max' => ($max == $default_max) ? null : $max);
-                            $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-                            if (($test != -1) && ($test != 0)) {
+                            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                            if (($test !== null) && ($test !== '0')) {
                                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                             }
-                            $test = get_param_integer('threaded', -1);
-                            if ($test != -1) {
-                                $map['threaded'] = $test;
+                            $test_threaded = get_param_integer('threaded', null);
+                            if ($test_threaded !== null) {
+                                $map['threaded'] = $test_threaded;
                             }
                             $results_url = build_url($map, get_module_zone('topics'));
                             $button = do_template('CNS_TOPIC_POLL_BUTTON', array('_GUID' => '94b932fd01028df8f67bb5864d9235f9', 'RESULTS_URL' => $results_url));
@@ -708,13 +708,13 @@ class Module_topicview
                 $answers->attach($answer_tpl);
             }
             $map = array('page' => 'topics', 'type' => 'vote_poll', 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'topic_max' => ($max == $default_max) ? null : $max);
-            $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-            if (($test != -1) && ($test != 0)) {
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
-            $test = get_param_integer('threaded', -1);
-            if ($test != -1) {
-                $map['threaded'] = $test;
+            $test_threaded = get_param_integer('threaded', null);
+            if ($test_threaded !== null) {
+                $map['threaded'] = $test_threaded;
             }
             $vote_url = build_url($map, get_module_zone('topics'));
             if ($_poll['is_private']) {
@@ -747,18 +747,18 @@ class Module_topicview
         // Quick reply
         if ((array_key_exists('may_use_quick_reply', $topic_info)) && ($may_reply) && (!is_null($id))) {
             $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id, 'timestamp' => time());
-            $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-            if (($test != -1) && ($test != 0)) {
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
-            $test = get_param_integer('threaded', -1);
-            if ($test != -1) {
-                $map['threaded'] = $test;
+            $test_threaded = get_param_integer('threaded', null);
+            if ($test_threaded !== null) {
+                $map['threaded'] = $test_threaded;
             }
             $_post_url = build_url($map, get_module_zone('topics'));
             $post_url = $_post_url->evaluate();
             $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'timestamp' => time());
-            if (($test != -1) && ($test != 0)) {
+            if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
             $more_url = build_url($map, get_module_zone('topics'));
@@ -908,13 +908,13 @@ class Module_topicview
 
             // Marked post actions
             $map = array('page' => 'topics', 'id' => $id);
-            $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-            if (($test != -1) && ($test != 0)) {
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
-            $test = get_param_integer('threaded', -1);
-            if ($test != -1) {
-                $map['threaded'] = $test;
+            $test_threaded = get_param_integer('threaded', null);
+            if ($test_threaded !== null) {
+                $map['threaded'] = $test_threaded;
             }
             $action_url = build_url($map, get_module_zone('topics'), null, false, true);
             $marked_post_actions = '';

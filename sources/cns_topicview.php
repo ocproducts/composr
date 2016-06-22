@@ -47,9 +47,9 @@ function find_post_id_url($post_id)
             $map[$key] = $val;
         }
     }
-    $test = get_param_integer('threaded', -1);
-    if ($test != -1) {
-        $map['threaded'] = $test;
+    $test_threaded = get_param_integer('threaded', null);
+    if ($test_threaded !== null) {
+        $map['threaded'] = $test_threaded;
     }
     $_redirect = build_url($map, '_SELF', null, true);
     $redirect = $_redirect->evaluate();
@@ -677,13 +677,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 
     if ((array_key_exists('may_validate_posts', $topic_info)) && (addon_installed('unvalidated')) && ((($topic_info['validated'] == 0) && ($_postdetails['id'] == $topic_info['first_post_id'])) || ($_postdetails['validated'] == 0))) {
         $map = array('page' => 'topics', 'type' => 'validate_post', 'id' => $_postdetails['id']);
-        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $action_url = build_url($map, get_module_zone('topics'));
         $_title = do_lang_tempcode('VALIDATE_POST');
@@ -701,13 +701,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         if (array_key_exists('intended_solely_for', $_postdetails)) {
             $map['intended_solely_for'] = $_postdetails['poster'];
         }
-        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $action_url = build_url($map, get_module_zone('topics'));
         $javascript = null;
@@ -777,13 +777,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $edit_url = build_url($map, get_module_zone('topics'));
         $_title = do_lang_tempcode('EDIT');
@@ -800,13 +800,13 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_integer('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $delete_url = build_url($map, get_module_zone('topics'));
         $_title = do_lang_tempcode('DELETE');

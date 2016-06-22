@@ -49,11 +49,13 @@ class Hook_startup_tapatalk
                     }
                     break;
                 case 'forumview':
-                    $max = get_param_integer('max', intval(get_option('forum_topics_per_page')));
                     switch (get_param_string('type', 'browse')) {
                         case 'pt':
+                            require_code('templates_pagination');
+                            require_code('cns_forumview');
+                            list($max, , , , , $start) = get_keyset_pagination_settings('forum_max', intval(get_option('private_topics_per_page')), 'forum_start', 'kfs', 'sort', 'last_post', 'get_forum_sort_order');
+
                             $page_type = 'message';
-                            $start = get_param_integer('start', get_param_integer('kfs', 0));
                             $id = get_param_integer('id', null);
                             if (!is_null($id)) {
                                 $extra = '&mid=' . strval($id);
@@ -61,13 +63,17 @@ class Hook_startup_tapatalk
                             break;
                         case 'browse':
                             $id = get_param_integer('id', db_get_first_id());
+
+                            require_code('templates_pagination');
+                            require_code('cns_forumview');
+                            list($max, , , , , $start) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', 'kfs' . strval($id), 'sort', 'last_post', 'get_forum_sort_order');
+
                             if ($id == db_get_first_id()) {
                                 $page_type = 'home';
                             } else {
                                 $page_type = 'forum';
                                 $extra = '&fid=' . strval($id);
                             }
-                            $start = get_param_integer('start', get_param_integer('kfs' . strval($id), 0));
                             break;
                     }
                     break;

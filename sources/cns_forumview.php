@@ -19,6 +19,47 @@
  */
 
 /**
+ * Get the active forum sort order from a URL specifier.
+ *
+ * @param string $_sort Sort order keyword.
+ * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
+ */
+function get_forum_sort_order($_sort = 'first_post')
+{
+    $sort = 't_cascading DESC,t_pinned DESC,';
+    if (get_option('enable_sunk') == '1') {
+        $sort .= 't_sunk ASC,';
+    }
+
+    switch ($_sort) {
+        case 'first_post':
+            $sort .= 't_cache_first_time DESC';
+            $keyset_field = 't_cache_first_time<X';
+            $keyset_field_stripped = 'first_time';
+            break;
+
+        case 'title':
+            $sort .= 't_cache_first_title ASC';
+            $keyset_field = 't_cache_first_title>\'X\'';
+            $keyset_field_stripped = 'first_title';
+            break;
+
+        default:
+            $sort .= 't_cache_last_time DESC';
+            $keyset_field = 't_cache_last_time<X';
+            $keyset_field_stripped = 'last_time';
+            break;
+    }
+
+    if ($GLOBALS['FORUM_DRIVER']->get_topics() < intval(get_option('keyset_pagination'))) { // Not enabled
+        $keyset_field = null;
+        $keyset_field_stripped = null;
+    }
+
+    return array($sort, $keyset_field, $keyset_field_stripped);
+}
+
+/**
  * Render the Conversr forumview.
  *
  * @param  ?integer $id Forum ID (null: private topics).
@@ -26,12 +67,16 @@
  * @param  string $current_filter_cat The filter category (blank if no filter)
  * @param  integer $max Maximum results to show
  * @param  integer $start Offset for result showing
+ * @param  integer $true_start True offset when disconsidering keyset pagination
+ * @param  string $sql_sup Extra SQL to append for where clause.
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause.
+ * @param  string $keyset_field_stripped Keyset field name so that we can extract values from DB result sets
  * @param  AUTO_LINK $root Virtual root
  * @param  ?MEMBER $of_member_id The member to show private topics of (null: not showing private topics)
  * @param  Tempcode $breadcrumbs The breadcrumbs
  * @return mixed Either Tempcode (an interface that must be shown) or a pair: The main Tempcode, the forum name (string). For a PT view, it is always a tuple, never raw Tempcode (as it can go inside a tabset).
  */
-function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $root, $of_member_id, $breadcrumbs)
+function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $breadcrumbs)
 {
     require_css('cns');
 
@@ -43,7 +88,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
 
         require_code('cns_forumview_pt');
-        $details = cns_get_private_topics($start, $max, $of_member_id);
+        $details = cns_get_private_topics($start, $true_start, $max, $sql_sup, $sql_sup_order_by, $of_member_id);
         $root_forum_name = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $root));
         $pt_username = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id);
         $pt_displayname = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id, true);
@@ -52,7 +97,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
         $details['name'] = do_lang_tempcode('PRIVATE_TOPICS_OF', escape_html($pt_displayname), escape_html($pt_username));
     } else {
-        $details = cns_get_forum_view($id, $forum_info, $start, $max);
+        $details = cns_get_forum_view($id, $forum_info, $start, $true_start, $max, $sql_sup, $sql_sup_order_by);
 
         if ((array_key_exists('question', $details)) && (is_null(get_bot_type()))) {
             // Was there a question answering attempt?
@@ -272,6 +317,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     $topics = new Tempcode();
     $pinned = false;
     $num_unread = 0;
+    $keyset_value = null;
     foreach ($details['topics'] as $topic) {
         if (($pinned) && (!in_array('pinned', $topic['modifiers']))) {
             $topics->attach(do_template('CNS_PINNED_DIVIDER'));
@@ -280,6 +326,10 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $topics->attach(cns_render_topic($topic, $moderator_actions != '', $type == 'pt', null));
         if (in_array('unread', $topic['modifiers'])) {
             $num_unread++;
+        }
+
+        if (!$pinned && $keyset_field_stripped !== null) {
+            $keyset_value = $topic[$keyset_field_stripped]; // We keep overwriting this value until the last loop iteration
         }
     }
 
@@ -331,7 +381,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         }
 
         require_code('templates_pagination');
-        $pagination = pagination(do_lang_tempcode('FORUM_TOPICS'), $start, 'forum_start', $max, 'forum_max', $details['max_rows'], false, 5, null, ($type == 'pt' && get_page_name() == 'members') ? 'tab__pts' : '');
+        $pagination = pagination(make_string_tempcode(escape_html($forum_name)), $true_start, 'forum_start', $max, 'forum_max', $details['max_rows'], false, 5, null, ($type == 'pt' && get_page_name() == 'members') ? 'tab__pts' : '', $keyset_value);
 
         $sort = array_key_exists('sort', $details) ? $details['sort'] : 'last_post';
         $topic_wrapper = do_template('CNS_FORUM_TOPIC_WRAPPER', array(
@@ -540,8 +590,12 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         $last_post = do_lang_tempcode('NA_EM');
     }
     $map = array('page' => 'topicview', 'id' => $topic['id']);
-    if ((array_key_exists('forum_id', $topic)) && (is_null(get_bot_type())) && (get_param_integer('forum_start', 0) != 0)) {
-        $map['kfs' . strval($topic['forum_id'])] = get_param_integer('forum_start', 0);
+    if ((array_key_exists('forum_id', $topic)) && (is_null(get_bot_type()))) {
+        require_code('templates_pagination');
+        list(, , , , , $true_start, $compound) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', 'kfs' . strval($topic['forum_id']), 'sort', 'last_post'/*not used for what we're doing*/, 'get_forum_sort_order');
+        if ($true_start != 0) {
+            $map['kfs' . strval($topic['forum_id'])] = $compound;
+        }
     }
     $url = build_url($map, get_module_zone('topicview'));
 
@@ -646,10 +700,13 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
  * @param  AUTO_LINK $forum_id The forum ID.
  * @param  array $forum_info The forum row.
  * @param  integer $start The start row for getting details of topics in the forum (i.e. 0 is newest, higher is starting further back in time).
+ * @param  integer $true_start True offset when disconsidering keyset pagination
  * @param  ?integer $max The maximum number of topics to get detail of (null: default).
+ * @param  string $sql_sup Extra SQL to append.
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause.
  * @return array The details.
  */
-function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
+function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0, $max = null, $sql_sup = '', $sql_sup_order_by = '')
 {
     if (is_null($max)) {
         $max = intval(get_option('forum_topics_per_page'));
@@ -810,16 +867,6 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         }
         $where = $extra . ' (t_forum_id=' . strval($forum_id) . ' OR (t_cascading=1 ' . $extra2 . '))';
     }
-    $sort = get_param_string('sort', $forum_info['f_order']);
-    $sort2 = 't_cache_last_time DESC';
-    if ($sort == 'first_post') {
-        $sort2 = 't_cache_first_time DESC';
-    } elseif ($sort == 'title') {
-        $sort2 = 't_cache_first_title ASC';
-    }
-    if (get_option('enable_sunk') == '1') {
-        $sort2 = 't_sunk ASC,' . $sort2;
-    }
     if (is_guest()) {
         $query = 'SELECT ttop.*,NULL AS l_time';
         if (multi_lang_content()) {
@@ -831,10 +878,6 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
         if (strpos(get_db_type(), 'mysql') !== false) {
             $query .= ' USE INDEX (' . ((get_option('enable_sunk') == '1') ? 'topic_order_2' : 'topic_order_3') . ')';
         }
-        if (!multi_lang_content()) {
-            $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=ttop.t_cache_first_post_id';
-        }
-        $query .= ' WHERE ' . $where . ' ORDER BY t_cascading DESC,t_pinned DESC,' . $sort2;
     } else {
         $query = 'SELECT ttop.*,l_time';
         if (multi_lang_content()) {
@@ -847,17 +890,17 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $max = null)
             $query .= ' USE INDEX (' . ((get_option('enable_sunk') == '1') ? 'topic_order_2' : 'topic_order_3') . ')';
         }
         $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ttop.id=l.l_topic_id AND l.l_member_id=' . strval(get_member());
-        if (!multi_lang_content()) {
-            $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=ttop.t_cache_first_post_id';
-        }
-        $query .= ' WHERE ' . $where . ' ORDER BY t_cascading DESC,t_pinned DESC,' . $sort2;
     }
+    if (!multi_lang_content()) {
+        $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=ttop.t_cache_first_post_id';
+    }
+    $query .= ' WHERE ' . $where . $sql_sup . $sql_sup_order_by;
     if (($start < 200) && (multi_lang_content())) {
         $topic_rows = $GLOBALS['FORUM_DB']->query($query, $max, $start, false, false, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
     } else { // deep search, so we need to make offset more efficient, trade-off is more queries
         $topic_rows = $GLOBALS['FORUM_DB']->query($query, $max, $start);
     }
-    if (($start == 0) && (count($topic_rows) < $max)) {
+    if (($true_start == 0) && (count($topic_rows) < $max)) {
         $max_rows = $max; // We know that they're all on this screen
     } else {
         $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $where, false, true);
