@@ -265,7 +265,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
     $post_query_sql = 'SELECT ' . $post_query_select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ';
     if (strpos(get_db_type(), 'mysql') !== false) {
-        $post_query_sql .= 'USE INDEX(in_topic) ';
+        $post_query_sql .= 'FORCE INDEX(in_topic) ';
     }
     if (multi_lang_content()) {
         $post_query_sql .= 'LEFT JOIN ' . $this_ref->connection->get_table_prefix() . 'translate t_p_post ON t_p_post.id=p.p_post ';
@@ -282,7 +282,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         if (($filter_topic_title == '') && ($filter_topic_description == '')) {
             $query = 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
             if (strpos(get_db_type(), 'mysql') !== false) {
-                $query .= ' USE INDEX (topic_order_4)';
+                $query .= ' FORCE INDEX (topic_order_4)';
             }
             $query .= ' WHERE (' . $id_list . ')' . $topic_filter_sup;
             $query_simplified = $query;
@@ -307,7 +307,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 }
                 $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
                 if (strpos(get_db_type(), 'mysql') !== false) {
-                    $query_more .= ' USE INDEX (in_forum)';
+                    $query_more .= ' FORCE INDEX (in_forum)';
                 }
                 $query_more .= ' WHERE (' . $id_list . ') AND ' . $topic_filter . $topic_filter_sup;
                 $query .= $query_more;
@@ -466,7 +466,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
     }
     static $index = null;
     if ($index === null) {
-        $index = (strpos(get_db_type(), 'mysql') !== false && ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_name', array('i_table' => 'f_posts', 'i_name' => 'in_topic')) !== null)) ? 'USE INDEX (in_topic)' : '';
+        $index = (strpos(get_db_type(), 'mysql') !== false && ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_name', array('i_table' => 'f_posts', 'i_name' => 'in_topic')/*LEGACY*/) !== null)) ? ' FORCE INDEX (in_topic)' : '';
     }
 
     $order = $reverse ? 'p_time DESC,p.id DESC' : 'p_time ASC,p.id ASC';
@@ -487,8 +487,8 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
         $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
     }
-    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    $count = $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
+    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
+    $count = $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
 
     $out = array();
     foreach ($rows as $myrow) {

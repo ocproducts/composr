@@ -730,11 +730,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         }
                     } else {
                         // See if it is deprecated
+                        $table = 'url_id_monikers';
                         if (strpos(get_db_type(), 'mysql') !== false) {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers USE INDEX (uim_moniker)', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
-                        } else {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
+                            $table .= ' FORCE INDEX (uim_moniker)';
                         }
+                        $monikers = $GLOBALS['SITE_DB']->query_select($table, array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
                         if (!array_key_exists(0, $monikers)) { // hmm, deleted?
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                         }

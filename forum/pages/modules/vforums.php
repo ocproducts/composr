@@ -188,12 +188,18 @@ class Module_vforums
     public function unanswered_topics()
     {
         $title = do_lang_tempcode('UNANSWERED_TOPICS');
+
         $condition = array(
             '(t_cache_num_posts=1 OR t_cache_num_posts<5 AND (SELECT COUNT(DISTINCT p2.p_poster) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 WHERE p2.p_topic_id=top.id)=1) AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * 14), // Extra limit, otherwise query can take forever
         );
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top FORCE INDEX (unread_forums)');
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $initial_table .= ' FORCE INDEX (unread_forums)';
+        }
+
+        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $initial_table);
     }
 
     /**
@@ -208,9 +214,16 @@ class Module_vforums
         }
 
         $title = do_lang_tempcode('INVOLVED_TOPICS');
+
         $condition = array('pos.p_poster=' . strval(get_member()));
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos FORCE INDEX (posts_by) LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id');
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos';
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $initial_table .= ' FORCE INDEX (posts_by)';
+        }
+        $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
+
+        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $initial_table);
     }
 
     /**
