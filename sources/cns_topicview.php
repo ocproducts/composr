@@ -677,7 +677,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 
     if ((array_key_exists('may_validate_posts', $topic_info)) && (addon_installed('unvalidated')) && ((($topic_info['validated'] == 0) && ($_postdetails['id'] == $topic_info['first_post_id'])) || ($_postdetails['validated'] == 0))) {
         $map = array('page' => 'topics', 'type' => 'validate_post', 'id' => $_postdetails['id']);
-        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -701,7 +701,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         if (array_key_exists('intended_solely_for', $_postdetails)) {
             $map['intended_solely_for'] = $_postdetails['poster'];
         }
-        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -777,7 +777,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }
@@ -800,7 +800,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         } else {
             $map['redirect'] = get_self_url(true);
         }
-        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
         }

@@ -567,7 +567,7 @@ class Module_topicview
                 } else {
                     if ((get_option('enable_mark_topic_unread') === '1') && !$too_old) {
                         $map = array('page' => 'topics', 'type' => 'mark_unread_topic', 'id' => $id);
-                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
                         if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
@@ -595,7 +595,7 @@ class Module_topicview
                         require_lang('tickets');
                         require_css('tickets');
                         $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id, 'intended_solely_for' => $GLOBALS['FORUM_DRIVER']->get_guest_id());
-                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
                         if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
@@ -611,7 +611,7 @@ class Module_topicview
                 if (!$reply_prevented) {
                     if ($topic_info['is_threaded'] == 0) { // For threaded ones (i.e. not this) we want to encourage people to click the reply button by a post
                         $map = array('page' => 'topics', 'type' => 'new_post', 'id' => $id);
-                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                        $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
                         if (($test !== null) && ($test !== '0')) {
                             $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                         }
@@ -628,7 +628,7 @@ class Module_topicview
             } // Maybe we can let them edit their last post instead?
             elseif (((is_null($topic_info['forum_id'])) || (has_privilege(get_member(), 'submit_lowrange_content', 'topics', array('forums', $topic_info['forum_id'])))) && ($topic_info['last_poster'] == get_member()) && (!is_guest()) && (cns_may_edit_post_by($topic_info['last_post_id'], $topic_info['last_time'], get_member(), $topic_info['forum_id'], null, $topic_info['is_open'] == 0))) {
                 $map = array('page' => 'topics', 'type' => 'edit_post', 'id' => $topic_info['last_post_id']);
-                $test = get_param_string('kfs' . strval($topic_info['forum_id']), null);
+                $test = get_param_string('kfs' . strval($topic_info['forum_id']), null, true);
                 if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . strval($topic_info['forum_id'])] = $test;
                 }
@@ -675,7 +675,7 @@ class Module_topicview
                         } else {
                             require_lang('polls');
                             $map = array('page' => 'topicview', 'id' => $id, 'view_poll_results' => 1, 'topic_start' => ($start == 0) ? null : $start, 'topic_max' => ($max == $default_max) ? null : $max);
-                            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+                            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
                             if (($test !== null) && ($test !== '0')) {
                                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
                             }
@@ -708,7 +708,7 @@ class Module_topicview
                 $answers->attach($answer_tpl);
             }
             $map = array('page' => 'topics', 'type' => 'vote_poll', 'id' => $id, 'topic_start' => ($start == 0) ? null : $start, 'topic_max' => ($max == $default_max) ? null : $max);
-            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
             if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
@@ -747,7 +747,7 @@ class Module_topicview
         // Quick reply
         if ((array_key_exists('may_use_quick_reply', $topic_info)) && ($may_reply) && (!is_null($id))) {
             $map = array('page' => 'topics', 'type' => '_add_reply', 'topic_id' => $id, 'timestamp' => time());
-            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
             if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }
@@ -908,7 +908,7 @@ class Module_topicview
 
             // Marked post actions
             $map = array('page' => 'topics', 'id' => $id);
-            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null);
+            $test = get_param_string('kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id'])), null, true);
             if (($test !== null) && ($test !== '0')) {
                 $map['kfs' . (is_null($topic_info['forum_id']) ? '' : strval($topic_info['forum_id']))] = $test;
             }

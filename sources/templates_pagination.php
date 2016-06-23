@@ -27,6 +27,9 @@ function init__templates_pagination()
 {
     global $INCREMENTAL_ID_GENERATOR;
     $INCREMENTAL_ID_GENERATOR = 1;
+
+    global $COMPOUND_PARAMS_TO_SKIP;
+    $COMPOUND_PARAMS_TO_SKIP = array();
 }
 
 /**
@@ -85,14 +88,17 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
     require_code('json');
 
     if ($compound_name !== null) {
+        global $COMPOUND_PARAMS_TO_SKIP;
+        $COMPOUND_PARAMS_TO_SKIP[$compound_name] = true;
+
         $test = get_param_string($compound_name, null);
         if ($test == '') {
             $test = null;
         }
         if ($test !== null) {
-            $_compound_name = @json_decode($compound_name);
-            if ($_compound_name !== false) {
-                list($max, $start, $sort, $keyset_param) = $_compound_name;
+            $compound = @json_decode($test);
+            if ($compound !== false) {
+                list($max, $start, $sort, $keyset_param) = $compound;
             }
         }
     }
@@ -379,8 +385,10 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
  */
 function _build_pagination_cat_url($url_array, $post_array, $hash)
 {
+    global $COMPOUND_PARAMS_TO_SKIP;
+
     $url_array = array_merge($url_array, $post_array);
-    $cat_url = build_url($url_array, '_SELF', array('auth_key' => true, 'block_map' => true, 'snippet' => true, 'utheme' => true), true, false, false, $hash);
+    $cat_url = build_url($url_array, '_SELF', array('auth_key' => true, 'block_map' => true, 'snippet' => true, 'utheme' => true, 'ajax' => true) + $COMPOUND_PARAMS_TO_SKIP, true, false, false, $hash);
 
     return $cat_url;
 }
