@@ -267,6 +267,8 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
                     $parts->attach(do_template('PAGINATION_PAGE_NUMBER_LINK', array('_GUID' => 'a6d1a0ba93e3b7deb6fe6f8f1c117c0f', 'NOFOLLOW' => ($x * $max > $max * 5) && ($bot), 'REL' => $rel, 'TITLE' => $title, 'URL' => $cat_url, 'P' => strval($x + 1))));
                 }
             }
+        } else {
+            $parts->attach(do_template('PAGINATION_PAGE_NUMBER', array('P' => strval((int)($start / $max) + 1))));
         }
 
         // Indicate that the sequence is incomplete with an ellipsis
