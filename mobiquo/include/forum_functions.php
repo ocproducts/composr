@@ -334,6 +334,10 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
         $sql .= ' WHERE ' . tapatalk_get_topic_where($topic_id, $member_id);
         $sql .= ' ORDER BY p_time,p.id';
         $_posts = $GLOBALS['FORUM_DB']->query('SELECT *,p.id AS post_id,t.id AS topic_id,f.id AS forum_id' . $sql, $max, $start);
+
+        $sql = '';
+        $sql .= ' FROM ' . $table_prefix . 'f_posts p';
+        $sql .= ' WHERE ' . tapatalk_get_topic_where($topic_id, $member_id);
         $total_post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $sql);
 
         $posts = array();

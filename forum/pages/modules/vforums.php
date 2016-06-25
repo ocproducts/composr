@@ -169,15 +169,9 @@ class Module_vforums
 
         $condition = 't_cache_last_time>' . strval($last_time);
 
-        $order2 = 't_cache_last_time DESC';
-
-        if (get_option('enable_sunk') == '1') {
-            $order2 = 't_sunk ASC,' . $order2;
-        }
-
         $extra_tpl_map = array('FILTERING' => do_template('CNS_VFORUM_FILTERING', array()));
 
-        return $this->_vforum($title, $condition, 't_cascading DESC,t_pinned DESC,' . $order2, true, $extra_tpl_map);
+        return $this->_vforum($title, $condition, 'last_post', true, $extra_tpl_map);
     }
 
     /**
@@ -199,7 +193,7 @@ class Module_vforums
             $initial_table .= ' FORCE INDEX (unread_forums)';
         }
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $initial_table);
+        return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }
 
     /**
@@ -215,7 +209,11 @@ class Module_vforums
 
         $title = do_lang_tempcode('INVOLVED_TOPICS');
 
-        $condition = array('pos.p_poster=' . strval(get_member()));
+        $_condition='pos.p_poster=' . strval(get_member());
+        if ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) { // Too many posts, so make time-sensitive
+            $_condition.=' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
+        }
+        $condition = array($_condition);
 
         $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos';
         if (strpos(get_db_type(), 'mysql') !== false) {
@@ -223,7 +221,7 @@ class Module_vforums
         }
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $initial_table);
+        return $this->_vforum($title, $condition, 'post_time', true, null, $initial_table, ',pos.p_time');
     }
 
     /**
@@ -240,7 +238,7 @@ class Module_vforums
         $title = do_lang_tempcode('TOPICS_UNREAD');
         $condition = array('l_time IS NOT NULL AND l_time<t_cache_last_time', 'l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true);
+        return $this->_vforum($title, $condition, 'last_post', true);
     }
 
     /**
@@ -257,7 +255,7 @@ class Module_vforums
         $title = do_lang_tempcode('RECENTLY_READ');
         $condition = 'l_time>' . strval(time() - 60 * 60 * 24 * 2);
 
-        return $this->_vforum($title, $condition, 'l_time DESC', true);
+        return $this->_vforum($title, $condition, 'read_time', true);
     }
 
     /**
@@ -269,12 +267,13 @@ class Module_vforums
      * @param  boolean $no_pin Whether to not show pinning in a separate section
      * @param  ?array $extra_tpl_map Extra template parameters to pass through (null: none)
      * @param  ?string $initial_table The table to query (null: topic table)
+     * @param  string $extra_select Extra SQL for select clause
      * @return Tempcode The UI
      */
-    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null)
+    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null, $extra_select = '')
     {
         require_code('templates_pagination');
-        list($max, $start, , $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', null, null, $order, 'get_forum_sort_order');
+        list($max, $start, , $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', null, null, $order, 'get_forum_sort_order_simplified');
 
         $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), null, get_param_integer('keep_forum_root', db_get_first_id()), false);
         $_breadcrumbs[] = array('', $title);
@@ -322,6 +321,7 @@ class Module_vforums
             } else {
                 $full_query .= ',p.p_post,p.p_post__text_parsed,p.p_post__source_user';
             }
+            $full_query .= $extra_select;
             $full_query .= $query;
             if (($start < 200) && (is_null($initial_table)) && (multi_lang_content())) {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start, false, false, array('t_cache_first_post' => '?LONG_TRANS__COMCODE')));
@@ -349,7 +349,7 @@ class Module_vforums
         }
         $topics_array = array();
         foreach ($topic_rows as $topic_row) {
-            $topics_array[] = cns_get_topic_array($topic_row, get_member(), $hot_topic_definition, in_array($topic_row['id'], $involved));
+            $topics_array[] = cns_get_topic_array($topic_row, get_member(), $hot_topic_definition, in_array($topic_row['id'], $involved)) + $topic_row;
         }
 
         // Display topics

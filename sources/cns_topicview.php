@@ -411,7 +411,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         if (($start == 0) && (count($_postdetailss) < $max)) {
             $out['max_rows'] = $max; // We know that they're all on this screen
         } else {
-            $out['max_rows'] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where);
+            $out['max_rows'] = (is_null($topic_id) || $topic_info['t_cache_num_posts'] < 500)? $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where) : $topic_info['t_cache_num_posts']/*for performance reasons*/;
         }
         $posts = array();
         // Precache member/group details in one fell swoop

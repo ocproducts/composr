@@ -1268,7 +1268,7 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
         merge_sort($rows, '_multi_sort');
     } else {
         $first_key = key($rows);
-        if (is_integer($first_key)) {
+        if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
             usort($rows, '_multi_sort');
         } else {
             uasort($rows, '_multi_sort');

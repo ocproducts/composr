@@ -445,7 +445,9 @@ function wysiwyg_editor_init_for(element,id)
 		editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
 		if (typeof window.set_up_comcode_autocomplete!='undefined')
+		{
 			set_up_comcode_autocomplete(id);
+		}
 
 		// Instant preview of Comcode
 		find_tags_in_editor(editor,element);

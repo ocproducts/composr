@@ -156,7 +156,7 @@ function _param_invalid($name, $ret, $posted)
     require_code('lang');
     require_code('tempcode');
 
-    if (!url_monikers_enabled() && $name == 'id') {
+    if (function_exists('url_monikers_enabled') && !url_monikers_enabled() && $name == 'id') {
         warn_exit(do_lang_tempcode('javascript:NOT_INTEGER_URL_MONIKERS')); // Complaining about non-integers is just confusing
     }
 

@@ -208,7 +208,7 @@ $(function() {
 		this.$element = is_wysiwyg_field(element) ? null : $(element);
 		this.$itemList = $(Plugin.MENU_TEMPLATE);
 		this.currentToken = undefined;
-		this.startpos = null;
+		this.startPos = null;
 
 		this.options = $.extend({}, defaults, options);
 		if (!$.isArray(this.options.token)) {
@@ -241,7 +241,28 @@ $(function() {
 			this.options.onFilterChanged(this);
 		}
 
-		if (this.$element) {
+		if (typeof window.CKEDITOR != 'undefined' && typeof CKEDITOR.instances[this.element.id]!='undefined') {
+			var _this = this;
+			var editor = CKEDITOR.instances[this.element.id];
+			if (editor.document) {
+				editor.document.on('keyup', function(e) {
+					_this.onKeyUp.call(_this, e);
+				});
+				editor.document.on('keydown', function(e) {
+					_this.onKeyDown.call(_this, e);
+				});
+				editor.document.on('focus', function(e) {
+					_this.renderElements.call(_this, _this.options.values);
+				});
+				editor.document.on('blur', function(e) {
+					_this.remove.call(_this);
+				});
+				editor.document.on('click', function(e) {
+					_this.remove.call(_this);
+				});
+			}
+		}
+		else if (this.$element) {
 			this.$element
 										.bind('keyup', $.proxy(this.onKeyUp, this))
 										.bind('keydown', $.proxy(this.onKeyDown, this))
@@ -249,29 +270,6 @@ $(function() {
 										.bind('blur', $.proxy(this.remove, this))
 										.bind('click', $.proxy(this.remove, this))
 										;
-		} else {
-			var _this = this;
-
-			if (typeof window.CKEDITOR != 'undefined') {
-				var editor = CKEDITOR.instances[this.element.id];
-				if (editor.document) {
-					editor.document.on('keyup', function(e) {
-						_this.onKeyUp.call(_this, e);
-					});
-					editor.document.on('keydown', function(e) {
-						_this.onKeyDown.call(_this, e);
-					});
-					editor.document.on('focus', function(e) {
-						_this.renderElements.call(_this, _this.options.values);
-					});
-					editor.document.on('blur', function(e) {
-						_this.remove.call(_this);
-					});
-					editor.document.on('click', function(e) {
-						_this.remove.call(_this);
-					});
-				}
-			}
 		}
 	};
 
@@ -333,16 +331,16 @@ $(function() {
 
 	Plugin.prototype.replace = function (replacement) {
 		if (this.$element) {
-			var startpos = this.$element.getCursorPosition();
+			var startPos = this.$element.getCursorPosition();
 		} else {
-			var startpos = this.startpos; // Has to use this.startpos because focus may have moved away, breaking CKEditor selection
+			var startPos = this.startPos; // Has to use this.startPos because focus may have moved away, breaking CKEditor selection
 		}
 
 		var fullStuff = this.getText();
-		var val = fullStuff.substring(0, startpos);
+		var val = fullStuff.substring(0, startPos);
 		val = val.replace(this.expression, '$1' + '$2' + replacement);
 
-		var posfix = fullStuff.substring(startpos, fullStuff.length);
+		var posfix = fullStuff.substring(startPos, fullStuff.length);
 		var separator = posfix.match(/^\s/) ? '' : (this.$element?' ':'&nbsp;');
 
 		var finalFight = val + separator + posfix;
@@ -443,9 +441,21 @@ $(function() {
 
 			var _this=this;
 			window.setTimeout(function() {
-				var iframe = CKEDITOR.instances[_this.element.name].container.$.getElementsByTagName('iframe')[0];
-				var x = find_pos_x(dummyElement.$) + find_pos_x(iframe,true);
-				var y = find_pos_y(dummyElement.$) + find_pos_y(iframe,true);
+				var cke = CKEDITOR.instances[_this.element.name];
+				var iframe = cke.container.$.getElementsByTagName('iframe')[0];
+
+				var sel = cke.getSelection(); // text selection
+				var obj = sel.getStartElement().$; // the element the selected text resides in
+
+				var x = find_pos_x(obj,true) - get_window_scroll_x() + get_window_scroll_x(cke.window.$) + find_pos_x(iframe,true);
+				var y = find_pos_y(obj,true) - get_window_scroll_y() + get_window_scroll_y(cke.window.$) + find_pos_y(iframe,true) + 20;
+				// NB: The get_window_scroll_x/get_window_scroll_y is because calculation happened on wrong window object
+
+				var text = _this.getText().substring(0, this.startPos);
+				console.log(text);
+				var lines = (text.match(/<br( \/)?>/g) || []).length;
+				window.top.console.log(lines);
+				y += 17 * lines;
 
 				dummyElement.remove();
 
@@ -512,17 +522,20 @@ $(function() {
 
 	Plugin.prototype.onKeyUp = function (e) {
 		if (this.$element) {
-			var startpos = this.$element.getCursorPosition();
-			var val = this.getText().substring(0, startpos);
+			var startPos = this.$element.getCursorPosition();
+			var val = this.getText().substring(0, startPos);
 		} else {
 			var range = CKEDITOR.instances[this.element.name].getSelection().getRanges()[0];
 			if (typeof range == 'undefined') return; // Out of focus :S
-			var text = this.getText();
+			var allText = this.getText();
+			allText = allText.replace(/\u200B/,'');
 			var textNode = range.startContainer.$;
-			var startpos = text.replace(/&nbsp;/g,' ').lastIndexOf(textNode.nodeValue?textNode.nodeValue:textNode.textContent);
-			if (startpos == -1) return; // Could not correlate, maybe some weird HTML encoding problem
-			startpos += range.startOffset; // A but of a fudge. We assume the last occurrence of the element we're on, in the overall HTML, is the one we're working in ; no API to get true cursor position
-			var val = text.substring(0, startpos);
+			var selectedText = textNode.nodeValue?textNode.nodeValue:textNode.textContent;
+			selectedText = selectedText.replace(/\u200B/,'');
+			var startPos = allText.lastIndexOf(selectedText);
+			if (startPos == -1) return; // Could not correlate, maybe some weird HTML encoding problem
+			startPos += range.startOffset; // A but of a fudge. We assume the last occurrence of the element we're on, in the overall HTML, is the one we're working in ; no API to get true cursor position
+			var val = allText.substring(0, startPos);
 		}
 		var matches = val.match(this.expression);
 
@@ -534,7 +547,7 @@ $(function() {
 		}
 
 		if (matches) {
-			this.startpos = startpos;
+			this.startPos = startPos;
 
 			this.currentToken = matches[2];
 
@@ -643,8 +656,13 @@ function autoCompleteElementFactory(element,e) {
 
 /* Composr binder code */
 
-function set_up_comcode_autocomplete(name)
+function set_up_comcode_autocomplete(name,wysiwyg)
 {
+	if (typeof wysiwyg!='undefined' && wysiwyg && wysiwyg_on() && (typeof CKEDITOR=='undefined' || typeof CKEDITOR.instances[name]=='undefined'))
+		return;
+
+	register_mouse_listener();
+
 	$('#'+name).sew({
 		values: [],
 		token: '@',

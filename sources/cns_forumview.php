@@ -24,11 +24,27 @@
  * @param string $_sort Sort order keyword.
  * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
  */
-function get_forum_sort_order($_sort = 'first_post')
+function get_forum_sort_order_simplified($_sort = 'first_post')
+{
+    return get_forum_sort_order($_sort, true);
+}
+
+/**
+ * Get the active forum sort order from a URL specifier.
+ *
+ * @param string $_sort Sort order keyword.
+ * @param boolean $simplified Whether to not include pinning etc in the order.
+ * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
+ */
+function get_forum_sort_order($_sort = 'first_post', $simplified = false)
 {
     $sort = 't_cascading DESC,t_pinned DESC,';
     if (get_option('enable_sunk') == '1') {
         $sort .= 't_sunk ASC,';
+    }
+
+    if ($simplified) {
+        $sort = '';
     }
 
     switch ($_sort) {
@@ -44,6 +60,19 @@ function get_forum_sort_order($_sort = 'first_post')
             $keyset_field_stripped = 'first_title';
             break;
 
+        case 'read_time':
+            $sort .= 'l_time DESC';
+            $keyset_field = null;
+            $keyset_field_stripped = null;
+            break;
+
+        case 'post_time':
+            $sort .= 'pos.p_time DESC';
+            $keyset_field = 'pos.p_time<X';
+            $keyset_field_stripped = 'p_time';
+            break;
+
+        case 'last_post':
         default:
             $sort .= 't_cache_last_time DESC';
             $keyset_field = 't_cache_last_time<X';
@@ -328,7 +357,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
             $num_unread++;
         }
 
-        if (!$pinned && $keyset_field_stripped !== null) {
+        if (!$pinned && $keyset_field_stripped !== null && isset($topic[$keyset_field_stripped])) {
             $keyset_value = $topic[$keyset_field_stripped]; // We keep overwriting this value until the last loop iteration
         }
     }

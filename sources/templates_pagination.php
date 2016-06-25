@@ -97,7 +97,7 @@ function get_keyset_pagination_settings($max_name, $max_default, $start_name, $c
         }
         if ($test !== null) {
             $compound = @json_decode($test);
-            if ($compound !== false) {
+            if (is_array($compound) && count($compound) == 4) {
                 list($max, $start, $sort, $keyset_param) = $compound;
             }
         }
@@ -268,7 +268,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
                 }
             }
         } else {
-            $parts->attach(do_template('PAGINATION_PAGE_NUMBER', array('P' => strval((int)($start / $max) + 1))));
+            $parts->attach(do_template('PAGINATION_PAGE_NUMBER', array('P' => strval(($max == 0) ? 1 : ((int)($start / $max) + 1)))));
         }
 
         // Indicate that the sequence is incomplete with an ellipsis

@@ -33,7 +33,7 @@
 		<script>// <![CDATA[
 			set_up_change_monitor('form_table_field_input__{$GET,randomised_id}');
 			manage_scroll_height(document.getElementById('{NAME;/}'));
-			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}{+END}
+			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}WYSIWYG={$IN_STR,{REQUIRED},wysiwyg}{+END}
 		//]]></script>
 	</td>
 </tr>
