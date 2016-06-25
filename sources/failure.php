@@ -946,7 +946,7 @@ function _fatal_exit($text, $return = false)
         $sup = '';
     }
     if (is_object($text)) {
-        if ($text->pure_lang) {
+        if (!empty($text->pure_lang)) {
             $sup = escape_html($sup);
         }
         $text->attach($sup);

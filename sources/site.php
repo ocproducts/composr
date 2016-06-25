@@ -346,7 +346,7 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
 
         $webservice_result = get_webservice_result($message);
         if ($webservice_result !== null) {
-            if ((is_object($message)) && ($message->pure_lang)) {
+            if ((is_object($message)) && (!empty($message->pure_lang))) {
                 $message = $message->evaluate();
             } elseif (is_object($message)) {
                 $message = escape_html($message->evaluate());
@@ -886,6 +886,9 @@ function do_site()
     if ($GLOBALS['RECORD_TEMPLATES_USED']) {
         require_code('themes_meta_tree');
         global $CSSS, $JAVASCRIPTS;
+        if (!isset($out->metadata)) {
+            $out->metadata = array('children' => array());
+        }
         foreach (array_keys($CSSS) as $css) {
             $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'css/' . $css . '.css');
         }

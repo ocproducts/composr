@@ -1055,7 +1055,12 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
     }
 
     $ret = new Tempcode(array($funcdefs, $seq_parts)); // Parameters will be bound in later.
-    $ret->preprocessable_bits = array_merge($ret->preprocessable_bits, $preprocessable_bits);
+    if (!empty($preprocessable_bits)) {
+        if (!isset($ret->preprocessable_bits)) {
+            $ret->preprocessable_bits = array();
+        }
+        $ret->preprocessable_bits = array_merge($ret->preprocessable_bits, $preprocessable_bits);
+    }
     $ret->codename = $codename;
     return $ret;
 }

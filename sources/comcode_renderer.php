@@ -686,7 +686,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $parts = explode('[*]', $_embed);
             }
 
-            if (isset($temp_tpl->preprocessable_bits)) {
+            if (!empty($embed->preprocessable_bits)) {
+                if (!isset($temp_tpl->preprocessable_bits)) {
+                    $temp_tpl->preprocessable_bits = array();
+                }
                 $temp_tpl->preprocessable_bits = array_merge($temp_tpl->preprocessable_bits, $embed->preprocessable_bits);
             }
 

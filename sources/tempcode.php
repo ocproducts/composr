@@ -833,7 +833,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
         $out->code_to_preexecute = $_data->code_to_preexecute;
 
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($_data->preprocessable_bits)) {
             $out->preprocessable_bits = $_data->preprocessable_bits;
         }
 
@@ -1378,16 +1378,8 @@ class Tempcode
 {
     public $code_to_preexecute;
     public $seq_parts; // List of list of closure pairs: (0) function name, and (1) parameters, (2) type, (3) name         We use a 2D list to make attach ops very fast
-    public $preprocessable_bits; // List of tuples: escape (ignored), type (e.g. TC_SYMBOL), name, parameters
-    public $pure_lang;
-    public $evaluate_echo_offset_group = 0;
-    public $evaluate_echo_offset_inner = 0;
 
-    public $codename = ':container'; // The name of the template it came from
-    public $metadata = null;
-
-    public $preprocessed = false;
-    public $cached_output;
+    public $codename; // The name of the template it came from
 
     /**
      * Constructor of Tempcode
@@ -1396,10 +1388,9 @@ class Tempcode
      */
     public function __construct($details = null)
     {
-        $this->cached_output = null;
+        $this->codename = ':container';
 
         if (!isset($details)) {
-            $this->preprocessable_bits = array();
             $this->seq_parts = array();
             $this->code_to_preexecute = array();
         } else {
@@ -1436,7 +1427,7 @@ class Tempcode
                             }
                         }
                         foreach ($seq_part[1] as $param) {
-                            if (isset($param->preprocessable_bits)) { // If is a Tempcode object
+                            if (!empty($param->preprocessable_bits)) { // If is a Tempcode object
                                 foreach ($param->preprocessable_bits as $b) {
                                     $pp_bits[] = $b;
                                 }
@@ -1445,9 +1436,9 @@ class Tempcode
                     }
                 }
 
-                $this->preprocessable_bits = $pp_bits;
-            } else {
-                $this->preprocessable_bits = array();
+                if (!empty($pp_bits)) {
+                    $this->preprocessable_bits = $pp_bits;
+                }
             }
         }
 
@@ -1464,7 +1455,14 @@ class Tempcode
      */
     public function __sleep()
     {
-        return array('code_to_preexecute', 'seq_parts', 'preprocessable_bits', 'pure_lang', 'codename');
+        $ret = array('code_to_preexecute', 'seq_parts', 'codename');
+        if (isset($this->preprocessable_bits)) {
+            $ret[] = 'preprocessable_bits';
+        }
+        if (isset($this->pure_lang)) {
+            $ret[] = 'pure_lang';
+        }
+        return $ret;
     }
 
     /**
@@ -1481,7 +1479,7 @@ class Tempcode
                 }
             }
         }
-        $this->cached_output = null;
+        unset($this->cached_output);
     }
 
     /**
@@ -1493,12 +1491,14 @@ class Tempcode
      */
     public function parse_from(&$code, &$pos, &$len)
     {
-        $this->cached_output = null;
+        unset($this->cached_output);
         require_code('tempcode_compiler');
         $temp = template_to_tempcode(substr($code, $pos, $len - $pos), 0, false, '');
         $this->code_to_preexecute = $temp->code_to_preexecute;
         $this->seq_parts = $temp->seq_parts;
-        $this->preprocessable_bits = $temp->preprocessable_bits;
+        if (!empty($temp->preprocessable_bits)) {
+            $this->preprocessable_bits = $temp->preprocessable_bits;
+        }
     }
 
     /**
@@ -1515,7 +1515,7 @@ class Tempcode
 
         unset($this->is_empty);
 
-        $this->cached_output = null;
+        unset($this->cached_output);
 
         if (isset($attach->codename)/*faster than is_object*/) { // Consider it another piece of Tempcode
             foreach ($attach->seq_parts as $seq_part_group) {
@@ -1524,7 +1524,7 @@ class Tempcode
 
             $this->code_to_preexecute += $attach->code_to_preexecute;
 
-            if (!$GLOBALS['OUTPUT_STREAMING']) {
+            if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($attach->preprocessable_bits)) {
                 foreach ($attach->preprocessable_bits as $b) {
                     $this->preprocessable_bits[] = $b;
                 }
@@ -1584,7 +1584,7 @@ class Tempcode
         require_code('tempcode_optimiser');
         optimise_tempcode($this);
 
-        return 'return unserialize("' . php_addslashes(serialize(array($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute))) . '");' . "\n";
+        return 'return unserialize("' . php_addslashes(serialize(array($this->seq_parts, isset($this->preprocessable_bits) ? $this->preprocessable_bits : array(), $this->codename, !empty($this->pure_lang), $this->code_to_preexecute))) . '");' . "\n";
     }
 
     /**
@@ -1606,11 +1606,17 @@ class Tempcode
             return false; // May never get here, as PHP fatal errors can't be suppressed or skipped over
         }
 
-        $this->cached_output = null;
-        list($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute) = $result;
-        if ($GLOBALS['OUTPUT_STREAMING']) {
-            $this->preprocessable_bits = array();
+        unset($this->cached_output);
+
+        $this->seq_parts = $result[0];
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($result[1])) {
+            $this->preprocessable_bits = $result[1];
         }
+        $this->codename = $result[2];
+        if ($result[3]) {
+            $this->pure_lang = $result[3];
+        }
+        $this->code_to_preexecute = $result[4];
 
         if ($forced_reload_details[6] === null) {
             $forced_reload_details[6] = '';
@@ -1688,11 +1694,17 @@ class Tempcode
             fatal_exit(@strval($php_errormsg));
         }
 
-        $this->cached_output = null;
-        list($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute) = $result;
-        if ($GLOBALS['OUTPUT_STREAMING']) {
-            $this->preprocessable_bits = array();
+        unset($this->cached_output);
+
+        $this->seq_parts = $result[0];
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($result[1])) {
+            $this->preprocessable_bits = $result[1];
         }
+        $this->codename = $result[2];
+        if ($result[3]) {
+            $this->pure_lang = $result[3];
+        }
+        $this->code_to_preexecute = $result[4];
 
         if ($GLOBALS['XSS_DETECT']) {
             $this->_mark_all_as_escaped();
@@ -1740,7 +1752,7 @@ class Tempcode
         $out = new Tempcode();
         $out->codename = $codename;
         $out->code_to_preexecute = $this->code_to_preexecute;
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($this->preprocessable_bits)) {
             foreach ($this->preprocessable_bits as $preprocessable_bit) {
                 foreach ($preprocessable_bit[3] as $i => $param) {
                     if ((($preprocessable_bit[2] != 'SET') || (($i >= 1))) && (isset($param->codename/*faster than is_object*/))) {
@@ -1756,7 +1768,7 @@ class Tempcode
             $out->metadata = isset($this->metadata) ? $this->metadata : create_template_tree_metadata();
             foreach ($parameters as $key => $parameter) {
                 if (is_object($parameter)) {
-                    if (count($parameter->preprocessable_bits) != 0) {
+                    if (!empty($parameter->preprocessable_bits)) {
                         $parameter->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
                     }
                     $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
@@ -1773,11 +1785,9 @@ class Tempcode
             if ($p_type === 'string') {
                 // Performance, this is most likely
             } elseif ($p_type === 'object') {
-                if (isset($parameter->preprocessable_bits[0])) {
-                    if (!$GLOBALS['OUTPUT_STREAMING']) {
-                        foreach ($parameter->preprocessable_bits as $b) {
-                            $out->preprocessable_bits[] = $b;
-                        }
+                if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($parameter->preprocessable_bits)) {
+                    foreach ($parameter->preprocessable_bits as $b) {
+                        $out->preprocessable_bits[] = $b;
                     }
                 } elseif ($parameter->is_empty_shell()) {
                     $parameters[$key] = ''; // Little optimisation to save memory
@@ -1810,7 +1820,7 @@ class Tempcode
      */
     public function singular_bind($key, $parameter)
     {
-        $this->cached_output = null;
+        unset($this->cached_output);
 
         if ($GLOBALS['RECORD_TEMPLATES_USED']) {
             if (is_object($parameter)) {
@@ -1820,7 +1830,7 @@ class Tempcode
                     $this->metadata = create_template_tree_metadata();
                 }
 
-                if (count($parameter->preprocessable_bits) != 0) {
+                if (!empty($parameter->preprocessable_bits)) {
                     $parameter->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
                 }
                 $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
@@ -1839,11 +1849,9 @@ class Tempcode
             }
         }
 
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
-            if (isset($parameter->preprocessable_bits)) { // Is Tempcode
-                foreach ($parameter->preprocessable_bits as $b) {
-                    $this->preprocessable_bits[] = $b;
-                }
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($parameter->preprocessable_bits)) { // Is Tempcode
+            foreach ($parameter->preprocessable_bits as $b) {
+                $this->preprocessable_bits[] = $b;
             }
         }
     }
@@ -1856,14 +1864,16 @@ class Tempcode
         if ($GLOBALS['OUTPUT_STREAMING']) {
             return;
         }
-        if (isset($this->preprocessed) && $this->preprocessed) {
+        if (!empty($this->preprocessed)) {
             return;
         }
 
         $children = array();
 
-        foreach ($this->preprocessable_bits as $seq_part) {
-            handle_symbol_preprocessing($seq_part, $children);
+        if (!empty($this->preprocessable_bits)) {
+            foreach ($this->preprocessable_bits as $seq_part) {
+                handle_symbol_preprocessing($seq_part, $children);
+            }
         }
 
         if (($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($this->metadata['children']))) {
@@ -1896,7 +1906,7 @@ class Tempcode
      */
     public function is_empty()
     {
-        if ($this->cached_output !== null) {
+        if (isset($this->cached_output)) {
             return strlen($this->cached_output) == 0;
         }
         if (isset($this->is_empty)) {
@@ -2103,9 +2113,9 @@ class Tempcode
             return '';
         }
 
-        if ($this->cached_output !== null) {
+        if (isset($this->cached_output)) {
             echo $this->cached_output;
-            $this->cached_output = null; // Won't be needed again
+            unset($this->cached_output); // Won't be needed again
             return '';
         }
         if ($this->is_empty_shell()) { // Optimisation: empty
@@ -2122,6 +2132,10 @@ class Tempcode
         $TEMPCODE_OUTPUT_STARTED = true;
         $tpl_funcs = $KEEP_TPL_FUNCS;
         $seq_parts_group_cnt = count($this->seq_parts);
+        if (!isset($this->evaluate_echo_offset_group)) {
+            $this->evaluate_echo_offset_group = 0;
+            $this->evaluate_echo_offset_inner = 0;
+        }
         $i = &$this->evaluate_echo_offset_group; // A reference, so evaluate_echo_offset_group will go up naturally via looping of $i
         if ($stop_if_stuck) {
             $stop_if_stuck_bak = $STOP_IF_STUCK;
