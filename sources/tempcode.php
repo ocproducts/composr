@@ -115,6 +115,29 @@ function init__tempcode()
     $CSS_OUTPUT_STARTED = false;
     $JS_OUTPUT_STARTED = false;
     $TEMPCODE_CURRENT_PAGE_OUTPUTTING = null;
+
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    $TEMPCODE_PARAMETER_INLINING_MODE = array(false);
+}
+
+/**
+ * Set the Tempcode parameter inlining mode.
+ *
+ * @param  boolean $m The current Tempcode parameter inlining mode.
+ */
+function push_tempcode_parameter_inlining_mode($m)
+{
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    array_push($TEMPCODE_PARAMETER_INLINING_MODE, $m);
+}
+
+/**
+ * Restore the Tempcode parameter inlining mode.
+ */
+function pop_tempcode_parameter_inlining_mode()
+{
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    array_pop($TEMPCODE_PARAMETER_INLINING_MODE);
 }
 
 /**
@@ -241,8 +264,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
     }
 
-    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
-    ;
+    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
     if ($name === '?' && $type == TC_SYMBOL) {
         $name = 'TERNARY';
     }
@@ -705,7 +727,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         kid_gloves_html_escaping($parameters);
     }
 
-    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE;
+    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE, $TEMPCODE_PARAMETER_INLINING_MODE;
 
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
         fill_template_preview_op_cache();
@@ -716,6 +738,8 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     if ($RECORD_TEMPLATES_USED) {
         record_template_used($directory . '/' . $codename . $suffix);
     }
+
+    $inlining_mode = end($TEMPCODE_PARAMETER_INLINING_MODE);
 
     // Variables we'll need
     if (!isset($theme)) {
@@ -736,7 +760,8 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         ($CACHE_TEMPLATES) &&
         //(/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || (!$RECORD_TEMPLATES_USED)) && Actually, unnecessary slowness, we don't care that much, and &cache_templates=0 can be set if we do
         (!$IS_TEMPLATE_PREVIEW_OP_CACHE) &&
-        ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
+        ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode())) &&
+        !$inlining_mode
         ;
     if ($may_use_template_cache) {
         if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
@@ -814,11 +839,15 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             }
         } else {
             require_code('tempcode_compiler');
-            $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme);
+            if ($inlining_mode) {
+                $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme, $parameters);
+            } else {
+                $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme);
+            }
         }
     }
 
-    if ($loaded_this_once) {// On 3rd load (and onwards) it will be fully cached
+    if ($loaded_this_once && !$inlining_mode) {// On 3rd load (and onwards) it will be fully cached
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 
@@ -888,7 +917,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename!='GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename!='FORM_SCREEN_INPUT_HIDDEN' && $codename!='FORM_SCREEN_INPUT_HIDDEN_2') {
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename != 'GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename != 'FORM_SCREEN_INPUT_HIDDEN' && $codename != 'FORM_SCREEN_INPUT_HIDDEN_2') {
         $ret2 = new Tempcode();
         $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
         $ret2->attach($ret);
@@ -2250,7 +2279,7 @@ function tempcode_include($filepath)
  * @param  ?array $tpl_funcs Evaluation code context (null: N/A)
  * @param  ?array $parameters Evaluation parameters (null: N/A)
  * @param  ?ID_TEXT $cl Language (null: N/A)
- * @return string Result
+ * @return mixed Result
  *
  * @ignore
  */

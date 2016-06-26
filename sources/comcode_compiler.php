@@ -950,13 +950,14 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 }
                                             } else {
                                                 require_code('tempcode_compiler');
-                                                $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer);
                                                 if (substr($comcode, $pos - 1, strlen('{+START,CASES,')) == '{+START,CASES,') {
-                                                    $ret->singular_bind('DIRECTIVE_EMBEDMENT', make_string_tempcode($p_portion));
+                                                    $p_portion_comcode = make_string_tempcode($p_portion);
                                                 } else {
                                                     $p_portion_comcode = comcode_to_tempcode($p_portion, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $in_semihtml, $structure_sweep, $check_only, $highlight_bits, $on_behalf_of_member);
-                                                    $ret->singular_bind('DIRECTIVE_EMBEDMENT', $p_portion_comcode);
                                                 }
+                                                $d_parameters = array('DIRECTIVE_EMBEDMENT' => $p_portion_comcode);
+                                                $ret = template_to_tempcode($p_opener . '{DIRECTIVE_EMBEDMENT}' . $p_closer, 0, false, '', null, null, false, $d_parameters);
+                                                $ret->singular_bind('DIRECTIVE_EMBEDMENT', $p_portion_comcode);
 
                                                 $pos = $p_end + 6;
                                             }

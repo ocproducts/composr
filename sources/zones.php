@@ -1114,7 +1114,9 @@ function do_block($codename, $map = null, $ttl = null)
                     if ($new_security_scope) {
                         _solemnly_enter();
                     }
+                    push_tempcode_parameter_inlining_mode(true);
                     $cache = $object->run($map);
+                    push_tempcode_parameter_inlining_mode(false);
                     if ($new_security_scope) {
                         $_cache = $cache->evaluate();
                         _solemnly_leave($_cache);

@@ -165,7 +165,7 @@ class template_previews_test_set extends cms_test_case
 
     public function testRepeatConsistency()
     {
-        global $STATIC_TEMPLATE_TEST_MODE, $EXTRA_SYMBOLS, $PREPROCESSABLE_SYMBOLS, $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
+        global $STATIC_TEMPLATE_TEST_MODE, $EXTRA_SYMBOLS, $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
         $STATIC_TEMPLATE_TEST_MODE = true;
 
         global $HAS_KEEP_IN_URL_CACHE;

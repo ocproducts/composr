@@ -27,24 +27,10 @@
  */
 function init__symbols()
 {
-    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $EXTRA_SYMBOLS, $PREPROCESSABLE_SYMBOLS, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
+    global $BLOCKS_CACHE, $PAGES_CACHE, $PANELS_CACHE, $EXTRA_SYMBOLS, $CANONICAL_URL, $STATIC_TEMPLATE_TEST_MODE;
     $BLOCKS_CACHE = array();
     $PAGES_CACHE = array();
     $PANELS_CACHE = array();
-    $PREPROCESSABLE_SYMBOLS = array(
-        'PAGE_LINK' => true,
-        'SET' => true,
-        'BLOCK' => true,
-        'FACILITATE_AJAX_BLOCK_CALL' => true,
-        'REQUIRE_JAVASCRIPT' => true,
-        'REQUIRE_CSS' => true,
-        'LOAD_PANEL' => true,
-        'JS_TEMPCODE' => true,
-        'CSS_TEMPCODE' => true,
-        'LOAD_PAGE' => true,
-        'FRACTIONAL_EDITABLE' => true,
-        'PAGE_TITLE' => true,
-    );
     $EXTRA_SYMBOLS = null;
     $CANONICAL_URL = null;
     $STATIC_TEMPLATE_TEST_MODE = false;
