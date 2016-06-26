@@ -33,9 +33,11 @@ if (!isset($GLOBALS['FILE_BASE'])) {
 
     require($FILE_BASE . '/_config.php');
 
-    define('STATIC_CACHE__FAST_SPIDER', 1);
-    define('STATIC_CACHE__GUEST', 2);
-    define('STATIC_CACHE__FAILOVER_MODE', 4);
+    if (!defined('STATIC_CACHE__FAST_SPIDER')) {
+        define('STATIC_CACHE__FAST_SPIDER', 1);
+        define('STATIC_CACHE__GUEST', 2);
+        define('STATIC_CACHE__FAILOVER_MODE', 4);
+    }
 
     static_cache(STATIC_CACHE__FAILOVER_MODE);
 }
@@ -185,11 +187,13 @@ function static_cache($mode)
     }
     foreach ($param_sets as $param) {
         $fast_cache_path = $_fast_cache_path;
-        if ($param['non_bot']) {
-            $fast_cache_path .= '__non-bot';
-        }
-        if ($param['no_js']) {
-            $fast_cache_path .= '__no-js';
+        if (!$param['failover_mode']) {
+            if ($param['non_bot']) {
+                $fast_cache_path .= '__non-bot';
+            }
+            if ($param['no_js']) {
+                $fast_cache_path .= '__no-js';
+            }
         }
         if ($param['mobile']) {
             $fast_cache_path .= '__mobile';

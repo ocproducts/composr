@@ -237,7 +237,12 @@ class Hook_sitemap_page extends Hook_sitemap_base
 
                 if (!is_null($functions[0])) {
                     $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
-                    if ((!is_null($entry_points)) && (count($entry_points) > 0)) {
+
+                    if (is_null($entry_points)) {
+                        return null;
+                    }
+
+                    if (count($entry_points) > 0) {
                         $struct['has_possible_children'] = true;
 
                         $entry_point_sitemap_ob = $this->_get_sitemap_object('entry_point');
@@ -268,7 +273,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $move_down_entry_point = (count($entry_points) == 1) ? key($entry_points) : 'browse';
                             if (!isset($row[1])) {
                                 if (substr($struct['page_link'], -strlen(':' . $move_down_entry_point)) != ':' . $move_down_entry_point) {
-                                    $struct['page_link'] .= ':' . $move_down_entry_point;
+                                    if ($move_down_entry_point != 'browse') {
+                                        $struct['page_link'] .= ':' . $move_down_entry_point;
+                                    }
                                 }
                                 if (!isset($entry_points['browse'])) {
                                     $_title = $entry_points[$move_down_entry_point][0];
@@ -348,7 +355,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             $virtual_child_nodes = array();
                         }
                         foreach ($virtual_child_nodes as $child_node) {
-                            if ((count($virtual_child_nodes) == 1) && (preg_match('#^' . preg_quote($page_link, '#') . ':browse(:[^:=]*$|$)#', $child_node['page_link']) != 0) && (!$require_permission_support) && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0)) {
+                            if ((count($virtual_child_nodes) == 1) && (preg_match('#^' . preg_quote($page_link, '#') . ':browse(:[^:=]*$|$)#', $child_node['page_link']) != 0) && (!$require_permission_support) && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0) && (empty($child_node['extra_meta']['is_a_category_tree_root']))) {
                                 // Put as container instead
                                 if ($child_node['extra_meta']['image'] == '') {
                                     $child_node['extra_meta']['image'] = $struct['extra_meta']['image'];

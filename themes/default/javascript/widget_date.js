@@ -161,6 +161,7 @@ HTML5 Date polyfill | Jonathan Stipe | https://github.com/jonstipe/date-polyfill
         $hiddenField.attr({
           type: "hidden",
           name: $this.attr('name'),
+          id: $this.attr('name'),
           value: makeDateString(value)
         });
         $hiddenField.data({
@@ -433,11 +434,11 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
           time_arr.push('0');
         }
         time_arr.push(time_obj.getMinutes().toString());
-        time_arr.push(':');
+        /*time_arr.push(':');
         if (time_obj.getSeconds() < 10) {
           time_arr.push('0');
         }
-        time_arr.push(time_obj.getSeconds().toString());
+        time_arr.push(time_obj.getSeconds().toString());*/
         /*if (time_obj.getMilliseconds() > 0) {
           time_arr.push('.');
           if (time_obj.getMilliseconds() % 100 === 0) {
@@ -466,9 +467,9 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         step = $hiddenField.data("step");
         max = $hiddenField.data("max");
         if (!(step != null) || step === 'any') {
-          value.setSeconds(value.getSeconds() + 1);
+          value.setMinutes(value.getMinutes() + 1);
         } else {
-          value.setSeconds(value.getSeconds() + step);
+          value.setMinutes(value.getMinutes() + step);
         }
         if ((max != null) && value > max) {
           value.setTime(max.getTime());
@@ -484,9 +485,9 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         step = $hiddenField.data("step");
         min = $hiddenField.data("min");
         if (!(step != null) || step === 'any') {
-          value.setSeconds(value.getSeconds() - 1);
+          value.setMinutes(value.getMinutes() - 1);
         } else {
-          value.setSeconds(value.getSeconds() - step);
+          value.setMinutes(value.getMinutes() - step);
         }
         if ((min != null) && value < min) {
           value.setTime(min.getTime());
@@ -569,6 +570,7 @@ HTML5 Time polyfill | Jonathan Stipe | https://github.com/jonstipe/time-polyfill
         $timeField.attr({
           type: "text",
           name: $this.attr('name'),
+          id: $this.attr('name'),
           value: makeTimeDisplayString(value),
           size: 14
         });

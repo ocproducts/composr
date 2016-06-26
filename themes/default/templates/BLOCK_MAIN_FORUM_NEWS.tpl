@@ -1,5 +1,5 @@
 <section class="box box___block_main_forum_news"><div class="box_inner">
-	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE}</h3>{+END}
+	{+START,IF_NON_EMPTY,{TITLE}}<h2>{TITLE}</h2>{+END}
 
 	<div class="webstandards_checker_off">
 		{CONTENT}

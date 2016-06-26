@@ -146,7 +146,7 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
     $unique_key_num = 0;
     if ($resource_fs_style) {
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         foreach ($fields as $i => $f) {
             if ($f['cf_type'] == 'codename') {
                 $unique_key_num = $i;
@@ -176,7 +176,7 @@ function generate_catalogue_thumb_field($url_parts)
     $unique_key_num = mixed();
 
     $catalogue_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => intval($url_parts['id'])));
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     foreach ($fields as $i => $f) {
         if ($f['cf_type'] == 'picture') {
             $unique_key_num = $i;

@@ -83,10 +83,6 @@ class Hook_fields_content_link
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        /*if ($required !== null)
-        {
-            Nothing special for this hook
-        }*/
         return array('short_unescaped', $default, 'short');
     }
 
@@ -113,9 +109,9 @@ class Hook_fields_content_link
         list($title, , $info) = content_get_details($type, $ev);
 
         $page_link = str_replace('_WILD', $ev, $info['view_page_link_pattern']);
-        list($zone, $map) = page_link_decode($page_link);
+        $url = page_link_to_tempcode_url($page_link);
 
-        return hyperlink(build_url($map, $zone), $title, false, true);
+        return hyperlink($url, $title, false, true);
     }
 
     // ======================
@@ -151,7 +147,7 @@ class Hook_fields_content_link
         require_code('content');
         $ob = get_content_object($type);
         $info = $ob->info();
-        $db = $GLOBALS[(substr($type, 0, 4) == 'cns_') ? 'FORUM_DB' : 'SITE_DB'];
+        $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
         if (!is_null($info['title_field'])) {
@@ -165,7 +161,7 @@ class Hook_fields_content_link
             if (is_null($info['title_field'])) {
                 $text = $id;
             } else {
-                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']]) : $row[$info['title_field']];
+                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']], $info['connection']) : $row[$info['title_field']];
             }
             $_list[$id] = $text;
         }

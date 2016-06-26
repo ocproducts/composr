@@ -181,6 +181,18 @@ div.cns_table_footer>div>div {
 
 /*
 =========================
+=========Joining=========
+=========================
+*/
+
+.cns_join_rules {
+	max-height: 30em;
+	overflow-y: auto;
+	{$BETA_CSS_PROPERTY,overflow-scrolling: touch;}
+}
+
+/*
+=========================
 =====Marking system======
 =========================
 */
@@ -202,11 +214,20 @@ div.cns_table_footer>div>div {
 .cns_topic {
 	display: table;
 }
+.cns_topic>* {
+	display: none; /*needed in case of unclosed <b> tags inside causing <b></b> throughout rest of document, due to HTML5 parse rules*/
+}
 .cns_topic>div {
 	display: table-row-group;
 }
+.cns_topic>div>* {
+	display: none; /*^ ditto*/
+}
 .cns_topic>div>div {
 	display: table-row;
+}
+.cns_topic>div>div>* {
+	display: none; /*^ ditto*/
 }
 .cns_topic>div>div>div {
 	display: table-cell;
@@ -485,6 +506,7 @@ hr.cns_sig_barrier {
 }
 .cns_topic_actions * {
 	vertical-align: middle;
+	display: inline-block;
 }
 
 .cns_topic_control_functions label, .cns_topic_actions label {
@@ -918,8 +940,8 @@ hr.cns_sig_barrier {
 		display: none;
 	}
 
-	.cns_forum_buttons .cns_screen_buttons input[alt="{!MARK_READ}"],
-	.cns_topic_buttons .cns_screen_buttons input[alt="{!MARK_READ}"] {
+	.cns_forum_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"],
+	.cns_topic_buttons .cns_screen_buttons input[alt="{!cns:MARK_READ}"] {
 		display: inline-block;
 	}
 {+END}

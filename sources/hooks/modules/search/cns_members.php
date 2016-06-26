@@ -35,7 +35,7 @@ class Hook_search_cns_members extends FieldsSearchHook
             return null;
         }
 
-        if (($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') <= 3) && (get_param_string('id', '') != 'cns_members') && (get_param_integer('search_cns_members', 0) != 1)) {
+        if (($GLOBALS['FORUM_DRIVER']->get_members() <= 3) && (get_param_string('id', '') != 'cns_members') && (get_param_integer('search_cns_members', 0) != 1)) {
             return null;
         }
 
@@ -73,8 +73,6 @@ class Hook_search_cns_members extends FieldsSearchHook
     public function get_fields()
     {
         require_code('cns_members');
-
-        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields')));
 
         $fields = array();
         if (has_privilege(get_member(), 'view_profiles')) {
@@ -224,7 +222,14 @@ class Hook_search_cns_members extends FieldsSearchHook
                     $temp = '?=' . float_to_raw_string(floatval($param));
                 } elseif ($storage_type == 'list') {
                     $temp = db_string_equal_to('?', $param);
-                } elseif ((array_key_exists('field_' . strval($row['id']), $indexes)) && (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($param))) {
+                } elseif (
+                    (array_key_exists('field_' . strval($row['id']), $indexes)) &&
+                    ($indexes['field_' . strval($row['id'])][0] == '#') &&
+                    (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) &&
+                    (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) &&
+                    ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) &&
+                    (!is_under_radar($param))
+                ) {
                     $temp = db_full_text_assemble('"' . $param . '"', true);
                 } else {
                     list($temp,) = db_like_assemble($param);
@@ -319,6 +324,10 @@ class Hook_search_cns_members extends FieldsSearchHook
      */
     public function render($row)
     {
+        if (is_null($row['id'])) {
+            return new Tempcode(); // Should not happen, some weird DB corruption probably
+        }
+
         require_code('cns_members');
         if (get_param_integer('option__emails_only', 0) == 1) {
             $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['id'], false, $row['m_username'], false);

@@ -62,7 +62,9 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
     $where .= ' OR priv.guest_view=1';
     if (!is_guest($viewing_member_id)) {
         $where .= ' OR priv.member_view=1';
-        $where .= ' OR priv.friend_view=1 AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'chat_friends f WHERE f.member_liked=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . ' AND f.member_likes=' . strval($viewing_member_id) . ')';
+        if (addon_installed('chat')) {
+            $where .= ' OR priv.friend_view=1 AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'chat_friends f WHERE f.member_liked=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . ' AND f.member_likes=' . strval($viewing_member_id) . ')';
+        }
         $where .= ' OR ' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . '=' . strval($viewing_member_id);
         $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (is_null($submitter) ? ($table_alias . '.' . $cma_info['id_field']) : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
         if ($additional_or != '') {
@@ -183,7 +185,7 @@ function privacy_limits_for($content_type, $content_id, $strict_all = false)
 
     $members[] = $content_submitter;
 
-    if ($row['friend_view'] == 1) {
+    if ($row['friend_view'] == 1 && addon_installed('chat')) {
         $cnt = $GLOBALS['SITE_DB']->query_select_value('chat_friends', 'COUNT(*)', array('chat_likes' => $content_submitter));
         if (($strict_all) || ($cnt <= 1000/*safety limit*/)) {
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('chat_liked'), array('chat_likes' => $content_submitter));

@@ -16,7 +16,10 @@ if [ -e "data_custom/failover_rewritemap.txt" ]; then
 	echo > data_custom/failover_rewritemap.txt
 	echo > data_custom/failover_rewritemap__mobile.txt
 fi
-echo $'\n\ndefine(\'DO_PLANNED_DECACHE\', true);' >> _config.php
+
+if [ -e "_config.php" ]; then
+	echo "\n\ndefine('DO_PLANNED_DECACHE', true);" >> _config.php
+fi
 
 if [ -e "sites" ]; then
    find sites -name "*.tcd" -exec rm -f {} \;
@@ -33,5 +36,5 @@ fi
 
 if [ -e "../decache.php" ]; then
     # Useful script, outside of web dir, for doing custom decaching
-	php ../decache.php
+    php ../decache.php
 fi

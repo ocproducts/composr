@@ -87,7 +87,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
         if ($catalogue_name == '') {
             $tree = create_selection_list_catalogues(null, true);
             if ($tree->is_empty()) {
-                inform_exit(do_lang_tempcode('NO_ENTRIES'));
+                inform_exit(do_lang_tempcode('NO_ENTRIES', 'catalogue'));
             }
 
             require_code('form_templates');
@@ -232,7 +232,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
             }
 
             $where_clause .= ' AND ';
-            $where_clause .= 'r.c_name NOT LIKE \'\_%\''; // Don't want results drawn from the hidden custom-field catalogues
+            $where_clause .= 'r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\''; // Don't want results drawn from the hidden custom-field catalogues
 
             $join .= $privacy_join;
 

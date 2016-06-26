@@ -35,6 +35,8 @@ function init__database_relations()
     define('TABLE_PURPOSE__MISC_NO_MERGE', 64); // Should not be merged between sites for other unspecified reasons
     define('TABLE_PURPOSE__SUBDATA', 128); // Data which is subsumed under other data when doing a transfer and has some importance but is totally meaningless when taken on its own
     define('TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG', 256); // We won't give the table full handling somewhere under a Resource-fs hook, we'll have a Commandr-fs extended config hook instead
+    // -
+    define('TABLE_PURPOSE__NOT_KNOWN', 512);
 }
 
 /**
@@ -272,7 +274,7 @@ function table_has_purpose_flag($table, $flag)
     }
 
     if (!isset($flags[$table])) {
-        return false;
+        return ($flag & TABLE_PURPOSE__NOT_KNOWN) != 0;
     }
 
     $real_flag = $flags[$table];

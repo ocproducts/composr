@@ -3646,8 +3646,8 @@ class Hook_cms_merge
             $rows = $db->query_select('content_privacy', array('*'), array('content_type' => $content_type, 'content_id' => $old_id), '', 1);
             foreach ($rows as $row) {
                 $GLOBALS['SITE_DB']->query_insert('content_privacy', array(
-                                                                         'content_id' => $id_new,
-                                                                     ) + $row);
+                    'content_id' => $id_new,
+                ) + $row);
             }
 
             $rows = $db->query_select('content_privacy__members', array('*'), array('content_type' => $content_type, 'content_id' => $old_id));
@@ -3655,9 +3655,9 @@ class Hook_cms_merge
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
                 if (!is_null($member_id)) {
                     $GLOBALS['SITE_DB']->query_insert('content_privacy__members', array(
-                                                                                      'content_id' => $id_new,
-                                                                                      'member_id' => $member_id,
-                                                                                  ) + $row);
+                        'content_id' => $id_new,
+                        'member_id' => $member_id,
+                    ) + $row);
                 }
             }
         }

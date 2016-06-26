@@ -22,7 +22,6 @@ class Module_admin_giftr extends Standard_crud_module
 {
     public $lang_type = 'GIFT';
     public $select_name = 'NAME';
-    public $content_type = 'group';
     public $possibly_some_kind_of_upload = true;
     public $output_of_action_is_confirmation = true;
     public $menu_label = 'GIFTR_TITLE';
@@ -143,9 +142,13 @@ class Module_admin_giftr extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
-                   'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_GIFTS', 'menu/giftr'),
+        ) + parent::get_entry_points();
     }
 
     public $title;

@@ -1,6 +1,6 @@
 {TITLE}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="constrain_field">

@@ -119,7 +119,14 @@ function slideshow_forward()
 
 function slideshow_ensure_loaded(slide,callback)
 {
-	if (typeof window.slideshow_slides[slide]!='undefined') return; // Already have it
+	if (typeof window.slideshow_slides[slide]!='undefined')
+	{
+		if (typeof callback!='undefined')
+		{
+			callback();
+		}
+		return; // Already have it
+	}
 
 	if (window.slideshow_current_position==slide) // Ah, it's where we are, so save that in
 	{
@@ -203,7 +210,7 @@ function slideshow_show_slide(slide)
 		}
 
 		if (window.slideshow_current_position!=window.slideshow_total_slides-1)
-			slideshow_ensure_loaded(slide+1,false);
+			slideshow_ensure_loaded(slide+1);
 		else
 			document.getElementById('gallery_entry_screen').style.cursor='';
 	});

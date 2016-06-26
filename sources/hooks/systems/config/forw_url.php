@@ -38,6 +38,7 @@ class Hook_config_forw_url
             'explanation' => 'CONFIG_OPTION_forw_url',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'pointstore',
         );

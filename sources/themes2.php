@@ -399,7 +399,8 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
     }
 
     require_code('uploads');
-    if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
+    is_plupload(true);
+    if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, false);
 
         $theme_img_code = $type . '/' . basename($urls[2], '.' . get_file_extension($urls[2]));
@@ -915,7 +916,7 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         return; // Still being used
     }
 
-    $path = find_theme_image($old, true, true);
+    $path = ($old == '') ? null : find_theme_image($old, true, true);
     if ((is_null($path)) || ($path == '')) {
         return;
     }

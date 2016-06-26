@@ -277,7 +277,7 @@ function form_for_filtercode($filter, $labels = null, $content_type = null, $typ
                             break;
                         case 'LANGUAGE_NAME':
                             $field_type = 'list';
-                            require_code('lang3');
+                            require_code('lang2');
                             $_extra = array_keys(find_all_langs());
                             $extra = array();
                             foreach (array_keys(find_all_langs()) as $lang) {
@@ -604,6 +604,17 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         }
         $clause = '(SELECT AVG(rating)/2 FROM ' . $db->get_table_prefix() . 'rating rat WHERE ' . db_string_equal_to('rat.rating_for_type', $matches[1]) . ' AND rat.rating_for_id=' . $table_join_code . '.id)';
         $extra_select[$filter_key] = ', ' . $clause . ' AS average_rating_' . fix_id($matches[1]);
+        return array($clause, '', $filter_val);
+    }
+
+    // Random
+    $matches = array('', $info['feedback_type_code']);
+    if (($filter_key == 'fixed_random') || (preg_match('#^fixed_random\_\_(.+)#', $filter_key, $matches) != 0)) {
+        if ($filter_key == 'fixed_random') {
+            $matches[1] .= '__' . $catalogue_name;
+        }
+        $clause = '(MOD(CAST(r.' . $info['id_field'] . ' AS SIGNED),' . date('d') . '))';
+        $extra_select[$filter_key] = ', ' . $clause . ' AS fixed_random_' . fix_id($matches[1]);
         return array($clause, '', $filter_val);
     }
 
@@ -966,6 +977,8 @@ function filtercode_to_sql($db, $filters, $content_type = '', $context = '', $ta
                     break;
 
                 case '~=':
+                    $filter_val = trim($filter_val, '*'); // In case user does not understand that this is not a wildcard search
+
                     if ($filter_val != '') {
                         if ($alt != '') {
                             $alt .= ' OR ';

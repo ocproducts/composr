@@ -48,7 +48,7 @@ function init__global2()
     }
     safe_ini_set('error_log', get_custom_file_base() . '/data_custom/errorlog.php');
 
-    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED;
+    global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
 
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
@@ -119,6 +119,13 @@ function init__global2()
     if (!isset($STATIC_CACHE_ENABLED)) {
         $STATIC_CACHE_ENABLED = false;
     }
+    /** Whether build_url requests point through the running script, as opposed to pointing to an index.php call.
+     *
+     * @global boolean $IN_SELF_ROUTING_SCRIPT
+     */
+    if (!isset($IN_SELF_ROUTING_SCRIPT)) {
+        $IN_SELF_ROUTING_SCRIPT = (current_script() == 'index')/*LEGACY - ideally just have as false*/;
+    }
     $CACHE_TEMPLATES = true;
     $IS_VIRTUALISED_REQUEST = false;
     /** On the quick installer, this presents manifest information about files that exist in the virtual filesystem.
@@ -136,7 +143,13 @@ function init__global2()
     $BOOTSTRAPPING = true;
     $CHECKING_SAFEMODE = false;
 
-    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (get_param_integer('routine_refresh', 0) == 0)) { // Architecturally hackerish chat message precheck (for extra efficiency)
+    // Set cross-domain headers (COR)
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        require_code('ajax');
+        cor_prepare();
+    }
+
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat message precheck (for extra efficiency)
         require_code('chat_poller');
         chat_poller();
     }
@@ -247,7 +260,7 @@ function init__global2()
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
-            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != get_ip_address())) && (!isset($_GET['keep_session']))) {
+            if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
@@ -336,12 +349,6 @@ function init__global2()
     }
     require_code('urls'); // URL building is crucial
 
-    // Set cross-domain headers (COR)
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        require_code('ajax');
-        cor_prepare();
-    }
-
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
     $locales = explode(',', do_lang('locale'));
@@ -389,7 +396,7 @@ function init__global2()
 
     if ((!$MICRO_AJAX_BOOTUP) && (!$MICRO_BOOTUP)) {
         // Clear caching if needed
-        $changed_base_url = empty($SITE_INFO['base_url']) && get_value('last_base_url', null, true) !== get_base_url(false);
+        $changed_base_url = (get_value('last_base_url', null, true) !== get_base_url(false));
         if ((running_script('index')) && ((is_browser_decaching()) || ($changed_base_url))) {
             require_code('caches3');
             auto_decache($changed_base_url);
@@ -711,13 +718,13 @@ function catch_fatal_errors()
  * @param  PATH $errstr The error message
  * @param  string $errfile The file the error occurred in
  * @param  integer $errline The line the error occurred on
- * @return boolean Always false
+ * @return boolean Bubble on to default PHP handler (i.e. output for staff or if display_php_errors is on); for errors we intercept we don't return at all so bubble on never happens in such a case
  *
  * @ignore
  */
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
-    if (((error_reporting() & $errno) != 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
+    if (((error_reporting() & $errno) !== 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
         // Strip down path for security
         if (substr(str_replace(DIRECTORY_SEPARATOR, '/', $errfile), 0, strlen(get_file_base() . '/')) == str_replace(DIRECTORY_SEPARATOR, '/', get_file_base() . '/')) {
             $errfile = substr($errfile, strlen(get_file_base() . '/'));
@@ -745,15 +752,15 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
                 $type = 'warning';
                 $syslog_type = LOG_WARNING;
                 break;
-            //case E_STRICT: (constant not defined in all php versions)
-            //case E_DEPRECATED: (constant not defined in all php versions)
-            //case E_USER_DEPRECATED: (constant not defined in all php versions)
             case E_USER_NOTICE:
             case E_NOTICE:
                 $type = 'notice';
                 $syslog_type = LOG_NOTICE;
                 break;
-            default: // We don't know the error type so it's probably best to continue (could be a problem with something getting deprecated)
+            //case E_STRICT: (constant not defined in all php versions)
+            //case E_DEPRECATED: (constant not defined in all php versions)
+            //case E_USER_DEPRECATED: (constant not defined in all php versions)
+            default: // We don't know the error type, or we know it's incredibly minor, so it's probably best to continue - PHP will output it for staff or if display_php_errors is on
                 return false;
         }
 
@@ -854,7 +861,7 @@ function running_script($is_this_running)
     }
 
     // Do the stem compare
-    $answer = (current_script() == $is_this_running);
+    $answer = (current_script() === $is_this_running);
 
     // Cache and return result
     $RUNNING_SCRIPT_CACHE[$is_this_running] = $answer;
@@ -1000,7 +1007,7 @@ function get_forum_type()
     if (!isset($SITE_INFO['forum_type'])) {
         $SITE_INFO['forum_type'] = 'cns';
     }
-    if ($SITE_INFO['forum_type'] == 'ocf') {
+    if ($SITE_INFO['forum_type'] === 'ocf') {
         $SITE_INFO['forum_type'] = 'cns'; // LEGACY
     }
     return $SITE_INFO['forum_type'];
@@ -1020,14 +1027,14 @@ function get_forum_base_url($forum_base = false)
         $SITE_INFO['board_prefix'] = get_base_url();
     }
     $forum_type = get_forum_type();
-    if ($forum_type == 'none') {
+    if ($forum_type === 'none') {
         return '';
     }
-    $needs_forum_strip = (substr($SITE_INFO['board_prefix'], -6) == '/forum') && (substr(get_base_url(), -6) != '/forum');
-    if (($forum_type == 'cns') && (!$forum_base) && ($needs_forum_strip)) {
+    $needs_forum_strip = (substr($SITE_INFO['board_prefix'], -6) === '/forum') && (substr(get_base_url(), -6) !== '/forum');
+    if (($forum_type === 'cns') && (!$forum_base) && ($needs_forum_strip)) {
         return substr($SITE_INFO['board_prefix'], 0, strlen($SITE_INFO['board_prefix']) - 6);
     }
-    if (($forum_type == 'cns') && ($forum_base) && ($needs_forum_strip)) {
+    if (($forum_type === 'cns') && ($forum_base) && ($needs_forum_strip)) {
         return $SITE_INFO['board_prefix'] . '/forum';
     }
     return $SITE_INFO['board_prefix'];
@@ -1195,10 +1202,10 @@ function get_base_url($https = null, $zone_for = null)
     }
 
     if (($BASE_URL_HTTP_CACHE !== null) && (!$https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTP_CACHE . (($zone_for == '') ? '' : ('/' . $zone_for));
+        return $BASE_URL_HTTP_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
     if (($BASE_URL_HTTPS_CACHE !== null) && ($https) && ((!$VIRTUALISED_ZONES_CACHE) || ($zone_for === null))) {
-        return $BASE_URL_HTTPS_CACHE . (($zone_for == '') ? '' : ('/' . $zone_for));
+        return $BASE_URL_HTTPS_CACHE . (empty($zone_for) ? '' : ('/' . $zone_for));
     }
 
     global $SITE_INFO;
@@ -1206,7 +1213,7 @@ function get_base_url($https = null, $zone_for = null)
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
         $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
         $php_self = dirname(cms_srv('PHP_SELF'));
-        if (($GLOBALS['RELATIVE_PATH'] == '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
+        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
             $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
         } else {
             $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
@@ -1214,7 +1221,7 @@ function get_base_url($https = null, $zone_for = null)
                 $php_self = dirname($php_self);
             }
         }
-        $SITE_INFO['base_url'] = 'http://' . $domain . str_replace('%2F', '/', rawurlencode($php_self));
+        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($php_self));
     }
 
     // Lookup
@@ -1223,7 +1230,7 @@ function get_base_url($https = null, $zone_for = null)
     if ($CURRENT_SHARE_USER !== null) {
         // Put in access domain, in case there is a custom domain attached to the site
         $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
-        $base_url = preg_replace('#^http://([\w]+\.)?' . preg_quote($SITE_INFO['custom_share_domain'], '#') . '#', 'http://' . $domain, $base_url);
+        $base_url = preg_replace('#^http(s)?://([\w]+\.)?' . preg_quote($SITE_INFO['custom_share_domain'], '#') . '#', 'http$1://' . $domain, $base_url);
     }
     $found_mapping = false;
     if ($VIRTUALISED_ZONES_CACHE) { // Special searching if we are doing a complex zone scheme
@@ -1232,8 +1239,8 @@ function get_base_url($https = null, $zone_for = null)
         if (!empty($SITE_INFO['ZONE_MAPPING_' . $zone_doing])) {
             $domain = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][0];
             $path = $SITE_INFO['ZONE_MAPPING_' . $zone_doing][1];
-            $base_url = 'http://' . $domain;
-            if ($path != '') {
+            $base_url = ((strpos($base_url, 'https://') === false) ? 'http://' : 'https://') . $domain;
+            if ($path !== '') {
                 $base_url .= '/' . $path;
             }
             $found_mapping = true;
@@ -1251,7 +1258,7 @@ function get_base_url($https = null, $zone_for = null)
     }
 
     if (!$found_mapping) { // Scope inside the correct zone
-        $base_url .= (($zone_for == '') ? '' : ('/' . $zone_for));
+        $base_url .= (empty($zone_for) ? '' : ('/' . $zone_for));
     }
 
     // Done
@@ -1290,7 +1297,7 @@ function get_custom_base_url($https = null)
  */
 function get_complex_base_url($at)
 {
-    return ((get_forum_base_url() != get_base_url()) ? get_forum_base_url() : ((substr($at, 0, 22) == 'themes/default/images/') ? get_base_url() : get_custom_base_url()));
+    return ((get_forum_base_url() != get_base_url()) ? get_forum_base_url() : ((substr($at, 0, 22) === 'themes/default/images/') ? get_base_url() : get_custom_base_url()));
 }
 
 /**
@@ -1344,7 +1351,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     if ($ret === null) {
         return null;
     }
-    if ((trim($ret) == '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] != '0')) {
+    if ((trim($ret) === '') && ($default !== '') && (array_key_exists('require__' . $name, $_POST)) && ($_POST['require__' . $name] !== '0')) {
         if ($default === null) {
             return null;
         }
@@ -1353,8 +1360,8 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
         improperly_filled_in_post($name);
     }
 
-    if (($ret != '') && (addon_installed('wordfilter'))) {
-        if ($name != 'password') {
+    if (($ret !== '') && (addon_installed('wordfilter'))) {
+        if ($name !== 'password') {
             require_code('wordfilter');
             if ($ret !== $default) {
                 $ret = check_wordfilter($ret, $name);
@@ -1364,21 +1371,21 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
     if ($ret !== null) {
         $ret = unixify_line_format($ret, null, $html);
 
-        if (post_param_integer($name . '_download_associated_media', 0) == 1) {
+        if (post_param_integer($name . '_download_associated_media', 0) === 1) {
             require_code('comcode_cleanup');
             download_associated_media($ret);
         }
     }
 
-    if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] == '1') && ($conv_from_wysiwyg)) {
-        if (trim($ret) == '') {
+    if ((isset($_POST[$name . '__is_wysiwyg'])) && ($_POST[$name . '__is_wysiwyg'] === '1') && ($conv_from_wysiwyg)) {
+        if (trim($ret) === '') {
             $ret = '';
         } else {
             require_code('comcode_from_html');
             $ret = trim(semihtml_to_comcode($ret));
         }
     } else {
-        if ((substr($ret, 0, 10) == '[semihtml]') && (substr(trim($ret), -11) == '[/semihtml]')) {
+        if ((substr($ret, 0, 10) === '[semihtml]') && (substr(trim($ret), -11) === '[/semihtml]')) {
             $_ret = trim($ret);
             $_ret = substr($_ret, 10, strlen($_ret) - 11 - 10);
             if (strpos($_ret, '[semihtml') === false) {
@@ -1424,7 +1431,7 @@ function post_param_string($name, $default = false, $html = false, $conv_from_wy
 function get_param_string($name, $default = false, $no_security = false)
 {
     $ret = __param($_GET, $name, $default);
-    if (($ret == '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] != '0')) {
+    if (($ret === '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] !== '0')) {
         // We didn't give some required input
         $GLOBALS['HTTP_STATUS_CODE'] = '400';
         if (!headers_sent()) {
@@ -1446,6 +1453,10 @@ function get_param_string($name, $default = false, $no_security = false)
     require_code('input_filter');
     check_input_field_string($name, $ret);
 
+    if ($ret === false) { // Should not happen, but have seen in the wild via malicious bots sending corrupt URLs
+        $ret = $default;
+    }
+
     return $ret;
 }
 
@@ -1463,7 +1474,7 @@ function get_param_string($name, $default = false, $no_security = false)
  */
 function __param($array, $name, $default, $integer = false, $posted = false)
 {
-    if ((!isset($array[$name])) || (($integer) && ($array[$name] == ''))) {
+    if ((!isset($array[$name])) || (($integer) && ($array[$name] === ''))) {
         if ($default !== false) {
             return $default;
         }
@@ -1559,10 +1570,10 @@ function post_param_integer($name, $default = false)
         require_code('failure');
         $ret = _param_invalid($name, $ret, true);
     }
-    if ($ret == '0') {
+    if ($ret === '0') {
         return 0;
     }
-    if ($ret == '1') {
+    if ($ret === '1') {
         return 1;
     }
     $reti = intval($ret);
@@ -1584,18 +1595,18 @@ function post_param_integer($name, $default = false)
  */
 function get_param_integer($name, $default = false, $not_string_ok = false)
 {
-    $m_default = ($default === false) ? false : (isset($default) ? (($default == 0) ? '0' : strval($default)) : '');
+    $m_default = ($default === false) ? false : (isset($default) ? (($default === 0) ? '0' : strval($default)) : '');
     $ret = __param($_GET, $name, $m_default, true); // do not set $ret to mixed(), breaks bootstrapping
     if ((!isset($default)) && ($ret === '')) {
         return null;
     }
     if (!is_numeric($ret)) {
-        if (substr($ret, -1) == '/') {
+        if (substr($ret, -1) === '/') {
             $ret = substr($ret, 0, strlen($ret) - 1);
         }
         if (!is_numeric($ret)) { // Bizarre situation (bug in IIS?)
             $matches = array();
-            if (preg_match('#^(\d+)\#[\w]*$#', $ret, $matches) != 0) {
+            if (preg_match('#^(\d+)\#[\w]*$#', $ret, $matches) !== 0) {
                 $ret = $matches[1];
             } else {
                 if ($not_string_ok) {
@@ -1606,10 +1617,10 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
             }
         }
     }
-    if ($ret == '0') {
+    if ($ret === '0') {
         return 0;
     }
-    if ($ret == '1') {
+    if ($ret === '1') {
         return 1;
     }
     $reti = intval($ret);
@@ -1632,7 +1643,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
  */
 function unixify_line_format($in, $desired_charset = null, $html = false, $from_disk = false)
 {
-    if ($in == '') {
+    if ($in === '') {
         return $in;
     }
 
@@ -1686,9 +1697,8 @@ function sync_file_move($old, $new)
 
 /**
  * Performs lots of magic to make sure data encodings are converted correctly. Input, and output too (as often stores internally in UTF or performs automatic dynamic conversions from internal to external charsets).
- * Roll on PHP6 that has a true internal UTF string model. For now, anyone who uses UTF will get some (albeit minor) imperfections from PHP's manipulations of the strings.
  *
- * @param  boolean $known_utf8 Whether we know we are working in UTF-8. This is the case for AJAX calls.
+ * @param  boolean $known_utf8 Whether we know we are working in utf-8. This is the case for AJAX calls.
  */
 function convert_data_encodings($known_utf8 = false)
 {

@@ -126,8 +126,8 @@ class Module_admin_workflow extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('MANAGE_WORKFLOWS', 'menu/workflows'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_WORKFLOWS', 'menu/workflows'),
+        ) + parent::get_entry_points();
     }
 
     public $title;
@@ -416,7 +416,9 @@ class Module_admin_workflow extends Standard_crud_module
 
         // Add the form elements for each section
         if (count($clarify_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '956a8b51ebbbd5e581092520534bd332', 'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
+                '_GUID' => '956a8b51ebbbd5e581092520534bd332',
+                'TITLE' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('DEFINE_WORKFLOW_POINTS_HELP', escape_html(implode(', ', $clarify_points))),
             )));
             foreach ($clarify_points as $seq_id => $p) {
@@ -436,7 +438,9 @@ class Module_admin_workflow extends Standard_crud_module
         }
 
         if (count($redefine_points) > 0) {
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '1670e74ade97bd18b8dc798033a14f36', 'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
+            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
+                '_GUID' => '1670e74ade97bd18b8dc798033a14f36',
+                'TITLE' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS'),
                 'HELP' => do_lang_tempcode('REDEFINE_WORKFLOW_POINTS_HELP'),
             )));
 
@@ -466,7 +470,9 @@ class Module_admin_workflow extends Standard_crud_module
 
         $title = get_screen_title('DEFINE_WORKFLOW_POINTS');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '31a56dccccdf5d7691439f79d120ffcb', 'TITLE' => $title,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '31a56dccccdf5d7691439f79d120ffcb',
+            'TITLE' => $title,
             'FIELDS' => $fields,
             'TEXT' => '',
             'HIDDEN' => $hidden,

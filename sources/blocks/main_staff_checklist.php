@@ -77,16 +77,17 @@ class Block_main_staff_checklist
             require_lang('staff_checklist');
             $tasks = array(
                 do_lang('CHECKLIST_INITIAL_TASK_STRUCTURE'),
-                do_lang('CHECKLIST_INITIAL_TASK_FAVICON'),
-                do_lang('CHECKLIST_INITIAL_TASK_WEBCLIP'),
                 do_lang('CHECKLIST_INITIAL_TASK_THEME'),
+                '[page="adminzone:admin_themes:edit_image:favicon"]' . do_lang('CHECKLIST_INITIAL_TASK_FAVICON') . '[/page]',
+                '[page="adminzone:admin_themes:edit_image:webclipicon"]' . do_lang('CHECKLIST_INITIAL_TASK_WEBCLIP') . '[/page]',
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
                 '[page="adminzone:admin_themes:edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_P3P') . '"]http://www.p3pwiz.com/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE') . '"]https://www.google.com/webmasters/tools/submit-url?pli=1[/url]',
+                '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_BING') . '"]http://www.bing.com/toolbox/submit-site-url[/url]',
+                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_UPTIME_MONITOR') . '"]https://uptimerobot.com/[/url]',
+                // NB: Google and Bing submission is automatic, via Sitemaps feature
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="http://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
                 '[url="Consider helping out with the Composr project"]' . get_brand_page_url(array('page' => 'contributions'), 'site') . '[/url]',
             );

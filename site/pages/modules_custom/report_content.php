@@ -219,7 +219,7 @@ class Module_report_content
         ) {
             warn_exit(do_lang_tempcode('ALREADY_REPORTED_CONTENT'));
         }
-        list($content_title, , $cma_info, $content_url) = content_get_details($content_type, $content_id);
+        list($content_title, , $cma_info, , $content_url) = content_get_details($content_type, $content_id);
 
         // Create reported post...
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('reported_posts_forum'));

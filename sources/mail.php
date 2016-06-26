@@ -217,6 +217,10 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         return $message_plain;
     }
 
+    // Strip resource loader
+    $message_plain = preg_replace('#\[require_css(\s[^"\[\]]*)?\][^\[\]]*\[/require_css\]#', '', $message_plain);
+    $message_plain = preg_replace('#\[require_javascript(\s[^"\[\]]*)?\][^\[\]]*\[/require_javascript\]#', '', $message_plain);
+
     // If it is just HTML encapsulated in Comcode, force our best HTML to text conversion first
     $match = array();
     if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
@@ -563,6 +567,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             }
         }
 
+        if (!$in_html) {
+            inject_web_resources_context_to_comcode($message_raw);
+        }
+
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
             'm_subject' => cms_mb_substr($subject_line, 0, 255),
             'm_message' => $message_raw,
@@ -814,20 +822,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
     $headers .= 'X-Mailer: ' . $brand_name . $line_term;
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
-        $_require_recipient_valid_since = date('D, j M Y H:i:s', $require_recipient_valid_since);
+        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers .= 'Require-Recipient-Valid-Since: ' . $to_email[0] . '; ' . $_require_recipient_valid_since . $line_term;
     }
     $headers .= 'MIME-Version: 1.0' . $line_term;
     if ((!is_null($attachments)) || (!$simplify_when_can)) {
-        $headers .= 'Content-Type: multipart/mixed;' . "\n\t" . 'boundary="' . $boundary . '"';
+        $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
     } else {
-        $headers .= 'Content-Type: multipart/alternative;' . "\n\t" . 'boundary="' . $boundary2 . '"';
+        $headers .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"';
     }
     $sending_message = '';
     $sending_message .= 'This is a multi-part message in MIME format.' . $line_term . $line_term;
     if ((!is_null($attachments)) || (!$simplify_when_can)) {
         $sending_message .= '--' . $boundary . $line_term;
-        $sending_message .= 'Content-Type: multipart/alternative;' . "\n\t" . 'boundary="' . $boundary2 . '"' . $line_term . $line_term . $line_term;
+        $sending_message .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"' . $line_term . $line_term . $line_term;
     }
 
     if (GOOGLE_APPENGINE) {
@@ -869,12 +877,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         } catch (InvalidArgumentException $e) {
             $error = $e->getMessage();
 
-            if (get_param_integer('keep_hide_mail_failure', 0) == 0) {
-                require_code('site');
-                attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
-            } else {
-                return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))));
-            }
+            require_code('site');
+            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
         }
 
         $SENDING_MAIL = false;
@@ -898,7 +902,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // HTML version
     $sending_message .= '--' . $boundary2 . $line_term;
-    $sending_message .= 'Content-Type: multipart/related;' . "\n\t" . 'type="text/html";' . "\n\t" . 'boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
+    $sending_message .= 'Content-Type: multipart/related; type="text/html"; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
     if (get_option('allow_ext_images') != '1') {
@@ -1027,9 +1031,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 if (is_null($error)) {
                     $smtp_from_address = get_option('smtp_from_address');
                     if ($smtp_from_address == '') {
-                        $smtp_from_address = $from_email;
+                        $smtp_from_address = $website_email;
                     }
-                    fwrite($socket, 'MAIL FROM:<' . $website_email . ">\r\n");
+                    fwrite($socket, 'MAIL FROM:<' . $smtp_from_address . ">\r\n");
                     $rcv = fread($socket, 1024);
                     if ((strtolower(substr($rcv, 0, 3)) == '250') || (strtolower(substr($rcv, 0, 3)) == '251')) {
                         $sent_one = false;
@@ -1044,8 +1048,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                             fwrite($socket, "DATA\r\n");
                             $rcv = fread($socket, 1024);
                             if (strtolower(substr($rcv, 0, 3)) == '354') {
-                                $attractive_date = strftime('%d %B %Y  %H:%M:%S', time());
-
                                 $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
                                 if (count($to_email) == 1) {
                                     if ($_to_name == '') {
@@ -1057,13 +1059,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                                     fwrite($socket, 'To: ' . $_to_name . "\r\n");
                                 }
                                 fwrite($socket, 'Subject: ' . $tightened_subject . "\r\n");
-                                fwrite($socket, 'Date: ' . $attractive_date . "\r\n");
                                 $headers = preg_replace('#^\.#m', '..', $headers);
                                 $sending_message = preg_replace('#^\.#m', '..', $sending_message);
-                                fwrite($socket, $headers . "\r\n");
+                                fwrite($socket, $headers . "\r\n\r\n");
                                 fwrite($socket, $sending_message);
                                 fwrite($socket, "\r\n.\r\n");
                                 $rcv = fread($socket, 1024);
+                                if (strtolower(substr($rcv, 0, 3)) != '250') {
+                                    $error = do_lang('MAIL_ERROR_DATA') . ' (' . $rcv . ')';
+                                }
                                 fwrite($socket, "QUIT\r\n");
                                 $rcv = fread($socket, 1024);
                             } else {
@@ -1133,12 +1137,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if (!$worked) {
         $SENDING_MAIL = false;
-        if (get_param_integer('keep_hide_mail_failure', 0) == 0) {
-            require_code('site');
-            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
-        } else {
-            return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))));
-        }
+        require_code('site');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
     }
 
     $SENDING_MAIL = false;

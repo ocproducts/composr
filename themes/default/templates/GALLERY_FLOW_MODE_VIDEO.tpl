@@ -80,6 +80,6 @@
 
 {+START,IF_PASSED,DESCRIPTION}
 	<div itemprop="caption">
-		{DESCRIPTION}
+		{$PARAGRAPH,{DESCRIPTION}}
 	</div>
 {+END}

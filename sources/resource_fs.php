@@ -156,7 +156,7 @@ function get_resource_fs_record($resource_type, $resource_id)
 function get_resource_commandr_fs_object($resource_type)
 {
     $fs_hook = convert_composr_type_codes('content_type', $resource_type, 'commandr_filesystem_hook');
-    if (is_null($fs_hook)) {
+    if (empty($fs_hook)) {
         return null;
     }
 
@@ -180,16 +180,12 @@ ACTUAL FILESYSTEM INTERACTION IS DONE VIA A RESOURCE-FS OBJECT (fetch that via t
  * @param  ID_TEXT $resource_type The resource type
  * @param  ID_TEXT $resource_id The resource ID
  * @param  ?LONG_TEXT $label The (new) label (null: lookup for specified resource)
- * @return array A triple: The moniker (may be new, or the prior one if the moniker did not need to change), the GUID, the label
  * @param  ?ID_TEXT $new_guid GUID to forcibly assign (null: don't force)
  * @param  boolean $definitely_new If we know this is new, i.e. has no existing moniker
+ * @return array A triple: The moniker (may be new, or the prior one if the moniker did not need to change), the GUID, the label
  */
 function generate_resource_fs_moniker($resource_type, $resource_id, $label = null, $new_guid = null, $definitely_new = false)
 {
-    if (!is_null($label)) {
-        $label = cms_mb_substr($label, 0, 255);
-    }
-
     static $cache = array();
     if (is_null($new_guid)) {
         if (isset($cache[$resource_type][$resource_id])) {
@@ -207,9 +203,11 @@ function generate_resource_fs_moniker($resource_type, $resource_id, $label = nul
     if (is_null($label)) {
         list($label) = content_get_details($resource_type, $resource_id, true);
         if (is_null($label)) {
-            return array(null, null);
+            return array(null, null, null);
         }
     }
+
+    $label = cms_mb_substr($label, 0, 255);
 
     $lookup = $definitely_new ? array() : $GLOBALS['SITE_DB']->query_select('alternative_ids', array('resource_moniker', 'resource_guid', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), '', 1);
     if (array_key_exists(0, $lookup)) {
@@ -981,6 +979,9 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
     list($moniker, $guid, $label) = generate_resource_fs_moniker($resource_type, $resource_id);
 
     $resource_fs_ob = get_resource_commandr_fs_object($resource_type);
+    if (is_null($resource_fs_ob)) {
+        return null;
+    }
     $subpath = $resource_fs_ob->search($resource_type, $resource_id, true);
     if (is_null($subpath)) {
         $subpath = '';

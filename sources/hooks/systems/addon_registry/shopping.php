@@ -609,6 +609,7 @@ class Hook_addon_registry_shopping
         $rating_inside = new Tempcode();
 
         $map = array(
+            'ID' => placeholder_id(),
             'FIELD_0' => lorem_phrase(),
             'FIELD_0_PLAIN' => lorem_phrase(),
             'FIELD_1' => lorem_phrase(),
@@ -622,6 +623,7 @@ class Hook_addon_registry_shopping
             'PRODUCT_CODE' => placeholder_id(),
             'PRICE' => placeholder_number(),
             'RATING' => $rating_inside,
+            'ALLOW_RATING' => false,
             'MAP_TABLE' => placeholder_table(),
             'CART_BUTTONS' => $cart_buttons,
             'CART_LINK' => $cart_link,
@@ -629,6 +631,7 @@ class Hook_addon_registry_shopping
             'FIELDS' => $fields,
             'ENTRY_SCREEN' => true,
             'GIVE_CONTEXT' => false,
+            'EDIT_URL' => placeholder_url(),
         );
         $entry = do_lorem_template('CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP', $map);
 
@@ -642,6 +645,14 @@ class Hook_addon_registry_shopping
                     'TRACKBACK_DETAILS' => lorem_phrase(),
                     'RATING_DETAILS' => lorem_phrase(),
                     'COMMENT_DETAILS' => lorem_phrase(),
+                    'ADD_DATE' => placeholder_date(),
+                    'ADD_DATE_RAW' => placeholder_date_raw(),
+                    'EDIT_DATE_RAW' => placeholder_date_raw(),
+                    'VIEWS' => placeholder_number(),
+                    'TAGS' => array(),
+                    'CATALOGUE' => 'products',
+                    'SUBMITTER' => placeholder_id(),
+                    'FIELD_1' => lorem_word(),
                 )), null, '', true)
         );
     }
@@ -716,6 +727,7 @@ class Hook_addon_registry_shopping
             'FIELDS' => $fields,
             'URL' => placeholder_url(),
             'VIEW_URL' => placeholder_url(),
+            'ALLOW_RATING' => false,
         );
         $entry = do_lorem_template('CATALOGUE_products_GRID_ENTRY_WRAP', $map);
 

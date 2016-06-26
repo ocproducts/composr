@@ -59,8 +59,6 @@ if (get_option('enable_previews') == '1') {
     warn_exit('Previews must be disabled. It is now disabled - just refresh the browser.');
 }
 
-set_value('no_frames', '1');
-
 $filename = 'static-' . get_site_name() . '.' . date('Y-m-d') . '.tar';
 
 if ((get_param_integer('do__headers', 1) == 1) && (get_param_integer('dir', 0) == 0)) {

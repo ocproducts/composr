@@ -49,7 +49,7 @@ class Block_main_image_fader
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'order\',$map)?$map[\'order\']:\'\',array_key_exists(\'time\',$map)?intval($map[\'time\']):8000,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'galleries\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'\')';
+        $info['cache_on'] = 'array($block_id,array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'order\',$map)?$map[\'order\']:\'\',array_key_exists(\'time\',$map)?intval($map[\'time\']):8000,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'galleries\'),array_key_exists(\'param\',$map)?$map[\'param\']:\'\')';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -76,8 +76,12 @@ class Block_main_image_fader
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
         $order = array_key_exists('order', $map) ? $map['order'] : '';
 
-        require_code('selectcode');
-        $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        if ($cat == 'root') {
+            $cat_select = db_string_equal_to('cat', $cat);
+        } else {
+            require_code('selectcode');
+            $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        }
 
         $images = array();
         $images_full = array();
@@ -165,7 +169,7 @@ class Block_main_image_fader
                 '_GUID' => 'aa84d65b8dd134ba6cd7b1b7bde99de2',
                 'HIGH' => false,
                 'TITLE' => do_lang_tempcode('GALLERY'),
-                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'image'),
                 'ADD_NAME' => do_lang_tempcode('ADD_IMAGE'),
                 'SUBMIT_URL' => $submit_url,
             ));
@@ -191,6 +195,7 @@ class Block_main_image_fader
             'TITLES' => $titles,
             'HTML' => $html,
             'MILL' => strval($mill),
+            'BLOCK_ID' => get_block_id($map),
         ));
     }
 }

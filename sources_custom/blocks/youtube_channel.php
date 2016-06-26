@@ -179,14 +179,12 @@ class Block_youtube_channel
         // If we get playlist data, parse out the meta information for each video and pass it to the style template. Else, send an error to template.
         if (isset($playlist_items->items) && $channel_startvideo <= $total_playlist_items) {
             foreach ($playlist_items->items as $entry) {
-
                 // Basic meta information for the video from 'playlistItems' YouTube API v3 call
                 //get private/public status of video
                 $is_public = $entry->status->privacyStatus;
 
                 // We will omit non-public videos and all videos before the start_video block parameter setting.
                 if (($is_public == 'public') && ($i >= $channel_startvideo) && ($i <= $channel_maxvideos)) {
-
                     //get video title
                     $title = (isset($entry->snippet->title) ? $entry->snippet->title : '');
 

@@ -38,6 +38,8 @@ class Module_admin_cns_forums extends Standard_crud_module
     public $javascript = 'if (document.getElementById(\'delete\')) { var form=document.getElementById(\'delete\').form; var crf=function() { form.elements[\'target_forum\'].disabled=(!form.elements[\'delete\'].checked); form.elements[\'delete_topics\'].disabled=(!form.elements[\'delete\'].checked); }; crf(); form.elements[\'delete\'].onchange=crf; }';
     public $menu_label = 'SECTION_FORUMS';
     public $do_preview = null;
+    public $donext_entry_content_type = 'forum';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -55,8 +57,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         }
 
         $ret = array(
-                   'browse' => array('MANAGE_FORUMS', 'menu/social/forum/forums'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_FORUMS', 'menu/social/forum/forums'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             $ret['_SEARCH:admin_cns_forum_groupings:add'] = array('ADD_FORUM_GROUPING', 'menu/_generic_admin/add_one_category');
@@ -168,7 +170,9 @@ class Module_admin_cns_forums extends Standard_crud_module
 
         require_code('templates_donext');
         require_code('fields');
-        return do_next_manager(get_screen_title('MANAGE_FORUMS'), comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_GROUPINGS'), null, true),
+        return do_next_manager(
+            get_screen_title('MANAGE_FORUMS'),
+            comcode_to_tempcode(do_lang('DOC_FORUMS') . "\n\n" . do_lang('DOC_FORUM_GROUPINGS'), null, true),
             array_merge($menu_links, manage_custom_fields_donext_link('post'), manage_custom_fields_donext_link('topic'), manage_custom_fields_donext_link('forum')),
             do_lang('MANAGE_FORUMS')
         );
@@ -409,9 +413,9 @@ class Module_admin_cns_forums extends Standard_crud_module
         $all = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_parent_forum', 'f_forum_grouping_id'));
         $ordering = array();
         foreach ($all as $forum) {
-            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), -1);
-            $order = post_param_integer('order_' . strval($forum['id']), -1);
-            if (($cat_order != -1) && ($order != -1)) { // Should only be -1 if since deleted
+            $cat_order = post_param_integer('forum_grouping_order_' . (is_null($forum['f_parent_forum']) ? '' : strval($forum['f_parent_forum'])) . '_' . (is_null($forum['f_forum_grouping_id']) ? '' : strval($forum['f_forum_grouping_id'])), null);
+            $order = post_param_integer('order_' . strval($forum['id']), null);
+            if (($cat_order !== null) && ($order !== null)) { // Should only be null if since created
                 if (!array_key_exists($forum['f_parent_forum'], $ordering)) {
                     $ordering[$forum['f_parent_forum']] = array();
                 }
@@ -534,7 +538,7 @@ class Module_admin_cns_forums extends Standard_crud_module
     {
         require_code('cns_forums_action2');
 
-        $parent_forum = post_param_integer('parent_forum', -1);
+        $parent_forum = post_param_integer('parent_forum');
         $name = post_param_string('name');
 
         $metadata = actual_metadata_get_fields('forum', null);
@@ -602,11 +606,10 @@ class Module_admin_cns_forums extends Standard_crud_module
             intval($id),
             post_param_string('name'),
             post_param_string('description', STRING_MAGIC_NULL),
-            post_param_integer('forum_grouping_id', INTEGER_MAGIC_NULL),
-            post_param_integer('parent_forum', INTEGER_MAGIC_NULL),
+            post_param_integer('forum_grouping_id', fractional_edit() ? INTEGER_MAGIC_NULL : false),
+            post_param_integer('parent_forum', fractional_edit() ? INTEGER_MAGIC_NULL : null/*root forum*/),
             fractional_edit() ? INTEGER_MAGIC_NULL : post_param_order_field(),
-            post_param_integer('post_count_increment',
-            fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('post_count_increment', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('order_sub_alpha', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_string('intro_question', STRING_MAGIC_NULL),
             post_param_string('intro_answer', STRING_MAGIC_NULL),

@@ -359,6 +359,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
     $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
     // Our wrapper tags
+    init_valid_comcode_tags();
     require_code('comcode_renderer');
     _custom_comcode_import($GLOBALS['SITE_DB']);
     global $VALID_COMCODE_TAGS;
@@ -452,10 +453,19 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false)
 {
+    // Optimisations
+    $matches = array();
+    if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
+        return $matches[1];
+    }
+    if (preg_match('#^([^\[\]<>]*)$#', $semihtml) != 0) {
+        return $semihtml;
+    }
+
     $semihtml = trim($semihtml);
 
     // Optimisation, not long enough to clean up
-    if (cms_trim($semihtml, strlen($semihtml) < 30) == '') {
+    if (cms_trim($semihtml, strlen($semihtml) < 30) === '') {
         return '';
     }
 
@@ -486,8 +496,7 @@ function semihtml_to_comcode($semihtml, $force = false)
 
     // ---
 
-    // Maybe we don't do a conversion?
-    $matches = array();
+    // Maybe we don't do a conversion? If possible we want to avoid it because conversions are messy.
     if (((!$force) && (get_option('eager_wysiwyg') == '0') && (has_privilege(get_member(), 'allow_html'))) || (strpos($semihtml, '{$,page hint: no_smart_conversion}') !== false)) {
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
         $semihtml = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*)>#siU', '_img_tag_fixup_raw', $semihtml); // Resolve relative URLs
@@ -496,13 +505,35 @@ function semihtml_to_comcode($semihtml, $force = false)
             $semihtml = convert_html_headers_to_titles($semihtml);
         }
 
-        $count = substr_count($semihtml, '[/') + substr_count($semihtml, '@') + substr_count($semihtml, '{') + substr_count($semihtml, '[[') + substr_count($semihtml, '<h1');
-        if (($count == 0) && (strpos($semihtml, '<h1') === false)) {
+        // Is it really simple? It is if $count is zero (i.e. nothing fancy)...
+
+        $count = 0;
+        $count += substr_count($semihtml, '[/');
+        $count += substr_count($semihtml, '@');
+        $count += substr_count($semihtml, '{');
+        $count += substr_count($semihtml, '[[');
+        $count += substr_count($semihtml, '<h1');
+        $_emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons();
+        foreach (array_keys($_emoticons) as $emoticon_code) {
+            $count += substr_count($semihtml, $emoticon_code);
+        }
+        if (strpos($semihtml, '<a ') === false) {
+            $count += substr_count($semihtml, '://');
+        }
+
+        // Yes, so just dump it inside html (maximum purity of parsing)...
+
+        if ($count == 0) {
             return ($semihtml == '') ? '' : ('[html]' . $semihtml . '[/html]');
         }
+
+        // No, but maybe we can chop it around a bit...
+
         if (strpos($semihtml, 'data:') === false) {
             $count2 = substr_count($semihtml, '[/attachment]') + substr_count($semihtml, '<h1');
-            if ($count2 == $count) { // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml')
+
+            // All HTML or attachments or headers, so we can encode mostly as 'html' (as opposed to 'semihtml'). Good purity of parsing
+            if ($count2 == $count) {
                 if ($semihtml != '') {
                     $semihtml = '[html]' . $semihtml . '[/html]';
                 }
@@ -514,11 +545,15 @@ function semihtml_to_comcode($semihtml, $force = false)
                 return $semihtml;
             }
         }
+
+        // Semihtml then...
+
         if ($semihtml != '') {
             $semihtml = '[semihtml]' . $semihtml . '[/semihtml]';
         }
         $semihtml = preg_replace('#<h1[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '[title]${1}[/title]', $semihtml);
         $semihtml = preg_replace('#<h1[^>]*>(.*)</h1>#Us', '[title]${1}[/title]', $semihtml);
+
         return $semihtml;
     }
 
@@ -589,7 +624,6 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('text-autospace:none', '', $semihtml);
     $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
-    $semihtml = str_replace("\n", ' ', $semihtml);
     // Clean some whitespace (they have a special Comcode meaning, but no special HTML meaning)
     $inline_elements = array(
         'font', 's', 'u', 'strike', 'span', 'abbr', 'acronym', 'cite',
@@ -601,9 +635,9 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = preg_replace('#\s+(</(' . implode('|', $inline_elements) . ')>)#', '</CDATA__space>${1}', $semihtml);
     $semihtml = preg_replace('#([^\>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
     $semihtml = preg_replace('#(</(' . implode('|', $inline_elements) . ')>)\s+#', '${1}</CDATA__space>', $semihtml);
-    $semihtml = preg_replace('#>\s+#', '>', $semihtml);
-    $semihtml = preg_replace('#\s+<#', '<', $semihtml);
-    $semihtml = preg_replace('#\s+#', ' ', $semihtml);
+    $semihtml = preg_replace('#>\s+#', '>', $semihtml); // NB: Only non-inline, due to above CDATA__space
+    $semihtml = preg_replace('#\s+<#', '<', $semihtml); // ditto
+    $semihtml = preg_replace('#(\s)\s*#', '${1}', $semihtml);
 
     // Clean redundant CSS syntax
     do
@@ -952,7 +986,7 @@ function semihtml_to_comcode($semihtml, $force = false)
         }
         $imgcode[1] = str_replace(get_base_url(), '', $imgcode[1]);
 
-        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>\s*#si', $code, $semihtml2);
+        $semihtml2 = preg_replace('#<img [^>]*src="[^"]*' . preg_quote(escape_html($imgcode[1]), '#') . '"[^>]*>([ \t])?[ \t]*#si', $code . '$1', $semihtml2);
     }
 
     $semihtml2 = preg_replace_callback('#<img([^>]*) src="([^"]*)"([^>]*) />#siU', '_img_tag_fixup', $semihtml2);
@@ -979,8 +1013,7 @@ function semihtml_to_comcode($semihtml, $force = false)
     $semihtml = str_replace('</p>', '</p>' . "\n", $semihtml);
     $semihtml = str_replace('[/align]', '[/align]' . "\n", $semihtml);
 
-    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/
-           ($semihtml) . '[/semihtml]';
+    return '[semihtml]' . /*apply_emoticons can cause problems inside Comcode tags*/($semihtml) . '[/semihtml]';
 }
 
 /**
@@ -1162,8 +1195,8 @@ function array_html_preg_replace($element, $array, $semihtml)
                         $subbed = preg_replace($pattern . 'A', $replacement, $segment);
                         $semihtml = $before . $subbed . $after;
                         if ($semihtml != $old_semihtml) {
-                            break 3;
-                        } // We need to start again now as the offsets have all changed
+                            break 3; // We need to start again now as the offsets have all changed
+                        }
                         break; // Ok, well at least we know we found our tag bound, so no more need to search
                     }
                 }

@@ -96,8 +96,13 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
+        $map = null;
+        if (get_forum_type() != 'cns' || !addon_installed('shopping')) {
+            $map = array('c_ecommerce' => 0);
+        }
+
         if ($child_cutoff !== null) {
-            $count = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)');
+            $count = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)', $map);
             if ($count > $child_cutoff) {
                 return $nodes;
             }
@@ -105,7 +110,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), null, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), $map, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if (substr($row['c_name'], 0, 1) != '_') {
                     // Index
@@ -159,19 +164,22 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
         $this->_make_zone_concrete($zone, $page_link);
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
-                      'sitemap_refreshfreq' => 'weekly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_MEDIUM,
+            'sitemap_refreshfreq' => 'weekly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_catalogues', 'type' => '_edit_catalogue', 'id' => $content_id), get_module_zone('cms_catalogues')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_catalogues', 'type' => '_edit_catalogue', 'id' => $content_id), get_module_zone('cms_catalogues')),
+        ) + $partial_struct;
 
         if (strpos($page_link, ':index:') !== false) {
             $struct['extra_meta']['description'] = null;
 
             if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {
                 $test = find_theme_image('icons/24x24/menu/rich_content/catalogues/' . $content_id, true);
+                if ($test == '') {
+                    $test = find_theme_image('icons/24x24/menu/rich_content/catalogues/catalogues', true);
+                }
                 if ($test != '') {
                     $struct['extra_meta']['image'] = $test;
                 }
@@ -185,10 +193,12 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                 $children = array();
 
                 // A-to-Z
-                $child_page_link = $zone . ':' . $page . ':atoz:catalogue_name=' . $content_id;
-                $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
-                if ($child_node !== null) {
-                    $children[] = $child_node;
+                if (($options & SITEMAP_GEN_REQUIRE_PERMISSION_SUPPORT) == 0) {
+                    $child_page_link = $zone . ':' . $page . ':atoz:catalogue_name=' . $content_id;
+                    $child_node = $this->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level, $options, $zone, $meta_gather, $row);
+                    if ($child_node !== null) {
+                        $children[] = $child_node;
+                    }
                 }
 
                 // Categories
@@ -203,7 +213,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                         $where = array('c_name' => $content_id, 'cc_parent_id' => null);
                         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('*'), $where, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
                         foreach ($rows as $child_row) {
-                            $child_page_link = $zone . ':' . $page . ':browse:' . strval($child_row['id']);
+                            $child_page_link = $zone . ':' . $page . ':category:' . strval($child_row['id']);
                             $child_node = $child_hook_ob->get_node($child_page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $recurse_level + 1, $options, $zone, $meta_gather, $child_row);
                             if ($child_node !== null) {
                                 if (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) {

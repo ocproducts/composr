@@ -855,7 +855,6 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by_in_forum', array('p_poster', 'p_cache_forum_id')); // Used for searching by member, filtered by forum access
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by_in_topic', array('p_poster', 'p_topic_id')); // Used to help on some joins / complex queries
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'posts_by', array('p_poster', 'p_time'));
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_4', array('t_forum_id', 't_cache_last_time')); // Total index for simple forum topic listing
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_num_posts', array('t_cache_num_posts'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'in_topic_change_order', array('p_topic_id', 'p_last_edit_time', 'p_time', 'id'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cache_last_member_id', array('t_cache_last_member_id'));

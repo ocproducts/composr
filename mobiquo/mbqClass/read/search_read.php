@@ -43,12 +43,16 @@ class CMSSearchRead
 
         $sql1 = ' FROM ' . $table_prefix . 'f_posts p';
         if ($keywords != '') {
-            $sql1 .= ' FORCE INDEX (p_title)';
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $sql1 .= ' FORCE INDEX (p_title)';
+            }
         }
         $sql1 .= ' JOIN ' . $table_prefix . 'f_topics t ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
         $sql2 = ' FROM ' . $table_prefix . 'f_topics t';
         if ($keywords != '') {
-            $sql2 .= ' FORCE INDEX (t_description)';
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $sql2 .= ' FORCE INDEX (t_description)';
+            }
         }
         $sql2 .= ' JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
 
@@ -183,22 +187,28 @@ class CMSSearchRead
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
-            $sql = '
-				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
-				JOIN ' . $table_prefix . 'translate trans ON trans.id=p.p_post
-				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
-				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
-				WHERE ' . $search_sql;
+            $sql = 'FROM ' . $table_prefix . 'f_posts p';
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $sql .= (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)');
+            }
+            $sql .= '
+                JOIN ' . $table_prefix . 'translate trans ON trans.id=p.p_post
+                JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
+                JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
+                WHERE ' . $search_sql;
         } else {
             $search_sql = preg_replace('#\?#', 'p_post', $w);
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
-            $sql = '
-				FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : ' FORCE INDEX (p_post)') . '
-				JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
-				JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
-				WHERE ' . $search_sql;
+            $sql = 'FROM ' . $table_prefix . 'f_posts p';
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $sql .= (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)');
+            }
+            $sql .= '
+                JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
+                JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id
+                WHERE ' . $search_sql;
         }
         $sql .= ' AND p_cache_forum_id IN (' . get_allowed_forum_sql() . ')';
         if (addon_installed('unvalidated')) {

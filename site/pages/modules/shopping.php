@@ -171,6 +171,10 @@ class Module_shopping
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         $ret = array(
             'browse' => array('SHOPPING', 'menu/rich_content/ecommerce/shopping_cart'),
         );
@@ -617,7 +621,7 @@ class Module_shopping
             attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
             // Process transaction
-            if (count($_POST) != 0) {
+            if (has_interesting_post_fields()) {
                 $order_id = handle_transaction_script();
 
                 $product_object = find_product(do_lang('CART_ORDER', $order_id));

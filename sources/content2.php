@@ -170,8 +170,8 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
 
         $add_time_field = in_array('add_time', $fields_to_skip) ? null : $info['add_time_field'];
         if (!is_null($add_time_field)) {
-            $add_time = is_null($content_row) ? time() : $content_row[$add_time_field];
-            $fields->attach(form_input_date(do_lang_tempcode('ADD_TIME'), do_lang_tempcode('DESCRIPTION_META_ADD_TIME'), 'meta_add_time', true, false, true, $add_time, 40, intval(date('Y')) - 20, null));
+            $add_time = is_null($content_row) ? null : $content_row[$add_time_field];
+            $fields->attach(form_input_date(do_lang_tempcode('ADD_TIME'), do_lang_tempcode('DESCRIPTION_META_ADD_TIME'), 'meta_add_time', !is_null($content_row), is_null($content_row), true, $add_time, 40, intval(date('Y')) - 20, null));
         }
 
         if (!is_null($content_id)) {
@@ -515,28 +515,8 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = null, $ne
 
                 if ($ok) {
                     // Insert
-                    $GLOBALS['SITE_DB']->query_delete('url_id_monikers', array(    // It's possible we're re-activating/replacing a deprecated one
-                                                                                   'm_resource_page' => $page,
-                                                                                   'm_resource_type' => $type,
-                                                                                   'm_resource_id' => $_content_id,
-                                                                                   'm_moniker' => $url_moniker,
-                    ), '', 1);
-                    $GLOBALS['SITE_DB']->query_update('url_id_monikers', array( // Deprecate old monikers
-                                                                                'm_deprecated' => 1,
-                    ), array(
-                        'm_resource_page' => $page,
-                        'm_resource_type' => $type,
-                        'm_resource_id' => $_content_id,
-                    ));
-                    $GLOBALS['SITE_DB']->query_insert('url_id_monikers', array(
-                        'm_resource_page' => $page,
-                        'm_resource_type' => $type,
-                        'm_resource_id' => $_content_id,
-                        'm_moniker' => $url_moniker,
-                        'm_moniker_reversed' => strrev($url_moniker),
-                        'm_deprecated' => 0,
-                        'm_manually_chosen' => 1,
-                    ));
+                    require_code('urls2');
+                    suggest_new_idmoniker_for($page, $type, $_content_id, ($content_type == 'comcode_page') ? $zone : '', $url_moniker, false, $url_moniker);
                 }
             }
         }

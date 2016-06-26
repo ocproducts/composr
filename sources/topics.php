@@ -105,7 +105,7 @@ class CMS_Topic
             return new Tempcode();
         }
 
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $content_type . '_' . $content_id);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $content_type . '_' . $content_id, do_lang('COMMENT'));
 
         // Settings we need
         $max_thread_depth = get_param_integer('max_thread_depth', intval(get_option('max_thread_depth')));
@@ -847,7 +847,7 @@ class CMS_Topic
                 // Signature
                 require_code('cns_posts');
                 $sig = new Tempcode();
-                if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option') == '0')) && (!isset($post['skip_sig'])) && ($post['skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+                if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && (!isset($post['skip_sig'])) && ($post['skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
                     global $SIGNATURES_CACHE;
 
                     if (array_key_exists($post['member'], $SIGNATURES_CACHE)) {
@@ -880,7 +880,7 @@ class CMS_Topic
                 if (!$is_spacer_post) {
                     if (!is_guest($post['member'])) {
                         require_code('cns_members2');
-                        $poster_details = render_member_box($post, false, $hooks, $hook_objects, false, null, false);
+                        $poster_details = render_member_box($post['member'], false, $hooks, $hook_objects, false, null, false);
                     } else {
                         $custom_fields = new Tempcode();
                         if ((array_key_exists('ip_address', $post)) && (addon_installed('cns_forum'))) {
@@ -953,7 +953,9 @@ class CMS_Topic
                 if ((!isset($GLOBALS['METADATA']['image'])) || ($GLOBALS['METADATA']['image'] == find_theme_image('icons/48x48/menu/social/forum/forums'))) {
                     $matches = array();
                     if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $message_eval, $matches) != 0) {
-                        $GLOBALS['METADATA']['image'] = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                        set_extra_request_metadata(array(
+                            'image' => html_entity_decode($matches[1], ENT_QUOTES, get_charset()),
+                        ));
                     }
                 }
             }

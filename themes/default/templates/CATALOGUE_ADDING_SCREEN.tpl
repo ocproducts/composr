@@ -4,7 +4,7 @@
 
 {+START,INCLUDE,FORM_SCREEN_ARE_REQUIRED}{+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" target="_top" id="catalogue_form">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" target="_top" id="catalogue_form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

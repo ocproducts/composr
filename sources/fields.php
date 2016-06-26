@@ -343,7 +343,7 @@ function has_tied_catalogue($content_type)
         require_code('content');
         $ob = get_content_object($content_type);
         $info = $ob->info();
-        if ((array_key_exists('support_custom_fields', $info)) && ($info['support_custom_fields'])) {
+        if ((!is_null($info)) && (array_key_exists('support_custom_fields', $info)) && ($info['support_custom_fields'])) {
             $exists = !is_null($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)));
             if ($exists) {
                 $first_cat = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $content_type));
@@ -369,9 +369,15 @@ function has_tied_catalogue($content_type)
  */
 function get_bound_content_entry($content_type, $id)
 {
+    if (!addon_installed('catalogues')) {
+        return null;
+    }
+
     // Optimisation: don't keep up looking custom field linkage if we have no custom fields
     static $content_type_has_custom_fields_cache = null;
-    $content_type_has_custom_fields_cache = persistent_cache_get('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
+    if ($content_type_has_custom_fields_cache === null) {
+        $content_type_has_custom_fields_cache = persistent_cache_get('CONTENT_TYPE_HAS_CUSTOM_FIELDS_CACHE');
+    }
     if ($content_type_has_custom_fields_cache === null) {
         $content_type_has_custom_fields_cache = array();
     }
@@ -384,7 +390,6 @@ function get_bound_content_entry($content_type, $id)
     if (!$content_type_has_custom_fields_cache[$content_type]) {
         return;
     }
-
     return $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entry_linkage', 'catalogue_entry_id', array(
         'content_type' => $content_type,
         'content_id' => $id,
@@ -404,13 +409,17 @@ function get_bound_content_entry($content_type, $id)
  */
 function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $field_filter = null, $field_filter_whitelist = true, $add_separate_header = false)
 {
+    if (!addon_installed('catalogues')) {
+        return;
+    }
+
     require_code('catalogues');
 
     $catalogue_entry_id = get_bound_content_entry($content_type, $id);
     if (!is_null($catalogue_entry_id)) {
         $special_fields = get_catalogue_entry_field_values('_' . $content_type, $catalogue_entry_id);
     } else {
-        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     }
 
     $field_groups = array();
@@ -493,6 +502,10 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
  */
 function save_form_custom_fields($content_type, $id, $old_id = null)
 {
+    if (!addon_installed('catalogues')) {
+        return;
+    }
+
     if (fractional_edit()) {
         return;
     }
@@ -506,7 +519,7 @@ function save_form_custom_fields($content_type, $id, $old_id = null)
     require_code('catalogues');
 
     // Get field values
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     $map = array();
     require_code('fields');
     foreach ($fields as $field) {
@@ -551,6 +564,10 @@ function save_form_custom_fields($content_type, $id, $old_id = null)
  */
 function delete_form_custom_fields($content_type, $id)
 {
+    if (!addon_installed('catalogues')) {
+        return;
+    }
+
     require_code('catalogues2');
 
     $existing = get_bound_content_entry($content_type, $id);

@@ -38,6 +38,7 @@ class Hook_config_banner_imp
             'explanation' => 'CONFIG_OPTION_banner_imp',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'pointstore',
         );

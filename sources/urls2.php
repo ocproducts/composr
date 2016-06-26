@@ -83,24 +83,6 @@ function remove_url_mistakes($url)
 }
 
 /**
- * Given a URL or page-link, return an absolute URL.
- *
- * @param  string $url URL or page-link
- * @return URLPATH URL
- */
-function page_link_as_url($url)
-{
-    $parts = array();
-    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
-        list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
-    } else {
-        $url = qualify_url($url, get_base_url());
-    }
-    return $url;
-}
-
-/**
  * Get hidden fields for a form representing 'keep_x'. If we are having a GET form instead of a POST form, we need to do this. This function also encodes the page name, as we'll always want that.
  *
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
@@ -204,6 +186,9 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
         }
 
         if (count($_POST) > 80 && !$force_everything) {
+            if (substr($key, 0, 14) == 'tick_on_form__') {
+                continue;
+            }
             if (substr($key, 0, 11) == 'label_for__') {
                 continue;
             }
@@ -227,7 +212,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
  */
 function _url_to_filename($url_full)
 {
-    $bad_chars = array('!', '/', '\\', '?', '*', '<', '>', '|', '"', ':');
+    $bad_chars = array('!', '/', '\\', '?', '*', '<', '>', '|', '"', ':', '%', ' ');
     $new_name = $url_full;
     foreach ($bad_chars as $bad_char) {
         $good_char = '!' . strval(ord($bad_char));
@@ -366,7 +351,7 @@ function _fixup_protocolless_urls($in)
         return $in;
     }
 
-    // Rule 1: // If we have a dot before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
+    // Rule 1: // If we have a dot somewhere before a slash, then this dot is likely part of a domain name (not a file extension)- thus we have an absolute URL.
     if (preg_match('#\..*/#', $in) != 0) {
         return 'http://' . $in; // Fix it
     }
@@ -395,8 +380,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     }
 
     // Try and strip any variants of the base URL from our $url variable, to make it relative
-    $non_www_base_url = str_replace('http://www.', 'http://', get_base_url());
-    $www_base_url = str_replace('http://', 'http://www.', get_base_url());
+    $non_www_base_url = str_replace('https://www.', 'https://', str_replace('http://www.', 'http://', get_base_url()));
+    $www_base_url = str_replace('https://', 'https://www.', str_replace('http://', 'http://www.', get_base_url()));
     $url = preg_replace('#^' . preg_quote(get_base_url() . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($non_www_base_url . '/', '#') . '#', '', $url);
     $url = preg_replace('#^' . preg_quote($www_base_url . '/', '#') . '#', '', $url);
@@ -633,12 +618,23 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
  * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
  * @param  string $moniker_src String from which a moniker will be chosen (may not be blank).
  * @param  boolean $is_new Whether we are sure this is a new moniker (makes things more efficient, saves a query).
+ * @param  ?string $moniker Actual moniker to use (null: generate from $moniker_src). Usually this is left null.
  * @return string The chosen moniker.
  */
-function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_new = false)
+function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_new = false, $moniker = null)
 {
     if (get_option('url_monikers_enabled') == '0') {
         return '';
+    }
+
+    static $force_called = array();
+    $ref = $zone . ':' . $page . ':' . $type . ':' . $id;
+    if ($moniker !== null) {
+        $force_called[$ref] = $moniker;
+    } else {
+        if (isset($force_called[$ref])) {
+            return $force_called[$ref];
+        }
     }
 
     if (!$is_new) {
@@ -651,8 +647,10 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         $old = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', array('m_resource_page' => $page, 'm_resource_type' => $type, 'm_resource_id' => $id, 'm_deprecated' => 0), 'ORDER BY id DESC');
         if (!is_null($old)) {
             // See if it is same as current
-            $scope = _give_moniker_scope($page, $type, $id, $zone, '');
-            $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
+            if ($moniker === null) {
+                $scope = _give_moniker_scope($page, $type, $id, $zone, '');
+                $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, $old, $scope);
+            }
             if ($moniker == $old) {
                 return $old; // hmm, ok it can stay actually
             }
@@ -675,14 +673,16 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         }
     }
 
-    if (is_numeric($moniker_src)) {
-        $moniker = $id;
-    } else {
-        $scope = _give_moniker_scope($page, $type, $id, $zone, '');
-        $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, null, $scope);
+    if ($moniker === null) {
+        if (is_numeric($moniker_src)) {
+            $moniker = $id;
+        } else {
+            $scope = _give_moniker_scope($page, $type, $id, $zone, '');
+            $moniker = $scope . _choose_moniker($page, $type, $id, $moniker_src, null, $scope);
 
-        if (($page == 'news') && ($type == 'view') && (get_value('google_news_urls') === '1')) {
-            $moniker .= '-' . str_pad($id, 3, '0', STR_PAD_LEFT);
+            if (($page == 'news') && ($type == 'view') && (get_value('google_news_urls') === '1')) {
+                $moniker .= '-' . str_pad($id, 3, '0', STR_PAD_LEFT);
+            }
         }
     }
 
@@ -702,6 +702,9 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
         'm_deprecated' => 0,
         'm_manually_chosen' => 0,
     ));
+
+    global $LOADED_MONIKERS_CACHE;
+    $LOADED_MONIKERS_CACHE = array();
 
     return $moniker;
 }

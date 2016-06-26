@@ -173,18 +173,21 @@ class Hook_sitemap_forum extends Hook_sitemap_content
         }
 
         $struct = array(
-                      'sitemap_priority' => $sitemap_priority,
-                      'sitemap_refreshfreq' => 'monthly',
+            'sitemap_priority' => $sitemap_priority,
+            'sitemap_refreshfreq' => 'monthly',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_forums')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_forums')),
+        ) + $partial_struct;
 
         $struct['extra_meta'] = array(
             'image' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/24x24/menu/social/forum/forums') : null,
             'image_2x' => (($meta_gather & SITEMAP_GATHER_IMAGE) != 0) ? find_theme_image('icons/48x48/menu/social/forum/forums') : null,
         ) + $struct['extra_meta'];
+
+
+        $struct['extra_meta']['is_a_category_tree_root'] = true;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

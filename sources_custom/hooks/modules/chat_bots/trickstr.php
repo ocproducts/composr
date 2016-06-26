@@ -61,12 +61,12 @@ class Hook_chat_bot_trickstr
     {
         $people = get_chatters_in_room($room_id);
         if (count($people) > 2) {
-            return null;
-        } // Don't spam if noone is here
+            return null; // Don't spam if noone is here
+        }
 
         if (running_script('shoutbox')) {
-            return null;
-        } // Messes up shoutbox
+            return null; // Messes up shoutbox
+        }
 
         $is_im = $GLOBALS['SITE_DB']->query_select_value('chat_rooms', 'is_im', array('id' => $room_id));
         if ($is_im == 1) {

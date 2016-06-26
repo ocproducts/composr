@@ -42,10 +42,9 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 
 require($FILE_BASE . '/_config.php');
 
-if (php_function_allowed('php_sapi_name')) {
-    if (php_sapi_name() != 'cli') {
-        header('Content-type: text/plain');
-    }
+$cli = ((function_exists('php_sapi_name')) && (strpos(@ini_get('disable_functions'), 'php_sapi_name') === false) && (php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+if ($cli) {
+    header('Content-type: text/plain');
 }
 
 $required_settings = array(
@@ -257,9 +256,9 @@ function set_failover_mode($new_mode)
     $orig_config_contents = $config_contents;
     $config_contents = preg_replace('#^(\$SITE_INFO\[\'failover_mode\'\]\s*=\s*\')[^\']+(\';)#m', '$1' . addslashes($new_mode) . '$2', $config_contents);
 
-    if ($orig_config_contents == $config_contents) {
+    if ($orig_config_contents == $config_contents) { // No change needed
         return;
-    } // No change needed
+    }
 
     file_put_contents($path, $config_contents, LOCK_EX);
 

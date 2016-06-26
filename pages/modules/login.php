@@ -202,13 +202,18 @@ class Module_login
         $passion = new Tempcode(); // Hidden fields
 
         // Where we will be redirected to after login, for GET requests (POST requests are handled further in the code)
-        $redirect_default = get_self_url(true, true); // The default is to go back to where we are after login. Note that this is not necessarily the URL to the login module, as login screens happen on top of screens you're not allowed to access. If it is the URL to the login module, we'll realise this later in this code. This URL is coded to not redirect to root if we have $_POST, because we relay $_POST values and have intelligence (via $passion).
+        $redirect_default = get_self_url(true); // The default is to go back to where we are after login. Note that this is not necessarily the URL to the login module, as login screens happen on top of screens you're not allowed to access. If it is the URL to the login module, we'll realise this later in this code. This URL is coded to not redirect to root if we have $_POST, because we relay $_POST values and have intelligence (via $passion).
         $redirect = get_param_string('redirect', $redirect_default); // ... but often the login screen's URL tells us where to go back to
         $unhelpful_redirect = false;
         $unhelpful_url_stubs = array(
             static_evaluate_tempcode(build_url(array('page' => 'login'), '', null, false, false, true)),
             static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '', null, false, false, true)),
             static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '_SELF', null, false, false, true)),
         );
         foreach ($unhelpful_url_stubs as $unhelpful_url_stub) {
             if (substr($redirect, 0, strlen($unhelpful_url_stub)) == $unhelpful_url_stub) {
@@ -235,7 +240,7 @@ class Module_login
         }
 
         // Lost password link
-        if (get_forum_type() == 'cns' && count($_POST) == 0) {
+        if (get_forum_type() == 'cns' && !has_interesting_post_fields()) {
             require_lang('cns');
             $forgotten_link = build_url(array('page' => 'lost_password', 'wide_high' => get_param_integer('wide_high', null)), get_module_zone('lost_password'));
             $extra = do_lang_tempcode('cns:IF_FORGOTTEN_PASSWORD', escape_html($forgotten_link->evaluate()));
@@ -272,7 +277,7 @@ class Module_login
         if (!is_null($id)) {
             $url = enforce_sessioned_url(either_param_string('redirect')); // Now that we're logged in, we need to ensure the redirect URL contains our new session ID
 
-            if (count($_POST) <= 4) { // Only the login username, password, remember-me and redirect
+            if (!has_interesting_post_fields()) {
                 require_code('site2');
                 assign_refresh($url, 0.0);
                 $post = new Tempcode();

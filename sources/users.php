@@ -93,13 +93,13 @@ function init__users()
     }
 
     // Canonicalise various disparities in how HTTP auth environment variables are set
-    if (array_key_exists('REDIRECT_REMOTE_USER', $_SERVER)) {
+    if (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REDIRECT_REMOTE_USER']);
     }
-    if (array_key_exists('PHP_AUTH_USER', $_SERVER)) {
+    if (!empty($_SERVER['PHP_AUTH_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']);
     }
-    if (array_key_exists('REMOTE_USER', $_SERVER)) {
+    if (!empty($_SERVER['REMOTE_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REMOTE_USER']);
     }
 
@@ -230,7 +230,9 @@ function get_member($quick_only = false)
             $member = $member_row['member_id'];
 
             if (($member !== null) && ((time() - $member_row['last_activity']) > 10)) { // Performance optimisation. Pointless re-storing the last_activity if less than 3 seconds have passed!
-                //$GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time(), 'the_zone' => get_zone_name(), 'the_page' => get_page_name()), array('the_session' => $session), '', 1);  Done in get_screen_title now
+                if (!running_script('index')) { // For 'index' it happens in get_screen_title, as screen meta-information is used
+                    $GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time()), array('the_session' => $session), '', 1);
+                }
                 $SESSION_CACHE[$session]['last_activity'] = time();
                 if (get_option('session_prudence') == '0') {
                     persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
@@ -441,7 +443,7 @@ function is_httpauth_login()
     }
 
     require_code('cns_members');
-    return ((array_key_exists('PHP_AUTH_USER', $_SERVER)) && (!is_null(cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']))));
+    return ((!empty($_SERVER['PHP_AUTH_USER'])) && (!is_null(cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']))));
 }
 
 /**

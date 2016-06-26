@@ -16,28 +16,29 @@
 			{+END}
 
 			<div class="attachment_details">
-				<a
+				{+START,IF,{THUMB}}<a
 					{+START,IF,{$NOT,{$INLINE_STATS}}}onclick="return ga_track(this,'{!IMAGE;*}','{FILENAME;*}');"{+END}
 					target="_blank"
-					title="{+START,IF_NON_EMPTY,{DESCRIPTION}}{DESCRIPTION*} {+END}{!LINK_NEW_WINDOW}"
+					title="{!LINK_NEW_WINDOW}"
 					{+START,IF_PASSED,CLICK_URL}href="{CLICK_URL*}"{+END}
 					{+START,IF_NON_PASSED,CLICK_URL}
 						rel="lightbox"
 						href="{URL*}"
 					{+END}
-				><img
+				>{+END}<img
 					{+START,IF,{$NEQ,{WIDTH}x{HEIGHT},{$CONFIG_OPTION,thumb_width}x{$CONFIG_OPTION,thumb_width}}}
 						{+START,IF_NON_EMPTY,{WIDTH}}width="{WIDTH*}"{+END}
 						{+START,IF_NON_EMPTY,{HEIGHT}}height="{HEIGHT*}"{+END}
 					{+END}
-					alt=""
+					{+START,IF_NON_EMPTY,{DESCRIPTION}}alt="{DESCRIPTION*}"{+END}
+					{+START,IF_EMPTY,{DESCRIPTION}}alt=""{+END}
 					src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"
-					{+START,IF_PASSED,URL_SAFE}{+START,IF_NON_EMPTY,{WIDTH}}srcset="{$THUMBNAIL*,{URL_SAFE},{$MULT,{WIDTH},2}} 2x"{+END}{+END}
-				/></a>
+					{+START,IF,{$NEQ,{THUMB_URL},{URL}}}{+START,IF_PASSED,URL_SAFE}{+START,IF_NON_EMPTY,{WIDTH}}srcset="{$THUMBNAIL*,{URL_SAFE},{$MULT,{WIDTH},2}} 2x"{+END}{+END}{+END}
+				/>{+START,IF,{THUMB}}</a>{+END}
 
 				{$,Uncomment for a download link \{+START,INCLUDE,MEDIA__DOWNLOAD_LINK\}\{+END\}}
 
-				{+START,IF_NON_PASSED,CLICK_URL}<p class="associated_details">({!comcode:CLICK_TO_ENLARGE})</p>{+END}
+				{+START,IF,{THUMB}}{+START,IF_NON_PASSED,CLICK_URL}<p class="associated_details">({!comcode:CLICK_TO_ENLARGE})</p>{+END}{+END}
 			</div>
 		</div>
 	</figure>
@@ -78,6 +79,6 @@
 
 		class="attachment_img"
 		src="{$ENSURE_PROTOCOL_SUITABILITY*,{THUMB_URL}}"
-		{+START,IF_PASSED,URL_SAFE}{+START,IF_NON_EMPTY,{WIDTH}}srcset="{$THUMBNAIL*,{URL_SAFE},{$MULT,{WIDTH},2}} 2x"{+END}{+END}
+		{+START,IF,{$NEQ,{THUMB_URL},{URL}}}{+START,IF_PASSED,URL_SAFE}{+START,IF_NON_EMPTY,{WIDTH}}srcset="{$THUMBNAIL*,{URL_SAFE},{$MULT,{WIDTH},2}} 2x"{+END}{+END}{+END}
 	/>{+START,IF,{THUMB}}</a>{+END}{+START,IF_PASSED,CLICK_URL}{+START,IF,{$NOT,{THUMB}}}</a>{+END}{+END}
 {+END}

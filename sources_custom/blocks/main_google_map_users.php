@@ -136,7 +136,7 @@ class Block_main_google_map_users
 
         if (count($members_to_show) == 0) { // If there's nothing to show
             if ($geolocate_user == '0') {// Exit, but only if we can't geolocate users via the block (i.e. self-healing)
-                return paragraph(do_lang_tempcode('NO_ENTRIES'), '', 'nothing_here');
+                return paragraph(do_lang_tempcode('NO_ENTRIES', 'member'), '', 'nothing_here');
             }
         }
 

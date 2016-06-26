@@ -323,6 +323,9 @@ function do_form_preview(event,form,preview_url,has_separate_preview)
 		}
 	}*/
 
+	// Turn main post editing back off
+	if (typeof wysiwyg_set_readonly!='undefined') wysiwyg_set_readonly('post',true);
+
 	return true;
 }
 
@@ -512,10 +515,10 @@ function check_field(the_element,the_form,for_preview)
 		}
 
 		// Custom error messages
-		if (error_msg!='')
+		if (error_msg!='' && errormsg_element!=null)
 		{
 			var custom_msg=errormsg_element.getAttribute('data-errorRegexp');
-			if ((errormsg_element) && (custom_msg!=null) && (custom_msg!=''))
+			if ((custom_msg!=null) && (custom_msg!=''))
 				error_msg=custom_msg;
 		}
 	}

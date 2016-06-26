@@ -118,9 +118,11 @@ function upload_syndication_auth_script()
         warn_exit(do_lang_tempcode('FAILURE_UPLOAD_SYNDICATION_AUTH', escape_html($label)));
     }
 
-    $tpl = do_template('UPLOAD_SYNDICATION_SETUP_SCREEN', array('_GUID' => '336ee1c1a5503a79ef426bbcdc4258fd', 'LABEL' => $label,
-                                                                'HOOK' => $hook,
-                                                                'NAME' => $name,
+    $tpl = do_template('UPLOAD_SYNDICATION_SETUP_SCREEN', array(
+        '_GUID' => '336ee1c1a5503a79ef426bbcdc4258fd',
+        'LABEL' => $label,
+        'HOOK' => $hook,
+        'NAME' => $name,
     ));
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'abde85be22df7fcfd51c5067f1b82e7a', 'TITLE' => do_lang_tempcode('UPLOAD_SYNDICATION_AUTH'), 'CONTENT' => $tpl, 'POPUP' => true));
     $echo->handle_symbol_preprocessing();
@@ -202,7 +204,7 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
 
     if ($remove_locally_if_no_quota || $force_remove_locally) {
         require_code('files2');
-        $max_attach_size = get_max_file_size(get_member(), $GLOBALS['SITE_DB']);
+        $max_attach_size = get_max_file_size(get_member(), $GLOBALS['SITE_DB'], false);
         $no_quota = (($max_attach_size == 0) && (get_forum_type() == 'cns') && (cns_get_member_best_group_property(get_member(), 'max_daily_upload_mb') == 0));
         if ($no_quota || $force_remove_locally) {
             if (url_is_local($new_url)) {

@@ -682,11 +682,11 @@ function init__webstandards2()
         'label' => array('for'),
         'map' => array('id'),
         'area' => array('alt'),
-        'form' => array('action', 'title'),
+        'form' => array('action', 'title', 'autocomplete'/*not really required but for stability we should always set it*/),
         'textarea' => array('cols', 'rows'),
         //'input' => array('value'), // accessibility, checked somewhere else
         'table' => array(/*'summary' not in html5*/),
-        'optgroup' => array('label')
+        'optgroup' => array('label'),
     );
 
     // New to HTML5...

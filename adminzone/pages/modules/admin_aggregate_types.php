@@ -35,6 +35,8 @@ class Module_admin_aggregate_types extends Standard_crud_module
     public $add_one_label = null;
     public $edit_this_label = null;
     public $edit_one_label = null;
+    public $donext_entry_content_type = 'aggregate_type_instance';
+    public $donext_category_content_type = null;
 
     /**
      * Find details of the module.
@@ -382,9 +384,11 @@ class Module_admin_aggregate_types extends Standard_crud_module
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_xml'), '_SELF');
 
-        return do_template('XML_CONFIG_SCREEN', array('_GUID' => '2303459e94b959d2edf8444188bbeea9', 'TITLE' => $this->title,
-                                                      'POST_URL' => $post_url,
-                                                      'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') : file_get_contents(get_custom_file_base() . '/data/xml_config/aggregate_types.xml'),
+        return do_template('XML_CONFIG_SCREEN', array(
+            '_GUID' => '2303459e94b959d2edf8444188bbeea9',
+            'TITLE' => $this->title,
+            'POST_URL' => $post_url,
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') : file_get_contents(get_custom_file_base() . '/data/xml_config/aggregate_types.xml'),
         ));
     }
 
@@ -443,14 +447,16 @@ class Module_admin_aggregate_types extends Standard_crud_module
 
         $url = build_url(array('page' => '_SELF', 'type' => '_sync'), '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '823999c74834fc34a51a6a63cdafeab5', 'TITLE' => $this->title,
-                                                'SKIP_WEBSTANDARDS' => true,
-                                                'HIDDEN' => '',
-                                                'URL' => $url,
-                                                'FIELDS' => $fields,
-                                                'TEXT' => do_lang_tempcode('SELECT_AGGREGATE_TYPES_FOR_SYNC'),
-                                                'SUBMIT_ICON' => 'menu___generic_admin__sync',
-                                                'SUBMIT_NAME' => $submit_name,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '823999c74834fc34a51a6a63cdafeab5',
+            'TITLE' => $this->title,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'URL' => $url,
+            'FIELDS' => $fields,
+            'TEXT' => do_lang_tempcode('SELECT_AGGREGATE_TYPES_FOR_SYNC'),
+            'SUBMIT_ICON' => 'menu___generic_admin__sync',
+            'SUBMIT_NAME' => $submit_name,
         ));
     }
 

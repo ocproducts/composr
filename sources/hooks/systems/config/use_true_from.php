@@ -38,6 +38,7 @@ class Hook_config_use_true_from
             'explanation' => 'CONFIG_OPTION_use_true_from',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',
         );

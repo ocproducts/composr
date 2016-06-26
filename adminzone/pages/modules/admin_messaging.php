@@ -212,7 +212,7 @@ class Module_admin_messaging
         require_code('feedback');
         actualise_post_comment(true, $message_type, $id, build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true), null, $forum);
         $count = 0;
-        $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id), $count);
+        $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id, do_lang('COMMENT')), $count);
         if ((is_array($_comments)) && (array_key_exists(0, $_comments))) {
             $message_title = $_comments[0]['title'];
             $message = $_comments[0]['message'];
@@ -244,7 +244,7 @@ class Module_admin_messaging
         $whos_read = array();
         if (get_forum_type() == 'cns') {
             // Read - who has, and when
-            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id);
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id, do_lang('COMMENT'));
             $rows = $GLOBALS['FORUM_DB']->query_select('f_read_logs', array('l_member_id', 'l_time'), array('l_topic_id' => $topic_id));
             foreach ($rows as $row) {
                 if (is_guest($row['l_member_id'])) {

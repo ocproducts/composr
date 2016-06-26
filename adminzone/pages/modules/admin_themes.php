@@ -372,7 +372,7 @@ class Module_admin_themes
                 if (!$zone_list_free_choices->is_empty()) {
                     $zone_list_free_choices->attach(do_lang_tempcode('LIST_SEP'));
                 }
-                $zone_list_free_choices->attach($zone['zone_name']);
+                $zone_list_free_choices->attach(($zone['zone_name'] == '') ? do_lang('_WELCOME') : $zone['zone_name']);
 
                 $free_choices++;
             }
@@ -1114,9 +1114,9 @@ class Module_admin_themes
         } else {
             // Remove old file first so we can re-use the filepath
             is_plupload(true);
-            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file'])))) || (post_param_string('path', '') != '')) {
+            if (((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name'])))) || (post_param_string('path', '') != '')) {
                 $old_url = find_theme_image($old_id, true, true, $theme, ($lang == '') ? null : $lang);
-                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']))) || $old_url != post_param_string('path', ''))) {
+                if ($old_url != '' && ((array_key_exists('file', $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES['file']['tmp_name']))) || $old_url != post_param_string('path', ''))) {
                     if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
                         $where_map = array('theme' => $theme, 'id' => $old_id);
                         if (($lang != '') && (!is_null($lang))) {

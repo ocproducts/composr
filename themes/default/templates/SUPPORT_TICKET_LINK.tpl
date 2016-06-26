@@ -62,7 +62,7 @@
 
 	{+START,IF_NON_EMPTY,{$GET,ticket_merge_into}}{+START,IF,{$HAS_PRIVILEGE,support_operator}}
 		<td>
-			<form title="{!MERGE_SUPPORT_TICKETS}" action="{$PAGE_LINK*,_SEARCH:tickets:merge:from={$GET,ticket_merge_into}:to={ID}}" method="post">
+			<form title="{!MERGE_SUPPORT_TICKETS}" action="{$PAGE_LINK*,_SEARCH:tickets:merge:from={$GET,ticket_merge_into}:to={ID}}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<input class="button_screen_item menu___generic_admin__merge" type="submit" title="{!MERGE_SUPPORT_TICKETS}" value="{!_MERGE}" />

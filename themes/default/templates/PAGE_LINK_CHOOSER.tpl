@@ -1,5 +1,5 @@
 {+START,IF_NON_PASSED_OR_FALSE,AS_FIELD}
-<form title="{!PRIMARY_PAGE_FORM}" action="{$BASE_URL*}/index.php" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{$BASE_URL*}/index.php" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 {+END}

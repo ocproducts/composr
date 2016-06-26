@@ -105,12 +105,12 @@ class Block_main_news
         $days_outline = floatval($days) - $days_full;
 
         // News query
-        require_code('selectcode');
         $select = isset($map['select']) ? $map['select'] : get_param_string('news_select', '*');
         $select_and = isset($map['select_and']) ? $map['select_and'] : '';
-        if ($filter == '*') {
+        if ($select == '*') {
             $q_filter = '1=1';
         } else {
+            require_code('selectcode');
             $selects_1 = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
             $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
             $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
@@ -132,6 +132,7 @@ class Block_main_news
             $join = '';
         }
         if ($select_and != '') {
+            require_code('selectcode');
             $selects_and_1 = selectcode_to_sqlfragment($select_and, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
             $selects_and_2 = selectcode_to_sqlfragment($select_and, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
             $q_filter .= ' AND (' . $selects_and_1 . ' OR ' . $selects_and_2 . ')';
@@ -175,7 +176,7 @@ class Block_main_news
             }
         } else {
             if (php_function_allowed('set_time_limit')) {
-                set_time_limit(0);
+                set_time_limit(100);
             }
             $start = 0;
             do {
@@ -246,7 +247,7 @@ class Block_main_news
 
                 // Basic details
                 $id = $myrow['p_id'];
-                $date = get_timezoned_date($myrow['date_and_time']);
+                $date = get_timezoned_date_tempcode($myrow['date_and_time']);
                 $news_title = get_translated_tempcode('news', $just_news_row, 'title');
                 $news_title_plain = get_translated_text($myrow['title']);
 
@@ -359,7 +360,7 @@ class Block_main_news
                 $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'));
 
                 // Basic details
-                $date = get_timezoned_date($myrow['date_and_time']);
+                $date = get_timezoned_date_tempcode($myrow['date_and_time']);
 
                 // URL
                 $tmp = array('page' => 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;
@@ -395,7 +396,7 @@ class Block_main_news
         $is_on_rss = is_null($_is_on_rss) ? 0 : intval($_is_on_rss); // Set to zero if we don't want to show RSS links
         $submit_url = new Tempcode();
         $management_page = ($blogs === 1) ? 'cms_blogs' : 'cms_news';
-        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, $management_page, null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), $management_page))) {
+        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, $management_page, null, null)) && (has_submit_permission(($blogs === 1) ? 'mid' : 'high', get_member(), get_ip_address(), $management_page))) {
             $map2 = array('page' => $management_page, 'type' => 'add', 'redirect' => SELF_REDIRECT);
             if (is_numeric($select)) {
                 $map2['cat'] = $select; // select news cat by default, if we are only showing one news cat in this block
@@ -459,7 +460,7 @@ class Block_main_news
 
         return do_template('BLOCK_MAIN_NEWS', array(
             '_GUID' => '01f5fbd2b0c7c8f249023ecb4254366e',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'BLOG' => $blogs === 1,
             'TITLE' => $_title,
             'CONTENT' => $news_text,
@@ -470,7 +471,6 @@ class Block_main_news
             'RSS_URL' => $rss_url,
             'ATOM_URL' => $atom_url,
             'PAGINATION' => $pagination,
-
             'START' => strval($start),
             'MAX' => strval($fallback_full + $fallback_archive),
             'START_PARAM' => $block_id . '_start',

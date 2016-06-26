@@ -299,7 +299,7 @@ class Module_cms_blogs extends Standard_crud_module
             }
         }
         if ($cats1->is_empty()) {
-            warn_exit(do_lang_tempcode('NO_CATEGORIES'));
+            warn_exit(do_lang_tempcode('NO_CATEGORIES', 'news_category'));
         }
         if (addon_installed('authors')) {
             $hidden->attach(form_input_hidden('author', $author));
@@ -622,7 +622,16 @@ class Module_cms_blogs extends Standard_crud_module
             has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_news') ? array('cms_news', array('type' => 'add_category'), '_SELF') : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_news') ? array('cms_news', array('type' => 'edit_category'), '_SELF') : null, // Edit one category
             is_null($cat) ? null : has_privilege(get_member(), 'edit_own_cat_midrange_content', 'cms_news') ? array('cms_news', array('type' => '_edit_category', 'id' => $cat), '_SELF') : null, // Edit this category
-            null // View this category
+            null, // View this category
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            do_lang('BLOG_NEWS_ARTICLE'),
+            'news_category'
         );
     }
 
@@ -738,7 +747,7 @@ class Module_cms_blogs extends Standard_crud_module
             }
 
             require_code('tasks');
-            $ret = call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_rss', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss_url, $rss));
+            $ret = call_user_func_array__long_task(do_lang('IMPORT_WORDPRESS'), $this->title, 'import_rss', array($is_validated, $download_images, $to_own_account, $import_blog_comments, $import_to_blog, $rss));
 
             return $ret;
         } elseif (get_param_string('method') == 'db') { // Importing directly from wordpress DB

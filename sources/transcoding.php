@@ -62,7 +62,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
 
             require_code('xml');
             $transcoded_filename = uniqid('transcoded', true) . '--' . rawurldecode(preg_replace('#\.\w+$#', '', basename($url))) . '.' . $extension;
-            $xml = '<' . '?xml version="1.0" encoding="UTF-8"?' . '>
+            $xml = '<' . '?xml version="1.0" encoding="utf-8"?' . '>
                     <api-request>
                             <api_key>' . xmlentities(get_option('transcoding_zencoder_api_key')) . '</api_key>
                             <input>' . xmlentities(url_is_local($url) ? (get_custom_base_url() . '/' . $url) : $url) . '</input>

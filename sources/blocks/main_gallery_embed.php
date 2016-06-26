@@ -81,10 +81,14 @@ class Block_main_gallery_embed
         $root = ((array_key_exists('root', $map)) && ($map['root'] != '')) ? $map['root'] : get_param_string('keep_gallery_root', null);
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
-        require_code('selectcode');
         $cat = array_key_exists('param', $map) ? $map['param'] : 'root';
         $cat_raw = trim($cat, '>*');
-        $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        if ($cat == 'root') {
+            $cat_select = db_string_equal_to('cat', $cat);
+        } else {
+            require_code('selectcode');
+            $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        }
 
         $title = array_key_exists('title', $map) ? $map['title'] : '';
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
@@ -98,11 +102,17 @@ class Block_main_gallery_embed
         if (!array_key_exists('select', $map)) {
             $map['select'] = '*';
         }
-        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
+        if ($map['select'] != '*') {
+            require_code('selectcode');
+            $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['select'], 'id');
+        }
         if (!array_key_exists('video_select', $map)) {
             $map['video_select'] = '*';
         }
-        $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
+        if ($map['video_select'] != '*') {
+            require_code('selectcode');
+            $where_sup .= ' AND ' . selectcode_to_sqlfragment($map['video_select'], 'id');
+        }
 
         // Day filtering
         $_days = array_key_exists('days', $map) ? $map['days'] : '';
@@ -346,7 +356,7 @@ class Block_main_gallery_embed
                 return do_template('BLOCK_NO_ENTRIES', array(
                     '_GUID' => ($guid != '') ? $guid : 'bf84d65b8dd134ba6cd7b1b7bde99de2',
                     'HIGH' => false,
-                    'TITLE' => do_lang_tempcode('GALLERY'),
+                    'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
                     'ADD_NAME' => $add_name,
                     'SUBMIT_URL' => $submit_url,
@@ -369,7 +379,7 @@ class Block_main_gallery_embed
             'VIDEO_FILTER' => $map['video_filter'],
             'DAYS' => $_days,
             'SORT' => $sort,
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'PAGINATION' => $pagination,
             'TITLE' => $title,
             'CAT' => $cat_raw,
@@ -382,6 +392,7 @@ class Block_main_gallery_embed
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 }

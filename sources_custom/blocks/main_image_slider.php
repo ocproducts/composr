@@ -81,8 +81,12 @@ class Block_main_image_slider
         $_transitions = array_key_exists('transitions', $map) ? $map['transitions'] : 'cube|cubeRandom|block|cubeStop|cubeHide|cubeSize|horizontal|showBars|showBarsRandom|tube|fade|fadeFour|paralell|blind|blindHeight|blindWidth|directionTop|directionBottom|directionRight|directionLeft|cubeStopRandom|cubeSpread|cubeJelly|glassCube|glassBlock|circles|circlesInside|circlesRotate|cubeShow|upBars|downBars|hideBars|swapBars|swapBarsBack|swapBlocks|cut|random|randomSmart';
         $transitions = ($_transitions == '') ? array() : explode('|', $_transitions);
 
-        require_code('selectcode');
-        $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        if ($cat == 'root') {
+            $cat_select = db_string_equal_to('cat', 'root');
+        } else {
+            require_code('selectcode');
+            $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        }
 
         $extra_join_image = '';
         $extra_join_video = '';
@@ -175,9 +179,11 @@ class Block_main_image_slider
             if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat))) && (can_submit_to_gallery($cat))) {
                 $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
             }
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8b92cd992508e55bfe4139b5c09475c2', 'HIGH' => false,
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => '8b92cd992508e55bfe4139b5c09475c2',
+                'HIGH' => false,
                 'TITLE' => do_lang_tempcode('GALLERY'),
-                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'image'),
                 'ADD_NAME' => do_lang_tempcode('ADD_IMAGE'),
                 'SUBMIT_URL' => $submit_url,
             ));
@@ -189,7 +195,9 @@ class Block_main_image_slider
         }
         $gallery_url = build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $nice_cat), $zone);
 
-        return do_template('BLOCK_MAIN_IMAGE_SLIDER', array('_GUID' => '264a178c1ea7fa719ac53af07129a38c', 'GALLERY_URL' => $gallery_url,
+        return do_template('BLOCK_MAIN_IMAGE_SLIDER', array(
+            '_GUID' => '264a178c1ea7fa719ac53af07129a38c',
+            'GALLERY_URL' => $gallery_url,
             'IMAGES' => $images,
             'MILL' => strval($mill),
             'WIDTH' => strval($width),

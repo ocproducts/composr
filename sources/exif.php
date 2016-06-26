@@ -37,7 +37,9 @@ function get_exif_data($path, $filename = null)
     }
 
     if (!function_exists('exif_read_data')) {
-        return array(); // EXIF extension not installed
+        return array( // EXIF extension not installed
+            'UserComment' => '',
+        );
     }
 
     $metadata = @exif_read_data($path, 'ANY_TAG');
@@ -253,7 +255,7 @@ function store_exif($content_type, $content_id, $exif, $map = null)
     }
 
     // Get field values
-    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+    $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name'), array('c_name' => '_' . $content_type), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     if (is_null($map)) {
         $map = array();
     }

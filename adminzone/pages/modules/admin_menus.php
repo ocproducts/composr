@@ -100,6 +100,9 @@ class Module_admin_menus
      */
     public function run()
     {
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+
         require_javascript('menu_editor');
         require_javascript('ajax');
 
@@ -204,7 +207,7 @@ class Module_admin_menus
         // Option to copy to an editable menu
         if ($id == '') {
             $preview = do_lang_tempcode('COPY_TO_EDITABLE_MENU');
-            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu'), '_SELF');
+            $confirm_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => 'main_menu', 'redirect' => get_param_string('redirect', null)), '_SELF');
             require_code('templates_confirm_screen');
             return confirm_screen($this->title, $preview, $confirm_url, null, array('copy_from' => get_option('header_menu_call_string'), 'switch_over' => 1));
         }
@@ -423,8 +426,8 @@ class Module_admin_menus
             log_it('DELETE_MENU', $menu_id);
 
             // Go back to menu editor screen
-            $url = get_param_string('redirect', '!');
-            if ($url == '!') {
+            $url = get_param_string('redirect', null);
+            if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
                 $url = $_url->evaluate();
             }
@@ -465,8 +468,8 @@ class Module_admin_menus
             log_it('EDIT_MENU', $menu_id);
 
             // Go back to editing the menu
-            $url = get_param_string('redirect', '!');
-            if ($url == '!') {
+            $url = get_param_string('redirect', null);
+            if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $menu_id), '_SELF');
                 $url = $_url->evaluate();
             }

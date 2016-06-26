@@ -17,7 +17,7 @@
 class getid3_dts
 {
 
-    function getid3_dts(&$fd, &$ThisFileInfo) {
+    function __construct(&$fd, &$ThisFileInfo) {
         // Specs taken from "DTS Coherent Acoustics;Core and Extensions,  ETSI TS 102 114 V1.2.1 (2002-12)"
         // (http://pda.etsi.org/pda/queryform.asp)
         // With thanks to Gambit <macteam@users.sourceforge.net> http://mac.sourceforge.net/atl/

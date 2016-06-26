@@ -71,7 +71,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
     if ((@is_array($FILE_ARRAY)) && (file_array_exists('lang/' . $lang . '/' . $codename . '.ini'))) {
         $lang_file = 'lang/' . $lang . '/' . $codename . '.ini';
         $file = file_array_get($lang_file);
-        _get_lang_file_map($file, $load_target, 'strings', true);
+        _get_lang_file_map($file, $load_target, 'strings', true, true, $lang);
         $bad = true;
     } else {
         $bad = true;
@@ -80,26 +80,26 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
         // Load originals
         $lang_file = get_file_base() . '/lang/' . $lang . '/' . filter_naughty($codename) . '.ini';
         if (file_exists($lang_file)) { // Non-custom, Proper language
-            _get_lang_file_map($lang_file, $load_target, 'strings', false);
+            _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
         }
 
         // Load overrides now if they are there
-        if ($type != 'lang') {
+        if ($type !== 'lang') {
             $lang_file = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
-            if ((!file_exists($lang_file)) && (get_file_base() != get_custom_file_base())) {
+            if ((!file_exists($lang_file)) && (get_file_base() !== get_custom_file_base())) {
                 $lang_file = get_file_base() . '/lang_custom/' . $lang . '/' . $codename . '.ini';
             }
         }
-        if (($type != 'lang') && (file_exists($lang_file))) {
-            _get_lang_file_map($lang_file, $load_target, 'strings', false);
+        if (($type !== 'lang') && (file_exists($lang_file))) {
+            _get_lang_file_map($lang_file, $load_target, 'strings', false, true, $lang);
             $bad = false;
             $dirty = true; // Tainted from the official pack, so can't store server wide
         }
 
         // NB: Merge op doesn't happen in require_lang. It happens when do_lang fails and then decides it has to force a recursion to do_lang(xx, fallback_lang()) which triggers require_lang(xx, fallback_lang()) when it sees it's not loaded
 
-        if (($bad) && ($lang != fallback_lang())) { // Still some hope
+        if (($bad) && ($lang !== fallback_lang())) { // Still some hope
             require_lang($codename, fallback_lang(), $type, $ignore_errors);
             $REQUIRE_LANG_LOOP--;
             $fallback_cache_path = get_custom_file_base() . '/caches/lang/' . fallback_lang() . '/' . $codename . '.lcd';
@@ -122,7 +122,7 @@ function require_lang_compile($codename, $lang, $type, $cache_path, $ignore_erro
                 return true;
             }
 
-            if (($codename != 'critical_error') || ($lang != get_site_default_lang())) {
+            if (($codename !== 'critical_error') || ($lang !== get_site_default_lang())) {
                 $error_msg = do_lang_tempcode('MISSING_LANG_FILE', escape_html($codename), escape_html($lang));
                 if (get_page_name() == 'admin_themes') {
                     warn_exit($error_msg);
@@ -198,7 +198,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
     }
 
     $a = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
-    if ((get_custom_file_base() != get_file_base()) && (!is_file($a))) {
+    if ((get_custom_file_base() !== get_file_base()) && (!is_file($a))) {
         $a = get_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
     }
 
@@ -209,7 +209,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
     }
 
     require_code('lang_compile');
-    _get_lang_file_map($b, $entries, $section);
+    _get_lang_file_map($b, $entries, $section, false, true, $lang);
     return $entries;
 }
 
@@ -224,7 +224,7 @@ function get_lang_file_section($lang, $file = null, $section = 'descriptions')
 function get_lang_file_map($lang, $file, $non_custom = false)
 {
     $a = get_custom_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
-    if ((get_custom_file_base() != get_file_base()) && (!file_exists($a))) {
+    if ((get_custom_file_base() !== get_file_base()) && (!file_exists($a))) {
         $a = get_file_base() . '/lang_custom/' . $lang . '/' . $file . '.ini';
     }
 
@@ -241,7 +241,7 @@ function get_lang_file_map($lang, $file, $non_custom = false)
     }
 
     $target = array();
-    _get_lang_file_map($a, $target);
+    _get_lang_file_map($a, $target, 'strings', false, true, $lang);
     return $target;
 }
 
@@ -253,10 +253,11 @@ function get_lang_file_map($lang, $file, $non_custom = false)
  * @param  string $section The section to get
  * @param  boolean $given_whole_file Whether $b is in fact not a path, but the actual file contents
  * @param  boolean $apply_filter Apply the language pack filter
+ * @param  ?LANGUAGE_NAME $lang Language (null: current language)
  *
  * @ignore
  */
-function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true)
+function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_file = false, $apply_filter = true, $lang = null)
 {
     if (!$given_whole_file) {
         if (!file_exists($b)) {
@@ -275,9 +276,9 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
         $lines = explode("\n", unixify_line_format($b));
     }
 
-    if ((!$given_whole_file) && ($b[strlen($b) - 1] == 'o')) { // po file.
+    if ((!$given_whole_file) && ($b[strlen($b) - 1] === 'o')) { // po file. LEGACY
         // No description support btw (but shouldn't really be needed, once you save it will make a .ini and that does have description support)
-        if ($section != 'strings') {
+        if ($section !== 'strings') {
             return;
         }
 
@@ -291,8 +292,8 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                 continue;
             }
 
-            if (($line[0] == '#') && (preg_match('/#: \[strings\](.*)/', $line, $matches) != 0)) {
-                if ((!is_null($doing)) && ($value != '')) {
+            if (($line[0] == '#') && (preg_match('/#: \[strings\](.*)/', $line, $matches) !== 0)) {
+                if ((!is_null($doing)) && ($value !== '')) {
                     $entries[$doing] = $value;
                 }
                 $doing = $matches[1];
@@ -308,11 +309,11 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                     $value .= stripslashes($v);
                 } else {
                     $processing = false;
-                    if ((!is_null($doing)) && ($value != '')) {
-                        if (($doing == 'en_left') && ($value != 'left') && ($value != 'right')) {
+                    if ((!is_null($doing)) && ($value !== '')) {
+                        if (($doing == 'en_left') && ($value !== 'left') && ($value !== 'right')) {
                             $value = 'left';
                         }
-                        if (($doing == 'en_right') && ($value != 'left') && ($value != 'right')) {
+                        if (($doing == 'en_right') && ($value !== 'left') && ($value !== 'right')) {
                             $value = 'right';
                         }
                         $entries[$doing] = $value;
@@ -330,7 +331,7 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
                 }
             }
         }
-        if ((!is_null($doing)) && ($value != '')) {
+        if ((!is_null($doing)) && ($value !== '')) {
             $entries[$doing] = $value;
         }
         if (substr(basename($b), 0, 6) == 'global' || $given_whole_file) {
@@ -346,12 +347,12 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
     $nl = "\r\n";
     foreach ($lines as $line) {
         $line = rtrim($line, $nl);
-        if ($line == '') {
+        if ($line === '') {
             continue;
         }
 
-        if ($line[0] == '[') {
-            $in_lang = ($line == '[' . $section . ']');
+        if ($line[0] === '[') {
+            $in_lang = ($line === '[' . $section . ']');
         }
 
         if ($in_lang) {
@@ -359,9 +360,9 @@ function _get_lang_file_map($b, &$entries, $section = 'strings', $given_whole_fi
 
             if (isset($parts[1])) {
                 $key = $parts[0];
-                $value = rtrim(str_replace('\n', "\n", $parts[1]), $nl);
+                $value = str_replace('\n', "\n", rtrim($parts[1], $nl));
                 if ($apply_filter) {
-                    $value = $LANG_FILTER_OB->compile_time($key, $value);
+                    $value = $LANG_FILTER_OB->compile_time($key, $value, $lang);
                 }
                 $entries[$key] = $value;
             }

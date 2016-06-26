@@ -18,7 +18,7 @@
 {+START,IF_NON_EMPTY,{SYNDICATIONS}}
 	<p>{!CREATE_SYNDICATION_LINK}</p>
 
-	<form action="{$SELF_URL*}#tab__activities" method="post">
+	<form action="{$PAGE_LINK*,_SEARCH:members:view:{MEMBER_ID}}#tab__activities" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p>

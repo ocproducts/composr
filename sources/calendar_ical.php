@@ -159,7 +159,7 @@ function output_ical()
             $start = 0;
             do {
                 $count = 0;
-                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, 'events_' . strval($event['id'])), $count, 1000, $start);
+                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, 'events_' . strval($event['id']), do_lang('COMMENT')), $count, 1000, $start);
                 if (is_array($_comments)) {
                     foreach ($_comments as $comment) {
                         if ($comment['title'] != '') {
@@ -537,11 +537,14 @@ function get_event_data_ical($calendar_nodes)
         $url = $calendar_nodes['URL'];
     }
 
+    $all_day = true;
+
     if (array_key_exists('DTSTART', $calendar_nodes)) {
-        $all_day = false;
         if (strlen($calendar_nodes['DTSTART']) == 8) {
             $calendar_nodes['DTSTART'] .= ' 00:00';
-            $all_day = true;
+        }
+        if (substr($calendar_nodes['DTSTART'], -6) != ' 00:00') {
+            $all_day = false;
         }
         $start = strtotime($calendar_nodes['DTSTART']);
         $start_year = intval(date('Y', $start));
@@ -565,7 +568,8 @@ function get_event_data_ical($calendar_nodes)
     if (array_key_exists('DTEND', $calendar_nodes)) {
         if (strlen($calendar_nodes['DTEND']) == 8) {
             $calendar_nodes['DTEND'] .= ' 00:00';
-        } else {
+        }
+        if (substr($calendar_nodes['DTEND'], -6) != ' 00:00') {
             $all_day = false;
         }
         $end = strtotime($calendar_nodes['DTEND']);

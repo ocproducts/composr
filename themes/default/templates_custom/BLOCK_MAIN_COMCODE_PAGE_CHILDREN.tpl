@@ -2,8 +2,8 @@
 
 {$,Needed to stop potential looping problems due to get_page_name() breaking context sensitivity. For example, if including one page that has a main_comcode_page_children block from the main_comcode_page_children block of another}
 
-{+START,IF,{$NOT,{$GET,has_comcode_page_children_block}}}
-	{$SET_NOPREEVAL,has_comcode_page_children_block,1}
+{+START,IF,{$NOT,{$GET,has_comcode_page_children_block,1}}}
+	{$SET-,has_comcode_page_children_block,1}
 
 	{+START,IF_ARRAY_NON_EMPTY,CHILDREN}
 		<h2>{!PAGES}</h2>

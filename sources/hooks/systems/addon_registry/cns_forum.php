@@ -149,8 +149,6 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/notifications/cns_new_pt.php',
             'sources/hooks/systems/notifications/cns_topic.php',
             'sources/hooks/systems/content_meta_aware/forum.php',
-            'sources/hooks/systems/content_meta_aware/topic.php',
-            'sources/hooks/systems/content_meta_aware/post.php',
             'sources/hooks/systems/commandr_fs/forums.php',
             'sources/hooks/modules/admin_stats/cns_posting_rates.php',
             'sources/hooks/systems/sitemap/topic.php',
@@ -333,10 +331,8 @@ class Hook_addon_registry_cns_forum
             'sources/hooks/systems/config/is_on_post_titles.php',
             'sources/hooks/systems/config/is_on_anonymous_posts.php',
             'sources/hooks/systems/config/force_guest_names.php',
-            'sources/hooks/systems/config/forced_preview_option.php',
             'sources/hooks/systems/config/forum_posts_per_page.php',
             'sources/hooks/systems/config/forum_topics_per_page.php',
-            'sources/hooks/systems/config/default_preview_guests.php',
             'sources/hooks/systems/config/delete_trashed_pts.php',
             'sources/hooks/systems/tasks/cns_recache.php',
             'sources/hooks/systems/tasks/cns_topics_recache.php',
@@ -628,12 +624,12 @@ class Hook_addon_registry_cns_forum
 
         return array(
             lorem_globalise(do_lorem_template('CNS_POST_BOX', array(
-                                                                  'GIVE_CONTEXT' => true,
-                                                                  'ID' => placeholder_id(),
-                                                                  'POST' => $post,
-                                                                  'URL' => placeholder_url(),
-                                                                  'BREADCRUMBS' => lorem_phrase(),
-                                                              ) + $map + array('ACTUAL_POST' => $post)), null, '', true)
+                'GIVE_CONTEXT' => true,
+                'ID' => placeholder_id(),
+                'POST' => $post,
+                'URL' => placeholder_url(),
+                'BREADCRUMBS' => lorem_phrase(),
+            ) + $map + array('ACTUAL_POST' => $post)), null, '', true)
         );
     }
 

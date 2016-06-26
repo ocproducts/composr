@@ -798,7 +798,7 @@ class ADORecordSet_mysqli extends ADORecordSet{
 	var $databaseType = "mysqli";
 	var $canSeek = true;
 	
-	function ADORecordSet_mysqli($queryID, $mode = false) 
+	function __construct($queryID, $mode = false) 
 	{
 	  if ($mode === false) 
 	   { 
@@ -1105,7 +1105,7 @@ class ADORecordSet_mysqli extends ADORecordSet{
 
 class ADORecordSet_array_mysqli extends ADORecordSet_array {
   
-  function ADORecordSet_array_mysqli($id=-1,$mode=false) 
+  function __construct($id=-1,$mode=false) 
   {
     $this->ADORecordSet_array($id,$mode);
   }

@@ -36,6 +36,10 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
         return new Tempcode();
     }
 
+    if (!addon_installed('cns_cpfs')) { // This is coded as a dependency
+        return new Tempcode();
+    }
+
     require_lang('content_privacy');
     require_lang('cns_privacy');
     require_code('form_templates');
@@ -139,6 +143,10 @@ function save_privacy_form_fields($content_type, $content_id, $privacy_level, $a
         return false;
     }
     if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
+        return false;
+    }
+
+    if (!addon_installed('cns_cpfs')) { // This is coded as a dependency
         return false;
     }
 

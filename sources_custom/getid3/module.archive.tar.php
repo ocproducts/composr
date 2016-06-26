@@ -21,7 +21,7 @@
 
 class getid3_tar {
 
-	function getid3_tar(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['fileformat'] = 'tar';
 		$ThisFileInfo['tar']['files'] = array();
 

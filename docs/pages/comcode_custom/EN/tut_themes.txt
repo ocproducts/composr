@@ -182,6 +182,7 @@ The "Template names as HTML comments" HTML comments look something like this...
 ... you can see that it's marking the beginning and end of two templates. The first is [tt]MENU_BRANCH_popup.tpl[/tt], which contains another template: [tt]HYPERLINK.tpl[/tt].
 
 [title="3"]Understanding Templates Code (Tempcode)[/title]
+
 There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
 
 [title="3"]Hand-editing (advanced)[/title]
@@ -254,7 +255,7 @@ Go to Admin Zone > Style > Themes > Edit templates (against your own theme).
 [html]<div style="clear: right"></div>[/html]
 [box="Manually"]
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
-You can add new theme images by saving them directly into [tt]themes/mytheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools.
+You can add new theme images by saving them directly into [tt]themes/mytheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools. If you delete a file with one extension then add a file with the same theme image name but another extension, the theme image cache will need clearing first.
 [/box]
 [html]<div style="clear: right"></div>[/html]
 [title="2"]Deleting themes[/title]
@@ -286,7 +287,8 @@ Many more tips and points of guidance are included in the [page="_SEARCH:tut_des
  2_key="CSS"        2_value="Your CSS is the element of your theme that specifically controls the colours and styles on your site, and has limited layout functionality"
  3_key="Templates"  3_value="The templates on your site are individual HTML files that chain together to create the final HTML used on your site."
  4_key="Images"     4_value="Images are used throughout your site, in the form of buttons, backgrounds, emoticons, and more."
- 5_key="Tempcode"   5_value="Tempcode is a set of symbols, parameters, and directives to help you edit your templates. These include the $IMG symbol."]Concepts[/concepts]
+ 5_key="Tempcode"   5_value="Tempcode is a set of symbols, parameters, and directives to help you edit your templates. These include the $IMG symbol."
+]Concepts[/concepts]
 
 [title="2"]See also[/title]
 

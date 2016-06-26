@@ -992,7 +992,7 @@ class ADORecordset_mssql extends ADORecordSet {
 
 
 class ADORecordSet_array_mssql extends ADORecordSet_array {
-	function ADORecordSet_array_mssql($id=-1,$mode=false) 
+	function __construct($id=-1,$mode=false) 
 	{
 		$this->ADORecordSet_array($id,$mode);
 	}

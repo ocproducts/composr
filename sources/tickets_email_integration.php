@@ -79,9 +79,9 @@ function ticket_outgoing_message($ticket_id, $ticket_url, $ticket_type_name, $su
     require_code('mail');
     $extended_message = '';
     $extended_message .= do_lang('TICKET_SIMPLE_MAIL_' . ($new ? 'new' : 'reply'), get_site_name(), $ticket_type_name, array($ticket_url, $from_displayname));
-    $extended_message .= comcode_to_clean_text($message);
+    $extended_message .= $message;
 
-    mail($to_name . ' <' . $to_email . '>', $extended_subject, $extended_message, $headers);
+    mail($to_name . ' <' . $to_email . '>', $extended_subject, comcode_to_clean_text($extended_message), $headers);
 }
 
 /**
@@ -161,11 +161,13 @@ function ticket_incoming_scan()
             }
             _imap_get_part($resource, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total);
 
-            if (!is_non_human_email($subject, $body, $full_header)) {
+            $email_from = (strlen($header->reply_toaddress) > 0) ? $header->reply_toaddress : $header->fromaddress;
+
+            if (!is_non_human_email($subject, $body, $full_header, $email_from)) {
                 imap_clearflag_full($resource, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 ticket_incoming_message(
-                    (strlen($header->reply_toaddress) > 0) ? $header->reply_toaddress : $header->fromaddress,
+                    $email_from,
                     $subject,
                     $body,
                     $attachments
@@ -176,7 +178,13 @@ function ticket_incoming_scan()
         }
         imap_close($resource);
     } else {
-        warn_exit(do_lang_tempcode('IMAP_ERROR', imap_last_error()));
+        $error = imap_last_error();
+        imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
+
+        $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+        if (!$cli && get_param_integer('no_fatal_cron_errors', 0) != 1) {
+            warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
+        }
     }
 }
 
@@ -279,10 +287,15 @@ function email_comcode_from_text($body)
  * @param  string $subject Subject line
  * @param  string $body Message body
  * @param  string $full_header Message headers
+ * @param  EMAIL $email_from From address
  * @return boolean Whether it should not be processed
  */
-function is_non_human_email($subject, $body, $full_header)
+function is_non_human_email($subject, $body, $full_header, $email_from)
 {
+    if ($email_from == get_option('ticket_email_from') || $email_from == get_option('staff_address') || $email_from == get_option('website_email')) {
+        return true;
+    }
+
     $full_header = "\r\n" . strtolower($full_header);
     if (strpos($full_header, "\r\nfrom: <>") !== false) {
         return true;
@@ -454,7 +467,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
             $existing_ticket = $matches[2];
 
             // Validate
-            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket);
+            $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $existing_ticket, do_lang('SUPPORT_TICKET'));
             if (is_null($topic_id)) {
                 $existing_ticket = null; // Invalid
             }

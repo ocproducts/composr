@@ -34,7 +34,7 @@ class Hook_checklist_polls
             return array();
         }
 
-        if (get_option('poll_update_time') == '') {
+        if (get_option('poll_update_time') == '' || get_option('poll_update_time') == '0') {
             return array();
         }
 

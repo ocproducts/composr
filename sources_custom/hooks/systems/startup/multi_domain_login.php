@@ -27,7 +27,7 @@ class Hook_startup_multi_domain_login
             //$url = $this->session_syndicate_code(cms_srv('HTTP_HOST'), preg_replace('#^.*://[^/]*(/|$)#', '', get_base_url()));
             //$value .= 'new Image().src=\'' . addslashes($url) . '\';';
             foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
-                if (substr($key, 0, strlen('ZONE_MAPPING_')) == 'ZONE_MAPPING_') {
+                if (@$key[0] == 'Z' && substr($key, 0, strlen('ZONE_MAPPING_')) == 'ZONE_MAPPING_') {
                     if ($_val[0] != cms_srv('HTTP_HOST')) {
                         $url = $this->session_syndicate_code($_val[0], $_val[1]);
                         $value .= 'new Image().src=\'' . addslashes($url) . '\';';
@@ -35,9 +35,7 @@ class Hook_startup_multi_domain_login
                 }
             }
             if ($value != '') {
-                $value = "<!-- Syndicate sessions -->\n" . $value;
-                $value .= '<script>';
-                $value .= "</script>\n\n";
+                $value = "<!-- Syndicate sessions -->\n<script>" . $value . "</script>\n\n";
 
                 attach_to_screen_header($value);
             }

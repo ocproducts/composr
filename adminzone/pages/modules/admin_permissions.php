@@ -94,7 +94,7 @@ class Module_admin_permissions
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => '', 'group_id' => $id));
                 //$GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'docs', 'group_id' => $id)); Docs are admin only now
                 $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'forum', 'group_id' => $id));
-                if ($id != $guest_groups[0]) {
+                if ($id != $guest_groups[0] || get_forum_type() == 'none') {
                     $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => 'site', 'group_id' => $id));
                 }
                 if ($id != $guest_groups[0]) {
@@ -271,13 +271,13 @@ class Module_admin_permissions
                 breadcrumb_set_self(do_lang_tempcode('CHOOSE'));
             } else {
                 breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS'))));
-                breadcrumb_set_self(($zone == '') ? do_lang('_WELCOME') : escape_html($zone));
+                breadcrumb_set_self(($zone == '') ? do_lang('_WELCOME') : $zone);
             }
         }
 
         if ($type == '_page') {
             $zone = post_param_string('zone');
-            breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS')), array('_SELF:_SELF:page:zone=' . $zone, ($zone == '') ? do_lang('_WELCOME') : escape_html($zone))));
+            breadcrumb_set_parents(array(array('_SELF:_SELF:page', do_lang_tempcode('PAGE_ACCESS')), array('_SELF:_SELF:page:zone=' . $zone, ($zone == '') ? do_lang('_WELCOME') : $zone)));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
         }
 
@@ -633,8 +633,8 @@ class Module_admin_permissions
                 $id = substr($key, 5);
                 if ((substr($id, 0, 4) == 'new_') || (!array_key_exists(intval($id), $mkeylang))) {
                     $GLOBALS['SITE_DB']->query_insert('match_key_messages', array(
-                                                                                'k_match_key' => $val
-                                                                            ) + insert_lang_comcode('k_message', post_param_string('msg_' . $id), 2));
+                        'k_match_key' => $val
+                    ) + insert_lang_comcode('k_message', post_param_string('msg_' . $id), 2));
                 } else {
                     $map = array(
                         'k_match_key' => $val

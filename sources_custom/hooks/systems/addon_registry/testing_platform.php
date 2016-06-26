@@ -339,6 +339,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/authors.php',
             '_tests/tests/unit_tests/awards.php',
             '_tests/tests/unit_tests/banners.php',
+            '_tests/tests/unit_tests/comcode_wysiwyg.php',
             '_tests/tests/unit_tests/_bash_parser.php',
             '_tests/tests/unit_tests/bookmark.php',
             '_tests/tests/unit_tests/bump_member_group_timeout.php',
@@ -398,6 +399,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/addon_screenshots.php',
             '_tests/tests/unit_tests/missing_block_params.php',
             '_tests/tests/unit_tests/missing_colour_equations.php',
+            '_tests/tests/unit_tests/permissions.php',
             '_tests/tests/unit_tests/tutorial_image_consistency.php',
             '_tests/tests/unit_tests/tutorial_quality.php',
             '_tests/tests/unit_tests/tutorials_broken_links.php',
@@ -423,6 +425,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/tempcode.php',
             '_tests/tests/unit_tests/template_previews.php',
             '_tests/tests/unit_tests/ticket_type.php',
+            '_tests/tests/unit_tests/_find_broken_screen_links.php',
             '_tests/tests/unit_tests/user.php',
             '_tests/tests/unit_tests/user_banunban.php',
             '_tests/tests/unit_tests/usergroup.php',
@@ -445,6 +448,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/chmod_consistency.php',
             '_tests/tests/unit_tests/external_code_considerations.php',
             '_tests/tests/unit_tests/tutorials_codebox.php',
+            '_tests/tests/unit_tests/_performance.php',
             '_tests/tests/regression_tests/input_filter_post_block.php',
         );
     }

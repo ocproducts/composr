@@ -39,30 +39,6 @@ class Hook_notification_cns_new_pt extends Hook_Notification
     }
 
     /**
-     * Find the initial setting that members have for a notification code (only applies to the member_could_potentially_enable members).
-     *
-     * @param  ID_TEXT $notification_code Notification code
-     * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
-     * @return integer Initial setting
-     */
-    public function get_initial_setting($notification_code, $category = null)
-    {
-        return A__STATISTICAL;
-    }
-
-    /**
-     * Find the setting that members have for a notification code if they have done some action triggering automatic setting (e.g. posted within a topic).
-     *
-     * @param  ID_TEXT $notification_code Notification code
-     * @param  ?SHORT_TEXT $category The category within the notification code (null: none)
-     * @return integer Automatic setting
-     */
-    public function get_default_auto_setting($notification_code, $category = null)
-    {
-        return A__STATISTICAL;
-    }
-
-    /**
      * Get a list of all the notification codes this hook can handle.
      * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
      *
@@ -88,7 +64,9 @@ class Hook_notification_cns_new_pt extends Hook_Notification
     public function list_members_who_have_enabled($notification_code, $category = null, $to_member_ids = null, $start = 0, $max = 300)
     {
         $members = $this->_all_members_who_have_enabled($notification_code, $category, $to_member_ids, $start, $max);
-        $members = $this->_all_members_who_have_enabled_with_privilege($members, 'use_pt', $notification_code, $category, $to_member_ids, $start, $max);
+        if (count($to_member_ids) == 0) { // Only if we're not actually sending a PT now (notification should happen if sending a PT to someone who can't send them, with default settings)
+            $members = $this->_all_members_who_have_enabled_with_privilege($members, 'use_pt', $notification_code, $category, $to_member_ids, $start, $max);
+        }
         $members = $this->_all_members_who_have_enabled_with_zone_access($members, 'forum', $notification_code, $category, $to_member_ids, $start, $max);
 
         return $members;

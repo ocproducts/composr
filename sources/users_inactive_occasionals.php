@@ -96,6 +96,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     }
 
     $new_session = mixed();
+    $prior_session_row = mixed();
     $restored_session = delete_expired_sessions_or_recover($member);
     if (is_null($restored_session)) { // We're force to make a new one
         // Generate random session
@@ -132,7 +133,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         $new_session = $restored_session;
         $prior_session_row = $SESSION_CACHE[$new_session];
         $new_session_row = array(
-            'the_title' => '',
+            'the_title' => $prior_session_row['the_title'],
             'the_zone' => get_zone_name(),
             'the_page' => get_page_name(),
             'the_type' => cms_mb_substr(get_param_string('type', ''), 0, 80),
@@ -152,7 +153,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     }
 
     if ($big_change) { // Only update the persistent cache for non-trivial changes.
-        if (get_option('session_prudence') == '0') {// With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
+        if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -163,7 +164,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
     if ((!is_null($member)) && (!is_guest($member)) && (addon_installed('points')) && (addon_installed('stats'))) {
         // See if this is the first visit today
         global $SESSION_CACHE;
-        $test = isset($SESSION_CACHE[get_session_id()]['last_activity']) ? $SESSION_CACHE[get_session_id()]['last_activity'] : null;
+        $test = isset($prior_session_row['last_activity']) ? $prior_session_row['last_activity'] : null;
         if ($test === null) {
             $test = $GLOBALS['SITE_DB']->query_select_value('stats', 'MAX(date_and_time)', array('member_id' => $member));
         }
@@ -209,7 +210,7 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
     /*if (($GLOBALS['DEV_MODE']) && (get_param_integer('keep_debug_has_cookies', 0) == 0)) {     Useful for testing non-cookie support, but annoying if left on
         $test = false;
     } else {*/
-    $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
+    $test = @setcookie(get_session_cookie(), $id, $timeout, get_cookie_path(), get_cookie_domain()); // Set a session cookie with our session ID. We only use sessions for secure browser-session login... the database and url's do the rest
     if (is_null($test)) {
         $test = false;
     }
@@ -233,6 +234,7 @@ function force_httpauth()
 {
     if (empty($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="' . addslashes(get_site_name()) . '"');
+        require_code('global3');
         set_http_status_code('401');
         exit();
     }
@@ -309,6 +311,12 @@ function try_su_login($member)
             $FLOOD_CONTROL_ONCE = false;
             $GLOBALS['FORUM_DRIVER']->cns_flood_control($member);
             $GLOBALS['SITE_DB']->query_update('sessions', array('session_invisible' => 1), array('the_session' => get_session_id()), '', 1);
+
+            if (get_option('session_prudence') == '0') { // With session prudence we don't store all these in persistent cache due to the size of it all. So only re-save if that's not on.
+                global $SESSION_CACHE;
+                $SESSION_CACHE[get_session_id()] = array('session_invisible' => 1) + $new_session_row;
+                persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
+            }
         }
     }
 

@@ -65,11 +65,6 @@ class Hook_fields_posting_field
      */
     public function get_field_value_row_bits($field, $required = null, $default = null, $db = null)
     {
-        if ($required !== null) {
-            if (($required) && ($default == '')) {
-                $default = 'default';
-            }
-        }
         return array('long_trans', $default, 'long_trans');
     }
 
@@ -132,7 +127,7 @@ class Hook_fields_posting_field
 
         $emoticon_chooser = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser($input_name);
 
-        $comcode_editor = get_comcode_editor($input_name);
+        $comcode_editor = get_comcode_editor($input_name, false, true);
         $comcode_editor_small = get_comcode_editor($input_name, true);
 
         $w = (has_js()) && (browser_matches('wysiwyg') && (strpos($actual_value, '{$,page hint: no_wysiwyg}') === false));

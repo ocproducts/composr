@@ -2,7 +2,7 @@
 
 <p>{!Q_SURE}</p>
 
-<form method="post" enctype="multipart/form-data" action="{URL*}">
+<form method="post" enctype="multipart/form-data" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<input type="hidden" name="type" value="{COMMAND*}" />

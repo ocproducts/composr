@@ -559,6 +559,10 @@ class Module_admin_orders
             $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_det['c_member']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
+
+            $submit_name = do_lang_tempcode('SEND_DISPATCH_NOTIFICATION');
+        } else {
+            $submit_name = do_lang_tempcode('ADD_NOTE');
         }
 
         return do_template('FORM_SCREEN', array(
@@ -569,7 +573,7 @@ class Module_admin_orders
             'FIELDS' => $fields,
             'URL' => $update_url,
             'SUBMIT_ICON' => 'buttons__proceed',
-            'SUBMIT_NAME' => do_lang_tempcode('ADD_NOTE'),
+            'SUBMIT_NAME' => $submit_name,
             'SUPPORT_AUTOSAVE' => true,
         ));
     }

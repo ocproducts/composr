@@ -105,6 +105,9 @@ class Module_admin_pointstore
      */
     public function run()
     {
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+
         require_code('form_templates');
         require_css('points');
 
@@ -166,7 +169,7 @@ class Module_admin_pointstore
                     break;
                 default:
                     $_type = do_lang($row['purchasetype'], null, null, null, null, false);
-                    if (is_null($type)) {
+                    if (is_null($_type)) {
                         $type = make_string_tempcode($row['purchasetype']);
                     } else {
                         $type = do_lang_tempcode($row['purchasetype']);

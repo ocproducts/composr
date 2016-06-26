@@ -156,8 +156,12 @@ function has_zone_access($member, $zone)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('zone_access_needed', $zone, true);
-    $test = $SMART_CACHE->get('zone_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('zone_access_needed', $zone, true);
+        $test = $SMART_CACHE->get('zone_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -301,8 +305,12 @@ function has_page_access($member, $page, $zone, $at_now = false)
 
     global $SMART_CACHE;
     $where = '1=0';
-    $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
-    $test = $SMART_CACHE->get('page_access_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
+        $test = $SMART_CACHE->get('page_access_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -508,6 +516,10 @@ function has_category_access($member, $module, $category)
  */
 function _get_where_clause_groups($member, $consider_clubs = true)
 {
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return '1=0';
+    }
+
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
         return null;
     }
@@ -730,8 +742,12 @@ function has_privilege($member, $permission, $page = null, $cats = null)
 
     global $SMART_CACHE;
     $where = ' AND (1=0';
-    $SMART_CACHE->append('privileges_needed', $permission, true);
-    $test = $SMART_CACHE->get('privileges_needed');
+    if (isset($SMART_CACHE)) {
+        $SMART_CACHE->append('privileges_needed', $permission, true);
+        $test = $SMART_CACHE->get('privileges_needed');
+    } else {
+        $test = null;
+    }
     if ($test === null) {
         $test = array();
     }
@@ -742,9 +758,11 @@ function has_privilege($member, $permission, $page = null, $cats = null)
         $where .= ' OR ' . db_string_equal_to('privilege', $privilege_needed);
     }
     $where .= ')';
-    $perhaps = $GLOBALS['SITE_DB']->query('SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ')' . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, null, false, true);
+    $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ')' . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
+    $perhaps = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
     if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
-        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query('SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, null, false, true));
+        $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
+        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
     }
     $PRIVILEGE_CACHE[$member] = array();
     foreach ($perhaps as $p) {
@@ -805,7 +823,7 @@ function has_submit_permission($range, $member, $ip, $page, $cats = null)
 
     $result = null;
 
-    if ((addon_installed('securitylogging')) && ((get_value('pinpoint_submitban_check') !== '1') || (get_zone_name() == 'cms'))) {
+    if ((addon_installed('securitylogging')) && (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && ((get_value('pinpoint_submitban_check') !== '1') || (get_zone_name() == 'cms'))) {
         if ($USERSUBMITBAN_MEMBER_CACHE === null) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $member));
             $USERSUBMITBAN_MEMBER_CACHE = ($test !== null);

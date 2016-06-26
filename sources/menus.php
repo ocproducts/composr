@@ -613,12 +613,12 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $children->attach($child);
         } else {
             $children->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type), $child + array(
-                    'POSITION' => strval($i),
-                    'FIRST' => $i == 0,
-                    'LAST' => $i == $num - 1,
-                    'BRETHREN_COUNT' => strval($num),
-                    'MENU' => $codename,
-                ), null, false, 'MENU_BRANCH_tree'));
+                'POSITION' => strval($i),
+                'FIRST' => $i == 0,
+                'LAST' => $i == $num - 1,
+                'BRETHREN_COUNT' => strval($num),
+                'MENU' => $codename,
+            ), null, false, 'MENU_BRANCH_tree'));
         }
     }
     if (($children->is_empty()) && ($url->is_empty())) {

@@ -318,7 +318,7 @@ class ADORecordset_sqlite extends ADORecordSet {
 	var $databaseType = "sqlite";
 	var $bind = false;
 
-	function ADORecordset_sqlite($queryID,$mode=false)
+	function __construct($queryID,$mode=false)
 	{
 		
 		if ($mode === false) { 

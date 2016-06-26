@@ -38,6 +38,7 @@ class Hook_config_personal_under_members
             'explanation' => 'CONFIG_OPTION_personal_under_members',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'galleries',
         );
@@ -50,6 +51,9 @@ class Hook_config_personal_under_members
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '0';
     }
 }

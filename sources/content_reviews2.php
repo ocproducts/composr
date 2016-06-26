@@ -41,8 +41,10 @@ function content_review_get_fields($content_type, $content_id = null, $catalogue
     if (cron_installed()) {
         require_lang('content_reviews');
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'ca379bacb82c15c768d3c45f5ed9f207', 'SECTION_HIDDEN' => true,
-                                                                      'TITLE' => do_lang_tempcode('CONTENT_REVIEWS'),
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
+            '_GUID' => 'ca379bacb82c15c768d3c45f5ed9f207',
+            'SECTION_HIDDEN' => true,
+            'TITLE' => do_lang_tempcode('CONTENT_REVIEWS'),
         )));
 
         $content_review_rows = is_null($content_id) ? array() : $GLOBALS['SITE_DB']->query_select('content_reviews', array('review_freq', 'next_review_time', 'auto_action', 'display_review_status'), array('content_type' => $content_type, 'content_id' => $content_id), '', 1);
@@ -238,4 +240,6 @@ function schedule_content_review($content_type, $content_id, $review_freq, $next
         'display_review_status' => $display_review_status,
         'last_reviewed_time' => time(),
     ));
+
+    decache('main_staff_checklist');
 }

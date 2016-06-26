@@ -1295,20 +1295,20 @@ class Virtual_shell
                 }
                 $data = base64_encode(serialize($commandr_state_diff));
                 if (strlen($data) < 4096) {
-                    cms_setcookie('commandr_state', $data);
+                    cms_setcookie('commandr_state', $data, true);
                 }
 
                 // Code includes
                 $newly_required = array_diff(array_keys($GLOBALS['REQUIRED_CODE']), $already_required);
                 $data = base64_encode(serialize($newly_required));
                 if (strlen($data) < 4096) {
-                    cms_setcookie('commandr_state_code', $data);
+                    cms_setcookie('commandr_state_code', $data, true);
                 }
 
                 // Lang file includes
                 $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
                 if (strlen($data) < 4096) {
-                    cms_setcookie('commandr_state_lang', $data);
+                    cms_setcookie('commandr_state_lang', $data, true);
                 }
 
 

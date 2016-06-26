@@ -597,7 +597,7 @@ function recalculate_bounding_long_lat($category)
 {
     static $fields = null;
     if (is_null($fields)) {
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => '_catalogue_category'), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
     }
 
     $min_latitude = mixed();

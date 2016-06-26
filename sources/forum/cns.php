@@ -592,7 +592,7 @@ class Forum_driver_cns extends Forum_driver_base
     protected function _join_url()
     {
         $page = '_SELF';
-        if (count($_POST) != 0) {
+        if (has_interesting_post_fields()) {
             $page = '';
         }
         $_redirect_url = build_url(array('page' => $page), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
@@ -675,7 +675,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Get the forum ID from a forum name.
      *
      * @param  SHORT_TEXT $forum_name The forum name
-     * @return integer The forum ID
+     * @return ?integer The forum ID (null: not found)
      */
     public function forum_id_from_name($forum_name)
     {
@@ -703,9 +703,10 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @param  string $forum The forum name / ID
      * @param  SHORT_TEXT $topic_identifier The topic identifier
+     * @param  ?string $topic_identifier_encapsulation_prefix This is put together with the topic identifier to make a more-human-readable topic title or topic description (hopefully the latter and a $content_title title, but only if the forum supports descriptions). Set this to improve performance (null: unknown)
      * @return ?integer The topic ID (null: not found)
      */
-    public function find_topic_id_for_topic_identifier($forum, $topic_identifier)
+    public function find_topic_id_for_topic_identifier($forum, $topic_identifier, $topic_identifier_encapsulation_prefix = null)
     {
         $key = serialize(array($forum, $topic_identifier));
 
@@ -732,8 +733,16 @@ class Forum_driver_cns extends Forum_driver_base
             return null;
         }
 
-        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND (' . db_string_equal_to('t_description', $topic_identifier) . ' OR t_description LIKE \'%: #' . db_encode_like($topic_identifier) . '\'';
-        $query .= ' OR t_cache_first_title LIKE \'% (#' . db_encode_like($topic_identifier) . ')\''; // LEGACY
+        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND ';
+        $query .= '(';
+        if ($topic_identifier_encapsulation_prefix === null) {
+            $query .= db_string_equal_to('t_description', $topic_identifier);
+            $query .= ' OR t_description LIKE \'%: #' . db_encode_like($topic_identifier) . '\'';
+            $query .= ' OR t_cache_first_title LIKE \'% (#' . db_encode_like($topic_identifier) . ')\''; // LEGACY
+        } else {
+            $query .= db_string_equal_to('t_description', $topic_identifier);
+            $query .= ' OR ' . db_string_equal_to('t_description', $topic_identifier_encapsulation_prefix . ': ' . $topic_identifier);
+        }
         $query .= ')';
 
         $_result = $this->connection->query($query, 1, null, false, true);
@@ -811,49 +820,73 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function member_group_query($groups, $max = null, $start = 0)
     {
-        $_groups = '';
-        foreach ($groups as $group) {
-            if ($_groups != '') {
-                $_groups .= ' OR ';
-            }
-            $_groups .= 'gm_group_id=' . strval($group);
-        }
-        if ($_groups == '') {
-            return array();
-        }
-        $a = $this->connection->query('SELECT u.* FROM ' . $this->connection->get_table_prefix() . 'f_group_members g JOIN ' . $this->connection->get_table_prefix() . 'f_members u ON u.id=g.gm_member_id WHERE (' . $_groups . ') AND gm_validated=1 ORDER BY g.gm_group_id ASC', $max, $start, false, true);
-        $_groups = '';
-        foreach ($groups as $group) {
-            if ($_groups != '') {
-                $_groups .= ' OR ';
-            }
-            $_groups .= 'm_primary_group=' . strval($group);
-        }
-        $b = $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE ' . $_groups . ' ORDER BY m_primary_group ASC', $max, $start, false, true);
         $out = array();
-        foreach ($a as $x) {
-            if (!array_key_exists($x['id'], $out)) {
+
+        if (db_has_subqueries($this->connection->connection_read)) {
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ',';
+                }
+                $_groups .= strval($group);
+            }
+            if ($_groups == '') {
+                return array();
+            }
+            $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members m WHERE m_primary_group IN (' . $_groups . ') OR EXISTS(SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_group_members WHERE gm_group_id IN (' . $_groups . ') AND gm_member_id=m.id AND gm_validated=1) ORDER BY m_primary_group ASC,id ASC';
+            $a = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($a as $x) {
                 $out[$x['id']] = $x;
             }
-        }
-        foreach ($b as $x) {
-            if (!array_key_exists($x['id'], $out)) {
-                $out[$x['id']] = $x;
+        } else { // This can be removed in the future, when we reduce our ancient MySQL tolerance
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ' OR ';
+                }
+                $_groups .= 'gm_group_id=' . strval($group);
+            }
+            if ($_groups == '') {
+                return array();
+            }
+            $sql = 'SELECT u.* FROM ' . $this->connection->get_table_prefix() . 'f_group_members g JOIN ' . $this->connection->get_table_prefix() . 'f_members u ON u.id=g.gm_member_id WHERE (' . $_groups . ') AND gm_validated=1 ORDER BY g.gm_group_id ASC';
+            $a = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($a as $x) {
+                if (!array_key_exists($x['id'], $out)) {
+                    $out[$x['id']] = $x;
+                }
+            }
+
+            $_groups = '';
+            foreach ($groups as $group) {
+                if ($_groups != '') {
+                    $_groups .= ' OR ';
+                }
+                $_groups .= 'm_primary_group=' . strval($group);
+            }
+            $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE ' . $_groups . ' ORDER BY m_primary_group ASC';
+            $b = $this->connection->query($sql, $max, $start, false, true);
+            foreach ($b as $x) {
+                if (!array_key_exists($x['id'], $out)) {
+                    $out[$x['id']] = $x;
+                }
             }
         }
 
         // Now implicit usergroup hooks
-        $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-            $ob = object_factory('Hook_implicit_usergroups_' . $hook);
-            $group_ids = $ob->get_bound_group_ids();
-            foreach ($group_ids as $group_id) {
-                if (in_array($group_id, $groups)) {
-                    $c = $ob->get_member_list($group_id);
-                    if (!is_null($c)) {
-                        foreach ($c as $member_id => $x) {
-                            $out[$member_id] = $x;
+        if ($start == 0) {
+            $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
+            foreach (array_keys($hooks) as $hook) {
+                require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
+                $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+                $group_ids = $ob->get_bound_group_ids();
+                foreach ($group_ids as $group_id) {
+                    if (in_array($group_id, $groups)) {
+                        $c = $ob->get_member_list($group_id);
+                        if (!is_null($c)) {
+                            foreach ($c as $member_id => $x) {
+                                $out[$member_id] = $x;
+                            }
                         }
                     }
                 }
@@ -1104,7 +1137,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (!addon_installed('chat')) {
             $friends = false;
         }
-        if ($GLOBALS['SITE_DB']->connection_read != $GLOBALS['FORUM_DB']->connection_read) {
+        if (is_cns_satellite_site()) {
             $friends = false;
         }
         if (is_guest()) {
@@ -1211,7 +1244,15 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_member_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            $value = $this->connection->query_select_value('f_members', 'COUNT(*)') - 1;
+            if (get_value('slow_counts') === '1') {
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
+            } else {
+                $where = array('m_validated_email_confirm_code' => '');
+                if (addon_installed('unvalidated')) {
+                    $where['m_validated'] = 1;
+                }
+                $value = $this->connection->query_select_value('f_members', 'COUNT(*)', $where) - 1;
+            }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_member_count', strval($value));
             }
@@ -1230,7 +1271,15 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_topic_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            $value = $this->connection->query_select_value('f_topics', 'COUNT(*)');
+            if (get_value('slow_counts') === '1') {
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
+            } else {
+                $where = array();
+                if (addon_installed('unvalidated')) {
+                    $where['t_validated'] = 1;
+                }
+                $value = $this->connection->query_select_value('f_topics', 'COUNT(*)', $where);
+            }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_topic_count', strval($value));
             }
@@ -1249,7 +1298,15 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_post_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            $value = $this->connection->query_select_value('f_posts', 'COUNT(*)');
+            if (get_value('slow_counts') === '1') {
+                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
+            } else {
+                $where = '';
+                if (addon_installed('unvalidated')) {
+                    $where = ' AND p_validated=1';
+                }
+                $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL' . $where);
+            }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
             }
@@ -1376,7 +1433,7 @@ class Forum_driver_cns extends Forum_driver_base
         $where = $only_permissive ? ' WHERE g_is_private_club=0' : '';
 
         $select = 'g.id,g_name,g.g_hidden';
-        $sup = ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name');
+        $sup = ' ORDER BY g_order,' . $this->connection->translate_field_ref('g_name');
         if (running_script('upgrader')) {
             $sup = '';
         }
@@ -1526,7 +1583,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Handle flood control for members.
+     * Handle flood control for members, and update member last visiting times.
      *
      * @param  MEMBER $id The member ID that just got detected
      */
@@ -1543,7 +1600,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
 
         // Set last visit time session cookie if it doesn't exist
-        if ((!isset($_COOKIE['last_visit'])) && ($GLOBALS['FORUM_DRIVER']->get_guest_id() != $id)) {
+        if ((!isset($_COOKIE['last_visit'])) && (!is_guest($id))) {
             require_code('users_active_actions');
             $lvt = $this->get_member_row_field($id, 'm_last_visit_time');
             if (function_exists('cms_setcookie')) {// May be trying to check in safe mode when doing above require_code, so recurse
@@ -1555,7 +1612,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
 
         // Do some flood control
-        $submitting = ((count($_POST) > 0) && (get_param_string('type', null) !== 'edit') && (get_param_string('type', null) !== 'edit_category') && (!running_script('preview')));
+        $submitting = ((has_interesting_post_fields()) && (get_param_string('type', null) !== 'edit') && (get_param_string('type', null) !== 'edit_category') && (!running_script('preview')));
         if (get_value('no_flood_control') !== '1') {
             $restrict = $submitting ? 'flood_control_submit_secs' : 'flood_control_access_secs';
             $restrict_setting = $submitting ? 'm_last_submit_time' : 'm_last_visit_time';
@@ -1566,6 +1623,9 @@ class Forum_driver_cns extends Forum_driver_base
             }
             if ($restrict_answer < 0) {
                 $restrict_answer = 0;
+            }
+            if (($restrict_answer == 0) && (is_guest($id))) {
+                return;
             }
             $last = $this->get_member_row_field($id, $restrict_setting);
             if ($last > time()) {
@@ -1598,6 +1658,7 @@ class Forum_driver_cns extends Forum_driver_base
                 if (($count >= $count_threshold) && (addon_installed('securitylogging'))) {
                     $ip = get_ip_address();
                     require_code('failure');
+                    require_code('failure_spammers');
                     add_ip_ban($ip, do_lang('SPAM_REPORT_SITE_FLOODING'));
                     require_code('notifications');
                     dispatch_notification('auto_ban', null, do_lang('AUTO_BAN_SUBJECT', $ip, null, null, get_site_default_lang()), do_notification_lang('AUTO_BAN_DOS_MESSAGE', $ip, integer_format($count_threshold), integer_format($time_threshold), get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
@@ -1611,6 +1672,7 @@ class Forum_driver_cns extends Forum_driver_base
                 }
                 require_lang('cns');
 
+                require_code('global3');
                 set_http_status_code('429');
 
                 warn_exit(do_lang_tempcode('FLOOD_CONTROL_RESTRICT', escape_html(integer_format($wait_time))));

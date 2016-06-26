@@ -31,6 +31,10 @@
  */
 function render_post_box($row, $use_post_title = false, $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
     require_css('cns');
 
@@ -125,7 +129,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
             '_GUID' => ($guid != '') ? $guid : 'cb1724a9d97f93e097cf49b50eeafa66',
             'LAST_EDIT_DATE_RAW' => is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']),
-            'LAST_EDIT_DATE' => get_timezoned_date($row['p_last_edit_time']),
+            'LAST_EDIT_DATE' => get_timezoned_date_tempcode($row['p_last_edit_time']),
             'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], false, true),
             'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
         ));
@@ -149,7 +153,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     $post_url = build_url($map, get_module_zone('topicview'));
     $post_url->attach('#post_' . strval($row['id']));
     $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
-    $post_date = get_timezoned_date($row['p_time']);
+    $post_date = get_timezoned_date_tempcode($row['p_time']);
     $post_date_raw = $row['p_time'];
     if ($use_post_title) {
         $post_title = $row['p_title'];
@@ -179,7 +183,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
     // Feedback
     require_code('feedback');
     actualise_rating(true, 'post', strval($row['id']), get_self_url(), $row['p_title']);
-    $rating = display_rating(get_self_url(), $row['p_title'], 'post', strval($row['id']), 'RATING_INLINE_DYNAMIC', $row['p_poster']);
+    $rating = display_rating(get_self_url(), $row['p_title'], 'post', strval($row['id']), $give_context ? 'RATING_INLINE_STATIC' : 'RATING_INLINE_DYNAMIC', $row['p_poster']);
 
     // Render
     $map = array(
@@ -213,12 +217,12 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
         'PREVIEWING' => true,
         'RATING' => $rating,
     );
+    $_post = do_template('CNS_TOPIC_POST', $map);
     $tpl = do_template('CNS_POST_BOX', array(
-                                           '_GUID' => ($guid != '') ? $guid : '9456f4fe4b8fb1bf34f606fcb2bcc9d7',
-                                           'GIVE_CONTEXT' => $give_context,
-                                           'BREADCRUMBS' => $breadcrumbs,
-                                           'POST' => do_template('CNS_TOPIC_POST', $map)
-                                       ) + $map + array('ACTUAL_POST' => $post));
+        '_GUID' => ($guid != '') ? $guid : '9456f4fe4b8fb1bf34f606fcb2bcc9d7',
+        'BREADCRUMBS' => $breadcrumbs,
+        'POST' => $_post,
+    ) + $map + array('ACTUAL_POST' => $post));
 
     if ($give_context) {
         $poster = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['p_poster']);

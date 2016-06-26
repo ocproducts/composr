@@ -1,6 +1,6 @@
 {TITLE}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{FORM_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage">
+<form title="{!PRIMARY_PAGE_FORM}" action="{FORM_URL*}" method="post" itemscope="itemscope" itemtype="http://schema.org/CheckoutPage" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{RESULTS_TABLE}

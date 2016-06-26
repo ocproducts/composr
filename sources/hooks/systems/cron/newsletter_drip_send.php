@@ -45,6 +45,8 @@ class Hook_cron_newsletter_drip_send
             return;
         }
 
+        require_lang('newsletter');
+
         set_value('newsletter_currently_dripping', '1', true);
 
         set_value('last_newsletter_drip_send', strval($time), true);

@@ -54,7 +54,7 @@ function init__tempcode()
     global $XHTML_SPIT_OUT, $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $TEMPLATE_DISK_ORIGIN_CACHE, $REQUEST_BLOCK_NEST_LEVEL, $LOADED_TPL_CACHE, $KEEP_TPL_FUNCS;
     $XHTML_SPIT_OUT = null;
     $NO_EVAL_CACHE = false;
-    $MEMORY_OVER_SPEED = (get_param_integer('keep_memory_over_speed', 0) == 1);
+    $MEMORY_OVER_SPEED = (get_param_integer('keep_memory_over_speed', 0) === 1);
     $TEMPLATE_DISK_ORIGIN_CACHE = array();
     $REQUEST_BLOCK_NEST_LEVEL = 0;
     $LOADED_TPL_CACHE = array();
@@ -63,7 +63,7 @@ function init__tempcode()
     global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $INJECT_HIDDEN_TEMPLATE_NAMES, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
     $RECORD_TEMPLATES_USED = false;
     $RECORDED_TEMPLATES_USED = array();
-    $INJECT_HIDDEN_TEMPLATE_NAMES = (get_param_integer('keep_template_magic_markers', 0) == 1);
+    $INJECT_HIDDEN_TEMPLATE_NAMES = (get_param_integer('keep_template_magic_markers', 0) === 1);
     /** The name of a template that was called to render the current screen (null: not rendering a screen), auto-populated within the template system. This is tracked during dev mode to confirm that each screen really does wrap itself in a proper screen template.
      *
      * @global ?ID_TEXT $SCREEN_TEMPLATE_CALLED
@@ -74,7 +74,7 @@ function init__tempcode()
      * @global boolean $TITLE_CALLED
      */
     $TITLE_CALLED = false;
-    $POSSIBLY_IN_SAFE_MODE_CACHE = (get_param_integer('keep_safe_mode', 0) == 1);
+    $POSSIBLY_IN_SAFE_MODE_CACHE = (get_param_integer('keep_safe_mode', 0) === 1);
 
     global $SIMPLE_ESCAPED, $XSS_DETECT;
     $SIMPLE_ESCAPED = array(ENTITY_ESCAPED);
@@ -85,7 +85,7 @@ function init__tempcode()
     require_code('symbols');
 
     global $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
-    // && substr($x, 0, 6) == \'bound_\' removed from the below for performance, not really needed
+    // && substr($x, 0, 6) === \'bound_\' removed from the below for performance, not really needed
     $FULL_RESET_VAR_CODE = 'foreach(get_defined_vars() as $x => $_) { if ($x[0]==\'b\' && $x[1]==\'o\') unset($$x); } extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
     $RESET_VAR_CODE = 'extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
 
@@ -97,14 +97,14 @@ function init__tempcode()
      * @global boolean $OUTPUT_STREAMING
      */
     global $OUTPUT_STREAMING;
-    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0);
+    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') === '1') && (get_param_integer('keep_no_output_streaming', 0) === 0);
     if ($GLOBALS['SMART_CACHE'] === null || !$GLOBALS['SMART_CACHE']->get_initial_status('CSSS')) {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_string('special_page_type', 'view') != 'view') {
+    } elseif (get_param_string('special_page_type', 'view') !== 'view') {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_integer('keep_markers', 0) == 1) {
+    } elseif (get_param_integer('keep_markers', 0) === 1) {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_integer('show_edit_links', 0) == 1) {
+    } elseif (get_param_integer('show_edit_links', 0) === 1) {
         $OUTPUT_STREAMING = false;
     }
 
@@ -206,7 +206,7 @@ function otp($var, $origin = '')
     }
     // Assuming array
     $cnt = count($var);
-    return ($cnt == 0) ? '' : strval($cnt);
+    return ($cnt === 0) ? '' : strval($cnt);
 }
 
 /**
@@ -217,11 +217,11 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    list($parameter, $template_name) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
-    if (strtolower($template_name) != $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
+    list($parameter, $template_name) = ($origin === '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
+    if (strtolower($template_name) !== $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
-    attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name == '') ? '???' : $template_name), 'warn');
+    attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name === '') ? '???' : $template_name), 'warn');
     return '';
 }
 
@@ -244,7 +244,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
     }
 
     $_type = strval($type);
-    if (preg_match('#^[\w\-]*$#', $name) == 0) {
+    if (preg_match('#^[\w\-]*$#', $name) === 0) {
         $_name = php_addslashes_twice($name);
     } else {
         $_name = $name;
@@ -265,13 +265,13 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
     }
 
     $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
-    if ($name === '?' && $type == TC_SYMBOL) {
+    if ($name === '?' && $type === TC_SYMBOL) {
         $name = 'TERNARY';
     }
 
     if ($has_tempcode) {
         $funcdef = "\$tpl_funcs['$myfunc']=\"foreach (\\\$parameters as \\\$i=>\\\$p) { if (is_object(\\\$p)) \\\$parameters[\\\$i]=\\\$p->evaluate(); } echo ";
-        if (($type == TC_SYMBOL) && (function_exists('ecv_' . $name))) {
+        if (($type === TC_SYMBOL) && (function_exists('ecv_' . $name))) {
             $funcdef .= "ecv_" . $name . "(\\\$cl," . ($_escaping) . ",\\\$parameters);\";\n";
         } else {
             $funcdef .= "ecv(\\\$cl," . ($_escaping) . "," . ($_type) . ",\\\"" . ($_name) . "\\\",\\\$parameters);\";\n";
@@ -280,7 +280,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         $_parameters = '';
         if ($parameters !== null) {
             foreach ($parameters as $parameter) {
-                if ($_parameters != '') {
+                if ($_parameters !== '') {
                     $_parameters .= ',';
                 }
                 if (is_bool($parameter)) {
@@ -292,19 +292,35 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
 
         $funcdef = "\$tpl_funcs['$myfunc']=\"echo ";
-        if (($type == TC_SYMBOL) && (function_exists('ecv_' . $name))) {
+        if (($type === TC_SYMBOL) && (function_exists('ecv_' . $name))) {
             $funcdef .= "ecv_" . $name . "(\\\$cl," . ($_escaping) . ",array(" . $_parameters . "));\";\n";
         } else {
             $funcdef .= "ecv(\\\$cl," . ($_escaping) . "," . ($_type) . ",\\\"" . ($_name) . "\\\",array(" . $_parameters . "));\";\n";
         }
 
-        if ($name != 'BLOCK') {
-            $parameters = array(); // Optimisation (we need for BLOCK though, so we can build the template tree correctly)
+        switch ($_name) {
+            // Needs parameters for preprocessing, so we won't throw them out
+            case 'REQUIRE_CSS':
+            case 'REQUIRE_JAVASCRIPT':
+            case 'FACILITATE_AJAX_BLOCK_CALL':
+            case 'JS_TEMPCODE':
+            case 'CSS_TEMPCODE':
+            case 'SET':
+            case 'SET_TITLE':
+            case 'BLOCK':
+            case 'PAGE_LINK':
+            case 'LOAD_PAGE':
+            case 'LOAD_PANEL':
+                break;
+
+            default:
+                $parameters = array();
+                break;
         }
     }
 
     $ret = new Tempcode(array(array($myfunc => $funcdef), array(array(array($myfunc, ($parameters === null) ? array() : $parameters, $type, $name, '')))));
-    if ($type == TC_LANGUAGE_REFERENCE) {
+    if ($type === TC_LANGUAGE_REFERENCE) {
         $ret->pure_lang = true;
     }
     return $ret;
@@ -426,12 +442,12 @@ function closure_loop($param, $args, $main_function)
         }
         if (isset($param[1 + 1])) { /* NB: +1 is due to there being a non-numeric index here too */
             $columns = intval($param[1]);
-            if ($columns == 0) {
+            if ($columns === 0) {
                 $columns = 1;
             }
             $row_starter = isset($param[2 + 1]) ? $param[2] : '<tr>';
             $row_terminator = isset($param[3 + 1]) ? $param[3] : '</tr>';
-            if ($array != array()) {
+            if ($array !== array()) {
                 $value .= $row_starter;
             }
 
@@ -439,8 +455,8 @@ function closure_loop($param, $args, $main_function)
             if (isset($param[4 + 1])) {
                 $sort_key = $param[4];
 
-                $rev = ((isset($param[5 + 1])) && ($param[5] == 'DESC'));
-                if ($sort_key != '') {
+                $rev = ((isset($param[5 + 1])) && ($param[5] === 'DESC'));
+                if ($sort_key !== '') {
                     sort_maps_by($array, $sort_key);
                 }
                 if ($rev) {
@@ -459,22 +475,22 @@ function closure_loop($param, $args, $main_function)
                 $go['_loop_var'] = '(array)'; // In case it's not a list of maps, but just a list
             }
 
-            if ((isset($param[2])) && ($col % $columns == 0) && ($col != 0)) {
+            if ((isset($param[2])) && ($col % $columns === 0) && ($col !== 0)) {
                 $value .= $row_starter;
             }
 
-            $ps = $go + array('_loop_key' => is_integer($go_key) ? strval($go_key) : $go_key, '_i' => strval($col), '_first' => $first, '_last' => $col == $max_index);
+            $ps = $go + array('_loop_key' => is_integer($go_key) ? strval($go_key) : $go_key, '_i' => strval($col), '_first' => $first, '_last' => $col === $max_index);
             $args[0] = $ps + $args[0];
             $args[0]['vars'] = $args[0];
             $value .= call_user_func_array($main_function, $args);
 
             ++$col;
-            if ((isset($param[3])) && ($col % $columns == 0)) {
+            if ((isset($param[3])) && ($col % $columns === 0)) {
                 $value .= $row_terminator;
             }
             $first = false;
         }
-        if ((isset($param[2])) && ($col % $columns != 0)) {
+        if ((isset($param[2])) && ($col % $columns !== 0)) {
             $value .= $row_terminator;
         }
     }
@@ -527,39 +543,44 @@ function escape_html_tempcode($data)
  */
 function apply_tempcode_escaping($escaped, &$value)
 {
+    static $charset = null;
+    if ($charset === null) {
+        $charset = get_charset();
+    }
+
     global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
-        if ($escape == ENTITY_ESCAPED) {
-            if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+        if ($escape === ENTITY_ESCAPED) {
+            if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (!function_exists('has_solemnly_declared')) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
+                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
             }
-        } elseif ($escape == FORCIBLY_ENTITY_ESCAPED) {
-            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
-        } elseif ($escape == SQ_ESCAPED) {
+        } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
+            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+        } elseif ($escape === SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
-        } elseif ($escape == DQ_ESCAPED) {
+        } elseif ($escape === DQ_ESCAPED) {
             $value = str_replace('&quot;', '\&quot;', str_replace('"', '\\"', str_replace('\\', '\\\\', $value)));
-        } elseif ($escape == NL_ESCAPED) {
+        } elseif ($escape === NL_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', ''), $value);
-        } elseif ($escape == NL2_ESCAPED) {
+        } elseif ($escape === NL2_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', '\n'), $value);
-        } elseif ($escape == CC_ESCAPED) {
+        } elseif ($escape === CC_ESCAPED) {
             $value = str_replace('[', '\\[', str_replace('\\', '\\\\', $value));
-        } elseif ($escape == UL_ESCAPED) {
+        } elseif ($escape === UL_ESCAPED) {
             $value = cms_url_encode($value);
-        } elseif ($escape == UL2_ESCAPED) {
+        } elseif ($escape === UL2_ESCAPED) {
             $value = rawurlencode($value);
-        } elseif ($escape == JSHTML_ESCAPED) {
+        } elseif ($escape === JSHTML_ESCAPED) {
             $value = str_replace(']]>', ']]\'+\'>', str_replace('</', '<\/', $value));
-        } elseif ($escape == ID_ESCAPED) {
+        } elseif ($escape === ID_ESCAPED) {
             $value = fix_id($value);
-        } elseif ($escape == CSS_ESCAPED) {
+        } elseif ($escape === CSS_ESCAPED) {
             $value = preg_replace('#[^\w\#\.\-\%]#', '_', $value);
-        } elseif ($escape == NAUGHTY_ESCAPED) {
+        } elseif ($escape === NAUGHTY_ESCAPED) {
             $value = filter_naughty_harsh($value, true);
         }
     }
-    if (($GLOBALS['XSS_DETECT']) && ($escaped != array())) {
+    if (($GLOBALS['XSS_DETECT']) && ($escaped !== array())) {
         ocp_mark_as_escaped($value);
     }
 
@@ -575,39 +596,44 @@ function apply_tempcode_escaping($escaped, &$value)
  */
 function apply_tempcode_escaping_inline($escaped, $value)
 {
+    static $charset = null;
+    if ($charset === null) {
+        $charset = get_charset();
+    }
+
     global $ESCAPE_HTML_OUTPUT;
     foreach ($escaped as $escape) {
-        if ($escape == ENTITY_ESCAPED) {
-            if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
-                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+        if ($escape === ENTITY_ESCAPED) {
+            if ((!isset($ESCAPE_HTML_OUTPUT[$value])/*not already auto-escaped once*/) || (!function_exists('has_solemnly_declared')) || (has_solemnly_declared(I_UNDERSTAND_XSS)/*no auto-escape*/)) {
+                $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
             }
-        } elseif ($escape == FORCIBLY_ENTITY_ESCAPED) {
-            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
-        } elseif ($escape == SQ_ESCAPED) {
+        } elseif ($escape === FORCIBLY_ENTITY_ESCAPED) {
+            $value = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+        } elseif ($escape === SQ_ESCAPED) {
             $value = str_replace('&#039;', '\&#039;', str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value)));
-        } elseif ($escape == DQ_ESCAPED) {
+        } elseif ($escape === DQ_ESCAPED) {
             $value = str_replace('&quot;', '\&quot;', str_replace('"', '\\"', str_replace('\\', '\\\\', $value)));
-        } elseif ($escape == NL_ESCAPED) {
+        } elseif ($escape === NL_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', ''), $value);
-        } elseif ($escape == NL2_ESCAPED) {
+        } elseif ($escape === NL2_ESCAPED) {
             $value = str_replace(array("\r", "\n"), array('', '\n'), $value);
-        } elseif ($escape == CC_ESCAPED) {
+        } elseif ($escape === CC_ESCAPED) {
             $value = str_replace('[', '\\[', str_replace('\\', '\\\\', $value));
-        } elseif ($escape == UL_ESCAPED) {
+        } elseif ($escape === UL_ESCAPED) {
             $value = cms_url_encode($value);
-        } elseif ($escape == UL2_ESCAPED) {
+        } elseif ($escape === UL2_ESCAPED) {
             $value = rawurlencode($value);
-        } elseif ($escape == JSHTML_ESCAPED) {
+        } elseif ($escape === JSHTML_ESCAPED) {
             $value = str_replace(']]>', ']]\'+\'>', str_replace('</', '<\/', $value));
-        } elseif ($escape == ID_ESCAPED) {
+        } elseif ($escape === ID_ESCAPED) {
             $value = fix_id($value);
-        } elseif ($escape == CSS_ESCAPED) {
+        } elseif ($escape === CSS_ESCAPED) {
             $value = preg_replace('#[^\w\#\.\-\%]#', '_', $value);
-        } elseif ($escape == NAUGHTY_ESCAPED) {
+        } elseif ($escape === NAUGHTY_ESCAPED) {
             $value = filter_naughty_harsh($value, true);
         }
     }
-    if (($GLOBALS['XSS_DETECT']) && ($escaped != array())) {
+    if (($GLOBALS['XSS_DETECT']) && ($escaped !== array())) {
         ocp_mark_as_escaped($value);
     }
 
@@ -688,7 +714,7 @@ function kid_gloves_html_escaping_singular(&$param)
 function fill_template_preview_op_cache()
 {
     global $IS_TEMPLATE_PREVIEW_OP_CACHE;
-    $IS_TEMPLATE_PREVIEW_OP_CACHE = isset($_POST['template_preview_op']) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'screen_preview'));
+    $IS_TEMPLATE_PREVIEW_OP_CACHE = isset($_POST['template_preview_op']) && ($_POST['template_preview_op'] === '1') && ((get_page_name() !== 'admin_themes') || (get_param_string('type', '') === 'screen_preview'));
 }
 
 /**
@@ -714,18 +740,18 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
 
     if ($GLOBALS['SEMI_DEV_MODE']) {
-        if (($codename == strtolower($codename)) && ($directory == 'templates')) {
+        if (($codename === strtolower($codename)) && ($directory === 'templates')) {
             fatal_exit('Template names should be in upper case, and the files should be stored in upper case (' . $codename . ').');
         }
 
         if ($codename !== 'MENU_BRANCH_dropdown'/*optimisation*/) {
-            if ((substr($codename, -7) == '_SCREEN') || (substr($codename, -8) == '_OVERLAY') || ($codename == 'POOR_XHTML_WRAPPER')) {
+            if ((substr($codename, -7) === '_SCREEN') || (substr($codename, -8) === '_OVERLAY') || ($codename === 'POOR_XHTML_WRAPPER')) {
                 $GLOBALS['SCREEN_TEMPLATE_CALLED'] = $codename;
             }
         }
     }
 
-    if (($parameters !== null) && (!has_solemnly_declared(I_UNDERSTAND_XSS))) {
+    if (($parameters !== null) && (function_exists('has_solemnly_declared')) && (!has_solemnly_declared(I_UNDERSTAND_XSS))) {
         kid_gloves_html_escaping($parameters);
     }
 
@@ -788,9 +814,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
                 }
             } else {
                 global $SITE_INFO;
-                $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+                $support_smart_decaching = support_smart_decaching();
                 if ($support_smart_decaching) {
-                    if (get_custom_file_base() != get_file_base()) {
+                    if (get_custom_file_base() !== get_file_base()) {
                         $file_path = get_custom_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
                         if (!is_file($file_path)) {
                             $file_path = get_file_base() . '/themes/' . $found[0] . $found[1] . $codename . $found[2];
@@ -872,7 +898,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
 
         foreach ($out->seq_parts as &$seq_parts_group) {
             foreach ($seq_parts_group as &$seq_part) {
-                if ($seq_part[1] != array()) {
+                if ($seq_part[1] !== array()) {
                     $seq_part[1] = array();
                 }
             }
@@ -897,7 +923,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             $__data->attach('<!-- END-TEMPLATE=' . escape_html($codename) . ' -->');
             $ret = $__data;
         }
-        if (($SHOW_EDIT_LINKS) && ($codename != 'PARAM_INFO') && ($codename != 'TEMPLATE_EDIT_LINK') && ($codename != 'GLOBAL_HTML_WRAP'/*For some obscure reason letting this go through causes content to disappear, maybe because it has already started output streaming*/)) {
+        if (($SHOW_EDIT_LINKS) && ($codename !== 'PARAM_INFO') && ($codename !== 'TEMPLATE_EDIT_LINK') && ($codename !== 'GLOBAL_HTML_WRAP'/*For some obscure reason letting this go through causes content to disappear, maybe because it has already started output streaming*/)) {
             $edit_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $codename), 'adminzone');
 
             $parameters2 = array();
@@ -919,7 +945,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory == 'templates' && (running_script('index') || running_script('iframe')) && $codename != 'GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename != 'FORM_SCREEN_INPUT_HIDDEN' && $codename != 'FORM_SCREEN_INPUT_HIDDEN_2') {
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory === 'templates' && (running_script('index') || running_script('iframe')) && $codename !== 'GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename !== 'FORM_SCREEN_INPUT_HIDDEN' && $codename !== 'FORM_SCREEN_INPUT_HIDDEN_2') {
         $ret2 = new Tempcode();
         $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
         $ret2->attach($ret);
@@ -943,7 +969,7 @@ function invisible_output_encode($string)
 {
     $ret = '';
 
-    $utf8 = (get_charset() == 'utf-8');
+    $utf8 = (get_charset() === 'utf-8');
 
     $len = strlen($string);
     for ($i = 0; $i < $len; $i++) {
@@ -952,7 +978,7 @@ function invisible_output_encode($string)
         for ($_bit = 7; $_bit >= 0; $_bit--) {
             $_bitmask = '1' . str_repeat('0', $_bit);
             $bitmask = bindec($_bitmask);
-            $bit = ($char & $bitmask) != 0;
+            $bit = ($char & $bitmask) !== 0;
             if ($utf8) {
                 if ($bit)
                 {
@@ -987,7 +1013,7 @@ function invisible_output_encode($string)
  */
 function strip_invisible_output_encoding($string)
 {
-    if (get_charset() == 'utf-8') {
+    if (get_charset() === 'utf-8') {
         $string = str_replace(array(chr(0xE2) . chr(0x80) . chr(0x8B), chr(0xEF) . chr(0xBB) . chr(0xBF)), array('', ''), $string);
     } else {
         $string = str_replace(array('&#x200b;', '&#xfeff;'), array('', ''), $string);
@@ -1101,16 +1127,17 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
             if (isset($param[1])) {
                 global $TEMPCODE_SETGET;
-                $param_copy = array();
-                foreach ($param as $i => $x) {
-                    if ($i != 0) {
-                        $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
+                if (count($param) == 2) {
+                    $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = $param[1];
+                } else {
+                    $param_copy = array();
+                    foreach ($param as $i => $x) {
+                        if ($i !== 0) {
+                            $param_copy[] = isset($x->codename/*faster than is_object*/) ? $x->evaluate() : $x;
+                        }
                     }
+                    $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
                 }
-
-                $key = isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0];
-                $val = implode(',', $param_copy);
-                $TEMPCODE_SETGET[$key] = $val;
 
                 if (($GLOBALS['RECORD_TEMPLATES_USED']) && (is_object($param[1]))) {
                     require_code('themes_meta_tree');
@@ -1128,7 +1155,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
             }
 
-            if ((count($param) == 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in symbols.php
+            if ((count($param) === 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in symbols.php
                 $param = block_params_str_to_arr($param[0], true);
             }
 
@@ -1163,19 +1190,23 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $block_parms[$key] = $val;
                 }
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                    require_code('files');
                     $before = memory_get_usage();
                 }
                 if (isset($block_parms['block'])) {
                     $b_value = do_block($block_parms['block'], $block_parms);
 
-                    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                        require_code('files');
-                        @ob_end_flush();
-                        @ob_end_flush();
-                        @ob_end_flush();
-                        print('<!-- block: ' . htmlentities($block_parms['block']) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . integer_format(memory_get_usage()) . ') -->' . "\n");
-                        flush();
+                    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                        if (function_exists('attach_message')) {
+                            attach_message('block: ' . $block_parms['block'] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . integer_format(memory_get_usage()) . ')', 'inform');
+                        } else {
+                            @ob_end_flush();
+                            @ob_end_flush();
+                            @ob_end_flush();
+                            print('<!-- block: ' . htmlentities($block_parms['block']) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(integer_format(memory_get_usage())) . ') -->' . "\n");
+                            flush();
+                        }
                     }
 
                     $b_value->handle_symbol_preprocessing();
@@ -1195,14 +1226,16 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'REQUIRE_JAVASCRIPT':
-            $param = $seq_part[3];
-            foreach ($param as $i => $p) {
-                if (is_object($p)) {
-                    $param[$i] = $p->evaluate();
+            if (isset($param[0])) {
+                $param = $seq_part[3];
+                foreach ($param as $i => $p) {
+                    if (is_object($p)) {
+                        $param[$i] = $p->evaluate();
+                    }
                 }
-            }
 
-            require_javascript($param[0]);
+                require_javascript($param[0]);
+            }
             return;
 
         case 'FACILITATE_AJAX_BLOCK_CALL':
@@ -1212,14 +1245,16 @@ function handle_symbol_preprocessing($seq_part, &$children)
         case 'CSS_INHERIT':
 
         case 'REQUIRE_CSS':
-            $param = $seq_part[3];
-            foreach ($param as $i => $p) {
-                if (is_object($p)) {
-                    $param[$i] = $p->evaluate();
+            if (isset($param[0])) {
+                $param = $seq_part[3];
+                foreach ($param as $i => $p) {
+                    if (is_object($p)) {
+                        $param[$i] = $p->evaluate();
+                    }
                 }
-            }
 
-            require_css($param[0]);
+                require_css($param[0]);
+            }
             return;
 
         case 'TRIM':
@@ -1247,29 +1282,33 @@ function handle_symbol_preprocessing($seq_part, &$children)
             }
 
             if (array_key_exists(0, $param)) {
-                if (substr(get_page_name(), 0, 6) != 'panel_') {
+                if (substr(get_page_name(), 0, 6) !== 'panel_') {
                     if (strpos($param[0], ':') !== false) {
                         $param = array_reverse(explode(':', $param[0], 2));
                     }
-                    if (substr($param[0], 0, 6) == 'panel_') {
+                    if (substr($param[0], 0, 6) === 'panel_') {
                         $param[0] = substr($param[0], 6);
                     }
 
                     global $ZONE;
                     $wide_high = is_wide_high();
                     $wide = is_wide();
-                    if ((($wide == 0) || (($wide_high == 0) && (($param[0] == 'bottom') || ($param[0] == 'top')))) && ((get_option('site_closed') == '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
-                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                    if ((($wide === 0) || (($wide_high === 0) && (($param[0] === 'bottom') || ($param[0] === 'top')))) && ((get_option('site_closed') === '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                            require_code('files');
                             $before = memory_get_usage();
                         }
                         $tp_value = request_page('panel_' . $param[0], false, array_key_exists(1, $param) ? $param[1] : null, null);
-                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                            require_code('files');
-                            @ob_end_flush();
-                            @ob_end_flush();
-                            @ob_end_flush();
-                            print('<!-- panel: ' . htmlentities('panel_' . $param[0]) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                            flush();
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                            if (function_exists('attach_message')) {
+                                attach_message('panel: ' . 'panel_' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                            } else {
+                                @ob_end_flush();
+                                @ob_end_flush();
+                                @ob_end_flush();
+                                print('<!-- panel: ' . htmlentities('panel_' . $param[0]) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                                flush();
+                            }
                         }
 
                         $tp_value->handle_symbol_preprocessing();
@@ -1339,10 +1378,11 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $param = array_reverse(explode(':', $param[0], 2));
                 }
 
-                $being_included = (!array_key_exists(2, $param)) || ($param[2] == '1');
-                $virtual_state = (array_key_exists(3, $param)) && ($param[3] == '1');
+                $being_included = (!array_key_exists(2, $param)) || ($param[2] === '1');
+                $virtual_state = (array_key_exists(3, $param)) && ($param[3] === '1');
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                    require_code('files');
                     $before = memory_get_usage();
                 }
 
@@ -1372,13 +1412,16 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     );
                 }
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
-                    require_code('files');
-                    @ob_end_flush();
-                    @ob_end_flush();
-                    @ob_end_flush();
-                    print('<!-- page: ' . htmlentities($param[0]) . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ') -->' . "\n");
-                    flush();
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+                    if (function_exists('attach_message')) {
+                        attach_message('page: ' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
+                    } else {
+                        @ob_end_flush();
+                        @ob_end_flush();
+                        @ob_end_flush();
+                        print('<!-- page: ' . htmlentities($param[0]) . ' (' . htmlentities(clean_file_size(memory_get_usage() - $before)) . ' bytes used, now at ' . htmlentities(number_format(memory_get_usage())) . ') -->' . "\n");
+                        flush();
+                    }
                 }
 
                 if ($GLOBALS['RECORD_TEMPLATES_USED']) {
@@ -1435,7 +1478,7 @@ class Tempcode
 
                 foreach ($this->seq_parts as $seq_parts_group) {
                     foreach ($seq_parts_group as $seq_part) {
-                        if ($seq_part[2] == TC_SYMBOL) {
+                        if ($seq_part[2] === TC_SYMBOL) {
                             switch ($seq_part[3]) {
                                 case 'REQUIRE_CSS':
                                 case 'REQUIRE_JAVASCRIPT':
@@ -1451,7 +1494,7 @@ class Tempcode
                                     $pp_bits[] = array(array(), TC_SYMBOL, $seq_part[3], $seq_part[1]);
                                     break;
                             }
-                        } elseif ($seq_part[2] == TC_DIRECTIVE) {
+                        } elseif ($seq_part[2] === TC_DIRECTIVE) {
                             switch ($seq_part[3]) {
                                 case 'INCLUDE':
                                 case 'FRACTIONAL_EDITABLE':
@@ -1589,7 +1632,7 @@ class Tempcode
                 $end = &$this->seq_parts[key($this->seq_parts)];
                 if (end($end) !== false) {
                     $_end = &$end[key($end)];
-                    if (($_end[2] == TC_KNOWN) && ($_end[1] == array())) { // Optimisation to save memory/storage-space/evaluation-time -- we can just append text
+                    if (($_end[2] === TC_KNOWN) && ($_end[1] === array())) { // Optimisation to save memory/storage-space/evaluation-time -- we can just append text
                         $myfunc = $_end[0];
                         if (isset($this->code_to_preexecute[$myfunc])) {
                             $code = $this->code_to_preexecute[$myfunc];
@@ -1671,7 +1714,7 @@ class Tempcode
         if ((count($this->code_to_preexecute) > 10) && ($GLOBALS['CACHE_TEMPLATES'])) {
             // We don't actually use $code_to_preexecute, because it uses too much RAM and DB space throwing full templates into the caching. Instead we rewrite to custom load it whenever it's needed. This isn't inefficient due to normal opcode caching and optimizer opcode caching, and because we cache Tempcode object's evaluations at runtime so it can only happen once per screen view.
             $_file = (strpos($file, '\'') === false) ? $file : php_addslashes($file);
-            $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',null,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] == '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
+            $this->code_to_preexecute[] = 'if (($result=tempcode_include(\'' . $_file . '\'))===false) { $tmp=do_template(\'' . php_addslashes($forced_reload_details[0]) . '\',null,\'' . ((strpos($forced_reload_details[2], '\'') === false) ? $forced_reload_details[2] : php_addslashes($forced_reload_details[2])) . '\',false,\'' . (($forced_reload_details[6] === '') ? '' : ((strpos($forced_reload_details[6], '\'') === false) ? $forced_reload_details[6] : php_addslashes($forced_reload_details[6]))) . '\',\'' . ($forced_reload_details[4]) . '\',\'' . ($forced_reload_details[5]) . '\'); clearstatcache(); $tmp2=$GLOBALS[\'CACHE_TEMPLATES\']; if (!@is_file(\'' . $_file . '\')) { $GLOBALS[\'CACHE_TEMPLATES\']=false; } /*$GLOBALS[\'DEV_MODE\']?debug_eval($tmp->code_to_preexecute):*/eval($tmp->code_to_preexecute); $GLOBALS[\'CACHE_TEMPLATES\']=$tmp2; unset($tmp); }
             else { debug_eval($result[4]); unset($result); }';
             // NB: $GLOBALS[\'CACHE_TEMPLATES\']=false; is in case the template cache has been detected as broken, it prevents this branch running as it would fail again
         }
@@ -1771,8 +1814,8 @@ class Tempcode
         $i = 0;
         foreach ($this->seq_parts as $seq_parts_group) {
             foreach ($seq_parts_group as $seq_part) {
-                if ($i == $at) {
-                    return ($seq_part[1] == array());
+                if ($i === $at) {
+                    return ($seq_part[1] === array());
                 }
                 $i++;
             }
@@ -1804,7 +1847,7 @@ class Tempcode
         if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($this->preprocessable_bits)) {
             foreach ($this->preprocessable_bits as $preprocessable_bit) {
                 foreach ($preprocessable_bit[3] as $i => $param) {
-                    if ((($preprocessable_bit[2] != 'SET') || (($i >= 1))) && (isset($param->codename/*faster than is_object*/))) {
+                    if ((($preprocessable_bit[2] !== 'SET') || (($i >= 1))) && (isset($param->codename/*faster than is_object*/))) {
                         $preprocessable_bit[3][$i] = $param->bind($parameters, '<' . $codename . '>');
                     }
                 }
@@ -1822,7 +1865,7 @@ class Tempcode
                     }
                     $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
                 } else {
-                    if ((is_string($parameter)) && ($key == '_GUID')) {
+                    if ((is_string($parameter)) && ($key === '_GUID')) {
                         $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_GUID, $parameter);
                     }
                 }
@@ -1847,7 +1890,7 @@ class Tempcode
                 }
             } elseif ($p_type === 'boolean') {
                 $parameters[$key] = $parameter ? '1' : '0';
-            } elseif (($p_type != 'array') && ($p_type != 'NULL')) {
+            } elseif (($p_type !== 'array') && ($p_type !== 'NULL')) {
                 critical_error('PASSON', do_lang('NO_INTEGERS_TEMPLATE', escape_html($key)));
             }
         }
@@ -1855,7 +1898,7 @@ class Tempcode
         $out->seq_parts[0] = array();
         foreach ($this->seq_parts as $seq_parts_group) {
             foreach ($seq_parts_group as $seq_part) {
-                if ((($seq_part[0][0] != 's') || (substr($seq_part[0], 0, 14) != 'string_attach_')) && ($seq_part[2] != TC_LANGUAGE_REFERENCE)) {
+                if ((($seq_part[0][0] !== 's') || (substr($seq_part[0], 0, 14) !== 'string_attach_')) && ($seq_part[2] !== TC_LANGUAGE_REFERENCE)) {
                     $seq_part[1] = &$parameters; // & is to preserve memory
                 }
                 $out->seq_parts[0][] = $seq_part;
@@ -1894,13 +1937,13 @@ class Tempcode
             }
         }
 
-        if ($this->seq_parts == array()) {
+        if ($this->seq_parts === array()) {
             return;
         }
 
         foreach ($this->seq_parts as &$seq_parts_group) {
             foreach ($seq_parts_group as &$seq_part) {
-                if ((($seq_part[0][0] != 's') || (substr($seq_part[0], 0, 14) != 'string_attach_')) && ($seq_part[2] != TC_LANGUAGE_REFERENCE)) {
+                if ((($seq_part[0][0] !== 's') || (substr($seq_part[0], 0, 14) !== 'string_attach_')) && ($seq_part[2] !== TC_LANGUAGE_REFERENCE)) {
                     $seq_part[1][$key] = $parameter;
                 }
             }
@@ -1968,7 +2011,7 @@ class Tempcode
     public function is_empty()
     {
         if (isset($this->cached_output)) {
-            return strlen($this->cached_output) == 0;
+            return strlen($this->cached_output) === 0;
         }
         if (isset($this->is_empty)) {
             return $this->is_empty;
@@ -2010,7 +2053,7 @@ class Tempcode
                     if (!isset($tpl_funcs[$seq_part_0])) {
                         debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
                         debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
                         $parameters = $seq_part[1];
@@ -2020,7 +2063,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] != 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2120,7 +2163,7 @@ class Tempcode
                     if (!isset($tpl_funcs[$seq_part_0])) {
                         debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
                         debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
                         $parameters = $seq_part[1];
@@ -2130,7 +2173,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] != 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2222,7 +2265,7 @@ class Tempcode
                     if (!isset($tpl_funcs[$seq_part_0])) {
                         debug_eval($this->code_to_preexecute[$seq_part_0], $tpl_funcs);
                     }
-                    if (($tpl_funcs[$seq_part_0][0] != 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
+                    if (($tpl_funcs[$seq_part_0][0] !== 'e') && (function_exists($tpl_funcs[$seq_part_0]))) {
                         debug_call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                     } else {
                         $parameters = $seq_part[1];
@@ -2232,7 +2275,7 @@ class Tempcode
                 if (!isset($tpl_funcs[$seq_part_0])) {
                     eval($this->code_to_preexecute[$seq_part_0]);
                 }
-                if (($tpl_funcs[$seq_part_0][0] != 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
+                if (($tpl_funcs[$seq_part_0][0] !== 'e'/*for echo*/) && (function_exists($tpl_funcs[$seq_part_0]))) {
                     call_user_func($tpl_funcs[$seq_part_0], $seq_part[1], $current_lang, $seq_part[4]);
                 } else {
                     $parameters = $seq_part[1];
@@ -2322,7 +2365,7 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
     if ($code === null) {
         return ''; // HHVM issue
     }
-    if ($code == '') {
+    if ($code === '') {
         return ''; // Blank eval returns false
     }
     $result = @eval($code);

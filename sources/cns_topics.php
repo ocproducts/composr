@@ -31,6 +31,10 @@
  */
 function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
 
     $map = array('page' => 'topicview', 'id' => $row['id']);
@@ -88,7 +92,11 @@ function cns_get_topic_where($topic_id, $member_id = null)
         $where .= ' AND (p_intended_solely_for=' . strval($member_id) . ' OR p_poster=' . strval($member_id) . ' OR p_intended_solely_for IS NULL)';
     }
     if ((!has_privilege($member_id, 'see_unvalidated')) && (addon_installed('unvalidated'))) {
-        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval($member_id) . '))';
+        if (is_guest($member_id)) {
+            $where .= ' AND (p_validated=1 OR (' . db_string_equal_to('p_ip_address', get_ip_address()) . ' AND p_poster=' . strval($member_id) . '))';
+        } else {
+            $where .= ' AND (p_validated=1 OR p_poster=' . strval($member_id) . ')';
+        }
     }
     return $where;
 }

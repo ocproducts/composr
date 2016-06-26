@@ -5,7 +5,7 @@
 
 	{MESSAGES}
 
-	<form target="_self" action="{$EXTEND_URL*,{URL},posted=1}" method="post" title="{!SHOUTBOX}">
+	<form target="_self" action="{$EXTEND_URL*,{URL},posted=1}" method="post" title="{!SHOUTBOX}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

@@ -15,7 +15,7 @@ defaults.type=''; // =autodetect rendering type
 
 // Shall we show the options overlay?
 show_overlay=true;
-if (multi || is_image || is_archive)
+if (multi{+START,IF,{$CONFIG_OPTION,simplified_attachments_ui}} || is_image{+END} || is_archive)
 {
 	show_overlay=false;
 }

@@ -114,8 +114,8 @@ class Block_main_custom_gfx
             $text = foxy_utf8_to_nce($map['data']);
             foreach (explode("\n", $text) as $line) {
                 if ($line == '') {
-                    $line = ' ';
-                } // Otherwise our algorithm breaks
+                    $line = ' '; // Otherwise our algorithm breaks
+                }
 
                 list(, , , , $width, , ,) = imagettfbbox(floatval($map['font_size']), 0.0, $file_base . $font . '.ttf', $line);
                 $pos_x = intval(array_key_exists('x', $map) ? $map['x'] : '0');

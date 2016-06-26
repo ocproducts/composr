@@ -34,6 +34,8 @@ class Module_admin_cns_post_templates extends Standard_crud_module
     public $menu_label = 'POST_TEMPLATES';
     public $table = 'f_post_templates';
     public $orderer = 't_title';
+    public $donext_entry_content_type = 'post_template';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -55,8 +57,8 @@ class Module_admin_cns_post_templates extends Standard_crud_module
         }
 
         return array(
-                   'browse' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_post_templates', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/post_templates'),
-               ) + parent::get_entry_points();
+            'browse' => array(do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('POST_TEMPLATES'), make_string_tempcode(escape_html(integer_format($GLOBALS['FORUM_DB']->query_select_value_if_there('f_post_templates', 'COUNT(*)', null, '', true))))), 'menu/adminzone/structure/forum/post_templates'),
+        ) + parent::get_entry_points();
     }
 
     public $title;
@@ -139,7 +141,7 @@ class Module_admin_cns_post_templates extends Standard_crud_module
             array(
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_POST_TEMPLATE')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_POST_TEMPLATE')),
-                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES')),
+                array('menu/_generic_admin/import', array('_SELF', array('type' => 'import'), '_SELF'), do_lang('IMPORT_STOCK_RESPONSES_PT')),
             ),
             do_lang('POST_TEMPLATES')
         );

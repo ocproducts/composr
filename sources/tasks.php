@@ -130,7 +130,7 @@ function execute_task_background($task_row)
 
         dispatch_notification('task_completed', null, $subject, $message, array($requester), A_FROM_SYSTEM_PRIVILEGED, 2, false, false, null, null, '', '', '', '', $attachments);
 
-        if (is_null(!$result)) {
+        if (!is_null($result)) {
             list($mime_type, $content_result) = $result;
             @unlink($content_result[1]);
             sync_file($content_result[1]);
@@ -235,8 +235,10 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
             if (is_null($title)) {
                 return is_object($content_result) ? protect_from_escaping($content_result) : make_string_tempcode($content_result);
             }
-            return do_template('FULL_MESSAGE_SCREEN', array('_GUID' => '20e67ceb86e3bbd1e889c6ca116d7a77', 'TITLE' => $title,
-                                                            'TEXT' => is_object($content_result) ? protect_from_escaping($content_result) : make_string_tempcode($content_result),
+            return do_template('FULL_MESSAGE_SCREEN', array(
+                '_GUID' => '20e67ceb86e3bbd1e889c6ca116d7a77',
+                'TITLE' => $title,
+                'TEXT' => is_object($content_result) ? protect_from_escaping($content_result) : make_string_tempcode($content_result),
             ));
         }
 

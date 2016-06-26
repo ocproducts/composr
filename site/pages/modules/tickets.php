@@ -525,7 +525,7 @@ class Module_tickets
                 }
 
                 $this->title = get_screen_title('_VIEW_SUPPORT_TICKET', true, array(escape_html($ticket_title), escape_html($ticket_type_name)));
-                breadcrumb_set_self(escape_html($ticket_title));
+                breadcrumb_set_self($ticket_title);
             }
 
             // Help text
@@ -620,7 +620,7 @@ class Module_tickets
                     'POST_WARNING' => '',
                     'COMMENT_TEXT' => '',
                     'GET_EMAIL' => is_guest(),
-                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'])),
+                    'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)),
                     'GET_TITLE' => $new,
                     'EM' => $em,
                     'DISPLAY' => 'block',
@@ -677,12 +677,7 @@ class Module_tickets
             }
 
             // URL To add a new ticket
-            $map = array('page' => '_SELF', 'type' => 'ticket');
-            $default_ticket_type = $this->get_ticket_type_id();
-            if ($default_ticket_type !== null) {
-                $map['ticket_type_id'] = $default_ticket_type;
-            }
-            $add_ticket_url = build_url($map, '_SELF');
+            $add_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $default_ticket_type), '_SELF');
 
             // Link to edit ticket subject/type
             $edit_url = mixed();
@@ -858,8 +853,8 @@ class Module_tickets
                 if (substr($body, -2) == '> ') {
                     $body = substr($body, 0, strlen($body) - 2);
                 }
-                $new_post->attach('[email subject="Re: ' . comcode_escape(post_param_string('title')) . ' [' . get_site_name() . ']" body="' . comcode_escape($body) . '"]' . $email . '[/email]' . "\n\n");
-            } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'])) {
+                $new_post->attach(do_lang('GUEST_TICKET_REPLY_LINK', comcode_escape(post_param_string('title')), comcode_escape(get_site_name()), array(comcode_escape($body), $email)));
+            } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)) {
                 // Error if the e-mail address is required for this ticket type
                 warn_exit(do_lang_tempcode('ERROR_GUEST_EMAILS_MANDATORY'));
             }
@@ -933,7 +928,7 @@ class Module_tickets
         }
 
         // Get the ID of the default FAQ catalogue
-        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
+        $catalogue_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'faqs'), '');
         if (is_null($catalogue_id)) {
             return null;
         }
@@ -956,7 +951,13 @@ class Module_tickets
         $results = sort_search_results($hook_results, array(), 'ASC');
         $out = build_search_results_interface($results, 0, $max, 'ASC');
 
-        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array('_GUID' => '427e28208e15494a8f126eb4fb2aa60c', 'TITLE' => $title, 'URL' => build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id), '_SELF'), 'POST_FIELDS' => build_keep_post_fields(), 'RESULTS' => $out));
+        return do_template('SUPPORT_TICKETS_SEARCH_SCREEN', array(
+            '_GUID' => '427e28208e15494a8f126eb4fb2aa60c',
+            'TITLE' => $title,
+            'URL' => build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id), '_SELF'),
+            'POST_FIELDS' => build_keep_post_fields(),
+            'RESULTS' => $out,
+        ));
     }
 
     /**

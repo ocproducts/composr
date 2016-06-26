@@ -159,8 +159,8 @@ class Module_admin_stats
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
         );
 
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test == 0) {
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($test !== null) {
             $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
         }
 
@@ -356,8 +356,8 @@ class Module_admin_stats
             }
         }
 
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test == 0) {
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($test !== null) {
             $actions[] = array('menu/adminzone/audit/statistics/geolocate', array('_SELF', array('type' => 'install_data'), '_SELF'), do_lang('INSTALL_GEOLOCATION_DATA'), 'DOC_INSTALL_GEOLOCATION_DATA');
         }
 
@@ -1123,6 +1123,9 @@ class Module_admin_stats
     {
         $page_request = _request_page(get_zone_default_page(''), '');
         $page = $page_request[count($page_request) - 1];
+        if (is_array($page)) {
+            $page = $page['r_to_page'];
+        }
 
         list($graph_views_monthly, $list_views_monthly) = array_values($this->views_per_x($page, 'views_hourly', 'VIEWS_PER_MONTH', 'DESCRIPTION_VIEWS_PER_MONTH', 730, 8766));
 
@@ -1309,8 +1312,8 @@ class Module_admin_stats
         //************************************************************************************************
         // Regionalities
         //************************************************************************************************
-        $regionalities_test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($regionalities_test > 0) {
+        $regionalities_test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($regionalities_test !== null) {
             $start = get_param_integer('start_regionalities', 0);
             $max = get_param_integer('max_regionalities', 15);
             $sortables = array('ip' => do_lang_tempcode('REGIONALITY'));

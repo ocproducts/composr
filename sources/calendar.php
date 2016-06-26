@@ -43,6 +43,10 @@ function init__calendar()
  */
 function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_css('calendar');
     require_lang('calendar');
 
@@ -52,6 +56,7 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 
     return do_template('CALENDAR_EVENT_BOX', array(
         '_GUID' => ($guid != '') ? $guid : '0eaa10d9fab32599ff095e1121d41c43',
+        'ID' => strval($row['id']),
         'TITLE' => get_translated_text($row['e_title']),
         'SUMMARY' => get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
         'URL' => $url,
@@ -70,6 +75,10 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
  */
 function render_calendar_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('calendar');
 
     $map = array('page' => 'calendar', 'type' => 'browse');
@@ -542,7 +551,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
 
                 foreach ($reminders as $reminder) {
                     $GLOBALS['SITE_DB']->query_insert('calendar_jobs', array(
-                        'j_time' => usertime_to_utctime($recurrences[0][0]) - $reminder['n_seconds_before'],
+                        'j_time' => usertime_to_utctime($recurrences[0][0], $reminder['n_member_id']) - $reminder['n_seconds_before'],
                         'j_reminder_id' => $reminder['id'],
                         'j_member_id' => $reminder['n_member_id'],
                         'j_event_id' => $event['id']
@@ -623,7 +632,7 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
  * @param  boolean $restrict Whether to restrict only to viewable events for the current member (rarely pass this as false!)
  * @param  ?TIME $period_start The timestamp that found times must exceed. In user-time (null: use find_periods_recurrence default)
  * @param  ?TIME $period_end The timestamp that found times must not exceed. In user-time (null: use find_periods_recurrence default)
- * @param  ?array $filter The type filter (null: none)
+ * @param  ?array $filter The type filter, as used by the calendar module internally (null: none)
  * @param  boolean $do_rss Whether to include RSS/iCal events in the results
  * @param  ?BINARY $private Whether to show private events (1) or public events (0) (null: both public and private)
  * @return array A list of events happening, with time details
@@ -820,6 +829,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
     if ($where != '') {
         $where .= ' AND ';
     }
+    // Limitation: won't find anything that started *over* a month before $period_start. Which is reasonable.
     $where .= '(((e_start_month>=' . strval(intval(date('m', $period_start)) - 1) . ' AND e_start_year=' . date('Y', $period_start) . ' OR e_start_year>' . date('Y', $period_start) . ') AND (e_start_month<=' . strval(intval(date('m', $period_end)) + 1) . ' AND e_start_year=' . date('Y', $period_end) . ' OR e_start_year<' . date('Y', $period_end) . ')) OR ' . db_string_not_equal_to('e_recurrence', 'none') . ')';
 
     $where = ' WHERE ' . $where;

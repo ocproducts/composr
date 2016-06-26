@@ -1,6 +1,8 @@
 {TITLE}
 
-{MESSAGE}
+{+START,IF,{$HAS_FORUM,1}}
+	{MESSAGE}
+{+END}
 
 <p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 
@@ -40,14 +42,14 @@
 			{+START,IF_NON_EMPTY,{CHATROOMS}}
 				<ul class="actions_list">
 					{+START,LOOP,CHATROOMS}
-						<li><a href="{URL*}">{+START,FRACTIONAL_EDITABLE,{NAME},room_name,_SEARCH:admin_chat:__edit:{ID}}{NAME*}{+END}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
+						<li><a href="{URL*}">{NAME*}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
 					{+END}
 				</ul>
 
 				<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>
 			{+END}
 			{+START,IF_EMPTY,{CHATROOMS}}
-				<p class="nothing_here">{!NO_CATEGORIES}</p>
+				<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
 			{+END}
 		</div>
 	</div>
@@ -107,7 +109,7 @@
 					{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
 						<p>{!MUST_ADD_CONTACTS}</p>
 
-						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { set_inner_html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" autocomplete="off" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}">
+						<form onsubmit="var _this=this; load_snippet('im_friends_rejig&amp;member_id={MEMBER_ID%}','add='+window.encodeURIComponent(this.elements['friend_username'].value),function(ajax_result) { set_inner_html(document.getElementById('friends_wrap'),ajax_result.responseText); _this.elements['friend_username'].value=''; }); return false;" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
@@ -119,7 +121,7 @@
 
 					{CHAT_SOUND}
 
-					<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form">
+					<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<p>

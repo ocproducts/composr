@@ -29,9 +29,6 @@ For other language packs you can copy this file to the obvious new name. This is
  */
 class LangFilter_EN extends LangFilter
 {
-    private $make_uncle_sam_happy;
-    private $the_sun_never_sets_on_the_british_empire;
-
     private $vowels;
 
     /**
@@ -39,9 +36,26 @@ class LangFilter_EN extends LangFilter
      */
     public function __construct()
     {
+        $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
+    }
+
+    /**
+     * Do a compile-time filter.
+     *
+     * @param  ?string $key Language string ID (null: not a language string)
+     * @param  string $value String value
+     * @param  ?LANGUAGE_NAME $lang Language (null: current language)
+     * @return string The suffix
+     */
+    public function compile_time($key, $value, $lang = null)
+    {
+        if ($lang === null) {
+            $lang = user_lang();
+        }
+
         // Broken into sets. We don't need to include "d"/"s"/"r" suffixes because the base word is a stem of that. But "ing" suffixes mean removing a letter so are needed. Some completely standard long stem transfers are done as universal replaces elsewhere.
         // All words are stem bound, but not tail bound.
-        $this->make_uncle_sam_happy = array(
+        static $make_uncle_sam_happy = array(
             // Spelling...
 
             'analyse' => 'analyze',
@@ -188,7 +202,7 @@ class LangFilter_EN extends LangFilter
             //'bill' => 'invoice', not needed and likely to be substring
         );
 
-        $this->the_sun_never_sets_on_the_british_empire = array( // Tally ho
+        static $the_sun_never_sets_on_the_british_empire = array( // Tally ho
             'tick (check)' => 'tick',
             'untick (uncheck)' => 'untick',
             'ticked (checked)' => 'ticked',
@@ -197,20 +211,8 @@ class LangFilter_EN extends LangFilter
             'unticking (unchecking)' => 'unticking',
         ); // pip pip
 
-        $this->vowels = array('a', 'e', 'i', 'o', 'u');
-    }
-
-    /**
-     * Do a compile-time filter.
-     *
-     * @param  ?string $key Language string ID (null: not a language string)
-     * @param  string $value String value
-     * @return string The suffix
-     */
-    public function compile_time($key, $value)
-    {
         // American <> British
-        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1');
+        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1') || ($lang == 'EN_US');
         if ($is_american) {
             // NB: Below you will see there are exceptions, typically when the base word already naturally ends with "se" on the end, it uses "s" not "z"
 
@@ -230,9 +232,9 @@ class LangFilter_EN extends LangFilter
             $value = str_replace('sational', 'zational', $value);
             $value = str_replace('senzational', 'sensational', $value); // Exception, put this back
 
-            $remapping = $this->make_uncle_sam_happy;
+            $remapping = $make_uncle_sam_happy;
         } else {
-            $remapping = $this->the_sun_never_sets_on_the_british_empire;
+            $remapping = $the_sun_never_sets_on_the_british_empire;
         }
 
         // Put in correct brand name
@@ -317,10 +319,19 @@ class LangFilter_EN extends LangFilter
         $preserved = array();
 
         foreach ($flags as $flag_i => $flag) {
-            if (preg_match('#^preserve=(.*)$#', '', $matches) != 0) {
+            if (preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
                 $preserve = $matches[1];
                 $preserved[$flag_i] = $matches[1];
                 $value = str_replace($preserve, 'preserve_' . strval($flag_i), $value);
+            }
+
+            // Putting in correct keypress for Mac users
+            if ($flag == 'platform_specific') {
+                if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
+                } else {
+                    $value = str_replace('Ctrl key (Option key on a mac)', 'Option key', $value);
+                }
             }
 
             // Putting correct content type words to generic strings, with appropriate grammar...
@@ -330,10 +341,15 @@ class LangFilter_EN extends LangFilter
                 $param_num = intval($matches[2]);
                 if (!empty($parameters[$param_num - 1])) {
                     $content_type = is_object($parameters[$param_num - 1]) ? $parameters[$param_num - 1]->evaluate() : $parameters[$param_num - 1];
+
                     require_code('content');
                     $object = get_content_object($content_type);
                     if (is_null($object)) {
-                        $specific = do_lang($content_type, null, null, null, null, false);
+                        if (preg_match('#^\w+$#', $content_type) != 0) {
+                            $specific = do_lang($content_type, null, null, null, null, false);
+                        } else {
+                            $specific = $content_type;
+                        }
                         if (is_null($specific)) {
                             $specific = strtolower($content_type);
                         } else {
@@ -344,7 +360,7 @@ class LangFilter_EN extends LangFilter
                         $specific = strtolower(do_lang($info['content_type_label']));
                     }
 
-                    $is_vowel = in_array(substr($specific, 0, 1), $this->vowels);
+                    $is_vowel = $specific !== '' && isset($this->vowels[$specific[0]]);
                     $article_word = $is_vowel ? 'an' : 'a';
 
                     if (preg_match('#[^aeiou]y$#', $specific) != 0) {
@@ -396,7 +412,19 @@ class LangFilter_EN extends LangFilter
                             break;
                     }
 
-                    $value = str_replace(array_keys($reps), array_values($reps), $value);
+                    $strlen = strlen($value);
+                    for ($i = 0; $i < $strlen; $i++) {
+                        foreach ($reps as $from => $to) {
+                            if ($value[$i] == $from[0] && substr($value, $i, strlen($from)) == $from) {
+                                $value = substr($value, 0, $i) . $to . substr($value, $i + strlen($from));
+                                $strlen = strlen($value);
+                                $i += strlen($to) - 1;
+                                continue 2;
+                            }
+                        }
+                    }
+                    //$value = str_replace(array_keys($reps), array_values($reps), $value); This doesn't work when a replacement itself might be replaced in a further iteration of $reps
+                    
                 }
             }
         }

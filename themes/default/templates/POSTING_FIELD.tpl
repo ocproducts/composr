@@ -24,11 +24,14 @@
 			<div class="comcode_supported posting_form_main_comcode_button">
 				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
-						{$,<li><a class="link_exempt" title="\{!COMCODE_MESSAGE,Comcode\}: \{!LINK_NEW_WINDOW\}" target="_blank" href="\{COMCODE_URL*\}"><img alt="\{!COMCODE_MESSAGE,Comcode\}" src="\{$IMG*,comcode\}" title="\{!COMCODE_MESSAGE,Comcode\}" /></a> \{!COMCODE_MESSAGE,<a class="link_exempt" title="Comcode: \{!LINK_NEW_WINDOW\}" target="_blank" href="\{COMCODE_URL*\}">Comcode</a>\}</li>}
+						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
+							<li><a onclick="return open_link_as_overlay(this);" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
+						{+END}
 						{+START,IF,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}
 							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
 							<li><a class="link_exempt" title="{!FULL_BLOCK_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_adv_comcode_pages}">{!FULL_BLOCK_TUTORIAL}</a></li>
 						{+END}
+						<li><a rel="nofollow" class="link_exempt" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" onclick="window.faux_open(maintain_theme_in_link('{$FIND_SCRIPT;*,emoticons}?field_name={NAME;*}{$KEEP;*,0,1}'),'field_emoticon_chooser','width=300,height=320,status=no,resizable=yes,scrollbars=no'); return false;"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="" class="vertical_alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 						{+START,IF,{$JS_ON}}
@@ -125,13 +128,13 @@
 
 		<script>// <![CDATA[
 			manage_scroll_height(document.getElementById('{NAME;/}'));
-			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}{+END}
+			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}WYSIWYG=1{+END}
 		//]]></script>
 
 		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 			{ATTACHMENTS}
 
-			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
 				add_event_listener_abstract(window,'load',function() {
@@ -153,7 +156,7 @@
 				{!ATTACHMENTS}
 
 				{+START,IF,{$NOT,{$MOBILE}}}
-					<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{!ATTACHMENT_HELP=}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+					<img class="activate_rich_semantic_tooltip help_icon" onclick="this.onmouseover(event);" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" onmouseover="activate_rich_semantic_tooltip(this,event);" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 
@@ -168,7 +171,7 @@
 		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
 			{ATTACHMENTS}
 
-			<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 
 			<script>// <![CDATA[
 				add_event_listener_abstract(window,'load',function() {

@@ -371,12 +371,12 @@ class Module_admin_addons
                 '_GUID' => '9a06f5a9c9e3085c10ab7fb17c3efcd1',
                 'UPDATED_ADDONS' => $updated,
                 'DESCRIPTION' => $description,
-                'FILE_LIST' => implode("\n", $file_list),
+                'FILE_LIST' => $file_list,
                 'COLOUR' => $colour,
                 'STATUS' => $status,
                 'PRETTY_NAME' => $pretty_name,
                 'NAME' => $row['name'],
-                'FILENAME' => do_lang_tempcode('NA_EM'),
+                'FILENAME' => null,
                 'AUTHOR' => $row['author'],
                 'ORGANISATION' => $row['organisation'],
                 'CATEGORY' => $row['category'],
@@ -405,7 +405,7 @@ class Module_admin_addons
                     '_GUID' => 'cb61bdb9ce0cef5cd520440c5f62008f',
                     'UPDATED_ADDONS' => false,
                     'DESCRIPTION' => $description,
-                    'FILE_LIST' => implode("\n", $file_list),
+                    'FILE_LIST' => $file_list,
                     'COLOUR' => 'orange',
                     'STATUS' => $status,
                     'PRETTY_NAME' => $pretty_name,
@@ -871,7 +871,7 @@ class Module_admin_addons
      * @param  PATH $dir The directory to search
      * @return array A map, path=>true (inverted list)
      */
-    public function do_dir($dir)
+    private function do_dir($dir)
     {
         $full = get_file_base() . '/' . (($dir == '') ? '' : ($dir . '/'));
         $temp = array();
@@ -930,7 +930,6 @@ class Module_admin_addons
         $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         $organisation = get_site_name();
         $description = '';
-        $category = is_null($theme) ? ($is_language ? 'Translations' : 'Uncategorised/Unstable') : 'Themes';
         $version = '1.0';
         $copyright_attribution = '';
         $licence = 'Creative Commons Attribution-ShareAlike';
@@ -978,9 +977,37 @@ class Module_admin_addons
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('VERSION'), do_lang_tempcode('DESCRIPTION_VERSION'), 'version', $version, true);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $category, true);
+        if (!is_null($theme)) {
+            $categories = array(
+                'Themes',
+            );
+            $category = 'Themes';
+        }
+        elseif ($is_language) {
+            $categories = array(
+                'Translations',
+            );
+            $category = 'Translations';
+        } else {
+            $categories = array(
+                'Admin Utilities',
+                'Development',
+                'Fun and Games',
+                'Graphical',
+                'Information Display',
+                'New Features',
+                'Third Party Integration',
+                'Uncategorised/Alpha',
+            );
+            $category = 'Uncategorised/Alpha';
+        }
+        $_categories = new Tempcode();
+        foreach ($categories as $_category) {
+            $_categories->attach(form_input_list_entry($_category, $_category == $category));
+        }
+        $field = form_input_list(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_ADDON_CATEGORY'), 'category', $_categories);
         $fields .= $field->evaluate();
-        $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, true);
+        $field = form_input_line(do_lang_tempcode('COPYRIGHT_ATTRIBUTION'), do_lang_tempcode('DESCRIPTION_COPYRIGHT_ATTRIBUTION'), 'copyright_attribution', $copyright_attribution, false);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('LICENCE'), do_lang_tempcode('DESCRIPTION_ADDON_LICENCE'), 'licence', $licence, true);
         $fields .= $field->evaluate();

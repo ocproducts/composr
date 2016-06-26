@@ -942,7 +942,7 @@ function _restore_form_autosave(form,fields_to_do,biggest_length_data)
 	var autosave_name;
 
 	// If we've found something to restore then invite user to restore it
-	biggest_length_data=biggest_length_data.replace(/<[^>]*>/g,'').replace(/\n/g,' '); // Strip HTML and new lines
+	biggest_length_data=biggest_length_data.replace(/<[^>]*>/g,'').replace(/\n/g,' ').replace(/&nbsp;/g,' '); // Strip HTML and new lines
 	if (biggest_length_data.length>100) biggest_length_data=biggest_length_data.substr(0,100)+'...'; // Trim down if needed
 	window.fauxmodal_confirm(
 		'{!javascript:RESTORE_SAVED_FORM_DATA;^}\n\n'+biggest_length_data,

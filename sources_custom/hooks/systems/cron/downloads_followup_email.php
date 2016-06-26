@@ -69,7 +69,7 @@ class Hook_cron_downloads_followup_email
             $last = strval($time - 60 * 60 * 48);
         }
 
-        if (intval($last) > $time - 60 * 60 * $cron_interval) {
+        if (intval($last) > intval($time - 60 * 60 * $cron_interval)) {
             return; // Don't do more than once per $cron_interval (default is 24 hours)
         }
 

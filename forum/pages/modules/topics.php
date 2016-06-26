@@ -1715,8 +1715,7 @@ class Module_topics
         // Awards?
         if (addon_installed('awards')) {
             require_code('awards');
-            $specialisation2->attach(get_award_fields('topic'));
-            $specialisation2->attach(get_award_fields('post'));
+            $specialisation2->attach(get_award_fields(array('topic', 'post')));
         }
 
         // Render form
@@ -1768,7 +1767,7 @@ class Module_topics
             $agreed = get_param_integer('agreed', 0);
             $member_row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
             $just_member_row = db_map_restrict($member_row, array('id', 'm_pt_rules_text'));
-            $rules = get_translated_tempcode('f_members', $member_row, 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
+            $rules = get_translated_tempcode('f_members', $just_member_row, 'm_pt_rules_text', $GLOBALS['FORUM_DB']);
             if (($agreed == 0) && (!$rules->is_empty())) {
                 $url = get_self_url(false, false, array('agreed' => '1'));
                 $title = get_screen_title('NEW_PRIVATE_TOPIC');
@@ -1879,13 +1878,13 @@ class Module_topics
         $hidden_fields->attach(form_input_hidden('from_url', get_self_url(true, false, array('type' => get_param_string('type', 'browse')))));
 
         $map = array('page' => '_SELF', 'type' => '_add_reply', 'parent_id' => $parent_id, 'timestamp' => get_param_integer('timestamp', null));
-        $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), null, true);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $post_url = build_url($map, '_SELF');
 
@@ -2414,13 +2413,13 @@ END;
 
                     $text = do_lang_tempcode('SUCCESS');
                     $map = array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic_id);
-                    $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
-                    if (($test != -1) && ($test != 0)) {
+                    $test = get_param_string('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), null, true);
+                    if (($test !== null) && ($test !== '0')) {
                         $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
                     }
-                    $test = get_param_integer('threaded', -1);
-                    if ($test != -1) {
-                        $map['threaded'] = $test;
+                    $test_threaded = get_param_integer('threaded', null);
+                    if ($test_threaded !== null) {
+                        $map['threaded'] = $test_threaded;
                     }
                     $_url = build_url($map, get_module_zone('topicview'));
                     $url = $_url->evaluate();
@@ -2488,13 +2487,13 @@ END;
                 $url = find_post_id_url($post_id);
             } else {
                 $map = array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id);
-                $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
-                if (($test != -1) && ($test != 0)) {
+                $test = get_param_string('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), null, true);
+                if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
                 }
-                $test = get_param_integer('threaded', -1);
-                if ($test != -1) {
-                    $map['threaded'] = $test;
+                $test_threaded = get_param_integer('threaded', null);
+                if ($test_threaded !== null) {
+                    $map['threaded'] = $test_threaded;
                 }
                 $_url = build_url($map, get_module_zone('topicview'));
                 $url = $_url->evaluate();
@@ -2512,13 +2511,13 @@ END;
             $topic_validated = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_validated', array('id' => $topic_id));
             if (($topic_validated == 0) && (!has_privilege(get_member(), 'jump_to_unvalidated'))) {
                 $map = array('page' => 'forumview', 'id' => $forum_id);
-                $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
-                if (($test != -1) && ($test != 0)) {
+                $test = get_param_string('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), null, true);
+                if (($test !== null) && ($test !== '0')) {
                     $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
                 }
-                $test = get_param_integer('threaded', -1);
-                if ($test != -1) {
-                    $map['threaded'] = $test;
+                $test_threaded = get_param_integer('threaded', null);
+                if ($test_threaded !== null) {
+                    $map['threaded'] = $test_threaded;
                 }
                 $_url = build_url($map, get_module_zone('forumview'));
                 $url = $_url->evaluate();
@@ -2557,7 +2556,7 @@ END;
         if ($add_poll == 1) {
             if (post_param_integer('add_poll', 0) == 1) {
                 // Show it worked / Refresh
-                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => 1), '_SELF');
+                $_url = build_url(array('page' => '_SELF', 'type' => 'add_poll', 'id' => $topic_id, 'try_validate' => is_null(post_param_date('schedule')) ? 1 : 0), '_SELF');
                 return redirect_screen($_title, $_url, do_lang_tempcode('SUCCESS'));
             }
         }
@@ -2590,7 +2589,11 @@ END;
     public function mark_read_topic() // Type
     {
         $topic_id = get_param_integer('id');
-        $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
+        $forum_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => $topic_id));
+        if (is_null($forum_id)) 
+        {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
 
         cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
         if ((is_null($forum_id)) || (get_param_integer('ajax', 0) == 1)) {
@@ -3059,13 +3062,13 @@ END;
         if ($redirect != '') {
             $map['redirect'] = $redirect;
         }
-        $test = get_param_integer('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . (is_null($forum_id) ? '' : strval($forum_id)), null, true);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . (is_null($forum_id) ? '' : strval($forum_id))] = $test;
         }
-        $test = get_param_integer('threaded', -1);
-        if ($test != -1) {
-            $map['threaded'] = $test;
+        $test_threaded = get_param_integer('threaded', null);
+        if ($test_threaded !== null) {
+            $map['threaded'] = $test_threaded;
         }
         $post_url = build_url($map, '_SELF');
 
@@ -3244,10 +3247,7 @@ END;
         }
         $forum_id = $post_details[0]['p_cache_forum_id'];
 
-        $intended_solely_for = post_param_integer('intended_solely_for', -1);
-        if ($intended_solely_for == -1) {
-            $intended_solely_for = null;
-        }
+        $intended_solely_for = post_param_integer('intended_solely_for', null);
         $validated = post_param_integer('validated', 0);
         if ((!is_null($forum_id)) && (!has_privilege(get_member(), 'bypass_validation_lowrange_content', 'topics', array('forums', $forum_id)))) {
             $validated = 0;
@@ -3533,12 +3533,9 @@ END;
     public function _delete_topic() // Type
     {
         $topic_id = get_param_integer('id');
-        $post_target_topic_id = post_param_integer('select_topic_id', -1);
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = post_param_integer('manual_topic_id', -1);
-        }
-        if ($post_target_topic_id == -1) {
-            $post_target_topic_id = null;
+        $post_target_topic_id = post_param_integer('select_topic_id', null);
+        if ($post_target_topic_id === null) {
+            $post_target_topic_id = post_param_integer('manual_topic_id', null);
         }
 
         require_code('cns_topics_action');
@@ -4004,7 +4001,7 @@ END;
             $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_TITLE_SUFFIX', escape_html($_mm['mm_title_suffix'])));
         }
         if (!is_null($_mm['mm_move_to'])) {
-            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_MOVE', cns_forum_breadcrumbs($_mm['mm_move_to'])));
+            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_MOVE', span(breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($_mm['mm_move_to'])), '', 'breadcrumbs')));
         }
         $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_POST'));
         $text = do_lang_tempcode('MULTI_MODERATION_WILL', make_string_tempcode($mm_title), $action_list);
@@ -4049,7 +4046,7 @@ END;
      */
     public function topic_history() // Type
     {
-        $title = get_screen_title('REVISIONS');
+        $title = get_screen_title('actionlog:REVISIONS');
 
         // We should be somewhere else entirely - it's just our moderator action list took us here
         $url = build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'resource_types' => 'topic,post', 'category_id' => get_param_integer('id')), get_module_zone('admin_revisions'));

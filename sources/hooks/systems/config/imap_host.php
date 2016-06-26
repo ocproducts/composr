@@ -38,7 +38,7 @@ class Hook_config_imap_host
             'explanation' => 'CONFIG_OPTION_imap_host',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
         );

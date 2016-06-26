@@ -39,7 +39,7 @@
 
 				{+START,IF,{$AND,{$JS_ON},{STAFF_ACCESS}}}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker wiki_mass_select_marker">
-						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+						<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							<div>
 								{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility_hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
 								<input onclick="var button=document.getElementById('wiki_merge_button'); button.className=button.className.replace(' button_faded','');"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" onclick="change_class(this,'cell_mark_{ID*}','cns_on mass_select_marker','cns_off mass_select_marker')" />
@@ -52,7 +52,7 @@
 			{+START,SET,commented_out}
 				{+START,IF,{$EQ,{$CONFIG_OPTION,is_on_rating},1}}
 					<div class="wiki_post_below">
-						<form title="{!RATING}" class="inline" action="{RATE_URL*}" method="post">
+						<form title="{!RATING}" class="inline" action="{RATE_URL*}" method="post" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							{RATING}

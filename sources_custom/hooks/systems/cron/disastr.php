@@ -27,25 +27,25 @@ class Hook_cron_disastr
 
         // ensure it is done once per week
         $time = time();
-        $last_time = intval(get_value('last_dead_time'));
+        $last_time = intval(get_value('last_disastr_time'));
         if ($last_time > time() - 24 * 60 * 60) {
             return; // run it once a day
         }
-        set_value('last_dead_time', strval($time));
+        set_value('last_disastr_time', strval($time));
 
         require_lang('disastr');
 
         // get just disease that should spead and are enabled
         $diseases_to_spread = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'diseases WHERE (last_spread_time<(' . strval(time()) . '-(spread_rate*60*60)) OR  last_spread_time=0) AND enabled=1', null, null, true);
         if (is_null($diseases_to_spread)) {
-            return;
+            return; // Missing table
         }
 
         foreach ($diseases_to_spread as $disease) {
             // select infected by the disease members
             $sick_by_disease_members = $GLOBALS['SITE_DB']->query_select('members_diseases', array('member_id'), array('sick' => 1, 'disease_id' => $disease['id']), '', null, null, true);
             if (is_null($sick_by_disease_members)) {
-                return;
+                return; // Missing table
             }
 
             $sick_members = array();
@@ -87,14 +87,14 @@ class Hook_cron_disastr
                 $to_infect = array_rand($friends_healthy);
 
                 if (isset($friends_healthy[$to_infect]) && ($friends_healthy[$to_infect] != 0)) {
-                    $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id']));
+                    $members_disease_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $friends_healthy[$to_infect], 'disease_id' => $disease['id']));
 
                     $insert = true;
                     $has_immunization = false;
-                    if (isset($member_rows[0]['member_id']) && $member_rows[0]['member_id'] != 0) {
+                    if (isset($members_disease_rows[0])) {
                         // there is already a db member disease record
                         $insert = false;
-                        if ($member_rows[0]['immunisation'] == 1) {
+                        if ($members_disease_rows[0]['immunisation'] == 1) {
                             $has_immunization = true;
                         }
                     }
@@ -123,7 +123,7 @@ class Hook_cron_disastr
             // =============================================================================
 
             // get immunised members first
-            $immunised_members_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('disease_id' => $disease['id'], 'immunisation' => 1), '', null, null, true);
+            $immunised_members_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('disease_id' => $disease['id'], 'immunisation' => 1));
             $immunised_members = array();
             foreach ($immunised_members_rows as $im_member) {
                 $immunised_members[] = $im_member['member_id'];
@@ -137,13 +137,13 @@ class Hook_cron_disastr
 
             $avoid_members = (strlen($avoid_members) == 0) ? '0' : $avoid_members;
 
-            // if there is a rondomly selected members that can be infected, otherwise all of the members are already infected or immunised
-            $random_member = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id NOT IN (' . $avoid_members . ') ORDER BY RAND()', 1, null, true);
-            if (isset($random_member[0]['id']) && $random_member[0]['id'] > 0) {
-                $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id']));
+            // if there is a randomly selected members that can be infected, otherwise all of the members are already infected or immunised
+            $random_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id NOT IN (' . $avoid_members . ') ORDER BY RAND()', 1, null, true);
+            if (isset($random_member[0])) {
+                $members_disease_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id']));
 
                 $insert = true;
-                if (isset($member_rows[0]['member_id']) && $member_rows[0]['member_id'] > 0) {
+                if (isset($members_disease_rows[0])) {
                     // there is already a db member disease record
                     $insert = false;
                 }

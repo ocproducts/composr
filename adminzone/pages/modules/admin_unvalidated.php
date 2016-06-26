@@ -83,7 +83,8 @@ class Module_admin_unvalidated
      */
     public function run()
     {
-        $out = new Tempcode();
+        $out = array();
+
         require_code('form_templates');
 
         $_hooks = find_all_hooks('modules', 'admin_unvalidated');
@@ -139,9 +140,21 @@ class Module_admin_unvalidated
                 $content = do_template('FORM', array('_GUID' => '51dcee39273a0fee29569190344f2e41', 'SKIP_REQUIRED' => true, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('EDIT'), 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
             }
 
-            $out->attach(do_template('UNVALIDATED_SECTION', array('_GUID' => '838240008e190b9cbaa0280fbddd6baf', 'TITLE' => $info['title'], 'CONTENT' => $content)));
+            $out[$info['title']->evaluate()] = do_template('UNVALIDATED_SECTION', array('_GUID' => '838240008e190b9cbaa0280fbddd6baf', 'TITLE' => $info['title'], 'CONTENT' => $content));
         }
 
-        return do_template('UNVALIDATED_SCREEN', array('_GUID' => '4e971f1c8851b821af030b5c7bbcb3fb', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('UNVALIDATED_PAGE_TEXT'), 'SECTIONS' => $out));
+        ksort($out);
+
+        $_out = new Tempcode();
+        foreach ($out as $__out) {
+            $_out->attach($__out);
+        }
+
+        return do_template('UNVALIDATED_SCREEN', array(
+            '_GUID' => '4e971f1c8851b821af030b5c7bbcb3fb',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('UNVALIDATED_PAGE_TEXT'),
+            'SECTIONS' => $_out,
+        ));
     }
 }

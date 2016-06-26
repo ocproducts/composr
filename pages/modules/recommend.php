@@ -49,7 +49,7 @@ class Module_recommend
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => '',
             'the_page' => 'recommend_help',
-        ));
+        ), '', 1);
     }
 
     /**
@@ -64,6 +64,10 @@ class Module_recommend
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => '',
+                'the_page' => 'recommend_help',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => '',
                 'the_page' => 'recommend_help',
@@ -315,7 +319,7 @@ class Module_recommend
             }
         }
 
-        $text = is_null($page_title) ? do_lang_tempcode('RECOMMEND_SITE_TEXT') : new Tempcode();
+        $text = is_null($page_title) ? do_lang_tempcode('RECOMMEND_SITE_TEXT', escape_html(get_site_name())) : new Tempcode();
 
         if (!is_null(get_param_string('from', null, true))) {
             $submit_name = do_lang_tempcode('SEND');
@@ -329,7 +333,7 @@ class Module_recommend
         handle_max_file_size($hidden);
 
         $fields->attach(form_input_line(do_lang_tempcode('SUBJECT'), '', 'subject', $subject, true));
-        $fields->attach(form_input_text_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('RECOMMEND_SUP_MESSAGE'), 'message', $message, $need_message, null, true));
+        $fields->attach(form_input_text_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('RECOMMEND_SUP_MESSAGE', escape_html(get_site_name())), 'message', $message, $need_message, null, true));
 
         if (addon_installed('captcha')) {
             require_code('captcha');
@@ -395,7 +399,7 @@ class Module_recommend
 
         $hidden->attach(form_input_hidden('select_contacts_page', '1'));
 
-        $text = do_lang_tempcode('RECOMMEND_SITE_TEXT_CHOOSE_CONTACTS');
+        $text = do_lang_tempcode('RECOMMEND_SITE_TEXT_CHOOSE_CONTACTS', escape_html(get_site_name()));
 
         $page_title = get_param_string('page_title', null, true);
         if (is_null(get_param_string('from', null, true))) {
@@ -738,6 +742,6 @@ class Module_recommend
         require_code('autosave');
         clear_cms_autosave();
 
-        return inform_screen($this->title, do_lang_tempcode('RECOMMENDATION_MADE'));
+        return inform_screen($this->title, do_lang_tempcode('RECOMMENDATION_MADE', escape_html(get_site_name())));
     }
 }

@@ -19,6 +19,135 @@
  */
 
 /**
+ * Get Tempcode for a banner type 'feature box' for the given row
+ *
+ * @param  array $row The database field row of it
+ * @param  ID_TEXT $zone The zone to use
+ * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
+ * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @return Tempcode A box for it, linking to the full page
+ */
+function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
+{
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
+    require_lang('banners');
+
+    $url = new Tempcode();
+
+    $_title = $row['id'];
+    if ($_title == '') {
+        $_title = do_lang('_DEFAULT');
+    }
+    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER_TYPE'), $_title) : $_title;
+
+    $num_entries = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('validated' => 1));
+    $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
+
+    return do_template('SIMPLE_PREVIEW_BOX', array(
+        '_GUID' => ($guid != '') ? $guid : 'ba1f8d9da6b65415483d0d235f29c3d4',
+        'ID' => $row['id'],
+        'TITLE' => $title,
+        'SUMMARY' => '',
+        'ENTRY_DETAILS' => $entry_details,
+        'URL' => $url,
+        'RESOURCE_TYPE' => 'banner_type',
+    ));
+}
+
+/**
+ * Get Tempcode for a banner 'feature box' for the given row
+ *
+ * @param  array $row The database field row of it
+ * @param  ID_TEXT $zone The zone to use
+ * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
+ * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
+ * @return Tempcode A box for it, linking to the full page
+ */
+function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
+{
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
+    require_lang('banners');
+    require_code('banners');
+
+    $just_banner_row = db_map_restrict($row, array('name', 'caption'));
+
+    $url = new Tempcode();
+
+    $_title = $row['name'];
+    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER'), $_title) : $_title;
+
+    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
+
+    return do_template('SIMPLE_PREVIEW_BOX', array(
+        '_GUID' => ($guid != '') ? $guid : 'aaea5f7f64297ab46aa3b3182fb57c37',
+        'ID' => $row['name'],
+        'TITLE' => $title,
+        'TITLE_PLAIN' => $_title,
+        'SUMMARY' => $summary,
+        'URL' => $url,
+        'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
+        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_banners:__edit:' . $row['name'],
+        'RESOURCE_TYPE' => 'banner',
+    ));
+}
+
+/**
+ * Get a nice, formatted XHTML list to select a banner type
+ *
+ * @param  ?mixed $it The currently selected banner type (null: none selected)
+ * @return Tempcode The list of banner types
+ */
+function create_selection_list_banner_types($it = null)
+{
+    if (is_string($it)) {
+        $it = array($it);
+    }
+
+    $list = new Tempcode();
+    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), null, 'ORDER BY id');
+    foreach ($rows as $row) {
+        $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
+
+        if ($row['t_is_textual'] == 1) {
+            $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', $caption);
+        } else {
+            $type_line = do_lang_tempcode('BANNER_TYPE_LINE', $caption, strval($row['t_image_width']), strval($row['t_image_height']));
+        }
+
+        $list->attach(form_input_list_entry($row['id'], in_array($row['id'], $it), $type_line));
+    }
+    return $list;
+}
+
+/**
+ * Get a list of banners.
+ *
+ * @param  ?ID_TEXT $it The ID of the banner selected by default (null: no specific default)
+ * @param  ?MEMBER $only_owned Only show banners owned by the member (null: no such restriction)
+ * @return Tempcode The list
+ */
+function create_selection_list_banners($it = null, $only_owned = null)
+{
+    $where = is_null($only_owned) ? null : array('submitter' => $only_owned);
+    $rows = $GLOBALS['SITE_DB']->query_select('banners', array('name'), $where, 'ORDER BY name', 150);
+    if (count($rows) == 300) {
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('name'), $where, 'ORDER BY add_date DESC', 150);
+    }
+    $out = new Tempcode();
+    foreach ($rows as $myrow) {
+        $selected = ($myrow['name'] == $it);
+        $out->attach(form_input_list_entry($myrow['name'], $selected));
+    }
+
+    return $out;
+}
+/**
  * Get the Tempcode for the form to add a banner, with the information passed along to it via the parameters already added in.
  *
  * @param  boolean $simplified Whether to simplify the banner interface (for the Point Store buy process)
@@ -65,7 +194,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     if (!$simplified) {
         $types = create_selection_list_banner_types($b_type);
         if ($types->is_empty()) {
-            warn_exit(do_lang_tempcode('NO_CATEGORIES'));
+            warn_exit(do_lang_tempcode('NO_CATEGORIES', 'banner_type'));
         }
         $fields->attach(form_input_list(do_lang_tempcode('BANNER_TYPE'), do_lang_tempcode('_DESCRIPTION_BANNER_TYPE'), 'b_type', $types, null, false, false));
 

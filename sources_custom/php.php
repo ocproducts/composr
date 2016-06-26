@@ -216,8 +216,7 @@ function get_php_file_api($filename, $include_code = true)
                                     if (preg_match('#^\s*((public|protected|private|static|abstract) )*function \w+\((.*)\)#', $lines[$k], $matches) != 0) {
                                         $params = explode(',', $matches[3]);
                                         if (isset($params[$arg_counter])) {
-                                            $_description = /*str_pad(*/
-                                                preg_replace('#^\s*&?(\$\w+).*$#', '$1', $params[$arg_counter])/*, 20, ' ')*/ . ' ' . $_description;
+                                            $_description = /*str_pad(*/preg_replace('#^\s*&?(\$\w+).*$#', '$1', $params[$arg_counter])/*, 20, ' ')*/ . ' ' . $_description;
                                             $found = true;
                                         }
                                         break;

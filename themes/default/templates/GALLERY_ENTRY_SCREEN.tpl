@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,jquery}
 
 <div class="gallery_entry_screen" id="gallery_entry_screen" itemscope="itemscope" itemtype="http://schema.org/{+START,IF_PASSED,VIDEO}Video{+END}{+START,IF_NON_PASSED,VIDEO}Image{+END}Object">
 	{TITLE}
@@ -44,10 +45,13 @@
 					</tr>
 
 					{+START,IF_NON_EMPTY,{RATING_DETAILS}}
-						<tr>
-							<th class="de_th metadata_title">{!RATING}</th>
-							<td>{$RATING,{MEDIA_TYPE},{ID},,,,RATING_INLINE_DYNAMIC}</td>
-						</tr>
+						{$SET,rating,{$RATING,{MEDIA_TYPE},{ID},{SUBMITTER},,,RATING_INLINE_DYNAMIC}}
+						{+START,IF_NON_EMPTY,{$TRIM,{$GET,rating}}}
+							<tr>
+								<th class="de_th metadata_title">{!RATING}</th>
+								<td>{$GET,rating}</td>
+							</tr>
+						{+END}
 					{+END}
 
 					{+START,IF_NON_EMPTY,{EDIT_DATE}}
@@ -124,14 +128,14 @@
 		{+END}
 
 		{+START,IF,{SLIDESHOW}}
-			{+START,IF_NON_EMPTY,{E_TITLE}{COMMENTS}}
+			{+START,IF_NON_EMPTY,{E_TITLE}{COMMENT_DETAILS}}
 				<p itemprop="caption">
 					{+START,IF_NON_EMPTY,{E_TITLE}}
-						<strong>{E_TITLE*}</strong>{+START,IF_NON_EMPTY,{COMMENTS}} &ndash;{+END}
+						<strong>{E_TITLE*}</strong>{+START,IF_NON_EMPTY,{COMMENT_DETAILS}} &ndash;{+END}
 					{+END}
 
-					{+START,IF_NON_EMPTY,{COMMENTS}}
-						{COMMENTS}
+					{+START,IF_NON_EMPTY,{COMMENT_DETAILS}}
+						{COMMENT_DETAILS}
 					{+END}
 				</p>
 			{+END}
@@ -141,7 +145,7 @@
 	{+START,IF,{$NOT,{SLIDESHOW}}}
 		{+START,IF_NON_EMPTY,{DESCRIPTION}}
 			<div itemprop="caption">
-				{DESCRIPTION}
+				{$PARAGRAPH,{DESCRIPTION}}
 			</div>
 		{+END}
 

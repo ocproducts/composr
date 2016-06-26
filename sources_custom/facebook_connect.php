@@ -26,34 +26,11 @@ function init__facebook_connect()
     // Initialise Facebook Connect
     require_code('facebook/facebook');
 
-    class CMSFacebook extends BaseFacebook // We don't want any persistence - we store in normal Composr sessions/member rows
-    {
-        protected function setPersistentData($key, $value)
-        {
-        }
-
-        protected function getPersistentData($key, $default = false)
-        {
-        }
-
-        protected function clearPersistentData($key)
-        {
-        }
-
-        protected function clearAllPersistentData()
-        {
-        }
-
-        protected function constructSessionVariableName($key)
-        {
-        }
-    }
-
     global $FACEBOOK_CONNECT;
     $FACEBOOK_CONNECT = mixed();
     $appid = get_option('facebook_appid');
     $appsecret = get_option('facebook_secret_code');
-    $FACEBOOK_CONNECT = new CMSFacebook(array('appId' => $appid, 'secret' => $appsecret));
+    $FACEBOOK_CONNECT = new Facebook(array('appId' => $appid, 'secret' => $appsecret));
 }
 
 // This is only called if we know we have a user logged into Facebook, who has authorised to our app
@@ -85,6 +62,8 @@ function handle_facebook_connection_login($current_logged_in_member)
     try {
         $details = $FACEBOOK_CONNECT->api('/me', array('fields' => 'id,name,email,about,bio,website,currency,first_name,last_name,gender,location,hometown'));
     } catch (Exception $e) {
+        header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
+
         return $current_logged_in_member;
     }
     if (!is_array($details)) {
@@ -104,7 +83,7 @@ function handle_facebook_connection_login($current_logged_in_member)
         $photo_url = $photo_url['data']['url'];
     }
     if ($photo_url != '') {
-        $photo_url = 'http://graph.facebook.com/' . strval($facebook_uid) . '/picture?type=large'; // In case URL changes
+        $photo_url = 'https://graph.facebook.com/' . strval($facebook_uid) . '/picture?type=large'; // In case URL changes
     }
     $avatar_url = ($photo_url == '') ? mixed() : $photo_url;
     $photo_thumb_url = '';
@@ -331,6 +310,7 @@ function handle_facebook_connection_login($current_logged_in_member)
                         }
                     }
                 } catch (Exception $e) {
+                    header('Facebook-Error: ' . str_replace("\n", '', $e->getMessage()));
                 }
             }
             if (!empty($changes)) {

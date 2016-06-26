@@ -1,5 +1,5 @@
 {+START,IF_NON_EMPTY,{_EDIT_URL}}
-	<form onsubmit="return confirm_delete(this);" class="delete_cross_button" title="{!DELETE} #{ID*}" action="{_EDIT_URL*}" method="post">
+	<form onsubmit="return confirm_delete(this);" class="delete_cross_button" title="{!DELETE} #{ID*}" action="{_EDIT_URL*}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

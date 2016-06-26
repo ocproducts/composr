@@ -877,7 +877,7 @@ function set_up_parent_page_highlighting(file,file_id)
 		a.onmouseover=function(selector) { return function(event) {
 			if (typeof event=='undefined') event=window.event;
 
-			if ((window.opener) && (!event.ctrlKey))
+			if ((window.opener) && (!event.ctrlKey) && (!event.metaKey))
 			{
 				var elements=find_selectors_for(window.opener,selector);
 				for (var i=0;i<elements.length;i++)
@@ -890,7 +890,7 @@ function set_up_parent_page_highlighting(file,file_id)
 		a.onmouseout=function(selector) { return function(event) {
 			if (typeof event=='undefined') event=window.event;
 
-			if ((window.opener) && (!event.ctrlKey))
+			if ((window.opener) && (!event.ctrlKey) && (!event.metaKey))
 			{
 				var elements=find_selectors_for(window.opener,selector);
 				for (var i=0;i<elements.length;i++)
@@ -910,7 +910,7 @@ function set_up_parent_page_highlighting(file,file_id)
 			add_event_listener_abstract(element,'mouseover',function(a,element) { return function(event) {
 				if (typeof event=='undefined') event=window.event;
 
-				if ((window) && (!event.ctrlKey))
+				if ((window) && (!event.ctrlKey) && (!event.metaKey))
 				{
 					var target=event.target || event.srcElement;
 					var target_distance=0;
@@ -935,7 +935,7 @@ function set_up_parent_page_highlighting(file,file_id)
 			add_event_listener_abstract(element,'mouseout',function(a) { return function(event) {
 				if (typeof event=='undefined') event=window.event;
 
-				if ((window) && (!event.ctrlKey))
+				if ((window) && (!event.ctrlKey) && (!event.metaKey))
 				{
 					a.style.outline='';
 					a.style.background='';

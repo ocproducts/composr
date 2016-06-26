@@ -43,6 +43,8 @@ function add_custom_comcode_tag($tag, $title, $description, $replace, $example, 
 
     require_code('comcode_compiler');
 
+    init_valid_comcode_tags();
+
     global $VALID_COMCODE_TAGS;
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $tag));
     if ((array_key_exists($tag, $VALID_COMCODE_TAGS)) || (!is_null($test))) {
@@ -110,6 +112,8 @@ function edit_custom_comcode_tag($old_tag, $tag, $title, $description, $replace,
     }
 
     require_code('comcode_compiler');
+
+    init_valid_comcode_tags();
 
     global $VALID_COMCODE_TAGS;
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $tag));

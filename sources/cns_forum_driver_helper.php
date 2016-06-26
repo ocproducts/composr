@@ -124,7 +124,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
         $forum_id = (integer)$forum_name;
     }
 
-    $topic_id = $this_ref->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
+    $topic_id = $this_ref->find_topic_id_for_topic_identifier($forum_name, $topic_identifier, $topic_identifier_encapsulation_prefix);
 
     $update_caching = false;
     $support_attachments = false;
@@ -259,10 +259,13 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     }
 
     $post_query_select = 'p.p_title,top.id,p.p_poster,p.p_poster_name_if_guest,p.id AS p_id,p_post';
+    if (!multi_lang_content()) {
+        $post_query_select .= ',p_post__text_parsed,p_post__source_user';
+    }
     $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
     $post_query_sql = 'SELECT ' . $post_query_select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ';
     if (strpos(get_db_type(), 'mysql') !== false) {
-        $post_query_sql .= 'USE INDEX(in_topic) ';
+        $post_query_sql .= 'FORCE INDEX(in_topic) ';
     }
     if (multi_lang_content()) {
         $post_query_sql .= 'LEFT JOIN ' . $this_ref->connection->get_table_prefix() . 'translate t_p_post ON t_p_post.id=p.p_post ';
@@ -279,13 +282,13 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         if (($filter_topic_title == '') && ($filter_topic_description == '')) {
             $query = 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
             if (strpos(get_db_type(), 'mysql') !== false) {
-                $query .= ' USE INDEX (topic_order_4)';
+                $query .= ' FORCE INDEX (unread_forums)';
             }
             $query .= ' WHERE (' . $id_list . ')' . $topic_filter_sup;
             $query_simplified = $query;
 
-            if (strpos(get_db_type(), 'mysql') !== false) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR EXISTS(' . $post_query_sql . '))';
+            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         } else {
             $query = '';
@@ -304,14 +307,14 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 }
                 $query_more .= 'SELECT * FROM ' . $this_ref->connection->get_table_prefix() . 'f_topics top';
                 if (strpos(get_db_type(), 'mysql') !== false) {
-                    $query_more .= ' USE INDEX (in_forum)';
+                    $query_more .= ' FORCE INDEX (in_forum)';
                 }
                 $query_more .= ' WHERE (' . $id_list . ') AND ' . $topic_filter . $topic_filter_sup;
                 $query .= $query_more;
                 $query_simplified .= $query_more;
 
-                if (strpos(get_db_type(), 'mysql') !== false) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                    $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR EXISTS(' . $post_query_sql . '))';
+                if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                    $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
                 }
             }
         }
@@ -334,8 +337,8 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= $query_more;
             $query_simplified .= $query_more;
 
-            if (strpos(get_db_type(), 'mysql') !== false) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
-                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR EXISTS(' . $post_query_sql . '))';
+            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         }
     }
@@ -370,7 +373,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
         $out[$i]['forum_id'] = $r['t_forum_id'];
 
         $_post_query_sql = str_replace('top.id', strval($out[$i]['id']), $post_query_sql);
-        $fp_rows = $this_ref->connection->query($_post_query_sql, 1, null, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
+        $fp_rows = $this_ref->connection->query($_post_query_sql, 1, null, false, true/*, array('p_post' => 'LONG_TRANS__COMCODE') we already added it further up*/);
         if (!array_key_exists(0, $fp_rows)) {
             unset($out[$i]);
             continue;
@@ -458,12 +461,9 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $where .= not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
     }
     $where .= $extra_where;
-    if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
-        $where .= ' AND (p_validated=1 OR ((p_poster<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' OR ' . db_string_equal_to('p_ip_address', get_ip_address()) . ') AND p_poster=' . strval(get_member()) . '))';
-    }
     static $index = null;
     if ($index === null) {
-        $index = (strpos(get_db_type(), 'mysql') !== false && ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_name', array('i_table' => 'f_posts', 'i_name' => 'in_topic')) !== null)) ? 'USE INDEX (in_topic)' : '';
+        $index = (strpos(get_db_type(), 'mysql') !== false && ($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_name', array('i_table' => 'f_posts', 'i_name' => 'in_topic')/*LEGACY*/) !== null)) ? ' FORCE INDEX (in_topic)' : '';
     }
 
     $order = $reverse ? 'p_time DESC,p.id DESC' : 'p_time ASC,p.id ASC';
@@ -484,8 +484,8 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
         $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
     }
-    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
-    $count = $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p ' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
+    $rows = $this_ref->connection->query('SELECT ' . $select . ' FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p' . $index . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
+    $count = $this_ref->connection->query_value('f_topics', 't_cache_num_posts', array('id' => $topic_id));//This may be slow for large topics: $this_ref->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->connection->get_table_prefix() . 'f_posts p' . $index . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
 
     $out = array();
     foreach ($rows as $myrow) {

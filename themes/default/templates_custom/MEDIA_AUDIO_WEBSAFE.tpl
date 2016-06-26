@@ -34,17 +34,19 @@
 					audioHeight: {$MIN,{$MULT,{HEIGHT},{$DIV_FLOAT,1000,{WIDTH}}},{HEIGHT%}},
 				{+END}
 
-				enableKeyboard: true
-			});
+				enableKeyboard: true,
 
-			{+START,IF,{$NOT,{$INLINE_STATS}}}
-				player.addEventListener('play',function() { ga_track(null,'{!AUDIO;/}','{URL;/}'); });
-			{+END}
-			if (document.getElementById('next_slide'))
-			{
-				player.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
-				player.addEventListener('ended',function() { player_stopped(); });
-			}
+				success: function(media) {
+					{+START,IF,{$NOT,{$INLINE_STATS}}}
+						media.addEventListener('play',function() { ga_track(null,'{!AUDIO;/}','{URL;/}'); });
+					{+END}
+					if (document.getElementById('next_slide'))
+					{
+						media.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
+						media.addEventListener('ended',function() { player_stopped(); });
+					}
+				}
+			});
 		});
 	//]]></script>
 

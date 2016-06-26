@@ -2,7 +2,7 @@
 
 {$SET,EDIT_URL,{EDIT_URL}}
 
-<tr>
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
 	{FIELDS_TABULAR}
 	{+START,IF_NON_EMPTY,{VIEW_URL}}
 		<td>

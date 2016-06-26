@@ -234,7 +234,7 @@
 	
 		var $createdir = true; // requires creation of temp dirs
 		
-		function ADODB_Cache_File()
+		function __construct()
 		{
 		global $ADODB_INCLUDED_CSV;
 			if (empty($ADODB_INCLUDED_CSV)) include_once(ADODB_DIR.'/adodb-csvlib.inc.php');

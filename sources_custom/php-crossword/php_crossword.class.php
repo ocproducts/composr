@@ -61,7 +61,7 @@ class PHP_Crossword
 	 * @param int $rows 
 	 * @param int $cols
 	 */
-	function PHP_Crossword($rows = 15, $cols = 15)
+	function __construct($rows = 15, $cols = 15)
 	{
 		$this->rows = (int)$rows;
 		$this->cols = (int)$cols;

@@ -407,8 +407,17 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
     $images = array_merge(find_images_do_dir($theme, 'images/', $langs), find_images_do_dir($theme, 'images_custom/', $langs));
 
     foreach (array_keys($langs) as $lang) {
-        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('lang' => $lang, 'theme' => $target_theme));
+        $where = array('lang' => $lang, 'theme' => $target_theme);
+        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), $where);
 
+        // Cleanup broken references
+        foreach ($existing as $e) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($e['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($e['path'])))) {
+                $GLOBALS['SITE_DB']->query_delete('theme_images', $e + $where, '', 1);
+            }
+        }
+
+        // Add theme images for anything on disk but not currently having a reference
         foreach ($images as $id => $path) {
             $found = false;
             foreach ($existing as $e) {

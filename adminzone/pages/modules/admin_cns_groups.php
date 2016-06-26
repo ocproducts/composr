@@ -38,6 +38,8 @@ class Module_admin_cns_groups extends Standard_crud_module
     public $menu_label = 'USERGROUPS';
     public $orderer = 'g_name';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'group';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -55,8 +57,8 @@ class Module_admin_cns_groups extends Standard_crud_module
         }
 
         $ret = array(
-                   'browse' => array('MANAGE_USERGROUPS', 'menu/social/groups'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_USERGROUPS', 'menu/social/groups'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');
@@ -236,13 +238,13 @@ class Module_admin_cns_groups extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('OPEN_MEMBERSHIP'), do_lang_tempcode('OPEN_MEMBERSHIP_DESCRIPTION'), 'open_membership', $open_membership == 1));
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4ec20b3b67c70e1d4136432ae4fd56b6', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('RANK'))));
         if (addon_installed('points')) {
-            $promotion_target_groups = form_input_list_entry('-1', false, do_lang_tempcode('NA_EM'));
+            $promotion_target_groups = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
             foreach ($rows as $group) {
                 if (($group['id'] != $id) && ($group['id'] != db_get_first_id())) {
                     $promotion_target_groups->attach(form_input_list_entry(strval($group['id']), ($group['id'] == $promotion_target), get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
                 }
             }
-            $fields->attach(form_input_list(do_lang_tempcode('PROMOTION_TARGET'), do_lang_tempcode('DESCRIPTION_PROMOTION_TARGET'), 'promotion_target', $promotion_target_groups));
+            $fields->attach(form_input_list(do_lang_tempcode('PROMOTION_TARGET'), do_lang_tempcode('DESCRIPTION_PROMOTION_TARGET'), 'promotion_target', $promotion_target_groups, null, false, false));
             $fields->attach(form_input_integer(do_lang_tempcode('PROMOTION_THRESHOLD'), do_lang_tempcode('DESCRIPTION_PROMOTION_THRESHOLD'), 'promotion_threshold', $promotion_threshold, false));
         }
 
@@ -323,13 +325,13 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         // Take permissions from
         $permissions_from_groups = new Tempcode();
-        $permissions_from_groups = form_input_list_entry('-1', false, do_lang_tempcode('NA_EM'));
+        $permissions_from_groups = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         foreach ($rows as $group) {
             if ($group['id'] != $id) {
                 $permissions_from_groups->attach(form_input_list_entry(strval($group['id']), false, get_translated_text($group['g_name'], $GLOBALS['FORUM_DB'])));
             }
         }
-        $fields->attach(form_input_list(do_lang_tempcode('DEFAULT_PERMISSIONS_FROM'), do_lang_tempcode(is_null($id) ? 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM_NEW' : 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM'), 'absorb', $permissions_from_groups));
+        $fields->attach(form_input_list(do_lang_tempcode('DEFAULT_PERMISSIONS_FROM'), do_lang_tempcode(is_null($id) ? 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM_NEW' : 'DESCRIPTION_DEFAULT_PERMISSIONS_FROM'), 'absorb', $permissions_from_groups, null, false, false));
 
         $this->appended_actions_already = true;
 
@@ -613,14 +615,8 @@ class Module_admin_cns_groups extends Standard_crud_module
             $group_leader = INTEGER_MAGIC_NULL;
         }
 
-        $promotion_target = post_param_integer('promotion_target', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($promotion_target == -1) {
-            $promotion_target = null;
-        }
-        $promotion_threshold = post_param_integer('promotion_threshold', fractional_edit() ? INTEGER_MAGIC_NULL : -1);
-        if ($promotion_threshold == -1) {
-            $promotion_threshold = null;
-        }
+        $promotion_target = post_param_integer('promotion_target', fractional_edit() ? INTEGER_MAGIC_NULL : null);
+        $promotion_threshold = post_param_integer('promotion_threshold', fractional_edit() ? INTEGER_MAGIC_NULL : null);
 
         return array($group_leader, $promotion_target, $promotion_threshold);
     }
@@ -645,8 +641,8 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $this->copy_members_into($id);
 
-        $absorb = post_param_integer('absorb', -1);
-        if ($absorb != -1) {
+        $absorb = post_param_integer('absorb', null);
+        if ($absorb !== null) {
             cns_group_absorb_privileges_of($id, $absorb);
         }
 
@@ -714,13 +710,13 @@ class Module_admin_cns_groups extends Standard_crud_module
             $promotion_target,
             $promotion_threshold,
             $group_leader,
-            post_param_integer('flood_control_submit_secs', INTEGER_MAGIC_NULL),
-            post_param_integer('flood_control_access_secs', INTEGER_MAGIC_NULL),
-            post_param_integer('max_daily_upload_mb', INTEGER_MAGIC_NULL),
-            post_param_integer('max_attachments_per_post', INTEGER_MAGIC_NULL),
+            post_param_integer('flood_control_submit_secs', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('flood_control_access_secs', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('max_daily_upload_mb', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
+            post_param_integer('max_attachments_per_post', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('max_avatar_width', fractional_edit() ? INTEGER_MAGIC_NULL : 100),
             post_param_integer('max_avatar_height', fractional_edit() ? INTEGER_MAGIC_NULL : 100),
-            post_param_integer('max_post_length_comcode', INTEGER_MAGIC_NULL),
+            post_param_integer('max_post_length_comcode', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('max_sig_length_comcode', fractional_edit() ? INTEGER_MAGIC_NULL : 10000),
             post_param_integer('gift_points_base', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
             post_param_integer('gift_points_per_day', fractional_edit() ? INTEGER_MAGIC_NULL : 0),
@@ -746,8 +742,8 @@ class Module_admin_cns_groups extends Standard_crud_module
         }
 
         if (!fractional_edit()) {
-            $absorb = post_param_integer('absorb', -1);
-            if ($absorb != -1) {
+            $absorb = post_param_integer('absorb', null);
+            if ($absorb !== null) {
                 cns_group_absorb_privileges_of(intval($id), $absorb);
             }
 

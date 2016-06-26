@@ -129,6 +129,10 @@ function rebuild_sitemap_set($set_number, $last_time)
     fwrite($sitemaps_out_file, $blob);
     fclose($sitemaps_out_file);
     @unlink($sitemaps_out_path);
+    if (!file_exists(dirname($sitemaps_out_path))) {
+        require_code('files2');
+        make_missing_directory(dirname($sitemaps_out_path));
+    }
     rename($sitemaps_out_temppath, $sitemaps_out_path);
     sync_file($sitemaps_out_path);
     fix_permissions($sitemaps_out_path);
@@ -234,7 +238,7 @@ function build_sitemap_cache_table()
 
     // Load ALL URL ID monikers (for efficiency)
     global $LOADED_MONIKERS_CACHE;
-    if ($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'COUNT(*)', array('m_deprecated' => 0)) < 10000) {
+    if ($GLOBALS['SITE_DB']->query_select_value('url_id_monikers', 'COUNT(*)'/*, array('m_deprecated' => 0) Poor performance to include this and it's unnecessary*/) < 10000) {
         $results = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_moniker', 'm_resource_page', 'm_resource_type', 'm_resource_id'), array('m_deprecated' => 0));
         foreach ($results as $result) {
             $LOADED_MONIKERS_CACHE[$result['m_resource_page']][$result['m_resource_type']][$result['m_resource_id']] = $result['m_moniker'];
@@ -253,7 +257,7 @@ function build_sitemap_cache_table()
         /*$valid_node_types=*/null,
         /*$child_cutoff=*/null,
         /*$max_recurse_depth=*/null,
-        /*$options=*/SITEMAP_GEN_CHECK_PERMS,
+        /*$options=*/SITEMAP_GEN_CHECK_PERMS | SITEMAP_GEN_CONSIDER_VALIDATION,
         /*$zone=*/'_SEARCH',
         $meta_gather
     );

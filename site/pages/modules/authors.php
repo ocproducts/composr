@@ -47,6 +47,8 @@ class Module_authors
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('authors');
+
+        delete_privilege('set_own_author_profile');
     }
 
     /**
@@ -80,6 +82,8 @@ class Module_authors
         if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
+
+        add_privilege('SUBMISSION', 'set_own_author_profile');
     }
 
     /**
@@ -114,12 +118,12 @@ class Module_authors
         $type = get_param_string('type', 'browse');
 
         require_lang('authors');
+        require_code('authors');
 
         $author = get_param_string('id', null);
         if (is_null($author)) {
             if (is_guest()) {
-                global $EXTRA_HEAD;
-                $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+                attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'author'));
             }
@@ -145,7 +149,7 @@ class Module_authors
             if ((has_actual_page_access(get_member(), 'cms_authors')) && (has_edit_author_permission(get_member(), $author))) {
                 set_http_status_code('404');
 
-                $_author_add_url = build_url(array('page' => 'cms_authors', 'type' => '_add', 'author' => $author), get_module_zone('cms_authors'));
+                $_author_add_url = build_url(array('page' => 'cms_authors', 'type' => '_add', 'id' => $author), get_module_zone('cms_authors'));
                 $author_add_url = $_author_add_url->evaluate();
                 $message = do_lang_tempcode('NO_SUCH_AUTHOR_CONFIGURE_ONE', escape_html($author), escape_html($author_add_url));
 
@@ -153,7 +157,7 @@ class Module_authors
             } else {
                 $message = do_lang_tempcode('NO_SUCH_AUTHOR', escape_html($author));
             }
-            $details = array('author' => $author, 'url' => '', 'member_id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($author), 'description' => null, 'skills' => null,);
+            $details = array('author' => $author, 'url' => '', 'member_id' => get_author_id_from_name($author), 'description' => null, 'skills' => null,);
         } else {
             $details = $rows[0];
         }
@@ -177,8 +181,6 @@ class Module_authors
     public function run()
     {
         set_feed_url('?mode=authors&select=');
-
-        require_code('authors');
 
         // Decide what we're doing
         $type = get_param_string('type', 'browse');

@@ -96,6 +96,7 @@ class Block_menu
         require_code('menus');
         $menu = build_menu($type, $map['param'], $silent_failure == '1');
         $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
+        $menu = apply_quick_caching($menu);
 
         if ((array_key_exists('title', $map)) && ($map['title'] != '')) {
             $menu = do_template('BLOCK_MENU', array('_GUID' => 'ae46aa37a9c5a526f43b26a391164436', 'CONTENT' => $menu, 'TYPE' => $type, 'PARAM' => $map['param'], 'TRAY_STATUS' => $tray_status, 'TITLE' => comcode_to_tempcode($map['title'], null, true)));
@@ -120,15 +121,30 @@ function block_menu__cache_on($map)
      (special case -- catalogue index screens are also distinguished by ID, as catalogues vary a lot)
 
     There is a simple workaround if our assumptions don't hold up. Just turn off caching for the
-    particular menu block instance. cache="0". It won't hurt very much, menus are relatively fast.
+    particular menu block instance. cache="0". It won't hurt very much, menus are relatively fast,
+    except for large drop-down sets.
     */
 
+    require_code('permissions');
+
     $menu = array_key_exists('param', $map) ? $map['param'] : '';
+
+    $zone = get_zone_name();
+
+    // Fudge: fold caching for Admin Zone, as it doesn't actually change between pages, except the top level ones
     $page = get_page_name();
+    if (strpos($menu, ',title=' . do_lang('menus:DASHBOARD')) !== false) {
+        if ($page != 'admin' && $page != 'cms' && $page != 'start') {
+            $page = '_generic_';
+        }
+    }
+
     $url_type = get_param_string('type', 'browse');
-    return array(
+
+    $ret = array(
+        has_keep_parameters(),
         ((substr($menu, 0, 1) != '_') && (substr($menu, 0, 3) != '!!!') && (has_actual_page_access(get_member(), 'admin_menus'))),
-        get_zone_name(),
+        $zone,
         $page,
         $url_type,
         ($page == 'catalogues' && $url_type == 'index') ? get_param_string('id', '') : '', // Catalogues need a little extra work to distinguish them
@@ -138,4 +154,6 @@ function block_menu__cache_on($map)
         array_key_exists('silent_failure', $map) ? $map['silent_failure'] : '0',
         array_key_exists('tray_status', $map) ? $map['tray_status'] : '',
     );
+
+    return $ret;
 }

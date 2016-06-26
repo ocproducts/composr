@@ -26,7 +26,7 @@
 
 		{+START,IF_EMPTY,{ENTRIES}}
 			<p class="nothing_here">
-				{!NO_ENTRIES}
+				{!NO_ENTRIES,catalogue_entry}
 			</p>
 		{+END}
 
@@ -35,7 +35,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{PAGINATION}}
-			<div class="float_surrounder ajax_block_wrapper_links">
+			<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
 				{PAGINATION}
 			</div>
 

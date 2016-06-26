@@ -38,6 +38,7 @@ class Hook_config_eager_wysiwyg
             'explanation' => 'CONFIG_OPTION_eager_wysiwyg',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

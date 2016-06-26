@@ -1,5 +1,5 @@
 <div class="float_surrounder zebra_{$CYCLE,addon_export,0,1}">
-	<form title="{!EXPORT_ADDON}: {NAME*}" action="{URL*}" method="post" class="{$CYCLE*,zz,zebra_0,zebra_1}">
+	<form title="{!EXPORT_ADDON}: {NAME*}" action="{URL*}" method="post" class="{$CYCLE*,zz,zebra_0,zebra_1}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="right float_separation">

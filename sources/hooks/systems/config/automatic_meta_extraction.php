@@ -38,6 +38,7 @@ class Hook_config_automatic_meta_extraction
             'explanation' => 'CONFIG_OPTION_automatic_meta_extraction',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 7,
 
             'addon' => 'core_configuration',
         );

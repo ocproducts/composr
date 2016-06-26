@@ -182,7 +182,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             'the_message' => do_lang_tempcode('MESSAGE'),
             'days' => do_lang_tempcode('NUMBER_DAYS'),
             'order_time' => do_lang_tempcode('ORDER_DATE'),
-            'member_id' => do_lang_tempcode('OWNER'),
+            'member_id' => do_lang_tempcode('metadata:OWNER'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
@@ -193,7 +193,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             do_lang_tempcode('NUMBER_DAYS'),
             do_lang_tempcode('ORDER_DATE'),
             do_lang_tempcode('_UP_FOR'),
-            do_lang_tempcode('OWNER'),
+            do_lang_tempcode('metadata:OWNER'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 

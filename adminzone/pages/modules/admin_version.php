@@ -364,6 +364,7 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'recentmessages', array('m_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'queued', array('m_queued'));
+            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'combo', array('m_date_and_time', 'm_queued')); // Used for number-sent-within querying
 
             $GLOBALS['SITE_DB']->create_table('link_tracker', array(
                 'id' => '*AUTO',
@@ -758,21 +759,23 @@ class Module_admin_version
             $max = 300;
             do {
                 $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
-                foreach ($keywords as $_keyword) {
-                    $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
-                    foreach ($_keywords as $keyword) {
-                        if (trim($keyword) == '') {
-                            continue;
-                        }
+                if (!is_null($keywords)) {
+                    foreach ($keywords as $_keyword) {
+                        $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));
+                        foreach ($_keywords as $keyword) {
+                            if (trim($keyword) == '') {
+                                continue;
+                            }
 
-                        $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
-                            'meta_for_type' => $_keyword['meta_for_type'],
-                            'meta_for_id' => $_keyword['meta_for_id'],
-                        ) + insert_lang('meta_keyword', $keyword, 2));
+                            $GLOBALS['SITE_DB']->query_insert('seo_meta_keywords', array(
+                                'meta_for_type' => $_keyword['meta_for_type'],
+                                'meta_for_id' => $_keyword['meta_for_id'],
+                            ) + insert_lang('meta_keyword', $keyword, 2));
+                        }
+                        delete_lang($_keyword['meta_keywords']);
                     }
-                    delete_lang($_keyword['meta_keywords']);
+                    $start += $max;
                 }
-                $start += $max;
             }
             while (count($keywords) > 0);
 
@@ -832,7 +835,7 @@ class Module_admin_version
 
             add_privilege('SUBMISSION', 'edit_meta_fields');
             add_privilege('SUBMISSION', 'perform_webstandards_check_by_default');
-            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 0, '', 'tick', 0, '0');
+            $GLOBALS['FORUM_DRIVER']->install_create_custom_field('smart_topic_notification', 20, 1, 0, 1, 1, '', 'tick', 0, '0');
 
             $GLOBALS['SITE_DB']->create_table('email_bounces', array(
                 'id' => '*AUTO',
@@ -875,6 +878,10 @@ class Module_admin_version
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'userguide_comcode',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'userguide_comcode',
@@ -887,6 +894,10 @@ class Module_admin_version
                 'p_order' => 0,
             ));
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => '',
+                'the_page' => 'keymap',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => '',
                 'the_page' => 'keymap',

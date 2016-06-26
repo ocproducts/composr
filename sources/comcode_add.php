@@ -111,7 +111,7 @@ function _get_details_comcode_tags()
     ksort($tag_list);
 
     /* // Helps find missing tags
-    require_code('comcode_compiler');
+    init_valid_comcode_tags();
     unset($VALID_COMCODE_TAGS['section']);
     unset($VALID_COMCODE_TAGS['section_controller']);
     unset($VALID_COMCODE_TAGS['tab']);
@@ -884,7 +884,25 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
         return true; // Consider 'handled' already
     }
 
-    if ((($tag == 'attachment') || ($tag == 'media')) && ($param == 'type')) {
+    if ((($tag == 'code' || $tag == 'codebox')) && ($param == 'param')) {
+        $list = new Tempcode();
+        $list->attach(form_input_list_entry('', $default == '', ''));
+        $languages = array();
+        if (file_exists(get_file_base() . '/sources_custom/geshi')) {
+            $dh = opendir(get_file_base() . '/sources_custom/geshi');
+            while (($f = readdir($dh)) !== false) {
+                if ($f[0] != '.' && substr($f, -4) == '.php') {
+                    $languages[] = basename($f, '.php');
+                }
+            }
+        } else {
+            $languages[] = 'php';
+        }
+        foreach ($languages as $language) {
+            $list->attach(form_input_list_entry($language, $default == $language, $language));
+        }
+        $fields->attach(form_input_list($parameter_name, $descriptiont, $param, $list, null, false, false));
+    } elseif ((($tag == 'attachment') || ($tag == 'media')) && ($param == 'type')) {
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', $default == '', do_lang('MEDIA_TYPE_')));
         require_code('media_renderer');

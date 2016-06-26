@@ -27,13 +27,13 @@
 			{CUSTOM_TASKS}
 		</div>
 
-		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);">
+		<form title="{!CUSTOM_TASKS}" action="{URL*}" method="post" class="add_custom_task" onsubmit="return submit_custom_task(this);" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="right">
 				<label class="accessibility_hidden" for="recur_interval">{!TASK_LENGTH}</label>
 				<label class="accessibility_hidden" for="recur_every">{!TASK_LENGTH_UNITS}</label>
-				{!RECUR_EVERY,<input maxlength="8" value="" type="text" id="recur_interval" name="recur_interval" size="3" />,<select id="recur_every" name="recur_every"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
+				{!RECUR_EVERY,<input maxlength="8" value="" type="number" id="recur_interval" name="recur_interval" size="3" />,<select id="recur_every" name="recur_every"><option value="mins">{!dates:DPLU_MINUTES}</option><option value="hours">{!dates:DPLU_HOURS}</option><option value="days">{!dates:DPLU_DAYS}</option><option value="months">{!dates:DPLU_MONTHS}</option></select>}
 				<input class="button_micro menu___generic_admin__add_one" type="submit" name="save" title="{!ADD} ({!CUSTOM_TASKS})" value="{!ADD}" />
 			</div>
 			<div class="constrain_field">

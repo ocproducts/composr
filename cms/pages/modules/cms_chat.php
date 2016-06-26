@@ -272,7 +272,7 @@ class Module_cms_chat
             }
         }
         if ($fields->is_empty()) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+            inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
         $results_table = results_table(do_lang_tempcode('CHATROOMS'), $start, 'start', $max, 'max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort');
@@ -576,7 +576,12 @@ class Module_cms_chat
                 array(
                     has_actual_page_access(get_member(), 'admin_chat') ? array('menu/social/chat/chat', array('admin_chat', array('type' => 'browse'), get_module_zone('admin_chat')), do_lang('CHATROOMS')) : null,
                 ),
-                do_lang('SETUP')
+                do_lang('SETUP'),
+                null,
+                null,
+                null,
+                null,
+                'chat'
             );
         }
     }
@@ -631,7 +636,15 @@ class Module_cms_chat
             /* SPECIALLY TYPED 'LINKS' */
             array(
                 has_actual_page_access(get_member(), 'admin_chat') ? array('menu/social/chat/chat', array('admin_chat', array('type' => 'browse'), get_module_zone('admin_chat')), do_lang('SETUP')) : null,
-            )
+            ),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            'chat'
         );
     }
 

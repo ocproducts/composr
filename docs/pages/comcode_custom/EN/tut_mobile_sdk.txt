@@ -1,7 +1,5 @@
 [title sub="Written by ocProducts"]Composr Tutorial: Mobile apps via Composr Mobile SDK[/title]
 
-[b][i]At the time of writing Composr Mobile SDK is in the final stages of development, so isn't yet live. We'll update this tutorial when that changes.[/i][/b]
-
 Composr Mobile SDK ("CMS SDK") is a toolkit to help you build mobile apps that work with a central Composr-powered website. It is intended for use by experienced iOS and Android developers.
 
 As well as containing Composr integrations, there are also a large collection of standalone utilities for building apps. These create a common base between iOS and Android that is reminiscent of the PHP and Composr APIs, allowing easier code porting while also remaining 100% native.
@@ -13,7 +11,7 @@ As well as containing Composr integrations, there are also a large collection of
 
 [title="3"]SDK[/title]
 
-The main iOS/Android SDK can be [url="found on github"]https://github.com/ocproducts/[/url].
+The main iOS/Android SDK can be [url="found on github"]https://github.com/ocproducts/composr_mobile_sdk/[/url].
 
 [title="3"]Server-side functionality[/title]
 
@@ -1320,6 +1318,25 @@ Inserts a string input control similar to an HTML input box. There are no valida
 [i]Usage:[/i]
 [code="objc"]
 [form_instance form_input_line_withPrettyName:<pretty_name>
+		withDescription:<description>
+		withParamName:<param_name>
+		withDefaultValue:<default_value>
+		isRequired:<is_required ?>];
+[/code]
+
+[title="4"]form_input_password_withPrettyName[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(id)form_input_password_withPrettyName:(NSString *)prettyName withDescription:(NSString *)description withParamName:(NSString *)paramName withDefaultValue:(NSString *)defaultValue isRequired:(BOOL)isRequired;
+[/code]
+
+[i]Description:[/i]
+Inserts a password input control similar to an HTML password input box. There are no validations: it will accept any type of characters but display as password dots.
+
+[i]Usage:[/i]
+[code="objc"]
+[form_instance form_input_password_withPrettyName:<pretty_name>
 		withDescription:<description>
 		withParamName:<param_name>
 		withDefaultValue:<default_value>

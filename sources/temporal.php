@@ -246,6 +246,8 @@ function usertime_to_utctime($timestamp = null, $member = null)
 
 /**
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
+ * %i is 'g' in date
+ * %k is 'S' in date
  *
  * @param  string $format The formatting string.
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required
@@ -269,6 +271,22 @@ function cms_strftime($format, $timestamp = null)
         $ret = '';
     }
     return trim($ret); // Needed as %e comes with a leading space
+}
+
+/**
+ * Similar to get_timezoned_date, except works via Tempcode so is cache-safe for relative date display.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $include_time Whether to include the time in the output
+ * @return Tempcode Formatted time
+ */
+function get_timezoned_date_tempcode($timestamp, $include_time = true)
+{
+    if (!$include_time) {
+        return symbol_tempcode('DATE', array('0', '0', '0', strval($timestamp)));
+    }
+
+    return symbol_tempcode('DATE_AND_TIME', array('0', '0', '0', strval($timestamp)));
 }
 
 /**

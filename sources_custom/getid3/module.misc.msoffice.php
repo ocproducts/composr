@@ -17,7 +17,7 @@
 class getid3_doc
 {
 
-	function getid3_doc(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		$ThisFileInfo['fileformat'] = 'doc';
 

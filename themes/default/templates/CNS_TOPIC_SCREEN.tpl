@@ -76,7 +76,7 @@
 	{+END}
 	{+START,IF_EMPTY,{POSTS}}
 		<p class="nothing_here">
-			{!NO_ENTRIES}
+			{!NO_ENTRIES,post}
 		</p>
 	{+END}
 
@@ -85,7 +85,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}<span class="field_name">{!CONTROL_FUNCTIONS}:</span>{+END}
 
 			{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
-				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward">
+				<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
 					{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 					<div class="inline">
@@ -101,7 +101,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
 					{+START,IF,{$JS_ON}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline horiz_field_sep_rightward">
@@ -119,7 +119,7 @@
 			{+END}
 
 			{+START,IF,{THREADED}}
-				<form class="inline" action="{$SELF_URL*}" method="post">
+				<form class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">

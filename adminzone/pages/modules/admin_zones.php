@@ -362,7 +362,7 @@ class Module_admin_zones
 
                     if (strpos($full_path, '_custom/') === false) {
                         global $LANG_FILTER_OB;
-                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
+                        $comcode = $LANG_FILTER_OB->compile_time(null, $comcode, $lang);
                     }
 
                     $default_parsed = comcode_to_tempcode($comcode, null, false, null, null, null, true);
@@ -392,9 +392,9 @@ class Module_admin_zones
                 $settings = null;
                 $comcode_editor = new Tempcode();
                 $button = 'block';
-                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '0acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
                 $button = 'comcode';
-                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+                $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
             }
 
             $preview = (substr($page_info[0], 0, 6) == 'MODULE') ? null : request_page($for, false, $id, null, true);
@@ -610,7 +610,9 @@ class Module_admin_zones
                 $base_url = 'http://' . $SITE_INFO['ZONE_MAPPING_' . $zone][0] . '/' . $SITE_INFO['ZONE_MAPPING_' . $zone][1];
             }
         }
-        $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('ZONE_BASE_URL'), do_lang_tempcode('DESCRIPTION_ZONE_BASE_URL'), 'base_url', $base_url, false));
+        if (is_null($GLOBALS['CURRENT_SHARE_USER'])) {
+            $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('ZONE_BASE_URL'), do_lang_tempcode('DESCRIPTION_ZONE_BASE_URL'), 'base_url', $base_url, false));
+        }
 
         if ((!$in_zone_editor) && (!is_null($zone)) && (addon_installed('zone_logos'))) {
             // Logos
@@ -873,7 +875,7 @@ class Module_admin_zones
             if ($no_rename) {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '2fec0bddfe975b573da9bbd68ec16689', 'TITLE' => do_lang_tempcode('ACTIONS'))));
             }
-            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+            $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS', 'zone'), 'delete', false));
         }
 
         $map = array('page' => '_SELF', 'type' => '__edit');

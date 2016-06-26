@@ -89,6 +89,9 @@ class Module_admin_lang
         $type = get_param_string('type', 'browse');
 
         require_lang('lang');
+        require_code('lang2');
+        require_code('lang3');
+        require_code('lang_compile');
 
         set_helper_panel_tutorial('tut_intl');
 
@@ -113,7 +116,6 @@ class Module_admin_lang
                     $this->title = get_screen_title('TRANSLATE_CODE');
                 } else {
                     $lang_file = get_param_string('lang_file');
-                    require_code('lang3');
                     $this->title = get_screen_title('_TRANSLATE_CODE', true, array(escape_html($lang_file), escape_html(lookup_language_full_name($lang))));
                 }
             }
@@ -137,10 +139,10 @@ class Module_admin_lang
      */
     public function run()
     {
-        require_javascript('translate');
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
 
-        require_code('lang2');
-        require_code('lang_compile');
+        require_javascript('translate');
 
         require_css('translations_editor');
 
@@ -415,7 +417,6 @@ class Module_admin_lang
 
         // Make our translation page
         require_code('form_templates');
-        require_code('lang2');
         $lines = '';
         $google = $this->get_google_code($lang);
         $actions = make_string_tempcode('&nbsp;');
@@ -462,8 +463,6 @@ class Module_admin_lang
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => '_content', 'lang' => $lang, 'start' => $start), '_SELF');
-
-        require_code('lang2');
 
         $_GET['lang'] = $lang;
         require_code('templates_pagination');

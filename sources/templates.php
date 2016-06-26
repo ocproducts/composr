@@ -126,31 +126,27 @@ function get_screen_title($title, $dereference_lang = true, $params = null, $use
     }
 
     if (function_exists('get_session_id')) {
-        if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {
-            $change_map = array(
-                'last_activity' => time(),
-            );
-            if (get_value('no_member_tracking') === '1') {
-                $change_map += array(
-                    'the_title' => '',
-                    'the_zone' => '',
-                    'the_page' => '',
-                    'the_type' => '',
-                    'the_id' => '',
-                );
-            } else {
-                $change_map += array(
+        if (get_value('no_member_tracking') !== '1') {
+            if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {
+                $change_map = array(
+                    'last_activity' => time(),
                     'the_title' => is_null($user_online_title) ? cms_mb_substr($_title->evaluate(), 0, 255) : $user_online_title->evaluate(),
                     'the_zone' => get_zone_name(),
                     'the_page' => cms_mb_substr(get_page_name(), 0, 80),
                     'the_type' => cms_mb_substr(get_param_string('type', '', true), 0, 80),
                     'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
                 );
-            }
-            $session_id = get_session_id();
-            global $SESSION_CACHE;
-            if ((get_value('disable_user_online_counting') !== '1') || (get_option('session_prudence') == '0') || (!isset($SESSION_CACHE[$session_id])) || ($SESSION_CACHE[$session_id]['last_activity'] < time() - 60 * 60 * 5)) {
-                $GLOBALS['SITE_DB']->query_update('sessions', $change_map, array('the_session' => $session_id), '', 1, null, false, true);
+
+                $session_id = get_session_id();
+                global $SESSION_CACHE;
+                if ((get_value('disable_user_online_counting') !== '1') || (get_option('session_prudence') == '0') || (!isset($SESSION_CACHE[$session_id])) || ($SESSION_CACHE[$session_id]['last_activity'] < time() - 60 * 60 * 5)) {
+                    $GLOBALS['SITE_DB']->query_update('sessions', $change_map, array('the_session' => $session_id), '', 1, null, false, true);
+
+                    if (get_option('session_prudence') == '0' && isset($SESSION_CACHE[$session_id]/*if not logging out?*/)) {
+                        $SESSION_CACHE[$session_id] = $change_map + $SESSION_CACHE[$session_id];
+                        persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
+                    }
+                }
             }
         }
     }
@@ -196,6 +192,32 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
 }
 
 /**
+ * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s)
+ *
+ * @param  Tempcode $tempcode The Tempcode to put into a div
+ * @param  string $guid GUID for call
+ * @param  ?string $class CSS classname (null: none)
+ * @return Tempcode The generated div with contents
+ */
+function div($tempcode, $guid = '', $class = null)
+{
+    return do_template('DIV', array('_GUID' => $guid, 'TEMPCODE' => $tempcode, 'CLASS' => $class));
+}
+
+/**
+ * Get the Tempcode for a span
+ *
+ * @param  Tempcode $tempcode The Tempcode to put into a span
+ * @param  string $guid GUID for call
+ * @param  ?string $class CSS classname (null: none)
+ * @return Tempcode The generated span with contents
+ */
+function span($tempcode, $guid = '', $class = null)
+{
+    return do_template('SPAN', array('_GUID' => $guid, 'TEMPCODE' => $tempcode, 'CLASS' => $class));
+}
+
+/**
  * Get the Tempcode for a paragraph. This function should only be used with escaped text strings that need to be put into a paragraph, not with sections of HTML. Remember, paragraphs are literally that, and should only be used with templates that don't assume that they are going to put the given parameters into paragraphs themselves.
  *
  * @param  mixed $text The text to put into the paragraph (string or Tempcode)
@@ -206,18 +228,6 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
 function paragraph($text, $guid = '', $class = null)
 {
     return do_template('PARAGRAPH', array('_GUID' => $guid, 'TEXT' => $text, 'CLASS' => $class));
-}
-
-/**
- * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s)
- *
- * @param  Tempcode $tempcode The Tempcode to put into a div
- * @param  string $guid GUID for call
- * @return Tempcode The generated div with contents
- */
-function div($tempcode, $guid = '')
-{
-    return do_template('DIV', array('_GUID' => '2b0459e48a6b6420b716e05f21a933ad', 'TEMPCODE' => $tempcode));
 }
 
 /**

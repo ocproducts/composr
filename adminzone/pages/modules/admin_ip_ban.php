@@ -343,6 +343,9 @@ class Module_admin_ip_ban
         $id = get_param_integer('id');
         $test = $this->test;
 
+        require_code('cns_members_action');
+        require_code('cns_members_action2');
+
         if (!$test) {
             if ($id == get_member()) {
                 warn_exit(do_lang_tempcode('AVOIDING_BANNING_SELF'));
@@ -354,8 +357,6 @@ class Module_admin_ip_ban
                 return do_template('CONFIRM_SCREEN', array('_GUID' => '4f8c5443497e60e9d636cd45283f2d59', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
             }
 
-            require_code('cns_members_action');
-            require_code('cns_members_action2');
             cns_ban_member($id);
         } else {
             if (post_param_integer('confirm', 0) == 0) {
@@ -364,8 +365,6 @@ class Module_admin_ip_ban
                 return do_template('CONFIRM_SCREEN', array('_GUID' => '6a21b101d5c0621572d0f80606258963', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'FIELDS' => form_input_hidden('confirm', '1'), 'URL' => $url));
             }
 
-            require_code('cns_members_action');
-            require_code('cns_members_action2');
             cns_unban_member($id);
         }
 
@@ -446,6 +445,7 @@ class Module_admin_ip_ban
         }
 
         require_code('failure');
+        require_code('failure_spammers');
         syndicate_spammer_report($ip, is_guest($member_id) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_id), $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), get_param_string('reason'), true);
         log_it('SYNDICATED_IP_BAN', $ip);
 

@@ -58,7 +58,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 {$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
 {$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
 {$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
-{$THEME_WIZARD_COLOR,#00aa00,green_highlight_text,100% 00AA00}
+{$THEME_WIZARD_COLOR,#009900,green_highlight_text,100% 009900}
 {$THEME_WIZARD_COLOR,#ede2e4,required_background,60% (area_4_background hue_to 0) + 40% area_background}
 {$THEME_WIZARD_COLOR,#ebe6eb,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
 {$THEME_WIZARD_COLOR,#000000,dark_shadow,100% BW}
@@ -378,6 +378,9 @@ iframe {
 ::selection {
 	background: {$GET,yellow_highlight_background};
 }
+comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
+	background: {$GET,green_highlight_text};
+}
 
 /* Stop Chrome breaking our datalist display with an arrow */
 input.input_username::-webkit-calendar-picker-indicator {
@@ -543,15 +546,15 @@ header h1 {
 }
 
 .global_navigation .top_buttons, .global_navigation .top_form {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 1.5em;
-	/*{+END}*/
 	padding: 0.5em 0;
 	margin-right: 1em;
 	float: right;
 }
 
 .global_navigation .top_buttons {
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		margin-left: 1.5em;
+	/*{+END}*/
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
@@ -563,7 +566,7 @@ header h1 {
 }
 
 .global_navigation .top_login .horizontal_links {
-	margin-left: 1em;
+	margin-left: 0.5em;
 	width: auto;
 	padding-top: 2px; /* To force it align correctly with the form in a different block (which is taller) */
 }
@@ -1460,6 +1463,7 @@ td>.box, .right>.box, .left>.box {
 	background-color: {$GET,box_title_background};
 	background-image: url('{$IMG_INLINE;,gradient}');
 	background-repeat: repeat-x;
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});}
 	color: {$GET,box_title_text};
 	text-align: center;
 	font-weight: bold;
@@ -1536,15 +1540,16 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 	color: {$GET,slightly_seeded_right_complement_text} !important;
 	text-align: {!en_left};
 	font-size: 15px;
-	margin: 0.5em 0;
+	margin: 0.5em 0 !important;
 	font-family: Arial;
-	padding: 1px 0 2px 21px;
+	padding: 1px 0 2px 21px !important;
 	width: auto;
 	font-weight: bold;
 	text-transform: uppercase;
 	{$BETA_CSS_PROPERTY,border-radius: 0;}
 }
-.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_leftcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_left_complement_text} !important;
 }
@@ -1553,7 +1558,8 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_rightcomp}');
 		background-size: 18px 18px;
 	}
-	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6 {
+	.global_side_panel .boxless_space .box>.box_inner>h1, .global_side_panel .boxless_space .box>.box_inner>h2, .global_side_panel .boxless_space .box>.box_inner>h3, .global_side_panel .boxless_space .box>.box_inner>h4, .global_side_panel .boxless_space .box>.box_inner>h5, .global_side_panel .boxless_space .box>.box_inner>h6,
+	.boxless_space .box .box>.box_inner>h1, .boxless_space .box .box>.box_inner>h2, .boxless_space .box .box>.box_inner>h3, .boxless_space .box .box>.box_inner>h4, .boxless_space .box .box>.box_inner>h5, .boxless_space .box .box>.box_inner>h6 {
 		background-image: url('{$IMG_INLINE;,2x/boxless_title_leadin_leftcomp}');
 		background-size: 18px 18px;
 	}
@@ -1638,10 +1644,10 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 
 .toggleable_tray_button img {
 	float: {!en_right};
-	margin: 0 0.3em !important;
+	margin: 0 0 0 0.3em !important;
 }
 .toggleable_tray_title .toggleable_tray_button img {
-	margin-top: -1px !important;
+	margin: -2px 0.4em 0 0.4em !important;
 }
 .toggleable_tray_button img, .box .toggleable_tray_title .toggleable_tray_button img {
 	width: 20px;
@@ -1884,7 +1890,7 @@ hr.spaced_rule {
 
 .inline_lined_up>* {
 	white-space: normal;
-    display: inline-block;
+	display: inline-block;
 }
 
 /* Something being shown for previewing, on its own so needs focus */
@@ -2085,16 +2091,20 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .tooltip {
 	font-size: 1em;
-	padding: 0.5em;
-	background-color: {$GET,area_faded_background};
-	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
-	border: 1px solid {$GET,point_of_interest_border};
-	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	z-index: 10000;
 	{$BETA_CSS_PROPERTY,opacity: 0.9;}
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+}
+.tooltip_ownlayout {
+	padding: 0.5em;
+	border: 1px solid {$GET,point_of_interest_border};
+	{$BETA_CSS_PROPERTY,box-shadow: 3px 3px 10px {$GET,point_of_interest_border};}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
+}
+.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+	background-color: {$GET,area_faded_background};
+	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
 .tooltip .box {
 	margin: 0;
@@ -2177,6 +2187,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 1em 0;
 }
 
+.compacted_subbox_stream .pagination_spacing {
+	margin-left: 1em;
+}
+
 .pagination {
 	float: {!en_left};
 	/*	max-width: 540px; Looks bad on forumview */
@@ -2185,7 +2199,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .pagination * {
 	vertical-align: middle;
 }
-.pagination .inline {
+.pagination .inline, .pagination nav {
 	display: inline-block;
 }
 
@@ -2235,11 +2249,6 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .results_page_num {
 	font-weight: bold;
-}
-
-.pagination_per_page {
-	float: {!en_right};
-	margin-{!en_left}: 1em;
 }
 
 .pagination_pages {
@@ -2388,7 +2397,7 @@ div.wysiwyg_toolbar_color_finder {
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
 }
 
-.ajax_loading {
+div.ajax_loading, p.ajax_loading {
 	padding: 2em;
 	text-align: center;
 }
@@ -2490,18 +2499,22 @@ div.wysiwyg_toolbar_color_finder {
 	text-align: center;
 }
 
-.RATING_INLINE_DYNAMIC, .RATING_INLINE_STATIC, .RATING_INLINE_DYNAMIC div, .RATING_INLINE_STATIC div, .RATING_INLINE_DYNAMIC form, .RATING_INLINE_STATIC form {
+.RATING_INLINE, .RATING_INLINE div, .RATING_INLINE form {
 	display: inline;
 }
-.RATING_INLINE_DYNAMIC .rating_outer, .RATING_INLINE_STATIC .rating_outer {
+.RATING_INLINE .rating_outer {
 	padding-left: 2em;
 }
-.RATING_INLINE_DYNAMIC .rating_outer:first-child, .RATING_INLINE_STATIC .rating_outer:first-child {
+.RATING_INLINE .rating_outer:first-child {
 	padding-left: 0;
 }
 
-.post_action_link .RATING_INLINE_DYNAMIC {
-	padding-left: 20px;
+.RATING_INLINE .ajax_loading {
+	padding: 0;
+}
+
+.post_action_link .RATING_INLINE {
+	padding-left: 2em;
 }
 
 .rating_inner img {
@@ -2512,11 +2525,21 @@ div.wysiwyg_toolbar_color_finder {
 	text-align: center;
 }
 
+.rating_stars {
+	min-width: 55px;
+	display: inline-block;
+}
+
 .rating_star {
 	{$BETA_CSS_PROPERTY,opacity: 0.2;} display: inline-block;/*Needed for IE8*/
+	padding-right: 3px;
 }
 .rating_star_highlight {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;} display: inline-block;/*Needed for IE8*/
+}
+
+.rating_likers a+a {
+	padding-left: 2px;
 }
 
 .trackbacks {
@@ -2583,7 +2606,7 @@ div.wysiwyg_toolbar_color_finder {
 }
 
 div .post_buttons>*, div .buttons_group_faded>* {
-	{$BETA_CSS_PROPERTY,opacity: 0.1;} display: inline-block;/*Needed for IE8*/
+	{$BETA_CSS_PROPERTY,opacity: 0.25;} display: inline-block;/*Needed for IE8*/
 	{$BETA_CSS_PROPERTY,transition-property : opacity;}
 	{$BETA_CSS_PROPERTY,transition-duration : 0.5s;}
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
@@ -3245,7 +3268,7 @@ input.magic_image_edit_link {
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
 	background-image: url('{$IMG_INLINE;,gradient}');
-	/*{$BETA_CSS_PROPERTY,background: linear-gradient(to bottom, {$GET,lgrad} 0%,{$GET,dgrad} 100%);} If you want a CSS gradient instead of the above image, do something like this*/
+	/*{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad});} If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	-webkit-appearance: none;
@@ -3296,6 +3319,10 @@ div .button_micro {
 	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 	display: inline-block;
 }
+.buttons__previous_none, .buttons__next_none {
+	{$BETA_CSS_PROPERTY,opacity: 0.85 !important;}
+	cursor: not-allowed;
+}
 .button_micro:hover, .button_screen:hover, .button_screen_item:hover {
 	{$BETA_CSS_PROPERTY,opacity: 1.0;}
 }
@@ -3331,7 +3358,7 @@ div.proceed_button_left_2 {
 }
 
 .mass_select_marker {
-	padding: 0.5em;
+	padding: 0.2em;
 	float: {!en_right};
 	border: 1px solid {$GET,standard_border};
 	margin-{!en_left}: 2em;
@@ -3480,9 +3507,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-.buttons__undo {
-	background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
-}
+{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	.buttons__undo {
+		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
+	}
+	.buttons__revisions {
+		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
+	}
+{+END}
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -3590,9 +3622,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__calculate {
 		background-image: url('{$IMG,icons/48x48/buttons/calculate}') !important;
 	}
-	.buttons__revisions {
-		background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
-	}
 	.buttons__choose {
 		background-image: url('{$IMG,icons/48x48/buttons/choose}') !important;
 	}
@@ -3662,9 +3691,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	.buttons__undo {
-		background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
-	}
+	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+		.buttons__undo {
+			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
+		}
+		.buttons__revisions {
+			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
+		}
+	{+END}
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}
@@ -3756,6 +3790,7 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Fixes bugginess in Chrome */
 }
 
 /*
@@ -3816,7 +3851,7 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .tab {
 	float: left;
-	padding: 3px 7px 0 7px !important;
+	padding: 3px 6px 0 6px !important;
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
@@ -3834,6 +3869,13 @@ a.tab, a.tab:visited, a.tab:hover {
 
 .spaced_out_tabs .tab {
 	margin-right: 1px;
+}
+
+a.tab>img+span {
+	padding-top: 0;
+}
+a.tab>span {
+	padding-top: 3px;
 }
 
 /*{+START,IF,{$MOBILE}}*/
@@ -4034,6 +4076,14 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	overflow: auto;
 }
 
+/* Allow pre tags to work when mixed in, as people do this when pasting */
+pre .comcode_code_wrap {
+	white-space: normal;
+}
+pre .comcode_code_inner {
+	white-space: pre;
+}
+
 .comcode_code_scroll {
 	max-height: 300px;
 }
@@ -4222,6 +4272,7 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	font-size: 0.9em;
 	/*display: inline-block; Actually table works better, shows margins even when not floated*/
 	display: table;
+	border-collapse: separate;
 	max-width: 100%;
 	background: {$GET,WB};
 }

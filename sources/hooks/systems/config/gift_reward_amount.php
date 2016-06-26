@@ -38,6 +38,7 @@ class Hook_config_gift_reward_amount
             'explanation' => 'CONFIG_OPTION_gift_reward_amount',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'points',
         );

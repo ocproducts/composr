@@ -42,7 +42,7 @@ class PHP_Crossword_Grid
 	 * @param int $rows
 	 * @param int $cols
 	 */
-	function PHP_Crossword_Grid($rows, $cols)
+	function __construct($rows, $cols)
 	{
 		$this->rows = (int)$rows;
 		$this->cols = (int)$cols;

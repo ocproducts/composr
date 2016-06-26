@@ -32,6 +32,8 @@ class Module_admin_ecommerce extends Standard_crud_module
     public $table = 'f_usergroup_subs';
     public $orderer = 's_title';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'usergroup_subscription';
+    public $donext_category_content_type = null;
 
     public $javascript = "
         var _length_units=document.getElementById('length_units'),_length=document.getElementById('length');
@@ -87,6 +89,12 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_value('unofficial_ecommerce') !== '1') {
+            if (get_forum_type() != 'cns') {
+                return null;
+            }
+        }
+
         $ret = array(
             'browse' => array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/subscriptions'),
         );
@@ -138,12 +146,14 @@ class Module_admin_ecommerce extends Standard_crud_module
         require_code('ecommerce');
         require_code('ecommerce2');
 
-        if ((get_value('unofficial_ecommerce') != '1') && (count(find_all_hooks('systems', 'ecommerce')) == 8)) {
+        if (get_value('unofficial_ecommerce') !== '1') {
             if (get_forum_type() != 'cns') {
                 warn_exit(do_lang_tempcode('NO_CNS'));
-            } else {
-                cns_require_all_forum_stuff();
             }
+        }
+
+        if (get_forum_type() == 'cns') {
+            cns_require_all_forum_stuff();
         }
 
         $this->add_one_label = do_lang_tempcode('ADD_USERGROUP_SUBSCRIPTION');
@@ -167,8 +177,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         require_code('templates_donext');
         return do_next_manager($this->title, comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
             array(
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') != '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
-                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') != '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
+                ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
             ),
             do_lang('CUSTOM_PRODUCT_USERGROUP')
         );

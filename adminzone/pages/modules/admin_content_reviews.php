@@ -148,7 +148,7 @@ class Module_admin_content_reviews
                     $title .= ' (' . get_timezoned_date($next_review_time, false) . ')';
                     $_content_ids[$content_id] = $title;
                 } else {
-                    $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_id, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
+                    $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_type, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
                     continue;
                 }
             }

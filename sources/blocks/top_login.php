@@ -42,6 +42,19 @@ class Block_top_login
     }
 
     /**
+     * Find caching details for the block.
+     *
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     */
+    public function caching_environment()
+    {
+        $info = array();
+        $info['cache_on'] = 'is_guest() ? null : array()'; // No caching for guests due to self URL redirect
+        $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 24;
+        return $info;
+    }
+
+    /**
      * Execute the block.
      *
      * @param  array $map A map of parameters.
@@ -53,12 +66,16 @@ class Block_top_login
             return new Tempcode();
         }
 
+        if (get_forum_type() == 'none') {
+            return new Tempcode();
+        }
+
         require_css('personal_stats');
 
         $title = do_lang_tempcode('NOT_LOGGED_IN');
 
         if ((get_page_name() != 'join') && (get_page_name() != 'login')) {
-            if (count($_POST) > 0) {
+            if (has_interesting_post_fields()) {
                 $_this_url = build_url(array('page' => ''), '', array('keep_session' => 1, 'redirect' => 1));
             } else {
                 $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);

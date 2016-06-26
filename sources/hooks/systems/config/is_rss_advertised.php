@@ -38,6 +38,7 @@ class Hook_config_is_rss_advertised
             'explanation' => 'CONFIG_OPTION_is_rss_advertised',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'syndication_blocks',
         );

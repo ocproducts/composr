@@ -72,7 +72,7 @@
 	</table>
 
 	<div class="theme_manage_footnote">
-		{+START,IF,{$AND,{$HAS_FORUM},{HAS_FREE_CHOICES}}}
+		{+START,IF,{$AND,{$HAS_FORUM,1},{HAS_FREE_CHOICES}}}
 			<p><sup>*</sup> {!MEMBERS_MAY_ALTER_THEME}</p>
 		{+END}
 

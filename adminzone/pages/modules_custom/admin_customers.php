@@ -728,6 +728,7 @@ class Module_admin_customers
     public function charge()
     {
         require_code('form_templates');
+        require_code('mantis');
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_charge'), '_SELF');
         $submit_name = do_lang_tempcode('CHARGE');
@@ -763,7 +764,7 @@ class Module_admin_customers
                 $num_credits = intval($_fields['field_' . strval($cpf_id)]);
             }
 
-            $text = do_lang_tempcode('CUSTOMER_CURRENTLY_HAS', escape_html(number_format($num_credits)));
+            $text = paragraph(do_lang_tempcode('CUSTOMER_CURRENTLY_HAS', escape_html(number_format($num_credits))));
         } else {
             $text = new Tempcode();
         }
@@ -806,6 +807,7 @@ class Module_admin_customers
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($username);
         $amount = post_param_integer('amount');
 
+        require_code('mantis');
         $cpf_id = get_credits_profile_field_id();
         if (is_null($cpf_id)) {
             $msg_tpl = warn_screen($this->title, do_lang_tempcode('INVALID_FIELD_ID'));

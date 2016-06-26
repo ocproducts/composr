@@ -79,7 +79,7 @@ if (str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini
 
 $hashed_password = $_GET['hashed_password'];
 global $SITE_INFO;
-require_once($FILE_BASE . '/_config.php');
+require_once(is_file($FILE_BASE . '/_config.php') ? $FILE_BASE . '/_config.php' : $FILE_BASE . '/info.php'); // LEGACY
 if (!upgrader2_check_master_password($hashed_password)) {
     exit('Access Denied');
 }
@@ -91,6 +91,12 @@ if (!file_exists($tmp_path)) {
     exit('Temp file has disappeared (' . $tmp_path . ')');
 }
 $tmp_path = dirname(dirname(__FILE__)) . '/data_custom/upgrader.cms.tmp'; // Actually for security, we will not allow it to be configurable (in case someone managed to steal the hash we can't let them extract arbitrary archives)
+if (!is_file($tmp_path)) {
+    $tmp_path = dirname(dirname(__FILE__)) . '/data_custom/upgrader.tar.tmp';  // LEGACY. Some old ocPortal upgraders versions overwrite upgrader2.php early, so Composr needs to support the ocPortal temporary name.
+}
+if (!is_file($tmp_path)) {
+    exit('Could not find data_custom/upgrader.cms.tmp');
+}
 $myfile = fopen($tmp_path, 'rb');
 
 $file_offset = intval($_GET['file_offset']);

@@ -275,6 +275,10 @@ function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $
         $by = get_member();
     }
 
+    // Tidy up auto-save
+    require_code('autosave');
+    clear_cms_autosave();
+
     return $GLOBALS['FORUM_DB']->query_insert('f_moderator_logs', array(
         'l_the_type' => $the_type,
         'l_param_a' => $param_a,

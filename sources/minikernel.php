@@ -59,6 +59,9 @@ function init__minikernel()
     global $EXTERNAL_CALL;
     $EXTERNAL_CALL = false;
 
+    global $IN_SELF_ROUTING_SCRIPT;
+    $IN_SELF_ROUTING_SCRIPT = false;
+
     global $XSS_DETECT, $LAX_COMCODE;
     $XSS_DETECT = false;
     $LAX_COMCODE = false;
@@ -557,7 +560,9 @@ function get_base_url($https = null, $zone_for = '')
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['base_url'])) {
-        $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+        $default_base_url = (tacit_https() ? 'https://' : 'http://') . cms_srv('HTTP_HOST') . str_replace('%2F', '/', rawurlencode(str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')))));
+
+        $base_url = post_param_string('base_url', $default_base_url);
         if (substr($base_url, -1) == '/') {
             $base_url = substr($base_url, 0, strlen($base_url) - 1);
         }

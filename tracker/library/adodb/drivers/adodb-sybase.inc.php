@@ -375,7 +375,7 @@ class ADORecordset_sybase extends ADORecordSet {
 }
 
 class ADORecordSet_array_sybase extends ADORecordSet_array {
-	function ADORecordSet_array_sybase($id=-1)
+	function __construct($id=-1)
 	{
 		$this->ADORecordSet_array($id);
 	}

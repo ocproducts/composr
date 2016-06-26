@@ -3,10 +3,12 @@
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}{ARCHIVE_URL}}
 			<ul class="horizontal_links associated_links_block_group">
 				{+START,IF_NON_EMPTY,{SUBMIT_URL}}
-					<li><a rel="add" href="{SUBMIT_URL*}">{!ADD}</a></li>
+					<li><a rel="add" href="{SUBMIT_URL*}">{ADD_STRING*}</a></li>
 				{+END}
-				{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
-					<li><a href="{ARCHIVE_URL*}" title="{!ARCHIVES}: {TYPE*}">{!ARCHIVES}</a></li>
+				{+START,IF_NON_EMPTY,{CONTENT}}
+					{+START,IF_NON_EMPTY,{ARCHIVE_URL}}
+						<li><a href="{ARCHIVE_URL*}" title="{!ARCHIVES}: {TYPE*}">{!ARCHIVES}</a></li>
+					{+END}
 				{+END}
 			</ul>
 		{+END}
@@ -61,7 +63,7 @@
 		{+END}
 
 		{+START,IF_EMPTY,{CONTENT}}
-			<p class="nothing_here">{!NO_ENTRIES}</p>
+			<p class="nothing_here">{!NO_ENTRIES,{CONTENT_TYPE}}</p>
 		{+END}
 
 		{$GET,links}
@@ -84,7 +86,7 @@
 				{+END}
 
 				{+START,IF_EMPTY,{CONTENT}}
-					<p class="nothing_here">{!NO_ENTRIES}</p>
+					<p class="nothing_here">{!NO_ENTRIES,{CONTENT_TYPE}}</p>
 				{+END}
 			</div>
 

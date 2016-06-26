@@ -346,7 +346,7 @@ class Hook_video_syndication_youtube
     public function leave_comment($video, $comment)
     {
         $xml = trim('
-            <' . '?xml version="1.0" encoding="UTF-8"?' . '>
+            <' . '?xml version="1.0" encoding="utf-8"?' . '>
             <entry xmlns="http://www.w3.org/2005/Atom" xmlns:yt="http://gdata.youtube.com/schemas/2007">
                     <content>' . xmlentities($comment) . '</content>
             </entry>

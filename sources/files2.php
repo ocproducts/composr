@@ -609,9 +609,10 @@ function get_upload_limit_config_url()
  *
  * @param  ?MEMBER $source_member Member we consider quota for (null: do not consider quota)
  * @param  ?object $connection Database connection to get quota from (null: site DB)
+ * @param  boolean $consider_php_limits Whether to consider limitations in PHP's configuration
  * @return integer The maximum allowed upload filesize, in bytes
  */
-function get_max_file_size($source_member = null, $connection = null)
+function get_max_file_size($source_member = null, $connection = null, $consider_php_limits = true)
 {
     $possibilities = array();
 
@@ -639,11 +640,13 @@ function get_max_file_size($source_member = null, $connection = null)
         $d = max(0, $daily_quota * 1024 * 1024 - $size_uploaded_today);
     }
 
-    if ($a != 0) {
-        $possibilities[] = $a;
-    }
-    if ($b != 0) {
-        $possibilities[] = $b;
+    if ($consider_php_limits) {
+        if ($a != 0) {
+            $possibilities[] = $a;
+        }
+        if ($b != 0) {
+            $possibilities[] = $b;
+        }
     }
     if ($c != 0) {
         $possibilities[] = $c;
@@ -652,7 +655,7 @@ function get_max_file_size($source_member = null, $connection = null)
         $possibilities[] = $d;
     }
 
-    return min($possibilities);
+    return (count($possibilities) == 0) ? (1024 * 1024 * 1024 * 1024) : min($possibilities);
 }
 
 /**
@@ -904,14 +907,24 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     if (!array_key_exists('host', $base_url_parsed)) {
         $base_url_parsed['host'] = '127.0.0.1';
     }
-    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && (function_exists('get_option')) && (get_option('ip_forwarding') == '1');
+    $config_ip_forwarding = function_exists('get_option') ? get_option('ip_forwarding') : '';
+    $do_ip_forwarding = ($base_url_parsed['host'] == $connect_to) && ($config_ip_forwarding != '') && ($config_ip_forwarding != '0');
     if ($do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
-        $connect_to = cms_srv('LOCAL_ADDR');
-        if ($connect_to == '') {
-            $connect_to = cms_srv('SERVER_ADDR');
-        }
-        if ($connect_to == '') {
-            $connect_to = '127.0.0.1'; // Localhost can fail due to IP6
+        if ($config_ip_forwarding == '1') {
+            $connect_to = cms_srv('LOCAL_ADDR');
+            if ($connect_to == '') {
+                $connect_to = cms_srv('SERVER_ADDR');
+            }
+            if ($connect_to == '') {
+                $connect_to = '127.0.0.1'; // "localhost" can fail due to IP6
+            }
+        } else {
+            $protocol_end_pos = strpos($config_ip_forwarding, '://');
+            if ($protocol_end_pos !== false) {
+                $url = preg_replace('#^(https?://)#', substr($config_ip_forwarding, 0, $protocol_end_pos + 3), $url);
+                $config_ip_forwarding = substr($config_ip_forwarding, $protocol_end_pos + 3);
+            }
+            $connect_to = $config_ip_forwarding;
         }
     } elseif (php_function_allowed('gethostbyname')) {
         $connect_to = @gethostbyname($connect_to); // for DNS caching
@@ -919,6 +932,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     if (!array_key_exists('scheme', $url_parts)) {
         $url_parts['scheme'] = 'http';
     }
+
+    $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
 
     // File-system/shell_exec method, for local calls
     $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
@@ -956,7 +971,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $HTTP_DOWNLOAD_SIZE = filesize($file_path);
                 $HTTP_DOWNLOAD_MTIME = filemtime($file_path);
                 $HTTP_MESSAGE = '200';
-                $HTTP_FILENAME = null;
+                $HTTP_FILENAME = basename($file_path);
             }
 
             if (!is_null($byte_limit)) {
@@ -1149,12 +1164,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                     if (($url_parts['scheme'] == 'https') || ($url_parts['scheme'] == 'http')) {
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
-                                            if ($do_ip_forwarding) {
-                                                $_url = preg_replace('#^(https?://)' . preg_quote($url_parts['host'], '#') . '([/:]|$)#', '${1}' . $connect_to . '${2}', $url);
-                                            } else {
-                                                $_url = $url;
-                                            }
-                                            $ch = curl_init($_url);
+                                            $ch = curl_init($do_ip_forwarding ? $_url : $url);
                                             $curl_headers = array();
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
@@ -1168,7 +1178,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
                                                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
                                             } else {
-                                                curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
+                                                    curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                } else {
+                                                    curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
+                                                }
                                             }
                                             if ($do_ip_forwarding) {
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -1214,7 +1228,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                 }
                                             }
-                                            $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            if ($do_ip_forwarding) {
+                                                $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                            }
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
                                                     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
@@ -1295,7 +1311,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     }
                                                     if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
                                                         if (is_null($HTTP_FILENAME)) {
-                                                            $HTTP_FILENAME = basename($matches[1]);
+                                                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                                                         }
 
                                                         if (strpos($matches[1], '://') === false) {
@@ -1381,7 +1397,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $errno = 0;
     $errstr = '';
-    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen')) && (php_function_allowed('shell_exec'))) {
+    if (($url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
         $proxy = function_exists('get_option') ? get_option('proxy') : null;
         if ($proxy == '') {
             $proxy = null;
@@ -1517,7 +1533,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     _read_in_headers($line);
                     if (preg_match("#^Refresh: (\d*);(.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1543,7 +1559,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                     if (preg_match("#^Location: (.*)\r\n#i", $line, $matches) != 0) {
                         if (is_null($HTTP_FILENAME)) {
-                            $HTTP_FILENAME = basename($matches[1]);
+                            $HTTP_FILENAME = urldecode(basename($matches[1]));
                         }
 
                         @fclose($mysock);
@@ -1571,36 +1587,23 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                     if (preg_match("#HTTP/(\d*\.\d*) (\d*) #", $line, $matches) != 0) {
                         // 200=Ok
-                        // 301/302=Redirected: Not good, we should not be here
-                        // 401=Unauthorized
-                        // 403=Forbidden
+                        // 301/302/307=Redirected: Not good, we should not be here
+                        // 401/403=Unauthorized
                         // 404=Not found
-                        // 500=Internal server error
+                        // 400/500=Internal error
+                        // 405=Method not allowed
+
                         $HTTP_MESSAGE = $matches[2];
                         switch ($matches[2]) {
-                            case '302':
                             case '301':
+                            case '302':
+                            case '307':
                                 // We'll expect a location header
                                 break;
                             case '200':
                                 // Good
                                 break;
                             case '401':
-                                if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
-                                } else {
-                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
-                                }
-                                @fclose($mysock);
-                                $HTTP_DOWNLOAD_MIME_TYPE = 'security';
-                                $DOWNLOAD_LEVEL--;
-                                if ($put !== null) {
-                                    fclose($put);
-                                    if (!$put_no_delete) {
-                                        @unlink($put_path);
-                                    }
-                                }
-                                return null;
                             case '403':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
@@ -1620,6 +1623,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '404':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                 }
                                 @fclose($mysock);
                                 $DOWNLOAD_LEVEL--;
@@ -1634,6 +1639,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '500':
                                 if ($trigger_error) {
                                     warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                 }
                                 @fclose($mysock);
                                 $DOWNLOAD_LEVEL--;
@@ -1658,7 +1665,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 }
                             default:
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url)));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])));
+                                } else {
+                                    $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2]));
                                 }
                         }
                     }
@@ -1755,12 +1764,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             $opts = array(
                 'method' => $http_verb,
-                'header' => $headers,
+                'header' => rtrim(($do_ip_forwarding ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
                 'user_agent' => $ua,
                 'content' => $raw_payload,
                 'follow_location' => $no_redirect ? 0 : 1,
                 'ssl' => array(
-                    'verify_peer' => true,
+                    'verify_peer' => !$do_ip_forwarding,
                     'cafile' => $crt_path,
                     'SNI_enabled' => true,
                     'ciphers' => 'TLSv1',
@@ -1780,9 +1789,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             $context = stream_context_create(array('http' => $opts));
             $php_errormsg = mixed();
             if ((is_null($byte_limit)) && (is_null($write_to_file))) {
-                $read_file = @file_get_contents($url, false, $context);
+                $read_file = @file_get_contents($_url, false, $context);
             } else {
-                $_read_file = @fopen($url, 'rb', false, $context);
+                $_read_file = @fopen($_url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
                     while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
@@ -1802,6 +1811,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             safe_ini_set('allow_url_fopen', '0');
             safe_ini_set('default_socket_timeout', $timeout_before);
+            if (isset($http_response_header)) {
+                foreach ($http_response_header as $header) {
+                    _read_in_headers($header . "\r\n");
+                }
+            }
             if ($read_file !== false) {
                 $DOWNLOAD_LEVEL--;
                 if ($put !== null) {
@@ -1998,7 +2012,7 @@ function get_webpage_meta_details($url)
         }
 
         $GLOBALS['SITE_DB']->query_insert('url_title_cache', $meta_details, false, true); // 'true' to stop race conditions
-    } else {
+    } elseif (is_array($result)) {
         $meta_details['t_mime_type'] = $result[1];
     }
 

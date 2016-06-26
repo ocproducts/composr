@@ -256,7 +256,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
             $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
             if (is_null($db_type)) {
-                $db_type = 'SHORT_TEXT';
+                $db_type = 'INTEGER';
                 if (running_script('install')) {
                     fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field . ').');
                 }
@@ -412,7 +412,7 @@ function _helper_rename_table($this_ref, $old, $new)
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $name The field name
  * @param  ID_TEXT $_type The field type
- * @param  ?mixed $default The default value (null: no default)
+ * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
  * @ignore
  */
 function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default = null)
@@ -533,7 +533,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
 
     $type_remap = $this_ref->static_ob->db_get_type_remap();
 
-    $final_type = $_type;
+    $_final_type = $_type;
     if (strpos($_type, '_TRANS') !== false) {
         if ((is_null($default)) && (strpos($_type, '?') === false)) {
             $default = '';
@@ -545,22 +545,22 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
                 $default = 0;
             }
         } else {
-            $final_type = 'LONG_TEXT'; // In the DB layer, it must now save as such
+            $_final_type = 'LONG_TEXT'; // In the DB layer, it must now save as such
         }
     }
 
-    if ($final_type[0] == '?') {
+    if ($_final_type[0] == '?') {
         $tag = ' NULL';
     } else {
         $tag = ' NOT NULL';
     }
-    $type = str_replace(array('*', '?'), array('', ''), $final_type);
+    $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = '';
     if (($final_type != 'LONG_TEXT') || (get_db_type() == 'postgresql')) {
         $extra = is_null($default) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
-    $query .= ' ADD ' . $name . ' ' . $type_remap[$type] . ' ' . $extra . ' ' . $tag;
+    $query .= ' ADD ' . $name . ' ' . $type_remap[$final_type] . ' ' . $extra . ' ' . $tag;
 
     return array($query, $default_st);
 }
@@ -633,25 +633,28 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
         }
     }
 
-    if ($_type[0] == '?') {
+    $_final_type = $_type;
+    if (strpos($_type, '_TRANS') !== false) {
+        if (!multi_lang_content()) {
+            $_final_type = 'LONG_TEXT'; // In the DB layer, it must now save as such
+        }
+    }
+
+    if ($_final_type[0] == '?') {
         $tag = ' NULL';
     } else {
         $tag = ' NOT NULL';
     }
-    $type = str_replace(array('*', '?'), array('', ''), $_type);
+    $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = (!is_null($new_name)) ? $new_name : $name;
-    $extra2 = '';
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
-        $extra2 = 'IGNORE ';
-    }
-    $query = 'ALTER ' . $extra2 . 'TABLE ' . $this_ref->table_prefix . $table_name;
+    $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
     $query .= ' CHANGE ';
     if (strpos(get_db_type(), 'mysql') !== false) {
         $query .= '`' . $name . '`'; // In case we renamed due to change in keywords
     } else {
         $query .= $name;
     }
-    $query .= ' ' . $extra . ' ' . $type_remap[$type] . $tag;
+    $query .= ' ' . $extra . ' ' . $type_remap[$final_type] . $tag;
 
     return $query;
 }

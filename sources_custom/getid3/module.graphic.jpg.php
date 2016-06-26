@@ -18,7 +18,7 @@ class getid3_jpg
 {
 
 
-	function getid3_jpg(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		$ThisFileInfo['fileformat']                  = 'jpg';
 		$ThisFileInfo['video']['dataformat']         = 'jpg';
 		$ThisFileInfo['video']['lossless']           = false;

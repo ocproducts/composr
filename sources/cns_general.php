@@ -114,9 +114,22 @@ function cns_read_in_member_profile($member_id, $lite = true)
         $out['custom_fields'] = cns_get_all_custom_fields_match_member($member_id, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null, ((get_member() != $member_id) && (!has_privilege(get_member(), 'view_any_profile_field'))) ? 1 : null);
 
         // Birthdate
-        if ($row['m_reveal_age'] == 1 && !is_null($row['m_dob_year'])) {
-            $out['birthdate'] = strval($row['m_dob_year']) . '/' . strval($row['m_dob_month']) . '/' . strval($row['m_dob_day']);
+        $dob = '';
+        $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
+        $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
+        $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
+        if (($day !== null) && ($month !== null) && ($year !== null)) {
+            if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
+                if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+                    $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+                } else {
+                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
+                }
+            } else {
+                $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
+            }
         }
+        $out['birthdate'] = $dob;
 
         // Find title
         $title = get_member_title($member_id);

@@ -67,9 +67,7 @@ function _multi_lang()
     }
 
     foreach ($_langs as $lang => $dir) {
-        if (/*optimisation*/
-        is_file((($dir == 'lang_custom') ? get_custom_file_base() : get_file_base()) . '/' . $dir . '/' . $lang . '/global.ini')
-        ) {
+        if (/*optimisation*/is_file((($dir == 'lang_custom') ? get_custom_file_base() : get_file_base()) . '/' . $dir . '/' . $lang . '/global.ini')) {
             $MULTI_LANG_CACHE = true;
             break;
         }
@@ -174,7 +172,6 @@ function set_option($name, $value, $will_be_formally_set = 1)
 
     // For use by get_option during same script execution
     $CONFIG_OPTIONS_CACHE[$name]['_cached_string_value'] = $value;
-    $CONFIG_OPTIONS_CACHE[$name]['c_set'] = $will_be_formally_set;
 
     // Log it
     if ((function_exists('log_it')) && ($will_be_formally_set == 1)) {

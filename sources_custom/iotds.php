@@ -25,6 +25,10 @@
  */
 function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = false, $give_context = true, $guid = '')
 {
+    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('iotds');
     require_code('images');
 

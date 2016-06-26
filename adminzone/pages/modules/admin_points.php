@@ -148,15 +148,17 @@ class Module_admin_points
         $fields->attach(form_input_date(do_lang_tempcode('FROM'), '', 'from', true, false, false, $time_start, 10, intval(date('Y')) - 9));
         $fields->attach(form_input_date(do_lang_tempcode('TO'), '', 'to', true, false, false, time(), 10, intval(date('Y')) - 9));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'e7529ab3f49792924ecdad78e1f3593c', 'GET' => true,
-                                                'SKIP_WEBSTANDARDS' => true,
-                                                'TITLE' => $title,
-                                                'FIELDS' => $fields,
-                                                'TEXT' => '',
-                                                'HIDDEN' => '',
-                                                'URL' => get_self_url(false, false, null, false, true),
-                                                'SUBMIT_ICON' => 'menu___generic_admin__export',
-                                                'SUBMIT_NAME' => do_lang_tempcode('EXPORT'),
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'e7529ab3f49792924ecdad78e1f3593c',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $title,
+            'FIELDS' => $fields,
+            'TEXT' => '',
+            'HIDDEN' => '',
+            'URL' => get_self_url(false, false, null, false, true),
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => do_lang_tempcode('EXPORT'),
         ));
     }
 
@@ -225,7 +227,9 @@ class Module_admin_points
             }
 
             $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => get_self_url(true)), '_SELF');
-            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '3585ec7f35a1027e8584d62ffeb41e56', 'NAME' => do_lang_tempcode('REVERSE'),
+            $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+                '_GUID' => '3585ec7f35a1027e8584d62ffeb41e56',
+                'NAME' => do_lang_tempcode('REVERSE'),
                 'URL' => $delete_url,
                 'HIDDEN' => form_input_hidden('id', strval($myrow['id'])),
             ));

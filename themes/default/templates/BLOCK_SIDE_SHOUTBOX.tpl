@@ -5,7 +5,7 @@
 
 		{MESSAGES}
 
-		<form title="{!SHOUTBOX}" onsubmit="if (check_field_for_blankness(this.elements['shoutbox_message'],event)) { disable_button_just_clicked(this); return true; } return false;" target="_self" action="{URL*}" method="post">
+		<form title="{!SHOUTBOX}" onsubmit="if (check_field_for_blankness(this.elements['shoutbox_message'],event)) { disable_button_just_clicked(this); return true; } return false;" target="_self" action="{URL*}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div>

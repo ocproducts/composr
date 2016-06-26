@@ -38,7 +38,7 @@ class Hook_fields_just_time
         $type = '_JUST_TIME';
         $special = $this->get_search_filter_from_env($field);
         $extra = '';
-        $display = get_translated_text($field['cf_name']);
+        $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
 
         $range_search = (option_value_from_field_array($field, 'range_search', 'off') == 'on');
         if ($range_search) {
@@ -190,6 +190,10 @@ class Hook_fields_just_time
      */
     public function inputted_to_field_value($editing, $field, $upload_dir = 'uploads/catalogues', $old_value = null)
     {
+        if (fractional_edit()) {
+            return STRING_MAGIC_NULL;
+        }
+
         $id = $field['id'];
         $stub = 'field_' . strval($id);
         return $this->input_from($stub);

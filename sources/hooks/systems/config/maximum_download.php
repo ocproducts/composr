@@ -38,6 +38,7 @@ class Hook_config_maximum_download
             'explanation' => 'CONFIG_OPTION_maximum_download',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'downloads',
         );

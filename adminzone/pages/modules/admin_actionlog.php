@@ -451,6 +451,7 @@ class Module_admin_actionlog
                         $fields['SYNDICATE_TO_STOPFORUMSPAM'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
                             '_GUID' => '7d10045c6b3b48f256e2f8eb5535809c',
                             'LABEL' => do_lang_tempcode('PROCEED'),
+                            'LONELY' => true,
                             'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'syndicate_ip_ban', 'ip' => $row['ip'], 'member_id' => $row['member_id'], 'reason' => do_lang('BANNED_ADDRESSES'), 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
                         ));
                     }
@@ -458,14 +459,22 @@ class Module_admin_actionlog
             }
 
             if ((!is_guest($row['member_id'])) && ($row['member_id'] != get_member())) {
-                $fields['SUBMITTER_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => 'f79fb00ef35d89381371a67bc9c4d69b', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+                $fields['SUBMITTER_BANNED'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
+                    '_GUID' => 'f79fb00ef35d89381371a67bc9c4d69b',
+                    'LONELY' => true,
+                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
+                ));
             } else {
                 $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $row['member_id']));
                 $fields['SUBMITTER_BANNED'] = is_null($banned_test_2) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
             }
 
             if (((get_forum_type() == 'cns') && (!is_guest($row['member_id']))) && ($row['member_id'] != get_member())) {
-                $fields['MEMBER_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => '6b192ecfad1afc67bb8c2f1e744cc3b1', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_member_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+                $fields['MEMBER_BANNED'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
+                    '_GUID' => '6b192ecfad1afc67bb8c2f1e744cc3b1',
+                    'LONELY' => true,
+                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_member_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
+                ));
             } else {
                 $banned_test_3 = $GLOBALS['FORUM_DRIVER']->is_banned($row['member_id']);
                 $fields['MEMBER_BANNED'] = $banned_test_3 ? do_lang_tempcode('YES') : do_lang_tempcode('NO');

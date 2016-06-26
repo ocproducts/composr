@@ -47,6 +47,11 @@ function cns_list_multi_moderations($forum_id)
     foreach ($rows as $row) {
         $row['_mm_name'] = get_translated_text($row['mm_name'], $GLOBALS['FORUM_DB']);
 
+        if ($row['mm_forum_multi_code'] == '*') {
+            $out[$row['id']] = $row['_mm_name'];
+            continue;
+        }
+
         require_code('selectcode');
         if ($lots_of_forums) {
             $sql = selectcode_to_sqlfragment($row['mm_forum_multi_code'], 'id', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);

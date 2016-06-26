@@ -173,6 +173,8 @@ class Module_admin
             array('maximum', 'limit', 'total', 'max', 'increase', 'long', 'count', 'tally'),
             array('characters', 'words', 'bytes'),
 
+            array('image', 'picture'),
+            array('integer', 'number'),
             array('webclipicon', 'webclip', 'apple touch icon'),
             array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
             array('delineate', 'delimit', 'delimitate', 'demarcate'),
@@ -183,6 +185,7 @@ class Module_admin
             array('social', 'forum'),
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
+            array('masthead', 'header'),
             array('news', 'blogs', 'press release'),
             array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approve', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'verify', 'publish'/*, 'screened'*/), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
@@ -192,6 +195,7 @@ class Module_admin
             //  approve (for IPs)
             //  confirm (for newsletter subscriptions)
             array('theme', 'skin', 'style'),
+            array('basket', 'cart'),
             array('uninstall', 'disable', 'remove'),
             array('pruning', 'prune', 'lurkers'),
             array('lost password', 'forgot password', 'forgotten password', 'reset password'),
@@ -638,8 +642,7 @@ class Module_admin
                                     }
                                 }
                                 if (strpos($type, ':') !== false) {
-                                    list($zone, $attributes, $hash) = page_link_decode($type);
-                                    $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+                                    $_url = page_link_to_tempcode_url($type);
                                 } else {
                                     $_url = build_url(array('page' => $page, 'type' => $type), $zone);
                                 }

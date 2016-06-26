@@ -54,6 +54,7 @@ $g_database_name = $SITE_INFO['db_site'];
 $g_db_type       = $SITE_INFO['db_type'];
 $cms_sc_db_prefix = $SITE_INFO['table_prefix'];
 $cms_sc_session_cookie_name = $SITE_INFO['session_cookie'];
+$cms_sc_multi_lang_content = (!isset($SITE_INFO['multi_lang_content'])) || ($SITE_INFO['multi_lang_content'] == '1');
 
 # --- Anonymous Access / Signup ---
 $g_allow_signup				= ON;
@@ -108,6 +109,7 @@ $cms_sc_main_currency = 'GBP';
 $cms_sc_main_currency_symbol = '&pound';
 $cms_sc_alternate_currencies = array('USD', 'CAD', 'EUR');
 $cms_sc_custom_profile_field = 'cms_support_credits';
+$cms_sponsorship_locked_until = mktime(0, 0, 0, 7, 1, 2016); // Useful to deal with work back-logs, as unscheduled work can be a major problem sometimes (as much as sponsorship is valued and important)
 
 $cms_updater_groups = array();
 $cms_developer_groups = array(22);

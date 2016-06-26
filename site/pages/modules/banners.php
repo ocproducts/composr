@@ -379,7 +379,7 @@ class Module_banners
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', is_null($only_owned) ? null : array('submitter' => $only_owned));
         if ($max_rows == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'banner'));
         }
         $max = get_param_integer('banner_max', 20);
         $start = get_param_integer('banner_start', 0);

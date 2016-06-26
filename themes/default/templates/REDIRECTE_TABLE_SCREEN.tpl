@@ -9,7 +9,7 @@
 	{!TEXT_REDIRECTS}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2>{!EXISTING_REDIRECTS}</h2>
@@ -39,7 +39,7 @@
 					{!REDIRECT_TO_PAGE}
 				</th>
 				<th>
-					<abbr title="{!IS_TRANSPARENT_REDIRECT=}">{!REDIRECT_TRANS_SHORT}</abbr>
+					<abbr title="{$STRIP_TAGS,{!IS_TRANSPARENT_REDIRECT}}">{!REDIRECT_TRANS_SHORT}</abbr>
 				</th>
 				<th>
 				</th>
@@ -77,7 +77,7 @@
 					{!REDIRECT_TO_PAGE}
 				</th>
 				<th>
-					<abbr title="{!IS_TRANSPARENT_REDIRECT=}">{!REDIRECT_TRANS_SHORT}</abbr>
+					<abbr title="{$STRIP_TAGS,{!IS_TRANSPARENT_REDIRECT}}">{!REDIRECT_TRANS_SHORT}</abbr>
 				</th>
 				<th>
 				</th>

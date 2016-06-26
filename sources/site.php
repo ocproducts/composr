@@ -77,7 +77,7 @@ function init__site()
 
     // SEO redirection
     require_code('urls');
-    if (can_try_mod_rewrite()) {
+    if (can_try_url_schemes()) {
         $ruri = cms_srv('REQUEST_URI');
 
         $url_scheme = get_option('url_scheme');
@@ -149,7 +149,7 @@ function check_has_page_access()
     require_code('permissions');
     global $ZONE;
     if ($ZONE['zone_require_session'] == 1) {
-        header('X-Frame-Options: SAMEORIGIN'); // Clickjacking protection
+        set_no_clickjacking_csp();
     }
     if (($ZONE['zone_name'] != '') && (!is_httpauth_login()) && ((get_session_id() == '') || (!$SESSION_CONFIRMED_CACHE)) && ($ZONE['zone_require_session'] == 1) && (get_page_name() != 'login')) {
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
@@ -293,8 +293,12 @@ function inform_non_canonical_parameter($param)
 {
     global $NON_CANONICAL_PARAMS;
 
-    if (substr($param, 0, 1) == '#') {
+    if ($param[0] == '#') { // A regexp
         foreach (array_keys($_GET) as $key) {
+            if (is_numeric($key)) {
+                $key = strval($key);
+            }
+
             if (preg_match($param, $key) != 0) {
                 inform_non_canonical_parameter($key);
             }
@@ -328,6 +332,10 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
     $am_looping = true;
 
     global $ATTACH_MESSAGE_CALLED, $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW, $LATE_ATTACHED_MESSAGES;
+
+    if (!isset($ATTACH_MESSAGE_CALLED)) {
+        return ''; // Still starting up
+    }
 
     foreach ($ATTACHED_MESSAGES_RAW as $last) {
         if (array(strip_tags(is_object($last[0]) ? $last[0]->evaluate() : $last[0]), $last[1]) == array(strip_tags(is_object($message) ? $message->evaluate() : $message), $type)) {
@@ -534,8 +542,7 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
-            list($zone, $attributes, $hash) = page_link_decode($entry_point);
-            $url = build_url($attributes, $zone, null, false, false, $hash);
+            $url = page_link_to_tempcode_url($entry_point);
 
             $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
@@ -723,11 +730,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         }
                     } else {
                         // See if it is deprecated
+                        $table = 'url_id_monikers';
                         if (strpos(get_db_type(), 'mysql') !== false) {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers USE INDEX (uim_moniker)', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
-                        } else {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
+                            $table .= ' FORCE INDEX (uim_moniker)';
                         }
+                        $monikers = $GLOBALS['SITE_DB']->query_select($table, array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
                         if (!array_key_exists(0, $monikers)) { // hmm, deleted?
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                         }
@@ -869,6 +876,10 @@ function do_site()
     }
     $out->singular_bind('MIDDLE', $middle);
 
+    if (!$GLOBALS['OUTPUT_STREAMING']) {
+        $out->handle_symbol_preprocessing();
+    }
+
     // Web Standards mode
     if ($webstandards_mode) {
         require_code('view_modes');
@@ -922,7 +933,9 @@ function do_site()
         if ($out_evaluated !== null) {
             echo $out_evaluated;
         } else {
-            $middle->handle_symbol_preprocessing();
+            if ($GLOBALS['OUTPUT_STREAMING']) {
+                $middle->handle_symbol_preprocessing();
+            }
             $GLOBALS['FINISHING_OUTPUT'] = true;
             /*if (get_option('gzip_output')=='1')  Does not work well
                     ob_start('_compress_html_output');*/
@@ -991,6 +1004,7 @@ function save_static_caching($out, $mime_type = 'text/html')
         if ((($bot_type !== null) || ($supports_failover_mode) || ($supports_guest_caching)) && (can_static_cache())) {
             $url = static_cache_current_url();
             $fast_cache_path = get_custom_file_base() . '/caches/guest_pages/' . md5($url);
+            $fast_cache_path_static_cache = $fast_cache_path;
             if ($bot_type === null) {
                 $fast_cache_path .= '__non-bot';
             }
@@ -999,6 +1013,7 @@ function save_static_caching($out, $mime_type = 'text/html')
             }
             if (is_mobile()) {
                 $fast_cache_path .= '__mobile';
+                $fast_cache_path_static_cache = '__mobile';
             }
 
             if (is_object($out)) {
@@ -1026,7 +1041,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                 }
 
                 if ($supports_failover_mode) {
-                    if (!is_file($fast_cache_path . '__failover_mode' . $file_extension) || filemtime($fast_cache_path . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
+                    if (!is_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension) || filemtime($fast_cache_path_static_cache . '__failover_mode' . $file_extension) < time() - 60 * 60 * 5) {
                         // Add failover messages
                         if (!empty($SITE_INFO['failover_message_place_after'])) {
                             $static_cache = str_replace($SITE_INFO['failover_message_place_after'], $SITE_INFO['failover_message_place_after'] . $SITE_INFO['failover_message'], $static_cache);
@@ -1038,7 +1053,7 @@ function save_static_caching($out, $mime_type = 'text/html')
                         // Disable all form controls
                         $static_cache = preg_replace('#<(textarea|input|select|button)#', '<$1 disabled="disabled"', $static_cache);
 
-                        write_static_cache_file($fast_cache_path . '__failover_mode' . $file_extension, $static_cache, false);
+                        write_static_cache_file($fast_cache_path_static_cache . '__failover_mode' . $file_extension, $static_cache, false);
                     }
 
                     if (!empty($SITE_INFO['failover_apache_rewritemap_file'])) {
@@ -1503,7 +1518,7 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
 }
 
 /**
- * Take the specified parameters, and try to find a redirect for the corresponding page
+ * Take the specified parameters, and try to find a redirect for the corresponding page.
  *
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in
@@ -1691,8 +1706,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     global $KEEP_MARKERS, $SHOW_EDIT_LINKS, $INJECT_HIDDEN_TEMPLATE_NAMES;
     if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0) && !$KEEP_MARKERS && !$SHOW_EDIT_LINKS && !$INJECT_HIDDEN_TEMPLATE_NAMES) {
-        global $SITE_INFO;
-        $support_smart_decaching = (!isset($SITE_INFO['disable_smart_decaching'])) || ($SITE_INFO['disable_smart_decaching'] != '1');
+        $support_smart_decaching = support_smart_decaching();
 
         if (is_browser_decaching()) {
             $comcode_page = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index', 'cc_page_title'), array('the_page' => $codename, 'the_zone' => $zone, 'the_theme' => $GLOBALS['FORUM_DRIVER']->get_theme()), '', 1, 0, false, array());
@@ -1727,6 +1741,11 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
                     }
                 }
                 if ((!$support_smart_decaching) || ((($comcode_page_row['p_edit_date'] !== null) && ($comcode_page_row['p_edit_date'] >= $mtime)) || (($comcode_page_row['p_edit_date'] === null) && ($comcode_page_row['p_add_date'] !== null) && ($comcode_page_row['p_add_date'] >= $mtime)))) { // Make sure it has not been edited since last edited or created
+                    // Optimised path for empty panels when no super-fast persistent cache
+                    if ($support_smart_decaching/*only should do an fstat if this is enabled*/ && ($being_included || $is_panel) && $GLOBALS['PERSISTENT_CACHE'] === null && filesize($file_base . '/' . $string) == 0) {
+                        return new Tempcode();
+                    }
+
                     $just_comcode_page_row = db_map_restrict($comcode_page_row, array('the_page', 'the_zone', 'the_theme', 'string_index'));
                     $db_set = get_translated_tempcode('cached_comcode_pages', $just_comcode_page_row, 'string_index', null, user_lang(), true, true/*,true*/);
                 } else {
@@ -1786,7 +1805,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     }
     $LAST_COMCODE_PARSED_TITLE = $title_to_use;
 
-    if (($html->is_empty_shell()) && ($being_included)) {
+    if (($html->is_empty_shell()) && ($being_included || $is_panel)) {
         return $html;
     }
 
@@ -1830,10 +1849,6 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         $GLOBALS['TEMPCODE_CURRENT_PAGE_OUTPUTTING'] = $out;
 
         $out->evaluate_echo(null, true);
-    }
-
-    if (($html->is_empty_shell()) && ($is_panel)) {
-        return $html;
     }
 
     global $SCREEN_TEMPLATE_CALLED;
@@ -1968,7 +1983,7 @@ function log_stats($string, $pg_time)
         return;
     }
 
-    if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '1')) {
+    if ((get_option('site_closed') == '1') && (get_option('stats_when_closed') == '0')) {
         return;
     }
 

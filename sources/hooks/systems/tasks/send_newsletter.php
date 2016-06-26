@@ -42,6 +42,7 @@ class Hook_task_send_newsletter
     public function run($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template)
     {
         require_code('newsletter');
+        require_lang('newsletter');
         require_code('mail');
 
         //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
@@ -77,8 +78,25 @@ class Hook_task_send_newsletter
                 $in_html = false;
                 if (strpos($newsletter_message_substituted, '<html') === false) {
                     if ($html_only == 1) {
-                        $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
-                        $newsletter_message_substituted = $_m->evaluate($lang);
+                        $comcode_version = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
+
+                        $newsletter_message_substituted = do_template(
+                            $mail_template,
+                            array(
+                                'TITLE' => $subject,
+                                'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
+                                'LANG' => get_site_default_lang(),
+                                'LOGOURL' => get_logo_url(''),
+                                'CONTENT' => $comcode_version
+                            ),
+                            null,
+                            false,
+                            null,
+                            '.tpl',
+                            'templates',
+                            $GLOBALS['FORUM_DRIVER']->get_theme('')
+                        );
+
                         $in_html = true;
                     }
                 } else {

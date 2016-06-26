@@ -1867,7 +1867,7 @@ abstract class Resource_fs_base
         }
 
         // Content reviews (by staff)
-        if ($cma_info['support_content_reviews']) {
+        if ($cma_info['support_content_reviews'] && addon_installed('content_reviews')) {
             $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
         }
 
@@ -1875,7 +1875,7 @@ abstract class Resource_fs_base
             if (get_forum_type() == 'cns') {
                 // Comments & Reviews
                 require_code('feedback');
-                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(find_overridden_comment_forum($cma_info['feedback_type_code']), $cma_info['feedback_type_code'] . '_' . $resource_id);
+                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(find_overridden_comment_forum($cma_info['feedback_type_code']), $cma_info['feedback_type_code'] . '_' . $resource_id, do_lang('COMMENT'));
                 if (!is_null($topic_id)) {
                     $comments = get_resource_fs_record('topic', strval($topic_id));
                     if (!is_null($comments)) {
@@ -2055,7 +2055,7 @@ abstract class Resource_fs_base
 
                     $forum_name = find_overridden_comment_forum($cma_info['feedback_type_code']);
                     require_code('feedback');
-                    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id);
+                    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum_name, $cma_info['feedback_type_code'] . '_' . $resource_id, do_lang('COMMENT'));
                     if (is_null($topic_id)) {
                         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
                         $resource_fs_path = $comments['comment__path'] . '/' . $comments['comment__filename'];

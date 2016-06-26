@@ -51,7 +51,7 @@ There are eight main kinds of web design company, ordered roughly by price:
 It can be really tricky to tell these apart though, many of them will call themselves creative agencies (even freelancers do) and sometimes you really need to read between the lines.
 
 Here's the main differentiators:
- - [b]Companies[/b]. Here you get proper project management, a much stronger guarantee of quality work (e.g. a range of standards and quality management), a company with proper insurance, a range of staff who are well trained and work well together as a team, coverage for if staff are sick or on holiday, a proper infrastructure (revision control, backups, legally licensed development software, proper communication tools, etc), and particular expertise and reputation in the area of work.
+ - [b]Companies[/b]. Here you get proper project management, a much stronger guarantee of quality work (e.g. a range of standards and quality management), a company with proper insurance, a range of staff who are well trained and work well together as a team, coverage for if staff are sick or on holiday, a proper infrastructure (revision control, backups, legally licenced development software, proper communication tools, etc), and particular expertise and reputation in the area of work.
  - [b]Individuals[/b]. Freelancers will typically charge about 1/2 what companies charge, but don't have most of the above advantages, and you may be surprised that they can often take twice as long to get things done due to the lack of support structure for them to work in. There are some excellent freelancers out there (in fact you may be one of them -- full respect to you if you are!), but a lot of mediocre and poor ones too. A lot of low-quoting companies are really freelancers that have invested in a corporate image.
  - [b]Offshoring[/b]. Offshore developers typically will charge about 1/5 of what American/European companies charge, which is quite striking; you often won't realise it, but whenever you see a company out there quoting really low prices it is likely because the company has just one part-time non-skilled person working in Europe/America, and otherwise it is entirely offshore.
 
@@ -188,6 +188,11 @@ The following illustrates prices an agency may charge for different example leve
 | $100,000
 | As above, but done to a further great scope.
 |}
+
+[title="2"]Upgrades[/title]
+
+Don't forget that it is important to keep web software such as your CMS updated. You can't just launch a project on one particular version and have it languish for years without upgrades -- this will create compatibility problems on new web browsers, and leave security holes open that have been discovered and publicly highlighted.
+You must therefore budget to have upgrades done, preferably about once per quarter.
 
 [title="2"]Rising costs (the cost of design and branding)[/title]
 

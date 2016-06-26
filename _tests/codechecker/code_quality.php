@@ -616,7 +616,6 @@ if (isset($GLOBALS['API'])) {
 
 // To get it started
 if (isset($_GET['test'])) {
-
     // Checking an internal test
 
     $GLOBALS['API'] = 1;
@@ -628,7 +627,6 @@ if (isset($_GET['test'])) {
     $parsed = parse(lex('<' . '?php' . "\n" . $tests[$_GET['test']] . "\n"));
     check($parsed);
 } elseif ((!isset($_GET['to_use'])) && (!isset($_SERVER['argv'][1]))) {
-
     // Search for stuff to check
 
     $GLOBALS['API'] = 1;
@@ -638,7 +636,7 @@ if (isset($_GET['test'])) {
     if (isset($_GET['avoid'])) {
         $avoid = explode(',', $_GET['avoid']);
     }
-    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), true, false, $avoid);
+    $files = do_dir($COMPOSR_PATH . (isset($_GET['subdir']) ? ('/' . $_GET['subdir']) : ''), true, true, $avoid);
     $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
     foreach ($files as $i => $to_use) {
         if ($i < $start) {
@@ -657,7 +655,6 @@ if (isset($_GET['test'])) {
         }
     }
 } else {
-
     // Given list of things to check
 
     $_to_use = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : $_GET['to_use'];
@@ -743,7 +740,7 @@ function check($structure)
 
         $CURRENT_CLASS = $class['name'];
         foreach ($class['functions'] as $function) {
-            if ($function['name'] == $class['name']) {
+            if (strtolower($function['name']) == strtolower($class['name'])) {
                 log_warning('Use __construct for construct name, not \'' . $function['name'] . '\'', $function['offset']);
             }
 
@@ -1353,6 +1350,10 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
         }
     }
 
+    if (($function == 'isset' || $function == 'empty') && (@$c[2][0][0] != 'VARIABLE')) {
+        log_warning('Can only pass variables to ' . $function, $c_pos);
+    }
+
     if (($function == 'tempnam') && (@$c[2][0][0] == 'LITERAL') && (substr(@$c[2][0][1][1], 0, 4) == '/tmp')) {
         log_warning('Don\'t assume you can write to the shared temp directory -- safe mode won\'t tolerate it', $c_pos);
     }
@@ -1668,18 +1669,18 @@ function check_expression($e, $assignment = false, $equate_false = false, $funct
             log_warning('Divide by zero un-handled', $c_pos);
         }
     }
-    if ($e[0] == 'UNARY_IF') {
+    if ($e[0] == 'TERNARY_IF') {
         if (($e[1][0] == 'CALL_DIRECT') && ($e[1][1] == 'php_function_allowed' || strpos($e[1][1], '_exists') !== false/*function_exists or method_exists or class_exists*/) && ($e[1][2][0][0] == 'LITERAL') && ($e[1][2][0][1][0] == 'STRING')) {
             $function_guard .= ',' . $e[1][2][0][1][1] . ',';
         }
-        $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (unary)');
+        $passes = ensure_type(array('boolean'), check_expression($e[1], false, false, $function_guard), $c_pos, 'Conditionals must be boolean (ternary)');
         if ($passes) {
             infer_expression_type_to_variable_type('boolean', $e[1]);
         }
         $type_a = check_expression($e[2][0], false, false, $function_guard);
         $type_b = check_expression($e[2][1], false, false, $function_guard);
         if (($type_a != 'null') && ($type_b != 'null')) {
-            $passes = ensure_type(array($type_a, 'mixed'/*imperfect, but useful for performance*/), $type_b, $c_pos, 'Type symettry error in unary operator');
+            $passes = ensure_type(array($type_a, 'mixed'/*imperfect, but useful for performance*/), $type_b, $c_pos, 'Type symettry error in ternary operator');
             if ($passes) {
                 infer_expression_type_to_variable_type($type_a, $e[2][1]);
             }

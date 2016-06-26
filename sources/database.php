@@ -81,7 +81,7 @@ function db_map_restrict($row, $fields)
     $out = array();
     foreach ($fields as $field) {
         $out[$field] = $row[$field];
-        if (array_key_exists($field . '__text_parsed', $row)) {
+        if (isset($row[$field . '__text_parsed'])) {
             $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
         }
         if (array_key_exists($field . '__source_user', $row)) {
@@ -101,7 +101,7 @@ function multi_lang_content()
     global $HAS_MULTI_LANG_CONTENT;
     if ($HAS_MULTI_LANG_CONTENT === null) {
         global $SITE_INFO;
-        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true; // For legacy reasons
+        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] === '1') : true; // For legacy reasons
     }
     return $HAS_MULTI_LANG_CONTENT;
 }
@@ -330,7 +330,11 @@ function get_db_type()
     if (!isset($SITE_INFO['db_type'])) {
         return is_dir(get_custom_file_base() . '/uploads/website_specific/' . get_db_site()) ? 'xml' : 'mysql';
     }
-    return $SITE_INFO['db_type'];
+    $ret = $SITE_INFO['db_type'];
+    if ($ret === 'mysql' && !function_exists('mysql_connect')) {
+        $ret = 'mysqli';
+    }
+    return $ret;
 }
 
 /**
@@ -467,7 +471,7 @@ function get_db_forums_password()
 /**
  * Find whether we are on a multi-site-network.
  *
- * @param  ?object $db The DB connection to check against (null: main active site database)
+ * @param  ?object $db The DB connection to check against (null: site's main active forum database)
  * @return boolean Whether we are
  */
 function is_on_multi_site_network($db = null)
@@ -666,7 +670,7 @@ class DatabaseConnector
         $eis = $this->static_ob->db_empty_is_null();
 
         foreach ($map as $key => $value) {
-            if ($keys != '') {
+            if ($keys !== '') {
                 $keys .= ', ';
             }
             $keys .= $key;
@@ -680,25 +684,25 @@ class DatabaseConnector
                 }
                 $values = $all_values[$i];
 
-                if ($values != '') {
+                if ($values !== '') {
                     $values .= ', ';
                 }
 
                 if ($value === null) {
-                    if (($eis) && (is_string($v)) && ($v == '')) {
+                    if (($eis) && ($v === '')) {
                         $values .= '\' \'';
                     } else {
                         $values .= 'NULL';
                     }
                 } else {
-                    if (($eis) && (is_string($v)) && ($v == '')) {
+                    if (($eis) && ($v === '')) {
                         $v = ' ';
                     }
                     if (is_integer($v)) {
                         $values .= strval($v);
                     } elseif (is_float($v)) {
                         $values .= float_to_raw_string($v, 10);
-                    } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+                    } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                         $values .= $v; // Fudge, for all our known large unsigned integers
                     } else {
                         $values .= '\'' . $this->static_ob->db_escape_string($v) . '\'';
@@ -709,8 +713,8 @@ class DatabaseConnector
             }
         }
 
-        if (count($all_values) == 1) { // usually $all_values only has length of 1
-            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) == 'mysql')) {
+        if (count($all_values) === 1) { // usually $all_values only has length of 1
+            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) === 'mysql')) {
                 $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             } else {
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
@@ -719,7 +723,7 @@ class DatabaseConnector
             // So we can do batch inserts...
             $all_v = '';
             foreach ($all_values as $v) {
-                if ($all_v != '') {
+                if ($all_v !== '') {
                     $all_v .= ', ';
                 }
                 $all_v .= '(' . $v . ')';
@@ -752,7 +756,7 @@ class DatabaseConnector
         foreach ($select_map as $key) {
             //if (!is_string($key)) $key = strval($key);   Should not happen, but won't cause a problem if does. Don't do this check for performance reasons.
 
-            if ($select != '') {
+            if ($select !== '') {
                 $select .= ',';
             }
 
@@ -768,7 +772,7 @@ class DatabaseConnector
                     }
                 }
 
-                if ($where != '') {
+                if ($where !== '') {
                     $where .= ' AND ';
                 }
 
@@ -776,7 +780,7 @@ class DatabaseConnector
                     $where .= $key . '=' . float_to_raw_string($value, 10);
                 } elseif (is_integer($value)) {
                     $where .= $key . '=' . strval($value);
-                } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+                } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                     $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
                 } else {
                     if ($value === null) {
@@ -792,6 +796,9 @@ class DatabaseConnector
             }
 
             return 'SELECT ' . $select . ' FROM ' . $table . ' WHERE (' . $where . ') ' . $end;
+        }
+        if (substr(ltrim($end), 0, 6) !== 'WHERE ') {
+            $end = 'WHERE 1=1 ' . $end; // We force a WHERE so that code of ours that alters queries can work robustly
         }
         return 'SELECT ' . $select . ' FROM ' . $table . ' ' . $end;
     }
@@ -936,12 +943,12 @@ class DatabaseConnector
     {
         // Optimisation for entirely automatic translate table linkage (only done on non-joins, as this removes a whole lot of potential complexities -- if people are doing joins they go a little further to do this manually anyway; also we make sure we're operating on our site's table prefix so we don't collect meta info for the wrong table set)
         if ($lang_fields === null) {
-            if (($table != 'translate') && (strpos($table, ' ') === false) && ((isset($GLOBALS['SITE_DB'])) && ($this->table_prefix == $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() == 'cns'))) {
+            if (($table !== 'translate') && (strpos($table, ' ') === false) && ((isset($GLOBALS['SITE_DB'])) && ($this->table_prefix === $GLOBALS['SITE_DB']->table_prefix) || (get_forum_type() === 'cns'))) {
                 global $TABLE_LANG_FIELDS_CACHE;
                 $lang_fields_provisional = isset($TABLE_LANG_FIELDS_CACHE[$table]) ? $TABLE_LANG_FIELDS_CACHE[$table] : array();
                 $lang_fields = array();
 
-                if ($lang_fields_provisional != array()) {
+                if ($lang_fields_provisional !== array()) {
                     $full_table .= ' main';
 
                     foreach ($select as $i => $s) {
@@ -950,7 +957,7 @@ class DatabaseConnector
                             break; // Bad API call, but we'll let it fail naturally
                         }
 
-                        if (preg_match('#^[A-Za-z\_\*]+$#', $s) != 0) {
+                        if (preg_match('#^[A-Za-z\_\*]+$#', $s) !== 0) {
                             $select[$i] = 'main.' . $s;
                         }
                     }
@@ -961,13 +968,13 @@ class DatabaseConnector
                                 break; // Bad API call, but we'll let it fail naturally
                             }
 
-                            if (preg_match('#^[A-Za-z\_]+$#', $i) != 0) {
+                            if (preg_match('#^[A-Za-z\_]+$#', $i) !== 0) {
                                 unset($where_map[$i]);
                                 $where_map['main.' . $i] = $s;
                             }
                         }
                     }
-                    if ($end != '') {
+                    if ($end !== '') {
                         $end = preg_replace('#(^|,|\s)([a-z]+)($|,|\s)#', '${1}main.${2}${3}', $end);
                     }
 
@@ -1018,7 +1025,7 @@ class DatabaseConnector
                 $val = strval($val);
             }
 
-            if ($key == 'prefix') {
+            if ($key === 'prefix') {
                 // Special case, not within quotes.
                 $search = '#{' . preg_quote($key, '#') . '}#';
                 $replace = $val;
@@ -1132,11 +1139,11 @@ class DatabaseConnector
         if ($fb === null) {
             $fb = function_exists('fb');
         }
-        if (($fb) && (!headers_sent()) && (get_param_integer('keep_firephp_queries', 0) == 1) && (function_exists('fb'))) {
+        if (($fb) && (!headers_sent()) && (get_param_integer('keep_firephp_queries', 0) === 1) && (function_exists('fb'))) {
             fb('Query: ' . $query);
         }
 
-        if (($QUERY_COUNT == 250) && (get_param_integer('keep_no_query_limit', 0) == 0) && ($GLOBALS['RELATIVE_PATH'] != '_tests') && (count($_POST) == 0) && (get_page_name() != 'admin_importer') && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') != 'query')) {
+        if (($QUERY_COUNT === 250) && (get_param_integer('keep_no_query_limit', 0) === 0) && ($GLOBALS['RELATIVE_PATH'] !== '_tests') && (count($_POST) === 0) && (get_page_name() !== 'admin_importer') && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') !== 'query')) {
             cms_profile_start_for('_query:HIGH_VOLUME_ALERT');
 
             $NO_QUERY_LIMIT = true;
@@ -1164,14 +1171,14 @@ class DatabaseConnector
                         $field_stripped = preg_replace('#.*\.#', '', $field);
 
                         $join = ' LEFT JOIN ' . $this->table_prefix . 'translate t_' . $field_stripped . ' ON t_' . $field_stripped . '.id=' . $field_prefix . $field;
-                        if (strpos($query, 't_' . $field_stripped . '.text_original') === false) {
-                            $join .= ' AND ' . db_string_equal_to('t_' . $field_stripped . '.language', $lang);
-                        }
+                        $join .= ' AND ' . db_string_equal_to('t_' . $field_stripped . '.language', $lang);
 
                         $_query = strtoupper($query);
                         $from_pos = strpos($_query, ' FROM ');
                         $where_pos = strpos($_query, ' WHERE ');
-                        if (($from_pos !== false) && (strpos(substr($_query, 0, $from_pos), '(SELECT') !== false)) {
+                        $from_in_subquery = ($from_pos !== false) && (strpos(substr($_query, 0, $from_pos), '(SELECT') !== false); // FROM clause seems to be in a subquery, so it's mroe robust for us to work backwards
+                        $where_in_subquery = ($where_pos !== false) && (strpos(substr($_query, 0, $where_pos), '(SELECT') !== false); // WHERE clause seems to be in a subquery, so it's mroe robust for us to work backwards
+                        if ($from_in_subquery || $where_in_subquery) {
                             $from_pos = strrpos($_query, ' FROM ');
                             $where_pos = strrpos($_query, ' WHERE ');
                         }
@@ -1200,7 +1207,7 @@ class DatabaseConnector
                         }
 
                         $before_from = substr($query, 0, $from_pos);
-                        if (preg_match('#(COUNT|SUM|AVG|MIN|MAX)\(#', $before_from) == 0) { // If we're returning full result sets (as opposed probably to just joining so we can use translate_field_ref)
+                        if (preg_match('#(COUNT|SUM|AVG|MIN|MAX)\(#', $before_from) === 0) { // If we're returning full result sets (as opposed probably to just joining so we can use translate_field_ref)
                             $original = 't_' . $field_stripped . '.text_original AS t_' . $field_stripped . '__text_original';
                             $parsed = 't_' . $field_stripped . '.text_parsed AS t_' . $field_stripped . '__text_parsed';
 
@@ -1220,7 +1227,7 @@ class DatabaseConnector
                         }
                         $before_from = substr($query, 0, $from_pos);
 
-                        if (preg_match('#(COUNT|SUM|AVG|MIN|MAX)\(#', $before_from) == 0) { // If we're returning full result sets (as opposed probably to just joining so we can use translate_field_ref)
+                        if (preg_match('#(COUNT|SUM|AVG|MIN|MAX)\(#', $before_from) === 0) { // If we're returning full result sets (as opposed probably to just joining so we can use translate_field_ref)
                             $source_user = $field . '__source_user';
                             $parsed = $field . '__text_parsed';
 
@@ -1242,7 +1249,7 @@ class DatabaseConnector
             $before = microtime(true);
         }
         $sub = substr($query, 0, 6); // NB: We don't get 7, because it's time-consuming to check for space/tab/new-lines after 'SELECT', so we'll make the correct assumption SELECT is not a stem of any other keyword
-        if ($sub == 'SELECT' || $sub == 'select' || $sub == '(SELEC' || $sub == '(selec') {
+        if ($sub === 'SELECT' || $sub === 'select' || $sub === '(SELEC' || $sub === '(selec') {
             $connection = &$this->connection_read;
         } else {
             $connection = &$this->connection_write;
@@ -1253,7 +1260,7 @@ class DatabaseConnector
         }
 
         // Special handling for searches, which are slow and specific - we want to recognise if previous active searches were the same and kill them (as this would have been a double form submit)
-        if (($this->dedupe_mode) && (substr(get_db_type(), 0, 5) == 'mysql')) {
+        if (($this->dedupe_mode) && (substr(get_db_type(), 0, 5) === 'mysql')) {
             $query .= '/* ' . get_session_id() . ' */'; // Identify query to session, for accurate de-duping
 
             $real_query = $query;
@@ -1268,7 +1275,7 @@ class DatabaseConnector
             $ret = $this->static_ob->db_query('SHOW FULL PROCESSLIST', $connection, null, null, true);
             if (is_array($ret)) {
                 foreach ($ret as $process) {
-                    if ($process['Info'] == $real_query) {
+                    if ($process['Info'] === $real_query) {
                         $this->static_ob->db_query('KILL ' . strval($process['Id']), $connection, null, null, true);
                     }
                 }
@@ -1375,7 +1382,7 @@ class DatabaseConnector
 
         if ($where_map !== null) {
             foreach ($where_map as $key => $value) {
-                if ($where != '') {
+                if ($where !== '') {
                     $where .= ' AND ';
                 }
 
@@ -1383,13 +1390,13 @@ class DatabaseConnector
                     $where .= $key . '=' . float_to_raw_string($value, 10);
                 } elseif (is_integer($value)) {
                     $where .= $key . '=' . strval($value);
-                } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+                } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                     $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
                 } else {
                     if ($value === null) {
                         $where .= $key . ' IS NULL';
                     } else {
-                        if ((is_string($value)) && ($value == '') && ($this->static_ob->db_empty_is_null())) {
+                        if (($value === '') && ($this->static_ob->db_empty_is_null())) {
                             $value = ' ';
                         }
                         $where .= db_string_equal_to($key, $value);
@@ -1402,7 +1409,7 @@ class DatabaseConnector
             if (($value === STRING_MAGIC_NULL) || ($value === INTEGER_MAGIC_NULL)) {
                 continue;
             }
-            if ($update != '') {
+            if ($update !== '') {
                 $update .= ', ';
             }
 
@@ -1413,18 +1420,18 @@ class DatabaseConnector
                     $update .= $key . '=' . float_to_raw_string($value, 10);
                 } elseif (is_integer($value)) {
                     $update .= $key . '=' . strval($value);
-                } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+                } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                     $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
                 } else {
                     $update .= $key . '=\'' . $this->static_ob->db_escape_string($value) . '\'';
                 }
             }
         }
-        if ($update == '') {
+        if ($update === '') {
             return null;
         }
 
-        if ($where == '') {
+        if ($where === '') {
             return $this->_query('UPDATE ' . $this->table_prefix . $table . ' SET ' . $update . ' ' . $end, $max, $start, $fail_ok, $num_touched);
         } else {
             return $this->_query('UPDATE ' . $this->table_prefix . $table . ' SET ' . $update . ' WHERE (' . $where . ') ' . $end, $max, $start, $fail_ok, $num_touched);
@@ -1444,7 +1451,7 @@ class DatabaseConnector
     public function query_delete($table, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false)
     {
         if ($where_map === null) {
-            if (($end == '') && (is_null($max)) && (is_null($start)) && (strpos(get_db_type(), 'mysql') !== false)) {
+            if (($end === '') && (is_null($max)) && (is_null($start)) && (strpos(get_db_type(), 'mysql') !== false)) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);
@@ -1455,7 +1462,7 @@ class DatabaseConnector
         $where = '';
 
         foreach ($where_map as $key => $value) {
-            if ($where != '') {
+            if ($where !== '') {
                 $where .= ' AND ';
             }
 
@@ -1463,13 +1470,13 @@ class DatabaseConnector
                 $where .= $key . '=' . float_to_raw_string($value, 10);
             } elseif (is_integer($value)) {
                 $where .= $key . '=' . strval($value);
-            } elseif (($key == 'begin_num') || ($key == 'end_num')) {
+            } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                 $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
             } else {
                 if ($value === null) {
                     $where .= $key . ' IS NULL';
                 } else {
-                    if ((is_string($value)) && ($value == '') && ($this->static_ob->db_empty_is_null())) {
+                    if (($value === '') && ($this->static_ob->db_empty_is_null())) {
                         $where .= $key . ' IS NULL'; // $value = ' ';
                     } else {
                         $where .= db_string_equal_to($key, $value);
@@ -1523,7 +1530,7 @@ class DatabaseConnector
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name
      * @param  ID_TEXT $_type The field type
-     * @param  ?mixed $default The default value (null: no default)
+     * @param  ?mixed $default The default value; for a translatable field should still be a string value (null: no default)
      */
     public function add_table_field($table_name, $name, $_type, $default = null)
     {

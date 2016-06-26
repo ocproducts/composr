@@ -11,7 +11,7 @@ The system comes with all of the features you would expect which include:
 [*] The ability to limit downloads of files by using Composr's point system to "sell" the downloads
 [*] Protection to stop users leeching your files
 [*] Allows for comments and rating for files
-[*] Assign Licenses to files which users must agree to before being able to download the file
+[*] Assign Licences to files which users must agree to before being able to download the file
 [*] Attach a representative image for the file
 [*] Basic support for file versioning
 [/list]

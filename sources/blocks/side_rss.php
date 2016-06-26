@@ -84,7 +84,7 @@ class Block_side_rss
         if (!is_null($rss->error)) {
             $GLOBALS['DO_NOT_CACHE_THIS'] = true;
             require_code('failure');
-            relay_error_notification(do_lang('ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
+            relay_error_notification(do_lang('rss:ERROR_HANDLING_RSS_FEED', $url, $rss->error), false, 'error_occurred_rss');
             if (cron_installed()) {
                 if (!$GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                     return new Tempcode();
@@ -160,7 +160,7 @@ class Block_side_rss
 
             $_title = $item['title'];
             $_title = array_key_exists('title', $item) ? $item['title'] : '';
-            $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date($item['clean_add_date']) : (array_key_exists('add_date', $item) ? $item['add_date'] : '');
+            $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date_tempcode($item['clean_add_date']) : (array_key_exists('add_date', $item) ? make_string_tempcode($item['add_date']) : new Tempcode());
 
             $content->attach(do_template('BLOCK_SIDE_RSS_SUMMARY', array(
                 '_GUID' => '18f6d1ccfe980cc01bbdd2ee178c2410',

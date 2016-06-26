@@ -104,10 +104,8 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$OR,{VIEW_PROFILES},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
-			{+START,IF_PASSED,CUSTOM_FIELDS_SECTIONS}{+START,IF_NON_EMPTY,{CUSTOM_FIELDS_SECTIONS}}
-				<h2>{!ABOUT}</h2>
-			{+END}{+END}
+		{+START,IF,{$OR,{$AND,{VIEW_PROFILES},{$IS_NON_EMPTY,{CUSTOM_FIELDS}}},{$IS_NON_EMPTY,{$TRIM,{SIGNATURE}}}}}
+			<h2>{!ABOUT}</h2>
 
 			<div class="wide_table_wrap">
 				<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
@@ -135,14 +133,14 @@
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 													{+START,IF_PASSED,EDITABILITY}
 														{$SET,edit_type,{EDIT_TYPE}}
-														{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+														{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
 													{+END}
 													{+START,IF_NON_PASSED,EDITABILITY}
 														{VALUE}
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
 													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
@@ -194,13 +192,13 @@
 											<span>
 												{+START,IF_EMPTY,{ENCRYPTED_VALUE}}
 													{+START,IF,{$EQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
-														{$COUNTRY_CODE_TO_NAME,{VALUE}}
+														{$COUNTRY_CODE_TO_NAME,{RAW_VALUE}}
 													{+END}
 
 													{+START,IF,{$NEQ,{!ADDRESS}: {NAME},{!cns_special_cpf:SPECIAL_CPF__cms_country}}}
 														{+START,IF_PASSED,EDITABILITY}
 															{$SET,edit_type,{EDIT_TYPE}}
-															{+START,FRACTIONAL_EDITABLE,{VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
+															{+START,FRACTIONAL_EDITABLE,{RAW_VALUE},field_{FIELD_ID},_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,{EDITABILITY}}{VALUE}{+END}
 														{+END}
 														{+START,IF_NON_PASSED,EDITABILITY}
 															{VALUE}
@@ -208,7 +206,7 @@
 													{+END}
 												{+END}
 												{+START,IF_NON_EMPTY,{ENCRYPTED_VALUE}}
-													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {!encryption:DESCRIPTION_DECRYPT_DATA=}">{!encryption:DECRYPT_DATA}</a>{+END}
+													{+START,IF,{$JS_ON}}{!encryption:DATA_ENCRYPTED} <a href="javascript:decrypt_data('{ENCRYPTED_VALUE;^*}');" title="{!encryption:DECRYPT_DATA}: {$STRIP_TAGS,{!encryption:DESCRIPTION_DECRYPT_DATA}}">{!encryption:DECRYPT_DATA}</a>{+END}
 													{+START,IF,{$NOT,{$JS_ON}}}{ENCRYPTED_VALUE*}{+END}
 												{+END}
 												<!-- {$,Break out of non-terminated comments in CPF} -->
@@ -293,7 +291,7 @@
 						{+START,IF,{$HAS_PRIVILEGE,member_maintenance}}{+START,IF_NON_EMPTY,{EMAIL_ADDRESS}}
 							<tr>
 								<th class="de_th">{!EMAIL_ADDRESS}:</th>
-								<td><a class="email" href="mailto:{EMAIL_ADDRESS*}">{+START,FRACTIONAL_EDITABLE,{EMAIL_ADDRESS},email_address,_SEARCH:members:view:{MEMBER_ID}:only_tab=edit:only_subtab=settings,0}{EMAIL_ADDRESS*}{+END}</a></td>
+								<td><a class="email" href="mailto:{EMAIL_ADDRESS*}">{EMAIL_ADDRESS*}</a></td>
 							</tr>
 						{+END}{+END}
 
@@ -371,8 +369,8 @@
 
 						{+START,IF_PASSED,USER_AGENT}
 							<tr>
-								<th class="de_th">{!USER_AGENT}:</th>
-								<td>{USER_AGENT*}</td>
+								<th class="de_th"><abbr title="{!USER_AGENT}">{$PREG_REPLACE*, \([^\(\)]*\),,{!USER_AGENT}}</abbr>:</th>
+								<td><abbr title="{USER_AGENT*}">{$PREG_REPLACE*, \([^\(\)]*\),,{$PREG_REPLACE,\.\d+,,{$REPLACE,({OPERATING_SYSTEM}),,{USER_AGENT}}}}</abbr></td>
 							</tr>
 						{+END}
 

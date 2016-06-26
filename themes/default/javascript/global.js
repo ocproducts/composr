@@ -176,9 +176,50 @@ function script_load_stuff()
 		set_font_size(font_size);
 	}
 
-	// Fix Flashes own cleanup code so if the SWFMovie was removed from the page
-	// it doesn't display errors.
-	window["__flash__removeCallback"]=function (instance, name) {
+	/*
+	// Fake onmouseout events for DOM elements removed (fixes issues with stuck tooltips)
+	if (typeof window.MutationObserver!='undefined')
+	{
+		var observer=new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type=='childList')
+				{
+					var node,child_node,i,j,k;
+					for (i=0;i<mutation.removedNodes.length;i++)
+					{
+						node=mutation.removedNodes[i];
+						if (node.onmouseout) node.onmouseout();
+						if (typeof node.getElementsByTagName!='undefined')
+						{
+							var child_nodes=node.getElementsByTagName('*');
+							for (j=0;j<child_nodes.length;j++)
+							{
+								child_node=child_nodes[j];
+								if (child_node.onmouseout)
+								{
+									child_node.onmouseout.call(child_node);
+								}
+								if (typeof child_node.simulated_events!='undefined' && typeof child_node.simulated_events.mouseout!='undefined')
+								{
+									for (k=0;k<child_node.simulated_events.mouseout.length;k++)
+									{
+										child_node.simulated_events.mouseout[k].call(child_node);
+									}
+								}
+							}
+						}
+					}
+				}
+			});
+		});
+		observer.observe(document.body,{childList: true,subtree: true});
+	}
+
+	^ Disabled this because it is not reliable and possibly non-performant. Instead we will manually call clear_out_tooltips(null); at appropriate places.
+	*/
+
+	// Fix Flashes own cleanup code so if the SWFMovie was removed from the page it doesn't display errors.
+	window["__flash__removeCallback"]=function(instance, name) {
 		try {
 			if (instance) {
 				instance[name]=null;
@@ -187,6 +228,15 @@ function script_load_stuff()
 
 		}
 	};
+
+	// If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
+	window.onpopstate = function(event) {
+		window.setTimeout(function() {
+			if (window.location.hash=='') {
+				window.location.reload();
+			}
+		},0);
+	}
 
 	if (typeof window.script_load_stuff_b!='undefined') window.script_load_stuff_b(); // This is designed to allow you to easily define additional initialisation code in JAVASCRIPT_CUSTOM_GLOBALS.tpl
 
@@ -428,6 +478,7 @@ function staff_unload_action()
 {
 	undo_staff_unload_action();
 
+	// If clicking a download link then don't show the animation
 	if (document.activeElement && typeof document.activeElement.href!='undefined' && document.activeElement.href!=null)
 	{
 		var url=document.activeElement.href.replace(/.*:\/\/[^\/:]+/,'');
@@ -435,6 +486,13 @@ function staff_unload_action()
 			return;
 	}
 
+	// If doing a meta refresh then don't show the animation
+	if ((typeof document.querySelector!='undefined') && document.querySelector('meta[http-equiv="Refresh"]'))
+	{
+		return;
+	}
+
+	// Show the animation
 	var bi=document.getElementById('main_website_inner');
 	if (bi)
 	{
@@ -455,6 +513,7 @@ function staff_unload_action()
 	window.setTimeout( function() { if (document.getElementById('loading_image')) document.getElementById('loading_image').src+=''; } , 100); // Stupid workaround for Google Chrome not loading an image on unload even if in cache
 	document.body.appendChild(div);
 
+	// Allow unloading of the animation
 	add_event_listener_abstract(window,'pageshow',undo_staff_unload_action);
 	add_event_listener_abstract(window,'keydown',undo_staff_unload_action);
 	add_event_listener_abstract(window,'click',undo_staff_unload_action);
@@ -1503,12 +1562,14 @@ function handle_tray_cookie_setting(id)
 }
 
 /* Animate the loading of a frame */
-function animate_frame_load(pf,frame,leave_gap_top)
+function animate_frame_load(pf,frame,leave_gap_top,leave_height)
 {
 	if (!pf) return;
 	if (typeof leave_gap_top=='undefined') leave_gap_top=0;
+	if (typeof leave_height=='undefined') leave_height=false;
 
-	pf.style.height=window.top.get_window_height()+'px'; // Enough to stop jumping around
+	if (!leave_height)
+		pf.style.height=window.top.get_window_height()+'px'; // Enough to stop jumping around
 
 	illustrate_frame_load(pf,frame);
 
@@ -2057,7 +2118,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	// Add in move/leave events if needed
 	if (!have_links)
 	{
-		if (!ac.onmouseout) ac.onmouseout=function(event) { if (!event) var event=window.event; win.deactivate_tooltip(ac); };
+		if (!ac.onmouseout) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
 		if (!ac.onmousemove) ac.onmousemove=function(event) { if (!event) var event=window.event; win.reposition_tooltip(ac,event,false,false,null,false,win); };
 	} else
 	{
@@ -2090,7 +2151,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		tooltip_element=win.document.createElement('div');
 		tooltip_element.role='tooltip';
 		tooltip_element.style.display='none';
-		tooltip_element.className='tooltip boxless_space'+(have_links?' have_links':'');
+		tooltip_element.className='tooltip '+((tooltip.indexOf('results_table')==-1)?'tooltip_ownlayout':'tooltip_nolayout')+' boxless_space'+(have_links?' have_links':'');
 		if (ac.className.substr(0,3)=='tt_')
 		{
 			tooltip_element.className+=' '+ac.className;
@@ -2807,6 +2868,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 					script_tag_dependencies['to_load'].push(this_node);
 					this_node.async=false;
 					this_node.onload=this_node.onreadystatechange=function() {
+						// Once this <script src="..."> has loaded, we need to execute any <script>...</script> code. So we need to tie into load state for this
 						if ((typeof this_node.readyState=='undefined') || (this_node.readyState=='complete') || (this_node.readyState=='loaded'))
 						{
 							var found=0,i;
@@ -2908,6 +2970,7 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 function set_outer_html(element,target_html)
 {
 	var p=element.parentNode;
+	var ref=element.nextSibling;
 	p.removeChild(element);
 
 	set_inner_html(element,target_html,false,true);
@@ -2917,7 +2980,7 @@ function set_outer_html(element,target_html)
 	{
 		ci=c[0];
 		element.removeChild(ci);
-		p.appendChild(ci);
+		p.insertBefore(ci,ref);
 	}
 }
 
@@ -3406,7 +3469,7 @@ function topic_reply(is_threaded,ob,id,replying_to_username,replying_to_post,rep
 	{
 		post.value='{!QUOTED_REPLY_MESSAGE;^}'.replace(/\\{1\\}/g,replying_to_username).replace(/\\{2\\}/g,replying_to_post_plain);
 		post.strip_on_focus=post.value;
-		post.style.color='gray';
+		post.className+=' field_input_non_filled';
 	} else
 	{
 		if (typeof post.strip_on_focus!='undefined' && post.value==post.strip_on_focus)
@@ -3513,6 +3576,33 @@ function set_up_change_monitor(id)
 			if (ch) _set_up_change_monitor(ch.parentNode);
 		}
 	});
+}
+
+/* Used by audio CAPTCHA. Wave files won't play inline anymore on Firefox (https://bugzilla.mozilla.org/show_bug.cgi?id=890516) */
+function play_self_audio_link(ob)
+{
+	if (browser_matches('gecko') || true/*actually it works well generally*/)
+	{
+		require_javascript('sound',window.SoundManager);
+
+		var timer=window.setInterval(function() {
+			if (typeof window.soundManager=='undefined') return;
+
+			window.clearInterval(timer);
+
+			window.soundManager.setup({
+				url: get_base_url()+'/data',
+				debugMode: false,
+				onready: function() {
+					var sound_object=window.soundManager.createSound({url: ob.href});
+					if (sound_object) sound_object.play();
+				}
+			});
+		},50);
+
+		return false;
+	}
+	return null;
 }
 
 /* Used by MASS_SELECT_MARKER.tpl */

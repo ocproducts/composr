@@ -44,11 +44,7 @@ class CMSBoardStats
      */
     private function get_topics_count()
     {
-        $where = array();
-        if (addon_installed('unvalidated')) {
-            $where['t_validated'] = 1;
-        }
-        return $GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)', $where);
+        return $GLOBALS['FORUM_DRIVER']->get_topics();
     }
 
     /**
@@ -58,11 +54,7 @@ class CMSBoardStats
      */
     private function get_posts_count()
     {
-        $where = array();
-        if (addon_installed('unvalidated')) {
-            $where['p_validated'] = 1;
-        }
-        return $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', $where);
+        return $GLOBALS['FORUM_DRIVER']->get_num_forum_posts();
     }
 
     /**
@@ -72,11 +64,7 @@ class CMSBoardStats
      */
     private function get_members_count()
     {
-        $where = array('m_validated_email_confirm_code' => '');
-        if (addon_installed('unvalidated')) {
-            $where['m_validated'] = 1;
-        }
-        return $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)', $where);
+        return $GLOBALS['FORUM_DRIVER']->get_members();
     }
 
     /**

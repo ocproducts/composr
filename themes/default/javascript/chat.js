@@ -32,7 +32,7 @@ function play_sound_url(url) // Used for testing different sounds
 
 	var base_url=((url.indexOf('data_custom')==-1)&&(url.indexOf('uploads/')==-1))?'{$BASE_URL_NOHTTP;}':'{$CUSTOM_BASE_URL_NOHTTP;}';
 	var sound_object=window.soundManager.createSound({url: base_url+'/'+url});
-	sound_object.play();
+	if (sound_object) sound_object.play();
 }
 
 function play_chat_sound(s_id,for_member)
@@ -280,7 +280,7 @@ function chat_post(event,current_room_id,field_name,font_name,font_colour)
 				}
 				catch (e) {}
 			}
-			do_ajax_request(maintain_theme_in_link(url)+window.top_window.keep_stub(false),func,'room_id='+window.encodeURIComponent(current_room_id)+'&message='+window.encodeURIComponent(message_text)+'&font='+window.encodeURIComponent(font_name)+'&colour='+window.encodeURIComponent(font_colour)+'&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false));
+			do_ajax_request(maintain_theme_in_link(url)+window.top_window.keep_stub(false),func,'room_id='+window.encodeURIComponent(current_room_id)+'&message='+window.encodeURIComponent(message_text)+'&font='+window.encodeURIComponent(font_name)+'&colour='+window.encodeURIComponent(font_colour)+'&message_id='+window.encodeURIComponent((window.top_window.last_message_id===null)?-1:window.top_window.last_message_id)+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false));
 		}
 
 		return false;
@@ -394,6 +394,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 			{
 				room_id=messages[i].getAttribute('room_id');
 				current_room_id=room_id;
+				message_container=null;
 			} else
 			{
 				current_room_id=messages[i].getAttribute('room_id');
@@ -505,11 +506,12 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 					{
 						if (get_inner_html(tmp_element).toLowerCase()=='{!ACTIVE;^}'.toLowerCase()) break;
 						set_inner_html(tmp_element,'{!ACTIVE;^}');
-						document.getElementById('friend_img_'+member_id).className='friend_active';
+						var friend_img=document.getElementById('friend_img_'+member_id);
+						if (friend_img) friend_img.className='friend_active';
 						var alert_box_wrap=document.getElementById('alert_box_wrap');
-						alert_box_wrap.style.display='block';
+						if (alert_box_wrap) alert_box_wrap.style.display='block';
 						var alert_box=document.getElementById('alert_box');
-						set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
+						if (alert_box) set_inner_html(alert_box,'{!NOW_ONLINE;^}'.replace('{'+'1}',username));
 						window.setTimeout(function() {
 							if (document.getElementById('alert_box')) // If the alert box is still there, remove it
 								alert_box_wrap.style.display='none';
@@ -521,7 +523,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 						}
 					} else if (!document.getElementById('chat_lobby_convos_tabs'))
 					{
-						create_overlay_event(skip_incoming_sound,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
+						create_overlay_event(/*skip_incoming_sound*/true,member_id,'{!NOW_ONLINE;^}'.replace('{'+'1}',username),function() { start_im(member_id,true); return false; } ,avatar_url);
 					}
 
 					rooms=find_im_convo_room_ids();
@@ -603,27 +605,29 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 					break;
 
 				case 'DEINVOLVE_IM':
-					tmp_element=document.getElementById('participant__'+room_id+'__'+member_id);
+					var doc=document;
+					if (typeof opened_popups['room_'+room_id]!='undefined')
+					{
+						if (!opened_popups['room_'+room_id].document) break;
+						doc=opened_popups['room_'+room_id].document;
+					}
+
+					tmp_element=doc.getElementById('participant__'+room_id+'__'+member_id);
 					if ((tmp_element) && (tmp_element.parentNode))
 					{
 						var parent=tmp_element.parentNode;
-						if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
+						/*Actually prefer to let them go away it's cleaner if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
 						{
-							document.getElementById('post_'+room_id).force_invite=member_id;
+							tmp_element=doc.getElementById('post_'+room_id);
+							if (tmp_element) tmp_element.force_invite=member_id;
 
-							var doc=document;
-							if (typeof opened_popups['room_'+room_id]!='undefined')
-							{
-								if (!opened_popups['room_'+room_id].document) break;
-								doc=opened_popups['room_'+room_id].document;
-							}
 							tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
 							if (tmp_element)
 							{
 								if (get_inner_html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
 								set_inner_html(tmp_element,'{!INACTIVE;^}');
 							}
-						} else
+						} else*/
 						{
 							parent.removeChild(tmp_element);
 						}
@@ -709,7 +713,7 @@ function process_chat_xml_messages(ajax_result,skip_incoming_sound)
 				catch (e) {}
 			}
 			var post=document.getElementById('post');
-			if (post)
+			if (post && post.name=='message'/*The chat posting field is named message and IDd post*/)
 			{
 				try
 				{
@@ -892,7 +896,7 @@ function _start_im(people,may_recycle)
 	div.className='loading_overlay';
 	set_inner_html(div,'{!LOADING;^}');
 	document.body.appendChild(div);
-	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent(window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
+	do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT;,messages}?action=start_im&message_id='+window.encodeURIComponent((window.top_window.last_message_id===null)?-1:window.top_window.last_message_id)+'&may_recycle='+(may_recycle?'1':'0')+'&event_id='+window.encodeURIComponent(window.top_window.last_event_id)+keep_stub(false)),function(result) {
 		var responses=result.getElementsByTagName('result');
 		if (responses[0])
 		{
@@ -1148,7 +1152,7 @@ function detected_conversation(room_id,room_name,participants) // Assumes conver
 					// Set title
 					var dom_title=new_window.document.getElementsByTagName('title')[0];
 					if (dom_title!=null)
-						new_window.document.title=get_inner_html(dom_title); // For Safari
+						new_window.document.title=get_inner_html(dom_title).replace(/<.*?>/g,''); // For Safari
 
 				},500); /* Could be 60 except for Firefox which is slow */
 			}

@@ -17,7 +17,7 @@
 class getid3_monkey
 {
 
-	function getid3_monkey(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 		// based loosely on code from TMonkey by Jurgen Faul <jfaulØgmx*de>
 		// http://jfaul.de/atl  or  http://j-faul.virtualave.net/atl/atl.html
 

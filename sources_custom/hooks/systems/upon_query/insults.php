@@ -20,6 +20,10 @@ class Hook_upon_query_insults
 {
     public function run_post($ob, $query, $max, $start, $fail_ok, $get_insert_id, $ret)
     {
+        if ($query[0] == 'S') {
+            return;
+        }
+
         if (!isset($GLOBALS['FORUM_DB'])) {
             return;
         }
@@ -53,6 +57,9 @@ class Hook_upon_query_insults
             $first_post_data = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('p_topic_id' => $topic_id), 'ORDER BY p_time,id', 1, null, true);
 
             $first_post = $first_post_data[0]['p_post'];
+            if ($first_post === 0 || $first_post === '') { // Still being created
+                return;
+            }
 
             $first_post = get_translated_text($first_post);
 

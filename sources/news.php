@@ -53,6 +53,10 @@ function get_news_category_image_url($nc_img)
  */
 function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('news');
     require_css('news');
 
@@ -121,7 +125,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         'NEWS' => $news,
         'ID' => strval($row['id']),
         'SUBMITTER' => strval($row['submitter']),
-        'DATE' => get_timezoned_date($row['date_and_time']),
+        'DATE' => get_timezoned_date_tempcode($row['date_and_time']),
         'DATE_RAW' => strval($row['date_and_time']),
         'FULL_URL' => $url,
         'NEWS_TITLE' => $title,
@@ -148,6 +152,10 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
  */
 function render_news_category_box($row, $zone = '_SEARCH', $give_context = true, $attach_to_url_filter = false, $blogs = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('news');
 
     // URL
@@ -337,7 +345,7 @@ function create_selection_list_news($it, $only_owned = null, $editable_filter = 
         if (!has_category_access(get_member(), 'news', strval($myrow['news_category']))) {
             continue;
         }
-        if (($editable_filter) && (!has_edit_permission('high', get_member(), $myrow['submitter'], 'cms_news', array('news', $myrow['news_category'])))) {
+        if (($editable_filter) && (!has_edit_permission($only_in_blog ? 'mid' : 'high', get_member(), $myrow['submitter'], $only_in_blog ? 'cms_blogs' : 'cms_news', array('news', $myrow['news_category'])))) {
             continue;
         }
 

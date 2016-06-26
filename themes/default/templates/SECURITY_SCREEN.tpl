@@ -16,7 +16,7 @@
 
 {+START,IF,{$NEQ,{NUM_ALERTS},0}}
 	{+START,IF,{$JS_ON}}
-		<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+		<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p class="proceed_button">

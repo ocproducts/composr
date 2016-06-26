@@ -1,4 +1,4 @@
-<tr>
+<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
 	<td>
 		{+START,IF_NON_EMPTY,{MEMBER_URL}}
 			<a title="{NAME*} {!LINK_NEW_WINDOW}" target="_blank" href="{MEMBER_URL*}"><span class="{STYLE*}">{NAME*}</span></a>

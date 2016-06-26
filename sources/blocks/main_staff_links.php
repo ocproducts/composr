@@ -92,7 +92,7 @@ class Block_main_staff_links
                 'Google Chrome addons' => 'https://chrome.google.com/extensions/featured/web_dev',
                 'SharedCount (social sharing stats)' => 'http://www.sharedcount.com/',
                 'Facebook Insights (Facebook Analytics)' => 'https://developers.facebook.com/docs/insights/',
-                'Paint.net (free graphics tool)' => 'http://www.getpaint.net/',
+                'Paint.net (free graphics tool, Windows)' => 'http://www.getpaint.net/',
                 'PNGGauntlet (compress PNG files, Windows)' => 'http://benhollis.net/software/pnggauntlet/',
                 'ImageOptim (compress PNG files, Mac)' => 'http://imageoptim.pornel.net/',
                 'Find Icons (free icons)' => 'http://findicons.com/',

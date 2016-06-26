@@ -141,6 +141,16 @@ function init__global3()
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
     $KNOWN_TRUE_HTML = array();
+
+    // Would normally put these in sources/comcode.php, but some of our templating references these constants
+    define('WYSIWYG_COMCODE__BUTTON', 1);
+    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+    define('WYSIWYG_COMCODE__XML_INLINE', 16);
+    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+    define('WYSIWYG_COMCODE__HTML', 128);
 }
 
 /**
@@ -394,8 +404,8 @@ function restore_output_state($just_tempcode = false, $merge_current = false, $k
     } else {
         foreach ($old_state as $var => $val) {
             if ((!$just_tempcode) || ($var == 'CYCLES') || ($var == 'TEMPCODE_SETGET')) {
-                $merge_array = (($merge_current) && (is_array($val)) && (array_key_exists($var, $mergeable_arrays)));
-                $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (array_key_exists($var, $mergeable_tempcode)));
+                $merge_array = (($merge_current) && (is_array($val)) && (isset($mergeable_arrays[$var])));
+                $merge_tempcode = (($merge_current) && (isset($val->codename/*faster than is_object*/)) && (isset($mergeable_tempcode[$var])));
                 $mergeable = $merge_array || $merge_tempcode;
                 if (($keep === array()) || (!in_array($var, $keep)) || ($mergeable)) {
                     if ($merge_array) {
@@ -454,7 +464,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
             'TARGET' => '_self',
             'CONTENT' => $middle,
         ));
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
         return $global;
     }
 
@@ -467,7 +479,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         if (headers_sent()) {
-            $global = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd579b62182a0f815e0ead1daa5904793', 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+            $global = do_template('STANDALONE_HTML_WRAP', array(
+                '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
+                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
                 'FRAME' => false,
                 'TARGET' => '_self',
                 'CONTENT' => $middle,
@@ -478,7 +492,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
                 'MIDDLE' => $middle,
             ));
         }
-        $global->handle_symbol_preprocessing();
+        if ($GLOBALS['OUTPUT_STREAMING'] || $middle !== null) {
+            $global->handle_symbol_preprocessing();
+        }
     }
 
     if (get_value('xhtml_strict') === '1') {
@@ -592,7 +608,11 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
                             break;
 
                         case 'description':
-                            $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            if (is_integer($row[$cma_info[$cma_field]])) {
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                            } else {
+                                $val_raw = $row[$cma_info[$cma_field]];
+                            }
                             $val = $val_raw;
                             break;
 
@@ -738,9 +758,9 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
             $place = array($theme, '/' . $directory . '_custom/', $suffix);
         } elseif (is_file($prefix . $theme . '/' . $directory . '/' . $codename . $suffix)) {
             $place = array($theme, '/' . $directory . '/', $suffix);
-        } elseif (($CURRENT_SHARE_USER !== null) && ($theme != 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
+        } elseif (($CURRENT_SHARE_USER !== null) && ($theme !== 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
             $place = array($theme, '/' . $directory . '_custom/', $suffix);
-        } elseif (($CURRENT_SHARE_USER !== null) && ($theme != 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '/' . $codename . $suffix))) {
+        } elseif (($CURRENT_SHARE_USER !== null) && ($theme !== 'default') && (is_file(get_file_base() . '/themes/' . $theme . '/' . $directory . '/' . $codename . $suffix))) {
             $place = array($theme, '/' . $directory . '/', $suffix);
         } elseif (($CURRENT_SHARE_USER !== null) && (is_file(get_custom_file_base() . '/themes/default/' . $directory . '_custom/' . $codename . $suffix)) && (!$non_custom_only)) {
             $place = array('default', '/' . $directory . '_custom/', $suffix);
@@ -757,7 +777,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
         if (($place === null) && (!$non_custom_only)) { // Get desperate, search in themes other than current and default
             $dh = opendir(get_file_base() . '/themes');
             while (($possible_theme = readdir($dh))) {
-                if ((substr($possible_theme, 0, 1) != '.') && ($possible_theme != 'default') && ($possible_theme != $theme) && ($possible_theme != 'map.ini') && ($possible_theme != 'index.html')) {
+                if (($possible_theme[0] !== '.') && ($possible_theme !== 'default') && ($possible_theme !== $theme) && ($possible_theme !== 'map.ini') && ($possible_theme !== 'index.html')) {
                     $full_path = get_custom_file_base() . '/themes/' . $possible_theme . '/' . $directory . '_custom/' . $codename . $suffix;
                     if (is_file($full_path)) {
                         $place = array($possible_theme, '/' . $directory . '_custom/', $suffix);
@@ -837,6 +857,10 @@ function fix_bad_unicode($input, $definitely_unicode = false)
 {
     // Fix bad unicode
     if (get_charset() == 'utf-8' || $definitely_unicode) {
+        if (preg_match('#[^x00-x7f]#', $input) == 0) {
+            return $input; // No non-ASCII characters
+        }
+
         $test_string = $input; // avoid being destructive
         $test_string = preg_replace('#[\x09\x0A\x0D\x20-\x7E]#', '', $test_string); // ASCII
         $test_string = preg_replace('#[\xC2-\xDF][\x80-\xBF]#', '', $test_string); // non-overlong 2-byte
@@ -846,7 +870,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
         $test_string = preg_replace('#\xF0[\x90-\xBF][\x80-\xBF]{2}#', '', $test_string); // planes 1-3
         $test_string = preg_replace('#[\xF1-\xF3][\x80-\xBF]{3}#', '', $test_string); //  planes 4-15
         $test_string = preg_replace('#\xF4[\x80-\x8F][\x80-\xBF]{2}#', '', $test_string); // plane 16
-        if ($test_string != '') {// All unicode characters stripped, so if anything is remaining it must be some kind of corruption
+        if ($test_string !== '') { // All ASCII/unicode characters stripped, so if anything is remaining it must be some kind of corruption
             $input = utf8_encode($input);
         }
     }
@@ -887,6 +911,11 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
 {
     if ($amount === null) {
         $amount = cms_mb_strlen($in, $force) - $from;
+    }
+
+    if ($in == '' || strlen($in) == $from)
+    {
+        return ''; // Workaround PHP bug/inconsistency (https://bugs.php.net/bug.php?id=72320)
     }
 
     if ((!$force) && (get_charset() != 'utf-8')) {
@@ -960,7 +989,7 @@ function cms_mb_strtolower($in)
  */
 function cms_mb_strtoupper($in)
 {
-    if (strtoupper(get_charset()) != 'utf-8') {
+    if (get_charset() != 'utf-8') {
         return strtoupper($in);
     }
 
@@ -1092,10 +1121,12 @@ function addon_installed($addon, $non_bundled_too = false)
             $answer = true;
         }
     }
+
     $ADDON_INSTALLED_CACHE[$addon] = $answer;
     if (function_exists('persistent_cache_set')) {
         persistent_cache_set('ADDONS_INSTALLED', $ADDON_INSTALLED_CACHE);
     }
+
     return $answer;
 }
 
@@ -1143,7 +1174,8 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
         $locale['thousands_sep'] = ',';
     }
     $str = number_format($val, $decs_wanted, $locale['decimal_point'], $locale['thousands_sep']);
-    $decs_here = strlen($str) - strpos($str, '.') - 1;
+    $dot_pos = strpos($str, '.');
+    $decs_here = ($dot_pos === false) ? 0 : (strlen($str) - $dot_pos - 1);
     if ($decs_here < $decs_wanted) {
         for ($i = 0; $i < $decs_wanted - $decs_here; $i++) {
             $str .= '0';
@@ -1236,7 +1268,7 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
         merge_sort($rows, '_multi_sort');
     } else {
         $first_key = key($rows);
-        if (is_integer($first_key)) {
+        if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
             usort($rows, '_multi_sort');
         } else {
             uasort($rows, '_multi_sort');
@@ -1338,7 +1370,7 @@ function _multi_sort($a, $b)
     global $M_SORT_KEY;
     $keys = explode(',', is_string($M_SORT_KEY) ? $M_SORT_KEY : strval($M_SORT_KEY));
     $first_key = $keys[0];
-    if ($first_key[0] == '!') {
+    if ($first_key[0] === '!') {
         $first_key = substr($first_key, 1);
     }
 
@@ -1347,7 +1379,7 @@ function _multi_sort($a, $b)
         do {
             $key = array_shift($keys);
 
-            $backwards = ($key[0] == '!');
+            $backwards = ($key[0] === '!');
             if ($backwards) {
                 $key = substr($key, 1);
             }
@@ -1369,19 +1401,19 @@ function _multi_sort($a, $b)
             } else {
                 $ret = strnatcasecmp($av, $bv);
             }
-        } while ((count($keys) != 0) && ($ret == 0));
+        } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;
     }
 
     do {
         $key = array_shift($keys);
-        if ($key[0] == '!') { // Flip around
+        if ($key[0] === '!') { // Flip around
             $key = substr($key, 1);
             $ret = ($a[$key] > $b[$key]) ? -1 : (($a[$key] == $b[$key]) ? 0 : 1);
         } else {
             $ret = ($a[$key] > $b[$key]) ? 1 : (($a[$key] == $b[$key]) ? 0 : -1);
         }
-    } while ((count($keys) != 0) && ($ret == 0));
+    } while ((count($keys) !== 0) && ($ret == 0));
     return $ret;
 }
 
@@ -1437,7 +1469,7 @@ function array_peek($array, $depth_down = 1)
  */
 function fix_id($param)
 {
-    if (preg_match('#^[A-Za-z][\w]*$#', $param) != 0) {
+    if (preg_match('#^[A-Za-z][\w]*$#', $param) !== 0) {
         return $param; // Optimisation
     }
 
@@ -1473,7 +1505,7 @@ function fix_id($param)
                 break;
             default:
                 $ascii = ord($char);
-                if ((($i != 0) && ($char == '_')) || (($ascii >= 48) && ($ascii <= 57)) || (($ascii >= 65) && ($ascii <= 90)) || (($ascii >= 97) && ($ascii <= 122))) {
+                if ((($i !== 0) && ($char === '_')) || (($ascii >= 48) && ($ascii <= 57)) || (($ascii >= 65) && ($ascii <= 90)) || (($ascii >= 97) && ($ascii <= 122))) {
                     $new .= $char;
                 } else {
                     $new .= '_' . strval($ascii) . '_';
@@ -1481,10 +1513,10 @@ function fix_id($param)
                 break;
         }
     }
-    if ($new == '') {
+    if ($new === '') {
         $new = 'zero_length';
     }
-    if ($new[0] == '_') {
+    if ($new[0] === '_') {
         $new = 'und_' . $new;
     }
     return $new;
@@ -1505,7 +1537,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
     $req_func = $support_post ? 'either_param_string' : 'get_param_string';
 
     if ($current_zone_name === null) {
-        if (!running_script('index') && !running_script('iframe')) {
+        global $IN_SELF_ROUTING_SCRIPT;
+        if (!$IN_SELF_ROUTING_SCRIPT) {
             return false;
         }
 
@@ -1553,8 +1586,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 $env_val = ($current_params === null) ? call_user_func_array($req_func, array($subparts[0], null)) : (isset($current_params[$subparts[0]]) ? $current_params[$subparts[0]] : null);
                 if ($subparts[1] == '_WILD') {
                     if ($env_val !== null) {
-                        $subparts[1] = $env_val;
-                    } // null won't match to a wildcard
+                        $subparts[1] = $env_val; // null won't match to a wildcard
+                    }
                 } else {
                     if ($env_val === null) {
                         $env_val = $default;
@@ -1580,7 +1613,8 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
  */
 function get_page_or_script_name()
 {
-    if (running_script('index') || running_script('iframe')) {
+    global $IN_SELF_ROUTING_SCRIPT;
+    if ($IN_SELF_ROUTING_SCRIPT) {
         return get_page_name();
     }
     return current_script();
@@ -1620,6 +1654,9 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
+    if ($page !== '') {
+        $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
+    }
     $page = fix_page_name_dashing(get_zone_name(), $page);
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
@@ -1640,7 +1677,7 @@ function fix_page_name_dashing($zone, $page)
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
-        $test = _request_page($page, $zone);
+        $test = _request_page($page, $zone, null, null, true);
         if ($test === false) {
             $_page = str_replace('-', '_', $page);
             $test = _request_page($_page, $zone);
@@ -1813,6 +1850,8 @@ function is_valid_ip($ip)
  */
 function get_ip_address($amount = 4, $ip = null)
 {
+    require_code('config');
+
     if ((get_value('cloudflare_workaround') === '1') && (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) && (isset($_SERVER['REMOTE_ADDR']))) {
         $regexp = '^(204\.93\.240\.|204\.93\.177\.|199\.27\.|173\.245\.|103\.21\.|103\.22\.|103\.31\.|141\.101\.|108\.162\.|190\.93\.|188\.114\.|197\.234\.|198\.41\.|162\.)';
         if (preg_match('#' . $regexp . '#', $_SERVER['REMOTE_ADDR']) != 0) {
@@ -1851,9 +1890,11 @@ function get_ip_address($amount = 4, $ip = null)
  */
 function normalise_ip_address($ip, $amount = null)
 {
+    $raw_ip = $ip;
+
     static $ip_cache = array();
-    if (isset($ip_cache[$ip][$amount])) {
-        return $ip_cache[$ip][$amount];
+    if (isset($ip_cache[$raw_ip][$amount])) {
+        return $ip_cache[$raw_ip][$amount];
     }
 
     // Bizarro-filter (found "in the wild")
@@ -1868,7 +1909,7 @@ function normalise_ip_address($ip, $amount = null)
     }
 
     if (!is_valid_ip($ip)) {
-        $ip_cache[$ip][$amount] = '';
+        $ip_cache[$raw_ip][$amount] = '';
         return '';
     }
 
@@ -1886,8 +1927,7 @@ function normalise_ip_address($ip, $amount = null)
                 $parts[$i] = '*';
             }
         }
-        $ip_cache[$ip][$amount] = implode(':', $parts);
-        return $ip_cache[$ip][$amount];
+        $ip_cache[$raw_ip][$amount] = implode(':', $parts);
     } else { // IPv4
         $parts = explode('.', $ip);
         for ($i = 0; $i < (is_null($amount) ? 4 : $amount); $i++) {
@@ -1900,9 +1940,9 @@ function normalise_ip_address($ip, $amount = null)
                 $parts[$i] = '*';
             }
         }
-        $ip_cache[$ip][$amount] = implode('.', $parts);
-        return $ip_cache[$ip][$amount];
+        $ip_cache[$raw_ip][$amount] = implode('.', $parts);
     }
+    return $ip_cache[$raw_ip][$amount];
 }
 
 /**
@@ -1958,6 +1998,11 @@ function get_os_string()
  */
 function cron_installed()
 {
+    $test = get_param_integer('keep_has_cron', null);
+    if ($test !== null) {
+        return $test == 1;
+    }
+
     if ($GLOBALS['DEV_MODE']) {
         return true;
     }
@@ -2995,8 +3040,8 @@ function make_fractionable_editable($content_type, $id, $title)
 
     $parameters = array(
         is_object($title) ? $title->evaluate() : $title,
-        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '', $info['title_field']),
-        str_replace('_WILD', is_integer($id) ? strval($id) : $id, array_key_exists('edit_page_link_pattern_post', $info) ? $info['edit_page_link_pattern_post'] : preg_replace('#:_(.*)#', ':__${1}', $info['edit_page_link_pattern'])),
+        array_key_exists('edit_page_link_field', $info) ? $info['edit_page_link_field'] : preg_replace('#^\w\w?_#', '', array_key_exists('title_field_post', $info) ? $info['title_field_post'] : $info['title_field']),
+        array_key_exists('edit_page_link_pattern_post', $info) ? str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern_post']) : preg_replace('#:_(.*)#', ':__${1}', str_replace('_WILD', is_integer($id) ? strval($id) : $id, $info['edit_page_link_pattern'])),
         (array_key_exists('title_field_supports_comcode', $info) && $info['title_field_supports_comcode']) ? '1' : '0',
     );
     return directive_tempcode('FRACTIONAL_EDITABLE', is_object($title) ? $title : escape_html($title), $parameters);
@@ -3307,4 +3352,140 @@ function send_http_output_ping()
 function get_dynamic_file_parameter($file)
 {
     return str_replace(array('/', ':', '.'), array('__', '__', '__'), $file);
+}
+
+/**
+ * Improve security by turning on a strict CSP that only allows stuff from partner sites and disables frames and forms.
+ * Must be called before page output starts.
+ *
+ * @param  ?MEMBER $enable_more_open_html_for Allow more open HTML for a particular member ID (null: no member). It still will use the HTML blacklist functionality (unless they have even higher access already), but will remove the more restrictive whitelist functionality. Use of set_high_security_csp here is further decreasing the risk from dangerous HTML, even though the risk should be very low anyway due to the blacklist filter.
+ */
+function set_high_security_csp($enable_more_open_html_for = null)
+{
+    require_code('input_filter');
+    $_partners = get_allowed_partner_sites();
+    if ($_partners == array()) {
+        $partners = '';
+    } else {
+        $partners = ' ' . implode(' ', $_partners);
+        $partners .= ' https://' . implode(' https://', $_partners);
+        $partners .= ' http://' . implode(' http://', $_partners);
+    }
+
+    $value = "";
+    $value .= "script-src 'self'{$partners}; "; // browser will check mime-type, so okay for self
+    $value .= "style-src 'self'{$partners}; "; // browser will check mime-type, so okay for self
+    $value .= "object-src 'none'; "; // browser may not check mime-type, so none
+    $value .= "frame-src 'none'; child-src 'none'; ";
+    $value .= "form-action 'self'; ";
+    $value .= "base-uri 'self'; ";
+    $value .= "frame-ancestors 'self'{$partners}; ";
+
+    header('Content-Security-Policy:' . trim($value));
+
+    if ($enable_more_open_html_for !== null) {
+        global $PRIVILEGE_CACHE;
+        has_privilege($enable_more_open_html_for, 'allow_html'); // Force loading, so we can amend the cached value cleanly
+        $PRIVILEGE_CACHE[$enable_more_open_html_for]['allow_html'][''][''][''] = 1;
+    }
+}
+
+/**
+ * Set a CSP header to not allow any frames to include us.
+ */
+function set_no_clickjacking_csp()
+{
+    require_code('input_filter');
+    $_partners = get_allowed_partner_sites();
+    if ($_partners == array()) {
+        $partners = '';
+    } else {
+        $partners = ' ' . implode(' ', $_partners);
+        $partners .= ' https://' . implode(' https://', $_partners);
+        $partners .= ' http://' . implode(' http://', $_partners);
+    }
+
+    $value = "";
+    $value .= "frame-ancestors 'self'{$partners}; ";
+
+    @header('Content-Security-Policy:' . trim($value));
+}
+
+/**
+ * Stop the web browser trying to save us, and breaking some requests in the process.
+ */
+function disable_browser_xss_detection()
+{
+    @header('X-XSS-Protection: 0');
+}
+
+/**
+ * Whether smart decaching is enabled. It is slightly inefficient but makes site development easier for people.
+ *
+ * @return boolean If smart decaching is enabled
+ */
+function support_smart_decaching()
+{
+    static $has_in_url = null;
+    if ($has_in_url === null) {
+        $has_in_url = (get_param_integer('keep_smart_decaching', 0) == 1);
+    }
+    if ($has_in_url) {
+        return true;
+    }
+
+    global $SITE_INFO;
+    if (!empty($SITE_INFO['disable_smart_decaching'])) {
+        if ($SITE_INFO['disable_smart_decaching'] == '1') {
+            return false;
+        }
+
+        static $has_temporary = null;
+        if ($has_temporary === null) {
+            $has_temporary = false;
+            $matches = array();
+            if (preg_match('#^(\d+):(.*)$#', $SITE_INFO['disable_smart_decaching'], $matches) != 0) {
+                $time = intval($matches[1]);
+                $path = $matches[2];
+                if (is_file($path) && filemtime($path) > time() - $time) {
+                    $has_temporary = true;
+                }
+            }
+        }
+        return $has_temporary;
+    }
+
+    return true; // By default it is on
+}
+
+/**
+ * For performance reasons disable smart decaching (it does a lot of file system checks).
+ */
+function disable_smart_decaching_temporarily()
+{
+    global $SITE_INFO;
+    $SITE_INFO['disable_smart_decaching'] = '1';
+}
+
+/**
+ * Find if the current request has POST fields worth considering/propagating. Very standard framework fields will be ignored.
+ *
+ * @return boolean Whether it does
+ */
+function has_interesting_post_fields()
+{
+    $post = $_POST;
+    $to_ignore = array(
+        'csrf_token',
+        'y' . md5(get_site_name() . ': antispam'),
+        'login_username',
+        'password',
+        'remember_me',
+        'redirect',
+        'redirect_passon',
+    );
+    foreach ($to_ignore as $field) {
+        unset($post[$field]);
+    }
+    return (count($post) !== 0);
 }

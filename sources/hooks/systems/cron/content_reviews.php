@@ -50,7 +50,7 @@ class Hook_cron_content_reviews
             // Get title / check not deleted, cleanup if is
             list($title, $submitter) = content_get_details($content_type, $content_id);
             if (is_null($title)) {
-                $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_id, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
+                $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_type, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess
                 continue;
             }
 
@@ -76,7 +76,7 @@ class Hook_cron_content_reviews
             $subject = do_lang('NOTIFICATION_SUBJECT_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str);
             $message = do_notification_lang('NOTIFICATION_BODY_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str, $edit_url->evaluate());
             dispatch_notification('content_reviews', $content_type, $subject, $message, null, null, 4, false);
-            if (!is_null($submitter)) {
+            if ((!is_null($submitter)) && (!notifications_enabled('content_reviews', $content_type, $submitter))) {
                 dispatch_notification('content_reviews__own', $content_type, $subject, $message, array($submitter), null, 4, false);
             }
 

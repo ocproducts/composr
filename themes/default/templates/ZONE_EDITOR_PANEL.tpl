@@ -33,7 +33,7 @@
 
 {+START,IF_PASSED,COMCODE}
 	<div id="edit_{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit_tab_{ID*}" role="tabpanel">
-		<form title="{ID*}: {!COMCODE}" action="index.php" method="post">
+		<form title="{ID*}: {!COMCODE}" action="index.php" method="post" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>
@@ -91,7 +91,7 @@
 
 	{+START,IF_PASSED,ZONES}
 		{+START,IF,{$ADDON_INSTALLED,redirects_editor}}
-			<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post">
+			<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p class="lonely_label">
@@ -113,7 +113,7 @@
 
 {+START,IF_PASSED,SETTINGS}
 	<div id="settings_{ID*}" style="display: none" aria-labeledby="settings_tab_{ID*}" role="tabpanel">
-		<form title="{ID*}: {!SETTINGS}" id="middle_fields" action="index.php">
+		<form title="{ID*}: {!SETTINGS}" id="middle_fields" action="index.php" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="wide_table_wrap"><table class="map_table form_table wide_table">

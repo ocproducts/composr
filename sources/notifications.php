@@ -602,7 +602,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                     $from_email,
                     $from_name,
                     $priority,
-                    null,
+                    $attachments,
                     $no_cc,
                     ($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id,
                     ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
@@ -610,7 +610,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                     false,
                     'MAIL',
                     true,
-                    $attachments,
+                    null,
                     null,
                     $join_time
                 );
@@ -634,8 +634,13 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 
         if (($setting & $frequency) != 0) {
             if ($frequency == A_WEB_NOTIFICATION) {
-                if (($notification_code == 'cns_new_pt') && (get_option('pt_notifications_as_web') == '0')) {
-                    continue;
+                if (get_option('pt_notifications_as_web') == '0') {
+                    if (
+                        ($notification_code == 'cns_new_pt') ||
+                        ($notification_code == 'cns_topic' && is_numeric($code_category) && is_null($GLOBALS['FORUM_DB']->query_select_value_if_there('f_topics', 't_forum_id', array('id' => intval($code_category)))))
+                    ) {
+                        continue;
+                    }
                 }
                 $path = get_custom_file_base() . '/data_custom/modules/web_notifications';
                 if (!file_exists($path)) {
@@ -644,6 +649,8 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
                 }
                 @file_put_contents($path . '/latest.dat', strval(time()));
             }
+
+            inject_web_resources_context_to_comcode($message);
 
             $map = array(
                 'd_subject' => $subject,
@@ -681,7 +688,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
             $wrapped_message = do_lang($use_real_from ? 'NOTIFICATION_PT_MESSAGE_WRAP_DIRECT_REPLY' : 'NOTIFICATION_PT_MESSAGE_WRAP', $message_to_send);
 
             // NB: These are posted by Guest (system) although the display name is set to the member triggering. This is intentional to stop said member getting unexpected replies.
-            $topic_id = cns_make_topic(null, $wrapped_subject, 'icons/14x14/cns_topic_modifiers/announcement', 1, 1, 0, 0, 0, $from_member_id_shown, $to_member_id, false, 0, null, '');
+            $topic_id = cns_make_topic(null, '', 'icons/14x14/cns_topic_modifiers/announcement', 1, 1, 0, 0, 0, $from_member_id_shown, $to_member_id, false, 0, null, '');
             cns_make_post($topic_id, $wrapped_subject, $wrapped_message, 0, true, 1, 0, ($from_member_id < 0) ? do_lang('SYSTEM') : $from_name, null, null, $from_member_id_shown, null, null, null, false, true, null, true, $wrapped_subject, 0, null, true, true, true, ($from_member_id == A_FROM_SYSTEM_PRIVILEGED));
         }
     }
@@ -776,8 +783,8 @@ function enable_notifications($notification_code, $notification_category, $membe
     $map['l_setting'] = $setting;
     $db->query_insert('notifications_enabled', $map);
 
-    if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns')) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category);
+    if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns') && (!is_null($notification_category))) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));
         if (!is_null($topic_id)) {
             enable_notifications('cns_topic', strval($topic_id), $member_id);
         }
@@ -812,7 +819,7 @@ function disable_notifications($notification_code, $notification_category, $memb
     ));
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns')) { // Sync comment_posted ones to the forum ones
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));
         if (!is_null($topic_id)) {
             disable_notifications('cns_topic', strval($topic_id), $member_id);
         }

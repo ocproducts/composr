@@ -128,6 +128,8 @@ function do_emoticon($imgcode)
  */
 function check_naughty_javascript_url($source_member, $url, $as_admin)
 {
+    init_potential_js_naughty_array();
+
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
 
     if ((!$as_admin) && (!has_privilege($source_member, 'use_very_dangerous_comcode'))) {
@@ -180,8 +182,14 @@ function check_naughty_javascript_url($source_member, $url, $as_admin)
  */
 function _custom_comcode_import($connection)
 {
+    init_valid_comcode_tags();
+
     global $IN_MINIKERNEL_VERSION;
     global $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $TEXTUAL_TAGS, $IMPORTED_CUSTOM_COMCODE, $CUSTOM_COMCODE_REPLACE_TARGETS_CACHE;
+
+    if ($IMPORTED_CUSTOM_COMCODE) {
+        return;
+    }
 
     if (!$IN_MINIKERNEL_VERSION) {
         // From forum driver
@@ -205,11 +213,12 @@ function _custom_comcode_import($connection)
         // From Custom Comcode
         $tags = array();
         if (addon_installed('custom_comcode')) {
-            if (($GLOBALS['FORUM_DB'] != $connection) && (!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
-                $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
-            }
-            if (is_forum_db($connection)) {
-                $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+            if (is_on_multi_site_network()) {
+                if (is_forum_db($connection)) {
+                    $tags = array_merge($tags, $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+                } elseif ((!is_null($GLOBALS['FORUM_DB'])) && (get_forum_type() == 'cns')) {
+                    $tags = array_merge($tags, $GLOBALS['FORUM_DB']->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
+                }
             }
             $tags = array_merge($tags, $connection->query_select('custom_comcode', array('tag_parameters', 'tag_replace', 'tag_tag', 'tag_dangerous_tag', 'tag_block_tag', 'tag_textual_tag'), array('tag_enabled' => 1)));
         }
@@ -274,8 +283,8 @@ function _custom_comcode_import($connection)
  */
 function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $wrap_pos = null, $pass_id = null, $connection = null, $semiparse_mode = false, $preparse_mode = false, $is_all_semihtml = false, $structure_sweep = false, $check_only = false, $highlight_bits = null, $on_behalf_of_member = null)
 {
-    if (count($_POST) != 0) {
-        @header('X-XSS-Protection: 0');
+    if (has_interesting_post_fields()) {
+        disable_browser_xss_detection();
     }
 
     if (is_null($connection)) {
@@ -348,7 +357,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
         }
     }
     if (!$check_only) {
-        if (((get_mass_import_mode()) || (count($_POST) == 0) || (!$posted)) && (!$preparse_mode)) {
+        if (((get_mass_import_mode()) || (!has_interesting_post_fields()) || (!$posted)) && (!$preparse_mode)) {
             $line = substr_count(substr($comcode, 0, $pos), "\n") + 1;
             $out = do_template('COMCODE_CRITICAL_PARSE_ERROR', array('_GUID' => '29da9dc5c6b9a527cb055b7da35bb6b8', 'LINE' => integer_format($line), 'MESSAGE' => $message, 'SOURCE' => $comcode)); // Won't parse, but we can't help it, so we will skip on
             return $out;
@@ -622,6 +631,30 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $temp_tpl->attach($embed);
             break;
 
+        // Undocumented, used to inject dependencies in things like logged e-mail Comcode or notification Comcode, without needing access-restricted Tempcode
+        case 'require_css':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $css) {
+                    if ($css != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_CSS', array($css)));
+                    }
+                }
+            }
+            break;
+        case 'require_javascript':
+            $_embed = $embed->evaluate();
+            if ($_embed != '') {
+                $temp_tpl = new Tempcode();
+                foreach (explode(',', $_embed) as $javascript) {
+                    if ($javascript != '') {
+                        $temp_tpl->attach(symbol_tempcode('REQUIRE_JAVASCRIPT', array($javascript)));
+                    }
+                }
+            }
+            break;
+
         case 'currency':
             if (addon_installed('ecommerce')) {
                 $bracket = (array_key_exists('bracket', $attributes) && ($attributes['bracket'] == '1'));
@@ -656,7 +689,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've double converted. Ideally we would have parsed a direct stream of HTML. But we could not do that for security reasons.
+                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
                     $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
                     $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true); // Re-parse (with full security)
@@ -1622,7 +1655,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             } else {
                 $url_full = $url;
             }
-            $striped_base_url = str_replace('www.', '', str_replace('http://', '', get_base_url()));
+            $striped_base_url = str_replace('www.', '', str_replace('https://', '', str_replace('http://', '', get_base_url())));
             if (($striped_base_url != '') && (substr($url, 0, 1) != '%') && (strpos($url_full, $striped_base_url) === false)) { // We don't want to hammer our own server when we have Comcode pages full of links to our own site (much less risk of hammering other people's servers, as we won't tend to have loads of links to them). Would also create bugs in emails sent out - e.g. auto-running approve_ip.php links hence voiding the intent of the feature.
                 $temp_tpl = test_url($url_full, 'url', $given_url, $source_member);
             }
@@ -1862,7 +1895,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $width = array_key_exists('width', $attributes) ? $attributes['width'] : '';
             $height = array_key_exists('height', $attributes) ? $attributes['height'] : '';
 
-            $temp_tpl = do_template('COMCODE_MEDIA_SET', array('_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa', 'WIDTH' => $width,
+            $temp_tpl = do_template('COMCODE_MEDIA_SET', array(
+                '_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa',
+                'WIDTH' => $width,
                 'HEIGHT' => $height,
                 'MEDIA' => $embed,
             ));
@@ -2122,9 +2157,10 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             // New attachments need inserting
             if (is_null($attachment_row)) {
+                require_code('images');
+
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    require_code('images');
                     if (is_image($original_filename)) {
                         if (function_exists('imagetypes')) {
                             require_code('images');

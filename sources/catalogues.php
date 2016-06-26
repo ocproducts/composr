@@ -80,6 +80,10 @@ function load_catalogue_row($catalogue_name, $fail_ok = false)
  */
 function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
     require_css('catalogues');
 
@@ -119,6 +123,10 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
  */
 function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
 
     $just_category_row = db_map_restrict($row, array('id', 'cc_description'));
@@ -196,6 +204,10 @@ function render_catalogue_category_box($row, $zone = '_SEARCH', $give_context = 
  */
 function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('catalogues');
 
     $just_catalogue_row = db_map_restrict($row, array('c_name', 'c_description'));
@@ -280,7 +292,7 @@ function count_catalogue_category_children($category_id)
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
  * @return array An array containing our built up entries (renderable Tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows
  */
-function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $filter, $root, $display_type = null, $do_sorting = true, $entries = null, $_filtercode = '', $_order_by = null, $ordering_param = 'sort', $viewing_member_id = null)
+function render_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $filter, $root, $display_type = null, $do_sorting = true, $entries = null, $_filtercode = '', $_order_by = null, $ordering_param = 'sort', $viewing_member_id = null)
 {
     if ($_filtercode != '') {
         require_code('filtercode');
@@ -349,7 +361,7 @@ function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $ca
         $filter = null;
     }
     if ($entries === null) {
-        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, '', $direction);
+        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, $direction);
     } else { // Oh, we already have $entries
         $num_entries = count($entries);
         $in_db_sorting = false;
@@ -502,8 +514,7 @@ function get_catalogue_category_entry_buildup($category_id, $catalogue_name, $ca
                         $tab_entry_map['VIEW_URL'] = '';
                     }
 
-                    $entry_buildup->attach(/*Preserve memory*/
-                        static_evaluate_tempcode(do_template('CATALOGUE_' . $tpl_set . '_TABULAR_ENTRY_WRAP', $tab_entry_map, null, false, 'CATALOGUE_DEFAULT_TABULAR_ENTRY_WRAP')));
+                    $entry_buildup->attach(/*Preserve memory*/static_evaluate_tempcode(do_template('CATALOGUE_' . $tpl_set . '_TABULAR_ENTRY_WRAP', $tab_entry_map, null, false, 'CATALOGUE_DEFAULT_TABULAR_ENTRY_WRAP')));
                 }
                 if (($start !== null) && ($i >= $start + $max)) {
                     break;
@@ -694,6 +705,8 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
             $bits = _catalogues_filtercode($GLOBALS['SITE_DB'], $info, $catalogue_name, $extra_join, $extra_select, $order_by, '', array(), 'r');
             if ($bits !== null) {
                 list($virtual_order_by,) = $bits;
+            } else {
+                $virtual_order_by = 'r.ce_add_date'; // Should not happen
             }
         } elseif (is_numeric($order_by)) { // Ah, so it's saying the nth field of this catalogue
             $ob = object_factory('Hook_content_meta_aware_catalogue_entry');
@@ -909,7 +922,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         if (($i == 0) && ($catalogue['c_display_type'] == C_DT_TITLELIST)) {
             $use_ev = $ev;
         } else {
-            $use_ev = $ob->render_field_value($field, $ev, $i, $only_fields, 'catalogue_efv_' . $storage_type, $entry['id'], 'ce_id', 'cf_id', 'cv_value', $entry['ce_submitter']);
+            $use_ev = $ob->render_field_value($field, $ev, $i, $only_fields, 'catalogue_efv_' . $storage_type, $id, 'ce_id', 'cf_id', 'cv_value', $entry['ce_submitter']);
         }
 
         // Special case for access to raw thumbnail
@@ -923,30 +936,30 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
             $map['_FIELD_' . $str_id . '_THUMB'] = $map['FIELD_' . $str_i . '_THUMB'];
         }
 
+        // Different ways of accessing the main field value, and pure version of it
+        $field_name = get_translated_text($field['cf_name']);
+        //$map['FIELDNAME_' . $str_i] = $field_name;
+        //$fields_2d[] = array('NAME' => $field_name, 'VALUE' => $use_ev);
+        $field_type = $field['cf_type'];
+        //$map['FIELDTYPE_' . $str_i] = $field_type;
+        $map['FIELD_' . $str_i] = $use_ev;
+        $map['_FIELD_' . $str_id] = &$map['FIELD_' . $str_i];
+        if ($use_ev === $ev) {
+            $map['FIELD_' . $str_i . '_PLAIN'] = &$map['FIELD_' . $str_i];
+        } else {
+            $map['FIELD_' . $str_i . '_PLAIN'] = $ev;
+        }
+        $map['_FIELD_' . $str_id . '_PLAIN'] = &$map['FIELD_' . $str_i . '_PLAIN'];
+        if ($ev === $field['effective_value_pure']) {
+            $map['FIELD_' . $str_i . '_PURE'] = &$map['FIELD_' . $str_i . '_PLAIN'];
+        } else {
+            $map['FIELD_' . $str_i . '_PURE'] = $field['effective_value_pure'];
+        }
+        $map['_FIELD_' . $str_id . '_PURE'] = &$map['FIELD_' . $str_i . '_PURE'];
+
         // If the field should be shown, show it
         if (($view_type == 'PAGE') || (($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH')) || ($force_view_all)) {
-            // Different ways of accessing the main field value, and pure version of it
-            $field_name = get_translated_text($field['cf_name']);
-            //$map['FIELDNAME_' . $str_i] = $field_name;
-            //$fields_2d[] = array('NAME' => $field_name, 'VALUE' => $use_ev);
-            $field_type = $field['cf_type'];
-            //$map['FIELDTYPE_' . $str_i] = $field_type;
-            $map['FIELD_' . $str_i] = $use_ev;
-            $map['_FIELD_' . $str_id] = &$map['FIELD_' . $str_i];
-            if ($use_ev === $ev) {
-                $map['FIELD_' . $str_i . '_PLAIN'] = &$map['FIELD_' . $str_i];
-            } else {
-                $map['FIELD_' . $str_i . '_PLAIN'] = $ev;
-            }
-            $map['_FIELD_' . $str_id . '_PLAIN'] = &$map['FIELD_' . $str_i . '_PLAIN'];
-            if ($ev === $field['effective_value_pure']) {
-                $map['FIELD_' . $str_i . '_PURE'] = &$map['FIELD_' . $str_i . '_PLAIN'];
-            } else {
-                $map['FIELD_' . $str_i . '_PURE'] = $field['effective_value_pure'];
-            }
-            $map['_FIELD_' . $str_id . '_PURE'] = &$map['FIELD_' . $str_i . '_PURE'];
-
-            if (($field['cf_visible'] == 1) || ($i == 0)) {
+            if ($field['cf_visible'] == 1) {
                 if ((!$no_catalogue_field_assembly) || (!$feedback_details/*no feedback details implies wants all field data*/) || ($force_view_all)) {
                     $f = array('ENTRYID' => strval($id), 'CATALOGUE' => $catalogue_name, 'TYPE' => $field['cf_type'], 'FIELD' => $field_name, 'FIELDID' => $str_i, '_FIELDID' => $str_id, 'FIELDTYPE' => $field_type, 'VALUE_PLAIN' => $ev, 'VALUE' => $use_ev);
                     if (!$no_catalogue_field_assembly_fieldmaps__this) {
@@ -968,7 +981,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
                         }
                     }
                 }
-            } else {
+            } elseif ($i != 0) {
                 $all_visible = false;
             }
             //$fields_1d[]=$field;
@@ -992,8 +1005,8 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $map['VIEWS'] = strval($entry['ce_views']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
-    $map['ADD_DATE'] = get_timezoned_date($entry['ce_add_date']);
-    $map['EDIT_DATE'] = get_timezoned_date($entry['ce_edit_date']);
+    $map['ADD_DATE'] = get_timezoned_date_tempcode($entry['ce_add_date']);
+    $map['EDIT_DATE'] = is_null($entry['ce_edit_date']) ? new Tempcode() : get_timezoned_date_tempcode($entry['ce_edit_date']);
     $map['ID'] = strval($id);
     $map['CATALOGUE'] = $catalogue_name;
     $map['CATALOGUE_TITLE'] = array_key_exists('c_title', $catalogue) ? get_translated_text($catalogue['c_title']) : '';
@@ -1004,6 +1017,12 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
 
     $zone = get_module_zone('catalogues');
 
+    $separate_view_screen =
+        (get_option('is_on_comments') == '1') && ($entry['allow_comments'] >= 1) ||
+        /*(get_option('is_on_rating') == '1') && ($entry['allow_rating'] == 1) || We'll just allow inline rating */
+        (get_option('is_on_trackbacks') == '1') && ($entry['allow_trackbacks'] == 1) ||
+        (!$all_visible);
+
     // Feedback
     $c_value = isset($map['FIELD_0_PLAIN_PURE']) ? $map['FIELD_0_PLAIN_PURE'] : (isset($map['FIELD_0_PLAIN']) ? $map['FIELD_0_PLAIN'] : do_lang('UNKNOWN'));
     if (is_object($c_value)) {
@@ -1013,8 +1032,9 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     $self_url = build_url($url_map, $zone, null, false, false, true);
     if (($feedback_details) || ($only_fields !== array(0))) {
         require_code('feedback');
-        $map['RATING'] = ($entry['allow_rating'] == 1) ? display_rating($self_url, $c_value, 'catalogues__' . $catalogue_name, strval($id), 'RATING_INLINE_STATIC', $entry['ce_submitter']) : new Tempcode();
+        $map['RATING'] = ($entry['allow_rating'] == 1) ? display_rating($self_url, $c_value, 'catalogues__' . $catalogue_name, strval($id), $separate_view_screen ? 'RATING_INLINE_STATIC' : 'RATING_INLINE_DYNAMIC', $entry['ce_submitter']) : new Tempcode();
     }
+    $map['ALLOW_RATING'] = ($entry['allow_rating'] == 1);
     if ($feedback_details) {
         require_code('feedback');
         list($map['RATING_DETAILS'], $map['COMMENT_DETAILS'], $map['TRACKBACK_DETAILS']) = embed_feedback_systems(
@@ -1033,7 +1053,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     }
 
     // Link to view entry
-    if ((get_option('is_on_comments') == '1') && ($entry['allow_comments'] >= 1) || (get_option('is_on_rating') == '1') && ($entry['allow_rating'] == 1) || (get_option('is_on_trackbacks') == '1') && ($entry['allow_trackbacks'] == 1) || (!$all_visible)) {
+    if ($separate_view_screen) {
         $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $id);
         if ($root !== null) {
             $url_map['keep_catalogue_' . $catalogue_name . '_root'] = $root;
@@ -1155,8 +1175,11 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
                 $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
             } else {
                 $just_row = db_map_restrict($temp, array('cv_value')) + array('ce_id' => is_array($entry_id) ? $entry_id['id'] : $entry_id, 'cf_id' => $field['id']);
+                if (multi_lang_content()) {
+                    $just_row['cv_value'] = intval($just_row['cv_value']);
+                }
                 $target['effective_value'] = get_translated_tempcode('catalogue_efv_' . $raw_type, $just_row, 'cv_value');
-                $target['effective_value_pure'] = get_translated_text($temp['cv_value']);
+                $target['effective_value_pure'] = get_translated_text($just_row['cv_value']);
             }
             break;
         case 'long_text':
@@ -1680,7 +1703,7 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
 
     if (!$no_link_for_me_sir) {
         $title = get_translated_text($PT_PAIR_CACHE[$category_id]['cc_title']);
-        $segments[] = array($page_link, escape_html($title));
+        $segments[] = array($page_link, $title);
     }
 
     return array_merge($below, $segments);
@@ -1819,9 +1842,9 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     // Main rendering...
 
     $map['ENTRY'] = do_template('CATALOGUE_' . $tpl_set . '_FIELDMAP_ENTRY_WRAP', $map + array('ENTRY_SCREEN' => true, 'GIVE_CONTEXT' => false), null, false, 'CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP');
-    $map['ADD_DATE'] = get_timezoned_date($entry['ce_add_date']);
+    $map['ADD_DATE'] = get_timezoned_date_tempcode($entry['ce_add_date']);
     $map['ADD_DATE_RAW'] = strval($entry['ce_add_date']);
-    $map['EDIT_DATE'] = ($entry['ce_edit_date'] === null) ? '' : get_timezoned_date($entry['ce_edit_date']);
+    $map['EDIT_DATE'] = ($entry['ce_edit_date'] === null) ? '' : get_timezoned_date_tempcode($entry['ce_edit_date']);
     $map['EDIT_DATE_RAW'] = ($entry['ce_edit_date'] === null) ? '' : strval($entry['ce_edit_date']);
     $map['VIEWS'] = integer_format($entry['ce_views']);
     $title_to_use = do_lang_tempcode($catalogue_name . '__CATALOGUE_ENTRY', $map['FIELD_0']);

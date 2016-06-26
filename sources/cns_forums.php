@@ -51,6 +51,10 @@ function init__cns_forums()
  */
 function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
 
     $map = array('page' => 'forumview');
@@ -339,17 +343,17 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
         if ($end_point_forum != db_get_first_id()) {
             $map['id'] = $end_point_forum;
         }
-        $test = get_param_integer('kfs' . strval($end_point_forum), -1);
-        if (($test != -1) && ($test != 0)) {
+        $test = get_param_string('kfs' . strval($end_point_forum), null, true);
+        if (($test !== null) && ($test !== '0')) {
             $map['kfs' . strval($end_point_forum)] = $test;
         }
         if ($start) {
             $map['keep_forum_root'] = $end_point_forum;
         }
         $page_link = build_page_link($map, get_module_zone('forumview'));
-        $segments[] = array($page_link, escape_html($this_name), $start ? do_lang_tempcode('VIRTUAL_ROOT') : new Tempcode());
+        $segments[] = array($page_link, $this_name, $start ? do_lang_tempcode('VIRTUAL_ROOT') : new Tempcode());
     } else {
-        $segments[] = array('', escape_html($this_name));
+        $segments[] = array('', $this_name);
     }
 
     if ($end_point_forum !== $root) {

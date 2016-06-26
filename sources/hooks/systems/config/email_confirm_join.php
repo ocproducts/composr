@@ -38,6 +38,7 @@ class Hook_config_email_confirm_join
             'explanation' => 'CONFIG_OPTION_email_confirm_join',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'core_cns',
         );

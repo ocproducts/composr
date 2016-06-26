@@ -80,14 +80,17 @@ function reinstall_addon_soft($addon, $ini_info = null)
     require_code('config2');
     require_code('files2');
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
-    $ob = object_factory('Hook_addon_registry_' . $addon);
+    $hook_path = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+    if (is_file(get_file_base() . '/sources/' . $hook_path . '.php') || is_file(get_file_base() . '/sources_custom/' . $hook_path . '.php')) {
+        require_code($hook_path);
+        $ob = object_factory('Hook_addon_registry_' . $addon);
 
-    if (method_exists($ob, 'uninstall')) {
-        $ob->uninstall();
-    }
-    if (method_exists($ob, 'install')) {
-        $ob->install();
+        if (method_exists($ob, 'uninstall')) {
+            $ob->uninstall();
+        }
+        if (method_exists($ob, 'install')) {
+            $ob->install();
+        }
     }
 
     $addon_info = read_addon_info($addon, false, null, $ini_info);
@@ -584,14 +587,24 @@ function install_addon($file, $files = null)
 
         if ((is_null($files)) || (in_array($addon_file, $files))) {
             $matches = array();
-            if (preg_match('#(\w*)/index.php#', $addon_file, $matches) != 0) {
+            if (preg_match('#(\w*)/index\.php$#', $addon_file, $matches) != 0) {
                 $zone = $matches[1];
 
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $zone));
                 if (is_null($test)) {
+                    $map = array(
+                        'zone_name' => $zone,
+                        'zone_default_page' => ($zone == 'forum') ? 'forumview' : 'start',
+                        'zone_theme' => '-1',
+                        'zone_require_session' => 0,
+                    );
+                    $map += insert_lang('zone_title', titleify($zone), 1);
+                    $map += insert_lang('zone_header_text', '', 1);
+                    $GLOBALS['SITE_DB']->query_insert('zones', $map);
+
                     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
                     foreach (array_keys($groups) as $group_id) {
-                        $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id));
+                        $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true);
                     }
                 }
 

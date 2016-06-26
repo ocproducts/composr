@@ -419,6 +419,8 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	float: none;
 	margin: 1em;
 	border: 1px solid {$GET,standard_border};
+	min-height: auto;
+	{$BETA_CSS_PROPERTY,opacity: 1.0;}
 }
 
 .radio_list_picture img {
@@ -757,6 +759,10 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 .cke_reset_all div[role="tabpanel"]>:last-child {
 	margin-bottom: 0;
+}
+
+.cke_widget_inline {
+	line-height: 1em !important;
 }
 
 /* Icons for our custom plugins (we specify ours this way for greatest flexibility) */

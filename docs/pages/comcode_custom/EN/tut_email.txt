@@ -88,6 +88,10 @@ Composr has config options for:
 The queue can be viewed from:
 Admin Zone > Audit > E-mail queue/log
 
+All (&dagger;) e-mails are logged for 14 days in the same system, regardless of whether the queue is on or not. This is very useful for analysing what your site has been sending out.
+
+&dagger; Except support ticket e-mails if IMAP integration is enabled, newsletter e-mails, password reset e-mails, and some other very high security or high volume e-mails.
+
 [concepts
  1_key="SMTP"   1_value="The e-mail protocol for sending e-mail and delivery between servers"
  2_key="IMAP"   2_value="A protocol for accessing e-mail stored on a server"

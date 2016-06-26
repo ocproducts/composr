@@ -113,6 +113,9 @@ class html_safe_lang_test_set extends cms_test_case
                             'BANNER_HITS_TO',
                             'CANT_TRACK',
                             'BANNER_CLICKTHROUGH',
+                            'SU_CHATTING_AS',
+                            'NUM_GUESTS',
+                            'ALT_FIELD',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));
@@ -134,7 +137,7 @@ class html_safe_lang_test_set extends cms_test_case
         //if ($cnt == 0) echo '<p><em>None</em></p>';
     }
 
-    public function do_dir($dir, $dir_stub, $exp, $ext)
+    private function do_dir($dir, $dir_stub, $exp, $ext)
     {
         global $FILE2;
         if (($dh = opendir($dir)) !== false) {
@@ -155,7 +158,7 @@ class html_safe_lang_test_set extends cms_test_case
         }
     }
 
-    public function do_file($exp)
+    private function do_file($exp)
     {
         global $FILE2;
         preg_replace_callback($exp, array($this, 'find_php_use_match'), file_get_contents($FILE2));

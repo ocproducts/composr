@@ -22,7 +22,6 @@ class Module_admin_disastr extends Standard_crud_module
 {
     public $lang_type = 'DISEASE';
     public $select_name = 'NAME';
-    public $content_type = 'group';
     public $possibly_some_kind_of_upload = true;
     public $output_of_action_is_confirmation = true;
     public $menu_label = 'DISASTR_TITLE';
@@ -116,9 +115,13 @@ class Module_admin_disastr extends Standard_crud_module
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
+
         return array(
-                   'browse' => array('MANAGE_DISEASES', 'menu/disastr_log'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_DISEASES', 'menu/disastr_log'),
+        ) + parent::get_entry_points();
     }
 
     public $title;
@@ -195,40 +198,45 @@ class Module_admin_disastr extends Standard_crud_module
 
     public function view()
     {
-        $id = null;
-        $name = '';
-        $image = '';
-        $cure = '';
-        $cure_price = 0;
-        $immunization = '';
-        $immunization_price = 0;
-        $spread_rate = 0;
-        $points_per_spread = 10;
-        $enabled = do_lang_tempcode('DISEASE_DISABLED');
+        $title = get_screen_title('VIEW_DISEASE');
 
-        $id = get_param_integer('id', 0);
-        if ($id > 0) {
-            $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array('id' => $id));
+        $id = get_param_integer('id');
 
-            if (isset($rows[0]['id']) && $rows[0]['id'] > 0) {
-                $id = $rows[0]['id'];
-                $name = $rows[0]['name'];
-                $image = $rows[0]['image'];
-                $cure = $rows[0]['cure'];
-                $cure_price = $rows[0]['cure_price'];
-                $immunization = $rows[0]['immunisation'];
-                $immunization_price = $rows[0]['immunisation_price'];
-                $spread_rate = $rows[0]['spread_rate'];
-                $points_per_spread = $rows[0]['points_per_spread'];
-                $enabled = ($rows[0]['enabled'] == 1) ? do_lang_tempcode('DISEASE_ENABLED') : do_lang_tempcode('DISEASE_DISABLED');
-            }
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array('id' => $id), '' , 1);
+        if (!isset($rows[0])) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
+        $name = $rows[0]['name'];
+
+        require_code('images');
+        $image = do_image_thumb($rows[0]['image'], $name);
+
+        $cure = $rows[0]['cure'];
+        $cure_price = $rows[0]['cure_price'];
+        $immunization = $rows[0]['immunisation'];
+        $immunization_price = $rows[0]['immunisation_price'];
+
+        $spread_rate = $rows[0]['spread_rate'];
+        $points_per_spread = $rows[0]['points_per_spread'];
+
+        $enabled = ($rows[0]['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
+
         require_code('templates_map_table');
-        return map_table_screen(get_screen_title('VIEW_DISEASE'), array('NAME' => $name, 'IMAGE' => $image, 'CURE' => $cure, 'CURE_PRICE' => integer_format($cure_price), 'IMMUNIZATION' => $immunization, 'IMMUNIZATION_PRICE' => integer_format($immunization_price), 'SPREAD_RATE' => integer_format($spread_rate), 'POINTS_PER_SPREAD' => integer_format($points_per_spread), 'ENABLED' => $enabled));
+        return map_table_screen($title, array(
+            'NAME' => $name,
+            'IMAGE' => $image,
+            'CURE' => $cure,
+            'CURE_PRICE' => integer_format($cure_price),
+            'IMMUNIZATION' => $immunization,
+            'IMMUNIZATION_PRICE' => integer_format($immunization_price),
+            'SPREAD_RATE' => integer_format($spread_rate),
+            'POINTS_PER_SPREAD' => integer_format($points_per_spread),
+            'ENABLED' => $enabled,
+        ));
     }
 
-    public function get_form_fields($id = null, $name = '', $image = '', $cure = '', $cure_price = 10, $immunization = '', $immunization_price = 5, $spread_rate = 12, $points_per_spread = 10, $enabled = 0)
+    public function get_form_fields($id = null, $name = '', $image = '', $cure = '', $cure_price = 10, $immunization = '', $immunization_price = 5, $spread_rate = 12, $points_per_spread = 10, $enabled = 1)
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();

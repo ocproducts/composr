@@ -92,7 +92,6 @@ class Hook_fields_reference_multi
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        unset($field);
         return array('long_unescaped', $default, 'long');
     }
 

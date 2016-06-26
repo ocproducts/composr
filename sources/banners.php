@@ -70,76 +70,6 @@ function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avo
 }
 
 /**
- * Get Tempcode for a banner 'feature box' for the given row
- *
- * @param  array $row The database field row of it
- * @param  ID_TEXT $zone The zone to use
- * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
- * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return Tempcode A box for it, linking to the full page
- */
-function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
-{
-    require_lang('banners');
-
-    $just_banner_row = db_map_restrict($row, array('name', 'caption'));
-
-    $url = new Tempcode();
-
-    $_title = $row['name'];
-    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER'), $_title) : $_title;
-
-    $summary = show_banner($row['name'], $row['b_title_text'], get_translated_tempcode('banners', $just_banner_row, 'caption'), $row['b_direct_code'], $row['img_url'], '', $row['site_url'], $row['b_type'], $row['submitter']);
-
-    return do_template('SIMPLE_PREVIEW_BOX', array(
-        '_GUID' => ($guid != '') ? $guid : 'aaea5f7f64297ab46aa3b3182fb57c37',
-        'ID' => $row['name'],
-        'TITLE' => $title,
-        'TITLE_PLAIN' => $_title,
-        'SUMMARY' => $summary,
-        'URL' => $url,
-        'FRACTIONAL_EDIT_FIELD_NAME' => $give_context ? null : 'name',
-        'FRACTIONAL_EDIT_FIELD_URL' => $give_context ? null : '_SEARCH:cms_banners:__edit:' . $row['name'],
-        'RESOURCE_TYPE' => 'banner',
-    ));
-}
-
-/**
- * Get Tempcode for a banner type 'feature box' for the given row
- *
- * @param  array $row The database field row of it
- * @param  ID_TEXT $zone The zone to use
- * @param  boolean $give_context Whether to include context (i.e. say WHAT this is, not just show the actual content)
- * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
- * @return Tempcode A box for it, linking to the full page
- */
-function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
-{
-    require_lang('banners');
-
-    $url = new Tempcode();
-
-    $_title = $row['id'];
-    if ($_title == '') {
-        $_title = do_lang('_DEFAULT');
-    }
-    $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('BANNER_TYPE'), $_title) : $_title;
-
-    $num_entries = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('validated' => 1));
-    $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
-
-    return do_template('SIMPLE_PREVIEW_BOX', array(
-        '_GUID' => ($guid != '') ? $guid : 'ba1f8d9da6b65415483d0d235f29c3d4',
-        'ID' => $row['id'],
-        'TITLE' => $title,
-        'SUMMARY' => '',
-        'ENTRY_DETAILS' => $entry_details,
-        'URL' => $url,
-        'RESOURCE_TYPE' => 'banner_type',
-    ));
-}
-
-/**
  * Show a banner according to GET parameter specification.
  *
  * @param  boolean $ret Whether to return a result rather than outputting
@@ -299,23 +229,27 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
 
         // Are we allowed to show fallback banners?
         $show_fallbacks = true;
-        foreach ($rows as $counter => $myrow) {
-            if ($myrow['the_type'] == BANNER_CAMPAIGN) {
-                $show_fallbacks = false;
+        if (count($rows) > 1) {
+            foreach ($rows as $counter => $myrow) {
+                if ($myrow['the_type'] == BANNER_CAMPAIGN) {
+                    $show_fallbacks = false;
+                }
             }
         }
 
         // Remove ones already shown on this page-view
         static $shown_already = array(); // NB: Holds shown ones for any banner types, not specifically the restraints we are working on here. This could be true if you have multiple banner spots: count($shown_already)>count($rows)
-        if (!running_script('banner')) {
-            $old_rows = $rows;
-            foreach ($rows as $counter => $myrow) {
-                if (array_key_exists($myrow['name'], $shown_already)) {
-                    unset($rows[$counter]);
+        if ($shown_already !== array()) {
+            if (!running_script('banner')) {
+                $old_rows = $rows;
+                foreach ($rows as $counter => $myrow) {
+                    if (array_key_exists($myrow['name'], $shown_already)) {
+                        unset($rows[$counter]);
+                    }
                 }
-            }
-            if (count($rows) == 0) {
-                $rows = $old_rows;
+                if (count($rows) == 0) {
+                    $rows = $old_rows;
+                }
             }
         }
 
@@ -351,11 +285,15 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         // Choose which banner to show from the results
-        $rand = mt_rand(0, $tally);
-        for ($i = 0; $i < $counter - 1; $i++) {
-            if ($rand >= (isset($bound[$i - 1]) ? $bound[$i - 1] : 0) && $rand < $bound[$i]) {
-                break;
+        if (count($rows) > 1) {
+            $rand = mt_rand(0, $tally);
+            for ($i = 0; $i < $counter - 1; $i++) {
+                if ($rand >= (isset($bound[$i - 1]) ? $bound[$i - 1] : 0) && $rand < $bound[$i]) {
+                    break;
+                }
             }
+        } else {
+            $i = 0;
         }
 
         $name = $rows[$i]['name'];
@@ -387,34 +325,6 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
     }
 
     return null;
-}
-
-/**
- * Get a nice, formatted XHTML list to select a banner type
- *
- * @param  ?mixed $it The currently selected banner type (null: none selected)
- * @return Tempcode The list of banner types
- */
-function create_selection_list_banner_types($it = null)
-{
-    if (is_string($it)) {
-        $it = array($it);
-    }
-
-    $list = new Tempcode();
-    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), null, 'ORDER BY id');
-    foreach ($rows as $row) {
-        $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
-
-        if ($row['t_is_textual'] == 1) {
-            $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', $caption);
-        } else {
-            $type_line = do_lang_tempcode('BANNER_TYPE_LINE', $caption, strval($row['t_image_width']), strval($row['t_image_height']));
-        }
-
-        $list->attach(form_input_list_entry($row['id'], in_array($row['id'], $it), $type_line));
-    }
-    return $list;
 }
 
 /**
@@ -538,27 +448,4 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
     }
 
     return $content;
-}
-
-/**
- * Get a list of banners.
- *
- * @param  ?ID_TEXT $it The ID of the banner selected by default (null: no specific default)
- * @param  ?MEMBER $only_owned Only show banners owned by the member (null: no such restriction)
- * @return Tempcode The list
- */
-function create_selection_list_banners($it = null, $only_owned = null)
-{
-    $where = is_null($only_owned) ? null : array('submitter' => $only_owned);
-    $rows = $GLOBALS['SITE_DB']->query_select('banners', array('name'), $where, 'ORDER BY name', 150);
-    if (count($rows) == 300) {
-        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('name'), $where, 'ORDER BY add_date DESC', 150);
-    }
-    $out = new Tempcode();
-    foreach ($rows as $myrow) {
-        $selected = ($myrow['name'] == $it);
-        $out->attach(form_input_list_entry($myrow['name'], $selected));
-    }
-
-    return $out;
 }

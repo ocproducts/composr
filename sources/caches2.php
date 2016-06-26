@@ -57,7 +57,7 @@ function _decache($cached_for, $identifier = null, $member = null)
         // NB: If we use persistent cache we still need to decache from DB, in case we're switching between for whatever reason. Or maybe some users use persistent cache and others don't. Or maybe some nodes do and others don't.
 
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
-            persistent_cache_delete(array('CACHE', $_cached_for));
+            persistent_cache_delete($_cached_for, true);
         }
 
         if ($where != '') {
@@ -167,7 +167,7 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
 
     if (!is_null($GLOBALS['PERSISTENT_CACHE'])) {
         $pcache = array('dependencies' => $dependencies, 'date_and_time' => time(), 'the_value' => $cache);
-        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme), $pcache, false, $ttl * 60);
+        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone), $pcache, false, $ttl * 60);
     } else {
         $GLOBALS['SITE_DB']->query_delete('cache', array(
             'lang' => $lang,

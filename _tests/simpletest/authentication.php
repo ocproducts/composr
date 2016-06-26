@@ -30,7 +30,7 @@ class SimpleRealm {
      *    @param SimpleUrl $url    Somewhere in realm.
      *    @access public
      */
-    function SimpleRealm($type, $url) {
+    function __construct($type, $url) {
         $this->_type = $type;
         $this->_root = $url->getBasePath();
         $this->_username = false;
@@ -136,7 +136,7 @@ class SimpleAuthenticator {
      *    Clears the realms.
      *    @access public
      */
-    function SimpleAuthenticator() {
+    function __construct() {
         $this->restartSession();
     }
     

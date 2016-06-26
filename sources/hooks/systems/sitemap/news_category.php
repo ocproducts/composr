@@ -136,13 +136,13 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
         $this->_make_zone_concrete($zone, $page_link);
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_HIGH,
-                      'sitemap_refreshfreq' => 'daily',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_HIGH,
+            'sitemap_refreshfreq' => 'daily',
 
-                      'privilege_page' => $this->get_privilege_page($page_link),
+            'privilege_page' => $this->get_privilege_page($page_link),
 
-                      'edit_url' => build_url(array('page' => 'cms_news', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_news')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'cms_news', 'type' => '_edit_category', 'id' => $content_id), get_module_zone('cms_news')),
+        ) + $partial_struct;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

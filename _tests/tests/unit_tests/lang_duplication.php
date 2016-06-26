@@ -45,7 +45,7 @@ class lang_duplication_test_set extends cms_test_case
             }
 
             $input = array();
-            _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false);
+            _get_lang_file_map(get_file_base() . '/lang/EN/' . $file, $input, 'strings', false, true, 'EN');
 
             foreach ($input as $key => $val) {
                 if (!isset($vals[$val])) {

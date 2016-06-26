@@ -117,5 +117,7 @@ Here are the step by step instructions for selecting an appropriate image:
  - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
+ - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 
 {$SET,tutorial_tags,core,Advice & Guidance,Introduction,regular}{$SET,tutorial_add_date,Mar 2015}{$SET,tutorial_summary,An explanation of how metadata works within Composr.}[block]main_tutorial_rating[/block]

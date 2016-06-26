@@ -63,19 +63,29 @@ function jestr_filtering_wrap_2($in)
 function jestr_filtering($in)
 {
     require_code('selectcode');
-    $passes = (count(array_intersect(selectcode_to_idlist_using_memory(get_option('jestr_piglatin_shown_for'), $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
-    if ($passes) {
-        $in = jestr_piglatin_filter($in);
+
+    $option = get_option('jestr_piglatin_shown_for');
+    if ($option != '') {
+        $passes = (count(array_intersect(selectcode_to_idlist_using_memory($option, $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
+        if ($passes) {
+            $in = jestr_piglatin_filter($in);
+        }
     }
 
-    $passes = (count(array_intersect(selectcode_to_idlist_using_memory(get_option('jestr_leet_shown_for'), $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
-    if ($passes) {
-        $in = jestr_leet_filter($in);
+    $option = get_option('jestr_leet_shown_for');
+    if ($option != '') {
+        $passes = (count(array_intersect(selectcode_to_idlist_using_memory($option, $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
+        if ($passes) {
+            $in = jestr_leet_filter($in);
+        }
     }
 
-    $passes = (count(array_intersect(selectcode_to_idlist_using_memory(get_option('jestr_string_changes_shown_for'), $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
-    if ($passes) {
-        $in = jestr_string_changes_filter($in);
+    $option = get_option('jestr_string_changes_shown_for');
+    if ($option != '') {
+        $passes = (count(array_intersect(selectcode_to_idlist_using_memory($option, $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
+        if ($passes) {
+            $in = jestr_string_changes_filter($in);
+        }
     }
 
     return $in;

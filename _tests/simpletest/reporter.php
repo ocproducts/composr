@@ -27,8 +27,8 @@ class HtmlReporter extends SimpleReporter {
      *    by a web browser.
      *    @access public
      */
-    function HtmlReporter($character_set = 'ISO-8859-1') {
-        $this->SimpleReporter();
+    function __construct($character_set = 'ISO-8859-1') {
+        parent::__construct();
         $this->_character_set = $character_set;
     }
 
@@ -97,6 +97,18 @@ class HtmlReporter extends SimpleReporter {
         print "<strong>" . strval($this->getFailCount()) . "</strong> fails and ";
         print "<strong>" . strval($this->getExceptionCount()) . "</strong> exceptions.";
         print "</div>\n";
+
+        if ($colour == "green" && !empty($_GET['close_if_passed'])) {
+            print "
+                <script>
+                    if (typeof window.history!='undefined' && typeof window.history.length!='undefined' && window.history.length==1)
+                    {
+                        window.close();
+                    }
+                </script>
+            ";
+        }
+
         print "</body>\n</html>\n";
     }
 
@@ -199,8 +211,8 @@ class TextReporter extends SimpleReporter {
      *    be sent on the first test start.
      *    @access public
      */
-    function TextReporter() {
-        $this->SimpleReporter();
+    function __construct() {
+        parent::__construct();
     }
 
     /**
@@ -323,7 +335,7 @@ class SelectiveReporter extends SimpleReporterDecorator {
      *    @param string $just_this_case    Only this case or group will run.
      *    @param string $just_this_test    Only this test method will run.
      */
-    function SelectiveReporter(&$reporter, $just_this_case = false, $just_this_test = false) {
+    function __construct(&$reporter, $just_this_case = false, $just_this_test = false) {
         if (isset($just_this_case) && $just_this_case) {
             $this->_just_this_case = strtolower($just_this_case);
             $this->_off();
@@ -333,7 +345,7 @@ class SelectiveReporter extends SimpleReporterDecorator {
         if (isset($just_this_test) && $just_this_test) {
             $this->_just_this_test = strtolower($just_this_test);
         }
-        $this->SimpleReporterDecorator($reporter);
+        parent::__construct($reporter);
     }
 
     /**

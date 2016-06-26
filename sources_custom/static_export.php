@@ -18,13 +18,12 @@
  *
  * @param  array $node The Sitemap node.
  */
-function _sitemap_xml_serialize_sitemap_node($node)
+function _page_link_to_static($node)
 {
     $page_link = $node['page_link'];
     if ($page_link === null) {
         return;
     }
-    list($zone, $attributes, $hash) = page_link_decode($page_link);
 
     $add_date = $node['extra_meta']['add_date'];
     $edit_date = $node['extra_meta']['edit_date'];
@@ -57,7 +56,8 @@ function _sitemap_xml_serialize_sitemap_node($node)
                 continue; // Probably this is just the utf8 addon
             }
 
-            $url_test = static_evaluate_tempcode(symbol_tempcode('PAGE_LINK', array($page_link, '0', '1')));
+            list($zone, $attributes, $hash) = page_link_decode($page_link);
+            $url_test = _build_url($attributes, $zone, null, false, false, true, $hash);
             if (strpos($url_test, '?') !== false) {
                 continue;
             }
@@ -69,7 +69,8 @@ function _sitemap_xml_serialize_sitemap_node($node)
             if (count($langs) != 1) {
                 $extended_page_link .= ':keep_lang=' . $lang . ':max=10000';
             }
-            $url = static_evaluate_tempcode(symbol_tempcode('PAGE_LINK', array($extended_page_link, '0', '1')));
+            list($zone, $attributes, $hash) = page_link_decode($extended_page_link);
+            $url = _build_url($attributes, $zone, null, false, false, true, $hash);
 
             $target_path = urldecode(preg_replace('#\?.*$#', '', preg_replace('#^' . preg_quote(get_base_url(), '#') . '/#', '', $url)));
 

@@ -29,7 +29,7 @@
 								{+START,IF,{HAS_UP_ROOM}}
 									<div>
 										&uarr;<br />
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button_hyperlink" type="submit" value="{UP_ROOM}" /></form>
+										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="up" /><input class="button_hyperlink" type="submit" value="{UP_ROOM}" /></form>
 									</div>
 								{+END}
 								{+START,IF,{$NOT,{HAS_UP_ROOM}}}
@@ -48,7 +48,7 @@
 						<td>
 							{+START,IF,{HAS_LEFT_ROOM}}
 								<div style="text-align: right">
-									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button_hyperlink" type="submit" value="{LEFT_ROOM}" /></form>
+									&larr;&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="left" /><input class="button_hyperlink" type="submit" value="{LEFT_ROOM}" /></form>
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_LEFT_ROOM}}}
@@ -63,7 +63,7 @@
 						<td>
 							{+START,IF,{HAS_RIGHT_ROOM}}
 								<div style="text-align: left">
-									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button_hyperlink" type="submit" value="{RIGHT_ROOM}" /></form>&nbsp;&rarr;
+									&nbsp;<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="right" /><input class="button_hyperlink" type="submit" value="{RIGHT_ROOM}" /></form>&nbsp;&rarr;
 								</div>
 							{+END}
 							{+START,IF,{$NOT,{HAS_RIGHT_ROOM}}}
@@ -81,7 +81,7 @@
 							<div style="text-align: center">
 								{+START,IF,{HAS_DOWN_ROOM}}
 								<div>
-									<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM}" /></form><br />
+									<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM}" /></form><br />
 									<div class="buildr_arrow">
 										&darr;
 									</div>
@@ -133,7 +133,7 @@
 			<div>
 				<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} title="{!MESSAGES}" src="{$FIND_SCRIPT*,wmessages}{$KEEP*,1}">{!MESSAGES}</iframe> {EMOTICON_CHOOSER}
 			</div>
-			<form method="post" id="posting_form" action="{$PAGE_LINK*,_SELF:_SELF}">
+			<form method="post" id="posting_form" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div><input id="post" name="post" value="" type="text" /> <input name="type" type="hidden" value="message" /> <select name="tmember" size="1">
@@ -290,7 +290,7 @@
 				</tr>
 			</table>
 			{+START,IF_NON_EMPTY,{ITEMS_HELD}}
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -321,7 +321,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -352,7 +352,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -383,7 +383,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -414,7 +414,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF:confirm}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -446,7 +446,7 @@
 					</table>
 				</form>
 			{+END}
-			<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+			<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<table class="columned_table results_table wide_table autosized_table">
@@ -485,7 +485,7 @@
 						</td>
 					</tr>
 				</table>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -516,7 +516,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -547,7 +547,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -578,7 +578,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -609,7 +609,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -640,7 +640,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -671,7 +671,7 @@
 						</tr>
 					</table>
 				</form>
-				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}">
+				<form method="post" class="inline" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<table class="columned_table results_table wide_table autosized_table">
@@ -749,14 +749,14 @@
 
 		<div class="toggleable_tray" style="{$JS_ON,{HIDE_MODIFICATIONS*},}"{+START,IF,{HIDE_MODIFICATIONS}} aria-expanded="false"{+END}>
 			{+START,IF_NON_EMPTY,{ITEMS_OWNED}}
-				<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}"><div>
+				<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<label for="item">{!W_ITEMS}</label>: {ITEMS_OWNED} <input type="hidden" name="type" value="edititem" /> <input class="button_screen_item buttons__edit" type="submit" value="{!W_EDIT_ITEM}" onclick="form.elements['type']='edititem';" /> <input class="button_screen_item menu___generic_admin__delete" type="submit" value="{!W_DELETE_ITEM}" onclick="form.elements['type']='confirm';" />
 				</div></form>
 
 				{+START,IF,{IS_STAFF}}
-					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}"><div>
+					<form method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off"><div>
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<label for="item">{!FROM}</label>: {ITEMS_OWNED} <label for="item2">{!TO}</label>: {ITEMS_OWNED_2} <input type="hidden" name="type" value="mergeitems" /> <input class="button_screen_item menu___generic_admin__merge" type="submit" value="{!W_MERGE_ITEMS}" />

@@ -3,6 +3,8 @@
 <div class="vcard member_profile_screen" itemscope="itemscope" itemtype="http://schema.org/ProfilePage">
 	{TITLE}
 
+	<!-- Member: #{MEMBER_ID%} -->
+
 	{+START,IF,{$GT,{TABS},1}}
 		<div class="float_surrounder"><div class="tabs" role="tablist">
 			{+START,LOOP,TABS}

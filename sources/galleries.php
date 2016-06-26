@@ -48,6 +48,10 @@ function init__galleries()
  */
 function render_image_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
     require_code('images');
@@ -119,6 +123,10 @@ function render_image_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function render_video_box($row, $zone = '_SEARCH', $give_context = true, $include_breadcrumbs = true, $root = null, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
     require_code('images');
@@ -197,6 +205,10 @@ function render_video_box($row, $zone = '_SEARCH', $give_context = true, $includ
  */
 function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_appropriate = false, $zone = '_SEARCH', $quit_if_empty = true, $preview = false, $give_context = true, $include_breadcrumbs = true, $attach_to_url_filter = false, $guid = '')
 {
+    if (is_null($myrow)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('galleries');
     require_css('galleries');
 
@@ -217,7 +229,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
 
     // Basic details
     $_title = get_translated_text($myrow['fullname']);
-    $add_date = get_timezoned_date($myrow['add_date'], false);
+    $add_date = get_timezoned_date_tempcode($myrow['add_date'], false);
     $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
 
     // Member details
@@ -575,7 +587,7 @@ function create_selection_list_gallery_tree($it = null, $filter = null, $must_ac
  * @param  string $breadcrumbs The parent breadcrumbs at this point of the recursion
  * @param  ?array $gallery_info The database row for the $gallery gallery (null: get it from the DB)
  * @param  boolean $do_stats Whether to include video/image statistics in the returned tree
- * @param  ?string $filter A function name to filter galleries with (null: no filter)
+ * @param  ?string $filter A function name to filter galleries with OR a Selectcode string (null: no filter)
  * @param  boolean $must_accept_images Whether displayed galleries must support images
  * @param  boolean $must_accept_videos Whether displayed galleries must support videos
  * @param  boolean $purity Whether to NOT show member galleries that do not exist yet
@@ -878,7 +890,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
 
     $title = get_translated_text($PT_PAIR_CACHE_G[$gallery]['fullname']);
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, escape_html($title));
+        $segments[] = array($page_link, $title);
     }
 
     if ($PT_PAIR_CACHE_G[$gallery]['parent_id'] == $gallery) {
@@ -890,14 +902,24 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
         if (!is_null($owner)) {
             $below = array();
 
-            foreach (array(array('_SEARCH:members:browse', do_lang_tempcode('MEMBERS')), array('_SEARCH:members:view:' . strval($owner) . '#tab__galleries', do_lang_tempcode('cns:MEMBER_PROFILE', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true))))) as $bits) {
-                list($page_link, $title) = $bits;
+            $personal_gallery_breadcrumb_parts = array(
+                array(
+                    '_SEARCH:members:browse',
+                    do_lang_tempcode('MEMBERS')
+                ),
+                array(
+                    '_SEARCH:members:view:' . strval($owner) . '#tab__galleries',
+                    do_lang_tempcode('cns:MEMBER_ACCOUNT', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true)))
+                ),
+            );
+            foreach ($personal_gallery_breadcrumb_parts as $bits) {
+                list($page_link, $label) = $bits;
                 list($zone, $map, $hash) = page_link_decode($page_link);
                 if (get_page_name() == 'galleries') {
                     $map += propagate_filtercode();
                 }
                 $page_link = build_page_link($map, $zone, $hash);
-                $below[] = array($page_link, $title);
+                $below[] = array($page_link, $label);
             }
             return array_merge($below, $segments);
         }

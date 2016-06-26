@@ -39,7 +39,7 @@ class PHP_Crossword_Word
 	 * @param string $word
 	 * @param int $axis
 	 */
-    function PHP_Crossword_Word($word, $axis)
+    function __construct($word, $axis)
     {
         $this->word = $word;
         $this->axis = $axis;

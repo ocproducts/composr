@@ -3,11 +3,11 @@
 	<div id="{$GET*,wrapper_id}" class="box_wrapper">
 		<section class="box box___block_main_news"><div class="box_inner compacted_subbox_stream">
 			{+START,IF,{$NOT,{BLOG}}}{+START,IF_NON_EMPTY,{TITLE}}
-				<h3>{TITLE}</h3>
+				<h2>{TITLE}</h2>
 			{+END}{+END}
 
 			{+START,IF_EMPTY,{BRIEF}{CONTENT}}
-				<p class="nothing_here">{!NO_ENTRIES}</p>
+				<p class="nothing_here">{!NO_ENTRIES,news}</p>
 			{+END}
 
 			<div class="raw_ajax_grow_spot">
@@ -22,7 +22,7 @@
 
 			{+START,IF_PASSED,PAGINATION}
 				{+START,IF_NON_EMPTY,{PAGINATION}}
-					<div class="float_surrounder ajax_block_wrapper_links">
+					<div class="pagination_spacing float_surrounder ajax_block_wrapper_links">
 						{PAGINATION}
 					</div>
 				{+END}

@@ -49,6 +49,10 @@ function init__cns_groups()
  */
 function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid = '')
 {
+    if (is_null($row)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
 
     $url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $row['id']), get_module_zone('groups'));
@@ -58,6 +62,7 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 
     $summary = get_translated_text($row['g_name'], $GLOBALS['FORUM_DB']);
 
+    require_code('cns_groups2');
     $num_members = cns_get_group_members_raw_count($row['id']);
     $entry_details = do_lang_tempcode('GROUP_NUM_MEMBERS', escape_html(integer_format($num_members)));
 
@@ -395,10 +400,6 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
 
     require_code('cns_members');
     if ((!function_exists('cns_is_ldap_member')/*can happen if said in safe mode and detecting safe mode when choosing whether to avoid a custom file via admin permission which requires this function to run*/) || (!cns_is_ldap_member($member_id))) {
-        $_groups = $GLOBALS['FORUM_DB']->query_select('f_group_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=m.gm_group_id', array('gm_group_id', 'g_hidden'), array('gm_member_id' => $member_id, 'gm_validated' => 1), 'ORDER BY g.g_order');
-        foreach ($_groups as $group) {
-            $groups[$group['gm_group_id']] = true;
-        }
         if (!isset($GLOBALS['CNS_DRIVER'])) { // We didn't init fully (MICRO_BOOTUP), but now we dug a hole - get out of it
             if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_layer_initialise')) {
                 $GLOBALS['FORUM_DRIVER']->forum_layer_initialise();
@@ -411,6 +412,11 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
         $groups[$primary_group] = true;
         foreach (array_keys($groups) as $group_id) {
             $groups[$group_id] = true;
+        }
+
+        $_groups = $GLOBALS['FORUM_DB']->query_select('f_group_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g ON g.id=m.gm_group_id', array('gm_group_id', 'g_hidden'), array('gm_member_id' => $member_id, 'gm_validated' => 1), 'ORDER BY g.g_order');
+        foreach ($_groups as $group) {
+            $groups[$group['gm_group_id']] = true;
         }
 
         $GROUP_MEMBERS_CACHE[$member_id][false][$handle_probation] = $groups;

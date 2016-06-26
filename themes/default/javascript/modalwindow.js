@@ -87,7 +87,7 @@ function open_link_as_overlay(ob,width,height,target)
 	{
 		if (typeof is_video=='undefined') is_video=false;
 		var has_full_button=(typeof a.childNodes[0]=='undefined') || (a.href!==a.childNodes[0].src);
-		_open_image_into_lightbox(a.href,a.title,null,null,has_full_button,is_video);
+		_open_image_into_lightbox(a.href,(typeof a.cms_tooltip_title!='undefined')?a.cms_tooltip_title:a.title,null,null,has_full_button,is_video);
 	}
 
 	function _open_image_into_lightbox(initial_img_url,description,x,n,has_full_button,is_video)
@@ -470,7 +470,7 @@ function ModalWindow()
 		BOX_NORTH_PERIPHERARY: 4,
 		BOX_SOUTH_PERIPHERARY: 4,
 		VCENTRE_FRACTION_SHIFT: 0.5, // Fraction of remaining top gap also removed (as overlays look better slightly higher than vertical centre)
-		LOADING_SCREEN_HEIGHT: 10,
+		LOADING_SCREEN_HEIGHT: 100,
 
 		// Properties
 		box_wrapper: null,
@@ -857,7 +857,7 @@ function ModalWindow()
 
 					container.appendChild(iframe);
 
-					animate_frame_load(iframe,'overlay_iframe',50);
+					animate_frame_load(iframe,'overlay_iframe',50,true);
 
 					window.setTimeout(function() { _this.add_event(_this.box_wrapper,'click',_this.clickout_finished); },1000);
 
@@ -875,6 +875,13 @@ function ModalWindow()
 					// Fiddle it, to behave like a popup would
 					var name=this.name;
 					var make_frame_like_popup=function() {
+						if (iframe.parentNode.parentNode.parentNode.parentNode==null && _this.iframe_restyle_timer!=null)
+						{
+							clearInterval(_this.iframe_restyle_timer);
+							_this.iframe_restyle_timer=null;
+							return;
+						}
+
 						if ((has_iframe_ownership(iframe)) && (iframe.contentWindow.document.body) && (typeof iframe.contentWindow.document.body.done_popup_trans=='undefined'))
 						{
 							iframe.contentWindow.document.body.style.background='transparent';

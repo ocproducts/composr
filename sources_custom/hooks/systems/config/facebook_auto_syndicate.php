@@ -33,7 +33,7 @@ class Hook_config_facebook_auto_syndicate
             'explanation' => 'CONFIG_OPTION_facebook_auto_syndicate',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 5,
+            'order_in_category_group' => 10,
 
             'addon' => 'facebook',
         );

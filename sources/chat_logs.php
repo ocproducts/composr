@@ -36,6 +36,7 @@ function chat_logs_script()
     }
 
     require_lang('chat');
+    require_code('chat');
 
     $room = get_param_integer('room', 1);
     $start = get_param_integer('start', 0);
@@ -53,7 +54,7 @@ function chat_logs_script()
     $start_date = ($start == 0) ? '' : strval($start_date_seed['year']) . '-' . strval($start_date_seed['mon']) . '-' . strval($start_date_seed['mday']) . ',' . strval($start_date_seed['hours']) . ':' . strval($start_date_seed['minutes']);
     $finish_date = strval($finish_date_seed['year']) . '-' . strval($finish_date_seed['mon']) . '-' . strval($finish_date_seed['mday']) . ',' . strval($finish_date_seed['hours']) . ':' . strval($finish_date_seed['minutes']);
 
-    $messages = chat_get_room_content(intval($room), $room_check, null, false, true, intval($start), intval($finish), null, get_param_string('zone', get_module_zone('chat')));
+    $messages = chat_get_room_content($room, $room_check, null, false, true, intval($start), intval($finish), null, get_param_string('zone', get_module_zone('chat')));
 
     if ((is_null($messages)) || (count($messages) == 0)) {
         // There are no messages

@@ -39,10 +39,12 @@ class Hook_checklist_content_reviews
         require_lang('content_reviews');
         $_status = ($status == 0) ? do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_0') : do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM_STATUS_1');
         $url = build_url(array('page' => 'admin_content_reviews'), 'adminzone');
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c00c54ed0e3095ff0b653a5799b7cd92', 'URL' => '',
-                                                                    'STATUS' => $_status,
-                                                                    'TASK' => do_lang_tempcode('NAG_CONTENT_REVIEWS', escape_html_tempcode($url)),
-                                                                    'INFO' => do_lang_tempcode('CONTENT_NEEDING_REVIEWING', escape_html(integer_format($num_to_review))),
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => 'c00c54ed0e3095ff0b653a5799b7cd92',
+            'URL' => '',
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('NAG_CONTENT_REVIEWS', escape_html_tempcode($url)),
+            'INFO' => do_lang_tempcode('CONTENT_NEEDING_REVIEWING', escape_html(integer_format($num_to_review))),
         ));
         return array(array($tpl, null, $num_to_review, null));
     }

@@ -156,11 +156,12 @@ function erase_comcode_cache()
     cms_profile_start_for('erase_comcode_cache');
 
     if (multi_lang_content()) {
-        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache'))))) {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'translate FORCE INDEX (decache) SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/);
-        } else {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'translate SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/);
+        $sql = 'UPDATE ' . get_table_prefix() . 'translate';
+        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache')/*LEGACY*/)))) {
+            $sql .= ' FORCE INDEX (decache)';
         }
+        $sql .= ' SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/;
+        $GLOBALS['SITE_DB']->query($sql);
     } else {
         global $TABLE_LANG_FIELDS_CACHE;
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
@@ -491,7 +492,7 @@ function erase_theme_images_cache()
         if ($path['path'] == '') {
             $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
         } elseif (preg_match('#^themes/[^/]+/images_custom/#', $path['path']) != 0) {
-            if ((!file_exists(get_custom_file_base() . '/' . $path['path'])) && (!file_exists(get_file_base() . '/' . $path['path']))) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($path['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($path['path'])))) {
                 $GLOBALS['SITE_DB']->query_delete('theme_images', $path, '', 1);
             }
         }

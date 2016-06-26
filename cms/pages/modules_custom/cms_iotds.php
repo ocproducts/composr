@@ -30,6 +30,8 @@ class Module_cms_iotds extends Standard_crud_module
     public $permissions_require = 'mid';
     public $menu_label = 'IOTDS';
     public $table = 'iotd';
+    public $donext_entry_content_type = 'iotd';
+    public $donext_category_content_type = null;
 
     public $title;
 
@@ -107,8 +109,8 @@ class Module_cms_iotds extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         return array(
-                   'browse' => array('MANAGE_IOTDS', 'menu/rich_content/iotds'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_IOTDS', 'menu/rich_content/iotds'),
+        ) + parent::get_entry_points();
     }
 
     /**
@@ -206,7 +208,7 @@ class Module_cms_iotds extends Standard_crud_module
     {
         $count = $GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)');
         if ($count == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
+            inform_exit(do_lang_tempcode('NO_ENTRIES', 'iotd'));
         }
 
         $used = get_param_integer('used', 0);

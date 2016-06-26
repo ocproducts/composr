@@ -49,6 +49,8 @@ class Module_lost_password
      */
     public function pre_run()
     {
+        $GLOBALS['OUTPUT_STREAMING'] = false; // Due to meta refresh that may happen
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -232,6 +234,11 @@ class Module_lost_password
         }
         $correct_code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code');
         if ($correct_code == '') {
+            if (get_member() == $member_id) { // Already reset and already logged in
+                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
+                return redirect_screen($this->title, $redirect_url);
+            }
+
             $_reset_url = build_url(array('page' => '_SELF', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), '_SELF');
             $reset_url = $_reset_url->evaluate();
             warn_exit(do_lang_tempcode('PASSWORD_ALREADY_RESET', escape_html($reset_url), get_site_name()));
@@ -264,7 +271,12 @@ class Module_lost_password
             $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
             $login_url = $_login_url->evaluate();
             $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
-            $message = do_lang('MAIL_NEW_PASSWORD', comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate()));
+            if (get_option('one_per_email_address') == '1') {
+                $lang_string = 'MAIL_NEW_PASSWORD_EMAIL_LOGIN';
+            } else {
+                $lang_string = 'MAIL_NEW_PASSWORD';
+            }
+            $message = do_lang($lang_string, comcode_escape($new_password), $login_url, array(comcode_escape(get_site_name()), comcode_escape($username), $account_edit_url->evaluate(), comcode_escape($email)));
             require_code('mail');
             mail_wrap(do_lang('LOST_PASSWORD_FINAL'), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', 3, null, false, null, false, false, false, 'MAIL', true, null, null, $join_time);
         }
@@ -301,6 +313,6 @@ class Module_lost_password
         }
 
         // Email new password
-        return inform_screen($this->title, do_lang_tempcode('NEW_PASSWORD_MAILED', escape_html($email)));
+        return inform_screen($this->title, do_lang_tempcode('NEW_PASSWORD_MAILED', escape_html($email), escape_html($new_password)));
     }
 }

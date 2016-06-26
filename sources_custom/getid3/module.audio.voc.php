@@ -17,7 +17,7 @@
 class getid3_voc
 {
 
-	function getid3_voc(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		$OriginalAVdataOffset = $ThisFileInfo['avdataoffset'];
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);

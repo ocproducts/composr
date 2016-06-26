@@ -59,7 +59,7 @@ class Hook_cron_calendar
                     }
 
                     $job_text = get_translated_text($job['e_content']);
-                    if (substr($job_text, 0, 7) == 'http://') { // It's URL
+                    if (substr($job_text, 0, 7) == 'http://' || substr($job_text, 0, 8) == 'https://') { // It's a URL
                         require_code('character_sets');
 
                         echo convert_to_internal_encoding(http_download_file($job_text));
@@ -118,7 +118,7 @@ class Hook_cron_calendar
                 $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_jobs WHERE ' . $or_list, null, null, false, true);
             }
 
-            $start += 300;
+            //$start += 300;    No, we just deleted, so offsets would have changed
         } while (array_key_exists(0, $jobs));
     }
 }

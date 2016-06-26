@@ -81,11 +81,6 @@ class Hook_fields_content_link_multi
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        unset($field);
-        /*if (!is_null($required))
-        {
-            Nothing special for this hook
-        }*/
         return array('long_unescaped', $default, 'long');
     }
 
@@ -167,7 +162,7 @@ class Hook_fields_content_link_multi
         require_code('content');
         $ob = get_content_object($type);
         $info = $ob->info();
-        $db = $GLOBALS[(substr($type, 0, 4) == 'cns_') ? 'FORUM_DB' : 'SITE_DB'];
+        $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);
         if ($type == 'comcode_page') {
@@ -184,7 +179,7 @@ class Hook_fields_content_link_multi
             if (is_null($info['title_field'])) {
                 $text = $id;
             } else {
-                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']]) : $row[$info['title_field']];
+                $text = $info['title_field_dereference'] ? get_translated_text($row[$info['title_field']], $info['connection']) : $row[$info['title_field']];
             }
             $_list[$id] = $text;
         }

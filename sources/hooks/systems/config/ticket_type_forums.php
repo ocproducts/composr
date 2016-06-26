@@ -38,6 +38,7 @@ class Hook_config_ticket_type_forums
             'explanation' => 'CONFIG_OPTION_ticket_type_forums',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 4,
 
             'addon' => 'tickets',
         );

@@ -378,11 +378,18 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         );
     }
 
+    if (($bitmask & IGNORE_NONBUNDLED_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_VERY_SCATTERED) != 0 || ($bitmask & IGNORE_NONBUNDLED_EXTREMELY_SCATTERED) != 0) {
+        $ignore_filenames_and_dir_names += array(
+            '_critical_error.html' => '',
+            'critical_errors' => '',
+        );
+    }
+
     if (($bitmask & IGNORE_ACCESS_CONTROLLERS) != 0) {
         $ignore_filenames_and_dir_names = array(
-                                              '.htaccess' => '.*',
-                                              'index.html' => '.*',
-                                          ) + $ignore_filenames_and_dir_names; // Done in this order as we are overriding .htaccess to block everywhere (by default blocks root only). PHP has weird array merge precedence rules.
+            '.htaccess' => '.*',
+            'index.html' => '.*',
+        ) + $ignore_filenames_and_dir_names; // Done in this order as we are overriding .htaccess to block everywhere (by default blocks root only). PHP has weird array merge precedence rules.
     }
 
     if (($bitmask & IGNORE_USER_CUSTOMISE) != 0) { // Ignores directories that user override files go in, not code or uploads (which IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS would cover): stuff edited through frontend to override bundled files

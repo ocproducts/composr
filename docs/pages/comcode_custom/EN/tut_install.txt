@@ -44,6 +44,10 @@ Typically you can set the database up yourself in the control panel. It can be a
 [/list]
 
 Composr does not need its own database (i.e. it can share one), but if you are able to create a new one it is often preferable for reasons of tidiness. The database user needs full read/write/administer access over the database Composr will be installed in. Sometimes you set this access by ticking (checking) to have all permissions on your user. Sometimes you do it by setting the 'User role' to something such as 'dba' (e.g. h-sphere on Windows).
+Specifically for MySQL the low-level permissions needed are:
+ - Read: [tt]SELECT[/tt]
+ - Write: [tt]INSERT[/tt], [tt]UPDATE[/tt], [tt]DELETE[/tt]
+ - Administer: [tt]CREATE[/tt], [tt]DROP[/tt], [tt]ALTER[/tt], [tt]INDEX[/tt]
 
 Similar products require the same information.
 
@@ -89,7 +93,7 @@ You now need to put these files in the desired folder. This can usually be done 
 [media width="150" description="The Composr installation screen" float="right"]data_custom/images/docs/tut_install/install_step1.png[/media]
 After you upload these files, you've completed the hardest part of the installation. The next step is to open your web browser and go to [tt]http://yourbaseurl/install.php[/tt] (substitute [tt]http://yourbaseurl/[/tt] as appropriate for your domain and install path). You should be greeted with a welcome screen, asking you which language you would like to use.
 
-On step two, you are shown a license agreement. You must agree to the license agreement before you can install Composr. You also have the opportunity to sign up for our newsletter, which will notify you by e-mail of any updates to our software. Composr will never sell or rent your e-mail address to a third party. You can read our [page=":privacy"]privacy policy[/page] for more information.
+On step two, you are shown a licence agreement. You must agree to the licence agreement before you can install Composr. You also have the opportunity to sign up for our newsletter, which will notify you by e-mail of any updates to our software. Composr will never sell or rent your e-mail address to a third party. You can read our [page=":privacy"]privacy policy[/page] for more information.
 
 On step three, you are presented with a choice to choose which forum system you would like to use for your website. We strongly recommend that you use Composr's own forum (Conversr), which if chosen will be installed at the same time as Composr. If you're using a third-party forum software, then you will need to already have it installed. Select the name of the software on the left, and then choose the appropriate version from the right-hand column.
 [/surround]

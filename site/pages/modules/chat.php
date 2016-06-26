@@ -67,12 +67,12 @@ class Module_chat
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => 'site',
             'the_page' => 'userguide_chatcode',
-        ));
+        ), '', 1);
 
         $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
             'the_zone' => 'site',
             'the_page' => 'popup_blockers',
-        ));
+        ), '', 1);
     }
 
     /**
@@ -206,6 +206,10 @@ class Module_chat
             require_code('users_active_actions');
             $admin_user = get_first_admin_user();
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'userguide_chatcode',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'userguide_chatcode',
@@ -218,6 +222,10 @@ class Module_chat
                 'p_order' => 0,
             ));
 
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => 'site',
+                'the_page' => 'popup_blockers',
+            ), '', 1);
             $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
                 'the_zone' => 'site',
                 'the_page' => 'popup_blockers',
@@ -623,7 +631,7 @@ class Module_chat
             //$_buttons[] = 'html'; Bloat
         }
         foreach ($_buttons as $button) {
-            $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+            $buttons->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '4fd75edb2d091b1c78a71c653efb18f0', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
         }
 
         if (!is_guest()) {
@@ -645,7 +653,7 @@ class Module_chat
             'i',
         );
         foreach ($_micro_buttons as $button) {
-            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => '3ced1e569e0c6feaeadbc09f7f89e7ee', 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
+            $micro_buttons->attach(do_template('COMCODE_EDITOR_MICRO_BUTTON', array('_GUID' => '3ced1e569e0c6feaeadbc09f7f89e7ee', 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => 'post', 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
         }
 
         $user_colour = ((array_key_exists(0, $prefs)) && ($prefs[0] != '')) ? $prefs[0] : get_option('chat_default_post_colour');
@@ -1088,7 +1096,7 @@ class Module_chat
         $posting_url = build_url(array('page' => '_SELF', 'type' => '_download_logs'), '_SELF', null, false, true);
 
         if (count($chatrooms) == 0) {
-            inform_exit(do_lang_tempcode('NO_CATEGORIES'));
+            inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => '6741ef01d1c6dd8d2de9be3290666db7', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $posting_name, 'URL' => $posting_url, 'TEXT' => ''));

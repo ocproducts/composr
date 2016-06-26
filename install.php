@@ -596,7 +596,7 @@ function step_3()
     $dbs_found = 0;
     foreach (array_keys($databases) as $database) {
         if (GOOGLE_APPENGINE) {
-            if ($database != 'mysql') {
+            if ($database != 'mysql' && $database != 'mysqli') {
                 continue;
             }
         }
@@ -616,10 +616,10 @@ function step_3()
         if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
             continue;
         }
-        if ($database == 'mysql') {
+        if ($database == 'mysqli') {
             $selected = true;
         }
-        if (($database == 'mysqli') && (!function_exists('mysql_connect'))) {
+        if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
             $selected = true;
         }
         if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
@@ -711,7 +711,7 @@ function step_4()
 
     // Probing
 
-    $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+    $base_url = post_param_string('base_url', get_base_url());
 
     // Our forum is
     $forum_type = post_param_string('forum_type');
@@ -1152,7 +1152,7 @@ function step_5()
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -1194,7 +1194,7 @@ function step_5()
 
     // Give warning if setting up a multi-site-network to a bad database
     if (($_POST['db_forums'] != $_POST['db_site']) && (get_forum_type() == 'cns')) {
-        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), $table_prefix);
+        $tmp = new DatabaseConnector(trim(post_param_string('db_forums')), trim(post_param_string('db_forums_host')), trim(post_param_string('db_forums_user')), trim(post_param_string('db_forums_password')), post_param_string('cns_table_prefix'));
         if (is_null($tmp->query_select_value_if_there('db_meta', 'COUNT(*)', null, '', true))) {
             warn_exit(do_lang_tempcode('MSN_FORUM_DB_NOT_CNS_ALREADY'));
         }
@@ -1703,7 +1703,7 @@ if (!function_exists(\'git_repos\')) {
         }
         if ($key == 'master_password') {
             if (function_exists('password_hash')) { // PHP5.5+
-                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12, 'salt' => md5('cms')));
+                $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
             } else {
                 $val = '!' . md5($val . 'cms');
             }
@@ -2309,6 +2309,9 @@ function step_10()
         closedir($_dir);
     }
 
+    require_code('caches3');
+    erase_cached_templates();
+
     return do_template('INSTALLER_STEP_10', array('_GUID' => '0e50bc1b9934c32fb62fb865a3971a9b', 'PREVIOUS_STEP' => '9', 'CURRENT_STEP' => '10', 'FINAL' => $final, 'LOG' => $log));
 }
 
@@ -2329,7 +2332,7 @@ function step_10_populate_database()
     if (file_exists(get_file_base() . '/docs')) { // installing from git
         $zones[] = 'docs';
     }
-    foreach ($zones as $zone) {
+    foreach (array_unique($zones)/*in case find_all_zones did find docs*/ as $zone) {
         if (($zone != 'site') && ($zone != 'adminzone') && ($zone != 'forum') && ($zone != 'cms')) {
             $modules = find_all_modules($zone);
             foreach (array_keys($modules) as $module) {
@@ -2389,8 +2392,8 @@ function require_code($codename)
 
     if (!array_key_exists('type', $_GET)) {
         $prior = memory_get_usage();
-        echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n";
-        echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
+        //echo '<!-- Memory: ' . number_format($prior) . ' -->' . "\n"; Can break JS validity if we inject this
+        //echo '<!-- Loading code file: ' . $codename . ' -->' . "\n";
         flush();
     }
 
@@ -2659,8 +2662,7 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $a = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => '455b0f61e6ce2eaf2acce2844fdd5e7a', 'NAME' => $name, 'INPUT' => $input1, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => $description));
         if ((substr($name, 0, 3) != 'db_') && (substr($name, 0, 12) != 'gae_live_db_') && ($name != 'ftp_password')) {
             $input2 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '0f15bfe5b58f3ca7830a48791f1a6a6d', 'REQUIRED' => $_required, 'NAME' => $name . '_confirm', 'VALUE' => $value));
-            $nice_name_2 = do_lang_tempcode('RELATED_FIELD', $nice_name);
-            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3', 'NAME' => $name, 'INPUT' => $input2, 'NICE_NAME' => $nice_name_2, 'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD')));
+            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3', 'NAME' => $name, 'INPUT' => $input2, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD')));
             $a->attach($b);
         }
         return $a;
@@ -2868,8 +2870,8 @@ END;
     if ($php_value_ok) {
         $clauses[] = <<<END
 # Composr needs uploads; many hosts leave these low
-php_value post_max_size "16M"
-php_value upload_max_filesize "16M"
+php_value post_max_size "500M"
+php_value upload_max_filesize "500M"
 END;
     }
 
@@ -3012,7 +3014,7 @@ order allow,deny
 allow from all
 END;
 
-    $base = dirname(cms_srv('SCRIPT_NAME'));
+    $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
     $clauses[] = <<<END
 <FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
 ErrorDocument 404 {$base}/index.php?page=404
@@ -3022,7 +3024,7 @@ END;
     if ((is_writable_wrap(get_file_base() . '/exports/addons')) && ((!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) || (trim(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) == ''))) {
         global $HTTP_MESSAGE;
 
-        $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+        $base_url = post_param_string('base_url', get_base_url());
 
         foreach ($clauses as $i => $clause) {
             $myfile = fopen(get_file_base() . '/exports/addons/index.php', GOOGLE_APPENGINE ? 'wb' : 'wt');

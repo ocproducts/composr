@@ -101,7 +101,11 @@ class Block_main_content
             warn_exit(do_lang_tempcode('IMPOSSIBLE_TYPE_USED'));
         }
         if ($title === null) {
-            $title = do_lang('RANDOM_CONTENT', do_lang($info['content_type_label']));
+            if ($content_id === null) {
+                $title = do_lang('RANDOM_CONTENT', do_lang($info['content_type_label']));
+            } else {
+                $title = do_lang($info['content_type_label']);
+            }
         }
         if (((!array_key_exists('id_field_numeric', $info)) || ($info['id_field_numeric'])) && ($content_id !== null) && (!is_numeric($content_id))) {
             list(, $resource_page, $resource_type) = explode(':', $info['view_page_link_pattern']);
@@ -120,8 +124,7 @@ class Block_main_content
 
         $submit_url = $info['add_url'];
         if ($submit_url !== null) {
-            list($submit_url_zone, $submit_url_map, $submit_url_hash) = page_link_decode($submit_url);
-            $submit_url = static_evaluate_tempcode(build_url($submit_url_map, $submit_url_zone, null, false, false, false, $submit_url_hash));
+            $submit_url = page_link_to_url($submit_url);
         } else {
             $submit_url = '';
         }
@@ -247,13 +250,13 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '13f060922a5ab6c370f218b2ecc6fe9c',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
+                    'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
             }
 
-            $rows = $info['connection']->query('SELECT * ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
+            $rows = $info['connection']->query('SELECT *,r.' . $info['id_field'] . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
             $award_content_row = $rows[0];
 
             // Get content ID
@@ -284,7 +287,7 @@ class Block_main_content
                     'HIGH' => true,
                     'TITLE' => $title,
                     'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', $content_type),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
             }
@@ -298,8 +301,7 @@ class Block_main_content
         $submit_url = str_replace('%21', $content_id, $submit_url);
 
         if ($info['archive_url'] !== null) {
-            list($archive_url_zone, $archive_url_map, $archive_url_hash) = page_link_decode($info['archive_url']);
-            $archive_url = build_url($archive_url_map, $archive_url_zone, null, false, false, false, $archive_url_hash);
+            $archive_url = page_link_to_tempcode_url($info['archive_url']);
         } else {
             $archive_url = new Tempcode();
         }
@@ -317,7 +319,7 @@ class Block_main_content
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'RAW_AWARD_DATE' => ($raw_date === null) ? '' : strval($raw_date),
-            'AWARD_DATE' => ($raw_date === null) ? '' : get_timezoned_date($raw_date),
+            'AWARD_DATE' => ($raw_date === null) ? new Tempcode() : get_timezoned_date_tempcode($raw_date),
             'CONTENT' => $rendered_content,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,

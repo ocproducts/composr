@@ -252,6 +252,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
     }
 
     $GLOBALS['SITE_DB']->query_update('poll', $update_map, array('id' => $id), '', 1);
+    persistent_cache_delete('POLL');
     decache('main_poll');
 
     require_code('urls2');
@@ -318,8 +319,6 @@ function delete_poll($id)
  */
 function set_poll($id)
 {
-    persistent_cache_delete('POLL');
-
     $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'submitter'), array('id' => $id));
     $question = $rows[0]['question'];
     $submitter = $rows[0]['submitter'];
@@ -342,7 +341,9 @@ function set_poll($id)
 
     $GLOBALS['SITE_DB']->query_update('poll', array('is_current' => 0), array('is_current' => 1));
     $GLOBALS['SITE_DB']->query_update('poll', array('is_current' => 1, 'date_and_time' => time()), array('id' => $id), '', 1);
+
     decache('main_poll');
+    persistent_cache_delete('POLL');
 
     require_lang('polls');
     require_code('notifications');

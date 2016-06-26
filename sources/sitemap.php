@@ -528,7 +528,7 @@ abstract class Hook_sitemap_base
             }
 
             if ($row === null) { // Get from stored menus?
-                $test = $GLOBALS['SITE_DB']->query_select('menu_items', array('i_caption', 'i_theme_img_code', 'i_caption_long'), array('i_url' => $zone . ':' . $page), '', 1);
+                $test = $GLOBALS['SITE_DB']->query_select('menu_items', array('*'), array('i_url' => $zone . ':' . $page), '', 1);
                 if (array_key_exists(0, $test)) {
                     $title = get_translated_tempcode('menu_items', $test[0], 'i_caption');
                     $icon = $test[0]['i_theme_img_code'];
@@ -856,7 +856,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
         if ((($meta_gather & SITEMAP_GATHER_NUM_COMMENTS) != 0) && (!is_null($cma_info['feedback_type_code']))) {
             $num_comments = 0;
-            $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cma_info['feedback_type_code'] . '_' . $content_id), $num_comments, 0, 0, false);
+            $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cma_info['feedback_type_code'] . '_' . $content_id, do_lang('COMMENT')), $num_comments, 0, 0, false);
 
             $struct['extra_meta']['num_comments'] = $num_comments;
         }
@@ -973,7 +973,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
                     if (!$skip_children) {
                         $start = 0;
                         do {
-                            $rows = $cma_entry_info['connection']->query_select($table, array('*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
+                            $rows = $cma_entry_info['connection']->query_select($table, array('r.*'), $where, $extra_where_entries . $privacy_where . (is_null($explicit_order_by_entries) ? '' : (' ORDER BY ' . $explicit_order_by_entries)), SITEMAP_MAX_ROWS_PER_LOOP, $start);
                             $child_page = ($cma_entry_info['module'] == $cma_info['module']) ? $page : $cma_entry_info['module']; // assumed in same zone
                             foreach ($rows as $child_row) {
                                 $child_page_link = $zone . ':' . $child_page . ':' . $child_hook_ob->screen_type . ':' . ($cma_entry_info['id_field_numeric'] ? strval($child_row[$cma_entry_info['id_field']]) : $child_row[$cma_entry_info['id_field']]);
@@ -1003,8 +1003,10 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             if (($consider_validation) && (!is_null($cma_info['validated_field']))) {
                 $where[$cma_info['validated_field']] = 1;
             }
+            $select = array('r.*');
             $table = $cma_info['parent_spec__table_name'] . ' r';
             if ($cma_info['parent_spec__table_name'] != $cma_info['table']) {
+                $select[] = 'r2.*';
                 $table .= ' JOIN ' . $cma_info['connection']->get_table_prefix() . $cma_info['table'] . ' r2 ON r2.' . $cma_info['id_field'] . '=r.' . $cma_info['parent_spec__field_name'];
             }
 
@@ -1027,7 +1029,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
                 $start = 0;
                 do {
-                    $rows = $cma_info['connection']->query_select($table, array('*'), $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
+                    $rows = $cma_info['connection']->query_select($table, $select, $where, (is_null($explicit_order_by_subcategories) ? '' : ('ORDER BY ' . $explicit_order_by_subcategories)), SITEMAP_MAX_ROWS_PER_LOOP, $start, false, $lang_fields);
                     foreach ($rows as $child_row) {
                         if ($this->content_type == 'comcode_page') {
                             $child_page_link = $zone . ':' . $child_row['the_page'];

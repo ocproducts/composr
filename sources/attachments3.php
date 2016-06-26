@@ -42,7 +42,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     }
 
     if ($text === STRING_MAGIC_NULL) {
-        return $lang_id;
+        return array();
     }
 
     if (is_null($connection)) {

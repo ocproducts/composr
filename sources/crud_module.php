@@ -95,6 +95,8 @@ abstract class Standard_crud_module
     public $posting_field_required = true;
     public $donext_type = null;
     public $donext_category_id = null;
+    public $donext_entry_content_type = null;
+    public $donext_category_content_type = null;
     public $cached_entry_rows = null;
     public $cached_max_rows = null;
     public $lang_type = null;
@@ -238,11 +240,14 @@ abstract class Standard_crud_module
                 $doing = 'ADD_' . $this->lang_type;
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -263,11 +268,14 @@ abstract class Standard_crud_module
                 }
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_ADD_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -283,11 +291,14 @@ abstract class Standard_crud_module
                 $doing = 'EDIT_' . $this->lang_type;
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -306,11 +317,14 @@ abstract class Standard_crud_module
                 }
 
                 if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                    $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                    if ($this->type_code == '') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                    } elseif ($this->type_code == 'category') {
-                        $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                    $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                    if (!is_null($_catalogue_title)) {
+                        $catalogue_title = get_translated_text($_catalogue_title);
+                        if ($this->type_code == '') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                        } elseif ($this->type_code == 'category') {
+                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        }
                     }
                 }
 
@@ -326,11 +340,14 @@ abstract class Standard_crud_module
                 if (($delete == 1) || ($delete == 2)) { //1=partial,2=full,...=unknown,thus handled as an edit
                     $doing = 'DELETE_' . $this->lang_type;
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_DELETE', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_DELETE_CATEGORY', escape_html($catalogue_title));
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                        if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
+                            if ($this->type_code == '') {
+                                $doing = do_lang('CATALOGUE_GENERIC_DELETE', escape_html($catalogue_title));
+                            } elseif ($this->type_code == 'category') {
+                                $doing = do_lang('CATALOGUE_GENERIC_DELETE_CATEGORY', escape_html($catalogue_title));
+                            }
                         }
                     }
 
@@ -339,11 +356,14 @@ abstract class Standard_crud_module
                     $doing = 'EDIT_' . $this->lang_type;
 
                     if (($this->catalogue) && (get_param_string('catalogue_name', '') != '')) {
-                        $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name'))));
-                        if ($this->type_code == '') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
-                        } elseif ($this->type_code == 'category') {
-                            $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                        $_catalogue_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_title', array('c_name' => get_param_string('catalogue_name')));
+                        if (!is_null($_catalogue_title)) {
+                            $catalogue_title = get_translated_text($_catalogue_title);
+                            if ($this->type_code == '') {
+                                $doing = do_lang('CATALOGUE_GENERIC_EDIT', escape_html($catalogue_title));
+                            } elseif ($this->type_code == 'category') {
+                                $doing = do_lang('CATALOGUE_GENERIC_EDIT_CATEGORY', escape_html($catalogue_title));
+                            }
                         }
                     }
 
@@ -403,7 +423,6 @@ abstract class Standard_crud_module
 
         require_code('form_templates');
         require_code('feedback');
-        require_code('autosave');
         require_code('permissions2');
         require_code('users2');
 
@@ -682,7 +701,9 @@ abstract class Standard_crud_module
             $this->extra_donext_whatever_title,
             null,
             $this->entries_title,
-            $this->categories_title
+            $this->categories_title,
+            $this->donext_entry_content_type,
+            $this->donext_category_content_type
         );
     }
 
@@ -728,7 +749,7 @@ abstract class Standard_crud_module
 
         $tree = create_selection_list_catalogues(null, false, true);
         if ($tree->is_empty()) {
-            return inform_screen($title, do_lang_tempcode('NO_ENTRIES'));
+            return inform_screen($title, do_lang_tempcode('NO_ENTRIES', 'catalogue'));
         }
 
         require_code('form_templates');
@@ -784,7 +805,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to add an entry.
+     * Standard CRUD-module UI to add a resource.
      *
      * @return Tempcode The UI
      */
@@ -807,6 +828,9 @@ abstract class Standard_crud_module
         $map = array('page' => '_SELF', 'type' => $this->get_screen_type_for('_add', $this->type_code));
         if (get_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = get_param_string('catalogue_name');
+        }
+        if (get_param_string('type', '') == 'add_catalogue') {
+            $map['type'] = '_add_catalogue';
         }
         if (!is_null(get_param_string('auto__add_one', null))) {
             $map['auto__add_one'] = get_param_string('auto__add_one');
@@ -860,8 +884,7 @@ abstract class Standard_crud_module
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
             require_code('fields');
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'd55b3a9fc65c8586498489f55ca2f1b8', 'TITLE' => do_lang_tempcode('MORE'))));
-            append_form_custom_fields($this->content_type, null, $fields, $hidden);
+            append_form_custom_fields($this->content_type, null, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
 
         // Awards?
@@ -922,51 +945,51 @@ abstract class Standard_crud_module
 
             $fields->attach($fields2);
             return do_template('CATALOGUE_ADDING_SCREEN', array(
-                                                              '_GUID' => 'adf73fdfccb387640340f15d5d6dae54' . get_class($this),
-                                                              'HIDDEN' => $hidden,
-                                                              'TITLE' => $this->title,
-                                                              'TEXT' => $this->add_text,
-                                                              'URL' => $post_url,
-                                                              'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                              'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                                                              'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
-                                                              'SUBMIT_NAME' => $submit_name,
-                                                              'JAVASCRIPT' => $this->javascript,
-                                                          ) + $extra_tpl_params);
+                '_GUID' => 'adf73fdfccb387640340f15d5d6dae54' . get_class($this),
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => 'menu__cms__catalogues__add_one_catalogue',
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+            ) + $extra_tpl_params);
         } elseif (!is_null($this->posting_form_title)) {
             $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $posting_form_tabindex, $this->posting_field_required);
             return do_template('POSTING_SCREEN', array(
-                                                     '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
-                                                     'TITLE' => $this->title,
-                                                     'PREVIEW' => $this->do_preview,
-                                                     'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                     'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
-                                                     'JAVASCRIPT' => $this->javascript,
-                                                     'SUPPORT_AUTOSAVE' => true,
-                                                 ) + $extra_tpl_params);
+                '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
+                'TITLE' => $this->title,
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'TEXT' => $this->add_text,
+                'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
             return do_template('FORM_SCREEN', array(
-                                                  '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
-                                                  'PREVIEW' => $this->do_preview,
-                                                  'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                  'HIDDEN' => $hidden,
-                                                  'TITLE' => $this->title,
-                                                  'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
-                                                  'TEXT' => $this->add_text,
-                                                  'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                  'SUBMIT_ICON' => $submit_icon,
-                                                  'SUBMIT_NAME' => $submit_name,
-                                                  'JAVASCRIPT' => $this->javascript,
-                                                  'SUPPORT_AUTOSAVE' => true,
-                                              ) + $extra_tpl_params);
+                '_GUID' => '1df73fdfccb387640340f15d5d6dae54' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => $submit_icon,
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         }
     }
 
     /**
-     * Standard CRUD-module UI/actualiser to add an entry.
+     * Standard CRUD-module UI/actualiser to add a resource.
      *
      * @return Tempcode The UI
      */
@@ -1084,7 +1107,11 @@ abstract class Standard_crud_module
         $table = $table_raw . ' r';
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if (($orderer_is_multi_lang) && (preg_replace('# (ASC|DESC)$#', '', $orderer) == $select_field)) {
-            $orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
+            $_orderer = $GLOBALS['SITE_DB']->translate_field_ref(preg_replace('# (ASC|DESC)$#', '', $orderer));
+            if (substr($orderer, -5) == ' DESC') {
+                $_orderer .= ' DESC';
+            }
+            $orderer = $_orderer;
         } elseif (substr($orderer, 0, 1) != '(') { // If not a subquery
             $orderer = 'r.' . $orderer;
         }
@@ -1142,7 +1169,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to choose an entry to edit.
+     * Standard CRUD-module UI to choose a resource to edit.
      *
      * @return Tempcode The UI
      */
@@ -1178,7 +1205,7 @@ abstract class Standard_crud_module
         if (method_exists($this, 'create_selection_list_radio_entries')) { // For picture selection lists only
             $entries = $this->create_selection_list_radio_entries();
             if ($entries->is_empty()) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $fields = form_input_radio(do_lang_tempcode($this->select_name), $description, 'id', $entries, $this->no_blank_ids, true, '');
         } elseif ((method_exists($this, 'create_selection_list_ajax_tree')) && (($_fields = $this->create_selection_list_ajax_tree()) !== null)) {
@@ -1191,11 +1218,11 @@ abstract class Standard_crud_module
         } elseif (method_exists($this, 'create_selection_list_choose_table')) {
             list($test,) = $this->get_entry_rows();
             if (count($test) == 0) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $table_result = $this->create_selection_list_choose_table($map);
             if (is_null($table_result)) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $table = $table_result[0];
             $has_ordering = $table_result[1];
@@ -1236,7 +1263,7 @@ abstract class Standard_crud_module
             }
 
             if ($entries->is_empty()) {
-                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES'));
+                inform_exit(do_lang_tempcode(($this->type_code == '') ? 'NO_ENTRIES' : 'NO_CATEGORIES', $this->content_type));
             }
             $fields = form_input_huge_list(do_lang_tempcode($this->select_name), $description, 'id', $entries, null, true, $this->no_blank_ids);
         }
@@ -1278,7 +1305,7 @@ abstract class Standard_crud_module
     }
 
     /**
-     * Standard CRUD-module UI to edit an entry.
+     * Standard CRUD-module UI to edit a resource.
      *
      * @return Tempcode The UI
      */
@@ -1292,6 +1319,9 @@ abstract class Standard_crud_module
         $map = array('page' => '_SELF', 'type' => $this->get_screen_type_for('__edit', $this->type_code), 'id' => $id);
         if (get_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = get_param_string('catalogue_name');
+        }
+        if (get_param_string('type', '') == '_edit_catalogue') {
+            $map['type'] = '__edit_catalogue';
         }
         if (!is_null(get_param_string('redirect', null))) {
             $map['redirect'] = get_param_string('redirect');
@@ -1365,8 +1395,7 @@ abstract class Standard_crud_module
         // Add in custom fields
         if ($tie_in_custom_form_fields) {
             require_code('fields');
-            $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3431365db07e3ecd6f9f4d8cf51ff396', 'TITLE' => do_lang_tempcode('MORE'))));
-            append_form_custom_fields($this->content_type, $id, $fields, $hidden);
+            append_form_custom_fields($this->content_type, $id, $fields, $hidden, null, true, strpos($fields->evaluate(), 'form_table_field_spacer') !== false);
         }
 
         // Awards?
@@ -1388,14 +1417,21 @@ abstract class Standard_crud_module
         $action_fields = new Tempcode();
         if ($may_delete) {
             if (!$all_delete_fields_given) {
-                $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+                // HACKHACK: Improve with #1789
+                if ($this->content_type === 'catalogue_category' && $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues c JOIN ' . get_table_prefix() . 'catalogue_categories cc ON c.c_name=cc.c_name', 'c_is_tree', array('id' => $id)) == 0) {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS'), 'delete', false));
+                } elseif ($this->content_type === 'gallery') {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS'), 'delete', false));
+                } else {
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
+                }
             }
 
             if ((addon_installed('points')) && (!is_null($submitter)) && (!is_null($date_and_time))) {
                 $points_test = $GLOBALS['SITE_DB']->query_select_value_if_there('gifts', 'id', array('date_and_time' => $date_and_time, 'gift_to' => $submitter, 'gift_from' => $GLOBALS['FORUM_DRIVER']->get_guest_id()));
                 if (!is_null($points_test)) {
                     require_lang('points');
-                    $action_fields->attach(form_input_tick(do_lang_tempcode('REVERSE_TITLE'), do_lang_tempcode('REVERSE_TITLE_DESCRIPTION'), 'reverse_point_transaction', false));
+                    $action_fields->attach(form_input_tick(do_lang_tempcode('REVERSE_TITLE'), do_lang_tempcode('REVERSE_TITLE_DESCRIPTION', $this->content_type), 'reverse_point_transaction', false));
                 }
             }
             $action_fields->attach($delete_fields);
@@ -1434,7 +1470,7 @@ abstract class Standard_crud_module
             // Existing fields
             $field_count = 0;
             $c_name = get_param_string('id', false, true);
-            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $c_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
             $fields_existing = new Tempcode();
             foreach ($rows as $i => $myrow) {
                 $name = get_translated_text($myrow['cf_name']);
@@ -1465,18 +1501,18 @@ abstract class Standard_crud_module
 
             $fields->attach($fields2);
             return do_template('CATALOGUE_EDITING_SCREEN', array(
-                                                               '_GUID' => '584d7dc7c2c13939626102374f13f508' . get_class($this),
-                                                               'HIDDEN' => $hidden,
-                                                               'TITLE' => $this->title,
-                                                               'TEXT' => $this->add_text,
-                                                               'URL' => $post_url,
-                                                               'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                               'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
-                                                               'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
-                                                               'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
-                                                               'SUBMIT_NAME' => $submit_name,
-                                                               'JAVASCRIPT' => $this->javascript,
-                                                           ) + $extra_tpl_params);
+                '_GUID' => '584d7dc7c2c13939626102374f13f508' . get_class($this),
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => $this->add_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'FIELDS_EXISTING' => $fields_existing->evaluate()/*FUDGE*/,
+                'FIELDS_NEW' => $fields_new->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => 'menu__cms__catalogues__edit_this_catalogue',
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+            ) + $extra_tpl_params);
         }
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
@@ -1486,41 +1522,41 @@ abstract class Standard_crud_module
         if (!is_null($this->posting_form_title)) {
             $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $this->posting_form_tabindex, $this->posting_field_required);
             return do_template('POSTING_SCREEN', array(
-                                                     '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
-                                                     'PREVIEW' => $this->do_preview,
-                                                     'TITLE' => $this->title,
-                                                     'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                     'PING_URL' => $ping_url,
-                                                     'WARNING_DETAILS' => $warning_details,
-                                                     'TEXT' => $this->add_text,
-                                                     'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
-                                                     'JAVASCRIPT' => $this->javascript,
-                                                     'SUPPORT_AUTOSAVE' => true,
-                                                 ) + $extra_tpl_params);
+                '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'TITLE' => $this->title,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'PING_URL' => $ping_url,
+                'WARNING_DETAILS' => $warning_details,
+                'TEXT' => $this->add_text,
+                'POSTING_FORM' => $posting_form->evaluate()/*FUDGE*/,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         } else {
             $fields->attach($fields2);
             return do_template('FORM_SCREEN', array(
-                                                  '_GUID' => '2d70be34595a16c6f170d966b894bfe2' . get_class($this),
-                                                  'PREVIEW' => $this->do_preview,
-                                                  'SEPARATE_PREVIEW' => $this->second_stage_preview,
-                                                  'TITLE' => $this->title,
-                                                  'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
-                                                  'PING_URL' => $ping_url,
-                                                  'WARNING_DETAILS' => $warning_details,
-                                                  'HIDDEN' => $hidden,
-                                                  'TEXT' => $this->edit_text,
-                                                  'URL' => $post_url,
-                                                  'FIELDS' => $fields->evaluate()/*FUDGE*/,
-                                                  'SUBMIT_ICON' => $submit_icon,
-                                                  'SUBMIT_NAME' => $submit_name,
-                                                  'JAVASCRIPT' => $this->javascript,
-                                                  'SUPPORT_AUTOSAVE' => true,
-                                              ) + $extra_tpl_params);
+                '_GUID' => '2d70be34595a16c6f170d966b894bfe2' . get_class($this),
+                'PREVIEW' => $this->do_preview,
+                'SEPARATE_PREVIEW' => $this->second_stage_preview,
+                'TITLE' => $this->title,
+                'SKIP_WEBSTANDARDS' => $this->skip_webstandards,
+                'PING_URL' => $ping_url,
+                'WARNING_DETAILS' => $warning_details,
+                'HIDDEN' => $hidden,
+                'TEXT' => $this->edit_text,
+                'URL' => $post_url,
+                'FIELDS' => $fields->evaluate()/*FUDGE*/,
+                'SUBMIT_ICON' => $submit_icon,
+                'SUBMIT_NAME' => $submit_name,
+                'JAVASCRIPT' => $this->javascript,
+                'SUPPORT_AUTOSAVE' => true,
+            ) + $extra_tpl_params);
         }
     }
 
     /**
-     * Standard CRUD-module UI/actualiser to edit an entry.
+     * Standard CRUD-module UI/actualiser to edit a resource.
      *
      * @return Tempcode The UI
      */

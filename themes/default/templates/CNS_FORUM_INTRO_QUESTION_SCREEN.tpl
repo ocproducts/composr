@@ -15,7 +15,7 @@
 	{QUESTION}
 </div></div>
 
-<form title="{!PROCEED}" action="{URL*}" method="post">
+<form title="{!PROCEED}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{+START,IF_NON_EMPTY,{ANSWER}}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application xmlns="http://apstandard.com/ns/1" packaged="2016-03-06T19:54:58+00:00" version="1.2">
+<application xmlns="http://apstandard.com/ns/1" packaged="2016-06-15T12:54:28+00:00" version="1.2">
   <id>http://compo.sr/</id>
   <name>Composr</name>
-  <version>10.beta4</version>
+  <version>10.RC12</version>
   <release>1</release>
   <homepage>http://compo.sr/</homepage>
   <vendor>
@@ -31,6 +31,45 @@
       </description>
     </screenshot>
     <changelog>
+      <version release="1" version="10.RC12">
+        <entry>Composr 10.RC12 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC12</entry>
+      </version>
+      <version release="1" version="10.RC11">
+        <entry>Composr 10.RC11 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC11</entry>
+      </version>
+      <version release="1" version="10.RC10">
+        <entry>Composr 10.RC10 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC10</entry>
+      </version>
+      <version release="1" version="10.RC9">
+        <entry>Composr 10.RC9 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC9</entry>
+      </version>
+      <version release="1" version="10.RC8">
+        <entry>Composr 10.RC8 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC8</entry>
+      </version>
+      <version release="1" version="10.RC7">
+        <entry>Composr 10.RC7 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC7</entry>
+      </version>
+      <version release="1" version="10.RC6">
+        <entry>Composr 10.RC6 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC6</entry>
+      </version>
+      <version release="1" version="10.RC5">
+        <entry>Composr 10.RC5 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC5</entry>
+      </version>
+      <version release="1" version="10.RC4">
+        <entry>Composr 10.RC4 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC4</entry>
+      </version>
+      <version release="1" version="10.RC3">
+        <entry>Composr 10.RC3 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC3</entry>
+      </version>
+      <version release="1" version="10.RC2">
+        <entry>Composr 10.RC2 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC2</entry>
+      </version>
+      <version release="1" version="10.RC1">
+        <entry>Composr 10.RC1 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.RC1</entry>
+      </version>
+      <version release="1" version="10.beta5">
+        <entry>Composr 10.beta5 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.beta5</entry>
+      </version>
       <version release="1" version="10.beta4">
         <entry>Composr 10.beta4 release notes: https://compo.sr/uploads/website_specific/compo.sr/scripts/goto_release_notes.php?version=10.beta4</entry>
       </version>

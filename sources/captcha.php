@@ -52,14 +52,15 @@ function captcha_script()
     $mode = get_param_string('mode', '');
 
     // Audio version
-    if ($mode == 'audio') {
+    if (($mode == 'audio') && (get_option('audio_captcha') === '1')) {
         header('Content-Type: audio/x-wav');
+        header('Content-Disposition: inline; filename="captcha.wav"');
+        //header('Content-Disposition: attachment; filename="captcha.wav"');  Useful for testing
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
             return;
         }
 
-        //header('Content-Disposition: attachment; filename="securityvoice.wav"');  Useful for testing
         $data = '';
         for ($i = 0; $i < strlen($code_needed); $i++) {
             $char = strtolower($code_needed[$i]);
@@ -77,7 +78,7 @@ function captcha_script()
             $_data = fread($myfile, filesize($file_path));
             for ($j = 0; $j < strlen($_data); $j++) {
                 if (get_option('captcha_noise') == '1') {
-                    $amp_mod = mt_rand(-4, 4);
+                    $amp_mod = mt_rand(-2, 2);
                     $_data[$j] = chr(min(255, max(0, ord($_data[$j]) + $amp_mod)));
                 }
                 if (get_option('captcha_noise') == '1') {
@@ -169,6 +170,9 @@ function captcha_script()
         </head>
         <body style="margin: 0">
         ';
+        if (get_option('js_captcha') === '1') {
+            echo '<div style="display: none" id="hidden_captcha">';
+        }
         echo '<div style="width: ' . strval($width) . 'px; font-size: 0; line-height: 0">';
         for ($j = 0; $j < $height; $j++) {
             for ($i = 0; $i < $width; $i++) {
@@ -177,6 +181,10 @@ function captcha_script()
             }
         }
         echo '</div>';
+        if (get_option('js_captcha') === '1') {
+            echo '</div>';
+            echo '<script>document.getElementById(\'hidden_captcha\').style.display=\'block\';</script>';
+        }
         echo '
         </body>
         </html>

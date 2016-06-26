@@ -371,7 +371,7 @@ function fractional_edit_script()
 
     $supports_comcode = get_param_integer('supports_comcode', 0) == 1;
     $param_name = get_param_string('edit_param_name');
-    if (isset($_POST[$param_name . '__altered_rendered_output'])) {
+    if (isset($_POST[$param_name . '__altered_rendered_output'])) { // This will potentially be written into by module, as a better thing to render
         $edited = $_POST[$param_name . '__altered_rendered_output'];
     } else {
         $edited = post_param_string($param_name);
@@ -421,16 +421,16 @@ function edit_ping_script()
     $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE the_time<' . strval(time() - 200));
 
     $GLOBALS['SITE_DB']->query_delete('edit_pings', array(
-        'the_page' => get_page_name(),
-        'the_type' => get_param_string('type'),
-        'the_id' => get_param_string('id', false, true),
+        'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+        'the_type' => cms_mb_substr(get_param_string('type'), 0, 80),
+        'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
         'the_member' => get_member()
     ));
 
     $GLOBALS['SITE_DB']->query_insert('edit_pings', array(
-        'the_page' => get_page_name(),
-        'the_type' => get_param_string('type'),
-        'the_id' => get_param_string('id', false, true),
+        'the_page' => cms_mb_substr(get_page_name(), 0, 80),
+        'the_type' => cms_mb_substr(get_param_string('type'), 0, 80),
+        'the_id' => cms_mb_substr(get_param_string('id', '', true), 0, 80),
         'the_time' => time(),
         'the_member' => get_member()
     ));
@@ -563,6 +563,13 @@ function sheet_script()
 function snippet_script()
 {
     prepare_for_known_ajax_response();
+
+    global $RELATIVE_PATH, $ZONE;
+    $test = get_module_zone(get_page_name());
+    if ($test !== null) {
+        $RELATIVE_PATH = $test;
+        $ZONE = null;
+    }
 
     header('Content-Type: text/plain; charset=' . get_charset());
     convert_data_encodings(true);

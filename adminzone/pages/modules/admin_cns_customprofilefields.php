@@ -31,6 +31,8 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     public $orderer = 'cf_name';
     public $table = 'f_custom_fields';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'cpf';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -185,7 +187,9 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         require_code('encryption');
         require_lang('fields');
 
-        if (substr($name, 0, 4) != 'cms_') {
+        $allow_full_edit = (get_param_integer('keep_all_cpfs', 0) == 1);
+
+        if (substr($name, 0, 4) != 'cms_' || $allow_full_edit) {
             $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
         } else {
             $hidden->attach(form_input_hidden('name', $name));
@@ -197,21 +201,21 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_VIEW'), do_lang_tempcode('DESCRIPTION_OWNER_VIEW'), 'owner_view', $owner_view == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('OWNER_SET'), do_lang_tempcode('DESCRIPTION_OWNER_SET'), 'owner_set', $owner_set == 1));
         $fields->attach(form_input_tick(do_lang_tempcode('PUBLIC_VIEW'), do_lang_tempcode('DESCRIPTION_PUBLIC_VIEW'), 'public_view', $public_view == 1));
-        if (($locked == 0) && (is_encryption_enabled()) && ($name == '')) {
+        if ((($locked == 0) || ($allow_full_edit)) && (is_encryption_enabled()) && ($name == '')) {
             require_lang('encryption');
             $fields->attach(form_input_tick(do_lang_tempcode('ENCRYPTED'), do_lang_tempcode('DESCRIPTION_ENCRYPTED'), 'encrypted', $encrypted == 1));
         }
 
         require_code('fields');
         $type_list = create_selection_list_field_type($type, $name != '');
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_FIELD_TYPE'), 'type', $type_list));
         } else {
             $hidden->attach(form_input_hidden('type', $type));
         }
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), 'options', $options, false));
 
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $fields->attach(form_input_tick(do_lang_tempcode('REQUIRED'), do_lang_tempcode('DESCRIPTION_REQUIRED'), 'required', $required == 1));
         } else {
             $hidden->attach(form_input_hidden('required', strval($required)));
@@ -225,7 +229,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields->attach(form_input_tick(do_lang_tempcode('SHOW_IN_POST_PREVIEWS'), do_lang_tempcode('DESCRIPTION_SHOW_IN_POST_PREVIEWS'), 'show_in_post_previews', $show_in_post_previews == 1));
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_is_super_admin'), array('g_is_private_club' => 0));
-        if ($locked == 0) {
+        if ($locked == 0 || $allow_full_edit) {
             $groups = new Tempcode();
             //$groups = form_input_list_entry('-1', false, do_lang_tempcode('_ALL'));
             foreach ($rows as $group) {
@@ -347,7 +351,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $orderlist = new Tempcode();
+            $order_list = '';
             $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
             $selected_one = false;
             $order = $row['cf_order'];
@@ -356,12 +360,12 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 if ($selected) {
                     $selected_one = true;
                 }
-                $orderlist->attach(form_input_list_entry(strval($i), $selected, strval($i + 1)));
+                $order_list .= '<option value="' . strval($i) . '"' . ($selected ? ' selected="selected"' : '') . '>' . strval($i + 1) . '</option>'; // XHTMLXHTML
             }
             if (!$selected_one) {
-                $orderlist->attach(form_input_list_entry(strval($order), true, ($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)));
+                $order_list .= '<option value="' . strval($i) . '" selected="selected">' . (($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)) . '</option>'; // XHTMLXHTML
             }
-            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $orderlist));
+            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $order_list));
 
             $fr = array();
             $fr[] = $trans;

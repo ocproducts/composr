@@ -92,6 +92,11 @@ class Module_forumview
     {
         $type = get_param_string('type', 'browse');
 
+        if (get_forum_type() != 'cns') {
+            warn_exit(do_lang_tempcode('NO_CNS'));
+        } else {
+            cns_require_all_forum_stuff();
+        }
         require_lang('cns');
 
         inform_non_canonical_parameter('#^kfs_.*$#');
@@ -169,46 +174,35 @@ class Module_forumview
      */
     public function run()
     {
-        if (get_forum_type() != 'cns') {
-            warn_exit(do_lang_tempcode('NO_CNS'));
-        } else {
-            cns_require_all_forum_stuff();
-        }
         require_code('cns_forumview');
 
         $type = get_param_string('type', 'browse');
 
         $current_filter_cat = get_param_string('category', '');
 
-        $default_max = intval(get_option('forum_topics_per_page'));
-        $max = get_param_integer('forum_max', $default_max);
-        if (($max > 50) && (!has_privilege(get_member(), 'remove_page_split'))) {
-            $max = $default_max;
-        }
-
         $root = get_param_integer('keep_forum_root', db_get_first_id());
 
         if ($type == 'pt') { // Not used anymore by default, but code still here
             $id = null;
             $forum_info = array();
-            $start = get_param_integer('forum_start', get_param_integer('kfs', 0));
+            $compound_name = 'kfs';
             $of_member_id = $this->of_member_id;
+            $sort_default = 'first_post';
         } else {
             $id = $this->id;
             $forum_info = $this->forum_info;
-            $start = get_param_integer('forum_start', get_param_integer('kfs' . strval($id), 0));
+            $compound_name = 'kfs' . strval($id);
             $of_member_id = null;
-        }
-
-        // Don't allow guest bots to probe too deep into the forum index, it gets very slow; the XML Sitemap is for guiding to topics like this
-        if (($start > $max * 5) && (is_guest()) && (!is_null(get_bot_type()))) {
-            access_denied('NOT_AS_GUEST');
+            $sort_default = $forum_info['f_order'];
         }
 
         require_code('cns_general');
         cns_set_context_forum($id);
 
-        $test = cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $root, $of_member_id, $this->breadcrumbs);
+        require_code('templates_pagination');
+        list($max, $start, $sort, $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', $compound_name, 'sort', $sort_default, 'get_forum_sort_order');
+
+        $test = cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $start, $true_start, $sql_sup, $sql_sup_order_by, $keyset_field_stripped, $root, $of_member_id, $this->breadcrumbs);
         if (is_array($test)) {
             list($content, $forum_name) = $test;
         } else {

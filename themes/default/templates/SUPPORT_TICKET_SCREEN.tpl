@@ -25,7 +25,7 @@
 			{+START,LOOP,ASSIGNED}
 				<li>
 					{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
-						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment">
+						<form title="{!_ASSIGNED_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:unassign:ticket_id={ID}:member_id={_loop_key}}" method="post" class="inline vertical_alignment" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<span>{_loop_var*}</span>
@@ -42,7 +42,7 @@
 
 		{+START,IF,{$HAS_PRIVILEGE,ticket_assigned_staff}}
 			<li>
-				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment">
+				<form title="{!ASSIGN_TO}" action="{$PAGE_LINK*,_SEARCH:tickets:assign:ticket_id={ID}}" method="post" class="inline vertical_alignment" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					{$REQUIRE_JAVASCRIPT,people_lists}
@@ -153,7 +153,7 @@
 {$SET,COMMENT_POSTING_ROWS,20}
 
 {+START,IF_NON_EMPTY,{COMMENT_FORM}}
-	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" onsubmit="return (check_field_for_blankness(this.elements['post'],event)) &amp;&amp; ((!this.elements['ticket_type_id']) || (check_field_for_blankness(this.elements['ticket_type_id'],event)));" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage">
+	<form title="{!PRIMARY_PAGE_FORM}" id="comments_form" onsubmit="return (check_field_for_blankness(this.elements['post'],event)) &amp;&amp; ((!this.elements['ticket_type_id']) || (check_field_for_blankness(this.elements['ticket_type_id'],event)));" action="{URL*}" method="post" enctype="multipart/form-data" itemscope="itemscope" itemtype="http://schema.org/ContactPage" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{COMMENT_FORM}

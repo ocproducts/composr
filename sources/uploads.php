@@ -25,10 +25,6 @@
  */
 function init__uploads()
 {
-    if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0); // On some server setups, slow uploads can trigger the time-out
-    }
-
     if (!defined('CMS_UPLOAD_ANYTHING')) {
         define('CMS_UPLOAD_IMAGE', 1);
         define('CMS_UPLOAD_VIDEO', 2);
@@ -68,7 +64,8 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
     require_code('uploads');
     $field_file = $name . '__upload';
     $thumb_attach_name = $name . '__thumb__upload';
-    if ((is_plupload()) || (((array_key_exists($field_file, $_FILES)) && (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
+    is_plupload(true);
+    if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
         $urls = get_url('', $field_file, $upload_to, 0, $upload_type, $thumb_url !== null, $thumb_specify_name, $thumb_attach_name);
 
         if ((substr($urls[0], 0, 8) != 'uploads/') && (is_null(http_download_file($urls[0], 0, false))) && (!is_null($GLOBALS['HTTP_MESSAGE_B']))) {
@@ -346,9 +343,9 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     require_code('images');
     if ((($enforce_type & CMS_UPLOAD_VIDEO) != 0) || (($enforce_type & CMS_UPLOAD_AUDIO) != 0)) {
         require_code('files2');
-        $max_size = get_max_file_size();
+        $max_size = get_max_file_size(null, null, false);
     } else {
-        $max_size = get_max_image_size();
+        $max_size = get_max_image_size(false);
     }
     if (($attach_name != '') && (array_key_exists($attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$attach_name]['tmp_name'])) || ($plupload_uploaded))) { // If we uploaded
         if (!has_privilege($member_id, 'exceed_filesize_limit')) {
@@ -506,16 +503,16 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
     // Generate thumbnail if needed
     if (($make_thumbnail) && ($url[0] != '') && ($is_image)) {
         if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size(false)) {
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
+                    attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size(false)))), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))));
+                    warn_exit(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size(false)))));
                 }
             }
 
-            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $upload_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
+            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $thumb_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
             $thumb = $_thumb[0];
         } elseif (array_key_exists($thumb_specify_name, $_POST)) { // If we specified
             $_thumb = _get_specify_url($member_id, $thumb_specify_name, $thumb_folder, CMS_UPLOAD_IMAGE, $accept_errors);
@@ -554,7 +551,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         $out[1] = $thumb;
     } elseif ($make_thumbnail) {
         if ((array_key_exists($thumb_attach_name, $filearrays)) && ((is_uploaded_file($filearrays[$thumb_attach_name]['tmp_name'])) || ($plupload_uploaded_thumb))) { // If we uploaded
-            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size()) {
+            if ($filearrays[$thumb_attach_name]['size'] > get_max_image_size(false)) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('FILE_TOO_BIG', escape_html(integer_format(get_max_image_size()))), 'warn');
                     return array('', '', '', '');
@@ -563,7 +560,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 }
             }
 
-            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $upload_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
+            $_thumb = _get_upload_url($member_id, $thumb_attach_name, $thumb_folder, $thumb_folder_full, CMS_UPLOAD_IMAGE, 0, $accept_errors);
             $thumb = $_thumb[0];
         } elseif (array_key_exists($thumb_specify_name, $_POST)) {
             $_thumb = _get_specify_url($member_id, $thumb_specify_name, $thumb_folder, CMS_UPLOAD_IMAGE, $accept_errors);

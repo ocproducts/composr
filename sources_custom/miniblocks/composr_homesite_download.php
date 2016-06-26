@@ -74,7 +74,11 @@ function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
             'file_size' => 12345,
         );
     } else {
-        $sql = 'SELECT d.num_downloads,d.name,d.file_size,d.id AS d_id FROM ' . get_table_prefix() . 'download_downloads d USE INDEX(downloadauthor) WHERE ' . db_string_equal_to('author', 'ocProducts') . ' AND validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('%' . $name_suffix) . '\' ORDER BY add_date DESC';
+        $sql = 'SELECT d.num_downloads,d.name,d.file_size,d.id AS d_id FROM ' . get_table_prefix() . 'download_downloads d';
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $sql .= ' FORCE INDEX (downloadauthor)';
+        }
+        $sql .= ' WHERE ' . db_string_equal_to('author', 'ocProducts') . ' AND validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('%' . $name_suffix) . '\' ORDER BY add_date DESC';
         $rows = $GLOBALS['SITE_DB']->query($sql, 1, null, false, false, array('name' => 'SHORT_TRANS'));
         if (!array_key_exists(0, $rows)) {
             return null; // Shouldn't happen, but let's avoid transitional errors

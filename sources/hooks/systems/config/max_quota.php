@@ -38,6 +38,7 @@ class Hook_config_max_quota
             'explanation' => 'CONFIG_OPTION_max_quota',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'order_in_category_group' => 7,
 
             'addon' => 'pointstore',
         );

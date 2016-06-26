@@ -62,7 +62,7 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
     $test = in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
     if (!$test) {
         // Add them to the group
-        if ((method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+        if ((method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
             $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
         } else {
             if ($prefer_for_primary_group) {
@@ -120,7 +120,7 @@ function cleanup_member_timeouts()
 
             $test = in_array($group_id, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));
             if ($test) { // If they're still in it
-                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                     $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
                 } else {
                     if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group') == $group_id) {

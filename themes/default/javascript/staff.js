@@ -67,7 +67,7 @@ function script_load_stuff_staff()
 	];
 	var cells=document.getElementsByTagName('td');
 	var links=[];
-	if (window.location.href.indexOf('/cms/')!=-1)
+	if (window.location.href.replace('{$BASE_URL_NOHTTP;}','').indexOf('/cms/')!=-1{+START,IF,{$DEV_MODE}} || true{+END})
 	{
 		for (var i=0;i<cells.length;i++)
 		{
@@ -122,10 +122,10 @@ function apply_comcode_tooltip(hook,id,link)
 			{
 				link.is_over=true;
 
-				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame,ajax_result) {
-					if (ajax_result)
+				var request=do_ajax_request(maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}'+keep_stub(false)),function(ajax_result_frame) {
+					if (ajax_result_frame && ajax_result_frame.responseText)
 					{
-						link.rendered_tooltip=get_inner_html(ajax_result);
+						link.rendered_tooltip=ajax_result_frame.responseText;
 					}
 					if (typeof link.rendered_tooltip!='undefined')
 					{
@@ -258,6 +258,8 @@ function handle_image_mouse_over(event)
 
 function handle_image_mouse_out(event)
 {
+	if (typeof event=='undefined') event=window.event;
+
 	var target=event.target || event.srcElement;
 
 	/*{+START,IF,{$CONFIG_OPTION,enable_theme_img_buttons}}*/
@@ -424,10 +426,10 @@ function set_task_hiding(hide_done)
 
 function submit_custom_task(form)
 {
-	var new_task=load_snippet('checklist_task_manage','type=add&recur_every='+window.encodeURIComponent(form.elements['recur_every'].value)+'&recur_interval='+window.encodeURIComponent(form.elements['recur'].value)+'&task_title='+window.encodeURIComponent(form.elements['new_task'].value));
+	var new_task=load_snippet('checklist_task_manage','type=add&recur_every='+window.encodeURIComponent(form.elements['recur_every'].value)+'&recur_interval='+window.encodeURIComponent(form.elements['recur_interval'].value)+'&task_title='+window.encodeURIComponent(form.elements['new_task'].value));
 
 	form.elements['recur_every'].value='';
-	form.elements['recur'].value='';
+	form.elements['recur_interval'].value='';
 	form.elements['new_task'].value='';
 
 	set_inner_html(document.getElementById('custom_tasks_go_here'),new_task,true);

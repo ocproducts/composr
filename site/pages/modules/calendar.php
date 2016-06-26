@@ -187,8 +187,10 @@ class Module_calendar
             // Save in permissions for event type
             $types = $GLOBALS['SITE_DB']->query_select('calendar_types');
             foreach ($types as $type) {
-                require_code('permissions2');
-                set_global_category_access('calendar', $type['id']);
+                if ($type['id'] != db_get_first_id()) {
+                    require_code('permissions2');
+                    set_global_category_access('calendar', $type['id']);
+                }
             }
         }
 
@@ -275,11 +277,6 @@ class Module_calendar
 
         if ($type == 'view') {
             $id = get_param_integer('id');
-            if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'e_seg_recurrences', array('id' => $id)) == 0) {
-                inform_non_canonical_parameter('day');
-                inform_non_canonical_parameter('date');
-            }
-            inform_non_canonical_parameter('back');
 
             $filter = $this->get_filter();
 
@@ -289,6 +286,13 @@ class Module_calendar
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
             }
             $event = $rows[0];
+
+            // Set SEO ignores
+            if ($event['e_seg_recurrences'] == 0) {
+                inform_non_canonical_parameter('day');
+                inform_non_canonical_parameter('date');
+            }
+            inform_non_canonical_parameter('back');
 
             // Check permissions
             check_privilege('view_calendar');
@@ -310,8 +314,6 @@ class Module_calendar
                     $_is_public = false;
                 }
             }
-
-            $just_event_row = db_map_restrict($event, array('id', 'e_content'));
 
             // Title and metadata
             if ((get_value('no_awards_in_titles') !== '1') && (addon_installed('awards'))) {
@@ -633,9 +635,7 @@ class Module_calendar
         {
             $next_no_follow = false;
         }
-        if (/*get_bot_type()!==null Actually we can't rely on bot detection, so let's just tie to guest && */
-        is_guest()
-        ) {
+        if (/*get_bot_type()!==null Actually we can't rely on bot detection, so let's just tie to guest && */is_guest()) {
             // Some bots ignore nofollow, so let's be more forceful
             $past_no_follow = ($timestamp < time() - 60 * 60 * 24 * 31);
             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $timestamp) . ' AND e_start_month<=' . date('m', $timestamp) . ' OR e_start_year<' . date('Y', $timestamp));
@@ -650,13 +650,12 @@ class Module_calendar
                 $future_no_follow = false;
             }
             if ($past_no_follow || $future_no_follow) {
-                global $EXTRA_HEAD;
-                $EXTRA_HEAD->attach('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+                attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
                 $GLOBALS['HTTP_STATUS_CODE'] = '401';
                 if (!headers_sent()) {
                     if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                        header('HTTP/1.0 401 Unauthorized');
-                    } // Stop spiders ever storing the URL that caused this
+                        header('HTTP/1.0 401 Unauthorized'); // Stop spiders ever storing the URL that caused this
+                    }
                 }
                 access_denied('NOT_AS_GUEST_CALENDAR_PERFORMANCE');
             }
@@ -829,12 +828,19 @@ class Module_calendar
                 $found_stream = count($streams) - 1;
             }
 
-            $just_event_row = db_map_restrict($event, array('id', 'e_content'));
-
             // Fill in stream gaps as appropriate
             $_title = is_integer($event['e_title']) ? get_translated_text($event['e_title']) : $event['e_title'];
             $down = strval($to_h - $from_h);
-            $description = (intval($down) < 3) ? new Tempcode() : ((!is_string($event['e_content']) && !isset($event['e_content__text_parsed'])) ? get_translated_tempcode('calendar_events', $just_event_row, 'e_content') : $event['e_content']);
+            if (intval($down) < 3) {
+                $description = new Tempcode();
+            } else {
+                if ((!is_string($event['e_content'])) && (!isset($event['e_content__text_parsed']))) {
+                    $just_event_row = db_map_restrict($event, array('id', 'e_content'));
+                    $description = get_translated_tempcode('calendar_events', $just_event_row, 'e_content');
+                } else {
+                    $description = $event['e_content'];
+                }
+            }
             $priority_lang = do_lang_tempcode('PRIORITY_' . strval($event['e_priority']));
             $priority_icon = 'calendar/priority_' . strval($event['e_priority']);
             $streams[$found_stream][$from_h] = array('TPL' => 'CALENDAR_DAY_ENTRY', 'DESCRIPTION' => $description, 'DOWN' => $down, 'ID' => is_string($event['e_id']) ? $event['e_id'] : strval($event['e_id']), 'T_TITLE' => array_key_exists('t_title', $event) ? (is_string($event['t_title']) ? $event['t_title'] : get_translated_text($event['t_title'])) : 'RSS', 'PRIORITY' => strval($event['e_priority']), 'ICON' => $icon, 'TIME' => $date, 'TITLE' => $_title, 'URL' => $url, 'PRIORITY_LANG' => $priority_lang, 'PRIORITY_ICON' => $priority_icon, 'RECURRING' => $event['e_recurrence'] != 'none', 'VALIDATED' => $event['validated'] == 1);

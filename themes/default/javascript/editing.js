@@ -174,6 +174,9 @@ function disable_wysiwyg(forms,so,so2,discard)
 				textarea.disabled=false;
 				textarea.readOnly=false;
 
+				if (typeof window.rebuild_attachment_button_for_next!='undefined')
+					rebuild_attachment_button_for_next(id,'attachment_upload_button');
+
 				// Unload editor
 				var wysiwyg_data=window.wysiwyg_editors[id].getData();
 				try
@@ -219,6 +222,33 @@ function disable_wysiwyg(forms,so,so2,discard)
 	if (so2) so2.style.display='none';
 
 	window.wysiwyg_on=function() { return false; };
+}
+
+window.wysiwyg_readonly_timer={};
+function wysiwyg_set_readonly(name,readonly)
+{
+	if (typeof window.wysiwyg_editors[name]=='undefined')
+	{
+		return;
+	}
+
+	var editor=window.wysiwyg_editors[name];
+   editor.document.$.body.readOnly=readonly;
+   editor.document.$.body.contentEditable=!readonly;
+   editor.document.$.body.designMode=readonly?'off':'on';
+
+	// In case it sticks as read only we need a timer to put it back. But only if not already back.
+	if (typeof window.wysiwyg_readonly_timer[name]!='undefined' && window.wysiwyg_readonly_timer[name])
+	{
+		window.clearTimeout(window.wysiwyg_readonly_timer[name]);
+		window.wysiwyg_readonly_timer[name]=null;
+	}
+	if (readonly)
+	{
+		window.wysiwyg_readonly_timer[name]=window.setTimeout(function() {
+			wysiwyg_set_readonly(name,false);
+		},5000);
+	}
 }
 
 // Initialising the HTML editor if requested later (i.e. toggling it to on)
@@ -415,7 +445,9 @@ function wysiwyg_editor_init_for(element,id)
 		editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
 		if (typeof window.set_up_comcode_autocomplete!='undefined')
+		{
 			set_up_comcode_autocomplete(id);
+		}
 
 		// Instant preview of Comcode
 		find_tags_in_editor(editor,element);
@@ -845,7 +877,7 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 		{
 			var result_tags=request.responseXML.documentElement.getElementsByTagName('result');
 			var result=result_tags[0];
-			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,'');
+			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,''); /* result is an XML-escaped string of HTML, so we get via looking at the node text */
 		} else
 		{
 			new_html = selected_html;

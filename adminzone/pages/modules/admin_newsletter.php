@@ -32,6 +32,8 @@ class Module_admin_newsletter extends Standard_crud_module
     public $menu_label = 'NEWSLETTER';
     public $table = 'newsletters';
     public $title_is_multi_lang = true;
+    public $donext_entry_content_type = 'newsletter';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -475,6 +477,9 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $title = get_screen_title('BOUNCE_FILTER');
 
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+
         $delete_sql = '';
         $delete_sql_members = '';
 
@@ -492,7 +497,7 @@ class Module_admin_newsletter extends Standard_crud_module
             warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
-        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter WHERE ' . $delete_sql;
+        $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribers WHERE ' . $delete_sql;
         $GLOBALS['SITE_DB']->query($query);
 
         $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $delete_sql;
@@ -883,7 +888,9 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $text = do_lang_tempcode('SELECT_CATEGORIES_WANTED');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'bacc372b7338d8e1103facc05ae4598f', 'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'bacc372b7338d8e1103facc05ae4598f',
+            'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
             'TEXT' => $text,
@@ -938,7 +945,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $chosen_categories = post_param_string('chosen_categories');
         $message = $this->_generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
 
-        return $this->send_gui($message);
+        return $this->send_gui($message->evaluate());
     }
 
     /**
@@ -1514,7 +1521,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $preview = do_template('NEWSLETTER_CONFIRM_WRAP', array('_GUID' => '02bd5a782620141f8589e647e2c6d90b', 'TEXT_PREVIEW' => $text_preview, 'PREVIEW' => $_preview, 'SUBJECT' => $subject));
         pop_media_mode();
 
-        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html);
+        mail_wrap($preview_subject, ($html_only == 1) ? $_preview->evaluate() : $message, array($address), $username/*do_lang('NEWSLETTER_SUBSCRIBER',get_site_name())*/, $from_email, $from_name, 3, null, true, null, true, $in_html, true);
 
         require_code('templates_confirm_screen');
         return confirm_screen($this->title, $preview, 'send', get_param_string('old_type', 'new'), $extra_post_data);
@@ -1738,7 +1745,7 @@ class Module_admin_newsletter extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $num_readers = $GLOBALS['SITE_DB']->query_select_value('newsletter n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id', 'COUNT(*)', array('code_confirm' => 0));
+            $num_readers = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id', 'COUNT(*)', array('code_confirm' => 0));
 
             $fields->attach(results_entry(array(get_translated_text($row['title']), integer_format($num_readers), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }

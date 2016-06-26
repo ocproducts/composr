@@ -305,7 +305,7 @@ class Module_cms_comcode_pages
             //do_lang_tempcode('PAGE_LINK'),
             do_lang_tempcode('ORDER'),
             do_lang_tempcode('PARENT_PAGE'),
-            //do_lang_tempcode('OWNER'),
+            //do_lang_tempcode('metadata:OWNER'),
             //do_lang_tempcode('ADDED'),
             //do_lang_tempcode('VALIDATED'),
             do_lang_tempcode('ACTIONS'),
@@ -532,7 +532,9 @@ class Module_cms_comcode_pages
             );
         }
 
-        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array('_GUID' => 'eba3e03c65d96530e3a42d600f90ccd8', 'TITLE' => $this->title,
+        $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array(
+            '_GUID' => 'eba3e03c65d96530e3a42d600f90ccd8',
+            'TITLE' => $this->title,
             'TEXT' => $text,
             'TABLE' => $table,
             'FIELDS' => $fields,
@@ -619,7 +621,7 @@ class Module_cms_comcode_pages
 
                 if (strpos($file_path, '_custom/') === false) {
                     global $LANG_FILTER_OB;
-                    $contents = $LANG_FILTER_OB->compile_time(null, $contents);
+                    $contents = $LANG_FILTER_OB->compile_time(null, $contents, $lang);
                 }
 
                 $comcode_page_rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $file), '', 1);

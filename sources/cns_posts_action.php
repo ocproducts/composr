@@ -44,8 +44,12 @@ function cns_get_post_templates($forum_id)
     $all_templates = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('*'));
     $apply = array();
     foreach ($all_templates as $template) {
-        require_code('selectcode');
-        $idlist = selectcode_to_idlist_using_db($template['t_forum_multi_code'], 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
+        if ($template['t_forum_multi_code'] == '*') {
+            $idlist = array($forum_id);
+        } else {
+            require_code('selectcode');
+            $idlist = selectcode_to_idlist_using_db($template['t_forum_multi_code'], 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
+        }
         if (in_array($forum_id, $idlist)) {
             if (strpos($template['t_text'], '{') !== false) {
                 require_code('tempcode_compiler');
@@ -347,8 +351,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 if (!is_null($read_to_timestamp)) {
                     // Nothing unread since it was read?
                     if ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id), ' AND p_time>' . strval($read_to_timestamp) . ' AND id<>' . strval($post_id)) == 0) {
-                        $read_to_timestamp = time();
-                    } // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
+                        $read_to_timestamp = time(); // ... then bump up to now, so our own post doesn't make the topic as a whole seem unread
+                    }
                 }
                 cns_ping_topic_read($topic_id, $poster, $read_to_timestamp);
 
@@ -445,6 +449,10 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         require_code('sitemap_xml');
         notify_sitemap_node_add('SEARCH:topicview:id=' . strval($topic_id), $time, $last_edit_time, SITEMAP_IMPORTANCE_LOW, 'daily', has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($forum_id)));
     }
+
+    // Tidy up auto-save
+    require_code('autosave');
+    clear_cms_autosave();
 
     cms_profile_end_for('cns_make_post', '#' . strval($post_id));
 

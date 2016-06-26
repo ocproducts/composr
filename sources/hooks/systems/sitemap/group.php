@@ -125,13 +125,13 @@ class Hook_sitemap_group extends Hook_sitemap_content
         list($content_id, $row, $partial_struct) = $_;
 
         $struct = array(
-                      'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
-                      'sitemap_refreshfreq' => 'yearly',
+            'sitemap_priority' => SITEMAP_IMPORTANCE_LOW,
+            'sitemap_refreshfreq' => 'yearly',
 
-                      'privilege_page' => null,
+            'privilege_page' => null,
 
-                      'edit_url' => build_url(array('page' => 'admin_cns_groups', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_groups')),
-                  ) + $partial_struct;
+            'edit_url' => build_url(array('page' => 'admin_cns_groups', 'type' => '_edit', 'id' => $content_id), get_module_zone('admin_cns_groups')),
+        ) + $partial_struct;
 
         if (!$this->_check_node_permissions($struct)) {
             return null;

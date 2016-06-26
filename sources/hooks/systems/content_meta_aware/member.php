@@ -60,7 +60,7 @@ class Hook_content_meta_aware_member
             'title_field' => 'm_username',
             'title_field_dereference' => false,
             'description_field' => 'm_title',
-            'thumb_field' => 'm_avatar_url',
+            'thumb_field' => addon_installed('cns_member_avatars') ? 'm_avatar_url' : null,
             'thumb_field_is_theme_image' => false,
             'alternate_icon_theme_image' => null,
 
@@ -69,7 +69,7 @@ class Hook_content_meta_aware_member
             'edit_page_link_pattern_post' => '_SEARCH:members:view:_WILD:only_tab=edit:only_subtab=settings',
             'edit_page_link_field' => 'edit_username',
             'view_category_page_link_pattern' => null,
-            'add_url' => '',
+            'add_url' => has_actual_page_access(get_member(), 'admin_cns_members') ? '_SEARCH:admin_cns_members:step1' : null,
             'archive_url' => ((!is_null($zone)) ? $zone : get_module_zone('members')) . ':members',
 
             'support_url_monikers' => (get_option('username_profile_links') == '0'),

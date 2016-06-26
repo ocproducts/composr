@@ -1,4 +1,4 @@
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" onsubmit="return submit_settings(this);">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" onsubmit="return submit_settings(this);" autocomplete="off">
 	{HIDDEN}
 
 	<div>

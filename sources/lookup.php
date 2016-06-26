@@ -172,9 +172,9 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
             if (substr($data, -3) == ', ' . "\n") {
                 $data = substr($data, 0, strlen($data) - 3);
             }
-            $parameters = symbol_truncator(array($data, 35, '1', '1'), 'left');
+            $parameters = symbol_truncator(array($data, 35, '1'), 'left');
         } else {
-            $parameters = '?';
+            $parameters = escape_html('?');
         }
 
         $out->attach(results_entry(array(escape_html($page_converted), escape_html($date), $parameters, escape_html($myrow['browser']), escape_html($myrow['operating_system'])), false));

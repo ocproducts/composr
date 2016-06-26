@@ -104,7 +104,6 @@ class Block_main_members
         require_code('cns_members');
         require_code('cns_groups');
         require_code('cns_members2');
-        require_code('selectcode');
 
         require_css('cns_member_directory');
         require_lang('cns_member_directory');
@@ -180,7 +179,10 @@ class Block_main_members
         $where .= $filter_extra_where;
 
         $select = array_key_exists('select', $map) ? $map['select'] : '*';
-        $where .= ' AND (' . selectcode_to_sqlfragment($select, 'id') . ')';
+        if ($select != '*') {
+            require_code('selectcode');
+            $where .= ' AND (' . selectcode_to_sqlfragment($select, 'id') . ')';
+        }
 
         if ($usergroup != '') {
             $where .= ' AND (1=0';
@@ -323,9 +325,11 @@ class Block_main_members
 
         /*if (count($rows)==0)   We let our template control no-result output
         {
-            return do_template('BLOCK_NO_ENTRIES', array('_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8', 'HIGH' => false,
+            return do_template('BLOCK_NO_ENTRIES', array(
+                '_GUID' => '8e2691c84c5ff6e4ca16305fa409f7b8',
+                'HIGH' => false,
                 'TITLE' => do_lang_tempcode('RECENT', make_string_tempcode(integer_format($max)), do_lang_tempcode('MEMBERS')),
-                'MESSAGE' => do_lang_tempcode('NO_ENTRIES'),
+                'MESSAGE' => do_lang_tempcode('NO_ENTRIES', 'member'),
                 'ADD_NAME' => '',
                 'SUBMIT_URL' => '',
             ));
@@ -421,7 +425,9 @@ class Block_main_members
             foreach ($rows as $row) {
                 $_entry = array();
 
-                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array('_GUID' => '868074cc21dcdf4427e93ce78e8f5637', 'ID' => strval($row['id']),
+                $_entry[] = do_template('CNS_MEMBER_DIRECTORY_USERNAME', array(
+                    '_GUID' => '868074cc21dcdf4427e93ce78e8f5637',
+                    'ID' => strval($row['id']),
                     'USERNAME' => $row['m_username'],
                     'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, true),
                     'AVATAR_URL' => addon_installed('cns_member_avatars') ? $row['m_avatar_url'] : $row['m_photo_thumb_url'],
@@ -445,11 +451,11 @@ class Block_main_members
                 }
 
                 if (get_option('use_lastondate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_last_visit_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_last_visit_time'], false));
                 }
 
                 if (get_option('use_joindate') == '1') {
-                    $_entry[] = escape_html(get_timezoned_date($row['m_join_time'], false));
+                    $_entry[] = escape_html_tempcode(get_timezoned_date_tempcode($row['m_join_time'], false));
                 }
 
                 $results_entries->attach(results_entry($_entry, false));
@@ -503,6 +509,9 @@ class Block_main_members
                 break;
             }
         }
+
+        // Optimisation, as the member structure is much heavier than you'd think, due to lots of nested templates, including a member box tooltip for each member row in the results table
+        $results_table = apply_quick_caching($results_table);
 
         return do_template('BLOCK_MAIN_MEMBERS', array(
             '_GUID' => $guid,

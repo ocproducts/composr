@@ -17,7 +17,7 @@
 class getid3_rkau
 {
 
-	function getid3_rkau(&$fd, &$ThisFileInfo) {
+	function __construct(&$fd, &$ThisFileInfo) {
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$RKAUHeader = fread($fd, 20);

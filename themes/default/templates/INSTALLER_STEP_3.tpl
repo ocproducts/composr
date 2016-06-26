@@ -4,7 +4,7 @@
 //]]></script>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{HIDDEN}
 
 	<div class="installer_main_min">

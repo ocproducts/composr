@@ -374,10 +374,6 @@ class Module_quiz
         }
         $max_rows = $num;
 
-        if ($max_rows == 0) {
-            inform_exit(do_lang_tempcode('NO_ENTRIES'));
-        }
-
         require_code('templates_pagination');
         $pagination = pagination(do_lang_tempcode('QUIZZES'), $start, 'quizzes_start', $max, 'quizzes_max', $max_rows);
 

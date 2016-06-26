@@ -503,7 +503,6 @@ class Hook_addon_registry_core
             'data/html5.js', // LEGACY
             'data/external_url_proxy.php',
             'adminzone/.htaccess',
-            'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/no_image.png',
             'themes/default/css/install.css',
             'lang/EN/installer.ini',
@@ -1211,9 +1210,15 @@ class Hook_addon_registry_core
             'sources/hooks/systems/checks/suhosin_eval.php',
             'sources/hooks/systems/checks/unzip.php',
             'sources/hooks/systems/checks/xml.php',
+            'sources/hooks/systems/checks/directory_name.php',
+            'sources/hooks/systems/checks/normative_performance.php',
+            'sources/hooks/systems/checks/persistent_cache.php',
+            'sources/hooks/systems/checks/utf.php',
+            'sources/hooks/systems/checks/modsecurity.php',
             'sources/failure.php',
             'sources/failure_spammers.php',
             'sources/images.php',
+            'sources/images2.php',
             'sources/images_png.php',
             'sources/exif.php',
             'sources/index.html',
@@ -1540,6 +1545,7 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_MULTI_CONTENT', array(
                 'TYPE' => lorem_phrase(),
+                'CONTENT_TYPE' => lorem_phrase(),
                 'TITLE' => lorem_word(),
                 'RAW_AWARD_DATE' => placeholder_date(),
                 'AWARD_DATE' => placeholder_date(),
@@ -1549,6 +1555,7 @@ class Hook_addon_registry_core
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
                 'BLOCK_PARAMS' => '',
+                'ADD_STRING' => lorem_phrase(),
 
                 'START' => '0',
                 'MAX' => '10',

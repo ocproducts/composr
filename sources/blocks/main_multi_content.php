@@ -191,8 +191,7 @@ class Block_main_multi_content
 
         $submit_url = $info['add_url'];
         if ($submit_url !== null) {
-            list($submit_url_zone, $submit_url_map, $submit_url_hash) = page_link_decode($submit_url);
-            $submit_url = static_evaluate_tempcode(build_url($submit_url_map, $submit_url_zone, null, false, false, false, $submit_url_hash));
+            $submit_url = page_link_to_url($submit_url);
         } else {
             $submit_url = '';
         }
@@ -226,6 +225,9 @@ class Block_main_multi_content
 
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
+        if ($info['table'] == 'catalogue_entries') {
+            $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('_%') . '\'';
+        }
         if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
             $groups = '';
@@ -375,6 +377,7 @@ class Block_main_multi_content
             } else {
                 switch ($sort) {
                     case 'random':
+                    case 'fixed_random':
                     case 'fixed_random ASC':
                         $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',(MOD(CAST(r.' . $first_id_field . ' AS SIGNED),' . date('d') . ')) AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
                         break;
@@ -391,7 +394,9 @@ class Block_main_multi_content
                             }
                         }
                         if ($sort_combos != array()) {
-                            $order_by = 'GREATEST(';
+                            if (count($sort_combos) != 1) {
+                                $order_by = 'GREATEST(';
+                            }
                             foreach ($sort_combos as $i => $sort_combo) {
                                 if ($i != 0) {
                                     $order_by .= ',';
@@ -405,7 +410,9 @@ class Block_main_multi_content
                                 $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
                                 $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
                             }
-                            $order_by .= ')';
+                            if (count($sort_combos) != 1) {
+                                $order_by .= ')';
+                            }
 
                             if ($sort == 'recent_contents DESC') {
                                 $order_by .= ' DESC';
@@ -464,9 +471,6 @@ class Block_main_multi_content
                         $sort_order = preg_replace('#^.* #', '', $sort);
 
                         $sql = 'SELECT r.*' . $extra_select_sql . ' ' . $query . ' ORDER BY ';
-                        if (isset($info['order_field'])) {
-                            $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
-                        }
                         if ((array_key_exists('title_field', $info)) && (strpos($info['title_field'], ':') === false)) {
                             if ($info['title_field_dereference']) {
                                 $sql .= $GLOBALS['SITE_DB']->translate_field_ref($info['title_field']) . ' ' . $sort_order;
@@ -474,7 +478,11 @@ class Block_main_multi_content
                                 $sql .= 'r.' . $info['title_field'] . ' ' . $sort_order;
                             }
                         } else {
-                            $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
+                            if (isset($info['order_field'])) {
+                                $sql .= 'r.' . $info['order_field'] . ' ' . $sort_order . ',';
+                            } else {
+                                $sql .= 'r.' . $first_id_field . ' ' . $sort_order;
+                            }
                         }
                         $rows = $info['connection']->query($sql, $max, $start, false, true, $lang_fields);
                         break;
@@ -586,8 +594,7 @@ class Block_main_multi_content
         // Move towards render...
 
         if ($info['archive_url'] !== null) {
-            list($archive_url_zone, $archive_url_map, $archive_url_hash) = page_link_decode($info['archive_url']);
-            $archive_url = build_url($archive_url_map, $archive_url_zone, null, false, false, false, $archive_url_hash);
+            $archive_url = page_link_to_tempcode_url($info['archive_url']);
         } else {
             $archive_url = new Tempcode();
         }
@@ -681,19 +688,22 @@ class Block_main_multi_content
 
         return do_template('BLOCK_MAIN_MULTI_CONTENT', array(
             '_GUID' => ($guid != '') ? $guid : '9035934bc9b25f57eb8d23bf100b5796',
-            'BLOCK_PARAMS' => block_params_arr_to_str($map),
+            'BLOCK_PARAMS' => block_params_arr_to_str(array('block_id' => $block_id) + $map),
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'CONTENT' => $rendered_content,
+            'CONTENT_TYPE' => $content_type,
             'CONTENT_DATA' => $content_data,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,
             'PAGINATION' => $pagination,
+            'ADD_STRING' => content_language_string($content_type, 'ADD'),
 
             'START' => strval($start),
             'MAX' => strval($max),
             'START_PARAM' => $block_id . '_start',
             'MAX_PARAM' => $block_id . '_max',
+            'EXTRA_GET_PARAMS' => (get_param_integer($block_id . '_max', null) === null) ? null : ('&' . $block_id . '_max=' . urlencode(strval($max))),
         ));
     }
 

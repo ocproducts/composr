@@ -599,7 +599,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                 $fields->attach(form_input_tick(do_lang_tempcode('PREVIEW_POSTS'), do_lang_tempcode('DESCRIPTION_PREVIEW_POSTS'), 'preview_posts', $preview_posts == 1));
             }
             if (addon_installed('cns_signatures')) {
-                if (get_option('enable_views_sigs_option') == '1') {
+                if (get_option('enable_views_sigs_option', true) === '1') {
                     $fields->attach(form_input_tick(do_lang_tempcode('VIEWS_SIGNATURES'), do_lang_tempcode('DESCRIPTION_VIEWS_SIGNATURES'), 'views_signatures', $views_signatures == 1));
                 } else {
                     $hidden->attach(form_input_hidden('views_signatures', '1'));
@@ -768,7 +768,7 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
                 $value = remove_magic_encryption_marker($value);
             }
 
-            if (!member_field_is_required($member_id, 'required_cpfs', $value)) {
+            if (!member_field_is_required($member_id, 'required_cpfs', $value) && $custom_field['cf_type'] != 'tick'/*HACKHACK*/) {
                 $custom_field['cf_required'] = 0;
             }
         } else {
@@ -1052,7 +1052,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
                 $parent_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('galleries', 'fullname', array('name' => $gallery['parent_id'])));
                 if (get_translated_text($gallery['fullname']) == do_lang('PERSONAL_GALLERY_OF', $old_username, $parent_title)) {
                     $new_fullname = do_lang('PERSONAL_GALLERY_OF', $username, $parent_title);
-                    $GLOBALS['SITE_DB']->query_update('galleries', lang_remap_comcode('fullname', $gallery['fullname'], $new_fullname, $GLOBALS['FORUM_DB']), array('name' => $gallery['name']), '', 1);
+                    $GLOBALS['SITE_DB']->query_update('galleries', lang_remap_comcode('fullname', $gallery['fullname'], $new_fullname), array('name' => $gallery['name']), '', 1);
                 }
             }
         }
@@ -1356,21 +1356,17 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     list($_type, $index) = get_cpf_storage_for($type);
 
     require_code('database_action');
+
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
-    $indices_count = $GLOBALS['FORUM_DB']->query_select_value('db_meta_indices', 'COUNT(*)', array('i_table' => 'f_member_custom_fields'));
-    if ($indices_count < 60) { // Could be 64 but trying to be careful here...
-        if ($index) {
-            if ($_type != 'LONG_TEXT') {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-            if (strpos($_type, '_TEXT') !== false) {
-                $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', '#mcf_ft_' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-            }
-        } elseif ((strpos($type, 'trans') !== false) || ($type == 'posting_field')) { // for efficient joins
-            $GLOBALS['FORUM_DB']->create_index('f_member_custom_fields', 'mcf' . strval($id), array('field_' . strval($id)), 'mf_member_id');
-        }
+
+    if (substr(get_db_type(), 0, 5) == 'mysql') {
+        $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
     }
+    $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
+
+    require_code('cns_members_action');
+    build_cpf_indices($id, $index, $type, $_type);
 
     log_it('EDIT_CUSTOM_PROFILE_FIELD', strval($id), $name);
 
@@ -1447,6 +1443,10 @@ function cns_delete_custom_field($id)
  */
 function cns_set_custom_field($member_id, $field, $value, $type = null, $defer = false)
 {
+    if ($value === STRING_MAGIC_NULL) {
+        return null;
+    }
+
     if (is_null($type)) {
         $type = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'cf_type', array('id' => $field));
     }
@@ -1540,6 +1540,11 @@ function cns_set_custom_field($member_id, $field, $value, $type = null, $defer =
 
     if (function_exists('decache')) {
         decache('main_members');
+    }
+
+    global $MEMBER_CACHE_FIELD_MAPPINGS;
+    if ((isset($MEMBER_CACHE_FIELD_MAPPINGS)) && (isset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]))) {
+        unset($MEMBER_CACHE_FIELD_MAPPINGS[$member_id]);
     }
 
     return null;

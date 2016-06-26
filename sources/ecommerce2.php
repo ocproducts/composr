@@ -71,8 +71,8 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
             'm_ref_point' => $mail['ref_point'],
             'm_ref_point_offset' => $mail['ref_point_offset'],
         );
-        $map += insert_lang_comcode('m_subject', $mail['subject'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
-        $map += insert_lang_comcode('m_body', $mail['body'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+        $map += insert_lang('m_subject', $mail['subject'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+        $map += insert_lang('m_body', $mail['body'], 2, $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
         $GLOBALS['SITE_DB']->query_insert('f_usergroup_sub_mails', $map);
     }
 
@@ -126,7 +126,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
         foreach ($subscriptions as $sub) {
             $member_id = $sub['s_member_id'];
-            if ((get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+            if ((get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                 if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (method_exists($GLOBALS['FORUM_DB'], 'add_member_to_group'))) {
                     $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $group_id);
                     $GLOBALS['FORUM_DB']->add_member_to_group($member_id, $group_id);
@@ -174,8 +174,8 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
                     'm_ref_point' => $mail['ref_point'],
                     'm_ref_point_offset' => $mail['ref_point_offset'],
                 );
-                $map += lang_remap_comcode('m_subject', $existing_mails[$i][1], $mail['subject'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
-                $map += lang_remap_comcode('m_body', $existing_mails[$i][2], $mail['body'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+                $map += lang_remap('m_subject', $existing_mails[$i][1], $mail['subject'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
+                $map += lang_remap('m_body', $existing_mails[$i][2], $mail['body'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']);
                 $GLOBALS['SITE_DB']->query_update('f_usergroup_sub_mails', $map, array('id' => $existing_mails[$i][0]), '', 1);
             } else {
                 $map = array(
@@ -235,7 +235,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
             if (is_null($GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select_value_if_there('f_group_member_timeouts', 'member_id', array('member_id' => $member_id, 'group_id' => $new_group)))) {
                 // Remove them from the group
 
-                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') == '1') && (get_forum_type() != 'cns')) {
+                if ((method_exists($GLOBALS['FORUM_DB'], 'remove_member_from_group')) && (get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
                     $GLOBALS['FORUM_DB']->remove_member_from_group($member_id, $new_group);
                 } else {
                     $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $new_group, 'gm_member_id' => $member_id), '', 1);

@@ -5,7 +5,7 @@
 		<p><em>{!ONLY_1000_SHOWN}</em></p>
 	{+END}
 
-	<form title="{!PRIMARY_PAGE_FORM}" action="{$PAGE_LINK*,_SEARCH:admin_trackbacks:delete}" method="post">
+	<form title="{!PRIMARY_PAGE_FORM}" action="{$PAGE_LINK*,_SEARCH:admin_trackbacks:delete}" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		{TRACKBACKS}

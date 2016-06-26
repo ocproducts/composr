@@ -89,8 +89,7 @@ class Hook_fields_page_link
             $_ev[1] = $_ev[0];
         }
 
-        list($zone, $attributes,) = page_link_decode($_ev[0]);
-        $url = build_url($attributes, $zone);
+        $url = page_link_to_tempcode_url($_ev[0]);
 
         return hyperlink($url, $_ev[1], false, true);
     }

@@ -295,12 +295,15 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
     switch ($node['content_type']) {
         case 'root':
         case 'zone':
-            $access = $GLOBALS['SITE_DB']->query_select('group_zone_access', array('group_id'), array('zone_name' => $id));
+            $where = array('zone_name' => $id);
+            $access = $GLOBALS['SITE_DB']->query_select('group_zone_access', array('group_id'), $where);
             $access = array_flip(collapse_1d_complexity('group_id', $access));
             break;
 
         case 'page':
-            $negative_access = $GLOBALS['SITE_DB']->query_select('group_page_access', array('group_id'), array('zone_name' => $node['permissions'][1]['zone_name'], 'page_name' => $node['permissions'][1]['page_name']));
+        case 'comcode_page':
+            $where = array('zone_name' => $node['permissions'][1]['zone_name'], 'page_name' => $node['permissions'][1]['page_name']);
+            $negative_access = $GLOBALS['SITE_DB']->query_select('group_page_access', array('group_id'), $where);
             $negative_access = array_flip(collapse_1d_complexity('group_id', $negative_access));
             $access = array();
             foreach (array_keys($groups) as $group_id) {
@@ -311,9 +314,12 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
             break;
 
         default:
-            if (isset($node['permissions'][2]['permission_module'])) {
-                $access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), array('module_the_name' => $node['permissions'][2]['permission_module'], 'category_name' => $id));
-                $access = array_flip(collapse_1d_complexity('group_id', $access));
+            foreach ($node['permissions'] as $p) {
+                if (isset($p['permission_module'])) {
+                    $where = array('module_the_name' => $p['permission_module'], 'category_name' => $id);
+                    $access = $GLOBALS['SITE_DB']->query_select('group_category_access', array('group_id'), $where);
+                    $access = array_flip(collapse_1d_complexity('group_id', $access));
+                }
             }
             break;
     }
@@ -551,8 +557,7 @@ function sitemap_script_saving()
                 } else {
                     $privilege_page = $page;
                 }
-
-                $overridable_privileges = _get_overridable_privileges_for_privilege_page($privilege_page);
+                $overridable_privileges = ($node['content_type'] == 'comcode_page') ? array() : _get_overridable_privileges_for_privilege_page($privilege_page);
 
                 // Insertion
                 foreach ($groups as $group => $group_name) { // For all usergroups
@@ -598,8 +603,16 @@ function sitemap_script_saving()
 
                 $overridable_privileges = _get_overridable_privileges_for_privilege_page($privilege_page);
 
-                $module = $node['permissions'][2]['permission_module'];
-                $category = $node['permissions'][2]['category_name'];
+                foreach ($node['permissions'] as $p) {
+                    if (isset($p['permission_module'])) {
+                        break;
+                    }
+                }
+                if (!isset($p['permission_module'])) {
+                    fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
+                }
+                $module = $p['permission_module'];
+                $category = $p['category_name'];
 
                 // Insertion
                 foreach ($groups as $group => $group_name) { // For all usergroups

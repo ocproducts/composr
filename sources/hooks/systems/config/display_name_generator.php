@@ -38,6 +38,7 @@ class Hook_config_display_name_generator
             'explanation' => 'CONFIG_OPTION_display_name_generator',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 9,
 
             'addon' => 'core_cns',
         );

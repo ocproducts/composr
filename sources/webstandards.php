@@ -219,8 +219,8 @@ function init__webstandards()
         'head' => array('html'),
         'param' => array('script', 'object'),
         //'link' => array('head', 'link'),  Composr will dynamically optimise things to tend towards correctness, so can't enable this rule
+        //'style' => array('head'), "
         'li' => array('ul', 'ol', 'dd', 'menu', 'dt', 'dl', 'dir'),
-        'style' => array('head'),
         'tbody' => array('table'),
         'tfoot' => array('table'),
         'thead' => array('table'),
@@ -304,7 +304,7 @@ function init__webstandards()
 function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $webstandards_javascript = true, $webstandards_css = true, $webstandards_wcag = true, $webstandards_compat = true, $webstandards_ext_files = true, $webstandards_manual = false)
 {
     if (php_function_allowed('set_time_limit')) {
-        set_time_limit(0);
+        set_time_limit(100);
     }
 
     if (function_exists('disable_php_memory_limit')) {

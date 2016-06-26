@@ -177,7 +177,6 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 				url_stub+=(url_stem.indexOf('?')==-1)?'?':'&';
 				url_stub+=matches[1]+'='+matches[2];
 				url_stub+='&raw=1';
-
 				window.infinite_scroll_pending=true;
 
 				return call_block(url_stem+url_stub,'',wrapper_inner,true,function() { window.infinite_scroll_pending=false; internalise_infinite_scrolling(url_stem,wrapper); });
@@ -188,7 +187,7 @@ function internalise_infinite_scrolling_go(url_stem,wrapper,more_links)
 	return false;
 }
 
-function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_params,append,forms_too,scroll_to_top)
+function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,extra_params,append,forms_too,scroll_to_top)
 {
 	if (typeof look_for=='undefined') look_for=[];
 	if (typeof extra_params=='undefined') extra_params=[];
@@ -196,8 +195,13 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 	if (typeof forms_too=='undefined') forms_too=false;
 	if (typeof scroll_to_top=='undefined') scroll_to_top=true;
 
-	var _link_wrappers=get_elements_by_class_name(block,'ajax_block_wrapper_links');
-	if (_link_wrappers.length==0) _link_wrappers=[block];
+	var block_pos_y=find_pos_y(block_element,true);
+	if (block_pos_y>get_window_scroll_y()) {
+		scroll_to_top=false;
+	}
+
+	var _link_wrappers=get_elements_by_class_name(block_element,'ajax_block_wrapper_links');
+	if (_link_wrappers.length==0) _link_wrappers=[block_element];
 	var links=[];
 	for (var i=0;i<_link_wrappers.length;i++)
 	{
@@ -263,8 +267,12 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 					}
 				}
 
+				if (typeof window.history.pushState!='undefined') history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=\w+/,''));
+
+				clear_out_tooltips(null);
+
 				// Make AJAX block call
-				return call_block(url_stem+url_stub,'',block,append,function() { if (scroll_to_top) window.scrollTo(0,0); },false,post_params);
+				return call_block(url_stem+url_stub,'',block_element,append,function() { if (scroll_to_top) window.scrollTo(0,block_pos_y); },false,post_params);
 			};
 			if (links[i].nodeName.toLowerCase()=='a')
 			{
@@ -279,7 +287,7 @@ function internalise_ajax_block_wrapper_links(url_stem,block,look_for,extra_para
 			{
 				if (links[i].onsubmit)
 				{
-					links[i].onsubmit=function(old_onsubmit) { return function(event) { return old_onsubmit.call(this.event)!==false && submit_func.call(this,event); } }(links[i].onsubmit);
+					links[i].onsubmit=function(old_onsubmit) { return function(event) { return old_onsubmit.call(this,event)!==false && submit_func.call(this,event); } }(links[i].onsubmit);
 				} else
 				{
 					links[i].onsubmit=submit_func;
@@ -295,18 +303,19 @@ function guarded_form_submit(form)
 }
 
 // This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
-function call_block(url,new_block_params,target_div,append,callback,scroll_to_top_of_wrapper,post_params,inner)
+function call_block(url,new_block_params,target_div,append,callback,scroll_to_top_of_wrapper,post_params,inner,show_loading_animation)
 {
 	if (typeof scroll_to_top_of_wrapper=='undefined') scroll_to_top_of_wrapper=false;
 	if (typeof post_params=='undefined') post_params=null;
 	if (typeof inner=='undefined') inner=false;
+	if (typeof show_loading_animation=='undefined') show_loading_animation=true;
 	if ((typeof block_data_cache[url]=='undefined') && (new_block_params!=''))
 		block_data_cache[url]=get_inner_html(target_div); // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
 
 	var ajax_url=url;
 	if (new_block_params!='') ajax_url+='&block_map_sup='+window.encodeURIComponent(new_block_params);
 	if (typeof window.cms_theme!='undefined') ajax_url+='&utheme='+window.cms_theme;
-	if (typeof block_data_cache[ajax_url]!='undefined')
+	if (typeof block_data_cache[ajax_url]!='undefined' && post_params==null)
 	{
 		// Show results from cache
 		show_block_html(block_data_cache[ajax_url],target_div,append,inner);
@@ -316,7 +325,7 @@ function call_block(url,new_block_params,target_div,append,callback,scroll_to_to
 
 	// Show loading animation
 	var loading_wrapper=target_div;
-	if ((loading_wrapper.id.indexOf('carousel_')==-1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading_block')==-1))
+	if ((loading_wrapper.id.indexOf('carousel_')==-1) && (get_inner_html(loading_wrapper).indexOf('ajax_loading_block')==-1) && (show_loading_animation))
 	{
 		var raw_ajax_grow_spot=get_elements_by_class_name(target_div,'raw_ajax_grow_spot');
 		if (typeof raw_ajax_grow_spot[0]!='undefined' && append) loading_wrapper=raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper

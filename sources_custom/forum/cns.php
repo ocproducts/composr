@@ -16,8 +16,8 @@
 if (!function_exists('init__forum__cns')) {
     function init__forum__cns($in = null)
     {
-        $option = get_option('jestr_name_changes');
-        if ($option == '') {
+        $option = get_option('jestr_name_changes', true);
+        if (empty($option)) {
             return $in;
         }
 
@@ -40,9 +40,13 @@ function jestr_name_filter($in)
         return $in;
     }
 
-    require_code('selectcode');
+    $option = get_option('jestr_name_changes_shown_for');
+    if ($option == '') {
+        return $in;
+    }
 
-    $passes = (count(array_intersect(selectcode_to_idlist_using_memory(get_option('jestr_name_changes_shown_for'), $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
+    require_code('selectcode');
+    $passes = (count(array_intersect(selectcode_to_idlist_using_memory($option, $GLOBALS['FORUM_DRIVER']->get_usergroup_list()), $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))) != 0);
     if (!$passes) {
         return $in;
     }

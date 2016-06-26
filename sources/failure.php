@@ -59,7 +59,7 @@ function suggest_fatalistic()
         if (cms_srv('REQUEST_METHOD') != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
-        } elseif (count($_FILES) == 0) {
+        } elseif (count($_FILES) == 0 || function_exists('is_plupload') && is_plupload()) {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
             $p = build_keep_post_fields();
             $p->attach(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
@@ -155,7 +155,13 @@ function _param_invalid($name, $ret, $posted)
 
     require_code('lang');
     require_code('tempcode');
+
+    if (function_exists('url_monikers_enabled') && !url_monikers_enabled() && $name == 'id') {
+        warn_exit(do_lang_tempcode('javascript:NOT_INTEGER_URL_MONIKERS')); // Complaining about non-integers is just confusing
+    }
+
     warn_exit(do_lang_tempcode('javascript:NOT_INTEGER'));
+
     return '';
 }
 
@@ -170,6 +176,7 @@ function improperly_filled_in($name, $posted, $array)
 {
     require_code('tempcode');
 
+    require_code('global3');
     set_http_status_code('400');
 
     if ($posted !== false) {
@@ -193,6 +200,7 @@ function improperly_filled_in($name, $posted, $array)
  */
 function improperly_filled_in_post($name)
 {
+    require_code('global3');
     set_http_status_code('400');
 
     if ((count($_POST) == 0) && (get_option('user_postsize_errors') == '1')) {
@@ -298,6 +306,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
     $text_eval = is_object($text) ? $text->evaluate() : $text;
 
     if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
+        require_code('global3');
         set_http_status_code('404');
         if (cms_srv('HTTP_REFERER') != '') {
             relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
@@ -368,9 +377,11 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         $text = $tmp;
     }
 
+    require_code('global3');
+
     global $WANT_TEXT_ERRORS;
     if ($WANT_TEXT_ERRORS) {
-        header('Content-type: text/plain; charset=' . get_charset());
+        @header('Content-type: text/plain; charset=' . get_charset());
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
         debug_print_backtrace();
@@ -410,8 +421,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         $GLOBALS['MSN_DB'] = null;
     }
 
-    global $EXITING;
-    if ((running_script('upgrader')) || (!function_exists('get_screen_title'))) {
+    global $EXITING, $MICRO_BOOTUP;
+    if ((running_script('upgrader')) || (!function_exists('get_screen_title')) || ($MICRO_BOOTUP)) {
         critical_error('PASSON', is_object($text) ? $text->evaluate() : $text);
     }
 
@@ -527,6 +538,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
     if (!$silent) {
+        require_code('global3');
         set_http_status_code('403'); // Stop spiders ever storing the URL that caused this
     }
 
@@ -922,6 +934,7 @@ function _fatal_exit($text, $return = false)
     global $WANT_TEXT_ERRORS;
     if ($WANT_TEXT_ERRORS) {
         header('Content-type: text/plain; charset=' . get_charset());
+        require_code('global3');
         set_http_status_code('500');
         safe_ini_set('ocproducts.xss_detect', '0');
         debug_print_backtrace();
@@ -1209,6 +1222,15 @@ function put_value_in_stack_trace($value)
     } catch (Exception $e) { // Can happen for SimpleXMLElement or PDO
         $_value = '...';
     }
+
+    global $SITE_INFO;
+    if ((isset($SITE_INFO['db_site_password'])) && (strlen($SITE_INFO['db_site_password']) > 4)) {
+        $_value = str_replace($SITE_INFO['db_site_password'], '(password removed)', $_value);
+    }
+    if ((isset($SITE_INFO['db_forums_password'])) && (strlen($SITE_INFO['db_forums_password']) > 4)) {
+        $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
+    }
+
     return escape_html($_value);
 }
 
@@ -1219,6 +1241,8 @@ function put_value_in_stack_trace($value)
  */
 function get_html_trace()
 {
+    require_code('templates');
+
     $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
     $_trace = debug_backtrace();
     $trace = array();
@@ -1227,6 +1251,7 @@ function get_html_trace()
         //if (in_array($stage['function'], array('get_html_trace', 'composr_error_handler', 'fatal_exit'))) continue;  Hinders more than helps
         $file = '';
         $line = '';
+        $_value = mixed();
         $__value = mixed();
         foreach ($stage as $key => $__value) {
             if ($key == 'file') {
@@ -1234,6 +1259,7 @@ function get_html_trace()
             } elseif ($key == 'line') {
                 $line = strval($__value);
             }
+
             if ($key == 'args') {
                 $_value = new Tempcode();
                 foreach ($__value as $param) {
@@ -1243,14 +1269,6 @@ function get_html_trace()
                 }
             } else {
                 $_value = put_value_in_stack_trace($__value);
-            }
-
-            global $SITE_INFO;
-            if ((isset($SITE_INFO['db_site_password'])) && (strlen($SITE_INFO['db_site_password']) > 4)) {
-                $_value = str_replace($SITE_INFO['db_site_password'], '(password removed)', $_value);
-            }
-            if ((isset($SITE_INFO['db_forums_password'])) && (strlen($SITE_INFO['db_forums_password']) > 4)) {
-                $_value = str_replace($SITE_INFO['db_forums_password'], '(password removed)', $_value);
             }
 
             $traces[] = array('LINE' => $line, 'FILE' => $file, 'KEY' => ucfirst($key), 'VALUE' => $_value);
@@ -1344,7 +1362,12 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
  */
 function _access_denied($class, $param, $force_login)
 {
+    require_code('global3');
     set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
+
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
+        chat_null_exit();
+    }
 
     require_lang('permissions');
     require_lang('cns_config');
@@ -1392,7 +1415,7 @@ function _access_denied($class, $param, $force_login)
 
         @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
-        $redirect = get_self_url(true, true, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
+        $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;
         $_GET['page'] = 'login';
         $_GET['type'] = 'browse';

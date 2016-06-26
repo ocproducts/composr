@@ -95,6 +95,10 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  */
 function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
+    if (is_null($poster_details)) { // Should never happen, but we need to be defensive
+        return new Tempcode();
+    }
+
     require_lang('cns');
     require_css('cns');
 
@@ -172,6 +176,9 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
     $custom_fields = new Tempcode();
     foreach ($poster_details['custom_fields'] as $name => $value) {
         if (($value !== null) && ($value !== '')) {
+            if (is_integer($name)) {
+                $name = strval($name);
+            }
             $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '10b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
         }
     }
@@ -179,18 +186,24 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
     if (isset($poster_details['custom_fields_full'])) {
         foreach ($poster_details['custom_fields_full'] as $name => $value) {
             if (($value !== null) && ($value !== '')) {
+                if (is_integer($name)) {
+                    $name = strval($name);
+                }
                 $custom_fields_full->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '20b72cd1ec240c315e56bc8a0f3a92a1', 'MEMBER_ID' => strval($member_id), 'NAME' => $name, 'RAW' => $value['RAW'], 'VALUE' => is_object($value['RENDERED']) ? protect_from_escaping($value['RENDERED']) : $value['RENDERED'])));
             }
         }
     }
+
     $ip_address = null;
     if (isset($poster_details['ip_address'])) {
         $ip_address = $poster_details['ip_address'];
     }
+
     $num_warnings = null;
     if ((isset($poster_details['poster_num_warnings'])) && (addon_installed('cns_warnings'))) {
         $num_warnings = integer_format($poster_details['poster_num_warnings']);
     }
+
     $galleries = null;
     if ((addon_installed('galleries')) && (get_option('show_gallery_counts') == '1')) {
         $gallery_cnt = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'galleries WHERE name LIKE \'' . db_encode_like('member_' . strval($member_id) . '_%') . '\'');
@@ -200,29 +213,38 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
             $galleries = integer_format($gallery_cnt);
         }
     }
+
     $dob = null;
     $age = null;
     $day = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_day');
     $month = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_month');
     $year = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_dob_year');
-    if (($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) && ($day !== null) && ($month !== null) && ($year !== null)) {
-        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-            $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
-        } else {
-            $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
-        }
+    if (($day !== null) && ($month !== null) && ($year !== null)) {
+        if ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_reveal_age') == 1) {
+            if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+                $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+            } else {
+                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
+            }
 
-        $age = intval(date('Y')) - $year;
-        if ($month > intval(date('m'))) {
-            $age--;
-        }
-        if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
-            $age--;
+            $age = intval(date('Y')) - $year;
+            if ($month > intval(date('m'))) {
+                $age--;
+            }
+            if (($month == intval(date('m'))) && ($day > intval(date('D')))) {
+                $age--;
+            }
+        } else {
+            $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));
         }
     }
 
     if ($extra_fields !== null) {
         foreach ($extra_fields as $key => $val) {
+            if (is_integer($key)) {
+                $key = strval($key);
+            }
+
             $custom_fields->attach(do_template('CNS_MEMBER_BOX_CUSTOM_FIELD', array('_GUID' => ($guid != '') ? $guid : '530f049d3b3065df2d1b69270aa93490', 'MEMBER_ID' => strval($member_id), 'NAME' => $key, 'VALUE' => ($val))));
         }
     }

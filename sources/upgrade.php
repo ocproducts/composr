@@ -219,7 +219,8 @@ function upgrade_script()
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
                     echo '<label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /> ';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
-                        echo '<br /><label for="upload">' . do_lang('UPLOAD') . '</label> <input type="file" id="upload" name="upload" />';
+                        echo '<br /><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" />';
+                        echo '<script>var url=document.getElementById(\'url\'); url.onchange=function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; };</script>';
                     }
                     echo '<input class="buttons__proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" />';
                     echo '</form>';
@@ -1630,16 +1631,19 @@ function version_specific()
                 '#([^\w])seedy([^\w])#' => '$1wiki$2',
                 '#ocPortal#' => 'Composr',
                 '#ocp_#' => 'cms_',
+                '#side_ocf_personal_topics#' => 'side_cns_private_topics',
                 '#ocf_#' => 'cns_',
                 '# filter="#' => ' select="',
                 '# select="#' => ' filter="',
                 '# ocselect="#' => ' filter="',
+                '# caption="#' => ' title="',
                 '#main_feedback#' => 'main_contact_us',
-                '#side_ocf_personal_topics#' => 'side_cns_private_topics',
                 '#side_stored_menu#' => 'menu',
                 '#topsites#' => 'top_sites',
                 '#internal_box#' => 'box',
                 '#external_box#' => 'box',
+                '# type="curved"#' => '',
+                '# type=&quot;curved&quot;#' => '',
                 '#side_root_galleries#' => 'side_galleries',
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
                 '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',

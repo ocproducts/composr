@@ -15,7 +15,7 @@
 			<div class="box box___cns_whisper_choice_screen"><div class="box_inner">
 				<h2>{!PRIVATE_TOPIC}</h2>
 
-				<form title="{!PRIVATE_TOPIC}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
+				<form title="{!PRIVATE_TOPIC}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 					{$HIDDENS_FOR_GET_FORM,{URL}}
 
 					<div>
@@ -36,7 +36,7 @@
 		<div class="box box___cns_whisper_choice_screen"><div class="box_inner">
 			<h2>{!PERSONAL_POST}</h2>
 
-			<form title="{!PERSONAL_POST}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get">
+			<form title="{!PERSONAL_POST}" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 				{$HIDDENS_FOR_GET_FORM,{URL}}
 
 				<div>

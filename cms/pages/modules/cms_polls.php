@@ -37,6 +37,8 @@ class Module_cms_polls extends Standard_crud_module
     public $table = 'poll';
     public $title_is_multi_lang = true;
     public $content_type = 'poll';
+    public $donext_entry_content_type = 'poll';
+    public $donext_category_content_type = null;
 
     /**
      * Find entry-points available within this module.
@@ -50,8 +52,8 @@ class Module_cms_polls extends Standard_crud_module
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
         $ret = array(
-                   'browse' => array('MANAGE_POLLS', 'menu/social/polls'),
-               ) + parent::get_entry_points();
+            'browse' => array('MANAGE_POLLS', 'menu/social/polls'),
+        ) + parent::get_entry_points();
 
         if ($support_crosslinks) {
             require_code('fields');
@@ -159,7 +161,7 @@ class Module_cms_polls extends Standard_crud_module
             'question' => do_lang_tempcode('QUESTION'),
             'add_time' => do_lang_tempcode('ADDED'),
             'is_current DESC,add_time' => do_lang_tempcode('CURRENT'),
-            'submitter' => do_lang_tempcode('OWNER'),
+            'submitter' => do_lang_tempcode('metadata:OWNER'),
             'poll_views' => do_lang_tempcode('COUNT_VIEWS'),
             'votes1+votes2+votes3+votes4+votes5+votes6+votes7+votes8+votes9+votes10' => do_lang_tempcode('COUNT_TOTAL'),
         );
@@ -172,7 +174,7 @@ class Module_cms_polls extends Standard_crud_module
             do_lang_tempcode('ADDED'),
             do_lang_tempcode('CURRENT'),
             do_lang_tempcode('USED_PREVIOUSLY'),
-            do_lang_tempcode('OWNER'),
+            do_lang_tempcode('metadata:OWNER'),
             do_lang_tempcode('COUNT_VIEWS'),
             do_lang_tempcode('COUNT_TOTAL'),
             do_lang_tempcode('ACTIONS'),

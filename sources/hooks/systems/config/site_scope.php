@@ -38,6 +38,7 @@ class Hook_config_site_scope
             'explanation' => 'CONFIG_OPTION_site_scope',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 2,
 
             'addon' => 'core_configuration',
         );

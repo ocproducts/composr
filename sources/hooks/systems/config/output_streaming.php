@@ -50,6 +50,6 @@ class Hook_config_output_streaming
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

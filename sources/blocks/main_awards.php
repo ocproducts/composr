@@ -94,8 +94,7 @@ class Block_main_awards
 
         $submit_url = $info['add_url'];
         if (!is_null($submit_url)) {
-            list($submit_url_zone, $submit_url_map, $submit_url_hash) = page_link_decode($submit_url);
-            $submit_url = static_evaluate_tempcode(build_url($submit_url_map, $submit_url_zone, null, false, false, false, $submit_url_hash));
+            $submit_url = page_link_to_url($submit_url);
         } else {
             $submit_url = '';
         }
@@ -120,7 +119,7 @@ class Block_main_awards
                     'HIGH' => false,
                     'TITLE' => $award_title,
                     'MESSAGE' => do_lang_tempcode('NO_AWARD'),
-                    'ADD_NAME' => do_lang_tempcode('ADD'),
+                    'ADD_NAME' => content_language_string($award_type_row['a_content_type'], 'ADD'),
                     'SUBMIT_URL' => str_replace('=!', '__ignore=1', $submit_url),
                 ));
             }
@@ -158,7 +157,7 @@ class Block_main_awards
             'AWARDEE' => $awardee,
             'AWARDEE_USERNAME' => $awardee_username,
             'RAW_AWARD_DATE' => strval($myrow['date_and_time']),
-            'AWARD_DATE' => get_timezoned_date($myrow['date_and_time']),
+            'AWARD_DATE' => get_timezoned_date_tempcode($myrow['date_and_time']),
             'CONTENT' => $rendered_content,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,

@@ -6,7 +6,7 @@
 	{!SETUPWIZARD_2_DESCRIBE_EXPECTATIONS}
 </div></div>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

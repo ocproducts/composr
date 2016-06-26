@@ -108,7 +108,7 @@ class Block_main_member_bar
                 'DETAILS' => $details
             ));
         } else { // Guest
-            if (count($_POST) > 0 || (get_page_name() == 'join') || (get_page_name() == 'login')) {
+            if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login')) {
                 $_this_url = build_url(array('page' => 'forumview'), 'forum', array('keep_session' => 1, 'redirect' => 1));
             } else {
                 $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
@@ -123,7 +123,7 @@ class Block_main_member_bar
                 'JOIN_URL' => $join_url,
                 'FULL_LOGIN_URL' => $full_link,
                 'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
-                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered_topics'), get_module_zone('vforums')),
+                'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered'), get_module_zone('vforums')),
             ));
         }
 

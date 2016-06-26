@@ -38,6 +38,7 @@ class Hook_config_show_first_join_page
             'explanation' => 'CONFIG_OPTION_show_first_join_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
 
             'addon' => 'core_cns',
         );

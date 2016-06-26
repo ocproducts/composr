@@ -396,8 +396,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         ->setDate(time())
         ->setPriority($priority)
         ->setCharset($charset)
-        ->setBody($html_evaluated, 'text/html', $charset)
-        ->addPart($message_plain, 'text/plain', $charset);
+        ->setBody($html_evaluated, 'text/html', $charset);
+    if (!$in_html) {
+        $message->addPart($message_plain, 'text/plain', $charset);
+    }
 
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
@@ -411,7 +413,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     if ((count($to_email) == 1) && (!is_null($require_recipient_valid_since))) {
         $headers = $message->getHeaders();
-        $_require_recipient_valid_since = date('D, j M Y H:i:s', $require_recipient_valid_since);
+        $_require_recipient_valid_since = date('r', $require_recipient_valid_since);
         $headers->addTextHeader('Require-Recipient-Valid-Since', $to_email[0] . '; ' . $_require_recipient_valid_since);
     }
 
@@ -453,12 +455,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Return / Error handling
     $SENDING_MAIL = false;
     if ($error != '') {
-        if (get_param_integer('keep_hide_mail_failure', 0) == 0) {
-            require_code('site');
-            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
-        } else {
-            return warn_screen(get_screen_title('ERROR_OCCURRED'), do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))));
-        }
+        require_code('site');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
     }
     return null;
 }

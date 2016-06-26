@@ -79,7 +79,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
 
     // FUDGE: Extra check for private topics
     $topic_id = null;
-    if (($content_type == 'post') && (get_forum_type() == 'ocf')) {
+    if (($content_type == 'post') && (get_forum_type() == 'cns')) {
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_intended_solely_for', 'p_poster'), array('id' => intval($content_id)), '', 1);
         if (!array_key_exists(0, $post_rows)) {
             return false;
@@ -89,7 +89,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         }
         $topic_id = $post_rows[0]['p_topic_id'];
     }
-    if (($content_type == 'topic') && (get_forum_type() == 'ocf')) {
+    if (($content_type == 'topic') && (get_forum_type() == 'cns')) {
         $topic_id = intval($content_id);
     }
     if (!is_null($topic_id)) {
@@ -119,13 +119,13 @@ function get_content_object($content_type)
         return $cache[$content_type];
     }
 
-    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type);
+    $path = 'hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true);
     if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_code($path);
         $ob = object_factory('Hook_content_meta_aware_' . filter_naughty_harsh($content_type), true);
     } else {
         // Okay, maybe it's a resource type (more limited functionality).
-        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type);
+        $path = 'hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type, true);
         if ((file_exists(get_file_base() . '/sources/' . $path . '.php')) || (file_exists(get_file_base() . '/sources_custom/' . $path . '.php'))) {
             require_code('hooks/systems/resource_meta_aware/' . filter_naughty_harsh($content_type));
             $ob = object_factory('Hook_resource_meta_aware_' . filter_naughty_harsh($content_type), true);
@@ -219,6 +219,10 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     $cma_info = $cma_ob->info();
+
+    if ($cma_info === null) {
+        return array(null, null, null, null, null, null);
+    }
 
     $db = $cma_info['connection'];
 
@@ -396,4 +400,30 @@ function append_content_select_for_id(&$select, $cma_info, $table_alias = null)
     foreach (is_array($cma_info['id_field']) ? $cma_info['id_field'] : array($cma_info['id_field']) as $id_field_part) {
         $select[] = (($table_alias === null) ? '' : ($table_alias . '.')) . $id_field_part;
     }
+}
+
+/**
+ * Get an action language string for a particular content type based on a stub.
+ * If it can't get a match it'll just use the stub.
+ *
+ * @param  string $content_type The content type
+ * @param  string $string The language string stub (must itself be a valid language string)
+ * @return Tempcode Tempcode of language string
+ */
+function content_language_string($content_type, $string)
+{
+    $object = get_content_object($content_type);
+    $info = $object->info();
+    $regexp = $info['actionlog_regexp'];
+
+    do_lang($info['content_type_label']); // This forces the language file to load if there is one, as it'll include the language file reference within content_type_label
+
+    $string_custom = str_replace('\w+', $string, $regexp);
+    $test = do_lang($string_custom, null, null, null, null, false);
+    if ($test !== null) {
+        $string = $string_custom;
+    }
+
+    //return do_lang_tempcode($string); // Assumes that the lang string stays memory resident, but our probing only guarantees it's resident NOW
+    return protect_from_escaping($test); // But this should work as the string is rolled into the Tempcode permanently
 }

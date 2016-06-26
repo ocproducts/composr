@@ -46,11 +46,6 @@
 	</div>
 </div>
 
-{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,post,{ID}}}
-{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}
-	{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry},1}
-{+END}
-
 <div>
 	<div class="cns_topic_post_member_details" role="note">
 		{+START,IF_NON_EMPTY,{POSTER}}
@@ -71,7 +66,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker">
-						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<div>
@@ -89,14 +84,19 @@
     			</h3>
     		{+END}{+END}
 
-    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
+    		{+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}{+START,IF,{$NEQ,{DESCRIPTION},{POST_TITLE}}}
     			<h3>
     				{DESCRIPTION*}
     			</h3>
-    		{+END}{+END}
+    		{+END}{+END}{+END}
 
 			{POST}
 		</div>
+
+		{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,post,{ID}}}
+		{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}
+			{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry},1}
+		{+END}
 
 		{LAST_EDITED}
 

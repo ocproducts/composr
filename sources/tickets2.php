@@ -138,7 +138,8 @@ function delete_ticket_type($ticket_type_id)
 function get_ticket_type($ticket_type_id)
 {
     if (is_null($ticket_type_id)) {
-        return array('ticket_type' => null, 'guest_emails_mandatory' => false, 'search_faq' => false, 'cache_lead_time' => null);
+        // LEGACY
+        return array('ticket_type' => null, 'ticket_type_name' => do_lang('UNKNOWN'), 'guest_emails_mandatory' => 0, 'search_faq' => 0, 'cache_lead_time' => null);
     }
 
     $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', null, array('id' => $ticket_type_id), '', 1);
@@ -314,15 +315,15 @@ function get_ticket_posts($ticket_id, &$forum, &$topic_id, &$ticket_type, $start
         $forum = $ticket[0]['forum_id'];
         $topic_id = $ticket[0]['topic_id'];
         $count = 0;
-        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count, $max, $start);
+        return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id, do_lang('SUPPORT_TICKET')), $count, $max, $start);
     }
 
     // It must be an old-style ticket, residing in the root ticket forum
     $forum = get_ticket_forum_id();
-    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id);
+    $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('ticket_forum_name'), $ticket_id, do_lang('SUPPORT_TICKET'));
     $ticket_type_id = null;
     $count = 0;
-    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id), $count);
+    return $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum), $ticket_id, do_lang('SUPPORT_TICKET')), $count);
 }
 
 /**

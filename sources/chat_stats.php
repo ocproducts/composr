@@ -49,5 +49,9 @@ function get_num_chatrooms()
  */
 function get_num_chatposts()
 {
-    return $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)');
+    if (get_value('slow_counts') === '1') {
+        return $GLOBALS['SITE_DB']->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_messages\'');
+    } else {
+        return $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)');
+    }
 }

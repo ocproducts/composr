@@ -467,9 +467,10 @@ function cos($angle)
  * Count elements in a variable.
  *
  * @param  array $var Variable to count elements of.
+ * @param  integer $mode The count mode (COUNT_NORMAL or COUNT_RECURSIVE).
  * @return integer The count.
  */
-function count($var)
+function count($var, $mode = 0)
 {
     return 0;
 }
@@ -932,7 +933,7 @@ function get_object_vars($object)
  * @param  string $charset The character set to use
  * @return array The translation table.
  */
-function get_html_translation_table($table, $quote_style = ENT_COMPAT, $charset = 'UTF-8')
+function get_html_translation_table($table, $quote_style = ENT_COMPAT, $charset = 'utf-8')
 {
     return array();
 }
@@ -3444,7 +3445,7 @@ function usort(&$array, $cmp_function)
 }
 
 /**
- * Converts a string with ISO-8859-1 characters encoded with UTF-8 to single-byte ISO-8859-1.
+ * Converts a string with ISO-8859-1 characters encoded with utf-8 to single-byte ISO-8859-1.
  *
  * @param  string $data Subject.
  * @return string Result.
@@ -3455,7 +3456,7 @@ function utf8_decode($data)
 }
 
 /**
- * Encodes an ISO-8859-1 string to UTF-8.
+ * Encodes an ISO-8859-1 string to utf-8.
  *
  * @param  string $data Subject.
  * @return string Result.
@@ -3908,9 +3909,9 @@ function pi()
 /**
  * Exponential expression.
  *
- * @param  float $base Base.
- * @param  float $exp Exponent.
- * @return float Result.
+ * @param  mixed $base Base (integer or float).
+ * @param  mixed $exp Exponent (integer or float).
+ * @return mixed Result (integer or float).
  */
 function pow($base, $exp)
 {

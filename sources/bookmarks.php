@@ -72,10 +72,10 @@ function add_bookmark_form($post_url)
     require_code('character_sets');
 
     $url = base64_decode(get_param_string('url', '', true));
-    $url = convert_to_internal_encoding($url, 'UTF-8'); // Note that this is intentionally passed in to not be a URL Scheme
-    $page_link = convert_to_internal_encoding(url_to_page_link($url, false, false), 'UTF-8');
+    $url = convert_to_internal_encoding($url, 'utf-8'); // Note that this is intentionally passed in to not be a URL Scheme
+    $page_link = convert_to_internal_encoding(url_to_page_link($url, false, false), 'utf-8');
     $default_title = get_param_string('title', '', true);
-    $default_title = convert_to_internal_encoding($default_title, 'UTF-8');
+    $default_title = convert_to_internal_encoding($default_title, 'utf-8');
     $default_title = preg_replace('#\s.\s' . preg_quote(get_site_name(), '#') . '$#s', '', $default_title);
     $default_title = preg_replace('#^' . preg_quote(get_site_name(), '#') . '\s.\s#s', '', $default_title);
     $default_title_2 = @preg_replace('#\s.\s' . preg_quote(get_site_name(), '#') . '$#su', '', $default_title);

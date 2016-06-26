@@ -283,7 +283,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$RAND}</td>
-			<td>A random number between 0 and 2147483647. You can also give an upper bound as a second parameter</td>
+			<td>A random number between 0 and 2147483647</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$SET_RAND,a,b,c}</td>
@@ -475,7 +475,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MEMBER_PROFILE_URL,2}</td>
-			<td>The member's profile URK (optionally takes a member ID, else assumes current user)</td>
+			<td>The member's profile URL (optionally takes a member ID, else assumes current user)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CNS_MEMBER_HTML,2}</td>
@@ -487,7 +487,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$IS_IN_GROUP,1-3}</td>
-			<td>Find whether the current member is in a usergroup (parameters together constitute an [concept]Selectcode[/concept] list, except if the last is primary or secondary then this specifies that the check be limited to checking such usergroup membership).</td>
+			<td>Find whether the current member is in a usergroup (parameters together constitute an [/html][concept]Selectcode[/concept][html] list, except if the last is primary or secondary then this specifies that the check be limited to checking such usergroup membership).</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CPF_VALUE,Some Custom Field}</td>
@@ -939,7 +939,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$BLOCK,block=main_search,zone=site}</td>
-			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd>. For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
+			<td>Place a block into the template. Takes any number of parameters (but at least 1 for the block name), each of which defines a block parameter and its value. Parameters must include the block name, which is encoded against the special reserved name <kbd>block</kbd> (<strong>not</strong> just placed in there as a lone parameter). For example: [/html][tt]{$BLOCK,block=main_news,filter=1\,2\,3}[/tt][html]</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$LOAD_PAGE,about,site}</td>
@@ -975,7 +975,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$PAGE_LINK,site:about}</td>
-			<td>Link to a page, using [concept]page-link[/concept] syntax (e.g. "_SELF:pagename:type:1")</td>
+			<td>Link to a page, using [/html][concept]page-link[/concept][html] syntax (e.g. "_SELF:pagename:type:1")</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$ADDON_INSTALLED,galleries}</td>
@@ -1282,7 +1282,7 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$GROUP_NAME,4}</td>
-			<td>Find the name of a usergroup</td>
+			<td>Find the name of a members nth usergroup</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$URL_FOR_GET_FORM,someurl}</td>
@@ -1335,6 +1335,10 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 		<tr style="background: #DDFFDD">
 			<td>{$CPF_LIST,&lt;field-title&gt;}</td>
 			<td>Find all the possible values for a custom profile field in a loop-iterable string</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$AUTHOR_MEMBER,author_name}</td>
+			<td>Find the member ID associated with an author, or guest ID if none</td>
 		</tr>
 	</tbody>
 </table>
@@ -1670,12 +1674,8 @@ You can store and retrieve values in Tempcode variables. These work across templ
 			<td>Set a Tempcode variable to a value (give it the name of a variable, and a value, returns nothing). Bear in mind that the Composr Tempcode-preprocessor will likely cause your code to run once in every code branch before it outputs (meaning even code inside IF directives that never are true will still pre-process), and once again as it outputs. So always reinitialise your variables in your template to make sure they are not dirty from the pre-processing stage. This behaviour may seem strange, but it is necessary for performance, comprehensive caching, and reasons of Composr needing conditionless output foresight.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$SET_NOPREEVAL,test,1}</td>
-			<td>As above, but with no pre-processing.</td>
-		</tr>
-		<tr style="background: #DDFFDD">
 			<td>{$GET,test}</td>
-			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. <kbd>SET_NOPREEVAL</kbd> must be used to do the initial SET.</td>
+			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}</td>
@@ -1712,7 +1712,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>These allow the 'standard box' layout convention to be used without duplicating a lot of HTML in different templates. CSS could never provide this itself, as the box 'styling' actually involves a large chunk of complex structure.
 		          <br />The parameters to the directive are (all may be blank or left out):<ol>
 						<li>the title (blank means no title is used)</li>
-						<li>the type of the table (there will be a template, STANDARDBOX_&lt;type&gt; for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
+						<li>the type of the table (there will be a template, <kbd>STANDARDBOX_&lt;type&gt;</kbd> for any valid type code; the default is <kbd>default</kbd>). [/html][tt]default[/tt] and [tt]accordion[/tt][html] come as standard.</li>
 						<li>the CSS width</li>
 						<li>'|' separated list of options (meaning dependant upon templates interpretation)</li>
 						<li>'|' separated list of meta information (key|value|key|value|...) (e.g. [/html][tt]Name|Allen|Gender|Male|Country|USA[/tt][html])</li>
@@ -1738,7 +1738,7 @@ Note that you cannot use directives for symbol parameters because directives con
 	            Do a loop over an array. This is not used much in default templates and only works if arrays are actually what is passed into the template (unless the third operating mode is used, see below).
 	            It operates in 3 possible ways:<ol>
 	                <li>With a template parameter that is a simple 1-dimensional list of strings. E.g. <kbd>'EXAMPLE'=>array('a','b','c')</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop).</li>
-	                <li>With a template parameter that is a 2-dimensional array structure, a list of maps of key names to strings. E.g. <kbd>'EXAMPLE'=>array(array('FOO'=>'a1','BAR'=>'b1'),array('FOO'=>'a2','BAR'=>'b2'))</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{FOO}</kbd> and <kbd>{BAR}</kbd> are bound.</li>
+	                <li>With a template parameter that is a 2-dimensional array structure, a list of maps of key names to strings. E.g. 'EXAMPLE'=>array(array('FOO'=>'a1', 'BAR'=>'b1'), array('FOO'=>'a2', 'BAR'=>'b2'))</kbd> could be looped via <kbd>{+START,LOOP,EXAMPLE}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{FOO}</kbd> and <kbd>{BAR}</kbd> are bound.</li>
 	                <li>With no template parameter, just a hard-coded list within the template. E.g. <kbd>{+START,LOOP,a\,b\,c}...{+END}</kbd>. Within the directive <kbd>{_loop_key}</kbd> and <kbd>{_loop_var}</kbd> are bound (so it's a little like a PHP foreach loop with hard-coded data). The "\" is required to encode a comma-separated list within a single directive parameter.</li>
 	            </ol>
 	            If also has support for automatic HTML table columnisation and sorting, as an advanced feature (very rarely used). If you want to use that check at the implementation in the PHP code to see how it works.
@@ -1777,7 +1777,7 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>Find the number of elements in an array.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>SET / SET_NOPREEVAL</td>
+			<td>SET</td>
 			<td>Like the SET symbol, but sets with surrounded block of code rather than the second parameter.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
@@ -1815,6 +1815,10 @@ Note that you cannot use directives for symbol parameters because directives con
 		<tr style="background: #DDFFDD">
 			<td>COMMENT</td>
 			<td>A comment (i.e. does nothing)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>NO_PREPROCESSING</td>
+			<td>Avoid preprocessing of anything inside the directive. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
 		</tr>
 	</tbody>
 </table>

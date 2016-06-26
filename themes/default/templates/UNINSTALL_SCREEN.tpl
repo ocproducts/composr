@@ -2,7 +2,7 @@
 	{!UNINSTALL_WARNING,{$TUTORIAL_URL*,uninstall},{$TUTORIAL_URL*,tut_moving}}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="uninstall.php" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="uninstall.php" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>

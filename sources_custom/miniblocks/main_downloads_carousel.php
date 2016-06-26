@@ -18,7 +18,7 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 if (!isset($map['id'])) {
     $map['id'] = strval(db_get_first_id());
 }
-$id = intval($map['id']);
+$id = $map['id'];
 
 require_code('images');
 require_code('downloads');
@@ -28,7 +28,7 @@ require_css('carousels');
 
 $subdownloads = new Tempcode();
 require_code('selectcode');
-$filter_where = selectcode_to_sqlfragment(strval($id) . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
+$filter_where = selectcode_to_sqlfragment($id . '*', 'id', 'download_categories', 'parent_id', 'category_id', 'id');
 $all_rows = $GLOBALS['SITE_DB']->query('SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d WHERE ' . $filter_where, 20, null, false, true, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
 shuffle($all_rows);
 foreach ($all_rows as $d_row) {
@@ -42,27 +42,31 @@ foreach ($all_rows as $d_row) {
     }
 }
 
-$carousel_id = strval(mt_rand(0, mt_getrandmax()));
+if ($subdownloads->is_empty()) {
+    $content = paragraph(do_lang('NO_ENTRIES'), '', 'nothing_here');
+} else {
+    $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 
-$content = '
-    <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none">
-        <div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',-100); return false;"></div>
-        <div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',+100); return false;"></div>
+    $content = '
+        <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none">
+            <div class="move_left" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',-100); return false;"></div>
+            <div class="move_right" onkeypress="this.onmousedown(event);" onmousedown="carousel_move(' . $carousel_id . ',+100); return false;"></div>
 
-        <div class="main">
+            <div class="main">
+            </div>
         </div>
-    </div>
 
-    <div class="carousel_temp" id="carousel_ns_' . $carousel_id . '">
-        ' . $subdownloads->evaluate() . '
-    </div>
+        <div class="carousel_temp" id="carousel_ns_' . $carousel_id . '">
+            ' . $subdownloads->evaluate() . '
+        </div>
 
-    <script>// <![CDATA[
-        add_event_listener_abstract(window,\'load\',function() {
-            initialise_carousel(' . $carousel_id . ');
-        });
-    //]]></script>
-';
+        <script>// <![CDATA[
+            add_event_listener_abstract(window,\'load\',function() {
+                initialise_carousel(' . $carousel_id . ');
+            });
+        //]]></script>
+    ';
+}
 
 $tpl = put_in_standard_box(make_string_tempcode($content), do_lang('RANDOM_20_DOWNLOADS'));
 $tpl->evaluate_echo();

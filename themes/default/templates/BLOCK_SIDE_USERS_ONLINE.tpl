@@ -1,7 +1,7 @@
 <section class="box box___block_side_users_online"><div class="box_inner">
 	<h3>{!USERS_ONLINE}</h3>
 
-	<p>{!FORUM_NUM_MEMBERS,{ONLINE}}, <span class="associated_details">{!NUM_GUESTS,{GUESTS*}}</span></p>
+	<p>{!FORUM_NUM_MEMBERS,{MEMBERS}}, {!NUM_GUESTS,{GUESTS*}}</p>
 
 	{+START,IF_NON_EMPTY,{NEWEST}}
 		{NEWEST}

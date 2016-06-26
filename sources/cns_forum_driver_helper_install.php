@@ -70,7 +70,7 @@ function _helper_install_specifics()
 {
     $a = array();
     $a['name'] = 'cns_table_prefix';
-    $a['default'] = 'cms_';
+    $a['default'] = function_exists('get_default_table_prefix') ? get_default_table_prefix() : 'cms_';
     $a['description'] = do_lang('MOST_DEFAULT');
     $a['title'] = do_lang('TABLE_PREFIX');
     $b = array();
@@ -106,7 +106,7 @@ function _helper_install_test_load_from($path)
     $PROBED_FORUM_CONFIG['sql_user'] = $GLOBALS['DB_STATIC_OBJECT']->db_default_user();
     $PROBED_FORUM_CONFIG['sql_pass'] = $GLOBALS['DB_STATIC_OBJECT']->db_default_password();
 
-    $base_url = post_param_string('base_url', 'http://' . cms_srv('HTTP_HOST') . dirname(cms_srv('SCRIPT_NAME')));
+    $base_url = post_param_string('base_url', get_base_url());
 
     $PROBED_FORUM_CONFIG['board_url'] = $base_url . '/forum';
     return true;

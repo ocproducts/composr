@@ -86,7 +86,7 @@ class Hook_profiles_tabs_about
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'id' => $member_id_of), get_module_zone('warnings')), 'tabs/member_account/warnings');
         }
         if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {
-            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('REVISIONS'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
+            $modules[] = (!addon_installed('cns_forum')) ? null : array('audit', do_lang_tempcode('actionlog:REVISIONS'), build_url(array('page' => 'admin_revisions', 'type' => 'browse', 'username' => $username), get_module_zone('admin_revisions')), 'buttons/revisions');
         }
         if ((addon_installed('securitylogging')) && (has_actual_page_access($member_id_viewing, 'admin_lookup'))) {
             require_lang('lookup');
@@ -242,17 +242,26 @@ class Hook_profiles_tabs_about
         }
 
         // Birthday
+        $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_day');
+        $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_month');
+        $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_year');
         $dob = '';
-        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_reveal_age') == 1) {
-            $day = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_day');
-            $month = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_month');
-            $year = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_dob_year');
-            if (!is_null($day)) {
+        $_dob = mktime(12, 0, 0, $month, $day, $year);
+        $_dob_censored = mktime(12, 0, 0, $month, $day);
+        if (($day !== null) && ($month !== null) && ($year !== null)) {
+            if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_reveal_age') == 1) {
                 if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                     $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
+                    $_dob = $_dob_censored; // Have to use censored as other is broken
                 } else {
-                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true, true);
+                    $dob = get_timezoned_date($_dob, false, false, true);
+                    $_dob_censored = $_dob; // No censoring needed
                 }
+            } else {
+                if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+                    $_dob = $_dob_censored;
+                }
+                $dob = cms_strftime(do_lang('date_no_year'), $_dob_censored);
             }
         }
 
@@ -314,7 +323,7 @@ class Hook_profiles_tabs_about
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_join_time');
         $days_joined = intval(round((time() - $join_time) / 60 / 60 / 24));
-        $total_posts = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)');
+        $total_posts = $GLOBALS['FORUM_DRIVER']->get_num_forum_posts();
         $join_date = ($join_time == 0) ? '' : get_timezoned_date($join_time, false);
         $count_posts = do_lang_tempcode('_COUNT_POSTS', escape_html(integer_format($post_count)), escape_html(float_format(floatval($post_count) / floatval(($days_joined == 0) ? 1 : $days_joined))), array(escape_html(float_format(floatval(100 * $post_count) / floatval(($total_posts == 0) ? 1 : $total_posts)))));
 
@@ -398,55 +407,57 @@ class Hook_profiles_tabs_about
         }
 
         $content = do_template('CNS_MEMBER_PROFILE_ABOUT', array(
-                                                               '_GUID' => 'fodfjdsfjsdljfdls',
-                                                               'CLUBS' => $clubs,
-                                                               'RIGHT_MARGIN' => $right_margin,
-                                                               'AVATAR_WIDTH' => strval($a) . 'px',
-                                                               'PHOTO_WIDTH' => strval($b) . 'px',
-                                                               'MOST_ACTIVE_FORUM' => $most_active_forum,
-                                                               'TIME_FOR_THEM' => $time_for_them,
-                                                               'TIME_FOR_THEM_RAW' => strval($time_for_them_raw),
-                                                               'USERS_TIMEZONE' => make_nice_timezone_name($users_timezone),
-                                                               'USERS_TIMEZONE_RAW' => $users_timezone,
-                                                               'SUBMIT_DAYS_AGO' => integer_format($submit_days_ago),
-                                                               'SUBMIT_TIME_RAW' => strval($last_submit_time),
-                                                               'LAST_VISIT_TIME_RAW' => strval($last_visit_time),
-                                                               'ONLINE_NOW' => $online_now,
-                                                               '_ONLINE_NOW' => $_online_now,
-                                                               'BANNED' => $banned,
-                                                               'USER_AGENT' => $user_agent,
-                                                               'OPERATING_SYSTEM' => $operating_system,
-                                                               'DOB' => $dob,
-                                                               'IP_ADDRESS' => $ip_address,
-                                                               'COUNT_POSTS' => $count_posts,
-                                                               'COUNT_POINTS' => $count_points,
-                                                               'PRIMARY_GROUP' => $primary_group,
-                                                               'PRIMARY_GROUP_ID' => strval($primary_group_id),
-                                                               'PHOTO_URL' => $photo_url,
-                                                               'PHOTO_THUMB_URL' => $photo_thumb_url,
-                                                               'EMAIL_ADDRESS' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address'),
-                                                               'AVATAR_URL' => $avatar_url,
-                                                               'SIGNATURE' => $signature,
-                                                               'JOIN_DATE' => $join_date,
-                                                               'JOIN_DATE_RAW' => strval($join_time),
-                                                               'CUSTOM_FIELDS' => $custom_fields,
-                                                               'CUSTOM_FIELDS_SECTIONS' => $custom_fields_sections,
-                                                               'ACTIONS_contact' => $actions['contact'],
-                                                               'ACTIONS_profile' => $actions['profile'],
-                                                               'ACTIONS_views' => $actions['views'],
-                                                               'ACTIONS_audit' => $actions['audit'],
-                                                               'ACTIONS_content' => $actions['content'],
-                                                               'USERNAME' => $username,
-                                                               'MEMBER_ID' => strval($member_id_of),
-                                                               'SECONDARY_GROUPS' => $secondary_groups,
-                                                               'VIEW_PROFILES' => $member_id_viewing == $member_id_of || has_privilege($member_id_viewing, 'view_profiles'),
-                                                               'ON_PROBATION' => $on_probation,
-                                                               'EXTRA_INFO_DETAILS' => $extra_info_details,
-                                                               'EXTRA_TRACKING_DETAILS' => $extra_tracking_details,
-                                                               'EXTRA_SECTIONS' => $extra_sections,
-                                                               'VIEWS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_profile_views')),
-                                                               'TOTAL_SESSIONS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_total_sessions')),
-                                                           ) + $fields_map);
+            '_GUID' => 'fodfjdsfjsdljfdls',
+            'CLUBS' => $clubs,
+            'RIGHT_MARGIN' => $right_margin,
+            'AVATAR_WIDTH' => strval($a) . 'px',
+            'PHOTO_WIDTH' => strval($b) . 'px',
+            'MOST_ACTIVE_FORUM' => $most_active_forum,
+            'TIME_FOR_THEM' => $time_for_them,
+            'TIME_FOR_THEM_RAW' => strval($time_for_them_raw),
+            'USERS_TIMEZONE' => make_nice_timezone_name($users_timezone),
+            'USERS_TIMEZONE_RAW' => $users_timezone,
+            'SUBMIT_DAYS_AGO' => integer_format($submit_days_ago),
+            'SUBMIT_TIME_RAW' => strval($last_submit_time),
+            'LAST_VISIT_TIME_RAW' => strval($last_visit_time),
+            'ONLINE_NOW' => $online_now,
+            '_ONLINE_NOW' => $_online_now,
+            'BANNED' => $banned,
+            'USER_AGENT' => $user_agent,
+            'OPERATING_SYSTEM' => $operating_system,
+            'DOB' => $dob,
+            '_DOB' => strval($_dob),
+            '_DOB_CENSORED' => strval($_dob_censored),
+            'IP_ADDRESS' => $ip_address,
+            'COUNT_POSTS' => $count_posts,
+            'COUNT_POINTS' => $count_points,
+            'PRIMARY_GROUP' => $primary_group,
+            'PRIMARY_GROUP_ID' => strval($primary_group_id),
+            'PHOTO_URL' => $photo_url,
+            'PHOTO_THUMB_URL' => $photo_thumb_url,
+            'EMAIL_ADDRESS' => $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address'),
+            'AVATAR_URL' => $avatar_url,
+            'SIGNATURE' => $signature,
+            'JOIN_DATE' => $join_date,
+            'JOIN_DATE_RAW' => strval($join_time),
+            'CUSTOM_FIELDS' => $custom_fields,
+            'CUSTOM_FIELDS_SECTIONS' => $custom_fields_sections,
+            'ACTIONS_contact' => $actions['contact'],
+            'ACTIONS_profile' => $actions['profile'],
+            'ACTIONS_views' => $actions['views'],
+            'ACTIONS_audit' => $actions['audit'],
+            'ACTIONS_content' => $actions['content'],
+            'USERNAME' => $username,
+            'MEMBER_ID' => strval($member_id_of),
+            'SECONDARY_GROUPS' => $secondary_groups,
+            'VIEW_PROFILES' => $member_id_viewing == $member_id_of || has_privilege($member_id_viewing, 'view_profiles'),
+            'ON_PROBATION' => $on_probation,
+            'EXTRA_INFO_DETAILS' => $extra_info_details,
+            'EXTRA_TRACKING_DETAILS' => $extra_tracking_details,
+            'EXTRA_SECTIONS' => $extra_sections,
+            'VIEWS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_profile_views')),
+            'TOTAL_SESSIONS' => strval($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_total_sessions')),
+        ) + $fields_map);
 
         return array($title, $content, $order, 'tabs/member_account/profile');
     }

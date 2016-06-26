@@ -3,12 +3,17 @@
 		{+START,IF,{USE_CAPTCHA}}
 			<div class="comments_captcha">
 				<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-					<p><label for="captcha">{!DESCRIPTION_CAPTCHA_2,<a target="_blank" title="{!AUDIO_VERSION} {!LINK_NEW_WINDOW}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}">{!AUDIO_VERSION}</a>}</label></p>
+					{+START,IF,{$CONFIG_OPTION,audio_captcha}}
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a onclick="return play_self_audio_link(this);" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+					{+END}
+					{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
+						<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+					{+END}
 					{+START,IF,{$CONFIG_OPTION,css_captcha}}
-						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
+						<iframe{$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
 					{+END}
 					{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}" />
+						<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
 					{+END}
 					<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
 				</div></div>
@@ -18,7 +23,7 @@
 {+END}
 
 {+START,IF_NON_EMPTY,{COMMENT_URL}}
-<form role="form" title="{TITLE*}" class="comments_form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data">
+<form role="form" title="{TITLE*}" class="comments_form" id="comments_form" onsubmit="return ({+START,IF_PASSED,MORE_URL}(this.getAttribute('action')=='{MORE_URL;*}') || {+END}(check_field_for_blankness(this.elements['post'],event)){+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}} &amp;&amp; (check_field_for_blankness(this.elements['email'],event)){+END});" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 	<input type="hidden" name="_comment_form_post" value="1" />
 {+END}
@@ -117,7 +122,7 @@
 
 									<td>
 										{+START,IF,{$JS_ON}}
-											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_2__{TYPE*}__{REVIEW_TITLE|*}__{ID*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_3__{TYPE*}__{REVIEW_TITLE|*}__{ID*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_4__{TYPE*}__{REVIEW_TITLE|*}__{ID*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_5__{TYPE*}__{REVIEW_TITLE|*}__{ID*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
+											<img id="review_bar_1__{TYPE|*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_2__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_3__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_4__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" /><img id="review_bar_5__{TYPE*}__{REVIEW_TITLE|*}__{ID|*}" alt="" src="{$IMG*,icons/14x14/rating}" srcset="{$IMG*,icons/28x28/rating} 2x" />
 											<script>// <![CDATA[
 												function new_review_highlight__{TYPE%}__{REVIEW_TITLE|}__{ID|}(review,first_time)
 												{
@@ -222,13 +227,22 @@
 										{+START,IF_PASSED,ATTACH_SIZE_FIELD}
 											{ATTACH_SIZE_FIELD}
 										{+END}
-										<input type="hidden" name="posting_ref_id" value="{$RAND,1,2147483646}" />
+										<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 										{ATTACHMENTS}
 									</div>
 								{+END}
 
 								{+START,IF,{$MOBILE}}
-									{$GET,CAPTCHA}
+									{+START,IF,{$CONFIG_OPTION,js_captcha}}
+										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
+
+										<script>// <![CDATA[
+											document.write('{$GET;^/,CAPTCHA}');
+										//]]></script>
+									{+END}
+									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+										{$GET,CAPTCHA}
+									{+END}
 								{+END}
 							</td>
 						</tr>
@@ -239,7 +253,16 @@
 
 				<div class="comments_posting_form_end">
 					{+START,IF,{$NOT,{$MOBILE}}}
-						{$GET,CAPTCHA}
+						{+START,IF,{$CONFIG_OPTION,js_captcha}}
+							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
+
+							<script>// <![CDATA[
+								document.write('{$GET;^/,CAPTCHA}');
+							//]]></script>
+						{+END}
+						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+							{$GET,CAPTCHA}
+						{+END}
 					{+END}
 
 					<div class="proceed_button buttons_group">

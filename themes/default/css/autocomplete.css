@@ -31,7 +31,7 @@
 }
 
 .-sew-list-item.selected {
-	color: {$GET,native_ui_selected_foreground};
+	color: {$GET,native_ui_foreground};
 	background: {$GET,area_current_background};
 	text-decoration: none;
 }

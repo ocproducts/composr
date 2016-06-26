@@ -38,7 +38,7 @@ class Hook_config_captcha_noise
             'explanation' => 'CONFIG_OPTION_captcha_noise',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 3,
 
             'addon' => 'captcha',
         );

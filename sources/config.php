@@ -39,7 +39,7 @@ function init__config()
                 $_cache = $SMART_CACHE->get('CONFIG_OPTIONS');
                 if ($_cache !== null) {
                     foreach ($_cache as $c_key => $c_value) {
-                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value, 'c_needs_dereference' => 0);
+                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value, 'c_set' => 1);
                     }
                 }
             }
@@ -132,14 +132,19 @@ function load_config_options()
         return;
     }
 
-    $temp = $GLOBALS['SITE_DB']->query_select('config', array('*', 'c_name'/*LEGACY, see note below*/), null, '', null, null, true);
+    if (multi_lang_content()) {
+        $select = array('c_name', 'c_value', 'c_value_trans', 'c_needs_dereference');
+    } else {
+        $select = array('c_name', 'c_value');
+    }
+    $temp = $GLOBALS['SITE_DB']->query_select('config', $select, null, '', null, null, true);
 
     if ($temp === null) {
         if (running_script('install')) {
             $temp = array();
         } else {
-            if ($GLOBALS['SITE_DB']->table_exists('config')) { // LEGACY: Has to use old naming from pre v10
-                $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference', 'c_set'), null, '', null, null, true);
+            if ($GLOBALS['SITE_DB']->table_exists('config', true)) { // LEGACY: Has to use old naming from pre v10; also has to use $really, because of possibility of corrupt db_meta table
+                $temp = $GLOBALS['SITE_DB']->query_select('config', array('the_name AS c_name', 'config_value AS c_value', 'config_value AS c_value_trans', 'if(the_type=\'transline\' OR the_type=\'transtext\' OR the_type=\'comcodeline\' OR the_type=\'comcodetext\',1,0) AS c_needs_dereference'), null, '', null, null, true);
                 if ($temp === null) {
                     critical_error('DATABASE_FAIL');
                 }
@@ -187,9 +192,11 @@ function get_option($name, $missing_ok = false)
 
             $value = get_option($name, $missing_ok);
 
-            global $SMART_CACHE;
-            if ($SMART_CACHE !== null) {
-                $SMART_CACHE->append('CONFIG_OPTIONS', $name, $value);
+            if (!is_null($value)) {
+                global $SMART_CACHE;
+                if ($SMART_CACHE !== null) {
+                    $SMART_CACHE->append('CONFIG_OPTIONS', $name, $value);
+                }
             }
 
             return $value;
@@ -199,24 +206,27 @@ function get_option($name, $missing_ok = false)
             return ''; // Upgrade scenario, probably can't do this robustly
         }
 
-        if ($missing_ok) {
-            return null;
-        }
-
         global $GET_OPTION_LOOP;
         $GET_OPTION_LOOP = true;
 
         require_code('config2');
         $value = get_default_option($name);
+
         if ($value === null) {
-            if ($missing_ok) {
-                return null;
+            if (!$missing_ok) {
+                if (function_exists('attach_message')) {
+                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+                } else {
+                    critical_error('PASSON', 'Missing option: ' . $name);
+                }
             }
 
-            attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
-        } else {
-            set_option($name, $value, 0);
+            $GET_OPTION_LOOP = false;
+
+            return null;
         }
+
+        set_option($name, $value, 0);
 
         $GET_OPTION_LOOP = false;
     }
@@ -238,7 +248,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Non-translated
-    if ($option['c_needs_dereference'] == 0) {
+    if (empty($option['c_needs_dereference'])) {
         $value = $option['c_value'];
         $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
@@ -285,7 +295,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
         return $default;
     }
 
-    if (array_key_exists($name, $VALUE_OPTIONS_CACHE)) {
+    if (isset($VALUE_OPTIONS_CACHE[$name])) {
         return $VALUE_OPTIONS_CACHE[$name]['the_value'];
     }
 

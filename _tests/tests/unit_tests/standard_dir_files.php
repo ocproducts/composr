@@ -32,7 +32,7 @@ class standard_dir_files_test_set extends cms_test_case
         $this->do_dir(get_file_base());
     }
 
-    public function do_dir($dir)
+    private function do_dir($dir)
     {
         $contents = 0;
 
@@ -40,7 +40,7 @@ class standard_dir_files_test_set extends cms_test_case
 
         if (($dh = opendir($dir)) !== false) {
             while (($file = readdir($dh)) !== false) {
-                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS, 0)) {
+                if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_THEMES, 0)) {
                     continue;
                 }
 

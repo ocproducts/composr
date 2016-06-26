@@ -22,7 +22,7 @@ TODO: Support if JS disabled, possibly remove jQuery dependency
  *
  * @param  MEMBER $viewer_member The viewing member; permissions are checked against this, NOT against the member_ids parameter
  * @param  ID_TEXT $mode The view mode
- * @set some_members friends all
+ * @set some_members some_members_direct friends all
  * @param  array $member_ids A list of member IDs
  * @return array A pair: SQL WHERE clause to use on the activities table, a boolean indicating whether it is worth querying
  */
@@ -57,6 +57,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
 
     switch ($mode) {
         case 'some_members': // This is used to view one's own activity (e.g. on a profile)
+        case 'some_members_direct':
             foreach ($member_ids as $member_id) {
                 if ($where_clause != '') {
                     $where_clause .= ' AND ';
@@ -65,16 +66,18 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                 $_where_clause = '';
                 $_where_clause .= '(';
                 $_where_clause .= 'a_member_id=' . strval($member_id);
-                $_where_clause .= ' OR ';
-                $_where_clause .= '(';
-                $_where_clause .= 'a_also_involving=' . strval($member_id);
-                if ($blocking != '') {
-                    $_where_clause .= ' AND a_member_id NOT IN (' . $blocking . ')';
+                if ($mode == 'some_members') {
+                    $_where_clause .= ' OR ';
+                    $_where_clause .= '(';
+                    $_where_clause .= 'a_also_involving=' . strval($member_id);
+                    if ($blocking != '') {
+                        $_where_clause .= ' AND a_member_id NOT IN (' . $blocking . ')';
+                    }
+                    if (addon_installed('chat')) { // Limit to stuff from this member's friends about them
+                        $_where_clause .= ' AND a_member_id IN (SELECT member_liked FROM ' . get_table_prefix() . 'chat_friends WHERE member_likes=' . strval($member_id) . ')';
+                    }
+                    $_where_clause .= ')';
                 }
-                if (addon_installed('chat')) { // Limit to stuff from this member's friends about them
-                    $_where_clause .= ' AND a_member_id IN (SELECT member_liked FROM ' . get_table_prefix() . 'chat_friends WHERE member_likes=' . strval($member_id) . ')';
-                }
-                $_where_clause .= ')';
                 $_where_clause .= ')';
 
                 // If the chat addon is installed then there may be 'friends-only'

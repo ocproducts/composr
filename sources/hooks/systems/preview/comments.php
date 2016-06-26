@@ -52,7 +52,8 @@ class Hook_preview_comments
         }
 
         $poster_name = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $post = comcode_to_tempcode(post_param_string('post'));
+        $post_comcode = post_param_string('post');
+        $post = comcode_to_tempcode($post_comcode);
 
         // Conversr renderings of poster
         static $hooks = null;
@@ -100,23 +101,29 @@ class Hook_preview_comments
             'TITLE' => $title,
             'TIME_RAW' => strval($datetime_raw),
             'TIME' => $datetime,
+            'POSTER_ID' => strval(get_member()),
             'POSTER_URL' => $poster_url,
             'POSTER_NAME' => $poster_name,
-            'POST' => $post,
-            'POSTER_ID' => strval(get_member()),
             'POSTER' => $poster,
             'POSTER_DETAILS' => $poster_details,
             'ID' => '',
+            'POST' => $post,
+            'POST_COMCODE' => $post_comcode,
+            'POST_NUMBER' => '',
             'CHILDREN' => '',
+            'OTHER_IDS' => '',
             'RATING' => '',
             'EMPHASIS' => '',
             'BUTTONS' => '',
             'TOPIC_ID' => '',
             'UNVALIDATED' => '',
             'IS_SPACER_POST' => false,
-            'NUM_TO_SHOW_LIMIT' => '0',
             'LAST_EDITED_RAW' => '',
             'LAST_EDITED' => '',
+            'NUM_TO_SHOW_LIMIT' => '0',
+            'SIGNATURE' => '',
+            'IS_UNREAD' => false,
+            'IS_THREADED' => false,
         ));
         return array($tpl, null);
     }

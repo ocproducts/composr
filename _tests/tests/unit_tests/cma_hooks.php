@@ -43,6 +43,7 @@ class cma_hooks_test_set extends cms_test_case
         $may_be_unset_properties = array(
             'edit_page_link_field',
             'edit_page_link_pattern_post',
+            'title_field_post',
             'filtercode',
             'filtercode_protected_fields',
             'parent_category_field__resource_fs',

@@ -289,8 +289,8 @@ You need to create [tt]php.ini[/tt] files that override your web-server's defaul
 This is what your [tt]php.ini[/tt] file should look like, assuming you do not need to add any extra lines (see "2" above).
 [codebox="INI"]
 ; Composr needs uploads; many hosts leave these low
-post_max_size=16M
-upload_max_filesize=16M
+post_max_size=500M
+upload_max_filesize=500M
 
 ; Turn insecure things off
 allow_url_fopen=off
@@ -353,6 +353,10 @@ The [tt]from[/tt] address (different to the 'reply address' you see when you cli
 [title="3"]Why is e-mail not getting sent from the server?[/title]
 
 This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the webhost) is not working.
+
+[title="3"]Why do my sessions timeout too quickly?[/title]
+
+If your sessions timeout in less than the time configured in the "Session expiry-time" option then a faulty MySQL installation could be the cause. A workaround is to manually edit the [tt]cms_sessions[/tt] table to have a table type of [tt]MyISAM[/tt]. The default is type [tt]MEMORY[/tt] (for performance reasons), but if MySQL keeps resetting itself this won't hold properly.
 
 [title="2"]Common usage queries[/title]
 
@@ -523,7 +527,7 @@ There are many factors to cookie integration, and it is renowned to be problemat
 [title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
 
 You must correct it using the config editor script, available under Admin Zone > Setup > Configuration > Installation Options. The installer asked for this value, but many users (wrongly) do not change it from the default auto-detected value.
-Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. To do this, hold down Ctrl+Alt+Shift and reload a page from your Composr site in a browser, when logged into Composr as an administrator. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
+Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.
 
 [title="3"]Why do I not have commenting boxes on my CMS?[/title]
 

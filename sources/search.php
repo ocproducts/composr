@@ -47,14 +47,16 @@ abstract class FieldsSearchHook
     {
         $extra_sort_fields = array();
 
-        require_code('fields');
+        if (addon_installed('catalogues')) {
+            require_code('fields');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
-        foreach ($rows as $i => $row) {
-            $ob = get_fields_hook($row['cf_type']);
-            $temp = $ob->inputted_to_sql_for_search($row, $i);
-            if (is_null($temp)) { // Standard direct 'substring' search
-                $extra_sort_fields['f' . strval($i) . '_actual_value'] = get_translated_text($row['cf_name']);
+            $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id', 'cf_name', 'cf_type', 'cf_default'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
+            foreach ($rows as $i => $row) {
+                $ob = get_fields_hook($row['cf_type']);
+                $temp = $ob->inputted_to_sql_for_search($row, $i);
+                if (is_null($temp)) { // Standard direct 'substring' search
+                    $extra_sort_fields['f' . strval($i) . '_actual_value'] = get_translated_text($row['cf_name']);
+                }
             }
         }
 
@@ -97,9 +99,13 @@ abstract class FieldsSearchHook
      */
     protected function _get_search_parameterisation_advanced($catalogue_name, $table_alias = 'r')
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         $where_clause = '';
 
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
         if (count($fields) == 0) {
             return null;
         }

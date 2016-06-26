@@ -124,6 +124,10 @@ class external_code_considerations_test_set extends cms_test_case
                         continue;
                     }
 
+                    if (is_numeric(get_file_extension($f))) {
+                        continue; // Backup file
+                    }
+
                     if (in_array($dir . '/' . $f, $skip)) {
                         continue;
                     }
