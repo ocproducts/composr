@@ -501,7 +501,9 @@ function make_string_tempcode($string)
     ;
     $code_to_preexecute = array($myfunc => "\$tpl_funcs['$myfunc']=\"echo \\\"" . php_addslashes_twice($string) . "\\\";\";\n");
     $seq_parts = array(array(array($myfunc, array(), TC_KNOWN, '', '')));
-    return new Tempcode(array($code_to_preexecute, $seq_parts));
+    $ret = new Tempcode(array($code_to_preexecute, $seq_parts));
+    $ret->is_all_static = true;
+    return $ret;
 }
 
 /**
@@ -1422,6 +1424,8 @@ class Tempcode
         if (!isset($details)) {
             $this->seq_parts = array();
             $this->code_to_preexecute = array();
+
+            $this->is_all_static = true;
         } else {
             $this->code_to_preexecute = $details[0];
             $this->seq_parts = $details[1];
@@ -1528,6 +1532,9 @@ class Tempcode
         if (!empty($temp->preprocessable_bits)) {
             $this->preprocessable_bits = $temp->preprocessable_bits;
         }
+        if (!isset($temp->is_all_static)) {
+            unset($this->is_all_static);
+        }
     }
 
     /**
@@ -1546,7 +1553,18 @@ class Tempcode
 
         unset($this->cached_output);
 
+        global $TEMPCODE_PARAMETER_INLINING_MODE;
+        $inlining_mode = end($TEMPCODE_PARAMETER_INLINING_MODE)/*in inlining mode*/;
+
+        if (isset($attach->is_all_static) && $inlining_mode) { // Can flatten to a string?
+            $attach = $attach->evaluate();
+        }
+
         if (isset($attach->codename)/*faster than is_object*/) { // Consider it another piece of Tempcode
+            if (!isset($attach->is_all_static)) {
+                unset($this->is_all_static);
+            }
+
             foreach ($attach->seq_parts as $seq_part_group) {
                 $this->seq_parts[] = $seq_part_group;
             }
@@ -1567,7 +1585,7 @@ class Tempcode
                 $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__ATTACHED, '', $attach);
             }
         } else { // Consider it a string
-            if (end($this->seq_parts) !== false) {
+            if ($inlining_mode && end($this->seq_parts) !== false) { // If not currently empty
                 $end = &$this->seq_parts[key($this->seq_parts)];
                 if (end($end) !== false) {
                     $_end = &$end[key($end)];
@@ -1575,9 +1593,9 @@ class Tempcode
                         $myfunc = $_end[0];
                         if (isset($this->code_to_preexecute[$myfunc])) {
                             $code = $this->code_to_preexecute[$myfunc];
-                            $pos2 = strpos($code, "\";\n");
-                            if ($pos2 !== false) {
-                                $code = substr($code, 0, $pos2) . " echo \\\"" . php_addslashes_twice($attach) . "\\\";" . substr($code, $pos2);
+                            $pos2 = strpos($code, '\\";');
+                            if ($pos2 !== false && strpos($code, '\\\\"') === false) {
+                                $code = substr($code, 0, $pos2) . php_addslashes_twice($attach) . substr($code, $pos2);
                                 $this->code_to_preexecute[$myfunc] = $code;
                                 return;
                             }
@@ -1585,7 +1603,7 @@ class Tempcode
                     }
                 }
             } else {
-                $this->seq_parts[] = array();
+                $this->seq_parts[] = array(); // Currently empty. We need a stub to append to
                 $end = &$this->seq_parts[0];
             }
 
@@ -1778,6 +1796,8 @@ class Tempcode
             $parameters['_GUID'] = isset($trace[3]) ? ($trace[3]['function'] . '/' . $trace[2]['function']) : (isset($trace[2]) ? $trace[2]['function'] : $trace[1]['function']);
         }
 
+        $is_all_static = isset($this->is_all_static);
+
         $out = new Tempcode();
         $out->codename = $codename;
         $out->code_to_preexecute = $this->code_to_preexecute;
@@ -1814,6 +1834,10 @@ class Tempcode
             if ($p_type === 'string') {
                 // Performance, this is most likely
             } elseif ($p_type === 'object') {
+                if (!isset($parameter->is_all_static)) {
+                    $is_all_static = false;
+                }
+
                 if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($parameter->preprocessable_bits)) {
                     foreach ($parameter->preprocessable_bits as $b) {
                         $out->preprocessable_bits[] = $b;
@@ -1836,6 +1860,10 @@ class Tempcode
                 }
                 $out->seq_parts[0][] = $seq_part;
             }
+        }
+
+        if (!$is_all_static) {
+            unset($out->is_all_static);
         }
 
         return $out;
@@ -1882,6 +1910,10 @@ class Tempcode
             foreach ($parameter->preprocessable_bits as $b) {
                 $this->preprocessable_bits[] = $b;
             }
+        }
+
+        if (!isset($parameter->is_all_static)) {
+            unset($this->is_all_static);
         }
     }
 

@@ -899,7 +899,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             $differented = false; // If somehow via lookahead we've changed this to HTML and thus won't use it in raw form
 
-                            // Variable lookahead
+                            // Variable lookahead (symbols, directives, language string references)
                             if ((!$in_code_tag) && (($next == '{') && (isset($comcode[$pos])) && (($comcode[$pos] == '$') || ($comcode[$pos] == '+') || ($comcode[$pos] == '!')))) {
                                 if ($comcode_dangerous) {
                                     if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] == '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
@@ -908,7 +908,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         }
                                         $tag_output->attach($continuation);
                                         $continuation = '';
-                                        if ($comcode[$pos] == '+') {
+                                        if ($comcode[$pos] == '+') { // Directive
                                             $p_end = $pos + 5;
                                             while ($p_end < $len) {
                                                 $p_portion = substr($comcode, $pos - 1, $p_end - ($pos - 1) + 5);
@@ -961,7 +961,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                                 $pos = $p_end + 6;
                                             }
-                                        } elseif ($comcode[$pos] == '!') {
+                                        } elseif ($comcode[$pos] == '!') { // Language string reference
                                             $p_len = $pos;
                                             $balance = 1;
                                             while (($p_len < $len) && ($balance != 0)) {
@@ -984,7 +984,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                     $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode language string
                                                 }
                                             }
-                                        } else {
+                                        } else { // Symbol
                                             $p_len = $pos;
                                             $balance = 1;
                                             while (($p_len < $len) && ($balance != 0)) {

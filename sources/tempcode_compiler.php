@@ -233,7 +233,7 @@ function substitute_comment_encapsulated_tempcode($data)
  * @param  ?array $parameters_used Parameters used in final Tempcode will be written into here (null: don't)
  * @return array A pair: array Compiled result structure, array preprocessable bits (special stuff needing attention that is referenced within the template)
  */
-function compile_template($data, $template_name, $theme, $lang, $tolerate_errors = false, $parameters = null, &$parameters_used = null)
+function compile_template($data, $template_name, $theme, $lang, $tolerate_errors = false, &$parameters = null, &$parameters_used = null)
 {
     if (strpos($data, '/*{$,Parser hint: pure}*/') !== false) {
         return array(array('"' . php_addslashes(preg_replace('#\{\$,.*\}#U', '', str_replace('/*{$,Parser hint: pure}*/', '/*no minify*/', $data))) . '"'), array());
@@ -244,6 +244,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
         foreach ($parameters as $key => $parameter) {
             if (is_bool($parameter)) {
                 $parameters[$key] = $parameter ? '1' : '0';
+            }
+
+            elseif (is_null($parameter)) {
+                unset($parameters[$key]);
+            }
+
+            elseif (isset($parameter->is_all_static)) {
+                $parameters[$key] = $parameters[$key]->evaluate();
             }
         }
     }
@@ -496,14 +504,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         } else {
                             $new_line = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_SYMBOL) . ',' . $first_param . ',array(' . $_opener_params . '))';
                         }
-                        if ((may_optimise_out_symbol(trim($first_param, '"'))) && (tc_has_static_params($_opener_params))) { // Can optimise out?
+                        if ((may_optimise_out_symbol(trim($first_param, '"'))) && (tc_is_all_static($_opener_params))) { // Can optimise out?
                             $tpl_funcs = array();
                             $eval = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
 
                             $new_line = '"' . php_addslashes($eval) . '"';
                         } else {
                             // We want the benefit's of keep_ variables but not with having to do lots of individual URL moniker lookup queries - so use a static URL and KEEP_ symbol combination
-                            if (($GLOBALS['OUTPUT_STREAMING']) && ($first_param == '"PAGE_LINK"') && (count($opener_params) == 1) && (tc_has_static_params($_opener_params)) && (function_exists('has_submit_permission')/*needed for moniker hooks to load up*/)) {
+                            if (($GLOBALS['OUTPUT_STREAMING']) && ($first_param == '"PAGE_LINK"') && (count($opener_params) == 1) && (tc_is_all_static($_opener_params)) && (function_exists('has_submit_permission')/*needed for moniker hooks to load up*/)) {
                                 $tmp = $_GET;
                                 foreach (array_keys($_GET) as $key) {
                                     if (substr($key, 0, 5) == 'keep_') {
@@ -525,7 +533,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                     case PARSE_LANGUAGE_REFERENCE:
                         $new_line = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_LANGUAGE_REFERENCE) . ',' . $first_param . ',array(' . $_opener_params . '))';
-                        if (tc_has_static_params($_opener_params)) { // Optimise out for simple case?
+                        if (tc_is_all_static($_opener_params)) { // Optimise out for simple case?
                             $tpl_funcs = array();
                             $looked_up = debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl);
                             if ($looked_up !== null) {
@@ -691,15 +699,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if ($directive_name == 'SET_NOPREEVAL') {
                             $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
                             $_past_level_data = $directive_internal;
-                            $unset_code = '';
                             if (strpos($_past_level_data, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
-                                $reset_code = "eval(\\\$FULL_RESET_VAR_CODE);";
+                                $reset_code = "eval(\\\$FULL_RESET_VAR_CODE); ";
                             } elseif (strpos($_past_level_data, '$bound') !== false) {
-                                $reset_code = "eval(\\\$RESET_VAR_CODE);";
+                                $reset_code = "eval(\\\$RESET_VAR_CODE); ";
                             } else {
                                 $reset_code = '';
                             }
-                            $funcdef = /*if (!isset(\$tpl_funcs['$myfunc']))\n\t*/"\$tpl_funcs['$myfunc']=\"$reset_code echo " . php_addslashes($_past_level_data) . ";\";\n";
+                            $funcdef = /*if (!isset(\$tpl_funcs['$myfunc']))\n\t*/"\$tpl_funcs['$myfunc']=\"{$reset_code}echo " . php_addslashes($_past_level_data) . ";\";\n";
                             $past_level_data = array('new Tempcode(array(array(\'' . $myfunc . '\'=>"' . php_addslashes($funcdef) . '"),array(array(array("' . $myfunc . '",array(),' . strval(TC_KNOWN) . ',\'\',\'\')))))');
                         }
 
@@ -716,7 +723,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
 
                         // See if we can completely optimise out a directive
-                        if (tc_has_static_params($directive_params)) {
+                        if (tc_is_all_static($directive_params)) {
                             switch ($directive_name) {
                                 case 'IF':
                                 case 'IF_EMPTY':
@@ -953,19 +960,20 @@ function tc_eval_opener_params($_opener_params)
  * Find if some opening parameters are definitely static.
  *
  * @param  string $_opener_params The parameters in PHP code format
- * @param boolean $consider_symbols Consider symbols also, not just parameters
  * @return boolean Is static
  */
-function tc_has_static_params($_opener_params, $consider_symbols = true)
+function tc_is_all_static($_opener_params)
 {
     if (strpos($_opener_params, '$bound_') !== false) {
         return false;
     }
 
-    if ($consider_symbols) {
-        if (strpos($_opener_params, 'ecv_') !== false) {
-            return false;
-        }
+    if (strpos($_opener_params, 'ecv_') !== false) {
+        return false;
+    }
+
+    if (strpos($_opener_params, 'ecv2_') !== false) {
+        return false;
     }
 
     return true;
@@ -1251,6 +1259,8 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
 
     $output_streaming = (function_exists('get_option')) && (get_option('output_streaming') == '1');
 
+    $is_all_static = true;
+
     $parts_groups = array();
     $parts_group = array();
     foreach ($parts as $part) {
@@ -1261,6 +1271,10 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
             $parts_group = array();
         }
         $parts_group[] = $part;
+
+        if (!tc_is_all_static($part)) {
+            $is_all_static = false;
+        }
     }
     if ($parts_group !== array()) {
         $parts_groups[] = $parts_group;
@@ -1283,6 +1297,19 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
         $ret->preprocessable_bits = array_merge($ret->preprocessable_bits, $preprocessable_bits);
     }
     $ret->codename = $codename;
+    if ($is_all_static) {
+        if ($parameters !== null) {
+            foreach ($parameters as $parameter) {
+                if (is_object($parameter) && !isset($parameter->is_all_static)) {
+                    $is_all_static = false;
+                }
+            }
+        }
+
+        if ($is_all_static) {
+            $ret->is_all_static = true;
+        }
+    }
     return $ret;
 }
 
@@ -1314,15 +1341,14 @@ function build_closure_function($myfunc, $parts)
 
     //   Eval version also works. Easier to debug. Less performant due to re-parse requirement each time it is called
     if ($GLOBALS['DEV_MODE']) {
-        $unset_code = '';
         if (strpos($code, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
-            $reset_code = "eval(\\\$FULL_RESET_VAR_CODE);";
+            $reset_code = "eval(\\\$FULL_RESET_VAR_CODE); ";
         } elseif (strpos($code, '$bound') !== false) {
-            $reset_code = "eval(\\\$RESET_VAR_CODE);";
+            $reset_code = "eval(\\\$RESET_VAR_CODE); ";
         } else {
             $reset_code = '';
         }
-        $funcdef = "\$tpl_funcs['$myfunc']=\"$reset_code echo " . php_addslashes($code) . ";\";";
+        $funcdef = "\$tpl_funcs['$myfunc']=\"{$reset_code}echo " . php_addslashes($code) . ";\";";
     }
 
     return $funcdef;

@@ -374,7 +374,9 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $temp = $LAX_COMCODE;
     $LAX_COMCODE = true;
     require_code('attachments2');
+    push_tempcode_parameter_inlining_mode(true);
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, $as_admin/*Ideally we assign $page_submitter based on this as well so it is safe if the Comcode cache is emptied*/, $page_submitter);
+    push_tempcode_parameter_inlining_mode(false);
     $_text_parsed = $_new['tempcode'];
     $LAX_COMCODE = $temp;
     $text_parsed = $_text_parsed->to_assembly();
