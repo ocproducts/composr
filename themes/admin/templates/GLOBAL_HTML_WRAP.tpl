@@ -230,6 +230,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 		script_load_stuff();
 
 		{+START,IF,{$EQ,{$_GET,wide_print},1}}try { window.print(); } catch (e) {}{+END}
+
+		{+START,IF,{$CONFIG_OPTION,background_template_compilation}}
+			load_snippet('background_template_compilation&page={$PAGE&}','',function() {});
+		{+END}
 	//]]></script>
 </body>
 </html>

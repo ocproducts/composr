@@ -19,6 +19,91 @@
  */
 
 /**
+ * Compile all templates to improve run-time performance.
+ */
+function compile_all_templates()
+{
+    require_code('css_and_js');
+    require_code('web_resources');
+
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
+    }
+
+    $themes = array(
+        'admin',
+        $GLOBALS['FORUM_DRIVER']->get_theme(''),
+    );
+
+    $directories = array(
+        'css' => 'css',
+        'javascript' => 'js',
+        'templates' => 'tpl',
+        'text' => 'txt',
+        'xml' => 'xml',
+        'css_custom' => 'css',
+        'javascript_custom' => 'js',
+        'templates_custom' => 'tpl',
+        'text_custom' => 'txt',
+        'xml_custom' => 'xml',
+    );
+
+    $base_path = get_file_base() . '/themes';
+
+    $lang = user_lang();
+
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    require_code('files2');
+
+    global $USER_THEME_CACHE;
+
+    @ignore_user_abort(false);
+
+    foreach ($themes as $theme) {
+        $USER_THEME_CACHE = $theme; // HACKHACK: due to {$THEME} in global.css, and some templates (it's considered static, as it's tied to cache directory)
+
+        foreach ($directories as $directory => $suffix) {
+            $dh = opendir($base_path . '/default/' . $directory);
+            while (($file = readdir($dh)) !== false) {
+                $parts = explode('.', $file, 2);
+
+                if ((count($parts) == 2) && ($parts[1] == $suffix)) {
+                    $codename = $parts[0];
+
+                    $tcp_path = $base_path . '/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.' . $suffix . '.tcp';
+
+                    if (!is_file($tcp_path)) {
+                        do_template($codename, null, $lang, true, null, '.' . $suffix, $directory, $theme);
+
+                        switch ($directory) {
+                            case 'javascript':
+                            case 'javascript_custom':
+                                javascript_enforce($codename, $theme);
+                                break;
+
+                            case 'css':
+                            case 'css_custom':
+                                css_enforce($codename, $theme);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            closedir($dh);
+        }
+    }
+
+    unset($USER_THEME_CACHE);
+
+    // Do language files too, for kicks...
+
+    require_all_lang();
+    require_all_open_lang_files();
+}
+
+/**
  * Add a theme.
  *
  * @param  ID_TEXT $name The theme name

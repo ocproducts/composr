@@ -1400,6 +1400,7 @@ class Hook_addon_registry_core
             'sources/persistent_caching/.htaccess',
             'sources/deep_clean.php',
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
+            'sources/hooks/systems/snippets/background_template_compilation.php',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',

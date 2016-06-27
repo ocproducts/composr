@@ -218,6 +218,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/cpf_enable_post_code.php',
             'sources/hooks/systems/config/cpf_enable_county.php',
             'sources/hooks/systems/config/cpf_enable_state.php',
+            'sources/hooks/systems/config/background_template_compilation.php',
             'sources/hooks/systems/config/filter_regions.php',
             'sources/hooks/systems/config/cns_show_profile_link.php',
             'sources/hooks/systems/config/show_avatar.php',
