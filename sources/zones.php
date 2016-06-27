@@ -376,15 +376,16 @@ function get_zone_name()
 function load_redirect_cache()
 {
     global $REDIRECT_CACHE;
-    $REDIRECT_CACHE = array();
 
-    $_zone = get_zone_name();
-    $REDIRECT_CACHE = array($_zone => array());
+    if ($REDIRECT_CACHE === null) {
+        $REDIRECT_CACHE = array();
+    }
+
     if (addon_installed('redirects_editor')) {
-        $redirect = persistent_cache_get(array('REDIRECT', $_zone));
+        $redirect = persistent_cache_get('REDIRECT');
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
-            persistent_cache_set(array('REDIRECT', $_zone), $redirect);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => get_zone_name())*/);
+            persistent_cache_set('REDIRECT', $redirect);
         }
         foreach ($redirect as $r) {
             if (($r['r_from_zone'] == $r['r_to_zone']) && ($r['r_from_page'] == $r['r_to_page'])) {

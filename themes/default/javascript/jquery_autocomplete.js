@@ -241,7 +241,7 @@ $(function() {
 			this.options.onFilterChanged(this);
 		}
 
-		if (typeof window.CKEDITOR != 'undefined' && typeof CKEDITOR.instances[this.element.id]!='undefined') {
+		if (typeof window.CKEDITOR != 'undefined' && window.CKEDITOR != null && typeof CKEDITOR.instances[this.element.id]!='undefined') {
 			var _this = this;
 			var editor = CKEDITOR.instances[this.element.id];
 			if (editor.document) {
