@@ -741,7 +741,7 @@ class Forum_driver_cns extends Forum_driver_base
             $query .= ' OR t_cache_first_title LIKE \'% (#' . db_encode_like($topic_identifier) . ')\''; // LEGACY
         } else {
             $query .= db_string_equal_to('t_description', $topic_identifier);
-            $query .= ' OR ' . db_string_equal_to('t_description', $topic_identifier_encapsulation_prefix . ': ' . $topic_identifier);
+            $query .= ' OR ' . db_string_equal_to('t_description', $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier);
         }
         $query .= ')';
 
