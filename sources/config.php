@@ -295,7 +295,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
         return $default;
     }
 
-    if (array_key_exists($name, $VALUE_OPTIONS_CACHE)) {
+    if (isset($VALUE_OPTIONS_CACHE[$name])) {
         return $VALUE_OPTIONS_CACHE[$name]['the_value'];
     }
 
@@ -338,7 +338,7 @@ function get_value_newer_than($name, $cutoff, $elective_or_lengthy = false)
 
     $cutoff -= mt_rand(0, 200); // Bit of scattering to stop locking issues if lots of requests hit this at once in the middle of a hit burst (whole table is read each page requests, and mysql will lock the table on set_value - causes horrible out-of-control buildups)
 
-    if (array_key_exists($name, $VALUE_OPTIONS_CACHE)) {
+    if (isset($VALUE_OPTIONS_CACHE[$name])) {
         if ($VALUE_OPTIONS_CACHE[$name]['date_and_time'] > $cutoff) {
             return $VALUE_OPTIONS_CACHE[$name]['the_value'];
         }

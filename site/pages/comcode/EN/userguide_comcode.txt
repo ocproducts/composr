@@ -153,7 +153,7 @@ JavaScript script tags, onX handlers and URLs will all be filtered/blocked. Don'
 </thead>
 
 <tbody>
-	<tr><td>[tt][url="This is a link"][/tt]{$BASE_URL}[tt][/url][/tt]</td><td>[url="This is a link"]{$BASE_URL}[/url]</td></tr>
+	<tr><td>[tt][url="This is a link"][/tt]{$BASE_URL*}[tt][/url][/tt]</td><td>[url="This is a link"]{$BASE_URL*}[/url]</td></tr>
 	<tr><td>[tt][email="My E-Mail"]fake_address@example.com[/email][/tt]</td><td>[email="My E-Mail"]fake_address@example.com[/email]</td></tr>
 	<tr><td>[tt][page="cms:cms"]Content Management[/page][/tt]</td><td>[page="cms:cms"]Content Management[/page]</td></tr>
 </tbody>
