@@ -152,6 +152,8 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             ));
         }
 
+        $found_via_db = false;
+
         foreach ($priorities as $i => $priority) {
             if ($priority === null) {
                 continue;
@@ -165,7 +167,13 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
                 $path = $truism_b ? null : $db->query_select_value_if_there('theme_images', 'path', $smap);
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
 
-                if ($path !== null) { // Make sure this isn't just the result file we should find at a lower priority
+                if ($path !== null) {
+                    if ($i == 0) {
+                        $found_via_db = true;
+                        break;
+                    }
+
+                    // Make sure this isn't just the result file we should find at a lower priority
                     if (strpos($path, '/images/' . $id . '.') !== false) {
                         continue;
                     }
@@ -191,7 +199,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         }
 
         if (!is_forum_db($db)) { // If guard is here because a MSN site can't make assumptions about the file system of the central site
-            if ((($path !== null) && ($path !== '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE']))) {
+            if ((!$found_via_db) && ((($path !== null) && ($path !== '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE'])))) {
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
                 $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang)); // Allow for race conditions

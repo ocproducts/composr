@@ -1537,7 +1537,7 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
     if ($REDIRECT_CACHE === null) {
         load_redirect_cache();
     }
-    if (isset($REDIRECT_CACHE[$zone])) {
+    if (isset($REDIRECT_CACHE)) {
         if (isset($REDIRECT_CACHE[$zone][$codename])) {
             $redirect = array($REDIRECT_CACHE[$zone][$codename]);
         } elseif (($wildcard_mode) && (isset($REDIRECT_CACHE['*'][$codename]))) {
@@ -1546,9 +1546,9 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
             $redirect = array();
         }
     } else {
-        $query = 'SELECT * FROM ' . get_table_prefix() . 'redirects WHERE (' . db_string_equal_to('r_from_zone', '*');
+        $query = 'SELECT * FROM ' . get_table_prefix() . 'redirects WHERE (' . db_string_equal_to('r_from_zone', $zone);
         if ($wildcard_mode) {
-            $query .= ' OR ' . db_string_equal_to('r_from_zone', $zone);
+            $query .= ' OR ' . db_string_equal_to('r_from_zone', '*');
         }
         $query .= ') AND ' . db_string_equal_to('r_from_page', $codename);
         $query .= ' ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this

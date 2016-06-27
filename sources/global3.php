@@ -744,7 +744,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
 
     if (addon_installed('less') && $suffix == '.css') {
         $test = find_template_place($codename, $lang, $theme, '.less', $directory);
-        if (!is_null($test)) {
+        if ($test !== null) {
             $tp_cache[$sz] = $test;
             return $test;
         }
@@ -1548,6 +1548,12 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
         $current_page_name = get_page_name();
     }
 
+    static $cache = array();
+    $sz_key = serialize(array($match_keys, $support_post, $current_params, $current_zone_name, $current_page_name));
+    if (isset($cache[$sz_key])) {
+        return $cache[$sz_key];
+    }
+
     $potentials = is_array($match_keys) ? $match_keys : explode(',', $match_keys);
     foreach ($potentials as $potential) {
         $parts = is_array($potential) ? $potential : explode(':', $potential);
@@ -1599,10 +1605,12 @@ function match_key_match($match_keys, $support_post = false, $current_params = n
                 }
             }
             if (!$bad) {
+                $cache[$sz_key] = true;
                 return true;
             }
         }
     }
+    $cache[$sz_key] = false;
     return false;
 }
 
@@ -1919,10 +1927,11 @@ function normalise_ip_address($ip, $amount = null)
             $ip = str_replace('::', str_repeat(':', (7 - substr_count($ip, ':')) + 2), $ip);
         }
         $parts = explode(':', $ip);
-        for ($i = 0; $i < (is_null($amount) ? 8 : ($amount * 2)); $i++) {
+        $to = (($amount === null) ? 8 : ($amount * 2));
+        for ($i = 0; $i < $to; $i++) {
             $parts[$i] = isset($parts[$i]) ? str_pad($parts[$i], 4, '0', STR_PAD_LEFT) : '0000';
         }
-        if (!is_null($amount)) {
+        if ($amount !== null) {
             for ($i = $amount * 2; $i < 8; $i++) {
                 $parts[$i] = '*';
             }
@@ -1930,12 +1939,13 @@ function normalise_ip_address($ip, $amount = null)
         $ip_cache[$raw_ip][$amount] = implode(':', $parts);
     } else { // IPv4
         $parts = explode('.', $ip);
-        for ($i = 0; $i < (is_null($amount) ? 4 : $amount); $i++) {
+        $to = (($amount === null) ? 4 : $amount);
+        for ($i = 0; $i < $to; $i++) {
             if (!array_key_exists($i, $parts)) {
                 $parts[$i] = '0';
             }
         }
-        if (!is_null($amount)) {
+        if ($amount !== null) {
             for ($i = $amount; $i < 4; $i++) {
                 $parts[$i] = '*';
             }
@@ -2730,7 +2740,7 @@ function has_js()
     if (get_param_integer('keep_has_js', null) === 0) {
         return false;
     }
-    return ((array_key_exists('js_on', $_COOKIE)) && ($_COOKIE['js_on'] == '1'));
+    return ((isset($_COOKIE['js_on'])) && ($_COOKIE['js_on'] == '1'));
 }
 
 /**

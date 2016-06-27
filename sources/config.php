@@ -295,7 +295,7 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
         return $default;
     }
 
-    if (isset($VALUE_OPTIONS_CACHE[$name])) {
+    if (array_key_exists($name, $VALUE_OPTIONS_CACHE)) {
         return $VALUE_OPTIONS_CACHE[$name]['the_value'];
     }
 

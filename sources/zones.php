@@ -376,15 +376,16 @@ function get_zone_name()
 function load_redirect_cache()
 {
     global $REDIRECT_CACHE;
-    $REDIRECT_CACHE = array();
 
-    $_zone = get_zone_name();
-    $REDIRECT_CACHE = array($_zone => array());
+    if ($REDIRECT_CACHE === null) {
+        $REDIRECT_CACHE = array();
+    }
+
     if (addon_installed('redirects_editor')) {
-        $redirect = persistent_cache_get(array('REDIRECT', $_zone));
+        $redirect = persistent_cache_get('REDIRECT');
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
-            persistent_cache_set(array('REDIRECT', $_zone), $redirect);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => get_zone_name())*/);
+            persistent_cache_set('REDIRECT', $redirect);
         }
         foreach ($redirect as $r) {
             if (($r['r_from_zone'] == $r['r_to_zone']) && ($r['r_from_page'] == $r['r_to_page'])) {
@@ -1118,9 +1119,14 @@ function do_block($codename, $map = null, $ttl = null)
                     if ($new_security_scope) {
                         _solemnly_enter();
                     }
-                    push_tempcode_parameter_inlining_mode(true);
+                    $do_inlining_mode = ($codename != 'menu'/*This generates on too many pages and has it's own internal optimisation*/);
+                    if ($do_inlining_mode) {
+                        push_tempcode_parameter_inlining_mode(true);
+                    }
                     $cache = $object->run($map);
-                    push_tempcode_parameter_inlining_mode(false);
+                    if ($do_inlining_mode) {
+                        push_tempcode_parameter_inlining_mode(false);
+                    }
                     if ($new_security_scope) {
                         $_cache = $cache->evaluate();
                         _solemnly_leave($_cache);
@@ -1252,10 +1258,11 @@ function apply_quick_caching($_cache)
 
         if ($has_keep_parameters) {
             if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
-                $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+                $sym_params = array('0');
             } else { // All parameters are keep_*
-                $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+                $sym_params = array('1');
             }
+            $keep = symbol_tempcode('KEEP', $sym_params, $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
             $new_tempcode->attach($keep);
         }
 

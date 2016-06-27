@@ -251,29 +251,37 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         }
         $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $extra_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $extra_where . ')';
     }
-    $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
-    if ($count > 500) { // Uh oh, loads, need to limit things more
-        $where .= ' AND (nc_owner IS NULL OR nc_owner=' . strval(get_member()) . ')';
-    }
-    $_cats = $GLOBALS['SITE_DB']->query('SELECT *,c.id as n_id FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY c.id', null, null, false, true, array('nc_title' => 'SHORT_TRANS'));
 
-    foreach ($_cats as $i => $cat) {
-        $_cats[$i]['nice_title'] = get_translated_text($cat['nc_title']);
-    }
-    sort_maps_by($_cats, 'nice_title');
+    static $query_cache = array();
+    if (isset($query_cache[$where])) {
+        list($count, $_cats) = $query_cache[$where];
+    } else {
+        $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
+        if ($count > 500) { // Uh oh, loads, need to limit things more
+            $where .= ' AND (nc_owner IS NULL OR nc_owner=' . strval(get_member()) . ')';
+        }
+        $_cats = $GLOBALS['SITE_DB']->query('SELECT *,c.id as n_id FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY c.id', null, null, false, true, array('nc_title' => 'SHORT_TRANS'));
 
-    // Sort so blogs go after news
-    $title_ordered_cats = $_cats;
-    $_cats = array();
-    foreach ($title_ordered_cats as $cat) {
-        if (is_null($cat['nc_owner'])) {
-            $_cats[] = $cat;
+        foreach ($_cats as $i => $cat) {
+            $_cats[$i]['nice_title'] = get_translated_text($cat['nc_title']);
         }
-    }
-    foreach ($title_ordered_cats as $cat) {
-        if (!is_null($cat['nc_owner'])) {
-            $_cats[] = $cat;
+        sort_maps_by($_cats, 'nice_title');
+
+        // Sort so blogs go after news
+        $title_ordered_cats = $_cats;
+        $_cats = array();
+        foreach ($title_ordered_cats as $cat) {
+            if (is_null($cat['nc_owner'])) {
+                $_cats[] = $cat;
+            }
         }
+        foreach ($title_ordered_cats as $cat) {
+            if (!is_null($cat['nc_owner'])) {
+                $_cats[] = $cat;
+            }
+        }
+
+        $query_cache[$where] = array($count, $_cats);
     }
 
     $categories = new Tempcode();

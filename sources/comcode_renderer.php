@@ -72,28 +72,30 @@ function _apply_emoticons($text)
         for ($i = 0; $i < $len; ++$i) { // Has to go through in byte order so double application cannot happen (i.e. emoticon contains [all or portion of] emoticon code somehow)
             $char = $text[$i];
 
-            if ($char == '"') { // This can cause severe HTML corruption so is a disallowed character
+            if ($char === '"') { // This can cause severe HTML corruption so is a disallowed character
                 $i++;
                 continue;
             }
             foreach ($emoticons as $code => $imgcode) {
-                $code_len = strlen($code);
-                if (($char == $code[0]) && (substr($text, $i, $code_len) == $code)) {
-                    $eval = do_emoticon($imgcode);
-                    $_eval = $eval->evaluate();
-                    if ($GLOBALS['XSS_DETECT']) {
-                        ocp_mark_as_escaped($_eval);
+                if ($char == $code[0]) {
+                    $code_len = strlen($code);
+                    if (substr($text, $i, $code_len) == $code) {
+                        $eval = do_emoticon($imgcode);
+                        $_eval = $eval->evaluate();
+                        if ($GLOBALS['XSS_DETECT']) {
+                            ocp_mark_as_escaped($_eval);
+                        }
+                        $before = substr($text, 0, $i);
+                        $after = substr($text, $i + $code_len);
+                        if (($before == '') && ($after == '')) {
+                            $text = $_eval;
+                        } else {
+                            $text = $before . $_eval . $after;
+                        }
+                        $len = strlen($text);
+                        $i += strlen($_eval) - 1;
+                        break;
                     }
-                    $before = substr($text, 0, $i);
-                    $after = substr($text, $i + $code_len);
-                    if (($before == '') && ($after == '')) {
-                        $text = $_eval;
-                    } else {
-                        $text = $before . $_eval . $after;
-                    }
-                    $len = strlen($text);
-                    $i += strlen($_eval) - 1;
-                    break;
                 }
             }
         }

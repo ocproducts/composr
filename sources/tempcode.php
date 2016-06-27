@@ -1628,9 +1628,9 @@ class Tempcode
                 $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__ATTACHED, '', $attach);
             }
         } else { // Consider it a string
-            if ($inlining_mode && end($this->seq_parts) !== false) { // If not currently empty
+            if (end($this->seq_parts) !== false) { // If not currently empty
                 $end = &$this->seq_parts[key($this->seq_parts)];
-                if (end($end) !== false) {
+                if ($inlining_mode && end($end) !== false) {
                     $_end = &$end[key($end)];
                     if (($_end[2] === TC_KNOWN) && ($_end[1] === array())) { // Optimisation to save memory/storage-space/evaluation-time -- we can just append text
                         $myfunc = $_end[0];
