@@ -199,7 +199,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         }
 
         if (!is_forum_db($db)) { // If guard is here because a MSN site can't make assumptions about the file system of the central site
-            if ((!$found_via_db) && ((($path !== null) && ($path !== '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE']))))
+            if ((!$found_via_db) && ((($path !== null) && ($path !== '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE'])))) {
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
                 $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang)); // Allow for race conditions
