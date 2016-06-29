@@ -72,6 +72,12 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
             $keyset_field_stripped = 'p_time';
             break;
 
+        case 'post_time_grouped':
+            $sort .= 'MAX(pos.p_time) DESC';
+            $keyset_field = 'MAX(pos.p_time)<X';
+            $keyset_field_stripped = 'p_time';
+            break;
+
         case 'last_post':
         default:
             $sort .= 't_cache_last_time DESC';

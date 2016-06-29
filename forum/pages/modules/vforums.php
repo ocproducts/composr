@@ -221,7 +221,7 @@ class Module_vforums
         }
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
-        return $this->_vforum($title, $condition, 'post_time', true, null, $initial_table, ',pos.p_time');
+        return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
     }
 
     /**
