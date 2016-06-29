@@ -484,6 +484,10 @@ class Module_wiki
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 
+                if (!has_category_access(get_member(), 'wiki_page', strval($child_id))) {
+                    continue;
+                }
+
                 if (get_option('wiki_enable_content_posts') == '0') {
                     $myrow['hide_posts'] = 1;
                 }

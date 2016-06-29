@@ -30,7 +30,7 @@
 .mobile_search {
 	text-align: center;
 	padding: 1em 0;
-	background-color: {$GET,area_6_background};
+	background-color: {$GET,area_5_background};
 }
 
 .menu_type__mobile {
@@ -39,6 +39,7 @@
 	top: 3.4em;
 	width: 100%;
 	z-index: 1000;
+	{$BETA_CSS_PROPERTY,box-shadow: 0px 20px 25px 0px {$GET,dark_border};}
 }
 
 .menu_type__mobile>ul {
@@ -46,13 +47,13 @@
 }
 
 .menu_type__mobile ul {
-	background-color: {$GET,area_6_background};
+	background-color: {$GET,area_5_background};
 }
 
 .menu_type__mobile li {
 	border-top: 1px solid {$GET,standard_border};
 	background: url('{$IMG;,icons/24x24/buttons/proceed}') transparent no-repeat top 1em right 1em;
-	color: {$GET,WB};
+	color: {$GET,BW};
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_type__mobile li {
@@ -63,7 +64,6 @@
 
 .menu_type__mobile li.current, .menu_type__mobile li:hover {
 	background-color: {$GET,area_hover_2_background};
-	color: {$GET,BW};
 }
 
 .menu_type__mobile li a {

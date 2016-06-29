@@ -108,7 +108,7 @@ function testset_do_header($title)
 
         <style>
 END;
-    @print(file_get_contents(css_enforce('global', 'default', false)));
+    @print(file_get_contents(css_enforce('global', 'default')));
     echo <<<END
             .screen_title { text-decoration: underline; display: block; background: url('../themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
             a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }

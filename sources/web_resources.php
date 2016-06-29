@@ -66,18 +66,15 @@ function require_javascript($javascript)
  *
  * @param  string $j The javascript file required
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @param  ?boolean $minify Whether to minify (null: read from environment)
  * @return string The path to the javascript file in the cache (blank: no file)
  */
-function javascript_enforce($j, $theme = null, $minify = null)
+function javascript_enforce($j, $theme = null)
 {
     if (get_param_integer('keep_textonly', 0) == 1) {
         return '';
     }
 
-    if ($minify === null) {
-        $minify = (get_param_integer('keep_no_minify', 0) == 0);
-    }
+    list($minify, $https, $mobile) = _get_web_resources_env();
 
     global $SITE_INFO;
 
@@ -96,10 +93,10 @@ function javascript_enforce($j, $theme = null, $minify = null)
     if (!$minify) {
         $js_cache_path .= '_non_minified';
     }
-    if ((addon_installed('ssl')) && function_exists('is_page_https') && function_exists('get_zone_name') && ((tacit_https()) || is_page_https(get_zone_name(), get_page_name()))) {
+    if ($https) {
         $js_cache_path .= '_ssl';
     }
-    if (is_mobile()) {
+    if ($mobile) {
         $js_cache_path .= '_mobile';
     }
     $js_cache_path .= '.js';
@@ -219,18 +216,7 @@ function javascript_tempcode($position = null)
  */
 function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobile = null, $do_enforce = true)
 {
-    static $minify = null;
-    if ($_minify !== null) {
-        $minify = $_minify;
-    }
-    static $https = null;
-    if ($_https !== null) {
-        $https = $_https;
-    }
-    static $mobile = null;
-    if ($_mobile !== null) {
-        $mobile = $_mobile;
-    }
+    list($minify, $https, $mobile) = _get_web_resources_env(null, $_minify, $_https, $_mobile);
 
     $temp = $do_enforce ? javascript_enforce($j) : '';
     if (($temp != '') || (!$do_enforce)) {
@@ -294,16 +280,14 @@ function require_css($css)
  * @param  ?boolean $minify Whether to minify (null: read from environment)
  * @return string The path to the CSS file in the cache (blank: no file)
  */
-function css_enforce($c, $theme = null, $minify = null)
+function css_enforce($c, $theme = null)
 {
     $text_only = (get_param_integer('keep_textonly', 0) == 1);
     if ($text_only) {
         $c .= '_textonly';
     }
 
-    if ($minify === null) {
-        $minify = (get_param_integer('keep_no_minify', 0) == 0);
-    }
+    list($minify, $https, $mobile) = _get_web_resources_env();
 
     global $SITE_INFO;
 
@@ -323,10 +307,10 @@ function css_enforce($c, $theme = null, $minify = null)
     if (!$minify) {
         $css_cache_path .= '_non_minified';
     }
-    if ((addon_installed('ssl')) && function_exists('is_page_https') && function_exists('get_zone_name') && ((tacit_https()) || is_page_https(get_zone_name(), get_page_name()))) {
+    if ($https) {
         $css_cache_path .= '_ssl';
     }
-    if (is_mobile()) {
+    if ($mobile) {
         $css_cache_path .= '_mobile';
     }
     $css_cache_path .= '.css';

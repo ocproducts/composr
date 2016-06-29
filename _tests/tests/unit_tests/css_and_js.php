@@ -51,7 +51,7 @@ class css_and_js_test_set extends cms_test_case
         $dh = opendir(get_file_base() . '/themes/default/javascript');
         while (($f = readdir($dh)) !== false) {
             if ((substr($f, -4) == '.tpl') && (substr($f, 0, 7) == 'themes/') && (strtolower($f) == $f) && (strpos($f, 'jwplayer') === false) && (strpos($f, 'sound') === false) && (strpos($f, 'widget') === false) && (strpos($f, 'jquery') === false)) {
-                $path = javascript_enforce(basename($f, '.js'), 'default', false);
+                $path = javascript_enforce(basename($f, '.js'), 'default');
                 $contents = file_get_contents($path);
                 $errors = check_js($contents);
                 if (!is_null($errors)) {
@@ -84,7 +84,7 @@ class css_and_js_test_set extends cms_test_case
         $dh = opendir(get_file_base() . '/themes/default/css');
         while (($f = readdir($dh)) !== false) {
             if ((substr($f, -4) == '.css') && (substr($f, 0, 7) == 'themes/') && ($f != 'svg.css') && ($f != 'no_cache.css') && ($f != 'quizzes.css'/*we know this doesn't pass but it is extra glitz only*/)) {
-                $path = css_enforce(basename($f, '.css'), 'default', false);
+                $path = css_enforce(basename($f, '.css'), 'default');
 
                 $contents = file_get_contents($path);
                 $errors = check_css($contents);
