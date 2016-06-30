@@ -40,8 +40,6 @@ class _performance_test_set extends cms_test_case
             warn_exit('backdoor_ip must be set to 127.0.0.1 temporarily');
         }
 
-        set_time_limit(0);
-
         $this->log_file = fopen(get_file_base() . '/data_custom/performance.log', 'wb');
         $this->log_warnings_file = fopen(get_file_base() . '/data_custom/performance_warnings.log', 'wb');
     }
@@ -60,12 +58,15 @@ class _performance_test_set extends cms_test_case
 
     public function _test_screen_performance($node)
     {
+        set_time_limit(0);
+
+        $page_link = $node['page_link'];
+
         list($zone) = page_link_decode($page_link);
         if ($zone == 'docs') {
             //Actually no, some really are slow and Comcode-Tempcode should be tuned for performance too   return; // We don't want to be running this for hours. Tutorials have predictable performance anyway.
         }
 
-        $page_link = $node['page_link'];
         $url = page_link_to_url($page_link);
 
         $times = array();
