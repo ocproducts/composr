@@ -82,7 +82,7 @@ class _performance_test_set extends cms_test_case
         $url = page_link_to_url($page_link);
 
         $times = array();
-        for ($i = 0; $i < 2; $i++) { // We do it twice so that caches are primed for second time
+        for ($i = 0; $i < 3; $i++) { // We can do it multiple times so that caches are primed for final time
             $before = microtime(true);
             $result = http_download_file($url, null, false/*we're not looking for errors - we may get some under normal conditions, e.g. for site:authors which is 404 until you add your profile*/, false, 'Composr', null, null, null, null, null, null, null, null, 60.0);
             $after = microtime(true);

@@ -418,8 +418,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     $zone = $_zone;
 
     global $MODULES_ZONES_CACHE;
-    if ((isset($MODULES_ZONES_CACHE[$zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
-        return $MODULES_ZONES_CACHE[$zone][$type][$module_name];
+    if ((isset($MODULES_ZONES_CACHE[$_zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$_zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$_zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
+        return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
     }
 
     $error = false; // hack for now
@@ -507,7 +507,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     }
 
     if (!$error) {
-        $MODULES_ZONES_CACHE[$zone][$type][$module_name] = null;
+        $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = null;
         return null;
     }
     warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', $module_name));
@@ -1048,7 +1048,7 @@ function get_block_id($map)
  */
 function do_block($codename, $map = null, $ttl = null)
 {
-    global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS;
+    global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS, $SMART_CACHE;
 
     if ($map === null) {
         $map = array();
@@ -1119,6 +1119,9 @@ function do_block($codename, $map = null, $ttl = null)
                     if ($new_security_scope) {
                         _solemnly_enter();
                     }
+                    if (isset($SMART_CACHE)) {
+                        $SMART_CACHE->paused = true;
+                    }
                     $cache = $object->run($map);
                     if ($new_security_scope) {
                         $_cache = $cache->evaluate();
@@ -1128,6 +1131,9 @@ function do_block($codename, $map = null, $ttl = null)
                         }
                     }
                     $cache->evaluate(); // To force lang files to load, etc
+                    if (isset($SMART_CACHE)) {
+                        $SMART_CACHE->paused = false;
+                    }
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')/* && (has_cookies())*/) {

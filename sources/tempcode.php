@@ -222,7 +222,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
 
     $_type = strval($type);
 
-    if ((function_exists('ctype_alnum')) && (ctype_alnum($name))) {
+    if ((function_exists('ctype_alnum')) && (ctype_alnum(str_replace(array('_', '-'), array('', ''), $name)))) {
         $_name = $name;
     } else {
         if (preg_match('#^[\w\-]*$#', $name) === 0) {

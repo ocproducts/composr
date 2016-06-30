@@ -136,6 +136,7 @@ class Self_learning_cache
     private $data = null; // null means "Nothing loaded"
     private $keys_inital = array();
     private $pending_save = false;
+    public $paused = false;
 
     /**
      * Constructor. Initialise our cache.
@@ -243,6 +244,10 @@ class Self_learning_cache
      */
     public function set($key, $value)
     {
+        if ($this->paused) {
+            return;
+        }
+
         if (!isset($this->data[$key]) || $this->data[$key] !== $value) {
             $this->data[$key] = $value;
 
@@ -266,6 +271,10 @@ class Self_learning_cache
         }
 
         if ((!isset($this->data[$key][$value])) && !array_key_exists($value, $this->data[$key]) || $this->data[$key][$value] !== $value_2) {
+            if ($this->paused) {
+                return true;
+            }
+
             $this->data[$key][$value] = $value_2;
 
             $this->save(false);

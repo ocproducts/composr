@@ -174,8 +174,8 @@ class Database_Static_mysql extends Database_super_mysql
                 return $string; // No non-trivial characters
             }
         } else {
-            if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
-                return $string; // No non-trivial characters
+            if (preg_match('#[^\x00-\x7f]#', $string) === 0) {
+                return $string; // No non-ASCII characters
             }
         }
 
