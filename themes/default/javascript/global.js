@@ -2006,9 +2006,9 @@ function menu_active_selection(menu_id)
 function _menu_active_selection(menu_id)
 {
 	var menu_element=document.getElementById(menu_id);
+	var possibilities=[],is_selected,url;
 	if (menu_element.nodeName.toLowerCase()=='select')
 	{
-		var possibilities={},is_selected,url;
 		for (var i=0;i<menu_element.options.length;i++)
 		{
 			url=menu_element.options[i].value;
@@ -2038,25 +2038,23 @@ function _menu_active_selection(menu_id)
 		}
 	} else
 	{
-		var menu_items=get_elements_by_class_name(menu_element,'current');
-
-		var possibilities={},is_selected,url,element;
+		var menu_items=get_elements_by_class_name(menu_element,'non_current'),a;
 		for (var i=0;i<menu_items.length;i++)
 		{
-			element=null;
+			a=null;
 			for (var j=0;j<menu_items[i].childNodes.length;j++)
 			{
 				if (menu_items[i].childNodes[j].nodeName.toLowerCase()=='a')
 				{
-					element=menu_items[i].childNodes[j];
+					a=menu_items[i].childNodes[j];
 				}
 			}
-			if (element==null)
+			if (a==null)
 			{
 				continue;
 			}
 
-			url=element.value;
+			url=a.href;
 			is_selected=menu_item_is_selected(url);
 			if (is_selected!==null)
 			{
@@ -2078,7 +2076,7 @@ function _menu_active_selection(menu_id)
 			for (var i=0;i<possibilities.length;i++)
 			{
 				if (possibilities[i].score!=min_score) break;
-				possibilities[i].element.className=possibilities[i].element.className.replace(/^current/,'non_current');
+				possibilities[i].element.className=possibilities[i].element.className.replace('non_current','current');
 			}
 		}
 	}
@@ -2091,10 +2089,10 @@ function menu_item_is_selected(url)
 	var global_breadcrumbs=document.getElementById('global_breadcrumbs');
 	if (global_breadcrumbs)
 	{
-		var links=document.getElementsByTagName('a');
+		var links=global_breadcrumbs.getElementsByTagName('a');
 		for (var i=0;i<links.length;i++)
 		{
-			if (current_url==links[links.length-1-i].href) return i+1;
+			if (url==links[links.length-1-i].href) return i+1;
 		}
 	}
 	return null;

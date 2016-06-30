@@ -493,9 +493,6 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
         if (is_integer($val)) {
             $val = strval($val);
         }
-        if ($val === null) {
-            $val = '<null>';
-        }
 
         if ($key !== 'page') {
             if (is_integer($key)) {
@@ -1311,10 +1308,8 @@ function find_id_moniker($url_parts, $zone)
             $url_parts['type'] = 'browse'; // null means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
         }
 
-        if (array_key_exists('id', $url_parts)) {
-            if ($url_parts['id'] === null) {
-                $url_parts['id'] = strval(db_get_first_id());
-            }
+        if ($url_parts['id'] === null) {
+            return null;
         }
 
         $effective_id = $url_parts['id'];

@@ -10,7 +10,6 @@
 
 	{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING}
 		<script>// <![CDATA[
-			console.log('!');
 			menu_active_selection('r_{MENU|}_d');
 		//]]></script>
 	{+END}
