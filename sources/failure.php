@@ -661,7 +661,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
         }
         if ((!$is_se) && (($alt_ip ? $ip2 : $ip) != '127.0.0.1')) {
-            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip));
+            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip), 'ORDER BY date_and_time');
             $rows[] = $new_row;
             $summary = '[list]';
             $is_spammer = false;

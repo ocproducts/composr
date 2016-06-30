@@ -83,7 +83,7 @@ class Hook_profiles_tabs_edit_privacy
                     $groups_view = (!is_null($_groups_view)) ? $_groups_view : '';
                 }
 
-                $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $field_id));
+                $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $field_id), '', 1);
 
                 // if there are permissions saved already
                 if (array_key_exists(0, $cpf_permissions) && $cpf_permissions[0]['field_id'] == $field_id) {
@@ -122,7 +122,7 @@ class Hook_profiles_tabs_edit_privacy
         $cpf_ids = array();
         foreach ($member_cpfs as $cpf_id => $cpf) {
             // Look up the details for this field
-            $cpf_data = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), array('id' => $cpf_id));
+            $cpf_data = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), array('id' => $cpf_id), '', 1);
             if (!array_key_exists(0, $cpf_data)) {
                 continue;
             }
@@ -141,7 +141,7 @@ class Hook_profiles_tabs_edit_privacy
             $cpf_ids[] = $cpf_id;
 
             // Work out current settings for this field
-            $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $cpf_id));
+            $cpf_permissions = $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id_of, 'field_id' => $cpf_id), '', 1);
             if (!array_key_exists(0, $cpf_permissions)) {
                 $view_by_guests = true;
                 $view_by_members = true;

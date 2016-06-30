@@ -239,7 +239,7 @@ class Module_admin_giftr extends Standard_crud_module
 
         $id = get_param_integer('id', null);
         if ($id !== null) {
-            $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $id));
+            $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $id), '', 1);
 
             if (isset($rows[0]['id']) && $rows[0]['id'] > 0) {
                 $id = $rows[0]['id'];

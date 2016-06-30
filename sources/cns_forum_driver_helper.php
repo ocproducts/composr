@@ -560,7 +560,7 @@ function _helper_get_emoticon_chooser($this_ref, $field_name)
     }
 
     $extra_where = has_privilege(get_member(), 'use_special_emoticons') ? array() : array('e_is_special' => 0);
-    $emoticons = $this_ref->connection->query_select('f_emoticons', array('*'), array('e_relevance_level' => 0) + $extra_where);
+    $emoticons = $this_ref->connection->query_select('f_emoticons', array('*'), array('e_relevance_level' => 0) + $extra_where, 'ORDER BY e_code');
     $em = new Tempcode();
     foreach ($emoticons as $emo) {
         $code = $emo['e_code'];

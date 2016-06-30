@@ -168,7 +168,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
     // Next try what is in the database...
 
     if (is_null($row)) {
-        $addon_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon));
+        $addon_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon), '', 1);
         if (array_key_exists(0, $addon_rows)) {
             $row = $addon_rows[0];
         }

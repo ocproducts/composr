@@ -227,7 +227,7 @@ class Module_admin_email_log
         $fields = new Tempcode();
         require_code('form_templates');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id));
+        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
@@ -344,7 +344,7 @@ class Module_admin_email_log
                 );
 
                 if ($action == 'send') {
-                    $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id));
+                    $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id), '', 1);
                     if (!array_key_exists(0, $rows)) {
                         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                     }

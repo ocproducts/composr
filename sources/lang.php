@@ -459,7 +459,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
         $lang = user_lang();
     }
 
-    if ((isset($LANG_REQUESTED_LANG[$lang])) && (isset($LANG_REQUESTED_LANG[$lang][$codename]))) {
+    if (isset($LANG_REQUESTED_LANG[$lang][$codename])) {
         return;
     }
     $LANG_REQUESTED_LANG[$lang][$codename] = true;

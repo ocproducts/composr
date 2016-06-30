@@ -171,7 +171,7 @@ function portal($member_id, $dest_realm)
 {
     // Find destination realm for the portal in the users current room
     list($realm, $x, $y) = get_loc_details($member_id);
-    $portals = $GLOBALS['SITE_DB']->query_select('w_portals', array('*'), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm));
+    $portals = $GLOBALS['SITE_DB']->query_select('w_portals', array('*'), array('start_location_x' => $x, 'start_location_y' => $y, 'start_location_realm' => $realm, 'end_location_realm' => $dest_realm), '', 1);
     if (!array_key_exists(0, $portals)) {
         buildr_refresh_with_message(do_lang_tempcode('INTERNAL_ERROR'), 'warn');
     }

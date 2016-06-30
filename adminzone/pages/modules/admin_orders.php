@@ -752,10 +752,10 @@ class Module_admin_orders
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.order_id
             WHERE ' . $cond;
-        $row = $GLOBALS['SITE_DB']->query($qry);
-        remove_duplicate_rows($row);
+        $rows = $GLOBALS['SITE_DB']->query($qry);
+        remove_duplicate_rows($rows);
 
-        foreach ($row as $order) {
+        foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
             $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];

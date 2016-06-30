@@ -1169,7 +1169,7 @@ function page_link_to_url($url)
  * Given a page-link, return an absolute URL.
  *
  * @param  string $page_link Page-link
- * @return URLPATH URL
+ * @return Tempcode URL
  */
 function page_link_to_tempcode_url($page_link)
 {

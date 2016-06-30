@@ -147,7 +147,7 @@ class Hook_pointstore_giftr
             $member_row = $member_rows[0];
             $to_member_id = $member_row['id'];
 
-            $gift_rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $gift_id));
+            $gift_rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $gift_id), '', 1);
             if (array_key_exists(0, $gift_rows)) {
                 $gift_row = $gift_rows[0];
                 $gift_name = $gift_row['name'];

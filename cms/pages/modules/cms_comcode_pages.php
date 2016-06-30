@@ -682,7 +682,7 @@ class Module_cms_comcode_pages
             }
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $file));
+        $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $file), '', 1);
         if (array_key_exists(0, $rows)) {
             // Existing
             $validated = $rows[0]['p_validated'] == 1;

@@ -64,6 +64,9 @@ class Block_menu
      */
     public function run($map)
     {
+        global $LANGS_REQUESTED;
+        $bak = $LANGS_REQUESTED;
+
         if (!array_key_exists('param', $map)) {
             $map['param'] = '';
         }
@@ -96,7 +99,9 @@ class Block_menu
         require_code('menus');
         $menu = build_menu($type, $map['param'], $silent_failure == '1');
         $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
+
         $menu = apply_quick_caching($menu);
+        $LANGS_REQUESTED = $bak; // We've flatten with apply_quick_caching, we don't need to load up all those language files next time
 
         if ((array_key_exists('title', $map)) && ($map['title'] != '')) {
             $menu = do_template('BLOCK_MENU', array('_GUID' => 'ae46aa37a9c5a526f43b26a391164436', 'CONTENT' => $menu, 'TYPE' => $type, 'PARAM' => $map['param'], 'TRAY_STATUS' => $tray_status, 'TITLE' => comcode_to_tempcode($map['title'], null, true)));

@@ -115,5 +115,5 @@ function cns_get_warnings($member_id)
         return array();
     }
 
-    return $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id, 'w_is_warning' => 1));
+    return $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id, 'w_is_warning' => 1), 'ORDER BY w_time');
 }

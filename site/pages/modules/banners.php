@@ -274,7 +274,7 @@ class Module_banners
         if ($type == 'view') {
             $source = get_param_string('source');
 
-            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $source));
+            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $source), '', 1);
             if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('BANNER_MISSING_SOURCE'));
             }

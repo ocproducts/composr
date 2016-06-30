@@ -177,7 +177,7 @@ class Module_warnings extends Standard_crud_module
 
         $member_id = get_param_integer('id');
 
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id));
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id), 'ORDER BY w_time');
         if (count($rows) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }

@@ -1680,7 +1680,7 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $id = get_param_integer('id');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $id));
+        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $id), '', 1);
 
         $time = get_timezoned_date($rows[0]['date_and_time']);
         $subject = $rows[0]['subject'];

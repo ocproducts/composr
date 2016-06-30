@@ -1629,7 +1629,7 @@ class DatabaseConnector
             return false; // Actually, we have delayed insert for these so locking is not an issue
         }
 
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
+        if (substr(get_db_type(), 0, 5) != 'mysql' || get_value('innodb') === '1') {
             return false;
         }
 

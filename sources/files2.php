@@ -974,7 +974,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $HTTP_FILENAME = basename($file_path);
             }
 
-            if (!is_null($byte_limit)) {
+            if ($byte_limit !== null) {
                 $contents = substr($contents, 0, $byte_limit);
             }
 
@@ -1255,7 +1255,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
                                                 }
                                             }
-                                            if (!is_null($byte_limit)) {
+                                            if ($byte_limit !== null) {
                                                 curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
                                             }
                                             $line = curl_exec($ch);
@@ -1473,7 +1473,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $line = '';
             }
             if ($line == '') {
-                if (!is_null($first_fail_time)) {
+                if ($first_fail_time !== null) {
                     if ($first_fail_time < time() - 5) {
                         break;
                     }
@@ -1505,14 +1505,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     }
                 }
 
-                if (is_null($write_to_file)) {
+                if ($write_to_file === null) {
                     $input .= $line;
                 } else {
                     fwrite($write_to_file, $line);
                 }
                 $input_len += strlen($line);
 
-                if ((!is_null($byte_limit)) && ($input_len >= $byte_limit)) {
+                if (($byte_limit !== null) && ($input_len >= $byte_limit)) {
                     $input = substr($input, 0, $byte_limit);
                     break;
                 }
@@ -1686,13 +1686,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         // Process any non-chunked extra buffer (chunked would have been handled in main loop)
         if (!$chunked) {
             if ($buffer_unprocessed != '') {
-                if (is_null($write_to_file)) {
+                if ($write_to_file === null) {
                     $input .= $buffer_unprocessed;
                 } else {
                     fwrite($write_to_file, $buffer_unprocessed);
                 }
                 $input_len += strlen($buffer_unprocessed);
-                if ((!is_null($byte_limit)) && ($input_len >= $byte_limit)) {
+                if (($byte_limit !== null) && ($input_len >= $byte_limit)) {
                     $input = substr($input, 0, $byte_limit);
                 }
             }
@@ -1720,7 +1720,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             return null;
         }
         $size_expected = $HTTP_DOWNLOAD_SIZE;
-        if (!is_null($byte_limit)) {
+        if ($byte_limit !== null) {
             if ($byte_limit < $HTTP_DOWNLOAD_SIZE) {
                 $size_expected = $byte_limit;
             }
@@ -1788,13 +1788,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $context = stream_context_create(array('http' => $opts));
             $php_errormsg = mixed();
-            if ((is_null($byte_limit)) && (is_null($write_to_file))) {
+            if (($byte_limit === null) && (is_null($write_to_file))) {
                 $read_file = @file_get_contents($_url, false, $context);
             } else {
                 $_read_file = @fopen($_url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
-                    while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
+                    while ((!feof($_read_file)) && (($byte_limit === null) || (strlen($read_file) < $byte_limit))) {
                         $read_file .= fread($_read_file, 1024);
                         if (!is_null($write_to_file)) {
                             fwrite($write_to_file, $read_file);
@@ -1806,7 +1806,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $read_file = false;
                 }
             }
-            if ((!is_null($byte_limit)) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
+            if (($byte_limit !== null) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
                 $read_file = substr($read_file, 0, $byte_limit);
             }
             safe_ini_set('allow_url_fopen', '0');

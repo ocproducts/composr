@@ -91,10 +91,10 @@ function output_inventory_screen($member_id)
     $title = get_screen_title('W_INVENTORY_OF', true, array(escape_html($username)));
     $health = $GLOBALS['SITE_DB']->query_select_value('w_members', 'health', array('id' => $member_id));
 
-    $rows = $GLOBALS['SITE_DB']->query_select('w_inventory', array('*'), array('item_owner' => $member_id));
+    $rows = $GLOBALS['SITE_DB']->query_select('w_inventory', array('*'), array('item_owner' => $member_id), 'ORDER BY item_name');
     $inventory = new Tempcode();
     foreach ($rows as $myrow) {
-        $item_rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => $myrow['item_name']));
+        $item_rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => $myrow['item_name']), '', 1);
         if (!array_key_exists(0, $item_rows)) {
             continue;
         }
@@ -261,7 +261,7 @@ function output_room_screen($member_id)
         $members->attach(do_template('W_MAIN_MEMBER', array('_GUID' => '83d9f930b68d4988b009b3c06ef783e9', 'HEALTH' => integer_format($health), 'ID' => strval($id), 'MEMBER_URL' => $member_url, 'STYLE' => $style, 'NAME' => $name, 'AUX' => $aux)));
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('w_items', array('*'), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'cost' => 0));
+    $rows = $GLOBALS['SITE_DB']->query_select('w_items', array('*'), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'cost' => 0), 'ORDER BY name');
     $items = new Tempcode();
     foreach ($rows as $myrow) {
         $rows2 = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => $myrow['name']), '', 1);
@@ -375,7 +375,7 @@ function output_room_screen($member_id)
 
     // ITEMS HELD
     $item = post_param_string('item', '');
-    $rows = $GLOBALS['SITE_DB']->query_select('w_inventory', array('*'), array('item_owner' => $member_id));
+    $rows = $GLOBALS['SITE_DB']->query_select('w_inventory', array('*'), array('item_owner' => $member_id), 'ORDER BY item_name');
     $items_held = new Tempcode();
     foreach ($rows as $myrow) {
         $items_held->attach(do_template('W_MAIN_ITEM_OWNED', array('_GUID' => '85b1de9cf8c11b535b28bf033fa11dc9', 'SELECTED' => false, 'NAME' => $myrow['item_name'])));
@@ -384,7 +384,7 @@ function output_room_screen($member_id)
 
     // ITEMS OWNED
     $item = post_param_string('item', '');
-    $rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('owner' => $member_id));
+    $rows = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('owner' => $member_id), 'ORDER BY name');
     $_items_owned = new Tempcode();
     foreach ($rows as $myrow) {
         $selected = $myrow['name'] == $item;

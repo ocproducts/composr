@@ -28,6 +28,17 @@ class _performance_test_set extends cms_test_case
     private $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
+    private $whitelist = array(
+        'site:warnings:edit',
+        'buildr:buildr',
+        'docs:codebook_1',
+        'docs:codebook_1b',
+        'docs:codebook_3',
+        'docs:tut_mobile_sdk',
+        'docs:tut_tempcode',
+        'forum:topicview:id=11',
+        'buildr:buildr',
+    );
 
     public function setUp()
     {
@@ -61,6 +72,10 @@ class _performance_test_set extends cms_test_case
         set_time_limit(0);
 
         $page_link = $node['page_link'];
+
+        if ($this->whitelist !== null && !in_array($page_link, $this->whitelist)) {
+            return;
+        }
 
         list($zone) = page_link_decode($page_link);
         if ($zone == 'docs') {

@@ -509,7 +509,7 @@ class Module_buildr
 
             $out = new Tempcode();
 
-            $rows = $GLOBALS['SITE_DB']->query_select('items', array('*'), array('copy_owner' => null));
+            $rows = $GLOBALS['SITE_DB']->query_select('items', array('*'), array('copy_owner' => null), 'ORDER BY name');
             foreach ($rows as $myrow) {
                 $owner = $GLOBALS['SITE_DB']->query_select_value('w_itemdef', 'owner', array('name' => $myrow['name']));
                 if (!is_null($owner)) {

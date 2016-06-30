@@ -277,7 +277,6 @@ function require_css($css)
  *
  * @param  string $c The CSS file required
  * @param  ?ID_TEXT $theme The name of the theme (null: current theme)
- * @param  ?boolean $minify Whether to minify (null: read from environment)
  * @return string The path to the CSS file in the cache (blank: no file)
  */
 function css_enforce($c, $theme = null)

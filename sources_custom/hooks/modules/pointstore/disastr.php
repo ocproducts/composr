@@ -63,7 +63,7 @@ class Hook_pointstore_disastr
             $_immunization_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'immunization' => 1), '_SEARCH');
             $immunization_url = $_immunization_url->evaluate();
 
-            $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease['id']));
+            $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease['id']), '', 1);
 
             $get_cure = true;
             $get_immunization = true;
@@ -126,7 +126,7 @@ class Hook_pointstore_disastr
         $cure = ($get_cure == 1) ? 1 : 0;
         $immunization = ($get_immunization == 1) ? 1 : 0;
 
-        $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease_id));
+        $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease_id), '', 1);
 
         $insert = true;
 
@@ -138,7 +138,7 @@ class Hook_pointstore_disastr
             //we should insert a new db member disease record
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array('id' => $disease_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array('id' => $disease_id), '', 1);
 
         $cure_price = (isset($rows[0]['cure_price']) && (intval($rows[0]['cure_price']) > 0)) ? intval($rows[0]['cure_price']) : 0;
         $immunization_price = (isset($rows[0]['immunisation_price']) && (intval($rows[0]['immunisation_price']) > 0)) ? intval($rows[0]['immunisation_price']) : 0;

@@ -88,6 +88,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Enable the "Gzipped output" option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file to spot undesired request patterns and terminate those requests.
  - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
+ - Make sure PHP was not compiled with [tt]--disable-ctype[/tt]
 
 [title="2"]Persistent cache[/title]
 

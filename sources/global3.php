@@ -857,7 +857,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
 {
     // Fix bad unicode
     if (get_charset() == 'utf-8' || $definitely_unicode) {
-        if (preg_match('#[^x00-x7f]#', $input) == 0) {
+        if (is_numeric($input) || preg_match('#[^\x00-\x7f]#', $input) == 0) {
             return $input; // No non-ASCII characters
         }
 
@@ -2954,7 +2954,12 @@ function get_zone_default_page($zone_name)
  */
 function titleify($boring)
 {
-    $boring = preg_replace('#([/\\\\])#', '${1} ', $boring);
+    $ret = $boring;
+
+    if (strpos($ret, '/') !== false || strpos($ret, '\\') !== false) {
+        $ret = preg_replace('#([/\\\\])#', '${1} ', $ret);
+    }
+
     $ret = ucwords(str_replace('_', ' ', $boring));
 
     $acronyms = array(
@@ -2972,7 +2977,9 @@ function titleify($boring)
         'HPHP',
     );
     foreach ($acronyms as $acronym) {
-        $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
+        if (stripos($ret, $acronym) !== false) {
+            $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
+        }
     }
     $ret = str_replace('Ecommerce', 'eCommerce', $ret);
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);

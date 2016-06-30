@@ -354,7 +354,7 @@ class Module_tester
 
             $a_test = make_string_tempcode(escape_html($test['t_test']));
             if (!is_null($test['t_inherit_section'])) {
-                $_tests_2 = $GLOBALS['SITE_DB']->query_select('tests', array('*'), array('t_section' => $test['t_inherit_section']));
+                $_tests_2 = $GLOBALS['SITE_DB']->query_select('tests', array('*'), array('t_section' => $test['t_inherit_section']), 'ORDER BY id');
                 if (count($_tests_2) != 0) {
                     $section_notes = $GLOBALS['SITE_DB']->query_select_value('test_sections', 's_notes', array('id' => $test['t_inherit_section']));
                     if ($section_notes != '') {
@@ -732,7 +732,7 @@ class Module_tester
 
         $add_template = do_template('TESTER_TEST_GROUP_NEW', array('_GUID' => '3d0e12fdff0aef8f8aa5818e441238ee', 'ID' => 'add_-REPLACEME-', 'FIELDS' => $this->get_test_form_fields('add_-REPLACEME-')));
 
-        $_tests = $GLOBALS['SITE_DB']->query_select('tests', array('*'), array('t_section' => $id));
+        $_tests = $GLOBALS['SITE_DB']->query_select('tests', array('*'), array('t_section' => $id), 'ORDER BY id');
         $tests = new Tempcode();
         foreach ($_tests as $test) {
             $_fields = $this->get_test_form_fields('edit_' . strval($test['id']), $test['t_test'], $test['t_assigned_to'], $test['t_enabled'], $test['t_inherit_section']);

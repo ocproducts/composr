@@ -443,6 +443,10 @@ function get_custom_file_base()
  */
 function filter_naughty($in, $preg = false)
 {
+    if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
+        return $in;
+    }
+
     if (strpos($in, "\0") !== false) {
         log_hack_attack_and_exit('PATH_HACK');
     }
@@ -470,6 +474,9 @@ function filter_naughty($in, $preg = false)
  */
 function filter_naughty_harsh($in, $preg = false)
 {
+    if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
+        return $in;
+    }
     if (preg_match('#^[\w\-]*$#', $in) !== 0) {
         return $in;
     }

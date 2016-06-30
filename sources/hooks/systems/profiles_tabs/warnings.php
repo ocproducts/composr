@@ -58,7 +58,7 @@ class Hook_profiles_tabs_warnings
         require_css('cns');
 
         $warnings = new Tempcode();
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id_of, 'w_is_warning' => 1));
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array('w_member_id' => $member_id_of, 'w_is_warning' => 1), 'ORDER BY w_time');
         foreach ($rows as $row) {
             $warning_by = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_by']);
             $date = get_timezoned_date($row['w_time']);

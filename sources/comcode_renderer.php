@@ -2397,7 +2397,14 @@ function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
  */
 function get_tutorial_link($name)
 {
-    return $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => cms_mb_strtolower($name)));
+    static $cache = array();
+    if (isset($cache[$name])) {
+        $ret = $cache[$name];
+    } else {
+        $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => cms_mb_strtolower($name)));
+        $cache[$name] = $ret;
+    }
+    return $ret;
 }
 
 /**
@@ -2408,6 +2415,8 @@ function get_tutorial_link($name)
  */
 function set_tutorial_link($name, $value)
 {
-    $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
-    $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition
+    if (get_tutorial_link($name) !== $value) {
+        $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
+        $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition
+    }
 }

@@ -618,9 +618,15 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             $zone = $matches[1];
             $page = $matches[2];
 
-            require_code('content');
-            $cma_ob = get_content_object($this->content_type);
-            $cma_info = $cma_ob->info();
+            static $cache = array();
+            if (isset($cache[$this->content_type])) {
+                $cma_info = $cache[$this->content_type];
+            } else {
+                require_code('content');
+                $cma_ob = get_content_object($this->content_type);
+                $cma_info = $cma_ob->info();
+                $cache[$this->content_type] = $cma_info;
+            }
             require_code('site');
             if (($cma_info['module'] == $page) && ($zone != '_SEARCH') && (_request_page($page, $zone) !== false)) { // Ensure the given page matches the content type, and it really does exist in the given zone
                 if ($matches[0] == $page_link) {

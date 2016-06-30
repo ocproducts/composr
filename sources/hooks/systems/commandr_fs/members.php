@@ -112,7 +112,7 @@ class Hook_commandr_fs_members
             );
 
             // Custom profile fields
-            $_member_custom_fields = $GLOBALS['SITE_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_data['id']));
+            $_member_custom_fields = $GLOBALS['SITE_DB']->query_select('f_member_custom_fields', array('*'), array('mf_member_id' => $member_data['id']), '', 1);
             if (!array_key_exists(0, $_member_custom_fields)) {
                 return false;
             }

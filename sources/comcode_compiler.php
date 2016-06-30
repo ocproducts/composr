@@ -1030,6 +1030,12 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $less_pos = $pos - 1;
                                             $ret->parse_from($comcode, $less_pos, $p_len);
                                             $pos = $p_len;
+
+                                            if (!$in_html && !$in_semihtml) {
+                                                if (strpos(substr($comcode, $less_pos, $p_len), '*') === false) {
+                                                    $ret = escape_html_tempcode($ret);
+                                                }
+                                            }
                                         }
                                         $differented = true;
                                         if (($pos <= $len) || (!$lax)) {

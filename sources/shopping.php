@@ -251,9 +251,9 @@ function stock_maintain_warn_mail($product_name, $product_id)
  */
 function update_stock($order_id)
 {
-    $row = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), '', 1);
 
-    foreach ($row as $ordered_items) {
+    foreach ($rows as $ordered_items) {
         $hook = $ordered_items['p_type'];
 
         require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook), true);
@@ -524,9 +524,9 @@ function get_ordered_product_list_string($order_id)
 {
     $product_det = array();
 
-    $row = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
+    $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id), 'ORDER BY p_name');
 
-    foreach ($row as $key => $product) {
+    foreach ($rows as $key => $product) {
         $product_det[] = $product['p_name'] . ' x ' . integer_format($product['p_quantity']) . ' @ ' . do_lang('UNIT_PRICE') . '=' . float_format($product['p_price']);
     }
 
