@@ -539,7 +539,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
     }
 
     $map = array('page' => 'downloads', 'type' => 'browse', 'id' => ($category_id == db_get_first_id()) ? null : $category_id, 'keep_download_root' => ($root == db_get_first_id()) ? null : $root);
-    if (get_page_name() == 'catalogues') {
+    if (get_page_name() == 'downloads') {
         $map += propagate_filtercode();
     }
     $page_link = build_page_link($map, $zone);

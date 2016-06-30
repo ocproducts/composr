@@ -223,6 +223,11 @@ class Block_main_multi_content
             $category_type_select = mixed();
         }
 
+        // Actually for categories we check access on category ID
+        if ($info['is_category'] && $category_type_access !== null) {
+            $category_field_access = $info['id_field'];
+        }
+
         $where = '1=1';
         $query = 'FROM ' . get_table_prefix() . $info['table'] . ' r';
         if ($info['table'] == 'catalogue_entries') {
