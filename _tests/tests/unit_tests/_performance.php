@@ -32,10 +32,7 @@ class _performance_test_set extends cms_test_case
         'site:warnings:edit',
         'buildr:buildr',
         'docs:codebook_1',
-        'docs:codebook_1b',
-        'docs:codebook_3',
         'docs:tut_mobile_sdk',
-        'docs:tut_tempcode',
         'forum:topicview:id=11',
         'buildr:buildr',
     );

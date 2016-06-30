@@ -50,7 +50,7 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+    if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
         $before = memory_get_usage();
     }
 

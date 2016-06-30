@@ -221,10 +221,15 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
     }
 
     $_type = strval($type);
-    if (preg_match('#^[\w\-]*$#', $name) === 0) {
-        $_name = php_addslashes_twice($name);
-    } else {
+
+    if ((function_exists('ctype_alnum')) && (ctype_alnum($name))) {
         $_name = $name;
+    } else {
+        if (preg_match('#^[\w\-]*$#', $name) === 0) {
+            $_name = php_addslashes_twice($name);
+        } else {
+            $_name = $name;
+        }
     }
 
     static $generator_base = null;

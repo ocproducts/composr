@@ -1488,20 +1488,38 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $buffer_unprocessed = '';
 
                 if ($chunked) {
-                    $matches = array();
-                    if (preg_match('#^(\r\n)?([a-f\d]+) *(;[^\r\n]*)?\r\n(.*)$#is', $line, $matches) != 0) {
-                        $amount_wanted = hexdec($matches[2]);
-                        if (strlen($matches[4]) < $amount_wanted) { // Chunk was more than what we grabbed, so we need to iterate more to parse
-                            $buffer_unprocessed = $line;
-                            continue;
-                        }
-                        $buffer_unprocessed = substr($matches[4], $amount_wanted); // May be some more extra read
-                        $line = substr($matches[4], 0, $amount_wanted);
-                        if ($line == '') {
+                    if (substr($line, 0, 2) == "\r\n") {
+                        $line = substr($line, 2);
+                    }
+                    $hexdec_chunk_details = '';
+                    $chunk_end_pos = mixed();
+                    $chunk_line_length = strlen($line);
+                    for ($hexdec_read = 0; $hexdec_read < $chunk_line_length; $hexdec_read++) {
+                        $chunk_char = $line[$hexdec_read];
+                        $chunk_char_ord = ord($chunk_char);
+                        if ($chunk_char_ord >= 48 && $chunk_char_ord <= 57 || $chunk_char_ord >= 65 && $chunk_char_ord <= 90 || $chunk_char_ord >= 97 && $chunk_char_ord <= 122) {
+                            $hexdec_chunk_details .= $chunk_char;
+                        } else {
+                            $chunk_end_pos = strpos($line, "\r\n");
+                            if ($chunk_end_pos === false) {
+                                break 2; // Should not happen :S
+                            }
                             break;
                         }
-                    } else {
-                        // Should not happen :S
+                    }
+                    if ($hexdec_chunk_details == '') {
+                        continue;
+                    }
+                    $amount_wanted = hexdec($hexdec_chunk_details);
+                    $amount_available = strlen($line) - ($chunk_end_pos + 2);
+                    if ($amount_available < $amount_wanted) { // Chunk was more than what we grabbed, so we need to iterate more (more fread) to parse
+                        $buffer_unprocessed = $line;
+                        continue;
+                    }
+                    $buffer_unprocessed = substr($line, $chunk_end_pos + 2 + $amount_wanted); // May be some more extra read
+                    $line = substr($line, $chunk_end_pos + 2, $amount_wanted);
+                    if ($line == '') {
+                        break; // Terminating chunk
                     }
                 }
 
