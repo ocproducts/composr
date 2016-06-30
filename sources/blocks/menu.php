@@ -37,7 +37,7 @@ class Block_menu
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('title', 'type', 'param', 'tray_status', 'silent_failure');
+        $info['parameters'] = array('title', 'type', 'param', 'tray_status', 'silent_failure', 'javascript_highlighting');
         return $info;
     }
 
@@ -64,15 +64,14 @@ class Block_menu
      */
     public function run($map)
     {
-        if (!array_key_exists('param', $map)) {
-            $map['param'] = '';
+        $menu = isset($map['param']) ? $map['param'] : '';
+        if ($menu == '') {
+            // Sitemap takes lots of memory
+            disable_php_memory_limit();
         }
 
-        $type = array_key_exists('type', $map) ? $map['type'] : 'embossed';
-        $silent_failure = array_key_exists('silent_failure', $map) ? $map['silent_failure'] : '0';
-        $tray_status = array_key_exists('tray_status', $map) ? $map['tray_status'] : '';
-
-        if ($type != 'tree') {
+        $type = isset($map['type']) ? $map['type'] : 'embossed';
+        if ($type != 'dropdown') {
             $exists = file_exists(get_file_base() . '/themes/default/templates/MENU_BRANCH_' . $type . '.tpl');
             if (!$exists) {
                 $exists = file_exists(get_custom_file_base() . '/themes/default/templates_custom/MENU_BRANCH_' . $type . '.tpl');
@@ -89,17 +88,29 @@ class Block_menu
             }
         }
 
-        if ($map['param'] == '') {
-            disable_php_memory_limit();
-        }
+        $title = (isset($map['title']) ? $map['title'] : '');
+
+        $silent_failure = ((isset($map['silent_failure']) ? $map['silent_failure'] : '0') == '1');
+
+        $tray_status = isset($map['tray_status']) ? $map['tray_status'] : '';
+
+        $javascript_highlighting = ((isset($map['javascript_highlighting']) ? $map['javascript_highlighting'] : '1') == '1');
 
         require_code('menus');
-        $menu = build_menu($type, $map['param'], $silent_failure == '1');
+        $menu = build_menu($type, $menu, $silent_failure, !$javascript_highlighting);
         $menu->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
         $menu = apply_quick_caching($menu);
 
-        if ((array_key_exists('title', $map)) && ($map['title'] != '')) {
-            $menu = do_template('BLOCK_MENU', array('_GUID' => 'ae46aa37a9c5a526f43b26a391164436', 'CONTENT' => $menu, 'TYPE' => $type, 'PARAM' => $map['param'], 'TRAY_STATUS' => $tray_status, 'TITLE' => comcode_to_tempcode($map['title'], null, true)));
+        if ($title != '') {
+            $menu = do_template('BLOCK_MENU', array(
+                '_GUID' => 'ae46aa37a9c5a526f43b26a391164436',
+                'CONTENT' => $menu,
+                'TYPE' => $type,
+                'PARAM' => $menu,
+                'TRAY_STATUS' => $tray_status,
+                'TITLE' => comcode_to_tempcode($map['title'], null, true),
+                'JAVASCRIPT_HIGHLIGHTING' => $javascript_highlighting,
+            ));
         }
 
         return $menu;
@@ -125,35 +136,31 @@ function block_menu__cache_on($map)
     except for large drop-down sets.
     */
 
+    $menu = isset($map['param']) ? $map['param'] : '';
+
     require_code('permissions');
+    $show_edit_link = ((substr($menu, 0, 1) != '_') && (substr($menu, 0, 3) != '!!!') && (has_actual_page_access(get_member(), 'admin_menus')));
 
-    $menu = array_key_exists('param', $map) ? $map['param'] : '';
-
-    $zone = get_zone_name();
-
-    // Fudge: fold caching for Admin Zone, as it doesn't actually change between pages, except the top level ones
-    $page = get_page_name();
-    if (strpos($menu, ',title=' . do_lang('menus:DASHBOARD')) !== false) {
-        if ($page != 'admin' && $page != 'cms' && $page != 'start') {
-            $page = '_generic_';
-        }
-    }
-
-    $url_type = get_param_string('type', 'browse');
+    $javascript_highlighting = ((isset($map['javascript_highlighting']) ? $map['javascript_highlighting'] : '1') == '1');
 
     $ret = array(
         has_keep_parameters(),
-        ((substr($menu, 0, 1) != '_') && (substr($menu, 0, 3) != '!!!') && (has_actual_page_access(get_member(), 'admin_menus'))),
-        $zone,
-        $page,
-        $url_type,
-        ($page == 'catalogues' && $url_type == 'index') ? get_param_string('id', '') : '', // Catalogues need a little extra work to distinguish them
-        array_key_exists('type', $map) ? $map['type'] : 'embossed',
+        $show_edit_link,
         $menu,
-        array_key_exists('title', $map) ? $map['title'] : '',
-        array_key_exists('silent_failure', $map) ? $map['silent_failure'] : '0',
-        array_key_exists('tray_status', $map) ? $map['tray_status'] : '',
+        isset($map['type']) ? $map['type'] : 'embossed',
+        isset($map['title']) ? $map['title'] : '',
+        ((isset($map['silent_failure']) ? $map['silent_failure'] : '0') == '1'),
+        isset($map['tray_status']) ? $map['tray_status'] : '',
     );
+
+    if (!$javascript_highlighting) {
+        $ret = array_merge($ret, array(
+            get_zone_name(),
+            get_page_name(),
+            get_param_string('type', 'browse'),
+            ($page == 'catalogues' && $url_type == 'index') ? get_param_string('id', '') : '', // Catalogues need a little extra work to distinguish them
+        ));
+    }
 
     return $ret;
 }
