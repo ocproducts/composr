@@ -311,10 +311,6 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         }
     }
 
-    if ((substr($type, 0, 4) == 'cns_') && (file_exists(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs
-        $type = substr($type, 4);
-    }
-
     require_code('uploads');
     is_plupload(true);
     if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
@@ -357,12 +353,6 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
  */
 function post_param_image($name = 'image', $upload_to = null, $theme_image_type = null, $required = true, $is_edit = false, &$filename = null, &$thumb_url = null)
 {
-    if (!is_null($theme_image_type)) {
-        if ((substr($theme_image_type, 0, 4) == 'cns_') && (file_exists(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs
-            $theme_image_type = substr($theme_image_type, 4);
-        }
-    }
-
     $thumb_specify_name = $name . '__thumb__url';
     $test = post_param_string($thumb_specify_name, '');
     if ($test == '') {

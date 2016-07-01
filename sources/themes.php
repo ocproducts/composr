@@ -25,12 +25,20 @@
  */
 function init__themes()
 {
-    global $THEME_IMAGES_CACHE, $CDN_CONSISTENCY_CHECK, $RECORD_THEME_IMAGES_CACHE, $RECORDED_THEME_IMAGES, $THEME_IMAGES_SMART_CACHE_LOAD;
+    global $THEME_IMAGES_CACHE, $RECORD_THEME_IMAGES_CACHE, $RECORDED_THEME_IMAGES, $THEME_IMAGES_LOAD_INTENSITY;
     $THEME_IMAGES_CACHE = array();
-    $CDN_CONSISTENCY_CHECK = array();
     $RECORD_THEME_IMAGES_CACHE = false;
     $RECORDED_THEME_IMAGES = array();
-    $THEME_IMAGES_SMART_CACHE_LOAD = 0;
+
+    define('THEME_IMAGE_PLACE_SITE', 0);
+    define('THEME_IMAGE_PLACE_FORUM', 1);
+    define('THEME_IMAGES_LOAD_INTENSITY__NONE', 0);
+    define('THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE', 1);
+    define('THEME_IMAGES_LOAD_INTENSITY__ALL', 2);
+    $THEME_IMAGES_LOAD_INTENSITY = array(
+        THEME_IMAGE_PLACE_SITE => THEME_IMAGES_LOAD_INTENSITY__NONE,
+        THEME_IMAGE_PLACE_FORUM => THEME_IMAGES_LOAD_INTENSITY__NONE
+    );
 }
 
 /**
@@ -47,7 +55,9 @@ function init__themes()
  */
 function find_theme_image($id, $silent_fail = false, $leave_local = false, $theme = null, $lang = null, $db = null, $pure_only = false)
 {
-    global $THEME_IMAGES_CACHE, $USER_LANG_CACHED, $THEME_IMAGES_SMART_CACHE_LOAD, $RECORD_THEME_IMAGES_CACHE, $SMART_CACHE, $SITE_INFO;
+    global $THEME_IMAGES_CACHE, $USER_LANG_CACHED, $THEME_IMAGES_LOAD_INTENSITY, $RECORD_THEME_IMAGES_CACHE, $SMART_CACHE, $SITE_INFO;
+
+    // Special case: bad function parameters...
 
     if (!$GLOBALS['DEV_MODE']) {
         if (empty($id)) {
@@ -55,9 +65,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         }
     }
 
-    if (($id[0] === 'c') && (substr($id, 0, 4) === 'cns_') && (is_file(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs
-        $id = substr($id, 4);
-    }
+    // Special case: theme wizard...
 
     if ((isset($_GET['keep_theme_seed'])) && (get_param_string('keep_theme_seed', null) !== null) && (function_exists('has_privilege')) && (has_privilege(get_member(), 'view_profiling_modes'))) {
         require_code('themewizard');
@@ -66,6 +74,8 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             return $test;
         }
     }
+
+    // Work out basic parameters...
 
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
@@ -83,235 +93,206 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     $truism = ($theme === $true_theme) && ($lang === $true_lang);
 
-    $site = ($GLOBALS['SITE_DB'] === $db) ? 'site' : 'forums';
+    $db_place = ($GLOBALS['SITE_DB'] === $db) ? THEME_IMAGE_PLACE_SITE : THEME_IMAGE_PLACE_FORUM;
 
-    if (!isset($THEME_IMAGES_CACHE[$site])) {
-        load_theme_image_cache($db, $site, $true_theme, $true_lang);
-    }
+    $url_path = null; // null means keep searching, '' means we know it does not exist
 
-    if ((!$truism) && (!$pure_only)) { // Separate lookup, cannot go through $THEME_IMAGES_CACHE
-        $path = $db->query_select_value_if_there('theme_images', 'path', array('theme' => $theme, 'lang' => $lang, 'id' => $id));
-        if ($path !== null) {
-            if ((url_is_local($path)) && (!$leave_local)) {
-                if (is_forum_db($db)) {
-                    $path = get_forum_base_url() . '/' . $path;
-                } else {
-                    if ((substr($path, 0, 22) === 'themes/default/images/') || (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) {
-                        $path = get_base_url() . '/' . $path;
-                    } else {
-                        $path = get_custom_base_url() . '/' . $path;
-                    }
+    $force_recache = false;
+
+    // Special case: Separate lookup (cannot go through $THEME_IMAGES_CACHE but can rely on theme_images table)...
+
+    // Can we get it from the database / internal caching?...
+
+    if (!$pure_only) {
+        if ($truism) {
+            // Are we looking for something the the internal cache does not know about yet? If so then we better load further
+            if (
+                ($THEME_IMAGES_LOAD_INTENSITY[$db_place] !== THEME_IMAGES_LOAD_INTENSITY__ALL) &&
+                (!isset($THEME_IMAGES_CACHE[$db_place][$id]))
+            ) {
+                load_theme_image_cache($db, $db_place, $true_theme, $true_lang);
+
+                // Hmm, still failing from smart cache level? If so then we better load further
+                if (
+                    ($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE) &&
+                    (!isset($THEME_IMAGES_CACHE[$db_place][$id]))
+                ) {
+                    load_theme_image_cache($db, $db_place, $true_theme, $true_lang);
                 }
             }
 
-            $ret = cdn_filter($path);
-            if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-                $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
+            if (isset($THEME_IMAGES_CACHE[$db_place][$id])) {
+                $url_path = $THEME_IMAGES_CACHE[$db_place][$id];
+
+                // Check it is still here
+                if (($url_path !== '') && (url_is_local($url_path)) && (support_smart_decaching())) {
+                    if (substr($url_path, 0, 22) === 'themes/default/images/') {
+                        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) {
+                            $missing = !is_file(get_file_base() . '/' . rawurldecode($url_path));
+                        } else {
+                            $missing = false;
+                        }
+                    } else {
+                        $missing = !is_file(get_custom_file_base() . '/' . rawurldecode($url_path)) && !is_file(get_file_base() . '/' . rawurldecode($url_path));
+                    }
+                    if ($missing) {
+                        $url_path = '';
+
+                        $force_recache = true;
+                    }
+                }
             }
-            return $ret;
+        } else {
+            // Can't rely on caching because the cache only runs if $truism
+            $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
         }
     }
 
-    if ((!$pure_only) && ($site === 'site') && (!array_key_exists($id, $THEME_IMAGES_CACHE[$site])) && ($THEME_IMAGES_SMART_CACHE_LOAD < 2)) {
-        // Smart cache update
-        load_theme_image_cache($db, $site, $true_theme, $true_lang);
-        find_theme_image($id, true, true, $theme, $lang, $db, $pure_only);
-    }
+    // Disk search then?...
 
-    if (($pure_only) || (!isset($THEME_IMAGES_CACHE[$site][$id])) || (!$truism)) {
-        // Disk search...
-
-        $path = null;
-
+    if ($url_path === null) {
+        // Do search
         $priorities = array();
-        if (!$pure_only) { // Should do "images_custom" first, as this will also do a DB search
-            $priorities = array_merge($priorities, array(
-                array($theme, $lang, 'images_custom'),
-                array($theme, '', 'images_custom'),
-                ($lang === fallback_lang()) ? null : array($theme, fallback_lang(), 'images_custom'),
-            ));
+        if (!$pure_only) {
+            $priorities[] = array($theme, $lang, 'images_custom');
+            $priorities[] = array($theme, '', 'images_custom');
+            if ($lang !== fallback_lang()) {
+                $priorities[] = array($theme, fallback_lang(), 'images_custom');
+            }
         }
-        // This will not do a DB search, just a filesystem search. The Theme Wizard makes these though
-        $priorities = array_merge($priorities, array(
-            array($theme, $lang, 'images'),
-            array($theme, '', 'images'),
-            ($lang === fallback_lang()) ? null : array($theme, fallback_lang(), 'images'),
-        ));
+        $priorities[] = array($theme, $lang, 'images');
+        $priorities[] = array($theme, '', 'images');
+        if ($lang !== fallback_lang()) {
+            $priorities[] = array($theme, fallback_lang(), 'images');
+        }
         if ($theme !== 'default') {
             if (!$pure_only) {
-                $priorities = array_merge($priorities, array(
-                    array('default', $lang, 'images_custom'),
-                    array('default', '', 'images_custom'),
-                    ($lang === fallback_lang()) ? null : array('default', fallback_lang(), 'images_custom'),
-                ));
+                $priorities[] = array('default', $lang, 'images_custom');
+                $priorities[] = array('default', '', 'images_custom');
+                if ($lang !== fallback_lang()) {
+                    $priorities[] = array('default', fallback_lang(), 'images_custom');
+                }
             }
-            $priorities = array_merge($priorities, array(
-                array('default', $lang, 'images'),
-                array('default', '', 'images'),
-                ($lang === fallback_lang()) ? null : array('default', fallback_lang(), 'images'),
-            ));
+            $priorities[] = array('default', $lang, 'images');
+            $priorities[] = array('default', '', 'images');
+            if ($lang !== fallback_lang()) {
+                $priorities[] = array('default', fallback_lang(), 'images');
+            }
         }
 
-        $found_via_db = false;
-
-        foreach ($priorities as $i => $priority) {
-            if ($priority === null) {
-                continue;
-            }
-
-            if (($priority[2] === 'images_custom') && ($priority[1] !== '')) { // Likely won't auto find
-                $smap = array('id' => $id, 'theme' => $priority[0], 'lang' => $priority[1]);
-                $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-                $GLOBALS['NO_QUERY_LIMIT'] = true;
-                $truism_b = ($priority[0] === $true_theme) && ((!multi_lang()) || ($priority[1] === '') || ($priority[1] === $true_lang));
-                $path = $truism_b ? null : $db->query_select_value_if_there('theme_images', 'path', $smap);
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
-
-                if ($path !== null) {
-                    if ($i == 0) {
-                        $found_via_db = true;
-                        break;
-                    }
-
-                    // Make sure this isn't just the result file we should find at a lower priority
-                    if (strpos($path, '/images/' . $id . '.') !== false) {
-                        continue;
-                    }
-                    if ((array_key_exists('lang', $smap)) && (strpos($path, '/images/' . $smap['lang'] . '/' . $id . '.') !== false)) {
-                        continue;
-                    }
-                    break;
-                }
-            }
-
-            $test = _search_img_file($priority[0], $priority[1], $id, $priority[2]);
-            if ($test !== null) {
-                $path_bits = explode('/', $test);
-                $path = '';
-                foreach ($path_bits as $bit) {
-                    if ($path !== '') {
-                        $path .= '/';
-                    }
-                    $path .= rawurlencode($bit);
-                }
+        foreach ($priorities as $priority) {
+            $url_path = _search_img_file($priority[0], $priority[1], $id, $priority[2]);
+            if ($url_path !== null) {
                 break;
             }
         }
 
-        if (!is_forum_db($db)) { // If guard is here because a MSN site can't make assumptions about the file system of the central site
-            if ((!$found_via_db) && ((($path !== null) && ($path !== '')) || (($silent_fail) && (!$GLOBALS['SEMI_DEV_MODE'])))) {
+        // Missing?
+        if ($url_path === null) {
+            $url_path = ''; // This means search happened and it's missing
+        }
+
+        // Store result of search in database
+        if ((!$GLOBALS['SEMI_DEV_MODE']) || ($url_path !== '')) { // We don't cache failure on dev-mode as we may add it later while writing code and don't want to have to keep doing cache flushes
+            if (!is_forum_db($db)) { // If guard is here because a MSN site can't code assumptions about the file system of the central site into that site's database, we rely on that site to maintain its own theme_images table for performance
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
-                $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang)); // Allow for race conditions
-                $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => ($path === null) ? '' : $path, 'lang' => $lang), false, true); // Allow for race conditions
+                $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang, 'path' => $url_path), false, true); // Allow for race conditions
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
-                Self_learning_cache::erase_smart_cache();
             }
+        }
+    }
+
+    // Final stuff, then return...
+
+    // Update internal caching?
+    if ((!$pure_only) && ($truism)) {
+        $THEME_IMAGES_CACHE[$db_place][$id] = $url_path;
+    }
+
+    // Smart cache learning if we ended up having to bypass smart cache
+    if ((($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__ALL) || ($force_recache)) && (!$pure_only)) {
+        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang . '_' . strval($db_place), $id, $url_path);
+    }
+
+    if ($url_path !== '') {
+        // Turn to full URL (the default behaviour)?
+        if (!$leave_local) {
+            if (url_is_local($url_path)) {
+                if (is_forum_db($db)) {
+                    $url_path = get_forum_base_url() . '/' . $url_path;
+                } else {
+                    if ((substr($url_path, 0, 22) === 'themes/default/images/') || (!is_file(get_custom_file_base() . '/' . rawurldecode($url_path)))) {
+                        $url_path = get_base_url() . '/' . $url_path;
+                    } else {
+                        $url_path = get_custom_base_url() . '/' . $url_path;
+                    }
+                }
+            }
+
+            // Apply CDN
+            $url_path = cdn_filter($url_path);
         }
 
-        if ($path === null) {
-            if (!$silent_fail) {
-                require_code('site');
-                attach_message(do_lang_tempcode('NO_SUCH_THEME_IMAGE', escape_html($id)), 'warn');
+        // Take note for view mode tools
+        if ($RECORD_THEME_IMAGES_CACHE) {
+            global $RECORDED_THEME_IMAGES;
+            if (!is_on_multi_site_network()) {
+                $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = true;
             }
-            if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-                $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, '');
-            }
-            return '';
-        }
-        if ($truism) {
-            $THEME_IMAGES_CACHE[$site][$id] = $path; // only cache if we are looking up for our own theme/lang
         }
     } else {
-        $path = $THEME_IMAGES_CACHE[$site][$id];
-
-        // Decache if file has disappeared
-        $support_smart_decaching = support_smart_decaching();
-        if (($path !== '') && (!$support_smart_decaching) && (url_is_local($path)) && ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_file_base() . '/' . rawurldecode($path))) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Missing image, so erase to re-search for it
-            unset($THEME_IMAGES_CACHE[$site][$id]);
-            $ret = find_theme_image($id, $silent_fail, $leave_local, $theme, $lang, $db, $pure_only);
-            if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-                $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
-            }
-            return $ret;
+        // Missing
+        if (!$silent_fail) {
+            require_code('site');
+            attach_message(do_lang_tempcode('NO_SUCH_THEME_IMAGE', escape_html($id)), 'warn');
         }
     }
 
-    // Add to cache
-    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $path);
-    }
-
-    // Make absolute
-    if ((url_is_local($path)) && (!$leave_local) && ($path !== '')) {
-        if (is_forum_db($db)) {
-            $base_url = get_forum_base_url();
-        } else {
-            global $SITE_INFO;
-            $support_smart_decaching = support_smart_decaching();
-            $missing = (!$pure_only) && ((!$support_smart_decaching) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path))));
-            if ((substr($path, 0, 22) === 'themes/default/images/') || ($missing) || ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) && (!is_file(get_custom_file_base() . '/' . rawurldecode($path)))) { // Not found, so throw away custom theme image and look in default theme images to restore default
-                if (($missing) && (!is_file(get_file_base() . '/' . rawurldecode($path)))) {
-                    $ret = find_theme_image($id, $silent_fail, $leave_local, $theme, $lang, $db, true);
-                    if ($THEME_IMAGES_SMART_CACHE_LOAD >= 2) {
-                        $SMART_CACHE->append('theme_images_' . $theme . '_' . $lang, $id, $ret);
-                    }
-                    return $ret;
-                }
-
-                $base_url = get_base_url();
-            } else {
-                $base_url = get_custom_base_url();
-            }
-        }
-
-        $path = $base_url . '/' . $path;
-    }
-
-    $ret = cdn_filter($path);
-
-    if ($RECORD_THEME_IMAGES_CACHE) {
-        global $RECORDED_THEME_IMAGES;
-        if (!is_on_multi_site_network()) {
-            $RECORDED_THEME_IMAGES[serialize(array($id, $theme, $lang))] = true;
-        }
-    }
-
-    return $ret;
+    // Done
+    return $url_path;
 }
 
 /**
  * Load up theme image cache.
  *
  * @param  object $db The database to load from (used for theme images running across multi-site-networks)
- * @param  ID_TEXT $site The internal name of the database to load from (used for theme images running across multi-site-networks)
+ * @param  integer $db_place The internal name of the database to load from (used for theme images running across multi-site-networks)
  * @param  ID_TEXT $true_theme Theme0
  * @param  LANGUAGE_NAME $true_lang Language
  */
-function load_theme_image_cache($db, $site, $true_theme, $true_lang)
+function load_theme_image_cache($db, $db_place, $true_theme, $true_lang)
 {
-    global $THEME_IMAGES_CACHE, $THEME_IMAGES_SMART_CACHE_LOAD, $SMART_CACHE;
+    global $THEME_IMAGES_CACHE, $THEME_IMAGES_LOAD_INTENSITY, $SMART_CACHE;
 
-    if ($THEME_IMAGES_SMART_CACHE_LOAD === 0) {
-        $THEME_IMAGES_CACHE[$site] = $SMART_CACHE->get('theme_images_' . $true_theme . '_' . $true_lang);
-        if (is_null($THEME_IMAGES_CACHE[$site])) {
-            $THEME_IMAGES_CACHE[$site] = array();
-        }
-    } elseif ($THEME_IMAGES_SMART_CACHE_LOAD === 1) {
-        $test = $db->query_select('theme_images', array('id', 'path'), array('theme' => $true_theme, 'lang' => $true_lang));
-        $THEME_IMAGES_CACHE[$site] = collapse_2d_complexity('id', 'path', $test);
+    switch ($THEME_IMAGES_LOAD_INTENSITY[$db_place]) {
+        case THEME_IMAGES_LOAD_INTENSITY__NONE:
+            $THEME_IMAGES_CACHE[$db_place] = $SMART_CACHE->get('theme_images_' . $true_theme . '_' . $true_lang . '_' . strval($db_place));
+            if (is_null($THEME_IMAGES_CACHE[$db_place])) {
+                $THEME_IMAGES_CACHE[$db_place] = array();
+            }
+
+            $THEME_IMAGES_LOAD_INTENSITY[$db_place] = THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE;
+
+            break;
+
+        case THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE:
+            $theme_images = $db->query_select('theme_images', array('id', 'path'), array('theme' => $true_theme, 'lang' => $true_lang));
+            $THEME_IMAGES_CACHE[$db_place] = collapse_2d_complexity('id', 'path', $theme_images);
+
+            $THEME_IMAGES_LOAD_INTENSITY[$db_place] = THEME_IMAGES_LOAD_INTENSITY__ALL;
+
+            break;
     }
-
-    $THEME_IMAGES_SMART_CACHE_LOAD++;
 }
 
 /**
  * Filter a path so it runs through a CDN.
  *
- * @param  URLPATH $path Input URL
+ * @param  URLPATH $url_path Input URL
  * @return URLPATH Output URL
  */
-function cdn_filter($path)
+function cdn_filter($url_path)
 {
     static $cdn = null;
     if ($cdn === null) {
@@ -322,7 +303,7 @@ function cdn_filter($path)
         $knm = get_param_integer('keep_no_minify', 0);
     }
 
-    if (($cdn != '') && ($knm === 0)) {
+    if (($cdn !== '') && ($knm === 0)) {
         if ($cdn === '<autodetect>') {
             $cdn = get_value('cdn');
             if ($cdn === null) {
@@ -331,13 +312,13 @@ function cdn_filter($path)
             }
         }
         if ($cdn === '') {
-            return $path;
+            return $url_path;
         }
 
-        global $CDN_CONSISTENCY_CHECK;
+        static $cdn_consistency_check = array();
 
-        if (isset($CDN_CONSISTENCY_CHECK[$path])) {
-            return $CDN_CONSISTENCY_CHECK[$path];
+        if (isset($cdn_consistency_check[$url_path])) {
+            return $cdn_consistency_check[$url_path];
         }
 
         static $cdn_parts = null;
@@ -345,24 +326,31 @@ function cdn_filter($path)
             $cdn_parts = explode(',', $cdn);
         }
 
-        $sum_asc = 0;
-        $basename = basename($path);
-        $path_len = strlen($basename);
-        for ($i = 0; $i < $path_len; $i++) {
-            $sum_asc += ord($basename[$i]);
+        if (count($cdn_parts) === 1) {
+            $cdn_part = $cdn_parts[0];
+        } else {
+            $sum_asc = 0;
+            $basename = basename($url_path);
+            $url_path_len = strlen($basename);
+            for ($i = 0; $i < $url_path_len; $i++) {
+                $sum_asc += ord($basename[$i]);
+            }
+
+            $cdn_part = $cdn_parts[$sum_asc % count($cdn_parts)]; // To make a consistent but fairly even distribution we do some modular arithmetic against the total of the ascii values
         }
 
-        $cdn_part = $cdn_parts[$sum_asc % count($cdn_parts)]; // To make a consistent but fairly even distribution we do some modular arithmetic against the total of the ascii values
         static $normal_suffix = null;
         if ($normal_suffix === null) {
             $normal_suffix = '#(^https?://)' . str_replace('#', '#', preg_quote(get_domain())) . '(/)#';
         }
-        $out = preg_replace($normal_suffix, '${1}' . $cdn_part . '${2}', $path);
-        $CDN_CONSISTENCY_CHECK[$path] = $out;
+        $out = preg_replace($normal_suffix, '${1}' . $cdn_part . '${2}', $url_path);
+
+        $cdn_consistency_check[$url_path] = $out;
+
         return $out;
     }
 
-    return $path;
+    return $url_path;
 }
 
 /**
@@ -372,32 +360,34 @@ function cdn_filter($path)
  * @param  ?LANGUAGE_NAME $lang The language (null: try generally, under no specific language)
  * @param  ID_TEXT $id The theme image ID
  * @param  ID_TEXT $dir Directory to search
- * @return ?string The path to the image (null: was not found)
+ * @return ?URLPATH The URL path to the image (null: was not found)
  * @ignore
  */
 function _search_img_file($theme, $lang, $id, $dir = 'images')
 {
+    $places = array(get_custom_file_base(), get_file_base());
     $extensions = array('png', 'jpg', 'jpeg', 'gif', 'ico', 'svg');
-    $url_base = 'themes/';
-    foreach (array(get_custom_file_base(), get_file_base()) as $_base) {
+
+    foreach ($places as $_base) {
         $base = $_base . '/themes/';
 
         foreach ($extensions as $extension) {
             $file_path = $base . $theme . '/';
-            if ($dir != '') {
+            if ($dir !== '') {
                 $file_path .= $dir . '/';
             }
-            if (($lang !== null) && ($lang != '')) {
+            if (!empty($lang)) {
                 $file_path .= $lang . '/';
             }
             $file_path .= $id . '.' . $extension;
-            if (is_file($file_path)) { // Theme+Lang
-                $path = $url_base . rawurlencode($theme) . '/' . $dir . '/';
-                if (($lang !== null) && ($lang != '')) {
-                    $path .= rawurlencode($lang) . '/';
+
+            if (is_file($file_path)) { // Good, now return URL
+                $url_path = 'themes/' . rawurlencode($theme) . '/' . $dir . '/';
+                if (!empty($lang)) {
+                    $url_path .= $lang . '/';
                 }
-                $path .= $id . '.' . $extension;
-                return $path;
+                $url_path .= $id . '.' . $extension;
+                return $url_path;
             }
         }
     }
