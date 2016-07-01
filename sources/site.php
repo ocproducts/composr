@@ -1813,7 +1813,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     if ((!$is_panel) && ($title_to_use !== null) && (!$being_included)) {
         global $PT_PAIR_CACHE_CP;
-        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode($title_to_use);
+        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($title_to_use));
         $PT_PAIR_CACHE_CP[$codename]['p_parent_page'] = $comcode_page_row['p_parent_page'];
         $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] == '') || !has_privilege(get_member(), 'open_virtual_roots'));
         breadcrumb_set_parents($comcode_breadcrumbs);
@@ -1901,7 +1901,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
                 $PT_PAIR_CACHE_CP[$the_page] = array();
                 $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $temp_title->evaluate();
                 if ($PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] == '') {
-                    $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = escape_html($the_page);
+                    $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $the_page;
                 }
                 $PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] = '';
             }
@@ -1912,15 +1912,12 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             if ($_title === null) {
                 $_title = $the_page;
             }
-            if ($GLOBALS['XSS_DETECT']) {
-                ocp_mark_as_escaped($_title);
-            }
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }
     }
     $title = $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'];
     if ($title === null) {
-        $title = escape_html($the_page);
+        $title = $the_page;
     }
 
     // End of recursion
@@ -1928,7 +1925,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
         if ($no_link_for_me_sir) {
             return array();
         }
-        return array(array($page_link, $title));
+        return array(array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title))));
     }
 
     // Cut off broken recursion
@@ -1939,10 +1936,10 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     // Our point in the chain
     $segments = array();
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, $title, ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
+        $segments[] = array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title)), ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
     } else {
         if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
-            $segments[] = array('', $title);
+            $segments[] = array('', is_object($title) ? $title : make_string_tempcode(escape_html($title)));
         }
     }
 

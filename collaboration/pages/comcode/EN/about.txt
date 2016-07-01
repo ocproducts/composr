@@ -1,6 +1,6 @@
 [title sub="About the Collaboration Zone"]About[/title]
 
-The Collaboration Zone is an exclusive area of {$SITE_NAME} for super-members to share files, manage their author profile, release files instantly onto {$SITE_NAME} and generally collaborate with other active super-members in a supported and protected environment.
+The Collaboration Zone is an exclusive area of {$SITE_NAME*} for super-members to share files, manage their author profile, release files instantly onto {$SITE_NAME*} and generally collaborate with other active super-members in a supported and protected environment.
 
 [title="2"]Non-Super-members[/title]
 

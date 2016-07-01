@@ -14,7 +14,7 @@ This website:
 
 If you wish to see what exact cookies are saved, or delete cookies, you may do so using [url="standard tools built into your web browser"]http://www.wikihow.com/View-Cookies[/url].
 
-We may occasionally send bulk e-mails about {$SITE_NAME}, or matters relating to {$SITE_SCOPE} to our members. We will not send bulk e-mails or allow others to send bulk e-mails, which we believe would be considered spam.
+We may occasionally send bulk e-mails about {$SITE_NAME*}, or matters relating to {$SITE_SCOPE*} to our members. We will not send bulk e-mails or allow others to send bulk e-mails, which we believe would be considered spam.
 
 We will not share private details other than what can be seen in the forum profile and public postings unless legally required to do so.
 
@@ -33,7 +33,7 @@ A notice will be sent, by e-mail, to the e-mail address given when a child joins
 
 The parent or guardian has the option to agree to the collection and use of the child's information without consenting to the disclosure of the information to third parties.
 
-{$SITE_NAME} may not require a child to disclose more information than is reasonably necessary to participate in an activity as a condition of participation.
+{$SITE_NAME*} may not require a child to disclose more information than is reasonably necessary to participate in an activity as a condition of participation.
 
 The parent or guardian can review the child's personal information, ask to have it deleted and refuse to allow any further collection or use of the child's information. This may be done by contacting the staff in the same way as was done to approve the membership originally.
 {+END}{+START,IF,{$NEQ,{$CONFIG_OPTION,spam_check_level},NEVER}}

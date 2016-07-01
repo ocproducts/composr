@@ -553,7 +553,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
  */
 function clean_html_title($title)
 {
-    $_title = trim(strip_tags($title));
+    $_title = trim(strip_html($title));
     if ($_title == '') { // Complex case
         $matches = array();
         if (preg_match('#<img[^>]*alt="([^"]+)"#', $title, $matches) != 0) {

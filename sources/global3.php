@@ -3082,7 +3082,9 @@ function strip_html($in)
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $in = preg_replace($search, '', $in);
-    $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
+    if (get_charset() != 'utf-8') {
+        $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
+    }
     $in = strip_tags($in);
     return @html_entity_decode($in, ENT_QUOTES, get_charset());
 }

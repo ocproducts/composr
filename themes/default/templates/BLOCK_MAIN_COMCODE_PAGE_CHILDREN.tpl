@@ -4,7 +4,7 @@
 		<ul class="spaced_list">
 			{+START,LOOP,CHILDREN}
 				<li>
-					<a href="{$PAGE_LINK*,{ZONE}:{PAGE}}">{TITLE}</a>
+					<a href="{$PAGE_LINK*,{ZONE}:{PAGE}}">{TITLE*}</a>
 				</li>
 			{+END}
 		</ul>

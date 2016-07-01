@@ -28,10 +28,8 @@ class _performance_test_set extends cms_test_case
     private $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
-    private $whitelist = array(
-        'forum:topicview:id=11',
-        'buildr:buildr',
-    );
+    private $whitelist = null;
+    private $whitelist_zone = 'cms';
 
     public function setUp()
     {
@@ -70,9 +68,11 @@ class _performance_test_set extends cms_test_case
             return;
         }
 
-        list($zone) = page_link_decode($page_link);
-        if ($zone == 'docs') {
-            //Actually no, some really are slow and Comcode-Tempcode should be tuned for performance too   return; // We don't want to be running this for hours. Tutorials have predictable performance anyway.
+        if ($this->whitelist_zone !== null) {
+            list($zone) = page_link_decode($page_link);
+            if ($zone != $this->whitelist_zone) {
+                return;
+            }
         }
 
         $url = page_link_to_url($page_link);

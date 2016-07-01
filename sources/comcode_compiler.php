@@ -1031,11 +1031,11 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $ret->parse_from($comcode, $less_pos, $p_len);
                                             $pos = $p_len;
 
-                                            if (!$in_html && !$in_semihtml) {
+                                            /*if (!$in_html && !$in_semihtml) {     Actually, no, we must explicitly escape symbols in Comcode (except when there's a pre-Tempcode-pass of that Comcode / inside tag attributes / inside non-textual areas)
                                                 if (strpos(substr($comcode, $less_pos, $p_len), '*') === false) {
                                                     $ret = escape_html_tempcode($ret);
                                                 }
-                                            }
+                                            }*/
                                         }
                                         $differented = true;
                                         if (($pos <= $len) || (!$lax)) {

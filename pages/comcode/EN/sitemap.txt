@@ -1,3 +1,3 @@
-[title]{$SITE_NAME} Site-Map[/title]
+[title]{$SITE_NAME*} Site-Map[/title]
 
 {$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}
