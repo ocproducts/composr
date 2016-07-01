@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: shell_exec|fsockopen*/
+/*EXTRA FUNCTIONS: shell_exec|fsockopen|ctype_xdigit*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -876,6 +876,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $HTTP_FILENAME = null;
 
+    static $has_ctype_xdigit = null;
+    if ($has_ctype_xdigit === null) {
+        $has_ctype_xdigit = function_exists('ctype_xdigit');
+    }
+
     // Prevent DOS loop attack
     if (cms_srv('HTTP_USER_AGENT') == $ua) {
         $ua = 'Composr-recurse';
@@ -1465,7 +1470,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $chunked = false;
         $buffer_unprocessed = '';
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
-            $line = @fread($mysock, (($chunked) && (strlen($buffer_unprocessed) > 10)) ? 10 : 1024);
+            $line = @fread($mysock, 32000);
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;
@@ -1488,30 +1493,40 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $buffer_unprocessed = '';
 
                 if ($chunked) {
-                    if (substr($line, 0, 2) == "\r\n") {
+                    if (isset($line[1]) && $line[0] == "\r" && $line[1] == "\n") {
                         $line = substr($line, 2);
                     }
+
                     $hexdec_chunk_details = '';
-                    $chunk_end_pos = mixed();
                     $chunk_line_length = strlen($line);
                     for ($hexdec_read = 0; $hexdec_read < $chunk_line_length; $hexdec_read++) {
                         $chunk_char = $line[$hexdec_read];
-                        $chunk_char_ord = ord($chunk_char);
-                        if ($chunk_char_ord >= 48 && $chunk_char_ord <= 57 || $chunk_char_ord >= 65 && $chunk_char_ord <= 90 || $chunk_char_ord >= 97 && $chunk_char_ord <= 122) {
+                        if ($chunk_char == "\r") {
+                            $chunk_char_is_hex = false;
+                        } else {
+                            if ($has_ctype_xdigit) {
+                                $chunk_char_is_hex = ctype_xdigit($chunk_char);
+                            } else {
+                                $chunk_char_ord = ord($chunk_char);
+                                $chunk_char_is_hex = ($chunk_char_ord >= 48 && $chunk_char_ord <= 57 || $chunk_char_ord >= 65 && $chunk_char_ord <= 90 || $chunk_char_ord >= 97 && $chunk_char_ord <= 122);
+                            }
+                        }
+                        if ($chunk_char_is_hex) {
                             $hexdec_chunk_details .= $chunk_char;
                         } else {
-                            $chunk_end_pos = strpos($line, "\r\n");
-                            if ($chunk_end_pos === false) {
-                                break 2; // Should not happen :S
-                            }
                             break;
                         }
                     }
-                    if ($hexdec_chunk_details == '') {
+                    if ($hexdec_chunk_details == '') { // No data
+                        continue;
+                    }
+                    $chunk_end_pos = strpos($line, "\r\n");
+                    if ($chunk_end_pos === false) {
+                        $buffer_unprocessed = $line;
                         continue;
                     }
                     $amount_wanted = hexdec($hexdec_chunk_details);
-                    $amount_available = strlen($line) - ($chunk_end_pos + 2);
+                    $amount_available = $chunk_line_length - ($chunk_end_pos + 2);
                     if ($amount_available < $amount_wanted) { // Chunk was more than what we grabbed, so we need to iterate more (more fread) to parse
                         $buffer_unprocessed = $line;
                         continue;
@@ -1521,6 +1536,10 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     if ($line == '') {
                         break; // Terminating chunk
                     }
+
+                    $input_len += $amount_wanted;
+                } else {
+                    $input_len += strlen($line);
                 }
 
                 if ($write_to_file === null) {
@@ -1528,7 +1547,6 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 } else {
                     fwrite($write_to_file, $line);
                 }
-                $input_len += strlen($line);
 
                 if (($byte_limit !== null) && ($input_len >= $byte_limit)) {
                     $input = substr($input, 0, $byte_limit);

@@ -3137,7 +3137,7 @@ function get_brand_page_url($params, $zone)
 function brand_name()
 {
     $value = function_exists('get_value') ? get_value('rebrand_name') : null;
-    if (is_null($value)) {
+    if ($value === null) {
         $value = 'Composr';
     }
     return $value;

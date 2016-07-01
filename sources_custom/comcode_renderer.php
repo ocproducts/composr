@@ -73,7 +73,10 @@ function comcode_white_listed($tag, $marker, $comcode)
     $comcode_portion = substr($comcode_portion_at_and_after, 0, $end_pos);
 
     require_code('textfiles');
-    $whitelists = explode("\n", read_text_file('comcode_whitelist'));
+    static $whitelists = null;
+    if ($whitelists === null) {
+        $whitelists = explode("\n", read_text_file('comcode_whitelist'));
+    }
 
     if (in_array($comcode_portion, $whitelists)) {
         return true;

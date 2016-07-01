@@ -408,6 +408,28 @@ function delete_value($name)
 }
 
 /**
+ * Delete situational values.
+ *
+ * @param  array $values List of names of the values
+ */
+function delete_values($values)
+{
+    if ($values === array()) {
+        return;
+    }
+    global $VALUE_OPTIONS_CACHE;
+    $sql = 'DELETE FROM ' . get_table_prefix() . 'values WHERE 1=0';
+    foreach ($values as $name) {
+        $sql .= ' OR ' . db_string_equal_to('the_name', $name);
+        unset($VALUE_OPTIONS_CACHE[$name]);
+    }
+    $GLOBALS['SITE_DB']->query($sql);
+    if (function_exists('persistent_cache_delete')) {
+        persistent_cache_delete('VALUES');
+    }
+}
+
+/**
  * Increment the specified stored value, by the specified amount.
  *
  * @param  ID_TEXT $stat The codename for the stat

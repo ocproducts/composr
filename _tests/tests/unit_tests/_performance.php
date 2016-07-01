@@ -29,10 +29,6 @@ class _performance_test_set extends cms_test_case
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
     private $whitelist = array(
-        'site:warnings:edit',
-        'buildr:buildr',
-        'docs:codebook_1',
-        'docs:tut_mobile_sdk',
         'forum:topicview:id=11',
         'buildr:buildr',
     );
