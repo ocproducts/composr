@@ -559,7 +559,21 @@ function _helper_get_emoticon_chooser($this_ref, $field_name)
         return new Tempcode();
     }
 
-    $extra_where = has_privilege(get_member(), 'use_special_emoticons') ? array() : array('e_is_special' => 0);
+    $use_special = has_privilege(get_member(), 'use_special_emoticons');
+
+    $do_caching = has_caching_for('block');
+
+    $em = mixed();
+    if ($do_caching) {
+        $cache_identifier = serialize($use_special);
+        $em = get_cache_entry('_emoticon_chooser', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);
+
+        if ($em !== null) {
+            return $em;
+        }
+    }
+
+    $extra_where = $use_special ? array() : array('e_is_special' => 0);
     $emoticons = $this_ref->connection->query_select('f_emoticons', array('*'), array('e_relevance_level' => 0) + $extra_where, 'ORDER BY e_code');
     $em = new Tempcode();
     foreach ($emoticons as $emo) {
@@ -569,6 +583,14 @@ function _helper_get_emoticon_chooser($this_ref, $field_name)
         }
 
         $em->attach(do_template('EMOTICON_CLICK_CODE', array('_GUID' => '1a75f914e09f2325ad96ad679bcffe88', 'FIELD_NAME' => $field_name, 'CODE' => $code, 'IMAGE' => apply_emoticons($code))));
+    }
+
+    if ($do_caching) {
+        require_code('caches2');
+
+        $em = apply_quick_caching($em);
+
+        put_into_cache('_emoticon_chooser', 60 * 60 * 24, $cache_identifier, null, null, '', null, get_users_timezone(get_member()), $em);
     }
 
     return $em;

@@ -467,7 +467,7 @@ class Module_topicview
                 $emphasis = cns_get_post_emphasis($_postdetails);
 
                 require_code('feedback');
-                if (!array_key_exists('intended_solely_for', $_postdetails)) {
+                if (!array_key_exists('intended_solely_for', $_postdetails) && get_value('no_post_rating', '0', true) !== '1') {
                     actualise_rating(true, 'post', strval($_postdetails['id']), get_self_url(), $_postdetails['title']);
                     $rating = display_rating(get_self_url(), $_postdetails['title'], 'post', strval($_postdetails['id']), 'RATING_INLINE_DYNAMIC', $_postdetails['poster']);
                 } else {
