@@ -33,7 +33,6 @@ class _performance_test_set extends cms_test_case
         //'cms:cms_comcode_pages:generate_page_sitemap',
         //'cms:cms_comcode_pages',
         //'adminzone:start',
-        //'adminzone:admin_addons',
         //'adminzone:admin_config:category:ADMIN',
         //'adminzone:admin_config:category:FEATURE',
         //'adminzone:admin_notifications',

@@ -477,6 +477,12 @@ function filter_naughty_harsh($in, $preg = false)
     if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
         return $in;
     }
+    if (strpos($in, '_') !== false) {
+        return $in;
+    }
+    if (strpos($in, '-') !== false) {
+        return $in;
+    }
     if (preg_match('#^[\w\-]*$#', $in) !== 0) {
         return $in;
     }

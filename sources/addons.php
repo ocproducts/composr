@@ -62,52 +62,52 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
 
     if (file_exists($path)) {
         $_hook_bits = extract_module_functions($path, array('get_dependencies', 'get_version', 'get_category', 'get_copyright_attribution', 'get_licence', 'get_description', 'get_author', 'get_organisation', 'get_file_list', 'get_default_icon'));
-        if (is_null($_hook_bits[0])) {
-            $dep = array();
-        } else {
+        if ($_hook_bits[0] !== null) {
             $dep = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+        } else {
+            $dep = array();
         }
         $defaults = get_default_addon_details();
-        if (!is_null($_hook_bits[1])) {
+        if ($_hook_bits[1] !== null) {
             $version = is_array($_hook_bits[1]) ? call_user_func_array($_hook_bits[1][0], $_hook_bits[1][1]) : @eval($_hook_bits[1]);
         } else {
             $version = $defaults['version'];
         }
-        if (!is_null($_hook_bits[2])) {
+        if ($_hook_bits[2] !== null) {
             $category = is_array($_hook_bits[2]) ? call_user_func_array($_hook_bits[2][0], $_hook_bits[2][1]) : @eval($_hook_bits[2]);
         } else {
             $category = $defaults['category'];
         }
-        if (!is_null($_hook_bits[3])) {
+        if ($_hook_bits[3] !== null) {
             $copyright_attribution = is_array($_hook_bits[3]) ? call_user_func_array($_hook_bits[3][0], $_hook_bits[3][1]) : @eval($_hook_bits[3]);
         } else {
             $copyright_attribution = $defaults['copyright_attribution'];
         }
-        if (!is_null($_hook_bits[4])) {
+        if ($_hook_bits[4] !== null) {
             $licence = is_array($_hook_bits[4]) ? call_user_func_array($_hook_bits[4][0], $_hook_bits[4][1]) : @eval($_hook_bits[4]);
         } else {
             $licence = $defaults['licence'];
         }
         $description = is_array($_hook_bits[5]) ? call_user_func_array($_hook_bits[5][0], $_hook_bits[5][1]) : @eval($_hook_bits[5]);
-        if (!is_null($_hook_bits[6])) {
+        if ($_hook_bits[6] !== null) {
             $author = is_array($_hook_bits[6]) ? call_user_func_array($_hook_bits[6][0], $_hook_bits[6][1]) : @eval($_hook_bits[6]);
         } else {
             $author = $is_orig ? 'Core Team' : $defaults['author'];
         }
-        if (!is_null($_hook_bits[7])) {
+        if ($_hook_bits[7] !== null) {
             $organisation = is_array($_hook_bits[7]) ? call_user_func_array($_hook_bits[7][0], $_hook_bits[7][1]) : @eval($_hook_bits[7]);
         } else {
             $organisation = $is_orig ? 'ocProducts' : $defaults['organisation'];
         }
-        if (is_null($_hook_bits[8])) {
-            $file_list = array();
-        } else {
+        if ($_hook_bits[8] !== null) {
             $file_list = is_array($_hook_bits[8]) ? call_user_func_array($_hook_bits[8][0], $_hook_bits[8][1]) : @eval($_hook_bits[8]);
-        }
-        if (is_null($_hook_bits[9])) {
-            $default_icon = mixed();
         } else {
+            $file_list = array();
+        }
+        if ($_hook_bits[9] !== null) {
             $default_icon = is_array($_hook_bits[9]) ? call_user_func_array($_hook_bits[9][0], $_hook_bits[9][1]) : @eval($_hook_bits[9]);
+        } else {
+            $default_icon = mixed();
         }
 
         $addon_info = array(
@@ -134,7 +134,7 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
 
     // Next try .ini file
 
-    if (!is_null($ini_info)) {
+    if ($ini_info !== null) {
         $version = $ini_info['version'];
         if ($version == '(version-synched)') {
             $version = float_to_raw_string(cms_version_number(), 2, true);
@@ -167,14 +167,14 @@ function read_addon_info($addon, $get_dependencies_on_this = false, $row = null,
 
     // Next try what is in the database...
 
-    if (is_null($row)) {
+    if ($row === null) {
         $addon_rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon), '', 1);
         if (array_key_exists(0, $addon_rows)) {
             $row = $addon_rows[0];
         }
     }
 
-    if (!is_null($row)) {
+    if ($row !== null) {
         $addon_info = array(
             'name' => $row['addon_name'],
             'author' => $row['addon_author'],
@@ -229,7 +229,7 @@ function find_addon_icon($addon_name, $pick_default = true, $tar_path = null)
                 if (($ob !== null) && (method_exists($ob, 'get_default_icon'))) {
                     $file = $ob->get_default_icon();
                     if (file_exists(get_file_base() . '/' . $file)) {
-                        return get_base_url() . '/' . str_replace('%2F', '/', urlencode($ob->get_default_icon()));
+                        return get_base_url() . '/' . str_replace('%2F', '/', urlencode($file));
                     } else {
                         require_code('mime_types');
                         $file = $ob->get_default_icon();

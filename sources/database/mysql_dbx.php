@@ -144,10 +144,9 @@ class Database_Static_mysql_dbx extends Database_super_mysql
             if (ctype_alnum($string)) {
                 return $string; // No non-trivial characters
             }
-        } else {
-            if (preg_match('#[^\x00-\x7f]#', $string) === 0) {
-                return $string; // No non-ASCII characters
-            }
+        }
+        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
+            return $string; // No non-trivial characters
         }
 
         $string = fix_bad_unicode($string);

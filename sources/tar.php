@@ -81,6 +81,10 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
     $directory = array();
     $next_name = mixed();
 
+    $chr_0 = chr(0);
+
+    $is_windows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+
     do {
         if (feof($myfile)) {
             if ($tolerate_errors) {
@@ -91,33 +95,33 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
 
         $offset = ftell($myfile);
         $header = fread($myfile, 512);
-        if (strlen($header) < 512) {
+        if (!isset($header[511])) {
             if ($tolerate_errors) {
                 return null;
             }
             warn_exit(do_lang_tempcode('CORRUPT_TAR'));
         }
-        if (ord(substr($header, 0, 1)) == 0) {
+        if ($header[0] == $chr_0) {
             $finished = true;
             $resource['end'] = $offset;
         } else {
             if (substr($header, 257, 5) == 'ustar') {
-                $path = str_replace('\\', '/', substr($header, 345, min(512, strpos($header, chr(0), 345) - 345)) . substr($header, 0, min(100, strpos($header, chr(0), 0))));
+                $path = str_replace('\\', '/', substr($header, 345, min(512, strpos($header, $chr_0, 345) - 345)) . substr($header, 0, min(100, strpos($header, $chr_0, 0))));
             } else {
-                $path = substr($header, 0, min(100, strpos($header, chr(0), 0)));
+                $path = substr($header, 0, min(100, strpos($header, $chr_0, 0)));
             }
             if ($next_name !== null) {
                 $path = $next_name;
             }
 
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            if ($is_windows) {
                 $path = utf8_decode($path);
             }
 
             $mode = octdec(substr($header, 100, 8));
-            $size = octdec(trim(substr($header, 124, 12)));
-            $mtime = octdec(trim(substr($header, 136, 12)));
-            $chksum = octdec(trim(substr($header, 148, 8)));
+            $size = octdec(rtrim(substr($header, 124, 12)));
+            $mtime = octdec(rtrim(substr($header, 136, 12)));
+            $chksum = octdec(rtrim(substr($header, 148, 8)));
             $block_size = file_size_to_tar_block_size($size);
             //$is_ok = substr($header, 156, 1) == '0';  Actually, this isn't consistently useful
 
@@ -136,7 +140,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
                 $next_name = fread($myfile, $size);
                 fseek($myfile, $block_size - $size, SEEK_CUR);
             } else {
-                if (substr(basename($path), 0, 2) != '._') {
+                if ((strpos($path, '._') !== false) && (substr(basename($path), 0, 2) != '._')) {
                     $directory[$offset] = array('path' => $path, 'mode' => $mode, 'size' => $size, 'mtime' => $mtime);
                 }
                 $next_name = null;
@@ -655,7 +659,7 @@ function tar_crc($header)
 {
     $checksum = 0;
     for ($i = 0; $i < 512; $i++) {
-        $checksum += ord(substr($header, $i, 1));
+        $checksum += ord($header[$i]);
     }
 
     return $checksum;

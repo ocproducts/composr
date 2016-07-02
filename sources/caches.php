@@ -193,7 +193,7 @@ class Self_learning_cache
             if ($myfile !== false) {
                 @flock($myfile, LOCK_SH);
                 while (!feof($myfile)) {
-                    $_data .= fread($myfile, 8192);
+                    $_data .= fread($myfile, 32768);
                 }
             }
             if ($_data !== false) {
@@ -595,7 +595,7 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
     $det = array($codename, $cache_identifier, md5($cache_identifier), $special_cache_flags, $ttl, $tempcode, $caching_via_cron, $map);
 
     global $SMART_CACHE;
-    $test = $SMART_CACHE->get('blocks_needed');
+    $test = (get_page_name() == 'admin_addons'/*special case*/) ? array() : $SMART_CACHE->get('blocks_needed');
     if (count($test) < 20) {
         $SMART_CACHE->append('blocks_needed', serialize($det));
     } else {

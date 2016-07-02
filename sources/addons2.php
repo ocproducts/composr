@@ -196,6 +196,10 @@ function find_remote_addons()
  */
 function find_updated_addons()
 {
+    if ($GLOBALS['DEV_MODE']) {
+        return array();
+    }
+
     static $updated_addons = null; // Cache
     if ($updated_addons === null) {
         $updated_addons = mixed();
@@ -204,7 +208,7 @@ function find_updated_addons()
         return $updated_addons;
     }
 
-    $addons = find_installed_addons(true);
+    $addons = find_installed_addons(true, false);
     if (count($addons) == 0) {
         return array();
     }
@@ -255,9 +259,10 @@ function find_updated_addons()
  * Find all the installed addons.
  *
  * @param  boolean $just_non_bundled Whether to only return details on on-bundled addons
+ * @param  boolean $get_info Whether to get full details about each addon
  * @return array Map of maps describing the available addons (addon name => details)
  */
-function find_installed_addons($just_non_bundled = false)
+function find_installed_addons($just_non_bundled = false, $get_info = true)
 {
     $addons_installed = array();
 
@@ -267,7 +272,7 @@ function find_installed_addons($just_non_bundled = false)
         // Find installed addons- file system method (for coded addons). Coded addons don't need to be in the DB, although they will be if they are (re)installed after the original Composr installation finished.
         foreach (array_keys($hooks) as $addon) {
             if (substr($addon, 0, 4) != 'core') {
-                $addons_installed[$addon] = read_addon_info($addon);
+                $addons_installed[$addon] = $get_info ? read_addon_info($addon) : null;
             }
         }
     }
@@ -282,7 +287,7 @@ function find_installed_addons($just_non_bundled = false)
         }
 
         if (!isset($addons_installed[$addon])) {
-            $addons_installed[$addon] = read_addon_info($addon);
+            $addons_installed[$addon] = $get_info ? read_addon_info($addon) : null;
         }
     }
 
@@ -335,7 +340,7 @@ function find_available_addons($installed_too = true)
     foreach ($files as $_file) {
         $file = $_file[0];
 
-        if ((!$installed_too) && (addon_installed(basename($file, '.tar'), true))) {
+        if ((!$installed_too) && (addon_installed(preg_replace('#-\d+#', '', basename($file, '.tar')), true))) {
             continue;
         }
 
