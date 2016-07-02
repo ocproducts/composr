@@ -928,21 +928,24 @@ function do_site()
         log_stats($PAGE_STRING, intval($page_generation_time));
     }
 
-    // When someone hits the Admin Zone front page.
-    if (($ZONE['zone_name'] == 'adminzone') && (get_page_name() == 'start')) {
+    // When someone hits the Admin Zone
+    if ($ZONE['zone_name'] == 'adminzone') {
         // Security feature admins can turn on
-        require_code('notifications');
-        $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
-        $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
-        dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
+        if (get_page_name() == 'start') {
+            require_code('notifications');
+            $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+            $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
+            $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
+            dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
+        }
 
-        // Track very basic details of what sites use Composr. You can remove if you like.
+        // Track very basic details of what sites use Composr
         if ((!running_locally()) && (get_option('call_home') == '1')) {
             $timeout_before = @ini_get('default_socket_timeout');
             safe_ini_set('default_socket_timeout', '3');
             require_code('version2');
-            http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), null, false);
+            require_code('files2');
+            cache_and_carry('http_download_file', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), null, false), 60 * 24/*once a day*/);
             safe_ini_set('default_socket_timeout', $timeout_before);
         }
     }

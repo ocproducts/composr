@@ -69,9 +69,11 @@ function adminzone_extended_breadcrumbs()
     if ($link !== null) {
         list($link_map, $link_zone, $link_lang) = $link;
 
-        $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
-        $page_link = build_page_link($link_map, $link_zone);
-        $breadcrumbs[] = array($page_link, $title);
+        if ($link_lang !== null) {
+            $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
+            $page_link = build_page_link($link_map, $link_zone);
+            $breadcrumbs[] = array($page_link, $title);
+        }
 
         return $breadcrumbs;
     }
@@ -142,6 +144,8 @@ function adminzone_extended_breadcrumbs()
             }
         }
     }
+
+    $SMART_CACHE->set('extended_breadcrumbs', array(null, null, null));
 
     return $breadcrumbs;
 }

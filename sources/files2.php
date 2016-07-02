@@ -78,9 +78,10 @@ function init__files2()
  *
  * @param string $func Function to call
  * @param array $args Arguments to call with
+ * @param ?integer $timeout Timeout in minutes (null: no timeout)
  * @return mixed The function result
  */
-function cache_and_carry($func, $args)
+function cache_and_carry($func, $args, $timeout = null)
 {
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
 
@@ -89,7 +90,7 @@ function cache_and_carry($func, $args)
         mkdir(dirname($path), 0777);
         fix_permissions(dirname($path));
     }
-    if (is_file($path)) {
+    if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
         $ret = @unserialize(file_get_contents($path));
     } else {
         $ret = call_user_func_array($func, $args);

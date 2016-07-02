@@ -196,10 +196,6 @@ function find_remote_addons()
  */
 function find_updated_addons()
 {
-    if ($GLOBALS['DEV_MODE']) {
-        return array();
-    }
-
     static $updated_addons = null; // Cache
     if ($updated_addons === null) {
         $updated_addons = mixed();
@@ -218,7 +214,8 @@ function find_updated_addons()
         $url .= '&addon_' . strval($i) . '=' . urlencode($addon);
     }
 
-    $addon_data = http_download_file($url, null, false);
+    require_code('files2');
+    $addon_data = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
     if ((is_null($addon_data)) || ($addon_data == '')) {
         return array();
         //warn_exit(do_lang('INTERNAL_ERROR'));

@@ -32,7 +32,6 @@ class _performance_test_set extends cms_test_case
         //'cms:cms_catalogues:add_catalogue',
         //'cms:cms_comcode_pages:generate_page_sitemap',
         //'cms:cms_comcode_pages',
-        //'adminzone:start',
         //'adminzone:admin_notifications',
         //'adminzone:vimeo_oauth',
         //'adminzone:youtube_oauth',
