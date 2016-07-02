@@ -79,6 +79,9 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     if ($db === null) {
         $db = $GLOBALS['SITE_DB'];
+        $db_place = THEME_IMAGE_PLACE_SITE;
+    } else {
+        $db_place = ($GLOBALS['SITE_DB'] === $db) ? THEME_IMAGE_PLACE_SITE : THEME_IMAGE_PLACE_FORUM;
     }
 
     $true_theme = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->get_theme() : 'default';
@@ -93,8 +96,6 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     $truism = ($theme === $true_theme) && ($lang === $true_lang);
 
-    $db_place = ($GLOBALS['SITE_DB'] === $db) ? THEME_IMAGE_PLACE_SITE : THEME_IMAGE_PLACE_FORUM;
-
     $url_path = null; // null means keep searching, '' means we know it does not exist
 
     $force_recache = false;
@@ -106,40 +107,46 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
     if (!$pure_only) {
         if ($truism) {
             // Are we looking for something the the internal cache does not know about yet? If so then we better load further
+            $has = isset($THEME_IMAGES_CACHE[$db_place][$id]);
             if (
-                ($THEME_IMAGES_LOAD_INTENSITY[$db_place] !== THEME_IMAGES_LOAD_INTENSITY__ALL) &&
-                (!isset($THEME_IMAGES_CACHE[$db_place][$id]))
+                (!$has) &&
+                ($THEME_IMAGES_LOAD_INTENSITY[$db_place] !== THEME_IMAGES_LOAD_INTENSITY__ALL)
             ) {
                 load_theme_image_cache($db, $db_place, $true_theme, $true_lang);
 
                 // Hmm, still failing from smart cache level? If so then we better load further
                 if (
-                    ($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE) &&
-                    (!isset($THEME_IMAGES_CACHE[$db_place][$id]))
+                    (!isset($THEME_IMAGES_CACHE[$db_place][$id])) &&
+                    ($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE)
                 ) {
                     load_theme_image_cache($db, $db_place, $true_theme, $true_lang);
                 }
             }
 
-            if (isset($THEME_IMAGES_CACHE[$db_place][$id])) {
+            if ($has || isset($THEME_IMAGES_CACHE[$db_place][$id])) {
                 $url_path = $THEME_IMAGES_CACHE[$db_place][$id];
 
                 // Check it is still here
-                if (($url_path !== '') && (url_is_local($url_path)) && (support_smart_decaching())) {
-                    if (substr($url_path, 0, 22) === 'themes/default/images/') {
-                        if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) {
-                            $missing = !is_file(get_file_base() . '/' . rawurldecode($url_path));
+                static $checked = array();
+                if (!isset($checked[$url_path])) {
+                    if ((url_is_local($url_path)) && (support_smart_decaching())) {
+                        if (substr($url_path, 0, 22) === 'themes/default/images/') {
+                            if ((!isset($SITE_INFO['no_disk_sanity_checks'])) || ($SITE_INFO['no_disk_sanity_checks'] === '0')) {
+                                $missing = !is_file(get_file_base() . '/' . rawurldecode($url_path));
+                            } else {
+                                $missing = false;
+                            }
                         } else {
-                            $missing = false;
+                            $missing = !is_file(get_custom_file_base() . '/' . rawurldecode($url_path)) && !is_file(get_file_base() . '/' . rawurldecode($url_path));
                         }
-                    } else {
-                        $missing = !is_file(get_custom_file_base() . '/' . rawurldecode($url_path)) && !is_file(get_file_base() . '/' . rawurldecode($url_path));
-                    }
-                    if ($missing) {
-                        $url_path = '';
+                        if ($missing) {
+                            $url_path = '';
 
-                        $force_recache = true;
+                            $force_recache = true;
+                        }
                     }
+
+                    $checked[$url_path] = true;
                 }
             }
         } else {
@@ -201,14 +208,14 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
                 $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
             }
         }
+
+        // Update internal caching?
+        if ((!$pure_only) && ($truism)) {
+            $THEME_IMAGES_CACHE[$db_place][$id] = $url_path;
+        }
     }
 
     // Final stuff, then return...
-
-    // Update internal caching?
-    if ((!$pure_only) && ($truism)) {
-        $THEME_IMAGES_CACHE[$db_place][$id] = $url_path;
-    }
 
     // Smart cache learning if we ended up having to bypass smart cache
     if ((($THEME_IMAGES_LOAD_INTENSITY[$db_place] === THEME_IMAGES_LOAD_INTENSITY__ALL) || ($force_recache)) && (!$pure_only)) {

@@ -61,9 +61,20 @@ function adminzone_special_cases($codename)
  */
 function adminzone_extended_breadcrumbs()
 {
-    global $BREADCRUMB_SET_PARENTS;
+    global $BREADCRUMB_SET_PARENTS, $SMART_CACHE;
 
     $breadcrumbs = array();
+
+    $link = $SMART_CACHE->get('extended_breadcrumbs');
+    if ($link !== null) {
+        list($link_map, $link_zone, $link_lang) = $link;
+
+        $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
+        $page_link = build_page_link($link_map, $link_zone);
+        $breadcrumbs[] = array($page_link, $title);
+
+        return $breadcrumbs;
+    }
 
     if ((count($BREADCRUMB_SET_PARENTS) > 0) && (!is_object($BREADCRUMB_SET_PARENTS[0][0]))) { // Ideally
         // Works by finding where our oldest ancestor connects on to the do-next menus, and carries from there
@@ -111,13 +122,18 @@ function adminzone_extended_breadcrumbs()
 
                     if ((is_array($i[2])) && ($page == $i[2][0]) && ($i[0] != '') && (((!isset($i[2][1]['type'])) && ($type == 'browse')) || ((isset($i[2][1]['type'])) && (($type == $i[2][1]['type']) || ($i[2][1]['type'] == 'browse')))) && ($zone == $i[2][2])) {
                         if ($i[0] == 'cms') {
-                            $page_link = build_page_link(array('page' => 'cms', 'type' => ($i[0] == 'cms') ? null : $i[0]), 'cms');
+                            $link_zone = 'cms';
+                            $link_map = array('page' => 'cms', 'type' => ($i[0] == 'cms') ? null : $i[0]);
                         } else {
-                            $page_link = build_page_link(array('page' => 'admin', 'type' => $i[0]), 'adminzone');
+                            $link_zone = 'adminzone';
+                            $link_map = array('page' => 'admin', 'type' => $i[0]);
                         }
+                        $link_lang = strtoupper($i[0]);
 
-                        $title = do_lang_tempcode(strtoupper($i[0])); // The language string ID version of the page grouping we found our current module was in
+                        $SMART_CACHE->set('extended_breadcrumbs', array($link_map, $link_zone, $link_lang));
 
+                        $title = do_lang_tempcode($link_lang); // The language string ID version of the page grouping we found our current module was in
+                        $page_link = build_page_link($link_map, $link_zone);
                         $breadcrumbs[] = array($page_link, $title);
 
                         return $breadcrumbs;

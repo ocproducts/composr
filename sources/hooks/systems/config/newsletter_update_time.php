@@ -35,7 +35,7 @@ class Hook_config_newsletter_update_time
             'type' => 'integer',
             'category' => 'ADMIN',
             'group' => 'CHECK_LIST',
-            'explanation' => 'CONFIG_OPTION_newletter_update_time',
+            'explanation' => 'CONFIG_OPTION_newsletter_update_time',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
