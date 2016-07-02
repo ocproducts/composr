@@ -10,10 +10,22 @@
 				</select>
 			</div>
 		</form>
+
+		{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING}
+			<script>// <![CDATA[
+				menu_active_selection('menu_select_{MENU|}');
+			//]]></script>
+		{+END}
 	{+END}
 	{+START,IF,{$NOT,{$JS_ON}}}
-		<ul class="nl">
+		<ul class="nl" id="r_{MENU|}">
 			{CONTENT}
 		</ul>
+
+		{+START,IF_PASSED_AND_TRUE,JAVASCRIPT_HIGHLIGHTING}
+			<script>// <![CDATA[
+				menu_active_selection('r_{MENU|}');
+			//]]></script>
+		{+END}
 	{+END}
 </div>

@@ -215,7 +215,7 @@ function find_updated_addons()
     }
 
     require_code('files2');
-    $addon_data = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
+    list($addon_data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
     if ((is_null($addon_data)) || ($addon_data == '')) {
         return array();
         //warn_exit(do_lang('INTERNAL_ERROR'));

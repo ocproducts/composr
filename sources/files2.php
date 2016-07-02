@@ -79,7 +79,7 @@ function init__files2()
  * @param string $func Function to call
  * @param array $args Arguments to call with
  * @param ?integer $timeout Timeout in minutes (null: no timeout)
- * @return mixed The function result
+ * @return mixed The function result OR for http_download_file calls a tuple of result details
  */
 function cache_and_carry($func, $args, $timeout = null)
 {
@@ -94,8 +94,12 @@ function cache_and_carry($func, $args, $timeout = null)
         $ret = @unserialize(file_get_contents($path));
     } else {
         $ret = call_user_func_array($func, $args);
-        $tmp = array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
-        file_put_contents($path, serialize($tmp), LOCK_EX);
+        if ($func == 'http_download_file') {
+            $tmp = serialize(array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME));
+        } else {
+            $tmp = $ret;
+        }
+        file_put_contents($path, $tmp, LOCK_EX);
         fix_permissions($path);
         sync_file($path);
     }

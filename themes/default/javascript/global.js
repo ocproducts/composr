@@ -1996,6 +1996,108 @@ function key_pressed(event,key,no_error_if_bad)
 	return ((typeof event.keyCode!='undefined') && (event.keyCode==key)); // Whether we have a match to what was pressed
 }
 
+function menu_active_selection(menu_id)
+{
+	add_event_listener_abstract(window,'load',function() {
+		_menu_active_selection(menu_id);
+	});
+}
+
+function _menu_active_selection(menu_id)
+{
+	var menu_element=document.getElementById(menu_id);
+	var possibilities=[],is_selected,url;
+	if (menu_element.nodeName.toLowerCase()=='select')
+	{
+		for (var i=0;i<menu_element.options.length;i++)
+		{
+			url=menu_element.options[i].value;
+			is_selected=menu_item_is_selected(url);
+			if (is_selected!==null)
+			{
+				possibilities.push({
+					url: url,
+					score: is_selected,
+					element: menu_element.options[i]
+				});
+			}
+		}
+
+		if (possibilities.length>0)
+		{
+			possibilities.sort(function(a,b) {
+				return a.score-b.score
+			})
+
+			var min_score=possibilities[0].score;
+			for (var i=0;i<possibilities.length;i++)
+			{
+				if (possibilities[i].score!=min_score) break;
+				possibilities[i].element.selected=true;
+			}
+		}
+	} else
+	{
+		var menu_items=get_elements_by_class_name(menu_element,'non_current'),a;
+		for (var i=0;i<menu_items.length;i++)
+		{
+			a=null;
+			for (var j=0;j<menu_items[i].childNodes.length;j++)
+			{
+				if (menu_items[i].childNodes[j].nodeName.toLowerCase()=='a')
+				{
+					a=menu_items[i].childNodes[j];
+				}
+			}
+			if (a==null)
+			{
+				continue;
+			}
+
+			url=a.href;
+			is_selected=menu_item_is_selected(url);
+			if (is_selected!==null)
+			{
+				possibilities.push({
+					url: url,
+					score: is_selected,
+					element: menu_items[i]
+				});
+			}
+		}
+
+		if (possibilities.length>0)
+		{
+			possibilities.sort(function(a,b) {
+				return a.score-b.score
+			})
+
+			var min_score=possibilities[0].score;
+			for (var i=0;i<possibilities.length;i++)
+			{
+				if (possibilities[i].score!=min_score) break;
+				possibilities[i].element.className=possibilities[i].element.className.replace('non_current','current');
+			}
+		}
+	}
+}
+
+function menu_item_is_selected(url)
+{
+	var current_url=window.location.toString();
+	if (current_url==url) return 0;
+	var global_breadcrumbs=document.getElementById('global_breadcrumbs');
+	if (global_breadcrumbs)
+	{
+		var links=global_breadcrumbs.getElementsByTagName('a');
+		for (var i=0;i<links.length;i++)
+		{
+			if (url==links[links.length-1-i].href) return i+1;
+		}
+	}
+	return null;
+}
+
 function convert_tooltip(element)
 {
 	var title=element.title;
