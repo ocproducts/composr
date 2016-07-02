@@ -51,8 +51,8 @@ foreach ($files as $i => $file) {
 
     $IN = file_get_contents(get_custom_file_base() . '/' . $file);
 
-    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => ('[^\']+')#", 'callback', $IN);
-    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => #", 'callback', $IN);
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => ('[^\']+')#", 'callback', $IN); // Existing GUIDs
+    $out = preg_replace_callback("#do_template\('([^']*)', array\(\s*'([^']+)' => #", 'callback', $IN); // Potentially missing GUIDs
 
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
@@ -62,7 +62,7 @@ foreach ($files as $i => $file) {
         fclose($myfile);
     }
 }
-echo 'Finished!';
+echo 'Finished! You will want to check that any changed do_template arrays are not now ugly, because there\'s no autoformatter here.';
 
 if ($limit_file == '') {
     $guid_file = fopen(get_file_base() . '/data/guids.dat', 'wb');
@@ -80,12 +80,13 @@ function callback($match)
         $GUID_LANDSCAPE[$match[1]] = array();
     }
     $line = substr_count(substr($IN, 0, strpos($IN, $match[0])), "\n") + 1;
-    if ($match[2] != '_GUID') {
+    if ($match[2] != '_GUID') { // Potentially missing GUIDs
+        // Missing GUIDs
         echo 'Insert needed for ' . escape_html($match[1]) . '<br />';
         $GUID_LANDSCAPE[$match[1]][] = array($FILENAME, $line, $new_guid);
         return "do_template('" . $match[1] . "', array('_GUID' => '" . $new_guid . "', '" . $match[2] . '\' => ' . (isset($match[3]) ? $match[3] : '');
     }
-    if (isset($match[3])) {
+    if (isset($match[3])) { // Existing GUIDs
         global $FOUND_GUID;
         $guid_value = str_replace('\'', '', $match[3]);
         if (array_key_exists($guid_value, $FOUND_GUID)) {

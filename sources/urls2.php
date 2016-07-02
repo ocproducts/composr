@@ -245,7 +245,8 @@ function _url_to_filename($url_full)
 function _qualify_url($url, $url_base)
 {
     require_code('obfuscate');
-    if (($url != '') && ($url[0] != '#') && (substr($url, 0, 5) != 'data:') && (substr($url, 0, 7) != 'mailto:') && (substr($url, 0, strlen(mailto_obfuscated())) != mailto_obfuscated())) {
+    $mto = mailto_obfuscated();
+    if (($url != '') && ($url[0] != '#') && (substr($url, 0, 5) != 'data:') && (substr($url, 0, 7) != 'mailto:') && (substr($url, 0, strlen($mto)) != $mto)) {
         if (url_is_local($url)) {
             if ($url[0] == '/') {
                 $parsed = @parse_url($url_base);

@@ -28,8 +28,34 @@ class _performance_test_set extends cms_test_case
     private $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
-    private $whitelist = null;
-    private $whitelist_zone = 'cms';
+    private $whitelist = array(
+        //'cms:cms_catalogues:add_catalogue',
+        //'cms:cms_comcode_pages:generate_page_sitemap',
+        //'cms:cms_comcode_pages',
+        //'adminzone:start',
+        //'adminzone:admin_addons',
+        //'adminzone:admin_config:category:ADMIN',
+        //'adminzone:admin_config:category:FEATURE',
+        //'adminzone:admin_notifications',
+        //'adminzone:vimeo_oauth',
+        //'adminzone:youtube_oauth',
+    );
+    private $blacklist = array(
+        // These are non-bundled tooling screens that are irrevocably slow
+        'adminzone:string_scan',
+        'adminzone:sql_dump',
+        'adminzone:tar_dump',
+        'adminzone:admin_generate_bookmarks',
+        'adminzone:build_addons',
+        'adminzone:css_check',
+        'adminzone:doc_index_build',
+        'adminzone:plug_guid',
+        'adminzone:static_export',
+
+        // Irrevocably slow for some other reason
+        'adminzone:admin_addons:addon_export', // Does full file-system scan, particularly slow on a full git clone
+    );
+    private $whitelist_zone = null;
 
     public function setUp()
     {
@@ -65,6 +91,10 @@ class _performance_test_set extends cms_test_case
         $page_link = $node['page_link'];
 
         if ($this->whitelist !== null && !in_array($page_link, $this->whitelist)) {
+            return;
+        }
+
+        if ($this->blacklist !== null && in_array($page_link, $this->blacklist)) {
             return;
         }
 

@@ -25,7 +25,11 @@
  */
 function mailto_obfuscated()
 {
-    return 'm' . obfuscate_entities('ailto:');
+    static $ret = null;
+    if ($ret === null) {
+        $ret = 'm' . obfuscate_entities('ailto:');
+    }
+    return $ret;
 }
 
 /**
@@ -50,9 +54,9 @@ function obfuscate_entities($val)
         } elseif ($char == '&') {
             $_char = '&amp;';
         } elseif ($i % 2 == 0) {
-            $_char = '&#' . sprintf('%d', ord($char)) . ';';
+            $_char = '&#' . strval(ord($char)) . ';';
         } else {
-            $_char = '&#x' . sprintf('%x', ord($char)) . ';';
+            $_char = '&#x' . dechex(ord($char)) . ';';
         }
 
         $out .= $_char;

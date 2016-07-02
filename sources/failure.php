@@ -1006,7 +1006,7 @@ function _fatal_exit($text, $return = false)
         if (!may_see_stack_dumps()) {
             $trace = get_html_trace();
         }
-        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $trace->evaluate() . '[/html]');
+        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . $trace->evaluate());
     }
 
     if (!$return) {

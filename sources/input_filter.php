@@ -187,8 +187,9 @@ function get_allowed_partner_sites()
     } else {
         $allowed_partners = array();
     }
+    $zl = strlen('ZONE_MAPPING_');
     foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
-        if (substr($key, 0, strlen('ZONE_MAPPING_')) === 'ZONE_MAPPING_') {
+        if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
             $allowed_partners[] = $_val[0];
         }
     }

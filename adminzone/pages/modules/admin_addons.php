@@ -880,8 +880,8 @@ class Module_admin_addons
             require_code('files');
 
             while (false !== ($file = readdir($_dir))) {
-                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS)) {
-                    $temp[$file] = 1;
+                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+                    $temp[$file] = true;
                 }
             }
             closedir($_dir);
@@ -901,7 +901,7 @@ class Module_admin_addons
                     }
                 }
             } else {
-                $out[$dir . '/' . $file] = 1;
+                $out[($dir == '') ? '' : ($dir . '/') . $file] = true;
             }
         }
 

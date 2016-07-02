@@ -8,7 +8,7 @@
 
 		{FILES}
 
-		<p><kbd>{NAME*}</kbd></p>
+		<p>{NAME*}</p>
 	</form>
 </div>
 

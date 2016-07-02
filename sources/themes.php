@@ -231,7 +231,13 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
             }
 
             // Apply CDN
-            $url_path = cdn_filter($url_path);
+            static $cdn = null;
+            if ($cdn === null) {
+                $cdn = get_option('cdn');
+            }
+            if ($cdn !== '') {
+                $url_path = cdn_filter($url_path);
+            }
         }
 
         // Take note for view mode tools

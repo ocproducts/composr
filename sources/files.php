@@ -217,7 +217,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
                                              // Source code control systems
                                              '.svn' => '.*',
-                                             '.git' => '',
+                                             '.git' => '.*',
                                              'git-hooks' => '',
                                              '.gitattributes' => '',
                                              '.gitignore' => '',

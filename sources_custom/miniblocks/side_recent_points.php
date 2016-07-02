@@ -66,5 +66,5 @@ foreach ($gifts as $gift) {
     );
 }
 
-$tpl = do_template('BLOCK_SIDE_RECENT_POINTS', array('GIFTS' => $_gifts));
+$tpl = do_template('BLOCK_SIDE_RECENT_POINTS', array('_GUID' => 'ee241c0bd5356f1d6e28a9de3cdfa387', 'GIFTS' => $_gifts));
 $tpl->evaluate_echo();

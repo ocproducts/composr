@@ -394,7 +394,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             <td>
                 <img class="right" src="http://compo.sr/themes/default/images/icons/48x48/menu/pages/privacy_policy.png" />Content Privacy<br />(<kbd>content_privacy</kbd>)<br /><br />
                 <strong>Core</strong>: No<br /><br />
-                <strong>Dependencies</strong>: <em>None</em>
+                <strong>Dependencies</strong>: <kbd>cns_cpfs</kbd>
             </td>
             <td>Allows users to specify privacy level for their content.</td>
             <td><a href="http://compo.sr/docs10/tut-censor.htm">Dealing with annoying users</a></td>
@@ -1250,7 +1250,7 @@ This tutorial features an index of the Composr addons, with links to tutorials t
             </td>
             <td>Show advanced graphs (analytics) and dumps of raw data relating to your website activity.</td>
             <td><a href="http://compo.sr/docs10/tut-statistics.htm">Activity statistics for your site (analytics)</a></td>
-            <td>analytics<br /><br />statistics<br /><br />hits</td>
+            <td>engagement<br /><br />metric<br /><br />kpi<br /><br />analytics<br /><br />statistics<br /><br />hits</td>
             <td><a href="http://compo.sr/tracker/search.php?project_id=1&amp;category=stats&amp;status_id=10">Link</a></td>
         </tr>
     

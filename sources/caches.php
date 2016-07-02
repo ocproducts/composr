@@ -193,7 +193,7 @@ class Self_learning_cache
             if ($myfile !== false) {
                 @flock($myfile, LOCK_SH);
                 while (!feof($myfile)) {
-                    $_data .= fread($myfile, 1024);
+                    $_data .= fread($myfile, 8192);
                 }
             }
             if ($_data !== false) {

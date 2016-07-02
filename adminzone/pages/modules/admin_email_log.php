@@ -73,6 +73,10 @@ class Module_admin_email_log
             $this->title = get_screen_title('EMAIL_LOG');
         }
 
+        if ($type == 'view') {
+            $this->title = get_screen_title('VIEW_SENT_MESSAGE');
+        }
+
         if ($type == 'edit' || $type == '_edit') {
             $this->title = get_screen_title('HANDLE_QUEUED_MESSAGE');
         }
@@ -99,6 +103,9 @@ class Module_admin_email_log
 
         if ($type == 'browse') {
             return $this->show();
+        }
+        if ($type == 'view') {
+            return $this->view();
         }
         if ($type == 'edit') {
             return $this->edit();
@@ -132,7 +139,7 @@ class Module_admin_email_log
 
         // Put errors into table
         $start = get_param_integer('start', 0);
-        $max = get_param_integer('max', 20);
+        $max = get_param_integer('max', 50);
         if ($max > 50) {
             disable_php_memory_limit();
         }
@@ -157,7 +164,8 @@ class Module_admin_email_log
                 $date_time = hyperlink($edit_url, get_timezoned_date($row['m_date_and_time']), false, true);
                 $date_time = do_lang_tempcode('MAIL_WAS_QUEUED', $date_time);
             } else {
-                $date_time = make_string_tempcode(escape_html(get_timezoned_date($row['m_date_and_time'])));
+                $edit_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+                $date_time = hyperlink($edit_url, get_timezoned_date($row['m_date_and_time']), false, true);
                 $date_time = do_lang_tempcode('MAIL_WAS_LOGGED', $date_time);
             }
 
@@ -169,38 +177,33 @@ class Module_admin_email_log
             if ($from_name == '') {
                 $from_name = get_site_name();
             }
+            $from_link = 'mailto:' . $from_email . '?subject=' . rawurlencode('Re: ' . $row['m_subject']);
 
             $to_email = unserialize($row['m_to_email']);
-            $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
-            $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
             if (is_string($to_email)) {
                 $to_email = array($to_email);
             }
-            $to_email = array_merge($to_email, $extra_cc_addresses);
-            $to_email = array_merge($to_email, $extra_bcc_addresses);
             if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
                 $to_email[0] = get_option('staff_address');
             }
+            $to_link = 'mailto:' . $to_email[0] . '?subject=' . rawurlencode($row['m_subject']);
+
             $to_name = unserialize($row['m_to_name']);
             if (is_string($to_name)) {
                 $to_name = array($to_name);
             }
-            if ((is_null($to_name)) || ($to_name == array(null)) || ($to_name == array(''))) {
+            if ((empty($to_name)) || (empty($to_name[0]))) {
                 $to_name = array(get_site_name());
             }
             if (!array_key_exists(0, $to_name)) {
                 $to_name[0] = get_site_name();
             }
 
-            $to_link = 'mailto:' . $to_email[0];
-            $to_link .= '?subject=' . rawurlencode($row['m_subject']);
-            $to_link .= '&body=' . rawurlencode(comcode_to_clean_text($row['m_message']));
-
             $fields->attach(results_entry(array(
                 $date_time,
-                hyperlink('mailto:' . $from_email, $from_name, false, true),
+                hyperlink($from_link, $from_name, false, true),
                 hyperlink($to_link, $to_name[0], false, true),
-                do_template('CROP_TEXT_MOUSE_OVER', array('_GUID' => 'c2fd45ce32e1c03a536674108b937098', 'TEXT_LARGE' => nl2br(escape_html(substr($row['m_message'], 0, 3000))), 'TEXT_SMALL' => escape_html($row['m_subject']))),
+                escape_html($row['m_subject']),
             ), false));
         }
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*)');
@@ -213,6 +216,95 @@ class Module_admin_email_log
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);
+    }
+
+    /**
+     * Get a map table for an email.
+     *
+     * @return Tempcode The result of execution.
+     */
+    public function view()
+    {
+        $id = get_param_integer('id');
+
+        require_code('mail');
+        require_code('form_templates');
+        require_code('templates_map_table');
+
+        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $row = $rows[0];
+
+        $fields = array();
+
+        $fields['SUBJECT'] = $row['m_subject'];
+
+        $fields['DATE_TIME'] = get_timezoned_date($row['m_date_and_time']);
+
+        $body = comcode_to_clean_text($row['m_message']);
+
+        $from_email = $row['m_from_email'];
+        if ($from_email == '') {
+            $from_email = get_option('staff_address');
+        }
+        $fields['FROM_EMAIL'] = $from_email;
+
+        $from_name = $row['m_from_name'];
+        if ($from_name == '') {
+            $from_name = get_site_name();
+        }
+        $fields['FROM_NAME'] = $from_name;
+
+        $to_email = unserialize($row['m_to_email']);
+        if (is_string($to_email)) {
+            $to_email = array($to_email);
+        }
+        if (!array_key_exists(0, $to_email)) {
+            $to_email[0] = get_option('staff_address');
+        }
+        $to_emails = new Tempcode();
+        foreach ($to_email as $i => $_to_email) {
+            $to_link = 'mailto:' . $_to_email;
+            $to_link .= '?subject=' . rawurlencode($row['m_subject']);
+            $to_link .= '&body=' . rawurlencode($body);
+            if ($i != 0) {
+                $to_emails->attach(escape_html(', '));
+            }
+            $to_emails->attach(hyperlink($to_link, $_to_email, false, true));
+        }
+        $fields['TO_EMAIL'] = protect_from_escaping($to_emails);
+
+        $to_name = unserialize($row['m_to_name']);
+        if ((empty($to_name)) || (empty($to_name[0]))) {
+            $to_name = array(get_site_name());
+        }
+        if (is_string($to_name)) {
+            $to_name = array($to_name);
+        }
+        if (!array_key_exists(0, $to_name)) {
+            $to_name[0] = get_site_name();
+        }
+        $fields['TO_NAME'] = protect_from_escaping(escape_html(implode(', ', $to_name)));
+
+        $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
+        if (count($extra_cc_addresses) != 0) {
+            $fields['EXTRA_CC_ADDRESSES'] = protect_from_escaping(escape_html(implode(', ', $extra_cc_addresses)));
+        }
+
+        $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
+        if (count($extra_bcc_addresses) != 0) {
+            $fields['EXTRA_BCC_ADDRESSES'] = protect_from_escaping(escape_html(implode(', ', $extra_bcc_addresses)));
+        }
+
+        $fields['MESSAGE'] = protect_from_escaping(comcode_to_tempcode($row['m_message']));
+
+        $fields['TEXT'] = do_template('WITH_WHITESPACE', array('_GUID' => 'b141337923279a8a12646d0e29230f60', 'CONTENT' => $body));
+
+        $fields['_COMCODE'] = do_template('WITH_WHITESPACE', array('_GUID' => 'a141337923279a8a12646d0e29230f60', 'CONTENT' => $row['m_message']));
+
+        return map_table_screen($this->title, $fields);
     }
 
     /**
@@ -237,6 +329,7 @@ class Module_admin_email_log
         if ($from_email == '') {
             $from_email = get_option('staff_address');
         }
+
         $from_name = $row['m_from_name'];
         if ($from_name == '') {
             $from_name = get_site_name();
@@ -246,13 +339,12 @@ class Module_admin_email_log
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
-        $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
-        $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
         if (!array_key_exists(0, $to_email)) {
             $to_email[0] = get_option('staff_address');
         }
+
         $to_name = unserialize($row['m_to_name']);
-        if ((is_null($to_name)) || ($to_name == array(null)) || ($to_name == array(''))) {
+        if ((empty($to_name)) || (empty($to_name[0]))) {
             $to_name = array(get_site_name());
         }
         if (is_string($to_name)) {
@@ -261,6 +353,10 @@ class Module_admin_email_log
         if (!array_key_exists(0, $to_name)) {
             $to_name[0] = get_site_name();
         }
+
+        $extra_cc_addresses = ($row['m_extra_cc_addresses'] == '') ? array() : @unserialize($row['m_extra_cc_addresses']);
+
+        $extra_bcc_addresses = ($row['m_extra_bcc_addresses'] == '') ? array() : @unserialize($row['m_extra_bcc_addresses']);
 
         $fields->attach(form_input_line_comcode(do_lang_tempcode('SUBJECT'), '', 'subject', $row['m_subject'], true));
         $fields->attach(form_input_email(do_lang_tempcode('FROM_EMAIL'), '', 'from_email', $from_email, false));
