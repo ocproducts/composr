@@ -589,6 +589,25 @@ function delete_form_custom_fields($content_type, $id)
  */
 function create_selection_list_field_type($type = '', $limit_to_storage_set = false)
 {
+    static $cache = array();
+    $cache_sig = serialize(array($type, $limit_to_storage_set));
+    if (isset($cache[$cache_sig])) {
+        return $cache[$cache_sig];
+    }
+
+    $do_caching = has_caching_for('block');
+
+    $ret = mixed();
+    if ($do_caching) {
+        $cache_identifier = $cache_sig;
+        $ret = get_cache_entry('_field_type_selection', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);
+
+        if ($ret !== null) {
+            $cache[$cache_sig] = $ret;
+            return $ret;
+        }
+    }
+
     require_lang('fields');
 
     $all_types = find_all_hooks('systems', 'fields');
@@ -626,7 +645,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
             $_types[] = $o;
             $done_one_in_section = false;
         } else {
-            if (array_key_exists($o, $types)) {
+            if (isset($types[$o])) {
                 $_types[] = $o;
                 unset($types[$o]);
                 $done_one_in_section = true;
@@ -641,15 +660,15 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
     } else {
         $types = $_types;
     }
-    $_type_list = new Tempcode();
+    $_type_list = '';
     $type_list = new Tempcode();
     $last_type = do_lang_tempcode('OTHER');
     foreach ($types as $_type) {
         if (is_object($_type)) {
-            if (!$_type_list->is_empty()) {
+            if ($_type_list !== '') {
                 $type_list->attach(form_input_list_group($last_type, $_type_list));
             }
-            $_type_list = new Tempcode();
+            $_type_list = '';
             $last_type = $_type;
         } else {
             $ob = get_fields_hook($_type);
@@ -660,13 +679,26 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
             }
 
             foreach ($sub_types as $__type => $_title) {
-                $_type_list->attach(form_input_list_entry($__type, ($__type == $type), $_title));
+                //$_type_list->attach(form_input_list_entry($__type, ($__type == $type), $_title));
+                $_type_list .= '<option value="' . escape_html($__type) . '"' . ($__type == $type ? ' selected="selected"' : '') . '>' . $_title->evaluate() . '</option>'; // XHTMLXHTML
             }
         }
     }
-    if (!$_type_list->is_empty()) {
+    if ($_type_list !== '') {
         $type_list->attach(form_input_list_group($last_type, $_type_list));
     }
 
-    return make_string_tempcode($type_list->evaluate()); // XHTMLXHTML
+    $ret = make_string_tempcode($type_list->evaluate()); // XHTMLXHTML
+
+    $cache[$cache_sig] = $ret;
+
+    if ($do_caching) {
+        require_code('caches2');
+
+        $ret = apply_quick_caching($ret);
+
+        put_into_cache('_field_type_selection', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', $ret);
+    }
+
+    return $ret;
 }

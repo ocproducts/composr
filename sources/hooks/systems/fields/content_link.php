@@ -30,6 +30,11 @@ class Hook_fields_content_link
      */
     public function get_field_types()
     {
+        static $ret = null;
+        if ($ret !== null) {
+            return $ret;
+        }
+
         $hooks = find_all_hooks('systems', 'content_meta_aware');
         $ret = array();
         foreach (array_keys($hooks) as $hook) {

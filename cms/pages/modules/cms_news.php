@@ -226,7 +226,7 @@ class Module_cms_news extends Standard_crud_module
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         if (addon_installed('unvalidated')) {
-            $fh[] = do_lang_tempcode('VALIDATED');
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('metadata:OWNER');
         $fh[] = do_lang_tempcode('ACTIONS');
@@ -543,8 +543,6 @@ class Module_cms_news extends Standard_crud_module
         $allow_rating = post_param_integer('allow_rating', 0);
         $allow_comments = post_param_integer('allow_comments', 0);
         $allow_trackbacks = post_param_integer('allow_trackbacks', 0);
-        require_code('feedback2');
-        send_trackbacks(post_param_string('send_trackbacks', ''), $title, $news);
         $notes = post_param_string('notes', '');
 
         require_code('themes2');
@@ -569,6 +567,9 @@ class Module_cms_news extends Standard_crud_module
         $regions = isset($_POST['regions']) ? $_POST['regions'] : array();
 
         $id = add_news($title, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, $notes, $news_article, $main_news_category, $news_category, $metadata['add_time'], $metadata['submitter'], $metadata['views'], null, null, $image, '', '', $regions);
+
+        require_code('feedback2');
+        send_trackbacks(post_param_string('send_trackbacks', ''), $title, $news);
 
         set_url_moniker('news', strval($id));
 

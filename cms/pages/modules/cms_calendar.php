@@ -374,7 +374,7 @@ class Module_cms_calendar extends Standard_crud_module
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('TYPE'),
-            do_lang_tempcode('VALIDATED'),
+            protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT')))),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 

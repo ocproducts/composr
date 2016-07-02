@@ -325,7 +325,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         $fh[] = do_lang_tempcode('metadata:OWNER');
         if (addon_installed('unvalidated')) {
-            $fh[] = do_lang_tempcode('VALIDATED');
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
@@ -1754,14 +1754,22 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode(($name == '') ? 'DESCRIPTION_FIELD_TYPE_FIRST_TIME' : 'DESCRIPTION_FIELD_TYPE'), $prefix . 'type', $type_list));
         $fields->attach(form_input_line(do_lang_tempcode('FIELD_OPTIONS'), do_lang_tempcode('DESCRIPTION_FIELD_OPTIONS'), $prefix . 'options', $options, false));
-        $order_list = new Tempcode();
+        //$order_list = new Tempcode();
+        $order_list = '';
         for ($i = 0; $i < $num_fields_to_show; $i++) {
-            $order_list->attach(form_input_list_entry(strval($i), $i == $order, integer_format($i + 1) . (($i == 0 && substr(get_param_string('id', ''), 0, 1) != '_') ? do_lang('NEW_FIELD_TITLE') : '')));
+            $order_title = integer_format($i + 1);
+            $order_selected = ($i == $order);
+            if (($i == 0) && (substr(get_param_string('id', ''), 0, 1) != '_')) {
+                $order_title .= do_lang('NEW_FIELD_TITLE');
+            }
+            //$order_list->attach(form_input_list_entry(strval($i), $order_selected, $order_title));
+            $order_list .= '<option value="' . strval($i) . '"' . ($order_selected ? ' selected="selected"' : '') . '>' . escape_html($order_title) . '</option>'; // XHTMLXHTML
         }
         $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER_CLEVER', do_lang_tempcode('CATALOGUE_FIELD')), $prefix . 'order', $order_list));
 
         // Defines order?
-        $radios = form_input_radio_entry($prefix . 'defines_order', '0', $defines_order == 0, do_lang_tempcode('NO'));
+        $radios = new Tempcode();
+        $radios->attach(form_input_radio_entry($prefix . 'defines_order', '0', $defines_order == 0, do_lang_tempcode('NO')));
         $radios->attach(form_input_radio_entry($prefix . 'defines_order', '1', $defines_order == 1, do_lang_tempcode('ASCENDING')));
         $radios->attach(form_input_radio_entry($prefix . 'defines_order', '2', $defines_order == 2, do_lang_tempcode('DESCENDING')));
         $fields->attach(form_input_radio(do_lang_tempcode('DEFINES_ORDER'), do_lang_tempcode('DESCRIPTION_DEFINES_ORDER'), $prefix . 'defines_order', $radios));

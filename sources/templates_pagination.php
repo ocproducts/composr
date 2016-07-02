@@ -255,7 +255,7 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         // Show the page number jump links
         if ($keyset_value === null) {
             for ($x = $from; $x < $to; $x++) {
-                $url_array = array('page' => '_SELF', $start_name => ($x == 0) ? null : strval($x * $max));
+                $url_array = array('page' => '_SELF', $start_name => ($x == 0 && running_script('index')) ? null : strval($x * $max));
                 $cat_url = _build_pagination_cat_url($url_array, $post_array, $hash);
                 if ($x * $max == $start) {
                     $parts->attach(do_template('PAGINATION_PAGE_NUMBER', array('_GUID' => '13cdaf548d5486fb8d8ae0d23b6a08ec', 'P' => strval($x + 1))));

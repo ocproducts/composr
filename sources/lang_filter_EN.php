@@ -340,14 +340,14 @@ class LangFilter_EN extends LangFilter
         $preserved = array();
 
         foreach ($flags as $flag_i => $flag) {
-            if (preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
+            if ($flag[0] == 'p' && preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
                 $preserve = $matches[1];
                 $preserved[$flag_i] = $matches[1];
                 $value = str_replace($preserve, 'preserve_' . strval($flag_i), $value);
             }
 
             // Putting in correct keypress for Mac users
-            if ($flag == 'platform_specific') {
+            elseif ($flag == 'platform_specific') {
                 if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
                     $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
                 } else {
@@ -357,7 +357,7 @@ class LangFilter_EN extends LangFilter
 
             // Putting correct content type words to generic strings, with appropriate grammar...
 
-            if (preg_match('#^(resource|category|entry|content_type_module)_in_param_(\d+)$#', $flag, $matches) != 0) {
+            elseif (preg_match('#^(resource|category|entry|content_type_module)_in_param_(\d+)$#', $flag, $matches) != 0) {
                 $type = $matches[1];
                 $param_num = intval($matches[2]);
                 if (!empty($parameters[$param_num - 1])) {

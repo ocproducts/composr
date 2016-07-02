@@ -29,12 +29,7 @@ class _performance_test_set extends cms_test_case
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
     private $whitelist = array(
-        //'cms:cms_catalogues:add_catalogue',
-        //'cms:cms_comcode_pages:generate_page_sitemap',
-        //'cms:cms_comcode_pages',
-        //'adminzone:admin_notifications',
-        //'adminzone:vimeo_oauth',
-        //'adminzone:youtube_oauth',
+        'cms:cms_comcode_pages:generate_page_sitemap',
     );
     private $blacklist = array(
         // These are non-bundled tooling screens that are irrevocably slow
@@ -72,12 +67,6 @@ class _performance_test_set extends cms_test_case
     {
         require_code('sitemap');
         retrieve_sitemap_node($this->start_page_link, array($this, '_test_screen_performance'), null,null, null, SITEMAP_GEN_CHECK_PERMS);
-
-        asort($this->page_links);
-
-        foreach ($this->page_links_warnings as $page_link => $time) {
-            $this->assertTrue(false, 'Too slow on ' . $page_link . ' (' . float_format($time) . ' seconds)');
-        }
     }
 
     public function _test_screen_performance($node)
@@ -124,6 +113,7 @@ class _performance_test_set extends cms_test_case
         if ($slow) {
             $this->page_links_warnings[$page_link] = $time;
         }
+        $this->assertTrue(!$slow, 'Too slow on ' . $page_link . ' (' . float_format($time) . ' seconds)');
 
         $message = $page_link . ' (' . $url . '): ' . float_format($time) . ' seconds';
         fwrite($this->log_file, $message . "\n");

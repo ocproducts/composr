@@ -437,12 +437,13 @@ function _render_menu($menu, $source_member, $type, $as_admin = false)
             $content->attach($child);
         } else {
             $content->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type), $child + array(
-                    'POSITION' => strval($i),
-                    'FIRST' => $i == 0,
-                    'LAST' => $i == $num - 1,
-                    'BRETHREN_COUNT' => strval($num),
-                    'MENU' => $codename,
-                ), null, false, 'MENU_BRANCH_tree'));
+                '_GUID' => 'b5209ec65425bed1207e2f667d9116f6',
+                'POSITION' => strval($i),
+                'FIRST' => $i == 0,
+                'LAST' => $i == $num - 1,
+                'BRETHREN_COUNT' => strval($num),
+                'MENU' => $codename,
+            ), null, false, 'MENU_BRANCH_tree'));
         }
     }
 
@@ -482,6 +483,8 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             do_template(
                 'MENU_SPACER_' . filter_naughty_harsh($type),
                 array(
+                    '_GUID' => 'c5209ec65425bed1207e2f667d9116f6',
+
                     // Useful contextual information
                     'MENU' => $codename,
                     'TOP_LEVEL' => $the_level == 1,
@@ -613,6 +616,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $children->attach($child);
         } else {
             $children->attach(do_template('MENU_BRANCH_' . filter_naughty_harsh($type), $child + array(
+                '_GUID' => 'd5209ec65425bed1207e2f667d9116f6',
                 'POSITION' => strval($i),
                 'FIRST' => $i == 0,
                 'LAST' => $i == $num - 1,

@@ -450,7 +450,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
             if (array_key_exists($email, $all_subscribers)) {
                 $tick = form_input_tick($email, $subject . '.', 'email_' . strval($num), $is_bounce, null, $email);
-                $fields .= $tick->evaluate(); // HTMLHTML
+                $fields .= $tick->evaluate(); // XHTMLXHTML
                 //$fields->attach($tick);
 
                 $i++;

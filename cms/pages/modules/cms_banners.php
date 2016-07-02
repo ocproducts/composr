@@ -262,7 +262,7 @@ class Module_cms_banners extends Standard_crud_module
         }
         $hr[] = do_lang_tempcode('ADDED');
         if (addon_installed('unvalidated')) {
-            $hr[] = do_lang_tempcode('VALIDATED');
+            $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $hr[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);

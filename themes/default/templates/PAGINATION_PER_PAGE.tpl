@@ -2,7 +2,7 @@
 	{$SET,RAND_PAGINATION_PER_PAGE,{$RAND}}
 
 	{HIDDEN}
-	<div class="pagination_per_page">
+	<div class="inline">
 		<div class="accessibility_hidden"><label for="r_{$GET*,RAND_PAGINATION_PER_PAGE}">{!PER_PAGE}{+START,IF_NON_EMPTY,{$GET,TEXT_ID}}: {$GET*,TEXT_ID}{+END}</label></div>
 		<select id="r_{$GET*,RAND_PAGINATION_PER_PAGE}" name="{MAX_NAME*}">
 			{SELECTORS}
