@@ -46,6 +46,32 @@ class Module_contact_member
     public $to_name;
 
     /**
+     * Uninstall the module.
+     */
+    public function uninstall()
+    {
+    }
+
+    /**
+     * Install the module.
+     *
+     * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
+     * @param  ?integer $upgrade_from_hack What hack version we're upgrading from (null: new-install/not-upgrading-from-a-hacked-version)
+     */
+    public function install($upgrade_from = null, $upgrade_from_hack = null)
+    {
+        // Deny non-staff/Guest access to contact_member (as non-Guests can just use private topics and contact_member may be abused by spammers)
+        $staff_groups = $GLOBALS['FORUM_DRIVER']->get_moderator_groups();
+        $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+        foreach (array_keys($usergroups) as $id) {
+            if ((!isset($staff_groups[$id])) && $id != (db_get_first_id())) {
+                $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'contact_member', 'zone_name' => 'site', 'group_id' => $id), '', 1); // in case already exists
+                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'contact_member', 'zone_name' => 'site', 'group_id' => $id));
+            }
+        }
+    }
+
+    /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
      * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).

@@ -735,7 +735,7 @@ class Module_admin_config
             } else {
                 // If the option was changed
                 $old_value = get_option($name);
-                if (($old_value != $value) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
+                if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
                     set_option($name, $value);
                 }
             }

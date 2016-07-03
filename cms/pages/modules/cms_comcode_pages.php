@@ -400,21 +400,21 @@ class Module_cms_comcode_pages
             }
 
             // We need to separately read from DB to work out metadata?
-            $row = mixed();
+            $db_row = mixed();
             if ($path_bits[1] === null) {
-                $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
-                if ((!isset($rows[0])) && ($number_pages_parsed_for_titles < 3/*Too intensive to do much at all*/) && (has_caching_for('comcode_page'))) {
+                $db_rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
+                if ((!isset($db_rows[0])) && ($number_pages_parsed_for_titles < 3/*Too intensive to do much at all*/) && (has_caching_for('comcode_page'))) {
                     $result = request_page($page, false, $zone, 'comcode_custom', true);
-                    $rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
+                    $db_rows = $GLOBALS['SITE_DB']->query_select('comcode_pages c LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages a ON c.the_page=a.the_page AND c.the_zone=a.the_zone', array('c.*', 'cc_page_title'), array('c.the_zone' => $zone, 'c.the_page' => $page), '', 1);
                     $number_pages_parsed_for_titles++;
                 }
-                $row = isset($rows[0]) ? $rows[0] : null;
+                $db_row = isset($db_rows[0]) ? $db_rows[0] : null;
             } else { // Ah, no we got everything from DB in one go
-                $row = $path_bits[1];
+                $db_row = $path_bits[1];
             }
 
             // Work out metadata
-            if (is_null($row)) {
+            if (is_null($db_row)) {
                 $page_title = titleify($page);
                 $order = null;
                 $parent_page = '';
@@ -422,16 +422,16 @@ class Module_cms_comcode_pages
                 $add_date = null;
                 $validated = null;
             } else {
-                if ($row['cc_page_title'] === null) {
+                if ($db_row['cc_page_title'] === null) {
                     $page_title = titleify($page);
                 } else {
-                    $page_title = get_translated_text($row['cc_page_title'], null, null, true);
+                    $page_title = get_translated_text($db_row['cc_page_title'], null, null, true);
                 }
-                $order = $row['p_order'];
-                $parent_page = $row['p_parent_page'];
-                $submitter = $row['p_submitter'];
-                $add_date = $row['p_add_date'];
-                $validated = $row['p_validated'];
+                $order = $db_row['p_order'];
+                $parent_page = $db_row['p_parent_page'];
+                $submitter = $db_row['p_submitter'];
+                $add_date = $db_row['p_add_date'];
+                $validated = $db_row['p_validated'];
             }
             $page_path = $path_bits[0];
 
