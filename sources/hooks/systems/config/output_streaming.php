@@ -50,6 +50,11 @@ class Hook_config_output_streaming
      */
     public function get_default()
     {
+        global $SMART_CACHE;
+        if (!$SMART_CACHE->is_on()) {
+            return null;
+        }
+
         return '0';
     }
 }

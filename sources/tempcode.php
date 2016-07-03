@@ -96,8 +96,8 @@ function init__tempcode()
      *
      * @global boolean $OUTPUT_STREAMING
      */
-    global $OUTPUT_STREAMING;
-    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0);
+    global $OUTPUT_STREAMING, $SMART_CACHE;
+    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0) && (isset($SMART_CACHE)) && (!$SMART_CACHE->empty);
     if ($GLOBALS['SMART_CACHE'] === null || !$GLOBALS['SMART_CACHE']->get_initial_status('CSSS')) {
         $OUTPUT_STREAMING = false;
     } elseif (get_param_string('special_page_type', 'view') != 'view') {

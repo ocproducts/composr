@@ -137,6 +137,7 @@ class Self_learning_cache
     private $keys_inital = array();
     private $pending_save = false;
     public $paused = false;
+    public $empty = true;
 
     /**
      * Constructor. Initialise our cache.
@@ -205,6 +206,8 @@ class Self_learning_cache
                 $this->data = null;
             }
         }
+
+        $this->empty = empty($this->data);
 
         if ($this->data !== null) {
             $this->keys_initial = array_flip(array_keys($this->data));
