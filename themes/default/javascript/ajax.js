@@ -267,7 +267,14 @@ function internalise_ajax_block_wrapper_links(url_stem,block_element,look_for,ex
 					}
 				}
 
-				if (typeof window.history.pushState!='undefined') history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=\w+/,''));
+				if (typeof window.history.pushState!='undefined')
+				{
+					try
+					{
+						history.pushState({js: true},document.title,href.replace('&ajax=1','').replace(/&zone=\w+/,''));
+					}
+					catch (e) {}; // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History': A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+				}
 
 				clear_out_tooltips(null);
 
