@@ -84,7 +84,7 @@ You should consider:
  - Enabling SSL for the whole site (soon web browsers are going to be giving out warnings when you browse a website that is not fully running SSL)
  - Using [url="CloudFlare"]https://www.cloudflare.com/[/url] for the free DDOS protection, or a more advanced service such as [url="SiteLock"]https://www.sitelock.com/[/url] or [url="Sucuri"]https://sucuri.net/[/url]
 
-You should forget about:
+You should be wary about:
  - PHP "Safe Mode" (the name is very misleading, at best this introduces bugs and mitigates the problems on shared hosting environments that are already fundamentally insecure)
  - PHP "disable_functions" (this increases security by disabling arbitrary parts of PHP -- this should only be done by consent with a programmer, to confirm those parts that were decided to be disabled are not actually necessary for functionality)
  - PHP "magic quotes" (this does not add any actual security due to fundamental design problems, but does have the potential to create lots of bugs)

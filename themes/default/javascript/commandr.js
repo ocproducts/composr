@@ -54,7 +54,7 @@ function commandr_handle_history(element,key_code,e)
 }
 
 // Submit an Commandr command
-function commandr_form_submission(command)
+function commandr_form_submission(command,form)
 {
 	// Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
 	// var command=document.getElementById('commandr_command').value;
@@ -64,7 +64,11 @@ function commandr_form_submission(command)
 		// Send it through XMLHttpRequest, and append the results.
 		document.getElementById('commandr_command').focus();
 		document.getElementById('commandr_command').disabled=true;
-		do_ajax_request('{$BASE_URL_NOHTTP;}/data/commandr.php'+keep_stub(true),commandr_command_response,'command='+window.encodeURIComponent(command));
+
+		var post='command='+window.encodeURIComponent(command.value);
+		post=modsecurity_workaround_ajax(post);
+		do_ajax_request('{$FIND_SCRIPT;,commandr}'+keep_stub(true),commandr_command_response,post);
+
 		window.disable_timeout=window.setTimeout( function() {
 			document.getElementById('commandr_command').disabled=false;
 			document.getElementById('commandr_command').focus();
@@ -77,10 +81,10 @@ function commandr_form_submission(command)
 		window.previous_commands.push(command);
 
 		return false;
-	} else
+	} else if (typeof form!='undefined')
 	{
 		// Let the form be submitted the old-fashioned way.
-		return true;
+		return modsecurity_workaround(form);
 	}
 }
 

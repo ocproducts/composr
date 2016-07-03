@@ -244,7 +244,8 @@ function generate_background_preview(post)
 			form_post+='&'+name+'='+window.encodeURIComponent(value);
 		}
 	}
-	var preview_ret=do_ajax_request(form_preview_url+'&js_only=1&known_utf8=1',null,form_post.substr(1));
+	form_post=modsecurity_workaround_ajax(form_post.substr(1));
+	var preview_ret=do_ajax_request(form_preview_url+'&js_only=1&known_utf8=1',null,form_post);
 	eval(preview_ret.responseText.replace('<script>','').replace('</script>',''));
 }
 
@@ -1102,6 +1103,7 @@ function handle_form_saving_explicit(event,form)
 			// Save remotely
 			if (navigator.onLine)
 			{
+				post=modsecurity_workaround_ajax(post);
 				do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() {
 					if (document.body.style.cursor=='wait') document.body.style.cursor='';
 
@@ -1127,6 +1129,7 @@ function handle_form_saving(event,element,force)
 				if (typeof console.log!='undefined') console.log('Doing AJAX auto-save');
 			{+END}
 
+			post=modsecurity_workaround_ajax(post);
 			do_ajax_request('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store'+keep_stub(),function() { },post);
 		}
 	}

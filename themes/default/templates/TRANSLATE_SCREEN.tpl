@@ -12,7 +12,7 @@
 	</p>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide_table_wrap really_long_table_wrap"><table class="autosized_table columned_table results_table wide_table">

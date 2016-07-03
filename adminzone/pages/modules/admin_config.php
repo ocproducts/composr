@@ -93,6 +93,9 @@ class Module_admin_config
      */
     public function pre_run()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         require_all_lang();
 
         $type = get_param_string('type', 'browse');

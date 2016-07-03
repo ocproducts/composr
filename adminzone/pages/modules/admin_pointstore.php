@@ -239,6 +239,9 @@ class Module_admin_pointstore
      */
     public function interface_set_prices()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $field_groups = new Tempcode();
         $add_forms = new Tempcode();
 
@@ -297,6 +300,7 @@ class Module_admin_pointstore
                 'SUBMIT_BUTTON_CLASS' => 'proceed_button_left_2',
                 'URL' => $post_url,
                 'SUPPORT_AUTOSAVE' => true,
+                'MODSECURITY_WORKAROUND' => true,
             ));
         }
 
@@ -319,6 +323,9 @@ class Module_admin_pointstore
      */
     public function set_prices()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         // Save configuration for hooks
         $_hooks = find_all_hooks('modules', 'pointstore');
         foreach (array_keys($_hooks) as $hook) {

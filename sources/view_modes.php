@@ -257,6 +257,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
     // Content translation mode
     if (substr($special_page_type, 0, 12) == 'lang_content') {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -323,9 +326,13 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
+            'MODSECURITY_WORKAROUND' => true,
         ));
     } // Language mode
     elseif (substr($special_page_type, 0, 4) == 'lang') {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -381,6 +388,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
+            'MODSECURITY_WORKAROUND' => true,
         ));
     }
 

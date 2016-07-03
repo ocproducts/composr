@@ -117,6 +117,9 @@ class Module_cms_catalogues extends Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $this->cat_crud_module = class_exists('Mx_cms_catalogues_cat') ? new Mx_cms_catalogues_cat() : new Module_cms_catalogues_cat();
         $this->alt_crud_module = class_exists('Mx_cms_catalogues_alt') ? new Mx_cms_catalogues_alt() : new Module_cms_catalogues_alt();
         $GLOBALS['MODULE_CMS_CATALOGUES'] = $this;

@@ -33,7 +33,7 @@
 
 {+START,IF_PASSED,COMCODE}
 	<div id="edit_{ID*}" style="{+START,IF_NON_PASSED,PREVIEW}display: block{+END}{+START,IF_PASSED,PREVIEW}display: none{+END}" aria-labeledby="edit_tab_{ID*}" role="tabpanel">
-		<form title="{ID*}: {!COMCODE}" action="index.php" method="post" autocomplete="off">
+		<form title="{ID*}: {!COMCODE}" action="index.php" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<p>

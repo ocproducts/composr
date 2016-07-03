@@ -5,7 +5,7 @@
 		{+START,IF_NON_EMPTY,{COMMANDS}}{COMMANDS}{+END}
 	</div>
 	<div class="webstandards_checker_off">
-		<form title="{!PRIMARY_PAGE_FORM}" autocomplete="off" action="{SUBMIT_URL*}" method="post" id="commandr_form" onsubmit="return commandr_form_submission(document.getElementById('commandr_command').value);" autocomplete="off">
+		<form title="{!PRIMARY_PAGE_FORM}" autocomplete="off" action="{SUBMIT_URL*}" method="post" id="commandr_form" onsubmit="return commandr_form_submission(document.getElementById('commandr_command'),this);" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div id="command_prompt">

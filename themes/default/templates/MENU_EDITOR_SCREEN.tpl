@@ -11,7 +11,7 @@
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 	</form>
 
-	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off">
+	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="float_surrounder menu_edit_main">

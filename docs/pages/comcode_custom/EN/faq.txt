@@ -241,7 +241,7 @@ Check your web server's raw logs, or contact your webhost.
 
 [title="4"]ModSecurity[/title]
 
-If you specifically get it when saving the site configuration, using the WYSIWYG editor, or editing templates then your server has an extension called [page="_SEARCH:sup_modsecurity"]ModSecurity[/page] enabled.
+If you specifically get it when saving the site configuration, using the WYSIWYG editor, or editing templates then your server likely has an extension called [page="_SEARCH:sup_modsecurity"]ModSecurity[/page] enabled.
 
 [title="4"]File permissions[/title]
 
