@@ -50,7 +50,7 @@ function get_future_version_information()
     static $data = null; // Cache
     if (is_null($data)) {
         require_code('files2');
-        $data = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
+        list($data) = cache_and_carry('http_download_file', array($url, null, false), 5/*5 minute cache*/);
     }
     if (!is_null($data)) {
         $data = str_replace('"../upgrader.php"', '"' . get_base_url() . '/upgrader.php"', $data);

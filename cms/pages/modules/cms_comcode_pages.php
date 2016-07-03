@@ -216,7 +216,7 @@ class Module_cms_comcode_pages
                 }
 
                 $out[$zone . ':' . $page] = array(
-                    $zone . '/pages/' . $subdir . '/' . $page, // page path
+                    (($zone == '') ? '' : ($zone . '/')) . 'pages/' . $subdir . '/' . $page, // page path
                     null, // row
                 );
             }
@@ -489,7 +489,7 @@ class Module_cms_comcode_pages
             if ($page_path === null) {
                 $located = _request_page($row['page'], $row['zone'], null, $lang);
                 if ($located !== false) {
-                    $page_path = $row['zone'] . '/pages/' . strtolower($located[0]) . '/' . $row['page'];
+                    $page_path = (($row['zone'] == '') ? '' : ($row['zone'] . '/')) . 'pages/' . strtolower($located[0]) . '/' . $row['page'];
                 }
             }
 
@@ -1016,7 +1016,7 @@ class Module_cms_comcode_pages
             if (substr($_page['the_page'], 0, 1) == '_') {
                 continue;
             }
-            if (!is_alphanumeric($_page['the_page'])) {
+            if (!is_alphanumeric($_page['the_page'])) { // e.g. 404 page
                 continue;
             }
             if (!is_alphanumeric($_page['the_zone'])) {
@@ -1031,7 +1031,10 @@ class Module_cms_comcode_pages
                 continue;
             }
 
-            $pages[] = $_page;
+            if (!isset($pages[$_page['p_parent_page']])) {
+                $pages[$_page['p_parent_page']] = array();
+            }
+            $pages[$_page['p_parent_page']][] = $_page;
         }
 
         $_zones = find_all_zones(false, true, true);
@@ -1062,9 +1065,7 @@ class Module_cms_comcode_pages
             $zones = array_merge(array('' => $zones['']), $zones);
         }
 
-        $menu_branches = list_to_map('id', $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), null, 'ORDER BY i_menu'));
-
-        $page_structure = $this->organise_page_tree($pages, '', $menu_branches);
+        $page_structure = $this->organise_page_tree($pages);
 
         return do_template('GENERATE_PAGE_SITEMAP_SCREEN', array('_GUID' => 'b07b07bfca5d4191e99671040b70ed51', 'TITLE' => $title, 'ZONES' => $zones, 'PAGE_STRUCTURE' => $page_structure));
     }
@@ -1074,72 +1075,102 @@ class Module_cms_comcode_pages
      *
      * @param  array $pages An array of pages
      * @param  ID_TEXT $under The page we are looking under
-     * @param  array $menu_branches An array of menu links
      * @return Tempcode The structure
      */
-    public function organise_page_tree(&$pages, $under, &$menu_branches)
+    public function organise_page_tree(&$pages, $under = '')
     {
-        $todo_checks = explode('|', cms_mb_strtolower(do_lang('UNDER_CONSTRUCTION_MARKERS')));
+        static $todo_checks = null;
+        static $no_validation_support = null;
+        static $path_prefix = null;
+        static $menu_branches_by_url = null;
+        static $menu_branches_by_id = null;
+        static $user_lang = null;
+        if ($todo_checks === null) {
+            $_todo_checks = cms_mb_strtolower(do_lang('UNDER_CONSTRUCTION_MARKERS'));
+            $todo_checks = ($_todo_checks == '') ? array() : explode('|', $_todo_checks);
+
+            $no_validation_support = !addon_installed('unvalidated');
+
+            $path_prefix = get_custom_file_base() . '/';
+
+            $menu_branches = $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), null, 'ORDER BY i_menu');
+            $menu_branches_by_url = array();
+            foreach ($menu_branches as $menu_branch) {
+                if (!isset($menu_branches_by_url[$menu_branch['i_url']])) {
+                    $menu_branches_by_url[$menu_branch['i_url']] = array();
+                }
+                $menu_branches_by_url[$menu_branch['i_url']][] = $menu_branch;
+            }
+            $menu_branches_by_id = list_to_map('id', $menu_branches);
+
+            $user_lang = user_lang();
+        }
 
         $page_structure = array();
-        foreach ($pages as $page) {
-            if (!addon_installed('unvalidated')) {
-                $page['p_validated'] = 1;
+        foreach (isset($pages[$under]) ? $pages[$under] : array() as $page) {
+            $todo = false;
+            if ($page['string_index'] !== null) {
+                $page_contents = get_translated_text($page['string_index']);
+            } else {
+                $located = _request_page($page['the_page'], $page['the_zone']);
+                if ($located === false) {
+                    $page_contents = '';
+                } else {
+                    $path = $path_prefix . $located[4];
+                    $page_contents = file_get_contents($path);
+                }
+            }
+            if (!empty($page_contents)) {
+                if ($user_lang == 'EN') {
+                    $page_contents_lower = $page_contents; // HACKHACK: For performance we can assume English only requires ASCII characters for this check
+                } else {
+                    $page_contents_lower = cms_mb_strtolower($page_contents);
+                }
+
+                foreach ($todo_checks as $todo_check) {
+                    if (strpos($page_contents_lower, $todo_check) !== false) {
+                        $todo = true;
+                    }
+                }
+                if (strpos($page_contents, 'TODO') !== false) {
+                    $todo = true;
+                }
             }
 
-            if ($page['p_parent_page'] == $under) {
-                $todo = false;
-                if (!is_null($page['string_index'])) {
-                    $page_contents = cms_mb_strtolower(get_translated_text($page['string_index']));
-                } else {
-                    $path = get_custom_file_base() . '/' . $page['the_zone'] . '/pages/comcode_custom/EN/' . $page['the_page'] . '.txt';
-                    $page_contents = is_file($path) ? cms_mb_strtolower(file_get_contents($path)) : '';
-                }
-                if (!is_null($page_contents)) {
-                    foreach ($todo_checks as $todo_check) {
-                        if (($todo_check != '') && (strpos($page_contents, $todo_check) !== false)) {
-                            $todo = true;
-                        }
+            $page_link = $page['the_zone'] . ':' . $page['the_page'];
+
+            $menu_paths = array();
+            foreach (isset($menu_branches_by_url[$page_link]) ? $menu_branches_by_url[$page_link] : array() as $menu_branch) {
+                $menu_path_components = array();
+                $menu_branch_temp = $menu_branch;
+                do {
+                    $menu_path_components[] = get_translated_text($menu_branch_temp['i_caption']);
+                    $parent = $menu_branch_temp['i_parent'];
+                    if (!is_null($parent)) {
+                        $menu_branch_temp = $menu_branches_by_id[$parent];
                     }
-                }
+                } while (!is_null($parent));
 
-                $page_link = $page['the_zone'] . ':' . $page['the_page'];
-
-                $menu_paths = array();
-                foreach ($menu_branches as $menu_branch) {
-                    if ($menu_branch['i_url'] == $page_link) {
-                        $menu_path_components = array();
-                        $menu_branch_temp = $menu_branch;
-                        do {
-                            $menu_path_components[] = get_translated_text($menu_branch_temp['i_caption']);
-                            $parent = $menu_branch_temp['i_parent'];
-                            if (!is_null($parent)) {
-                                $menu_branch_temp = $menu_branches[$parent];
-                            }
-                        } while (!is_null($parent));
-
-                        $menu_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_branch['i_menu']), get_module_zone('admin_menus'));
-                        $menu_paths[] = array(
-                            'MENU' => $menu_branch['i_menu'],
-                            'MENU_URL' => $menu_url,
-                            'MENU_PATH_COMPONENTS' => array_reverse($menu_path_components),
-                        );
-                    }
-                }
-
-                $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $page_link), '_SELF');
-
-                $page_structure[] = array(
-                    'EDIT_URL' => $edit_url,
-                    'ZONE_NAME' => $page['the_zone'],
-                    'PAGE_NAME' => $page['the_page'],
-                    'PAGE_TITLE' => (is_null($page['cc_page_title']) ? '' : get_translated_text($page['cc_page_title'])),
-                    'VALIDATED' => ($page['p_validated'] == 1),
-                    'TODO' => $todo,
-                    'MENU_PATHS' => $menu_paths,
-                    'CHILDREN' => $this->organise_page_tree($pages, $page['the_page'], $menu_branches),
+                $menu_url = build_url(array('page' => 'admin_menus', 'type' => 'edit', 'id' => $menu_branch['i_menu']), get_module_zone('admin_menus'));
+                $menu_paths[] = array(
+                    'MENU' => $menu_branch['i_menu'],
+                    'MENU_URL' => $menu_url,
+                    'MENU_PATH_COMPONENTS' => array_reverse($menu_path_components),
                 );
             }
+
+            $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $page_link), '_SELF');
+
+            $page_structure[] = array(
+                'EDIT_URL' => $edit_url,
+                'ZONE_NAME' => $page['the_zone'],
+                'PAGE_NAME' => $page['the_page'],
+                'PAGE_TITLE' => ($page['cc_page_title'] === null) ? '' : get_translated_text($page['cc_page_title']),
+                'VALIDATED' => $no_validation_support || ($page['p_validated'] == 1),
+                'TODO' => $todo,
+                'MENU_PATHS' => $menu_paths,
+                'CHILDREN' => $this->organise_page_tree($pages, $page['the_page']),
+            );
         }
 
         return do_template('GENERATE_PAGE_SITEMAP', array('_GUID' => 'f92876ca45010873c71a9fea574d17c1', 'PAGE_STRUCTURE' => $page_structure));

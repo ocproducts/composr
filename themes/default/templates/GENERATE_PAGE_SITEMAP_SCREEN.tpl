@@ -7,7 +7,7 @@
 		{PAGE_STRUCTURE}
 	</div>
 
-	<p>
+	<p class="lonely_label">
 		{!FILTER_BY_ZONE}:
 	</p>
 	<ul>

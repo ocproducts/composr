@@ -91,15 +91,21 @@ function cache_and_carry($func, $args, $timeout = null)
         fix_permissions(dirname($path));
     }
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
-        $ret = @unserialize(file_get_contents($path));
-    } else {
-        $ret = call_user_func_array($func, $args);
+        $_ret = file_get_contents($path);
         if ($func == 'http_download_file') {
-            $tmp = serialize(array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME));
+            $ret = @unserialize($_ret);
         } else {
-            $tmp = $ret;
+            $ret = $_ret;
         }
-        file_put_contents($path, $tmp, LOCK_EX);
+    } else {
+        $_ret = call_user_func_array($func, $args);
+        if ($func == 'http_download_file') {
+            $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
+            file_put_contents($path, serialize($ret), LOCK_EX);
+        } else {
+            $ret = $_ret;
+            file_put_contents($path, $ret, LOCK_EX);
+        }
         fix_permissions($path);
         sync_file($path);
     }

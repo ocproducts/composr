@@ -28,9 +28,7 @@ class _performance_test_set extends cms_test_case
     private $quick = true; // Times will be less accurate if they're fast enough, focus on finding slow pages only
     private $threshold = 0.50; // If loading times exceed this a page is considered slow
     private $start_page_link = '';
-    private $whitelist = array(
-        'cms:cms_comcode_pages:generate_page_sitemap',
-    );
+    private $whitelist = null;
     private $blacklist = array(
         // These are non-bundled tooling screens that are irrevocably slow
         'adminzone:string_scan',
