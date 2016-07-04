@@ -1339,7 +1339,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
             }
         }
     }
-    $query .= ' ORDER BY c_add_date DESC';
+    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' DESC';
     $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
@@ -1632,10 +1632,11 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
         }
 
         $entry_fields = get_catalogue_entry_field_values($catalogue_name, $row['id'], array(0));
-        $name = $entry_fields[0]['effective_value']; // 'Name' is value of first field
+        $name = $entry_fields[0]['effective_value_pure']; // 'Name' is value of first field
 
         $children[0]['entries'][$row['id']] = $name;
     }
+    asort($children[0]['entries']);
     $children[0]['child_entry_count'] = count($children[0]['entries']);
     if ($levels === 0) { // We throw them away now because they're not on the desired level
         $children[0]['entries'] = array();

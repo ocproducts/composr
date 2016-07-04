@@ -542,7 +542,7 @@ class Module_downloads
         require_code('selectcode');
         $sql_select = selectcode_to_sqlfragment(is_numeric($id) ? ($id . '*') : $id, 'p.category_id', 'download_categories', 'parent_id', 'p.category_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
 
-        if ($GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)') > 1000) {
+        if ($GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)') > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
 

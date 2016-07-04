@@ -1008,7 +1008,7 @@ function get_trackbacks($content_type, $content_id, $allow_trackback, $type = ''
     if ((get_option('is_on_trackbacks') == '1') && ($allow_trackback)) {
         require_lang('trackbacks');
 
-        $trackbacks = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id), 'ORDER BY trackback_time DESC', 300);
+        $trackbacks = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id), 'ORDER BY trackback_time DESC', intval(get_option('general_safety_listing_limit')));
 
         $content = new Tempcode();
         $items = new Tempcode();

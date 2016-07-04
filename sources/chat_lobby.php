@@ -80,7 +80,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
     $online_url = $GLOBALS['FORUM_DRIVER']->users_online_url();
     $friends_offline = array();
     $friends_online = array();
-    $friend_rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id), 'ORDER BY date_and_time', 300);
+    $friend_rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id), 'ORDER BY date_and_time', intval(get_option('general_safety_listing_limit')));
     $friend_active = get_chatters_in_room(null);
     $users_online_time_seconds = CHAT_ACTIVITY_PRUNE;
     foreach ($friend_rows as $friend) {

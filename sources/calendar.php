@@ -834,7 +834,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
 
     $where = ' WHERE ' . $where;
     $event_count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_events e' . $privacy_join . ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types t ON e.e_type=t.id' . $where);
-    if ($event_count > 2000) {
+    if ($event_count > intval(get_option('general_safety_listing_limit')) * 5) {
         attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'inform');
         return array();
     }
@@ -871,7 +871,7 @@ function create_selection_list_events($only_owned, $it, $edit_viewable_events = 
     if (!is_null($only_owned)) {
         $where['e_submitter'] = $only_owned;
     }
-    if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)') > 500) {
+    if ($GLOBALS['SITE_DB']->query_select_value('calendar_events', 'COUNT(*)') > intval(get_option('general_safety_listing_limit'))) {
         warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
     }
     $events = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id', 'e_title', 'e_type'), $where);

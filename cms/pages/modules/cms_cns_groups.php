@@ -202,7 +202,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     {
         $fields = new Tempcode();
         $count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_private_club' => 1));
-        if ($count < 500) {
+        if ($count < intval(get_option('general_safety_listing_limit'))) {
             $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_promotion_target', 'g_is_super_admin', 'g_group_leader'), array('g_is_private_club' => 1), 'ORDER BY g_name');
         } else {
             $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name', 'g_promotion_target', 'g_is_super_admin', 'g_group_leader'), array('g_group_leader' => get_member(), 'g_is_private_club' => 1), 'ORDER BY g_name');

@@ -158,8 +158,8 @@ class Module_admin_chat extends Standard_crud_module
     {
         require_code('chat_lobby');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('is_im' => 0), 'ORDER BY room_name DESC', 500);
-        if (count($rows) == 500) {
+        $rows = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('*'), array('is_im' => 0), 'ORDER BY room_name DESC', intval(get_option('general_safety_listing_limit')));
+        if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
         $fields = new Tempcode();

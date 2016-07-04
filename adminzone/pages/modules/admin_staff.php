@@ -141,8 +141,8 @@ class Module_admin_staff
         }
 
         $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
-        $staff = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups, 400);
-        if (count($staff) >= 400) {
+        $staff = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups, intval(get_option('general_safety_listing_limit')));
+        if (count($staff) >= intval(get_option('general_safety_listing_limit'))) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
         $available = new Tempcode();

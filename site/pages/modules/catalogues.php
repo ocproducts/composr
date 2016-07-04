@@ -825,7 +825,7 @@ class Module_catalogues
         $description = get_translated_tempcode('catalogues', $catalogue, 'c_description');
 
         // Read in categories
-        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
+        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
         $rows_subcategories = $GLOBALS['SITE_DB']->query_select(
@@ -899,7 +899,7 @@ class Module_catalogues
         require_code('selectcode');
         $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
 
-        if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries p WHERE ce_validated=1 AND (' . $sql_select . ')', false, true) > 1000) {
+        if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries p WHERE ce_validated=1 AND (' . $sql_select . ')', false, true) > intval(get_option('general_safety_listing_limit')) * 3) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
         $cats = array();
