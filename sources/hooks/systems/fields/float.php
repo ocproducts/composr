@@ -110,7 +110,16 @@ class Hook_fields_float
             return '';
         }
 
-        $ev = float_format(floatval($ev));
+        $float = floatval($ev);
+
+        $decimal_points = intval(option_value_from_field_array($field, 'decimal_points', '2'));
+        $decimal_points_behaviour = option_value_from_field_array($field, 'decimal_points_behaviour', 'dp');
+
+        $ev = float_format($float, $decimal_points, $decimal_points_behaviour == 'trim');
+
+        if (($decimal_points_behaviour == 'price') && (substr($ev, -3) == '.00')) {
+            $ev = float_format($float, 0, false);
+        }
 
         if (($GLOBALS['XSS_DETECT']) && (ocp_is_escaped($ev))) {
             ocp_mark_as_escaped($ev);

@@ -329,7 +329,7 @@ class Hook_ecommerce_catalogue_items
                     'price_pre_tax' => round(floatval($product_det['tax']), 2),
                     'product_description' => $product_det['description'],
                     'product_type' => $product_det['product_type'],
-                    'product_weight' => floatval($product_det['product_weight']),
+                    'product_weight' => $product_det['product_weight'],
                     'is_deleted' => 0,
                 )
             );
@@ -446,7 +446,8 @@ class Hook_ecommerce_catalogue_items
 
         $catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry['product_id']));
         if (is_null($catalogue_name)) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'catalogue_entry'));
+            $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $entry['product_id']));
+            return new Tempcode();
         }
 
         $image = $this->get_product_image($catalogue_name, $entry['product_id']);
@@ -467,7 +468,7 @@ class Hook_ecommerce_catalogue_items
 
         $product_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['product_id']), '_SELF');
 
-        $product_link = hyperlink($product_url, $entry['product_name'], false, false, do_lang('INDEX'));
+        $product_link = hyperlink($product_url, $entry['product_name'], false, true, do_lang('INDEX'));
 
         $shopping_cart->attach(
             results_entry(
