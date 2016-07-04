@@ -265,10 +265,13 @@ function cms_strftime($format, $timestamp = null)
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
+        $format = str_replace('%i', '%#I', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
+        $format = str_replace('%i', '%-I', $format);
     }
-    $ret = strftime(str_replace(array('%i', '%k'), array(date('g', $timestamp), date('S', $timestamp)), $format), $timestamp);
+    $format = str_replace('%k', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
+    $ret = strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';
     }
