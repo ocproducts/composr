@@ -95,7 +95,7 @@ class Block_main_contact_us
             dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, 3, true, false, null, null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix);
 
             // Send standard confirmation email to current user
-            if ($email_from != '') {
+            if ($email_from != '' && get_option('message_received_emails') == '1') {
                 require_code('mail');
                 mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
             }
