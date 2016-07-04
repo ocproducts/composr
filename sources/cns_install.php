@@ -454,6 +454,9 @@ function install_cns($upgrade_from = null)
             'boat' => true,
             'fishing' => true,
             'reallybadday' => true,
+            'hug' => true,
+            'tired' => true,
+            'whew' => true,
         );
         $core_emoticons = array(
             ':P' => 'cheeky',
@@ -512,6 +515,9 @@ function install_cns($upgrade_from = null)
             ':boat:' => 'boat',
             ':fishing:' => 'fishing',
             ':reallybadday:' => 'reallybadday',
+            ':hug:' => 'hug',
+            ':tired:' => 'tired',
+            ':whew:' => 'whew',
         );
         $unused_emoticons = array(
             ':christmas:' => 'christmas'
