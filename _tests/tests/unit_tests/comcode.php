@@ -57,7 +57,7 @@ class comcode_test_set extends cms_test_case
             ',@test' => false, // Must be preceded by white-space or nothing
             ',@test,' => false, // "
             'x@test ' => false, // "
-            '@testx' => false, // Must not have junk on tail-end
+            '@testxppp' => false, // Must not have junk on tail-end
         );
 
         foreach ($tests as $test => $expected) {

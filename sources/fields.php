@@ -666,7 +666,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
     foreach ($types as $_type) {
         if (is_object($_type)) {
             if ($_type_list !== '') {
-                $type_list->attach(form_input_list_group($last_type, $_type_list));
+                $type_list->attach(form_input_list_group($last_type, make_string_tempcode($_type_list)));
             }
             $_type_list = '';
             $last_type = $_type;
@@ -685,7 +685,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
         }
     }
     if ($_type_list !== '') {
-        $type_list->attach(form_input_list_group($last_type, $_type_list));
+        $type_list->attach(form_input_list_group($last_type, make_string_tempcode($_type_list)));
     }
 
     $ret = make_string_tempcode($type_list->evaluate()); // XHTMLXHTML

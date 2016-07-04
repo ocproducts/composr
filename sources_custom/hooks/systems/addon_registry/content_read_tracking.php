@@ -136,4 +136,31 @@ class Hook_addon_registry_content_read_tracking
             'sources_custom/hooks/systems/symbols/HAS_READ.php',
         );
     }
+
+    /**
+     * Uninstall the addon.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('content_read');
+    }
+
+    /**
+     * Install the addon.
+     *
+     * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
+     */
+    public function install($upgrade_from = null)
+    {
+        if (is_null($upgrade_from)) {
+            $GLOBALS['SITE_DB']->create_table('content_read', array(
+                'r_content_type' => '*ID_TEXT',
+                'r_content_id' => '*ID_TEXT',
+                'r_member_id' => '*MEMBER',
+                'r_time' => 'TIME',
+            ));
+            $GLOBALS['SITE_DB']->create_index('content_read', 'content_read', array('r_content_type', 'r_content_id'));
+            $GLOBALS['SITE_DB']->create_index('content_read', 'content_read_cleanup', array('r_time'));
+        }
+    }
 }

@@ -93,7 +93,7 @@ class overused_globals_test_set extends cms_test_case
         ksort($found_globals);
 
         foreach ($found_globals as $global => $count) {
-            if ((!isset($sanctified_globals[$global])) && (strpos($global, '_CACHE') === false) && ($global != 'SITE_INFO') && ($global != 'FILE_BASE') && ($global != 'LAST_TOPIC_ID') && ($global != 'LAST_TOPIC_IS_NEW') && ($global != 'RELATIVE_PATH') && ($global != '_CREATED_FILES') && ($global != '_MODIFIED_FILES')) {
+            if ((!isset($sanctified_globals[$global])) && (strpos($global, '_CACHE') === false) && (strpos($global, 'DEV_MODE') === false) && ($global != 'SITE_INFO') && ($global != 'FILE_BASE') && ($global != 'LAST_TOPIC_ID') && ($global != 'LAST_TOPIC_IS_NEW') && ($global != 'RELATIVE_PATH') && ($global != '_CREATED_FILES') && ($global != '_MODIFIED_FILES')) {
                 $this->assertTrue($count <= 6, 'Don\'t over-use global variables (' . $global . ', ' . integer_format($count) . ' files using).');
             }
         }

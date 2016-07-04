@@ -34,8 +34,9 @@ class ecommerce_test_set extends cms_test_case
         require_code('form_templates');
 
         require_lang('ecommerce');
+        require_lang('shopping');
 
-        $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
+        $this->order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
             'c_member' => get_member(),
             'session_id' => get_session_id(),
             'add_date' => time(),
@@ -43,9 +44,9 @@ class ecommerce_test_set extends cms_test_case
             'order_status' => 'NEW',
             'notes' => '',
             'transaction_id' => 'ddfsfdsdfsdfs',
-            'purchase_through' => 'paypal',
+            'purchase_through' => 'cart',
             'tax_opted_out' => 0,
-        ));
+        ), true);
 
         $this->access_mapping = array(db_get_first_id() => 4);
 
@@ -67,58 +68,59 @@ class ecommerce_test_set extends cms_test_case
 
     public function testOrderDetails()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $_GET['id'] = strval($this->order_id);
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_GET['id'] = strval($order_id);
         return $this->admin_orders->order_details();
     }
 
     public function testAddNoteToOrderUI()
     {
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_GET['id'] = strval($order_id);
         $this->admin_orders->add_note();
     }
 
     public function testAddNoteToOrderActualiser()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $_POST['order_id'] = $this->order_id;
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_POST['order_id'] = $order_id;
         $_POST['note'] = 'Test note';
         $this->admin_orders->_add_note();
     }
 
     public function testOrderDispatch()
     {
-        $order_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'max(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
+        $order_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'MAX(id)', array('order_status' => 'ORDER_STATUS_payment_received'));
         if (!is_null($order_id)) {
-            $this->order_id = $order_id;
-            $_GET['id'] = $this->order_id;
+            $_GET['id'] = $order_id;
             $this->admin_orders->dispatch();
         }
     }
 
     public function testOrderDispatchNotification()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $this->admin_orders->send_dispatch_notification($this->order_id);
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $this->admin_orders->send_dispatch_notification($order_id);
     }
 
     public function testDeleteOrder()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $_GET['id'] = $this->order_id;
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_GET['id'] = $order_id;
         $this->admin_orders->delete_order();
     }
 
     public function testReturnOrder()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $_GET['id'] = $this->order_id;
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_GET['id'] = $order_id;
         $this->admin_orders->return_order();
     }
 
     public function testHoldOrder()
     {
-        $this->order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array());
-        $_GET['id'] = $this->order_id;
+        $order_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)');
+        $_GET['id'] = $order_id;
         $this->admin_orders->hold_order();
     }
 
@@ -148,5 +150,11 @@ class ecommerce_test_set extends cms_test_case
         );
 
         $this->admin_orders->_order_export(true);
+    }
+
+    public function tearDown()
+    {
+        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $this->order_id), '', 1);
+        parent::tearDown();
     }
 }

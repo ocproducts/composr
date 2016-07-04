@@ -150,8 +150,8 @@ function parse_raw_http_request()
  * Based on https://gist.github.com/chlab/4283560
  * Doesn't support more than one level of list nesting, or associative arrays
  *
- * @param   string   Data
- * @return  ?array   Associative array of request data (null: could not rescue)
+ * @param  string $input Data
+ * @return ?array Associative array of request data (null: could not rescue)
  */
 function _parse_raw_http_request_urlencoded($input)
 {
@@ -187,9 +187,9 @@ function _parse_raw_http_request_urlencoded($input)
  * Based on https://gist.github.com/chlab/4283560
  * Doesn't support more than one level of list nesting, or associative arrays
  *
- * @param   string   Data
- * @param   string   Multi-part boundary
- * @return  ?array   Associative array of request data (null: could not rescue)
+ * @param  string $input Data
+ * @param  string $boundary Multi-part boundary
+ * @return ?array Associative array of request data (null: could not rescue)
  */
 function _parse_raw_http_request_multipart($input, $boundary)
 {
@@ -198,6 +198,8 @@ function _parse_raw_http_request_multipart($input, $boundary)
     // Split content by boundary and get rid of last -- element
     $blocks = preg_split("#-+$boundary#", $input);
     array_pop($blocks);
+
+    $matches = array();
 
     // Loop data blocks
     foreach ($blocks as $block) {

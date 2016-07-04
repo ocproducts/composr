@@ -194,7 +194,7 @@ class Hook_addon_registry_iotds
      */
     public function tpl_preview__administrative__iotd_admin_choose_screen()
     {
-        $current_iotd = do_lorem_template('IOTD_BOX', array(
+        $map = array(
             'IS_CURRENT' => placeholder_number(),
             'THUMB_URL' => placeholder_image_url(),
             'IMAGE_URL' => placeholder_image_url(),
@@ -203,7 +203,6 @@ class Hook_addon_registry_iotds
             'DATE' => placeholder_date(),
             'DATE_RAW' => placeholder_date_raw(),
             'VIEW_URL' => placeholder_url(),
-            'ID' => placeholder_id(),
             'EDIT_URL' => placeholder_url(),
             'DELETE_URL' => placeholder_url(),
             'CHOOSE_URL' => placeholder_url(),
@@ -212,9 +211,10 @@ class Hook_addon_registry_iotds
             'SUBMITTER' => placeholder_id(),
             'USERNAME' => lorem_word(),
             'GIVE_CONTEXT' => true,
-        ));
-        $unused_iotd = $current_iotd;
-        $used_iotd = $current_iotd;
+        );
+        $current_iotd = do_lorem_template('IOTD_BOX', $map + array('ID' => placeholder_id() . '_1'));
+        $unused_iotd = do_lorem_template('IOTD_BOX', $map + array('ID' => placeholder_id() . '_2'));
+        $used_iotd = do_lorem_template('IOTD_BOX', $map + array('ID' => placeholder_id() . '_3'));
 
         return array(
             lorem_globalise(do_lorem_template('IOTD_ADMIN_CHOOSE_SCREEN', array(

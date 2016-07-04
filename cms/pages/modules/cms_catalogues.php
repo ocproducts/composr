@@ -1768,7 +1768,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             //$order_list->attach(form_input_list_entry(strval($i), $order_selected, $order_title));
             $order_list .= '<option value="' . strval($i) . '"' . ($order_selected ? ' selected="selected"' : '') . '>' . escape_html($order_title) . '</option>'; // XHTMLXHTML
         }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER_CLEVER', do_lang_tempcode('CATALOGUE_FIELD')), $prefix . 'order', $order_list));
+        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('DESCRIPTION_FIELD_ORDER_CLEVER', do_lang_tempcode('CATALOGUE_FIELD')), $prefix . 'order', make_string_tempcode($order_list)));
 
         // Defines order?
         $radios = new Tempcode();

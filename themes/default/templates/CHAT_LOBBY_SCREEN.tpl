@@ -87,7 +87,7 @@
 					<h3>{!FRIEND_LIST}</h3>
 
 					{+START,IF_NON_EMPTY,{FRIENDS}}
-						<form autocomplete="off" title="{!FRIEND_LIST}" method="post" action="{$?,{$IS_EMPTY,{URL_REMOVE_FRIENDS}},index.php,{URL_REMOVE_FRIENDS*}}">
+						<form title="{!FRIEND_LIST}" method="post" action="{$?,{$IS_EMPTY,{URL_REMOVE_FRIENDS}},index.php,{URL_REMOVE_FRIENDS*}}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<div id="friends_wrap">

@@ -251,6 +251,8 @@ class Hook_addon_registry_securitylogging
      */
     public function tpl_preview__administrative__lookup_screen()
     {
+        require_lang('actionlog');
+
         $inner_ip_list = new Tempcode();
         foreach (placeholder_array() as $value) {
             $inner_ip_list->attach(do_lorem_template('LOOKUP_IP_LIST_ENTRY', array(

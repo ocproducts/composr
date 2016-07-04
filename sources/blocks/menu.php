@@ -159,10 +159,13 @@ function block_menu__cache_on($map)
     );
 
     if (!$javascript_highlighting) {
+        $page = get_page_name();
+        $url_type = get_param_string('type', 'browse');
+
         $ret = array_merge($ret, array(
             get_zone_name(),
-            get_page_name(),
-            get_param_string('type', 'browse'),
+            $page,
+            $url_type,
             ($page == 'catalogues' && $url_type == 'index') ? get_param_string('id', '') : '', // Catalogues need a little extra work to distinguish them
         ));
     }

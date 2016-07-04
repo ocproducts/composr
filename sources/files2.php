@@ -85,6 +85,8 @@ function cache_and_carry($func, $args, $timeout = null)
 {
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
 
+    $ret = mixed();
+
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
     if (!file_exists(dirname($path))) {
         mkdir(dirname($path), 0777);

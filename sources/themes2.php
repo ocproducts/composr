@@ -536,7 +536,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
         $db = $GLOBALS['SITE_DB'];
     }
 
-    static $cache;
+    static $cache = array();
     $cache_sig = serialize(array($type, $recurse, $theme, $dirs_only, $db_only, $skip));
     if ($db === $GLOBALS['SITE_DB']) {
         if (isset($cache[$cache_sig])) {

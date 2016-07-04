@@ -332,16 +332,16 @@ class Module_admin_orders
             }
 
             $order_entries->attach(results_entry(
-                    array(
-                        escape_html($order_title),
-                        ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
-                        escape_html(is_null($row['tax']) ? '' : float_format($row['tax'], 2)),
-                        $order_date,
-                        $member,
-                        $transaction_id,
-                        $order_status,
-                        $actions
-                    ), false, null)
+                array(
+                    escape_html($order_title),
+                    ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
+                    escape_html(is_null($row['tax']) ? '' : float_format($row['tax'], 2)),
+                    $order_date,
+                    $member,
+                    $transaction_id,
+                    $order_status,
+                    $actions
+                ), false, null)
             );
         }
         if ($order_entries->is_empty()) {
