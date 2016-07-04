@@ -265,6 +265,8 @@ function cms_strftime($format, $timestamp = null)
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
+    } else {
+        $format = str_replace('%e', '%-d', $format);
     }
     $ret = strftime(str_replace(array('%i', '%k'), array(date('g', $timestamp), date('S', $timestamp)), $format), $timestamp);
     if ($ret === false) {
