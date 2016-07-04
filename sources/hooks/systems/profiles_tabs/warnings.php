@@ -71,7 +71,7 @@ class Hook_profiles_tabs_warnings
             if (strlen($row['w_explanation']) > 30) {
                 $row['w_explanation'] = substr($row['w_explanation'], 0, 27) . '...';
             }
-            $explanation = hyperlink(build_url(array('page' => 'warnings', 'type' => '_edit', 'id' => $row['id'], 'redirect' => get_self_url(true)), get_module_zone('warnings')), $row['w_explanation'], false, true, $row['w_explanation_orig']);
+            $explanation = hyperlink(build_url(array('page' => 'warnings', 'type' => '_edit', 'id' => $row['id'], 'redirect' => static_evaluate_tempcode($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true, true))), get_module_zone('warnings')), $row['w_explanation'], false, true, $row['w_explanation_orig']);
             $warnings->attach(paragraph(do_lang_tempcode('MEMBER_WARNING', $explanation, $warning_by, array(make_string_tempcode(escape_html($date)))), 'treyerhy34y'));
         }
 
