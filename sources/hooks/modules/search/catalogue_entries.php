@@ -50,7 +50,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('CATALOGUE_ENTRIES');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_catalogue_entries') == '1');
         $info['category'] = 'cc_id';
         $info['integer_category'] = true;
 

@@ -50,7 +50,7 @@ class Hook_search_filedump extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('FILEDUMP');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_filedump') == '1');
         $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('FILE_SIZE'));
 
         $info['permissions'] = array(

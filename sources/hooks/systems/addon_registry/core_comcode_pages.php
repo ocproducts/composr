@@ -157,12 +157,12 @@ class Hook_addon_registry_core_comcode_pages
             'themes/default/images/icons/48x48/contact_methods/email.png',
             'themes/default/images/icons/48x48/contact_methods/index.html',
             'themes/default/images/icons/48x48/contact_methods/telephone.png',
-        	'themes/default/images/icons/24x24/links/google_plus.png',
-        	'themes/default/images/icons/24x24/links/skype.png',
-        	'themes/default/images/icons/24x24/links/xmpp.png',
-        	'themes/default/images/icons/48x48/links/google_plus.png',
-        	'themes/default/images/icons/48x48/links/skype.png',
-        	'themes/default/images/icons/48x48/links/xmpp.png',
+            'themes/default/images/icons/24x24/links/google_plus.png',
+            'themes/default/images/icons/24x24/links/skype.png',
+            'themes/default/images/icons/24x24/links/xmpp.png',
+            'themes/default/images/icons/48x48/links/google_plus.png',
+            'themes/default/images/icons/48x48/links/skype.png',
+            'themes/default/images/icons/48x48/links/xmpp.png',
             'themes/default/images/icons/24x24/tiers/bronze.png',
             'themes/default/images/icons/24x24/tiers/gold.png',
             'themes/default/images/icons/24x24/tiers/index.html',
@@ -173,6 +173,7 @@ class Hook_addon_registry_core_comcode_pages
             'themes/default/images/icons/48x48/tiers/index.html',
             'themes/default/images/icons/48x48/tiers/platinum.png',
             'themes/default/images/icons/48x48/tiers/silver.png',
+            'sources/hooks/systems/config/search_comcode_pages.php',
         );
     }
 

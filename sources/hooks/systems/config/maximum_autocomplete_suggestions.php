@@ -33,8 +33,8 @@ class Hook_config_maximum_autocomplete_suggestions
         return array(
             'human_name' => 'MAXIMUM_AUTOCOMPLETE_SUGGESTIONS',
             'type' => 'integer',
-            'category' => 'FEATURE',
-            'group' => 'SEARCH',
+            'category' => 'SEARCH',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_maximum_autocomplete_suggestions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

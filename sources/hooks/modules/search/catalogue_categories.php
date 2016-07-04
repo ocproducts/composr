@@ -49,7 +49,7 @@ class Hook_search_catalogue_categories extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('CATALOGUE_CATEGORIES');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_catalogue_categories') == '1');
 
         $info['permissions'] = array(
             array(

@@ -49,7 +49,7 @@ class Hook_search_galleries extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('GALLERIES');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_galleries') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_gallery');
 
         $info['permissions'] = array(

@@ -49,7 +49,7 @@ class Hook_search_download_categories extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('DOWNLOAD_CATEGORIES');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_download_categories') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_download_category');
 
         $info['permissions'] = array(

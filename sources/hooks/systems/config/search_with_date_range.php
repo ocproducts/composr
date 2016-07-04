@@ -33,8 +33,8 @@ class Hook_config_search_with_date_range
         return array(
             'human_name' => 'SEARCH_WITH_DATE_RANGE',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'SEARCH',
+            'category' => 'SEARCH',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_search_with_date_range',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

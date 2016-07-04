@@ -42,6 +42,17 @@ class config_lang_strings_test_set extends cms_test_case
         foreach ($options as $option) {
             $test = do_lang($option['human_name'], null, null, null, null, false);
             $this->assertFalse(is_null($test), 'Error on: ' . $option['human_name']);
+
+            /* Actually this is allowed to be missing
+            $test = do_lang($option['explanation'], null, null, null, null, false);
+            $this->assertFalse(is_null($test), 'Error on: ' . $option['explanation']);
+            */
+
+            $test = do_lang('CONFIG_CATEGORY_' . $option['category'], null, null, null, null, false);
+            $this->assertFalse(is_null($test), 'Error on: CONFIG_CATEGORY_' . $option['category']);
+
+            $test = do_lang($option['group'], null, null, null, null, false);
+            $this->assertFalse(is_null($test), 'Error on: ' . $option['group']);
         }
     }
 }

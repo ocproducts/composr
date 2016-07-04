@@ -49,7 +49,7 @@ class Hook_search_downloads extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('SECTION_DOWNLOADS');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_downloads') == '1');
         $info['category'] = 'category_id';
         $info['integer_category'] = true;
         $info['extra_sort_fields'] = array('file_size' => do_lang_tempcode('FILE_SIZE')) + $this->_get_extra_sort_fields('_download');

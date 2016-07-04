@@ -49,7 +49,7 @@ class Hook_search_wiki_pages extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('WIKI_PAGES');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_wiki_pages') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_wiki_page');
 
         $info['permissions'] = array(

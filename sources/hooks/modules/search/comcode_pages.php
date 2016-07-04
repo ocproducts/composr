@@ -35,7 +35,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('PAGES');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_comcode_pages') == '1');
         $info['category'] = 'the_zone';
         $info['integer_category'] = false;
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_comcode_page');

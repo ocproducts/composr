@@ -33,8 +33,8 @@ class Hook_config_search_results_per_page
         return array(
             'human_name' => 'SEARCH_RESULTS_PER_PAGE',
             'type' => 'integer',
-            'category' => 'FEATURE',
-            'group' => 'SEARCH',
+            'category' => 'SEARCH',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_search_results_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

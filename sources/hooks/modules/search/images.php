@@ -49,7 +49,7 @@ class Hook_search_images extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('IMAGES');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_images') == '1');
         $info['category'] = 'cat';
         $info['integer_category'] = false;
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_image');

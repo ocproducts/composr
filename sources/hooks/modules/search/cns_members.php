@@ -43,7 +43,7 @@ class Hook_search_cns_members extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('MEMBERS');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_cns_members') == '1');
         $info['special_on'] = array();
         $info['special_off'] = array();
         $info['user_label'] = do_lang_tempcode('USERNAME');

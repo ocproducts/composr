@@ -53,7 +53,7 @@ class Hook_search_cns_own_pt extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('PRIVATE_TOPICS');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_cns_own_pt') == '1');
         $info['special_on'] = array();
         $info['special_off'] = array('starter' => do_lang_tempcode('POST_SEARCH_STARTER'));
 

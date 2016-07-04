@@ -43,7 +43,7 @@ class Hook_search_iotds extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('IOTD_ARCHIVE');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_iotds') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_iotd');
 
         $info['permissions'] = array(
