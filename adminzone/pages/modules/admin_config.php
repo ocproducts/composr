@@ -396,7 +396,13 @@ class Module_admin_config
         $groups_arr = array();
         require_code('form_templates');
         $_groups = array();
-        foreach ($options as $group_codename => $options_in_group) {
+        foreach ($all_known_groups as $group_codename) {
+            if (!isset($options[$group_codename])) {
+                continue;
+            }
+
+            $options_in_group = $options[$group_codename];
+
             ksort($options_in_group);
 
             $out = '';
