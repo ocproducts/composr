@@ -403,7 +403,7 @@ class Module_admin_config
 
             $options_in_group = $options[$group_codename];
 
-            ksort($options_in_group);
+            sort_maps_by($options_in_group, 'order_in_category_group');
 
             $out = '';
             foreach ($options_in_group as $name => $option) {
