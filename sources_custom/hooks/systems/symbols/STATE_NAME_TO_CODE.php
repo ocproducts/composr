@@ -29,8 +29,8 @@ class Hook_symbol_STATE_NAME_TO_CODE
         $value = '';
 
         if (!empty($param[0])) {
-        	require_code('locations/us');
-        	$value = find_state_code_from_name_US($param[0]);
+            require_code('locations/us');
+            $value = find_state_code_from_name_US($param[0]);
         }
 
         return $value;

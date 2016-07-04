@@ -403,7 +403,18 @@ class Module_admin_config
 
             $options_in_group = $options[$group_codename];
 
-            sort_maps_by($options_in_group, 'order_in_category_group');
+            $all_orders_default = true;
+            foreach ($options_in_group as $name => $option) {
+                if ($option['order_in_category_group'] != 100) {
+                    $all_orders_default = false;
+                }
+                $options_in_group[$name]['human_name_trans'] = do_lang($option['human_name']);
+            }
+            if ($all_orders_default) {
+                sort_maps_by($options_in_group, 'human_name_trans');
+            } else {
+                sort_maps_by($options_in_group, 'order_in_category_group');
+            }
 
             $out = '';
             foreach ($options_in_group as $name => $option) {
