@@ -253,7 +253,18 @@ class Module_catalogues
                 array('PROJECT_PROGRESS', 'DESCRIPTION_PROJECT_PROGRESS', 'integer', 0, 1, '0')
             );
             foreach ($fields as $i => $field) {
-                actual_add_catalogue_field('projects', lang_code_to_default_content('cf_name', $field[0], false, 3), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, $field[5], $field[4]);
+                actual_add_catalogue_field(
+                    'projects', // $c_name
+                    lang_code_to_default_content('cf_name', $field[0], false, 2), // $name
+                    lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
+                    $field[2], // $type
+                    $i, // $order
+                    $field[3], // $defines_order
+                    1, // $visible
+                    1, // $searchable
+                    $field[5], // $default
+                    $field[4] // $required
+                );
             }
             $cat_id = actual_add_catalogue_category('projects', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_PROJECTS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_PROJECTS_DESCRIPTION', true, 3), '', null, '');
             set_global_category_access('catalogues_catalogue', 'projects');
@@ -268,7 +279,19 @@ class Module_catalogues
                 array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1)
             );
             foreach ($fields as $i => $field) {
-                actual_add_catalogue_field('links', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], 1, 1, '', $field[4], $field[5]);
+                actual_add_catalogue_field(
+                    'links', // $c_name
+                    lang_code_to_default_content('cf_name', $field[0], false, 2), // $name
+                    lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
+                    $field[2], // $type
+                    $i, // $order
+                    $field[3], // $defines_order
+                    1, // $visible
+                    1, // $searchable
+                    '', // $default
+                    $field[4], // $required
+                    $field[5] // $put_in_category
+                );
             }
             $cat_id = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'id', array('c_name' => 'links'));
             set_global_category_access('catalogues_catalogue', 'links');
@@ -282,7 +305,21 @@ class Module_catalogues
                 array('ORDER', 'DESCRIPTION_ORDER', 'integer', 1, 0, 0, 'AUTO_INCREMENT')
             );
             foreach ($fields as $i => $field) {
-                    actual_add_catalogue_field('faqs', lang_code_to_default_content('cf_name', $field[0], false, 2), lang_code_to_default_content('cf_description', $field[1], false, 3), $field[2], $i, $field[3], $field[5], 1, $field[4], 1, 1, 1, $field[6]);
+                actual_add_catalogue_field(
+                    'faqs', // $c_name
+                    lang_code_to_default_content('cf_name', $field[0], false, 2), // $name
+                    lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
+                    $field[2], // $type
+                    $i, // $order
+                    $field[3], // $defines_order
+                    $field[5], // $visible
+                    1, // $searchable
+                    '', // $default
+                    $field[4], // $required
+                    1, // $put_in_category
+                    1, // $put_in_search
+                    $field[6] // $options
+                );
             }
             $cat_id = actual_add_catalogue_category('faqs', lang_code_to_default_content('cc_title', 'DEFAULT_CATALOGUE_FAQS_TITLE', false, 2), lang_code_to_default_content('cc_description', 'DEFAULT_CATALOGUE_FAQS_DESCRIPTION', true, 3), '', null, '');
             set_global_category_access('catalogues_catalogue', 'faqs');
@@ -305,7 +342,18 @@ class Module_catalogues
                 array('CONTACT_PHOTO', '', 'picture', 0, 0)
             );
             foreach ($fields as $i => $field) {
-                actual_add_catalogue_field('contacts', lang_code_to_default_content('cf_name', $field[0], false, 3), insert_lang('cf_description', '', 2), $field[2], $i, $field[3], 1, 1, '', $field[4]);
+                actual_add_catalogue_field(
+                    'contacts', // $c_name
+                    lang_code_to_default_content('cf_name', $field[0], false, 2), // $name
+                    insert_lang('cf_description', '', 3), // $description
+                    $field[2], // $type
+                    $i, // $order
+                    $field[3], // $defines_order
+                    1, // $visible
+                    1, // $searchable
+                    '', // $default
+                    $field[4] // $required
+                );
             }
             actual_add_catalogue_category('contacts', lang_code_to_default_content('cc_title', 'CONTACTS', false, 2), '', '', null, '');
 
@@ -326,8 +374,9 @@ class Module_catalogues
                 array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
             );
             foreach ($fields as $i => $field) {
-                actual_add_catalogue_field('products', // $c_name
-                    lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
+                actual_add_catalogue_field(
+                    'products', // $c_name
+                    lang_code_to_default_content('cf_name', $field[0], false, 2), // $name
                     lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
                     ($field[2] == 'tick') ? 'list' : $field[2], // $type
                     $i, // $order
