@@ -436,7 +436,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         javascript_enforce('editing');
     }
 
-    if (class_exists('Self_learning_cache')) {
+    if (class_exists('Self_learning_cache') && $raw_file_regexp === null && $only_templates === array()) {
         Self_learning_cache::erase_smart_cache();
     }
 

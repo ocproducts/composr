@@ -63,7 +63,7 @@ function init__users()
     $DID_CHANGE_SESSION_ID = false;
 
     // Load all sessions into memory, if possible
-    if (get_option('session_prudence') == '0') {
+    if (get_option('session_prudence') == '0' && function_exists('persistent_cache_get')) {
         $SESSION_CACHE = persistent_cache_get('SESSION_CACHE');
     } else {
         $SESSION_CACHE = null;
@@ -87,7 +87,7 @@ function init__users()
         } else {
             $SESSION_CACHE = list_to_map('the_session', $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions' . $where));
         }
-        if (get_option('session_prudence') == '0') {
+        if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
@@ -234,7 +234,7 @@ function get_member($quick_only = false)
                     $GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time()), array('the_session' => $session), '', 1);
                 }
                 $SESSION_CACHE[$session]['last_activity'] = time();
-                if (get_option('session_prudence') == '0') {
+                if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
                     persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
                 }
             }
@@ -505,7 +505,7 @@ function delete_expired_sessions_or_recover($member = null)
         }
     }
     if ($dirty_session_cache) {
-        if (get_option('session_prudence') == '0') {
+        if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }

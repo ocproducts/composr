@@ -133,7 +133,9 @@ function preload_block_internal_caching()
                 $bulk[] = unserialize($param);
             }
 
-            _get_cache_entries($bulk); // Will cache internally so that block loads super-quick
+            if ($GLOBALS['PERSISTENT_CACHE'] === null) {
+                _get_cache_entries($bulk); // Will cache internally so that block loads super-quick
+            }
         }
     }
 }
@@ -841,12 +843,18 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
             if ($ALL_ZONES_TITLED_CACHE === null) {
                 $ALL_ZONES_TITLED_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('ALL_ZONES_TITLED') : null;
             }
+            if (!is_array($ALL_ZONES_TITLED_CACHE)) {
+                $ALL_ZONES_TITLED_CACHE = null; // Cache corruption?
+            }
             if ($ALL_ZONES_TITLED_CACHE !== null) {
                 return $ALL_ZONES_TITLED_CACHE;
             }
         } else {
             if ($ALL_ZONES_CACHE === null) {
                 $ALL_ZONES_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('ALL_ZONES') : null;
+            }
+            if (!is_array($ALL_ZONES_CACHE)) {
+                $ALL_ZONES_CACHE = null; // Cache corruption?
             }
             if ($ALL_ZONES_CACHE !== null) {
                 return $ALL_ZONES_CACHE;
@@ -1450,19 +1458,18 @@ function get_block_info_row($codename, $map)
         if ((is_object($object)) && (method_exists($object, 'caching_environment'))) {
             $info = $object->caching_environment($map);
             if ($info !== null) {
-                $row = array('cached_for' => $codename, 'cache_on' => $info['cache_on'], 'cache_ttl' => $info['ttl']);
+                $special_cache_flags = array_key_exists('special_cache_flags', $info) ? $info['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
+                $row = array(
+                    'cached_for' => $codename,
+                    'cache_on' => $info['cache_on'],
+                    'special_cache_flags' => $special_cache_flags,
+                    'cache_ttl' => $info['ttl'],
+                );
 
                 if (!is_array($info['cache_on'])) {
-                    $special_cache_flags = array_key_exists('special_cache_flags', $info) ? $info['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
-                    $map = array(
-                        'cached_for' => $codename,
-                        'cache_on' => $info['cache_on'],
-                        'special_cache_flags' => $special_cache_flags,
-                        'cache_ttl' => $info['ttl'],
-                    );
-                    $GLOBALS['SITE_DB']->query_insert('cache_on', $map, false, true); // Allow errors in case of race conditions
+                    $GLOBALS['SITE_DB']->query_insert('cache_on', $row, false, true); // Allow errors in case of race conditions
                     global $BLOCK_CACHE_ON_CACHE;
-                    $BLOCK_CACHE_ON_CACHE[$codename] = $map;
+                    $BLOCK_CACHE_ON_CACHE[$codename] = $row;
                     persistent_cache_set('BLOCK_CACHE_ON_CACHE', $BLOCK_CACHE_ON_CACHE);
                 }
             }

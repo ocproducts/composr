@@ -188,7 +188,7 @@ class Self_learning_cache
         $data = persistent_cache_get(array('SELF_LEARNING_CACHE', $this->bucket_name));
         if ($data !== null) {
             $this->data = $data;
-        } else {
+        } elseif (is_file($this->path)) {
             $_data = '';
             $myfile = @fopen($this->path, 'rb');
             if ($myfile !== false) {
@@ -375,6 +375,8 @@ class Self_learning_cache
             closedir($dh);
         }
 
+        erase_persistent_cache();
+
         global $SMART_CACHE;
         if ($SMART_CACHE !== null) {
             $SMART_CACHE->invalidate();
@@ -472,6 +474,12 @@ function persistent_cache_delete($key, $substring = false)
  */
 function erase_persistent_cache()
 {
+    static $done_once = false;
+    if ($done_once) {
+        return;
+    }
+    $done_once = true;
+
     $path = get_custom_file_base() . '/safe_mode_temp';
     if (is_dir($path)) {
         $d = opendir($path);
@@ -605,7 +613,7 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
         $SMART_CACHE->get('blocks_needed', false); // Disable it for this smart-cache bucket, we probably have some block(s) with the cache signature varying too much
     }
 
-    $rets = _get_cache_entries(array($det));
+    $rets = _get_cache_entries(array($det), $special_cache_flags);
     return $rets[0];
 }
 
@@ -613,11 +621,12 @@ function get_cache_entry($codename, $cache_identifier, $special_cache_flags, $tt
  * Ability to do multiple get_cache_entry at once, for performance reasons.
  *
  * @param  array $dets An array of tuples of parameters (as per get_cache_entry, almost)
+ * @param  ?integer $special_cache_flags Special cache flags (null: unknown)
  * @return array Array of results
  *
  * @ignore
  */
-function _get_cache_entries($dets)
+function _get_cache_entries($dets, $special_cache_flags = null)
 {
     static $cache = array();
 
@@ -628,11 +637,11 @@ function _get_cache_entries($dets)
     $rets = array();
 
     require_code('temporal');
-    $staff_status = $GLOBALS['FORUM_DRIVER']->is_staff(get_member());
-    $the_member = get_member();
-    $groups = implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()))));
-    $is_bot = is_null(get_bot_type()) ? 0 : 1;
-    $timezone = get_users_timezone(get_member());
+    $staff_status = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0)) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
+    $member = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_MEMBER) !== 0)) ? get_member() : null;
+    $groups = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_PERMISSIVE_GROUPS) !== 0)) ? implode(',', array_map('strval', filter_group_permissivity($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member())))) : '';
+    $is_bot = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_BOT_STATUS) !== 0)) ? (is_null(get_bot_type()) ? 0 : 1) : null;
+    $timezone = (($special_cache_flags !== null) && (($special_cache_flags & CACHE_AGAINST_TIMEZONE) !== 0)) ? get_users_timezone(get_member()) : '';
 
     // Bulk load
     if ($GLOBALS['PERSISTENT_CACHE'] === null) {
@@ -640,11 +649,31 @@ function _get_cache_entries($dets)
 
         $sql = 'SELECT cached_for,identifier,the_value,date_and_time,dependencies FROM ' . get_table_prefix() . 'cache WHERE ';
         $sql .= db_string_equal_to('the_theme', $GLOBALS['FORUM_DRIVER']->get_theme());
-        $sql .= ' AND (staff_status=' . ($staff_status ? '1' : '0') . ' OR staff_status IS NULL)';
-        $sql .= ' AND (the_member=' . strval($the_member) . ' OR the_member IS NULL)';
-        $sql .= ' AND (' . db_string_equal_to('groups', $groups) . ' OR ' . db_string_equal_to('groups', '') . ')';
-        $sql .= ' AND (is_bot=' . strval($is_bot) . ' OR is_bot IS NULL)';
-        $sql .= ' AND (' . db_string_equal_to('timezone', $timezone) . ' OR ' . db_string_equal_to('timezone', '') . ')';
+        if ($staff_status === null) {
+            $sql .= ' AND staff_status IS NULL';
+        } else {
+            $sql .= ' AND staff_status=' . ($staff_status ? '1' : '0');
+        }
+        if ($member === null) {
+            $sql .= ' AND the_member IS NULL';
+        } else {
+            $sql .= ' AND the_member=' . strval($member);
+        }
+        if ($groups === null) {
+            $sql .= ' AND ' . db_string_equal_to('groups', '');
+        } else {
+            $sql .= ' AND ' . db_string_equal_to('groups', $groups);
+        }
+        if ($is_bot === null) {
+            $sql .= ' AND is_bot IS NULL';
+        } else {
+            $sql .= ' AND is_bot=' . strval($is_bot);
+        }
+        if ($timezone === null) {
+            $sql .= ' AND ' . db_string_equal_to('timezone', '');
+        } else {
+            $sql .= ' AND ' . db_string_equal_to('timezone', $timezone);
+        }
         $sql .= ' AND ' . db_string_equal_to('lang', user_lang());
         $sql .= ' AND (1=0';
         foreach ($dets as $det) {
@@ -678,7 +707,7 @@ function _get_cache_entries($dets)
         if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
             $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $lang = user_lang();
-            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $the_member, $groups, $is_bot, $timezone));
+            $cache_row = persistent_cache_get(array('CACHE', $codename, $md5_cache_identifier, $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone));
 
             if ($cache_row === null) { // No
                 if ($caching_via_cron) {

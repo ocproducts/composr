@@ -658,7 +658,7 @@ class Module_shopping
 
         $orders = array();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('c_member' => $member_id), 'ORDER BY p_name');
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order', array('*'), array('c_member' => $member_id), 'ORDER BY add_date');
 
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {

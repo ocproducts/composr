@@ -725,8 +725,8 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
             $_array_html_preg_replace[$i][0] = str_replace('div', 'p', $x[0]);
             $_array_html_preg_replace[$i][1] = '<p>' . $x[1] . '</p>';
         }
+        $semihtml = array_html_preg_replace('p', $_array_html_preg_replace, $semihtml);
     }
-    $semihtml = array_html_preg_replace('p', $_array_html_preg_replace, $semihtml);
     $array_html_preg_replace = array();
     $array_html_preg_replace[] = array('#^<font>(.*)</font>$#siU', '${1}');
     $array_html_preg_replace[] = array('#^<font ([^>]*)size="(\d+)"([^>]*)>(.*)</font>$#siU', '[font ${1}${3} size="${2}of"]${4}[/font]');

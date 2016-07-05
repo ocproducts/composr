@@ -217,13 +217,13 @@ function upgrade_script()
                         echo do_lang('FU_FILE_UPGRADE_INFO');
                     }
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-                    echo '<label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /> ';
-                    echo '<label for="dry_run">' . do_lang('FU_DRY_RUN') . '</label> <input type="checkbox" id="dry_run" name="dry_run" value="1" /> ';
+                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
+                    echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
-                        echo '<br /><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" />';
+                        echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
                         echo '<script>var url=document.getElementById(\'url\'); url.onchange=function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; };</script>';
                     }
-                    echo '<input class="buttons__proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" />';
+                    echo '<p><input class="buttons__proceed button_screen" type="submit" value="' . do_lang('PROCEED') . '" /></p>';
                     echo '</form>';
                     $show_more_link = false;
                     break;
@@ -416,7 +416,7 @@ function upgrade_script()
                             echo '<p>' . do_lang('FILES') . ':</p>';
                             echo '<ul>';
                             foreach ($data['todo'] as $file) {
-                                echo '<li>' . escape_html($file) . '</li>';
+                                echo '<li>' . escape_html($file[0]) . '</li>';
                             }
                             echo '</ul>';
                         }

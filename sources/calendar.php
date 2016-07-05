@@ -30,6 +30,8 @@ function init__calendar()
     define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL', 2);
     define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE', 2);
     define('DETECT_CONFLICT_SCOPE_ALL', 3);
+
+    require_lang('calendar');
 }
 
 /**
