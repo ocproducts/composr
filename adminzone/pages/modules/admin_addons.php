@@ -423,7 +423,7 @@ class Module_admin_addons
                 $addon_tpl = null;
 
                 if ($do_caching) {
-                    $cache_identifier = $name;
+                    $cache_identifier = $addon['name'];
                     $test = get_cache_entry('_addon_available_tpl', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);
                     if (is_array($test)) {
                         list($colour, $addon_tpl) = $test;
@@ -468,7 +468,7 @@ class Module_admin_addons
                     }
                 }
 
-                $_tpl_addons[$colour][$name] = $addon_tpl;
+                $_tpl_addons[$colour][$addon['name']] = $addon_tpl;
             }
         }
 
@@ -639,7 +639,8 @@ class Module_admin_addons
 
         foreach ($_POST as $key => $passed) {
             if (substr($key, 0, 8) == 'install_') {
-                install_addon($passed);
+                // Files pass
+                install_addon($passed, null, true, false);
             }
 
             if (substr($key, 0, 10) == 'uninstall_') {
@@ -654,6 +655,13 @@ class Module_admin_addons
                 }
 
                 $addons_to_remove[] = $name;
+            }
+        }
+
+        foreach ($_POST as $key => $passed) {
+            if (substr($key, 0, 8) == 'install_') {
+                // DB pass
+                install_addon($passed, null, false, true);
             }
         }
 

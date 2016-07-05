@@ -558,8 +558,10 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
  *
  * @param  string $file Name of the addon TAR file
  * @param  ?array $files The files to install (null: all)
+ * @param  boolean $do_files Do file part
+ * @param  boolean $do_db Do DB part
  */
-function install_addon($file, $files = null)
+function install_addon($file, $files = null, $do_files = true, $do_db = true)
 {
     $full = get_custom_file_base() . '/imports/addons/' . $file;
 
@@ -580,61 +582,67 @@ function install_addon($file, $files = null)
 
     // Extract files
     $directory = tar_get_directory($tar);
-    tar_extract_to_folder($tar, '', true, $files, true);
+    if ($do_files) {
+        tar_extract_to_folder($tar, '', true, $files, true);
+    }
 
     // Install new zones
-    $zones = array('');
-    foreach ($directory as $dir) {
-        $addon_file = $dir['path'];
+    if ($do_db) {
+        $zones = array('');
+        foreach ($directory as $dir) {
+            $addon_file = $dir['path'];
 
-        if ((is_null($files)) || (in_array($addon_file, $files))) {
-            $matches = array();
-            if (preg_match('#(\w*)/index\.php$#', $addon_file, $matches) != 0) {
-                $zone = $matches[1];
+            if ((is_null($files)) || (in_array($addon_file, $files))) {
+                $matches = array();
+                if (preg_match('#(\w*)/index\.php$#', $addon_file, $matches) != 0) {
+                    $zone = $matches[1];
 
-                $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $zone));
-                if (is_null($test)) {
-                    $map = array(
-                        'zone_name' => $zone,
-                        'zone_default_page' => ($zone == 'forum') ? 'forumview' : 'start',
-                        'zone_theme' => '-1',
-                        'zone_require_session' => 0,
-                    );
-                    $map += insert_lang('zone_title', titleify($zone), 1);
-                    $map += insert_lang('zone_header_text', '', 1);
-                    $GLOBALS['SITE_DB']->query_insert('zones', $map);
+                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => $zone));
+                    if (is_null($test)) {
+                        $map = array(
+                            'zone_name' => $zone,
+                            'zone_default_page' => ($zone == 'forum') ? 'forumview' : 'start',
+                            'zone_theme' => '-1',
+                            'zone_require_session' => 0,
+                        );
+                        $map += insert_lang('zone_title', titleify($zone), 1);
+                        $map += insert_lang('zone_header_text', '', 1);
+                        $GLOBALS['SITE_DB']->query_insert('zones', $map);
 
-                    $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
-                    foreach (array_keys($groups) as $group_id) {
-                        $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true);
+                        $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+                        foreach (array_keys($groups) as $group_id) {
+                            $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('zone_name' => $zone, 'group_id' => $group_id), false, true);
+                        }
                     }
-                }
 
-                $zones[] = $zone;
+                    $zones[] = $zone;
+                }
             }
         }
     }
 
     // Install new modules
-    $zones = array_unique(array_merge(find_all_zones(), $zones));
-    if (get_option('collapse_user_zones') == '1') {
-        $zones[] = 'site';
-    }
-    foreach ($zones as $zone) {
-        $prefix = ($zone == '') ? '' : ($zone . '/');
+    if ($do_db) {
+        $zones = array_unique(array_merge(find_all_zones(), $zones));
+        if (get_option('collapse_user_zones') == '1') {
+            $zones[] = 'site';
+        }
+        foreach ($zones as $zone) {
+            $prefix = ($zone == '') ? '' : ($zone . '/');
 
-        foreach ($directory as $dir) {
-            $addon_file = $dir['path'];
-            if (substr(basename($addon_file), 0, 1) == '.') {
-                continue;
-            }
+            foreach ($directory as $dir) {
+                $addon_file = $dir['path'];
+                if (substr(basename($addon_file), 0, 1) == '.') {
+                    continue;
+                }
 
-            if ((is_null($files)) || (in_array($addon_file, $files))) {
-                if (preg_match('#^' . $prefix . 'pages/(modules|modules_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
-                    if (!module_installed($matches[2])) {
-                        reinstall_module($zone, $matches[2]);
-                    } else {
-                        upgrade_module($zone, $matches[2]);
+                if ((is_null($files)) || (in_array($addon_file, $files))) {
+                    if (preg_match('#^' . $prefix . 'pages/(modules|modules_custom)/([^/]*)\.php$#', $addon_file, $matches) != 0) {
+                        if (!module_installed($matches[2])) {
+                            reinstall_module($zone, $matches[2]);
+                        } else {
+                            upgrade_module($zone, $matches[2]);
+                        }
                     }
                 }
             }
@@ -642,44 +650,48 @@ function install_addon($file, $files = null)
     }
 
     // Install new blocks
-    foreach ($directory as $dir) {
-        $addon_file = $dir['path'];
-        if (substr(basename($addon_file), 0, 1) == '.') {
-            continue;
-        }
+    if ($do_db) {
+        foreach ($directory as $dir) {
+            $addon_file = $dir['path'];
+            if (substr(basename($addon_file), 0, 1) == '.') {
+                continue;
+            }
 
-        if ((is_null($files)) || (in_array($addon_file, $files))) {
-            if (preg_match('#^(sources|sources\_custom)/blocks/([^/]*)\.php$#', $addon_file, $matches) != 0) {
-                if (!block_installed($matches[2])) {
-                    reinstall_block($matches[2]);
-                } else {
-                    upgrade_block($matches[2]);
+            if ((is_null($files)) || (in_array($addon_file, $files))) {
+                if (preg_match('#^(sources|sources\_custom)/blocks/([^/]*)\.php$#', $addon_file, $matches) != 0) {
+                    if (!block_installed($matches[2])) {
+                        reinstall_block($matches[2]);
+                    } else {
+                        upgrade_block($matches[2]);
+                    }
                 }
             }
         }
     }
 
     // Install addon itself
-    $_files = array();
-    foreach ($directory as $dir) {
-        $addon_file = $dir['path'];
-        if ($addon_file == 'addon.inf') {
-            continue;
+    if ($do_db) {
+        $_files = array();
+        foreach ($directory as $dir) {
+            $addon_file = $dir['path'];
+            if ($addon_file == 'addon.inf') {
+                continue;
+            }
+            if ($addon_file == 'addon.php') {
+                continue;
+            }
+            if (substr($addon_file, -1) == '/') {
+                continue;
+            }
+            if ((is_null($files)) || (in_array($addon_file, $files))) {
+                $_files[] = $addon_file;
+            }
         }
-        if ($addon_file == 'addon.php') {
-            continue;
+        if (!$was_already_installed) {
+            reinstall_addon_soft($addon, $info + array('files' => $_files));
+        } else {
+            upgrade_addon_soft($addon);
         }
-        if (substr($addon_file, -1) == '/') {
-            continue;
-        }
-        if ((is_null($files)) || (in_array($addon_file, $files))) {
-            $_files[] = $addon_file;
-        }
-    }
-    if (!$was_already_installed) {
-        reinstall_addon_soft($addon, $info + array('files' => $_files));
-    } else {
-        upgrade_addon_soft($addon);
     }
 
     // Clear some caching
@@ -699,18 +711,20 @@ function install_addon($file, $files = null)
     erase_cached_language();
 
     // Load addon_install_code.php if it exists
-    $_modphp_file = tar_get_file($tar, 'addon_install_code.php');
-    if (!is_null($_modphp_file)) {
-        $modphp_file = trim($_modphp_file['data']);
+    if ($do_db) {
+        $_modphp_file = tar_get_file($tar, 'addon_install_code.php');
+        if (!is_null($_modphp_file)) {
+            $modphp_file = trim($_modphp_file['data']);
 
-        if (substr($modphp_file, 0, 5) == '<' . '?php') {
-            $modphp_file = substr($modphp_file, 5);
-        }
-        if (substr($modphp_file, -2) == '?' . '>') {
-            $modphp_file = substr($modphp_file, 0, strlen($modphp_file) - 2);
-        }
-        if (eval($modphp_file) === false) {
-            fatal_exit(@strval($php_errormsg));
+            if (substr($modphp_file, 0, 5) == '<' . '?php') {
+                $modphp_file = substr($modphp_file, 5);
+            }
+            if (substr($modphp_file, -2) == '?' . '>') {
+                $modphp_file = substr($modphp_file, 0, strlen($modphp_file) - 2);
+            }
+            if (eval($modphp_file) === false) {
+                fatal_exit(@strval($php_errormsg));
+            }
         }
     }
 

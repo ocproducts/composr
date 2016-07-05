@@ -218,6 +218,7 @@ function upgrade_script()
                     }
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
                     echo '<label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /> ';
+                    echo '<label for="dry_run">' . do_lang('FU_DRY_RUN') . '</label> <input type="checkbox" id="dry_run" name="dry_run" value="1" /> ';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
                         echo '<br /><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" />';
                         echo '<script>var url=document.getElementById(\'url\'); url.onchange=function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; };</script>';
@@ -229,6 +230,11 @@ function upgrade_script()
 
                 case '_file_upgrade':
                     appengine_live_guard();
+
+                    $dry_run = (post_param_integer('dry_run', 0) == 1);
+                    if ($dry_run) {
+                        echo '<p>' . do_lang('FU_DOING_DRY_RUN') . '</p>';
+                    }
 
                     require_code('tar');
                     if (php_function_allowed('set_time_limit')) {
@@ -302,7 +308,9 @@ function upgrade_script()
                                     $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
                                 } else {
                                     $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                    afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
+                                    if (!$dry_run) {
+                                        afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
+                                    }
                                     echo do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                                 }
                             }
@@ -326,16 +334,20 @@ function upgrade_script()
                             //  - it's a file in an addon we have installed
                             if ((is_null($found)) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
-                                    afm_make_directory($upgrade_file['path'], false, true);
+                                    if (!$dry_run) {
+                                        afm_make_directory($upgrade_file['path'], false, true);
+                                    }
                                 } else {
                                     if ($popup_simple_extract) {
                                         $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
                                     } else {
                                         $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                        if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
-                                            afm_make_directory(dirname($upgrade_file['path']), false, true);
+                                        if (!$dry_run) {
+                                            if (!file_exists(get_file_base() . '/' . dirname($upgrade_file['path']))) {
+                                                afm_make_directory(dirname($upgrade_file['path']), false, true);
+                                            }
+                                            afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
                                         }
-                                        afm_make_file($upgrade_file['path'], $file_data['data'], ($file_data['mode'] & 0002) != 0);
 
                                         echo do_lang('U_EXTRACTING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
                                     }
@@ -345,26 +357,30 @@ function upgrade_script()
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 // If true: We need to copy it into our archived addon so that addon is kept up-to-date
                                 if ((!is_null($found)) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
-                                    $old_mod_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
-                                    $new_mod_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
-                                    $directory2 = tar_get_directory($old_mod_file, true);
+                                    $old_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
+                                    $new_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
+                                    $directory2 = tar_get_directory($old_addon_file, true);
                                     if (!is_null($directory2)) {
                                         foreach ($directory2 as $d) {
                                             if ($d['path'] == $upgrade_file['path']) {
                                                 continue;
                                             }
-                                            $file_data = tar_get_file($old_mod_file, $d['path']);
+                                            $file_data = tar_get_file($old_addon_file, $d['path']);
                                             if ($d['path'] == 'addon.inf') {
                                                 $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
                                             }
-                                            tar_add_file($new_mod_file, $d['path'], $file_data['data'], $d['mode'], $d['mtime']);
+                                            tar_add_file($new_addon_file, $d['path'], $file_data['data'], $d['mode'], $d['mtime']);
                                         }
                                         $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                        tar_add_file($new_mod_file, $upgrade_file['path'], $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
-                                        tar_close($new_mod_file);
-                                        tar_close($old_mod_file);
-                                        unlink(get_file_base() . '/imports/addons/' . $found . '.tar');
-                                        rename(get_file_base() . '/imports/addons/' . $found . '.new.tar', get_file_base() . '/imports/addons/' . $found . '.tar');
+                                        tar_add_file($new_addon_file, $upgrade_file['path'], $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
+                                        tar_close($new_addon_file);
+                                        tar_close($old_addon_file);
+                                        if (!$dry_run) {
+                                            unlink(get_file_base() . '/imports/addons/' . $found . '.tar');
+                                            rename(get_file_base() . '/imports/addons/' . $found . '.new.tar', get_file_base() . '/imports/addons/' . $found . '.tar');
+                                        } else {
+                                            unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
+                                        }
                                         sync_file('imports/addons/' . $found . '.tar');
 
                                         echo do_lang('U_PACKING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
@@ -392,9 +408,18 @@ function upgrade_script()
                             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
                             unset($GLOBALS['SITE_INFO']['admin_password']);
                         }
-                        $extract_url = get_base_url() . '/data/upgrader2.php?hashed_password=' . urlencode($SITE_INFO['master_password']) . '&tmp_path=' . urlencode($temp_path) . '&file_offset=0&tmp_data_path=' . urlencode($tmp_data_path) . '&done=' . urlencode(do_lang('DONE'));
-                        echo '<p>' . do_lang('FU_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
-                        echo '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
+                        if (!$dry_run) {
+                            $extract_url = get_base_url() . '/data/upgrader2.php?hashed_password=' . urlencode($SITE_INFO['master_password']) . '&tmp_path=' . urlencode($temp_path) . '&file_offset=0&tmp_data_path=' . urlencode($tmp_data_path) . '&done=' . urlencode(do_lang('DONE'));
+                            echo '<p>' . do_lang('FU_EXTRACTING_WINDOW', integer_format(count($data['todo']))) . '</p>';
+                            echo '<iframe frameBorder="0" style="width: 100%; height: 400px" src="' . escape_html($extract_url) . '"></iframe>';
+                        } else {
+                            echo '<p>' . do_lang('FILES') . ':</p>';
+                            echo '<ul>';
+                            foreach ($data['todo'] as $file) {
+                                echo '<li>' . escape_html($file) . '</li>';
+                            }
+                            echo '</ul>';
+                        }
                     } else {
                         echo '<p>' . do_lang('SUCCESS') . '</p>';
                         @unlink($temp_path);

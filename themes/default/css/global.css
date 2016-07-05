@@ -2017,11 +2017,11 @@ table.scrollable_inside {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0 {
+table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_zebra_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1 {
+table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_background} !important;
 	color: {$GET,slightly_seeded_text};
 }

@@ -140,7 +140,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
                 $next_name = fread($myfile, $size);
                 fseek($myfile, $block_size - $size, SEEK_CUR);
             } else {
-                if ((strpos($path, '._') !== false) && (substr(basename($path), 0, 2) != '._')) {
+                if ((strpos($path, '._')  === false) && (substr(basename($path), 0, 2) != '._')) {
                     $directory[$offset] = array('path' => $path, 'mode' => $mode, 'size' => $size, 'mtime' => $mtime);
                 }
                 $next_name = null;
