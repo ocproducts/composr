@@ -423,8 +423,10 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function bounce_filter_c()
     {
-        require_code('mail2');
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
 
+        require_code('mail2');
         require_code('form_templates');
 
         $username = post_param_string('username');
@@ -450,7 +452,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
             if (array_key_exists($email, $all_subscribers)) {
                 $tick = form_input_tick($email, $subject . '.', 'email_' . strval($num), $is_bounce, null, $email);
-                $fields .= $tick->evaluate(); // HTMLHTML
+                $fields .= $tick->evaluate(); // XHTMLXHTML
                 //$fields->attach($tick);
 
                 $i++;
@@ -465,7 +467,18 @@ class Module_admin_newsletter extends Standard_crud_module
         $post_url = get_self_url();
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'bounce_filter_d'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => 'a517b87e2080204262d0bcf7fcebdf99', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => build_keep_post_fields(), 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('BOUNCE_WHICH'), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'a517b87e2080204262d0bcf7fcebdf99',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => build_keep_post_fields(),
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('BOUNCE_WHICH'),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'MODSECURITY_WORKAROUND' => true,
+        ));
     }
 
     /**
@@ -475,6 +488,9 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function bounce_filter_d()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $title = get_screen_title('BOUNCE_FILTER');
 
         require_code('input_filter_2');
@@ -888,7 +904,9 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $text = do_lang_tempcode('SELECT_CATEGORIES_WANTED');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'bacc372b7338d8e1103facc05ae4598f', 'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'bacc372b7338d8e1103facc05ae4598f',
+            'SKIP_WEBSTANDARDS' => true,
             'HIDDEN' => $hidden,
             'TITLE' => $this->title,
             'TEXT' => $text,
@@ -1678,7 +1696,7 @@ class Module_admin_newsletter extends Standard_crud_module
     {
         $id = get_param_integer('id');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $id));
+        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_archive', array('*'), array('id' => $id), '', 1);
 
         $time = get_timezoned_date($rows[0]['date_and_time']);
         $subject = $rows[0]['subject'];

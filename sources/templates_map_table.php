@@ -54,5 +54,5 @@ function map_table_field($name, $value, $raw = false, $abbr = '') // Not for use
     if ($raw) {
         $value = protect_from_escaping($value);
     }
-    return do_template('MAP_TABLE_FIELD', array('ABBR' => $abbr, 'NAME' => $name, 'VALUE' => $value));
+    return do_template('MAP_TABLE_FIELD', array('_GUID' => '7cd6e583cac2dacc99e3185419d67930', 'ABBR' => $abbr, 'NAME' => $name, 'VALUE' => $value));
 }

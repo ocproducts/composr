@@ -159,8 +159,8 @@ class Module_admin_stats
             'clear' => array('CLEAR_STATISTICS', 'menu/adminzone/audit/statistics/clear_stats'),
         );
 
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test == 0) {
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($test !== null) {
             $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
         }
 
@@ -356,8 +356,8 @@ class Module_admin_stats
             }
         }
 
-        $test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($test == 0) {
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($test !== null) {
             $actions[] = array('menu/adminzone/audit/statistics/geolocate', array('_SELF', array('type' => 'install_data'), '_SELF'), do_lang('INSTALL_GEOLOCATION_DATA'), 'DOC_INSTALL_GEOLOCATION_DATA');
         }
 
@@ -1312,8 +1312,8 @@ class Module_admin_stats
         //************************************************************************************************
         // Regionalities
         //************************************************************************************************
-        $regionalities_test = $GLOBALS['SITE_DB']->query_select_value('ip_country', 'COUNT(*)');
-        if ($regionalities_test > 0) {
+        $regionalities_test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
+        if ($regionalities_test !== null) {
             $start = get_param_integer('start_regionalities', 0);
             $max = get_param_integer('max_regionalities', 15);
             $sortables = array('ip' => do_lang_tempcode('REGIONALITY'));

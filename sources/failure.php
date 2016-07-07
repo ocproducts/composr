@@ -156,7 +156,7 @@ function _param_invalid($name, $ret, $posted)
     require_code('lang');
     require_code('tempcode');
 
-    if (!url_monikers_enabled() && $name == 'id') {
+    if (function_exists('url_monikers_enabled') && !url_monikers_enabled() && $name == 'id') {
         warn_exit(do_lang_tempcode('javascript:NOT_INTEGER_URL_MONIKERS')); // Complaining about non-integers is just confusing
     }
 
@@ -661,7 +661,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
         }
         if ((!$is_se) && (($alt_ip ? $ip2 : $ip) != '127.0.0.1')) {
-            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip));
+            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip), 'ORDER BY date_and_time');
             $rows[] = $new_row;
             $summary = '[list]';
             $is_spammer = false;
@@ -1006,7 +1006,7 @@ function _fatal_exit($text, $return = false)
         if (!may_see_stack_dumps()) {
             $trace = get_html_trace();
         }
-        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . '[html]' . $trace->evaluate() . '[/html]');
+        relay_error_notification((is_object($text) ? $text->evaluate() : $text) . $trace->evaluate());
     }
 
     if (!$return) {

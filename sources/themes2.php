@@ -311,10 +311,6 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         }
     }
 
-    if ((substr($type, 0, 4) == 'cns_') && (file_exists(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs
-        $type = substr($type, 4);
-    }
-
     require_code('uploads');
     is_plupload(true);
     if (((array_key_exists($field_file, $_FILES)) && ((is_plupload()) || (is_uploaded_file($_FILES[$field_file]['tmp_name']))))) {
@@ -357,12 +353,6 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
  */
 function post_param_image($name = 'image', $upload_to = null, $theme_image_type = null, $required = true, $is_edit = false, &$filename = null, &$thumb_url = null)
 {
-    if (!is_null($theme_image_type)) {
-        if ((substr($theme_image_type, 0, 4) == 'cns_') && (file_exists(get_file_base() . '/themes/default/images/avatars/index.html'))) { // Allow debranding of theme img dirs
-            $theme_image_type = substr($theme_image_type, 4);
-        }
-    }
-
     $thumb_specify_name = $name . '__thumb__url';
     $test = post_param_string($thumb_specify_name, '');
     if ($test == '') {
@@ -542,11 +532,23 @@ function find_images_do_dir($theme, $subdir, $langs)
  */
 function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = null, $dirs_only = false, $db_only = false, $skip = null)
 {
-    global $THEME_IMAGES_CACHE;
-
     if (is_null($db)) {
         $db = $GLOBALS['SITE_DB'];
     }
+
+    static $cache = array();
+    $cache_sig = serialize(array($type, $recurse, $theme, $dirs_only, $db_only, $skip));
+    if ($db === $GLOBALS['SITE_DB']) {
+        if (isset($cache[$cache_sig])) {
+            return $cache[$cache_sig];
+        }
+    }
+
+    require_code('images');
+    require_code('files');
+
+    global $THEME_IMAGES_CACHE;
+
     if (is_null($theme)) {
         $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
     }
@@ -619,7 +621,13 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     }
     sort($ids);
 
-    return array_unique($ids);
+    $ret = array_unique($ids);
+
+    if ($db === $GLOBALS['SITE_DB']) {
+        $cache[$cache_sig] = $ret;
+    }
+
+    return $ret;
 }
 
 /**
@@ -636,8 +644,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
  */
 function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip)
 {
-    require_code('images');
-    require_code('files');
+    $has_skip = ($skip !== array());
 
     $_dir = @opendir($dir);
     if ($_dir !== false) {
@@ -645,26 +652,35 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
             if ($file[0] == '.' || $file == 'index.html') {
                 continue; // Optimisation, so no need for should_ignore_file call
             }
-            if (in_array($file, $skip)) {
+            if ($has_skip && in_array($file, $skip)) {
                 continue;
             }
 
-            if ((preg_match('#^[\w\-]+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
-                if (!is_dir($dir . '/' . $file)) {
-                    if (!$dirs_only) {
+            $path = $dir . (($dir != '') ? '/' : '') . $file;
+            $is_dir = is_dir($path);
+
+            if ($is_dir) {
+                if (($recurse) && (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) && ((strlen($file) != 2) || (strtoupper($file) != $file))) {
+                    $type_path = $type . (($type != '') ? '/' : '');
+
+                    if ($dirs_only) {
+                        $ids[] = $type_path . $file;
+                    }
+                    _get_all_image_ids_type($ids, $path, $type_path . $file, true, $dirs_only, $skip);
+                }
+            } else {
+                if (!$dirs_only) {
+                    if ((preg_match('#^[\w\-]+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
+                        $type_path = $type . (($type != '') ? '/' : '');
+
                         $dot_pos = strrpos($file, '.');
                         if ($dot_pos === false) {
                             $dot_pos = strlen($file);
                         }
                         if (is_image($file)) {
-                            $ids[] = $type . (($type != '') ? '/' : '') . substr($file, 0, $dot_pos);
+                            $ids[] = $type_path . substr($file, 0, $dot_pos);
                         }
                     }
-                } elseif (($recurse) && ((strlen($file) != 2) || (strtoupper($file) != $file))) {
-                    if ($dirs_only) {
-                        $ids[] = $type . (($type != '') ? '/' : '') . $file;
-                    }
-                    _get_all_image_ids_type($ids, $dir . (($dir != '') ? '/' : '') . $file, $type . (($type != '') ? '/' : '') . $file, true, $dirs_only, $skip);
                 }
             }
         }

@@ -12,7 +12,7 @@
 
 */
 
-/*EXTRA FUNCTIONS: shell_exec|fsockopen*/
+/*EXTRA FUNCTIONS: shell_exec|fsockopen|ctype_xdigit*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
@@ -78,23 +78,36 @@ function init__files2()
  *
  * @param string $func Function to call
  * @param array $args Arguments to call with
- * @return mixed The function result
+ * @param ?integer $timeout Timeout in minutes (null: no timeout)
+ * @return mixed The function result OR for http_download_file calls a tuple of result details
  */
-function cache_and_carry($func, $args)
+function cache_and_carry($func, $args, $timeout = null)
 {
     global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
+
+    $ret = mixed();
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
     if (!file_exists(dirname($path))) {
         mkdir(dirname($path), 0777);
         fix_permissions(dirname($path));
     }
-    if (is_file($path)) {
-        $ret = @unserialize(file_get_contents($path));
+    if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
+        $_ret = file_get_contents($path);
+        if ($func == 'http_download_file') {
+            $ret = @unserialize($_ret);
+        } else {
+            $ret = $_ret;
+        }
     } else {
-        $ret = call_user_func_array($func, $args);
-        $tmp = array($ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
-        file_put_contents($path, serialize($tmp), LOCK_EX);
+        $_ret = call_user_func_array($func, $args);
+        if ($func == 'http_download_file') {
+            $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
+            file_put_contents($path, serialize($ret), LOCK_EX);
+        } else {
+            $ret = $_ret;
+            file_put_contents($path, $ret, LOCK_EX);
+        }
         fix_permissions($path);
         sync_file($path);
     }
@@ -876,6 +889,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     $HTTP_FILENAME = null;
 
+    static $has_ctype_xdigit = null;
+    if ($has_ctype_xdigit === null) {
+        $has_ctype_xdigit = function_exists('ctype_xdigit');
+    }
+
     // Prevent DOS loop attack
     if (cms_srv('HTTP_USER_AGENT') == $ua) {
         $ua = 'Composr-recurse';
@@ -974,7 +992,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $HTTP_FILENAME = basename($file_path);
             }
 
-            if (!is_null($byte_limit)) {
+            if ($byte_limit !== null) {
                 $contents = substr($contents, 0, $byte_limit);
             }
 
@@ -1255,7 +1273,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
                                                 }
                                             }
-                                            if (!is_null($byte_limit)) {
+                                            if ($byte_limit !== null) {
                                                 curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
                                             }
                                             $line = curl_exec($ch);
@@ -1465,7 +1483,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $chunked = false;
         $buffer_unprocessed = '';
         while (($chunked) || (!@feof($mysock))) { // @'d because socket might have died. If so fread will will return false and hence we'll break
-            $line = @fread($mysock, (($chunked) && (strlen($buffer_unprocessed) > 10)) ? 10 : 1024);
+            $line = @fread($mysock, 32000);
             if ($line === false) {
                 if ((!$chunked) || ($buffer_unprocessed == '')) {
                     break;
@@ -1473,7 +1491,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $line = '';
             }
             if ($line == '') {
-                if (!is_null($first_fail_time)) {
+                if ($first_fail_time !== null) {
                     if ($first_fail_time < time() - 5) {
                         break;
                     }
@@ -1488,31 +1506,62 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $buffer_unprocessed = '';
 
                 if ($chunked) {
-                    $matches = array();
-                    if (preg_match('#^(\r\n)?([a-f\d]+) *(;[^\r\n]*)?\r\n(.*)$#is', $line, $matches) != 0) {
-                        $amount_wanted = hexdec($matches[2]);
-                        if (strlen($matches[4]) < $amount_wanted) { // Chunk was more than what we grabbed, so we need to iterate more to parse
-                            $buffer_unprocessed = $line;
-                            continue;
+                    if (isset($line[1]) && $line[0] == "\r" && $line[1] == "\n") {
+                        $line = substr($line, 2);
+                    }
+
+                    $hexdec_chunk_details = '';
+                    $chunk_line_length = strlen($line);
+                    for ($hexdec_read = 0; $hexdec_read < $chunk_line_length; $hexdec_read++) {
+                        $chunk_char = $line[$hexdec_read];
+                        if ($chunk_char == "\r") {
+                            $chunk_char_is_hex = false;
+                        } else {
+                            if ($has_ctype_xdigit) {
+                                $chunk_char_is_hex = ctype_xdigit($chunk_char);
+                            } else {
+                                $chunk_char_ord = ord($chunk_char);
+                                $chunk_char_is_hex = ($chunk_char_ord >= 48 && $chunk_char_ord <= 57 || $chunk_char_ord >= 65 && $chunk_char_ord <= 90 || $chunk_char_ord >= 97 && $chunk_char_ord <= 122);
+                            }
                         }
-                        $buffer_unprocessed = substr($matches[4], $amount_wanted); // May be some more extra read
-                        $line = substr($matches[4], 0, $amount_wanted);
-                        if ($line == '') {
+                        if ($chunk_char_is_hex) {
+                            $hexdec_chunk_details .= $chunk_char;
+                        } else {
                             break;
                         }
-                    } else {
-                        // Should not happen :S
                     }
+                    if ($hexdec_chunk_details == '') { // No data
+                        continue;
+                    }
+                    $chunk_end_pos = strpos($line, "\r\n");
+                    if ($chunk_end_pos === false) {
+                        $buffer_unprocessed = $line;
+                        continue;
+                    }
+                    $amount_wanted = hexdec($hexdec_chunk_details);
+                    $amount_available = $chunk_line_length - ($chunk_end_pos + 2);
+                    if ($amount_available < $amount_wanted) { // Chunk was more than what we grabbed, so we need to iterate more (more fread) to parse
+                        $buffer_unprocessed = $line;
+                        continue;
+                    }
+                    $buffer_unprocessed = substr($line, $chunk_end_pos + 2 + $amount_wanted); // May be some more extra read
+                    $line = substr($line, $chunk_end_pos + 2, $amount_wanted);
+                    if ($line == '') {
+                        break; // Terminating chunk
+                    }
+
+                    $input_len += $amount_wanted;
+                } else {
+                    $input_len += strlen($line);
                 }
 
-                if (is_null($write_to_file)) {
+                if ($write_to_file === null) {
                     $input .= $line;
                 } else {
                     fwrite($write_to_file, $line);
                 }
-                $input_len += strlen($line);
 
-                if ((!is_null($byte_limit)) && ($input_len >= $byte_limit)) {
+                if (($byte_limit !== null) && ($input_len >= $byte_limit)) {
                     $input = substr($input, 0, $byte_limit);
                     break;
                 }
@@ -1686,13 +1735,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         // Process any non-chunked extra buffer (chunked would have been handled in main loop)
         if (!$chunked) {
             if ($buffer_unprocessed != '') {
-                if (is_null($write_to_file)) {
+                if ($write_to_file === null) {
                     $input .= $buffer_unprocessed;
                 } else {
                     fwrite($write_to_file, $buffer_unprocessed);
                 }
                 $input_len += strlen($buffer_unprocessed);
-                if ((!is_null($byte_limit)) && ($input_len >= $byte_limit)) {
+                if (($byte_limit !== null) && ($input_len >= $byte_limit)) {
                     $input = substr($input, 0, $byte_limit);
                 }
             }
@@ -1720,7 +1769,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             return null;
         }
         $size_expected = $HTTP_DOWNLOAD_SIZE;
-        if (!is_null($byte_limit)) {
+        if ($byte_limit !== null) {
             if ($byte_limit < $HTTP_DOWNLOAD_SIZE) {
                 $size_expected = $byte_limit;
             }
@@ -1788,13 +1837,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $context = stream_context_create(array('http' => $opts));
             $php_errormsg = mixed();
-            if ((is_null($byte_limit)) && (is_null($write_to_file))) {
+            if (($byte_limit === null) && (is_null($write_to_file))) {
                 $read_file = @file_get_contents($_url, false, $context);
             } else {
                 $_read_file = @fopen($_url, 'rb', false, $context);
                 if ($_read_file !== false) {
                     $read_file = '';
-                    while ((!feof($_read_file)) && ((is_null($byte_limit)) || (strlen($read_file) < $byte_limit))) {
+                    while ((!feof($_read_file)) && (($byte_limit === null) || (strlen($read_file) < $byte_limit))) {
                         $read_file .= fread($_read_file, 1024);
                         if (!is_null($write_to_file)) {
                             fwrite($write_to_file, $read_file);
@@ -1806,7 +1855,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                     $read_file = false;
                 }
             }
-            if ((!is_null($byte_limit)) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
+            if (($byte_limit !== null) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
                 $read_file = substr($read_file, 0, $byte_limit);
             }
             safe_ini_set('allow_url_fopen', '0');

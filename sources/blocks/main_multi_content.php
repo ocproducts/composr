@@ -191,8 +191,7 @@ class Block_main_multi_content
 
         $submit_url = $info['add_url'];
         if ($submit_url !== null) {
-            list($submit_url_zone, $submit_url_map, $submit_url_hash) = page_link_decode($submit_url);
-            $submit_url = static_evaluate_tempcode(build_url($submit_url_map, $submit_url_zone, null, false, false, false, $submit_url_hash));
+            $submit_url = page_link_to_url($submit_url);
         } else {
             $submit_url = '';
         }
@@ -222,6 +221,11 @@ class Block_main_multi_content
         } else {
             $category_type_access = mixed();
             $category_type_select = mixed();
+        }
+
+        // Actually for categories we check access on category ID
+        if ($info['is_category'] && $category_type_access !== null) {
+            $category_field_access = $info['id_field'];
         }
 
         $where = '1=1';
@@ -595,8 +599,7 @@ class Block_main_multi_content
         // Move towards render...
 
         if ($info['archive_url'] !== null) {
-            list($archive_url_zone, $archive_url_map, $archive_url_hash) = page_link_decode($info['archive_url']);
-            $archive_url = build_url($archive_url_map, $archive_url_zone, null, false, false, false, $archive_url_hash);
+            $archive_url = page_link_to_tempcode_url($info['archive_url']);
         } else {
             $archive_url = new Tempcode();
         }

@@ -9,7 +9,7 @@
 		</h3>
 
 		<div class="toggleable_tray">
-			<form title="{$STRIP_TAGS,{TITLE}}" method="post" action="{URL*}">
+			<form title="{$STRIP_TAGS,{TITLE}}" method="post" action="{URL*}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="accessibility_hidden"><label for="n_block_{TITLE|}">{!NOTES}</label></div>

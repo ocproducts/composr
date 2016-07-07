@@ -5,7 +5,7 @@
 	<nav>
 		<ul class="actions_list">
 			<li>
-				<form title="{!LOAD} {$STRIP_TAGS,{TITLE|}}" action="#" method="post" class="inline" id="saved_use__{TITLE|}">
+				<form title="{!LOAD} {$STRIP_TAGS,{TITLE|}}" action="#" method="post" class="inline" id="saved_use__{TITLE|}" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div class="inline">

@@ -197,6 +197,19 @@ function _comcode_callback($matches)
 }
 
 /**
+ * Pass tag through semihtml_to_comcode. Callback for preg_replace_callback.
+ *
+ * @param  array $matches Matches
+ * @return string Replacement
+ *
+ * @ignore
+ */
+function _semihtml_to_comcode_callback($matches)
+{
+    return semihtml_to_comcode($matches[1], true, true);
+}
+
+/**
  * Make some Comcode more readable.
  *
  * @param  string $message_plain Comcode text to change
@@ -214,43 +227,47 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
 
     // Very simple case
     if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {
-        return $message_plain;
+        return trim($message_plain);
     }
 
     // Strip resource loader
-    $message_plain = preg_replace('#\[require_css(\s[^"\[\]]*)?\][^\[\]]*\[/require_css\]#', '', $message_plain);
-    $message_plain = preg_replace('#\[require_javascript(\s[^"\[\]]*)?\][^\[\]]*\[/require_javascript\]#', '', $message_plain);
+    if (stripos($message_plain, '[require') !== false) {
+        $message_plain = preg_replace('#\[require_css(\s[^"\[\]]*)?\][^\[\]]*\[/require_css\]#', '', $message_plain);
+        $message_plain = preg_replace('#\[require_javascript(\s[^"\[\]]*)?\][^\[\]]*\[/require_javascript\]#', '', $message_plain);
+    }
 
     // If it is just HTML encapsulated in Comcode, force our best HTML to text conversion first
-    $match = array();
-    if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
-        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Usi", $message_plain, $match) != 0) {
+    if (stripos($message_plain, 'html]') !== false) {
+        $match = array();
+        if ((substr($message_plain, 0, 10) == '[semihtml]') && (substr(trim($message_plain), -11) == '[/semihtml]')) {
             require_code('comcode_from_html');
-            $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
+            $message_plain = comcode_preg_replace('semihtml', '#^\[semihtml\](.*)\[\/semihtml\]$#si', array('_semihtml_to_comcode_callback'), $message_plain);
         }
-    }
-    if ((substr($message_plain, 0, 6) == '[html]') && (substr(trim($message_plain), -7) == '[/html]')) {
-        if (preg_match("#\[html\](.*)\[\/html\]#Usi", $message_plain, $match) != 0) {
+        if ((substr($message_plain, 0, 6) == '[html]') && (substr(trim($message_plain), -7) == '[/html]')) {
             require_code('comcode_from_html');
-            $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
+            $message_plain = comcode_preg_replace('html', '#^\[html\](.*)\[\/html\]$#si', array('_semihtml_to_comcode_callback'), $message_plain);
         }
     }
 
     // Now is a very simple case (after we converted HTML to Comcode)
     if ((strpos($message_plain, '[') === false) && (strpos($message_plain, '{') === false)) {
-        return $message_plain;
+        return trim($message_plain);
     }
 
     require_code('tempcode_compiler');
     if ((strpos($message_plain, '[code') === false) && (strpos($message_plain, '[no_parse') === false) && (strpos($message_plain, '[tt') === false)) {
         // Change username links to plain username namings
-        $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
+        if (stripos($message_plain, '{{') !== false) {
+            $message_plain = preg_replace('#\{\{([^\}\{]*)\}\}#', '\1', $message_plain);
+        }
 
-        // Remove directives etc
-        do {
-            $before = $message_plain;
-            $message_plain = preg_replace('#\{([^\}\{]*)\}#', '', $message_plain);
-        } while ($message_plain != $before);
+        if (stripos($message_plain, '{') !== false) {
+            // Remove directives etc
+            do {
+                $before = $message_plain;
+                $message_plain = preg_replace('#\{([^\}\{]*)\}#', '', $message_plain);
+            } while ($message_plain != $before);
+        }
 
         if (strpos($message_plain, '{') !== false) {
             $message_plain = static_evaluate_tempcode(template_to_tempcode($message_plain, 0, false, '', null, null, true));
@@ -258,102 +275,137 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
     }
 
     $match = array();
-    if (!in_array('semihtml', $tags_to_preserve)) {
-        if (preg_match("#\[semihtml\](.*)\[\/semihtml\]#Usi", $message_plain, $match) != 0) {
+
+    if (stripos($message_plain, 'html]') !== false) {
+        if (!in_array('semihtml', $tags_to_preserve)) {
             require_code('comcode_from_html');
-            $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
+            $message_plain = comcode_preg_replace('semihtml', '#^\[semihtml\](.*)\[\/semihtml\]$#si', array('_semihtml_to_comcode_callback'), $message_plain);
         }
-    }
-    if (!in_array('html', $tags_to_preserve)) {
-        if (preg_match("#\[html\](.*)\[\/html\]#Usi", $message_plain, $match) != 0) {
+        if (!in_array('html', $tags_to_preserve)) {
             require_code('comcode_from_html');
-            $message_plain = str_replace($match[0], semihtml_to_comcode($match[0], true), $message_plain);
+            $message_plain = comcode_preg_replace('html', '#^\[html\](.*)\[\/html\]$#si', array('_semihtml_to_comcode_callback'), $message_plain);
         }
     }
 
     // Convert certain tags to 'url' tags. These may then be converted to text entirely, depending on if 'url' is being preserved
-    if (!in_array('page', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback("#\[page=\"([^\"]*)\"[^\[\]]*\](.*)\[/page\]#Usi", '_page_callback', $message_plain);
+    if (stripos($message_plain, '[page') !== false) {
+        if (!in_array('page', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback("#\[page=\"([^\"]*)\"[^\[\]]*\](.*)\[/page\]#Usi", '_page_callback', $message_plain);
+        }
     }
-    if (!in_array('flash', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[flash=\"([^\"]*)\"[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[flash[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+    if (stripos($message_plain, '[flash') !== false) {
+        if (!in_array('flash', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[flash=\"([^\"]*)\"[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\2"]\1[/url]', $message_plain);
+            $message_plain = preg_replace("#\[flash[^\[\]]*\](.*)\[/flash\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        }
     }
-    if (!in_array('attachment', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+    if (stripos($message_plain, '[attachment') !== false) {
+        if (!in_array('attachment', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[attachment[^\[\]]* description=\"([^\"]*)\"[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\2"]\1[/url]', $message_plain);
+            $message_plain = preg_replace("#\[attachment[^\[\]]*\](\d*)\[/attachment[^\[\]]*\]#Usi", '[url="' . find_script('attachment') . '?id=\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        }
     }
-    if (!in_array('media', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Usi", '[url="\2"]\1[/url]', $message_plain);
-        $message_plain = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+    if (stripos($message_plain, '[media') !== false) {
+        if (!in_array('media', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[media=\"([^\"]*)\"[^\[\]]*\](.*)\[/media\]#Usi", '[url="\2"]\1[/url]', $message_plain);
+            $message_plain = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $message_plain);
+        }
     }
     if (!in_array('thumb', $tags_to_preserve)) {
         $message_plain = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $message_plain));
     }
-    if (!in_array('img', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $message_plain);
-        $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
+    if (stripos($message_plain, '[img') !== false) {
+        if (!in_array('img', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $message_plain);
+            $message_plain = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $message_plain);
+        }
     }
-    if (!in_array('email', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Usi", '[url="mailto:\1"]\1[/url]', $message_plain);
+    if (stripos($message_plain, '[email') !== false) {
+        if (!in_array('email', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[email[^\[\]]*\](.*)\[/email\]#Usi", '[url="mailto:\1"]\1[/url]', $message_plain);
+        }
     }
 
-    if (!in_array('url', $tags_to_preserve)) {
-        $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\1', $message_plain);
-        $message_plain = preg_replace("#\(\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\1', $message_plain);
-        $message_plain = preg_replace("#\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\3' : '\3 (\1)', $message_plain);
-        $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\1 (\3)', $message_plain);
-        $message_plain = preg_replace("#\[url=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\1' : '\1 (\3)', $message_plain);
+    if (stripos($message_plain, '[url') !== false) {
+        if (!in_array('url', $tags_to_preserve)) {
+            $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\1', $message_plain);
+            $message_plain = preg_replace("#\(\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\1', $message_plain);
+            $message_plain = preg_replace("#\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\3' : '\3 (\1)', $message_plain);
+            $message_plain = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\1 (\3)', $message_plain);
+            $message_plain = preg_replace("#\[url=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\1' : '\1 (\3)', $message_plain);
+        }
     }
 
     if (!in_array('html', $tags_to_preserve)) {
         $message_plain = strip_html($message_plain);
     }
 
-    if (!in_array('random', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[random(( [^=]*="([^"]*)")*)\].*\[/random\]#Usi', '_random_callback', $message_plain);
-    }
-
-    if (!in_array('shocker', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[shocker(( [^=]*="([^"]*)")*)\].*\[/shocker\]#Usi', '_shocker_callback', $message_plain);
-    }
-
-    if (!in_array('jumping', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[jumping(( [^=]*="([^"]*)")*)\].*\[/jumping\]#Usi', '_shocker_callback', $message_plain);
-    }
-
-    if (!in_array('abbr', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[abbr="([^"]*)"[^\]]*\](.*)\[/abbr\]#Usi', '\2 (\1)', $message_plain);
-    }
-    if (!in_array('acronym', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[acronym="([^"]*)"[^\]]*\](.*)\[/acronym\]#Usi', '\2 (\1)', $message_plain);
-    }
-    if (!in_array('tooltip', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Usi', '\2 (\1)', $message_plain);
-    }
-
-    if (addon_installed('ecommerce')) {
-        if (!in_array('currency', $tags_to_preserve)) {
-            $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
-            $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+    if (stripos($message_plain, '[random') !== false) {
+        if (!in_array('random', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#\[random(( [^=]*="([^"]*)")*)\].*\[/random\]#Usi', '_random_callback', $message_plain);
         }
     }
 
-    if (!in_array('hide', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[hide\](.*)\[/hide\]#Usi', do_lang('comcode:SPOILER_WARNING') . ':' . "\n" . '\1', $message_plain);
-        $message_plain = preg_replace('#\[hide="([^"]*)"[^\]]*\](.*)\[/hide\]#Usi', '\1:' . "\n" . '\2', $message_plain);
+    if (stripos($message_plain, '[shocker') !== false) {
+        if (!in_array('shocker', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#\[shocker(( [^=]*="([^"]*)")*)\].*\[/shocker\]#Usi', '_shocker_callback', $message_plain);
+        }
     }
 
-    if (!in_array('indent', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[indent[^\]]*\](.*)\[/indent\]#Usi', '_indent_callback', $message_plain);
+    if (stripos($message_plain, '[jumping') !== false) {
+        if (!in_array('jumping', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#\[jumping(( [^=]*="([^"]*)")*)\].*\[/jumping\]#Usi', '_shocker_callback', $message_plain);
+        }
     }
 
-    if (!in_array('title', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
+    if (stripos($message_plain, '[abbr') !== false) {
+        if (!in_array('abbr', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[abbr="([^"]*)"[^\]]*\](.*)\[/abbr\]#Usi', '\2 (\1)', $message_plain);
+        }
+    }
+    if (stripos($message_plain, '[acronym') !== false) {
+        if (!in_array('acronym', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[acronym="([^"]*)"[^\]]*\](.*)\[/acronym\]#Usi', '\2 (\1)', $message_plain);
+        }
+    }
+    if (stripos($message_plain, '[tooltip') !== false) {
+        if (!in_array('tooltip', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[tooltip="([^"]*)"[^\]]*\](.*)\[/tooltip\]#Usi', '\2 (\1)', $message_plain);
+        }
     }
 
-    if (!in_array('box', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#\[box="([^"]*)"[^\]]*\](.*)\[/box\]#Usi', '_box_callback', $message_plain);
+    if (addon_installed('ecommerce')) {
+        if (stripos($message_plain, '[currency') !== false) {
+            if (!in_array('currency', $tags_to_preserve)) {
+                $message_plain = preg_replace('#\[currency\](.*)\[/currency\]#Usi', get_option('currency') . ' \1', $message_plain);
+                $message_plain = preg_replace('#\[currency="([^"]*)"[^\]]*\](.*)\[/currency\]#Usi', '\1 \2', $message_plain);
+            }
+        }
+    }
+
+    if (stripos($message_plain, '[hide') !== false) {
+        if (!in_array('hide', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[hide\](.*)\[/hide\]#Usi', do_lang('comcode:SPOILER_WARNING') . ':' . "\n" . '\1', $message_plain);
+            $message_plain = preg_replace('#\[hide="([^"]*)"[^\]]*\](.*)\[/hide\]#Usi', '\1:' . "\n" . '\2', $message_plain);
+        }
+    }
+
+    if (stripos($message_plain, '[indent') !== false) {
+        if (!in_array('indent', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#\[indent[^\]]*\](.*)\[/indent\]#Usi', '_indent_callback', $message_plain);
+        }
+    }
+
+    if (stripos($message_plain, '[title') !== false) {
+        if (!in_array('title', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#(\s*)\[title([^\]])*\](.*)\[/title\]#Usi', '_title_callback', $message_plain);
+        }
+    }
+
+    if (stripos($message_plain, '[box') !== false) {
+        if (!in_array('box', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#\[box="([^"]*)"[^\]]*\](.*)\[/box\]#Usi', '_box_callback', $message_plain);
+        }
     }
 
     $tags_to_strip_entirely = array_diff(array(
@@ -375,15 +427,21 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         'attachment_safe',
     ), $tags_to_preserve);
     foreach ($tags_to_strip_entirely as $s) {
-        $message_plain = preg_replace('#\[' . $s . '[^\]]*\].*\[/' . $s . '\]#Usi', '', $message_plain);
+        if (stripos($message_plain, '[' . $s) !== false) {
+            $message_plain = preg_replace('#\[' . $s . '[^\]]*\].*\[/' . $s . '\]#Usi', '', $message_plain);
+        }
     }
 
-    if (!in_array('surround', $tags_to_preserve)) {
-        $message_plain = preg_replace('#\[surround="[\w ]+"\].*\[/surround\]#Usi', '', $message_plain);
+    if (stripos($message_plain, '[surround') !== false) {
+        if (!in_array('surround', $tags_to_preserve)) {
+            $message_plain = preg_replace('#\[surround="[\w ]+"\](.*)\[/surround\]#Usi', '$1', $message_plain);
+        }
     }
 
-    if (!in_array('if_in_group', $tags_to_preserve)) {
-        $message_plain = preg_replace_callback('#(\[if_in_group="[^"]*"\])(.*)(\[/if_in_group\])#Usi', '_comcode_callback', $message_plain);
+    if (stripos($message_plain, '[if_in_group') !== false) {
+        if (!in_array('if_in_group', $tags_to_preserve)) {
+            $message_plain = preg_replace_callback('#(\[if_in_group="[^"]*"\])(.*)(\[/if_in_group\])#Usi', '_comcode_callback', $message_plain);
+        }
     }
 
     $tags_to_strip_just_tags = array_diff(array(
@@ -431,7 +489,9 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         //'dfn',
     ), $tags_to_preserve);
     foreach ($tags_to_strip_just_tags as $s) {
-        $message_plain = preg_replace('#\[' . $s . '[^\]]*\](.*)\[/' . $s . '\]#U', '\1', $message_plain);
+        if (stripos($message_plain, '[' . $s) !== false) {
+            $message_plain = preg_replace('#\[' . $s . '[^\]]*\](.*)\[/' . $s . '\]#U', '\1', $message_plain);
+        }
     }
 
     $reps = array();
@@ -474,9 +534,13 @@ function comcode_to_clean_text($message_plain, $for_extract = false, $tags_to_pr
         $message_plain = preg_replace('#\[list[^\[\]]*\]#', '', $message_plain);
     }
 
-    $message_plain = preg_replace('#\{\$,[^\{\}]*\}#', '', $message_plain);
+    if (stripos($message_plain, '{$') !== false) {
+        $message_plain = preg_replace('#\{\$,[^\{\}]*\}#', '', $message_plain);
+    }
 
-    $message_plain = preg_replace('#\n\n+#', "\n\n", $message_plain);
+    if (stripos($message_plain, "\n\n") !== false) {
+        $message_plain = preg_replace('#\n\n+#', "\n\n", $message_plain);
+    }
 
     return trim($message_plain);
 }
@@ -1403,7 +1467,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
 
     mail_wrap($subject, $message_raw, is_null($to_email) ? null : array($to_email), $to_name, $from_email, $from_name, 3, $attachments, false, null, false, false, false, 'MAIL', count($attachments) != 0);
 
-    if ($from_email != '') {
+    if ($from_email != '' && get_option('message_received_emails') == '1') {
         mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $subject), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $from_email), array($from_email), null, '', '', 3, null, false, get_member());
     }
 }

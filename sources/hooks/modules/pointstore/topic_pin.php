@@ -156,13 +156,15 @@ class Hook_pointstore_topic_pin
         $keep->attach(form_input_hidden('days', strval($days)));
         $proceed_url = build_url(array('page' => '_SELF', 'type' => '___topic_pin', 'id' => 'topic_pin'), '_SELF');
 
-        return do_template('POINTSTORE_CONFIRM_SCREEN', array('_GUID' => '94abff69da7ba3cca3d125ac4d519d72', 'TITLE' => $title,
-                                                              'KEEP' => $keep,
-                                                              'ACTION' => $action,
-                                                              'COST' => integer_format($total),
-                                                              'POINTS_AFTER' => integer_format($points_left - $total),
-                                                              'PROCEED_URL' => $proceed_url,
-                                                              'CANCEL_URL' => build_url(array('page' => '_SELF'), '_SELF'),
+        return do_template('POINTSTORE_CONFIRM_SCREEN', array(
+            '_GUID' => '94abff69da7ba3cca3d125ac4d519d72',
+            'TITLE' => $title,
+            'KEEP' => $keep,
+            'ACTION' => $action,
+            'COST' => integer_format($total),
+            'POINTS_AFTER' => integer_format($points_left - $total),
+            'PROCEED_URL' => $proceed_url,
+            'CANCEL_URL' => build_url(array('page' => '_SELF'), '_SELF'),
         ));
     }
 

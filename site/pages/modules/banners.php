@@ -274,7 +274,7 @@ class Module_banners
         if ($type == 'view') {
             $source = get_param_string('source');
 
-            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $source));
+            $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array('name' => $source), '', 1);
             if (!array_key_exists(0, $rows)) {
                 warn_exit(do_lang_tempcode('BANNER_MISSING_SOURCE'));
             }
@@ -366,7 +366,7 @@ class Module_banners
             do_lang_tempcode('ADDED'),
         );
         if (addon_installed('unvalidated')) {
-            $hr[] = do_lang_tempcode('VALIDATED');
+            $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $hr[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);

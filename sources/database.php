@@ -204,7 +204,7 @@ function db_string_not_equal_to($attribute, $compare)
 }
 
 /**
- * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.
+ * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
  *
  * @param  string $pattern The pattern
  * @return string The encoded pattern
@@ -477,7 +477,7 @@ function get_db_forums_password()
 function is_on_multi_site_network($db = null)
 {
     static $cache = null;
-    if (isset($cache)) {
+    if ($db === null && $cache !== null) {
         return $cache;
     }
 
@@ -487,8 +487,8 @@ function is_on_multi_site_network($db = null)
     }
 
     if ($db !== null) {
-        $cache = !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
-        return $cache;
+        $ret = !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
+        return $ret;
     }
     $cache = ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
     return $cache;
@@ -502,12 +502,18 @@ function is_on_multi_site_network($db = null)
  */
 function is_forum_db($db)
 {
+    if (isset($db->is_forum_db)) {
+        return $db->is_forum_db;
+    }
+
     if (!is_on_multi_site_network()) {
         // Not on a multi-site-network
         return false;
     }
 
-    return ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($db->connection_write != $GLOBALS['SITE_DB']->connection_write));
+    $ret = ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($db->connection_write != $GLOBALS['SITE_DB']->connection_write));
+    $db->is_forum_db = $ret;
+    return $ret;
 }
 
 /**
@@ -1629,7 +1635,7 @@ class DatabaseConnector
             return false; // Actually, we have delayed insert for these so locking is not an issue
         }
 
-        if (substr(get_db_type(), 0, 5) != 'mysql') {
+        if (substr(get_db_type(), 0, 5) != 'mysql' || get_value('innodb') === '1') {
             return false;
         }
 

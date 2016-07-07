@@ -22,11 +22,14 @@
  * Get a map of details relating to the Private Topics of a certain member.
  *
  * @param  integer $start The start row for getting details of topics in the Private Topic forum (i.e. 0 is newest, higher is starting further back in time).
+ * @param  integer $true_start True offset when disconsidering keyset pagination
  * @param  ?integer $max The maximum number of topics to get detail of (null: default).
+ * @param  string $sql_sup Extra SQL to append.
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause.
  * @param  ?MEMBER $member_id The member to get Private Topics of (null: current member).
  * @return array The details.
  */
-function cns_get_private_topics($start = 0, $max = null, $member_id = null)
+function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_sup = '', $sql_sup_order_by = '', $member_id = null)
 {
     if (is_null($max)) {
         $max = intval(get_option('forum_topics_per_page'));
@@ -76,18 +79,8 @@ function cns_get_private_topics($start = 0, $max = null, $member_id = null)
             $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query2, false, true);
         }
     }
-    $sort = get_param_string('sort', 'last_time');
-    $sort2 = 't_cache_last_time DESC';
-    if ($sort == 'first_post') {
-        $sort2 = 't_cache_first_time DESC';
-    } elseif ($sort == 'title') {
-        $sort2 = 't_cache_first_title ASC';
-    }
-    if (get_option('enable_sunk') == '1') {
-        $sort2 = 't_sunk ASC,' . $sort2;
-    }
     $query_full = $select;
-    $query_full .= ' ' . $query . $union . ' ORDER BY t_pinned DESC,' . $sort2;
+    $query_full .= ' ' . $query . $union . $sql_sup . $sql_sup_order_by;
     $topic_rows = $GLOBALS['FORUM_DB']->query($query_full, $max, $start, false, true);
     $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
     $topics = array();

@@ -128,6 +128,8 @@ function do_emoticon($imgcode)
  */
 function check_naughty_javascript_url($source_member, $url, $as_admin)
 {
+    init_potential_js_naughty_array();
+
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
 
     if ((!$as_admin) && (!has_privilege($source_member, 'use_very_dangerous_comcode'))) {
@@ -180,6 +182,8 @@ function check_naughty_javascript_url($source_member, $url, $as_admin)
  */
 function _custom_comcode_import($connection)
 {
+    init_valid_comcode_tags();
+
     global $IN_MINIKERNEL_VERSION;
     global $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $TEXTUAL_TAGS, $IMPORTED_CUSTOM_COMCODE, $CUSTOM_COMCODE_REPLACE_TARGETS_CACHE;
 
@@ -437,7 +441,7 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
     require_code('form_templates');
     $fields = form_input_huge_comcode(do_lang_tempcode('FIXED_COMCODE'), do_lang_tempcode('COMCODE_REPLACEMENT'), $name, $comcode, true, null, 20, null, null, false, true);
     $post_url = get_self_url();
-    $form = do_template('FORM', array('_GUID' => '207bad1252add775029b34ba36e02856', 'URL' => $post_url, 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'SKIP_REQUIRED' => true));
+    $form = do_template('FORM', array('_GUID' => '207bad1252add775029b34ba36e02856', 'URL' => $post_url, 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'SKIP_REQUIRED' => true, 'MODSECURITY_WORKAROUND' => true));
     $output = do_template('COMCODE_MISTAKE_SCREEN', array('_GUID' => '0010230e6612b0775566d07ddf54305a', 'EDITABLE' => !running_script('preview'), 'FORM' => $form, 'TITLE' => get_screen_title('ERROR_OCCURRED'), 'LINE' => integer_format($line), 'MESSAGE' => $message, 'LINES' => $lines));
     $echo = globalise($output, null, '', true);
     $echo->handle_symbol_preprocessing();
@@ -1888,7 +1892,9 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             $width = array_key_exists('width', $attributes) ? $attributes['width'] : '';
             $height = array_key_exists('height', $attributes) ? $attributes['height'] : '';
 
-            $temp_tpl = do_template('COMCODE_MEDIA_SET', array('_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa', 'WIDTH' => $width,
+            $temp_tpl = do_template('COMCODE_MEDIA_SET', array(
+                '_GUID' => 'd8f811e2f3d13263edd32a3fe46678aa',
+                'WIDTH' => $width,
                 'HEIGHT' => $height,
                 'MEDIA' => $embed,
             ));
@@ -2391,7 +2397,14 @@ function _do_contents_level($tree_structure, $list_types, $base, $the_level = 0)
  */
 function get_tutorial_link($name)
 {
-    return $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => cms_mb_strtolower($name)));
+    static $cache = array();
+    if (isset($cache[$name])) {
+        $ret = $cache[$name];
+    } else {
+        $ret = $GLOBALS['SITE_DB']->query_select_value_if_there('tutorial_links', 'the_value', array('the_name' => cms_mb_strtolower($name)));
+        $cache[$name] = $ret;
+    }
+    return $ret;
 }
 
 /**
@@ -2402,6 +2415,8 @@ function get_tutorial_link($name)
  */
 function set_tutorial_link($name, $value)
 {
-    $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
-    $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition
+    if (get_tutorial_link($name) !== $value) {
+        $GLOBALS['SITE_DB']->query_delete('tutorial_links', array('the_name' => cms_mb_strtolower($name)), '', 1);
+        $GLOBALS['SITE_DB']->query_insert('tutorial_links', array('the_value' => $value, 'the_name' => cms_mb_strtolower($name)), false, true); // Allow failure, if there is a race condition
+    }
 }

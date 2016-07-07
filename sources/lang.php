@@ -459,7 +459,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
         $lang = user_lang();
     }
 
-    if ((isset($LANG_REQUESTED_LANG[$lang])) && (isset($LANG_REQUESTED_LANG[$lang][$codename]))) {
+    if (isset($LANG_REQUESTED_LANG[$lang][$codename])) {
         return;
     }
     $LANG_REQUESTED_LANG[$lang][$codename] = true;
@@ -782,8 +782,6 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
                 if ($REQUIRE_LANG_LOOP >= 2) {
                     return ''; // Probably failing to load global.ini, so just output with some text missing
                 }
-                require_code('caches3');
-                erase_cached_language();
 
                 require_code('site');
                 attach_message(do_lang_tempcode('MISSING_LANG_STRING', escape_html($codename)), 'warn');

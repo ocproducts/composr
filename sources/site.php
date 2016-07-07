@@ -542,8 +542,7 @@ function breadcrumb_segments_to_tempcode($segments, &$link_to_self_entrypoint = 
 
             $link_to_self_entrypoint = false; // Empty part implies that we are defining end-point ourselves
         } else {
-            list($zone, $attributes, $hash) = page_link_decode($entry_point);
-            $url = build_url($attributes, $zone, null, false, false, $hash);
+            $url = page_link_to_tempcode_url($entry_point);
 
             $out->attach(do_template('BREADCRUMB_LINK_WRAP', array('_GUID' => 'f7e8a83d61bde871ab182dec7da84ccc', 'LABEL' => $label, 'URL' => $url, 'TOOLTIP' => $tooltip)));
         }
@@ -731,11 +730,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         }
                     } else {
                         // See if it is deprecated
+                        $table = 'url_id_monikers';
                         if (strpos(get_db_type(), 'mysql') !== false) {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers USE INDEX (uim_moniker)', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
-                        } else {
-                            $monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
+                            $table .= ' FORCE INDEX (uim_moniker)';
                         }
+                        $monikers = $GLOBALS['SITE_DB']->query_select($table, array('m_resource_id', 'm_deprecated'), array('m_resource_page' => $page, 'm_resource_type' => get_param_string('type', 'browse'), 'm_moniker' => $url_id));
                         if (!array_key_exists(0, $monikers)) { // hmm, deleted?
                             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                         }
@@ -929,21 +928,24 @@ function do_site()
         log_stats($PAGE_STRING, intval($page_generation_time));
     }
 
-    // When someone hits the Admin Zone front page.
-    if (($ZONE['zone_name'] == 'adminzone') && (get_page_name() == 'start')) {
+    // When someone hits the Admin Zone
+    if ($ZONE['zone_name'] == 'adminzone') {
         // Security feature admins can turn on
-        require_code('notifications');
-        $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-        $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
-        $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
-        dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
+        if (get_page_name() == 'start') {
+            require_code('notifications');
+            $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+            $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
+            $mail = do_notification_lang('AFA_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($current_username), comcode_escape(get_ip_address()));
+            dispatch_notification('adminzone_dashboard_accessed', null, $subject, $mail);
+        }
 
-        // Track very basic details of what sites use Composr. You can remove if you like.
+        // Track very basic details of what sites use Composr
         if ((!running_locally()) && (get_option('call_home') == '1')) {
             $timeout_before = @ini_get('default_socket_timeout');
             safe_ini_set('default_socket_timeout', '3');
             require_code('version2');
-            http_download_file('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), null, false);
+            require_code('files2');
+            cache_and_carry('http_download_file', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), null, false), 60 * 24/*once a day*/);
             safe_ini_set('default_socket_timeout', $timeout_before);
         }
     }
@@ -1518,7 +1520,7 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
     if ($REDIRECT_CACHE === null) {
         load_redirect_cache();
     }
-    if (isset($REDIRECT_CACHE[$zone])) {
+    if (isset($REDIRECT_CACHE)) {
         if (isset($REDIRECT_CACHE[$zone][$codename])) {
             $redirect = array($REDIRECT_CACHE[$zone][$codename]);
         } elseif (($wildcard_mode) && (isset($REDIRECT_CACHE['*'][$codename]))) {
@@ -1527,9 +1529,9 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
             $redirect = array();
         }
     } else {
-        $query = 'SELECT * FROM ' . get_table_prefix() . 'redirects WHERE (' . db_string_equal_to('r_from_zone', '*');
+        $query = 'SELECT * FROM ' . get_table_prefix() . 'redirects WHERE (' . db_string_equal_to('r_from_zone', $zone);
         if ($wildcard_mode) {
-            $query .= ' OR ' . db_string_equal_to('r_from_zone', $zone);
+            $query .= ' OR ' . db_string_equal_to('r_from_zone', '*');
         }
         $query .= ') AND ' . db_string_equal_to('r_from_page', $codename);
         $query .= ' ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this
@@ -1814,7 +1816,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
 
     if ((!$is_panel) && ($title_to_use !== null) && (!$being_included)) {
         global $PT_PAIR_CACHE_CP;
-        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode($title_to_use);
+        $PT_PAIR_CACHE_CP[$codename]['cc_page_title'] = ($title_to_use === null) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($title_to_use));
         $PT_PAIR_CACHE_CP[$codename]['p_parent_page'] = $comcode_page_row['p_parent_page'];
         $comcode_breadcrumbs = comcode_breadcrumbs($codename, $zone, get_param_string('keep_page_root', ''), ($comcode_page_row['p_parent_page'] == '') || !has_privilege(get_member(), 'open_virtual_roots'));
         breadcrumb_set_parents($comcode_breadcrumbs);
@@ -1902,7 +1904,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
                 $PT_PAIR_CACHE_CP[$the_page] = array();
                 $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $temp_title->evaluate();
                 if ($PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] == '') {
-                    $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = escape_html($the_page);
+                    $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $the_page;
                 }
                 $PT_PAIR_CACHE_CP[$the_page]['p_parent_page'] = '';
             }
@@ -1913,15 +1915,12 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
             if ($_title === null) {
                 $_title = $the_page;
             }
-            if ($GLOBALS['XSS_DETECT']) {
-                ocp_mark_as_escaped($_title);
-            }
             $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'] = $_title;
         }
     }
     $title = $PT_PAIR_CACHE_CP[$the_page]['cc_page_title'];
     if ($title === null) {
-        $title = escape_html($the_page);
+        $title = $the_page;
     }
 
     // End of recursion
@@ -1929,7 +1928,7 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
         if ($no_link_for_me_sir) {
             return array();
         }
-        return array(array($page_link, $title));
+        return array(array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title))));
     }
 
     // Cut off broken recursion
@@ -1940,10 +1939,10 @@ function comcode_breadcrumbs($the_page, $the_zone, $root = '', $no_link_for_me_s
     // Our point in the chain
     $segments = array();
     if (!$no_link_for_me_sir) {
-        $segments[] = array($page_link, $title, ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
+        $segments[] = array($page_link, is_object($title) ? $title : make_string_tempcode(escape_html($title)), ($jumps == 0) ? do_lang('VIRTUAL_ROOT') : '');
     } else {
         if (!(((is_string($title)) && ($title == '')) || ((is_object($title)) && ($title->is_empty())))) {
-            $segments[] = array('', $title);
+            $segments[] = array('', is_object($title) ? $title : make_string_tempcode(escape_html($title)));
         }
     }
 

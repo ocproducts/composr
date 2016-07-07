@@ -775,9 +775,9 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                 if ($ext == 'txt') {
                     switch ($show_method) {
                         case FIND_ALL_PAGES__NEWEST: // Only gets newest if it's a large site
-                            if (count($out) > 300) {
+                            if (count($out) > intval(get_option('general_safety_listing_limit'))) {
                                 $out = array();
-                                $records = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page'), array('the_zone' => $zone), 'ORDER BY p_add_date DESC', 300);
+                                $records = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_page'), array('the_zone' => $zone), 'ORDER BY p_add_date DESC', intval(get_option('general_safety_listing_limit')));
                                 foreach ($records as $record) {
                                     $file = $record['the_page'] . '.txt';
 
@@ -799,7 +799,7 @@ function _find_all_pages($zone, $type, $ext = 'php', $keep_ext_on = false, $cuto
                         //break; Actually, no, let it roll on to the next one to get key files too
 
                         case FIND_ALL_PAGES__PERFORMANT: // Default, chooses selection carefully based on site size
-                            if (($show_method == FIND_ALL_PAGES__NEWEST) || (count($out) > 300)) {
+                            if (($show_method == FIND_ALL_PAGES__NEWEST) || (count($out) > intval(get_option('general_safety_listing_limit')))) {
                                 if ($show_method != FIND_ALL_PAGES__NEWEST) {
                                     $out = array();
                                 }

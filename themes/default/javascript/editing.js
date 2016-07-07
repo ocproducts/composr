@@ -194,7 +194,9 @@ function disable_wysiwyg(forms,so,so2,discard)
 				{
 					var url=maintain_theme_in_link('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1'+keep_stub());
 					if (window.location.href.indexOf('topics')!=-1) url+='&forum_db=1';
-					var request=do_ajax_request(url,null,'data='+window.encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203),'g'),'')));
+					var post='data='+window.encodeURIComponent(wysiwyg_data.replace(new RegExp(String.fromCharCode(8203),'g'),''));
+					post=modsecurity_workaround_ajax(post);
+					var request=do_ajax_request(url,null,post);
 					if ((!request.responseXML) || (!request.responseXML.documentElement.getElementsByTagName('result')[0]))
 					{
 						textarea.value='[semihtml]'+wysiwyg_data+'[/semihtml]';
@@ -445,7 +447,9 @@ function wysiwyg_editor_init_for(element,id)
 		editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
 		if (typeof window.set_up_comcode_autocomplete!='undefined')
+		{
 			set_up_comcode_autocomplete(id);
+		}
 
 		// Instant preview of Comcode
 		find_tags_in_editor(editor,element);

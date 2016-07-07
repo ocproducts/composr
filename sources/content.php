@@ -79,7 +79,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
 
     // FUDGE: Extra check for private topics
     $topic_id = null;
-    if (($content_type == 'post') && (get_forum_type() == 'ocf')) {
+    if (($content_type == 'post') && (get_forum_type() == 'cns')) {
         $post_rows = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_topic_id', 'p_intended_solely_for', 'p_poster'), array('id' => intval($content_id)), '', 1);
         if (!array_key_exists(0, $post_rows)) {
             return false;
@@ -89,7 +89,7 @@ function may_view_content_behind($member_id, $content_type, $content_id, $type_h
         }
         $topic_id = $post_rows[0]['p_topic_id'];
     }
-    if (($content_type == 'topic') && (get_forum_type() == 'ocf')) {
+    if (($content_type == 'topic') && (get_forum_type() == 'cns')) {
         $topic_id = intval($content_id);
     }
     if (!is_null($topic_id)) {

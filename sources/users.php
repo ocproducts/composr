@@ -63,7 +63,7 @@ function init__users()
     $DID_CHANGE_SESSION_ID = false;
 
     // Load all sessions into memory, if possible
-    if (get_option('session_prudence') == '0') {
+    if (get_option('session_prudence') == '0' && function_exists('persistent_cache_get')) {
         $SESSION_CACHE = persistent_cache_get('SESSION_CACHE');
     } else {
         $SESSION_CACHE = null;
@@ -87,19 +87,19 @@ function init__users()
         } else {
             $SESSION_CACHE = list_to_map('the_session', $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions' . $where));
         }
-        if (get_option('session_prudence') == '0') {
+        if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }
 
     // Canonicalise various disparities in how HTTP auth environment variables are set
-    if (array_key_exists('REDIRECT_REMOTE_USER', $_SERVER)) {
+    if (!empty($_SERVER['REDIRECT_REMOTE_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REDIRECT_REMOTE_USER']);
     }
-    if (array_key_exists('PHP_AUTH_USER', $_SERVER)) {
+    if (!empty($_SERVER['PHP_AUTH_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['PHP_AUTH_USER']);
     }
-    if (array_key_exists('REMOTE_USER', $_SERVER)) {
+    if (!empty($_SERVER['REMOTE_USER'])) {
         $_SERVER['PHP_AUTH_USER'] = preg_replace('#@.*$#', '', $_SERVER['REMOTE_USER']);
     }
 
@@ -234,7 +234,7 @@ function get_member($quick_only = false)
                     $GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time()), array('the_session' => $session), '', 1);
                 }
                 $SESSION_CACHE[$session]['last_activity'] = time();
-                if (get_option('session_prudence') == '0') {
+                if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
                     persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
                 }
             }
@@ -443,7 +443,7 @@ function is_httpauth_login()
     }
 
     require_code('cns_members');
-    return ((array_key_exists('PHP_AUTH_USER', $_SERVER)) && (!is_null(cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']))));
+    return ((!empty($_SERVER['PHP_AUTH_USER'])) && (!is_null(cns_authusername_is_bound_via_httpauth($_SERVER['PHP_AUTH_USER']))));
 }
 
 /**
@@ -505,7 +505,7 @@ function delete_expired_sessions_or_recover($member = null)
         }
     }
     if ($dirty_session_cache) {
-        if (get_option('session_prudence') == '0') {
+        if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
         }
     }

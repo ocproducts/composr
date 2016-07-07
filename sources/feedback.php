@@ -59,7 +59,7 @@ function process_overridden_comment_forum($feedback_code, $id, $category_id, $ol
     if (($category_id != $old_category_id) && (get_forum_type() == 'cns')) {
         // Move if needed
         $old_forum_id = find_overridden_comment_forum($feedback_code, $old_category_id);
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_code . '_' . $id);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_code . '_' . $id, do_lang('COMMENT'));
         if (!is_null($topic_id)) {
             $_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_id);
             $_old_forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($old_forum_id);
@@ -920,7 +920,7 @@ function actualise_post_comment($allow_comments, $content_type, $content_id, $co
 
     if (($post != '') && ($forum_tie) && (!$no_success_message)) {
         require_code('site2');
-        assign_refresh($GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id), $forum, true), 0.0);
+        assign_refresh($GLOBALS['FORUM_DRIVER']->topic_url($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $content_type . '_' . $content_id, do_lang('COMMENT')), $forum, true), 0.0);
     }
 
     if (($post != '') && (!$no_success_message)) {
@@ -967,7 +967,7 @@ function update_spacer_post($allow_comments, $content_type, $content_id, $conten
     $content_title = strip_comcode($content_title);
 
     if (is_null($post_id)) {
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(strval($forum_id), $content_type . '_' . $content_id, do_lang('COMMENT'));
         if (is_null($topic_id)) {
             return;
         }
@@ -1008,7 +1008,7 @@ function get_trackbacks($content_type, $content_id, $allow_trackback, $type = ''
     if ((get_option('is_on_trackbacks') == '1') && ($allow_trackback)) {
         require_lang('trackbacks');
 
-        $trackbacks = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id), 'ORDER BY trackback_time DESC', 300);
+        $trackbacks = $GLOBALS['SITE_DB']->query_select('trackbacks', array('*'), array('trackback_for_type' => $content_type, 'trackback_for_id' => $content_id), 'ORDER BY trackback_time DESC', intval(get_option('general_safety_listing_limit')));
 
         $content = new Tempcode();
         $items = new Tempcode();

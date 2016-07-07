@@ -15,7 +15,7 @@
 
 	<article id="page_running_{$PAGE*}" class="zone_running_{$ZONE*} global_middle">
 		{+START,IF_NON_EMPTY,{$BREADCRUMBS}}{+START,IF,{$IN_STR,{$BREADCRUMBS},<a }}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},:start}}{+START,IF,{$SHOW_HEADER}}
-			<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb">
+			<nav class="global_breadcrumbs breadcrumbs" itemprop="breadcrumb" id="global_breadcrumbs">
 				<img class="breadcrumbs_img" src="{$IMG*,1x/breadcrumbs}" srcset="{$IMG*,2x/breadcrumbs} 2x" title="{!YOU_ARE_HERE}" alt="{!YOU_ARE_HERE}" />
 				{$BREADCRUMBS}
 			</nav>

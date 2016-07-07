@@ -332,16 +332,16 @@ class Module_admin_orders
             }
 
             $order_entries->attach(results_entry(
-                    array(
-                        escape_html($order_title),
-                        ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
-                        escape_html(is_null($row['tax']) ? '' : float_format($row['tax'], 2)),
-                        $order_date,
-                        $member,
-                        $transaction_id,
-                        $order_status,
-                        $actions
-                    ), false, null)
+                array(
+                    escape_html($order_title),
+                    ecommerce_get_currency_symbol() . escape_html(float_format($row['tot_price'], 2)),
+                    escape_html(is_null($row['tax']) ? '' : float_format($row['tax'], 2)),
+                    $order_date,
+                    $member,
+                    $transaction_id,
+                    $order_status,
+                    $actions
+                ), false, null)
             );
         }
         if ($order_entries->is_empty()) {
@@ -752,10 +752,10 @@ class Module_admin_orders
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.order_id
             WHERE ' . $cond;
-        $row = $GLOBALS['SITE_DB']->query($qry);
-        remove_duplicate_rows($row);
+        $rows = $GLOBALS['SITE_DB']->query($qry);
+        remove_duplicate_rows($rows);
 
-        foreach ($row as $order) {
+        foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
             $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];

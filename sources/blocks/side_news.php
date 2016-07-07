@@ -85,11 +85,15 @@ class Block_side_news
         $content = new Tempcode();
 
         // News Query
-        require_code('selectcode');
         $select = array_key_exists('select', $map) ? $map['select'] : get_param_string('news_select', '*');
-        $selects_1 = selectcode_to_sqlfragment($select, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        if ($select == '*') {
+            $q_filter = '1=1';
+        } else {
+            require_code('selectcode');
+            $selects_1 = selectcode_to_sqlfragment($select, 'p.news_category', 'news_categories', null, 'p.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $selects_2 = selectcode_to_sqlfragment($select, 'd.news_entry_category', 'news_categories', null, 'd.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $q_filter = '(' . $selects_1 . ' OR ' . $selects_2 . ')';
+        }
         if ($blogs === 0) {
             if ($q_filter != '') {
                 $q_filter .= ' AND ';
@@ -242,7 +246,7 @@ class Block_side_news
         $is_on_rss = is_null($_is_on_rss) ? 0 : intval($_is_on_rss); // Set to zero if we don't want to show RSS links
         $submit_url = new Tempcode();
 
-        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), ($blogs === 1) ? 'cms_blogs' : 'cms_news'))) {
+        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission(($blogs === 1) ? 'mid' : 'high', get_member(), get_ip_address(), ($blogs === 1) ? 'cms_blogs' : 'cms_news'))) {
             $map2 = array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add', 'redirect' => SELF_REDIRECT);
             if (is_numeric($select)) {
                 $map2['cat'] = $select; // select news cat by default, if we are only showing one news cat in this block

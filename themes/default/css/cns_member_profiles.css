@@ -102,6 +102,8 @@ table.cns_profile_about_section .associated_details {
 
 .cns_profile_friends {
 	overflow: hidden;
+	margin-left: -5px;
+	width: calc(100% + 10px);
 }
 
 .cns_profile_friends>.box {

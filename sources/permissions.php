@@ -159,6 +159,7 @@ function has_zone_access($member, $zone)
     if (isset($SMART_CACHE)) {
         $SMART_CACHE->append('zone_access_needed', $zone, true);
         $test = $SMART_CACHE->get('zone_access_needed');
+        $test[$zone] = true; // Smart cache may have been paused, but we'll get into an infinite loop if this isn't in the map
     } else {
         $test = null;
     }
@@ -308,6 +309,7 @@ function has_page_access($member, $page, $zone, $at_now = false)
     if (isset($SMART_CACHE)) {
         $SMART_CACHE->append('page_access_needed', $page_access_needed, true);
         $test = $SMART_CACHE->get('page_access_needed');
+        $test[$page_access_needed] = true; // Smart cache may have been paused, but we'll get into an infinite loop if this isn't in the map
     } else {
         $test = null;
     }
@@ -473,6 +475,7 @@ function has_category_access($member, $module, $category)
             if ($test === null) {
                 $test = array();
             }
+            $test[$module . '/' . $category] = true; // Smart cache may have been paused, but we'll get into an infinite loop if this isn't in the map
         } else {
             $test = array();
         }
@@ -745,6 +748,7 @@ function has_privilege($member, $permission, $page = null, $cats = null)
     if (isset($SMART_CACHE)) {
         $SMART_CACHE->append('privileges_needed', $permission, true);
         $test = $SMART_CACHE->get('privileges_needed');
+        $test[$permission] = true; // Smart cache may have been paused, but we'll get into an infinite loop if this isn't in the map
     } else {
         $test = null;
     }

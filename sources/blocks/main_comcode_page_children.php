@@ -118,7 +118,7 @@ class Block_main_comcode_page_children
             }
 
             if ($title == '') {
-                $title = escape_html(titleify($child['the_page']));
+                $title = titleify($child['the_page']);
             }
 
             $child['TITLE'] = $title;

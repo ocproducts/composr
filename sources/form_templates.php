@@ -42,6 +42,9 @@ function init__form_templates()
     global $DOING_ALTERNATE_FIELDS_SET;
     $DOING_ALTERNATE_FIELDS_SET = mixed();
 
+    global $MODSECURITY_WORKAROUND_ENABLED;
+    $MODSECURITY_WORKAROUND_ENABLED = false;
+
     require_css('forms');
 
     if (function_exists('get_member')) {
@@ -101,7 +104,10 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
     }
     foreach ($max_values as $setting => $max_value) {
         if ($max_value < $count) {
-            attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
+            global $MODSECURITY_WORKAROUND_ENABLED;
+            if (!$MODSECURITY_WORKAROUND_ENABLED) {
+                attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
+            }
             $failed_already = true;
         }
     }
@@ -375,6 +381,8 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
     $default_parsed = @comcode_to_tempcode($post, null, false, null, null, null, true);
     $LAX_COMCODE = $temp;
 
+    global $MODSECURITY_WORKAROUND_ENABLED;
+
     return do_template('POSTING_FORM', array(
         '_GUID' => '41259424ca13c437d5bc523ce18980fe',
         'REQUIRED' => $required,
@@ -401,6 +409,7 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         'SPECIALISATION2_HIDDEN' => $specialisation2_hidden,
         'SUPPORT_AUTOSAVE' => $support_autosave,
         'DESCRIPTION' => $description,
+        'MODSECURITY_WORKAROUND' => $MODSECURITY_WORKAROUND_ENABLED,
     ));
 }
 
@@ -2236,7 +2245,9 @@ function form_input_dimensions($pretty_name, $description, $name_width, $name_he
     $default_height = ($_default_height == '') ? null : intval($_default_height);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array('_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35', 'TABINDEX' => strval($tabindex),
+    $input = do_template('FORM_SCREEN_INPUT_DIMENSIONS', array(
+        '_GUID' => 'd8ccbe6813e4d1a0c41a25adb87d5c35',
+        'TABINDEX' => strval($tabindex),
         'REQUIRED' => $_required,
         'NAME_WIDTH' => $name_width,
         'DEFAULT_WIDTH' => is_null($default_width) ? '' : strval($default_width),

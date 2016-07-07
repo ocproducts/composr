@@ -264,8 +264,8 @@ class Module_admin_cns_forums extends Standard_crud_module
         $forum_groupings = new Tempcode();
 
         if ($huge) {
-            $all_forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_name', 'f_position', 'f_forum_grouping_id', 'f_order_sub_alpha', 'f_parent_forum'), array('f_parent_forum' => $id), 'ORDER BY f_parent_forum,f_position', 300);
-            if (count($all_forums) == 300) {
+            $all_forums = $GLOBALS['FORUM_DB']->query_select('f_forums', array('id', 'f_name', 'f_position', 'f_forum_grouping_id', 'f_order_sub_alpha', 'f_parent_forum'), array('f_parent_forum' => $id), 'ORDER BY f_parent_forum,f_position', intval(get_option('general_safety_listing_limit')));
+            if (count($all_forums) == intval(get_option('general_safety_listing_limit'))) {
                 return paragraph(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
             }
         } else {
@@ -389,7 +389,7 @@ class Module_admin_cns_forums extends Standard_crud_module
      */
     public function edit()
     {
-        $huge = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)') > 300);
+        $huge = ($GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)') > intval(get_option('general_safety_listing_limit')));
 
         $all_forums = array();
         $forums = $this->get_forum_tree(db_get_first_id(), $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => db_get_first_id())), $all_forums, 0, 1, null, null, $huge);

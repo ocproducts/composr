@@ -292,7 +292,7 @@ class Module_admin_setupwizard
         require_code('addons2');
         require_lang('addons');
 
-        $addons_installed = list_to_map('name', find_installed_addons());
+        $addons_installed = find_installed_addons();
         $addons_not_installed = list_to_map('name', find_available_addons(false));
 
         $fields = '';

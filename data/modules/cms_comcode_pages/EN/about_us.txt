@@ -1,6 +1,6 @@
 [title]About Us[/title]
 
-{$SITE_NAME} is a leader in both foo and bar. We've been going from strength to strength since 1999.
+{$SITE_NAME*} is a leader in both foo and bar. We've been going from strength to strength since 1999.
 
 [title="2"]Mission[/title]
 

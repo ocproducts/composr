@@ -117,8 +117,8 @@ class Module_supermembers
 
         $supermember_groups = collapse_1d_complexity('group_id', $GLOBALS['SITE_DB']->query_select('group_zone_access', array('group_id'), array('zone_name' => get_zone_name())));
         $supermember_groups = array_merge($supermember_groups, $GLOBALS['FORUM_DRIVER']->get_super_admin_groups());
-        $rows = $GLOBALS['FORUM_DRIVER']->member_group_query($supermember_groups, 1000);
-        if (count($rows) >= 1000) {
+        $rows = $GLOBALS['FORUM_DRIVER']->member_group_query($supermember_groups, intval(get_option('general_safety_listing_limit')));
+        if (count($rows) >= intval(get_option('general_safety_listing_limit'))) {
             warn_exit(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
         }
         $all_usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list();

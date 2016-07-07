@@ -50,7 +50,7 @@ function require_code($codename, $light_exit = false)
         $codename = filter_naughty($codename);
     }
 
-    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
+    if ((isset($_GET['keep_show_loading_code'])) && ($_GET['keep_show_loading_code'] === '1')) {
         $before = memory_get_usage();
     }
 
@@ -443,6 +443,10 @@ function get_custom_file_base()
  */
 function filter_naughty($in, $preg = false)
 {
+    if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
+        return $in;
+    }
+
     if (strpos($in, "\0") !== false) {
         log_hack_attack_and_exit('PATH_HACK');
     }
@@ -470,6 +474,15 @@ function filter_naughty($in, $preg = false)
  */
 function filter_naughty_harsh($in, $preg = false)
 {
+    if ((function_exists('ctype_alnum')) && (ctype_alnum($in))) {
+        return $in;
+    }
+    if (strpos($in, '_') !== false) {
+        return $in;
+    }
+    if (strpos($in, '-') !== false) {
+        return $in;
+    }
     if (preg_match('#^[\w\-]*$#', $in) !== 0) {
         return $in;
     }

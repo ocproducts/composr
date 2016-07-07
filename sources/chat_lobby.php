@@ -80,7 +80,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
     $online_url = $GLOBALS['FORUM_DRIVER']->users_online_url();
     $friends_offline = array();
     $friends_online = array();
-    $friend_rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id), 'ORDER BY date_and_time', 300);
+    $friend_rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => $member_id), 'ORDER BY date_and_time', intval(get_option('general_safety_listing_limit')));
     $friend_active = get_chatters_in_room(null);
     $users_online_time_seconds = CHAT_ACTIVITY_PRUNE;
     foreach ($friend_rows as $friend) {
@@ -120,12 +120,14 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
         $friends = array_merge($friends_offline, $friends_online);
     }
 
-    return do_template('CHAT_FRIENDS', array('_GUID' => '57397daa0c000ea589e3a7a5fd323110', 'FRIENDS' => $friends,
-                                             'FRIENDS_ONLINE' => $friends_online,
-                                             'FRIENDS_OFFLINE' => $friends_offline,
-                                             'CAN_IM' => $can_im,
-                                             'ONLINE_URL' => $online_url,
-                                             'SIMPLER' => $simpler,
+    return do_template('CHAT_FRIENDS', array(
+        '_GUID' => '57397daa0c000ea589e3a7a5fd323110',
+        'FRIENDS' => $friends,
+        'FRIENDS_ONLINE' => $friends_online,
+        'FRIENDS_OFFLINE' => $friends_offline,
+        'CAN_IM' => $can_im,
+        'ONLINE_URL' => $online_url,
+        'SIMPLER' => $simpler,
     ));
 }
 

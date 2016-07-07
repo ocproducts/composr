@@ -147,9 +147,9 @@ class Hook_ecommerce_cart_orders
      */
     public function get_product_dispatch_type($order_id)
     {
-        $row = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
 
-        foreach ($row as $item) {
+        foreach ($rows as $item) {
             if (is_null($item['p_type'])) {
                 continue;
             }
@@ -164,7 +164,7 @@ class Hook_ecommerce_cart_orders
             }
         }
 
-        //if none of product items have manual dispatch, return order dispatch as automatic.
+        // If none of product items have manual dispatch, return order dispatch as automatic.
         return 'automatic';
     }
 

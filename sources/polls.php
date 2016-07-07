@@ -235,12 +235,12 @@ function may_vote_in_poll($poll_id, $member_id, $ip)
 function create_selection_list_polls($it = null, $only_owned = null)
 {
     $where = is_null($only_owned) ? null : array('submitter' => $only_owned);
-    $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where, 'ORDER BY is_current DESC,date_and_time,question', 400);
-    if (count($rows) == 400) { // Ok, just new ones
+    $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where, 'ORDER BY is_current DESC,date_and_time,question', intval(get_option('general_safety_listing_limit')));
+    if (count($rows) == intval(get_option('general_safety_listing_limit'))) { // Ok, just new ones
         if (is_null($where)) {
             $where = array();
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where + array('date_and_time' => null), 'ORDER BY add_time DESC', 400);
+        $rows = $GLOBALS['SITE_DB']->query_select('poll', array('question', 'is_current', 'votes1', 'votes2', 'votes3', 'votes4', 'votes5', 'votes6', 'votes7', 'votes8', 'votes9', 'votes10', 'id'), $where + array('date_and_time' => null), 'ORDER BY add_time DESC', intval(get_option('general_safety_listing_limit')));
     }
     $out = new Tempcode();
     foreach ($rows as $myrow) {

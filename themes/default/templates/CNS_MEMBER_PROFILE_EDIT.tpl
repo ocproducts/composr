@@ -10,7 +10,7 @@
 
 {$REQUIRE_JAVASCRIPT,checking}
 
-<form class="form_table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main_form">
+<form class="form_table" title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" enctype="multipart/form-data" id="main_form" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{HIDDEN}

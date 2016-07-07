@@ -1,6 +1,6 @@
 [title]Donate[/title]
 
-There are significant ongoing costs in keeping {$SITE_NAME} running and moving forward. If you feel you can assist by donating money it would be much appreciated.
+There are significant ongoing costs in keeping {$SITE_NAME*} running and moving forward. If you feel you can assist by donating money it would be much appreciated.
 
 
 [semihtml]

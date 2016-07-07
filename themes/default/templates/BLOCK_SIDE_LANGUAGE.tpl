@@ -1,7 +1,7 @@
 <section class="box box___block_side_language"><div class="box_inner">
 	<h3>{!LANGUAGE}</h3>
 
-	<form title="{!LANGUAGE} ({!FORM_AUTO_SUBMITS})" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}">
+	<form title="{!LANGUAGE} ({!FORM_AUTO_SUBMITS})" method="get" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" autocomplete="off">
 		{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1},keep_lang}
 		<div>
 			<p class="accessibility_hidden"><label for="keep_lang">{!LANGUAGE}</label></p>

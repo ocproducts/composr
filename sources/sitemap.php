@@ -618,9 +618,15 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
             $zone = $matches[1];
             $page = $matches[2];
 
-            require_code('content');
-            $cma_ob = get_content_object($this->content_type);
-            $cma_info = $cma_ob->info();
+            static $cache = array();
+            if (isset($cache[$this->content_type])) {
+                $cma_info = $cache[$this->content_type];
+            } else {
+                require_code('content');
+                $cma_ob = get_content_object($this->content_type);
+                $cma_info = $cma_ob->info();
+                $cache[$this->content_type] = $cma_info;
+            }
             require_code('site');
             if (($cma_info['module'] == $page) && ($zone != '_SEARCH') && (_request_page($page, $zone) !== false)) { // Ensure the given page matches the content type, and it really does exist in the given zone
                 if ($matches[0] == $page_link) {
@@ -856,7 +862,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
         if ((($meta_gather & SITEMAP_GATHER_NUM_COMMENTS) != 0) && (!is_null($cma_info['feedback_type_code']))) {
             $num_comments = 0;
-            $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cma_info['feedback_type_code'] . '_' . $content_id), $num_comments, 0, 0, false);
+            $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cma_info['feedback_type_code'] . '_' . $content_id, do_lang('COMMENT')), $num_comments, 0, 0, false);
 
             $struct['extra_meta']['num_comments'] = $num_comments;
         }

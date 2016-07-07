@@ -44,8 +44,12 @@ function cns_get_post_templates($forum_id)
     $all_templates = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('*'));
     $apply = array();
     foreach ($all_templates as $template) {
-        require_code('selectcode');
-        $idlist = selectcode_to_idlist_using_db($template['t_forum_multi_code'], 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
+        if ($template['t_forum_multi_code'] == '*') {
+            $idlist = array($forum_id);
+        } else {
+            require_code('selectcode');
+            $idlist = selectcode_to_idlist_using_db($template['t_forum_multi_code'], 'id', 'f_forums', 'f_forums', 'f_parent_forum', 'f_parent_forum', 'id', true, true, $GLOBALS['FORUM_DB']);
+        }
         if (in_array($forum_id, $idlist)) {
             if (strpos($template['t_text'], '{') !== false) {
                 require_code('tempcode_compiler');

@@ -29,9 +29,6 @@ For other language packs you can copy this file to the obvious new name. This is
  */
 class LangFilter_EN extends LangFilter
 {
-    private $make_uncle_sam_happy;
-    private $the_sun_never_sets_on_the_british_empire;
-
     private $vowels;
 
     /**
@@ -39,164 +36,6 @@ class LangFilter_EN extends LangFilter
      */
     public function __construct()
     {
-        // Broken into sets. We don't need to include "d"/"s"/"r" suffixes because the base word is a stem of that. But "ing" suffixes mean removing a letter so are needed. Some completely standard long stem transfers are done as universal replaces elsewhere.
-        // All words are stem bound, but not tail bound.
-        $this->make_uncle_sam_happy = array(
-            // Spelling...
-
-            'analyse' => 'analyze',
-            'analysing' => 'analyzing',
-
-            'apologise' => 'apologize',
-            'apologising' => 'apologizing',
-
-            'artefact' => 'artifact',
-
-            'authorise' => 'authorize',
-            'authorising' => 'authorizing',
-
-            'behaviour' => 'behavior',
-
-            'cancelled' => 'canceled',
-            'cancelling' => 'canceling',
-
-            'catalogue' => 'catalog',
-
-            'categorise' => 'categorize',
-            'categorising' => 'categorizing',
-
-            'centralise' => 'centralize',
-            'centralising' => 'centralizing',
-
-            'centre' => 'center',
-            'centring' => 'centering',
-
-            'colour' => 'color',
-
-            'criticise' => 'criticize',
-            'criticising' => 'criticizing',
-
-            'customise' => 'customize',
-            'customising' => 'customizing',
-
-            'defence' => 'defense',
-
-            'dialogue' => 'dialog',
-
-            'emphasise' => 'emphasize',
-            'emphasising' => 'emphasizing',
-
-            'encyclopaedic' => 'encyclopedic',
-
-            'favour' => 'favor',
-            'favouring' => 'favoring',
-
-            'finalise' => 'finalise',
-            'finalising' => 'finalising',
-
-            'fulfil' => 'fulfill',
-
-            'immunise' => 'immunize',
-            'immunising' => 'immunizing',
-
-            'initialise' => 'initialize',
-            'initialising' => 'initializing',
-
-            'italicise' => 'italicize',
-            'italicising' => 'italicizing',
-
-            'labelled' => 'labeled',
-            'labelling' => 'labeling',
-
-            'licence' => 'license',
-            'licencing' => 'licensing',
-
-            'maximise' => 'maximize',
-            'maximising' => 'maximizing',
-
-            'minimise' => 'minimize',
-            'minimising' => 'minimizing',
-
-            'misbehaviour' => 'misbehavior',
-
-            'neighbour' => 'neighbor',
-
-            'offence' => 'offense',
-
-            'optimise' => 'optimize',
-            'optimising' => 'optimizing',
-
-            'organise' => 'organize',
-            'organising' => 'organizing',
-
-            'penalise' => 'penalize',
-            'penalising' => 'penalizing',
-
-            'personalise' => 'personalize',
-            'personalising' => 'personalizing',
-
-            'prioritise' => 'prioritize',
-            'prioritising' => 'prioritizing',
-
-            'randomise' => 'randomize',
-            'randomising' => 'randomizing',
-
-            'realise' => 'realize',
-            'realising' => 'realizing',
-
-            'recognise' => 'recognise',
-            'recognising' => 'recognizing',
-
-            'standardise' => 'standardize',
-            'standardising' => 'standardizing',
-
-            'summarise' => 'summarize',
-            'summarising' => 'summarizing',
-
-            'symbolise' => 'symbolize',
-            'symbolising' => 'symbolizing',
-
-            'synchronise' => 'synchronize',
-            'synchronising' => 'synchronizing',
-
-            'theatre' => 'theater',
-
-            'unauthorised' => 'unauthorized',
-
-            'unrecognised' => 'unrecognized',
-
-            'utilise' => 'utilize',
-            'utilising' => 'utilizing',
-
-            'victimise' => 'victimize',
-            'victimising' => 'victimizing',
-
-            'visualise' => 'visualize',
-            'visualising' => 'visualizing',
-
-            // Various...
-
-            'forename' => 'first name',
-            'surname' => 'last name',
-            'maths' => 'math',
-            'tick (check)' => 'check',
-            'untick (uncheck)' => 'uncheck',
-            'ticked (checked)' => 'checked',
-            'unticked (unchecked)' => 'unchecked',
-            'ticking (checking)' => 'checking',
-            'unticking (unchecking)' => 'unchecking',
-            //'bill' => 'invoice', not needed and likely to be substring
-        );
-
-        $this->the_sun_never_sets_on_the_british_empire = array( // Tally ho
-            'tick (check)' => 'tick',
-            'untick (uncheck)' => 'untick',
-            'ticked (checked)' => 'ticked',
-            'unticked (unchecked)' => 'unticked',
-            'ticking (checking)' => 'ticking',
-            'unticking (unchecking)' => 'unticking',
-        ); // pip pip
-
         $this->vowels = array('a' => true, 'e' => true, 'i' => true, 'o' => true, 'u' => true);
     }
 
@@ -214,8 +53,196 @@ class LangFilter_EN extends LangFilter
             $lang = user_lang();
         }
 
+        // Broken into sets. We don't need to include "d"/"s"/"r" suffixes because the base word is a stem of that. But "ing" suffixes mean removing a letter so are needed. Some completely standard long stem transfers are done as universal replaces elsewhere.
+        // All words are stem bound, but not tail bound.
+        static $make_uncle_sam_happy = null;
+        static $the_sun_never_sets_on_the_british_empire = null;
+        if ($make_uncle_sam_happy === null) {
+            $make_uncle_sam_happy = array(
+                // Spelling...
+
+                'analyse' => 'analyze',
+                'analysing' => 'analyzing',
+
+                'apologise' => 'apologize',
+                'apologising' => 'apologizing',
+
+                'artefact' => 'artifact',
+
+                'authorise' => 'authorize',
+                'authorising' => 'authorizing',
+
+                'behaviour' => 'behavior',
+
+                'cancelled' => 'canceled',
+                'cancelling' => 'canceling',
+
+                'catalogue' => 'catalog',
+
+                'categorise' => 'categorize',
+                'categorising' => 'categorizing',
+
+                'centralise' => 'centralize',
+                'centralising' => 'centralizing',
+
+                'centre' => 'center',
+                'centring' => 'centering',
+
+                'colour' => 'color',
+
+                'criticise' => 'criticize',
+                'criticising' => 'criticizing',
+
+                'customise' => 'customize',
+                'customising' => 'customizing',
+
+                'defence' => 'defense',
+
+                'dialogue' => 'dialog',
+
+                'emphasise' => 'emphasize',
+                'emphasising' => 'emphasizing',
+
+                'encyclopaedic' => 'encyclopedic',
+
+                'favour' => 'favor',
+                'favouring' => 'favoring',
+
+                'finalise' => 'finalise',
+                'finalising' => 'finalising',
+
+                'fulfil' => 'fulfill',
+
+                'immunise' => 'immunize',
+                'immunising' => 'immunizing',
+
+                'initialise' => 'initialize',
+                'initialising' => 'initializing',
+
+                'italicise' => 'italicize',
+                'italicising' => 'italicizing',
+
+                'labelled' => 'labeled',
+                'labelling' => 'labeling',
+
+                'licence' => 'license',
+                'licencing' => 'licensing',
+
+                'maximise' => 'maximize',
+                'maximising' => 'maximizing',
+
+                'minimise' => 'minimize',
+                'minimising' => 'minimizing',
+
+                'misbehaviour' => 'misbehavior',
+
+                'neighbour' => 'neighbor',
+
+                'offence' => 'offense',
+
+                'optimise' => 'optimize',
+                'optimising' => 'optimizing',
+
+                'organise' => 'organize',
+                'organising' => 'organizing',
+
+                'penalise' => 'penalize',
+                'penalising' => 'penalizing',
+
+                'personalise' => 'personalize',
+                'personalising' => 'personalizing',
+
+                'prioritise' => 'prioritize',
+                'prioritising' => 'prioritizing',
+
+                'randomise' => 'randomize',
+                'randomising' => 'randomizing',
+
+                'realise' => 'realize',
+                'realising' => 'realizing',
+
+                'recognise' => 'recognise',
+                'recognising' => 'recognizing',
+
+                'standardise' => 'standardize',
+                'standardising' => 'standardizing',
+
+                'summarise' => 'summarize',
+                'summarising' => 'summarizing',
+
+                'symbolise' => 'symbolize',
+                'symbolising' => 'symbolizing',
+
+                'synchronise' => 'synchronize',
+                'synchronising' => 'synchronizing',
+
+                'theatre' => 'theater',
+
+                'unauthorised' => 'unauthorized',
+
+                'unrecognised' => 'unrecognized',
+
+                'utilise' => 'utilize',
+                'utilising' => 'utilizing',
+
+                'victimise' => 'victimize',
+                'victimising' => 'victimizing',
+
+                'visualise' => 'visualize',
+                'visualising' => 'visualizing',
+
+                // Various...
+
+                'forename' => 'first name',
+                'surname' => 'last name',
+                'maths' => 'math',
+                'tick (check)' => 'check',
+                'untick (uncheck)' => 'uncheck',
+                'ticked (checked)' => 'checked',
+                'unticked (unchecked)' => 'unchecked',
+                'ticking (checking)' => 'checking',
+                'unticking (unchecking)' => 'unchecking',
+                //'bill' => 'invoice', not needed and likely to be substring
+            );
+
+            $the_sun_never_sets_on_the_british_empire = array( // Tally ho
+                'tick (check)' => 'tick',
+                'untick (uncheck)' => 'untick',
+                'ticked (checked)' => 'ticked',
+                'unticked (unchecked)' => 'unticked',
+                'ticking (checking)' => 'ticking',
+                'unticking (unchecking)' => 'unticking',
+            ); // pip pip
+
+            $remapping = array();
+
+            // Put in correct brand name
+            if (!is_null($key)) {
+                $remapping['the software'] = preg_quote(brand_name(), '#');
+                $remapping['the website software'] = preg_quote(brand_name(), '#');
+                $remapping['other webmasters'] = 'other ' . preg_quote(brand_name(), '#') . ' users';
+            }
+
+            // Fix bad contextualisation
+            $remapping['on Yesterday'] = 'Yesterday';
+            $remapping['on Today'] = 'Today';
+
+            $the_sun_never_sets_on_the_british_empire += $remapping;
+            $make_uncle_sam_happy += $remapping;
+        }
+
         // American <> British
-        $is_american = (!function_exists('get_option')) || (get_option('yeehaw') == '1') || ($lang == 'EN_US');
+        static $_is_american = null;
+        if ($_is_american === null) {
+            if (function_exists('get_option')) {
+                $_is_american = (get_option('yeehaw') == '1') || ($lang == 'EN_US');
+                $is_american = $_is_american;
+            } else {
+                $is_american = true;
+            }
+        } else {
+            $is_american = $_is_american;
+        }
         if ($is_american) {
             // NB: Below you will see there are exceptions, typically when the base word already naturally ends with "se" on the end, it uses "s" not "z"
 
@@ -235,36 +262,27 @@ class LangFilter_EN extends LangFilter
             $value = str_replace('sational', 'zational', $value);
             $value = str_replace('senzational', 'sensational', $value); // Exception, put this back
 
-            $remapping = $this->make_uncle_sam_happy;
+            $remapping = $make_uncle_sam_happy;
         } else {
-            $remapping = $this->the_sun_never_sets_on_the_british_empire;
+            $remapping = $the_sun_never_sets_on_the_british_empire;
         }
-
-        // Put in correct brand name
-        if (!is_null($key)) {
-            $remapping['the software'] = brand_name();
-            $remapping['the website software'] = brand_name();
-            $remapping['other webmasters'] = 'other ' . brand_name() . ' users';
-        }
-
-        // Fix bad contextualisation
-        $remapping['on Yesterday'] = 'Yesterday';
-        $remapping['on Today'] = 'Today';
 
         foreach ($remapping as $authentic => $perverted) {
-            $value = preg_replace(
-                '#(^|\s)' . preg_quote($authentic, '#') . '#',
-                '$1' . $perverted,
-                $value
-            );
-            $value = preg_replace(
-                '#(^|\s)' . preg_quote(ucfirst($authentic), '#') . '#',
-                '$1' . ucfirst($perverted),
-                $value
-            );
+            if (stripos($value, $authentic) !== false) {
+                $value = preg_replace(
+                    '#(^|\s)' . $authentic . '#',
+                    '$1' . $perverted,
+                    $value
+                );
+                $value = preg_replace(
+                    '#(^|\s)' . ucfirst($authentic) . '#',
+                    '$1' . ucfirst($perverted),
+                    $value
+                );
+            }
         }
 
-        if (!is_null($key) && $is_american) {
+        if (!empty($key) && $is_american && strtolower($key[0]) == $key[0]) {
             // Day comes after month
             switch ($key . '=' . $value) {
                 case 'calendar_date=Y-m-d': // ISO (International) style
@@ -322,14 +340,14 @@ class LangFilter_EN extends LangFilter
         $preserved = array();
 
         foreach ($flags as $flag_i => $flag) {
-            if (preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
+            if ($flag[0] == 'p' && preg_match('#^preserve=(.*)$#', $flag, $matches) != 0) {
                 $preserve = $matches[1];
                 $preserved[$flag_i] = $matches[1];
                 $value = str_replace($preserve, 'preserve_' . strval($flag_i), $value);
             }
 
             // Putting in correct keypress for Mac users
-            if ($flag == 'platform_specific') {
+            elseif ($flag == 'platform_specific') {
                 if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
                     $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
                 } else {
@@ -339,7 +357,7 @@ class LangFilter_EN extends LangFilter
 
             // Putting correct content type words to generic strings, with appropriate grammar...
 
-            if (preg_match('#^(resource|category|entry|content_type_module)_in_param_(\d+)$#', $flag, $matches) != 0) {
+            elseif (preg_match('#^(resource|category|entry|content_type_module)_in_param_(\d+)$#', $flag, $matches) != 0) {
                 $type = $matches[1];
                 $param_num = intval($matches[2]);
                 if (!empty($parameters[$param_num - 1])) {

@@ -250,7 +250,7 @@ class Module_authors
             if ($count > 50) {
                 $downloads_released = paragraph(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
             } else {
-                $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('author' => $author, 'validated' => 1));
+                $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('author' => $author, 'validated' => 1), 'ORDER BY add_date');
                 foreach ($rows as $myrow) {
                     if (addon_installed('content_privacy')) {
                         require_code('content_privacy');
@@ -277,7 +277,7 @@ class Module_authors
             if ($count > 50) {
                 $news_released = paragraph(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'));
             } else {
-                $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('author' => $author, 'validated' => 1));
+                $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('author' => $author, 'validated' => 1), 'ORDER BY date_and_time');
                 foreach ($rows as $i => $row) {
                     if (addon_installed('content_privacy')) {
                         require_code('content_privacy');

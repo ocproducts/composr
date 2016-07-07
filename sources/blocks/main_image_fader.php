@@ -76,8 +76,12 @@ class Block_main_image_fader
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
         $order = array_key_exists('order', $map) ? $map['order'] : '';
 
-        require_code('selectcode');
-        $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        if ($cat == 'root') {
+            $cat_select = db_string_equal_to('cat', $cat);
+        } else {
+            require_code('selectcode');
+            $cat_select = selectcode_to_sqlfragment($cat, 'cat', 'galleries', 'parent_id', 'cat', 'name', false, false);
+        }
 
         $images = array();
         $images_full = array();

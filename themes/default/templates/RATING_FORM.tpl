@@ -34,7 +34,7 @@
 
 	{+START,IF,{$NOT,{$JS_ON}}}
 		{+START,IF,{$NOT,{$GET,block_embedded_forms}}}
-			<form title="{!RATE}" onsubmit="if (this.elements[0].selectedIndex==0) { window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN=;}'); return false; } else return true;" action="{URL*}" method="post">
+			<form title="{!RATE}" onsubmit="if (this.elements[0].selectedIndex==0) { window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN=;}'); return false; } else return true;" action="{URL*}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{+START,LOOP,ALL_RATING_CRITERIA}

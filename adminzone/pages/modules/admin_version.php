@@ -364,6 +364,7 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'recentmessages', array('m_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'queued', array('m_queued'));
+            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'combo', array('m_date_and_time', 'm_queued')); // Used for number-sent-within querying
 
             $GLOBALS['SITE_DB']->create_table('link_tracker', array(
                 'id' => '*AUTO',
@@ -468,6 +469,7 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'l_member_id', array('l_member_id', 'l_notification_code'));
             $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'l_code_category', array('l_code_category'));
+            $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'l_notification_code', array('l_notification_code'));
 
             $GLOBALS['SITE_DB']->create_table('digestives_tin', array( // Notifications queued up ready for the regular digest email
                                                                        'id' => '*AUTO',

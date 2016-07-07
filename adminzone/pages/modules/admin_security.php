@@ -136,7 +136,7 @@ class Module_admin_security
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('SECURITY_LOG'))));
 
             $id = get_param_integer('id');
-            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('id' => $id));
+            $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('id' => $id), '', 1);
             $row = $rows[0];
 
             $time = get_timezoned_date($row['date_and_time']);

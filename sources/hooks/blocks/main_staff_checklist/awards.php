@@ -66,8 +66,7 @@ class Hook_checklist_awards
 
                 $url = $details['add_url'];
                 if (!is_null($url)) {
-                    list($url_zone, $url_map, $url_hash) = page_link_decode($url);
-                    $url = static_evaluate_tempcode(build_url($url_map, $url_zone, null, false, false, false, $url_hash));
+                    $url = page_link_to_url($url);
                 } else {
                     $url = '';
                 }

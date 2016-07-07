@@ -83,7 +83,7 @@ class Hook_preview_download
             }
         }
         if (!is_null($id)) {
-            $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id));
+            $rows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('id' => $id), '', 1);
             if (array_key_exists(0, $rows)) {
                 $map['id'] = $id;
 

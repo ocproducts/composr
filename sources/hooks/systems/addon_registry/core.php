@@ -1193,6 +1193,7 @@ class Hook_addon_registry_core
             'sources/failure.php',
             'sources/failure_spammers.php',
             'sources/images.php',
+            'sources/images2.php',
             'sources/images_png.php',
             'sources/exif.php',
             'sources/index.html',

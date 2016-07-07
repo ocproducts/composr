@@ -18,6 +18,7 @@ For example:
 		width: 980px;
 		margin: 0 auto;
 	{+END}{+END}
+	overflow: hidden;
 }
 
 .menu_type__dropdown li.toplevel {
@@ -100,7 +101,8 @@ For example:
 }
 
 .menu_type__dropdown .nlevel li:hover, .menu_type__dropdown .nlevel li.current {
-	background-color: {$GET,dropdown_menu_text};
+	background-color: #e8f4ff;
+	background-image: none;
 }
 
 .menu_type__dropdown .nlevel li, .menu_type__dropdown div.nlevel, .menu_type__dropdown .nlevel .menu_spacer {

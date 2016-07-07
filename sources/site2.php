@@ -383,6 +383,12 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, $as_admin/*Ideally we assign $page_submitter based on this as well so it is safe if the Comcode cache is emptied*/, $page_submitter);
     $_text_parsed = $_new['tempcode'];
     $LAX_COMCODE = $temp;
+
+    // Flatten for performance reasons?
+    if (strpos($comcode, '{$,Quick Cache}') !== false) {
+        $_text_parsed = apply_quick_caching($_text_parsed);
+    }
+
     $text_parsed = $_text_parsed->to_assembly();
 
     // Check it still needs inserting (it might actually be there, but not translated)
@@ -547,7 +553,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
  */
 function clean_html_title($title)
 {
-    $_title = trim(strip_tags($title));
+    $_title = trim(strip_html($title));
     if ($_title == '') { // Complex case
         $matches = array();
         if (preg_match('#<img[^>]*alt="([^"]+)"#', $title, $matches) != 0) {

@@ -128,7 +128,7 @@
 
 		<script>// <![CDATA[
 			manage_scroll_height(document.getElementById('{NAME;/}'));
-			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}{+END}
+			{+START,INCLUDE,AUTOCOMPLETE_LOAD,.js,javascript}WYSIWYG=1{+END}
 		//]]></script>
 
 		{+START,IF,{$AND,{$BROWSER_MATCHES,simplified_attachments_ui},{$IS_NON_EMPTY,{ATTACHMENTS}}}}

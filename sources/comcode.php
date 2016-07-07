@@ -37,7 +37,13 @@ function init__comcode()
      * @global boolean $LAX_COMCODE
      */
     $LAX_COMCODE = null;
+}
 
+/**
+ * Set up the VALID_COMCODE_TAGS global. It uses a bit of memory, so for performance we do it on-demand
+ */
+function init_valid_comcode_tags()
+{
     global $VALID_COMCODE_TAGS;
     /** A list of all valid Comcode tags that we recognise.
      *
@@ -59,11 +65,21 @@ function init__comcode()
     //if (addon_installed('ecommerce')) {
     $VALID_COMCODE_TAGS['currency'] = true;
     //}
+}
 
+/**
+ * Set up the POTENTIAL_JS_NAUGHTY_ARRAY global. It uses a bit of memory, so for performance we do it on-demand
+ */
+function init_potential_js_naughty_array()
+{
     // We're not allowed to specify any of these as entities
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
-    $POTENTIAL_JS_NAUGHTY_ARRAY = array('d' => true, /*'a' => true, 't' => true, 'a' => true,*/
-                                        'j' => true, 'a' => true, 'v' => true, 's' => true, 'c' => true, 'r' => true, 'i' => true, 'p' => true, 't' => true, 'J' => true, 'A' => true, 'V' => true, 'S' => true, 'C' => true, 'R' => true, 'I' => true, 'P' => true, 'T' => true, ' ' => true, "\t" => true, "\n" => true, "\r" => true, ':' => true, '/' => true, '*' => true, '\\' => true);
+    $POTENTIAL_JS_NAUGHTY_ARRAY = array(
+        'd' => true, /*'a' => true, 't' => true, 'a' => true,*/
+        'j' => true, 'a' => true, 'v' => true, 's' => true, 'c' => true, 'r' => true, 'i' => true, 'p' => true, 't' => true,
+        'J' => true, 'A' => true, 'V' => true, 'S' => true, 'C' => true, 'R' => true, 'I' => true, 'P' => true, 'T' => true,
+        ' ' => true, "\t" => true, "\n" => true, "\r" => true, ':' => true, '/' => true, '*' => true, '\\' => true
+    );
     $POTENTIAL_JS_NAUGHTY_ARRAY[chr(0)] = true;
 }
 
@@ -104,6 +120,10 @@ function html_to_comcode($html, $force = true)
  */
 function apply_emoticons($text)
 {
+    if ($text == '') {
+        return '';
+    }
+
     require_code('comcode_renderer');
     if (preg_match('#^[A-Za-z0-9\s]*$#', $text) != 0) {
         return $text; // Nothing interesting here
@@ -186,8 +206,13 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
         $tags_to_preserve = array();
     }
 
-    if ($text == '' || preg_match('#^[\w\d\-\_\(\) \.,:;/"\'\!\?]*$$#', $text) != 0) {
-        return $text; // Optimisation
+    if ($text == '') {
+        return '';
+    }
+
+    $matches = array();
+    if (preg_match('#^(\[semihtml\])?([\w\d\-\_\(\) \.,:;/"\'\!\?]*)(\[/semihtml\])?$#', $text, $matches) != 0) {
+        return $matches[2]; // Optimisation
     }
 
     require_code('mail');
@@ -196,6 +221,8 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
     }
 
     if (strpos($text, '[') !== false) {
+        init_valid_comcode_tags();
+
         global $VALID_COMCODE_TAGS;
         foreach (array_keys($VALID_COMCODE_TAGS) as $tag) {
             if (in_array($tag, $tags_to_preserve)) {

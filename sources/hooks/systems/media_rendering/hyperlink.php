@@ -127,13 +127,15 @@ class Hook_media_rendering_hyperlink
                     $meta_title = escape_html($title);
                 }
 
-                return do_template('MEDIA_WEBPAGE_SEMANTIC', array('_GUID' => '59ae26467bbde639a176a213d85370ea', 'TITLE' => $meta_details['t_title'],
-                                                                   'META_TITLE' => $meta_title,
-                                                                   'DESCRIPTION' => ((array_key_exists('description', $attributes)) && ($attributes['description'] != '')) ? $attributes['description'] : $meta_details['t_description'],
-                                                                   'IMAGE_URL' => ((array_key_exists('thumb_url', $attributes)) && ($attributes['thumb_url'] != '')) ? $attributes['thumb_url'] : $meta_details['t_image_url'],
-                                                                   'URL' => $meta_details['t_url'],
-                                                                   'WIDTH' => ((array_key_exists('width', $attributes)) && ($attributes['width'] != '')) ? $attributes['width'] : get_option('thumb_width'),
-                                                                   'HEIGHT' => ((array_key_exists('height', $attributes)) && ($attributes['height'] != '')) ? $attributes['height'] : get_option('thumb_width'),
+                return do_template('MEDIA_WEBPAGE_SEMANTIC', array(
+                    '_GUID' => '59ae26467bbde639a176a213d85370ea',
+                    'TITLE' => $meta_details['t_title'],
+                   'META_TITLE' => $meta_title,
+                   'DESCRIPTION' => ((array_key_exists('description', $attributes)) && ($attributes['description'] != '')) ? $attributes['description'] : $meta_details['t_description'],
+                   'IMAGE_URL' => ((array_key_exists('thumb_url', $attributes)) && ($attributes['thumb_url'] != '')) ? $attributes['thumb_url'] : $meta_details['t_image_url'],
+                   'URL' => $meta_details['t_url'],
+                   'WIDTH' => ((array_key_exists('width', $attributes)) && ($attributes['width'] != '')) ? $attributes['width'] : get_option('thumb_width'),
+                   'HEIGHT' => ((array_key_exists('height', $attributes)) && ($attributes['height'] != '')) ? $attributes['height'] : get_option('thumb_width'),
                 ));
             }
             // Hmm, okay we'll proceed towards a plain link if it's not a download and has no metadata to box

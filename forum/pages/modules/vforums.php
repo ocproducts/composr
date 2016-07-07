@@ -169,15 +169,9 @@ class Module_vforums
 
         $condition = 't_cache_last_time>' . strval($last_time);
 
-        $order2 = 't_cache_last_time DESC';
-
-        if (get_option('enable_sunk') == '1') {
-            $order2 = 't_sunk ASC,' . $order2;
-        }
-
         $extra_tpl_map = array('FILTERING' => do_template('CNS_VFORUM_FILTERING', array()));
 
-        return $this->_vforum($title, $condition, 't_cascading DESC,t_pinned DESC,' . $order2, true, $extra_tpl_map);
+        return $this->_vforum($title, $condition, 'last_post', true, $extra_tpl_map);
     }
 
     /**
@@ -188,10 +182,18 @@ class Module_vforums
     public function unanswered_topics()
     {
         $title = do_lang_tempcode('UNANSWERED_TOPICS');
-        $condition = array('(t_cache_num_posts=1 OR t_cache_num_posts<5 AND (SELECT COUNT(DISTINCT p2.p_poster) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 WHERE p2.p_topic_id=top.id)=1)');
+
+        $condition = array(
+            '(t_cache_num_posts=1 OR t_cache_num_posts<5 AND (SELECT COUNT(DISTINCT p2.p_poster) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 WHERE p2.p_topic_id=top.id)=1) AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * 14), // Extra limit, otherwise query can take forever
+        );
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true);
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $initial_table .= ' FORCE INDEX (unread_forums)';
+        }
+
+        return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }
 
     /**
@@ -206,9 +208,20 @@ class Module_vforums
         }
 
         $title = do_lang_tempcode('INVOLVED_TOPICS');
-        $condition = array('pos.p_poster=' . strval(get_member()));
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true, null, $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id');
+        $_condition = 'pos.p_poster=' . strval(get_member());
+        if ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) { // Too many posts, so make time-sensitive
+            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
+        }
+        $condition = array($_condition);
+
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos';
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $initial_table .= ' FORCE INDEX (posts_by)';
+        }
+        $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
+
+        return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
     }
 
     /**
@@ -225,7 +238,7 @@ class Module_vforums
         $title = do_lang_tempcode('TOPICS_UNREAD');
         $condition = array('l_time IS NOT NULL AND l_time<t_cache_last_time', 'l_time IS NULL AND t_cache_last_time>' . strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))));
 
-        return $this->_vforum($title, $condition, 't_cache_last_time DESC', true);
+        return $this->_vforum($title, $condition, 'last_post', true);
     }
 
     /**
@@ -242,7 +255,7 @@ class Module_vforums
         $title = do_lang_tempcode('RECENTLY_READ');
         $condition = 'l_time>' . strval(time() - 60 * 60 * 24 * 2);
 
-        return $this->_vforum($title, $condition, 'l_time DESC', true);
+        return $this->_vforum($title, $condition, 'read_time', true);
     }
 
     /**
@@ -254,24 +267,21 @@ class Module_vforums
      * @param  boolean $no_pin Whether to not show pinning in a separate section
      * @param  ?array $extra_tpl_map Extra template parameters to pass through (null: none)
      * @param  ?string $initial_table The table to query (null: topic table)
+     * @param  string $extra_select Extra SQL for select clause
      * @return Tempcode The UI
      */
-    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null)
+    public function _vforum($title, $condition, $order, $no_pin = false, $extra_tpl_map = null, $initial_table = null, $extra_select = '')
     {
+        require_code('templates_pagination');
+        list($max, $start, , $sql_sup, $sql_sup_order_by, $true_start, , $keyset_field_stripped) = get_keyset_pagination_settings('forum_max', intval(get_option('forum_topics_per_page')), 'forum_start', null, null, $order, 'get_forum_sort_order_simplified');
+
         $_breadcrumbs = cns_forum_breadcrumbs(db_get_first_id(), null, get_param_integer('keep_forum_root', db_get_first_id()), false);
         $_breadcrumbs[] = array('', $title);
         breadcrumb_set_parents($_breadcrumbs);
         $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
 
-        $max = get_param_integer('forum_max', intval(get_option('forum_topics_per_page')));
-        $start = get_param_integer('forum_start', 0);
         $type = get_param_string('type', 'browse');
         $forum_name = do_lang_tempcode('VIRTUAL_FORUM');
-
-        // Don't allow guest bots to probe too deep into the forum index, it gets very slow; the XML Sitemap is for guiding to topics like this
-        if (($start > $max * 5) && (is_guest()) && (!is_null(get_bot_type()))) {
-            access_denied('NOT_AS_GUEST');
-        }
 
         // Find topics
         $extra = ' AND ';
@@ -282,6 +292,7 @@ class Module_vforums
         $extra .= get_forum_access_sql('top.t_forum_id');
         $max_rows = 0;
         $topic_rows = array();
+        $keyset_value = null;
         foreach (is_array($condition) ? $condition : array($condition) as $_condition) {
             $query = ' FROM ';
             if (!is_null($initial_table)) {
@@ -296,17 +307,21 @@ class Module_vforums
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
             }
             $query .= ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
-            $_query = $query;
+            $query_cnt = $query;
+            $_query_cnt = $query;
+            $query .= $sql_sup;
             if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
                 $query .= ' GROUP BY top.id';
+                $query_cnt .= ' GROUP BY top.id';
             }
-            $query .= ' ORDER BY ' . $order;
+            $query .= $sql_sup_order_by;
             $full_query = 'SELECT top.*,' . (is_guest() ? 'NULL as l_time' : 'l_time');
             if (multi_lang_content()) {
                 $full_query .= ',t_cache_first_post AS p_post';
             } else {
                 $full_query .= ',p.p_post,p.p_post__text_parsed,p.p_post__source_user';
             }
+            $full_query .= $extra_select;
             $full_query .= $query;
             if (($start < 200) && (is_null($initial_table)) && (multi_lang_content())) {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start, false, false, array('t_cache_first_post' => '?LONG_TRANS__COMCODE')));
@@ -314,9 +329,9 @@ class Module_vforums
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start));
             }
             if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
-                $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT top.id) ' . $_query);
+                $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT top.id) ' . $_query_cnt);
             } else {
-                $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
+                $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query_cnt);
             }
         }
         $hot_topic_definition = intval(get_option('hot_topic_definition'));
@@ -334,13 +349,12 @@ class Module_vforums
         }
         $topics_array = array();
         foreach ($topic_rows as $topic_row) {
-            $topics_array[] = cns_get_topic_array($topic_row, get_member(), $hot_topic_definition, in_array($topic_row['id'], $involved));
+            $topics_array[] = cns_get_topic_array($topic_row, get_member(), $hot_topic_definition, in_array($topic_row['id'], $involved)) + $topic_row;
         }
 
         // Display topics
         $topics = new Tempcode();
         $pinned = false;
-        require_code('templates_pagination');
         $topic_wrapper = new Tempcode();
         $forum_name_map = collapse_2d_complexity('id', 'f_name', $GLOBALS['FORUM_DB']->query('SELECT id,f_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
         foreach ($topics_array as $topic) {
@@ -349,11 +363,15 @@ class Module_vforums
             }
             $pinned = in_array('pinned', $topic['modifiers']);
             $forum_id = array_key_exists('forum_id', $topic) ? $topic['forum_id'] : null;
-            $_forum_name = array_key_exists($forum_id, $forum_name_map) ? $forum_name_map[$forum_id] : do_lang_tempcode('PRIVATE_TOPICS');
+            $_forum_name = array_key_exists($forum_id, $forum_name_map) ? make_string_tempcode(escape_html($forum_name_map[$forum_id])) : do_lang_tempcode('PRIVATE_TOPICS');
             $topics->attach(cns_render_topic($topic, true, false, $_forum_name));
+
+            if ($keyset_field_stripped !== null) {
+                $keyset_value = $topic[$keyset_field_stripped]; // We keep overwriting this value until the last loop iteration
+            }
         }
         if (!$topics->is_empty()) {
-            $pagination = pagination(do_lang_tempcode('FORUM_TOPICS'), $start, 'forum_start', $max, 'forum_max', $max_rows);
+            $pagination = pagination(do_lang_tempcode('FORUM_TOPICS'), $true_start, 'forum_start', $max, 'forum_max', $max_rows, false, 5, null, '', $keyset_value);
 
             $moderator_actions = '';
             $moderator_actions .= '<option value="mark_topics_read">' . do_lang('MARK_READ') . '</option>';

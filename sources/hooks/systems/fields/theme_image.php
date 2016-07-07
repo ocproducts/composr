@@ -30,6 +30,11 @@ class Hook_fields_theme_image
      */
     public function get_field_types()
     {
+        static $ret = null;
+        if ($ret !== null) {
+            return $ret;
+        }
+
         require_code('themes2');
         $images = get_all_image_ids_type('', true, null, null, true);
         $ret = array();

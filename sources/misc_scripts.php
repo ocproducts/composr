@@ -491,7 +491,7 @@ function emoticons_script()
         $rows[] = array('CELLS' => $cells);
     }
 
-    $content = do_template('CNS_EMOTICON_TABLE', array('ROWS' => $rows));
+    $content = do_template('CNS_EMOTICON_TABLE', array('_GUID' => 'fb8c4c51f57cd8334800ef12e60d2a8a', 'ROWS' => $rows));
 
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML

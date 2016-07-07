@@ -46,17 +46,6 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
-        // Potential caching
-        $x = serialize(array($db_name, $db_host));
-        if (array_key_exists($x, $this->cache_db)) {
-            if ($this->last_select_db !== $db_name) {
-                mysql_select_db($db_name, $x);
-                $this->last_select_db = $db_name;
-            }
-
-            return array($x, $db_name);
-        }
-
         if (!function_exists('mysql_connect')) {
             $error = 'The MySQL PHP extension not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
             if ($fail_ok) {
@@ -64,6 +53,17 @@ class Database_Static_mysql extends Database_super_mysql
                 return null;
             }
             critical_error('PASSON', $error);
+        }
+
+        // Potential caching
+        $x = serialize(array($db_name, $db_host));
+        if (array_key_exists($x, $this->cache_db)) {
+            if ($this->last_select_db[1] !== $db_name) {
+                mysql_select_db($db_name, $this->cache_db[$x]);
+                $this->last_select_db = array($this->cache_db[$x], $db_name);
+            }
+
+            return array($this->cache_db[$x], $db_name);
         }
 
         $db = $persistent ? @mysql_pconnect($db_host, $db_user, $db_password) : @mysql_connect($db_host, $db_user, $db_password, true);
@@ -89,7 +89,9 @@ class Database_Static_mysql extends Database_super_mysql
                 critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
             }
         }
-        $this->last_select_db = $db_name;
+        $this->last_select_db = array($db, $db_name);
+
+        $this->cache_db[$x] = $db;
 
         global $SITE_INFO;
         if (empty($SITE_INFO['database_charset'])) {
@@ -167,6 +169,11 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        if (function_exists('ctype_alnum')) {
+            if (ctype_alnum($string)) {
+                return $string; // No non-trivial characters
+            }
+        }
         if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
             return $string; // No non-trivial characters
         }
@@ -179,9 +186,6 @@ class Database_Static_mysql extends Database_super_mysql
         }
         if (($mres) && (isset($GLOBALS['SITE_DB']->connection_read[0])) && ($GLOBALS['SITE_DB']->connection_read[0] !== false)) {
             return mysql_real_escape_string($string, $GLOBALS['SITE_DB']->connection_read[0]);
-        }
-        if (!function_exists('mysql_escape_string')) {
-            return addslashes($string);
         }
         return @mysql_escape_string($string);
     }
@@ -219,7 +223,7 @@ class Database_Static_mysql extends Database_super_mysql
             }
         }
 
-        if ($this->last_select_db !== $db_name) {
+        if ($this->last_select_db[1] !== $db_name) {
             mysql_select_db($db_name, $db);
             $this->last_select_db = $db_name;
         }

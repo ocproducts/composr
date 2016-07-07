@@ -1,5 +1,5 @@
 <div id="room_{CHATROOM_ID*}" class="chat_lobby_convos_area">
-	<form autocomplete="off" title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post">
+	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="im_post_bits">

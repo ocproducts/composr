@@ -139,7 +139,7 @@ class Module_admin_content_reviews
             }
 
             $content = new Tempcode();
-            $content_ids = collapse_2d_complexity('content_id', 'next_review_time', $GLOBALS['SITE_DB']->query('SELECT content_id,next_review_time FROM ' . get_table_prefix() . 'content_reviews WHERE ' . db_string_equal_to('content_type', $content_type) . ' AND next_review_time<=' . strval(time()) . ' ORDER BY next_review_time', 100));
+            $content_ids = collapse_2d_complexity('content_id', 'next_review_time', $GLOBALS['SITE_DB']->query('SELECT content_id,next_review_time FROM ' . get_table_prefix() . 'content_reviews WHERE ' . db_string_equal_to('content_type', $content_type) . ' AND next_review_time<=' . strval(time()) . ' ORDER BY next_review_time', intval(get_option('general_safety_listing_limit'))));
             $_content_ids = array();
             foreach ($content_ids as $content_id => $next_review_time) {
                 list($title,) = content_get_details($content_type, $content_id);
@@ -155,7 +155,7 @@ class Module_admin_content_reviews
             foreach ($_content_ids as $content_id => $title) {
                 $content->attach(form_input_list_entry($content_id, false, $title));
             }
-            if (count($content_ids) == 100) {
+            if (count($content_ids) == intval(get_option('general_safety_listing_limit'))) {
                 attach_message(do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'warn');
             }
 

@@ -1,9 +1,10 @@
 {$REQUIRE_JAVASCRIPT,checking}
+{$REQUIRE_CSS,cns_member_directory}
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
 	<div id="{$GET*,wrapper_id}">
-		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get">
+		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 
 			<label class="accessibility_hidden" for="friends_search">{!SEARCH}</label>
@@ -13,11 +14,11 @@
 		<p>{!DESCRIPTION_FRIENDS,{$USERNAME*,{MEMBER_ID},1}}</p>
 
 		{+START,IF_NON_EMPTY,{FRIENDS_FORWARD}}
-			<div class="cns_profile_friends raw_ajax_grow_spot">
+			<div class="cns_profile_friends block_main_members block_main_members__boxes raw_ajax_grow_spot">
 				{+START,LOOP,FRIENDS_FORWARD}
-					<div class="box"><div class="box_inner">
+					<div><div class="box"><div class="box_inner">
 						{BOX}
-					</div></div>
+					</div></div></div>
 				{+END}
 			</div>
 
@@ -42,9 +43,9 @@
 
 {+START,IF,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 	{+START,LOOP,FRIENDS_FORWARD}
-		<div class="box"><div class="box_inner">
+		<div><div class="box"><div class="box_inner">
 			{BOX}
-		</div></div>
+		</div></div></div>
 	{+END}
 
 	{PAGINATION}

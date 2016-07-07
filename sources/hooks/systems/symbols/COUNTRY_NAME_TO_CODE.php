@@ -34,8 +34,8 @@ class Hook_symbol_COUNTRY_NAME_TO_CODE
         $value = '';
 
         if (isset($param[0])) {
-        	require_code('locations');
-        	$value = find_iso_country_from_name($param[0]);
+            require_code('locations');
+            $value = find_iso_country_from_name($param[0]);
         }
 
         return $value;

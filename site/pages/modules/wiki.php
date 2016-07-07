@@ -288,7 +288,7 @@ class Module_wiki
             if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
                 $where_map['validated'] = 1;
             }
-            $db_posts = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), $where_map, 'ORDER BY date_and_time', 300);
+            $db_posts = $GLOBALS['SITE_DB']->query_select('wiki_posts', array('*'), $where_map, 'ORDER BY date_and_time', intval(get_option('general_safety_listing_limit')));
             $num_posts = count($db_posts);
 
             $description_comcode = get_translated_text($page['description']);
@@ -484,6 +484,10 @@ class Module_wiki
             foreach ($children_rows as $myrow) {
                 $child_id = $myrow['child_id'];
 
+                if (!has_category_access(get_member(), 'wiki_page', strval($child_id))) {
+                    continue;
+                }
+
                 if (get_option('wiki_enable_content_posts') == '0') {
                     $myrow['hide_posts'] = 1;
                 }
@@ -572,11 +576,11 @@ class Module_wiki
             )));
         }
 
-        if ($num_posts >= 300) {
+        if ($num_posts >= intval(get_option('general_safety_listing_limit'))) {
             attach_message(do_lang_tempcode('TOO_MANY_WIKI_POSTS'), 'warn');
         }
 
-        $buttons = $this->_render_buttons($chain, $id, $include_expansion, $num_posts < 300);
+        $buttons = $this->_render_buttons($chain, $id, $include_expansion, $num_posts < intval(get_option('general_safety_listing_limit')));
 
         return do_template('WIKI_PAGE_SCREEN', array(
             '_GUID' => '1840d6934be3344c4f93a159fc737a45',
@@ -992,7 +996,7 @@ class Module_wiki
             $_id = get_param_wiki_chain('id');
             $id = $_id[0];
 
-            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $id)) >= 300) {
+            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('page_id' => $id)) >= intval(get_option('general_safety_listing_limit'))) {
                 warn_exit(do_lang_tempcode('TOO_MANY_WIKI_POSTS'));
             }
 
@@ -1105,7 +1109,7 @@ class Module_wiki
         if ($mode == 'edit') {
             $delete = post_param_integer('delete', 0);
         } else {
-            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('id' => $id)) >= 300) {
+            if ($GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'COUNT(*)', array('id' => $id)) >= intval(get_option('general_safety_listing_limit'))) {
                 warn_exit(do_lang_tempcode('TOO_MANY_WIKI_POSTS'));
             }
         }

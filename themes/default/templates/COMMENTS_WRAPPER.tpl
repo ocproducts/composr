@@ -40,7 +40,7 @@
 			</span>
 
 			<div class="comments_sorting_box inline{+START,IF,{$NOT,{$MOBILE}}} right{+END}">
-				<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post">
+				<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<label for="comments_sort">{!SORT_BY}:</label>

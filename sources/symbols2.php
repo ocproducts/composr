@@ -3048,6 +3048,7 @@ function ecv2_TEMPCODE($lang, $escaped, $param)
  */
 function ecv2_TIMEZONE($lang, $escaped, $param)
 {
+    require_code('temporal2');
     $value = make_nice_timezone_name(get_site_timezone());
 
     if ($escaped !== array()) {

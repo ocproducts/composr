@@ -73,7 +73,7 @@
 		<div class="float_surrounder">
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_1}}
 				<div class="right event_interest_box"><section class="box"><div class="box_inner">
-					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}">
+					<form title="{!INTERESTS}" method="post" action="{INTERESTS_URL*}" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						<p><strong>{!DESCRIPTION_INTERESTS}</strong></p>
@@ -90,7 +90,7 @@
 			{+END}
 			{+START,IF_NON_EMPTY,{EVENT_TYPES_2}}
 				<div class="left event_interest_box"><section class="box"><div class="box_inner">
-					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get">
+					<form title="{!FILTER}" action="{$URL_FOR_GET_FORM*,{FILTER_URL}}" method="get" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
 						{$HIDDENS_FOR_GET_FORM,{FILTER_URL}}

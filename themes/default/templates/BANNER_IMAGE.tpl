@@ -1,6 +1,6 @@
 {$,You may need to remove this or change it to an <a> as shown, if your banner gets placed inside a form, because nested forms are not allowed}
 {+START,IF,{$IS_ADMIN}}{+START,IF,{$NOT,{$MATCH_KEY_MATCH,cms:cms_banners}}}
-	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated_minor_button_action associated_minor_button_overlayed" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}"><input title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit" value="{!EDIT}" /></form>
+	<form title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" class="associated_minor_button_action associated_minor_button_overlayed" method="post" action="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}" autocomplete="off"><input title="{!BANNER}: {!EDIT}{+START,IF_NON_EMPTY,{CAPTION}} ({$STRIP_TAGS,{CAPTION*}}){+END}" type="submit" value="{!EDIT}" /></form>
 	{$,<a title="{!BANNER}: {!EDIT} ({$STRIP_TAGS,{CAPTION*}})" class="associated_minor_button_action associated_minor_button_overlayed button" href="{$PAGE_LINK*,cms:cms_banners:_edit:{DEST}}">{!EDIT}</a>}
 {+END}{+END}
 

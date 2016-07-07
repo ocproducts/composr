@@ -784,7 +784,7 @@ function enable_notifications($notification_code, $notification_category, $membe
     $db->query_insert('notifications_enabled', $map);
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns') && (!is_null($notification_category))) { // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));
         if (!is_null($topic_id)) {
             enable_notifications('cns_topic', strval($topic_id), $member_id);
         }
@@ -819,7 +819,7 @@ function disable_notifications($notification_code, $notification_category, $memb
     ));
 
     if (($notification_code == 'comment_posted') && (get_forum_type() == 'cns')) { // Sync comment_posted ones to the forum ones
-        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category);
+        $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $notification_category, do_lang('COMMENT'));
         if (!is_null($topic_id)) {
             disable_notifications('cns_topic', strval($topic_id), $member_id);
         }

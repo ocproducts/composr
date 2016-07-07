@@ -66,6 +66,8 @@ class Persistent_caching_filecache
             return $PC_FC_CACHE[$key];
         }
 
+        //@header('X-Persistent-Cache: caches/persistent/' . md5($key) . '.gcd');
+
         $myfile = @fopen(get_custom_file_base() . '/caches/persistent/' . md5($key) . '.gcd', 'rb');
         if ($myfile === false) {
             return null;

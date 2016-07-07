@@ -96,8 +96,8 @@ function init__tempcode()
      *
      * @global boolean $OUTPUT_STREAMING
      */
-    global $OUTPUT_STREAMING;
-    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0);
+    global $OUTPUT_STREAMING, $SMART_CACHE;
+    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0) && (isset($SMART_CACHE)) && (!$SMART_CACHE->empty);
     if ($GLOBALS['SMART_CACHE'] === null || !$GLOBALS['SMART_CACHE']->get_initial_status('CSSS')) {
         $OUTPUT_STREAMING = false;
     } elseif (get_param_string('special_page_type', 'view') != 'view') {
@@ -221,10 +221,15 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
     }
 
     $_type = strval($type);
-    if (preg_match('#^[\w\-]*$#', $name) === 0) {
-        $_name = php_addslashes_twice($name);
-    } else {
+
+    if ((function_exists('ctype_alnum')) && (ctype_alnum(str_replace(array('_', '-'), array('', ''), $name)))) {
         $_name = $name;
+    } else {
+        if (preg_match('#^[\w\-]*$#', $name) === 0) {
+            $_name = php_addslashes_twice($name);
+        } else {
+            $_name = $name;
+        }
     }
 
     static $generator_base = null;
@@ -1481,21 +1486,6 @@ class Tempcode
         } else { // Consider it a string
             if (end($this->seq_parts) !== false) {
                 $end = &$this->seq_parts[key($this->seq_parts)];
-                if (end($end) !== false) {
-                    $_end = &$end[key($end)];
-                    if (($_end[2] === TC_KNOWN) && ($_end[1] === array())) { // Optimisation to save memory/storage-space/evaluation-time -- we can just append text
-                        $myfunc = $_end[0];
-                        if (isset($this->code_to_preexecute[$myfunc])) {
-                            $code = $this->code_to_preexecute[$myfunc];
-                            $pos2 = strpos($code, "\";\n");
-                            if ($pos2 !== false) {
-                                $code = substr($code, 0, $pos2) . " echo \\\"" . php_addslashes_twice($attach) . "\\\";" . substr($code, $pos2);
-                                $this->code_to_preexecute[$myfunc] = $code;
-                                return;
-                            }
-                        }
-                    }
-                }
             } else {
                 $this->seq_parts[] = array();
                 $end = &$this->seq_parts[0];

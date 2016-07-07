@@ -110,7 +110,7 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         $edit_time = $null_is_literal ? null : time();
     }
 
-    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id));
+    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
     if (!array_key_exists(0, $post_info)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
     }

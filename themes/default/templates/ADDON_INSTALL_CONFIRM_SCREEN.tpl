@@ -2,7 +2,7 @@
 
 {WARNINGS}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="box box___addon_install_confirm_screen"><div class="box_inner">

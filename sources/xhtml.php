@@ -222,7 +222,9 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
         'optgroup', 'legend', 'area', 'form',
     );
     foreach ($may_not_be_empty as $t) {
-        $new = preg_replace('#<' . $t . '(\s[^>]*)?' . '>\s*</' . $t . '>#', '', $new);
+        if (stripos($new, '<' . $t) !== false) {
+            $new = preg_replace('#<' . $t . '(\s[^>]*)?' . '>\s*</' . $t . '>#', '', $new);
+        }
     }
 
     unset($OUT);

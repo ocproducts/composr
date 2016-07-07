@@ -167,9 +167,18 @@ class Database_Static_mysqli extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        if (function_exists('ctype_alnum')) {
+            if (ctype_alnum($string)) {
+                return $string; // No non-trivial characters
+            }
+        }
+        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
+            return $string; // No non-trivial characters
+        }
+
         $string = fix_bad_unicode($string);
 
-        if (is_null($this->last_select_db)) {
+        if ($this->last_select_db === null) {
             return addslashes($string);
         }
         return mysqli_real_escape_string($this->last_select_db[0], $string);
@@ -294,14 +303,14 @@ class Database_Static_mysqli extends Database_super_mysql
 
         $out = array();
         $newrow = array();
-        while (!is_null(($row = mysqli_fetch_row($results)))) {
+        while (($row = mysqli_fetch_row($results)) !== null) {
             $j = 0;
             foreach ($row as $v) {
                 $name = $names[$j];
                 $type = $types[$j];
 
                 if (($type === 'int') || ($type === 'integer') || ($type === 'real') || ($type === 1) || ($type === 3) || ($type === 8)) {
-                    if ((is_null($v)) || ($v === '')) { // Roadsend returns empty string instead of null
+                    if ((($v === null)) || ($v === '')) { // Roadsend returns empty string instead of null
                         $newrow[$name] = null;
                     } else {
                         $_v = intval($v);

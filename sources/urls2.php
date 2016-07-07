@@ -83,24 +83,6 @@ function remove_url_mistakes($url)
 }
 
 /**
- * Given a URL or page-link, return an absolute URL.
- *
- * @param  string $url URL or page-link
- * @return URLPATH URL
- */
-function page_link_as_url($url)
-{
-    $parts = array();
-    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
-        list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
-    } else {
-        $url = qualify_url($url, get_base_url());
-    }
-    return $url;
-}
-
-/**
  * Get hidden fields for a form representing 'keep_x'. If we are having a GET form instead of a POST form, we need to do this. This function also encodes the page name, as we'll always want that.
  *
  * @param  ID_TEXT $page The page for the form to go to (blank: don't attach)
@@ -263,7 +245,8 @@ function _url_to_filename($url_full)
 function _qualify_url($url, $url_base)
 {
     require_code('obfuscate');
-    if (($url != '') && ($url[0] != '#') && (substr($url, 0, 5) != 'data:') && (substr($url, 0, 7) != 'mailto:') && (substr($url, 0, strlen(mailto_obfuscated())) != mailto_obfuscated())) {
+    $mto = mailto_obfuscated();
+    if (($url != '') && ($url[0] != '#') && (substr($url, 0, 5) != 'data:') && (substr($url, 0, 7) != 'mailto:') && (substr($url, 0, strlen($mto)) != $mto)) {
         if (url_is_local($url)) {
             if ($url[0] == '/') {
                 $parsed = @parse_url($url_base);

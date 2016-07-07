@@ -81,7 +81,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     }
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
-    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ( t.id=l_topic_id AND l_member_id=' . strval($member_id) . ' )
+    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval($member_id) . ')
     JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON (p.id=t.t_cache_last_post_id)';
     if (!multi_lang_content()) {
         $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 ON p2.id=t.t_cache_first_post_id';
@@ -102,7 +102,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     }
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
-    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ( t.id=l_topic_id AND l_member_id=' . strval($member_id) . ' )
+    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval($member_id) . ')
     JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON (p.id=t.t_cache_last_post_id)';
     if (!multi_lang_content()) {
         $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 ON p2.id=t.t_cache_first_post_id';
@@ -124,7 +124,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $query .= ' FROM
     ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
     LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_special_pt_access i ON (i.s_topic_id=t.id)
-    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ( t.id=l_topic_id AND l_member_id=' . strval($member_id) . ' )
+    LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval($member_id) . ')
     JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON (p.id=t.t_cache_last_post_id)';
     if (!multi_lang_content()) {
         $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 ON p2.id=t.t_cache_first_post_id';
@@ -145,9 +145,9 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
             $query .= ',p2.p_post AS p_post_first,p2.p_post__text_parsed AS p_post_first__text_parsed,p2.p_post__source_user AS p_post_first__source_user';
         }
         $query .= ' FROM
-        ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t
-        LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ( t.id=l_topic_id AND l_member_id=' . strval($member_id) . ' )
-        JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON (p_topic_id=t.id AND p.p_intended_solely_for=' . strval($member_id) . ')';
+        ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p
+        JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t ON (p_topic_id=t.id AND p.p_intended_solely_for=' . strval($member_id) . ')
+        LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (t.id=l_topic_id AND l_member_id=' . strval($member_id) . ')';
         if (!multi_lang_content()) {
             $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p2 ON p2.id=t.t_cache_first_post_id';
         }
