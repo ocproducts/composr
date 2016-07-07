@@ -430,9 +430,13 @@ class Module_news
         $start = get_param_integer('news_categories_start', 0);
         $max = get_param_integer('news_categories_max', intval(get_option('news_categories_per_page')));
 
-        require_code('selectcode');
         $select = get_param_string('select', '*');
-        $where = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if ($select == '*') {
+            $where = '1=1';
+        } else {
+            require_code('selectcode');
+            $where = selectcode_to_sqlfragment($select, 'r.news_category', 'news_categories', null, 'r.news_category', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        }
 
         if (is_null($blogs)) {
             $map = array();
@@ -474,12 +478,12 @@ class Module_news
             inform_exit(do_lang_tempcode('NO_ENTRIES', 'news_category'));
         }
 
-        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), 'cms_news'))) {
+        if ((($blogs !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission(($blogs === 1) ? 'mid' : 'high', get_member(), get_ip_address(), 'cms_news'))) {
             $map = array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add');
             if (is_numeric($select)) {
                 $map['cat'] = $select;
             }
-            $submit_url = build_url($map, get_module_zone('cms_news'));
+            $submit_url = build_url($map, get_module_zone($map['page']));
         } else {
             $submit_url = new Tempcode();
         }
@@ -528,12 +532,12 @@ class Module_news
         ));
 
         // Management links
-        if ((($blog !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), 'cms_news'))) {
+        if ((($blog !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission(($blog === 1) ? 'mid' : 'high', get_member(), get_ip_address(), 'cms_news'))) {
             $map = array('page' => ($blog === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add');
             if (is_numeric($select)) {
                 $map['cat'] = $select;
             }
-            $submit_url = build_url($map, get_module_zone('cms_news'));
+            $submit_url = build_url($map, get_module_zone($map['page']));
         } else {
             $submit_url = new Tempcode();
         }
@@ -614,7 +618,7 @@ class Module_news
         }
 
         // Management links
-        if ((has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_edit_permission('high', get_member(), $myrow['submitter'], ($blog === 1) ? 'cms_blogs' : 'cms_news', array('news', $myrow['news_category'])))) {
+        if ((has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_edit_permission(($blog === 1) ? 'mid' : 'high', get_member(), $myrow['submitter'], ($blog === 1) ? 'cms_blogs' : 'cms_news', array('news', $myrow['news_category'])))) {
             $edit_url = build_url(array('page' => ($blog === 1) ? 'cms_blogs' : 'cms_news', 'type' => '_edit', 'id' => $id), get_module_zone(($blog === 1) ? 'cms_blogs' : 'cms_news'));
         } else {
             $edit_url = new Tempcode();
@@ -630,12 +634,12 @@ class Module_news
             $tmp['blog'] = $blog;
         }
         $archive_url = build_url($tmp + propagate_filtercode(), '_SELF');
-        if ((($blog !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('high', get_member(), get_ip_address(), 'cms_news', array('news', $myrow['news_category'])))) {
+        if ((($blog !== 1) || (has_privilege(get_member(), 'have_personal_category', 'cms_news'))) && (has_actual_page_access(null, ($blog === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission(($blog === 1) ? 'mid' : 'high', get_member(), get_ip_address(), 'cms_news', array('news', $myrow['news_category'])))) {
             $map = array('page' => ($blog === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add');
             if (is_numeric($select)) {
                 $map['cat'] = $select;
             }
-            $submit_url = build_url($map, get_module_zone('cms_news'));
+            $submit_url = build_url($map, get_module_zone($map['page']));
         } else {
             $submit_url = new Tempcode();
         }

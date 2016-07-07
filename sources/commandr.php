@@ -63,6 +63,9 @@ function commandr_script()
         }
     }
 
+    require_code('input_filter_2');
+    modsecurity_workaround_enable();
+
     // Check the action
     $action = get_param_string('action', 'commandr');
 
@@ -134,14 +137,14 @@ function commandr_script()
                 @header('Content-type: text/xml; charset=' . get_charset());
                 $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
                     <response>
-                    	<result>
-                    		<command>' . xmlentities(post_param_string('command', '')) . '</command>
-                    		<stdcommand></stdcommand>
-                    		<stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
-                    		<stdout>' . xmlentities($e->getMessage()) . '</stdout>
-                    		<stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
-                    		<stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
-                    	</result>
+                        <result>
+                            <command>' . xmlentities(post_param_string('command', '')) . '</command>
+                            <stdcommand></stdcommand>
+                            <stdhtml><div xmlns="http://www.w3.org/1999/xhtml">' . ((get_param_integer('keep_fatalistic', 0) == 1) ? static_evaluate_tempcode(get_html_trace()) : '') . '</div></stdhtml>
+                            <stdout>' . xmlentities($e->getMessage()) . '</stdout>
+                            <stderr>' . xmlentities(do_lang('EVAL_ERROR')) . '</stderr>
+                            <stdnotifications><div xmlns="http://www.w3.org/1999/xhtml"></div></stdnotifications>
+                        </result>
                     </response>';
 
                 if ($GLOBALS['XSS_DETECT']) {

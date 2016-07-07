@@ -35,7 +35,7 @@ class Hook_search_cns_members extends FieldsSearchHook
             return null;
         }
 
-        if (($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') <= 3) && (get_param_string('id', '') != 'cns_members') && (get_param_integer('search_cns_members', 0) != 1)) {
+        if (($GLOBALS['FORUM_DRIVER']->get_members() <= 3) && (get_param_string('id', '') != 'cns_members') && (get_param_integer('search_cns_members', 0) != 1)) {
             return null;
         }
 

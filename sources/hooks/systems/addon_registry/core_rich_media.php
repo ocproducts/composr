@@ -1548,13 +1548,13 @@ class Hook_addon_registry_core_rich_media
 
         /*
         COMCODE_FAKE_TABLE_WRAP_START (row start)
-        	COMCODE_FAKE_TABLE_WIDE_START_CELL (cell start)
-        		...
-        	COMCODE_FAKE_TABLE_END_CELL (cell end)
-        	...
-        	COMCODE_FAKE_TABLE_WIDE_CELL (cell start)
-        		...
-        	COMCODE_FAKE_TABLE_END_CELL (cell end)
+            COMCODE_FAKE_TABLE_WIDE_START_CELL (cell start)
+                ...
+            COMCODE_FAKE_TABLE_END_CELL (cell end)
+            ...
+            COMCODE_FAKE_TABLE_WIDE_CELL (cell start)
+                ...
+            COMCODE_FAKE_TABLE_END_CELL (cell end)
         COMCODE_FAKE_TABLE_WRAP_END (row end)
         */
 
@@ -1597,13 +1597,13 @@ class Hook_addon_registry_core_rich_media
 
         /*
         COMCODE_FAKE_TABLE_WRAP_START (row start)
-        	COMCODE_FAKE_TABLE_START_CELL (cell start)
-        		...
-        	COMCODE_FAKE_TABLE_END_CELL (cell end)
-        	...
-        	COMCODE_FAKE_TABLE_CELL (cell start)
-        		...
-        	COMCODE_FAKE_TABLE_END_CELL (cell end)
+            COMCODE_FAKE_TABLE_START_CELL (cell start)
+                ...
+            COMCODE_FAKE_TABLE_END_CELL (cell end)
+            ...
+            COMCODE_FAKE_TABLE_CELL (cell start)
+                ...
+            COMCODE_FAKE_TABLE_END_CELL (cell end)
         COMCODE_FAKE_TABLE_WRAP_END (row end)
         */
 

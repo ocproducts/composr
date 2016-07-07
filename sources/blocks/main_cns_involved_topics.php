@@ -74,12 +74,15 @@ class Block_main_cns_involved_topics
             $forum2 = null;
         }
         $where_more = '';
+        /*
+        Actually including this just slows down the COUNT part of the query due to lack of indexability
         if (!is_null($forum1)) {
             $where_more .= ' AND p_cache_forum_id<>' . strval($forum1);
         }
         if (!is_null($forum2)) {
             $where_more .= ' AND p_cache_forum_id<>' . strval($forum2);
         }
+        */
         $rows = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more . ' ORDER BY p_time DESC', $max, $start, false, true);
         if (count($rows) != 0) {
             $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT p_topic_id) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_poster=' . strval($member_id_of) . $where_more, false, true);

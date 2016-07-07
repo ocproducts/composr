@@ -47,7 +47,7 @@
 		{+START,IF,{$JS_ON}}
 			<hr class="spaced_rule" />
 
-			<form target="_self" action="{$SELF_URL*,0,0,keep_mobile={$MOBILE}}" method="post">
+			<form target="_self" action="{$SELF_URL*,0,0,keep_mobile={$MOBILE}}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				{HIDDEN}

@@ -156,11 +156,12 @@ function erase_comcode_cache()
     cms_profile_start_for('erase_comcode_cache');
 
     if (multi_lang_content()) {
-        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache'))))) {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'translate FORCE INDEX (decache) SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/);
-        } else {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'translate SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/);
+        $sql = 'UPDATE ' . get_table_prefix() . 'translate';
+        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache')/*LEGACY*/)))) {
+            $sql .= ' FORCE INDEX (decache)';
         }
+        $sql .= ' SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/;
+        $GLOBALS['SITE_DB']->query($sql);
     } else {
         global $TABLE_LANG_FIELDS_CACHE;
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
@@ -419,12 +420,14 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
 
     if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
         $zones = find_all_zones();
+        $values = array();
         foreach ($zones as $zone) {
-            delete_value('merged__' . $zone . '.css');
-            delete_value('merged__' . $zone . '.js');
-            delete_value('merged__' . $zone . '__admin.css');
-            delete_value('merged__' . $zone . '__admin.js');
+            $values[] = 'merged__' . $zone . '.css';
+            $values[] = 'merged__' . $zone . '.js';
+            $values[] = 'merged__' . $zone . '__admin.css';
+            $values[] = 'merged__' . $zone . '__admin.js';
         }
+        delete_values($values);
     }
 
     // Often the back button will be used to return to a form, so we need to ensure we have not broken the JavaScript
@@ -433,7 +436,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         javascript_enforce('editing');
     }
 
-    if (class_exists('Self_learning_cache')) {
+    if (class_exists('Self_learning_cache') && $raw_file_regexp === null && $only_templates === array()) {
         Self_learning_cache::erase_smart_cache();
     }
 
@@ -460,6 +463,11 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
  */
 function erase_comcode_page_cache()
 {
+    if (!multi_lang_content()) {
+        $GLOBALS['SITE_DB']->query_delete('cached_comcode_pages');
+        return;
+    }
+
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     do {

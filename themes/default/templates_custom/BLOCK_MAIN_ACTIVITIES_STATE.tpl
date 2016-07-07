@@ -3,7 +3,7 @@
 		<h2 class="status_icon">{TITLE*}</h2>
 	{+END}
 
-	<form id="fp_status_form" action="#" method="post">
+	<form id="fp_status_form" action="#" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input type="hidden" name="zone" value="{$?,{$ZONE},{$ZONE*},frontpage}" />

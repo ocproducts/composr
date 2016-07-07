@@ -853,7 +853,7 @@ class Module_tickets
                 if (substr($body, -2) == '> ') {
                     $body = substr($body, 0, strlen($body) - 2);
                 }
-                $new_post->attach('[email subject="Re: ' . comcode_escape(post_param_string('title')) . ' [' . get_site_name() . ']" body="' . comcode_escape($body) . '"]' . $email . '[/email]' . "\n\n");
+                $new_post->attach(do_lang('GUEST_TICKET_REPLY_LINK', comcode_escape(post_param_string('title')), comcode_escape(get_site_name()), array(comcode_escape($body), $email)));
             } elseif ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 1)) {
                 // Error if the e-mail address is required for this ticket type
                 warn_exit(do_lang_tempcode('ERROR_GUEST_EMAILS_MANDATORY'));

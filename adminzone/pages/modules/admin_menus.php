@@ -65,6 +65,9 @@ class Module_admin_menus
      */
     public function pre_run()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $type = get_param_string('type', 'browse');
 
         require_lang('menus');

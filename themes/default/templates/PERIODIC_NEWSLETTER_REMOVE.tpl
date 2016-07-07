@@ -4,7 +4,7 @@
 	{!CONFIRM_REMOVE_PERIODIC}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	{+START,IF_PASSED,HIDDEN}{HIDDEN}{+END}

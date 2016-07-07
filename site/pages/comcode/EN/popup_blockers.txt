@@ -1,6 +1,6 @@
 [title]Enabling pop-ups[/title]
 
-Some of our systems rely on your web browser allowing {$SITE_NAME} to allow pop-up windows.
+Some of our systems rely on your web browser allowing {$SITE_NAME*} to allow pop-up windows.
 {+START,IF,{$EQ,{$_GET,failure},1}}
 [b]You have been brought here as we detected a failure to open a pop-up window.[/b]{+END}
 [title="2"]Web browsers[/title]

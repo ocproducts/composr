@@ -323,7 +323,7 @@ class Hook_profiles_tabs_about
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_join_time');
         $days_joined = intval(round((time() - $join_time) / 60 / 60 / 24));
-        $total_posts = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)');
+        $total_posts = $GLOBALS['FORUM_DRIVER']->get_num_forum_posts();
         $join_date = ($join_time == 0) ? '' : get_timezoned_date($join_time, false);
         $count_posts = do_lang_tempcode('_COUNT_POSTS', escape_html(integer_format($post_count)), escape_html(float_format(floatval($post_count) / floatval(($days_joined == 0) ? 1 : $days_joined))), array(escape_html(float_format(floatval(100 * $post_count) / floatval(($total_posts == 0) ? 1 : $total_posts)))));
 

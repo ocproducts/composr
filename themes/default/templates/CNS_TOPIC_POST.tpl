@@ -66,7 +66,7 @@
 			{+START,IF,{$NOT,{$MOBILE}}}
 				{+START,IF,{$JS_ON}}{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
 					<div id="cell_mark_{ID*}" class="cns_off mass_select_marker">
-						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+						<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 							{$INSERT_SPAMMER_BLACKHOLE}
 
 							<div>
@@ -100,7 +100,7 @@
 
 		{LAST_EDITED}
 
-		{$REVIEW_STATUS,post,{ID}}
+		{$,Content reviews for posts is bloat for 99.99% of people but enable it if you want it {$REVIEW_STATUS,post,{ID}}}
 
 		{+START,IF_NON_EMPTY,{SIGNATURE}}
 			<div>

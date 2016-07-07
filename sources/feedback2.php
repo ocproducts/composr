@@ -66,7 +66,7 @@ function set_comment_forum_for($feedback_code, $category_id, $forum_id)
             foreach ($rows as $row) {
                 $id = $row[$info['id_field']];
                 $feedback_id = $feedback_code . '_' . (is_string($id) ? $id : strval($id));
-                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_id);
+                $topic_id = $GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($old_forum_id, $feedback_id, do_lang('COMMENT'));
                 if (!is_null($topic_id)) {
                     $topics[] = $topic_id;
                 }
@@ -219,6 +219,10 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
  */
 function send_trackbacks($_urls, $title, $excerpt)
 {
+    if ($_urls == '') {
+        return true;
+    }
+
     $urls = explode(',', $_urls);
 
     foreach ($urls as $url) {
@@ -226,5 +230,5 @@ function send_trackbacks($_urls, $title, $excerpt)
         http_download_file($url, null, false, false, 'Composr', array('url' => get_custom_base_url(), 'title' => $title, 'blog_name' => get_site_name(), 'excerpt' => $excerpt));
     }
 
-    return true; // To be honest, I can't be bothered to code a proper status return, and it wouldn't do anything, so I won't ;-).
+    return true;
 }

@@ -206,7 +206,7 @@ class Module_admin_quiz
     {
         require_code('form_templates');
 
-        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), null, 'ORDER BY q_add_date DESC', 300);
+        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), null, 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['q_name'])));
@@ -253,7 +253,7 @@ class Module_admin_quiz
     {
         require_code('form_templates');
 
-        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('q_type' => 'COMPETITION'), 'ORDER BY q_validated DESC,q_add_date DESC', 300);
+        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('q_type' => 'COMPETITION'), 'ORDER BY q_validated DESC,q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['q_name'])));
@@ -386,7 +386,7 @@ class Module_admin_quiz
             $where['q_type'] = $type;
         }
 
-        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), $where, 'ORDER BY q_validated DESC,q_add_date DESC', 300);
+        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), $where, 'ORDER BY q_validated DESC,q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['q_name']) . ' (' . do_lang($m['q_type']) . ')'));
@@ -572,7 +572,9 @@ class Module_admin_quiz
             $passed,
             ) = score_quiz($id, null, null, null, true);
 
-        return do_template('QUIZ_RESULT_SCREEN', array('_GUID' => 'f59cbda2bb6b6f0ad6fa149591d94c90', 'TITLE' => $this->title,
+        return do_template('QUIZ_RESULT_SCREEN', array(
+            '_GUID' => 'f59cbda2bb6b6f0ad6fa149591d94c90',
+            'TITLE' => $this->title,
             'USERNAME' => $username,
             'MEMBER_URL' => $member_url,
             'DATE' => $date,

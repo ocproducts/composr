@@ -41,7 +41,7 @@ class Hook_search_cns_posts extends FieldsSearchHook
             }
         }
 
-        if ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)') == 0) {
+        if ($GLOBALS['FORUM_DRIVER']->get_num_forum_posts() == 0) {
             return null;
         }
 

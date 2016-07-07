@@ -25,7 +25,7 @@
 <div class="box box___pointstore_confirm_screen"><div class="box_inner">
 	<div class="float_surrounder">
 		<div class="right">
-			<form title="{!NO}" class="inline" method="post" action="{CANCEL_URL*}">
+			<form title="{!NO}" class="inline" method="post" action="{CANCEL_URL*}" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="inline">
@@ -33,7 +33,7 @@
 				</div>
 			</form>
 
-			<form title="{!YES}" class="inline" action="{PROCEED_URL*}" method="post">
+			<form title="{!YES}" class="inline" action="{PROCEED_URL*}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="inline">

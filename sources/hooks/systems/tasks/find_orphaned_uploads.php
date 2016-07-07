@@ -76,7 +76,7 @@ class Hook_task_find_orphaned_uploads
      * @param  PATH $dir Path to search
      * @return array List of files
      */
-    public function do_dir($dir)
+    private function do_dir($dir)
     {
         $out = array();
         $_dir = ($dir == '') ? get_custom_file_base() : (get_custom_file_base() . '/' . $dir);

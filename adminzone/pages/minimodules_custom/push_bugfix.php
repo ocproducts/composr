@@ -82,7 +82,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
     $submit_to = post_param_string('submit_to');
     global $REMOTE_BASE_URL;
 
-    $REMOTE_BASE_URL = ($submit_to == 'live') ? (get_brand_base_url()) : (get_base_url());
+    $REMOTE_BASE_URL = ($submit_to == 'live') ? get_brand_base_url() : get_base_url();
 
     // If no tracker issue number was given, one is made
     $tracker_id = post_param_integer('tracker_id', null);

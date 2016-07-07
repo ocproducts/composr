@@ -19,7 +19,7 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points">
+	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p>
@@ -57,7 +57,7 @@
 		{+END}
 	</p>
 
-	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points">
+	<form title="{!GIVE_POINTS}" method="post" onsubmit="return check_form(this);" action="{GIVE_URL*}#tab__points" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div>

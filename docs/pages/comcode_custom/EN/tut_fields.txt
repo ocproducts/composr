@@ -292,6 +292,10 @@ NB: When adding there is no UI if 'AUTO_INCREMENT' was used.
 |-
 ! Supported field options
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search
+
+[tt]decimal_points=on|off[/tt]: search forms will allow a range-based search
+
+[tt]decimal_points_behaviour=dp|trim|price[/tt]: show exact number of decimal places, trim any zero decimal places off, show exact number of decimal places unless there are none
 |-
 ! Back-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_backend__float.png[/media]

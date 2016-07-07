@@ -9,7 +9,7 @@
 		</div></div>
 	{+END}
 
-	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" autocomplete="on" target="_top">
+	<form title="{!_LOGIN}" onsubmit="if (check_field_for_blankness(this.elements['login_username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{LOGIN_URL*}" method="post" target="_top" autocomplete="on">
 		<div>
 			{$INSERT_SPAMMER_BLACKHOLE}
 

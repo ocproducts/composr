@@ -8,7 +8,7 @@
 	</p>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div class="wide_table_wrap really_long_table_wrap"><table class="columned_table results_table wide_table autosized_table">
@@ -44,7 +44,7 @@
 	{+END}
 </form>
 
-<form title="" id="hack_form" action="http://translate.google.com/translate_t" method="post">
+<form title="" id="hack_form" action="http://translate.google.com/translate_t" method="post" autocomplete="off">
 	<div>
 		<input type="hidden" id="hack_input" name="text" value="" />
 		<input type="hidden" name="langpair" value="en|{GOOGLE*}" />

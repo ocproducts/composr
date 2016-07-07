@@ -6,12 +6,12 @@
 {+END}
 
 <div class="menu_editor_page docked" id="menu_editor_wrap">
-	<form title="" action="{URL*}" method="post">
+	<form title="" action="{URL*}" method="post" autocomplete="off">
 		<!-- In separate form due to mod_security -->
 		<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
 	</form>
 
-	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post">
+	<form title="{!PRIMARY_PAGE_FORM}" id="edit_form" action="{URL*}" method="post" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div class="float_surrounder menu_edit_main">
@@ -97,7 +97,7 @@
 		<div class="toggleable_tray" id="delete_menu" style="{$JS_ON,display: none,}" aria-expanded="false">
 			<p>{!ABOUT_DELETE_MENU}</p>
 
-			<form title="{!DELETE}" action="{DELETE_URL*}" method="post">
+			<form title="{!DELETE}" action="{DELETE_URL*}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<p class="proceed_button">

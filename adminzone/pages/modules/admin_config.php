@@ -93,6 +93,9 @@ class Module_admin_config
      */
     public function pre_run()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         require_all_lang();
 
         $type = get_param_string('type', 'browse');
@@ -347,15 +350,15 @@ class Module_admin_config
             require_code('hooks/systems/config/' . filter_naughty($hook));
             $ob = object_factory('Hook_config_' . $hook);
             $option = $ob->get_details();
-            if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
-                if (!is_null($ob->get_default())) {
-                    if ($category == $option['category']) {
+            if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
+                if ($category == $option['category']) {
+                    if ($ob->get_default() !== null) {
                         if (!isset($option['order_in_category_group'])) {
                             $option['order_in_category_group'] = 100;
                         }
                         $option['ob'] = $ob;
                         $option['name'] = $hook;
-                        $options[$hook] = $option;
+                        $options[$option['group']][$hook] = $option;
                     }
                 }
             }
@@ -363,24 +366,23 @@ class Module_admin_config
 
         // Add in special ones
         if ($category == 'SITE') {
-            $options['timezone'] = array('name' => 'timezone', 'human_name' => 'TIME_ZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 1);
+            $options['INTERNATIONALISATION']['timezone'] = array('name' => 'timezone', 'human_name' => 'TIME_ZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 1);
         }
         require_code('files');
         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));
         $post_max_size = (ini_get('post_max_size') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('post_max_size')));
 
-        // Sort generally, categorise into groups, sort the groups
-        sort_maps_by($options, 'order_in_category_group');
+        // Sort the groups
         $all_known_groups = array();
-        foreach ($options as $option) {
-            $_group = do_lang($option['group']);
+        foreach (array_keys($options) as $group) {
+            $_group = do_lang($group);
 
             $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', $_group)));
-            if ((array_key_exists($_group, $all_known_groups)) && ($all_known_groups[$_group] != $option['group'])) {
-                $_group = 'std_' . $option['group']; // If cat names translate to same things or are in non-latin characters like Cyrillic
+            if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
+                $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
 
-            $all_known_groups[$_group] = $option['group'];
+            $all_known_groups[$_group] = $group;
         }
         $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', do_lang('ADVANCED'))));
         ksort($all_known_groups);
@@ -389,33 +391,39 @@ class Module_admin_config
             unset($all_known_groups[$advanced_key]);
             $all_known_groups[$advanced_key] = $temp;
         }
-        $groups = array();
-        foreach ($all_known_groups as $group_codename) {
-            $group_rows = array();
-            foreach ($options as $option) {
-                if ($option['group'] == $group_codename) {
-                    $group_rows[] = $option;
-                }
-            }
-
-            $groups[$group_codename] = $group_rows;
-        }
 
         // Render option groups
         $groups_arr = array();
         require_code('form_templates');
         $_groups = array();
-        foreach ($groups as $group_codename => $options) {
-            $out = '';
-            foreach ($options as $option) {
-                $name = $option['name']; // Can't get from array key, as sorting nuked it
+        foreach ($all_known_groups as $group_codename) {
+            if (!isset($options[$group_codename])) {
+                continue;
+            }
 
+            $options_in_group = $options[$group_codename];
+
+            $all_orders_default = true;
+            foreach ($options_in_group as $name => $option) {
+                if ($option['order_in_category_group'] != 100) {
+                    $all_orders_default = false;
+                }
+                $options_in_group[$name]['human_name_trans'] = do_lang($option['human_name']);
+            }
+            if ($all_orders_default) {
+                sort_maps_by($options_in_group, 'human_name_trans');
+            } else {
+                sort_maps_by($options_in_group, 'order_in_category_group');
+            }
+
+            $out = '';
+            foreach ($options_in_group as $name => $option) {
                 // Language strings
                 $human_name = do_lang_tempcode($option['human_name']);
                 $_explanation = do_lang($option['explanation'], null, null, null, null, false);
-                if (is_null($_explanation)) {
+                if ($_explanation === null) {
                     $_explanation = do_lang('CONFIG_GROUP_DEFAULT_DESCRIP_' . $option['group'], null, null, null, null, false);
-                    if (is_null($_explanation)) {
+                    if ($_explanation === null) {
                         // So an error shows
                         $_explanation = do_lang($option['explanation']);
                         $explanation = do_lang_tempcode($option['explanation']);
@@ -496,7 +504,7 @@ class Module_admin_config
                         foreach ($values as $value) {
                             $__value = str_replace(' ', '__', $value);
                             $_option_text = do_lang('CONFIG_OPTION_' . $name . '_VALUE_' . $__value, null, null, null, null, false);
-                            if (!is_null($_option_text)) {
+                            if ($_option_text !== null) {
                                 $option_text = do_lang_tempcode('CONFIG_OPTION_' . $name . '_VALUE_' . $__value);
                             } else {
                                 $option_text = make_string_tempcode($value);
@@ -527,7 +535,7 @@ class Module_admin_config
                             $current_setting = get_option($name);
                             if (!is_numeric($current_setting)) {
                                 $_current_setting = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'id', array('f_name' => $current_setting));
-                                if (is_null($_current_setting)) {
+                                if ($_current_setting === null) {
                                     if ($required) {
                                         $current_setting = strval(db_get_first_id());
                                         attach_message(do_lang_tempcode('FORUM_CURRENTLY_UNSET', $human_name), 'notice');
@@ -585,7 +593,7 @@ class Module_admin_config
             // Render group
             $group_title = do_lang_tempcode($group_codename);
             $_group_description = do_lang('CONFIG_GROUP_DESCRIP_' . $group_codename, escape_html($post_max_size), escape_html($upload_max_filesize), null, null, false);
-            if (is_null($_group_description)) {
+            if ($_group_description === null) {
                 $group_description = new Tempcode();
             } else {
                 $group_description = do_lang_tempcode('CONFIG_GROUP_DESCRIP_' . $group_codename, escape_html($post_max_size), escape_html($upload_max_filesize));
@@ -747,7 +755,7 @@ class Module_admin_config
             } else {
                 // If the option was changed
                 $old_value = get_option($name);
-                if (($old_value != $value) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
+                if (($old_value != $value) || (!isset($CONFIG_OPTIONS_CACHE[$name]['c_set'])) || ($CONFIG_OPTIONS_CACHE[$name]['c_set'] == 0)) {
                     set_option($name, $value);
                 }
             }

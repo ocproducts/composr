@@ -195,6 +195,9 @@ function dload_script()
     }
 
     // Size, bandwidth
+    if (!is_file($_full)) {
+        warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+    }
     $size = filesize($_full);
     if (is_null($got_before)) {
         $bandwidth = $GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(file_size) AS answer FROM ' . get_table_prefix() . 'download_logging l LEFT JOIN ' . get_table_prefix() . 'download_downloads d ON l.id=d.id WHERE date_and_time>' . strval(time() - 24 * 60 * 60 * 32) . ' AND date_and_time<=' . strval(time()));

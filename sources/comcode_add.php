@@ -111,7 +111,7 @@ function _get_details_comcode_tags()
     ksort($tag_list);
 
     /* // Helps find missing tags
-    require_code('comcode_compiler');
+    init_valid_comcode_tags();
     unset($VALID_COMCODE_TAGS['section']);
     unset($VALID_COMCODE_TAGS['section_controller']);
     unset($VALID_COMCODE_TAGS['tab']);

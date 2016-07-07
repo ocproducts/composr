@@ -223,7 +223,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
 
 function close_tracker_issue($tracker_id)
 {
-    $GLOBALS['SITE_DB']->query_update('mantis_bug_table', array('resolution' => 20, 'status' => 80), array('id' => $tracker_id));
+    $GLOBALS['SITE_DB']->query('UPDATE mantis_bug_table SET resolution=20, status=80 WHERE id=' . strval($tracker_id));
 }
 
 function get_user_currency()

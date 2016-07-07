@@ -140,6 +140,15 @@ class Database_Static_mysql_dbx extends Database_super_mysql
      */
     public function db_escape_string($string)
     {
+        if (function_exists('ctype_alnum')) {
+            if (ctype_alnum($string)) {
+                return $string; // No non-trivial characters
+            }
+        }
+        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
+            return $string; // No non-trivial characters
+        }
+
         $string = fix_bad_unicode($string);
 
         if (is_null($this->last_select_db)) {

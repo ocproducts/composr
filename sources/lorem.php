@@ -850,7 +850,7 @@ function render_screen_preview($template, $hook, $function)
     // Load all ini/js/css
     $files = $ob->get_file_list();
     foreach ($files as $file) {
-        if ((substr($file, -4) == '.ini') && (substr($file, 0, 8) == 'lang/EN/')) {
+        if ((substr($file, -4) == '.ini') && ((substr($file, 0, 8) == 'lang/EN/') || (substr($file, 0, 15) == 'lang_custom/EN/'))) {
             require_lang(basename($file, '.ini'));
         }
 

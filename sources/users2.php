@@ -68,12 +68,13 @@ function get_users_online($longer_time, $filter, &$count)
         }
     }
 
-    sort_maps_by($SESSION_CACHE, 'last_activity'); // There may be multiple, and we need the latest to come out of the algorithm on top
+    $sessions = $SESSION_CACHE;
+    sort_maps_by($sessions, 'last_activity'); // There may be multiple, and we need the latest to come out of the algorithm on top
 
     $members = array();
     $guest_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
     $members_online = 0;
-    foreach ($SESSION_CACHE as $row) {
+    foreach ($sessions as $row) {
         if (!isset($row['member_id'])) {
             continue; // Workaround to HHVM weird bug
         }

@@ -1,6 +1,6 @@
 {+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin,adminzone}}
 	<div class="adminzone_search">
-		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,adminzone:admin:search}}" method="get" class="inline">
+		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,adminzone:admin:search}}" method="get" class="inline" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$PAGE_LINK,adminzone:admin:search}}
 
 			<div>

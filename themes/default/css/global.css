@@ -1942,10 +1942,13 @@ table.scrollable_inside {
 
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
-	{+START,IF,{$MOBILE}}
-		overflow-x: auto;
-	{+END}
 }
+
+{+START,IF,{$MOBILE}}
+	.spaced_table td {
+		overflow-x: auto;
+	}
+{+END}
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -2017,11 +2020,11 @@ table.scrollable_inside {
 	border-bottom: 1px solid {$GET,standard_border};
 }
 
-table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0 {
+table>*>.zebra_0>th, table>*>.zebra_0>td, div.zebra_0, table.zebra>tbody>tr:nth-child(even)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_zebra_background} !important;
 	color: {$GET,slightly_seeded_text};
 }
-table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1 {
+table>*>.zebra_1>th, table>*>.zebra_1>td, div.zebra_1, table.zebra>tbody>tr:nth-child(odd)>th, table.zebra>tbody>tr:nth-child(even)>td {
 	background-color: {$GET,area_background} !important;
 	color: {$GET,slightly_seeded_text};
 }

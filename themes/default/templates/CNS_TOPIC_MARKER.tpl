@@ -1,6 +1,6 @@
 {+START,IF,{$JS_ON}}
 	<td id="cell_mark_{ID*}" class="cns_topic_marker_cell">
-		<form class="webstandards_checker_off inline" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}">
+		<form class="webstandards_checker_off inline" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 			{$INSERT_SPAMMER_BLACKHOLE}
 
 			<div class="inline">

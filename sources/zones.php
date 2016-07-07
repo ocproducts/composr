@@ -133,7 +133,9 @@ function preload_block_internal_caching()
                 $bulk[] = unserialize($param);
             }
 
-            _get_cache_entries($bulk); // Will cache internally so that block loads super-quick
+            if ($GLOBALS['PERSISTENT_CACHE'] === null) {
+                _get_cache_entries($bulk); // Will cache internally so that block loads super-quick
+            }
         }
     }
 }
@@ -376,15 +378,16 @@ function get_zone_name()
 function load_redirect_cache()
 {
     global $REDIRECT_CACHE;
-    $REDIRECT_CACHE = array();
 
-    $_zone = get_zone_name();
-    $REDIRECT_CACHE = array($_zone => array());
+    if ($REDIRECT_CACHE === null) {
+        $REDIRECT_CACHE = array();
+    }
+
     if (addon_installed('redirects_editor')) {
-        $redirect = persistent_cache_get(array('REDIRECT', $_zone));
+        $redirect = persistent_cache_get('REDIRECT');
         if ($redirect === null) {
-            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => $_zone)*/);
-            persistent_cache_set(array('REDIRECT', $_zone), $redirect);
+            $redirect = $GLOBALS['SITE_DB']->query_select('redirects', array('*')/*Actually for performance we will load all and cache them , array('r_from_zone' => get_zone_name())*/);
+            persistent_cache_set('REDIRECT', $redirect);
         }
         foreach ($redirect as $r) {
             if (($r['r_from_zone'] == $r['r_to_zone']) && ($r['r_from_page'] == $r['r_to_page'])) {
@@ -417,8 +420,8 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     $zone = $_zone;
 
     global $MODULES_ZONES_CACHE;
-    if ((isset($MODULES_ZONES_CACHE[$zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
-        return $MODULES_ZONES_CACHE[$zone][$type][$module_name];
+    if ((isset($MODULES_ZONES_CACHE[$_zone][$type][$module_name])) || ((!$error) && (isset($MODULES_ZONES_CACHE[$_zone][$type])) && (array_key_exists($module_name, $MODULES_ZONES_CACHE[$_zone][$type])) && ($type === 'modules')/*don't want to look at cached failure for different page type*/)) {
+        return $MODULES_ZONES_CACHE[$_zone][$type][$module_name];
     }
 
     $error = false; // hack for now
@@ -506,7 +509,7 @@ function get_module_zone($module_name, $type = 'modules', $dir2 = null, $ftype =
     }
 
     if (!$error) {
-        $MODULES_ZONES_CACHE[$zone][$type][$module_name] = null;
+        $MODULES_ZONES_CACHE[$_zone][$type][$module_name] = null;
         return null;
     }
     warn_exit(do_lang_tempcode('MISSING_MODULE_REFERENCED', $module_name));
@@ -840,12 +843,18 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
             if ($ALL_ZONES_TITLED_CACHE === null) {
                 $ALL_ZONES_TITLED_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('ALL_ZONES_TITLED') : null;
             }
+            if (!is_array($ALL_ZONES_TITLED_CACHE)) {
+                $ALL_ZONES_TITLED_CACHE = null; // Cache corruption?
+            }
             if ($ALL_ZONES_TITLED_CACHE !== null) {
                 return $ALL_ZONES_TITLED_CACHE;
             }
         } else {
             if ($ALL_ZONES_CACHE === null) {
                 $ALL_ZONES_CACHE = function_exists('persistent_cache_get') ? persistent_cache_get('ALL_ZONES') : null;
+            }
+            if (!is_array($ALL_ZONES_CACHE)) {
+                $ALL_ZONES_CACHE = null; // Cache corruption?
             }
             if ($ALL_ZONES_CACHE !== null) {
                 return $ALL_ZONES_CACHE;
@@ -1047,7 +1056,7 @@ function get_block_id($map)
  */
 function do_block($codename, $map = null, $ttl = null)
 {
-    global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS;
+    global $LANGS_REQUESTED, $JAVASCRIPTS, $CSSS, $DO_NOT_CACHE_THIS, $SMART_CACHE;
 
     if ($map === null) {
         $map = array();
@@ -1118,6 +1127,9 @@ function do_block($codename, $map = null, $ttl = null)
                     if ($new_security_scope) {
                         _solemnly_enter();
                     }
+                    if (isset($SMART_CACHE)) {
+                        $SMART_CACHE->paused = true;
+                    }
                     $cache = $object->run($map);
                     if ($new_security_scope) {
                         $_cache = $cache->evaluate();
@@ -1127,10 +1139,14 @@ function do_block($codename, $map = null, $ttl = null)
                         }
                     }
                     $cache->evaluate(); // To force lang files to load, etc
+                    if (isset($SMART_CACHE)) {
+                        $SMART_CACHE->paused = false;
+                    }
                     if (!$DO_NOT_CACHE_THIS) {
                         require_code('caches2');
                         if ((isset($map['quick_cache'])) && ($map['quick_cache'] === '1')/* && (has_cookies())*/) {
                             $cache = apply_quick_caching($cache);
+                            $LANGS_REQUESTED = array();
                         }
                         require_code('temporal');
                         $staff_status = (($special_cache_flags & CACHE_AGAINST_STAFF_STATUS) !== 0) ? ($GLOBALS['FORUM_DRIVER']->is_staff(get_member()) ? 1 : 0) : null;
@@ -1442,19 +1458,18 @@ function get_block_info_row($codename, $map)
         if ((is_object($object)) && (method_exists($object, 'caching_environment'))) {
             $info = $object->caching_environment($map);
             if ($info !== null) {
-                $row = array('cached_for' => $codename, 'cache_on' => $info['cache_on'], 'cache_ttl' => $info['ttl']);
+                $special_cache_flags = array_key_exists('special_cache_flags', $info) ? $info['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
+                $row = array(
+                    'cached_for' => $codename,
+                    'cache_on' => $info['cache_on'],
+                    'special_cache_flags' => $special_cache_flags,
+                    'cache_ttl' => $info['ttl'],
+                );
 
                 if (!is_array($info['cache_on'])) {
-                    $special_cache_flags = array_key_exists('special_cache_flags', $info) ? $info['special_cache_flags'] : CACHE_AGAINST_DEFAULT;
-                    $map = array(
-                        'cached_for' => $codename,
-                        'cache_on' => $info['cache_on'],
-                        'special_cache_flags' => $special_cache_flags,
-                        'cache_ttl' => $info['ttl'],
-                    );
-                    $GLOBALS['SITE_DB']->query_insert('cache_on', $map, false, true); // Allow errors in case of race conditions
+                    $GLOBALS['SITE_DB']->query_insert('cache_on', $row, false, true); // Allow errors in case of race conditions
                     global $BLOCK_CACHE_ON_CACHE;
-                    $BLOCK_CACHE_ON_CACHE[$codename] = $map;
+                    $BLOCK_CACHE_ON_CACHE[$codename] = $row;
                     persistent_cache_set('BLOCK_CACHE_ON_CACHE', $BLOCK_CACHE_ON_CACHE);
                 }
             }

@@ -479,7 +479,9 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
         if (headers_sent()) {
-            $global = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd579b62182a0f815e0ead1daa5904793', 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
+            $global = do_template('STANDALONE_HTML_WRAP', array(
+                '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
+                'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
                 'FRAME' => false,
                 'TARGET' => '_self',
                 'CONTENT' => $middle,
@@ -855,7 +857,7 @@ function fix_bad_unicode($input, $definitely_unicode = false)
 {
     // Fix bad unicode
     if (get_charset() == 'utf-8' || $definitely_unicode) {
-        if (preg_match('#[^x00-x7f]#', $input) == 0) {
+        if (is_numeric($input) || preg_match('#[^\x00-\x7f]#', $input) == 0) {
             return $input; // No non-ASCII characters
         }
 
@@ -1266,7 +1268,7 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
         merge_sort($rows, '_multi_sort');
     } else {
         $first_key = key($rows);
-        if (is_integer($first_key)) {
+        if ((is_integer($first_key)) && (array_unique(array_map('is_integer', array_keys($rows))) === array(true))) {
             usort($rows, '_multi_sort');
         } else {
             uasort($rows, '_multi_sort');
@@ -2952,7 +2954,12 @@ function get_zone_default_page($zone_name)
  */
 function titleify($boring)
 {
-    $boring = preg_replace('#([/\\\\])#', '${1} ', $boring);
+    $ret = $boring;
+
+    if (strpos($ret, '/') !== false || strpos($ret, '\\') !== false) {
+        $ret = preg_replace('#([/\\\\])#', '${1} ', $ret);
+    }
+
     $ret = ucwords(str_replace('_', ' ', $boring));
 
     $acronyms = array(
@@ -2970,7 +2977,9 @@ function titleify($boring)
         'HPHP',
     );
     foreach ($acronyms as $acronym) {
-        $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
+        if (stripos($ret, $acronym) !== false) {
+            $ret = preg_replace('#(^|\s)' . preg_quote($acronym, '#') . '(\s|$)#i', '$1' . $acronym . '$2', $ret);
+        }
     }
     $ret = str_replace('Ecommerce', 'eCommerce', $ret);
     $ret = str_replace('Captcha', 'CAPTCHA', $ret);
@@ -3073,7 +3082,9 @@ function strip_html($in)
         '#<![\s\S]*?--[ \t\n\r]*>#',            // Strip multi-line comments including CDATA
     );
     $in = preg_replace($search, '', $in);
-    $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
+    if (get_charset() != 'utf-8') {
+        $in = str_replace(array('&ndash;', '&mdash;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '|', '"', '"', "'", "'"), $in);
+    }
     $in = strip_tags($in);
     return @html_entity_decode($in, ENT_QUOTES, get_charset());
 }
@@ -3128,7 +3139,7 @@ function get_brand_page_url($params, $zone)
 function brand_name()
 {
     $value = function_exists('get_value') ? get_value('rebrand_name') : null;
-    if (is_null($value)) {
+    if ($value === null) {
         $value = 'Composr';
     }
     return $value;

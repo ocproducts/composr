@@ -185,6 +185,7 @@ class Module_admin
             array('social', 'forum'),
             array('xml_fields', 'filtering'),
             array('banner', 'advert', 'advertising', 'advertise'),
+            array('masthead', 'header'),
             array('news', 'blogs', 'press release'),
             array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approve', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'verify', 'publish'/*, 'screened'*/), // i.e. Composr validation
             array('webstandards', 'check', 'conformance'),
@@ -642,8 +643,7 @@ class Module_admin
                                     }
                                 }
                                 if (strpos($type, ':') !== false) {
-                                    list($zone, $attributes, $hash) = page_link_decode($type);
-                                    $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+                                    $_url = page_link_to_tempcode_url($type);
                                 } else {
                                     $_url = build_url(array('page' => $page, 'type' => $type), $zone);
                                 }

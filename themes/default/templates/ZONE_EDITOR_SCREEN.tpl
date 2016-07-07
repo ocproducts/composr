@@ -26,7 +26,7 @@
 
 <hr class="spaced_rule" />
 
-<form title="{!SAVE}" action="{URL*}" method="post" target="_self">
+<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" onsubmit="return modsecurity_workaround(this);">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div id="edit_field_store" style="display: none">

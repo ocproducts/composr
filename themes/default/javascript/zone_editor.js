@@ -185,7 +185,10 @@ function reload_preview(id)
 
 	var data='';
 	data+=get_textbox(edit_element);
-	do_ajax_request('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml='+(is_wysiwyg_field(edit_element)?'1':'0')+'&panel='+(((id=='panel_left') || (id=='panel_right'))?'1':'0')+keep_stub(),reloaded_preview,(is_wysiwyg_field(edit_element)?'data__is_wysiwyg=1&':'')+'data='+window.encodeURIComponent(data));
+	var url='{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml='+(is_wysiwyg_field(edit_element)?'1':'0')+'&panel='+(((id=='panel_left') || (id=='panel_right'))?'1':'0')+keep_stub();
+	var post=(is_wysiwyg_field(edit_element)?'data__is_wysiwyg=1&':'')+'data='+window.encodeURIComponent(data);
+	post=modsecurity_workaround_ajax(post);
+	do_ajax_request(url,reloaded_preview,post);
 }
 
 function reloaded_preview(ajax_result_frame,ajax_result)

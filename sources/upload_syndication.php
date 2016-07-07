@@ -118,9 +118,11 @@ function upload_syndication_auth_script()
         warn_exit(do_lang_tempcode('FAILURE_UPLOAD_SYNDICATION_AUTH', escape_html($label)));
     }
 
-    $tpl = do_template('UPLOAD_SYNDICATION_SETUP_SCREEN', array('_GUID' => '336ee1c1a5503a79ef426bbcdc4258fd', 'LABEL' => $label,
-                                                                'HOOK' => $hook,
-                                                                'NAME' => $name,
+    $tpl = do_template('UPLOAD_SYNDICATION_SETUP_SCREEN', array(
+        '_GUID' => '336ee1c1a5503a79ef426bbcdc4258fd',
+        'LABEL' => $label,
+        'HOOK' => $hook,
+        'NAME' => $name,
     ));
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'abde85be22df7fcfd51c5067f1b82e7a', 'TITLE' => do_lang_tempcode('UPLOAD_SYNDICATION_AUTH'), 'CONTENT' => $tpl, 'POPUP' => true));
     $echo->handle_symbol_preprocessing();

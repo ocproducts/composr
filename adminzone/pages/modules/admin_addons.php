@@ -339,10 +339,10 @@ class Module_admin_addons
 
         $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-        $addons_installed = find_installed_addons();
-        $addons_available_for_installation = find_available_addons();
+        $addons_installed = find_installed_addons(false, false);
+        $addons_available_for_installation = find_available_addons(false);
 
-        $_tpl_addons = array();
+        $_tpl_addons = array('red' => array(), 'green' => array());
 
         $updated_addons_arr = find_updated_addons();
         $updated_addons = '';
@@ -353,82 +353,132 @@ class Module_admin_addons
             $updated_addons .= strval($updated_addon[0]);
         }
 
+        $do_caching = has_caching_for('block');
+
         // Show installed addons
-        foreach ($addons_installed as $row) {
-            if (substr($row['name'], 0, 5) == 'core_' || $row['name'] == 'core') {
+        foreach ($addons_installed as $name => $row) {
+            if (substr($name, 0, 5) == 'core_' || $name == 'core') {
                 continue;
             }
 
-            $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '5a65c9aa87291ecfe46f75e9b2949246', 'GET' => true, 'NAME' => $row['name'], 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $row['name']), '_SELF')));
-            $updated = array_key_exists($row['name'], $updated_addons_arr);
-            $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
-            $colour = $updated ? 'red' : 'green';
-            $description = $row['description'];
-            $file_list = $row['files'];
-            $pretty_name = do_template('ADDON_NAME', array('_GUID' => '86b940f63744eb0690059efd69c1d58c', 'IMAGE_URL' => find_addon_icon($row['name'], false, null), 'NAME' => $row['name']));
+            $colour = null;
+            $addon_tpl = null;
 
-            $_tpl_addons[$row['name']] = array(
-                '_GUID' => '9a06f5a9c9e3085c10ab7fb17c3efcd1',
-                'UPDATED_ADDONS' => $updated,
-                'DESCRIPTION' => $description,
-                'FILE_LIST' => $file_list,
-                'COLOUR' => $colour,
-                'STATUS' => $status,
-                'PRETTY_NAME' => $pretty_name,
-                'NAME' => $row['name'],
-                'FILENAME' => null,
-                'AUTHOR' => $row['author'],
-                'ORGANISATION' => $row['organisation'],
-                'CATEGORY' => $row['category'],
-                'COPYRIGHT_ATTRIBUTION' => implode("\n", $row['copyright_attribution']),
-                'LICENCE' => $row['licence'],
-                'VERSION' => $row['version'],
-                'ACTIONS' => $actions,
-                'TYPE' => 'uninstall',
-                'PASSTHROUGH' => $row['name'],
-            );
+            if ($do_caching) {
+                $cache_identifier = $name;
+                $test = get_cache_entry('_addon_installed_tpl', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);
+                if (is_array($test)) {
+                    list($colour, $addon_tpl) = $test;
+                }
+            }
+
+            if ($addon_tpl === null) {
+                if ($row === null) {
+                    $row = read_addon_info($name);
+                }
+
+                $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '5a65c9aa87291ecfe46f75e9b2949246', 'GET' => true, 'NAME' => $name, 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $name), '_SELF')));
+                $updated = array_key_exists($name, $updated_addons_arr);
+                $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
+                $colour = $updated ? 'red' : 'green';
+                $description = $row['description'];
+                $file_list = $row['files'];
+                $pretty_name = do_template('ADDON_NAME', array('_GUID' => '86b940f63744eb0690059efd69c1d58c', 'IMAGE_URL' => find_addon_icon($name, false, null), 'NAME' => $name));
+
+                $addon_tpl = static_evaluate_tempcode(do_template('ADDON_SCREEN_ADDON', array(
+                    '_GUID' => '9a06f5a9c9e3085c10ab7fb17c3efcd1',
+                    'UPDATED_ADDONS' => $updated,
+                    'DESCRIPTION' => $description,
+                    'DESCRIPTION_PARSED' => static_evaluate_tempcode(comcode_to_tempcode($description)),
+                    'FILE_LIST' => $file_list,
+                    'COLOUR' => $colour,
+                    'STATUS' => $status,
+                    'PRETTY_NAME' => $pretty_name,
+                    'NAME' => $name,
+                    'FILENAME' => null,
+                    'AUTHOR' => $row['author'],
+                    'ORGANISATION' => $row['organisation'],
+                    'CATEGORY' => $row['category'],
+                    'COPYRIGHT_ATTRIBUTION' => implode("\n", $row['copyright_attribution']),
+                    'LICENCE' => $row['licence'],
+                    'VERSION' => $row['version'],
+                    'ACTIONS' => $actions,
+                    'TYPE' => 'uninstall',
+                    'PASSTHROUGH' => $name,
+                )));
+
+                if ($do_caching) {
+                    require_code('caches2');
+                    put_into_cache('_addon_installed_tpl', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
+                }
+            }
+
+            $_tpl_addons[$colour][$name] = $addon_tpl;
         }
 
         // Show addons available for installation
         foreach ($addons_available_for_installation as $filename => $addon) {
             if (!array_key_exists($addon['name'], $addons_installed)) {
-                $actions = do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array('_GUID' => 'e6e2bdac62c0d3afcd5251b3d525a1c9', 'GET' => true, 'NAME' => $addon['name'], 'HIDDEN' => '', 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_install', 'file' => $filename), '_SELF')));
-                $status = do_lang_tempcode('STATUS_NOT_INSTALLED');
-                $description = $addon['description'];
-                $file_list = $addon['files'];
-                if ($addon['version'] == '(version-synched)') {
-                    $addon['version'] = float_to_raw_string(cms_version_number());
-                }
-                $pretty_name = do_template('ADDON_NAME', array('_GUID' => '4802523382da01432bf04120ad01c677', 'IMAGE_URL' => find_addon_icon($addon['name'], false, $addon['tar_path']), 'NAME' => $addon['name']));
+                $colour = null;
+                $addon_tpl = null;
 
-                $_tpl_addons[$addon['name']] = array(
-                    '_GUID' => 'cb61bdb9ce0cef5cd520440c5f62008f',
-                    'UPDATED_ADDONS' => false,
-                    'DESCRIPTION' => $description,
-                    'FILE_LIST' => $file_list,
-                    'COLOUR' => 'orange',
-                    'STATUS' => $status,
-                    'PRETTY_NAME' => $pretty_name,
-                    'NAME' => $addon['name'],
-                    'FILENAME' => $filename,
-                    'AUTHOR' => $addon['author'],
-                    'ORGANISATION' => $addon['organisation'],
-                    'CATEGORY' => $addon['category'],
-                    'COPYRIGHT_ATTRIBUTION' => implode("\n", $addon['copyright_attribution']),
-                    'LICENCE' => $addon['licence'],
-                    'VERSION' => $addon['version'],
-                    'ACTIONS' => $actions,
-                    'TYPE' => 'install',
-                    'PASSTHROUGH' => $filename,
-                );
+                if ($do_caching) {
+                    $cache_identifier = $addon['name'];
+                    $test = get_cache_entry('_addon_available_tpl', $cache_identifier, CACHE_AGAINST_NOTHING_SPECIAL, 10000);
+                    if (is_array($test)) {
+                        list($colour, $addon_tpl) = $test;
+                    }
+                }
+
+                if ($addon_tpl === null) {
+                    $actions = do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array('_GUID' => 'e6e2bdac62c0d3afcd5251b3d525a1c9', 'GET' => true, 'NAME' => $addon['name'], 'HIDDEN' => '', 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_install', 'file' => $filename), '_SELF')));
+                    $status = do_lang_tempcode('STATUS_NOT_INSTALLED');
+                    $description = $addon['description'];
+                    $file_list = $addon['files'];
+                    if ($addon['version'] == '(version-synched)') {
+                        $addon['version'] = float_to_raw_string(cms_version_number());
+                    }
+                    $pretty_name = do_template('ADDON_NAME', array('_GUID' => '4802523382da01432bf04120ad01c677', 'IMAGE_URL' => find_addon_icon($addon['name'], false, $addon['tar_path']), 'NAME' => $addon['name']));
+
+                    $addon_tpl = static_evaluate_tempcode(do_template('ADDON_SCREEN_ADDON', array(
+                        '_GUID' => 'cb61bdb9ce0cef5cd520440c5f62008f',
+                        'UPDATED_ADDONS' => false,
+                        'DESCRIPTION' => $description,
+                        'DESCRIPTION_PARSED' => comcode_to_tempcode($description),
+                        'FILE_LIST' => $file_list,
+                        'COLOUR' => 'orange',
+                        'STATUS' => $status,
+                        'PRETTY_NAME' => $pretty_name,
+                        'NAME' => $addon['name'],
+                        'FILENAME' => $filename,
+                        'AUTHOR' => $addon['author'],
+                        'ORGANISATION' => $addon['organisation'],
+                        'CATEGORY' => $addon['category'],
+                        'COPYRIGHT_ATTRIBUTION' => implode("\n", $addon['copyright_attribution']),
+                        'LICENCE' => $addon['licence'],
+                        'VERSION' => $addon['version'],
+                        'ACTIONS' => $actions,
+                        'TYPE' => 'install',
+                        'PASSTHROUGH' => $filename,
+                    )));
+
+                    if ($do_caching) {
+                        require_code('caches2');
+                        put_into_cache('_addon_available_tpl', 60 * 60 * 24, $cache_identifier, null, null, '', null, '', array($colour, $addon_tpl));
+                    }
+                }
+
+                $_tpl_addons[$colour][$addon['name']] = $addon_tpl;
             }
         }
 
-        sort_maps_by($_tpl_addons, '!COLOUR,NAME');
-
         $tpl_addons = new Tempcode();
-        foreach ($_tpl_addons as $t) {
-            $tpl_addons->attach(do_template('ADDON_SCREEN_ADDON', $t));
+        foreach ($_tpl_addons as $__tpl_addons) {
+            ksort($__tpl_addons);
+
+            foreach ($__tpl_addons as $t) {
+                $tpl_addons->attach($t);
+            }
         }
 
         $multi_action = build_url(array('page' => '_SELF', 'type' => 'multi_action'), '_SELF');
@@ -589,7 +639,8 @@ class Module_admin_addons
 
         foreach ($_POST as $key => $passed) {
             if (substr($key, 0, 8) == 'install_') {
-                install_addon($passed);
+                // Files pass
+                install_addon($passed, null, true, false);
             }
 
             if (substr($key, 0, 10) == 'uninstall_') {
@@ -604,6 +655,13 @@ class Module_admin_addons
                 }
 
                 $addons_to_remove[] = $name;
+            }
+        }
+
+        foreach ($_POST as $key => $passed) {
+            if (substr($key, 0, 8) == 'install_') {
+                // DB pass
+                install_addon($passed, null, false, true);
             }
         }
 
@@ -871,7 +929,7 @@ class Module_admin_addons
      * @param  PATH $dir The directory to search
      * @return array A map, path=>true (inverted list)
      */
-    public function do_dir($dir)
+    private function do_dir($dir)
     {
         $full = get_file_base() . '/' . (($dir == '') ? '' : ($dir . '/'));
         $temp = array();
@@ -880,8 +938,8 @@ class Module_admin_addons
             require_code('files');
 
             while (false !== ($file = readdir($_dir))) {
-                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS)) {
-                    $temp[$file] = 1;
+                if (!should_ignore_file((($dir == '') ? '' : ($dir . '/')) . $file, IGNORE_EDITFROM_FILES | IGNORE_REVISION_FILES | IGNORE_UPLOADS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+                    $temp[$file] = true;
                 }
             }
             closedir($_dir);
@@ -901,7 +959,7 @@ class Module_admin_addons
                     }
                 }
             } else {
-                $out[$dir . '/' . $file] = 1;
+                $out[($dir == '') ? '' : ($dir . '/') . $file] = true;
             }
         }
 

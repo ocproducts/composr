@@ -506,6 +506,7 @@ hr.cns_sig_barrier {
 }
 .cns_topic_actions * {
 	vertical-align: middle;
+	display: inline-block;
 }
 
 .cns_topic_control_functions label, .cns_topic_actions label {

@@ -1,7 +1,7 @@
-<tr class="{$CYCLE,results_table_zebra,zebra_0,zebra_1}">
+<tr>
 	<td class="addon_name">
 		{+START,SET,description}
-			{$COMCODE,{DESCRIPTION}}
+			{DESCRIPTION_PARSED}
 
 			{+START,IF_NON_EMPTY,{ORGANISATION}}
 				<p>

@@ -47,7 +47,7 @@
 			{+END}
 		{+END}
 
-		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form">
+		<form title="{!PRIMARY_PAGE_FORM}" action="{$URL_FOR_GET_FORM*,{URL}}" target="_self" method="get" class="main_search_form" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{URL}}
 
 			<div class="wide_table_wrap"><table class="map_table form_table wide_table">

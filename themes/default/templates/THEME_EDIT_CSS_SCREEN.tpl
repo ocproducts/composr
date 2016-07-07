@@ -422,7 +422,7 @@
 	</div>
 </div>
 
-<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post">
+<form title="{!PRIMARY_PAGE_FORM}" action="{URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -468,7 +468,7 @@
 			<label for="f_old"><a class="toggleable_tray_button" href="#" onclick="return toggleable_tray(this.parentNode.parentNode.parentNode);">{!ORIGINAL}</a>:</label>
 		</h2>
 		<div class="toggleable_tray" style="display: {$JS_ON,none,block}" aria-expanded="false">
-			<form title="{!ORIGINAL}" action="{$BASE_URL*}/index.php" method="post">
+			<form title="{!ORIGINAL}" action="{$BASE_URL*}/index.php" method="post" autocomplete="off">
 				<div class="constrain_field">
 					<textarea id="f_old" name="f_old" cols="70" rows="23" readonly="readonly" class="wide_field">{OLD_CONTENTS*}</textarea>
 				</div>
@@ -513,7 +513,7 @@
 
 		<p>{!DESCRIP_CSS_EQUATION_HELPER}</p>
 
-		<form title="{!CSS_EQUATION_HELPER}" action="{$BASE_URL*}/index.php" onsubmit="return false;" method="post">
+		<form title="{!CSS_EQUATION_HELPER}" action="{$BASE_URL*}/index.php" onsubmit="return false;" method="post" autocomplete="off">
 			<p class="vertical_alignment">
 				<label for="css_equation">{!CSS_EQUATION_HELPER}</label>
 				<input name="css_equation" id="css_equation" type="text" value="100% seed" />

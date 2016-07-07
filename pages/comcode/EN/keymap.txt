@@ -1,6 +1,6 @@
 [title]Keyboard shortcuts[/title]
 
-These are the key shortcuts that will work on {$SITE_NAME}.
+These are the key shortcuts that will work on {$SITE_NAME*}.
 
 On most web browsers you can activate a key shortcut by holding down the Alt key and pressing the key code (hold down the Ctrl key on a Mac). You may need to hold down the Shift key in addition.
 

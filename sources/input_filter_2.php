@@ -19,6 +19,49 @@
  */
 
 /**
+ * Enable the ModSecurity workaround on the PHP-side.
+ * It also needs enabling on the HTML-side.
+ * Doesn't support more than one level of list nesting, or associative arrays
+ */
+function modsecurity_workaround_enable()
+{
+    if (get_option('complex_uploader') == '0') {
+        return;
+    }
+
+    require_code('form_templates');
+
+    global $MODSECURITY_WORKAROUND_ENABLED;
+    $MODSECURITY_WORKAROUND_ENABLED = true;
+
+    require_javascript('jquery');
+
+    $data = post_param_string('_data', null);
+    if ($data !== null) {
+        $remapper = array(
+            '<' => '\\',
+            '>' => '/',
+            '\'' => '<',
+            '"' => '>',
+            '/' => '\'',
+            '\\' => '"',
+            '&' => '%',
+            '%' => '&',
+        );
+        $len = strlen($data);
+        for ($i = 0; $i < $len; $i++) {
+            $char = $data[$i];
+            if (isset($remapper[$char])) {
+                $data[$i] = $remapper[$char];
+            }
+        }
+
+        require_code('json');
+        $_POST = _parse_raw_http_request_urlencoded($data);
+    }
+}
+
+/**
  * Detect if the POST request was shortened due to a limitation.
  * If we're staff, try and fix it. If we're not staff, warn about it (as fixing it would subvert the reason for the restriction).
  */
@@ -73,6 +116,7 @@ function array_count_recursive($arr)
 /**
  * Parse raw HTTP request data.
  * Based on https://gist.github.com/chlab/4283560
+ * Doesn't support more than one level of list nesting, or associative arrays
  *
  * @return  ?array   Associative array of request data (null: could not rescue)
  */
@@ -82,8 +126,6 @@ function parse_raw_http_request()
         return null;
     }
 
-    $post_data = array();
-
     // Read incoming data
     $input = file_get_contents('php://input');
 
@@ -91,40 +133,73 @@ function parse_raw_http_request()
     $matches = array();
     preg_match('#boundary=(.*)$#', $_SERVER['CONTENT_TYPE'], $matches);
 
-    // Content type is probably regular form-encoded
     if (count($matches) == 0) {
-        $pairs = explode('&', $input);
-        foreach ($pairs as $pair) {
-            $exploded = explode('=', $pair, 2);
-            if (count($exploded) == 2) {
-                $key = urldecode($exploded[0]);
-                $val = urldecode($exploded[1]);
-                if (get_magic_quotes_gpc()) {
-                    $val = addslashes($val);
-                }
-
-                if (substr($key, -2) == '[]') {
-                    $key = substr($key, 0, strlen($key) - 2);
-                    if (!isset($post_data[$key])) {
-                        $post_data[$key] = array();
-                    }
-                    $post_data[$key][] = $val;
-                } else {
-                    $post_data[$key] = $val;
-                }
-            }
-        }
-
-        return $post_data;
+        // Content type is probably regular form-encoded
+        $post_data = _parse_raw_http_request_urlencoded($input);
+    } else {
+        // Multipart encoded (unfortunately for modern PHP versions, this code can't run as php://input is not populated for multipart)...
+        $boundary = $matches[1];
+        $post_data = _parse_raw_http_request_multipart($input, $boundary);
     }
 
-    // Multipart encoded (unfortunately for modern PHP versions, this code can't run as php://input is not populated for multipart)...
+    return $post_data;
+}
 
-    $boundary = $matches[1];
+/**
+ * Parse raw HTTP request data in URL encoding format (application/x-www-form-urlencoded).
+ * Based on https://gist.github.com/chlab/4283560
+ * Doesn't support more than one level of list nesting, or associative arrays
+ *
+ * @param  string $input Data
+ * @return ?array Associative array of request data (null: could not rescue)
+ */
+function _parse_raw_http_request_urlencoded($input)
+{
+    $post_data = array();
+
+    $pairs = explode('&', $input);
+    foreach ($pairs as $pair) {
+        $exploded = explode('=', $pair, 2);
+        if (count($exploded) == 2) {
+            $key = urldecode($exploded[0]);
+            $val = urldecode($exploded[1]);
+            if (get_magic_quotes_gpc()) {
+                $val = addslashes($val);
+            }
+
+            if (substr($key, -2) == '[]') {
+                $key = substr($key, 0, strlen($key) - 2);
+                if (!isset($post_data[$key])) {
+                    $post_data[$key] = array();
+                }
+                $post_data[$key][] = $val;
+            } else {
+                $post_data[$key] = $val;
+            }
+        }
+    }
+
+    return $post_data;
+}
+
+/**
+ * Parse raw HTTP request data in multipart format (multipart/form-data).
+ * Based on https://gist.github.com/chlab/4283560
+ * Doesn't support more than one level of list nesting, or associative arrays
+ *
+ * @param  string $input Data
+ * @param  string $boundary Multi-part boundary
+ * @return ?array Associative array of request data (null: could not rescue)
+ */
+function _parse_raw_http_request_multipart($input, $boundary)
+{
+    $post_data = array();
 
     // Split content by boundary and get rid of last -- element
     $blocks = preg_split("#-+$boundary#", $input);
     array_pop($blocks);
+
+    $matches = array();
 
     // Loop data blocks
     foreach ($blocks as $block) {

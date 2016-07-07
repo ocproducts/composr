@@ -57,7 +57,7 @@ class Hook_checklist_messaging
                 $outstanding++;
 
                 $count = 0;
-                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id), $count, 100, 0, false);
+                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $message_type . '_' . $id, do_lang('COMMENT')), $count, 100, 0, false);
                 if ((is_array($_comments)) && (array_key_exists(0, $_comments))) {
                     $message_title = $_comments[0]['title'];
                     $message = $_comments[0]['message'];

@@ -5,7 +5,7 @@
 !
 ! Foo
 ! Bar
-! {$SITE_NAME}
+! {$SITE_NAME*}
 
 |-
 

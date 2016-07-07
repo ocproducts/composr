@@ -80,6 +80,10 @@ function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_to
         generate_resource_fs_moniker('emoticon', $code, null, null, true);
     }
 
+    if (function_exists('decache')) {
+        decache('_emoticon_chooser');
+    }
+
     log_it('ADD_EMOTICON', $code, $theme_img_code);
 }
 

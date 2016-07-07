@@ -19,7 +19,7 @@
 
 		<div class="accessibility_hidden"><label for="trans_{ID*}">{NAME*}</label></div>
 		<div class="constrain_field">
-			<textarea class="wide_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
+			<textarea class="wide_field translate_field" cols="60" rows="{$ADD*,{$DIV,{$LENGTH,{CURRENT}},80},1}" id="trans_{ID*}" name="trans_{ID*}">{CURRENT*}</textarea>
 		</div>
 	</td>
 	<td>

@@ -3,6 +3,10 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
+.translate_field {
+	color: {$GET,native_ui_foreground} !important;
+}
+
 td.translate_line_first {
 	padding: 0.5em;
 }

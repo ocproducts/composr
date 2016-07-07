@@ -790,7 +790,7 @@ class Module_cms_downloads_alt extends Standard_crud_module
     {
         $id = intval($_id);
 
-        $myrows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id));
+        $myrows = $GLOBALS['SITE_DB']->query_select('download_licences', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $myrows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'download_licence'));
         }

@@ -8,7 +8,7 @@
 
 Every logged-in member can gain points as they contribute to our community, in ways like...
  - Posting on the forums
- - Contributing content to {$SITE_NAME}, such as gallery images
+ - Contributing content to {$SITE_NAME*}, such as gallery images
 
 As you gain points, you can spend them on various fun or useful things, such as buying your own e-mail account.
 
@@ -31,12 +31,12 @@ The items that are purchasable may include:
 Products that require manual setup will usually only be charged for upon activation, not at point of sale.{+END}
 {+START,IF,{$AND,{$ADDON_INSTALLED,news},{$HAS_ACTUAL_PAGE_ACCESS,cms_news}}}[title="2"]News/Blogs[/title]
 
-{$ANCHOR,ADD_NEWS}[page="_SEARCH:cms_news:add"]The add news page[/page] allows you to add your news to {$SITE_NAME}. For most members, this will put the news into a validation queue and inform the staff of the submission.
+{$ANCHOR,ADD_NEWS}[page="_SEARCH:cms_news:add"]The add news page[/page] allows you to add your news to {$SITE_NAME*}. For most members, this will put the news into a validation queue and inform the staff of the submission.
 {+START,IF,{$HAS_PRIVILEGE,have_personal_category,cms_news}}You also have the opportunity to submit to your own personal news category; this is your own blog on the website.{+END}
 {+END}
 {+START,IF,{$AND,{$ADDON_INSTALLED,galleries},{$HAS_ACTUAL_PAGE_ACCESS,cms_galleries}}}[title="2"]Galleries[/title]
 
-{$ANCHOR,ADD_MEDIA}The [page="_SEARCH:cms_galleries:add"]add image[/page]/[page="_SEARCH:cms_galleries:add_other"]add video[/page] pages allow you to add your media to {$SITE_NAME}. For most members, this will put the images into a validation queue and inform the staff of the submission.
+{$ANCHOR,ADD_MEDIA}The [page="_SEARCH:cms_galleries:add"]add image[/page]/[page="_SEARCH:cms_galleries:add_other"]add video[/page] pages allow you to add your media to {$SITE_NAME*}. For most members, this will put the images into a validation queue and inform the staff of the submission.
 {+END}{+END}{+START,IF,{$ADDON_INSTALLED,wiki}}[title="2"]Wiki+[/title]
 
 Wiki+ is a system that allows users to post content into a database of posts. This system is similar to that of a forum, however rather than having a structure of forums and user created topics, it has a staff-managed hierarchical structure of pages.

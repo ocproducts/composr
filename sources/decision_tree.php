@@ -338,7 +338,9 @@ class DecisionTree
         $next_tree_position = '_' . $tree_position; // Needs complex processing
         $next_url = $this->build_url($next_tree_position);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '3164d2c849259902d0e3dc8dce1ad110', 'SKIP_WEBSTANDARDS' => true,
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '3164d2c849259902d0e3dc8dce1ad110',
+            'SKIP_WEBSTANDARDS' => true,
             'TITLE' => $title,
             'HIDDEN' => $hidden,
             'FIELDS' => $fields,

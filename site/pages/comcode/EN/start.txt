@@ -1,5 +1,5 @@
 [semihtml]
-[title]{$SITE_NAME}[/title]
+[title]{$SITE_NAME*}[/title]
 
 [surround="boxless_space"]
 	[block failsafe="1"]main_news[/block]

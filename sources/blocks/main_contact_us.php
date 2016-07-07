@@ -95,15 +95,14 @@ class Block_main_contact_us
             dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, 3, true, false, null, null, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix);
 
             // Send standard confirmation email to current user
-            if ($email_from != '') {
+            if ($email_from != '' && get_option('message_received_emails') == '1') {
                 require_code('mail');
                 mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
             }
 
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
             if ($redirect != '') {
-                require_code('urls2');
-                $redirect = page_link_as_url($redirect);
+                $redirect = page_link_to_url($redirect);
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
             }
@@ -115,11 +114,9 @@ class Block_main_contact_us
 
         if (get_forum_type() != 'none') { // If cns_forum not installed, will still work
             // Comment posts
-            $forum = get_option('messaging_forum_name');
-            $count = 0;
-            $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier($forum, $type . '_' . $id), $count);
+            $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name(get_option('messaging_forum_name'));
 
-            if ($_comments !== -1) {
+            if ($forum_id !== null) {
                 $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
 
                 require_javascript('editing');

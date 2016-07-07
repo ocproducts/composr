@@ -30,7 +30,7 @@
 		<div class="box box___cns_view_group_screen"><div class="box_inner">
 			<h2>{!ADD_MEMBER_TO_GROUP}</h2>
 
-			<form title="{!ADD_MEMBER_TO_GROUP}" onsubmit="if (check_field_for_blankness(this.elements['username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{ADD_URL*}" method="post">
+			<form title="{!ADD_MEMBER_TO_GROUP}" onsubmit="if (check_field_for_blankness(this.elements['username'],event)) { disable_button_just_clicked(this); return true; } return false;" action="{ADD_URL*}" method="post" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div>

@@ -18,6 +18,25 @@
  * @package    core
  */
 
+/*
+Conversions...
+
+Page-link -> Structs : page_link_decode
+Page-link -> Tempcode : (none)
+Page-link -> URL : page_link_to_url
+Structs -> Page-link : build_page_link
+Structs -> Tempcode : build_url
+Structs -> URL : _build_url
+Tempcode -> Page-link : (none)
+Tempcode -> Structs : (none)
+Tempcode -> URL : static_evaluate_tempcode
+URL -> Page-link : url_to_page_link
+URL -> Structs : parse_url
+URL -> Tempcode : N/A
+
+(Structs aren't consistent, and just refer to some kind of PHP data structure involving arrays)
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -473,9 +492,6 @@ function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
         }
         if (is_integer($val)) {
             $val = strval($val);
-        }
-        if ($val === null) {
-            $val = '<null>';
         }
 
         if ($key !== 'page') {
@@ -1129,6 +1145,36 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
 }
 
 /**
+ * Given a URL or page-link, return an absolute URL.
+ *
+ * @param  string $url URL or page-link
+ * @return URLPATH URL
+ */
+function page_link_to_url($url)
+{
+    $parts = array();
+    if ((preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
+        list($zone, $map, $hash) = page_link_decode($url);
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, false, $hash));
+    } else {
+        $url = qualify_url($url, get_base_url());
+    }
+    return $url;
+}
+
+/**
+ * Given a page-link, return an absolute URL.
+ *
+ * @param  string $page_link Page-link
+ * @return Tempcode URL
+ */
+function page_link_to_tempcode_url($page_link)
+{
+    list($zone, $map, $hash) = page_link_decode($page_link);
+    return build_url($map, $zone, array(), false, false, false, $hash);
+}
+
+/**
  * Convert a local page file path to a written page-link.
  *
  * @param  string $page The path.
@@ -1162,11 +1208,22 @@ function load_moniker_hooks()
             return;
         }
 
+        $no_monikers_in = array( // FUDGE: Optimisation, not ideal! But it saves file loading and memory
+            'author' => true,
+            'banner' => true,
+            'banner_type' => true,
+            'calendar_type' => true,
+            'catalogue' => true,
+            'post' => true,
+            'wiki_page' => true,
+            'wiki_post' => true,
+        );
+
         $CONTENT_OBS = array();
         $hooks = find_all_hooks('systems', 'content_meta_aware');
         foreach ($hooks as $hook => $sources_dir) {
-            if ($hook == 'banner' || $hook == 'banner_type' || $hook == 'catalogue' || $hook == 'post') {
-                continue; // FUDGE: Optimisation, not ideal!
+            if (isset($no_monikers_in[$hook])) {
+                continue;
             }
 
             $info_function = extract_module_functions(get_file_base() . '/' . $sources_dir . '/hooks/systems/content_meta_aware/' . $hook . '.php', array('info'), null, false, 'Hook_content_meta_aware_' . $hook);
@@ -1251,10 +1308,8 @@ function find_id_moniker($url_parts, $zone)
             $url_parts['type'] = 'browse'; // null means "do not take from environment"; so we default it to 'browse' (even though it might actually be left out when URL Schemes are off, we know it cannot be for URL Schemes)
         }
 
-        if (array_key_exists('id', $url_parts)) {
-            if ($url_parts['id'] === null) {
-                $url_parts['id'] = strval(db_get_first_id());
-            }
+        if ($url_parts['id'] === null) {
+            return null;
         }
 
         $effective_id = $url_parts['id'];

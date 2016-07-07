@@ -11,6 +11,8 @@ The problem we need to deal with is false-positives -- i.e. ModSecurity thinks s
 [media description="" width="410" float="right" framed="0"]data_custom/images/docs/sup_modsecurity/image.jpg[/media]
 ModSecurity v1 could be disabled by a [tt].htaccess[/tt] file, but ModSecurity v2 cannot. ModSecurity is designed for use in enterprise environments, and the makers support it as such -- but it is deployed by a lot of webhosts. This leads to an unfortunate problems of responsibility. The ModSecurity authors think that the people managing the servers have control over what runs on them. The webhosts just want to layer in some extra security, and often have little understanding of how ModSecurity works, or what systems their customer's will install. Therefore unfortunately users are sometimes stuck in the middle. Your webhost has a responsibility to provide the service they advertise, so if Composr gets blocked, you have every right to insist that they unblock whatever is stopping it.
 
+Composr will try and work around ModSecurity-style systems in common areas where false positives happen, but we cannot guarantee perfection.
+
 Composr itself contains its own inbuilt firewall, which also blocks many malicious requests. Composr is also built with proper data management APIs and internal layers so that most vulnerabilities aren't possible. This said, as long as ModSecurity is configured right, it is a good thing to have both.
 
 It is not usually easy to know if ModSecurity is blocking you. You will usually see some kind of Apache error message, such as the very generic '500 Internal Server Error'/'402 Forbidden' message. ModSecurity does not explicitly state the problem so that hackers have less clues to why they are blocked. Apache error logs usually contain the full reason, however.
@@ -52,10 +54,6 @@ Using the [b]Tools > PHP Info[/b] feature.
 
 [title="2"]340009 -- Site options[/title]
 Saving changes on [b]Admin Zone > Configuration > Site options[/b] page.
-
-[title="2"]950801 -- Anything[/title]
-
-This rule (not on by default) introduces the assumption that the site is running utf8, so validates lots of text against it. This is a very bad assumption -- PHP doesn't even support utf8 by default.
 
 ----
 

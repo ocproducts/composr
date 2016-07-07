@@ -3,7 +3,7 @@
 
 [surround]Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultricies cursus egestas. Nunc orci lacus, viverra a ultrices nec, volutpat eu velit. Maecenas imperdiet tortor eget eros varius mattis. Nullam eget lacus in tellus mollis ornare in lobortis sapien. Duis lectus felis, consequat in ullamcorper at, elementum sed est. In viverra tellus turpis, in tincidunt leo. Donec sagittis rhoncus urna quis eleifend.[/surround]
 
-[surround="hero_button"][page=":join"]Join {$SITE_NAME}[/page][/surround]
+[surround="hero_button"][page=":join"]Join {$SITE_NAME*}[/page][/surround]
 [/surround]
 
 [title="2"]Benefits[/title]

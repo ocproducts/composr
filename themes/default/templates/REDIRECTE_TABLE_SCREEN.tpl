@@ -9,7 +9,7 @@
 	{!TEXT_REDIRECTS}
 </p>
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<h2>{!EXISTING_REDIRECTS}</h2>

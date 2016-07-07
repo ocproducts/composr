@@ -180,7 +180,7 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null, $check_perms = true)
 {
     // Info about source
-    $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id));
+    $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $info)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
     }

@@ -257,6 +257,9 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
     // Content translation mode
     if (substr($special_page_type, 0, 12) == 'lang_content') {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -274,10 +277,10 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
 
         require_lang('lang');
         require_code('form_templates');
+        $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
+        require_code('lang2');
 
         $fields = new Tempcode();
-
-        require_code('lang2');
 
         $names = find_lang_content_names(array_keys($RECORDED_LANG_STRINGS_CONTENT));
 
@@ -323,9 +326,13 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
+            'MODSECURITY_WORKAROUND' => true,
         ));
     } // Language mode
     elseif (substr($special_page_type, 0, 4) == 'lang') {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $map_a = get_file_base() . '/lang/langs.ini';
         $map_b = get_custom_file_base() . '/lang_custom/langs.ini';
         if (!file_exists($map_b)) {
@@ -342,6 +349,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         global $RECORDED_LANG_STRINGS;
         require_lang('lang');
         require_code('form_templates');
+        $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
         require_code('lang_compile');
         $fields = new Tempcode();
         $descriptions = get_lang_file_section(fallback_lang());
@@ -380,6 +388,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
             'SUPPORT_AUTOSAVE' => true,
+            'MODSECURITY_WORKAROUND' => true,
         ));
     }
 

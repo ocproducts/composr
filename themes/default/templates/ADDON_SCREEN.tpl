@@ -2,67 +2,60 @@
 
 <p>{!ADDONS_SCREEN}</p>
 
-{+START,IF_NON_EMPTY,{ADDONS}}
-	{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
-		{$,Link repeated here and below because it is important}
-		<nav>
-			<ul class="actions_list spaced_list">
-				<li>
-					<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
-				</li>
-			</ul>
-		</nav>
-	{+END}
+{+START,IF_NON_EMPTY,{UPDATED_ADDONS}}
+	{$,Link repeated here and below because it is important}
+	<nav>
+		<ul class="actions_list spaced_list">
+			<li>
+				<a href="{$PAGE_LINK*,_SELF:_SELF:addon_import:to_import={UPDATED_ADDONS}}"><strong>{!IMPORT_UPDATED_ADDONS}</strong></a>
+			</li>
+		</ul>
+	</nav>
+{+END}
 
-	{+START,IF,{$JS_ON}}
-		<div class="float_surrounder">
-			<p class="right associated_link">
-				<a href="#" onclick="var as=document.getElementsByTagName('input'); for (var i=0;i&lt;as.length;i++) { if (as[i].name.substr(0,10)=='uninstall_') as[i].checked=true; } return false;">{!UNINSTALL}: {!USE_ALL}</a>
-			</p>
-		</div>
-	{+END}
-
-	<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post">
-		{$INSERT_SPAMMER_BLACKHOLE}
-
-		<div class="not_too_tall_addons">
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table">
-				<thead>
-					<tr>
-						<th>
-							{!NAME}
-						</th>
-						<th>
-							{!AUTHOR}
-						</th>
-						<th>
-							{!VERSION}
-						</th>
-						<th>
-							{!STATUS}
-						</th>
-						<th>
-							{!ACTIONS}
-						</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					{ADDONS}
-				</tbody>
-			</table></div>
-		</div>
-
-		<p class="proceed_button">
-			<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
+{+START,IF,{$JS_ON}}
+	<div class="float_surrounder">
+		<p class="right associated_link">
+			<a href="#" onclick="var as=document.getElementsByTagName('input'); for (var i=0;i&lt;as.length;i++) { if (as[i].name.substr(0,10)=='uninstall_') as[i].checked=true; } return false;">{!UNINSTALL}: {!USE_ALL}</a>
 		</p>
-	</form>
+	</div>
 {+END}
-{+START,IF_EMPTY,{ADDONS}}
-	<p class="nothing_here">
-		{!NO_ADDONS_AVAILABLE}
+
+<form title="{!PRIMARY_PAGE_FORM}" action="{MULTI_ACTION*}" method="post" autocomplete="off">
+	{$INSERT_SPAMMER_BLACKHOLE}
+
+	<div class="not_too_tall_addons">
+		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table zebra">
+			<thead>
+				<tr>
+					<th>
+						{!NAME}
+					</th>
+					<th>
+						{!AUTHOR}
+					</th>
+					<th>
+						{!VERSION}
+					</th>
+					<th>
+						{!STATUS}
+					</th>
+					<th>
+						{!ACTIONS}
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{ADDONS}
+			</tbody>
+		</table></div>
+	</div>
+
+	<p class="proceed_button">
+		<input onclick="disable_button_just_clicked(this);" class="button_screen buttons__proceed" type="submit" value="{!INSTALL_AND_UNINSTALL}" />
 	</p>
-{+END}
+</form>
 
 <h2>{!ACTIONS}</h2>
 

@@ -87,6 +87,9 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search tutorial[/page]).
  - Enable the "Gzipped output" option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file to spot undesired request patterns and terminate those requests.
+ - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
+ - Make sure PHP was not compiled with [tt]--disable-ctype[/tt]
+ - You can add [tt]{$,Quick Cache}[/tt] into Comcode pages to enable the equivalent of quick block caching for that page
 
 [title="2"]Persistent cache[/title]
 
@@ -279,6 +282,12 @@ Go through and save them all, or run this Commandr command:
 If you have really large databases then two issues come into play:
 1) Composr will start doing sensible changes to site behaviour to stop things grinding to a halt
 2) You might start worrying about databases being too large for a single database server and need to implement 'sharding'
+
+You may also want to switch tables to InnoDB instead of MyISAM. If you do this then run this command in Commandr too:
+[code="Commandr"]
+:set_value('slow_counts', '1');
+[/code]
+This works around that InnoDB can't do quick row counts in tables, so implements an approximation for certain table counts.
 
 [title="3"]Composr adaptations[/title]
 

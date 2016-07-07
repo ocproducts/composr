@@ -2328,4 +2328,4 @@ There is an official Composr addon (non-bundled) for implementing Tapatalk suppo
 
  - [page="_SEARCH:tut_mobile"]Mobile design[/page]
 
-{$SET,tutorial_tags,Mobile,Development,composr_mobile_sdk,expert}{$SET,tutorial_add_date,Jan 2016}{$SET,tutorial_summary,Composr Mobile SDK is the toolkit for building mobile apps that connect to a Composr-powered website.}[block]main_tutorial_rating[/block]
+{$,Quick Cache}{$SET,tutorial_tags,Mobile,Development,composr_mobile_sdk,expert}{$SET,tutorial_add_date,Jan 2016}{$SET,tutorial_summary,Composr Mobile SDK is the toolkit for building mobile apps that connect to a Composr-powered website.}[block]main_tutorial_rating[/block]

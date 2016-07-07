@@ -57,7 +57,7 @@ class Hook_login_provider_httpauth
             //  - Don't assign any special permissions to these kinds of members
             //  - or, lock off all zones with .htaccess other than root (and root has httpauth login denied)
 
-            if ((array_key_exists('PHP_AUTH_USER', $_SERVER)) && (($member === null) || (is_guest($member))) && ((get_option('httpauth_is_enabled') == '1') || (get_value('windows_auth_is_enabled') === '1'))) {
+            if ((!empty($_SERVER['PHP_AUTH_USER'])) && (($member === null) || (is_guest($member))) && ((get_option('httpauth_is_enabled') == '1') || (get_value('windows_auth_is_enabled') === '1'))) {
                 require_code('users_inactive_occasionals');
                 $member = try_httpauth_login();
             }

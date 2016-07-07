@@ -86,6 +86,9 @@ class Module_admin_lang
      */
     public function pre_run()
     {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
         $type = get_param_string('type', 'browse');
 
         require_lang('lang');
@@ -844,14 +847,23 @@ class Module_admin_lang
 
             $out = '';
 
-            foreach ($for_base_lang_2 + $for_base_lang as $key => $now_val) {
-                $val = post_param_string('l_' . $key, array_key_exists($key, $for_base_lang_2) ? $for_base_lang_2[$key] : $now_val);
-                if ((str_replace("\n", '\n', $val) != $now_val) || (!array_key_exists($key, $for_base_lang)) || ($for_base_lang[$key] != $val) || (!file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini'))) {// if it's changed from default Composr, or not in default Composr, or was already changed in language file, or whole file is not in default Composr
+            $one_changed_from_saved = false;
+
+            foreach ($for_base_lang_2 + $for_base_lang as $key => $disk_val) {
+                $val = post_param_string('l_' . $key, str_replace('\n', "\n", array_key_exists($key, $for_base_lang_2) ? $for_base_lang_2[$key] : $disk_val));
+                $changed_from_saved = ($val != str_replace('\n', "\n", $disk_val)); // was already changed in language file
+                $not_a_default = (!array_key_exists($key, $for_base_lang)); // not in default Composr
+                $changed_from_default = !$not_a_default && ($for_base_lang[$key] != $val); // changed from default Composr
+                $no_default_file = (!file_exists(get_file_base() . '/lang/' . fallback_lang() . '/' . $lang_file . '.ini')); // whole file is not in default Composr
+                if ($changed_from_saved || $not_a_default || $changed_from_default || $no_default_file) {
                     $out .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
+                }
+                if ($changed_from_saved) {
+                    $one_changed_from_saved = true;
                 }
             }
 
-            if ($out != '') {
+            if ($out != '' && $one_changed_from_saved) {
                 $path = get_custom_file_base() . '/lang_custom/' . filter_naughty($lang) . '/' . filter_naughty($lang_file) . '.ini';
                 $path_backup = $path . '.' . strval(time());
                 if (file_exists($path)) {
@@ -866,21 +878,25 @@ class Module_admin_lang
                 if (!GOOGLE_APPENGINE) {
                     ftruncate($myfile, 0);
                 }
-                fwrite($myfile, "[descriptions]\n");
-                foreach ($descriptions as $key => $description) {
-                    if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                if (count($descriptions) != 0) {
+                    fwrite($myfile, "[descriptions]\n");
+                    foreach ($descriptions as $key => $description) {
+                        if (fwrite($myfile, $key . '=' . $description . "\n") == 0) {
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        }
                     }
+                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 }
-                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
-                fwrite($myfile, "[runtime_processing]\n");
-                foreach ($runtime_processing as $key => $flag) {
-                    if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                if (count($runtime_processing) != 0) {
+                    fwrite($myfile, "[runtime_processing]\n");
+                    foreach ($runtime_processing as $key => $flag) {
+                        if (fwrite($myfile, $key . '=' . $flag . "\n") == 0) {
+                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                        }
                     }
+                    fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
                 }
-                fwrite($myfile, "\n"); // Weird bug with IIS GOOGLE_APPENGINE?'wb':'wt' writing needs this to be on a separate line
-                fwrite($myfile, "\n[strings]\n");
+                fwrite($myfile, "[strings]\n");
                 fwrite($myfile, $out);
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);

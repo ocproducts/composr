@@ -187,8 +187,9 @@ function get_allowed_partner_sites()
     } else {
         $allowed_partners = array();
     }
+    $zl = strlen('ZONE_MAPPING_');
     foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
-        if (substr($key, 0, strlen('ZONE_MAPPING_')) === 'ZONE_MAPPING_') {
+        if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
             $allowed_partners[] = $_val[0];
         }
     }
@@ -258,6 +259,8 @@ function hard_filter_input_data__dynamic_firewall($name, &$val)
 function hard_filter_input_data__html(&$val)
 {
     require_code('comcode');
+
+    init_potential_js_naughty_array();
 
     global $POTENTIAL_JS_NAUGHTY_ARRAY;
 

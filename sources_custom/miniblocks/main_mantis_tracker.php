@@ -26,6 +26,7 @@ if (!running_script('tracker') && get_param_integer('keep_no_frames', 0) == 0) {
     $frame_name = 'frame_' . uniqid('', true);
 
     $tpl = do_template('BLOCK_MAIN_MANTIS_TRACKER', array(
+        '_GUID' => '52af5edf59440ba86c54e0324518561a',
         'FRAME_NAME' => $frame_name,
         'PARAMS' => $params,
     ));
@@ -153,6 +154,7 @@ $pagination = pagination(make_string_tempcode('Issues'), $start, 'mantis_start',
 // Templating...
 
 $tpl = do_template('MANTIS_TRACKER', array(
+    '_GUID' => '619919c2bf1e5207a4bf25111638f719',
     'ISSUES' => $issues,
     'PAGINATION' => $pagination,
 ));

@@ -80,7 +80,7 @@ class Hook_content_meta_aware_chat
 
             'feedback_type_code' => null,
 
-            'permissions_type_code' => null, // null if has no permissions
+            'permissions_type_code' => 'chat', // null if has no permissions
 
             'search_hook' => null,
             'rss_hook' => null,

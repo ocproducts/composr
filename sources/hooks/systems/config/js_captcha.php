@@ -51,6 +51,6 @@ class Hook_config_js_captcha
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

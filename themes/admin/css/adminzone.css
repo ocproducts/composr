@@ -6,7 +6,7 @@
 /* Style overrides (NB: it is reasonable to assume global.css ran before this, so precedence here is automatic) */
 
 html>body#main_website {
-	background: #f0f3f7;
+	background: #f0f3f7 !important;
 }
 
 header {

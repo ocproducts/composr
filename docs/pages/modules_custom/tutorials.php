@@ -597,7 +597,9 @@ class Module_tutorials
         $tutorials = list_tutorials_by('title', ($tag == '') ? null : $tag);
         $_tutorials = templatify_tutorial_list($tutorials);
 
-        return do_template('TUTORIAL_INDEX_SCREEN', array('_GUID' => '4569ab28e8959d9556dbb6d73c0e834a', 'TITLE' => $title,
+        return do_template('TUTORIAL_INDEX_SCREEN', array(
+            '_GUID' => '4569ab28e8959d9556dbb6d73c0e834a',
+            'TITLE' => $title,
             'TAGS' => $tags,
             'SELECTED_TAG' => $tag,
             'TUTORIALS' => $_tutorials,

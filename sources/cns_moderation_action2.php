@@ -96,7 +96,7 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
         access_denied('I_ERROR');
     }
 
-    $mm = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('*'), array('id' => $id));
+    $mm = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $mm)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
     }

@@ -164,7 +164,7 @@ class Module_invoices
         }
 
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_member_id' => $member_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
             $object = find_product($type_code);

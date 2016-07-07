@@ -190,7 +190,7 @@ class CMSTopicRead
                 if ($or_list != '') {
                     array_push($conditions, 't_forum_id IN (' . $or_list . ')');
                 } else {
-                    array_push($conditions, '0');
+                    array_push($conditions, '0=1');
                 }
             }
 
@@ -224,19 +224,20 @@ class CMSTopicRead
         // Enforce permissions
         if (get_allowed_forum_sql() != '') {
             array_push($conditions, 't_forum_id IN (' . get_allowed_forum_sql() . ')');
-        } else {
-            array_push($conditions, '0');
+        } else
+        {
+            // No PTs at least
+            array_push($conditions, 't_forum_id IS NOT NULL');
         }
 
-        // No PTs
-        array_push($conditions, 't_forum_id IS NOT NULL');
+        $conditions_full = array(); // For performance we won't put the less important ones that aren't easily indexable into a count query
 
         // No empty topic shells
-        array_push($conditions, 't_cache_first_member_id IS NOT NULL');
+        array_push($conditions_full, 't_cache_first_member_id IS NOT NULL');
 
         // Validated-only
         if (addon_installed('unvalidated')) {
-            array_push($conditions, 't_validated=1');
+            array_push($conditions_full, 't_validated=1');
         }
 
         // Only unread ones?
@@ -261,18 +262,27 @@ class CMSTopicRead
 
             $participant_id = $method_data;
 
-            $subquery = 'SELECT id FROM ' . $table_prefix . 'f_posts WHERE ';
-            $subquery .= 'p_poster=' . strval($participant_id) . ' AND ';
-            $subquery .= 'p_topic_id=t.id';
+            $array_push($conditions, 'pp.p_poster=' . strval($participant_id));
 
-            array_push($conditions, 'EXISTS (' . $subquery . ')');
+            // Run query
+            $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
+            $sql = $table_prefix . 'f_posts pp JOIN ' . $table_prefix . 'f_topics t ON t.id=pp.p_topic_id JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions);
+            $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $sql . ' GROUP BY t.id');
+            $sql .= implode(' AND ', $conditions_full);
+            $sql .=' GROUP BY t.id ORDER BY t_cache_last_time DESC,t.id DESC';
+            $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
+
+            return array($total_forum_topics, $forum_topics);
         }
 
         // Run query
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
-        $sql = $table_prefix . 'f_topics t JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY t_cache_last_time DESC,t.id DESC';
-        $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
+        $sql = $table_prefix . 'f_topics t WHERE ' . implode(' AND ', $conditions);
         $total_forum_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $sql);
+        $sql = $table_prefix . 'f_topics t JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE ' . implode(' AND ', $conditions);
+        $sql .= ' AND ' . implode(' AND ', $conditions_full);
+        $sql .=' ORDER BY t_cache_last_time DESC,t.id DESC';
+        $forum_topics = $GLOBALS['FORUM_DB']->query('SELECT *,t.id AS topic_id,p.id AS post_id,f.id AS forum_id FROM ' . $sql, $max, $start);
 
         return array($total_forum_topics, $forum_topics);
     }

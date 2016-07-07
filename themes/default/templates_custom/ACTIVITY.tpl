@@ -1,5 +1,5 @@
 {+START,IF,{ALLOW_REMOVE}}
-	<form id="feed_remove_{LIID*}" class="activities_remove" action="{$PAGE_LINK*,:start}" method="post" onsubmit="return s_update_remove(event,{LIID*});">
+	<form id="feed_remove_{LIID*}" class="activities_remove" action="{$PAGE_LINK*,:start}" method="post" onsubmit="return s_update_remove(event,{LIID*});" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<input class="remove_cross" type="submit" value="{!REMOVE}" />

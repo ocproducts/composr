@@ -381,7 +381,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($theme == '') {
                         $theme = null;
                     }
-                    $_value = do_template($param[0]->evaluate(), $tpl_params, null, false, null, $ex, $td, $theme);
+                    $_value = do_template($param[0]->evaluate(), $tpl_params, null, true, null, $ex, $td, $theme);
                     $value = $_value->evaluate();
 
                     if ((get_charset() == 'utf-8') && (substr($value, 0, 3) == chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')))) {
@@ -4374,7 +4374,7 @@ function ecv_COMMENT_COUNT($lang, $escaped, $param)
         } else {
             if (get_option('is_on_comments') == '1') {
                 $count = 0;
-                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cache_key), $count, 0, 0, false);
+                $_comments = $GLOBALS['FORUM_DRIVER']->get_forum_topic_posts($GLOBALS['FORUM_DRIVER']->find_topic_id_for_topic_identifier(get_option('comments_forum_name'), $cache_key, do_lang('COMMENT')), $count, 0, 0, false);
                 if (($count != 0) || (!array_key_exists(2, $param)) || ($param[2] == '0')) {
                     if (is_array($_comments)) {
                         $_value = do_lang_tempcode('_COMMENTS', escape_html(integer_format($count)));
