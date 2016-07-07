@@ -1942,10 +1942,13 @@ table.scrollable_inside {
 
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
-	{+START,IF,{$MOBILE}}
-		overflow-x: auto;
-	{+END}
 }
+
+{+START,IF,{$MOBILE}}
+	.spaced_table td {
+		overflow-x: auto;
+	}
+{+END}
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {

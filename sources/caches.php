@@ -95,10 +95,10 @@ function init__caches()
     global $CSS_OUTPUT_STARTED_LIST, $JS_OUTPUT_STARTED_LIST;
     $CSS_OUTPUT_STARTED_LIST = array();
     $JS_OUTPUT_STARTED_LIST = array();
-    global $JAVASCRIPT, $JS_OUTPUT_STARTED_LIST, $CSSS, $CSS_OUTPUT_STARTED_LIST;
-    $test = $SMART_CACHE->get('JAVASCRIPT');
+    global $JAVASCRIPTS, $JS_OUTPUT_STARTED_LIST, $CSSS, $CSS_OUTPUT_STARTED_LIST;
+    $test = $SMART_CACHE->get('JAVASCRIPTS');
     if ($test !== null) {
-        $JAVASCRIPT += $test;
+        $JAVASCRIPTS += $test;
         $JS_OUTPUT_STARTED_LIST += $test;
     }
     $test = $SMART_CACHE->get('CSSS');

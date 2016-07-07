@@ -341,18 +341,14 @@ class Database_super_mysql
     }
 
     /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wilcard symbols.
+     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
      *
      * @param  string $pattern The pattern
      * @return string The encoded pattern
      */
     public function db_encode_like($pattern)
     {
-        $ret = $this->db_escape_string($pattern);
-        if (strpos($ret, '\\_') !== false) {
-            $ret = preg_replace('#([^\\\\])\\\\\\\\_#', '${1}\_', $ret);
-        }
-        return $ret;
+        return $this->db_escape_string($pattern);
     }
 
     /**

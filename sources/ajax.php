@@ -190,7 +190,10 @@ function namelike_script()
             $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()), 'ORDER BY date_and_time', 100);
             $names = array();
             foreach ($rows as $row) {
-                $names[$row['member_liked']] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']);
+                if (!is_null($username)) {
+                    $names[$row['member_liked']] = $username;
+                }
             }
 
             foreach ($names as $name) {

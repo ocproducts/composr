@@ -19,6 +19,7 @@
 		{+END}
 
 		<tbody>
+			{$SET,just_done_title,}
 			{FIELDS}
 		</tbody>
 	</table></div>
