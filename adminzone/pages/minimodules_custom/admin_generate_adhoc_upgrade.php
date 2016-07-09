@@ -261,7 +261,7 @@ if ($type == 'go') {
 
     require_code('mime_types');
     header('Content-Type: ' . get_mime_type('tar', true) . '; authoritative=true;');
-    header('Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($generate_filename))) . '"');
+    header('Content-Disposition: inline; filename="' . escape_header($generate_filename) . '"');
     $myfile = fopen($gpath, 'rb');
     fpassthru($myfile);
     fclose($myfile);

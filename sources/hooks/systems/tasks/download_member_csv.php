@@ -43,7 +43,7 @@ class Hook_task_download_member_csv
 
         $headers = array();
         $headers['Content-type'] = $mime_type;
-        $headers['Content-Disposition'] = 'attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"';
+        $headers['Content-Disposition'] = 'attachment; filename="' . escape_header($filename) . '"';
 
         $ini_set = array();
         $ini_set['ocproducts.xss_detect'] = '0';

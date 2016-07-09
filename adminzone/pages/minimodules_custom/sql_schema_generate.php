@@ -25,7 +25,7 @@ $filename = 'composr-erd.sql';
 
 if (!isset($_GET['testing'])) {
     header('Content-Type: application/octet-stream' . '; authoritative=true;');
-    header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
+    header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
 } else {
     header('Content-type: text/plain; charset=' . get_charset());
 }

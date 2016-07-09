@@ -8,7 +8,7 @@ To keep things simple we will assume you only want a single language on your web
 
 [title="2"]Downloading languages[/title]
 
-Composr is supplied in English (British) as standard. Any other languages will need new language files downloading.
+Composr is supplied in English as standard. Any other languages will need new language files downloading.
 
 ([i]If you have a web designer, you will want to ask them to perform the translation installation for you, if they haven't already done them[/i])
 
@@ -34,10 +34,20 @@ To download and install the Transifex translations you can follow the following 
 8) Any [tt]x__administrative.ini[/tt] file needs manually merging into the corresponding [tt]x.ini[/tt] file. However, most translators won't have bothered translating administrative strings anyway.
 9) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
 
-[title="3"]As a developer[/title]
+[title="3"]Using developer tools[/title]
 
-If you have the full github repository cloned and running as a Composr site, you can use the [tt]data_custom/transifex_pull.php[/tt] script to automatically download all translations.
-This script is only intended for use by developers and not supported.
+If you install the developer [tt]addon_publish[/tt] addon then you can pull language packs from Transifex by calling a URL like:
+[tt]http://yourbaseurl/data_custom/transifex_pull.php?output=1&core_only=1&lang=XX&username=youremail&password=yourpassword[/tt]
+
+Substitute as follows:
+ - [tt]yourbaseurl[/tt] -- the URL to your Composr installation that has the [tt]addon_publish[/tt] addon installed on
+ - [tt]XX[/tt] -- the code for the language (e.g. [tt]fr[/tt] for French)
+ - [tt]youremail[/tt] -- your Transifex account e-mail address (it must have translator access to the language you are downloading)
+ - [tt]yourpassword[/tt] -- your Transifex account password
+
+If everything is working right then a [tt].tar[/tt] file will download to your computer. This is your addon.
+
+Change [tt]&core_only=1[/tt] to [tt]&core_only=0[/tt] if you want to download files for non-bundled addons too.
 
 [title="2"]Turning on a different language[/title]
 

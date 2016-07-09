@@ -250,7 +250,7 @@ END;
 
 $filename = 'mycustomprofile.tar';
 header('Content-Type: application/octet-stream' . '; authoritative=true;');
-header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
+header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
 
 require_code('tar');
 

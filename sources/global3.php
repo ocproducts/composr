@@ -3484,3 +3484,14 @@ function has_interesting_post_fields()
     }
     return (count($post) !== 0);
 }
+
+/**
+ * Apply escaping for an HTTP header.
+ *
+ * @param string $str Text to insert into header
+ * @return string Escaped text
+ */
+function escape_header($str)
+{
+    return str_replace("\r", '', str_replace("\n", '', addslashes($str)));
+}

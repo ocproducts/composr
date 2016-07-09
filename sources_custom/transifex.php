@@ -44,7 +44,7 @@ function init__transifex()
     $JUST_LANG_STRINGS_ADMIN = array_flip($JUST_LANG_STRINGS_ADMIN);
 
     global $URGENT_PRIORITY_LANGUAGE_FILES;
-    $URGENT_PRIORITY_LANGUAGE_FILES = array('global', 'cns', 'news');
+    $URGENT_PRIORITY_LANGUAGE_FILES = array('global.ini', 'cns.ini', 'news.ini');
 
     // Extra files to send to Transifex (additional to .ini files)
     global $EXTRA_LANGUAGE_FILES;
@@ -141,27 +141,30 @@ function convert_lang_code_to_transifex($lang)
 
 function transifex_push_script()
 {
-    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-    if (!$cli) {
-        header('Content-type: text/plain');
-        exit('Must run this script on command line, for security reasons');
+    if (!$GLOBALS['DEV_MODE']) {
+        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+        if (!$cli) {
+            header('Content-type: text/plain');
+            exit('Must run this script on command line, for security reasons');
+        }
     }
 
     @header('Content-type: text/plain; charset=' . get_charset());
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    push_to_transifex();
+    $core_only = (get_param_integer('core_only', 0) == 1);
+    $push_cms = (get_param_integer('push_cms', 1) == 1);
+    $push_ini = (get_param_integer('push_ini', 1) == 1);
+    $push_translations = (get_param_integer('push_translations', 0) == 1);
+
+    push_to_transifex($core_only, $push_cms, $push_ini, $push_translations);
 
     echo 'Done';
 }
 
-function push_to_transifex()
+function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations)
 {
-    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-    if (!$cli) {
-        header('Content-type: text/plain; charset=' . get_charset());
-        exit('Must run this script on command line, for security reasons');
-    }
+    global $EXISTING_LANGUAGE_AUTHORS, $EXTRA_LANGUAGE_FILES;
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
     if (php_function_allowed('set_time_limit')) {
@@ -169,8 +172,6 @@ function push_to_transifex()
     }
 
     $project_slug = 'composr-cms-' . str_replace('.', '-', strval(cms_version()));
-
-    global $EXISTING_LANGUAGE_AUTHORS, $EXTRA_LANGUAGE_FILES;
 
     // Create project if it does not already exist
     $args = array(
@@ -216,38 +217,57 @@ function push_to_transifex()
     }
 
     // Upload special files
-    foreach ($EXTRA_LANGUAGE_FILES as $path => $extra_file) {
-        _push_cms_file_to_transifex($path, $extra_file[0], $project_slug, $extra_file[1], $extra_file[3], $extra_file[2]);
+    if ($push_cms) {
+        foreach ($EXTRA_LANGUAGE_FILES as $path => $extra_file) {
+            _push_cms_file_to_transifex($path, $extra_file[0], $project_slug, $extra_file[1], $extra_file[3], $extra_file[2], $push_translations);
+
+            echo "Uploaded CMS file {$path}\n";
+            flush();
+        }
     }
 
     // Upload translatable language files
-    $d = get_file_base() . '/lang/' . fallback_lang();
-    $dh = opendir($d);
-    $default_lang_files = array();
-    while (($f = readdir($dh)) !== false) {
-        if (substr($f, -4) == '.ini') {
-            $default_lang_files[$f] = true;
-            _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO);
-            _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES);
+    if ($push_ini) {
+        $d = get_file_base() . '/lang/' . fallback_lang();
+        $dh = opendir($d);
+        $default_lang_files = array();
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.ini') {
+                $default_lang_files[$f] = true;
+                $result = _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
+                if ($result) {
+                    _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_YES, $push_translations);
+
+                    echo "Uploaded strings file {$f}\n";
+                    flush();
+                }
+            }
+        }
+        closedir($dh);
+        if (!$core_only) {
+            $d = get_file_base() . '/lang_custom/' . fallback_lang();
+            $dh = opendir($d);
+            while (($f = readdir($dh)) !== false) {
+                if ((substr($f, -4) == '.ini') && (!isset($default_lang_files[$f]))) {
+                    $result = _push_strings_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
+
+                    if ($result) {
+                        echo "Uploaded strings file {$f}\n";
+                        flush();
+                    }
+                }
+            }
+            closedir($dh);
         }
     }
-    closedir($dh);
-    $d = get_file_base() . '/lang_custom/' . fallback_lang();
-    $dh = opendir($d);
-    while (($f = readdir($dh)) !== false) {
-        if ((substr($f, -4) == '.ini') && (!isset($default_lang_files[$f]))) {
-            _push_strings_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED);
-        }
-    }
-    closedir($dh);
 }
 
-function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $priority, $administrative, $category)
+function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $priority, $administrative, $category, $push_translations)
 {
+    global $LANGUAGE_FILES_ADDON;
+
     $full_path = get_file_base() . '/' . $path;
     $c = file_get_contents($full_path);
-
-    global $LANGUAGE_FILES_ADDON;
 
     // Upload
     $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/', 'GET');
@@ -260,8 +280,7 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
         'slug' => $resource_path,
         'name' => $resource_path,
         'accept_translations' => true,
-        //'categories' => $categories, Does not work causes a 500 error
-        'category' => implode(', ', $categories),
+        'categories' => $categories,
         'priority' => $priority,
     );
     if ($test[1] == '200') {
@@ -270,40 +289,54 @@ function _push_cms_file_to_transifex($path, $resource_path, $project_slug, $prio
         $test = _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/content/', 'PUT', json_encode(array('content' => $c)));
     } else {
         // Add
-        $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'CMS', 'content' => $c)));
+        $test = _transifex('/project/' . $project_slug . '/resources/', 'POST', json_encode($args + array('i18n_type' => 'TXT', 'content' => $c)));
     }
 
     // Upload existing translated files for this language file
-    foreach (array_keys(find_all_langs()) as $lang) {
-        if ($lang != fallback_lang()) {
-            $trans_full_path = str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $full_path);
-            if (is_file($trans_full_path)) {
-                $c2 = file_get_contents($trans_full_path);
+    if ($push_translations) {
+        foreach (array_keys(find_all_langs()) as $lang) {
+            if ($lang != fallback_lang()) {
+                $trans_full_path = str_replace('/' . fallback_lang() . '/', '/' . $lang . '/', $full_path);
+                if (is_file($trans_full_path)) {
+                    $c2 = file_get_contents($trans_full_path);
 
-                $args = array('content' => $c2);
-                _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'PUT', json_encode($args));
+                    $args = array('content' => $c2);
+                    _transifex('/project/' . $project_slug . '/resource/' . $resource_path . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'PUT', json_encode($args));
+
+                    echo "Uploaded translation {$trans_full_path}\n";
+                    flush();
+                }
             }
         }
     }
 }
 
-function _push_strings_file_to_transifex($f, $project_slug, $custom, $administrative)
+function _push_strings_file_to_transifex($f, $project_slug, $custom, $administrative, $push_translations)
 {
-    if ($custom || $administrative == TRANSLATE_ADMINISTRATIVE_YES) {
-        $default_priority = TRANSLATE_PRIORITY_NORMAL;
+    global $JUST_LANG_STRINGS_ADMIN, $URGENT_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
+
+    if ($custom) {
         $category = TRANSLATE_ADDON;
     } else {
-        $default_priority = TRANSLATE_PRIORITY_HIGH;
         $category = TRANSLATE_CORE;
+    }
+
+    if ((in_array($f, $URGENT_PRIORITY_LANGUAGE_FILES)) && ($administrative != TRANSLATE_ADMINISTRATIVE_YES)) {
+        $priority = TRANSLATE_PRIORITY_URGENT;
+    } else {
+        if (($custom) || ($administrative == TRANSLATE_ADMINISTRATIVE_YES)) {
+            $priority = TRANSLATE_PRIORITY_NORMAL;
+        } else {
+            $priority = TRANSLATE_PRIORITY_HIGH;
+        }
     }
 
     $_f = basename($f, '.ini');
     $_f_extended = $_f . (($administrative == TRANSLATE_ADMINISTRATIVE_YES) ? '__administrative' : '');
 
-    global $JUST_LANG_STRINGS_ADMIN, $URGENT_PRIORITY_LANGUAGE_FILES, $LANGUAGE_STRING_DESCRIPTIONS, $LANGUAGE_FILES_ADDON;
-
     if (!isset($LANGUAGE_FILES_ADDON[$_f])) {
-        return;
+        echo "Unrecognised language file skipped {$_f}\n";
+        return false;
     }
 
     // Rebuild as a simpler .ini file
@@ -326,10 +359,13 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
         'slug' => $_f_extended,
         'name' => $_f_extended,
         'accept_translations' => true,
-        //'categories' => $categories, Does not work causes a 500 error
-        'category' => implode(', ', $categories),
-        'priority' => in_array($f, $URGENT_PRIORITY_LANGUAGE_FILES) ? TRANSLATE_PRIORITY_URGENT : $default_priority,
+        'priority' => $priority,
     );
+    if (count($categories) == 1) {
+        $args['category'] = $categories[0];
+    } else {
+        $args['categories'] = $categories;
+    }
     if ($test[1] == '200') {
         // Edit
         $test = _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/', 'PUT', json_encode($args));
@@ -350,25 +386,29 @@ function _push_strings_file_to_transifex($f, $project_slug, $custom, $administra
     }
 
     // Upload existing translated files for this language file
-    $d = get_file_base() . '/lang_custom';
-    $dh = opendir($d);
-    while (($lang = readdir($dh)) !== false) {
-        if ((is_dir($d . '/' . $lang)) && (does_lang_exist($lang)) && ($lang != fallback_lang())) {
-            if (is_file($d . '/' . $lang . '/' . $f)) {
-                $map = get_lang_file_map($lang, $_f, false);
-                $c2 = '';
-                foreach ($map as $key => $val) {
-                    if (($administrative != TRANSLATE_ADMINISTRATIVE_YES) || (isset($JUST_LANG_STRINGS_ADMIN[$key]))) {
-                        $c2 .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
+    if ($push_translations) {
+        $d = get_file_base() . '/lang_custom';
+        $dh = opendir($d);
+        while (($lang = readdir($dh)) !== false) {
+            if ((is_dir($d . '/' . $lang)) && (does_lang_exist($lang)) && ($lang != fallback_lang())) {
+                if (is_file($d . '/' . $lang . '/' . $f)) {
+                    $map = get_lang_file_map($lang, $_f, false);
+                    $c2 = '';
+                    foreach ($map as $key => $val) {
+                        if (($administrative != TRANSLATE_ADMINISTRATIVE_YES) || (isset($JUST_LANG_STRINGS_ADMIN[$key]))) {
+                            $c2 .= $key . '=' . str_replace("\n", '\n', $val) . "\n";
+                        }
                     }
-                }
 
-                $args = array('content' => $c2);
-                _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'PUT', json_encode($args));
+                    $args = array('content' => $c2);
+                    _transifex('/project/' . $project_slug . '/resource/' . $_f_extended . '/translation/' . convert_lang_code_to_transifex($lang) . '/', 'PUT', json_encode($args));
+                }
             }
         }
+        closedir($dh);
     }
-    closedir($dh);
+
+    return true;
 }
 
 function transifex_pull_script()
@@ -376,22 +416,32 @@ function transifex_pull_script()
     $version = get_param_string('version', strval(cms_version()));
     $output = (get_param_integer('output', 0) == 1);
     $lang = get_param_string('lang', null);
+    $core_only = (get_param_integer('core_only', 1) == 1);
 
     if ($output) {
+        header('Content-type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . escape_header($lang) . '.tar"');
+        safe_ini_set('ocproducts.xss_detect', '0');
+
         require_code('tar');
         $tar_file = tar_open(null, 'wb');
     } else {
         $tar_file = null;
     }
 
-    pull_from_transifex($version, $tar_file, $lang);
+    pull_from_transifex($version, $tar_file, $lang, $core_only);
 
-    header('Content-type: text/plain; charset=' . get_charset());
-    safe_ini_set('ocproducts.xss_detect', '0');
-    echo 'Done';
+    if ($output) {
+        $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
+        exit();
+    } else {
+        header('Content-type: text/plain; charset=' . get_charset());
+        safe_ini_set('ocproducts.xss_detect', '0');
+        echo 'Done';
+    }
 }
 
-function pull_from_transifex($version, $tar_file, $lang)
+function pull_from_transifex($version, $tar_file, $lang, $core_only)
 {
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
@@ -401,34 +451,65 @@ function pull_from_transifex($version, $tar_file, $lang)
     }
 
     if ($lang === null) {
-        $langs = better_parse_ini_file(get_file_base() . '/lang/langs.ini');
-        foreach (array_keys($langs) as $lang) {
+        $langs = array_keys(better_parse_ini_file(get_file_base() . '/lang/langs.ini'));
+        /*Or if too slow we could hard-code languages $langs = array(
+            'CS',
+            'NL',
+            'IT',
+            'RU',
+            'FR',
+            'ES',
+            'DE',
+            'TR',
+            'PT',
+            'SV',
+            'LT',
+            'JA',
+            'ET',
+            'NB',
+            'PL',
+            'EL',
+            'OC',
+            'TA',
+        );*/
+        foreach ($langs as $lang) {
             if ($lang != fallback_lang()) {
-                pull_lang_from_transifex($project_slug, $tar_file, $lang);
+                pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only);
             }
         }
     } else {
-        pull_lang_from_transifex($project_slug, $tar_file, $lang);
+        pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only);
     }
 }
 
-function pull_lang_from_transifex($project_slug, $tar_file, $lang)
+function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only)
 {
+    global $EXTRA_LANGUAGE_FILES, $LANG_FILES;
+
     $test = _transifex('/project/' . $project_slug . '/language/' . convert_lang_code_to_transifex($lang) . '/?details', 'GET', null, false);
+    if ($test[1] == '401') {
+        warn_exit('Access denied using your username. Does it have write-access to this language?');
+    }
     if ($test[1] == '200') {
         $language_details = json_decode($test[0], true);
 
         $files = array();
 
-        global $EXTRA_LANGUAGE_FILES, $LANG_FILES;
-
         // Grab special files
         foreach ($EXTRA_LANGUAGE_FILES as $path => $extra_file) {
+            if (($core_only) && ($extra_file[2] != TRANSLATE_CORE)) {
+                continue;
+            }
+
             _pull_cms_file_to_transifex($project_slug, $tar_file, $lang, $path, $extra_file, $files);
         }
 
         // Grab translatable language files
         foreach (array_keys($LANG_FILES) as $_f) {
+            if (($core_only) && (!is_file(get_file_base() . '/lang/' . fallback_lang() . '/' . $_f . '.ini'))) {
+                continue;
+            }
+
             _pull_strings_file_to_transifex($project_slug, $tar_file, $lang, $_f, $files);
         }
 
@@ -669,15 +750,14 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
         $params = array();
     }
 
-    $username = get_value('transifex_username', null, true);
-    $password = get_value('transifex_password', null, true);
-    if ($http_verb != 'GET') {
-        if (empty($username)) {
-            warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);
-        }
-        if (empty($password)) {
-            warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true);', true);
-        }
+    $username = get_param_string('username', get_value('transifex_username', null, true));
+    $password = get_param_string('password', get_value('transifex_password', null, true));
+
+    if (empty($username)) {
+        warn_exit('Transifex username must be set with :set_value(\'transifex_username\', \'...\', true);', true);
+    }
+    if (empty($password)) {
+        warn_exit('Transifex password must be set with :set_value(\'transifex_password\', \'...\', true);', true);
     }
 
     if (substr($call, 0, 1) != '/') {
@@ -705,6 +785,15 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     if ($cli) {
         @print('Done call to ' . $url . ' [' . $HTTP_MESSAGE . ']' . "\n");
     }
+
+    // Meet rate limit requirement
+    /*
+    Commented out because Transifex API is too slow for it to make a difference anyway!!
+    if ($http_verb == 'GET') {
+        usleep(200000);
+    } else {
+        usleep(500000);
+    }*/
 
     return array($result, $HTTP_MESSAGE);
 }

@@ -158,7 +158,7 @@ There are three systems that are in common usage to allow diverse characters to 
 
 Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly [tt]mbstring[/tt] and [tt]iconv[/tt]), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP [tt]mbstring[/tt] extension, and the vast majority of hosts do.
 
-The British English pack can be used in both Unicode and Character set mode, so we use HTML entities in many places to make up the difference. Most language strings support HTML, so HTML entities can be used there, but it is not universal.
+The English pack can be used in both Unicode and Character set mode, so we use HTML entities in many places to make up the difference. Most language strings support HTML, so HTML entities can be used there, but it is not universal.
 
 [title="4"]Advanced explanation of character encodings[/title]
 
