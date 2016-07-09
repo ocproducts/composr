@@ -326,7 +326,7 @@ class Module_catalogues
             set_global_category_access('catalogues_category', $cat_id);
 
             // Contacts
-            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), '', C_DT_FIELDMAPS, 0, '', 30);
+            actual_add_catalogue('contacts', lang_code_to_default_content('c_title', 'CONTACTS', false, 2), lang_code_to_default_content('c_description', 'DEFAULT_CATALOGUE_CONTACTS_DESCRIPTION', false, 2), C_DT_FIELDMAPS, 0, '', 30);
             $fields = array(
                 array('CONTACT_FIRST_NAME', '', 'short_text', 0, 1),
                 array('CONTACT_LAST_NAME', '', 'short_text', 1, 1),

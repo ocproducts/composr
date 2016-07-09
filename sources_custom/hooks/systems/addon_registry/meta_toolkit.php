@@ -139,6 +139,7 @@ class Hook_addon_registry_meta_toolkit
             'adminzone/pages/minimodules_custom/sql_dump.php',
             'adminzone/pages/minimodules_custom/tar_dump.php',
             'adminzone/pages/minimodules_custom/string_scan.php',
+            'sources_custom/string_scan.php',
             'sources_custom/hooks/systems/page_groupings/meta_toolkit.php',
             'sources_custom/database_relations.php',
             'sources_custom/database_toolkit.php',

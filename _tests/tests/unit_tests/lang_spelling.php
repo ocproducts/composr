@@ -16,7 +16,7 @@
 /**
  * Composr test case class (unit testing).
  */
-class lang_test_set extends cms_test_case
+class lang_spelling_test_set extends cms_test_case
 {
     public function setUp()
     {

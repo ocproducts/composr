@@ -1187,7 +1187,6 @@ class Hook_addon_registry_core
             'sources/hooks/systems/checks/xml.php',
             'sources/hooks/systems/checks/directory_name.php',
             'sources/hooks/systems/checks/normative_performance.php',
-            'sources/hooks/systems/checks/persistent_cache.php',
             'sources/hooks/systems/checks/utf.php',
             'sources/hooks/systems/checks/modsecurity.php',
             'sources/failure.php',

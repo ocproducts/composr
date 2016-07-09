@@ -22,7 +22,7 @@ Note that this script can't find everything due to dynamicness of Composr langua
 /**
  * Composr test case class (unit testing).
  */
-class html_safe_lang_test_set extends cms_test_case
+class lang_html_safe_test_set extends cms_test_case
 {
     function setUp()
     {

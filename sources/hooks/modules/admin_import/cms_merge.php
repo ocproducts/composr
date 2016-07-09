@@ -196,7 +196,7 @@ class Hook_cms_merge
             @include($file_base . '/_config.php');
             if (is_null($SITE_INFO)) {
                 $SITE_INFO = $backup_site_info;
-                attach_message(do_lang_tempcode('ERROR_INACESSIBLE_DIR'), 'warn');
+                attach_message(do_lang_tempcode('ERROR_INACCESSIBLE_DIR'), 'warn');
                 if (is_on_multi_site_network($db)) {
                     attach_message(do_lang_tempcode('ERROR_NOT_CORRECT_LINKING_POSSIBLY'), 'warn');
                 }

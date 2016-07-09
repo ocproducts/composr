@@ -127,19 +127,20 @@ class Module_shopping
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_logging', 'calculate_bandwidth', array('date_and_time'));
 
-            $GLOBALS['SITE_DB']->create_table('shopping_order_addresses', array( // Field names are based upon PayPal ones; they are filled after an order is made (maybe via what comes back from IPN), and presented in the admin orders UI
-                                                                                 'id' => '*AUTO',
-                                                                                 'order_id' => '?AUTO_LINK',
-                                                                                 'address_name' => 'SHORT_TEXT',
-                                                                                 'address_street' => 'LONG_TEXT',
-                                                                                 'address_city' => 'SHORT_TEXT',
-                                                                                 'address_state' => 'SHORT_TEXT', // NB: Not in PayPal
-                                                                                 'address_zip' => 'SHORT_TEXT',
-                                                                                 'address_country' => 'SHORT_TEXT',
-                                                                                 'receiver_email' => 'SHORT_TEXT',
-                                                                                 'contact_phone' => 'SHORT_TEXT',
-                                                                                 'first_name' => 'SHORT_TEXT', // NB: May be full-name, or include company name
-                                                                                 'last_name' => 'SHORT_TEXT',
+            $GLOBALS['SITE_DB']->create_table('shopping_order_addresses', array(
+                // Field names are based upon PayPal ones; they are filled after an order is made (maybe via what comes back from IPN), and presented in the admin orders UI
+                'id' => '*AUTO',
+                'order_id' => '?AUTO_LINK',
+                'address_name' => 'SHORT_TEXT',
+                'address_street' => 'LONG_TEXT',
+                'address_city' => 'SHORT_TEXT',
+                'address_state' => 'SHORT_TEXT', // NB: Not in PayPal
+                'address_zip' => 'SHORT_TEXT',
+                'address_country' => 'SHORT_TEXT',
+                'receiver_email' => 'SHORT_TEXT',
+                'contact_phone' => 'SHORT_TEXT',
+                'first_name' => 'SHORT_TEXT', // NB: May be full-name, or include company name
+                'last_name' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_addresses', 'order_id', array('order_id'));
         }
@@ -466,7 +467,7 @@ class Module_shopping
 
         $cart_view = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
 
-        return redirect_screen($this->title, $cart_view, do_lang_tempcode('SUCCESS'));
+        return redirect_screen($this->title, $cart_view, do_lang_tempcode('ADDED_TO_CART'));
     }
 
     /**

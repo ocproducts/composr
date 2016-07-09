@@ -219,7 +219,7 @@ function generate_notifications($member_id)
 
                 $additional_posts = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_topic_id=' . strval($unread_pp['p_topic_id']) . ' AND id>' . strval($unread_pp['id']));
             } else {
-                $type = do_lang_tempcode('ADD_INLINE_PERSONAL_POST');
+                $type = do_lang_tempcode('NEW_INLINE_PERSONAL_POST');
                 if ($unread_pp['p_title'] != '') {
                     $u_title = $unread_pp['p_title'];
                 }

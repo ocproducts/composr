@@ -107,8 +107,7 @@ class Module_tickets
             ));
 
             $default_types = array(
-                /*'TT_FEATURE_REQUEST','TT_FEATURE_INQUIRY','TT_MODDING_HELP','TT_REPAIR_HELP',*/
-                'TT_OTHER',/*'TT_FINANCIAL_INQUIRY',*/
+                'TT_OTHER',
                 'TT_COMPLAINT',
             );
             foreach ($default_types as $ticket_type_name) {

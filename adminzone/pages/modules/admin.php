@@ -713,7 +713,7 @@ class Module_admin
                     }
                 }
             }
-            $all_options['timezone'] = array('human_name' => 'TIME_ZONE', 'c_value' => '', 'the_type' => 'special', 'category' => 'SITE', 'group' => 'GENERAL', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0);
+            $all_options['timezone'] = array('human_name' => 'TIMEZONE', 'c_value' => '', 'the_type' => 'special', 'category' => 'SITE', 'group' => 'GENERAL', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0);
             $config_categories = array();
             $conf_found_count = 0;
             foreach ($all_options as $name => $p) {
