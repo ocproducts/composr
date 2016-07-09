@@ -185,6 +185,7 @@ class lang_no_unused_test_set extends cms_test_case
             'HOURS_AGO',
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
+            'EDIT_WARNING',
         );
 
         $dh = opendir(get_file_base() . '/lang/EN/');

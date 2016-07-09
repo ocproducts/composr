@@ -169,149 +169,23 @@ class Module_admin
      */
     public function _synonyms()
     {
-        return array(
-            array('maximum', 'limit', 'total', 'max', 'increase', 'long', 'count', 'tally'),
-            array('characters', 'words', 'bytes'),
+        require_code('textfiles');
+        $sets = explode("\n", read_text_file('synonyms', user_lang()));
+        $_sets = array();
+        foreach ($sets as $set) {
+            $_set = explode("\t", $set);
+            $__set = array();
+            foreach ($_set as $val) {
+                if (trim($val) != '') {
+                    $__set[] = $val;
+                }
+            }
 
-            array('image', 'picture'),
-            array('integer', 'number'),
-            array('webclipicon', 'webclip', 'apple touch icon'),
-            array('fault', 'error', 'bug', 'warning', 'notice', 'mistake', 'glitch', 'flaw', 'failure'),
-            array('delineate', 'delimit', 'delimitate', 'demarcate'),
-            array('order', 'sort', 'position', 'direction'),
-            array('sudo', 'masquerade', 'su'),
-            array('multi-moderation', 'multimoderation'),
-            array('invitation', 'invite'),
-            array('social', 'forum'),
-            array('xml_fields', 'filtering'),
-            array('banner', 'advert', 'advertising', 'advertise'),
-            array('masthead', 'header'),
-            array('news', 'blogs', 'press release'),
-            array('check-in', 'workflow', 'unvalidated', 'validation', 'valid', 'approve', 'approval', 'approved', 'live', 'accept', 'posted', 'online', 'active', 'activate', 'activation', 'visible', 'verify', 'publish'/*, 'screened'*/), // i.e. Composr validation
-            array('webstandards', 'check', 'conformance'),
-            // ^ We actually carefully segment our words so we don't talk of 'validation' anymore, like we did on earlier versions
-            //  sanitisation or check or well-formed (for input data, or transactions)
-            //  integrity (for system data)
-            //  approve (for IPs)
-            //  confirm (for newsletter subscriptions)
-            array('theme', 'skin', 'style'),
-            array('basket', 'cart'),
-            array('uninstall', 'disable', 'remove'),
-            array('pruning', 'prune', 'lurkers'),
-            array('lost password', 'forgot password', 'forgotten password', 'reset password'),
-            array('pm', 'pt', 'dm', 'private message', 'private topic', 'whisper'),
-            array('filedump', 'library', 'file manager', 'asset'),
-            array('word-filter', 'wordfilter', 'swear', 'curse'),
-            array('colour', 'color', 'css', 'font', 'background'),
-            array('dob', 'date of birth', 'age', 'birthday'),
-            array('sef', 'seo', 'google', 'search engine', 'search-engine-friendly', 'search-engine-optimisation'),
-            array('ban', 'suspend', 'suspension', 'probation', 'warn', 'punish', 'punitive', 'troll'),
-            array('crash', 'warn', 'error', 'fatal', 'falt'),
-            array('staff', 'moderator', 'admin', 'administrator', 'operator', 'webmaster'),
-            array('open', 'closed', 'live', 'activate', 'activation', /*'enable', */'turn'),
-            array('import', 'convert', 'migrate', 'interchange'),
-            array('commandr', 'console', 'command prompt', 'command line', 'cle'),
-            array('required', 'optional'),
-            array('export', 'download'),
-            array('attachment', 'upload'),
-            array('tree', 'nest', 'hierarchy', 'node', 'child', 'recursive', 'branch'),
-            array('pinned', 'sticky'),
-            array('interstitial', 'gateway'),
-            array('cpfs', 'cpf', 'fields'),
-            array('counting_blocks', 'hit counter'),
-            array('email', 'e-mail', 'cns_contact_member'),
-            array('redirect', 'route'),
-            array('center', 'centre'),
-            array('license', 'licence'),
-            array('search', 'find', 'filter'),
-            array('recommend', 'refer'),
-            array('quizzes', 'surveys', 'tests', 'competitions', 'questionnaires', 'prize-draw', 'exam', 'assessment'),
-            array('securitylogging', 'audit'),
-            array('content reviews', 'audit'),
-            array('award', 'highlight', 'feature'),
-            array('bookmark', 'favorite'),
-            array('calendar', 'event', 'diary', 'schedule'),
-            array('admin zone', 'admincp', 'admin panel', 'control panel'),
-            array('collaboration_zone', 'groupware'),
-            array('actionlog', 'audit'),
-            array('atom', 'rss', 'feed', 'syndication'),
-            array('login', 'logon', 'log-in', 'log-on'),
-            array('display', 'render', 'view'),
-            array('gallery', 'album', 'galleries', 'podcast', 'multimedia'),
-            array('audit', 'log', 'usage'),
-            array('download', 'file', 'document', 'publication', 'library'),
-            array('page', 'article', 'comcode'),
-            array('entry', 'item', 'content', 'resource', 'submission'),
-            array('category', 'node', 'section', 'repository', 'collection'),
-            array('directory', 'folder'),
-            array('catalogue', 'database', 'classified', 'catalog', 'directory', 'schema', 'field'),
-            array('speed', 'slow', 'fast', 'optimisation', 'performance', 'efficiency'),
-            array('panel', 'sidebar', 'frame', 'bar', 'column'),
-            array('usergroup', 'group', 'promote', 'rank', 'badge'),
-            array('member', 'user', 'contact', 'person'),
-            array('profile', 'account', 'memberaccount'),
-            array('accessibility', 'a11y'),
-            array('intl', 'internationalisation', 'regionalisation', 'i18n', 'l10n', 'localisation', 'translation'),
-            array('permission', 'privilege', 'authorisation', 'authorization', 'right', 'access', 'grant', 'restrict', 'prohibite', 'credentials'),
-            array('access', 'view'),
-            array('overlay', 'popup', 'dialog', 'window'),
-            array('option', 'setting', 'value', 'parameter'),
-            array('configure', 'configuration', 'setup', 'install', 'core_configuration'),
-            array('emoticon', 'smiley', 'smile', 'face', 'emoji'),
-            array('forum', 'board', 'bbs', 'cns_forum', 'message board'),
-            array('thread', 'topic'),
-            array('karma', 'point'),
-            array('batch', 'bulk', 'mass'),
-            array('subscribe', 'track', 'notification', 'alert', 'monitor', 'watch', 'follow'),
-            array('bbcode', 'wikicode', 'comcode', 'shortcode'),
-            array('html', 'xhtml'),
-            array('knowledgebase', 'wiki'),
-            array('wysiwyg', 'rte'),
-            array('addon', 'add-on', 'mod', 'hack', 'extension', 'plugin', 'app', 'core_addon_management', 'module', 'system', 'package', 'install'),
-            array('name', 'title', 'label', ''/*May be a stop word*/),
-            array('engagement', 'metric', 'kpi', 'analytics', 'statistics', 'hits', 'stats'),
-            array('newsletter', 'mass-mail', 'mass-mailing', 'bulletin', 'mail-merge', 'announcement'),
-            array('announcement', 'cascading'),
-            array('description', 'caption', 'summary'),
-            array('choose', 'set', 'specify', 'pick'),
-            array('add', 'submit', 'create', 'make', 'publish', 'upload', 'build'),
-            array('edit', 'modify', 'manage', 'change', 'control', 'moderate', 'update'),
-            array('changes', 'revisions', 'diff', 'history', 'undelete', 'version'),
-            array('delete', 'erase', 'remove', 'discard', 'prune', 'trash'),
-            array('restore', 'revert', 'undo'),
-            array('news', 'story', 'stories', 'article'),
-            array('language', 'unicode', 'utf', 'utf8', 'utf-8', 'character', 'charset', '24', 'clock', 'timezone', 'time-zone', 'time', 'date', 'translate'),
-            array('ldap', 'active directory'),
-            array('contact', 'feedback', 'ticket', 'message', 'issue', 'email', 'e-mail', 'support', 'desk'),
-            array('post', 'message', 'body'),
-            array('documentation', 'help', 'guide', 'manual'),
-            array('sef', 'short', 'friendly'),
-            array('survey', 'quiz', 'competition', 'test', 'questionnaire'),
-            array('swf', 'flash'),
-            array('friend', 'buddy', 'follower'),
-            array('like', 'love', 'rate'),
-            array('subscribe', 'subscription'),
-            array('attach', 'embed'),
-            array('smf', 'simple machines forum'),
-            array('ipb', 'invision'),
-            array('random_quotes', 'testimonials'),
-            array('join', 'register', 'signup', 'sign-up'),
-            array('logout', 'log-out', 'sign-out', 'sign-off'),
-            array('login', 'log-in', 'sign-in', 'sign-on'),
-            array('shopping', 'ecommerce', 'payment', 'purchase', 'products'),
-            array('cache', 'decache', 'cleanup'),
-            array('ssl', 'https'),
-            array('seed', 'theme wizard'),
-            array('chart', 'graph'),
-            array('author', 'bio', 'biography'),
-            array('block', 'widget'), // Joomla uses 'module', but we don't want to synonym this as it means something else in Composr
-            array('moniker', 'slug'),
-            array('guest', 'anonymous'),
-            array('rules', 'license', 'licence', 'agreement', 'terms', 'conditions', 'legals'),
-            array('dashboard', 'console', 'status'),
-            array('menu', 'navigation'),
-            array('permalink', 'url', 'link'),
-        );
+            if (count($__set) != 0) {
+                $_sets[] = $__set;
+            }
+        }
+        return $_sets;
     }
 
     /**
@@ -322,13 +196,14 @@ class Module_admin
      */
     public function _strip_junk_words($words)
     {
-        $bad = array('the', 'of', 'to', 'and', 'a', 'in', 'is', 'it', 'you', 'that', 'he', 'was', 'for', 'on', 'are',
-                     'with', 'as', 'I', 'his', 'they', 'be', 'at', 'this', 'or', 'had', 'by', 'but', 'what', 'some', 'we', 'can',
-                     'out', 'other', 'were', 'all', 'there', 'when', 'your', 'how', 'an', 'which', 'do', 'so', 'these', 'has', 'go',
-                     'come', 'did', 'no', 'my', 'where', 'me', 'our', 'thing', 'site', 'website');
+        require_code('textfiles');
+        $bad = array_flip(explode("\n", read_text_file('too_common_words', user_lang())));
+        unset($bad['']);
+
+        $bad = array();
         $_words = array();
         foreach ($words as $i => $b) {
-            if (!in_array($b, $bad)) {
+            if (!isset($bad[$b])) {
                 if ((($b != 'chat') || (!array_key_exists($i + 1, $words)) || (($words[$i + 1] != 'room') && ($words[$i + 1] != 'rooms'))) && (($b != 'user') || (!array_key_exists($i + 1, $words)) || (($words[$i + 1] != 'group') && ($words[$i + 1] != 'groups')))) {
                     $_words[] = $b;
                 } else {// Special case of compound terms that are actually single words in Composr; fix the word, and also stop ridiculous amounts of spurious result
@@ -1207,7 +1082,7 @@ class Module_admin
                             $breadcrumbs->attach(hyperlink(build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $default_theme), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_TEMPLATES'), false, false));
                             $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                             $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '5cd222ad77fe4bfdf05b4856a5f7b8ac', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
-                            $tpl_found[$file] = 1;
+                            $tpl_found[$file] = true;
                         }
                     }
                 }

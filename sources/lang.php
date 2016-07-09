@@ -96,7 +96,10 @@ function init__lang()
         require_code('lang_filter_' . $lang_stripped);
         $LANG_FILTER_OB = object_factory('LangFilter_' . $lang_stripped);
     } else {
-        $LANG_FILTER_OB = new LangFilter();
+        /*$LANG_FILTER_OB = new LangFilter(); Actually it's better to just fall back to the English one, rather than an empty one*/
+
+        require_code('lang_filter_EN');
+        $LANG_FILTER_OB = object_factory('LangFilter_EN');
     }
     lang_load_runtime_processing();
 

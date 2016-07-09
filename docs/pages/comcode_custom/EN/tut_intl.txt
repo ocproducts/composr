@@ -105,15 +105,6 @@ Language string codes that are in lower-case are special strings, that should no
 </table>
 [/html]
 
-[title="4"]Config options[/title]
-
-Config options are defined in Composr by a config option name and a config option description. For example:
-[code="INI"]
-UNZIP_CMD=Unzip command
-CONFIG_OPTION_unzip_cmd=The command executed in order to unzip files. This depends on InfoZip being on your system; you may require a full path to the unzip command here.
-[/code]
-Usually the naming follows the pattern of [tt]X[/tt] for the config option name and [tt]CONFIG_OPTION_x[/tt] for the config option description. It only deviates from this pattern when we are reusing some pre-existing language string for the config option name.
-
 [title="4"]"The software"[/title]
 
 You may see the phrase "The software" come up a lot. We use this phase because of how we support debranding in Composr. A web design studio may have renamed the product to some other name to increase their own brand-strength. We therefore try and make the language strings generic where possible.
@@ -165,7 +156,7 @@ There are three systems that are in common usage to allow diverse characters to 
 2) Character sets
 3) HTML entities
 
-Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly mbstring and iconv), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP mbstring extension, and the vast majority of hosts do.
+Composr supports both character sets and Unicode. Generally everyone will want to use Unicode (utf-8) nowadays, and that's our default in Composr. PHP does not have good Unicode support, but it does have a number of common extensions and techniques for handling it (mainly [tt]mbstring[/tt] and [tt]iconv[/tt]), and we support all of those. If there are no extensions installed we have some basic code to 'get by okay'. If you are using a non-English language, you want to ensure your host has the PHP [tt]mbstring[/tt] extension, and the vast majority of hosts do.
 
 The British English pack can be used in both Unicode and Character set mode, so we use HTML entities in many places to make up the difference. Most language strings support HTML, so HTML entities can be used there, but it is not universal.
 
@@ -222,18 +213,16 @@ The process is as follows:
 7) (Wait until the team join request has been accepted -- it is a good idea to introduce yourself on the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] so we know who you are)
 8) Start translating individual resources (language files)
 
-The strings are split across about 100 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons are marked normal priorities. Most users will want to ignore the non-bundled addons files. Don't feel compelled to do it all for 'completeness'.
+The strings are split across about 150 core resources/files; often it works well to work with other people, each doing different files. The files are actually marked by priority -- the high priority or urgent priority ones are core, while files for non-bundled addons, or collections of strings only relevant to administrators, are marked normal priorities. Most users will want to ignore anything not on a high or urgent priority. Don't feel compelled to do it all for 'completeness'.
+
+We also have certain default Comcode pages and text files available as resources.
 
 Notes about specific language strings are automatically made available within Transifex.
 
 To coordinate with other translators use the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page]. We suggest you have one main topic per language, and keep editing the first post of that topic to provide basic details such as policies, translator names, and translation status.
 Please try and respect the translators who have worked before you, and negotiate to a common translation standard. For example, you may need to agree on the use of formal/informal grammar within the translation to ensure everything is consistent. If you have suggestions, or are the first major translator, make them known on the forum. We have team approval turned on, i.e. you have to apply to join the translation team. The only reason for this is so that we can protect existing translators from problems caused by newbies diving right in. Generally we expect to approve all requests, unless there's already a strong language maintainer making quick progress on that language and not wanting to share the task.
 
-Transifex is not being used for things other than language strings (within language files), such as theme images, and page templates. However for the great majority of sites, translating the language strings is enough. If you want to distribute translations for page templates etc, you can do so in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page].
-
-[title="3"]Speeding up translation[/title]
-
-There is a non-bundled addon called [tt]meta_toolkit[/tt] that has a [tt]string_scan[/tt] module that can tell you which strings are only used on administrative screens (i.e. skippable if only doing a public translation) and which aren't. It's not perfect, however, and it may be quicker to just churn through the translations intuitively, skipping ones that look like obvious admin strings.
+Transifex is not being used for theme images. However for the great majority of sites, translating the language strings and default Comcode pages is enough. If you want to distribute translations for internationalised theme images (which are mostly just around Comcode/Chatcode editing toolbar at this point), you can do so in the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page].
 
 [title="3"]Downloading translations from Transifex[/title]
 
@@ -316,6 +305,7 @@ There are some other text files you might want to translate are, in a similar wa
  - [tt]text/EN/quotes.txt[/tt]
  - [tt]data/modules/cms_comcode_pages/EN/*.txt[/tt]
 And these files don't need translating but could be replaced with equivalents in your language:
+ - [tt]text/EN/synonyms.txt[/tt] (a list of alternative search words, particularly used within the admin system; if translating you may want to extend it with your translations, rather than replacing it -- so that the English words remain as synonyms)
  - [tt]text/EN/too_common_words.txt[/tt] (a list of words that should not be considered in search results, for example)
  - [tt]text/EN/word_characters.txt[/tt] (a list of characters that appear in words in your language -- most languages have all the English characters, but also accented ones)
 
@@ -366,7 +356,7 @@ Composr 10+ uses utf-8 tables by default and utf-8 internally, so none of this i
 We bundle some Open Source [tt].ttf[/tt] fonts (Bitstream fonts) that unfortunately don't have characters for all languages. For example you may notice issues in Cyrillic ("Russian").
 
 This affects:
-1) Vertical text shown on pemrission editing interfaces. [i]This issue is less relevant as it once was, as modern web browsers can render vertical text directly.[/i]
+1) Vertical text shown on permission editing interfaces. [i]This issue is less relevant as it once was, as modern web browsers can render vertical text directly.[/i]
 2) The Logo Wizard.
 3) The [tt]main_custom_gfx[/tt] block.
 
@@ -378,7 +368,7 @@ The solution to '2' is to upload [tt]Verdana.ttf[/tt] from your computer as [tt]
 
 [surround]
 [media width="150" description="Exporting an addon" float="right"]data_custom/images/docs/tut_intl/intl_pack.png[/media]
-If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. However for languages that have very high-quality release-ready translations an addon is a good thing to provide users.
+If you wish to directly distribute your translation as an addon, you can export it as such. Most translators will not want to bother to do this, as having users actively using Transifex directly will have the side-effect of encouraging collaboration. For languages that have very high-quality release-ready translations an addon is a good thing to provide users -- but building the addons from Transifex is integrated into the development process anyway.
 [/surround]
 
 [concepts
