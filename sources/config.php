@@ -39,7 +39,7 @@ function init__config()
                 $_cache = $SMART_CACHE->get('CONFIG_OPTIONS');
                 if ($_cache !== null) {
                     foreach ($_cache as $c_key => $c_value) {
-                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value, 'c_set' => 1);
+                        $CONFIG_OPTIONS_CACHE[$c_key] = array('_cached_string_value' => $c_value, 'c_value' => $c_value);
                     }
                 }
             }
@@ -262,7 +262,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? $option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
+    $value = is_string($option['c_value_trans']) ? /*LEGACY*/$option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
     $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
