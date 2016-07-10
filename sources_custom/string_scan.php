@@ -2861,7 +2861,6 @@ function string_scan($lang, $do_guessing = false)
         CONNECT_DB_ERROR
         CONNECT_ERROR
         CONTACT_US_MESSAGING
-        CONTENTS
         CONTENT_DATE_AND_TIME
         CONTENT_NEEDING_REVIEWING
         CONTENT_OWNER
@@ -2920,19 +2919,6 @@ function string_scan($lang, $do_guessing = false)
         COST_topic_pin
         COULD_NOT_SAVE_FILE
         COULD_NOT_SAVE_FILE_TMP
-        COUNT_CHATPOSTS
-        COUNT_CHATTERS
-        COUNT_FILES
-        COUNT_GIFT_POINTS_USED
-        COUNT_ONFORUMS
-        COUNT_ONSITE
-        COUNT_ONSITE_RECORD
-        COUNT_POINTS_EVER
-        COUNT_POINTS_LEFT
-        COUNT_POINTS_USED
-        COUNT_POSTSCOUNT
-        COUNT_POSTSTODAY
-        COUNT_TOPICSCOUNT
         CPF_ENABLE_CITY
         CPF_ENABLE_COUNTRY
         CPF_ENABLE_COUNTY
@@ -4218,7 +4204,6 @@ function string_scan($lang, $do_guessing = false)
         FIELD_TYPE_url_multi
         FIELD_TYPE_video
         FIELD_TYPE_video_multi
-        FILE
         FILEDUMP
         FILEDUMP_BROKEN
         FILEDUMP_COUNT_FILES
@@ -4242,7 +4227,6 @@ function string_scan($lang, $do_guessing = false)
         FILEDUMP_SIZE
         FILEDUMP_UPLOAD
         FILEDUMP_ZIP
-        FILES
         FILESYSTEM_DOWNLOADS
         FILES_TRANSFERRED
         FILETYPE_ICONS
@@ -4551,7 +4535,6 @@ function string_scan($lang, $do_guessing = false)
         HOSTING
         HOT_TOPIC_DEFINITION
         HOURLY_BREAKDOWNS
-        HOURS
         HOURS_MUST_BE_LESS_5_YEARS
         HOVER_FOR_CONTENTS
         HOW_MUCH_THIS_COSTS
@@ -4964,14 +4947,8 @@ function string_scan($lang, $do_guessing = false)
         MD_DEFAULT_SORT_ORDER
         MEDIA_FILE_IN_SET
         MEDIA_TYPE_
-        MEMBERS_ACTIVE_THIS_MONTH
-        MEMBERS_ACTIVE_THIS_WEEK
-        MEMBERS_ACTIVE_TODAY
         MEMBERS_ALSO_ON_IP
         MEMBERS_MAY_ALTER_THEME
-        MEMBERS_NEW_THIS_MONTH
-        MEMBERS_NEW_THIS_WEEK
-        MEMBERS_NEW_TODAY
         MEMBERS_PER_PAGE
         MEMBER_ACCESS
         MEMBER_ADDED_TO_GROUP
@@ -5493,7 +5470,6 @@ function string_scan($lang, $do_guessing = false)
         OWNER_SET
         OWNER_VIEW
         OWN_PARENT_ERROR
-        PAGES
         PAGES_STATISTICS
         PAGES_STATISTICS_RANGE
         PAGE_ACCESS
@@ -5508,9 +5484,6 @@ function string_scan($lang, $do_guessing = false)
         PAGE_TEMPLATE_DESCRIPTION
         PAGE_TEXT
         PAGE_TYPE
-        PAGE_VIEWS_THIS_MONTH
-        PAGE_VIEWS_THIS_WEEK
-        PAGE_VIEWS_TODAY
         PAGE_WRITE
         PANELS
         PARAMETER
@@ -6625,7 +6598,6 @@ function string_scan($lang, $do_guessing = false)
         VIDEO_TYPES
         VIDEO_WIDTH_SETTING
         VIEWING_SOURCE
-        VIEWS
         VIEWS_PER_DAY
         VIEWS_PER_HOUR
         VIEWS_PER_MONTH
@@ -6961,6 +6933,33 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
+        VIEWS
+        FILES
+        MEMBERS_ACTIVE_THIS_MONTH
+        MEMBERS_ACTIVE_THIS_WEEK
+        MEMBERS_ACTIVE_TODAY
+        MEMBERS_NEW_THIS_MONTH
+        MEMBERS_NEW_THIS_WEEK
+        MEMBERS_NEW_TODAY
+        PAGE_VIEWS_THIS_MONTH
+        PAGE_VIEWS_THIS_WEEK
+        PAGE_VIEWS_TODAY
+        PAGES
+        COUNT_CHATPOSTS
+        COUNT_CHATTERS
+        COUNT_FILES
+        COUNT_GIFT_POINTS_USED
+        COUNT_ONFORUMS
+        COUNT_ONSITE
+        COUNT_ONSITE_RECORD
+        COUNT_POINTS_EVER
+        COUNT_POINTS_LEFT
+        COUNT_POINTS_USED
+        COUNT_POSTSCOUNT
+        COUNT_POSTSTODAY
+        COUNT_TOPICSCOUNT
+        CONTENTS
+        FILE
         ABOUT
         ABOUT_BLOCKING
         ABOUT_POP3
@@ -7457,6 +7456,7 @@ function string_scan($lang, $do_guessing = false)
         DATE_OF_BIRTH
         DATE_RANGE_LABEL
         DATE_TIME
+        HOURS
         DAY
         DAYS
         DAYS_AGO

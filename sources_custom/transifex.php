@@ -156,13 +156,14 @@ function transifex_push_script()
     $push_cms = (get_param_integer('push_cms', 1) == 1);
     $push_ini = (get_param_integer('push_ini', 1) == 1);
     $push_translations = (get_param_integer('push_translations', 0) == 1);
+    $limit_substring = get_param_string('limit_substring', null);
 
-    push_to_transifex($core_only, $push_cms, $push_ini, $push_translations);
+    push_to_transifex($core_only, $push_cms, $push_ini, $push_translations, $limit_substring);
 
     echo 'Done';
 }
 
-function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations)
+function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations, $limit_substring)
 {
     global $EXISTING_LANGUAGE_AUTHORS, $EXTRA_LANGUAGE_FILES;
 
@@ -219,6 +220,10 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations)
     // Upload special files
     if ($push_cms) {
         foreach ($EXTRA_LANGUAGE_FILES as $path => $extra_file) {
+            if (($limit_substring !== null) && (strpos($path, $limit_substring) === false)) {
+                continue;
+            }
+
             _push_cms_file_to_transifex($path, $extra_file[0], $project_slug, $extra_file[1], $extra_file[3], $extra_file[2], $push_translations);
 
             echo "Uploaded CMS file {$path}\n";
@@ -233,6 +238,10 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations)
         $default_lang_files = array();
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.ini') {
+                if (($limit_substring !== null) && (strpos($f, $limit_substring) === false)) {
+                    continue;
+                }
+
                 $default_lang_files[$f] = true;
                 $result = _push_strings_file_to_transifex($f, $project_slug, false, TRANSLATE_ADMINISTRATIVE_NO, $push_translations);
                 if ($result) {
@@ -249,6 +258,10 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations)
             $dh = opendir($d);
             while (($f = readdir($dh)) !== false) {
                 if ((substr($f, -4) == '.ini') && (!isset($default_lang_files[$f]))) {
+                    if (($limit_substring !== null) && (strpos($f, $limit_substring) === false)) {
+                        continue;
+                    }
+
                     $result = _push_strings_file_to_transifex($f, $project_slug, true, TRANSLATE_ADMINISTRATIVE_MIXED, $push_translations);
 
                     if ($result) {
