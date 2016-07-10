@@ -114,7 +114,7 @@ function execute_task_background($task_row)
                     }
 
                     $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                    $message = do_notification_lang('TASK_COMPLETED_SIMPLE', $_content_result);
+                    $message = do_notification_lang('TASK_COMPLETED_BODY', $_content_result);
                 } else {
                     // Some downloaded result
                     if (is_array($content_result)) {

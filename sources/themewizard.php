@@ -1393,6 +1393,7 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                     if (php_function_allowed('shell_exec')) {
                         if (php_function_allowed('escapeshellarg')) {
                             if (!imageistruecolor($_image)) {
+                                require_code('images2');
                                 $imagemagick = find_imagemagick();
                                 if (!is_null($imagemagick)) {
                                     $tempnam = cms_tempnam();

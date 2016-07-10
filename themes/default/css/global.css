@@ -157,6 +157,10 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 =========================
 */
 
+html {
+	overflow-y: scroll; /* This makes rendering smoother, no jerk when browser realises a scrollbar is needed, or between pages with/without */
+}
+
 html, body {
 	border: 0;
 	{$BETA_CSS_PROPERTY,text-size-adjust: none;}

@@ -29,7 +29,7 @@ class Hook_config_syndicate_site_activity_default
             'human_name' => 'SYNDICATE_SITE_ACTIVITY_DEFAULT',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'ACTIVITIES_TITLE',
+            'group' => 'ACTIVITY',
             'explanation' => 'CONFIG_OPTION_syndicate_site_activity_default',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

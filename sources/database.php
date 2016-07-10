@@ -1156,7 +1156,7 @@ class DatabaseConnector
             $log_path = get_custom_file_base() . '/data_custom/big_query_screens.log';
             if (is_writable_wrap($log_path)) {
                 $myfile = fopen($log_path, 'at');
-                fwrite($myfile, get_self_url_easy() . "\n");
+                fwrite($myfile, get_self_url_easy(true) . "\n");
                 fclose($myfile);
             }
             if ($DEV_MODE) {

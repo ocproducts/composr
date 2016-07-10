@@ -19,7 +19,6 @@
 
 				{+START,INCLUDE,POSTING_FIELD}
 					NAME=post
-					DESCRIPTION=
 					WORD_COUNTER=1
 					URL={COMCODE_URL}
 				{+END}

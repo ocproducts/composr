@@ -279,7 +279,7 @@ class Module_admin_orders
         $fields_title = results_field_title(
             array(
                 do_lang_tempcode('ECOM_ORDER'),
-                do_lang_tempcode('THE_PRICE'),
+                do_lang_tempcode('PRICE'),
                 do_lang_tempcode('TAX_PAID'),
                 do_lang_tempcode('ORDERED_DATE'),
                 do_lang_tempcode('ORDERED_BY'),
@@ -401,7 +401,7 @@ class Module_admin_orders
             array(
                 do_lang_tempcode('SKU'),
                 do_lang_tempcode('PRODUCT_NAME'),
-                do_lang_tempcode('THE_PRICE'),
+                do_lang_tempcode('PRICE'),
                 do_lang_tempcode('QUANTITY'),
                 do_lang_tempcode('STATUS'),
             ), $sortables, 'sort', $sortable . ' ' . $sort_order

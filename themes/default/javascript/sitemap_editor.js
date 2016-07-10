@@ -66,7 +66,6 @@ function update_details_box(element)
 			path=page_link_bits[0]+'/pages/'+full_type+'/'+page_link_bits[1]+'.txt';
 			action_buildup+=window.actions_tpl_item.replace(/\[1\]/,'{!permissions:PERMISSIONS_TREE;^}').replace(/\[2\]/,window.permission_tree_editor_url.replace(/%21/,page_link.replace(/:/,'%3A',page_link)));
 			action_buildup+=window.actions_tpl_item.replace(/\[1\]/,'{!EDIT;^}').replace(/\[2\]/,window.edit_page_url.replace(/%21/,page_link));
-			action_buildup+=window.actions_tpl_item.replace(/\[1\]/,'{!zones:EXPORT_COMCODE_PAGE;^}').replace(/\[2\]/,window.export_page_url.replace(/%21/,page_link));
 			break;
 
 		case 'html':

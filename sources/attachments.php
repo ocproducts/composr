@@ -229,7 +229,7 @@ function attachments_script()
     if ((strpos($original_filename, "\n") !== false) || (strpos($original_filename, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Content-Disposition: inline; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($original_filename))) . '"');
+    header('Content-Disposition: inline; filename="' . escape_header($original_filename) . '"');
 
     // Is it non-local? If so, redirect
     if (!url_is_local($full)) {

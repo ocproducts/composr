@@ -63,6 +63,7 @@ abstract class Standard_crud_module
     public $content_type = null;
     public $posting_form_title = null;
     public $posting_form_text = '';
+    public $posting_form_description = '';
     public $posting_form_text_parsed = null;
     public $posting_form_tabindex = null;
     public $javascript = null;
@@ -957,7 +958,7 @@ abstract class Standard_crud_module
                 'JAVASCRIPT' => $this->javascript,
             ) + $extra_tpl_params);
         } elseif (!is_null($this->posting_form_title)) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $posting_form_tabindex, $this->posting_field_required);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '15930ba8cc02634ed3a225c9714c3eac' . get_class($this),
                 'TITLE' => $this->title,
@@ -1520,7 +1521,7 @@ abstract class Standard_crud_module
         $submit_icon = ($this->type_code == 'category') ? 'menu___generic_admin__edit_one_category' : 'menu___generic_admin__edit_one';
 
         if (!is_null($this->posting_form_title)) {
-            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $this->posting_form_tabindex, $this->posting_field_required);
+            $posting_form = get_posting_form($submit_name, $submit_icon, $this->posting_form_text, $post_url, $hidden, $fields, $this->posting_form_title, '', $fields2, $this->posting_form_text_parsed, $this->javascript, $this->posting_form_tabindex, $this->posting_field_required, /*$has_preview = */true, /*$avoid_wysiwyg = */false, /*$support_autosave = */true, /*$specialisation2_hidden = */false, $this->posting_form_description);
             return do_template('POSTING_SCREEN', array(
                 '_GUID' => '841b9af3aa80bcab86b907e4b942786a' . get_class($this),
                 'PREVIEW' => $this->do_preview,

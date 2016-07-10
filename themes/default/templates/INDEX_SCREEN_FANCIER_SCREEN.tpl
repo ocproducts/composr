@@ -11,7 +11,7 @@
 		{+START,IF_PASSED_AND_TRUE,ARRAY}
 			{+START,LOOP,CONTENT}
 				{+START,IF_NON_EMPTY,{_loop_var}}
-					<h2>{_loop_key}</h2>
+					<h2>{_loop_key*}</h2>
 
 					<div class="not_too_tall">
 						{_loop_var}

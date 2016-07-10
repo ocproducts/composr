@@ -339,14 +339,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
             }
             if (($order_by != 'fixed_random') && ($order_by != 'average_rating') && ($order_by != 'compound_rating') && ($order_by != 'add_date') && ($order_by != 'distance')) {
                 $found = false;
-                foreach ($fields as $i => $field) {
-                    if ($order_by == strval($field['id'])) {
-                        $order_by = strval($i);
-                        $found = true;
-                        break;
-                    }
-                }
-                if (!$found) {
+                if (!isset($fields[intval($order_by)])) {
                     $order_by = '0'; // Could not find
                 }
             }

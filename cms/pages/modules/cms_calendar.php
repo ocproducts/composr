@@ -289,6 +289,7 @@ class Module_cms_calendar extends Standard_crud_module
         ";
 
         $this->posting_form_title = do_lang_tempcode('EVENT_TEXT');
+        $this->posting_form_description = do_lang_tempcode('DESCRIPTION_EVENT_TEXT');
 
         require_lang('dates');
         require_css('calendar');

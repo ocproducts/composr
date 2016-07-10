@@ -86,10 +86,19 @@ function init__urls()
 /**
  * Get a well formed URL equivalent to the current URL. Reads direct from the environment and does no clever mapping at all. This function should rarely be used.
  *
+ * @param boolean $script_name_if_cli Return the script name instead of a URL, if running on the CLI. If this is set to false it will return the base URL instead.
  * @return URLPATH The URL
  */
-function get_self_url_easy()
+function get_self_url_easy($script_name_if_cli = false)
 {
+    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    if ($cli) {
+        if ($script_name_if_cli) {
+            return $_SERVER['argv'][0];
+        }
+        return get_base_url();
+    }
+
     $protocol = tacit_https() ? 'https' : 'http';
     $self_url = $protocol . '://' . cms_srv('HTTP_HOST');
     $ruri = cms_srv('REQUEST_URI');
@@ -134,7 +143,7 @@ function get_self_url($evaluate = false, $root_if_posted = false, $extra_params 
     }
 
     if (running_script('execute_temp')) {
-        return get_self_url_easy();
+        return get_base_url();
     }
 
     if ($posted_too) {

@@ -73,6 +73,8 @@ class Module_admin_lookup
         $type = get_param_string('type', 'browse');
 
         require_lang('lookup');
+        require_lang('submitban');
+        require_lang('security');
 
         set_helper_panel_tutorial('tut_trace');
 
@@ -263,30 +265,27 @@ class Module_admin_lookup
                 }
             }
 
-            $tpl = do_template(
-                'LOOKUP_SCREEN',
-                array(
-                    '_GUID' => 'dc6effaa043949940b809f6aa5a1f944',
-                    'TITLE' => $this->title,
-                    'ALERTS' => $alerts,
-                    'STATS' => $stats,
-                    'IP_LIST' => $ip_list,
-                    'IP_BANNED' => $ip_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                    'SUBMITTER_BANNED' => $submitter_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                    'MEMBER_BANNED' => $member_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                    'MEMBER_BAN_LINK' => $member_ban_link,
-                    'SUBMITTER_BAN_LINK' => $submitter_ban_link,
-                    'IP_BAN_LINK' => $ip_ban_link,
-                    'ID' => strval($id),
-                    'IP' => $ip,
-                    'NAME' => $name,
-                    'SEARCH_URL' => $search_url,
-                    'AUTHOR_URL' => $author_url,
-                    'POINTS_URL' => $points_url,
-                    'PROFILE_URL' => $profile_url,
-                    'ACTIONLOG_URL' => $actionlog_url
-                )
-            );
+            $tpl = do_template('LOOKUP_SCREEN', array(
+                '_GUID' => 'dc6effaa043949940b809f6aa5a1f944',
+                'TITLE' => $this->title,
+                'ALERTS' => $alerts,
+                'STATS' => $stats,
+                'IP_LIST' => $ip_list,
+                'IP_BANNED' => $ip_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
+                'SUBMITTER_BANNED' => $submitter_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
+                'MEMBER_BANNED' => $member_banned ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
+                'MEMBER_BAN_LINK' => $member_ban_link,
+                'SUBMITTER_BAN_LINK' => $submitter_ban_link,
+                'IP_BAN_LINK' => $ip_ban_link,
+                'ID' => strval($id),
+                'IP' => $ip,
+                'NAME' => $name,
+                'SEARCH_URL' => $search_url,
+                'AUTHOR_URL' => $author_url,
+                'POINTS_URL' => $points_url,
+                'PROFILE_URL' => $profile_url,
+                'ACTIONLOG_URL' => $actionlog_url
+            ));
 
             require_code('templates_internalise_screen');
             return internalise_own_screen($tpl);

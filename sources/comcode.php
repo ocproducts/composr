@@ -37,6 +37,9 @@ function init__comcode()
      * @global boolean $LAX_COMCODE
      */
     $LAX_COMCODE = null;
+
+    global $VALID_COMCODE_TAGS;
+    $VALID_COMCODE_TAGS = null;
 }
 
 /**
@@ -45,6 +48,11 @@ function init__comcode()
 function init_valid_comcode_tags()
 {
     global $VALID_COMCODE_TAGS;
+
+    if ($VALID_COMCODE_TAGS !== null) {
+        return;
+    }
+
     /** A list of all valid Comcode tags that we recognise.
      *
      * @global array $VALID_COMCODE_TAGS

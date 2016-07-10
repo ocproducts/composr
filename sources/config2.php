@@ -131,7 +131,8 @@ function set_option($name, $value, $will_be_formally_set = 1)
 
     $needs_dereference = ($option['type'] == 'transtext' || $option['type'] == 'transline' || $option['type'] == 'comcodetext' || $option['type'] == 'comcodeline') ? 1 : 0;
 
-    if (!isset($CONFIG_OPTIONS_CACHE[$name])) { // Not installed with a DB setting row, so install it; even if it's just the default, we need it for performance
+    if (!isset($CONFIG_OPTIONS_CACHE[$name])) {
+        // If not installed with a DB setting row, install it; even if it's just the default, we need it for performance
         $map = array(
             'c_name' => $name,
             'c_set' => $will_be_formally_set,
@@ -144,34 +145,36 @@ function set_option($name, $value, $will_be_formally_set = 1)
             $map['c_value_trans'] = multi_lang_content() ? null : '';
         }
 
-        $CONFIG_OPTIONS_CACHE[$name] = $map;
+        // For use by get_option during same script execution
+        $CONFIG_OPTIONS_CACHE[$name] = $map + array('_cached_string_value' => $value);
 
         if ($will_be_formally_set == 0 && $GLOBALS['IN_MINIKERNEL_VERSION']) {
             return; // Don't save in the installer
         }
 
+        // Save insert
         $GLOBALS['SITE_DB']->query_insert('config', $map, false, true/*block race condition errors*/);
-    }
-
-    if ($needs_dereference == 1) { // Translated
-        $current_value = multi_lang_content() ? $CONFIG_OPTIONS_CACHE[$name]['c_value_trans'] : $CONFIG_OPTIONS_CACHE[$name]['c_value'];
-        $map = array('c_set' => $will_be_formally_set);
-        if ($current_value === null) {
-            $map += insert_lang('c_value_trans', $value, 1);
-        } else {
-            $map += lang_remap('c_value_trans', $current_value, $value);
+    } else {
+        // Save edit
+        $map = array(
+            'c_set' => $will_be_formally_set,
+            'c_value' => $value,
+        );
+        if ($needs_dereference == 1) { // Translated
+            $current_value = multi_lang_content() ? $CONFIG_OPTIONS_CACHE[$name]['c_value_trans'] : $CONFIG_OPTIONS_CACHE[$name]['c_value'];
+            if ($current_value === null) {
+                $map += insert_lang('c_value_trans', $value, 1);
+            } else {
+                $map += lang_remap('c_value_trans', $current_value, $value);
+            }
+            $GLOBALS['SITE_DB']->query_update('config', $map, array('c_name' => $name), '', 1);
+        } else { // Not translated
+            $GLOBALS['SITE_DB']->query_update('config', $map, array('c_name' => $name), '', 1);
         }
-        $GLOBALS['SITE_DB']->query_update('config', $map, array('c_name' => $name), '', 1);
 
-        $CONFIG_OPTIONS_CACHE[$name] = $map + $CONFIG_OPTIONS_CACHE[$name];
-    } else { // Not translated
-        $GLOBALS['SITE_DB']->query_update('config', array('c_value' => $value, 'c_set' => $will_be_formally_set), array('c_name' => $name), '', 1);
-
-        $CONFIG_OPTIONS_CACHE[$name]['c_value'] = $value;
+        // For use by get_option during same script execution
+        $CONFIG_OPTIONS_CACHE[$name] = $map + array('_cached_string_value' => $value) + $CONFIG_OPTIONS_CACHE[$name];
     }
-
-    // For use by get_option during same script execution
-    $CONFIG_OPTIONS_CACHE[$name]['_cached_string_value'] = $value;
 
     // Log it
     if ((function_exists('log_it')) && ($will_be_formally_set == 1)) {

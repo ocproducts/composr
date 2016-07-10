@@ -40,7 +40,6 @@
 				var zone_editor_url='{$PAGE_LINK*;,_SEARCH:admin_zones:_editor:!}';
 				var permission_tree_editor_url='{$PAGE_LINK*;,_SEARCH:admin_permissions:browse:!}';
 				var edit_page_url='{$PAGE_LINK*;,cms:cms_comcode_pages:_edit:page_link=!}';
-				var export_page_url='{$PAGE_LINK*;,_SELF:_SELF:export:page_link=!}';
 				var add_page_url='{$PAGE_LINK*;,_SEARCH:cms_comcode_pages:_edit:page_link=!:example}';
 				var delete_url='{$PAGE_LINK*;,_SELF:_SELF:_delete:zone=[1]:page__[2]=1}';
 				var stats_url='{+START,IF,{$ADDON_INSTALLED,stats}}{$PAGE_LINK*;,_SEARCH:admin_stats:_page:iscreen=!}{+END}';

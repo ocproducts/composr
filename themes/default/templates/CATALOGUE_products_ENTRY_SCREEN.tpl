@@ -33,7 +33,7 @@
 
 				{+START,IF_NON_EMPTY,{FIELD_2}}
 					<div class="price_box">
-						<span class="price">{!PRICE} <span itemprop="priceCurrency">{$CURRENCY_SYMBOL}</span><span itemprop="price">{$FLOAT_FORMAT*,{FIELD_2_PLAIN}}</span>{$,Product price}</span>
+						<span class="price">{!PRICE}: <span itemprop="priceCurrency">{$CURRENCY_SYMBOL}</span><span itemprop="price">{$FLOAT_FORMAT*,{FIELD_2_PLAIN}}</span>{$,Product price}</span>
 					</div>
 				{+END}
 			</div>
@@ -56,7 +56,7 @@
 			{+END}
 
 			{+START,IF_NON_EMPTY,{FIELD_1}}
-				<p class="product-ids sku">{!PRODUCT_CODE} <kbd>{FIELD_1}</kbd>{$,Product code}</p>
+				<p class="product-ids sku">{!PRODUCT_CODE}: <kbd>{FIELD_1}</kbd>{$,Product code}</p>
 			{+END}
 
 			{CART_BUTTONS}

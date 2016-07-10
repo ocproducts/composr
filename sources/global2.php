@@ -497,7 +497,7 @@ function init__global2()
     }
 
     // For performance testing
-    if (get_value('monitor_slow_urls') === '1') {
+    if (get_value('monitor_slow_urls', '0') !== '0') {
         register_shutdown_function('monitor_slow_urls');
     }
 }
@@ -508,9 +508,11 @@ function init__global2()
 function monitor_slow_urls()
 {
     $time = time() - $_SERVER['REQUEST_TIME'];
-    if ($time >= 5) {
+    if ($time > intval(get_value('monitor_slow_urls'))) {
         require_code('urls');
-        file_put_contents(get_file_base() . '/data_custom/time_log.txt', get_self_url_easy() . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()) . "\n", FILE_APPEND);
+        if (php_function_allowed('error_log')) {
+            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
+        }
     }
 }
 
@@ -522,7 +524,7 @@ function memory_tracking()
     $memory_tracking = intval(get_value('memory_tracking'));
     if (memory_get_peak_usage() > 1024 * 1024 * $memory_tracking) {
         if (php_function_allowed('error_log')) {
-            error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(), 0);
+            error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(true), 0);
         }
     }
 }
@@ -767,7 +769,7 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
         if (strpos($errstr, 'Allowed memory') !== false) {
             global $REQUIRED_CODE;
             if (!array_key_exists('failure', $REQUIRED_CODE)) {
-                $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(); // We really want to know the URL where this is happening (normal PHP error logging does not include it)!
+                $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(true); // We really want to know the URL where this is happening (normal PHP error logging does not include it)!
                 if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
                     syslog($syslog_type, $php_error_label);
                 }
