@@ -652,7 +652,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         if ($staff_status === null) {
             $sql .= ' AND staff_status IS NULL';
         } else {
-            $sql .= ' AND staff_status=' . ($staff_status ? '1' : '0');
+            $sql .= ' AND staff_status=' . strval($staff_status);
         }
         if ($member === null) {
             $sql .= ' AND the_member IS NULL';

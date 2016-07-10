@@ -133,7 +133,7 @@ class Hook_addon_registry_downloads_carousel
         return array(
             'sources_custom/hooks/systems/addon_registry/downloads_carousel.php',
             'sources_custom/miniblocks/main_downloads_carousel.php',
-            'lang/EN/downloads.ini',
+            'lang_custom/EN/downloads.ini',
         );
     }
 }

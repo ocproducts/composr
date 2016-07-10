@@ -196,7 +196,9 @@ END;
     }
 
     // Check files
-    @set_time_limit(0);
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(0);
+    }
     $files = rd_do_dir('');
     foreach ($files as $file) {
         if (preg_match('#^data_custom/errorlog\.php$#', $file) != 0) {

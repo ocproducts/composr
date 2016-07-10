@@ -6921,6 +6921,7 @@ function string_scan($lang, $do_guessing = false)
         __WARN_MEMBER
         __WIKI_EDIT_TREE
         DESCRIPTION_DEFAULT_VALUE_CPF
+        MANUAL
     ')));
 
     $non_admin_files = array(
