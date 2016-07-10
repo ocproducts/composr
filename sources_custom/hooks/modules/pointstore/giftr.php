@@ -110,9 +110,9 @@ class Hook_pointstore_giftr
 
         $fields->attach(form_input_username(do_lang_tempcode('TO_USERNAME'), do_lang_tempcode('MEMBER_TO_GIVE'), 'username', get_param_string('username', ''), true));
 
-        $fields->attach(form_input_text(do_lang_tempcode('GIFT_MESSAGE'), do_lang_tempcode('DESCRIPTION_GIFT_MESSAGE'), 'gift_message', '', true));
+        $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_GIFT_MESSAGE'), 'gift_message', '', true));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('ANONYMOUS'), do_lang_tempcode('DESCRIPTION_ANONYMOUS'), 'anonymous', false));
+        $fields->attach(form_input_tick(do_lang_tempcode('ANON'), do_lang_tempcode('DESCRIPTION_ANONYMOUS'), 'anonymous', false));
 
         $submit_name = do_lang_tempcode('SEND_GIFT');
         $text = paragraph(do_lang_tempcode('CHOOSE_MEMBER'));

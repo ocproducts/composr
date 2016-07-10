@@ -699,6 +699,7 @@ class Module_admin_customers
         $type = get_param_string('type', 'browse');
 
         require_lang('customers');
+        require_lang('points');
 
         $this->title = get_screen_title('CHARGE_CUSTOMER');
 
@@ -754,7 +755,7 @@ class Module_admin_customers
 
         $fields = new Tempcode();
         $fields->attach(form_input_username(do_lang_tempcode('USERNAME'), '', 'member_username', $username, true));
-        $fields->attach(form_input_integer(do_lang_tempcode('CREDIT_AMOUNT'), do_lang_tempcode('CREDIT_AMOUNT_DESCRIPTION'), 'amount', get_param_integer('amount', 3), true));
+        $fields->attach(form_input_integer(do_lang_tempcode('AMOUNT'), do_lang_tempcode('CREDIT_AMOUNT_DESCRIPTION'), 'amount', get_param_integer('amount', 3), true));
         $fields->attach(form_input_tick(do_lang_tempcode('ALLOW_OVERDRAFT'), do_lang_tempcode('DESCRIPTION_ALLOW_OVERDRAFT'), 'allow_overdraft', true));
         $fields->attach(form_input_line(do_lang_tempcode('REASON'), 'If for a ticket, you can just paste in the ticket URL.', 'reason', '', true));
 

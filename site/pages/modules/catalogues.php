@@ -338,7 +338,7 @@ class Module_catalogues
                 array('CONTACT_WORKPHONE', '', 'short_text', 0, 0),
                 array('CONTACT_HOMEPAGE', '', 'short_text', 0, 0),
                 array('CONTACT_IM', '', 'short_text', 0, 0),
-                array('CONTACT_NOTES', '', 'long_text', 0, 0),
+                array('NOTES', '', 'long_text', 0, 0),
                 array('CONTACT_PHOTO', '', 'picture', 0, 0)
             );
             foreach ($fields as $i => $field) {

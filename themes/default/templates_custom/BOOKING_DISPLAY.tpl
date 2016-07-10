@@ -41,7 +41,7 @@
 
 <div class="wide_table_wrap"><table class="wide_table results_table"><tbody>
 	<tr>
-		<th>{!TOTAL_PRICE}</th>
+		<th>{!_TOTAL_PRICE}</th>
 		<td>{PRICE*}</td>
 	</tr>
 	<tr>

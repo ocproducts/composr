@@ -1,5 +1,5 @@
 <div class="posting_form_insert_buttons">
-	<span>{!INSERT}:</span>
+	<span>{!ADD}:</span>
 	{BUTTONS}
 </div>
 

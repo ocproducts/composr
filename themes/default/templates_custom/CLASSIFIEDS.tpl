@@ -9,7 +9,7 @@
 				{!CLASSIFIED_DISPLAY_PERIOD}
 			</th>
 			<th>
-				{!CLASSIFIED_PRICE}
+				{!PRICE}
 			</th>
 		</tr>
 	</thead>

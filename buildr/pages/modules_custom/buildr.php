@@ -760,7 +760,7 @@ class Module_buildr
                 $tpl = do_template('W_PORTAL_SCREEN', array(
                     '_GUID' => '69e74a964f69721d0381a920c4a25ce5',
                     'PRICE' => integer_format(get_price('mud_portal')),
-                    'TEXT' => paragraph(do_lang_tempcode('W_ADD_PORTAL_TEXT')),
+                    'TEXT' => paragraph(do_lang_tempcode('W_ABOUT_PORTALS')),
                     'TITLE' => $this->title,
                     'PORTAL_TEXT' => '',
                     'PAGE_TYPE' => 'addportal',

@@ -18,7 +18,7 @@
 		<div class="buttons_group cart_update_buttons" itemprop="significantLinks">
 			{$,Put first, so it associates with the enter key}
 			{+START,IF_NON_EMPTY,{PRO_IDS}}
-				<input id="cart_update_button" class="buttons__cart_update button_screen{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{PRO_IDS;*}');" title="{!UPDATE_CART}" value="{!UPDATE}" />
+				<input id="cart_update_button" class="buttons__cart_update button_screen{+START,IF,{$JS_ON}} button_faded{+END}" type="submit" name="update" onclick="return update_cart('{PRO_IDS;*}');" title="{!UPDATE_CART}" value="{!_UPDATE_CART}" />
 			{+END}
 
 			{+START,IF_NON_EMPTY,{EMPTY_CART_URL*}}

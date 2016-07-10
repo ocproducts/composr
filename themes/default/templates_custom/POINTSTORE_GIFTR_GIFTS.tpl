@@ -12,7 +12,7 @@
 				<thead>
 					<tr style="border: 1px solid #ccc; background-color: #E3EAF6;">
 						<th colspan="2">{!GIFT}</th>
-						<th width="33%">{!GIFT_PRICE}</th>
+						<th width="33%">{!PRICE}</th>
 						<th width="33%">{!ACTIONS}</th>
 					</tr>
 				</thead>
@@ -30,7 +30,7 @@
 								{!_GIFT_PRICE,{PRICE*}}
 							</td>
 							<td width="33%" style="text-align: center; padding: 10px;">
-								<a title="{NAME*}" href="{GIFT_URL*}">{!PURCHASE}</a>
+								<a title="{NAME*}" href="{GIFT_URL*}">{!GIFT_PURCHASE}</a>
 							</td>
 						</tr>
 					{+END}

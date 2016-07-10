@@ -467,7 +467,7 @@ class Module_tester
                 if (is_null($username)) {
                     $username = do_lang('UNKNOWN');
                 }
-                $extra = (is_null($_section['s_assigned_to'])) ? do_lang_tempcode('UNASSIGNED') : make_string_tempcode($username);
+                $extra = (is_null($_section['s_assigned_to'])) ? do_lang_tempcode('TEST_UNASSIGNED') : make_string_tempcode($username);
             }
             $list2->attach(form_input_list_entry(strval($id), $it == $id, do_lang_tempcode('TEST_SECTION_ASSIGNMENT', make_string_tempcode(escape_html($section)), make_string_tempcode(integer_format($count)), $extra)));
         }

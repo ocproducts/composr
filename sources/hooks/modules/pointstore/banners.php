@@ -63,7 +63,7 @@ class Hook_pointstore_banners
             return new Tempcode();
         }
 
-        $title = get_screen_title('TITLE_BANNER');
+        $title = get_screen_title('MANAGE_BANNERS');
 
         $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('sales', 'details', array('memberid' => get_member(), 'purchasetype' => 'banner'));
         if (!is_null($banner_name)) {

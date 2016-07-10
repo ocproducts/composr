@@ -72,6 +72,9 @@ class lang_spelling_test_set extends cms_test_case
                 if ($file[0] == '.') {
                     continue;
                 }
+                if ($file == 'synonyms.txt') {
+                    continue;
+                }
 
                 $this->check($file, null, file_get_contents($path . '/' . $file), $verbose);
             }

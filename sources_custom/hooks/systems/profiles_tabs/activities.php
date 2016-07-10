@@ -53,7 +53,7 @@ class Hook_profiles_tabs_activities
 
         require_lang('activities');
 
-        $title = do_lang_tempcode('ACTIVITIES_TITLE');
+        $title = do_lang_tempcode('ACTIVITY');
 
         $order = 70;
 

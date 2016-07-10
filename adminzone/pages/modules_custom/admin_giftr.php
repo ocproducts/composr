@@ -247,7 +247,7 @@ class Module_admin_giftr extends Standard_crud_module
                 $image = $rows[0]['image'];
                 $price = $rows[0]['price'];
                 $category = $rows[0]['category'];
-                $enabled = ($rows[0]['enabled'] == 1) ? do_lang_tempcode('GIFT_ENABLED') : do_lang_tempcode('GIFT_DISABLED');
+                $enabled = ($rows[0]['enabled'] == 1) ? do_lang_tempcode('ENABLED') : do_lang_tempcode('GIFT_DISABLED');
             }
         }
 
@@ -270,7 +270,7 @@ class Module_admin_giftr extends Standard_crud_module
 
         $fields->attach(form_input_integer(do_lang_tempcode('PRICE'), '', 'price', $price, true));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('GIFT_ENABLED'), do_lang_tempcode('DESCRIPTION_GIFT_ENABLED'), 'enabled', $enabled == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), do_lang_tempcode('DESCRIPTION_GIFT_ENABLED'), 'enabled', $enabled == 1));
 
         return array($fields, $hidden);
     }

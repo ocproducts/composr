@@ -5943,8 +5943,8 @@ function string_scan($lang, $do_guessing = false)
         RESET_BANNER_STATS
         RESET_CATEGORY_PERMISSIONS
         RESET_INTRO_ACCEPTANCE
-        RESOURCEFS_PATH_PRIOR_TO_REVISION
-        RESOURCEFS_RECORD_PRIOR_TO_REVISION
+        RESOURCE_FS_PATH_PRIOR_TO_REVISION
+        RESOURCE_FS_RECORD_PRIOR_TO_REVISION
         RESTORE_POINTS
         RESTRICTED_USERNAMES
         RESTRICTIONS
@@ -6329,7 +6329,6 @@ function string_scan($lang, $do_guessing = false)
         THEME_TO_SAVE_INTO
         THEME_USED_ON
         THESE_PRODUCTS_DEFINED
-        THE_PRICE
         THIS_CLUB_FORUM
         THIS_HAS_BEEN_READ_BY
         THIS_WITH
@@ -6921,6 +6920,7 @@ function string_scan($lang, $do_guessing = false)
         __TRANSLATE_CONTENT
         __WARN_MEMBER
         __WIKI_EDIT_TREE
+        DESCRIPTION_DEFAULT_VALUE_CPF
     ')));
 
     $non_admin_files = array(
@@ -6934,6 +6934,8 @@ function string_scan($lang, $do_guessing = false)
 
     $lang_strings_non_admin_initial = array_map('trim', explode("\n", trim('
         VIEWS
+        ATTACHMENT_SAVED
+        LOGIN_TEXT
         FILES
         MEMBERS_ACTIVE_THIS_MONTH
         MEMBERS_ACTIVE_THIS_WEEK
@@ -7390,7 +7392,6 @@ function string_scan($lang, $do_guessing = false)
         CONTACT_HOMEPHONE
         CONTACT_IM
         CONTACT_LAST_NAME
-        CONTACT_NOTES
         CONTACT_PHOTO
         CONTACT_STAFF_TO_JOIN_IF_IMPAIRED
         CONTACT_US
@@ -8969,7 +8970,6 @@ function string_scan($lang, $do_guessing = false)
         RESULT_OVERVIEW
         REVEAL_AGE
         REVIEWS
-        REVIEW_TITLE
         REVISIONS
         RICH_CONTENT
         ROLE
@@ -9262,7 +9262,6 @@ function string_scan($lang, $do_guessing = false)
         TIME_RANGE_START
         TIME_REMAINING
         TITLE
-        TITLE_BANNER
         TITLE_BANNER_UPGRADE
         TITLE_NEWFORWARDING
         TITLE_NEWPOP3
@@ -9353,8 +9352,8 @@ function string_scan($lang, $do_guessing = false)
         UNVALIDATED_TEXT_STAFF
         UNVALIDATED_TITLE
         UNVALIDATE_POST
-        UPDATE
         UPDATE_CART
+        _UPDATE_CART
         UPGRADE
         UPGRADE_ACCOUNT
         UPLOAD
@@ -9626,6 +9625,7 @@ function string_scan($lang, $do_guessing = false)
         _TYPE
         _UNKNOWN
         _UNSET
+        VIDEO_LENGTH
         _VIDEO_LENGTH
         _VIEW_AS_LINEAR
         _VIEW_AS_THREADED

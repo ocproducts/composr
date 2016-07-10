@@ -254,7 +254,7 @@ class Module_admin_disastr extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('IMMUNIZATION_PRICE'), '', 'immunization_price', strval($immunization_price), true));
         $fields->attach(form_input_line(do_lang_tempcode('SPREAD_RATE'), do_lang_tempcode('DESCRIPTION_SPREAD_RATE'), 'spread_rate', strval($spread_rate), true));
         $fields->attach(form_input_line(do_lang_tempcode('POINTS_PER_SPREAD'), do_lang_tempcode('DESCRIPTION_POINTS_PER_SPREAD'), 'points_per_spread', strval($points_per_spread), true));
-        $fields->attach(form_input_tick(do_lang_tempcode('DISEASE_ENABLED'), do_lang_tempcode('DESCRIPTION_DISEASE_ENABLED'), 'enabled', $enabled == 1));
+        $fields->attach(form_input_tick(do_lang_tempcode('ENABLED'), do_lang_tempcode('DESCRIPTION_DISEASE_ENABLED'), 'enabled', $enabled == 1));
 
         return array($fields, $hidden);
     }

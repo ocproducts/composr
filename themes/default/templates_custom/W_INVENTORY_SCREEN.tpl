@@ -3,7 +3,7 @@
 <div class="float_surrounder">
 	{+START,IF_NON_EMPTY,{AVATAR}}
 		<div class="buildr_avatar">
-			<img alt="{!W_AVATAR}" src="{AVATAR*}" />
+			<img alt="{!AVATAR}" src="{AVATAR*}" />
 			{+START,IF_NON_EMPTY,{PIC}}
 				[<a title="{!W_PHOTO} {!LINK_NEW_WINDOW}" target="_blank" href="{PIC*}">{!W_PHOTO}</a>]
 			{+END}

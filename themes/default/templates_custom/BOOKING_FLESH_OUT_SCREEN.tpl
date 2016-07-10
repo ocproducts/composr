@@ -16,7 +16,7 @@
 							<h3>{SUPPLEMENT_TITLE*} ({!OPTIONAL_SUPPLEMENT})</h3>
 
 							{+START,IF,{SUPPLEMENT_SUPPORTS_QUANTITY}}
-								{!QUANTITY}
+								{!QUANTITY}:
 
 								<select onchange="recalculate_price(this.form);" id="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity" name="bookable_{BOOKABLE_ID*}_supplement_{SUPPLEMENT_ID*}_quantity">
 									{$SET,quantity,0}
