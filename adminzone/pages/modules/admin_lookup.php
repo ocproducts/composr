@@ -73,6 +73,8 @@ class Module_admin_lookup
         $type = get_param_string('type', 'browse');
 
         require_lang('lookup');
+        require_lang('submitban');
+        require_lang('security');
 
         set_helper_panel_tutorial('tut_trace');
 

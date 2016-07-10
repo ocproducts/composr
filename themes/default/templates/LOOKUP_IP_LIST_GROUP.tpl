@@ -1,6 +1,6 @@
 {$SET,rndx,{$RAND}}
 
-<li>
+<li class="float_surrounder">
 	<div>
 		<label for="banned_{$GET*,rndx}">
 			<kbd>{MASK*}</kbd>

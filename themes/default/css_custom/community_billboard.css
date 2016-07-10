@@ -7,7 +7,6 @@ footer .global_community_message {
 	float: {!en_right};
 	font-size: 0.9em;
 	padding-top: 1px;
-	color: {$GET,inverted_text};
 	font-weight: bold;
 	padding-bottom: 4px;
 	text-shadow: 2px 2px 2px {$GET,standard_border};

@@ -253,7 +253,7 @@ function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $sys
     // Put into error log
     if (get_param_integer('keep_fatalistic', 0) == 0) {
         require_code('urls');
-        $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy();
+        $php_error_label = $errstr . ' in ' . $errfile . ' on line ' . strval($errline) . ' @ ' . get_self_url_easy(true);
         /*$log.="\n";
         ob_start();
         debug_print_backtrace(); Does not work consistently, sometimes just kills PHP
@@ -989,7 +989,7 @@ function _fatal_exit($text, $return = false)
 
     if (get_param_integer('keep_fatalistic', 0) == 0) {
         require_code('urls');
-        $php_error_label = (is_object($text) ? $text->evaluate() : $text) . ' @ ' . get_self_url_easy();
+        $php_error_label = (is_object($text) ? $text->evaluate() : $text) . ' @ ' . get_self_url_easy(true);
         if ((function_exists('syslog')) && (GOOGLE_APPENGINE)) {
             syslog(LOG_ERR, $php_error_label);
         }
@@ -1041,7 +1041,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     require_code('urls');
     require_code('tempcode');
 
-    $error_url = get_self_url_easy();
+    $error_url = get_self_url_easy(true);
 
     require_code('notifications');
     require_code('comcode');

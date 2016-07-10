@@ -160,7 +160,11 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
         if ((substr($page_converted, -4) == '.php') || (substr($page_converted, -4) == '.htm') || (substr($page_converted, -4) == '.txt')) {
             $page_converted = substr($page_converted, 0, strlen($page_converted) - 4);
         }
-        $page_converted = str_replace('/', ': ', $page_converted);
+        if (multi_lang_content()) {
+            $page_converted = str_replace('/', ': ', $page_converted);
+        } else {
+            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/\w+/(.*)#', '$2/$3', $page_converted));
+        }
 
         if (!is_null($myrow['s_get'])) {
             $get = $myrow['s_get'];

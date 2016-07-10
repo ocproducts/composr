@@ -98,7 +98,7 @@ function facebook_trigger_refresh(home_page_url)
 			else if (current_url.indexOf('keep_refreshed_once=1')==-1)
 			{
 				//window.alert('Could not login, probably due to restrictive cookie settings.');
-				window.location+='&keep_refreshed_once=1';
+				window.top.location=window.top.location.toString()+'&keep_refreshed_once=1';
 			}
 		}
 	},500);
