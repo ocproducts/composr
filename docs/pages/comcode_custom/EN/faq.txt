@@ -135,7 +135,7 @@ Depending on availability, and budget, yes. [page="site:contact:paid"]Contact us
 
 [title="3"]Why is your spelling so terrible?[/title]
 
-Composr is a British (in fact, English) company, so spelling is in British English.
+Composr is a British (in fact, English) company, so spelling is in British English. We do have a configuration option so that Composr CMS will generally display using US English.
 
 [title="3"]How can I make a donation?[/title]
 

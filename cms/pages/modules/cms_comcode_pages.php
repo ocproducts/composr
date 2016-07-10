@@ -738,7 +738,7 @@ class Module_cms_comcode_pages
 
         if (addon_installed('page_management')) {
             if (has_actual_page_access(get_member(), 'admin_sitemap')) {
-                $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_CODENAME'), 'title', $file, true));
+                $fields->attach(form_input_codename(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_PAGE_NAME'), 'title', $file, true));
             }
         }
 

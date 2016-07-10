@@ -7,6 +7,11 @@
 {+START,IF_NON_EMPTY,{INTRODUCTION}}<p>{INTRODUCTION}</p>{+END}
 
 {CHAT_SOUND}
+<script>
+// <![CDATA[
+	add_event_listener_abstract(window,'load',prepare_chat_sounds);
+// ]]>
+</script>
 
 <div class="chat_posting_area">
 	<div class="float_surrounder">

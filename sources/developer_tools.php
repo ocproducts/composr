@@ -173,7 +173,7 @@ function restrictify()
         safe_ini_set('ocproducts.type_strictness', '1');
 
         global $PREVIOUS_XSS_STATE;
-        @safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
+        safe_ini_set('ocproducts.xss_detect', array_pop($PREVIOUS_XSS_STATE));
     }
     if (!GOOGLE_APPENGINE) {
         safe_ini_set('include_path', '');

@@ -127,7 +127,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                     $num_unread_pps++;
                     $reply_url = build_url(array('page' => 'topics', 'type' => 'new_post', 'id' => $unread_pp['p_topic_id'], 'quote' => $unread_pp['id']), get_module_zone('topics'));
                 } else {
-                    $type = do_lang('ADD_INLINE_PERSONAL_POST');
+                    $type = do_lang('NEW_INLINE_PERSONAL_POST');
                     if ($unread_pp['p_title'] != '') {
                         $u_title = $unread_pp['p_title'];
                     }

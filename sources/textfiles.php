@@ -79,7 +79,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
         if ($missing_blank) {
             return '';
         }
-        warn_exit(do_lang_tempcode('MISSING_TEXT_FILE', escape_html($codename)));
+        warn_exit(do_lang_tempcode('MISSING_TEXT_FILE', escape_html($codename), escape_html('text/' . (is_null($lang) ? '' : ($lang . '/')) . $codename . '.txt')));
     }
     @flock($tmp, LOCK_SH);
     $in = @file_get_contents($path);

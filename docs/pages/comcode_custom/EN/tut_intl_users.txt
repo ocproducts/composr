@@ -8,7 +8,7 @@ To keep things simple we will assume you only want a single language on your web
 
 [title="2"]Downloading languages[/title]
 
-Composr is supplied in English (British) as standard. Any other languages will need new language files downloading.
+Composr is supplied in English as standard. Any other languages will need new language files downloading.
 
 ([i]If you have a web designer, you will want to ask them to perform the translation installation for you, if they haven't already done them[/i])
 
@@ -16,7 +16,8 @@ We use the Transifex platform for organising community translation. Transifex is
 
 [title="3"]From addons[/title]
 
-When we release new versions we bundle all current translation on Transifex into language packs, distributed as addons. These are available in the addon directory.
+When we release new versions we aim to bundle all translation from Transifex that has had significant progress into language packs, distributed as addons. These are available in the addon directory.
+If you see a language on Transifex that has been translated, but there's no addon, open an issue on the [url="Tracker"]http://compo.sr/tracker[/url] about that.
 
 [title="3"]Direct from Transifex[/title]
 
@@ -30,7 +31,23 @@ To download and install the Transifex translations you can follow the following 
 5) Choose your language.
 6) For each resource in the project, you need to download it individually. You'll be delivered a [tt].ini[/tt] file. These resources correspond to language files in Composr.
 7) Copy all the [tt].ini[/tt] files into the folder you created earlier.
-8) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
+8) Any [tt]x__administrative.ini[/tt] file needs manually merging into the corresponding [tt]x.ini[/tt] file. However, most translators won't have bothered translating administrative strings anyway.
+9) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
+
+[title="3"]Using developer tools[/title]
+
+If you install the developer [tt]addon_publish[/tt] addon then you can pull language packs from Transifex by calling a URL like:
+[tt]http://yourbaseurl/data_custom/transifex_pull.php?output=1&core_only=1&lang=XX&username=youremail&password=yourpassword[/tt]
+
+Substitute as follows:
+ - [tt]yourbaseurl[/tt] -- the URL to your Composr installation that has the [tt]addon_publish[/tt] addon installed on
+ - [tt]XX[/tt] -- the code for the language (e.g. [tt]fr[/tt] for French)
+ - [tt]youremail[/tt] -- your Transifex account e-mail address (it must have translator access to the language you are downloading)
+ - [tt]yourpassword[/tt] -- your Transifex account password
+
+If everything is working right then a [tt].tar[/tt] file will download to your computer. This is your addon.
+
+Change [tt]&core_only=1[/tt] to [tt]&core_only=0[/tt] if you want to download files for non-bundled addons too.
 
 [title="2"]Turning on a different language[/title]
 

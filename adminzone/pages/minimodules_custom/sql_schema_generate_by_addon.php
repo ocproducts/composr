@@ -48,7 +48,7 @@ foreach ($tables_by_addon as $addon => $tables_in_addon) {
 
 $filename = 'erd_sql__by_addon.zip';
 header('Content-Type: application/octet-stream' . '; authoritative=true;');
-header('Content-Disposition: attachment; filename="' . str_replace("\r", '', str_replace("\n", '', addslashes($filename))) . '"');
+header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
 
 require_code('zip');
 create_zip_file($file_array, true);

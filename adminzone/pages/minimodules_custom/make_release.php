@@ -153,7 +153,7 @@ function phase_1_pre()
     <ul>
         <li>Run a PHPStorm Code Inspection and see if any warning stands out as a bug</li>
         <li>Run a HHVM analyze: <kbd>hhvm --hphp -t analyze `find . -name "*.php" -not -path "./_tests/*" -not -path "./tracker/*" -not -path "./uploads/*" -not -path "./sources_custom/photobucket/*" -not -path "./sources_custom/geshi/*" -not -path "./sources_custom/getid3/*" -not -path "./sources_custom/sabredav/*" -not -path "./sources_custom/Swift-4.1.1/*" -not -path "./sources_custom/programe/*"`</kbd></li>
-        <li>For all data entry forms, add <kbd>' . escape_html('<IMG """><SCRIPT>alert("XSS hole")</SCRIPT>"><script>alert(\'XSS hole\')</script>') . '</kbd> wherever possible. Go through all screens on the sitemap, all Comcode tags in the add tag assistant, and all blocks in the add block assistant, ensuring no alerts or corruption (double-escaping or other bad output) happens.</li>
+        <li>For all data entry forms, add <kbd>' . escape_html('<IMG """><SCRIPT>alert("XSS hole")</SCRIPT>"><script>alert(\'XSS hole\')</script>') . '</kbd> wherever possible. Go through all screens on the sitemap, all Comcode tags in the add tag assistant, and all blocks in the add block assistant, ensuring no alerts, console warnings, or corruption (double-escaping or other bad output) happens.</li>
     </ul>
     ';
 
@@ -358,7 +358,7 @@ function phase_2()
             </ul></li>
 
             <li><strong>Update compo.sr</strong>:<ul>
-                <li>Do a git pull/checkout to get to the <kbd>composr_homesite</kbd> branch</li> branch</li>
+                <li>Do a git pull/checkout to get to the <kbd>composr_homesite</kbd> branch</li>
                 <li>Do a git merge of the <kbd>master</kbd> branch to update the branch</li>
                 <li>Make sure the site still works, as you may have just upgraded compo.sr to a new Composr CMS version; common sense needed</li>
                 <li>Git commit/push the updated branch

@@ -1,6 +1,10 @@
 <script>
 // <![CDATA[
-	add_event_listener_abstract(window,'load',function () {
+	function prepare_chat_sounds()
+	{
+		if (typeof window.prepared_chat_sounds!='undefined') return;
+		window.prepared_chat_sounds=true;
+
 		if (typeof window.soundManager!='undefined')
 		{
 			window.soundManager.setup({
@@ -13,6 +17,6 @@
 				}
 			});
 		}
-	} );
+	}
 // ]]>
 </script>

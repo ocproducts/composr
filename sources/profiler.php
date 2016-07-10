@@ -193,7 +193,7 @@ function _cms_profile_log_line($line)
         $PROFILER_FILEHANDLE = fopen($PROFILER_PATH, 'at');
 
         // Pre-logging
-        _cms_profile_log_line('URL: ' . get_self_url_easy());
+        _cms_profile_log_line('URL: ' . get_self_url_easy(true));
         _cms_profiler_generic_logging();
         _cms_profile_log_line(''); // Spacer line
     }

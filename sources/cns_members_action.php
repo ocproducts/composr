@@ -188,6 +188,14 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
                 warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
             }
         }
+
+        if ((get_option('one_per_email_address') == '1') && ($email_address != ''))
+        {
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
+            if (!is_null($test)) {
+                warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
+            }
+        }
     }
 
     require_code('cns_members');

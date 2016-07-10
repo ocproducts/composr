@@ -565,7 +565,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // Timezones, if enabled
     if ($doing_international) {
         $timezone_list = create_selection_list_timezone_list($timezone);
-        $fields->attach(form_input_list(do_lang_tempcode('TIME_ZONE'), do_lang_tempcode('DESCRIPTION_TIMEZONE_MEMBER'), 'timezone', $timezone_list));
+        $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_TIMEZONE_MEMBER'), 'timezone', $timezone_list));
     }
 
     // Language choice, if we have multiple languages on site
@@ -880,6 +880,14 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 
         if ((!is_null($email_address)) && ($email_address != '') && (!is_email_address($email_address))) {
             warn_exit(do_lang_tempcode('_INVALID_EMAIL_ADDRESS', escape_html($email_address)));
+        }
+
+        if ((get_option('one_per_email_address') == '1') && ($email_address != ''))
+        {
+            $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_email_address' => $email_address));
+            if ((!is_null($test)) && ($test != $member_id)) {
+                warn_exit(do_lang_tempcode('_EMAIL_ADDRESS_IN_USE'));
+            }
         }
     }
 

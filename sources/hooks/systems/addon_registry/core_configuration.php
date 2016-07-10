@@ -136,6 +136,7 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/session_prudence.php',
             'sources/hooks/systems/config/tornevall_api_password.php',
             'sources/hooks/systems/config/tornevall_api_username.php',
+            'sources/hooks/systems/config/message_received_emails.php',
             'sources/hooks/systems/config/use_true_from.php',
             'sources/hooks/systems/config/vote_member_ip_restrict.php',
             'sources/hooks/systems/config/spam_approval_threshold.php',

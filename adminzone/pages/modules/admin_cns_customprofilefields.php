@@ -629,7 +629,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             }
         }
         if ($lines === array()) {
-            warn_exit(do_lang_tempcode('NO_DATA'));
+            warn_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
         return do_template('CNS_CPF_STATS_SCREEN', array('_GUID' => 'bb7be7acf936cd008e16bd515f7f39ac', 'TITLE' => $this->title, 'STATS' => $lines));

@@ -517,8 +517,8 @@ function erase_persistent_cache()
     closedir($d);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', LOCK_EX);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', LOCK_EX);
-    fix_permissions('data_custom/failover_rewritemap.txt');
-    fix_permissions('data_custom/failover_rewritemap__mobile.txt');
+    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap.txt');
+    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt');
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {
@@ -652,7 +652,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
         if ($staff_status === null) {
             $sql .= ' AND staff_status IS NULL';
         } else {
-            $sql .= ' AND staff_status=' . ($staff_status ? '1' : '0');
+            $sql .= ' AND staff_status=' . strval($staff_status);
         }
         if ($member === null) {
             $sql .= ' AND the_member IS NULL';

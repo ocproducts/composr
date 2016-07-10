@@ -120,6 +120,11 @@
 					<h3 class="chat_lobby_options_header">{!OPTIONS}</h3>
 
 					{CHAT_SOUND}
+					<script>
+					// <![CDATA[
+						add_event_listener_abstract(window,'load',prepare_chat_sounds);
+					// ]]>
+					</script>
 
 					<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
