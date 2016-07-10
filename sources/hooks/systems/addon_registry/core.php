@@ -1357,7 +1357,6 @@ class Hook_addon_registry_core
             'themes/default/templates/MASS_SELECT_MARKER.tpl',
             'themes/default/templates/MASS_SELECT_DELETE_FORM.tpl',
             'themes/default/templates/MASS_SELECT_FORM_BUTTONS.tpl',
-            'themes/default/templates/DELETE_MARKER.tpl',
             'data/tasks.php',
             'sources/tasks.php',
             'lang/EN/tasks.ini',
@@ -1479,7 +1478,6 @@ class Hook_addon_registry_core
             'templates/MASS_SELECT_FORM_BUTTONS.tpl' => 'mass_select_form_buttons',
             'templates/MASS_SELECT_MARKER.tpl' => 'mass_select_marker',
             'templates/MASS_SELECT_DELETE_FORM.tpl' => 'mass_select_delete_form',
-            'templates/DELETE_MARKER.tpl' => 'delete_marker',
             'templates/UPLOAD_SYNDICATION_SETUP_SCREEN.tpl' => 'upload_syndication_setup_screen',
             'templates/GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN.tpl' => 'group_member_timeout_manage_screen',
         );
@@ -2238,23 +2236,6 @@ class Hook_addon_registry_core
     {
         return array(
             lorem_globalise(do_lorem_template('FONT_SIZER', array()), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__delete_marker()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('DELETE_MARKER', array(
-                '_EDIT_URL' => placeholder_url(),
-                'ID' => placeholder_id(),
-            )), null, '', true)
         );
     }
 

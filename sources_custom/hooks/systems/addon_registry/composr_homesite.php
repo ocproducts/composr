@@ -168,7 +168,6 @@ This addon does not contain the compo.sr install code and the overall site and t
             'sources_custom/miniblocks/composr_homesite_download.php',
             'themes/default/images_custom/help_small.gif',
             'sources_custom/miniblocks/composr_homesite_make_upgrader.php',
-            'themes/default/templates_custom/CMS_NEW_WEBSITE.tpl',
             'themes/default/templates_custom/CMS_DOWNLOAD_RELEASES.tpl',
             'themes/default/templates_custom/CMS_DOWNLOAD_BLOCK.tpl',
             'themes/default/templates_custom/CMS_HOSTING_COPY_SUCCESS_SCREEN.tpl',
