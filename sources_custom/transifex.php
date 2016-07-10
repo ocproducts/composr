@@ -465,37 +465,17 @@ function pull_from_transifex($version, $tar_file, $lang, $core_only)
 
     if ($lang === null) {
         $langs = array_keys(better_parse_ini_file(get_file_base() . '/lang/langs.ini'));
-        /*Or if too slow we could hard-code languages $langs = array(
-            'CS',
-            'NL',
-            'IT',
-            'RU',
-            'FR',
-            'ES',
-            'DE',
-            'TR',
-            'PT',
-            'SV',
-            'LT',
-            'JA',
-            'ET',
-            'NB',
-            'PL',
-            'EL',
-            'OC',
-            'TA',
-        );*/
         foreach ($langs as $lang) {
             if ($lang != fallback_lang()) {
-                pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only);
+                pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, false);
             }
         }
     } else {
-        pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only);
+        pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, true);
     }
 }
 
-function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only)
+function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $definitely_want)
 {
     global $EXTRA_LANGUAGE_FILES, $LANG_FILES;
 
@@ -505,6 +485,13 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only)
     }
     if ($test[1] == '200') {
         $language_details = json_decode($test[0], true);
+
+        if (!$definitely_want) {
+            if (floatval($language_details['translated_segments']) / floatval($language_details['total_segments']) < 0.2) {
+                // Not translated enough
+                return false;
+            }
+        }
 
         $files = array();
 
@@ -697,6 +684,8 @@ END;
             }
         }
     }
+
+    return true;
 }
 
 function _pull_cms_file_to_transifex($project_slug, $tar_file, $lang, $path, $extra_file, &$files)
