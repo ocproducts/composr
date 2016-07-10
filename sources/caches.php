@@ -517,8 +517,8 @@ function erase_persistent_cache()
     closedir($d);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', LOCK_EX);
     @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', LOCK_EX);
-    fix_permissions('data_custom/failover_rewritemap.txt');
-    fix_permissions('data_custom/failover_rewritemap__mobile.txt');
+    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap.txt');
+    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt');
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {

@@ -77,22 +77,6 @@ class Module_admin_themes
             ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
         }
-
-        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
-            $GLOBALS['SITE_DB']->query_insert('theme_images', array(
-                'id' => 'favicon',
-                'theme' => 'default',
-                'path' => 'favicon.ico',
-                'lang' => fallback_lang()
-            ), false, true);
-
-            $GLOBALS['SITE_DB']->query_insert('theme_images', array(
-                'id' => 'webclipicon',
-                'theme' => 'default',
-                'path' => 'webclipicon.png',
-                'lang' => fallback_lang()
-            ), false, true);
-        }
     }
 
     /**
