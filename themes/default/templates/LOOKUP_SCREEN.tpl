@@ -111,7 +111,7 @@
 	</p>
 {+END}
 
-<h2>{!VIEWS} ({!IP_ADDRESS})</h2>
+<h2>{!VIEWS}{+START,IF,{$IS_GUEST,{ID}}} ({!IP_ADDRESS}){+END}</h2>
 
 {STATS}
 

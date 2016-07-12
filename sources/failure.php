@@ -932,7 +932,7 @@ function _fatal_exit($text, $return = false)
     }
 
     global $WANT_TEXT_ERRORS;
-    if ($WANT_TEXT_ERRORS) {
+    if ($WANT_TEXT_ERRORS && !headers_sent()) {
         header('Content-type: text/plain; charset=' . get_charset());
         require_code('global3');
         set_http_status_code('500');
