@@ -752,7 +752,7 @@ class Text_Diff_Engine_string
             $unified = strpos($diff, '---');
             if ($context === $unified) {
                 warn_exit('Type of diff could not be detected');
-            } elseif ($context === false || $context === false) {
+            } elseif ($context === false || $unified === false) {
                 $mode = $context !== false ? 'context' : 'unified';
             } else {
                 $mode = $context < $unified ? 'context' : 'unified';

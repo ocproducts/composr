@@ -230,9 +230,10 @@ function script_load_stuff()
 	};
 
 	// If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
+	window.has_js_state=false;
 	window.onpopstate = function(event) {
 		window.setTimeout(function() {
-			if (window.location.hash=='') {
+			if (window.location.hash=='' && window.has_js_state) {
 				window.location.reload();
 			}
 		},0);

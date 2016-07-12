@@ -2178,7 +2178,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_table_sorter {
 	max-width: {$?,{$MOBILE},315,400}px;
 	float: {!en_left};
-	margin-{!en_right}: 1em;
+	margin-{!en_right}: 0.75em;
 }
 
 .pagination_spacing {

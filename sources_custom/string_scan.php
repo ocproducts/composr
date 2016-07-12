@@ -3702,7 +3702,6 @@ function string_scan($lang, $do_guessing = false)
         DOBS
         DOC_ABSORB_PERMISSIONS
         DOC_ACTIONLOG
-        DOC_ACTIONLOG_BAN_HELP
         DOC_ADDONS
         DOC_ADD_MEMBER
         DOC_ADMIN_ZONE

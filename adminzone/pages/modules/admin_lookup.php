@@ -78,11 +78,7 @@ class Module_admin_lookup
 
         set_helper_panel_tutorial('tut_trace');
 
-        if (addon_installed('securitylogging')) {
-            require_lang('actionlog');
-            $ip_ban_url = build_url(array('page' => 'admin_ip_ban'), get_module_zone('admin_ip_ban'));
-            set_helper_panel_text(comcode_to_tempcode(do_lang('DOC_ACTIONLOG_BAN_HELP', $ip_ban_url->evaluate())));
-        }
+        set_helper_panel_text(comcode_to_tempcode(do_lang('DOC_INVESTIGATE_USER')));
 
         $param = get_param_string('param', get_param_string('id', ''));
 

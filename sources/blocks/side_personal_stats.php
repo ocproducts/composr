@@ -74,7 +74,7 @@ class Block_side_personal_stats
         } else {
             $title = do_lang_tempcode('NOT_LOGGED_IN');
 
-            if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login')) {
+            if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
                 $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
             } else {
                 $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
