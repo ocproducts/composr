@@ -70,8 +70,12 @@ class Block_main_greeting
             // Standard welcome back vs into greeting
             $member = get_member();
             if (is_guest($member)) {
-                $redirect = get_self_url(true, true);
-                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
+                if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
+                    $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
+                } else {
+                    $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+                }
+                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $_this_url), get_module_zone('login'));
                 $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
                 $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
 

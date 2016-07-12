@@ -33,7 +33,7 @@ staff	moderator	admin	administrator	operator	webmaster
 open	closed	live	activate	activation /*enable */turn
 import	convert	migrate	interchange
 commandr	console	command prompt	command line	cle
-required	optional
+required	optional	mandatory
 export	download
 attachment	upload
 tree	nest	hierarchy	node	child	recursive	branch

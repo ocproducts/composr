@@ -722,7 +722,7 @@ class Hook_smf2
             if (($ban_till > time()) || empty($ban_till)) {
                 $uid = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['name']);
 
-                if (!empty($uid) && ($uid != 1 || $uid != 2)) {
+                if (!empty($uid) && ($uid != 1 && $uid != 2)) {
                     if (empty($ban_till)) {
                         $GLOBALS['SITE_DB']->query_update('f_members', array('m_is_perm_banned' => 1), array('id' => $uid));
                     } else {

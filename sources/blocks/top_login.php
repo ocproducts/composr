@@ -74,14 +74,10 @@ class Block_top_login
 
         $title = do_lang_tempcode('NOT_LOGGED_IN');
 
-        if ((get_page_name() != 'join') && (get_page_name() != 'login')) {
-            if (has_interesting_post_fields()) {
-                $_this_url = build_url(array('page' => ''), '', array('keep_session' => 1, 'redirect' => 1));
-            } else {
-                $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
-            }
+        if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
+            $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
         } else {
-            $_this_url = build_url(array('page' => ''), '', array('keep_session' => 1, 'redirect' => 1));
+            $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
         }
         $this_url = $_this_url->evaluate();
         $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
