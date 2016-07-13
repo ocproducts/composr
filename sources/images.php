@@ -502,7 +502,7 @@ function is_saveable_image($name)
     $ext = get_file_extension($name);
     if (function_exists('imagetypes')) {
         $gd = imagetypes();
-        if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('image_gif'))) {
+        if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagegif'))) {
             return true;
         }
         if (($ext == 'jpg') && (($gd & IMG_JPEG) != 0)) {

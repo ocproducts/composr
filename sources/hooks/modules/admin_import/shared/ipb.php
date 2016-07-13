@@ -432,7 +432,7 @@ class Hook_ipb_base
                     }
 
                     if (($photo_url != '') && (function_exists('imagepng'))) {
-                        $photo_thumb_url = 'uploads/cns_photos_thumbs/' . find_derivative_filename('cns_photos_thumbs', $filename, true);
+                        $photo_thumb_url = 'uploads/cns_photos_thumbs/' . find_derivative_filename('uploads/cns_photos_thumbs', $filename, true);
                         require_code('images');
                         convert_image($photo_url, $photo_thumb_url, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     }
