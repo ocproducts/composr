@@ -181,8 +181,13 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
         'source_language_code' => convert_lang_code_to_transifex(fallback_lang()),
         'description' => 'Community translation for Composr CMS ' . strval(cms_version()),
         'private' => false,
+        'license' => 'permissive_open_source',
         'repository_url' => 'https://github.com/ocproducts/composr',
+        'organization' => 'ocproducts',
         'team'=> 39268, // This is a hard-coded known value for the ocProducts organisation
+        'fill_up_resources' => true,
+        'homepage' => 'http://compo.sr',
+        'trans_instructions' => 'See http://compo.sr/docs/tut_intl.htm',
     );
     $test = _transifex('/projects/', 'POST', json_encode($args), false);
     if ($test[1] == '201') { // If creation happened
@@ -215,6 +220,8 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
                 }
             }
         }
+
+        echo "A new project was created. You need to manually edit the organization settings (https://www.transifex.com/ocproducts/settings/tm/) to add it to the translation memory group.\n";
     }
 
     // Upload special files

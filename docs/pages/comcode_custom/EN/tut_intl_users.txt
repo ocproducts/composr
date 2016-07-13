@@ -29,10 +29,11 @@ To download and install the Transifex translations you can follow the following 
 3) Register as a Transifex user if you do not already have an account, or log in.
 4) Choose the version of Composr you have installed (if you're not sure, it will say on the front page of the Admin Zone). Transifex calls this the 'project'.
 5) Choose your language.
-6) For each resource in the project, you need to download it individually. You'll be delivered a [tt].ini[/tt] file. These resources correspond to language files in Composr.
-7) Copy all the [tt].ini[/tt] files into the folder you created earlier.
-8) Any [tt]x__administrative.ini[/tt] file needs manually merging into the corresponding [tt]x.ini[/tt] file. However, most translators won't have bothered translating administrative strings anyway.
-9) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
+6) Join the translation team for this project & language.
+7) For each resource in the project, you need to download it individually. You'll be delivered a [tt].ini[/tt] file. These resources correspond to language files in Composr.
+8) Copy all the [tt].ini[/tt] files into the folder you created earlier.
+9) Any [tt]x__administrative.ini[/tt] file needs manually merging into the corresponding [tt]x.ini[/tt] file. However, most translators won't have bothered translating administrative strings anyway.
+10) If you want your new language to by the default, log into [tt]http://yourbaseurl/config_editor.php[/tt] and change the default language. This is discussed in more detail in the next section.
 
 [title="3"]Using developer tools[/title]
 
@@ -42,7 +43,7 @@ If you install the developer [tt]addon_publish[/tt] addon then you can pull lang
 Substitute as follows:
  - [tt]yourbaseurl[/tt] -- the URL to your Composr installation that has the [tt]addon_publish[/tt] addon installed on
  - [tt]XX[/tt] -- the code for the language (e.g. [tt]fr[/tt] for French)
- - [tt]youremail[/tt] -- your Transifex account e-mail address (it must have translator access to the language you are downloading)
+ - [tt]youremail[/tt] -- your Transifex account e-mail address (it must have translator access to the language you are downloading by joining the translation team)
  - [tt]yourpassword[/tt] -- your Transifex account password
 
 If everything is working right then a [tt].tar[/tt] file will download to your computer. This is your addon.
