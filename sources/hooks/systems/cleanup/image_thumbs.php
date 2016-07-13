@@ -68,10 +68,12 @@ class Hook_cleanup_image_thumbs
         $dh = @opendir($full);
         if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
-                $target = get_custom_file_base() . '/' . $dir . '_thumbs/' . $file;
-                if ((!file_exists($target)) && (is_image($full . '/' . $file))) {
-                    require_code('images');
-                    convert_image($full . '/' . $file, $target, -1, -1, intval(get_option('thumb_width')));
+                if (is_image($file, IMAGE_CRITERIA_GD_WRITE)) {
+                    $target = get_custom_file_base() . '/' . $dir . '_thumbs/' . $file;
+                    if (!file_exists($target)){
+                        require_code('images');
+                        convert_image($full . '/' . $file, $target, -1, -1, intval(get_option('thumb_width')));
+                    }
                 }
             }
         }

@@ -364,10 +364,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             return array('', '', '', '');
         }
 
-        $is_image = is_image($filearrays[$attach_name]['name'], true);
+        $is_image = is_image($filearrays[$attach_name]['name'], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'), true);
     } elseif (post_param_string($specify_name, '') != '') { // If we specified
         $url = _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_type, $accept_errors);
-        $is_image = is_image($url[0]);
+        $is_image = is_image($url[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'));
         if ($url[0] != '') {
             if ($enforce_type == CMS_UPLOAD_IMAGE) {
                 $is_image = true; // Must be an image if it got to here. Maybe came from oEmbed and not having an image extension.
@@ -418,7 +418,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             }
             if (is_null($filename)) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
-                    $ext = (($obfuscate == 2) && (!is_image($HTTP_FILENAME))) ? 'dat' : get_file_extension($HTTP_FILENAME);
+                    $ext = (($obfuscate == 2) && (!is_image($HTTP_FILENAME, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($HTTP_FILENAME);
 
                     $filename = preg_replace('#\..*\.#', '.', $HTTP_FILENAME) . ((substr($HTTP_FILENAME, -strlen($ext) - 1) == '.' . $ext) ? '' : ('.' . $ext));
                     $place = $upload_folder_full . '/' . $filename;
@@ -519,25 +519,18 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             $thumb = $_thumb[0];
         } else {
             if (function_exists('imagetypes')) {
-                if ((!is_saveable_image($url[0])) && (get_file_extension($url[0]) != 'svg')) {
-                    $ext = '.png';
-                } else {
-                    $ext = '';
-                }
                 $thumb_filename = preg_replace('#[^\w\.]#', 'x', basename($url[0]));
-                $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
+                $place = $thumb_folder_full . '/' . $thumb_filename;
                 $i = 2;
                 while (file_exists($place)) {
                     $thumb_filename = strval($i) . preg_replace('#[^\w\.]#', 'x', basename($url[0]));
-                    $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
+                    $place = $thumb_folder_full . '/' . $thumb_filename;
                     $i++;
                 }
                 file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
                 $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
 
-                convert_image($url_full, $place, -1, -1, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
-
-                $thumb = $thumb_folder . '/' . rawurlencode($thumb_filename) . $ext;
+                $thumb = convert_image($url_full, $place, -1, -1, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
             } else {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('GD_THUMB_ERROR'), 'warn');
@@ -653,7 +646,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 
     if ($url[0] != '') {
         // oEmbed etc
-        if (($enforce_type != CMS_UPLOAD_ANYTHING) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (!is_image($url[0])) && ((($enforce_type & CMS_UPLOAD_SWF) == 0) || (get_file_extension($url[0]) != 'swf'))) {
+        if (($enforce_type != CMS_UPLOAD_ANYTHING) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (!is_image($url[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) && ((($enforce_type & CMS_UPLOAD_SWF) == 0) || (get_file_extension($url[0]) != 'swf'))) {
             require_code('media_renderer');
             require_code('files2');
             $meta_details = get_webpage_meta_details($url[0]);
@@ -719,7 +712,7 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
         }
     }
     if (($enforce_type & CMS_UPLOAD_IMAGE) != 0) {
-        if (!is_image($file, true)) {
+        if (!is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'), true)) {
             if ($enforce_type == CMS_UPLOAD_IMAGE) {
                 if ($accept_errors) {
                     attach_message(do_lang_tempcode('NOT_IMAGE'), 'warn');
@@ -827,7 +820,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
             file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
         } else { // A result of some randomness
             $ext = get_file_extension($file);
-            $ext = (($obfuscate == 2) && (!is_image($file))) ? 'dat' : get_file_extension($file);
+            $ext = (($obfuscate == 2) && (!is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($file);
 
             $filename = uniqid('', true) . '.' . $ext;
             $place = $upload_folder_full . '/' . $filename;
@@ -877,8 +870,8 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     sync_file($place);
 
     // Special code to re-orientate JPEG images if required (browsers cannot do this)
-    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place))) {
-        if (function_exists('imagepng')) {
+    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) {
+        if (is_image($place, IMAGE_CRITERIA_GD_WRITE)) {
             require_code('images');
             convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
         }

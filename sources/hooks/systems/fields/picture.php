@@ -98,20 +98,16 @@ class Hook_fields_picture
         if (url_is_local($img_url)) {
             $img_url = get_custom_base_url() . '/' . $img_url;
         }
-        if (!function_exists('imagetypes')) {
-            $img_thumb_url = $img_url;
+
+        $new_name = url_to_filename($ev);
+        require_code('images');
+        $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
+        if (!file_exists($file_thumb)) {
+            $img_thumb_url = convert_image($img_url, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
         } else {
-            $new_name = url_to_filename($ev);
-            require_code('images');
-            if (!is_saveable_image($new_name)) {
-                $new_name .= '.png';
-            }
-            $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
-            if (!file_exists($file_thumb)) {
-                convert_image($img_url, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
-            }
             $img_thumb_url = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
         }
+
         if (!array_key_exists('c_name', $field)) {
             $field['c_name'] = 'other';
         }

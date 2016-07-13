@@ -66,7 +66,7 @@ public function cloudinary_transfer_upload($attach_name, $upload_folder, $filena
         $url = $result['secure_url'];
     }
 
-    if (is_image($filename)) {
+    if (is_image($filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
         // 1024 version
         $url = preg_replace('#^(.*/image/upload/)(.*)$#', '$1c_limit,w_1024/$2', $url);
     }

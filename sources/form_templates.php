@@ -430,7 +430,7 @@ function get_comcode_editor($field_name = 'post', $cut_down = false, $is_posting
 
     // Non-wrappers
     if (!$cut_down) {
-        $_buttons[] = (function_exists('imagepng') ? 'thumb' : 'img');
+        $_buttons[] = (function_exists('imagetypes') ? 'thumb' : 'img');
     }
     if (has_privilege(get_member(), 'comcode_dangerous')) {
         $_buttons[] = 'block';
@@ -1440,7 +1440,7 @@ function form_input_upload_multi_source($set_title, $set_description, &$hidden, 
         $files = get_directory_contents($full_path, '', false, false);
         $has_image_or_dir = false;
         foreach ($files as $file) {
-            if (is_image($file) || is_dir($full_path . '/' . $file)) {
+            if (is_image($file, IMAGE_CRITERIA_WEBSAFE, true) || is_dir($full_path . '/' . $file)) {
                 $has_image_or_dir = true;
                 break;
             }
@@ -1512,7 +1512,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
     $existing_url = '';
     if (!is_null($default)) {
         require_code('images');
-        $is_image = is_image($default);
+        $is_image = is_image($default, IMAGE_CRITERIA_WEBSAFE, true);
         $existing_url = $default;
         if (url_is_local($existing_url)) {
             $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . DIRECTORY_SEPARATOR . '.htaccess';
@@ -1568,7 +1568,7 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
     $existing_url = '';
     if ((!is_null($default)) && (count($default) > 0)) {
         require_code('images');
-        $is_image = is_image($default[0]);
+        $is_image = is_image($default[0], IMAGE_CRITERIA_WEBSAFE, true);
         $existing_url = $default[0];
         if (url_is_local($existing_url)) {
             $existing_url = get_custom_base_url() . '/' . $existing_url;

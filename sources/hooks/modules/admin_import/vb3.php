@@ -895,9 +895,9 @@ class Hook_vb3
             if ($thumbnail_data == '') {
                 if ($thumbnail) {
                     $t_filename = $filename;
-                    $thumb_url = 'uploads/' . $sections . '_thumbs/' . find_derivative_filename('_thumbs', $t_filename, true);
+                    $thumb_path = get_custom_file_base() . '/uploads/' . $sections . '_thumbs/' . find_derivative_filename('uploads/' . $sections . '_thumbs', $t_filename);
                     require_code('images');
-                    convert_image(get_custom_base_url() . '/' . $url, $thumb_url, -1, -1, intval(get_option('thumb_width')), false, null, true);
+                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     return array($url, $thumb_url);
                 } else {
                     return array($url, '');

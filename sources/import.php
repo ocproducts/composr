@@ -147,15 +147,10 @@ function add_wordfilter_word($word, $replacement = '', $substr = 0)
  *
  * @param  PATH $dir Directory
  * @param  string $file Preferred filename
- * @param  boolean $shun_gif Whether GIF files are made as PNG fiels
  * @return string Filename to use
  */
-function find_derivative_filename($dir, $file, $shun_gif = false)
+function find_derivative_filename($dir, $file)
 {
-    if (($shun_gif) && (substr($file, -4) == '.gif')) {
-        $file = substr($file, 0, strlen($file) - 4) . '.png';
-    }
-
     $_file = $file;
     $place = get_file_base() . '/' . $dir . '/' . $_file;
     $i = 2;

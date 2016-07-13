@@ -1794,7 +1794,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $align = array_key_exists('align', $attributes) ? $attributes['align'] : 'bottom';
 
-            if ((!function_exists('imagetypes')) || ((!has_privilege($source_member, 'draw_to_server')) && (!$as_admin))) {
+            if ((!has_privilege($source_member, 'draw_to_server')) && (!$as_admin)) {
                 $url_thumb = $url_full;
             } else {
                 if ($attributes['param'] != '') {
@@ -1803,14 +1803,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 if (($attributes['param'] == '') || ((url_is_local($attributes['param'])) && (!file_exists(get_custom_file_base() . '/' . rawurldecode($attributes['param']))))) {
                     $new_name = url_to_filename($url_full);
                     require_code('images');
-                    if (!is_saveable_image($new_name)) {
-                        $new_name .= '.png';
-                    }
                     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
                     if ((!file_exists($file_thumb)) && (strpos($file_thumb, '{$') === false)) {
-                        convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+                        $url_thumb = convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+                    } else {
+                        $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
                     }
-                    $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
                 }
             }
 
@@ -2090,13 +2088,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                     require_code('upload_syndication');
                     $urls[0] = handle_upload_syndication('file' . $_id, '', array_key_exists('description', $attributes) ? $attributes['description'] : '', $urls[0], $original_filename, true);
-
-                    // Special code to re-orientate JPEG images if required (browsers cannot do this)
-                    if ((is_saveable_image($urls[0])) && (url_is_local($urls[0])) && (($attributes['type'] == '') || ($attributes['image_websafe'] == ''))) {
-                        require_code('images');
-                        $attachment_path = get_custom_file_base() . '/' . rawurldecode($urls[0]);
-                        convert_image($attachment_path, $attachment_path, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-                    }
                 } else { // Should not get here
                     $temp_tpl = do_template('WARNING_BOX', array('_GUID' => 'f7c0ead08bf7e19f3b78a536c755d6a5', 'WARNING' => do_lang_tempcode('comcode:INVALID_ATTACHMENT')));
                     break;
@@ -2158,23 +2149,15 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
                 // Thumbnail generation
                 if ($attributes['thumb_url'] == '') {
-                    if (is_image($original_filename)) {
-                        if (function_exists('imagetypes')) {
-                            require_code('images');
-                            if (!is_saveable_image($url)) {
-                                $ext = '.png';
-                            } else {
-                                $ext = '.' . get_file_extension($original_filename);
-                            }
-                            $md5 = md5(substr($original_filename, 0, 30));
-                            $attributes['thumb_url'] = 'uploads/attachments_thumbs/' . $md5 . $ext;
-                            convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . $attributes['thumb_url'], -1, -1, intval(get_option('thumb_width')), true, null, false, true);
+                    if (is_image($original_filename, IMAGE_CRITERIA_WEBSAFE, has_privilege($source_member, 'comcode_dangerous'))) {
+                        require_code('images');
+                        $ext = '.' . get_file_extension($original_filename);
+                        $md5 = md5(substr($original_filename, 0, 30));
+                        $thumb_path = get_custom_file_base() . '/uploads/attachments_thumbs/' . $md5 . $ext;
+                        $attributes['thumb_url'] = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                            if (is_forum_db($connection)) {
-                                $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];
-                            }
-                        } else {
-                            $attributes['thumb_url'] = $url;
+                        if (is_forum_db($connection)) {
+                            $attributes['thumb_url'] = get_custom_base_url() . '/' . $attributes['thumb_url'];
                         }
                     } elseif ((addon_installed('galleries')) && (is_video($original_filename, $as_admin)) && (url_is_local($url))) {
                         require_code('galleries2');

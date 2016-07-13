@@ -1788,7 +1788,7 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
     // Check it has valid dimensions
     if ($avatar_url != '') {
         require_code('images');
-        if (!is_image($avatar_url, true)) {
+        if (!is_image($avatar_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($member_id, 'comcode_dangerous'), true)) {
             $ext = get_file_extension($avatar_url);
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext)));
         }
@@ -1822,16 +1822,17 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
             $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
             $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
             if (($sx > $width) || ($sy > $height)) {
+                // Size down, if possible
                 require_code('images');
-                $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
-                if ((!is_saveable_image($file_path)) || (!url_is_local($avatar_url))) {
+                if ((!is_image($file_path, IMAGE_CRITERIA_GD_WRITE)) || (!url_is_local($avatar_url))) {
                     if ((url_is_local($avatar_url)) && (substr($avatar_url, 0, 20) == 'uploads/cns_avatars/')) {
                         unlink($file_path);
                         sync_file(rawurldecode($avatar_url));
                     }
                     warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
                 }
-                convert_image($file_path, $file_path, $width, $height, -1, false, get_file_extension($file_path), true, true);
+                $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
+                $avatar_url = convert_image($file_path, $file_path, $width, $height, -1, false, get_file_extension($file_path), true, true);
             }
         }
 

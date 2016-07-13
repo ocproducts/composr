@@ -364,22 +364,12 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 // Thumbnail
                 $thumb_url = '';
                 require_code('images');
-                if (is_image($_file)) {
-                    if (function_exists('imagetypes')) {
-                        require_code('images');
-                        if (!is_saveable_image($_file)) {
-                            $ext = '.png';
-                        } else {
-                            $ext = '.' . get_file_extension($_file);
-                        }
-                        $thumb_url = 'uploads/attachments_thumbs/' . $_file_thumb;
-                        convert_image(get_custom_base_url() . '/uploads/attachments/' . $_file, $place_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
+                if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
+                    require_code('images');
+                    $thumb_url = convert_image('uploads/attachments/' . $_file, $place_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                        if (is_forum_db($connection)) {
-                            $thumb_url = get_custom_base_url() . '/' . $thumb_url;
-                        }
-                    } else {
-                        $thumb_url = 'uploads/attachments/' . $_file;
+                    if (is_forum_db($connection)) {
+                        $thumb_url = get_custom_base_url() . '/' . $thumb_url;
                     }
                 }
 

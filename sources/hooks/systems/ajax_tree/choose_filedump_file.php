@@ -74,14 +74,14 @@ class Hook_choose_filedump_file
                         }
                     }
                 } elseif (!$folder) {
-                    if ($images_only && !is_image($f)) {
+                    if ($images_only && !is_image($f, IMAGE_CRITERIA_WEBSAFE, true)) {
                         continue;
                     }
 
-                    if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f))) {
+                    if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
                         if ((is_null($description)) || (get_translated_text($description) == '')) {
                             $_description = '';
-                            if (is_image($f)) {
+                            if (is_image($f, IMAGE_CRITERIA_WEBSAFE, true)) {
                                 $url = get_custom_base_url() . '/uploads/filedump/' . (($id == '') ? '' : ($id . '/')) . $f;
                                 $_description = static_evaluate_tempcode(do_image_thumb($url, '', true, false, null, null, true));
                             }
@@ -131,7 +131,7 @@ class Hook_choose_filedump_file
             $tree = get_directory_contents($full_path, '');
 
             foreach ($tree as $f) {
-                if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f))) {
+                if ((!isset($options['only_images'])) || (!$options['only_images']) || (is_image($f, IMAGE_CRITERIA_WEBSAFE, true))) {
                     $rel = preg_replace('#^' . preg_quote($id, '#') . '/#', '', $f);
                     $out .= '<option value="' . escape_html('uploads/filedump/' . $f) . '"' . (($it === $f) ? ' selected="selected"' : '') . '>' . escape_html($rel) . '</option>' . "\n";
                 }

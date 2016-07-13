@@ -31,7 +31,7 @@ $default_images = array();
 foreach (array(get_custom_file_base() . '/themes/default/images', get_custom_file_base() . '/themes/default/images_custom', get_custom_file_base() . '/themes/default/images/EN') as $dir) {
     $dh = opendir($dir);
     while (($f = readdir($dh)) !== false) {
-        if (is_image($f) || substr($f, -4) == '.svg') {
+        if (is_image($f, IMAGE_CRITERIA_NONE)) {
             $img_code = basename($f, '.' . get_file_extension($f));
             $default_images[$img_code] = true;
         }
@@ -65,7 +65,7 @@ foreach (array_keys($themes) as $theme) {
         $images = array();
         $theme_images = get_directory_contents(get_custom_file_base() . '/themes/' . $theme . '/images_custom');
         foreach ($theme_images as $f) {
-            if (is_image($f) || substr($f, -4) == '.svg') {
+            if (is_image($f, IMAGE_CRITERIA_NONE)) {
                 $img_code = substr($f, 0, strlen($f) - 1 - strlen(get_file_extension($f)));
                 if (isset($images[$img_code])) {
                     echo '<br />Duplicated theme image: ' . escape_html($img_code);

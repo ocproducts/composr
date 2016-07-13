@@ -353,7 +353,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
             }
             if ((function_exists('imagetypes')) && (substr($test_url, -4) != '.swf')) {
                 require_code('images');
-                if (is_image($test_url)) {
+                if (is_image($test_url, IMAGE_CRITERIA_GD_READ)) {
                     require_code('files');
                     $img_res = @imagecreatefromstring($data);
                     if ($img_res === false) {

@@ -516,14 +516,12 @@ function thumb_script()
     require_code('images');
 
     $new_name = url_to_filename($url_full);
-    if (!is_saveable_image($new_name)) {
-        $new_name .= '.png';
-    }
     $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
     if (!file_exists($file_thumb)) {
-        convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+        $url_thumb = convert_image($url_full, $file_thumb, -1, -1, intval(get_option('thumb_width')), false);
+    } else {
+        $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
     }
-    $url_thumb = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
 
     require_code('mime_types');
     $mime_type = get_mime_type($url_thumb, false);

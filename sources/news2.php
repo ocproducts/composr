@@ -891,7 +891,7 @@ function _news_import_grab_image(&$data, $url)
         return;
     }
     require_code('images');
-    if (!is_image($url)) {
+    if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, true)) {
         return;
     }
 

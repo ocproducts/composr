@@ -712,7 +712,7 @@ class Hook_phpbb2
                 }
 
                 $source_path = $file_base . '/' . $upload_dir . '/' . $row['physical_filename'];
-                $new_filename = find_derivative_filename('attachments', $row['physical_filename']);
+                $new_filename = find_derivative_filename('uploads/attachments', $row['physical_filename']);
                 $target_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
                 if ((@rename($source_path, $target_path))) {
                     sync_file($target_path);

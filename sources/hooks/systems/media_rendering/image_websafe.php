@@ -99,7 +99,7 @@ class Hook_media_rendering_image_websafe
         $blank_thumbnail = (!array_key_exists('thumb_url', $attributes)) || ((is_object($attributes['thumb_url'])) && ($attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] == ''));
         // ^ If thumbnail is blank, then we will be using default thumbnail width/height and generating it from the main image UNLESS we decided not to use a thumbnail at all
 
-        if ((!$use_thumb) || (!function_exists('imagetypes'))) {
+        if (!$use_thumb) {
             $attributes['thumb_url'] = $url;
         }
 
@@ -122,14 +122,10 @@ class Hook_media_rendering_image_websafe
 
             $new_name = strval($thumb_box_width) . '__' . url_to_filename($_url_safe);
             require_code('images');
-            if (!is_saveable_image($new_name)) {
-                $new_name .= '.png';
-            }
             $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
-            if (function_exists('imagepng')) {
-                if (!file_exists($file_thumb)) {
-                    convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : $thumb_box_width, $auto_box_height ? -1 : $thumb_box_height, ($auto_box_width && $auto_box_height) ? $thumb_box_width : -1, false);
-                }
+            if (!file_exists($file_thumb)) {
+                $attributes['thumb_url'] = convert_image($url_direct_filesystem, $file_thumb, $auto_box_width ? -1 : $thumb_box_width, $auto_box_height ? -1 : $thumb_box_height, ($auto_box_width && $auto_box_height) ? $thumb_box_width : -1, false);
+            } else {
                 $attributes['thumb_url'] = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
             }
         }

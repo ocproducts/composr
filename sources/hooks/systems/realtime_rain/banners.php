@@ -45,7 +45,7 @@ class Hook_realtime_rain_banners
 
                 $image = is_guest($member_id) ? rain_get_country_image($row['c_ip_address']) : $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
                 require_code('images');
-                if (is_image($row['img_url'])) {
+                if (is_image($row['img_url'], IMAGE_CRITERIA_WEBSAFE, has_privilege($row['member_id'], 'comcode_dangerous'))) {
                     $image = $row['img_url'];
                 }
                 if (url_is_local($image)) {

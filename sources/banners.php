@@ -363,7 +363,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 $banner_type_row = array('t_image_width' => $width, 't_image_height' => $height);
             }
             $content = do_template('BANNER_FLASH', array('_GUID' => '25525a3722715e79a83af4cec53fe072', 'B_TYPE' => $b_type, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height']), 'SOURCE' => $source, 'DEST' => $name, 'CAPTION' => $caption, 'IMG' => $img_url));
-        } elseif (($url != '') || (is_image($img_url))) { // Image; Can't rely on image check, because often they have script-generated URLs
+        } elseif (($url != '') || (is_image($img_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($submitter, 'comcode_dangerous')))) { // Image; Can't rely on image check, because often they have script-generated URLs
             if (url_is_local($img_url)) {
                 if (substr($img_url, 0, 12) == 'data/images/') {
                     $img_url = cdn_filter(get_base_url() . '/' . $img_url);

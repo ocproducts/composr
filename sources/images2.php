@@ -39,52 +39,61 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
         $thumb_width = intval(get_option('thumb_width'));
     }
 
-    // Create new path
-    $url_parts = explode('/', $full_url);
-    $i = 0;
-    $_file = $url_parts[count($url_parts) - 1];
-    $dot_pos = strrpos($_file, '.');
-    $ext = substr($_file, $dot_pos + 1);
-    if ((!is_saveable_image($_file)) && (get_file_extension($_file) != 'svg')) {
-        $ext .= '.png';
+    $is_vector = is_image($full_url, IMAGE_CRITERIA_VECTOR);
+
+    if ($is_vector) {
+        $thumb_url = $full_url;
+    } else {
+        // Create new path
+        $url_parts = explode('/', $full_url);
+        $i = 0;
+        $_file = $url_parts[count($url_parts) - 1];
+        $dot_pos = strrpos($_file, '.');
+        $ext = substr($_file, $dot_pos + 1);
+        $_file = preg_replace('#[^\w]#', 'x', substr($_file, 0, $dot_pos));
+        $thumb_path = '';
+        do {
+            $file = rawurldecode($_file) . (($i == 0) ? '' : strval($i));
+            $thumb_path = get_custom_file_base() . '/uploads/' . $thumb_dir . '_thumbs/' . $file . '.' . $ext;
+            $i++;
+        } while (file_exists($thumb_path));
+        file_put_contents($thumb_path, ''); // Lock it in ASAP, to stop race conditions
+        $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
     }
-    $_file = preg_replace('#[^\w]#', 'x', substr($_file, 0, $dot_pos));
-    $thumb_path = '';
-    do {
-        $file = rawurldecode($_file) . (($i == 0) ? '' : strval($i));
-        $thumb_path = get_custom_file_base() . '/uploads/' . $thumb_dir . '_thumbs/' . $file . '.' . $ext;
-        $i++;
-    } while (file_exists($thumb_path));
-    file_put_contents($thumb_path, ''); // Lock it in ASAP, to stop race conditions
-    $thumb_url = 'uploads/' . $thumb_dir . '_thumbs/' . rawurlencode($file) . '.' . $ext;
+
+    // Update database
     if ((substr($table, 0, 2) == 'f_') && (get_forum_type() == 'cns')) {
         $GLOBALS['FORUM_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);
     } else {
         $GLOBALS['SITE_DB']->query_update($table, array($thumb_field_name => $thumb_url), array('id' => $id), '', 1);
     }
 
-    $from = str_replace(' ', '%20', $full_url);
-    if (url_is_local($from)) {
-        $from = get_custom_base_url() . '/' . $from;
-    }
-    if (is_video($from, true)) {
-        require_code('galleries2');
-        create_video_thumb($full_url, $thumb_path);
-    } else {
-        convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
-        if (!file_exists($thumb_path) && file_exists($thumb_path . '.png'/*convert_image maybe had to change the extension*/)) {
-            $thumb_url .= '.png';
+    if (!$is_vector) {
+        // Do thumbnail conversion
+        $from = str_replace(' ', '%20', $full_url);
+        if (url_is_local($from)) {
+            $from = get_custom_base_url() . '/' . $from;
+        }
+        if (is_video($from, true)) {
+            require_code('galleries2');
+            create_video_thumb($full_url, $thumb_path);
+        } else {
+            $thumb_url = convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
         }
     }
 
-    return get_custom_base_url() . '/' . $thumb_url;
+    // Return
+    if (url_is_local($thumb_url)) {
+        $thumb_url = get_custom_base_url() . '/' . $thumb_url;
+    }
+    return $thumb_url;
 }
 
 /**
  * (Helper for convert_image).
  *
- * @param  URLPATH $from The URL to the image to resize
- * @param  PATH $to The file path (including filename) to where the resized image will be saved
+ * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
+ * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image there for some reason
  * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
  * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
@@ -93,7 +102,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
- * @return boolean Success
+ * @return URLPATH The thumbnail URL
  *
  * @ignore
  */
@@ -110,13 +119,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     $ext = get_file_extension($from);
     if ($using_path) {
         if (!check_memory_limit_for($from, $exit_on_error)) {
-            return false;
+            return $from;
         }
         if ($ext == 'svg') { // SVG is pass-through
-            copy($from, $to);
-            fix_permissions($to);
-            sync_file($to);
-            return true;
+            return $from;
         }
         $from_file = @file_get_contents($from);
         $exif = function_exists('exif_read_data') ? @exif_read_data($from) : false;
@@ -124,13 +130,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $file_path_stub = convert_url_to_path($from);
         if (!is_null($file_path_stub)) {
             if (!check_memory_limit_for($file_path_stub, $exit_on_error)) {
-                return false;
+                return $from;
             }
             if ($ext == 'svg') { // SVG is pass-through
-                copy($file_path_stub, $to);
-                fix_permissions($to);
-                sync_file($to);
-                return true;
+                return $from;
             }
             $from_file = @file_get_contents($file_path_stub);
             $exif = function_exists('exif_read_data') ? @exif_read_data($file_path_stub) : false;
@@ -156,7 +159,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 sync_file($to);
                 $exif = function_exists('exif_read_data') ? @exif_read_data($to) : false;
                 if ($ext == 'svg') { // SVG is pass-through
-                    return true;
+                    return $from;
                 }
             }
         }
@@ -169,7 +172,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         if (get_value('no_cannot_access_url_messages') !== '1') {
             attach_message(do_lang_tempcode('CANNOT_ACCESS_URL', escape_html($from)), 'warn');
         }
-        return false;
+        return $from;
     }
 
     $source = @imagecreatefromstring($from_file);
@@ -179,7 +182,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         }
         require_code('site');
         attach_message(do_lang_tempcode('CORRUPT_FILE', escape_html($from)), 'warn');
-        return false;
+        return $from;
     }
 
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
@@ -238,7 +241,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 imagedestroy($source);
 
                 if (($using_path) && ($from == $to)) {
-                    return true;
+                    return $from;
                 }
 
                 if ($using_path) {
@@ -250,7 +253,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
                 }
                 fix_permissions($to);
                 sync_file($to);
-                return true;
+                return _image_path_to_url($to);
             }
         }
         if ($_width < 1) {
@@ -478,7 +481,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             }
             require_code('site');
             attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
-            return false;
+            return $from;
         } else {
             require_code('images_png');
             png_compress($to, $width <= 300 && $width != -1 || $height <= 300 && $height != -1 || $box_width <= 300 && $box_width != -1);
@@ -493,7 +496,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             }
             require_code('site');
             attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
-            return false;
+            return $from;
         } else {
             fix_permissions($to);
             sync_file($to);
@@ -506,7 +509,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
             }
             require_code('site');
             attach_message(do_lang_tempcode('ERROR_IMAGE_SAVE', @strval($php_errormsg)), 'warn');
-            return false;
+            return $from;
         } else {
             fix_permissions($to);
             sync_file($to);
@@ -517,7 +520,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         }
         require_code('site');
         attach_message(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext2)), 'warn');
-        return false;
+        return $from;
     }
 
     // Clean up
@@ -526,7 +529,24 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     fix_permissions($to);
     sync_file($to);
 
-    return true;
+    return _image_path_to_url($to);
+}
+
+/**
+ * Convert an image path to a URL, as convert_image returns a URL not a path.
+ *
+ * @param  PATH $to_path Path
+ * @return URLPATH URL
+ */
+function _image_path_to_url($to_path)
+{
+    $file_base = get_custom_file_base();
+    if (substr($to_path, 0, strlen($file_base) + 1) != $file_base . '/') {
+        fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Nothing in the code should be trying to generate a thumbnail outside the base directory
+    }
+
+    $to_url = str_replace('%2F', '/', rawurlencode(substr($to_path, strlen($file_base) + 1));
+    return $to_url
 }
 
 /**

@@ -305,9 +305,8 @@ class Hook_task_import_member_csv
                     $photo_thumb_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($linked_id, 'm_photo_url');
                 } else {
                     require_code('images');
-                    $photo_thumb_url = 'uploads/cns_photos_thumbs/' . uniqid('', true) . '.png';
                     $photo_thumb_path = get_custom_file_base() . '/' . $photo_thumb_url;
-                    convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false);
+                    $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false);
                 }
             } else {
                 $photo_thumb_url = '';

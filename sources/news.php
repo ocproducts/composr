@@ -30,7 +30,7 @@ function get_news_category_image_url($nc_img)
 
     if ($nc_img == '') {
         $image = '';
-    } elseif (is_image($nc_img)) {
+    } elseif (looks_like_url($nc_img)) {
         $image = $nc_img;
     } else {
         $image = find_theme_image($nc_img, true);
