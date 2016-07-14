@@ -27,6 +27,8 @@ function init__import()
 {
     global $REMAP_CACHE;
     $REMAP_CACHE = array();
+
+    require_code('urls2');
 }
 
 /**
@@ -140,27 +142,6 @@ function add_wordfilter_word($word, $replacement = '', $substr = 0)
     if (is_null($test)) {
         $GLOBALS['SITE_DB']->query_insert('wordfilter', array('word' => $word, 'w_replacement' => $replacement, 'w_substr' => $substr));
     }
-}
-
-/**
- * Find a similar but non conflicting filename to $file in the given directory.
- *
- * @param  PATH $dir Directory
- * @param  string $file Preferred filename
- * @return string Filename to use
- */
-function find_derivative_filename($dir, $file)
-{
-    $_file = $file;
-    $place = get_file_base() . '/' . $dir . '/' . $_file;
-    $i = 2;
-    // Hunt with sensible names until we don't get a conflict
-    while (file_exists($place)) {
-        $_file = strval($i) . $file;
-        $place = get_file_base() . '/' . $dir . '/' . $_file;
-        $i++;
-    }
-    return $_file;
 }
 
 /**

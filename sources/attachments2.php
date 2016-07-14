@@ -204,22 +204,27 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                 if (($data !== false) && (function_exists('imagepng'))) {
                     $image = @imagecreatefromstring($data);
                     if ($image !== false) {
-                        do {
-                            $new_filename = uniqid('', true) . '.png';
-                            $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
-                        } while (file_exists($new_path));
-                        imagepng($image, $new_path, 9);
+                        require_code('urls2');
+                        list($place, $new_url, $new_filename) = find_unique_path('uploads/attachments', null, true);
+                        imagepng($image, $place, 9);
                         imagedestroy($image);
-                        require_code('images_png');
-                        png_compress($new_path);
 
-                        fix_permissions($new_path);
-                        sync_file($new_path);
+                        require_code('images_png');
+                        png_compress($place);
+
+                        fix_permissions($place);
+                        sync_file($place);
+
+                        // Special code to re-orientate JPEG images if required (browsers cannot do this)
+                        require_code('images');
+                        if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
+                            convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
+                        }
 
                         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
                             'a_member_id' => get_member(),
                             'a_file_size' => strlen($data),
-                            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
+                            'a_url' => $new_url,
                             'a_thumb_url' => '',
                             'a_original_filename' => basename($new_filename),
                             'a_num_downloads' => 0,
@@ -312,26 +317,9 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     continue;
                 }
 
-                $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
-                $i = 2;
-                // Hunt with sensible names until we don't get a conflict
-                while (file_exists($place)) {
-                    $_file = strval($i) . basename($entry['path']);
-                    $place = get_custom_file_base() . '/uploads/attachments/' . $_file;
-                    $i++;
-                }
-                file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
-
-                $i = 2;
-                $_file_thumb = basename($entry['path']);
-                $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
-                // Hunt with sensible names until we don't get a conflict
-                while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . basename($entry['path']);
-                    $place_thumb = get_custom_file_base() . '/uploads/attachments_thumbs/' . $_file_thumb;
-                    $i++;
-                }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+                require_code('urls2');
+                list($place, , $_file) = find_unique_path('uploads/attachments', basename($entry['path']), true);
+                list($place_thumb, , $_file_thumb) = find_unique_path('uploads/attachments_thumbs', basename($entry['path']), true);
 
                 if ($arcext == 'tar') {
                     $file_details = tar_get_file($myfile, $entry['path'], false, $place);
@@ -359,6 +347,12 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $description = do_lang('EXTRACTED_FILE');
                 if (strpos($entry['path'], '/') !== false) {
                     $description = do_lang('EXTRACTED_FILE_PATH', dirname($entry['path']));
+                }
+
+                // Special code to re-orientate JPEG images if required (browsers cannot do this)
+                require_code('images');
+                if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
+                    convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
                 }
 
                 // Thumbnail

@@ -70,7 +70,7 @@ class Hook_cleanup_image_thumbs
             while (($file = readdir($dh)) !== false) {
                 if (is_image($file, IMAGE_CRITERIA_GD_WRITE)) {
                     $target = get_custom_file_base() . '/' . $dir . '_thumbs/' . $file;
-                    if (!file_exists($target)){
+                    if (!file_exists($target)) {
                         require_code('images');
                         convert_image($full . '/' . $file, $target, -1, -1, intval(get_option('thumb_width')));
                     }

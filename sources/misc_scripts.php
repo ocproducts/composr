@@ -455,8 +455,11 @@ function emoticons_script()
     $max_emoticon_width = 0;
     require_code('images');
     foreach ($_rows as $myrow) {
-        list($_width,) = _symbol_image_dims(array(find_theme_image($myrow['e_theme_img_code'], true)));
-        $max_emoticon_width = max($max_emoticon_width, intval($_width));
+        $test = cms_getimagesize(find_theme_image($myrow['e_theme_img_code'], true));
+        if ($test !== false) {
+            list($_width,) = $test;
+            $max_emoticon_width = max($max_emoticon_width, $_width);
+        }
     }
     if ($max_emoticon_width == 0) {
         $max_emoticon_width = 36;

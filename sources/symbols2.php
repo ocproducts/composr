@@ -344,7 +344,7 @@ function ecv2_BRAND_BASE_URL($lang, $escaped, $param)
  */
 function ecv2_CUSTOM_BASE_URL($lang, $escaped, $param)
 {
-    $value = get_custom_base_url((isset($param[0]) && ($param[0] != '')) ? ($param[0] == '1') : null);
+    $value = get_custom_base_url(empty($param[0]) ? null : ($param[0] == '1'));
 
     if ((isset($param[1])) && ($param[1] == '1')) {
         $value = cdn_filter($value);
@@ -603,7 +603,7 @@ function ecv2_IMG_INLINE($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-            $value = find_theme_image($param[0], true, true, (isset($param[2]) && $param[2] != '') ? $param[2] : null, null, ((isset($param[1])) && ($param[1] == '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
+            $value = find_theme_image($param[0], true, true, empty($param[2]) ? null : $param[2], null, ((isset($param[1])) && ($param[1] == '1')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB']);
         } else {
             $value = 'themes/default/images/' . $param[0] . '.png';
         }

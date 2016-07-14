@@ -159,10 +159,10 @@ class Block_main_multi_content
         $start = get_param_integer($block_id . '_start', isset($map['start']) ? intval($map['start']) : 0);
         $do_pagination = ((isset($map['pagination']) ? $map['pagination'] : '0') == '1');
         $attach_to_url_filter = ((isset($map['attach_to_url_filter']) ? $map['attach_to_url_filter'] : '0') == '1');
-        $root = ((isset($map['root'])) && ($map['root'] != '')) ? intval($map['root']) : get_param_integer('keep_' . $content_type . '_root', null);
+        $root = empty($map['root']) ? get_param_integer('keep_' . $content_type . '_root', null) : intval($map['root']);
 
         $guid = isset($map['guid']) ? $map['guid'] : '';
-        $sort = isset($map['sort']) ? $map['sort'] : 'recent'; // recent|top|views|random|title or some manually typed sort order
+        $sort = empty($map['sort']) ? 'recent' : $map['sort']; // recent|top|views|random|title or some manually typed sort order
         $select = isset($map['select']) ? $map['select'] : '';
         $select_b = isset($map['select_b']) ? $map['select_b'] : '';
         if ($select_b == '*') {
@@ -172,9 +172,9 @@ class Block_main_multi_content
         $zone = isset($map['zone']) ? $map['zone'] : '_SEARCH';
         $efficient = (isset($map['efficient']) ? $map['efficient'] : '1') == '1';
         $title = isset($map['title']) ? $map['title'] : '';
-        $days = ((isset($map['days'])) && ($map['days'] != '')) ? intval($map['days']) : null;
-        $lifetime = ((isset($map['lifetime'])) && ($map['lifetime'] != '')) ? intval($map['lifetime']) : null;
-        $pinned = ((isset($map['pinned'])) && ($map['pinned'] != '')) ? explode(',', $map['pinned']) : array();
+        $days = empty($map['days']) ? null : intval($map['days']);
+        $lifetime = empty($map['lifetime']) ? null : intval($map['lifetime']);
+        $pinned = empty($map['pinned']) ? array() : explode(',', $map['pinned']);
         $give_context = (isset($map['give_context']) ? $map['give_context'] : '0') == '1';
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 

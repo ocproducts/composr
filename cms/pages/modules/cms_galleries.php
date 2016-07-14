@@ -187,6 +187,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('galleries2');
         require_css('galleries');
         require_lang('dearchive');
+        require_code('urls2');
 
         $this->alt_crud_module->add_text = new Tempcode();
 
@@ -729,26 +730,8 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function store_from_archive($file, &$in, $cat, $time = null)
     {
-        // Find where to store on server
-        //  Hunt with sensible names until we don't get a conflict
-        $place = get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file);
-        $i = 2;
-        $_file = filter_naughty($file);
-        while (file_exists($place)) {
-            $_file = strval($i) . $file;
-            $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
-            $i++;
-        }
-        file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
-        $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . filter_naughty($file);
-        $i = 2;
-        $_file_thumb = filter_naughty($file);
-        while (file_exists($place_thumb)) {
-            $_file_thumb = strval($i) . $file;
-            $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
-            $i++;
-        }
-        file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+        list($place, $aurl, $_file) = find_unique_path('uploads/galleries', filter_naughty($file), true);
+        list($place_thumb, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
         // Store on server
         if (rename($in, $place) === false) {
@@ -756,9 +739,6 @@ class Module_cms_galleries extends Standard_crud_module
         }
         fix_permissions($place);
         sync_file($place);
-
-        $aurl = 'uploads/galleries/' . rawurlencode($_file);
-        $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
 
         // Add to database
         return $this->simple_add($aurl, $thumb_url, $_file, $cat, $time);
@@ -785,16 +765,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (substr($x, 0, 5) == 'file_') {
                 $aurl = 'uploads/galleries/' . rawurlencode($file);
 
-                $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $file;
-                $i = 2;
-                $_file_thumb = $file;
-                while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . $file;
-                    $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
-                    $i++;
-                }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
-                $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
+                list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
                 $this->simple_add($aurl, $thumb_url, $file, $cat);
             }

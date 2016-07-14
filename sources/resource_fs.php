@@ -889,13 +889,8 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
 
     if ($ignore_conflicts) {
         // Hunt with sensible names until we don't get a conflict
-        $i = 2;
-        while (file_exists($place)) {
-            $filename = strval($i) . preg_replace('#\..*\.#', '.', basename(urldecode($urlpath)));
-            $place = get_custom_file_base() . '/' . dirname(urldecode($urlpath)) . '/' . $filename;
-            $urlpath = dirname($urlpath) . '/' . urlencode($filename);
-            $i++;
-        }
+        require_code('urls2');
+        list($place, $urlpath) = find_unique_path(dirname(urldecode($urlpath)), basename(urldecode($urlpath)));
     }
 
     file_put_contents($place, $binary);

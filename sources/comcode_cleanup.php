@@ -86,19 +86,14 @@ function _download_associated_media(&$text, $old_url)
             $new_filename = uniqid('', true);
         }
         $new_filename .= '.' . $mapping[$HTTP_DOWNLOAD_MIME_TYPE];
-        $new_path = get_custom_file_base() . '/uploads/external_media/' . $new_filename;
-        $i = 2;
-        while (is_file($new_path)) {
-            $new_filename = strval($i) . '_' . urldecode(basename($old_url));
-            $new_path = get_custom_file_base() . '/uploads/external_media/' . $new_filename;
-            $i++;
-        }
-        rename($temp_path, $new_path);
+        require_code('urls2');
+        list($new_path, $new_url) = find_unique_path('uploads/external_media', $new_filename);
 
+        rename($temp_path, $new_path);
         fix_permissions($new_path);
         sync_file($new_path);
 
-        $new_url = get_custom_base_url() . '/uploads/external_media/' . $new_filename;
+        $new_url = get_custom_base_url() . '/' . $new_url;
         $text = str_replace($old_url, $new_url, $text);
     }
 }

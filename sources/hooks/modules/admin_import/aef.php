@@ -306,8 +306,8 @@ class Hook_aef
         foreach ($rows as $row) {
             $author_data = $db->query('SELECT username, email FROM ' . $table_prefix . 'users WHERE id=' . strval($row['uid']));
 
-            $url = (isset($author_data[0]['email']) && ($author_data[0]['email'] != '')) ? 'mailto:' . $author_data[0]['email'] : '';
-            $author_name = (isset($author_data[0]['username']) && ($author_data[0]['username'] != '')) ? $author_data[0]['username'] : '';
+            $url = empty($author_data[0]['email']) ? '' : 'mailto:' . $author_data[0]['email'];
+            $author_name = empty($author_data[0]['username']) ? '' : $author_data[0]['username'];
             add_author($author_name, $url, null, '', '');
         }
     }
@@ -329,7 +329,7 @@ class Hook_aef
 
         foreach ($rows as $row) {
             $author_data = $db->query('SELECT username FROM ' . $table_prefix . 'users WHERE id=' . strval($row['uid']));
-            $author_name = (isset($author_data[0]['username']) && ($author_data[0]['username'] != '')) ? $author_data[0]['username'] : '';
+            $author_name = empty($author_data[0]['username']) ? '' : $author_data[0]['username'];
 
             $append = '';
             $topic = db_get_first_id(); //there is no news topic/category specified in AEF
@@ -723,17 +723,15 @@ class Hook_aef
         $file_path = $attachments_dir . $filename;
         $data = ($data == '') ? file_get_contents($file_path) : $data;
 
-        $filename = find_derivative_filename('uploads/' . $sections, $filename);
-        $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename;
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename)));
+        list($path, $url) = find_unique_path('uploads/' . $sections, $filename);
+
+        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         if (fwrite($myfile, $data) < strlen($data)) {
             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
         }
         fclose($myfile);
         fix_permissions($path);
         sync_file($path);
-
-        $url = 'uploads/' . $sections . '/' . $filename;
 
         return array($url, $url);
     }
@@ -1000,14 +998,14 @@ class Hook_aef
     public function import_wordfilter($db, $table_prefix, $file_base)
     {
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'registry WHERE ' . db_string_equal_to('name', 'censor_words_from') . ' OR ' . db_string_equal_to('name', 'censor_words_to'));
-        $censor_words_from = (isset($rows[0]['regval']) && $rows[0]['regval'] != '') ? $rows[0]['regval'] : '';
-        $censor_words_to = (isset($rows[1]['regval']) && $rows[1]['regval'] != '') ? $rows[1]['regval'] : '';
+        $censor_words_from = empty($rows[0]['regval']) ? '' : $rows[0]['regval'];
+        $censor_words_to = empty($rows[1]['regval']) ? '' : $rows[1]['regval'];
 
         $censor_words_from_array = explode('|', $censor_words_from);
         $censor_words_to_array = explode('|', $censor_words_to);
 
         foreach ($censor_words_from_array as $key => $row) {
-            add_wordfilter_word($censor_words_from_array[$key], (isset($censor_words_to_array[$key]) && $censor_words_to_array[$key] != '') ? $censor_words_to_array[$key] : '');
+            add_wordfilter_word($censor_words_from_array[$key], empty($censor_words_to_array[$key]) ? '' : $censor_words_to_array[$key]);
         }
     }
 }

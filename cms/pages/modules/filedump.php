@@ -408,7 +408,7 @@ class Module_filedump
                 $width = mixed();
                 $height = mixed();
                 if (is_image($_full, IMAGE_CRITERIA_WEBSAFE, true)) {
-                    $dims = @getimagesize($_full);
+                    $dims = cms_getimagesize($_full);
                     if ($dims !== false) {
                         list($width, $height) = $dims;
                     }
@@ -920,7 +920,7 @@ class Module_filedump
 
         $image_sizes = mixed();
         if (is_image($file, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_WEBSAFE, true)) {
-            $size = @getimagesize($path);
+            $size = cms_getimagesize($path);
             if ($size !== false) {
                 $ratio = floatval($size[1]) / floatval($size[0]);
 

@@ -547,14 +547,10 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     }
 
     // Add in attachments
+    require_code('urls2');
     foreach ($attachments as $filename => $filedata) {
         $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
-        do {
-            $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
-            if (file_exists($new_path)) {
-                $new_filename = uniqid('', true) . '_' . preg_replace('#\..*#', '', $filename) . '.dat';
-            }
-        } while (file_exists($new_path));
+        list($new_path, , $new_filename) = find_unique_path('uploads/attachments', $new_filename);
         file_put_contents($new_path, $filedata);
         sync_file($new_path);
         fix_permissions($new_path);

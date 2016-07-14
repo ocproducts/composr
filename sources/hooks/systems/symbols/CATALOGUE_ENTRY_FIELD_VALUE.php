@@ -33,7 +33,7 @@ class Hook_symbol_CATALOGUE_ENTRY_FIELD_VALUE
     {
         $value = mixed();
         $value = '';
-        if ((isset($param[1])) && ($param[0] != '')) {
+        if (!empty($param[1])) {
             $map = null;
 
             $entry_id = intval($param[0]);

@@ -65,12 +65,12 @@ class Block_main_ebay
             return do_lang_tempcode('NO_PARAMETER_SENT', 'seller');
         }
 
-        $title = (isset($map['title']) && $map['title'] != '') ? $map['title'] : do_lang_tempcode('BLOCK_EBAY_TITLE');
-        $max_entries = (isset($map['max_entries']) && $map['max_entries'] != '') ? intval($map['max_entries']) : 4;
-        $image_size = (isset($map['image_size']) && $map['image_size'] != '') ? intval($map['image_size']) : 80;
-        $domain = (isset($map['domain']) && $map['domain'] != '') ? intval(preg_replace('#=.*$#', '', $map['domain'])) : 0;
+        $title = empty($map['title']) ? do_lang_tempcode('BLOCK_EBAY_TITLE') : $map['title'];
+        $max_entries = empty($map['max_entries']) ? 4 : intval($map['max_entries']);
+        $image_size = empty($map['image_size']) ? 80 : intval($map['image_size']);
+        $domain = empty($map['domain']) ? 0 : intval(preg_replace('#=.*$#', '', $map['domain']));
         $seller = $map['seller'];
-        $query = (isset($map['query']) && strlen($map['query']) > 0) ? preg_replace('#\s#', '+', $map['query']) : ''; // e.g. Gadgets
+        $query = empty($map['query']) ? '' : preg_replace('#\s#', '+', $map['query']); // e.g. Gadgets
 
         return do_template('BLOCK_MAIN_EBAY', array(
             '_GUID' => 'ffda4477bf08164f80dd45ef2985dfe9',

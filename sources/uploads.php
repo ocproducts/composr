@@ -32,6 +32,8 @@ function init__uploads()
         define('CMS_UPLOAD_SWF', 8); // Banners
         define('CMS_UPLOAD_ANYTHING', 15);
     }
+
+    require_code('urls2');
 }
 
 /**
@@ -419,13 +421,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             if (is_null($filename)) {
                 if (($obfuscate != 0) && ($obfuscate != 3)) {
                     $ext = (($obfuscate == 2) && (!is_image($HTTP_FILENAME, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($HTTP_FILENAME);
-
-                    $filename = preg_replace('#\..*\.#', '.', $HTTP_FILENAME) . ((substr($HTTP_FILENAME, -strlen($ext) - 1) == '.' . $ext) ? '' : ('.' . $ext));
-                    $place = $upload_folder_full . '/' . $filename;
-                    while (file_exists($place)) {
-                        $filename = uniqid('', true) . '.' . $ext;
-                        $place = $upload_folder_full . '/' . $filename;
-                    }
+                    list($place, , $filename) = find_unique_path($upload_folder, $filename);
                 } else {
                     $filename = $HTTP_FILENAME;
                     $place = $upload_folder_full . '/' . $filename;
@@ -520,14 +516,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
         } else {
             if (function_exists('imagetypes')) {
                 $thumb_filename = preg_replace('#[^\w\.]#', 'x', basename($url[0]));
-                $place = $thumb_folder_full . '/' . $thumb_filename;
-                $i = 2;
-                while (file_exists($place)) {
-                    $thumb_filename = strval($i) . preg_replace('#[^\w\.]#', 'x', basename($url[0]));
-                    $place = $thumb_folder_full . '/' . $thumb_filename;
-                    $i++;
-                }
-                file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+                list($place, , $thumb_filename) = find_unique_path($thumb_folder, $thumb_filename);
                 $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
 
                 $thumb = convert_image($url_full, $place, -1, -1, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
@@ -809,25 +798,13 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         // If we are not obfuscating then we will need to search for an available filename
         if (($obfuscate == 0) || ($obfuscate == 3) || (strlen($file) > 150)) {
             $filename = preg_replace('#\..*\.#', '.', $file);
-            $place = $upload_folder_full . '/' . $filename;
-            // Hunt with sensible names until we don't get a conflict
-            $i = 2;
-            while (file_exists($place)) {
-                $filename = strval($i) . preg_replace('#\..*\.#', '.', $file);
-                $place = $upload_folder_full . '/' . $filename;
-                $i++;
-            }
-            file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+            list($place, , $filename) = find_unique_path($upload_folder, $filename);
         } else { // A result of some randomness
             $ext = get_file_extension($file);
             $ext = (($obfuscate == 2) && (!is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($file);
 
             $filename = uniqid('', true) . '.' . $ext;
-            $place = $upload_folder_full . '/' . $filename;
-            while (file_exists($place)) {
-                $filename = uniqid('', true) . '.' . $ext;
-                $place = $upload_folder_full . '/' . $filename;
-            }
+            list($place, , $filename) = find_unique_path($upload_folder, $filename);
         }
     } else {
         $place = $upload_folder_full . '/' . $filename;
@@ -870,11 +847,9 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     sync_file($place);
 
     // Special code to re-orientate JPEG images if required (browsers cannot do this)
-    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) {
-        if (is_image($place, IMAGE_CRITERIA_GD_WRITE)) {
-            require_code('images');
-            convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-        }
+    require_code('images');
+    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
+        convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
     }
 
     $url = array();

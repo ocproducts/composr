@@ -403,9 +403,9 @@ class Hook_smf2
                 if ($row['birthdate'] != '') {
                     $birthdate = $row['birthdate'];
                     $birthdata = explode('-', $birthdate);
-                    $bday_day = (isset($birthdata[0]) && ($birthdata[0] != '')) ? $birthdata[0] : null;
-                    $bday_month = (isset($birthdata[1]) && ($birthdata[1] != '')) ? $birthdata[1] : null;
-                    $bday_year = (isset($birthdata[2]) && ($birthdata[2] != '')) ? $birthdata[2] : null;
+                    $bday_day = empty($birthdata[0]) ? null : $birthdata[0];
+                    $bday_month = empty($birthdata[1]) ? null : $birthdata[1];
+                    $bday_year = empty($birthdata[2]) ? null : $birthdata[2];
                 } else {
                     list($bday_day, $bday_month, $bday_year) = array(null, null, null);
                 }
@@ -1127,16 +1127,13 @@ class Hook_smf2
         $data = ($data == '') ? @file_get_contents($file_path) : $data;
         $filename = ($output_filename == '') ? $filename_fixed : $output_filename;
 
-        $filename = find_derivative_filename('uploads/' . $sections, $filename);
-        $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename;
+        list($path, $url) = find_unique_path('uploads/' . $sections, $filename);
 
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename)));
+        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         fwrite($myfile, $data);
         fclose($myfile);
         fix_permissions($path);
         sync_file($path);
-
-        $url = 'uploads/' . $sections . '/' . $filename;
 
         return $url;
     }
@@ -1672,7 +1669,7 @@ class Hook_smf2
                 $attid = isset($atts[0]['id_attach']) ? $atts[0]['id_attach'] : 0;
                 $att_imported = $attid > 0 && import_check_if_imported('post_files', strval($attid)) ? true : false;
                 $messages = $db->query('SELECT * FROM ' . $table_prefix . 'messages WHERE id_topic=' . strval($row['id_topic']) . ' ORDER BY id_topic ASC');
-                $description = (isset($messages[0]['body']) && ($messages[0]['body'] != '')) ? str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($messages[0]['body'])) : '';
+                $description = empty($messages[0]['body']) ? '' : str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($messages[0]['body']));
             }
             if ($att_imported) {
                 $attid_new = import_id_remap_get('post_files', strval($attid), true);
@@ -1800,12 +1797,10 @@ class Hook_smf2
                 $edit_date = null;
 
                 if ($row['illustration'] != '') {
-                    $out_filename = find_derivative_filename('uploads/repimages', basename($row['illustration']));
-                    $out_path = get_custom_file_base() . '/uploads/repimages/' . $out_filename;
+                    list($out_path, $image) = find_unique_path('uploads/repimages', basename($row['illustration']));
                     $out_handle = fopen($out_path, 'wb');
                     http_download_file($boardurl . '/tp-files/tp-articles/illustrations/' . $row['illustration'], null, false, false, 'Composr', null, null, null, null, null, $out_handle);
                     fclose($out_handle);
-                    $image = 'uploads/repimages/' . urlencode($out_filename);
                 } else {
                     $image = '';
                 }

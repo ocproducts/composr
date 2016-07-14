@@ -587,17 +587,14 @@ class Hook_wowbb
      */
     public function data_to_disk($data, $filename, $sections)
     {
-        $filename = find_derivative_filename('uploads/' . $sections, $filename);
-        $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . '.dat';
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . '.dat')));
+        list($path, $url) = find_unique_path('uploads/' . $sections, $filename . '.dat');
+        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         if (fwrite($myfile, $data) < strlen($data)) {
             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
         }
         fclose($myfile);
         fix_permissions($path);
         sync_file($path);
-
-        $url = 'uploads/' . $sections . '/' . $filename . '.dat';
 
         return $url;
     }

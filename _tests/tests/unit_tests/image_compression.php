@@ -77,7 +77,7 @@ class image_compression_test_set extends cms_test_case
                     $filesize = 1;
                 }
 
-                list($width, $height) = getimagesize($base . '/' . $file);
+                list($width, $height) = cms_getimagesize($base . '/' . $file);
                 $area = $width * $height;
                 $this->assertTrue(floatval($area) / floatval($filesize) > $min_ratio, 'Rubbish compression density on ' . $file . ' theme image');
             }

@@ -825,6 +825,50 @@ function ecv_IMG_HEIGHT($lang, $escaped, $param)
 }
 
 /**
+ * Render an 'IMAGE_WIDTH'/'IMAGE_HEIGHT' symbol.
+ *
+ * @param  array $param Symbol parameters
+ * @return array A pair: Image dimensions
+ *
+ * @ignore
+ */
+function _symbol_image_dims($param)
+{
+    if (!function_exists('imagecreatefromstring')) {
+        return array('', '');
+    }
+
+    $value = array('', '');
+
+    if (running_script('install')) {
+        return $value;
+    }
+
+    if (isset($param[0])) {
+        $path = $param[0];
+        $cacheable = (isset($param[1]) && $param[1] == '1');
+
+        if ($cacheable) {
+            $cache = persistent_cache_get('IMAGE_DIMS');
+            if (isset($cache[$path])) {
+                return $cache[$path];
+            }
+        }
+
+        $test = cms_getimagesize($path);
+        if ($test !== false) {
+            $value = array(strval($test[0]), strval($test[1]));
+        }
+
+        if ($cacheable) {
+            $cache[$path] = $value;
+            persistent_cache_set('IMAGE_DIMS', $cache);
+        }
+    }
+    return $value;
+}
+
+/**
  * Evaluate a particular Tempcode symbol.
  *
  * @ignore
@@ -2555,8 +2599,72 @@ function ecv_CYCLE($lang, $escaped, $param)
  */
 function ecv_THUMBNAIL($lang, $escaped, $param)
 {
+    if (empty($param[0])) {
+        return '';
+    }
+
+    $orig_url = $param[0]; // Source for thumbnail generation
+
+    if (empty($param[1])) {
+        $dimensions = null;
+    } else {
+        $dimensions = $param[1];
+    }
+
+    if (empty($param[2])) { // Where we are saving to
+        //$output_dir = dirname(rawurldecode(preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $orig_url)));  We used to try and save into the same dir as the source image, but actually that's pretty messy
+        $output_dir = 'uploads/auto_thumbs';
+    } else {
+        $output_dir = $param[2];
+        if (strpos($output_dir, '/') === false) {
+            $output_dir = 'uploads/' . $output_dir;
+        }
+
+        if (!is_dir(get_custom_file_base() . '/' . $output_dir)) {
+            $output_dir = 'uploads/auto_thumbs';
+        }
+    }
+
+    if (empty($param[3])) { // We can take a parameter that hints what filename to save with (useful to avoid filename collisions within the thumbnail filename subspace). Otherwise we based on source's filename
+        $filename = null;
+    } else {
+        $filename = $param[3];
+    }
+
+    if (empty($param[4])) {
+        $fallback_image = null;
+    } else {
+        $fallback_image = $param[4];
+    }
+
+    if (empty($param[5])) {
+        $algorithm = 'box';
+    } else {
+        $algorithm = $param[5];
+    }
+
+    if (empty($param[6])) {
+        $where = 'both';
+    } else {
+        $where = $param[6];
+    }
+
+    if (empty($param[7])) {
+        $background = null;
+    } else {
+        $background = $param[7];
+    }
+
+    if (empty($param[8])) {
+        $only_make_smaller = false;
+    } else {
+        $only_make_smaller = ($param[8] == '1');
+    }
+
     require_code('images');
-    $value = _symbol_thumbnail($param);
+    require_code('images2');
+
+    $value = convert_image_plus($orig_url, $dimensions, $output_dir, $filename, $fallback_image, $algorithm, $where, $background, $only_make_smaller);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3197,7 +3305,7 @@ function ecv_JS_TEMPCODE($lang, $escaped, $param)
     $temp_array = array();
     handle_symbol_preprocessing(array($escaped, TC_SYMBOL, 'JS_TEMPCODE', $param), $temp_array); // Late preprocessing. Should not be needed in case of full screen output (as this was properly preprocessed), but is in other cases
 
-    $_value = javascript_tempcode(((isset($param[0])) && ($param[0]) != '') ? $param[0] : null);
+    $_value = javascript_tempcode(empty($param[0]) ? null : $param[0]);
     $value = $_value->evaluate();
 
     if ($escaped !== array()) {
@@ -3467,7 +3575,7 @@ function ecv_DATE_AND_TIME($lang, $escaped, $param)
     $use_contextual_dates = (isset($param[0]) && ($param[0] == '1'));
     $verbose = (isset($param[1]) && ($param[1] == '1'));
     $server_time = (isset($param[2]) && ($param[2] == '1'));
-    $time = ((isset($param[3])) && ($param[3] != '')) ? intval($param[3]) : time();
+    $time = empty($param[3]) ? time() : intval($param[3]);
     $member = isset($param[4]) ? intval($param[2]) : null;
     $value = get_timezoned_date($time, true, $verbose, $server_time, !$use_contextual_dates, $member);
 

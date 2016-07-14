@@ -712,12 +712,10 @@ class Hook_phpbb2
                 }
 
                 $source_path = $file_base . '/' . $upload_dir . '/' . $row['physical_filename'];
-                $new_filename = find_derivative_filename('uploads/attachments', $row['physical_filename']);
-                $target_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
+                list($target_path, $url) = find_unique_path('uploads/attachments', $row['physical_filename']);
                 if ((@rename($source_path, $target_path))) {
                     sync_file($target_path);
 
-                    $url = 'uploads/attachments/' . urlencode($new_filename);
                     $thumb_url = '';
 
                     $a_id = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $row['filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['real_filename'], 'a_num_downloads' => $row['download_count'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['filetime'], 'a_description' => ''), true);

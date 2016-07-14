@@ -94,7 +94,7 @@ class Block_main_google_map
         $latitude_key = $map['latfield'];
         $catalogue_name = $map['catalogue'];
         $star_entry = isset($map['star_entry']) ? $map['star_entry'] : '';
-        $max_results = ((isset($map['max_results'])) && ($map['max_results'] != '')) ? intval($map['max_results']) : 300;
+        $max_results = empty($map['max_results']) ? 300 : intval($map['max_results']);
         $icon = isset($map['icon']) ? $map['icon'] : '';
         if (!isset($map['select'])) {
             $map['select'] = '';
@@ -203,7 +203,7 @@ class Block_main_google_map
                 }
             }
 
-            $has_guid = (isset($map['guid']) && $map['guid'] != '');
+            $has_guid = !empty($map['guid']);
             $star_entry_int = intval($star_entry);
 
             // Make marker data JavaScript-friendly

@@ -432,7 +432,8 @@ class Hook_ipb_base
                     }
 
                     if ($photo_url != '') {
-                        $photo_thumb_path = get_custom_file_base() . '/uploads/cns_photos_thumbs/' . find_derivative_filename('uploads/cns_photos_thumbs', $filename);
+                        list($photo_thumb_path) = find_unique_path('uploads/cns_photos_thumbs', $filename);
+
                         require_code('images');
                         $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     }
