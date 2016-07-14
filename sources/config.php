@@ -88,6 +88,17 @@ function init__config()
             exit();
         }
     }
+
+    // Some option(s) that have immediate effect...
+
+    if (get_option('error_handling_database_strict') == '0') {
+        if ((is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
+            $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(false), null, null, true);
+        }
+        if ((is_object($GLOBALS['FORUM_DB']->connection_read)) && ($GLOBALS['FORUM_DB']->connection_read != $GLOBALS['SITE_DB']->connection_read) && (method_exists($GLOBALS['FORUM_DB']->connection_read, 'strict_mode_query'))) {
+            $GLOBALS['FORUM_DB']->query($GLOBALS['FORUM_DB']->connection_read->strict_mode_query(false), null, null, true);
+        }
+    }
 }
 
 /**
@@ -214,8 +225,8 @@ function get_option($name, $missing_ok = false)
 
         if ($value === null) {
             if (!$missing_ok) {
-                if (function_exists('attach_message')) {
-                    attach_message(do_lang_tempcode('MISSING_OPTION', escape_html($name)), 'warn');
+                if (function_exists('do_lang')) {
+                    trigger_error(do_lang('MISSING_OPTION', escape_html($name)));
                 } else {
                     critical_error('PASSON', 'Missing option: ' . $name);
                 }

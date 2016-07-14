@@ -536,7 +536,6 @@ class Module_admin_import
         $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
         if (php_function_allowed('set_time_limit')) {
             set_time_limit($refresh_time);
-            safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
         send_http_output_ping();
         header('Content-type: text/html; charset=' . get_charset());

@@ -224,7 +224,7 @@ function fatal_exit($text)
 
     $trace = get_html_trace();
     $echo = new Tempcode();
-    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'MESSAGE' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => true,)));
+    $echo->attach(do_template('FATAL_SCREEN', array('_GUID' => '95877d427cf4e785b2f16cc71381e7eb', 'TITLE' => $title, 'TEXT' => $text, 'TRACE' => $trace, 'MAY_SEE_TRACE' => true,)));
     $css_url = 'install.php?type=css';
     $css_url_2 = 'install.php?type=css_2';
     $logo_url = 'install.php?type=logo';

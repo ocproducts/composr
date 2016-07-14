@@ -178,7 +178,7 @@ class CMS_simple_xml_reader
         $xml_data = unixify_line_format($xml_data, $parser_charset); // Fixes Windows characters
 
         if (xml_parse($xml_parser, $xml_data, true) == 0) {
-            warn_exit(xml_error_string(xml_get_error_code($xml_parser)));
+            warn_exit(xml_error_string(xml_get_error_code($xml_parser)), false, true);
         }
 
         @xml_parser_free($xml_parser);

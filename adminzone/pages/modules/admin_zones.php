@@ -544,7 +544,7 @@ class Module_admin_zones
                     ftruncate($myfile, 0);
                 }
                 if (fwrite($myfile, $comcode) < strlen($comcode)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 @flock($myfile, LOCK_UN);
                 fclose($myfile);

@@ -92,7 +92,7 @@ function user_sync__inbound($since = null)
 
     // Connect to the database
     if (!class_exists('PDO')) {
-        warn_exit('PDO must be installed.');
+        warn_exit('PDO must be installed.', false, true);
     }
     $connect_string = $db_type . ':host=' . $db_host . ';dbname=' . $db_name;
     $dbh = new PDO($connect_string, $db_user, $db_password);
@@ -503,7 +503,7 @@ function user_sync__outbound($member_id)
 
     // Connect to the database
     if (!class_exists('PDO')) {
-        warn_exit('PDO must be installed.');
+        warn_exit('PDO must be installed.', false, true);
     }
     $dbh = new PDO($db_type . ':host=' . $db_host . ';dbname=' . $db_name, $db_user, $db_password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);

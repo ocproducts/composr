@@ -330,7 +330,7 @@ class Self_learning_cache
             if (file_put_contents($this->path, $contents, LOCK_EX) < strlen($contents)) {
                 @unlink($this->path);
                 fix_permissions($this->path);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fix_permissions($this->path);
         } else {

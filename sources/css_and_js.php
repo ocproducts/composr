@@ -179,7 +179,7 @@ function js_compile($j, $js_cache_path, $minify = true)
         ftruncate($js_file, 0);
     }
     if (fwrite($js_file, $contents) < strlen($contents)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     @flock($js_file, LOCK_UN);
     fclose($js_file);
@@ -217,7 +217,7 @@ function compress_cms_stub_file($stub_file)
                 ftruncate($myfile, 0);
             }
             if (fwrite($myfile, $compressed) < strlen($compressed)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
 
@@ -266,7 +266,7 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
         ftruncate($css_file, 0);
     }
     if (fwrite($css_file, $out) < strlen($out)) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     @flock($css_file, LOCK_UN);
     fclose($css_file);

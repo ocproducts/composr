@@ -353,7 +353,7 @@ function log_newest_activity($id, $timeout = 1000, $force = false)
         fclose($fp);
     } else {
         if (function_exists('attach_message')) {
-            attach_message(intelligent_write_error_inline($file_path), 'warn');
+            attach_message(intelligent_write_error_inline($file_path), 'warn', false, true);
         }
     }
 

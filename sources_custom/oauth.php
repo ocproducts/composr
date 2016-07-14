@@ -108,7 +108,7 @@ function refresh_oauth2_token($service_name, $url, $client_id, $client_secret, $
     $parsed_result = json_decode($result);
 
     if (!array_key_exists('access_token', $parsed_result)) {
-        warn_exit(do_lang_tempcode('ERROR_OBTAINING_ACCESS_TOKEN'));
+        warn_exit(do_lang_tempcode('ERROR_OBTAINING_ACCESS_TOKEN'), false, true);
     }
 
     return $parsed_result->access_token;

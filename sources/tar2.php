@@ -47,7 +47,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
     $in_file = zip_open($in_path);
     if (is_integer($in_file)) {
         require_code('failure');
-        warn_exit(zip_error($in_file, $mzip));
+        warn_exit(zip_error($in_file, $mzip), false, true);
     }
 
     if (is_null($out_path)) {
@@ -67,7 +67,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
         do {
             $more = zip_entry_read($entry);
             if (fwrite($temp_file, $more) < strlen($more)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
         } while (($more !== false) && ($more != ''));
         fclose($temp_file);

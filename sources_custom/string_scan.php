@@ -2370,7 +2370,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_detect_lang_browser
         CONFIG_OPTION_detect_lang_forum
         CONFIG_OPTION_display_name_generator
-        CONFIG_OPTION_display_php_errors
         CONFIG_OPTION_dload_search_index
         CONFIG_OPTION_dobs
         CONFIG_OPTION_download_entries_per_page
@@ -3695,7 +3694,6 @@ function string_scan($lang, $do_guessing = false)
         DISPLAYING_BANNER_ROTATION
         DISPLAY_ELEMENTS
         DISPLAY_NAME_GENERATOR
-        DISPLAY_PHP_ERRORS
         DISPLAY_REVIEW_STATUS
         DISPLAY_TYPE
         DLOAD_SEARCH_INDEX

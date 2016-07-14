@@ -387,10 +387,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             if (is_null($file)) {
                 @unlink($path2);
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), 'warn');
+                    attach_message(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), 'warn', false, true);
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'));
+                    warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), false, true);
                 }
             }
             global $HTTP_FILENAME;
@@ -415,7 +415,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                     attach_message(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), 'warn');
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'));
+                    warn_exit(do_lang_tempcode('CANNOT_COPY_TO_SERVER'), false, true);
                 }
             }
             if (is_null($filename)) {
@@ -448,10 +448,10 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
             if (!$result) {
                 unlink($path2);
                 if ($accept_errors) {
-                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($upload_folder)), 'warn');
+                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($upload_folder)), 'warn', false, true);
                     return array('', '', '', '');
                 } else {
-                    warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($upload_folder)));
+                    warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($upload_folder)), false, true);
                 }
             }
             fix_permissions($place);
@@ -625,10 +625,10 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
         // Check the file exists
         if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url[0]))) && (!$missing_ok)) {
             if ($accept_errors) {
-                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn');
+                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn', false, true);
                 return array('', '');
             } else {
-                warn_exit(do_lang_tempcode('MISSING_FILE'));
+                warn_exit(do_lang_tempcode('MISSING_FILE'), false, true);
             }
         }
     }
@@ -827,7 +827,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     if ($test === false) {
         if ($accept_errors) {
             $df = do_lang_tempcode('FILE_MOVE_ERROR', escape_html($file), escape_html($place));
-            attach_message($df, 'warn');
+            attach_message($df, 'warn', false, true);
             return array('', '');
         } else {
             warn_exit(do_lang_tempcode('FILE_MOVE_ERROR', escape_html($file), escape_html($place)));

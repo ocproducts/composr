@@ -100,7 +100,7 @@ function init__m_zip()
                 $config_url = $_config_url->evaluate();
                 $config_url .= '#group_ARCHIVES';
 
-                attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE2', escape_html($config_url)), 'warn');
+                attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE2', escape_html($config_url)), 'warn', false, true);
 
                 return constant('ZIPARCHIVE::ER_INTERNAL');
             }
@@ -108,7 +108,7 @@ function init__m_zip()
             $res = -1; // any nonzero value
             $unused_array_result = array();
             if (!php_function_allowed('shell_exec')) {
-                attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE'), 'warn');
+                attach_message(do_lang_tempcode('NO_SHELL_ZIP_POSSIBLE'), 'warn', false, true);
 
                 return constant('ZIPARCHIVE::ER_INTERNAL');
             }

@@ -403,7 +403,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
     $parsed_url = @parse_url($url);
     if ($parsed_url === false) {
         require_code('site');
-        attach_message(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)), 'warn');
+        attach_message(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)), 'warn', false, true);
         return '';
     }
 

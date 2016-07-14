@@ -1368,8 +1368,8 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
 
-    if (substr(get_db_type(), 0, 5) == 'mysql') {
-        $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true); // Turn off strict mode
+    if ((is_object($GLOBALS['FORUM_DB']->connection_read)) && (method_exists($GLOBALS['FORUM_DB']->connection_read, 'strict_mode_query'))) {
+        $GLOBALS['FORUM_DB']->query($GLOBALS['FORUM_DB']->connection_read->strict_mode_query(false), null, null, true);
     }
     $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type); // Field type should not have changed, but bugs can happen, especially between CMS versions, so we allow a CPF edit as a "fixup" op
 

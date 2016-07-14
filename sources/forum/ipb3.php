@@ -403,7 +403,7 @@ class Forum_driver_ipb3 extends forum_driver_ipb_shared
         }
         $forum_id = $this->forum_id_from_name($forum_name);
         if (is_null($forum_id)) {
-            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)));
+            warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
         $username = $this->get_username($member);
 

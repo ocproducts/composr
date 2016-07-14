@@ -58,7 +58,7 @@ function semi_dev_mode_startup()
 
         if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (is_null(get_param_string('keep_devtest', null)))) {
             $_GET['keep_devtest'] = '1';
-            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn');
+            attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or keep_stub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
             $_GET['keep_devtest'] = '1';
         }
@@ -108,9 +108,9 @@ function semi_dev_mode_startup()
  * Remove Composr's strictness, to help integration of third-party code.
  *
  * @param  boolean $change_content_type Whether to also set the content type to plain-HTML
- * @param  boolean $mysql_too Whether to destrictify MySQL commands over the Composr database driver
+ * @param  boolean $db_too Whether to destrictify database commands over the Composr database driver
  */
-function destrictify($change_content_type = true, $mysql_too = false)
+function destrictify($change_content_type = true, $db_too = false)
 {
     // Turn off strictness
     if ((!headers_sent()) && ($change_content_type)) {
@@ -122,8 +122,8 @@ function destrictify($change_content_type = true, $mysql_too = false)
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(200);
     }
-    if ((get_forum_type() == 'cns') && ($mysql_too) && (substr(get_db_type(), 0, 5) == 'mysql')) {
-        $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, null, true);
+    if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
+        $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(false), null, null, true);
     }
     global $PREVIOUS_XSS_STATE;
     @array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
@@ -166,8 +166,8 @@ function restrictify()
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
-    if ((get_forum_type() == 'cns') && (substr(get_db_type(), 0, 5) == 'mysql')) {
-        $GLOBALS['SITE_DB']->query('SET sql_mode=STRICT_ALL_TABLES', null, null, true);
+    if ((is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
+        $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(true), null, null, true);
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
         safe_ini_set('ocproducts.type_strictness', '1');

@@ -884,17 +884,17 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Headers
-    if ($website_email == '') {
-        $website_email = $from_email;
-    }
-    if (get_option('use_true_from') == '0') {
-        $headers = 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
-    } else {
-        $headers = 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
-    }
+    $headers = '';
+    if ($website_email != '') {
+        if (get_option('use_true_from') == '0') {
+            $headers .= 'From: "' . $from_name . '" <' . $website_email . '>' . $line_term;
+        } else {
+            $headers .= 'From: "' . $from_name . '" <' . $from_email . '>' . $line_term;
+        }
+        $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
+        $headers .= 'X-Sender: <' . $website_email . '>' . $line_term;
+    } // else maybe server won't let us set it due to whitelist security, and we must let it use it's default (i.e. accountname@hostname)
     $headers .= 'Reply-To: <' . $from_email . '>' . $line_term;
-    $headers .= 'Return-Path: <' . $website_email . '>' . $line_term;
-    $headers .= 'X-Sender: <' . $website_email . '>' . $line_term;
     $cc_address = $no_cc ? '' : get_option('cc_address');
     if ($cc_address != '') {
         if (get_option('bcc') == '0') {
@@ -988,7 +988,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $error = $e->getMessage();
 
             require_code('site');
-            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+            attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
         }
 
         $SENDING_MAIL = false;
@@ -1208,7 +1208,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
             $additional = '';
-            if ($enveloper_override) {
+            if ($enveloper_override && $website_email != '') {
                 $additional = '-f ' . $website_email;
             }
             $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
@@ -1240,9 +1240,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     if (!$worked) {
-        $SENDING_MAIL = false;
         require_code('site');
-        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
     }
 
     $SENDING_MAIL = false;

@@ -81,7 +81,7 @@ function find_mail_folders($server, $port, $username, $password)
     if ($mbox === false) {
         $error = imap_last_error();
         imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
-        warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
+        warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
     }
     $_folders = imap_list($mbox, $server_spec, '*');
 
@@ -262,7 +262,7 @@ function _find_mail_bounces($server, $port, $folder, $username, $password, $boun
     if ($mbox === false) {
         $error = imap_last_error();
         imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
-        warn_exit(do_lang_tempcode('IMAP_ERROR', $error));
+        warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
     }
 
     $out = array();

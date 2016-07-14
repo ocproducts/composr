@@ -111,6 +111,10 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/CONFIRM_SCREEN.tpl',
             'themes/default/templates/WARN_SCREEN.tpl',
             'themes/default/templates/FULL_MESSAGE_SCREEN.tpl',
+            'themes/default/templates/FATAL_SCREEN.tpl',
+            'themes/default/templates/STACK_TRACE.tpl',
+            'themes/default/templates/INLINE_WIP_MESSAGE.tpl',
+            'themes/default/templates/MISSING_SCREEN.tpl',
             'themes/default/templates/INFORM_SCREEN.tpl',
             'themes/default/templates/REDIRECT_SCREEN.tpl',
             'themes/default/templates/WARNING_BOX.tpl',
@@ -228,6 +232,10 @@ class Hook_addon_registry_core_abstract_interfaces
             'templates/RESULTS_LAUNCHER_CONTINUE.tpl' => 'result_launcher_screen',
             'templates/RESULTS_LAUNCHER_WRAP.tpl' => 'result_launcher_screen',
             'templates/SIMPLE_PREVIEW_BOX.tpl' => 'simple_preview_box',
+            'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
+            'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
+            'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
+            'templates/MISSING_SCREEN.tpl' => 'missing_screen',
             'templates/INFORM_SCREEN.tpl' => 'inform_screen',
             'templates/PAGINATION_PER_PAGE_OPTION.tpl' => 'result_table_screen',
             'templates/PAGINATION_PER_PAGE.tpl' => 'result_table_screen',
@@ -505,6 +513,96 @@ class Hook_addon_registry_core_abstract_interfaces
                 'SUMMARY' => lorem_paragraph_html(),
                 'URL' => placeholder_url(),
                 'RESOURCE_TYPE' => '',
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__fatal_screen()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('FATAL_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'TEXT' => lorem_phrase(),
+                'TRACE' => lorem_phrase(),
+                'MAY_SEE_TRACE' => true,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__administrative__stack_trace()
+    {
+        $trace = array();
+        foreach (placeholder_array() as $value) {
+            $traces = array();
+            foreach (placeholder_array() as $key => $value1) {
+                $traces[] = array(
+                    'LINE' => $value1,
+                    'FILE' => lorem_phrase(),
+                    'KEY' => ucfirst($value1),
+                    'VALUE' => lorem_sentence(),
+                );
+            }
+            $trace[] = array(
+                'TRACES' => $traces,
+            );
+        }
+
+        return array(
+            lorem_globalise(do_lorem_template('STACK_TRACE', array(
+                'TRACE' => $trace,
+                'POST' => placeholder_array(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__inline_wip_message()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('INLINE_WIP_MESSAGE', array(
+                'MESSAGE' => lorem_phrase(),
+                'NO_ENTRIES' => lorem_word(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__missing_screen()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('MISSING_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'ADD_URL' => placeholder_url(),
+                'PAGE' => lorem_phrase(),
+                'DID_MEAN' => lorem_word(),
+                'ADD_REDIRECT_URL' => placeholder_url(),
+                'SKIP_SITEMAP' => true,
             )), null, '', true)
         );
     }

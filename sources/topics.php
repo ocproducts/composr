@@ -117,7 +117,7 @@ class CMS_Topic
         // Load up posts from DB
         if (is_null($preloaded_comments)) {
             if (!$this->load_from_topic($topic_id, $num_to_show_limit, $start, $reverse)) {
-                attach_message(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), 'warn');
+                attach_message(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), 'warn', false, true);
             }
         } else {
             $this->inject_posts_for_scoring_algorithm($preloaded_comments);
@@ -256,7 +256,7 @@ class CMS_Topic
 
         // Load up posts from DB
         if (!$this->load_from_topic($topic_id, $num_to_show_limit, $start, $reverse, $posts)) {
-            attach_message(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), 'warn');
+            attach_message(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), 'warn', false, true);
         }
 
         if (!$this->error) {

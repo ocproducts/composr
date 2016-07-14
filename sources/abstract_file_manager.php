@@ -464,7 +464,7 @@ function afm_make_directory($basic_path, $world_access, $recursive = false)
         if (!file_exists(get_custom_file_base() . '/' . $basic_path)) {
             $success = @ftp_mkdir($conn, $path);
             if (!is_string($success)) {
-                warn_exit(protect_from_escaping(@strval($php_errormsg)));
+                warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
             }
         }
         @ftp_chmod($conn, $access, $path);
@@ -474,7 +474,7 @@ function afm_make_directory($basic_path, $world_access, $recursive = false)
         sync_file(get_custom_file_base() . '/' . $basic_path);
     } else {
         if (!file_exists(get_custom_file_base() . '/' . $basic_path)) {
-            @mkdir($path, $access, $recursive) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path), escape_html(dirname($path))));
+            @mkdir($path, $access, $recursive) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path), escape_html(dirname($path))), false, true);
         } else {
             @chmod($path, $access);
         }
@@ -542,7 +542,7 @@ function afm_delete_directory($basic_path, $recursive = false)
 
                 sync_file(get_custom_file_base() . '/' . $basic_path);
             } else {
-                @rmdir($path) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path)));
+                @rmdir($path) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path)), false, true);
 
                 sync_file($path);
             }
@@ -568,7 +568,7 @@ function afm_make_file($basic_path, $contents, $world_access)
 
         $h = fopen($path2, 'wb');
         if (fwrite($h, $contents) < strlen($contents)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP', escape_html($path2)));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP', escape_html($path2)), false, true);
         }
         fclose($h);
 
@@ -579,7 +579,7 @@ function afm_make_file($basic_path, $contents, $world_access)
                 echo @strval($php_errormsg);
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)));
+            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
         }
         fclose($h);
 
@@ -596,7 +596,7 @@ function afm_make_file($basic_path, $contents, $world_access)
             intelligent_write_error($path);
         }
         if (fwrite($h, $contents) < strlen($contents)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE_TMP'), false, true);
         }
         fclose($h);
         @chmod($path, $access);
@@ -657,7 +657,7 @@ function afm_move($basic_old_path, $basic_new_path)
                 echo @strval($php_errormsg);
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)));
+            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
         }
 
         clearstatcache();
@@ -687,7 +687,7 @@ function afm_delete_file($basic_path)
                 echo @strval($php_errormsg);
                 return;
             }
-            warn_exit(protect_from_escaping(@strval($php_errormsg)));
+            warn_exit(protect_from_escaping(@strval($php_errormsg)), false, true);
         }
 
         clearstatcache();

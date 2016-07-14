@@ -633,7 +633,6 @@ class Hook_addon_registry_core
             'themes/default/javascript/sound.js',
             'data/sounds/message_background.mp3',
             'data/sounds/message_received.mp3',
-            'themes/default/templates/INLINE_WIP_MESSAGE.tpl',
             'themes/default/images_custom/.htaccess',
             'themes/default/templates_cached/.htaccess',
             'themes/default/images_custom/index.html',
@@ -655,7 +654,6 @@ class Hook_addon_registry_core
             'sources/blocks/main_content_filtering.php',
             'sources/lang_stemmer_EN.php',
             'sources/lang_filter_EN.php',
-            'themes/default/templates/MISSING_SCREEN.tpl',
             'themes/default/templates/PARAM_INFO.tpl',
             'sources/profiler.php',
             'sources/temporal.php',
@@ -802,8 +800,6 @@ class Hook_addon_registry_core
             'themes/default/templates/FORUM_ATTACHMENT_LINK.tpl',
             'themes/default/templates/LOOKUP_IP_LIST_ENTRY.tpl',
             'themes/default/templates/LOOKUP_SCREEN.tpl',
-            'themes/default/templates/FATAL_SCREEN.tpl',
-            'themes/default/templates/STACK_TRACE.tpl',
             'themes/default/templates/BLOCK_MAIN_EMOTICON_CODES.tpl',
             'themes/default/templates/BLOCK_NO_ENTRIES.tpl',
             'adminzone/index.php',
@@ -1445,10 +1441,6 @@ class Hook_addon_registry_core
             'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/JAVASCRIPT_NEED.tpl' => 'javascript_need',
             'templates/CSS_NEED.tpl' => 'css_need',
-            'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
-            'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
-            'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
-            'templates/MISSING_SCREEN.tpl' => 'missing_screen',
             'templates/PARAM_INFO.tpl' => 'param_info',
             'templates/BLOCK_SIDE_PERSONAL_STATS.tpl' => 'block_side_personal_stats',
             'templates/BLOCK_SIDE_PERSONAL_STATS_LINE.tpl' => 'block_side_personal_stats',
@@ -1699,96 +1691,6 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('CSS_NEED_INLINE', array(
                 'CODE' => '',
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__fatal_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('FATAL_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'MESSAGE' => lorem_phrase(),
-                'TRACE' => lorem_phrase(),
-                'MAY_SEE_TRACE' => true,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__administrative__stack_trace()
-    {
-        $trace = array();
-        foreach (placeholder_array() as $value) {
-            $traces = array();
-            foreach (placeholder_array() as $key => $value1) {
-                $traces[] = array(
-                    'LINE' => $value1,
-                    'FILE' => lorem_phrase(),
-                    'KEY' => ucfirst($value1),
-                    'VALUE' => lorem_sentence(),
-                );
-            }
-            $trace[] = array(
-                'TRACES' => $traces,
-            );
-        }
-
-        return array(
-            lorem_globalise(do_lorem_template('STACK_TRACE', array(
-                'TRACE' => $trace,
-                'POST' => placeholder_array(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__inline_wip_message()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('INLINE_WIP_MESSAGE', array(
-                'MESSAGE' => lorem_phrase(),
-                'NO_ENTRIES' => lorem_word(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__missing_screen()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('MISSING_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'ADD_URL' => placeholder_url(),
-                'PAGE' => lorem_phrase(),
-                'DID_MEAN' => lorem_word(),
-                'ADD_REDIRECT_URL' => placeholder_url(),
-                'SKIP_SITEMAP' => true,
             )), null, '', true)
         );
     }

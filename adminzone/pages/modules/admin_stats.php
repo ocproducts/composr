@@ -1748,7 +1748,7 @@ class Module_admin_stats
             intelligent_write_error($path);
         }
         if (fwrite($file, $graph) < strlen($graph)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         @fclose($file);
         fix_permissions($path);

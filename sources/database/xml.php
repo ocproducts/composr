@@ -1292,7 +1292,7 @@ class Database_Static_xml
         }
 
         if ((strlen($path) > 255) && (stripos(PHP_OS, 'win') !== false)) {
-            attach_message('File path too long on Windows (' . $path . ')', 'warn');
+            attach_message('File path too long on Windows (' . $path . ')', 'warn', false, true);
             return;
         }
         $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');

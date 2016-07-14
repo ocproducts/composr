@@ -125,7 +125,7 @@ END;
 
         $result = http_download_file('http://api.clickatell.com/xml/xml', null, false, false, 'Composr', array('data' => $xml));
         if (strpos($result, 'fault') !== false) {
-            attach_message($result, 'warn');
+            attach_message($result, 'warn', false, true);
             continue;
         }
 

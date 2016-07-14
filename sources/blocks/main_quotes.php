@@ -74,11 +74,11 @@ class Block_main_quotes
 
         $place = _find_text_file_path($file, '');
         if ($place == '') {
-            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file), escape_html(do_lang('FILE'))));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($file), escape_html(do_lang('FILE'))), false, true);
         }
 
         if (!file_exists($place)) {
-            warn_exit(do_lang_tempcode('DIRECTORY_NOT_FOUND', escape_html($place)));
+            warn_exit(do_lang_tempcode('DIRECTORY_NOT_FOUND', escape_html($place)), false, true);
         }
         $edit_url = new Tempcode();
         if (($file == 'quotes') && (has_actual_page_access(get_member(), 'quotes', 'adminzone'))) {

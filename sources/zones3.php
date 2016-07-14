@@ -565,7 +565,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
             ftruncate($myfile, 0);
         }
         if (fwrite($myfile, $text) < strlen($text)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);

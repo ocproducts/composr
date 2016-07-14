@@ -883,7 +883,7 @@ class Hook_vb3
             list($path, $url) = find_unique_path('uploads/' . $sections, $filename . ($obfuscate ? '.dat' : ''));
             $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
             if (fwrite($myfile, $data) < strlen($data)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
             }
             fclose($myfile);
             fix_permissions($path);
@@ -903,7 +903,7 @@ class Hook_vb3
                 list($path, $thumb_url) = find_unique_path('uploads/' . $sections . '_thumbs', $t_filename);
                 $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
                 if (fwrite($myfile, $thumbnail_data) < strlen($thumbnail_data)) {
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                 }
                 fclose($myfile);
                 fix_permissions($path);

@@ -1128,15 +1128,72 @@ For example:
 
 [title="4"]Supressing errors[/title]
 
-Composr will react fatally on most errors unless they are suppressed. This includes [tt]PHP_NOTICE[/tt]s. To suppress errors from a PHP command, put an [tt]@[/tt] symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'deferred' rather than fatal, you can set the global [tt]SUPPRESS_ERROR_DEATH[/tt] variable to [tt]true[/tt] temporarily.
+Composr will react fatally on most errors unless they are suppressed. This includes [tt]PHP_NOTICE[/tt]s. To suppress errors from a PHP command, put an [tt]@[/tt] symbol before the function call. If the PHP command causing the error is buried inside a Composr API function and you want errors to be shown as 'attached' rather than fatal, you can set the global [tt]SUPPRESS_ERROR_DEATH[/tt] variable to [tt]true[/tt] temporarily.
 
 [title="4"]Manually raising errors / showing messages[/title]
 
 To raise an error you'll typically call one of these functions:.
- - [tt]inform_exit[/tt] -- not actually an error, but exit with a message.
+ - [tt]trigger_error[/tt] -- routed through PHP error handling (which itself is taken up by Composr, with logging and error notifications).
+ - [tt]error_log[/tt] -- direct logging to the Composr error log (via the PHP error logging system)
+ - [tt]fatal_exit[/tt] -- some kind of particularly unexpected/egregious error, that needs to come with a stack track. Includes logging and error notifications.
  - [tt]warn_exit[/tt] -- normal error situation, inform the user.
- - [tt]fatal_exit[/tt] -- some kind of particularly unexpected/egregious error, that needs to come with a stack track.
+ - [tt]inform_exit[/tt] -- not actually an error, but exit with a message.
  - [tt]attach_message[/tt] -- an error is shown in the global layout, processing otherwise continues as normal. You can generate [tt]inform[/tt]/[tt]notice[/tt]/[tt]warn[/tt] messages.
+
+Use [tt]trigger_error[/tt]/[tt]fatal_exit[/tt] if it is a totally unexpected but detectable error condition (i.e. not user error, not a common system error, i.e. very likely a Composr bug). As such it would be subject to logging and error notifications. As [tt]trigger_error[/tt] goes through the Composr's handling of the PHP error system, the configuration options for how to handle PHP errors are respected. In many cases [tt]trigger_error[/tt] will effectively call [tt]fatal_exit[/tt]/[tt]attach_message[/tt] based on these settings. The other functions are to be called directly in detectable situations that are typically user errors, where you want to specify the precise handling for them.
+
+[tt]warn_exit[/tt] and [tt]attach_message[/tt] can be told to do logging and error notifications also via setting a special parameter. In this case though no error mail will send to ocProducts, as it's not a Composr bug.
+
+{|
+! Function
+! Error level
+! Handling type
+! Logging
+! Error notification
+! ocProducts error mail
+|-
+! [tt]trigger_error[/tt]
+| Notice, Warn, Error
+| [i]Depends on config[/i]
+| Yes
+| Yes
+| Yes
+|-
+| [tt]error_log[/tt]
+| N/A
+| Skip
+| Yes
+| No
+| No
+|-
+! [tt]fatal_exit[/tt]
+| Error
+| Fatal
+| Yes
+| Yes
+| Yes
+|-
+! [tt]warn_exit[/tt]
+| Warn
+| Fatal
+| [i]Depends on parameters[/i]
+| [i]Depends on parameters[/i]
+| No
+|-
+! [tt]inform_exit[/tt]
+| Inform
+| Fatal
+| No
+| No
+| No
+|-
+! [tt]attach_message[/tt]
+| Inform, Notice, or Warn
+| Attach
+| [i]Depends on parameters[/i]
+| [i]Depends on parameters[/i]
+| No
+|}
 
 [title="4"]Getting error messages[/title]
 

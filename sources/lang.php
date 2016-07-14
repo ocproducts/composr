@@ -786,8 +786,7 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
                     return ''; // Probably failing to load global.ini, so just output with some text missing
                 }
 
-                require_code('site');
-                attach_message(do_lang_tempcode('MISSING_LANG_STRING', escape_html($codename)), 'warn');
+                trigger_error(do_lang('MISSING_LANG_STRING', escape_html($codename)));
                 return '';
             } else {
                 if ($SMART_CACHE !== null) {
@@ -1126,7 +1125,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         $entry = $row[$field_name];
 
         if ($entry == 0) {
-            attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+            trigger_error(do_lang('FAILED_ENTRY'));
             return new Tempcode();
         }
 
@@ -1239,13 +1238,12 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
     }
 
     if ($entry == 0) {
-        require_code('site');
-        attach_message(do_lang_tempcode('FAILED_ENTRY'), 'warn');
+        trigger_error(do_lang('FAILED_ENTRY'));
         return '';
     }
 
     if ($entry === null) {
-        fatal_exit(do_lang_tempcode('NULL_LANG_STRING'));
+        trigger_error(do_lang('NULL_LANG_STRING'), E_USER_WARNING);
     }
 
     if ($connection === null) {
@@ -1291,7 +1289,7 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
             fatal_exit($msg);
         }
         require_code('site');
-        attach_message(make_string_tempcode($msg), 'warn');
+        attach_message(make_string_tempcode($msg), 'warn', false, true);
         return '';
     }
     if ($lang === user_lang()) {

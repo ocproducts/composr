@@ -219,9 +219,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     // Evaluate message. Needs doing early so we know if we have any headers
 
     // Misc settings
-    if ($website_email == '') {
-        $website_email = $from_email;
-    }
     $cc_address = $no_cc ? '' : get_option('cc_address');
 
     global $CID_IMG_ATTACHMENT;
@@ -437,8 +434,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $to_array[$_to_email] = is_array($to_name) ? $to_name[$i] : $to_name;
         }
     }
-    $message = Swift_Message::newInstance($subject)
-        ->setFrom(array($website_email => $from_name))
+    $message = Swift_Message::newInstance($subject);
+    if ($website_email != '') {
+        if (get_option('use_true_from') == '0') {
+            $message->setFrom(array($website_email => $from_name));
+        } else {
+            $message->setFrom(array($from_email => $from_name));
+        }
+    }
+    $message
         ->setReplyTo(array($from_email => $from_name))
         ->setTo($to_array)
         ->setDate(time())
@@ -501,10 +505,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     cms_profile_end_for('mail_wrap', $subject_line);
 
     // Return / Error handling
-    $SENDING_MAIL = false;
     if ($error != '') {
         require_code('site');
-        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn');
+        attach_message(!is_null($error) ? make_string_tempcode($error) : do_lang_tempcode('MAIL_FAIL', escape_html(get_option('staff_address'))), 'warn', false, true);
     }
+    $SENDING_MAIL = false;
     return null;
 }

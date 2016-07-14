@@ -1072,7 +1072,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $t_keyword_search_rows = $db->query($keywords_query, $max + $start);
             cms_profile_end_for('SEARCH:t_keyword_search_rows', $keywords_query);
             if (is_null($t_keyword_search_rows)) {
-                warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'));
+                warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'), false, true);
             }
             $t_rows = array_merge($t_rows, $t_keyword_search_rows);
 
@@ -1270,7 +1270,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $t_main_search_rows = $db->query($query, $max + $start, null, false, true);
             cms_profile_end_for('SEARCH:t_main_search_rows', $query);
             if (is_null($t_main_search_rows)) {
-                warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'));
+                warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'), false, true);
             }
 
             $db->dedupe_mode = false;

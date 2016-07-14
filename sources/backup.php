@@ -102,7 +102,7 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
     $indices = $GLOBALS['SITE_DB']->query_select($db_meta_indices, array('*'));
     foreach ($indices as $index) {
         if (fwrite($install_php_file, preg_replace('#^#m', '//', '   $GLOBALS[\'SITE_DB\']->create_index(\'' . $index['i_table'] . '\',\'' . $index['i_name'] . '\',array(\'' . str_replace(',', '\',\'', $index['i_fields']) . '\'));' . "\n")) == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
     }
 
@@ -172,7 +172,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     get_table_backup($logfile, 'db_meta', 'db_meta_indices', $install_data_php_file);
 
     if (fwrite($install_php_file, substr($_install_php_file, $place + 8)) == 0) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     fclose($install_php_file);
     fclose($install_data_php_file);
@@ -230,7 +230,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     $url = get_base_url() . '/exports/backups/' . $file . '.tar';
     if (function_exists('gzopen')) {
         if (fwrite($logfile, "\n" . do_lang('COMPRESSING') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
 
         $myfile = gzopen(get_custom_file_base() . '/exports/backups/' . $file . '.tar.gz.tmp', 'wb') or intelligent_write_error(get_custom_file_base() . '/exports/backups/' . $file . '.tar.gz.tmp');
@@ -252,7 +252,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     }
 
     if (fwrite($logfile, "\n" . do_lang('SUCCESS') . "\n") == 0) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
     }
     fclose($logfile);
     sync_file($logfile_path);

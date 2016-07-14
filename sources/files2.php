@@ -122,7 +122,7 @@ function cache_and_carry($func, $args, $timeout = null)
 function make_missing_directory($dir)
 {
     if (@mkdir($dir, 0777, true) === false) {
-        warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)));
+        warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)), false, true);
     }
     fix_permissions($dir);
     sync_file($dir);
@@ -141,14 +141,14 @@ function _intelligent_write_error($path)
             return; // Probably was OR'd where 0 casted to false
         }
 
-        warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)));
+        warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html($path)), false, true);
     } elseif (file_exists(dirname($path))) {
         if (strpos($path, '/templates_cached/') !== false) {
             critical_error('PASSON', do_lang('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path))));
         }
-        warn_exit(do_lang_tempcode('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path))));
+        warn_exit(do_lang_tempcode('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path))), false, true);
     } else {
-        warn_exit(do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path)))));
+        warn_exit(do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path)))), false, true);
     }
 }
 
@@ -312,13 +312,13 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
                 if (!$just_files) {
                     $test = @rmdir($dir . '/' . $entryname);
                     if (($test === false) && (!$just_files/*tolerate weird locked dirs if we only need to delete files anyways*/)) {
-                        attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
+                        attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn', false, true);
                     }
                 }
             } elseif (($entryname != '.') && ($entryname != '..')) {
                 $test = @unlink($dir . '/' . $entryname);
                 if ($test === false) {
-                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn');
+                    attach_message(do_lang_tempcode('WRITE_ERROR', escape_html($dir . '/' . $entryname)), 'warn', false, true);
                 }
             }
             sync_file($dir . '/' . $entryname);
@@ -950,7 +950,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     $url_parts = @parse_url($url);
     if ($url_parts === false || !isset($url_parts['host'])) {
         if ($trigger_error) {
-            warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)));
+            warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url)), false, true);
         } else {
             $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_BAD_URL', escape_html($url));
         }
@@ -1696,7 +1696,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '401':
                             case '403':
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)), false, true);
                                 } else {
                                     $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
                                 }
@@ -1712,7 +1712,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 return null;
                             case '404':
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)), false, true);
                                 } else {
                                     $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                 }
@@ -1728,7 +1728,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             case '400':
                             case '500':
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)), false, true);
                                 } else {
                                     $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                 }
@@ -1755,7 +1755,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 }
                             default:
                                 if ($trigger_error) {
-                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])));
+                                    warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])), false, true);
                                 } else {
                                     $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2]));
                                 }
@@ -1795,7 +1795,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
 
             if ($trigger_error) {
-                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)));
+                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url)), false, true);
             } else {
                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
             }
@@ -1817,7 +1817,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         }
         if ($input_len < $size_expected) {
             if ($trigger_error) {
-                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_CUT_SHORT', escape_html($url), escape_html(integer_format($size_expected)), escape_html(integer_format($input_len))));
+                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_CUT_SHORT', escape_html($url), escape_html(integer_format($size_expected)), escape_html(integer_format($input_len))), false, true);
             } else {
                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_CUT_SHORT', escape_html($url), escape_html(integer_format($size_expected)), escape_html(integer_format($input_len)));
             }
@@ -1924,7 +1924,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $errstr = strval($errno);
             }
             $error = do_lang_tempcode('_HTTP_DOWNLOAD_NO_SERVER', escape_html($url), escape_html($errstr));
-            warn_exit($error);
+            warn_exit($error, false, true);
         } else {
             $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }

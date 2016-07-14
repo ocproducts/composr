@@ -590,7 +590,7 @@ class Hook_wowbb
         list($path, $url) = find_unique_path('uploads/' . $sections, $filename . '.dat');
         $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         if (fwrite($myfile, $data) < strlen($data)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
         }
         fclose($myfile);
         fix_permissions($path);

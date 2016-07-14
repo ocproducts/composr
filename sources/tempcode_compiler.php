@@ -189,7 +189,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     if ($tolerate_errors) {
                         continue;
                     }
-                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                    warn_exit(do_lang_tempcode('ABRUPTED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                 }
                 $current_level_data = array();
                 switch (isset($next_token[0]) ? $next_token[0] : '') {
@@ -228,7 +228,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $opener_params = array_merge($current_level_params, array($current_level_data));
                 $__first_param = array_shift($opener_params);
                 if (count($__first_param) !== 1) {
-                    warn_exit(do_lang_tempcode('COMPLEX_FIRST_PARAMETER'));
+                    warn_exit(do_lang_tempcode('COMPLEX_FIRST_PARAMETER'), false, true);
                 }
                 $_first_param = $__first_param[0];
 
@@ -242,7 +242,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 $past_level_mode = $current_level_mode;
                 if ($stack === array()) {
                     if (!$tolerate_errors) {
-                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + _length_so_far($bits, $i)))));
+                        warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + _length_so_far($bits, $i)))), false, true);
                     }
                 } else {
                     list($current_level_mode, $current_level_data, $current_level_params, , , , $num_preprocessable_bits) = array_pop($stack);
@@ -520,21 +520,21 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
                         list($current_level_mode, $current_level_data, $current_level_params, $directive_level_mode, $directive_level_data, $directive_level_params, $num_preprocessable_bits) = array_pop($stack);
                         if (!is_array($directive_level_params)) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                            warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
                         $directive_opener_params = array_merge($directive_level_params, array($directive_level_data));
                         if (($directive_level_mode !== PARSE_DIRECTIVE) || ($directive_opener_params[0][0] !== '"START"')) {
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                            warn_exit(do_lang_tempcode('TEMPCODE_TOO_MANY_CLOSES', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
 
                         // Handle directive
@@ -542,7 +542,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             if ($tolerate_errors) {
                                 continue;
                             }
-                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                            warn_exit(do_lang_tempcode('NO_DIRECTIVE_TYPE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
                         }
                         $directive_params = '';
                         $first_directive_param = '""';
@@ -770,7 +770,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
     if ((!array_key_exists('LAX_COMCODE', $GLOBALS)) || ($GLOBALS['LAX_COMCODE'] === false)) {
         if ($stack !== array()) {
             if (!$tolerate_errors) {
-                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))));
+                warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);
             }
         }
     }
@@ -915,7 +915,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     }
 
     if (($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.js') && (strpos($template_contents, '.innerHTML') !== false) && (!running_script('install')) && (strpos($template_contents, 'Parser hint: .innerHTML okay') === false)) {
-        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not work in true XHTML (when the browsers real XML parser is in action). Use Composr\'s global set_inner_html/get_inner_html functions.', 'warn');
+        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not work in true XHTML (when the browsers real XML parser is in action). Use Composr\'s global set_inner_html/get_inner_html functions.', 'warn', false, true);
     }
 
     // Strip off trailing final lines from single lines templates. Editors often put these in, and it causes annoying "visible space" issues

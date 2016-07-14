@@ -255,7 +255,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                                 do {
                                     $more = zip_entry_read($entry);
                                     if (fwrite($outfile, $more) < strlen($more)) {
-                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                                     }
                                 } while (($more !== false) && ($more != ''));
 

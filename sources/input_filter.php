@@ -595,7 +595,7 @@ class Field_restriction_loader
             return;
         }
         if (@xml_parse($xml_parser, $data, true) == 0) {
-            attach_message('fields.xml: ' . xml_error_string(xml_get_error_code($xml_parser)), 'warn');
+            attach_message('fields.xml: ' . xml_error_string(xml_get_error_code($xml_parser)), 'warn', false, true);
             return;
         }
         @xml_parser_free($xml_parser);

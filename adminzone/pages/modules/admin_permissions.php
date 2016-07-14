@@ -35,7 +35,7 @@ class Module_admin_permissions
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 9;
+        $info['version'] = 10;
         $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
@@ -167,6 +167,10 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'GENERAL_SETTINGS'), array('the_name' => 'may_enable_staff_notifications'), '', 1);
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('the_default' => 0), array('the_name' => 'have_personal_category'), '', 1);
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'VOTE'), array('the_name' => 'vote_in_polls'), '', 1);
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 10)) {
+            rename_privilege('see_stack_dump', 'see_stack_trace');
         }
     }
 
