@@ -37,13 +37,13 @@ class tutorial_image_consistency_test_set extends cms_test_case
             if (is_dir($path . '/' . $f)) {
                 $dh2 = opendir($path . '/' . $f);
                 while (($f2 = readdir($dh2)) !== false) {
-                    if (is_image($f2)) {
+                    if (is_image($f2, IMAGE_CRITERIA_WEBSAFE)) {
                         $this->images[$f . '/' . $f2] = true;
                     }
                 }
                 closedir($dh2);
             } else {
-                if (is_image($f)) {
+                if (is_image($f, IMAGE_CRITERIA_WEBSAFE)) {
                     $this->images[$f] = true;
                 }
             }

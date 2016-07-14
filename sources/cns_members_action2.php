@@ -1788,50 +1788,32 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
     // Check it has valid dimensions
     if ($avatar_url != '') {
         require_code('images');
-        if (!is_image($avatar_url, true)) {
+        if (!is_image($avatar_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($member_id, 'comcode_dangerous'), true)) {
             $ext = get_file_extension($avatar_url);
             warn_exit(do_lang_tempcode('UNKNOWN_FORMAT', escape_html($ext)));
         }
         $stub = url_is_local($avatar_url) ? (get_complex_base_url($avatar_url) . '/') : '';
         if (function_exists('imagetypes')) {
-            $file_path_stub = convert_url_to_path($stub . $avatar_url);
-            if (!is_null($file_path_stub)) {
-                $from_file = @file_get_contents($file_path_stub);
-            } else {
-                $from_file = http_download_file($stub . $avatar_url, 1024 * 1024 * 4/*reasonable limit*/, false);
-            }
-            if (is_null($from_file)) {
-                warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('URL')));
-            }
-            $source = @imagecreatefromstring($from_file);
-            if ($source === false) {
-                warn_exit(do_lang_tempcode('CORRUPT_FILE', escape_html($avatar_url)));
-            }
+            $test = cms_getimagesize($stub . $avatar_url);
+            if (!is_null($test)) { // If we can get a size (if we can't it could mean many things - e.g. vector, missing, corrupt)
+                list($sx, $sy) = $test;
 
-            if (get_file_extension($avatar_url) == 'gif') {
-                $header = unpack('@6/' . 'vwidth/' . 'vheight', $from_file);
-                $sx = $header['width'];
-                $sy = $header['height'];
-            } else {
-                $sx = imagesx($source);
-                $sy = imagesy($source);
-            }
-            imagedestroy($source);
-
-            require_code('cns_groups');
-            $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
-            $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
-            if (($sx > $width) || ($sy > $height)) {
-                require_code('images');
-                $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
-                if ((!is_saveable_image($file_path)) || (!url_is_local($avatar_url))) {
-                    if ((url_is_local($avatar_url)) && (substr($avatar_url, 0, 20) == 'uploads/cns_avatars/')) {
-                        unlink($file_path);
-                        sync_file(rawurldecode($avatar_url));
+                require_code('cns_groups');
+                $width = cns_get_member_best_group_property($member_id, 'max_avatar_width');
+                $height = cns_get_member_best_group_property($member_id, 'max_avatar_height');
+                if (($sx > $width) || ($sy > $height)) {
+                    // Size down, if possible
+                    require_code('images');
+                    if ((!is_image($avatar_url, IMAGE_CRITERIA_GD_WRITE)) || (!url_is_local($avatar_url))) {
+                        if ((url_is_local($avatar_url)) && (substr($avatar_url, 0, 20) == 'uploads/cns_avatars/')) {
+                            unlink(get_custom_file_base() . '/' . rawurldecode($avatar_url));
+                            sync_file(get_custom_file_base() . '/' . rawurldecode($avatar_url));
+                        }
+                        warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
                     }
-                    warn_exit(do_lang_tempcode('IMAGE_BAD_DIMENSIONS', strval($width) . 'x' . strval($height), strval($sx) . 'x' . strval($sy)));
+                    $file_path = get_custom_file_base() . '/' . rawurldecode($avatar_url);
+                    $avatar_url = convert_image($file_path, $file_path, $width, $height, -1, false, get_file_extension($file_path), true, true);
                 }
-                convert_image($file_path, $file_path, $width, $height, -1, false, get_file_extension($file_path), true, true);
             }
         }
 

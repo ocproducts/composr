@@ -467,12 +467,10 @@ function post_param_image($name = 'image', $upload_to = null, $theme_image_type 
  */
 function resize_rep_image($rep_image)
 {
-    if (($rep_image != '') && (function_exists('imagepng')) && (get_value('resize_rep_images') !== '0')) {
-        $_rep_image = $rep_image;
-        if (url_is_local($rep_image)) {
-            $_rep_image = get_custom_base_url() . '/' . $rep_image;
-        }
-        convert_image($_rep_image, get_custom_file_base() . '/uploads/repimages/' . basename(rawurldecode($rep_image)), -1, -1, intval(get_option('thumb_width')), true, null, false, true);
+    if (($rep_image != '') && (get_value('resize_rep_images') !== '0')) {
+        require_code('images');
+        $rep_image_path = get_custom_file_base() . '/uploads/repimages/' . basename(rawurldecode($rep_image));
+        $rep_image = convert_image($rep_image, $rep_image_path, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
     }
 
     return $rep_image;
@@ -677,7 +675,7 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
                         if ($dot_pos === false) {
                             $dot_pos = strlen($file);
                         }
-                        if (is_image($file)) {
+                        if (is_image($file, IMAGE_CRITERIA_NONE)) {
                             $ids[] = $type_path . substr($file, 0, $dot_pos);
                         }
                     }
@@ -712,7 +710,7 @@ function combo_get_image_paths($selected_path, $base_url, $base_path)
 }
 
 /**
- * Search under a base path for image FILE URLs (not actually paths as function name would suggest).
+ * Search under a base path for image FILE URLs.
  *
  * @param  URLPATH $base_url The base-URL to where we are searching for images
  * @param  PATH $base_path The base-path to where we are searching for images
@@ -731,7 +729,7 @@ function get_image_paths($base_url, $base_path)
             if (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) {
                 $this_path = $base_path . $file;
                 if (is_file($this_path)) {
-                    if (is_image($file)) {
+                    if (is_image($file, IMAGE_CRITERIA_NONE)) {
                         $this_url = $base_url . rawurlencode($file);
                         $out[$this_path] = $this_url;
                     }
@@ -770,7 +768,7 @@ function get_all_image_codes($base_path, $search_under, $recurse = true)
             if (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS)) {
                 $full_path = $base_path . '/' . $search_under . '/' . $file;
                 if (is_file($full_path)) {
-                    if (is_image($file)) {
+                    if (is_image($file, IMAGE_CRITERIA_NONE)) {
                         $dot_pos = strrpos($file, '.');
                         if ($dot_pos === false) {
                             $dot_pos = strlen($file);

@@ -880,9 +880,8 @@ class Hook_vb3
             }
         }
         if ($filename != '') {
-            $filename = find_derivative_filename('uploads/' . $sections, $filename);
-            $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : '');
-            $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : ''))));
+            list($path, $url) = find_unique_path('uploads/' . $sections, $filename . ($obfuscate ? '.dat' : ''));
+            $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
             if (fwrite($myfile, $data) < strlen($data)) {
                 warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
             }
@@ -890,27 +889,23 @@ class Hook_vb3
             fix_permissions($path);
             sync_file($path);
 
-            $url = 'uploads/' . $sections . '/' . $filename . ($obfuscate ? '.dat' : '');
-
             if ($thumbnail_data == '') {
                 if ($thumbnail) {
                     $t_filename = $filename;
-                    $thumb_url = 'uploads/' . $sections . '_thumbs/' . find_derivative_filename('uploads/' . $sections . '_thumbs', $t_filename, true);
+                    list($thumb_path) = find_unique_path('uploads/' . $sections . '_thumbs', $t_filename);
                     require_code('images');
-                    convert_image(get_custom_base_url() . '/' . $url, $thumb_url, -1, -1, intval(get_option('thumb_width')), false, null, true);
+                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     return array($url, $thumb_url);
                 } else {
                     return array($url, '');
                 }
             } else {
-                $thumb_filename = find_derivative_filename('uploads/' . $sections . '_thumbs', $filename);
-                $path = get_custom_file_base() . '/uploads/' . $sections . '_thumbs/' . $thumb_filename;
-                $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '_thumbs/' . $thumb_filename)));
+                list($path, $thumb_url) = find_unique_path('uploads/' . $sections . '_thumbs', $t_filename);
+                $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
                 if (fwrite($myfile, $thumbnail_data) < strlen($thumbnail_data)) {
                     warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
                 }
                 fclose($myfile);
-                $thumb_url = 'uploads/' . $sections . '/' . $thumb_filename;
                 fix_permissions($path);
                 sync_file($path);
 

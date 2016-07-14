@@ -37,8 +37,8 @@ class Hook_symbol_CURRENCY
             if (isset($param[0])) {
                 require_code('currency');
                 $amount = floatval(str_replace(',', '', $param[0]));
-                $from_currency = ((isset($param[1])) && ($param[1] != '')) ? $param[1] : get_option('currency');
-                $to_currency = ((isset($param[2])) && ($param[2] != '')) ? $param[2] : null;
+                $from_currency = empty($param[1]) ? get_option('currency') : $param[1];
+                $to_currency = empty($param[2]) ? null : $param[2];
                 $value = currency_convert($amount, $from_currency, $to_currency, true);
                 if (is_null($value)) {
                     $value = $param[0] . ' ' . $from_currency . '<!--' . do_lang('INTERNAL_ERROR') . '-->';

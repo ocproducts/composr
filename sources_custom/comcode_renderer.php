@@ -54,7 +54,7 @@ if (!function_exists('init__comcode_renderer')) {
                     add_video('', \$gallery, \$description, \$urls_gal[0], \$urls_gal[1], 1, 1, 1, 1, '', \$video_length, \$video_width, \$video_height);
                 }
 
-                if (is_image(\$urls_gal[0])) {
+                if (is_image(\$urls_gal[0], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                     add_image('', \$gallery, \$description, \$urls_gal[0], \$urls_gal[1], 1, 1, 1, 1, '');
                 }
             }

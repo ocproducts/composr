@@ -788,11 +788,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
                 if (file_exists($expected_output_path)) {
                     require_code('images');
-                    if (function_exists('imagepng')) {
-                        convert_image($expected_output_path, $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
-                    }
-
-                    return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
+                    return convert_image($expected_output_path, $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
                 }
             }
         }
@@ -830,15 +826,13 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
             if (file_exists(str_replace('%d', '1', $dest_file))) {
                 require_code('images');
-                if (function_exists('imagepng')) {
-                    convert_image(str_replace('%d', '1', $dest_file), $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
+                if (function_exists('imagetypes')) {
+                    return convert_image(str_replace('%d', '1', $dest_file), $expected_output_path, -1, -1, intval(get_option('thumb_width')), true, null, true);
                 } else {
                     copy(str_replace('%d', '1', $dest_file), $expected_output_path);
                     fix_permissions($expected_output_path);
                     sync_file($expected_output_path);
                 }
-
-                return 'uploads/galleries/' . rawurlencode(basename($expected_output_path));
             }
         }
     }
@@ -1198,10 +1192,10 @@ function watermark_gallery_image($gallery, $file_path, $filename)
 {
     // We can't watermark an image we can't save
     require_code('images');
-    if (!function_exists('imagepng')) {
+    if (!function_exists('imagetypes')) {
         return;
     }
-    if (!is_saveable_image($filename)) {
+    if (!is_image($filename, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_GD_WRITE)) {
         return;
     }
 
@@ -1294,13 +1288,11 @@ function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
 {
     // We can't watermark an image we can't save
     require_code('images');
-    if (!is_saveable_image($filename)) {
+    if (!is_image($filename, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_GD_WRITE)) {
         return;
     }
 
-    if (function_exists('imagepng')) {
-        convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
-    }
+    convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
 }
 
 /**

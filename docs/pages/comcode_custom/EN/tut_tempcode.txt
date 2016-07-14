@@ -1344,29 +1344,32 @@ These are advanced symbols, and mirror Composr's internal API. The parameters ar
 
 The [tt]{$THUMBNAIL}[/tt] tag is actually much more sophisticated and powerful than described above. It's full syntax is as follows...
 
-Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_image,type,where,background,only_make_smaller}[/tt]
+Usage: [tt]{$THUMBNAIL,source_image,widthxheight,output_dir,filename,fallback_image,algorithm,where,background,only_make_smaller}[/tt]
 where:
  - [tt]source_image[/tt] is the URL to the full image
  - [tt]widthxheight[/tt] is the desired width/height for the thumbnail. For types (see below) of width or height or crop you can omit either of the width or height for automatically calculated proportionality (e.g. [tt]x20[/tt] for just a height). If you specify both for crop it crops to the exact specified box rather than to the implied proportional box.
- - [tt]output_dir[/tt] is the name of a directory under Composr's [tt]uploads[/tt] directory
- - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image and an articulation of the thumbnail settings
+ - [tt]output_dir[/tt] is the name of a directory, either under Composr's [tt]uploads[/tt] directory or a longer path relative to the base directory
+ - [tt]filename[/tt] is the name of the thumbnail filename. If not provided it will be automatically chosen based on the source_image. An articulation of the thumbnail settings will be prepended to the filename in any case
  - [tt]fallback_image[/tt] is the URL to the image to use if no thumbnail could be generated. If not provided the source_image will be used
- - [tt]type[/tt] is either:
-  - [tt]box[/tt] for an image which should be maximally fitted into the given box dimensions (the default)
+ - [tt]algorithm[/tt] is either:
+  - [tt]box[/tt] for an image which should be scaled proportionally to fit into the given box dimensions, with no cropping or padding meaning it may be an irregular size (the default)
   - [tt]width[/tt] for an image which is stretched to the given width and a height in proportion to that
   - [tt]height[/tt] for an image which is stretched to the given height and a width in proportion to that
   - [tt]crop[/tt] for an image which has been shrunk until one of its dimensions matched that given and the rest has been chopped off
-  - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out
+  - [tt]pad[/tt] for an image which has been shrunk until it completely fits within the given dimensions, and then padded out (padding will only be added if not together the where is 'both' and background is 'none' -- if both & none then it will just make the output image dimensions smaller)
   - [tt]pad_vert_crop_vert[/tt] for an image that may only have cropping or padding done above/below and therefore gets stretched to force that to be the case
   - [tt]pad_horiz_crop_horiz[/tt] for an image that may only have cropping or padding done left/right and therefore gets stretched to force that to be the case
- - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to crop/pad:
-  - [tt]start[/tt]
-  - [tt]end[/tt]
-  - [tt]both[/tt] (assuming bottom-to-top and right-to-left)
-  - If the [tt]where[/tt] option is omitted for cropped thumbnails then it will be centred. For padded thumbnails it will resize the image to get rid of any need for padding (ie. "padding none").
+ - The [tt]where[/tt] argument is not needed for [tt]width[/tt] or [tt]height[/tt] type thumbnails. For [tt]crop[/tt] & [tt]pad[/tt] types it is where to *anchor from* when cropping/padding:
+  - [tt]both[/tt] (crops/pads around all edges; the default)
+  - [tt]start[/tt] (anchors to the lhs/top, therefore padding/cropping to the rhs/bottom)
+  - [tt]end[/tt] (anchors to the rhs/bottom, therefore padding/cropping to the lhs/top)
+  - [tt]start_if_vertical[/tt] (anchors to the centre/top)
+  - [tt]start_if_horizontal[/tt] (anchors to the lhs/centre)
+  - [tt]end_if_vertical[/tt] (anchors to the centre/bottom)
+  - [tt]end_if_horizontal[/tt] (anchors to the rhs/centre)
  - For [tt]pad[/tt] types the background is used to pad the image:
-  - a hex code for a specific colour (with alpha)
-  - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them).
+  - an RGB hex code for a specific colour (optionally with alpha, i.e. RGBA)
+  - or, [tt]none[/tt] for no padding (ie. the image dimensions are not those given, but will fit inside them)
   - or, if the option is omitted for padded thumbnails then the average colour of the image is used.
  - [tt]only_make_smaller[/tt] can be set to "1" if the image should not be resized at all if it is already smaller than the requested thumbnail size
 

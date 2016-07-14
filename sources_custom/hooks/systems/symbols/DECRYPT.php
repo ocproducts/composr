@@ -28,7 +28,7 @@ class Hook_symbol_DECRYPT
     {
         $value = '';
 
-        if ((isset($param[1])) && ($param[1] != '')) {
+        if (!empty($param[1])) {
             require_code('encryption');
             if (is_encryption_enabled()) {
                 $value = decrypt_data($param[0], $param[1]);

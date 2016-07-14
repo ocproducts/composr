@@ -407,8 +407,8 @@ class Module_filedump
 
                 $width = mixed();
                 $height = mixed();
-                if (is_saveable_image($_full)) {
-                    $dims = @getimagesize($_full);
+                if (is_image($_full, IMAGE_CRITERIA_WEBSAFE, true)) {
+                    $dims = cms_getimagesize($_full);
                     if ($dims !== false) {
                         list($width, $height) = $dims;
                     }
@@ -435,7 +435,7 @@ class Module_filedump
                 } else { // File
                     $url = get_custom_base_url() . '/uploads/filedump' . str_replace('%2F', '/', rawurlencode($_place . $filename));
 
-                    if (is_saveable_image($url)) {
+                    if (is_image($url, IMAGE_CRITERIA_WEBSAFE, true)) {
                         $is_image = true;
                         $image_url = $url;
                     } else {
@@ -729,7 +729,7 @@ class Module_filedump
 
         switch ($type_filter) {
             case 'images':
-                if (!is_image($filename)) {
+                if (!is_image($filename, IMAGE_CRITERIA_WEBSAFE, true)) {
                     return false;
                 }
                 break;
@@ -750,7 +750,7 @@ class Module_filedump
                 break;
 
             case 'others':
-                if (is_image($filename)) {
+                if (is_image($filename, IMAGE_CRITERIA_WEBSAFE, true)) {
                     return false;
                 }
                 if (is_video($filename, true)) {
@@ -856,7 +856,7 @@ class Module_filedump
         }
         asort($hooks);
         foreach ($hooks as $option_val => $option_label) {
-            $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('type', is_image($file) ? 'image_websafe' : '')), $option_label));
+            $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('type', is_image($file, IMAGE_CRITERIA_WEBSAFE, true) ? 'image_websafe' : '')), $option_label));
         }
         $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_type_TITLE'), $_description, 'type', $list, null, false, false));
 
@@ -919,8 +919,8 @@ class Module_filedump
         ));
 
         $image_sizes = mixed();
-        if (is_saveable_image($file)) {
-            $size = @getimagesize($path);
+        if (is_image($file, IMAGE_CRITERIA_GD_READ | IMAGE_CRITERIA_WEBSAFE, true)) {
+            $size = cms_getimagesize($path);
             if ($size !== false) {
                 $ratio = floatval($size[1]) / floatval($size[0]);
 
@@ -936,8 +936,10 @@ class Module_filedump
                 $image_sizes = array();
                 foreach ($_image_sizes as $width => $lng_str) {
                     $size_url = make_string_tempcode($url);
-                    if ($width != $size[0]) {
-                        $size_url = symbol_tempcode('THUMBNAIL', array($url, strval($width)));
+                    if (is_image($file, IMAGE_CRITERIA_RASTER)) {
+                        if ($width != $size[0]) {
+                            $size_url = symbol_tempcode('THUMBNAIL', array($url, strval($width)));
+                        }
                     }
 
                     $height = intval(floatval($width) * $ratio);

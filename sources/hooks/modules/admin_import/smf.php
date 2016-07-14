@@ -346,9 +346,9 @@ class Hook_smf
                 if ($row['birthdate'] != '') {
                     $birthdate = $row['birthdate'];
                     $birthdata = explode('-', $birthdate);
-                    $bday_day = (isset($birthdata[0]) && ($birthdata[0] != '')) ? $birthdata[0] : null;
-                    $bday_month = (isset($birthdata[1]) && ($birthdata[1] != '')) ? $birthdata[1] : null;
-                    $bday_year = (isset($birthdata[2]) && ($birthdata[2] != '')) ? $birthdata[2] : null;
+                    $bday_day = empty($birthdata[0]) ? null : $birthdata[0];
+                    $bday_month = empty($birthdata[1]) ? null : $birthdata[1];
+                    $bday_year = empty($birthdata[2]) ? null : $birthdata[2];
                 } else {
                     list($bday_day, $bday_month, $bday_year) = array(null, null, null);
                 }
@@ -841,16 +841,13 @@ class Hook_smf
         $data = ($data == '') ? @file_get_contents($file_path) : $data;
         $filename = ($output_filename == '') ? $filename_fixed : $output_filename;
 
-        $filename = find_derivative_filename('uploads/' . $sections, $filename);
-        $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename;
+        list($path, $url) = find_unique_path('uploads/' . $sections, $filename);
 
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename)));
+        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         fwrite($myfile, $data);
         fclose($myfile);
         fix_permissions($path);
         sync_file($path);
-
-        $url = 'uploads/' . $sections . '/' . $filename;
 
         return $url;
     }
@@ -1202,7 +1199,7 @@ class Hook_smf
             if ($row['ID_TOPIC'] != 0) {
                 $messages = $db->query('SELECT * FROM ' . $table_prefix . 'messages WHERE ID_TOPIC=' . strval($row['ID_TOPIC']) . ' ORDER BY ID_TOPIC ASC');
                 cns_over_msn();
-                $description = (isset($messages[0]['body']) && ($messages[0]['body'] != '')) ? html_to_comcode($messages[0]['body']) : '';
+                $description = empty($messages[0]['body']) ? '' : html_to_comcode($messages[0]['body']);
                 cns_over_local();
             }
 

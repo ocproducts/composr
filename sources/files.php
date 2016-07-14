@@ -204,145 +204,145 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     }
 
     $ignore_filenames_and_dir_names = array( // Case insensitive, define in lower case
-                                             '.' => '.*',
-                                             '..' => '.*',
+        '.' => '.*',
+        '..' => '.*',
 
-                                             // Files other stuff makes
-                                             '__macosx' => '.*',
-                                             '.bash_history' => '.*',
-                                             'error_log' => '.*',
-                                             'thumbs.db:encryptable' => '.*',
-                                             'thumbs.db' => '.*',
-                                             '.ds_store' => '.*',
+        // Files other stuff makes
+        '__macosx' => '.*',
+        '.bash_history' => '.*',
+        'error_log' => '.*',
+        'thumbs.db:encryptable' => '.*',
+        'thumbs.db' => '.*',
+        '.ds_store' => '.*',
 
-                                             // Source code control systems
-                                             '.svn' => '.*',
-                                             '.git' => '.*',
-                                             'git-hooks' => '',
-                                             '.gitattributes' => '',
-                                             '.gitignore' => '',
-                                             '.gitconfig' => '',
-                                             'phpdoc.dist.xml' => '',
+        // Source code control systems
+        '.svn' => '.*',
+        '.git' => '.*',
+        'git-hooks' => '',
+        '.gitattributes' => '',
+        '.gitignore' => '',
+        '.gitconfig' => '',
+        'phpdoc.dist.xml' => '',
 
-                                             // Web server extensions / leave-behinds
-                                             'web-inf' => '.*',
-                                             'www.pid' => '',
-                                             '.ftaccess' => '',
-                                             '.ftpquota' => '',
-                                             'cgi-bin' => '',
-                                             'stats' => '', // ISPConfig
+        // Web server extensions / leave-behinds
+        'web-inf' => '.*',
+        'www.pid' => '',
+        '.ftaccess' => '',
+        '.ftpquota' => '',
+        'cgi-bin' => '',
+        'stats' => '', // ISPConfig
 
-                                             // Stuff from composr_homesite deployment
-                                             'upgrades' => '',
+        // Stuff from composr_homesite deployment
+        'upgrades' => '',
 
-                                             // Specially-recognised naming conventions
-                                             '_old' => '.*',
-                                             '_old_backups' => '.*',
+        // Specially-recognised naming conventions
+        '_old' => '.*',
+        '_old_backups' => '.*',
 
-                                             // Syntax's used during Composr testing
-                                             'gibb' => '.*',
-                                             'gibberish' => '.*',
+        // Syntax's used during Composr testing
+        'gibb' => '.*',
+        'gibberish' => '.*',
 
-                                             // Files you are sometimes expected to leave around, but outside Composr's direct remit
-                                             'bingsiteauth.xml' => '',
-                                             'php.ini' => '.*',
-                                             '.htpasswd' => '.*',
-                                             'iirf.ini' => '',
-                                             'robots.txt' => '',
-                                             'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
-                                             '400.shtml' => '',
-                                             '500.shtml' => '',
-                                             '404.shtml' => '',
-                                             '403.shtml' => '',
-                                             'cron.yaml' => '',
-                                             'dos.yaml' => '',
-                                             'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
-                                             'queue.yaml' => '',
-                                             '.htaccess' => '',
+        // Files you are sometimes expected to leave around, but outside Composr's direct remit
+        'bingsiteauth.xml' => '',
+        'php.ini' => '.*',
+        '.htpasswd' => '.*',
+        'iirf.ini' => '',
+        'robots.txt' => '',
+        'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
+        '400.shtml' => '',
+        '500.shtml' => '',
+        '404.shtml' => '',
+        '403.shtml' => '',
+        'cron.yaml' => '',
+        'dos.yaml' => '',
+        'server_certificates.pem' => 'data_custom/modules/composr_mobile_sdk/ios',
+        'queue.yaml' => '',
+        '.htaccess' => '',
 
-                                             // Installer files
-                                             'install.php' => '',
-                                             'data.cms' => '',
-                                             'cms.sql' => '', // Temporary backup
-                                             'restore.php' => '',
+        // Installer files
+        'install.php' => '',
+        'data.cms' => '',
+        'cms.sql' => '', // Temporary backup
+        'restore.php' => '',
 
-                                             // IDE projects
-                                             'nbproject' => '', // Netbeans
-                                             '.project' => '', // Eclipse
-                                             '.idea' => '', // JetBrains / PhpStorm
-                                             '.editorconfig' => '',
+        // IDE projects
+        'nbproject' => '', // Netbeans
+        '.project' => '', // Eclipse
+        '.idea' => '', // JetBrains / PhpStorm
+        '.editorconfig' => '',
 
-                                             // Composr control files
-                                             'closed.html' => '',
-                                             'closed.html.old' => '',
-                                             'install_ok' => '',
-                                             'install_locked' => '',
+        // Composr control files
+        'closed.html' => '',
+        'closed.html.old' => '',
+        'install_ok' => '',
+        'install_locked' => '',
 
-                                             // Demonstratr
-                                             'text/if_hosted_service.txt' => '',
-                                             'sites' => '',
+        // Demonstratr
+        'text/if_hosted_service.txt' => '',
+        'sites' => '',
 
-                                             // Tapatalk
-                                             'request_helper.dat' => 'mobiquo/include',
+        // Tapatalk
+        'request_helper.dat' => 'mobiquo/include',
 
-                                             // API docs
-                                             'api' => 'docs',
-                                             'composr-api-template' => 'docs',
+        // API docs
+        'api' => 'docs',
+        'composr-api-template' => 'docs',
 
-                                             // PHP compiler temporary files
-                                             'hphp-static-cache' => '',
-                                             'hphp.files.list' => '',
-                                             'hphp' => '',
+        // PHP compiler temporary files
+        'hphp-static-cache' => '',
+        'hphp.files.list' => '',
+        'hphp' => '',
 
-                                             // LEGACY: Old files
-                                             'info.php' => '', // Pre-v10 equivalent to _config.php
-                                             'persistant_cache' => '', // Old misspelling
-                                             'mods' => 'imports|exports',
+        // LEGACY: Old files
+        'info.php' => '', // Pre-v10 equivalent to _config.php
+        'persistant_cache' => '', // Old misspelling
+        'mods' => 'imports|exports',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
-                                // Exports (effectively these are like temporary files - only intended for file transmission)
-                                'tar' => '(imports|exports)/.*',
-                                'txt' => '(imports|exports)/.*',
+        // Exports (effectively these are like temporary files - only intended for file transmission)
+        'tar' => '(imports|exports)/.*',
+        'txt' => '(imports|exports)/.*',
 
-                                // Exports/Cache files
-                                'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
+        // Exports/Cache files
+        'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
 
-                                // Cache files
-                                'lcd' => '(caches|lang_cached)/.*', // LEGACY
-                                'gcd' => '(caches|persistent_cache|persistant_cache)/.*', // LEGACY
-                                'htm' => 'caches/guest_pages',
-                                'xml' => 'caches/guest_pages',
-                                'tcp' => 'themes/[^/]*/templates_cached/.*',
-                                'tcd' => 'themes/[^/]*/templates_cached/.*',
-                                'css' => 'themes/[^/]*/templates_cached/.*',
-                                'js' => 'themes/[^/]*/templates_cached/.*',
+        // Cache files
+        'lcd' => '(caches|lang_cached)/.*', // LEGACY
+        'gcd' => '(caches|persistent_cache|persistant_cache)/.*', // LEGACY
+        'htm' => 'caches/guest_pages',
+        'xml' => 'caches/guest_pages',
+        'tcp' => 'themes/[^/]*/templates_cached/.*',
+        'tcd' => 'themes/[^/]*/templates_cached/.*',
+        'css' => 'themes/[^/]*/templates_cached/.*',
+        'js' => 'themes/[^/]*/templates_cached/.*',
 
-                                // Logs
-                                'log' => '.*',
+        // Logs
+        'log' => '.*',
 
-                                // Temporary files
-                                'tmp' => '.*',
-                                'inc' => 'safe_mode_temp',
-                                'dat' => 'safe_mode_temp',
-                                'bak' => '.*',
-                                'old' => '.*',
-                                'cms' => '.*', // Installers and upgraders
+        // Temporary files
+        'tmp' => '.*',
+        'inc' => 'safe_mode_temp',
+        'dat' => 'safe_mode_temp',
+        'bak' => '.*',
+        'old' => '.*',
+        'cms' => '.*', // Installers and upgraders
 
-                                // HHVM Hack converted files (built on-the-fly)
-                                'hh' => '.*',
+        // HHVM Hack converted files (built on-the-fly)
+        'hh' => '.*',
 
-                                // IDE projects
-                                'clpprj' => '', // Code Lobster
+        // IDE projects
+        'clpprj' => '', // Code Lobster
     );
 
     $ignore_filename_and_dir_name_patterns = array( // Case insensitive
-                                                    array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
-                                                    array('\_vti\_.*', '.*'), // Frontpage
-                                                    array('google.*\.html', ''), // Google authorisation files
-                                                    array('\.\_.*', '.*'), // MacOS extended attributes
-                                                    array('tmpfile__.*', '.*'), // cms_tempnam produced temporarily files (unfortunately we can't specify a .tmp suffix)
-                                                    array('.*\.\d+', 'exports/file_backups'), // File backups (saved as revisions)
+        array('\..*\.(png|gif|jpeg|jpg)', '.*'), // Image metadata file, e.g. ".example.png"
+        array('\_vti\_.*', '.*'), // Frontpage
+        array('google.*\.html', ''), // Google authorisation files
+        array('\.\_.*', '.*'), // MacOS extended attributes
+        array('tmpfile__.*', '.*'), // cms_tempnam produced temporarily files (unfortunately we can't specify a .tmp suffix)
+        array('.*\.\d+', 'exports/file_backups'), // File backups (saved as revisions)
     );
     $ignore_filename_patterns = array( // Case insensitive; we'll use this only when we *need* directories that would match to be valid
     );

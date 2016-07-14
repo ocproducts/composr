@@ -21,263 +21,69 @@
  */
 
 /**
- * Render an 'IMAGE_WIDTH'/'IMAGE_HEIGHT' symbol.
- *
- * @param  array $param Symbol parameters
- * @return array A pair: Image dimensions
+ * Standard code module initialisation function.
  *
  * @ignore
  */
-function _symbol_image_dims($param)
+function init__images()
 {
-    if (!function_exists('imagecreatefromstring')) {
-        return array('', '');
-    }
-
-    $value = array('', '');
-
-    if (running_script('install')) {
-        return $value;
-    }
-
-    if (isset($param[0])) {
-        $path = $param[0];
-        $cacheable = (isset($param[1]) && $param[1] == '1');
-
-        if ($cacheable) {
-            $cache = persistent_cache_get('IMAGE_DIMS');
-            if (isset($cache[$path])) {
-                return $cache[$path];
-            }
-        }
-
-        $base_url = get_custom_base_url();
-
-        if ((function_exists('getimagesize')) && (strpos($path, '.php') === false) && (substr($path, 0, strlen($base_url)) == $base_url) && (is_image($path))) {
-            $details = @getimagesize(get_custom_file_base() . '/' . urldecode(substr($path, strlen($base_url) + 1)));
-            if ($details !== false) {
-                $value = array(strval($details[0]), strval($details[1]));
-            }
-        } else {
-            $from_file = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
-            $source = @imagecreatefromstring($from_file);
-            if ($source !== false) {
-                if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
-                    $header = unpack('@6/' . 'vwidth/' . 'vheight', $from_file);
-                    $sx = $header['width'];
-                    $sy = $header['height'];
-                } else {
-                    $sx = imagesx($source);
-                    $sy = imagesy($source);
-                }
-
-                $value = array(strval($sx), strval($sy));
-                imagedestroy($source);
-            }
-        }
-
-        if ($cacheable) {
-            $cache[$path] = $value;
-            persistent_cache_set('IMAGE_DIMS', $cache);
-        }
-    }
-    return $value;
+    define('IMAGE_CRITERIA_NONE', 0);
+    define('IMAGE_CRITERIA_GD_READ', 1);
+    define('IMAGE_CRITERIA_GD_WRITE', 2); // NB: We can assume IMAGE_CRITERIA_GD_READ is always true when IMAGE_CRITERIA_GD_WRITE is true, but not vice-versa
+    define('IMAGE_CRITERIA_RASTER', 4);
+    define('IMAGE_CRITERIA_VECTOR', 8); // Opposite of raster
+    define('IMAGE_CRITERIA_WEBSAFE', 16); // NB: We will make a basic assumption that we are not going to try to use IMAGE_CRITERIA_GD_READ to make something IMAGE_CRITERIA_WEBSAFE
 }
 
 /**
- * Render a 'THUMBNAIL' symbol.
+ * Find image dimensions. Better than PHP's built in getimagesize as it gets the correct size for animated gifs.
  *
- * @param  array $param Symbol parameters
- * @return string Rendered symbol
+ * @param  string $path Either a filesystem path or an absolute URL
+ * @return ~array The width and height (false: error)
  *
  * @ignore
  */
-function _symbol_thumbnail($param)
+function cms_getimagesize($path)
 {
-    $value = '';
+    if (looks_like_url($path)) {
+        $_path = convert_url_to_path($path);
+    } else {
+        $_path = $path;
+    }
 
-    // Usage: {$THUMBNAIL,source,widthxheight,directory,filename,fallback,type,where,option,only_make_smaller}
-    // source: URL of image to thumbnail
-    // widthxheight: The desired width and height, separated by a lowercase x. Can be -1 to mean "don't care", but better to use type as "width" or "height"
-    // directory: Where to save the thumbnail to
-    // filename: A suggested filename to use (if the default choice causes problems)
-    // fallback: The URL to an image we can use if the thumbnail fails (eg. the original)
-    // type: One of "box" (scale both dimensions in proportional so it fits a box), "width" (scale until the width matches), "height" (scale until the height matches), "crop" (scale until one dimension's right, cut off the remainder),
-    //      "pad" (scale down until the image fits completely inside the dimensions, then optionally fill the gaps), "pad_horiz_crop_horiz" (fit to height, cropping or
-    //      padding as needed) or "pad_vert_crop_vert" (fit to width, padding or cropping as needed)
-    // where: If padding or cropping, specifies where to crop or pad. One of "start", "end", "both", "start_if_vertical", "end_if_vertical", "start_if_horizontal", or "end_if_vhorizontal"
-    // option: An extra option if desired. If type is "pad" then this can be a hex colour for the padding
-    // only_make_smaller: Whether to avoid growing small images to fit (smaller images are better for the Web). One of 0 (false) or 1 (true)
-    if (!empty($param[0])) {
-        disable_php_memory_limit();
-
-        $only_make_smaller = isset($param[8]) ? ($param[8] == '1') : false;
-        $orig_url = $param[0]; // Source for thumbnail generation
-        if (url_is_local($orig_url)) {
-            $orig_url = get_custom_base_url() . '/' . $orig_url;
-        }
-        if (!array_key_exists(1, $param)) {
-            $param[1] = get_option('thumb_width');
-        }
-        $dimensions = $param[1]; // Generation dimensions.
-        $exp_dimensions = explode('x', $dimensions);
-        if (count($exp_dimensions) == 1) {
-            $exp_dimensions[] = '-1';
-        }
-
-        if ($exp_dimensions[0] == '') {
-            $exp_dimensions[0] = '-1';
-        }
-
-        $algorithm = 'box';
-        if (isset($param[5]) && in_array(trim($param[5]), array('width', 'height', 'crop', 'pad', 'pad_horiz_crop_horiz', 'pad_vert_crop_vert'))) {
-            $algorithm = trim($param[5]);
-        }
-
-        $fallback = (trim(isset($param[4]) ? $param[4] : '') == '') ? $orig_url : $param[4];
-
-        if (isset($param[2]) && $param[2] != '') { // Where we are saving to
-            $thumb_save_dir = $param[2];
-            if (strpos($thumb_save_dir, '/') === false) {
-                $thumb_save_dir = 'uploads/' . $thumb_save_dir;
+    if ($_path === null) {
+        $data = http_download_file($path, 1024 * 1024 * 20/*reasonable limit*/, false);
+    } else {
+        if ((function_exists('getimagesize')) && (is_image($_path, IMAGE_CRITERIA_GD_READ))) {
+            $details = @getimagesize($_path);
+            if ($details !== false) {
+                return array($details[0], $details[1]);
             }
-        } else {
-            //$thumb_save_dir = dirname(rawurldecode(preg_replace('#' . preg_quote(get_custom_base_url() . '/', '#') . '#', '', $orig_url)));  Annoying
-            $thumb_save_dir = 'uploads/auto_thumbs';
+            return false;
         }
-        if (!is_dir(get_custom_file_base() . '/' . $thumb_save_dir)) {
-            $thumb_save_dir = 'uploads/website_specific';
-        }
-        if (isset($param[3]) && $param[3] != '') { // We can take a third parameter that hints what filename to save with (useful to avoid filename collisions within the thumbnail filename subspace). Otherwise we based on source's filename
-            $filename = $param[3];
-        } else {
-            $ext = get_file_extension($orig_url);
-            if (!is_image('example.' . $ext)) {
-                $ext = 'png';
-            }
-            $filename = url_to_filename($orig_url);
-            if (substr($filename, -4) != '.' . $ext) {
-                $filename .= '.' . $ext;
-            }
-        }
-        if (!is_saveable_image($filename)) {
-            $filename .= '.png';
-        }
-        $file_prefix = '/' . $thumb_save_dir . '/thumb__' . $dimensions . '__' . $algorithm;
-        if (isset($param[6])) {
-            $file_prefix .= '__' . trim($param[6]);
-        }
-        if (isset($param[7])) {
-            $file_prefix .= '__' . trim(str_replace('#', '', $param[7]));
-        }
-        $save_path = get_custom_file_base() . $file_prefix . '__' . $filename;
-        $value = get_custom_base_url() . $file_prefix . '__' . rawurlencode($filename);
 
-        // Only bother calculating the image if we've not already
-        // made one with these options
-        if ((!is_file($save_path)) && (!is_file($save_path . '.png'))) {
-            if (!function_exists('imagepng')) {
-                return $fallback;
+        $data = file_get_contents($_path);
+    }
+
+    if (function_exists('imagecreatefromstring')) {
+        $source = @imagecreatefromstring($data);
+        if ($source !== false) {
+            if (get_file_extension($path) == 'gif') { // Workaround problem with animated gifs
+                $header = unpack('@6/' . 'vwidth/' . 'vheight', $data);
+                $sx = $header['width'];
+                $sy = $header['height'];
+            } else {
+                $sx = imagesx($source);
+                $sy = imagesy($source);
             }
 
-            // Branch based on the type of thumbnail we're making
-            if ($algorithm == 'box') {
-                // We just need to scale to the given dimension
-                $result = @convert_image($orig_url, $save_path, -1, -1, intval($exp_dimensions[0]), false, null, false, $only_make_smaller);
-            } elseif ($algorithm == 'width' || $algorithm == 'height') {
-                // We just need to scale to the given dimension
-                $result = @convert_image($orig_url, $save_path, ($algorithm == 'width') ? intval($exp_dimensions[0]) : -1, ($algorithm == 'height') ? intval($exp_dimensions[1]) : -1, -1, false, null, false, $only_make_smaller);
-            } elseif ($algorithm == 'crop' || $algorithm == 'pad' || $algorithm == 'pad_horiz_crop_horiz' || $algorithm == 'pad_vert_crop_vert') {
-                // We need to shrink a bit and crop/pad
-                require_code('files');
+            imagedestroy($source);
 
-                // Find dimensions of the source
-                $converted_to_path = convert_url_to_path($orig_url);
-                if (!is_null($converted_to_path)) {
-                    $sizes = @getimagesize($converted_to_path);
-                    if ($sizes === false) {
-                        return $fallback;
-                    }
-                    list($source_x, $source_y) = $sizes;
-                } else {
-                    $source = @imagecreatefromstring(http_download_file($orig_url, null, false));
-                    if ($source === false) {
-                        return $fallback;
-                    }
-                    $source_x = imagesx($source);
-                    $source_y = imagesy($source);
-                    imagedestroy($source);
-                }
-
-                // We only need to crop/pad if the aspect ratio
-                // differs from what we want
-                $source_aspect = floatval($source_x) / floatval($source_y);
-                if ($exp_dimensions[1] == '0') {
-                    $exp_dimensions[1] = '1';
-                }
-                $destination_aspect = floatval($exp_dimensions[0]) / floatval($exp_dimensions[1]);
-
-                // We test the scaled sizes, rather than the ratios
-                // directly, so that differences too small to affect
-                // the integer dimensions will be tolerated.
-                if ($source_aspect > $destination_aspect) {
-                    // The image is wider than the output.
-                    if (($algorithm == 'crop') || ($algorithm == 'pad_horiz_crop_horiz')) {
-                        // Is it too wide, requiring cropping?
-                        $scale = floatval($source_y) / floatval($exp_dimensions[1]);
-                        $modify_image = intval(round(floatval($source_x) / $scale)) != intval($exp_dimensions[0]);
-                    } else {
-                        // Is the image too short, requiring padding?
-                        $scale = floatval($source_x) / floatval($exp_dimensions[0]);
-                        $modify_image = intval(round(floatval($source_y) / $scale)) != intval($exp_dimensions[1]);
-                    }
-                } elseif ($source_aspect < $destination_aspect) {
-                    // The image is taller than the output
-                    if (($algorithm == 'crop') || ($algorithm == 'pad_vert_crop_vert')) {
-                        // Is it too tall, requiring cropping?
-                        $scale = floatval($source_x) / floatval($exp_dimensions[0]);
-                        $modify_image = intval(round(floatval($source_y) / $scale)) != intval($exp_dimensions[1]);
-                    } else {
-                        // Is the image too narrow, requiring padding?
-                        $scale = floatval($source_y) / floatval($exp_dimensions[1]);
-                        $modify_image = intval(round(floatval($source_x) / $scale)) != intval($exp_dimensions[0]);
-                    }
-                } else {
-                    // They're the same, within the tolerances of
-                    // floating point arithmentic. Just scale it.
-                    $modify_image = false;
-                }
-
-                // We have a special case here, since we can "pad" an
-                // image with nothing, ie. shrink it to fit in the
-                // output dimensions. This means we don't need to
-                // modify the image contents either, just scale it.
-                if (($algorithm == 'pad' || $algorithm == 'pad_horiz_crop_horiz' || $algorithm == 'pad_vert_crop_vert') && isset($algorithm) && (!isset($param[6]) || trim($param[6]) == '')) {
-                    $modify_image = false;
-                }
-
-                // Now do the cropping, padding and scaling
-                if ($modify_image) {
-                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller, array('type' => $algorithm, 'background' => (isset($param[7]) ? trim($param[7]) : null), 'where' => (isset($param[6]) ? trim($param[6]) : 'both'), 'scale' => $scale));
-                } else {
-                    // Just resize
-                    $result = @convert_image($orig_url, $save_path, intval($exp_dimensions[0]), intval($exp_dimensions[1]), -1, false, null, false, $only_make_smaller);
-                }
-            }
-
-            // If the conversion failed then give back the fallback,
-            // or if it's empty then give back the original image
-            if (!$result) {
-                $value = $fallback;
-            }
-        }
-
-        if (!file_exists($save_path)) {
-            $value .= '.png';
+            return array($sx, $sy);
         }
     }
 
-    return $value;
+    return false;
 }
 
 /**
@@ -341,6 +147,10 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         $height = intval(get_option('thumb_width'));
     }
 
+    if (is_image($url, IMAGE_CRITERIA_VECTOR)) {
+        $is_thumbnail_already = true;
+    }
+
     if (!$is_thumbnail_already) {
         $new_name = strval($width) . '_' . strval($height) . '_';
         if ($only_make_smaller) {
@@ -348,24 +158,13 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
         }
         $new_name .= url_to_filename($url);
 
-        if ((!is_saveable_image($new_name)) && (get_file_extension($new_name) != 'svg')) {
-            $new_name .= '.png';
+        $thumb_path = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
+
+        if (!file_exists($thumb_path)) {
+            $url = convert_image($url, $thumb_path, $box_size ? -1 : $width, $box_size ? -1 : $height, $box_size ? $width : -1, false, null, false, $only_make_smaller);
+        } else {
+            $url = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
         }
-
-        $file_thumb = get_custom_file_base() . '/uploads/auto_thumbs/' . $new_name;
-
-        if (url_is_local($url)) {
-            $url = get_custom_base_url() . '/' . $url;
-        }
-
-        if (!file_exists($file_thumb)) {
-            convert_image($url, $file_thumb, $box_size ? -1 : $width, $box_size ? -1 : $height, $box_size ? $width : -1, false, null, false, $only_make_smaller);
-            if (!file_exists($file_thumb) && file_exists($file_thumb . '.png')/*convert_image maybe had to change the extension*/) {
-                $new_name .= '.png';
-            }
-        }
-
-        $url = get_custom_base_url() . '/uploads/auto_thumbs/' . rawurlencode($new_name);
     }
 
     if (url_is_local($url)) {
@@ -415,8 +214,13 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
                     $from = get_custom_base_url() . '/' . $from;
                 }
 
-                if (is_image($from)) {
-                    convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
+                if (is_image($from, IMAGE_CRITERIA_WEBSAFE, true)) {
+                    $_thumb_url = convert_image($from, $thumb_path, -1, -1, intval($thumb_width), false);
+                    if ($_thumb_url != $thumb_url) {
+                        // Failed somehow, so do a full regeneration and resave
+                        require_code('images2');
+                        return _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb_field_name, $thumb_width, $only_make_smaller);
+                    }
                 } else {
                     require_code('galleries2');
                     create_video_thumb($full_url, $thumb_path);
@@ -427,6 +231,7 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
         return $thumb_url;
     }
 
+    // Do a full regeneration and resave
     require_code('images2');
     return _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb_field_name, $thumb_width, $only_make_smaller);
 }
@@ -434,19 +239,19 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
 /**
  * Resize an image to the specified size, but retain the aspect ratio.
  *
- * @param  URLPATH $from The URL to the image to resize
- * @param  PATH $to The file path (including filename) to where the resized image will be saved
+ * @param  URLPATH $from The URL to the image to resize. May be either relative or absolute
+ * @param  PATH $to The file path (including filename) to where the resized image will be saved. May be changed by reference if it cannot save an image there for some reason
  * @param  integer $width The maximum width we want our new image to be (-1 means "don't factor this in")
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
  * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
- * @param  ?string $ext2 The file extension to save with (null: same as our input file)
+ * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
- * @return boolean Success
+ * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  */
-function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
+function convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
     require_code('images2');
     cms_profile_start_for('convert_image');
@@ -459,10 +264,12 @@ function convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_er
  * Find whether the image specified is actually an image, based on file extension
  *
  * @param  string $name A URL or file path to the image
- * @param  boolean $mime_too Whether to check mime too
+ * @param  integer $criteria A bitmask of IMAGE_CRITERIA_* constants
+ * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
+ * @param  boolean $mime_too Whether to check mime as well as file extension. A full URL must have been passed
  * @return boolean Whether the string pointed to a file appeared to be an image
  */
-function is_image($name, $mime_too = false)
+function is_image($name, $criteria, $as_admin = false, $mime_too = false)
 {
     if (substr(basename($name), 0, 1) == '.') {
         return false; // Temporary file that some OS's make
@@ -470,54 +277,109 @@ function is_image($name, $mime_too = false)
 
     $ext = get_file_extension($name);
 
+    // Raster/vector check
+    $is_vector = ($ext == 'svg');
+    if (($criteria & IMAGE_CRITERIA_RASTER) != 0) {
+        if ($is_vector) {
+            return false;
+        }
+    }
+    if (($criteria & IMAGE_CRITERIA_VECTOR) != 0) {
+        if (!$is_vector) {
+            return false;
+        }
+    }
+
+    // GD-read check
+    if (($criteria & IMAGE_CRITERIA_GD_READ) != 0) {
+        $found = false;
+        if (function_exists('imagetypes')) {
+            $gd = imagetypes();
+            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagecreatefromgif'))) {
+                $found = true;
+            }
+            if ((($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'jpe')) && (($gd & IMG_JPEG) != 0)) {
+                $found = true;
+            }
+            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
+                $found = true;
+            }
+            if (($ext == 'webp') && (function_exists('imagecreatefromwebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
+                $found = true;
+            }
+        } else {
+            $found = (($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'png'));
+        }
+        if (!$found) {
+            return false;
+        }
+    }
+
+    // GD-write check
+    if (($criteria & IMAGE_CRITERIA_GD_WRITE) != 0) {
+        $found = false;
+        if (function_exists('imagetypes')) {
+            $gd = imagetypes();
+            if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagegif'))) {
+                $found = true;
+            }
+            if ((($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'jpe')) && (($gd & IMG_JPEG) != 0)) {
+                $found = true;
+            }
+            if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
+                $found = true;
+            }
+            if (($ext == 'webp') && (function_exists('imagewebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
+                $found = true;
+            }
+        } else {
+            $found = (($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'png'));
+        }
+        if (!$found) {
+            return false;
+        }
+    }
+
+    // Web-safe check
+    if (($criteria & IMAGE_CRITERIA_WEBSAFE) != 0) {
+        if (!in_array($ext, array('jpeg', 'jpe', 'jpg', 'gif', 'png', 'bmp', 'svg'))) {
+            return false;
+        }
+    }
+
+    // Configured extension list check
     static $types = null;
     if ($types === null) {
-        $types = explode(',', get_option('valid_images'));
+        $types = explode(',', str_replace(' ', '', get_option('valid_images')));
     }
+    $found = false;
     foreach ($types as $val) {
         if (strtolower($val) == $ext) {
-            return true;
+            $found = true;
         }
     }
-
-    if (($mime_too) && (looks_like_url($name))) {
-        http_download_file($name, 0, false);
-        global $HTTP_DOWNLOAD_MIME_TYPE;
-        if (preg_match('#^image/(png|gif|jpeg)$#', $HTTP_DOWNLOAD_MIME_TYPE) != 0) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/**
- * Use the image extension to determine if the specified image is of a format (extension) saveable by Composr or not.
- *
- * @param  string $name A URL or file path to the image
- * @return boolean Whether the string pointed to a file that appeared to be a saveable image
- */
-function is_saveable_image($name)
-{
-    $ext = get_file_extension($name);
-    if (function_exists('imagetypes')) {
-        $gd = imagetypes();
-        if (($ext == 'gif') && (($gd & IMG_GIF) != 0) && (function_exists('imagegif'))) {
-            return true;
-        }
-        if (($ext == 'jpg') && (($gd & IMG_JPEG) != 0)) {
-            return true;
-        }
-        if (($ext == 'jpeg') && (($gd & IMG_JPEG) != 0)) {
-            return true;
-        }
-        if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
-            return true;
-        }
+    if (!$found) {
         return false;
-    } else {
-        return (($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'png'));
     }
+
+    // Mime type recognition and security check
+    require_code('mime_types');
+    $ext_mime_type = get_mime_type($ext, $as_admin);
+    if (substr($ext_mime_type, 0, 6) != 'image/') {
+        return false;
+    }
+
+    // Mime type consistency check
+    if (($mime_too) && (looks_like_url($name))) {
+        global $HTTP_DOWNLOAD_MIME_TYPE;
+        http_download_file($name, 0, false);
+
+        if ($ext_mime_type != $HTTP_DOWNLOAD_MIME_TYPE) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /*
@@ -536,7 +398,7 @@ function is_video($name, $as_admin, $must_be_true_video = false)
 {
     $allow_audio = (get_option('allow_audio_videos') == '1');
 
-    if (is_image($name)) {
+    if (is_image($name, IMAGE_CRITERIA_WEBSAFE, true)) {
         return false;
     }
 

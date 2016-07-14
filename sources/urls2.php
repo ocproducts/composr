@@ -296,6 +296,9 @@ function _convert_url_to_path($url)
     if (strpos($url, '?') !== false) {
         return null;
     }
+    if (substr($url, -4) == '.php') {
+        return null;
+    }
     if ((strpos($url, '://') === false) || (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') || (substr($url, 0, strlen(get_custom_base_url()) + 1) == get_custom_base_url() . '/')) {
         if (substr($url, 0, strlen(get_base_url()) + 1) == get_base_url() . '/') {
             $file_path_stub = urldecode(substr($url, strlen(get_base_url()) + 1));
@@ -911,4 +914,48 @@ function find_id_via_url_moniker($content_type, $url_moniker)
 
     $ret = $cma_info['connection']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $where);
     return $ret;
+}
+
+/**
+ * Find a unique path on the filesystem, and corresponding URL and filename.
+ *
+ * @param  string $subdir Subdirectory relative to base directory.
+ * @param  ?string $filename Filename (null: random).
+ * @param  boolean $lock_in Whether to write out an empty string to the file so that some other code (e.g. from another request) doesn't try and use the same path.
+ * @return array A tuple: path, relative URL for path, filename used.
+ */
+function find_unique_path($subdir, $filename = null, $lock_in = false)
+{
+    if ($filename === null) {
+        $filename = uniqid('', true) . '.dat';
+    }
+
+    $ext = get_file_extension($filename);
+    if ($ext == '') {
+        $ext = 'dat';
+        $filename .= '.dat';
+    }
+
+    $basename = basename($filename, '.' . $ext);
+
+    $i = 1;
+    do {
+        if ($i == 1) {
+            $adjusted_filename = $filename;
+        } else {
+            $adjusted_filename = $basename . '_' . strval($i) . '.' . $ext;
+        }
+        $path = get_custom_file_base() . '/' . $subdir . '/' . $adjusted_filename;
+        $i++;
+    } while (is_file($path));
+
+    if ($lock_in) {
+        file_put_contents($path, '');
+        sync_file($path);
+        fix_permissions($path);
+    }
+
+    $url = str_replace('%2F', '/', rawurlencode($subdir . '/' . $adjusted_filename));
+
+    return array($path, $url, $adjusted_filename);
 }

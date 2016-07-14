@@ -778,7 +778,7 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             }
 
             if ($non_image_only) {
-                if (is_image($attachment_row[0]['a_original_filename'])) // Already as [img] tag
+                if (is_image($attachment_row[0]['a_original_filename'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row[0]['a_member_id'], 'comcode_dangerous'))) // Already as [img] tag
                 {
                     if (!url_is_local($attachment_row[0]['a_url'])) {
                         if (!is_null($content)) {
@@ -789,7 +789,7 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
                 }
             }
 
-            if (!is_image($attachment_row[0]['a_thumb_url'])) {
+            if (!is_image($attachment_row[0]['a_thumb_url'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row[0]['a_member_id'], 'comcode_dangerous'))) {
                 continue; // Can't deal with this
             }
 
@@ -822,7 +822,7 @@ function _get_attachment($attachment_row)
     $ext = get_file_extension($attachment_row['a_original_filename']);
     if ($ext == 'pdf') {
         $content_type = 'pdf';
-    } elseif (is_image($url)) {
+    } elseif (is_image($url, IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row['a_member_id'], 'comcode_dangerous'))) {
         $content_type = 'image';
     } else {
         $content_type = 'other';
@@ -835,7 +835,7 @@ function _get_attachment($attachment_row)
 
     $url = find_script('attachment') . '?id=' . strval($attachment_row['id']);
 
-    if (!is_image($attachment_row['a_url'])) {
+    if (!is_image($attachment_row['a_url'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row['a_member_id'], 'comcode_dangerous'))) {
         $url = $thumb_url; // Can't deal with this
     }
 

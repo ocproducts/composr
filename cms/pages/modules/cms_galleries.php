@@ -187,6 +187,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_code('galleries2');
         require_css('galleries');
         require_lang('dearchive');
+        require_code('urls2');
 
         $this->alt_crud_module->add_text = new Tempcode();
 
@@ -343,7 +344,7 @@ class Module_cms_galleries extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
-        if (function_exists('imagepng')) {
+        if (function_exists('imagetypes')) {
             if ($this->has_at_least_one_watermark($cat)) {
                 $fields->attach(form_input_tick(do_lang_tempcode('WATERMARK'), do_lang_tempcode('DESCRIPTION_WATERMARK'), 'watermark', true));
             }
@@ -377,7 +378,7 @@ class Module_cms_galleries extends Standard_crud_module
             $there = array();
             $_dir = opendir(get_custom_file_base() . '/uploads/galleries/');
             while (false !== ($file = readdir($_dir))) {
-                if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                     $there[$file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $file);
                 }
             }
@@ -385,7 +386,7 @@ class Module_cms_galleries extends Standard_crud_module
             $_dir = @opendir(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($cat));
             if ($_dir !== false) {
                 while (false !== ($file = readdir($_dir))) {
-                    if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
+                    if (($file != 'index.html') && (!is_dir(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file)) && ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous'))))) {
                         $there[$cat . '/' . $file] = filemtime(get_custom_file_base() . '/uploads/galleries/' . $cat . '/' . $file);
                     }
                 }
@@ -512,7 +513,7 @@ class Module_cms_galleries extends Standard_crud_module
                             } while (($more !== false) && ($more != ''));
                             fclose($myfile2);
 
-                            if ((is_image($_file)) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
+                            if ((is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
                                 $ret = $this->store_from_archive($_file, $tmp_name_2, $cat);
                                 if (!is_null($ret)) {
                                     $media_imported[] = $ret;
@@ -551,7 +552,7 @@ class Module_cms_galleries extends Standard_crud_module
                                 $_file = substr($_file, $slash + 1);
                             }
 
-                            if ((is_image($_file)) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
+                            if ((is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($_file, has_privilege(get_member(), 'comcode_dangerous')))) {
                                 $ret = $this->store_from_archive($_file, $tmp_name_2, $cat);
                                 if (!is_null($ret)) {
                                     $media_imported[] = $ret;
@@ -564,7 +565,7 @@ class Module_cms_galleries extends Standard_crud_module
                     }
                     break;
                 default:
-                    if ((is_image($file)) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
+                    if ((is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) || (is_video($file, has_privilege(get_member(), 'comcode_dangerous')))) {
                         $tmp_name_2 = cms_tempnam();
 
                         if ($__file['type'] != 'plupload') {
@@ -654,13 +655,10 @@ class Module_cms_galleries extends Standard_crud_module
         if (array_key_exists('ss_files', $_POST)) {
             foreach ($_POST['ss_files'] as $file) {
                 $url = 'uploads/galleries/' . str_replace('%2F', '/', rawurlencode($file));
-                $thumb_url = 'uploads/galleries_thumbs/' . str_replace('%2F', '/', rawurlencode($file));
-                if (substr($thumb_url, -4, 4) == '.gif') {
-                    $thumb_url = substr($thumb_url, 0, strlen($thumb_url) - 4) . '.png';
-                }
-                if (!is_image($url)) {
+                if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                     $ret = get_video_details(get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file), $file, true);
                     if ($ret !== false) {
+                        $thumb_url = create_video_thumb($url);
                         list($width, $height, $length) = $ret;
                         if (is_null($width)) {
                             $width = intval(get_option('default_video_width'));
@@ -689,37 +687,29 @@ class Module_cms_galleries extends Standard_crud_module
                         }
                     }
                 } else {
-                    $ok = true;
-                    if (function_exists('imagepng')) {
-                        $path = dirname(get_custom_file_base() . '/' . rawurldecode($thumb_url));
-                        if (!file_exists($path)) {
-                            require_code('files2');
-                            make_missing_directory($path);
-                        }
-                        $ok = convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . rawurldecode($thumb_url), -1, -1, intval(get_option('thumb_width')), false);
+                    $thumb_path = get_custom_file_base() . '/uploads/galleries_thumbs/' . rawurldecode($file);
+                    $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), false);
 
-                        // See if we need to do watermarking
-                        $watermark = (post_param_integer('ss_watermark', 0) == 1);
-                        if ($watermark) {
-                            watermark_gallery_image($cat, rawurldecode($url), $file);
-                        }
+                    // See if we need to do watermarking
+                    $watermark = (post_param_integer('ss_watermark', 0) == 1);
+                    if ($watermark) {
+                        watermark_gallery_image($cat, rawurldecode($url), $file);
                     }
-                    if ($ok) {
-                        $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
-                        $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('ss_allow_rating', 0), post_param_integer('ss_allow_reviews', post_param_integer('ss_allow_comments', 0)), post_param_integer('ss_allow_trackbacks', 0), '');
-                        store_exif('image', strval($id), $exif);
 
-                        require_code('users2');
-                        if ((has_actual_page_access(get_modal_user(), 'galleries')) && (has_category_access(get_modal_user(), 'galleries', $cat))) {
-                            $privacy_ok = true;
-                            if (addon_installed('content_privacy')) {
-                                require_code('content_privacy');
-                                $privacy_ok = has_privacy_access('image', strval($id), $GLOBALS['FORUM_DRIVER']->get_guest_id());
-                            }
-                            if ($privacy_ok) {
-                                require_code('activities');
-                                syndicate_described_activity('galleries:ACTIVITY_ADD_IMAGE', ($exif['UserComment'] == '') ? basename($url) : $exif['UserComment'], '', '', '_SEARCH:galleries:image:' . strval($id), '', '', 'galleries');
-                            }
+                    $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+                    $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('ss_allow_rating', 0), post_param_integer('ss_allow_reviews', post_param_integer('ss_allow_comments', 0)), post_param_integer('ss_allow_trackbacks', 0), '');
+                    store_exif('image', strval($id), $exif);
+
+                    require_code('users2');
+                    if ((has_actual_page_access(get_modal_user(), 'galleries')) && (has_category_access(get_modal_user(), 'galleries', $cat))) {
+                        $privacy_ok = true;
+                        if (addon_installed('content_privacy')) {
+                            require_code('content_privacy');
+                            $privacy_ok = has_privacy_access('image', strval($id), $GLOBALS['FORUM_DRIVER']->get_guest_id());
+                        }
+                        if ($privacy_ok) {
+                            require_code('activities');
+                            syndicate_described_activity('galleries:ACTIVITY_ADD_IMAGE', ($exif['UserComment'] == '') ? basename($url) : $exif['UserComment'], '', '', '_SEARCH:galleries:image:' . strval($id), '', '', 'galleries');
                         }
                     }
                 }
@@ -740,39 +730,28 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function store_from_archive($file, &$in, $cat, $time = null)
     {
-        // Find where to store on server
-        //  Hunt with sensible names until we don't get a conflict
-        $place = get_custom_file_base() . '/uploads/galleries/' . filter_naughty($file);
-        $i = 2;
-        $_file = filter_naughty($file);
-        while (file_exists($place)) {
-            $_file = strval($i) . $file;
-            $place = get_custom_file_base() . '/uploads/galleries/' . $_file;
-            $i++;
-        }
-        file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
-        $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . filter_naughty($file);
-        $i = 2;
-        $_file_thumb = filter_naughty($file);
-        while (file_exists($place_thumb)) {
-            $_file_thumb = strval($i) . $file;
-            $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
-            $i++;
-        }
-        file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
+        list($new_path, $new_url, $new_filename) = find_unique_path('uploads/galleries', filter_naughty($file), true);
+        list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
         // Store on server
-        if (rename($in, $place) === false) {
-            intelligent_write_error($place);
+        if (rename($in, $new_path) === false) {
+            intelligent_write_error($new_path);
         }
-        fix_permissions($place);
-        sync_file($place);
+        fix_permissions($new_path);
+        sync_file($new_path);
 
-        $aurl = 'uploads/galleries/' . rawurlencode($_file);
-        $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
+        // Post-process
+        require_code('uploads');
+        $test = handle_upload_post_processing(is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')) ? CMS_UPLOAD_IMAGE : CMS_UPLOAD_VIDEO, $new_path, 'uploads/galleries', $file, 0);
+        if ($test !== null) {
+            unlink($new_path);
+            sync_file($new_path);
+
+            $new_url = $test;
+        }
 
         // Add to database
-        return $this->simple_add($aurl, $thumb_url, $_file, $cat, $time);
+        return $this->simple_add($new_url, $thumb_url, $new_filename, $cat, $time);
     }
 
     /**
@@ -796,16 +775,7 @@ class Module_cms_galleries extends Standard_crud_module
             if (substr($x, 0, 5) == 'file_') {
                 $aurl = 'uploads/galleries/' . rawurlencode($file);
 
-                $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $file;
-                $i = 2;
-                $_file_thumb = $file;
-                while (file_exists($place_thumb)) {
-                    $_file_thumb = strval($i) . $file;
-                    $place_thumb = get_custom_file_base() . '/uploads/galleries_thumbs/' . $_file_thumb;
-                    $i++;
-                }
-                file_put_contents($place_thumb, ''); // Lock it in ASAP, to stop race conditions
-                $thumb_url = 'uploads/galleries_thumbs/' . rawurlencode($_file_thumb);
+                list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
                 $this->simple_add($aurl, $thumb_url, $file, $cat);
             }
@@ -862,10 +832,8 @@ class Module_cms_galleries extends Standard_crud_module
             $time = time();
         }
 
-        if (substr($thumb_url, -4, 4) == '.gif') {
-            $thumb_url = substr($thumb_url, 0, strlen($thumb_url) - 4) . '.png';
-        }
-        if (!is_image($url)) {
+        if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
+            $thumb_url = create_video_thumb($url);
             $ret = get_video_details(get_custom_file_base() . '/' . rawurldecode($url), $file, true);
             if ($ret !== false) {
                 list($width, $height, $length) = $ret;
@@ -903,48 +871,45 @@ class Module_cms_galleries extends Standard_crud_module
                 return array('video', $id);
             }
         } else {
-            $ok = true;
-            if (function_exists('imagepng')) {
-                require_code('images');
-                $ok = convert_image(get_custom_base_url() . '/' . $url, get_custom_file_base() . '/' . rawurldecode($thumb_url), -1, -1, intval(get_option('thumb_width')), true);
-            }
-            if ($ok) {
-                $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
+            require_code('images');
+            $thumb_path = get_custom_file_base() . '/' . rawurldecode($thumb_url);
+            $thumb_url = convert_image($url, $thumb_path, -1, -1, intval(get_option('thumb_width')), true);
 
-                if (function_exists('imagepng')) {
-                    // See if we need to resize the image
-                    constrain_gallery_image_to_max_size(get_custom_file_base() . '/' . rawurldecode($url), $file, intval(get_option('maximum_image_size')));
+            $exif = get_exif_data(get_custom_file_base() . '/' . rawurldecode($url), $file);
 
-                    // See if we need to do watermarking
-                    $watermark = (post_param_integer('watermark', 0) == 1);
-                    if ($watermark) {
-                        watermark_gallery_image($cat, rawurldecode($url), $file);
-                    }
+            if (function_exists('imagetypes')) {
+                // See if we need to resize the image
+                constrain_gallery_image_to_max_size(get_custom_file_base() . '/' . rawurldecode($url), $file, intval(get_option('maximum_image_size')));
+
+                // See if we need to do watermarking
+                $watermark = (post_param_integer('watermark', 0) == 1);
+                if ($watermark) {
+                    watermark_gallery_image($cat, rawurldecode($url), $file);
                 }
+            }
 
-                $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('allow_rating', 0), post_param_integer('allow_reviews', post_param_integer('allow_comments', 0)), post_param_integer('allow_trackbacks', 0), post_param_string('notes', ''), null, $time);
-                store_exif('image', strval($id), $exif);
+            $id = add_image($exif['UserComment'], $cat, '', $url, $thumb_url, 1, post_param_integer('allow_rating', 0), post_param_integer('allow_reviews', post_param_integer('allow_comments', 0)), post_param_integer('allow_trackbacks', 0), post_param_string('notes', ''), null, $time);
+            store_exif('image', strval($id), $exif);
+            if (addon_installed('content_privacy')) {
+                require_code('content_privacy2');
+                list($privacy_level, $additional_access) = read_privacy_fields();
+                save_privacy_form_fields('image', strval($id), $privacy_level, $additional_access);
+            }
+
+            require_code('users2');
+            if ((has_actual_page_access(get_modal_user(), 'galleries')) && (has_category_access(get_modal_user(), 'galleries', $cat))) {
+                $privacy_ok = true;
                 if (addon_installed('content_privacy')) {
-                    require_code('content_privacy2');
-                    list($privacy_level, $additional_access) = read_privacy_fields();
-                    save_privacy_form_fields('image', strval($id), $privacy_level, $additional_access);
+                    require_code('content_privacy');
+                    $privacy_ok = has_privacy_access('image', strval($id), $GLOBALS['FORUM_DRIVER']->get_guest_id());
                 }
-
-                require_code('users2');
-                if ((has_actual_page_access(get_modal_user(), 'galleries')) && (has_category_access(get_modal_user(), 'galleries', $cat))) {
-                    $privacy_ok = true;
-                    if (addon_installed('content_privacy')) {
-                        require_code('content_privacy');
-                        $privacy_ok = has_privacy_access('image', strval($id), $GLOBALS['FORUM_DRIVER']->get_guest_id());
-                    }
-                    if ($privacy_ok) {
-                        require_code('activities');
-                        syndicate_described_activity('galleries:ACTIVITY_ADD_IMAGE', ($exif['UserComment'] == '') ? basename($url) : $exif['UserComment'], '', '', '_SEARCH:galleries:image:' . strval($id), '', '', 'galleries');
-                    }
+                if ($privacy_ok) {
+                    require_code('activities');
+                    syndicate_described_activity('galleries:ACTIVITY_ADD_IMAGE', ($exif['UserComment'] == '') ? basename($url) : $exif['UserComment'], '', '', '_SEARCH:galleries:image:' . strval($id), '', '', 'galleries');
                 }
-
-                return array('image', $id);
             }
+
+            return array('image', $id);
         }
 
         return null;

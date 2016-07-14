@@ -394,12 +394,14 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
                 $matches = array();
                 if (isset($html[$i + 1]) && strtolower($html[$i + 1]) == 'i'/*Optimisation before we bother looking harder*/ && preg_match('#<img[^<>]+src="([^"]+)"#iA', $html, $matches, 0, $i) != 0) {
                     require_code('images');
-                    list($width, $height) = _symbol_image_dims(array(html_entity_decode($matches[1], ENT_QUOTES, get_charset()))); // Safe way to grab image dimensions
-                    if ($width == '') {
-                        $width = get_option('thumb_width');
-                        $height = get_option('thumb_width');
+                    $test = cms_getimagesize(html_entity_decode($matches[1], ENT_QUOTES, get_charset())); // Safe way to grab image dimensions
+                    if ($test === false) {
+                        $width = intval(get_option('thumb_width'));
+                        $height = intval(get_option('thumb_width'));
+                    } else {
+                        list($width, $height) = $test;
                     }
-                    $pixels = intval($width) * intval($height);
+                    $pixels = $width * $height;
                     $pixels_per_character = 15 * 15;
                     $img_characters = intval((float)$pixels / (float)$pixels_per_character);
                     $c += $img_characters;

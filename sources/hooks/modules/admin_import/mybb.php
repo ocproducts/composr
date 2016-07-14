@@ -802,7 +802,7 @@ class Hook_mybb
     {
         $options = $db->query('SELECT * FROM ' . $table_prefix . 'settings WHERE ' . db_string_equal_to('name', 'bburl'));
 
-        $OLD_BASE_URL = (isset($options[0]['value']) && $options[0]['value'] != '') ? $options[0]['value'] : '';
+        $OLD_BASE_URL = empty($options[0]['value']) ? '' : $options[0]['value'];
 
         $post = preg_replace_callback('#' . preg_quote($OLD_BASE_URL) . '/(showthread\.php\?tid=)(\d*)#', array($this, '_fix_links_callback_topic'), $post);
         $post = preg_replace_callback('#' . preg_quote($OLD_BASE_URL) . '/(forumdisplay\.php\?fid=)(\d*)#', array($this, '_fix_links_callback_forum'), $post);
@@ -826,7 +826,7 @@ class Hook_mybb
     {
         $options = $db->query('SELECT * FROM ' . $table_prefix . 'settings WHERE ' . db_string_equal_to('name', 'bburl'));
 
-        $homeurl = (isset($options[0]['value']) && ($options[0]['value'] != '')) ? $options[0]['value'] : '';
+        $homeurl = empty($options[0]['value']) ? '' : $options[0]['value'];
 
         $home_dir_parts = parse_url($homeurl);
         $forum_dir = cms_srv('DOCUMENT_ROOT') . urldecode($home_dir_parts['path']);
@@ -841,15 +841,13 @@ class Hook_mybb
 
         $filename = ($output_filename == '') ? preg_replace('#.*\/#', '', $filename) : $output_filename;
 
-        $filename = find_derivative_filename('uploads/' . $sections, $filename);
-        $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename;
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename)));
+        list($path, $url) = find_unique_path('uploads/' . $sections, $filename);
+
+        $myfile = @fopen($path, 'wb') or intelligent_write_error($path);
         fwrite($myfile, $data);
         fclose($myfile);
         fix_permissions($path);
         sync_file($path);
-
-        $url = 'uploads/' . $sections . '/' . $filename;
 
         return $url;
     }
@@ -1149,7 +1147,7 @@ class Hook_mybb
 
             $matches = array();
             preg_match('#\[(.*?)\\\]#', $row['regex'], $matches);
-            $custom_tag = (isset($matches[1]) && ($matches[1] != '')) ? $matches[1] : ''; //'tag_tag'
+            $custom_tag = empty($matches[1]) ? '' : $matches[1]; //'tag_tag'
             $title = $row['title'];//'tag_title'
             $description = $row['description'];//'tag_description'
 
@@ -1270,13 +1268,13 @@ class Hook_mybb
                     break;
                 case 3:
                     $week_array = array(0, 0, 0, 0, 0, 0, 0);
-                    $week_array[0] = (isset($event_repeat_data['days'][0]) && ($event_repeat_data['days'][0] != '')) ? 1 : 0;
-                    $week_array[1] = (isset($event_repeat_data['days'][1]) && ($event_repeat_data['days'][1] != '')) ? 1 : 0;
-                    $week_array[2] = (isset($event_repeat_data['days'][2]) && ($event_repeat_data['days'][2] != '')) ? 1 : 0;
-                    $week_array[3] = (isset($event_repeat_data['days'][3]) && ($event_repeat_data['days'][3] != '')) ? 1 : 0;
-                    $week_array[4] = (isset($event_repeat_data['days'][4]) && ($event_repeat_data['days'][4] != '')) ? 1 : 0;
-                    $week_array[5] = (isset($event_repeat_data['days'][5]) && ($event_repeat_data['days'][5] != '')) ? 1 : 0;
-                    $week_array[6] = (isset($event_repeat_data['days'][6]) && ($event_repeat_data['days'][6] != '')) ? 1 : 0;
+                    $week_array[0] = empty($event_repeat_data['days'][0]) ? 1 : 0;
+                    $week_array[1] = empty($event_repeat_data['days'][1]) ? 1 : 0;
+                    $week_array[2] = empty($event_repeat_data['days'][2]) ? 1 : 0;
+                    $week_array[3] = empty($event_repeat_data['days'][3]) ? 1 : 0;
+                    $week_array[4] = empty($event_repeat_data['days'][4]) ? 1 : 0;
+                    $week_array[5] = empty($event_repeat_data['days'][5]) ? 1 : 0;
+                    $week_array[6] = empty($event_repeat_data['days'][6]) ? 1 : 0;
 
                     $recurrence = 'daily ' . implode('', $week_array);
                     break;

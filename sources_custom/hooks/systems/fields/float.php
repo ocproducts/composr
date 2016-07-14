@@ -168,10 +168,10 @@ class Hook_fields_float
             $longitude = '';
 
             global $LATITUDE;
-            if ((isset($LATITUDE)) && ($LATITUDE != '') && ($LATITUDE != do_lang('NA'))) {
+            if ((!empty($LATITUDE)) && ($LATITUDE != do_lang('NA'))) {
                 $latitude = float_to_raw_string(floatval($LATITUDE), 10, true);
             }
-            if ((isset($actual_value)) && ($actual_value != '') && ($actual_value != do_lang('NA'))) {
+            if ((!empty($actual_value)) && ($actual_value != do_lang('NA'))) {
                 $longitude = float_to_raw_string(floatval($actual_value), 10, true);
             }
 

@@ -431,10 +431,11 @@ class Hook_ipb_base
                         $filename = (($rrpos === false) ? $photo_url : substr($photo_url, $rrpos));
                     }
 
-                    if (($photo_url != '') && (function_exists('imagepng'))) {
-                        $photo_thumb_url = 'uploads/cns_photos_thumbs/' . find_derivative_filename('uploads/cns_photos_thumbs', $filename, true);
+                    if ($photo_url != '') {
+                        list($photo_thumb_path) = find_unique_path('uploads/cns_photos_thumbs', $filename);
+
                         require_code('images');
-                        convert_image($photo_url, $photo_thumb_url, -1, -1, intval(get_option('thumb_width')), false, null, true);
+                        $photo_thumb_url = convert_image($photo_url, $photo_thumb_path, -1, -1, intval(get_option('thumb_width')), false, null, true);
                     }
 
                     if (either_param_string('importer') == 'ipb2') {

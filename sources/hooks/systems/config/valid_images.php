@@ -51,6 +51,6 @@ class Hook_config_valid_images
      */
     public function get_default()
     {
-        return 'jpg,jpeg,gif,png,ico';
+        return 'jpg,jpe,jpeg,gif,png,ico,svg,webp';
     }
 }

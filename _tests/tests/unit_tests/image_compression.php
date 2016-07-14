@@ -59,7 +59,7 @@ class image_compression_test_set extends cms_test_case
         require_code('files2');
         $files = get_directory_contents($base);
         foreach ($files as $file) {
-            if ((is_image($file)) && (substr($file, -4) != '.ico')) {
+            if (is_image($file, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_READ)) {
                 $filesize = filesize($base . '/' . $file);
 
                 // Approximate base size
@@ -77,7 +77,7 @@ class image_compression_test_set extends cms_test_case
                     $filesize = 1;
                 }
 
-                list($width, $height) = getimagesize($base . '/' . $file);
+                list($width, $height) = cms_getimagesize($base . '/' . $file);
                 $area = $width * $height;
                 $this->assertTrue(floatval($area) / floatval($filesize) > $min_ratio, 'Rubbish compression density on ' . $file . ' theme image');
             }

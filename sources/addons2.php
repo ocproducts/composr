@@ -1096,7 +1096,7 @@ function has_feature($dependency)
     if ((($dependency == 'cns') || ($dependency == 'Conversr')) && (get_forum_type() == 'cns')) {
         return true;
     }
-    if ((strtolower($dependency) == 'gd') && (function_exists('imagepng'))) {
+    if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {
         return true;
     }
     if ($dependency == 'adobeflash') {

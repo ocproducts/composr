@@ -82,7 +82,7 @@ class Hook_task_import_rss
 
             // Post name
             $post_name = $item['title'];
-            if ((isset($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_NAME'])) && ($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_NAME'] != '')) {
+            if (!empty($item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_NAME'])) {
                 $post_name = $item['extra']['HTTP://WORDPRESS.ORG/EXPORT/1.2/:POST_NAME'];
             }
 
@@ -194,15 +194,8 @@ class Hook_task_import_rss
                 if (array_key_exists('rep_image', $item)) {
                     $rep_image = $item['rep_image'];
                     if ($download_images == 1) {
-                        $stem = 'uploads/repimages/' . basename(urldecode($rep_image));
-                        $target_path = get_custom_file_base() . '/' . $stem;
-                        $rep_image = 'uploads/repimages/' . basename($rep_image);
-                        while (file_exists($target_path)) {
-                            $uniqid = uniqid('', true);
-                            $stem = 'uploads/repimages/' . $uniqid . '_' . basename(urldecode($rep_image));
-                            $target_path = get_custom_file_base() . '/' . $stem;
-                            $rep_image = 'uploads/repimages/' . $uniqid . '_' . basename($rep_image);
-                        }
+                        require_code('urls2');
+                        list($target_path, $rep_image) = find_unique_path('uploads/repimages', basename(urldecode($rep_image)));
                         $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
                         http_download_file($item['rep_image'], null, false, false, 'Composr', null, null, null, null, null, $target_handle);
                         fclose($target_handle);

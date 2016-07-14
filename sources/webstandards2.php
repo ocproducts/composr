@@ -966,7 +966,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 if ((isset($attributes['http-equiv'])) && (isset($attributes['content'])) && (strtolower($attributes['http-equiv']) == 'content-type') && ((strpos($attributes['content'], 'text/html;') !== false) || (strpos($attributes['content'], 'application/xhtml+xml;') !== false)) && (strpos($attributes['content'], 'charset=') !== false)) {
                     $GLOBALS['FOUND_CONTENTTYPE'] = true;
                 }
-                if ((isset($attributes['content'])) && ($attributes['content'] != '')) {
+                if (!empty($attributes['content'])) {
                     if ((isset($attributes['name'])) && ($attributes['name'] == 'keywords')) {
                         $GLOBALS['FOUND_KEYWORDS'] = true;
                     }
@@ -1465,7 +1465,7 @@ function _check_externals($tag, $attributes, $self_close, $close)
         }
     }
 
-    if (($tag == 'iframe') && (isset($attributes['src'])) && ($attributes['src'] != '') && (!$GLOBALS['NO_XHTML_LINK_FOLLOW']) && (!isset($VALIDATED_ALREADY[$attributes['src']]))) { // Validate iframe's
+    if (($tag == 'iframe') && (!empty($attributes['src'])) && (!$GLOBALS['NO_XHTML_LINK_FOLLOW']) && (!isset($VALIDATED_ALREADY[$attributes['src']]))) { // Validate iframe's
         $VALIDATED_ALREADY[$attributes['src']] = 1;
         $url = qualify_url($attributes['src'], $GLOBALS['URL_BASE']);
         if ($url != '') {

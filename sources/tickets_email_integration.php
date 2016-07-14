@@ -547,9 +547,13 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     }
 
     // Add in attachments
+    require_code('urls2');
     foreach ($attachments as $filename => $filedata) {
         $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
-        list($new_path, $new_url) ensure_path_uniqueness('uploads/attachments', $new_filename, true);
+        list($new_path, $new_url, $new_filename) = find_unique_path('uploads/attachments', $new_filename);
+        file_put_contents($new_path, $filedata);
+        sync_file($new_path);
+        fix_permissions($new_path);
 
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,

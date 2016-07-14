@@ -239,7 +239,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
 
                             $_file = zip_entry_name($entry);
 
-                            if (is_image($_file)) {
+                            if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                                 if (file_exists(get_file_base() . '/themes/default/images/emoticons/index.html')) {
                                     $path = get_custom_file_base() . '/themes/default/images_custom/emoticons__' . basename($_file);
                                 } else {
@@ -284,7 +284,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                             // Load in file
                             $_file = $entry['path'];
 
-                            if (is_image($_file)) {
+                            if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                                 if (file_exists(get_file_base() . '/themes/default/images/emoticons/index.html')) {
                                     $path = get_custom_file_base() . '/themes/default/images_custom/emoticons__' . basename($_file);
                                 } else {
@@ -301,7 +301,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
                     }
                     break;
                 default:
-                    if (is_image($file)) {
+                    if (is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                         $urls = get_url('', $attach_name, 'themes/default/images_custom');
                         $path = $urls[0];
                         $this->_import_emoticon($path);

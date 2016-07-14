@@ -112,7 +112,7 @@ function incoming_uploads_script()
         // File is valid, and was successfully uploaded. Now see if there is any metadata to surface from the file.
         require_code('images');
         $outa = array();
-        if (is_image($name)) {
+        if (is_image($name, IMAGE_CRITERIA_NONE)) {
             require_code('exif');
             $outa += get_exif_data(get_custom_file_base() . '/' . $savename);
         }

@@ -291,7 +291,7 @@ class Hook_commandr_fs_galleries extends Resource_fs_base
 
         require_code('galleries2');
 
-        $is_image = (((empty($properties['url'])) || (is_image($properties['url']))) && (empty($properties['video_length'])) || ($force_type === 'image')) && ($force_type !== 'video');
+        $is_image = (((empty($properties['url'])) || (is_image($properties['url'], IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) && (empty($properties['video_length'])) || ($force_type === 'image')) && ($force_type !== 'video');
 
         list($properties, $label) = $this->_file_magic_filter($filename, $path, $properties, $is_image ? 'image' : 'video');
 

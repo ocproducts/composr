@@ -891,19 +891,12 @@ function _news_import_grab_image(&$data, $url)
         return;
     }
     require_code('images');
-    if (!is_image($url)) {
+    if (!is_image($url, IMAGE_CRITERIA_WEBSAFE, true)) {
         return;
     }
 
-    $stem = 'uploads/attachments/' . basename(urldecode($url));
-    $target_path = get_custom_file_base() . '/' . $stem;
-    $target_url = get_custom_base_url() . '/uploads/attachments/' . basename($url);
-    while (file_exists($target_path)) {
-        $uniqid = uniqid('', true);
-        $stem = 'uploads/attachments/' . $uniqid . '_' . basename(urldecode($url));
-        $target_path = get_custom_file_base() . '/' . $stem;
-        $target_url = get_custom_base_url() . '/uploads/attachments/' . $uniqid . '_' . basename($url);
-    }
+    require_code('urls2');
+    list($target_path, $target_url) = find_unique_path('uploads/attachments', basename($url));
 
     if (!file_exists(dirname($target_path))) {
         require_code('files2');

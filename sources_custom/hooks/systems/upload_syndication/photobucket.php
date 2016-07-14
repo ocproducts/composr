@@ -206,7 +206,7 @@ class Hook_upload_syndication_photobucket
             require_code('images');
             $api->reset(true, true, true);
             $call_params = array(
-                'type' => is_image($filename) ? 'image' : 'video',
+                'type' => is_image($filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')) ? 'image' : 'video',
                 'uploadfile' => '@' . $filepath, // We can't do by URL unfortunately; that requires a business deal to be arranged, it's not allowed to the general public (for abuse reasons) http://web.archive.org/web/20120119180111/http://photobucket.com/developer/forum?read,2,319
                 'filename' => $filename,
                 'title' => $title,
