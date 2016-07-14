@@ -41,7 +41,7 @@ function optimise_tempcode(&$ob)
     if (isset($ob->seq_parts[0])) {
         $cnt = count($ob->seq_parts);
         for ($i = 1; $i < $cnt; $i++) {
-            $ob->seq_parts[0] = array_merge($ob->seq_parts[0], $ob->seq_parts[$i]);
+            array_splice($ob->seq_parts[0], count($ob->seq_parts[0]), 0, $ob->seq_parts[$i]);
         }
         $ob->seq_parts = array($ob->seq_parts[0]);
     }

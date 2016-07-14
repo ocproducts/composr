@@ -326,11 +326,6 @@ We have the PSD files (requires Adobe Photoshop or compatible software) for many
 Composr uses a third-party WYSIWYG editor &ndash; CKEditor.
 It has its own translations which should automatically be linked to your own by the standard ISO language name.
 
-[title="4"]Template/CSS editor[/title]
-
-Composr uses a third-party code editor &ndash; a modified version of EditArea.
-You need to make sure you have translated versions of all [tt]data/editarea/lang/<lang>.js[/tt] files. There are quite a few translations already in there.
-
 [title="4"]MySQL collations[/title]
 
 MySQL has 'collations' which basically sets the MySQL character set. Composr does not handle these, it uses whatever is there.

@@ -56,7 +56,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 }
 
 .global_breadcrumbs {
-	padding: 18px 0 7px 0;
+	padding: 4px 0 7px 0;
 }
 
 {+START,IF,{$NOT,{$MOBILE}}}
@@ -92,13 +92,6 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .page_running_login #main_website_inner {
 	{$BETA_CSS_PROPERTY,background-image: none !important;}
-}
-
-.footer_inner {
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}{+START,IF,{$NOT,{$MOBILE}}}
-		width: 980px;
-		margin: 0 auto;
-	{+END}{+END}
 }
 
 footer .global_footer_left #special_page_type {

@@ -372,6 +372,10 @@ iframe {
 		white-space: normal !important;
 		{$BETA_CSS_PROPERTY,word-wrap: break-word !important;}
 	}
+	/* Exceptions */
+	.ace_layer * {
+		white-space: pre !important;
+	}
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
@@ -404,8 +408,8 @@ body.website_body.frame {
 	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 	html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
 		/* Want to change the tiled background?
 			Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
@@ -432,6 +436,11 @@ body.website_body.frame {
 		.global_banner {
 			top: 0 !important;
 		}
+	}
+/*{+END}*/
+/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	#main_website #main_website_inner {
+		margin: 15px;
 	}
 /*{+END}*/
 /*{+END}*/
@@ -483,7 +492,7 @@ header h1 {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
-	/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+	/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		top: -16px;
 	/*{+END}*/
 	padding-top: 6px;
@@ -622,10 +631,10 @@ header h1 {
 .global_breadcrumbs {
 	padding: 7px 0 7px 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+		/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			text-align: {!en_right};
 		/*{+END}*/
-		/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+		/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			float: {!en_right};
 		/*{+END}*/
 		margin-left: 0.5em;
@@ -885,7 +894,7 @@ footer {
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,footer_background}\, {$GET,footer_2_background});}
 
 	color: {$GET,footer_text};
-	/*{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}*/
+	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		{$BETA_CSS_PROPERTY,box-shadow: 0 0 2px 2px {$GET,footer_tinting};}
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
@@ -1644,11 +1653,11 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .toggleable_tray_title .toggleable_tray_button img {
 	margin: -2px 0.4em 0 0.4em !important;
 }
-.toggleable_tray_button img {
+.toggleable_tray_button img, .box .toggleable_tray_title .toggleable_tray_button img {
 	width: 20px;
 }
-.box .toggleable_tray_title .toggleable_tray_button img {
-	width: 20px;
+h3 .toggleable_tray_button img {
+	width: 18px;
 }
 .ttb_left_spaced, .ttb_left_spaced div {
 	margin-top: 0.3em;
@@ -2426,6 +2435,7 @@ div.ajax_loading, p.ajax_loading {
 }
 .tree_list_highlighted *, .tree_list_nonhighlighted * {
 	vertical-align: middle;
+	white-space: nowrap;
 }
 .tree_list_highlighted a, .tree_list_nonhighlighted a {
 	background-color: {$GET,native_ui_background};
@@ -3515,9 +3525,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
-.buttons__save_and_stay {
-	background-image: url('{$IMG,icons/24x24/buttons/save_and_stay}') !important;
-}
 .buttons__search {
 	background-image: url('{$IMG,icons/24x24/buttons/search}') !important;
 }
@@ -3702,9 +3709,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}
-	.buttons__save_and_stay {
-		background-image: url('{$IMG,icons/48x48/buttons/save_and_stay}') !important;
-	}
 	.buttons__search {
 		background-image: url('{$IMG,icons/48x48/buttons/search}') !important;
 	}
@@ -3828,6 +3832,11 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	height: 25px;
 }
 
+.spaced_out_tabs.tabs {
+	overflow: hidden;
+	height: auto;
+}
+
 /*{+START,IF,{$MOBILE}}*/
 	.tabs {
 		border-bottom: 1px solid {$GET,tab_border};
@@ -3846,7 +3855,7 @@ a.tab, a.tab:visited, a.tab:hover {
 	height: 23px;
 	text-align: center;
 	cursor: pointer;
-	line-height: 1em;
+	line-height: 18px;
 	{$BETA_CSS_PROPERTY,opacity: 0.6;}
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		background-image: url('{$IMG;,tabs/tab}') !important;
@@ -3856,6 +3865,10 @@ a.tab, a.tab:visited, a.tab:hover {
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
 	/*{+END}*/
+}
+
+.spaced_out_tabs .tab {
+	margin-right: 1px;
 }
 
 a.tab>img+span {
@@ -3894,11 +3907,11 @@ a.tab>span {
 	width: 20px;
 }
 
-.tab_first {
+.tab_first, a.tab:first-child {
 }
 
 /*{+START,IF,{$NOT,{$MOBILE}}}*/
-	.tab_last {
+	.tab_last, a.tab:last-child, .spaced_out_tabs .tab {
 		border-right: 1px solid;
 		border-color: {$GET,tab_border};
 	}
@@ -4381,6 +4394,23 @@ a[rel="lightbox"] {
 .media_set img {
 	width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	height: auto;
+}
+
+/*
+=========================
+===Live themeing editor==
+=========================
+*/
+
+@keyframes greenPulse {
+	from { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
+	50% { background-color: #91bd09; {$BETA_CSS_PROPERTY,box-shadow: 0 0 18px #91bd09;} }
+	to { background-color: #749a02; {$BETA_CSS_PROPERTY,box-shadow: 0 0 9px #333333;} }
+}
+.glowing_node {
+	{$BETA_CSS_PROPERTY,animation-name: greenPulse;}
+	{$BETA_CSS_PROPERTY,animation-duration: 2s;}
+	{$BETA_CSS_PROPERTY,animation-iteration-count: infinite;}
 }
 
 /*

@@ -561,6 +561,7 @@ We have the following which are either unlikely to be useful, or potentially uns
   - [tt]no_flood_control[/tt] -- set this to '1' if you will not have flood control
   - [tt]implicit_usergroup_sync[/tt] -- set this to '1' to enable synching of implicit usergroups (see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page] for more information)
   - [tt]shortened_tempcode[/tt] -- set this to '1' to not store parameter reference origins in Tempcode, which makes Tempcode use less memory/storage/CPU
+  - [tt]aggressive_tempcode_compilation[/tt] -- set this to '1' if you want to compile some things aggressively into Tempcode that may occasionally change, such as member avatar URLs or resource URLs; setting this implies you will tolerate some outdated data in return for slightly faster cache rendering
   - [tt]save_jpegs_as_png[/tt] -- set this to '1' to allow Composr to detect when JPEG files would be smaller, and save JPEG data into PNG file extensions. It is a bit of a hack, and goes against standards, but works well
   - [tt]maximum_result_count_point[/tt] -- the number of search results to count up to (defaults to '1000'); a higher figure means that for multi-condition searches extra computation will be required to see which result rows match the search conditions (single-condition search counting is usually fast because an index gives an instant answer)
   - [tt]search_days__<search-hook>[/tt] -- (see "Low-level tuning")
@@ -634,12 +635,14 @@ The 'keep' parameters available are:
  - [tt]keep_force_open[/tt] -- set this to '1' if you want to ignore a [tt]closed.html[/tt] file and get to the website
  - [tt]keep_no_frames[/tt] -- set this to '1' to disable optional iframes / AJAX frame-simulation
  - [tt]keep_failover[/tt] -- set this to '1' or '0' to force failover mode to on or off
+ - [tt]keep_grow_template_meta_tree[/tt] -- set this to '1' for the "Grow template meta-tree" configuration option to be considered as temporarily enabled
  - [tt]keep_has_cron[/tt] -- set this to '1' or '0' to override UI adaptations to CRON being on or not (e.g. to enable scheduling options as if CRON was on, even if they won't run)
  - [tt]keep_smart_decaching[/tt] -- set this to '1' for smart decaching to be enabled, even if disabled in [tt]_config.php[/tt] (it is on by default, so you may want to use this flag if you disabled it but want to ease your development workflow)
  - [tt]keep_infinite_scroll[/tt] -- set this to '0' or '1' to temporarily change the infinite scrolling setting
 
 The following 'keep' parameters have interface triggers, but are also handy for manual activation:
  - [tt]keep_markers[/tt] -- set this to '1' if you want template start/end markers to be output in the page HTML source when viewed in Composr
+ - [tt]keep_template_magic_markers[/tt] -- set this to '1' if you want specially encoded "invisible" template start/end markers, that the template editor can pick up on
  - [tt]keep_webstandards_check[/tt] -- set this to '1' to perform advanced output checking (for staff only), giving errors if technology guidelines are broken (such as XHTML5, CSS, and WCAG). If you enable this flag you will be informed of any accessibility problems on your website, but it severely effects performance as well as your administration experience.
  - [tt]keep_su[/tt] -- set this to a username or member ID when logged in as admin, to pretend to be that member. May choose the guest member ('Guest' on Conversr by default).
  - [tt]keep_theme_seed[/tt] -- set this to kiddie or random or a 6-character HTML colour code, to get dynamic themegen going for your page view (this is very slow, but fun!); you must be staff, with a confirmed session, for this to work
@@ -794,7 +797,7 @@ Here are some assorted hints:
 
 Considerations for design and themeing:
  - If there are separate frontend and backend developers, the frontend developer can do an effective mockup by coding a simple mini-module/mini-block that uses a static array of data passed directly into templates. This way the built CSS and markup is "Composr ready" (particularly things like the 'IMG' symbol can be used from the start). This requires the frontend developer to have basic PHP and Tempcode experience.
- - In particular, do not make theme image changes using Composr's theme editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
+ - In particular, do not make theme image changes using Composr's themes editor, as these are really painful to sync. Make use of Composr's automatic theme image detection by simply saving new theme image files into appropriate directory locations; note you will need to clear the caches if you are overriding a default image.
  - If you are adding new functionality and write new templates, it is best to save these into the default theme's [tt]templates_custom[/tt]/[tt]javascript_custom[/tt]/[tt]xml_custom[/tt]/[tt]text_custom[/tt]/[tt]css_custom[/tt] directories, so that your functionality works on all themes. If you are overriding default theme templates/CSS, it is then that you save them into your site's theme. A similar rule applies for custom images.
 
 Take particular care with Comcode pages:

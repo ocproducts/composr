@@ -149,8 +149,8 @@ function put_into_cache($codename, $ttl, $cache_identifier, $staff_status, $memb
         $lang = user_lang();
     }
 
-    global $KEEP_MARKERS, $SHOW_EDIT_LINKS;
-    if ($KEEP_MARKERS || $SHOW_EDIT_LINKS) {
+    global $KEEP_MARKERS, $SHOW_EDIT_LINKS, $INJECT_HIDDEN_TEMPLATE_NAMES;
+    if ($KEEP_MARKERS || $SHOW_EDIT_LINKS || $INJECT_HIDDEN_TEMPLATE_NAMES) {
         return;
     }
 

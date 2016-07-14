@@ -189,6 +189,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 /* Tone it all down for forms inside tabs */
 .tab_surround tbody th, .tab_surround tbody td, .tab_surround .form_table .required {
 	background: none !important;
+	color: inherit !important;
 }
 
 .form_table_field_spacer>th, .form_table_field_spacer>td, .form_table_description_above_cell {

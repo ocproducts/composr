@@ -9,13 +9,13 @@
 
 <h2>{!EXISTING_THEMES}</h2>
 
-<div class="autosized_table theme_manage_table">
-	<table class="columned_table">
+<div class="autosized_table theme_manage_table wide_table_wrap">
+	<table class="columned_table wide_table">
 		<thead>
 			<tr>
 				<th>{!THEME}</th>
 				<th>{!TOOLS}</th>
-				<th colspan="4">{!EDIT}</th>
+				<th class="theme_manage_table_icon_column" colspan="3">{!EDIT}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,10 +49,6 @@
 						<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
 					</td>
 					<td class="do_theme_item" onclick="click_link(this.getElementsByTagName('a')[0]);" onkeypress="if (enter_pressed(event)) return this.onclick.call(this,event);">
-						<div><a rel="edit" title="{!EDIT_CSS}: {NAME*}" href="{CSS_URL*}" onclick="cancel_bubbling(event); if ('{NAME;*}'=='default') { var t=this; window.fauxmodal_confirm('{!EDIT_DEFAULT_THEME_WARNING;}',function(result) { if (result) { click_link(t); } }); return false; } return true;"><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/css}" /></a></div>
-						<div><a title="{!EDIT_CSS}: {NAME*}" href="{CSS_URL*}" onclick="cancel_bubbling(event); if ('{NAME;*}'=='default') { var t=this; window.fauxmodal_confirm('{!EDIT_DEFAULT_THEME_WARNING;}',function(result) { if (result) { click_link(t); } }); return false; } return true;">{!EDIT_CSS}</a></div>
-					</td>
-					<td class="do_theme_item" onclick="click_link(this.getElementsByTagName('a')[0]);" onkeypress="if (enter_pressed(event)) return this.onclick.call(this,event);">
 						<div><a rel="edit" title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}" onclick="cancel_bubbling(event); if ('{NAME;*}'=='default') { var t=this; window.fauxmodal_confirm('{!EDIT_DEFAULT_THEME_WARNING;}',function(result) { if (result) { click_link(t); } }); return false; } return true;"><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/templates}" /></a></div>
 						<div><a title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}" onclick="cancel_bubbling(event); if ('{NAME;*}'=='default') { var t=this; window.fauxmodal_confirm('{!EDIT_DEFAULT_THEME_WARNING;}',function(result) { if (result) { click_link(t); } }); return false; } return true;">{!EDIT_TEMPLATES}</a></div>
 					</td>
@@ -62,7 +58,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="6" class="manage_theme_theme_usage">
+					<td colspan="5" class="manage_theme_theme_usage">
 						{+START,IF_NON_EMPTY,{THEME_USAGE}}{THEME_USAGE*}{+END}
 						{+START,IF,{$EQ,{NAME},default}}
 							<p>{!DEFAULT_THEME_INHERITANCE}</p>
@@ -85,10 +81,6 @@
 		{+END}
 	</div>
 </div>
-
-<script>// <![CDATA[
-	load_previews();
-//]]></script>
 
 <h2>{!ADD_THEME}</h2>
 

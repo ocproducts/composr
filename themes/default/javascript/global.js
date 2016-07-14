@@ -2200,7 +2200,7 @@ function convert_tooltip(element)
 				element,
 				'mouseover',
 				function(event) {
-					win.activate_tooltip(element,event,element.cms_tooltip_title,'300px','',null,false,false,false,false,win);
+					win.activate_tooltip(element,event,element.cms_tooltip_title,'auto','',null,false,false,false,false,win);
 				}
 			);
 
@@ -2329,12 +2329,21 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 		{
 			tooltip_element.className+=' '+ac.className;
 		}
+		if (tooltip.length<50) tooltip_element.style.wordWrap='normal'; // Only break words on long tooltips. Otherwise it messes with alignment.
 		if (force_width)
 		{
 			tooltip_element.style.width=width;
 		} else
 		{
-			tooltip_element.style.maxWidth=(width=='auto')?((get_window_width(win)-30-window.mouse_x)+'px'):width;
+			if (width=='auto')
+			{
+				var new_auto_width=get_window_width(win)-30-window.mouse_x;
+				if (new_auto_width<150) new_auto_width=150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+				tooltip_element.style.maxWidth=new_auto_width+'px';
+			} else
+			{
+				tooltip_element.style.maxWidth=width;
+			}
 			tooltip_element.style.width='auto'; // Needed for Opera, else it uses maxWidth for width too
 		}
 		if ((height) && (height!='auto'))

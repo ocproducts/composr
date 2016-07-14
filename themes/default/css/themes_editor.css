@@ -3,28 +3,7 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.theme_wizard_preview_wrap {
-	margin: 1.5em 0;
-}
-
-.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
-	font-weight: bold;
-}
-
-.theme_wizard_use_colour {
-	font-weight: bold;
-	text-align: center;
-}
-
-.theme_wizard_preview {
-	width: 100%;
-	height: 300px;
-}
-
-.theme_wizard_info_box {
-	float: {!en_right};
-	text-align: center;
-}
+/* Main management screen */
 
 .theme_manage_table {
 	margin: 1em 0;
@@ -32,6 +11,10 @@
 
 .theme_manage_table table {
 	border-collapse: collapse;
+}
+
+.theme_manage_table_icon_column {
+	width: 350px;
 }
 
 .theme_manage_table th, .theme_manage_table td {
@@ -70,42 +53,35 @@
 	vertical-align: middle;
 }
 
-.theme_image_preview {
-	float: {!en_left};
-	margin-{!en_right}: 0.5em;
-	margin-top: 1em;
-	max-width: 100%;
-}
+/* Template editor */
 
-.theme_image_preview_wide {
-	max-width: 100%;
-}
-
-.css_editor_selector_tips {
-	width: 50%;
-	{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+.template_editor_file_selector {
+	width: 20em;
+	padding-right: 16px;
 	float: left;
-	margin-top: 1em;
-	font-size: 0.9em;
-	padding: 0.5em;
+	height: 45em;
+	{$BETA_CSS_PROPERTY,transform: scale(1);} /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
 }
 
-#selectors_inner ul {
-	display: block;
-	margin: 0;
-	padding: 0;
+.template_editor_file_selector>.inner {
+	overflow-x: hidden;
+	overflow-y: auto;
+	width: 100%;
+	height: 100%;
 }
 
-#selectors_inner li {
-	display: inline-block;
-	margin: 0.2em;
-	padding: 0.2em;
-	background-color: {$GET,area_background};
-	font-size: 0.9em;
+.template_editor_tabs {
 }
 
-#colours_go_here {
-	margin-top: 3em;
+.file_changed {
+	font-style: italic;
+}
+
+.file_unchanged {
+}
+
+.template_editing_toolbar {
+	margin-bottom: 1em;
 }
 
 .tpl_dropdown_row_a {
@@ -120,8 +96,76 @@
 	padding: 0.3em;
 }
 
-.original_template {
-	margin-top: 3em;
+.css_editor_selectors {
+	margin-bottom: 1em;
+}
+
+.css_editor_selectors>div ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+.css_editor_selectors>div li {
+	display: inline-block;
+	margin: 0.2em;
+	padding: 0.2em;
+	background-color: {$GET,area_background};
+	font-size: 0.9em;
+}
+
+.css_editor_lhs_column {
+}
+
+.css_editor_rhs_column {
+	width: 40em;
+	float: right;
+	font-size: 0.9em;
+	margin-left: 1em;
+}
+
+.main_editor {
+}
+
+.guids {
+}
+
+/* Theme images */
+
+.theme_image_preview {
+	float: {!en_left};
+	margin-{!en_right}: 0.5em;
+	margin-top: 1em;
+	max-width: 100%;
+}
+
+.theme_image_preview_wide {
+	max-width: 100%;
+}
+
+/* Theme Wizard */
+
+.theme_wizard_preview_wrap {
+	margin: 1.5em 0;
+}
+
+.theme_wizard_colour, .theme_wizard_info_box_label, .theme_wizard_change_colour {
+	font-weight: bold;
+}
+
+.theme_wizard_use_colour {
+	font-weight: bold;
+	text-align: center;
+}
+
+.theme_wizard_preview {
+	width: 100%;
+	height: 300px;
+}
+
+.theme_wizard_info_box {
+	float: {!en_right};
+	text-align: center;
 }
 
 /* Logo Wizard */

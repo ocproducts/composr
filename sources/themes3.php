@@ -19,154 +19,159 @@
  */
 
 /**
- * AJAX script for rendering some Tempcode.
+ * Compile all templates to improve run-time performance.
  */
-function tempcode_tester_script()
+function compile_all_templates()
 {
-    prepare_for_known_ajax_response();
+    require_code('css_and_js');
+    require_code('web_resources');
 
-    header('Content-type: text/plain; charset=' . get_charset());
-
-    $tempcode = post_param_string('tempcode');
-
-    $params = array();
-    foreach ($_POST as $key => $val) {
-        if ((substr($key, 0, 4) == 'key_') && ($val != '')) {
-            $_key = str_replace('}', '', str_replace('{', '', post_param_string($key, '')));
-            $_val = post_param_string('val_' . substr($key, 4), '');
-            $params[$_key] = $_val;
-        }
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(0);
     }
 
-    require_code('tempcode_compiler');
-    $tpl = template_to_tempcode($tempcode);
-    $bound = $tpl->bind($params, 'tempcode_tester');
-    $out = $bound->evaluate();
-    if (get_param_integer('comcode', 0) == 1) {
-        echo static_evaluate_tempcode(comcode_to_tempcode($out));
-    } else {
-        echo $out;
-    }
-}
+    $themes = array(
+        'admin',
+        $GLOBALS['FORUM_DRIVER']->get_theme(''),
+    );
 
-/**
- * Delete a theme image.
- *
- * @param  SHORT_TEXT $id The theme image ID
- * @param  ?ID_TEXT $theme The theme to delete in (null: all themes)
- * @param  ?LANGUAGE_NAME $lang The language to delete in (null: all languages) (blank: all languages)
- */
-function actual_delete_theme_image($id, $theme = null, $lang = null)
-{
-    if (!is_null($theme)) {
-        $old_url = find_theme_image($id, true, true, $theme, $lang);
+    $directories = array(
+        'css' => 'css',
+        'javascript' => 'js',
+        'templates' => 'tpl',
+        'text' => 'txt',
+        'xml' => 'xml',
+        'css_custom' => 'css',
+        'javascript_custom' => 'js',
+        'templates_custom' => 'tpl',
+        'text_custom' => 'txt',
+        'xml_custom' => 'xml',
+    );
 
-        $where_map = array('theme' => $theme, 'id' => $id);
-        if (($lang != '') && (!is_null($lang))) {
-            $where_map['lang'] = $lang;
-        }
-        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
-        if (!is_null($test)) {
-            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'path' => $test));
-        }
-    } else {
-        $old_url = find_theme_image($id, true, true);
+    $base_path = get_file_base() . '/themes';
 
-        $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id));
-    }
+    $lang = user_lang();
 
-    if ($old_url != '') {
-        cleanup_theme_images($old_url);
-    }
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    log_it('DELETE_THEME_IMAGE', $id);
-}
+    require_code('files2');
 
-/**
- * Regenerate all the theme image paths in the database.
- *
- * @param  ID_TEXT $theme The theme we're searching in.
- * @param  ?array $langs A map of languages (lang=>true) (null: find it in-function).
- * @param  ?ID_TEXT $target_theme The theme we're storing in (null: same as $theme).
- */
-function regen_theme_images($theme, $langs = null, $target_theme = null)
-{
-    if (is_null($langs)) {
-        $langs = find_all_langs(true);
-    }
-    if (is_null($target_theme)) {
-        $target_theme = $theme;
-    }
+    global $USER_THEME_CACHE;
 
-    $made_change = true;
+    @ignore_user_abort(false);
 
-    $images = array_merge(find_images_do_dir($theme, 'images/', $langs), find_images_do_dir($theme, 'images_custom/', $langs));
+    foreach ($themes as $theme) {
+        $USER_THEME_CACHE = $theme; // HACKHACK: due to {$THEME} in global.css, and some templates (it's considered static, as it's tied to cache directory)
 
-    foreach (array_keys($langs) as $lang) {
-        $where = array('lang' => $lang, 'theme' => $target_theme);
-        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), $where);
+        foreach ($directories as $directory => $suffix) {
+            $dh = opendir($base_path . '/default/' . $directory);
+            while (($file = readdir($dh)) !== false) {
+                $parts = explode('.', $file, 2);
 
-        // Cleanup broken references
-        foreach ($existing as $e) {
-            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($e['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($e['path'])))) {
-                $GLOBALS['SITE_DB']->query_delete('theme_images', $e + $where, '', 1);
-            }
-        }
+                if ((count($parts) == 2) && ($parts[1] == $suffix)) {
+                    $codename = $parts[0];
 
-        // Add theme images for anything on disk but not currently having a reference
-        foreach ($images as $id => $path) {
-            $found = false;
-            foreach ($existing as $e) {
-                if (($e['path'] == $path) || ($e['id'] == $id)) {
-                    $found = true;
-                    break;
+                    $tcp_path = $base_path . '/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.' . $suffix . '.tcp';
+
+                    if (!is_file($tcp_path)) {
+                        do_template($codename, null, $lang, true, null, '.' . $suffix, $directory, $theme);
+
+                        switch ($directory) {
+                            case 'javascript':
+                            case 'javascript_custom':
+                                javascript_enforce($codename, $theme);
+                                break;
+
+                            case 'css':
+                            case 'css_custom':
+                                css_enforce($codename, $theme);
+                                break;
+                        }
+                    }
                 }
             }
 
-            if (!$found) {
-                $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-                $GLOBALS['NO_QUERY_LIMIT'] = true;
-                $correct_path = find_theme_image($id, false, true, $theme, $lang);
-                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
-
-                $made_change = false;
-            }
+            closedir($dh);
         }
     }
 
-    if ($made_change) {
-        // Reset this so they can all load in in one go
-        global $THEME_IMAGES_CACHE, $THEME_IMAGES_SMART_CACHE_LOAD;
-        $THEME_IMAGES_CACHE = array();
-        $THEME_IMAGES_SMART_CACHE_LOAD = 1;
-    }
+    unset($USER_THEME_CACHE);
 
-    Self_learning_cache::erase_smart_cache();
+    // Do language files too, for kicks...
+
+    require_all_lang();
+    require_all_open_lang_files();
 }
 
 /**
- * Delete uploaded theme image if not tied into anything.
+ * Add a theme.
  *
- * @param  URLPATH $old_url The URL to the theme image being deleted
+ * @param  ID_TEXT $name The theme name
  */
-function cleanup_theme_images($old_url)
+function actual_add_theme($name)
 {
-    $files_referenced = collapse_1d_complexity('path', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT path')));
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    $themes = find_all_themes();
-    foreach (array_keys($themes) as $theme) {
-        $files_existing = get_image_paths(get_custom_base_url() . '/themes/' . rawurlencode($theme) . '/images_custom/', get_custom_file_base() . '/themes/' . $theme . '/images_custom/');
+    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
+        warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
+    }
 
-        foreach (array_keys($files_existing) as $path) {
-            $path = str_replace(get_custom_file_base() . '/', '', filter_naughty($path));
-            $encoded_path = substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1));
-            if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
-                @unlink(get_custom_file_base() . '/' . $path);
-                sync_file($path);
-            }
+    require_code('abstract_file_manager');
+    force_have_afm_details();
+
+    // Create directories
+    $dir_list = array(
+        '',
+        'images',
+        'images/logo',
+        'images_custom',
+        'templates',
+        'templates_custom',
+        'javascript',
+        'javascript_custom',
+        'xml',
+        'xml_custom',
+        'text',
+        'text_custom',
+        'templates_cached',
+        'css',
+        'css_custom',
+    );
+    $langs = find_all_langs(true);
+    foreach (array_keys($langs) as $lang) {
+        $dir_list[] = 'templates_cached/' . $lang;
+    }
+    $dir_list_access = array('', 'images', 'images_custom', 'css');
+    foreach ($dir_list as $dir) {
+        $path = 'themes/' . $name . '/' . $dir;
+        afm_make_directory($path, true);
+        $path = 'themes/' . $name . '/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html';
+        if (file_exists(get_file_base() . '/themes/default/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html')) {
+            afm_copy('themes/default/' . (($dir == '') ? '' : ($dir . '/')) . 'index.html', $path, false);
+        }
+        $path = 'themes/' . $name . '/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess';
+        if (file_exists(get_file_base() . '/themes/default/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess')) {
+            afm_copy('themes/default/' . (($dir == '') ? '' : ($dir . '/')) . '.htaccess', $path, false);
         }
     }
+    afm_copy('themes/default/theme.ini', 'themes/' . $name . '/theme.ini', true);
+
+    // Copy image references from default
+    $start = 0;
+    do {
+        $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => 'default'), '', 100, $start);
+        foreach ($theme_images as $theme_image) {
+            $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('theme' => $name, 'id' => $theme_image['id'], 'lang' => $theme_image['lang']));
+            if (is_null($test)) {
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $theme_image['id'], 'theme' => $name, 'path' => $theme_image['path'], 'lang' => $theme_image['lang']));
+            }
+        }
+        $start += 100;
+    } while (count($theme_images) == 100);
+
+    Self_learning_cache::erase_smart_cache();
+
+    log_it('ADD_THEME', $name);
 }
 
 /**
@@ -281,4 +286,274 @@ function actual_delete_theme($theme)
 
     $GLOBALS['SITE_DB']->query_delete('theme_images', array('theme' => $theme));
     log_it('DELETE_THEME', $theme);
+}
+
+/**
+ * AJAX script for rendering some Tempcode.
+ */
+function tempcode_tester_script()
+{
+    prepare_for_known_ajax_response();
+
+    header('Content-type: text/plain; charset=' . get_charset());
+
+    $tempcode = post_param_string('tempcode');
+
+    $params = array();
+    foreach ($_POST as $key => $val) {
+        if ((substr($key, 0, 4) == 'key_') && ($val != '')) {
+            $_key = str_replace('}', '', str_replace('{', '', post_param_string($key, '')));
+            $_val = post_param_string('val_' . substr($key, 4), '');
+            $params[$_key] = $_val;
+        }
+    }
+
+    require_code('tempcode_compiler');
+    $tpl = template_to_tempcode($tempcode);
+    $bound = $tpl->bind($params, 'tempcode_tester');
+    $out = $bound->evaluate();
+    if (get_param_integer('comcode', 0) == 1) {
+        echo static_evaluate_tempcode(comcode_to_tempcode($out));
+    } else {
+        echo $out;
+    }
+}
+
+/**
+ * Add a theme image.
+ *
+ * @param  ID_TEXT $theme The theme the theme image is in
+ * @param  LANGUAGE_NAME $lang The language the theme image is for
+ * @param  SHORT_TEXT $id The theme image ID
+ * @param  URLPATH $path The URL to the theme image
+ * @param  boolean $fail_ok Whether to allow failure without bombing out
+ */
+function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
+{
+    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $id, 'theme' => $theme, 'lang' => $lang));
+    if (!is_null($test)) {
+        if ($fail_ok) {
+            return;
+        }
+        warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
+    }
+
+    $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang));
+
+    log_it('ADD_THEME_IMAGE', $id, $theme);
+
+    Self_learning_cache::erase_smart_cache();
+
+    if (addon_installed('!ssl')) {
+        require_code('caches3');
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
+    }
+}
+
+/**
+ * Edit a theme image.
+ *
+ * @param  SHORT_TEXT $old_id The current theme image ID
+ * @param  ID_TEXT $theme The theme the theme image is in
+ * @param  LANGUAGE_NAME $lang The language the theme image is for (blank: all languages)
+ * @param  SHORT_TEXT $id The new theme image ID
+ * @param  URLPATH $path The URL to the theme image
+ * @param  boolean $quick Whether to avoid cleanup, etc
+ */
+function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = false)
+{
+    if ($old_id != $id) {
+        $where_map = array('theme' => $theme, 'id' => $id);
+        if ($lang != '') {
+            $where_map['lang'] = $lang;
+        }
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', $where_map);
+        if (!is_null($test)) {
+            warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($id)));
+        }
+    }
+
+    if (!$quick) {
+        $old_url = find_theme_image($id, true, true, $theme, ($lang == '') ? null : $lang);
+
+        if (($old_url != $path) && ($old_url != '')) {
+            if (($theme == 'default') || (strpos($old_url, 'themes/default/') === false)) {
+                $where_map = array('theme' => $theme, 'id' => $id);
+                if ($lang != '') {
+                    $where_map['lang'] = $lang;
+                }
+                $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
+
+                cleanup_theme_images($old_url);
+            }
+        }
+    }
+
+    if ($lang == '') {
+        $langs = array_keys(find_all_langs());
+    } else {
+        $langs = array($lang);
+    }
+
+    $where_map = array('theme' => $theme, 'id' => $id);
+    if ($lang != '') {
+        $where_map['lang'] = $lang;
+    }
+    $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
+
+    foreach ($langs as $lang) {
+        $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'path' => $path, 'lang' => $lang), false, true);
+    }
+
+    if (!$quick) {
+        Self_learning_cache::erase_smart_cache();
+
+        if (addon_installed('!ssl')) {
+            require_code('caches3');
+            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
+        }
+
+        log_it('EDIT_THEME_IMAGE', $id, $theme);
+    }
+}
+
+/**
+ * Delete a theme image.
+ *
+ * @param  SHORT_TEXT $id The theme image ID
+ * @param  ?ID_TEXT $theme The theme to delete in (null: all themes)
+ * @param  ?LANGUAGE_NAME $lang The language to delete in (null: all languages) (blank: all languages)
+ */
+function actual_delete_theme_image($id, $theme = null, $lang = null)
+{
+    if (!is_null($theme)) {
+        $old_url = find_theme_image($id, true, true, $theme, $lang);
+
+        $where_map = array('theme' => $theme, 'id' => $id);
+        if (($lang != '') && (!is_null($lang))) {
+            $where_map['lang'] = $lang;
+        }
+        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'path', $where_map);
+        if (!is_null($test)) {
+            $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id, 'path' => $test));
+        }
+    } else {
+        $old_url = find_theme_image($id, true, true);
+
+        $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $id));
+    }
+
+    if ($old_url != '') {
+        cleanup_theme_images($old_url);
+    }
+
+    log_it('DELETE_THEME_IMAGE', $id);
+}
+
+/**
+ * Export neatly named dump of all theme images for active theme.
+ */
+function export_theme_images()
+{
+    header('Content-type: text/csv; charset=' . get_charset());
+    header('Content-Disposition: attachment; filename="theme_images.tar"');
+
+    require_code('tar');
+    require_code('files');
+    $my_tar = tar_open(null, 'wb');
+    $theme_images = $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT id'));
+    foreach ($theme_images as $theme_image) {
+        $path = rawurldecode(find_theme_image($theme_image['id'], true, true));
+        if (($path != '') && (substr($path, 0, strlen('themes/default/images/')) != 'themes/default/images/')) {
+            tar_add_file($my_tar, $theme_image['id'] . '.' . get_file_extension($path), $path, 0644, null, true);
+        }
+    }
+    tar_close($my_tar);
+}
+
+/**
+ * Regenerate all the theme image paths in the database.
+ *
+ * @param  ID_TEXT $theme The theme we're searching in.
+ * @param  ?array $langs A map of languages (lang=>true) (null: find it in-function).
+ * @param  ?ID_TEXT $target_theme The theme we're storing in (null: same as $theme).
+ */
+function regen_theme_images($theme, $langs = null, $target_theme = null)
+{
+    if (is_null($langs)) {
+        $langs = find_all_langs(true);
+    }
+    if (is_null($target_theme)) {
+        $target_theme = $theme;
+    }
+
+    $made_change = true;
+
+    $images = array_merge(find_images_do_dir($theme, 'images/', $langs), find_images_do_dir($theme, 'images_custom/', $langs));
+
+    foreach (array_keys($langs) as $lang) {
+        $where = array('lang' => $lang, 'theme' => $target_theme);
+        $existing = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), $where);
+
+        // Cleanup broken references
+        foreach ($existing as $e) {
+            if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($e['path']))) && (!file_exists(get_file_base() . '/' . rawurldecode($e['path'])))) {
+                $GLOBALS['SITE_DB']->query_delete('theme_images', $e + $where, '', 1);
+            }
+        }
+
+        // Add theme images for anything on disk but not currently having a reference
+        foreach ($images as $id => $path) {
+            $found = false;
+            foreach ($existing as $e) {
+                if (($e['path'] == $path) || ($e['id'] == $id)) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
+                $GLOBALS['NO_QUERY_LIMIT'] = true;
+                $correct_path = find_theme_image($id, false, true, $theme, $lang);
+                $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
+                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+
+                $made_change = false;
+            }
+        }
+    }
+
+    if ($made_change) {
+        // Reset this so they can all load in in one go
+        global $THEME_IMAGES_CACHE, $THEME_IMAGES_SMART_CACHE_LOAD;
+        $THEME_IMAGES_CACHE = array();
+        $THEME_IMAGES_SMART_CACHE_LOAD = 1;
+    }
+
+    Self_learning_cache::erase_smart_cache();
+}
+
+/**
+ * Delete uploaded theme image if not tied into anything.
+ *
+ * @param  URLPATH $old_url The URL to the theme image being deleted
+ */
+function cleanup_theme_images($old_url)
+{
+    $files_referenced = collapse_1d_complexity('path', $GLOBALS['SITE_DB']->query_select('theme_images', array('DISTINCT path')));
+
+    $themes = find_all_themes();
+    foreach (array_keys($themes) as $theme) {
+        $files_existing = get_image_paths(get_custom_base_url() . '/themes/' . rawurlencode($theme) . '/images_custom/', get_custom_file_base() . '/themes/' . $theme . '/images_custom/');
+
+        foreach (array_keys($files_existing) as $path) {
+            $path = str_replace(get_custom_file_base() . '/', '', filter_naughty($path));
+            $encoded_path = substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1));
+            if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
+                @unlink(get_custom_file_base() . '/' . $path);
+                sync_file($path);
+            }
+        }
+    }
 }

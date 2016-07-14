@@ -88,7 +88,7 @@ CSS loads images with a base URL within the [tt]themes/<yourthemename>/templates
 
 [list="1"]
 [*] Take your theme images and copy them into a new [tt]themes/<yourthemename>/images_custom/<yoursitename>[/tt] directory. This will allow you to reference them in Composr as theme images.
-[*] Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit CSS' option next to your theme. Choose to edit the [tt]global[/tt] CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
+[*] Go to edit the CSS for your theme in Composr. Do this by going to Admin Zone > Themes, then the 'Edit templates' option next to your theme. Choose to edit the [tt]global[/tt] CSS file. Take your CSS and paste it on the top (don't remove the default CSS!). If you prefer, you can edit [tt]themes/<yourthemename>/css_custom/global.css[/tt] in your favourite text editor.
 [*] You need to change the image references in your CSS. If you had something like [tt]images/example.jpg[/tt] it would need to be changed to [tt]{$IMG,<yoursitename>/example}[/tt]. You should not add the [tt].jpg[/tt]/[tt].png[/tt]/[tt].gif[/tt] on the end. This will make it find [tt]themes/<yourthemename>/images_custom/<yoursitename>/example.jpg[/tt] (or [tt]example.png[/tt] or [tt]example.gif[/tt]).
 [/list]
 

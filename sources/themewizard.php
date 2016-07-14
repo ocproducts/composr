@@ -438,6 +438,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
+    require_code('themes3');
+
     load_themewizard_params_from_theme($source_theme, $algorithm == 'hsv');
 
     if (file_exists(get_custom_file_base() . '/themes/' . $theme_name)) {
@@ -448,7 +450,6 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
         if ($source_theme == 'default') {
             actual_add_theme($theme_name);
         } else {
-            require_code('themes3');
             actual_copy_theme($source_theme, $theme_name);
         }
         $extending_existing = false;

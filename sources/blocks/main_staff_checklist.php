@@ -82,6 +82,7 @@ class Block_main_staff_checklist
                 '[page="adminzone:admin_themes:edit_image:webclipicon"]' . do_lang('CHECKLIST_INITIAL_TASK_WEBCLIP') . '[/page]',
                 do_lang('CHECKLIST_INITIAL_TASK_CONTENT'),
                 '[page="adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL_LOGO') . '[/page]',
+                '[page="adminzone:admin_themes:edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',

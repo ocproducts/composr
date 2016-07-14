@@ -1130,7 +1130,14 @@ function do_block($codename, $map = null, $ttl = null)
                     if (isset($SMART_CACHE)) {
                         $SMART_CACHE->paused = true;
                     }
+                    $do_inlining_mode = ($codename != 'menu'/*This generates on too many pages and has it's own internal optimisation*/);
+                    if ($do_inlining_mode) {
+                        push_tempcode_parameter_inlining_mode(true);
+                    }
                     $cache = $object->run($map);
+                    if ($do_inlining_mode) {
+                        push_tempcode_parameter_inlining_mode(false);
+                    }
                     if ($new_security_scope) {
                         $_cache = $cache->evaluate();
                         _solemnly_leave($_cache);
@@ -1266,10 +1273,11 @@ function apply_quick_caching($_cache)
 
         if ($has_keep_parameters) {
             if ($matches[0][$i][0][0] === '&') { // Other parameters are non-keep, but as they come first we can just strip the keep_* ones off
-                $keep = symbol_tempcode('KEEP', array('0'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+                $sym_params = array('0');
             } else { // All parameters are keep_*
-                $keep = symbol_tempcode('KEEP', array('1'), $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
+                $sym_params = array('1');
             }
+            $keep = symbol_tempcode('KEEP', $sym_params, $has_escaping ? array(ENTITY_ESCAPED) : array(NULL_ESCAPED));
             $new_tempcode->attach($keep);
         }
 
@@ -1581,7 +1589,7 @@ function find_all_pages_wrap($zone, $keep_ext_on = false, $consider_redirects = 
  *
  * @param  ID_TEXT $zone The zone name
  * @param  ID_TEXT $type The page type
- * @set    modules comcode html
+ * @set    modules modules_custom comcode/EN comcode_custom/EN html/EN html_custom/EN
  * @param  string $ext The file extension to limit us to (without a dot)
  * @param  boolean $keep_ext_on Whether to leave file extensions on the page name
  * @param  ?TIME $cutoff_time Only show pages newer than (null: no restriction)

@@ -227,5 +227,7 @@ There may be cases where you don't want a Comcode page to appear in your Sitemap
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
 
 {$SET,tutorial_tags,Pages,Content,core_comcode_pages,Structure and navigation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to add new pages, using Comcode. It couldn't be simpler to do: Comcode pages almost look like plain text.}[block]main_tutorial_rating[/block]

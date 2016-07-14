@@ -35,7 +35,7 @@ class Module_admin_themes
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 6;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -47,6 +47,8 @@ class Module_admin_themes
     public function uninstall()
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('theme_images');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('theme_template_relations');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('theme_screen_tree');
 
         require_code('files');
         $langs = find_all_langs(true);
@@ -76,6 +78,36 @@ class Module_admin_themes
                 'lang' => '*LANGUAGE_NAME'
             ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->query_insert('theme_images', array(
+                'id' => 'favicon',
+                'theme' => 'default',
+                'path' => 'favicon.ico',
+                'lang' => fallback_lang()
+            ), false, true);
+
+            $GLOBALS['SITE_DB']->query_insert('theme_images', array(
+                'id' => 'webclipicon',
+                'theme' => 'default',
+                'path' => 'webclipicon.png',
+                'lang' => fallback_lang()
+            ), false, true);
+        }
+
+        if ((is_null($upgrade_from)) || ($upgrade_from < 5)) {
+            $GLOBALS['SITE_DB']->create_table('theme_template_relations', array(
+                'rel_a' => '*ID_TEXT',
+                'rel_b' => '*ID_TEXT'
+            ));
+
+            $GLOBALS['SITE_DB']->create_table('theme_screen_tree', array(
+                'id' => '*AUTO',
+                'page_link' => 'SHORT_TEXT',
+                'json_tree' => 'LONG_TEXT'
+            ));
+            $GLOBALS['SITE_DB']->create_index('theme_screen_tree', 'page_link', array('page_link'));
         }
     }
 
@@ -108,7 +140,6 @@ class Module_admin_themes
     public $title;
     public $id;
     public $theme;
-    public $file;
 
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
@@ -121,89 +152,36 @@ class Module_admin_themes
 
         require_lang('themes');
 
-        if ($type != 'screen_previews' && $type != 'screen_preview') {
-            set_helper_panel_tutorial('tut_themes');
-        }
+        $this->theme = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme(''));
 
         if ($type == 'browse') {
+            set_helper_panel_tutorial('tut_themes');
+
             set_helper_panel_text(comcode_lang_string('DOC_THEMES'));
 
             $this->title = get_screen_title('MANAGE_THEMES');
         }
 
-        if ($type == 'choose_css') {
+        if ($type == 'add_theme') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-            breadcrumb_set_self(do_lang_tempcode('CHOOSE_CSS'));
 
-            $this->title = get_screen_title('EDIT_CSS');
+            $this->title = get_screen_title('ADD_THEME');
         }
-
-        if ($type == 'edit_css') {
-            set_helper_panel_text(comcode_lang_string('DOC_CSS'));
-            set_helper_panel_tutorial('tut_markup');
-
-            $theme = get_param_string('theme', '');
-            if ($theme == '') {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-                breadcrumb_set_self(do_lang_tempcode('CHOOSE'));
-            } else {
-                breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:choose_css:theme=' . $theme, do_lang_tempcode('CHOOSE_CSS'))));
-            }
-
-            $file = filter_naughty(get_param_string('file', 'global.css'));
-
-            $this->title = get_screen_title('_EDIT_CSS', true, array(escape_html($file)));
-
-            $this->file = $file;
-
-            $file = preg_replace('#\.\d+#', '', $file);
-            set_short_title($file);
-        }
-
-        if ($type == '_edit_css') {
-            $theme = post_param_string('theme');
-            $file = post_param_string('file');
- 
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_css:theme=' . $theme, do_lang_tempcode('CHOOSE_CSS')), array('_SELF:_SELF:_edit_css:file=' . $file, do_lang_tempcode('EDIT_CSS'))));
+        if ($type == '_add_theme') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
 
-            $this->title = get_screen_title('EDIT_CSS');
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
+
+            $this->title = get_screen_title('ADD_THEME');
         }
 
         if ($type == 'edit_templates') {
-            set_helper_panel_text(comcode_lang_string('DOC_TEMPLATES'));
-            set_helper_panel_tutorial('tut_markup');
-
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-            breadcrumb_set_self(do_lang_tempcode('CHOOSE_TEMPLATES'));
 
-            $this->title = get_screen_title('EDIT_TEMPLATES');
-        }
+            $this->title = get_screen_title('_EDIT_TEMPLATES', true, array(escape_html($this->theme)));
 
-        if ($type == '_edit_templates') {
-            set_helper_panel_text(comcode_lang_string('DOC_MARKUP'));
-            set_helper_panel_tutorial('tut_themes');
-
-            $theme = get_param_string('theme');
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_templates:theme=' . $theme, do_lang_tempcode('CHOOSE_TEMPLATES'))));
-
-            $this->title = get_screen_title('EDIT_TEMPLATES');
-        }
-
-        if ($type == '__edit_templates') {
-            $theme = post_param_string('theme');
-            $file = '';
-            foreach (array_keys($_REQUEST) as $_i) {
-                if (preg_match('#f(\d+)file#', $_i) != 0) {
-                    $file = either_param_string($_i);
-                }
-            }
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:edit_templates:theme=' . $theme, do_lang_tempcode('CHOOSE_TEMPLATES')), array('_SELF:_SELF:_edit_templates:theme=' . $theme . ':file=' . $file, do_lang_tempcode('EDIT_TEMPLATES'))));
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-
-            $this->theme = $theme;
-
-            $this->title = get_screen_title('EDIT_TEMPLATES');
+            breadcrumb_set_self(do_lang_tempcode('EDIT_TEMPLATES'));
         }
 
         if ($type == 'manage_images') {
@@ -213,15 +191,27 @@ class Module_admin_themes
             $this->title = get_screen_title('EDIT_THEME_IMAGES');
         }
 
+        if ($type == 'add_image') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
+
+            $this->title = get_screen_title('ADD_THEME_IMAGE');
+        }
+        if ($type == '_add_image') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:add_image:theme=' . post_param_string('theme'), do_lang_tempcode('ADD_THEME_IMAGE'))));
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
+
+            breadcrumb_set_self(do_lang_tempcode('DONE'));
+
+            $this->title = get_screen_title('ADD_THEME_IMAGE');
+        }
+
         if ($type == 'edit_image') {
+            $theme = $this->theme;
+
             $url = get_param_string('url', '');
             if ($url != '') {
                 $url = preg_replace('#\.pagespeed\..*$#', '', $url); // Support for working around https://developers.google.com/speed/docs/mod_pagespeed/filter-cache-extend
 
-                $theme = get_param_string('theme', ''); // Editing like this happens in the theme the user is using
-                if ($theme == '') {
-                    $theme = $GLOBALS['FORUM_DRIVER']->get_theme('');
-                }
                 if (substr($url, 0, strlen(get_base_url())) == get_base_url()) {
                     $url = substr($url, strlen(get_base_url()));
                 }
@@ -236,7 +226,6 @@ class Module_admin_themes
                 }
             } else {
                 $id = get_param_string('id');
-                $theme = get_param_string('theme', $GLOBALS['FORUM_DRIVER']->get_theme(''));
             }
 
             set_short_title($id);
@@ -246,11 +235,10 @@ class Module_admin_themes
             $this->title = get_screen_title('EDIT_THEME_IMAGE');
 
             $this->id = $id;
-            $this->theme = $theme;
         }
-
         if ($type == '_edit_image') {
             $theme = post_param_string('theme');
+            $this->theme = $theme;
             $id = post_param_string('id');
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:manage_images:theme=' . $theme, do_lang_tempcode('CHOOSE_THEME_IMAGE')), array('_SELF:_SELF:edit_theme_image:' . $id, do_lang_tempcode('EDIT_THEME_IMAGE'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
@@ -258,42 +246,11 @@ class Module_admin_themes
             $this->title = get_screen_title('EDIT_THEME_IMAGE');
         }
 
-        if ($type == 'add_image') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-
-            $this->title = get_screen_title('ADD_THEME_IMAGE');
-        }
-
-        if ($type == '_add_image') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES')), array('_SELF:_SELF:add_image:theme=' . post_param_string('theme'), do_lang_tempcode('ADD_THEME_IMAGE'))));
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-
-            $this->title = get_screen_title('ADD_THEME_IMAGE');
-        }
-
-        if ($type == 'add_theme') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-
-            $this->title = get_screen_title('ADD_THEME');
-        }
-
-        if ($type == '_add_theme') {
-            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-
-            breadcrumb_set_self(do_lang_tempcode('DONE'));
-
-            $this->title = get_screen_title('ADD_THEME');
-        }
-
         if ($type == 'edit_theme') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
 
             $this->title = get_screen_title('EDIT_THEME');
         }
-
         if ($type == '_edit_theme') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('MANAGE_THEMES'))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
@@ -314,7 +271,6 @@ class Module_admin_themes
 
             $this->title = get_screen_title('SCREEN_PREVIEWS');
         }
-
         if ($type == 'screen_preview') {
             $function = get_param_string('function');
 
@@ -342,6 +298,7 @@ class Module_admin_themes
         require_lang('themes');
         require_code('view_modes');
         require_code('themes2');
+        require_code('themes3');
         require_lang('zones');
         require_code('files');
 
@@ -353,39 +310,6 @@ class Module_admin_themes
 
         if ($type == 'browse') {
             return $this->manage_themes();
-        }
-        if ($type == 'choose_css') {
-            return $this->choose_css();
-        }
-        if ($type == 'edit_css') {
-            return $this->edit_css();
-        }
-        if ($type == '_edit_css') {
-            return $this->_edit_css();
-        }
-        if ($type == 'edit_templates') {
-            return $this->edit_templates();
-        }
-        if ($type == '_edit_templates') {
-            return $this->_edit_templates();
-        }
-        if ($type == '__edit_templates') {
-            return $this->__edit_templates();
-        }
-        if ($type == 'manage_images') {
-            return $this->manage_images();
-        }
-        if ($type == 'edit_image') {
-            return $this->edit_image();
-        }
-        if ($type == '_edit_image') {
-            return $this->_edit_image();
-        }
-        if ($type == 'add_image') {
-            return $this->add_image();
-        }
-        if ($type == '_add_image') {
-            return $this->_add_image();
         }
         if ($type == 'add_theme') {
             return $this->add_theme();
@@ -399,11 +323,29 @@ class Module_admin_themes
         if ($type == '_edit_theme') {
             return $this->_edit_theme();
         }
+        if ($type == 'edit_templates') {
+            return $this->edit_templates();
+        }
+        if ($type == 'manage_images') {
+            return $this->manage_images();
+        }
+        if ($type == 'add_image') {
+            return $this->add_image();
+        }
+        if ($type == '_add_image') {
+            return $this->_add_image();
+        }
+        if ($type == 'edit_image') {
+            return $this->edit_image();
+        }
+        if ($type == '_edit_image') {
+            return $this->_edit_image();
+        }
         if ($type == 'screen_previews') {
-            return $this->list_screen_previews();
+            return $this->screen_previews();
         }
         if ($type == 'screen_preview') {
-            return $this->view_screen_preview();
+            return $this->screen_preview();
         }
         if ($type == 'tempcode_tester') {
             return $this->tempcode_tester();
@@ -448,7 +390,6 @@ class Module_admin_themes
             }
 
             // Get URLs
-            $css_url = build_url(array('page' => '_SELF', 'type' => 'choose_css', 'theme' => $theme), '_SELF');
             $templates_url = build_url(array('page' => '_SELF', 'type' => 'edit_templates', 'theme' => $theme), '_SELF');
             $images_url = build_url(array('page' => '_SELF', 'type' => 'manage_images', 'theme' => $theme), '_SELF');
             $deletable = ($theme != 'default');
@@ -510,7 +451,6 @@ class Module_admin_themes
                 'DESCRIPTION' => $details['description'],
                 'AUTHOR' => $details['author'],
                 'TITLE' => $details['title'],
-                'CSS_URL' => $css_url,
                 'TEMPLATES_URL' => $templates_url,
                 'IMAGES_URL' => $images_url,
                 'DELETABLE' => $deletable,
@@ -593,87 +533,6 @@ class Module_admin_themes
     }
 
     /**
-     * Common theme change saving for adding and editing themes.
-     *
-     * @param  ID_TEXT $theme The name of the theme
-     */
-    public function save_theme_changes($theme)
-    {
-        if (!file_exists((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
-        }
-
-        if (post_param_integer('use_on_all', 0) == 1) {
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
-
-            attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
-        }
-        erase_persistent_cache();
-
-        $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, 'title=' . post_param_string('title') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        if (fwrite($myfile, 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        foreach ($before as $key => $val) {
-            if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
-                fwrite($myfile, $key . '=' . $val . "\n");
-            }
-        }
-        if (fwrite($myfile, 'author=' . post_param_string('author') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        if (fwrite($myfile, 'mobile_pages=' . post_param_string('mobile_pages') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        if (fwrite($myfile, 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
-
-        require_code('permissions2');
-        set_category_permissions_from_environment('theme', $theme);
-
-        $map = file_exists(get_file_base() . '/themes/map.ini') ? better_parse_ini_file(get_file_base() . '/themes/map.ini') : array();
-        $new_map = array();
-        foreach ($map as $key => $val) {
-            if ($val != $theme) {
-                $new_map[$key] = $val;
-            }
-        }
-        if (array_key_exists('mapping', $_POST)) {
-            foreach ($_POST['mapping'] as $val) {
-                if (get_magic_quotes_gpc()) {
-                    $val = stripslashes($val);
-                }
-                $new_map[$val] = $theme;
-            }
-        }
-        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_file_base() . '/themes/map.ini');
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        foreach ($new_map as $key => $val) {
-            if (fwrite($myfile, $key . '=' . $val . "\n") == 0) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        sync_file('themes/map.ini');
-    }
-
-    /**
      * The UI to add a theme.
      *
      * @return Tempcode The UI
@@ -749,7 +608,7 @@ class Module_admin_themes
      */
     public function edit_theme()
     {
-        $theme = get_param_string('theme', false, true);
+        $theme = $this->theme;
 
         $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (!file_exists($ini_file)) {
@@ -795,7 +654,6 @@ class Module_admin_themes
     {
         if (post_param_integer('delete', 0) == 1) {
             $theme = get_param_string('old_theme', false, true);
-            require_code('themes3');
             actual_delete_theme($theme);
 
             $to = '';
@@ -806,7 +664,6 @@ class Module_admin_themes
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
             }
 
-            require_code('themes3');
             actual_copy_theme($theme, $to);
 
             $this->save_theme_changes($to);
@@ -824,7 +681,6 @@ class Module_admin_themes
                     warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
                 }
 
-                require_code('themes3');
                 actual_rename_theme($theme, $to);
             }
 
@@ -835,1035 +691,152 @@ class Module_admin_themes
     }
 
     /**
-     * The do-next manager for after download content management.
+     * Common theme change saving for adding and editing themes.
      *
-     * @param  Tempcode $title The title (output of get_screen_title)
-     * @param  Tempcode $description Some description to show, saying what happened
-     * @param  ID_TEXT $theme The theme that was just handled
-     * @param  ?LANGUAGE_NAME $lang The language we were working in (null: autodetect) (blank: autodetect)
-     * @param  ID_TEXT $type Code to determine what kind of links to show
-     * @param  ID_TEXT $file ID of file that an edit link should load (blank: N/A)
-     * @return Tempcode The UI
+     * @param  ID_TEXT $theme The name of the theme
      */
-    public function do_next_manager($title, $description, $theme, $lang, $type, $file)
+    private function save_theme_changes($theme)
     {
-        if (is_null($lang)) {
-            $lang = '';
+        if (!file_exists((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini')) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        switch ($type) {
-            case 'css':
-                $add_one = null;
-                $edit_this = array('_SELF', array('type' => 'edit_css', 'file' => str_replace('/css/', '/css_custom/', $file), 'theme' => $theme), '_SELF');
-                $edit_one = array('_SELF', array('type' => 'choose_css', 'theme' => $theme), '_SELF');
-                $section_title = do_lang_tempcode('CSS');
-                $content_type = do_lang('CSS_FILE');
-                break;
+        if (post_param_integer('use_on_all', 0) == 1) {
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
 
-            case 'templates':
-                $add_one = null;
-                $edit_this = array('_SELF', array('type' => '_edit_templates', 'f0file' => file_exists(get_custom_file_base() . '/' . str_replace('/templates/', '/templates_custom/', $file)) ? str_replace('/templates/', '/templates_custom/', $file) : $file, 'theme' => $theme), '_SELF');
-                $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
-                $section_title = do_lang_tempcode('TEMPLATES');
-                $content_type = do_lang('TEMPLATE');
-                break;
-
-            case 'image':
-                $add_one = array('_SELF', array('type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');
-                $edit_this = array('_SELF', array('type' => 'edit_image', 'id' => $file, 'theme' => $theme, 'lang' => $lang), '_SELF');
-                $edit_one = array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF');
-                $section_title = do_lang_tempcode('THEME_IMAGES');
-                $content_type = do_lang('THEME_IMAGE');
-                break;
-
-            default:
-                $add_one = null;
-                $edit_this = null;
-                $edit_one = null;
-                $section_title = null;
-                $content_type = null;
-                break;
+            attach_message(do_lang_tempcode('THEME_MADE_LIVE'), 'inform');
         }
+        erase_persistent_cache();
 
-        require_code('templates_donext');
-        return do_next_manager($title, $description,
-            null,
-            null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
-            $add_one, // Add one
-            $edit_this, // Edit this
-            $edit_one, // Edit one
-            null, // View this
-            null, // View archive
-            null, // Add to category
-            null, // Add one category
-            null, // Edit one category
-            null, // Edit this category
-            null, // View this category
-            /* SPECIALLY TYPED 'LINKS' */
-            array(),
-            array(),
-            array(
-                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_theme'), '_SELF'), do_lang_tempcode('ADD_THEME')), // Add one
-                is_null($theme) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
-                is_null($theme) ? null : array('menu/adminzone/style/themes/css', array('_SELF', array('type' => 'choose_css', 'theme' => $theme), '_SELF'), do_lang('EDIT_CSS')),
-                is_null($theme) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
-                is_null($theme) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
-                array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES'))
-            ),
-            do_lang('MANAGE_THEMES'),
-            null,
-            $section_title,
-            null,
-            $content_type
-        );
-    }
-
-    /**
-     * The UI to choose a theme to work with.
-     *
-     * @param  Tempcode $title The title to show when choosing a theme
-     * @param  boolean $lang_too Whether to also choose a language
-     * @return Tempcode The UI
-     */
-    public function choose_theme($title, $lang_too = false)
-    {
-        $themes = new Tempcode();
-        $_themes = find_all_themes();
-        require_code('form_templates');
-        foreach ($_themes as $theme => $theme_title) {
-            $themes->attach(form_input_list_entry($theme, ($theme == $GLOBALS['FORUM_DRIVER']->get_theme()), $theme_title));
-        }
-        $fields = form_input_list(do_lang_tempcode('THEME'), '', 'theme', $themes, null, true);
-
-        if ($lang_too) { // We also need the language
-            $langs = create_selection_list_langs();
-            $fields->attach(form_input_list(do_lang_tempcode('LANGUAGE'), do_lang_tempcode('DESCRIPTION_LANGUAGE'), 'lang', $langs, null, true));
-        }
-
-        $post_url = get_self_url(false, false, null, false, true);
-
-        return do_template('FORM_SCREEN', array('_GUID' => '01030dc8f338138ac36ff4f59c7892fc', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
-    }
-
-    /**
-     * The UI to choose a CSS file to edit.
-     *
-     * @return Tempcode The UI
-     */
-    public function choose_css()
-    {
-        require_code('form_templates');
-
-        $theme = get_param_string('theme', false, true);
-
-        single_field__start();
-
-        $css = new Tempcode();
-        $files = array();
-        $_dir = opendir(get_file_base() . '/themes/default/css');
-        while (false !== ($file = readdir($_dir))) {
-            if (strtolower(substr($file, -4, 4)) == '.css') {
-                $files[] = $file;
-            }
-        }
-        closedir($_dir);
-        $_dir = opendir(get_file_base() . '/themes/default/css_custom');
-        while (false !== ($file = readdir($_dir))) {
-            if ((strtolower(substr($file, -4, 4)) == '.css') && (!in_array($file, $files))) {
-                $files[] = $file;
-            }
-        }
-        closedir($_dir);
-        sort($files);
-        foreach ($files as $file) {
-            $css->attach(form_input_list_entry($file, $file == 'global.css'));
-        }
-        $fields = form_input_huge_list(do_lang_tempcode('FILE'), '', 'file', $css, null, true, true, 50);
-
-        single_field__end();
-
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_css', 'theme' => $theme), '_SELF', array(), false, true);
-
-        $form = do_template('FORM_SINGLE_FIELD', array(
-            '_GUID' => '26dfd6f0d77889f2438c2371e90738ag',
-            'GET' => true,
-            'NAME' => 'file',
-            'LABEL' => do_lang_tempcode('FILE'),
-            'SKIP_WEBSTANDARDS' => true,
-            'HIDDEN' => '',
-            'SUBMIT_ICON' => 'buttons__proceed',
-            'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
-            'FIELD' => $fields,
-            'URL' => $post_url,
-            'TEXT' => do_lang_tempcode('CSS_CHOOSE_TO_EDIT'),
-        ));
-
-        return do_template('PAGINATION_SCREEN', array(
-            '_GUID' => '16dfd6f0d77889f2438c2371e90738a3',
-            'TITLE' => $this->title,
-            'CONTENT' => $form,
-        ));
-    }
-
-    /**
-     * The UI to edit a CSS file.
-     *
-     * @return Tempcode The UI
-     */
-    public function edit_css()
-    {
-        $file = $this->file;
-
-        if (get_option('editarea') == '1') {
-            attach_to_screen_footer(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
-                <script>// <![CDATA[
-                    editAreaLoader.init({
-                        id : "css"
-                        ,syntax: "css"
-                        ,start_highlight: true
-                        ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                        ,allow_resize: true
-                        ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                    });
-                //]]></script>')); // XHTMLXHTML
-        }
-
-        require_javascript('ajax');
-
-        $theme = get_param_string('theme', '');
-        if ($theme == '') {
-            return $this->choose_theme($this->title);
-        }
-
-        $url = build_url(array('page' => '_SELF', 'type' => '_edit_css', 'file' => $file), '_SELF');
-
-        $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
-        if (!file_exists($path)) {
-            $path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css/' . $file;
-        }
-        if (!file_exists($path)) {
-            $path = get_custom_file_base() . '/themes/default/css_custom/' . $file;
-        }
-        if (!file_exists($path)) {
-            $path = get_file_base() . '/themes/default/css/' . $file;
-        }
-        $tmp = fopen($path, 'rb');
-        @flock($tmp, LOCK_SH);
-        $css = unixify_line_format(file_get_contents($path));
-        @flock($tmp, LOCK_UN);
-        fclose($tmp);
-
-        if (addon_installed('actionlog')) {
-            require_code('revisions_engine_files');
-            $revision_engine = new RevisionEngineFiles();
-            $revision_loaded = mixed();
-            $revisions = $revision_engine->ui_revision_undoer('themes/' . $theme . '/css_custom', basename($file, '.css'), 'css', 'EDIT_CSS', $css, $revision_loaded);
-        } else {
-            $revisions = new Tempcode();
-        }
-
-        $old_contents = @file_get_contents(get_file_base() . '/themes/default/css/' . $file);
-        if ($old_contents === false) {
-            $old_contents = '';
-        }
-
-        require_code('form_templates');
-        check_suhosin_request_size(strlen($css));
-
-        set_short_title($file);
-
-        $entries = new Tempcode();
-
-        $advanced_mode = get_param_integer('advanced_mode', 0);
-        if ($advanced_mode == 1) {
-            require_javascript('theme_colours');
-
-            global $CSS_MATCHES;
-            $CSS_MATCHES = array();
-            $css = preg_replace_callback('#\#[\da-f][\da-f][\da-f][\da-f][\da-f][\da-f]#i', 'css_preg', $css);
-
-            foreach ($CSS_MATCHES as $id => $color) {
-                $pos = strpos($css, '<color-' . $id . '>');
-                $section_start = $pos;
-                do {
-                    $section_start = strrpos(substr($css, 0, $section_start), '{');
-                    if ($section_start === false || $section_start < 5) {
-                        break;
-                    }
-                } while (($css[$section_start - 2] == '*') || ($css[$section_start - 1] != ' '));
-                $section_line_start = strrpos(substr($css, 0, $section_start), "\n");
-                $line_start = strrpos(substr($css, 0, $pos), "\n");
-                $context1 = substr($css, $section_line_start, $section_start - $section_line_start);
-                $context2 = substr($css, $line_start, $pos - $line_start);
-                $context = $context1 . '=>' . trim($context2);
-                $entries->attach(do_template('THEME_COLOUR_CHOOSER', array('_GUID' => 'a42ef9daa06a95f5bb9d715aab1bd887', 'COLOR' => $color, 'NAME' => 'c' . strval($id), 'CONTEXT' => trim($context))));
-            }
-        }
-
-        $switch_string = ($advanced_mode == 1) ? do_lang_tempcode('SWITCH_TO_SIMPLE_MODE') : do_lang_tempcode('SWITCH_TO_ADVANCED_MODE');
-        $switch_icon = ($advanced_mode == 1) ? 'buttons__simple' : 'buttons__advanced';
-        $switch_url = build_url(array('page' => '_SELF', 'type' => 'edit_css', 'file' => $file, 'theme' => $theme, 'advanced_mode' => 1 - $advanced_mode), '_SELF');
-
-        require_code('form_templates');
-        list($warning_details, $ping_url) = handle_conflict_resolution($file);
-
-        return do_template('THEME_EDIT_CSS_SCREEN', array(
-            '_GUID' => '3e34b2f44d7a73202f1bb475fd4ac593',
-            'PING_URL' => $ping_url,
-            'OLD_CONTENTS' => $old_contents,
-            'WARNING_DETAILS' => $warning_details,
-            'REVISIONS' => $revisions,
-            'SWITCH_ICON' => $switch_icon,
-            'SWITCH_STRING' => $switch_string,
-            'SWITCH_URL' => $switch_url,
-            'TITLE' => $this->title,
-            'THEME' => $theme,
-            'CSS' => $css,
-            'URL' => $url,
-            'FILE' => $file,
-            'ENTRIES' => $entries,
-        ));
-    }
-
-    /**
-     * The actualiser to edit a CSS file.
-     *
-     * @return Tempcode The UI
-     */
-    public function _edit_css()
-    {
-        $file = filter_naughty(get_param_string('file', 'global.css'));
-
-        $css = post_param_string('css');
-
-        $theme = post_param_string('theme');
-
-        // Apply colour selections (special colour picking mode)
-        $i = 0;
-        $color = post_param_string('c' . strval($i), '');
-        while ($color != '') {
-            $css = str_replace('<color-' . strval($i) . '>', '#' . $color, $css);
-            $i++;
-
-            $color = post_param_string('c' . strval($i), '');
-        }
-
-        // Convert from current path to save path
-        $custom_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/css_custom/' . $file;
-        if (!file_exists(dirname($custom_path))) {
-            require_code('files2');
-            make_missing_directory(dirname($custom_path));
-        }
-
-        // Store revision
-        require_code('revisions_engine_files');
-        $revision_engine = new RevisionEngineFiles();
-        $existing_path = $custom_path;
-        if (!file_exists($existing_path)) {
-            $existing_path = get_custom_file_base() . '/themes/default/css_custom/' . $file;
-        }
-        if (!file_exists($existing_path)) {
-            $existing_path = get_custom_file_base() . '/themes/default/css/' . $file;
-        }
-        $revision_engine->add_revision(dirname($custom_path), basename($custom_path, '.css'), 'css', file_get_contents($existing_path), filemtime($existing_path));
-
-        // Save
-        $myfile = @fopen($custom_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error($custom_path);
-        }
+        $before = better_parse_ini_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
+        $myfile = @fopen((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini');
         @flock($myfile, LOCK_EX);
         if (!GOOGLE_APPENGINE) {
             ftruncate($myfile, 0);
         }
-        if (fwrite($myfile, $css) < strlen($css)) {
-            fclose($myfile);
-            unlink($custom_path);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
+        if (fwrite($myfile, 'title=' . post_param_string('title') . "\n") == 0) {
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        }
+        if (fwrite($myfile, 'description=' . str_replace("\n", '\n', post_param_string('description')) . "\n") == 0) {
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        }
+        foreach ($before as $key => $val) {
+            if (($key != 'title') && ($key != 'description') && ($key != 'author') && ($key != 'mobile_pages') && ($key != 'supports_wide')) {
+                fwrite($myfile, $key . '=' . $val . "\n");
+            }
+        }
+        if (fwrite($myfile, 'author=' . post_param_string('author') . "\n") == 0) {
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        }
+        if (fwrite($myfile, 'mobile_pages=' . post_param_string('mobile_pages') . "\n") == 0) {
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        }
+        if (fwrite($myfile, 'supports_wide=' . strval(post_param_integer('supports_wide', 0)) . "\n") == 0) {
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
         }
         @flock($myfile, LOCK_UN);
         fclose($myfile);
-        sync_file($custom_path);
+        sync_file((($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini');
 
-        // Make base-hash-thingy
-        $base_path = get_file_base() . '/themes/default/css/' . $file;
-        if (is_file($base_path)) {
-            $myfile = @fopen($custom_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
-            if ($myfile === false) {
-                intelligent_write_error($custom_path);
+        require_code('permissions2');
+        set_category_permissions_from_environment('theme', $theme);
+
+        $map = file_exists(get_file_base() . '/themes/map.ini') ? better_parse_ini_file(get_file_base() . '/themes/map.ini') : array();
+        $new_map = array();
+        foreach ($map as $key => $val) {
+            if ($val != $theme) {
+                $new_map[$key] = $val;
             }
-            @flock($myfile, LOCK_EX);
-            if (!GOOGLE_APPENGINE) {
-                ftruncate($myfile, 0);
-            }
-            $hash = file_get_contents($base_path);
-            if (fwrite($myfile, $hash) < strlen($hash)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-            }
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            fix_permissions($custom_path . '.editfrom');
-            sync_file($custom_path . '.editfrom');
         }
-
-        require_code('caches3');
-        erase_cached_templates(false, array(preg_replace('#\..*#', '', $file)));
-        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
-
-        log_it('EDIT_CSS', $theme, $file);
-
-        if (get_param_integer('save_and_stay', 0) == 1) {
-            return inform_screen($this->title, protect_from_escaping('
-                <script>// <![CDATA[
-                        window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
-                //]]></script>
-            '));
-        }
-
-        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, '', 'css', $file);
-    }
-
-    /**
-     * Get all the templates for a theme.
-     *
-     * @param  ID_TEXT $theme The theme to search for
-     * @param  string $directory Subdirectory type to look in
-     * @set    templates javascript xml text css
-     * @param  string $suffix File type suffix of template file (e.g. .tpl)
-     * @set    .tpl .js .xml .txt .css
-     * @param  boolean $this_theme_only Just for this theme
-     * @return array A map of the files (file=>path)
-     */
-    private function get_template_files_list($theme, $directory, $suffix, $this_theme_only = false)
-    {
-        $out = array();
-        if (($theme == 'default') || (!$this_theme_only)) {
-            $out = array_merge($out, $this->_get_template_files_list(get_file_base(), 'default/' . $directory, $suffix));
-            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), 'default/' . $directory . '_custom', $suffix));
-        }
-        if ($theme != 'default') {
-            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory, $suffix));
-            $out = array_merge($out, $this->_get_template_files_list(get_custom_file_base(), $theme . '/' . $directory . '_custom', $suffix));
-        }
-        ksort($out);
-
-        return $out;
-    }
-
-    /**
-     * Get all the template files / revisions for a template file, in a certain directory.
-     *
-     * @param  PATH $base_dir The path to search relative to
-     * @param  PATH $subdir The subdirectory to search
-     * @param  string $suffix File type suffix of template file (e.g. .tpl)
-     * @set    .tpl .js .xml .txt .css
-     * @return array A map of the revisions (file=>timestamp)
-     */
-    private function _get_template_files_list($base_dir, $subdir, $suffix)
-    {
-        $_dir = @opendir($base_dir . '/themes/' . $subdir);
-        if ($_dir !== false) {
-            // Find all the themes
-            $files_list = array();
-            while (false !== ($file = readdir($_dir))) {
-                if (strtolower(substr($file, -strlen($suffix))) == $suffix) {
-                    $files_list[$file] = $subdir . '/' . $file;
+        if (array_key_exists('mapping', $_POST)) {
+            foreach ($_POST['mapping'] as $val) {
+                if (get_magic_quotes_gpc()) {
+                    $val = stripslashes($val);
                 }
+                $new_map[$val] = $theme;
             }
-            closedir($_dir);
-            return $files_list;
         }
-        return array();
+        $myfile = @fopen(get_file_base() . '/themes/map.ini', GOOGLE_APPENGINE ? 'wb' : 'at') or intelligent_write_error(get_file_base() . '/themes/map.ini');
+        @flock($myfile, LOCK_EX);
+        if (!GOOGLE_APPENGINE) {
+            ftruncate($myfile, 0);
+        }
+        foreach ($new_map as $key => $val) {
+            if (fwrite($myfile, $key . '=' . $val . "\n") == 0) {
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            }
+        }
+        @flock($myfile, LOCK_UN);
+        fclose($myfile);
+        sync_file('themes/map.ini');
     }
 
     /**
-     * The UI to choose a template to edit.
+     * The UI to edit a template file (actualisation is via AJAX).
      *
      * @return Tempcode The UI
      */
     public function edit_templates()
     {
-        require_javascript('ajax');
-        require_code('form_templates');
-
-        $theme = get_param_string('theme', '');
-        if ($theme == '') {
-            return $this->choose_theme($this->title);
-        }
-
-        $edit_forms = array();
-
-        $types = array(
-            array('templates', '.tpl', 'TEMPLATES_HTML'),
-            array('javascript', '.js', 'TEMPLATES_JAVASCRIPT'),
-            array('xml', '.xml', 'TEMPLATES_XML'),
-            array('text', '.txt', 'TEMPLATES_TEXT'),
-            array('css', '.css', 'TEMPLATES_CSS'),
-        );
-        foreach ($types as $i => $type) {
-            list($directory, $suffix, $lang_string) = $type;
-
-            $files_list = $this->get_template_files_list($theme, $directory, $suffix);
-            $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
-            $files = '';
-            $files_tmp = '';
-            $stub = '';
-            $new_stub = '';
-            foreach ($files_list as $file) {
-                $new_stub = dirname($file);
-                if ($stub != $new_stub) {
-                    if ($files_tmp != '') {
-                        $temp = form_input_list_group($stub, make_string_tempcode($files_tmp));
-                        $files .= $temp->evaluate(); // XHTMLXHTML
-                    }
-                    $files_tmp = '';
-                    $stub = $new_stub;
-                }
-                $_file = substr($file, strrpos($file, '/') + 1);
-                $temp = form_input_list_entry($directory . '/' . $_file, false, basename($file, $suffix));
-                $files_tmp .= $temp->evaluate(); // XHTMLXHTML
-            }
-            if ($new_stub != '') {
-                $temp = form_input_list_group($new_stub, make_string_tempcode($files_tmp));
-                $files .= $temp->evaluate(); // XHTMLXHTML
-            }
-
-            $fields = new Tempcode();
-
-            $set_name = 'template_' . strval($i);
-            $required = true;
-            $set_title = do_lang_tempcode($lang_string);
-            $field_set = alternate_fields_set__start($set_name);
-
-            if ($files != '') {
-                $field_set->attach(form_input_multi_list(do_lang_tempcode('EXISTING'), '', 'f' . strval($i) . 'file', make_string_tempcode($files), null, 35));
-            }
-
-            $field_set->attach(form_input_line(do_lang_tempcode('SEARCH'), do_lang_tempcode('DESCRIPTION_TEMPLATES_SEARCH'), 'search', '', false));
-
-            $field_set->attach(form_input_codename(do_lang_tempcode('NEW'), do_lang_tempcode('NEW_TEMPLATE'), 'f0file2', '', false));
-
-            $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, null, true));
-
-            $hidden = new Tempcode();
-            $hidden->attach(form_input_hidden('directory', $directory));
-            $hidden->attach(form_input_hidden('suffix', $suffix));
-
-            $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme), '_SELF');
-
-            $form = do_template('FORM', array(
-                '_GUID' => 'b26747b4a29281baf83b31167c63582a',
-                'GET' => true,
-                'HIDDEN' => $hidden,
-                'TEXT' => '',
-                'URL' => $post_url,
-                'FIELDS' => $fields,
-                'SUBMIT_ICON' => 'buttons__proceed',
-                'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
-            ));
-
-            $edit_forms[] = array(
-                '_TITLE' => do_lang_tempcode($lang_string),
-                'FORM' => $form,
-            );
-        }
-
-        list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
-
-        return do_template('TEMPLATE_MANAGE_SCREEN', array(
-            '_GUID' => '529cd009f85a84f60b7934b5e969c55b',
-            'THEME' => $theme,
-            'PING_URL' => $ping_url,
-            'WARNING_DETAILS' => $warning_details,
-            'TITLE' => $this->title,
-            'EDIT_FORMS' => $edit_forms,
-        ));
-    }
-
-    /**
-     * The UI to edit a template.
-     *
-     * @return Tempcode The UI
-     */
-    public function _edit_templates()
-    {
-        $theme = get_param_string('theme');
-
-        // Searching for something, which will provide links that loop back to the proper version of this page
-        $search = get_param_string('search', '', true);
-        if ($search != '') {
-            $directory = get_param_string('directory');
-
-            $suffix = get_param_string('suffix');
-
-            $files_list = $this->get_template_files_list($theme, $directory, $suffix);
-            $results = new Tempcode();
-            foreach ($files_list as $file) {
-                $full_path = ((strpos($file, '/default/templates/') !== false) ? get_file_base() : get_custom_file_base()) . '/themes/' . $file;
-                $contents = file_get_contents($full_path);
-                if ((stripos($contents, $search) !== false) || (stripos($file, $search) !== false)) {
-                    $_url = build_url(array('page' => '_SELF', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . basename($file)), '_SELF');
-                    $results->attach(do_template('INDEX_SCREEN_ENTRY', array('_GUID' => 'ed744a45728f3d7c1082a3dda893f352', 'URL' => $_url, 'NAME' => $file)));
-                }
-            }
-            return do_template('INDEX_SCREEN', array('_GUID' => '286a7ae3add44f935a9a2018dde3ccaf', 'TITLE' => $this->title, 'PRE' => do_lang_tempcode('RESULTS'), 'POST' => '', 'CONTENT' => $results));
-        }
-
-        require_javascript('editing');
-
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__edit_templates'), '_SELF');
-        $preview_url = get_param_string('preview_url', '');
-
-        // We support multi-list for getting here, so f0file can be an array, in which case we change that
-        $get2 = array();
-        for ($j = 0; $j < 5; $j++) {
-            if (array_key_exists('f' . strval($j) . 'file', $_GET)) {
-                if (is_array($_GET['f' . strval($j) . 'file'])) {
-                    foreach ($_GET['f' . strval($j) . 'file'] as $f) {
-                        $get2['f' . strval(count($get2)) . 'file'] = $f;
-                    }
-                    unset($_GET['f' . strval($j) . 'file']);
-                }
-            }
-        }
-        $_GET += $get2;
-
-        $template_editors = new Tempcode();
-        $templates = array();
-
-        $files_seen = array();
-
-        if (get_option('editarea') == '1') {
-            attach_to_screen_footer(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
-            ')); // XHTMLXHTML
-        }
-
-        $count = 0;
-        $first_id = '';
-        foreach (array_keys($_GET) as $_i) {
-            $matches = array();
-            if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
-                $i = $matches[1];
-            } else {
-                continue;
-            }
-
-            // The file we're editing
-            $file = filter_naughty(get_param_string('f' . $i . 'file', ''));
-            if ($file == '') {
-                $file = filter_naughty(get_param_string('f' . $i . 'file2', ''));
-            }
-            if ($file == '') {
-                continue;
-            }
-            if ($file[0] == '!') {
-                warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
-            }
-
-            // Screen preview feature
-            if (get_param_string('preview_url', '') == '') {
-                require_code('lorem');
-                $all_previews = find_all_previews__by_template();
-                if (array_key_exists($file, $all_previews)) {
-                    $_preview_url = build_url(array('page' => '_SELF', 'type' => 'screen_preview', 'id' => $file, 'hook' => $all_previews[$file][0], 'function' => $all_previews[$file][1], 'arg' => '', 'keep_theme' => $theme, 'keep_wide_high' => 1), '_SELF');
-                    $preview_url = $_preview_url->evaluate();
-                }
-            }
-
-            // De-dupe
-            if (in_array($file, $files_seen)) {
-                continue;
-            }
-            $files_seen[] = $file;
-
-            // Syntax highlighting
-            $syntax = 'html';
-            if (substr($file, -3) == '.js') {
-                $syntax = 'js';
-            } elseif (substr($file, -4) == '.xml') {
-                $syntax = 'xml';
-            } elseif (substr($file, -3) == '.txt') {
-                $syntax = 'txt';
-            } elseif (substr($file, -4) == '.css') {
-                $syntax = 'css';
-            }
-            if (get_option('editarea') == '1') {
-                attach_to_screen_footer('
-                    <script>// <![CDATA[
-                    editAreaLoader.init({
-                        id : "f' . $i . '_new"
-                        ' . (($syntax == 'txt') ? '' : (',syntax: "' . $syntax . '"')) . '
-                        ,start_highlight: true
-                        ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                        ,allow_resize: true
-                        ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                    });
-                    //]]></script>
-                    '); // XHTMLXHTML
-            }
-
-            $codename = basename($file);
-
-            // The file we're LOADING from for edit
-            $ext = get_file_extension($file);
-            if ($ext == '') {
-                $ext = ltrim(get_param_string('suffix', '.tpl'), '.');
-                $file .= '.' . $ext;
-            }
-            $_default_load_path = find_template_place(basename($file, '.' . $ext), null, $theme, '.' . $ext, dirname($file));
-            $contents = '';
-            $revisions = new Tempcode();
-            if (!is_null($_default_load_path[0])) {
-                $default_load_path = 'themes/' . $_default_load_path[0] . $_default_load_path[1] . '/' . $codename;
-                $full_path = get_custom_file_base() . '/' . $default_load_path;
-                if (!is_file($full_path)) {
-                    $full_path = get_file_base() . '/' . $default_load_path;
-                }
-                if (file_exists($full_path)) {
-                    $contents = file_get_contents($full_path);
-                }
-
-                // Revisions
-                if (addon_installed('actionlog')) {
-                    require_code('revisions_engine_files');
-                    $revision_engine = new RevisionEngineFiles();
-                    $revision_loaded = mixed();
-                    $revisions = $revision_engine->ui_revision_undoer(dirname($default_load_path), basename($file, '.' . $ext), $ext, 'EDIT_TEMPLATES', $contents, $revision_loaded);
-                }
-            }
-
-            // Old contents (for very easy compare to base file in default theme)
-            $_path = get_file_base() . '/themes/default/' . $file;
-            if (file_exists($_path)) {
-                $tmp = fopen($_path, 'rb');
-                @flock($tmp, LOCK_SH);
-                $old_contents = file_get_contents($_path);
-                @flock($tmp, LOCK_UN);
-                fclose($tmp);
-            } else {
-                $old_contents = '';
-            }
-
-            // Lots of UI stuff...
-
-            $matches = array();
-            $cnt = preg_match_all('#\{([\w][\w\_]*)[\*;%\#]?\}#', $old_contents, $matches);
-            $parameters = new Tempcode();
-            $p_done = array();
-            for ($j = 0; $j < $cnt; $j++) {
-                if (array_key_exists($matches[1][$j], $p_done)) {
-                    continue;
-                }
-                $p_done[$matches[1][$j]] = 1;
-                $parameters->attach(form_input_list_entry($matches[1][$j] . '__0', false, $matches[1][$j]));
-            }
-            $parameters = do_template('TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => '50f31c49c99b864c1719fb51ed426274', 'ID' => $i, 'PARAMETERS' => $parameters, 'NAME' => 'ppparameter', 'LANG' => do_lang_tempcode('INSERT_PARAMETER')));
-
-            $_directives = array(
-                array('BOX', '1'),
-                array('WHILE', '1'),
-                array('IF_NON_EMPTY', '1'),
-                array('IF_EMPTY', '1'),
-                array('IF', '1'),
-                array('SET', '1'),
-                array('LOOP', '1'), // To simplify things, we won't throw all options at the user
-            );
-            $directives = $this->generate_from($_directives, 'DIRECTIVE', $i);
-
-            $_programmatic_symbols = array(
-                array('RAND', '0'),
-                array('SET_RAND', '0+'),
-                array('CYCLE', '1+'),
-                array('INIT', '1'),
-                array('SET', '2'),
-                array('GET', '1'),
-                array('INC', '1'),
-                array('DEC', '1'),
-            );
-            $programmatic_symbols = $this->generate_from($_programmatic_symbols, 'PROGRAMMATIC_SYMBOL', $i);
-
-            $_abstraction_symbols = array(
-                array('IMG', '1'),
-                array('PAGE_LINK', '1'),
-                array('MAILTO', '0'),
-                array('BLOCK', '2'),
-                array('THUMBNAIL', '2'),
-                array('LOAD_PAGE', '1'),
-                array('LOAD_PANEL', '1'),
-            );
-            $abstraction_symbols = $this->generate_from($_abstraction_symbols, 'ABSTRACTION_SYMBOL', $i);
-
-            $_symbols = array(
-                array('THEME', '0'),
-                array('LANG', '0'),
-                array('BASE_URL', '0'),
-                array('MOBILE', '0'),
-                array('SITE_NAME', '0'),
-                array('STAFF_ADDRESS', '0'),
-                array('MEMBER', '0'),
-                array('DATE_AND_TIME', '0'),
-                array('DATE', '0'),
-                array('TIME', '0'),
-                array('USERNAME', '0-1'),
-                array('IS_STAFF', '0'),
-                array('MATCH_KEY_MATCH', '1'),
-            );
-            $symbols = $this->generate_from($_symbols, 'SYMBOL', $i);
-
-            $_arithmetical_symbols = array(
-                array('MAX', '2'),
-                array('MIN', '2'),
-                array('REM', '2'),
-                array('DIV', '2'),
-                array('SUBTRACT', '2'),
-                array('ADD', '2'),
-                array('ROUND', '2'),
-                array('MULT', '2'),
-            );
-            $arithmetical_symbols = $this->generate_from($_arithmetical_symbols, 'ARITHMETICAL_SYMBOL', $i);
-
-            $_formatting_symbols = array(
-                array('WCASE', '1'),
-                array('LCASE', '1'),
-                array('UCASE', '1'),
-                array('REPLACE', '3'),
-                array('AT', '2'),
-                array('SUBSTR', '3'),
-                array('LENGTH', '1'),
-                array('WORDWRAP', '2'),
-                array('TRUNCATE_LEFT', '2'),
-                array('TRUNCATE_SPREAD', '2'),
-            );
-            $formatting_symbols = $this->generate_from($_formatting_symbols, 'FORMATTING_SYMBOL', $i);
-
-            $_logical_symbols = array(
-                array('NOT', '1'),
-                array('OR', '2'),
-                array('AND', '2'),
-                array('EQ', '2'),
-                array('NEQ', '2'),
-                array('LT', '2'),
-                array('GT', '2'),
-            );
-            $logical_symbols = $this->generate_from($_logical_symbols, 'LOGICAL_SYMBOL', $i);
-
-            $guid = get_param_string('f' . $i . 'guid', '?');
-            if ($guid == '?') {
-                $guid = '';
-            }
-
-            $guids = array();
-            $file_bits = explode('/', $file);
-            $clean_file = str_replace('.' . get_file_extension($file), '', $file_bits[count($file_bits) - 1]);
-            $_guids = @unserialize(@file_get_contents(get_file_base() . '/data/guids.dat'));
-            if (($_guids !== false) && (array_key_exists($clean_file, $_guids))) {
-                foreach ($_guids[$clean_file] as $_guid) {
-                    $guids[] = array('FILENAME' => $_guid[0], 'LINE' => integer_format($_guid[1]), 'THIS_GUID' => $_guid[2]);
-                }
-            }
-
-            $templates[] = array('I' => $i, 'FILE' => $file);
-
-            $display = ($count == 0) ? 'block' : 'none';
-            if ($count == 0) {
-                $first_id = $i;
-            }
-
-            $file_save_target = preg_replace('#^default/#', $theme . '/', $file);
-
-            $template_editors->attach(do_template('TEMPLATE_EDIT_SCREEN_EDITOR', array(
-                '_GUID' => '9d3b75215c34c2b4b366118605b4cd59',
-                'PREVIEW_URL' => $preview_url,
-                'CODENAME' => str_replace('.' . get_file_extension($file), '', $codename),
-                'I' => $i,
-                'DISPLAY' => $display,
-                'GUIDS' => $guids,
-                'GUID' => $guid,
-                'ARITHMETICAL_SYMBOLS' => $arithmetical_symbols,
-                'FORMATTING_SYMBOLS' => $formatting_symbols,
-                'LOGICAL_SYMBOLS' => $logical_symbols,
-                'ABSTRACTION_SYMBOLS' => $abstraction_symbols,
-                'PARAMETERS' => $parameters,
-                'DIRECTIVES' => $directives,
-                'PROGRAMMATIC_SYMBOLS' => $programmatic_symbols,
-                'SYMBOLS' => $symbols,
-                'FILE' => $file,
-                'FILE_SAVE_TARGET' => $file_save_target,
-                'OLD_CONTENTS' => $old_contents,
-                'CONTENTS' => $contents,
-                'REVISIONS' => $revisions
-            )));
-
-            $count++;
-        }
-
-        if ($count == 1) {
-            $file_save_target = preg_replace('#^default/#', $theme . '/', $files_seen[0]);
-            $this->title = get_screen_title('_EDIT_TEMPLATE', true, array(escape_html($file_save_target)));
-
-            set_short_title($files_seen[0]);
-        }
-
-        if ($template_editors->is_empty_shell()) {
-            warn_exit(do_lang_tempcode('NO_TEMPLATES_SELECTED'));
-        }
-
-        return do_template('TEMPLATE_EDIT_SCREEN', array(
-            '_GUID' => 'cbcd6d18c2456f94f72624e1a39a36a5',
-            'TITLE' => $this->title,
-            'MULTIPLE' => $count > 1,
-            'FIRST_ID' => $first_id,
-            'THEME' => $theme,
-            'TEMPLATES' => $templates,
-            'URL' => $post_url,
-            'TEMPLATE_EDITORS' => $template_editors,
-            'COUNT' => strval($count),
-        ));
-    }
-
-    /**
-     * Helper function to get Tempcode for insertion of symbols.
-     *
-     * @param  array $array A list of pairs (symbol name,arity)
-     * @param  string $stub The "stub" that determines what language strings to lookup for the given symbols, and generally, the collective naming strategy
-     * @param  string $id The ID of the actual template editor we are working with
-     * @return Tempcode The Tempcode
-     */
-    public function generate_from($array, $stub, $id)
-    {
-        $out = new Tempcode();
-        foreach ($array as $x) {
-            list($op, $arity) = $x;
-            $lang = do_lang_tempcode($stub . '__' . $op);
-            $out->attach(form_input_list_entry($op . '__' . $arity, false, $lang));
-        }
-        return do_template('TEMPLATE_EDIT_SCREEN_DROPDOWN', array('_GUID' => 'c6d24f278ec874a4b6abff8c359f80ba', 'ID' => $id, 'PARAMETERS' => $out, 'NAME' => 'pp' . strtolower($stub), 'LANG' => do_lang_tempcode('INSERT_' . $stub)));
-    }
-
-    /**
-     * The actualiser to edit a template. Always saves to the most overridden version.
-     *
-     * @return Tempcode The UI
-     */
-    public function __edit_templates()
-    {
         $theme = $this->theme;
 
-        require_code('caches3');
+        require_javascript('tree_list');
+        require_javascript('editing');
+        require_javascript('posting');
+        require_javascript('ajax');
 
-        foreach (array_keys($_REQUEST) as $_i) {
-            $matches = array();
-            if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
-                $i = $matches[1];
-            } else {
-                continue;
-            }
+        require_code('form_templates');
+        require_code('lorem');
 
-            $_file = substr(str_replace('/default/', '/' . $theme . '/', '/' . filter_naughty(post_param_string('f' . $i . 'file', ''))), 1);
-            if ($_file == '') {
-                continue;
-            }
+        $active_guid = get_param_string('active_guid', null);
 
-            // Convert from current path to save path
-            $directory = dirname($_file);
-            if ($directory == '.' || $directory == '') {
-                $file = 'templates_custom/' . $_file;
-            } else {
-                $file = str_replace($directory . '/', $directory . '_custom/', $_file);
-            }
-            $full_path = get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/' . $file;
-            if (!file_exists(dirname($full_path))) {
-                require_code('files2');
-                make_missing_directory(dirname($full_path));
-            }
-
-            // Store revision
-            if (file_exists($full_path)) {
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                $existing_path = $full_path;
-                if (!file_exists($existing_path)) {
-                    $existing_path = get_custom_file_base() . '/themes/default/' . $_file;
-                }
-                $revision_engine->add_revision(dirname($full_path), basename($_file, '.' . get_file_extension($_file)), get_file_extension($_file), file_get_contents($existing_path), filemtime($existing_path));
-            }
-
-            // Save
-            $new = post_param_string('f' . $i . '_new', false, true);
-            $full_path_orig = preg_replace('#/themes/[^/]*/(.*)(\_custom)?/#U', '/themes/default/${1}/', $full_path);
-            if ((file_exists($full_path_orig)) && ($new == file_get_contents($full_path_orig))) {
-                if (file_exists($full_path)) {
-                    unlink($full_path);
-                    sync_file($full_path);
-                }
-                if (file_exists($full_path . '.editfrom')) {
-                    unlink($full_path . '.editfrom');
-                    sync_file($full_path . '.editfrom');
-                }
-                $_file = preg_replace('#[^/]*/(.*)(\_custom)?/#U', 'default/${1}/', $_file);
-
-                $file = $_file;
-            } else {
-                $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'at');
-                if ($myfile === false) {
-                    intelligent_write_error($full_path);
-                }
-                @flock($myfile, LOCK_EX);
-                if (!GOOGLE_APPENGINE) {
-                    ftruncate($myfile, 0);
-                }
-                if (fwrite($myfile, $new) < strlen($new)) {
-                    fclose($myfile);
-                    unlink($full_path);
-                    warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                }
-                @flock($myfile, LOCK_UN);
-                fclose($myfile);
-                fix_permissions($full_path);
-                sync_file($full_path);
-
-                if (file_exists(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'))) {
-                    // Make base-hash-thingy
-                    $myfile = @fopen($full_path . '.editfrom', GOOGLE_APPENGINE ? 'wb' : 'at');
-                    if ($myfile === false) {
-                        intelligent_write_error($full_path);
+        // Files to load
+        $files_to_load = array();
+        foreach ($_GET + $_POST as $key => $val) {
+            if (preg_match('#^f\d+file$#', $key) != 0) {
+                if (is_array($val)) { // We support passing lists by array
+                    foreach ($val as $_val) {
+                        $files_to_load[] = $_val;
                     }
-                    @flock($myfile, LOCK_EX);
-                    if (!GOOGLE_APPENGINE) {
-                        ftruncate($myfile, 0);
-                    }
-                    $hash = file_get_contents(get_file_base() . '/themes/default/' . post_param_string('f' . $i . 'file'));
-                    if (fwrite($myfile, $hash) < strlen($hash)) {
-                        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
-                    }
-                    @flock($myfile, LOCK_UN);
-                    fclose($myfile);
-                    fix_permissions($full_path . '.editfrom');
-                    sync_file($full_path . '.editfrom');
+                } else { // ... and also by string
+                    $files_to_load[] = get_param_string($key);
                 }
             }
-            log_it('EDIT_TEMPLATES', $file, $theme);
-
-            // Erase cache
-            erase_cached_templates(false, array(preg_replace('#\..*#', '', basename($file))));
+        }
+        $files_to_load = array_unique($files_to_load);
+        // Default files
+        if ($files_to_load == array()) {
+            $files_to_load = array(
+                'templates/HTML_HEAD.tpl',
+                'templates/GLOBAL_HTML_WRAP.tpl',
+                'css/global.css',
+                'javascript/custom_globals.js',
+                'templates/MAIL.tpl',
+                ':start',
+            );
         }
 
-        // Erase cache
-        erase_cached_templates(false, null, TEMPLATE_DECACHE_BASE);
-        erase_block_cache(false, $theme);
+        // NB: Files are loaded via AJAX template_editor_load snippet hook, and saved via template_editor_save snippet hook
 
-        if (get_param_integer('save_and_stay', 0) == 1) {
-            return inform_screen($this->title, protect_from_escaping('
-                <script>// <![CDATA[
-                        window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
-                //]]></script>
-            '));
-        }
+        // Conflict resolution
+        list($warning_details, $ping_url) = handle_conflict_resolution(''); // Intentionally blank, because only one person should edit any of all templates at any time (because they depend on each other)
 
-        return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, '', 'templates', $file);
+        // Screen preview feature
+        $live_preview_url = get_param_string('live_preview_url', null, true);
+
+        // Opening up file browser location
+        $default_theme_files_location = get_param_string('default_theme_files_location', null, true);
+
+        return do_template('THEME_TEMPLATE_EDITOR_SCREEN', array(
+            'TITLE' => $this->title,
+            'FILES_TO_LOAD' => $files_to_load,
+            'THEME' => $theme,
+            'LIVE_PREVIEW_URL' => $live_preview_url,
+            'WARNING_DETAILS' => $warning_details,
+            'PING_URL' => $ping_url,
+            'ACTIVE_GUID' => $active_guid,
+            'DEFAULT_THEME_FILES_LOCATION' => $default_theme_files_location,
+        ));
     }
 
     /**
@@ -1910,13 +883,70 @@ class Module_admin_themes
     }
 
     /**
+     * The UI to select a theme image to edit.
+     *
+     * @return Tempcode The UI
+     */
+    public function manage_images()
+    {
+        if (php_function_allowed('set_time_limit')) {
+            set_time_limit(300);
+        }
+        send_http_output_ping();
+
+        $lang = choose_language($this->title, true, true);
+        if (is_object($lang)) {
+            return $lang;
+        }
+
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+        $theme = $this->theme;
+
+        regen_theme_images($theme, array($lang => 1));
+        if ($theme != 'default') {
+            regen_theme_images('default', array($lang => 1), $theme);
+        }
+
+        require_code('form_templates');
+
+        $skip = array(
+            'icons', // Too many of these to show
+        );
+        $ids = get_all_image_ids_type('', true, $GLOBALS['SITE_DB'], $theme, false, true, $skip); // The final 'true' stops new theme images being detected, as we know regen_theme_images did that (and more conservatively - it won't scan images_custom dirs for NEW codes which an unbridled get_all_image_ids_type call would)
+
+        single_field__start();
+        $fields = form_input_theme_image(do_lang_tempcode('CODENAME'), '', 'id', $ids, null, null, null, false, null, $theme, $lang, true, true);
+        single_field__end();
+
+        $hidden = form_input_hidden('theme', $theme);
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_image', 'lang' => $lang), '_SELF');
+
+        $edit_form = do_template('FORM_SINGLE_FIELD', array(
+            '_GUID' => '48b3218750fcea21e0bf3be31ae58296',
+            'HIDDEN' => $hidden,
+            'TEXT' => do_lang_tempcode('CHOOSE_EDIT_LIST'),
+            'GET' => true,
+            'URL' => $post_url,
+            'FIELD' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => has_js() ? new Tempcode() : do_lang_tempcode('EDIT'), // We don't want a button if JS is on because clicking on images takes you through
+        ));
+
+        $add_url = build_url(array('page' => '_SELF', 'type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');
+
+        return do_template('THEME_IMAGE_MANAGE_SCREEN', array('_GUID' => '4e760b0aa59b1bbb6fcf289c0b93ec46', 'ADD_URL' => $add_url, 'TITLE' => $this->title, 'FORM' => $edit_form));
+    }
+
+    /**
      * The UI to add a theme image.
      *
      * @return Tempcode The UI
      */
     public function add_image()
     {
-        $theme = get_param_string('theme');
+        $theme = $this->theme;
         $lang = get_param_string('lang', user_lang());
         if ($lang == '') {
             $lang = user_lang();
@@ -1993,68 +1023,6 @@ class Module_admin_themes
     }
 
     /**
-     * The UI to select a theme image to edit.
-     *
-     * @return Tempcode The UI
-     */
-    public function manage_images()
-    {
-        if (php_function_allowed('set_time_limit')) {
-            set_time_limit(300);
-        }
-        send_http_output_ping();
-
-        $lang = choose_language($this->title, true, true);
-        if (is_object($lang)) {
-            return $lang;
-        }
-
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
-
-        $theme = get_param_string('theme', '');
-        if ($theme == '') {
-            return $this->choose_theme($this->title, true);
-        }
-
-        require_code('themes3');
-        regen_theme_images($theme, array($lang => 1));
-        if ($theme != 'default') {
-            regen_theme_images('default', array($lang => 1), $theme);
-        }
-
-        require_code('form_templates');
-        require_code('themes2');
-
-        $skip = array(
-            'icons', // Too many of these to show
-        );
-        $ids = get_all_image_ids_type('', true, $GLOBALS['SITE_DB'], $theme, false, true, $skip); // The final 'true' stops new theme images being detected, as we know regen_theme_images did that (and more conservatively - it won't scan images_custom dirs for NEW codes which an unbridled get_all_image_ids_type call would)
-
-        single_field__start();
-        $fields = form_input_theme_image(do_lang_tempcode('CODENAME'), '', 'id', $ids, null, null, null, false, null, $theme, $lang, true, true);
-        single_field__end();
-
-        $hidden = form_input_hidden('theme', $theme);
-
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_image', 'lang' => $lang), '_SELF');
-
-        $edit_form = do_template('FORM_SINGLE_FIELD', array(
-            '_GUID' => '48b3218750fcea21e0bf3be31ae58296',
-            'HIDDEN' => $hidden,
-            'TEXT' => do_lang_tempcode('CHOOSE_EDIT_LIST'),
-            'GET' => true,
-            'URL' => $post_url,
-            'FIELD' => $fields,
-            'SUBMIT_ICON' => 'buttons__proceed',
-            'SUBMIT_NAME' => has_js() ? new Tempcode() : do_lang_tempcode('EDIT'), // We don't want a button if JS is on because clicking on images takes you through
-        ));
-
-        $add_url = build_url(array('page' => '_SELF', 'type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');
-
-        return do_template('THEME_IMAGE_MANAGE_SCREEN', array('_GUID' => '4e760b0aa59b1bbb6fcf289c0b93ec46', 'ADD_URL' => $add_url, 'TITLE' => $this->title, 'FORM' => $edit_form));
-    }
-
-    /**
      * The UI to edit a theme image.
      *
      * @return Tempcode The UI
@@ -2066,8 +1034,8 @@ class Module_admin_themes
             return $lang;
         }
 
-        $id = $this->id;
         $theme = $this->theme;
+        $id = $this->id;
 
         $where_map = array('theme' => $theme, 'id' => $id);
         if ($lang != '') {
@@ -2142,7 +1110,6 @@ class Module_admin_themes
         $old_id = post_param_string('old_id');
 
         if (post_param_integer('delete', 0) == 1) {
-            require_code('themes3');
             actual_delete_theme_image($old_id, $theme, $lang);
         } else {
             // Remove old file first so we can re-use the filepath
@@ -2157,7 +1124,6 @@ class Module_admin_themes
                         }
                         $GLOBALS['SITE_DB']->query_delete('theme_images', $where_map);
 
-                        require_code('themes3');
                         cleanup_theme_images($old_url);
                     }
                 }
@@ -2192,7 +1158,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function list_screen_previews()
+    public function screen_previews()
     {
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(120);
@@ -2234,7 +1200,7 @@ class Module_admin_themes
 
                     $template_used = "(" . implode(', ', $all_previews__by_screen[$func]) . ")";
 
-                    $tpl_x = do_template('TEMPLATE_LIST', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview\_\_#', '', $func), 'LIST' => $template_used));
+                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview\_\_#', '', $func), 'LIST' => $template_used));
                     if (preg_match('#^tpl_preview\_\_administrative\_\_#', $func) != 0) {
                         $lis_admin->attach($tpl_x);
                     } else {
@@ -2245,7 +1211,7 @@ class Module_admin_themes
                 }
             } else {
                 // No preview for these
-                $tpl_x = do_template('TEMPLATE_LIST', array('_GUID' => '96115a3b168769744b4b69fd2e1e7f6c', 'URL' => '', 'COLOR' => 'red', 'TEMPLATE' => $t, 'LIST' => ''));
+                $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '96115a3b168769744b4b69fd2e1e7f6c', 'URL' => '', 'COLOR' => 'red', 'TEMPLATE' => $t, 'LIST' => ''));
                 $lis->attach($tpl_x);
             }
         }
@@ -2257,7 +1223,7 @@ class Module_admin_themes
         /* $lis (the main previews) will be displayed in the main INDEX_SCREEN content */
 
         // LISTING ADMIN PREVIEWS
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => '1e847f3c75998f2276765bc0c8ab6b78', 'LI' => $lis_admin, 'TITLE' => do_lang('ADMIN_SCREENS'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => '1e847f3c75998f2276765bc0c8ab6b78', 'LI' => $lis_admin, 'TITLE' => do_lang('ADMIN_SCREENS'))));
 
         // LISTING COMCODE FILES
         $com_li = new Tempcode();
@@ -2272,10 +1238,10 @@ class Module_admin_themes
 
                 $file = $page . '.txt';
                 $url = build_url(array('page' => $page), $zone);
-                $com_li->attach(do_template('TEMPLATE_LIST', array('_GUID' => '9db6fa9333470137ccf9bb752fd9b19e', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
+                $com_li->attach(do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '9db6fa9333470137ccf9bb752fd9b19e', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
             }
         }
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => 'adf69728048cbdbc3a0d9a2e2485a234', 'LI' => $com_li, 'TITLE' => do_lang('COMCODE_PAGES'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => 'adf69728048cbdbc3a0d9a2e2485a234', 'LI' => $com_li, 'TITLE' => do_lang('COMCODE_PAGES'))));
 
         // LISTING HTML FILES
         $htm_li = new Tempcode();
@@ -2284,10 +1250,10 @@ class Module_admin_themes
                 $file = $page . '.htm';
                 $url = build_url(array('page' => $page), $zone);
 
-                $htm_li->attach(do_template('TEMPLATE_LIST', array('_GUID' => '16d1c1c5dc5556254f7a3f28a44fdb52', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
+                $htm_li->attach(do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '16d1c1c5dc5556254f7a3f28a44fdb52', 'URL' => $url, 'COLOR' => '', 'TEMPLATE' => $file, 'LIST' => '')));
             }
         }
-        $post->attach(do_template('TEMPLATE_LIST_WRAP', array('_GUID' => '2220938b443ecdb7d3f2d869665b3a4e', 'LI' => $htm_li, 'TITLE' => do_lang('HTML_PAGES'))));
+        $post->attach(do_template('THEME_SCREEN_PREVIEW_WRAP', array('_GUID' => '2220938b443ecdb7d3f2d869665b3a4e', 'LI' => $htm_li, 'TITLE' => do_lang('HTML_PAGES'))));
 
         return do_template('INDEX_SCREEN', array('_GUID' => '6137f107de679580a6aafe36af427cdd', 'TITLE' => $this->title, 'CONTENT' => $lis, 'POST' => $post, 'PRE' => ''));
     }
@@ -2297,7 +1263,7 @@ class Module_admin_themes
      *
      * @return Tempcode The UI
      */
-    public function view_screen_preview()
+    public function screen_preview()
     {
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
@@ -2324,19 +1290,85 @@ class Module_admin_themes
 
         if (get_option('editarea') == '1') {
             attach_to_screen_header(make_string_tempcode('
-                <script language="javascript" src="' . get_base_url() . '/data/editarea/edit_area_full.js"></script>
+                <script src="' . get_base_url() . '/data/ace/ace.js"></script>
+                <script src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
                 <script>// <![CDATA[
-                editAreaLoader.init({
-                    id : "tempcode"
-                    ,syntax: "tempcode"
-                    ,start_highlight: true
-                    ,language: "' . (file_exists(get_file_base() . '/data/editarea/langs/' . strtolower(user_lang())) ? strtolower(user_lang()) : 'en') . '"
-                    ,allow_resize: true
-                    ,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-                });
-                //]]></script>')); // XHTMLXHTML
+                    ace_composr_loader(\'tempcode\',\'text\');
+                //]]></script>
+            ')); // XHTMLXHTML
         }
 
         return do_template('TEMPCODE_TESTER_SCREEN', array('_GUID' => 'b7ea146fffc0dfdcefcb8e8e0c0168a4', 'TITLE' => $this->title));
+    }
+
+    /**
+     * The do-next manager for after download content management.
+     *
+     * @param  Tempcode $title The title (output of get_screen_title)
+     * @param  Tempcode $description Some description to show, saying what happened
+     * @param  ID_TEXT $theme The theme that was just handled
+     * @param  ?LANGUAGE_NAME $lang The language we were working in (null: autodetect) (blank: autodetect)
+     * @param  ID_TEXT $type Code to determine what kind of links to show
+     * @param  ID_TEXT $file ID of file that an edit link should load (blank: N/A)
+     * @return Tempcode The UI
+     */
+    public function do_next_manager($title, $description, $theme, $lang, $type, $file)
+    {
+        if (is_null($lang)) {
+            $lang = '';
+        }
+
+        switch ($type) {
+            case 'templates':
+                $add_one = null;
+                $edit_this = array('_SELF', array('type' => 'edit_templates', 'f0file' => file_exists(get_custom_file_base() . '/' . str_replace('/templates/', '/templates_custom/', $file)) ? str_replace('/templates/', '/templates_custom/', $file) : $file, 'theme' => $theme), '_SELF');
+                $edit_one = array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF');
+                $section_title = do_lang_tempcode('TEMPLATES');
+                break;
+
+            case 'image':
+                $add_one = array('_SELF', array('type' => 'add_image', 'theme' => $theme, 'lang' => $lang), '_SELF');
+                $edit_this = array('_SELF', array('type' => 'edit_image', 'id' => $file, 'theme' => $theme, 'lang' => $lang), '_SELF');
+                $edit_one = array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF');
+                $section_title = do_lang_tempcode('THEME_IMAGES');
+                break;
+
+            default:
+                $add_one = null;
+                $edit_this = null;
+                $edit_one = null;
+                $section_title = null;
+                break;
+        }
+
+        require_code('templates_donext');
+        return do_next_manager($title, $description,
+            null,
+            null,
+            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            $add_one, // Add one
+            $edit_this, // Edit this
+            $edit_one, // Edit one
+            null, // View this
+            null, // View archive
+            null, // Add to category
+            null, // Add one category
+            null, // Edit one category
+            null, // Edit this category
+            null, // View this category
+            /* SPECIALLY TYPED 'LINKS' */
+            array(),
+            array(),
+            array(
+                array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add_theme'), '_SELF'), do_lang_tempcode('ADD_THEME')), // Add one
+                is_null($theme) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
+                is_null($theme) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
+                is_null($theme) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
+                array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES'))
+            ),
+            do_lang('MANAGE_THEMES'),
+            null,
+            $section_title
+        );
     }
 }

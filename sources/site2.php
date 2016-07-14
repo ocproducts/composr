@@ -31,10 +31,9 @@ function get_staff_actions_list()
     );
     $list += array(
         'spacer_1' => do_lang_tempcode('THEME'),
+        'templates' => do_lang_tempcode('EDIT_TEMPLATES'),
         'show_edit_links' => do_lang_tempcode('TEMPLATES_WITH_EDIT_LINKS'),
         'show_markers' => do_lang_tempcode('TEMPLATES_WITH_HTML_COMMENT_MARKERS'),
-        'tree' => do_lang_tempcode('TEMPLATE_TREE'),
-        'templates' => do_lang_tempcode('TEMPLATES'),
         'theme_images' => do_lang_tempcode('THEME_IMAGE_EDITING'),
         'code' => do_lang_tempcode('WEBSTANDARDS'),
     );
@@ -380,7 +379,9 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $temp = $LAX_COMCODE;
     $LAX_COMCODE = true;
     require_code('attachments2');
+    push_tempcode_parameter_inlining_mode(true);
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, $as_admin/*Ideally we assign $page_submitter based on this as well so it is safe if the Comcode cache is emptied*/, $page_submitter);
+    push_tempcode_parameter_inlining_mode(false);
     $_text_parsed = $_new['tempcode'];
     $LAX_COMCODE = $temp;
 
@@ -514,6 +515,13 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
     $_comcode_page_row = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $codename), '', 1);
 
     $comcode = file_get_contents($file_base . '/' . $string);
+    if ($GLOBALS['IS_TEMPLATE_PREVIEW_OP_CACHE']) {
+        $preview_post_param_key = 'e_' . get_dynamic_file_parameter($zone . ':' . $codename);
+        $test = post_param_string($preview_post_param_key, null);
+        if ($test !== null) {
+            $comcode = $test;
+        }
+    }
     if (strpos($string, '_custom/') === false) {
         global $LANG_FILTER_OB;
         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);

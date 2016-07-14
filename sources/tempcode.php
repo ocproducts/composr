@@ -54,16 +54,16 @@ function init__tempcode()
     global $XHTML_SPIT_OUT, $NO_EVAL_CACHE, $MEMORY_OVER_SPEED, $TEMPLATE_DISK_ORIGIN_CACHE, $REQUEST_BLOCK_NEST_LEVEL, $LOADED_TPL_CACHE, $KEEP_TPL_FUNCS;
     $XHTML_SPIT_OUT = null;
     $NO_EVAL_CACHE = false;
-    $MEMORY_OVER_SPEED = (get_param_integer('keep_memory_over_speed', 0) == 1);
+    $MEMORY_OVER_SPEED = (get_param_integer('keep_memory_over_speed', 0) === 1);
     $TEMPLATE_DISK_ORIGIN_CACHE = array();
     $REQUEST_BLOCK_NEST_LEVEL = 0;
     $LOADED_TPL_CACHE = array();
     $KEEP_TPL_FUNCS = array();
 
-    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $RECORD_TEMPLATES_TREE, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
+    global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $INJECT_HIDDEN_TEMPLATE_NAMES, $POSSIBLY_IN_SAFE_MODE_CACHE, $SCREEN_TEMPLATE_CALLED, $TITLE_CALLED;
     $RECORD_TEMPLATES_USED = false;
     $RECORDED_TEMPLATES_USED = array();
-    $RECORD_TEMPLATES_TREE = false;
+    $INJECT_HIDDEN_TEMPLATE_NAMES = (get_param_integer('keep_template_magic_markers', 0) === 1);
     /** The name of a template that was called to render the current screen (null: not rendering a screen), auto-populated within the template system. This is tracked during dev mode to confirm that each screen really does wrap itself in a proper screen template.
      *
      * @global ?ID_TEXT $SCREEN_TEMPLATE_CALLED
@@ -74,7 +74,7 @@ function init__tempcode()
      * @global boolean $TITLE_CALLED
      */
     $TITLE_CALLED = false;
-    $POSSIBLY_IN_SAFE_MODE_CACHE = (get_param_integer('keep_safe_mode', 0) == 1);
+    $POSSIBLY_IN_SAFE_MODE_CACHE = (get_param_integer('keep_safe_mode', 0) === 1);
 
     global $SIMPLE_ESCAPED, $XSS_DETECT;
     $SIMPLE_ESCAPED = array(ENTITY_ESCAPED);
@@ -85,7 +85,7 @@ function init__tempcode()
     require_code('symbols');
 
     global $FULL_RESET_VAR_CODE, $RESET_VAR_CODE;
-    // && substr($x, 0, 6) == \'bound_\' removed from the below for performance, not really needed
+    // && substr($x, 0, 6) === \'bound_\' removed from the below for performance, not really needed
     $FULL_RESET_VAR_CODE = 'foreach(get_defined_vars() as $x => $_) { if ($x[0]==\'b\' && $x[1]==\'o\') unset($$x); } extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
     $RESET_VAR_CODE = 'extract($parameters,EXTR_PREFIX_ALL,\'bound\');';
 
@@ -97,14 +97,14 @@ function init__tempcode()
      * @global boolean $OUTPUT_STREAMING
      */
     global $OUTPUT_STREAMING, $SMART_CACHE;
-    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') == '1') && (get_param_integer('keep_no_output_streaming', 0) == 0) && (isset($SMART_CACHE)) && (!$SMART_CACHE->empty);
+    $OUTPUT_STREAMING = (function_exists('get_option')) && (get_option('output_streaming') === '1') && (get_param_integer('keep_no_output_streaming', 0) === 0) && (isset($SMART_CACHE)) && (!$SMART_CACHE->empty);
     if ($GLOBALS['SMART_CACHE'] === null || !$GLOBALS['SMART_CACHE']->get_initial_status('CSSS')) {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_string('special_page_type', 'view') != 'view') {
+    } elseif (get_param_string('special_page_type', 'view') !== 'view') {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_integer('keep_markers', 0) == 1) {
+    } elseif (get_param_integer('keep_markers', 0) === 1) {
         $OUTPUT_STREAMING = false;
-    } elseif (get_param_integer('show_edit_links', 0) == 1) {
+    } elseif (get_param_integer('show_edit_links', 0) === 1) {
         $OUTPUT_STREAMING = false;
     }
 
@@ -115,6 +115,29 @@ function init__tempcode()
     $CSS_OUTPUT_STARTED = false;
     $JS_OUTPUT_STARTED = false;
     $TEMPCODE_CURRENT_PAGE_OUTPUTTING = null;
+
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    $TEMPCODE_PARAMETER_INLINING_MODE = array(false);
+}
+
+/**
+ * Set the Tempcode parameter inlining mode.
+ *
+ * @param  boolean $m The current Tempcode parameter inlining mode.
+ */
+function push_tempcode_parameter_inlining_mode($m)
+{
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    array_push($TEMPCODE_PARAMETER_INLINING_MODE, $m);
+}
+
+/**
+ * Restore the Tempcode parameter inlining mode.
+ */
+function pop_tempcode_parameter_inlining_mode()
+{
+    global $TEMPCODE_PARAMETER_INLINING_MODE;
+    array_pop($TEMPCODE_PARAMETER_INLINING_MODE);
 }
 
 /**
@@ -194,11 +217,11 @@ function otp($var, $origin = '')
  */
 function missing_template_parameter($origin)
 {
-    list($parameter, $template_name) = ($origin == '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
-    if (strtolower($template_name) != $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
+    list($parameter, $template_name) = ($origin === '') ? array(do_lang('UNKNOWN'), do_lang('UNKNOWN')) : explode('/', $origin, 2);
+    if (strtolower($template_name) !== $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
-    trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name == '') ? '???' : $template_name));
+    trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name === '') ? '???' : $template_name));
     return '';
 }
 
@@ -246,8 +269,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         }
     }
 
-    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
-    ;
+    $myfunc = 'do_runtime_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
     if ($name === '?' && $type === TC_SYMBOL) {
         $name = 'TERNARY';
     }
@@ -263,7 +285,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = null)
         $_parameters = '';
         if ($parameters !== null) {
             foreach ($parameters as $parameter) {
-                if ($_parameters != '') {
+                if ($_parameters !== '') {
                     $_parameters .= ',';
                 }
                 if (is_bool($parameter)) {
@@ -425,12 +447,12 @@ function closure_loop($param, $args, $main_function)
         }
         if (isset($param[1 + 1])) { /* NB: +1 is due to there being a non-numeric index here too */
             $columns = intval($param[1]);
-            if ($columns == 0) {
+            if ($columns === 0) {
                 $columns = 1;
             }
             $row_starter = isset($param[2 + 1]) ? $param[2] : '<tr>';
             $row_terminator = isset($param[3 + 1]) ? $param[3] : '</tr>';
-            if ($array != array()) {
+            if ($array !== array()) {
                 $value .= $row_starter;
             }
 
@@ -438,8 +460,8 @@ function closure_loop($param, $args, $main_function)
             if (isset($param[4 + 1])) {
                 $sort_key = $param[4];
 
-                $rev = ((isset($param[5 + 1])) && ($param[5] == 'DESC'));
-                if ($sort_key != '') {
+                $rev = ((isset($param[5 + 1])) && ($param[5] === 'DESC'));
+                if ($sort_key !== '') {
                     sort_maps_by($array, $sort_key);
                 }
                 if ($rev) {
@@ -458,22 +480,22 @@ function closure_loop($param, $args, $main_function)
                 $go['_loop_var'] = '(array)'; // In case it's not a list of maps, but just a list
             }
 
-            if ((isset($param[2])) && ($col % $columns == 0) && ($col != 0)) {
+            if ((isset($param[2])) && ($col % $columns === 0) && ($col !== 0)) {
                 $value .= $row_starter;
             }
 
-            $ps = $go + array('_loop_key' => is_integer($go_key) ? strval($go_key) : $go_key, '_i' => strval($col), '_first' => $first, '_last' => $col == $max_index);
+            $ps = $go + array('_loop_key' => is_integer($go_key) ? strval($go_key) : $go_key, '_i' => strval($col), '_first' => $first, '_last' => $col === $max_index);
             $args[0] = $ps + $args[0];
             $args[0]['vars'] = $args[0];
             $value .= call_user_func_array($main_function, $args);
 
             ++$col;
-            if ((isset($param[3])) && ($col % $columns == 0)) {
+            if ((isset($param[3])) && ($col % $columns === 0)) {
                 $value .= $row_terminator;
             }
             $first = false;
         }
-        if ((isset($param[2])) && ($col % $columns != 0)) {
+        if ((isset($param[2])) && ($col % $columns !== 0)) {
             $value .= $row_terminator;
         }
     }
@@ -500,7 +522,9 @@ function make_string_tempcode($string)
     ;
     $code_to_preexecute = array($myfunc => "\$tpl_funcs['$myfunc']=\"echo \\\"" . php_addslashes_twice($string) . "\\\";\";\n");
     $seq_parts = array(array(array($myfunc, array(), TC_KNOWN, '', '')));
-    return new Tempcode(array($code_to_preexecute, $seq_parts));
+    $ret = new Tempcode(array($code_to_preexecute, $seq_parts));
+    $ret->is_all_static = true;
+    return $ret;
 }
 
 /**
@@ -695,7 +719,7 @@ function kid_gloves_html_escaping_singular(&$param)
 function fill_template_preview_op_cache()
 {
     global $IS_TEMPLATE_PREVIEW_OP_CACHE;
-    $IS_TEMPLATE_PREVIEW_OP_CACHE = array_key_exists('template_preview_op', $_POST) && ($_POST['template_preview_op'] == '1') && ((get_page_name() != 'admin_themes') || (get_param_string('type', '') == 'view'));
+    $IS_TEMPLATE_PREVIEW_OP_CACHE = isset($_POST['template_preview_op']) && ($_POST['template_preview_op'] === '1') && ((get_page_name() !== 'admin_themes') || (get_param_string('type', '') === 'screen_preview'));
 }
 
 /**
@@ -736,15 +760,19 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         kid_gloves_html_escaping($parameters);
     }
 
-    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORD_TEMPLATES_TREE, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE;
+    global $IS_TEMPLATE_PREVIEW_OP_CACHE, $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED, $FILE_ARRAY, $KEEP_MARKERS, $SHOW_EDIT_LINKS, $XHTML_SPIT_OUT, $CACHE_TEMPLATES, $FORUM_DRIVER, $POSSIBLY_IN_SAFE_MODE_CACHE, $USER_THEME_CACHE, $TEMPLATE_DISK_ORIGIN_CACHE, $LOADED_TPL_CACHE, $TEMPCODE_PARAMETER_INLINING_MODE;
+
     if ($IS_TEMPLATE_PREVIEW_OP_CACHE === null) {
         fill_template_preview_op_cache();
     }
+
     $special_treatment = ((($KEEP_MARKERS) || ($SHOW_EDIT_LINKS)) && ($XHTML_SPIT_OUT === null));
 
     if ($RECORD_TEMPLATES_USED) {
-        $RECORDED_TEMPLATES_USED[] = $directory . '/' . $codename . $suffix;
+        record_template_used($directory . '/' . $codename . $suffix);
     }
+
+    $inlining_mode = end($TEMPCODE_PARAMETER_INLINING_MODE);
 
     // Variables we'll need
     if (!isset($theme)) {
@@ -761,9 +789,14 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
     $_data = mixed();
     $_data = false;
-    if (($CACHE_TEMPLATES) && (/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/
-            ($parameters === null) || ((!$RECORD_TEMPLATES_USED) && (!$RECORD_TEMPLATES_TREE))) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE) && ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode()))
-    ) {
+    $may_use_template_cache =
+        ($CACHE_TEMPLATES) &&
+        //(/*the following relates to ensuring a full recompile for INCLUDEs except for CSS and JS*/($parameters === null) || (!$RECORD_TEMPLATES_USED)) && Actually, unnecessary slowness, we don't care that much, and &cache_templates=0 can be set if we do
+        (!$IS_TEMPLATE_PREVIEW_OP_CACHE) &&
+        ((!$POSSIBLY_IN_SAFE_MODE_CACHE) || (isset($GLOBALS['SITE_INFO']['safe_mode'])) || (!in_safe_mode())) &&
+        !$inlining_mode
+        ;
+    if ($may_use_template_cache) {
         if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
             $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
             $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
@@ -839,21 +872,33 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             }
         } else {
             require_code('tempcode_compiler');
-            $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme);
+            if ($inlining_mode) {
+                $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme, $parameters);
+            } else {
+                $_data = _do_template($found[0], $found[1], $codename, $codename, $lang, $found[2], $theme);
+            }
         }
     }
 
-    if ($loaded_this_once) {// On 3rd load (and onwards) it will be fully cached
+    if ($loaded_this_once && !$inlining_mode) {// On 3rd load (and onwards) it will be fully cached
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 
-    if (!isset($parameters)) { // Streamlined if no parameters involved
+    if (!isset($parameters) && !$GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES']) { // Streamlined if no parameters involved
         $out = new Tempcode();
+
         $out->codename = $codename;
+
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            $out->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($_data->metadata) ? $_data->metadata['children'] : array());
+        }
+
         $out->code_to_preexecute = $_data->code_to_preexecute;
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
+
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($_data->preprocessable_bits)) {
             $out->preprocessable_bits = $_data->preprocessable_bits;
         }
+
         $out->seq_parts = $_data->seq_parts;
 
         foreach ($out->seq_parts as &$seq_parts_group) {
@@ -868,8 +913,11 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     }
 
     $ret = $_data->bind($parameters, $codename);
-    if ($special_treatment) {
-        $ret->codename = '(mixed)'; // Stop optimisation that assumes the codename represents the sole content of it
+    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+        $ret->metadata = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, $directory . '/' . $codename . $suffix, isset($ret->metadata) ? $ret->metadata['children'] : array());
+        if ($special_treatment) {
+            $ret->metadata['type'] = TEMPLATE_TREE_NODE__UNKNOWN; // Stop optimisation that assumes the codename represents the sole content of it
+        }
     }
 
     if ($special_treatment) {
@@ -881,7 +929,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
             $ret = $__data;
         }
         if (($SHOW_EDIT_LINKS) && ($codename !== 'PARAM_INFO') && ($codename !== 'TEMPLATE_EDIT_LINK') && ($codename !== 'GLOBAL_HTML_WRAP'/*For some obscure reason letting this go through causes content to disappear, maybe because it has already started output streaming*/)) {
-            $edit_url = build_url(array('page' => 'admin_themes', 'type' => '_edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $codename . $suffix), 'adminzone');
+            $edit_url = build_url(array('page' => 'admin_themes', 'type' => 'edit_templates', 'theme' => $theme, 'f0file' => $directory . '/' . $codename), 'adminzone');
 
             $parameters2 = array();
             foreach ($parameters as $k => $v) {
@@ -902,7 +950,80 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
+    if ($GLOBALS['INJECT_HIDDEN_TEMPLATE_NAMES'] && $directory === 'templates' && (running_script('index') || running_script('iframe')) && $codename !== 'GLOBAL_HTML_WRAP'/*don't want junk at start*/ && $codename !== 'FORM_SCREEN_INPUT_HIDDEN' && $codename !== 'FORM_SCREEN_INPUT_HIDDEN_2') {
+        $ret2 = new Tempcode();
+        $ret2->attach(invisible_output_encode('<' . $directory . '/' . $codename . $suffix . '>'));
+        $ret2->attach($ret);
+        $ret2->attach(invisible_output_encode('</' . $directory . '/' . $codename . $suffix . '>'));
+        return $ret2;
+    }
+
     return $ret;
+}
+
+/**
+ * Prepare some invisible text to annotate the HTML output stream.
+ * It works using invisible unicode characters.
+ * It's a bit like having hidden messages in the “umm”s and “err”s in speech. If I said “it’s lovely err err umm outside, want to umm err err umm go for a walk”, it can be a hidden code.
+ * Also implemented in JavaScript (themeing.js), function invisible_output_encode(string).
+ *
+ * @param  string $string Input
+ * @return string Output
+ */
+function invisible_output_encode($string)
+{
+    $ret = '';
+
+    $utf8 = (get_charset() === 'utf-8');
+
+    $len = strlen($string);
+    for ($i = 0; $i < $len; $i++) {
+        $char = ord($string[$i]);
+
+        for ($_bit = 7; $_bit >= 0; $_bit--) {
+            $_bitmask = '1' . str_repeat('0', $_bit);
+            $bitmask = bindec($_bitmask);
+            $bit = ($char & $bitmask) !== 0;
+            if ($utf8) {
+                if ($bit)
+                {
+                    $ret .= chr(0xE2) . chr(0x80) . chr(0x8B); // http://www.fileformat.info/info/unicode/char/200B/index.htm (ZERO WIDTH SPACE)
+                } else
+                {
+                    $ret .= chr(0xEF) . chr(0xBB) . chr(0xBF); // http://www.fileformat.info/info/unicode/char/feff/index.htm (ZERO WIDTH NO-BREAK SPACE)
+                }
+            } else {
+                $ret .= $bit ? '&#x200b;' : '&#xfeff;';
+            }
+        }
+    }
+
+    // Possible for future...
+    //  http://www.fileformat.info/info/unicode/char/fffe/index.htm (Unicode Noncharacter)
+    //  http://www.unicode.org/faq/private_use.html
+    //  https://en.wikipedia.org/wiki/Unicode_control_characters
+    //  https://en.wikipedia.org/wiki/Control_character
+    //  https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+    //  These all seem to have problems though. They're either explicitly visible spaces, show as unicode boxes (i.e. the no-font-character box), throw off lexical analysis, or at least they trigger non-empty element rules in CSS etc.
+    //   Null byte (0x00) seems okay, but it's likely browsers may remove it entirely.
+
+    return $ret;
+}
+
+/**
+ * Strip out the invisible_output_encode encoding.
+ *
+ * @param  string $string Input
+ * @return string Output
+ */
+function strip_invisible_output_encoding($string)
+{
+    if (get_charset() === 'utf-8') {
+        $string = str_replace(array(chr(0xE2) . chr(0x80) . chr(0x8B), chr(0xEF) . chr(0xBB) . chr(0xBF)), array('', ''), $string);
+    } else {
+        $string = str_replace(array('&#x200b;', '&#xfeff;'), array('', ''), $string);
+    }
+    return $string;
 }
 
 /**
@@ -974,7 +1095,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'INCLUDE':
-            if ($GLOBALS['RECORD_TEMPLATES_USED'] || $GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
                 if (!isset($param[1])) {
@@ -984,20 +1105,17 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $param[2] = make_string_tempcode('templates');
                 }
 
-                $tpl_path_descrip = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]) . '/' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]) . (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
+                $template_subdir = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]);
+                $template_file = (is_object($param[0]) ? $param[0]->evaluate() : $param[0]);
+                $template_suffix = (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
+                $tpl_path_descrip = $template_subdir . '/' . $template_file . $template_suffix;
 
-                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-                    $GLOBALS['RECORDED_TEMPLATES_USED'][] = $tpl_path_descrip;
-                }
+                record_template_used($tpl_path_descrip);
 
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $param = $seq_part[3];
-                    $children[] = array(
-                        $tpl_path_descrip,
-                        isset($param[1]->children) ? $param[1]->children : array(),
-                        isset($param[1]->fresh) ? $param[1]->fresh : false
-                    );
-                }
+                $temp = @do_template($template_file, null, null, true, null, $template_suffix, $template_subdir);
+
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);
             }
             return;
 
@@ -1025,8 +1143,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     }
                     $TEMPCODE_SETGET[isset($param[0]->codename/*faster than is_object*/) ? $param[0]->evaluate() : $param[0]] = implode(',', $param_copy);
                 }
-                if (($GLOBALS['RECORD_TEMPLATES_TREE']) && (is_object($param[1]))) {
-                    $children[] = array(':set: ' . (is_object($param[0]) ? $param[0]->evaluate() : $param[0]), isset($param[1]->children) ? $param[1]->children : array(), isset($param[1]->fresh) ? $param[1]->fresh : false);
+
+                if (($GLOBALS['RECORD_TEMPLATES_USED']) && (is_object($param[1]))) {
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $key);
                 }
             }
             return;
@@ -1040,7 +1160,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 }
             }
 
-            if ((count($param) == 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in symbols.php
+            if ((count($param) === 1) && (strpos($param[0], ',') !== false)) { // NB: This code is also in symbols.php
                 $param = block_params_str_to_arr($param[0], true);
             }
 
@@ -1075,13 +1195,14 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $block_parms[$key] = $val;
                 }
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                     require_code('files');
                     $before = memory_get_usage();
                 }
                 if (isset($block_parms['block'])) {
                     $b_value = do_block($block_parms['block'], $block_parms);
-                    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+
+                    if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                         if (function_exists('attach_message')) {
                             attach_message('block: ' . $block_parms['block'] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . integer_format(memory_get_usage()) . ')', 'inform');
                         } else {
@@ -1093,10 +1214,13 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         }
                     }
 
-                    if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                        $children[] = array(':block: ' . $block_parms['block'], array(array($b_value->codename, isset($b_value->children) ? $b_value->children : array(), isset($b_value->fresh) ? $b_value->fresh : false)), true);
-                    }
                     $b_value->handle_symbol_preprocessing();
+
+                    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+                        require_code('themes_meta_tree');
+
+                        $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__BLOCK, $block_parms['block'], $b_value);
+                    }
 
                     $BLOCKS_CACHE[serialize($param)] = $b_value;
                 }
@@ -1142,9 +1266,9 @@ function handle_symbol_preprocessing($seq_part, &$children)
         case 'PARAGRAPH':
             $param = $seq_part[3];
             if ((isset($param[0])) && (is_object($param[0]))) {
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $param[0]->handle_symbol_preprocessing();
-                    $children[] = array(':trim', isset($param[0]->children) ? $param[0]->children : array(), isset($param[0]->fresh) ? $param[0]->fresh : false, true);
+                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TRIM, '', $param[0]);
                 }
             }
             break;
@@ -1167,20 +1291,20 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     if (strpos($param[0], ':') !== false) {
                         $param = array_reverse(explode(':', $param[0], 2));
                     }
-                    if (substr($param[0], 0, 6) == 'panel_') {
+                    if (substr($param[0], 0, 6) === 'panel_') {
                         $param[0] = substr($param[0], 6);
                     }
 
                     global $ZONE;
                     $wide_high = is_wide_high();
                     $wide = is_wide();
-                    if ((($wide == 0) || (($wide_high == 0) && (($param[0] == 'bottom') || ($param[0] == 'top')))) && ((get_option('site_closed') == '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
-                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                    if ((($wide === 0) || (($wide_high === 0) && (($param[0] === 'bottom') || ($param[0] === 'top')))) && ((get_option('site_closed') === '0') || ($GLOBALS['IS_ACTUALLY_ADMIN']) || (has_privilege(get_member(), 'access_closed_site')))) {
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                             require_code('files');
                             $before = memory_get_usage();
                         }
                         $tp_value = request_page('panel_' . $param[0], false, array_key_exists(1, $param) ? $param[1] : null, null);
-                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                        if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                             if (function_exists('attach_message')) {
                                 attach_message('panel: ' . 'panel_' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
                             } else {
@@ -1193,8 +1317,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         }
 
                         $tp_value->handle_symbol_preprocessing();
-                        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                            $children[] = array(':panel: ' . $param[0], array(array($tp_value->codename, isset($tp_value->children) ? $tp_value->children : array(), isset($tp_value->fresh) ? $tp_value->fresh : false)), true);
+
+                        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+                            require_code('themes_meta_tree');
+                            $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PANEL, (array_key_exists(1, $param) ? $param[1] : get_zone_name()) . ':panel_' . $param[0], $tp_value);
                         }
 
                         $value = $tp_value->evaluate();
@@ -1213,7 +1339,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
             return;
 
         case 'JS_TEMPCODE':
-            if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
                 foreach ($param as $i => $p) {
                     if (is_object($p)) {
@@ -1223,17 +1349,19 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 $temp = javascript_tempcode(array_key_exists(0, $param) ? $param[0] : null);
 
-                $children[] = array(':container', isset($temp->children) ? $temp->children : array(), isset($temp->fresh) ? $temp->fresh : false);
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__JS_TEMPCODE, $param[0], $temp);
             }
             return;
 
         case 'CSS_TEMPCODE':
-            if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
+            if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
                 $temp = css_tempcode();
 
-                $children[] = array(':container', isset($temp->children) ? $temp->children : array(), isset($temp->fresh) ? $temp->fresh : false);
+                require_code('themes_meta_tree');
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__CSS_TEMPCODE, '', $temp);
             }
             return;
 
@@ -1255,10 +1383,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $param = array_reverse(explode(':', $param[0], 2));
                 }
 
-                $being_included = (!array_key_exists(2, $param)) || ($param[2] == '1');
-                $virtual_state = (array_key_exists(3, $param)) && ($param[3] == '1');
+                $being_included = (!array_key_exists(2, $param)) || ($param[2] === '1');
+                $virtual_state = (array_key_exists(3, $param)) && ($param[3] === '1');
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                     require_code('files');
                     $before = memory_get_usage();
                 }
@@ -1289,7 +1417,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     );
                 }
 
-                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] == '1')) {
+                if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                     if (function_exists('attach_message')) {
                         attach_message('page: ' . $param[0] . ' (' . clean_file_size(memory_get_usage() - $before) . ' bytes used, now at ' . number_format(memory_get_usage()) . ')', 'inform');
                     } else {
@@ -1300,8 +1428,10 @@ function handle_symbol_preprocessing($seq_part, &$children)
                         flush();
                     }
                 }
-                if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-                    $children[] = array(':page: ' . $param[0], isset($tp_value->children) ? $tp_value->children : array(), isset($tp_value->fresh) ? $tp_value->fresh : false);
+
+                if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+                    require_code('themes_meta_tree');
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__PAGE, $zone . ':' . $page, $tp_value);
                 }
             } else {
                 $tp_value = new Tempcode();
@@ -1327,17 +1457,8 @@ class Tempcode
 {
     public $code_to_preexecute;
     public $seq_parts; // List of list of closure pairs: (0) function name, and (1) parameters, (2) type, (3) name         We use a 2D list to make attach ops very fast
-    public $preprocessable_bits; // List of tuples: escape (ignored), type (e.g. TC_SYMBOL), name, parameters
-    public $pure_lang;
-    public $evaluate_echo_offset_group = 0;
-    public $evaluate_echo_offset_inner = 0;
 
-    public $codename = ':container'; // The name of the template it came from
-
-    public $preprocessed = false;
-    public $cached_output;
-
-    public $children = null, $fresh = null;
+    public $codename; // The name of the template it came from
 
     /**
      * Constructor of Tempcode
@@ -1346,17 +1467,18 @@ class Tempcode
      */
     public function __construct($details = null)
     {
-        $this->cached_output = null;
+        $this->codename = ':container';
 
         if (!isset($details)) {
-            $this->preprocessable_bits = array();
             $this->seq_parts = array();
             $this->code_to_preexecute = array();
+
+            $this->is_all_static = true;
         } else {
             $this->code_to_preexecute = $details[0];
             $this->seq_parts = $details[1];
 
-            if (!$GLOBALS['OUTPUT_STREAMING']) {
+            if (!$GLOBALS['OUTPUT_STREAMING'] || $GLOBALS['RECORD_TEMPLATES_USED']) {
                 $pp_bits = array();
 
                 foreach ($this->seq_parts as $seq_parts_group) {
@@ -1386,7 +1508,7 @@ class Tempcode
                             }
                         }
                         foreach ($seq_part[1] as $param) {
-                            if (isset($param->preprocessable_bits)) { // If is a Tempcode object
+                            if (!empty($param->preprocessable_bits)) { // If is a Tempcode object
                                 foreach ($param->preprocessable_bits as $b) {
                                     $pp_bits[] = $b;
                                 }
@@ -1395,15 +1517,15 @@ class Tempcode
                     }
                 }
 
-                $this->preprocessable_bits = $pp_bits;
-            } else {
-                $this->preprocessable_bits = array();
+                if (!empty($pp_bits)) {
+                    $this->preprocessable_bits = $pp_bits;
+                }
             }
         }
 
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = true;
-            $this->children = array();
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
     }
 
@@ -1414,7 +1536,14 @@ class Tempcode
      */
     public function __sleep()
     {
-        return array('code_to_preexecute', 'seq_parts', 'preprocessable_bits', 'pure_lang', 'codename');
+        $ret = array('code_to_preexecute', 'seq_parts', 'codename');
+        if (isset($this->preprocessable_bits)) {
+            $ret[] = 'preprocessable_bits';
+        }
+        if (isset($this->pure_lang)) {
+            $ret[] = 'pure_lang';
+        }
+        return $ret;
     }
 
     /**
@@ -1431,7 +1560,7 @@ class Tempcode
                 }
             }
         }
-        $this->cached_output = null;
+        unset($this->cached_output);
     }
 
     /**
@@ -1443,12 +1572,17 @@ class Tempcode
      */
     public function parse_from(&$code, &$pos, &$len)
     {
-        $this->cached_output = null;
+        unset($this->cached_output);
         require_code('tempcode_compiler');
         $temp = template_to_tempcode(substr($code, $pos, $len - $pos), 0, false, '');
         $this->code_to_preexecute = $temp->code_to_preexecute;
         $this->seq_parts = $temp->seq_parts;
-        $this->preprocessable_bits = $temp->preprocessable_bits;
+        if (!empty($temp->preprocessable_bits)) {
+            $this->preprocessable_bits = $temp->preprocessable_bits;
+        }
+        if (!isset($temp->is_all_static)) {
+            unset($this->is_all_static);
+        }
     }
 
     /**
@@ -1465,29 +1599,59 @@ class Tempcode
 
         unset($this->is_empty);
 
-        $this->cached_output = null;
+        unset($this->cached_output);
+
+        global $TEMPCODE_PARAMETER_INLINING_MODE;
+        $inlining_mode = end($TEMPCODE_PARAMETER_INLINING_MODE)/*in inlining mode*/;
+
+        if (isset($attach->is_all_static) && $inlining_mode) { // Can flatten to a string?
+            $attach = $attach->evaluate();
+        }
 
         if (isset($attach->codename)/*faster than is_object*/) { // Consider it another piece of Tempcode
+            if (!isset($attach->is_all_static)) {
+                unset($this->is_all_static);
+            }
+
             foreach ($attach->seq_parts as $seq_part_group) {
                 $this->seq_parts[] = $seq_part_group;
             }
 
             $this->code_to_preexecute += $attach->code_to_preexecute;
 
-            if (!$GLOBALS['OUTPUT_STREAMING']) {
+            if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($attach->preprocessable_bits)) {
                 foreach ($attach->preprocessable_bits as $b) {
                     $this->preprocessable_bits[] = $b;
                 }
             }
 
-            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_TREE'])) {
-                $this->children[] = array($attach->codename, isset($attach->children) ? $attach->children : array(), isset($attach->fresh) ? $attach->fresh : false);
+            if ((!$avoid_child_merge) && ($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($attach->metadata))) {
+                if (!isset($this->metadata)) {
+                    require_code('themes_meta_tree');
+                    $this->metadata = create_template_tree_metadata();
+                }
+                $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__ATTACHED, '', $attach);
             }
         } else { // Consider it a string
-            if (end($this->seq_parts) !== false) {
+            if (end($this->seq_parts) !== false) { // If not currently empty
                 $end = &$this->seq_parts[key($this->seq_parts)];
+                if ($inlining_mode && end($end) !== false) {
+                    $_end = &$end[key($end)];
+                    if (($_end[2] === TC_KNOWN) && ($_end[1] === array())) { // Optimisation to save memory/storage-space/evaluation-time -- we can just append text
+                        $myfunc = $_end[0];
+                        if (isset($this->code_to_preexecute[$myfunc])) {
+                            $code = $this->code_to_preexecute[$myfunc];
+                            $pos2 = strpos($code, '\\";');
+                            if ($pos2 !== false && strpos($code, '\\\\"') === false) {
+                                $code = substr($code, 0, $pos2) . php_addslashes_twice($attach) . substr($code, $pos2);
+                                $this->code_to_preexecute[$myfunc] = $code;
+                                return;
+                            }
+                        }
+                    }
+                }
             } else {
-                $this->seq_parts[] = array();
+                $this->seq_parts[] = array(); // Currently empty. We need a stub to append to
                 $end = &$this->seq_parts[0];
             }
 
@@ -1503,8 +1667,6 @@ class Tempcode
             $this->code_to_preexecute[$myfunc] = $funcdef;
             $end[] = array($myfunc, array(), TC_KNOWN, '', '');
         }
-
-        $this->codename = '(mixed)';
     }
 
     /**
@@ -1517,7 +1679,7 @@ class Tempcode
         require_code('tempcode_optimiser');
         optimise_tempcode($this);
 
-        return 'return unserialize("' . php_addslashes(serialize(array($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute))) . '");' . "\n";
+        return 'return unserialize("' . php_addslashes(serialize(array($this->seq_parts, isset($this->preprocessable_bits) ? $this->preprocessable_bits : array(), $this->codename, !empty($this->pure_lang), $this->code_to_preexecute))) . '");' . "\n";
     }
 
     /**
@@ -1529,9 +1691,9 @@ class Tempcode
      */
     public function from_assembly_executed($file, $forced_reload_details)
     {
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = false;
-            $this->children = array();
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
 
         $result = tempcode_include($file); // We don't eval on this because we want it to potentially be op-code cached by e.g. Zend Accelerator
@@ -1539,11 +1701,17 @@ class Tempcode
             return false; // May never get here, as PHP fatal errors can't be suppressed or skipped over
         }
 
-        $this->cached_output = null;
-        list($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute) = $result;
-        if ($GLOBALS['OUTPUT_STREAMING']) {
-            $this->preprocessable_bits = array();
+        unset($this->cached_output);
+
+        $this->seq_parts = $result[0];
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($result[1])) {
+            $this->preprocessable_bits = $result[1];
         }
+        $this->codename = $result[2];
+        if ($result[3]) {
+            $this->pure_lang = $result[3];
+        }
+        $this->code_to_preexecute = $result[4];
 
         if ($forced_reload_details[6] === null) {
             $forced_reload_details[6] = '';
@@ -1608,9 +1776,9 @@ class Tempcode
      */
     public function from_assembly(&$raw_data, $allow_failure = false)
     {
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $this->fresh = false;
-            $this->children = array();
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            require_code('themes_meta_tree');
+            $this->metadata = create_template_tree_metadata();
         }
 
         $result = /*$GLOBALS['DEV_MODE']?debug_eval($raw_data):*/@eval($raw_data);
@@ -1621,11 +1789,17 @@ class Tempcode
             fatal_exit(@strval($php_errormsg));
         }
 
-        $this->cached_output = null;
-        list($this->seq_parts, $this->preprocessable_bits, $this->codename, $this->pure_lang, $this->code_to_preexecute) = $result;
-        if ($GLOBALS['OUTPUT_STREAMING']) {
-            $this->preprocessable_bits = array();
+        unset($this->cached_output);
+
+        $this->seq_parts = $result[0];
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($result[1])) {
+            $this->preprocessable_bits = $result[1];
         }
+        $this->codename = $result[2];
+        if ($result[3]) {
+            $this->pure_lang = $result[3];
+        }
+        $this->code_to_preexecute = $result[4];
 
         if ($GLOBALS['XSS_DETECT']) {
             $this->_mark_all_as_escaped();
@@ -1670,10 +1844,12 @@ class Tempcode
             $parameters['_GUID'] = isset($trace[3]) ? ($trace[3]['function'] . '/' . $trace[2]['function']) : (isset($trace[2]) ? $trace[2]['function'] : $trace[1]['function']);
         }
 
+        $is_all_static = isset($this->is_all_static);
+
         $out = new Tempcode();
         $out->codename = $codename;
         $out->code_to_preexecute = $this->code_to_preexecute;
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($this->preprocessable_bits)) {
             foreach ($this->preprocessable_bits as $preprocessable_bit) {
                 foreach ($preprocessable_bit[3] as $i => $param) {
                     if ((($preprocessable_bit[2] !== 'SET') || (($i >= 1))) && (isset($param->codename/*faster than is_object*/))) {
@@ -1684,29 +1860,35 @@ class Tempcode
             }
         }
 
-        if ($GLOBALS['RECORD_TEMPLATES_TREE']) {
-            $out->children = isset($this->children) ? $this->children : array();
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            require_code('themes_meta_tree');
+            $out->metadata = isset($this->metadata) ? $this->metadata : create_template_tree_metadata();
             foreach ($parameters as $key => $parameter) {
                 if (is_object($parameter)) {
-                    if (count($parameter->preprocessable_bits) !== 0) {
+                    if (!empty($parameter->preprocessable_bits)) {
                         $parameter->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
                     }
-                    $out->children[] = array($parameter->codename, isset($parameter->children) ? $parameter->children : array(), isset($parameter->fresh) ? $parameter->fresh : false);
-                } elseif ((is_string($parameter)) && ($key === '_GUID')) {
-                    $out->children[] = array(':guid', array(array(':' . $parameter, array(), true)), true);
+                    $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $parameter);
+                } else {
+                    if ((is_string($parameter)) && ($key === '_GUID')) {
+                        $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_GUID, $parameter);
+                    }
                 }
             }
         }
+
         foreach ($parameters as $key => $parameter) {
             $p_type = gettype($parameter);
             if ($p_type === 'string') {
                 // Performance, this is most likely
             } elseif ($p_type === 'object') {
-                if (isset($parameter->preprocessable_bits[0])) {
-                    if (!$GLOBALS['OUTPUT_STREAMING']) {
-                        foreach ($parameter->preprocessable_bits as $b) {
-                            $out->preprocessable_bits[] = $b;
-                        }
+                if (!isset($parameter->is_all_static)) {
+                    $is_all_static = false;
+                }
+
+                if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($parameter->preprocessable_bits)) {
+                    foreach ($parameter->preprocessable_bits as $b) {
+                        $out->preprocessable_bits[] = $b;
                     }
                 } elseif ($parameter->is_empty_shell()) {
                     $parameters[$key] = ''; // Little optimisation to save memory
@@ -1729,18 +1911,37 @@ class Tempcode
             }
         }
 
+        if (!$is_all_static) {
+            unset($out->is_all_static);
+        }
+
         return $out;
     }
 
     /**
      * Replace the named parameter with a specific value. Hardly used, but still important. Note that this will bind to all kinds of things that might not normally take named parameters, like symbols; this should not cause problems though.
      *
-     * @param  string $parameter Named parameter
-     * @param  mixed $value Specific value
+     * @param  string $key Named parameter
+     * @param  Tempcode $parameter Specific value
      */
-    public function singular_bind($parameter, $value)
+    public function singular_bind($key, $value)
     {
-        $this->cached_output = null;
+        unset($this->cached_output);
+
+        if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+            if (is_object($value)) {
+                require_code('themes_meta_tree');
+
+                if (!isset($this->metadata)) {
+                    $this->metadata = create_template_tree_metadata();
+                }
+
+                if (!empty($value->preprocessable_bits)) {
+                    $value->handle_symbol_preprocessing(); // Needed to force children to be populated. Otherwise it is possible but not definite that evaluation will result in children being pushed down.
+                }
+                $this->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER, $key, $value);
+            }
+        }
 
         if ($this->seq_parts === array()) {
             return;
@@ -1749,17 +1950,19 @@ class Tempcode
         foreach ($this->seq_parts as &$seq_parts_group) {
             foreach ($seq_parts_group as &$seq_part) {
                 if ((($seq_part[0][0] !== 's') || (substr($seq_part[0], 0, 14) !== 'string_attach_')) && ($seq_part[2] !== TC_LANGUAGE_REFERENCE)) {
-                    $seq_part[1][$parameter] = $value;
+                    $seq_part[1][$key] = $value;
                 }
             }
         }
 
-        if (!$GLOBALS['OUTPUT_STREAMING']) {
-            if (isset($value->preprocessable_bits)) { // Is Tempcode
-                foreach ($value->preprocessable_bits as $b) {
-                    $this->preprocessable_bits[] = $b;
-                }
+        if (!$GLOBALS['OUTPUT_STREAMING'] && !empty($value->preprocessable_bits)) { // Is Tempcode
+            foreach ($value->preprocessable_bits as $b) {
+                $this->preprocessable_bits[] = $b;
             }
+        }
+
+        if (!isset($value->is_all_static)) {
+            unset($this->is_all_static);
         }
     }
 
@@ -1771,12 +1974,20 @@ class Tempcode
         if ($GLOBALS['OUTPUT_STREAMING']) {
             return;
         }
-        if (isset($this->preprocessed) && $this->preprocessed) {
+        if (!empty($this->preprocessed)) {
             return;
         }
 
-        foreach ($this->preprocessable_bits as $seq_part) {
-            handle_symbol_preprocessing($seq_part, $this->children);
+        $children = array();
+
+        if (!empty($this->preprocessable_bits)) {
+            foreach ($this->preprocessable_bits as $seq_part) {
+                handle_symbol_preprocessing($seq_part, $children);
+            }
+        }
+
+        if (($GLOBALS['RECORD_TEMPLATES_USED']) && (isset($this->metadata['children']))) {
+            $this->metadata['children'] = array_merge($this->metadata['children'], $children);
         }
 
         $this->preprocessed = true;
@@ -1805,7 +2016,7 @@ class Tempcode
      */
     public function is_empty()
     {
-        if ($this->cached_output !== null) {
+        if (isset($this->cached_output)) {
             return strlen($this->cached_output) === 0;
         }
         if (isset($this->is_empty)) {
@@ -2012,9 +2223,9 @@ class Tempcode
             return '';
         }
 
-        if ($this->cached_output !== null) {
+        if (isset($this->cached_output)) {
             echo $this->cached_output;
-            $this->cached_output = null; // Won't be needed again
+            unset($this->cached_output); // Won't be needed again
             return '';
         }
         if ($this->is_empty_shell()) { // Optimisation: empty
@@ -2031,6 +2242,10 @@ class Tempcode
         $TEMPCODE_OUTPUT_STARTED = true;
         $tpl_funcs = $KEEP_TPL_FUNCS;
         $seq_parts_group_cnt = count($this->seq_parts);
+        if (!isset($this->evaluate_echo_offset_group)) {
+            $this->evaluate_echo_offset_group = 0;
+            $this->evaluate_echo_offset_inner = 0;
+        }
         $i = &$this->evaluate_echo_offset_group; // A reference, so evaluate_echo_offset_group will go up naturally via looping of $i
         if ($stop_if_stuck) {
             $stop_if_stuck_bak = $STOP_IF_STUCK;
@@ -2145,7 +2360,7 @@ function tempcode_include($filepath)
  * @param  ?array $tpl_funcs Evaluation code context (null: N/A)
  * @param  ?array $parameters Evaluation parameters (null: N/A)
  * @param  ?ID_TEXT $cl Language (null: N/A)
- * @return string Result
+ * @return mixed Result
  *
  * @ignore
  */
@@ -2185,4 +2400,28 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
 function debug_call_user_func($function, $a, $b = null, $c = null)
 {
     return call_user_func($function, $a, $b, $c);
+}
+
+/**
+ * Record (in memory) that a template has been loaded up. Tallies are kept.
+ *
+ * @param  string $tpl_path_descrip Template that's getting loaded
+ */
+function record_template_used($tpl_path_descrip)
+{
+    static $called_once = false;
+
+    global $RECORDED_TEMPLATES_USED;
+
+    if (!isset($RECORDED_TEMPLATES_USED[$tpl_path_descrip])) {
+        $RECORDED_TEMPLATES_USED[$tpl_path_descrip] = 0;
+    }
+    $RECORDED_TEMPLATES_USED[$tpl_path_descrip]++;
+
+    if (!$called_once) {
+        require_code('themes_meta_tree');
+        register_shutdown_function('_record_templates_used');
+    }
+
+    $called_once = true;
 }

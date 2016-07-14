@@ -55,30 +55,6 @@ function script_load_stuff_staff()
 		}
 	}
 
-	// Local caching for improved perceived performance
-	var has_local_storage=false;
-	try
-	{
-		has_local_storage=(typeof window.localStorage!='undefined');
-	}
-	catch (e) { }
-	if ((has_local_storage) && ('{$VALUE_OPTION;,advanced_admin_cache}'=='1') && (!window.unloaded) && (!browser_matches('gecko')/*Far too slow*/) && (!browser_matches('ie')/*Big problems loading script with sanity in document.write*/))
-	{
-		var html=get_inner_html(document.documentElement,true);
-		if ((html.length<1024*256) && (!document.getElementById('login_username')) && (document.title!='Preloading')) // Do not save more than 256kb
-		{
-			// Saving
-			local_page_caching(html);
-		}
-
-		// Alter any <a> links so that local ones to cached URLs are handled nicely
-		promote_page_caching();
-	}
-
-	// Contextual CSS editor
-	contextual_css_edit();
-	window.setTimeout(contextual_css_edit,2000); // For frames
-
 	// Thumbnail tooltips
 	var url_patterns=[
 		/*{+START,LOOP,URL_PATTERNS}*/
@@ -119,6 +95,10 @@ function script_load_stuff_staff()
 		}
 	}
 }
+
+/*
+TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
+*/
 
 function apply_comcode_tooltip(hook,id,link)
 {
@@ -161,168 +141,72 @@ function apply_comcode_tooltip(hook,id,link)
 	});
 };
 
-function local_page_caching(html)
+/*
+STAFF ACTIONS LINKS
+*/
+
+function staff_actions_change(ob)
 {
-	var loc=(window.location+'').replace(/&js_cache=1&/,'&').replace(/&js_cache=1$/,'').replace(/\?js_cache=1&/,'?').replace(/\?js_cache=1$/,'');
-	var now=new Date().getTime();
-	var count=0;
-	try
+	var value=ob.options[ob.selectedIndex].value;
+	if (value=='templates' || value=='tree')
 	{
-		if ((typeof localStorage[loc]!='undefined') && (localStorage[loc]))
-			count=JSON.parse(localStorage[loc])[1];
-		localStorage[loc]=JSON.stringify([html,count+1,now,window.page_data_hash]);
-	}
-	catch (e) // Do not want privacy settings or whatever causing visible JS errors
-	{
-		if ((e.name=='QUOTA_EXCEEDED_ERR') && (localStorage.length!=0))
-		{
-			// Need to free some space, delete the oldest
-			var best_date_so_far=null,best_id=null,keyat,parsed;
-			for (var i=0;i<localStorage.length;i++)
-			{
-				try
-				{
-					keyat=localStorage.key(i);
-					parsed=JSON.parse(localStorage[keyat]);
-					if ((best_date_so_far==null) || (parsed[2]<best_date_so_far))
-					{
-						best_date_so_far=parsed[2];
-						best_id=keyat;
-					}
-				} catch (e) {} // Maybe not JSON
-			}
-
-			if (best_id)
-			{
-				localStorage.removeItem(best_id);
-
-				// Try again
-				local_page_caching(html);
-			}
-		}
+		/*
+		This is not actually needed, see code in PHP has_caching_for function
+		var hidden=document.createElement('input');
+		hidden.type='hidden';
+		hidden.name='cache_templates';
+		hidden.value='0';
+		ob.form.appendChild(hidden);
+		*/
 	}
 }
 
-function contextual_css_edit()
+function staff_actions_select(ob)
 {
-	var spt=document.getElementById('spacer_1'),css_option,i,l,sheet;
-	if (!spt) return;
-	var possibilities=find_css_sheets(window);
-	for (i=0;i<possibilities.length;i++)
-	{
-		sheet=possibilities[i];
-		if (!document.getElementById('opt_for_sheet_'+sheet))
-		{
-			css_option=document.createElement('option');
-			set_inner_html(css_option,((sheet=='global')?'{!CONTEXTUAL_CSS_EDITING_GLOBAL;}':'{!CONTEXTUAL_CSS_EDITING;}').replace('\{1}',escape_html(sheet+'.css')));
-			css_option.value=sheet+'.css';
-			css_option.id='opt_for_sheet_'+sheet;
-			if (find_active_selectors(sheet,window).length!=0)
-				spt.appendChild(css_option);
-		}
-	}
-}
+	var form;
 
-function find_css_sheets(win)
-{
-	var possibilities=[],sheet,i,j,k,ok;
-	try
+	var is_form_submit=(ob.nodeName.toLowerCase()=='form'); // If it already is a form submission, i.e. we don't need to trigger a form.submit() ourselves
+	if (is_form_submit)
 	{
-		if (typeof window.cms_theme=='undefined') window.cms_theme='{$THEME;}';
-		if (typeof window.cms_lang=='undefined') window.cms_lang='{$LANG;}';
-		if ((typeof win.document.querySelectorAll!='undefined') && (typeof window.cms_lang!='undefined') && (typeof window.cms_theme!='undefined'))
+		form=ob;
+		ob=form.elements['special_page_type'];
+	} else
+	{
+		form=ob.form;
+	}
+
+	var val=ob.options[ob.selectedIndex].value;
+	if (val!='view')
+	{
+		if (typeof form.elements['cache']!='undefined')
+			form.elements['cache'].value=(val.substring(val.length-4,val.length)=='.css')?'1':'0';
+		var window_name='cms_dev_tools'+Math.floor(Math.random()*10000);
+		var window_options;
+		if (val=='templates')
 		{
-			for (i=0;i<win.document.styleSheets.length;i++)
-			{
-				try
+			window_options='width='+window.screen.availWidth+',height='+window.screen.availHeight+',scrollbars=yes';
+
+			window.setTimeout(function() { // Do a refresh with magic markers, in a comfortable few seconds
+				var old_url=window.location.href;
+				if (old_url.indexOf('keep_template_magic_markers=1')==-1)
 				{
-					if (!win.document.styleSheets[i].href)
-					{
-						sheet='no_cache';
-						possibilities.push(sheet);
-					} else
-					{
-						var l=win.document.styleSheets[i].href.lastIndexOf('/templates_cached/'+window.cms_lang+'/');
-						if ((l!=-1) && (win.document.styleSheets[i].href.indexOf('merged__')==-1))
-						{
-							sheet=win.document.styleSheets[i].href.substring(l+('/templates_cached/'+window.cms_lang+'/').length,win.document.styleSheets[i].href.length).replace('_non_minified','').replace('_ssl','').replace('_mobile','').replace(/\?\d+/,'').replace('.css','');
-							possibilities.push(sheet);
-						}
-					}
+					window.location.href=old_url+((old_url.indexOf('?')==-1)?'?':'&')+'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
 				}
-				catch (e) {}
-			}
-
-			for (i=0;i<win.frames.length;i++)
-			{
-				if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
-				{
-					var result2=find_css_sheets(win.frames[i]);
-					for (j=0;j<result2.length;j++)
-					{
-						ok=true;
-						for (k=0;k<possibilities.length;k++)
-						{
-							if (possibilities[k]==result2[j]) ok=false;
-						}
-						if (ok) possibilities.push(result2[j]);
-					}
-				}
-			}
+			},10000);
+		} else
+		{
+			window_options='width=1020,height=700,scrollbars=yes';
 		}
+		var test=window.open('',window_name,window_options);
+		if (test) form.setAttribute('target',test.name);
+		if (!is_form_submit)
+			form.submit();
 	}
-	catch (e) {}
-
-	return possibilities;
 }
 
-function find_active_selectors(match,win)
-{
-	var test,selector,selectors=[],classes,i,j,result2;
-	try
-	{
-		for (i=0;i<win.document.styleSheets.length;i++)
-		{
-			try
-			{
-				if ((!match) || (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id=='style_for_'+match) || (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id=='style_for_'+match))) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/'+match)!=-1))
-				{
-					classes=win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
-					for (j=0;j<classes.length;j++)
-					{
-						selector=classes[j].selectorText;
-						test=win.document.querySelectorAll(selector);
-						if (test.length!=0) selectors.push(classes[j]);
-					}
-				}
-			}
-			catch (e) { }
-		}
-	}
-	catch (e) { }
-
-	for (i=0;i<win.frames.length;i++)
-	{
-		if (win.frames[i]) // If test needed for some browsers, as window.frames can get out-of-date
-		{
-			result2=find_active_selectors(match,win.frames[i]);
-			for (var j=0;j<result2.length;j++) selectors.push(result2[j]);
-		}
-	}
-
-	return selectors;
-}
-
-function promote_page_caching()
-{
-	for (var i=0;i<document.links.length;i++)
-	{
-		if ((typeof document.links[i]!='undefined') && (typeof localStorage[document.links[i].href]!='undefined') && (localStorage[document.links[i].href]))
-		{
-			document.links[i].href+=((document.links[i].href.indexOf('?')==-1)?'?':'&')+'js_cache=1';
-		}
-	}
-}
+/*
+THEME IMAGE CLICKING
+*/
 
 function handle_image_mouse_over(event)
 {
@@ -427,6 +311,10 @@ function handle_image_click(event,ob,force)
 	return true;
 }
 
+/*
+SOFTWARE CHAT
+*/
+
 function load_software_chat(event)
 {
 	cancel_bubbling(event);
@@ -488,47 +376,9 @@ function load_software_chat(event)
 	return false;
 }
 
-function staff_actions_select(ob)
-{
-	var form;
-
-	var is_form_submit=(ob.nodeName.toLowerCase()=='form');
-	if (is_form_submit)
-	{
-		form=ob;
-		ob=form.elements['special_page_type'];
-	} else
-	{
-		form=ob.form;
-	}
-
-	var val=ob.options[ob.selectedIndex].value;
-	if (val!='view')
-	{
-		if (typeof form.elements['cache']!='undefined')
-			form.elements['cache'].value=(val.substring(val.length-4,val.length)=='.css')?'1':'0';
-		var test=window.open('','cms_dev_tools'+Math.floor(Math.random()*10000),'width=1000,height=700,scrollbars=yes');
-		if (test) form.setAttribute('target',test.name);
-		if (!is_form_submit)
-			form.submit();
-	}
-}
-
-function staff_actions_change(ob)
-{
-	var value=ob.options[ob.selectedIndex].value;
-	if (value=='templates' || value=='tree')
-	{
-		/*
-		This is not actually needed, see code in PHP has_caching_for function
-		var hidden=document.createElement('input');
-		hidden.type='hidden';
-		hidden.name='cache_templates';
-		hidden.value='0';
-		ob.form.appendChild(hidden);
-		*/
-	}
-}
+/*
+ADMIN ZONE DASHBOARD
+*/
 
 function set_task_hiding(hide_done)
 {

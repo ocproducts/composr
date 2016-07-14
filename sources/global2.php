@@ -400,6 +400,7 @@ function init__global2()
         // Load requirements for admins
         if (has_zone_access(get_member(), 'adminzone')) {
             $JAVASCRIPTS_DEFAULT['staff'] = true;
+            $JAVASCRIPTS_DEFAULT['themeing'] = true;
             $JAVASCRIPTS_DEFAULT['ajax'] = true;
             if (get_option('bottom_show_commandr_button', true) === '1') {
                 $JAVASCRIPTS_DEFAULT['button_commandr'] = true;
@@ -1126,7 +1127,11 @@ function in_safe_mode()
         return false; // Stops infinite loops (e.g. Check safe mode > Check access > Check usergroups > Check implicit usergroup hooks > Check whether to look at custom implicit usergroup hooks [i.e. if not in safe mode])
     }
     $CHECKING_SAFEMODE = true;
-    $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ((isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
+    static $url_says = null;
+    if ($url_says === null) {
+        $url_says = (get_param_integer('keep_safe_mode', 0) == 1);
+    }
+    $ret = (($url_says) && ((isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
     $CHECKING_SAFEMODE = false;
     return $ret;
 }

@@ -427,28 +427,47 @@ function get_template_contents($name)
  * @param  ID_TEXT $new_file The page
  * @param  LANGUAGE_NAME $lang The language
  * @param  ID_TEXT $text The page text
- * @param  BINARY $validated The validated status
- * @param  ?ID_TEXT $parent_page The page parent (null: none)
- * @param  integer $order The page order
- * @param  ?TIME $add_time Add time (null: now)
+ * @param  ?BINARY $validated The validated status (null: 1 / don't change)
+ * @param  ?ID_TEXT $parent_page The page parent (null: none / don't change if $order is also null)
+ * @param  ?integer $order The page order (null: 0 / don't change)
+ * @param  ?TIME $add_time Add time (null: now / don't change)
  * @param  ?TIME $edit_time Edit time (null: not edited)
  * @param  BINARY $show_as_edit Whether to show as edited
  * @param  ?MEMBER $submitter The submitter (null: current member)
  * @param  ?ID_TEXT $file The old page name (null: not being renamed)
- * @param  SHORT_TEXT $meta_keywords Meta keywords for this resource (blank: implicit)
- * @param  LONG_TEXT $meta_description Meta description for this resource (blank: implicit)
+ * @param  ?SHORT_TEXT $meta_keywords Meta keywords for this resource (blank: implicit) (null: no change)
+ * @param  ?LONG_TEXT $meta_description Meta description for this resource (blank: implicit) (null: no change)
  * @return PATH The save path
  */
-function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_page = null, $order = 0, $add_time = null, $edit_time = null, $show_as_edit = 0, $submitter = null, $file = null, $meta_keywords = '', $meta_description = '')
+function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $parent_page = null, $order = null, $add_time = null, $edit_time = null, $show_as_edit = 0, $submitter = null, $file = null, $meta_keywords = '', $meta_description = '')
 {
     if (is_null($submitter)) {
         $submitter = get_member();
     }
-    if (is_null($add_time)) {
-        $add_time = time();
-    }
     if (is_null($file)) {
         $file = $new_file; // Not renamed
+    }
+
+    if (is_null($add_time)) {
+        $add_time = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_add_date', array('the_zone' => $zone, 'the_page' => $file));
+        if ($add_time === null) {
+            $add_time = time();
+        }
+    }
+    if (is_null($order)) {
+        $order = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_order', array('the_zone' => $zone, 'the_page' => $file));
+        if ($order === null) {
+            $order = 0;
+        }
+        if (is_null($parent_page)) {
+            $parent_page = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_parent_page', array('the_zone' => $zone, 'the_page' => $file));
+        }
+    }
+    if (is_null($validated)) {
+        $validated = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_validated', array('the_zone' => $zone, 'the_page' => $file));
+        if ($validated === null) {
+            $validated = 1;
+        }
     }
 
     // Check page name
@@ -507,11 +526,13 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated, $parent_p
     }
 
     // Set metadata
-    require_code('seo2');
-    if (($meta_keywords == '') && ($meta_description == '')) {
-        seo_meta_set_for_implicit('comcode_page', $zone . ':' . $new_file, array($text), $text);
-    } else {
-        seo_meta_set_for_explicit('comcode_page', $zone . ':' . $new_file, $meta_keywords, $meta_description);
+    if ($meta_keywords !== null) {
+        require_code('seo2');
+        if (($meta_keywords == '') && ($meta_description == '')) {
+            seo_meta_set_for_implicit('comcode_page', $zone . ':' . $new_file, array($text), $text);
+        } else {
+            seo_meta_set_for_explicit('comcode_page', $zone . ':' . $new_file, $meta_keywords, $meta_description);
+        }
     }
 
     // Store in DB

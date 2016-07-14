@@ -13,14 +13,8 @@
 	</p>
 </form>
 
-<script language="javascript" src="{$BASE_URL*}/data/editarea/edit_area_full.js"></script>
+<script src="{$BASE_URL*}/data/ace/ace.js"></script>
+<script src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
 <script>// <![CDATA[
-	editAreaLoader.init({
-		id : "xml"
-		,syntax: "xml"
-		,start_highlight: true
-		,language: "en"
-		,allow_resize: true
-		,toolbar: "search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, reset_highlight, word_wrap"
-	});
+	ace_composr_loader('xml','xml');
 //]]></script>

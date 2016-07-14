@@ -242,12 +242,8 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
     cms_profile_start_for('css_compile');
 
     if ($c != 'global') { // We need to make sure the global.css file is parsed, as it contains some shared THEME_WIZARD_COLOR variables that Tempcode will pick up on
-        $found = find_template_place('global', '', $active_theme, '.css', 'css');
-        $d_theme = $found[0];
-        $global_full_path = get_custom_file_base() . '/themes/' . $d_theme . $found[1] . 'global' . $found[2];
-        if (!is_file($global_full_path)) {
-            $global_full_path = get_file_base() . '/themes/' . $d_theme . $found[1] . 'global' . $found[2];
-        }
+        require_code('themes2');
+        $global_full_path = find_template_path('global.css', 'css', $active_theme);
 
         if (strpos(file_get_contents($global_full_path), '{$THEME_WIZARD_COLOR,') !== false) {
             require_code('tempcode_compiler');
@@ -334,8 +330,7 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
         $theme = 'default';
     }
     if ($GLOBALS['RECORD_TEMPLATES_USED']) {
-        global $RECORDED_TEMPLATES_USED;
-        $RECORDED_TEMPLATES_USED[] = 'css/' . $c . '.css';
+        record_template_used('css/' . $c . '.css');
     }
     require_code('tempcode_compiler');
     global $ATTACHED_MESSAGES_RAW;

@@ -127,8 +127,8 @@ class template_previews_test_set extends cms_test_case
                         continue;
                     }
 
-                    $this->assertTrue(in_array($template_2, $RECORDED_TEMPLATES_USED), $template_2 . ' not used in preview as claimed in ' . $hook . '/' . $function);
-                    if (!in_array($template_2, $RECORDED_TEMPLATES_USED)) {
+                    $this->assertTrue(array_key_exists($template_2, $RECORDED_TEMPLATES_USED), $template_2 . ' not used in preview as claimed in ' . $hook . '/' . $function);
+                    if (!array_key_exists($template_2, $RECORDED_TEMPLATES_USED)) {
                         $flag = true;
                     }
                 }
@@ -165,7 +165,7 @@ class template_previews_test_set extends cms_test_case
 
     public function testRepeatConsistency()
     {
-        global $STATIC_TEMPLATE_TEST_MODE, $EXTRA_SYMBOLS, $PREPROCESSABLE_SYMBOLS, $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
+        global $STATIC_TEMPLATE_TEST_MODE, $EXTRA_SYMBOLS, $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
         $STATIC_TEMPLATE_TEST_MODE = true;
 
         global $HAS_KEEP_IN_URL_CACHE;

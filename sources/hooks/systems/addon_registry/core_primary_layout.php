@@ -238,7 +238,6 @@ class Hook_addon_registry_core_primary_layout
             lorem_globalise(do_lorem_template('MAIL', array(
                 'CSS' => '',
                 'LOGOURL' => placeholder_image_url(),
-                'LOGOMAP' => '',
                 'LANG' => fallback_lang(),
                 'TITLE' => lorem_phrase(),
                 'CONTENT' => lorem_paragraph(),

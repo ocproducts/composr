@@ -374,7 +374,7 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
 
         $webservice_result = get_webservice_result($message);
         if ($webservice_result !== null) {
-            if ((is_object($message)) && ($message->pure_lang)) {
+            if ((is_object($message)) && (!empty($message->pure_lang))) {
                 $message = $message->evaluate();
             } elseif (is_object($message)) {
                 $message = escape_html($message->evaluate());
@@ -818,7 +818,7 @@ function do_site()
      */
     $KEEP_MARKERS = ($keep_markers == 1) || ($special_page_type == 'show_markers');
     if (($KEEP_MARKERS) && (!headers_sent())) {
-        header('Content-type: text/html; charset=' . get_charset());
+        @header('Content-type: text/html; charset=' . get_charset()); // Not XHTML compatible, so must set HTML charset
     }
     /** Whether we will be embedding edit links in the output.
      *
@@ -835,6 +835,10 @@ function do_site()
         initialise_special_page_types($special_page_type);
     }
     $doing_special_page_type = ($special_page_type != 'view') && ($special_page_type != 'show_markers') && ($special_page_type != 'show_edit_links') && ($special_page_type != 'memory') && ((has_privilege(get_member(), 'view_profiling_modes')) || ($GLOBALS['IS_ACTUALLY_ADMIN']));
+    if (get_option('grow_template_meta_tree') == '1' || get_param_integer('keep_grow_template_meta_tree', 0) == 1) {
+        global $RECORD_TEMPLATES_USED;
+        $RECORD_TEMPLATES_USED = true;
+    }
 
     // Allow the site to be closed
     $site_closed = get_option('site_closed');
@@ -907,6 +911,22 @@ function do_site()
     if ($GLOBALS['STATIC_CACHE_ENABLED']) {
         $out2 = clone $out; // This is needed to stop things messing up during output streaming
         save_static_caching($out2);
+    }
+
+    // Save template tree
+    if ($GLOBALS['RECORD_TEMPLATES_USED']) {
+        require_code('themes_meta_tree');
+        global $CSSS, $JAVASCRIPTS;
+        if (!isset($out->metadata)) {
+            $out->metadata = array('children' => array());
+        }
+        foreach (array_keys($CSSS) as $css) {
+            $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'css/' . $css . '.css');
+        }
+        foreach (array_keys($JAVASCRIPTS) as $javascript) {
+            $out->metadata['children'][] = create_template_tree_metadata(TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE, 'javascript/' . $javascript . '.js');
+        }
+        record_template_tree_used($out);
     }
 
     // Something to do now rather than output normal screen?
@@ -1712,7 +1732,8 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'p_order' => 0,
     );
 
-    if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0)) {
+    global $KEEP_MARKERS, $SHOW_EDIT_LINKS, $INJECT_HIDDEN_TEMPLATE_NAMES;
+    if ((has_caching_for('comcode_page')) && (get_param_integer('keep_print', 0) == 0) && !$KEEP_MARKERS && !$SHOW_EDIT_LINKS && !$INJECT_HIDDEN_TEMPLATE_NAMES) {
         $support_smart_decaching = support_smart_decaching();
 
         if (is_browser_decaching()) {
@@ -1865,8 +1886,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'IS_PANEL' => $is_panel,
         'BEING_INCLUDED' => $being_included,
         'SUBMITTER' => strval($comcode_page_row['p_submitter']),
-        'TAGS' => (get_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/
-            new Tempcode() : get_loaded_tags('comcode_pages'),
+        'TAGS' => (get_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/new Tempcode() : get_loaded_tags('comcode_pages'),
         'WARNING_DETAILS' => $warning_details,
         'EDIT_DATE_RAW' => ($comcode_page_row['p_edit_date'] === null) ? '' : strval($comcode_page_row['p_edit_date']),
         'SHOW_AS_EDIT' => $comcode_page_row['p_show_as_edit'] == 1,

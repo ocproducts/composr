@@ -70,7 +70,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
         $redirect = get_self_url(true, true);
         $url_map = array('page' => 'admin_menus', 'type' => 'edit', 'id' => $is_sitemap_menu ? null : $root['content_id'], 'redirect' => $redirect, 'clickable_sections' => (($type == 'popup') || ($type == 'dropdown')) ? 1 : 0);
         $url = build_url($url_map, get_module_zone('admin_menus'));
-        $_content = new Tempcode(); // Done to preserve tree structure, special_page_type=tree
+        $_content = new Tempcode(); // Done to preserve tree structure with $RECORD_TEMPLATES_USED=true
         $_content->attach($content);
         $_content->attach(do_template('MENU_STAFF_LINK', array(
             '_GUID' => 'a5209ec65425bed1207e2f667d9116f6',
