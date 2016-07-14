@@ -106,6 +106,7 @@ class Hook_addon_registry_cns_clubs
             'cms/pages/modules/cms_cns_groups.php',
             'sources/hooks/systems/config/club_forum_parent_forum_grouping.php',
             'sources/hooks/systems/config/club_forum_parent_forum.php',
+            'sources/hooks/systems/config/search_cns_clubs.php',
         );
     }
 }

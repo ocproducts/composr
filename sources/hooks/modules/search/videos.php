@@ -49,7 +49,7 @@ class Hook_search_videos extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('VIDEOS');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_videos') == '1');
         $info['category'] = 'cat';
         $info['integer_category'] = false;
         $info['extra_sort_fields'] = array('video_length' => do_lang_tempcode('VIDEO_LENGTH')) + $this->_get_extra_sort_fields('_video');

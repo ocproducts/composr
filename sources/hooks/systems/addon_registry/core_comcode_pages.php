@@ -173,6 +173,7 @@ class Hook_addon_registry_core_comcode_pages
             'themes/default/images/icons/48x48/tiers/index.html',
             'themes/default/images/icons/48x48/tiers/platinum.png',
             'themes/default/images/icons/48x48/tiers/silver.png',
+            'sources/hooks/systems/config/search_comcode_pages.php',
         );
     }
 

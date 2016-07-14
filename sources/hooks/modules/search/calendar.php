@@ -49,7 +49,7 @@ class Hook_search_calendar extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('CALENDAR');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_calendar') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_event');
 
         $info['permissions'] = array(

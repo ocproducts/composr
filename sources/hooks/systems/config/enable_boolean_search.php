@@ -33,8 +33,8 @@ class Hook_config_enable_boolean_search
         return array(
             'human_name' => 'ENABLE_BOOLEAN_SEARCH',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'SEARCH',
+            'category' => 'SEARCH',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_enable_boolean_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

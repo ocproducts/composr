@@ -33,8 +33,8 @@ class Hook_config_minimum_autocomplete_past_search
         return array(
             'human_name' => 'MINIMUM_AUTOCOMPLETE_PAST_SEARCH',
             'type' => 'integer',
-            'category' => 'FEATURE',
-            'group' => 'SEARCH',
+            'category' => 'SEARCH',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_minimum_autocomplete_past_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

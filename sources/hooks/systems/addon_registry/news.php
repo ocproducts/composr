@@ -177,6 +177,7 @@ class Hook_addon_registry_news
             'sources/news_sitemap.php',
             'sources/hooks/systems/tasks/import_rss.php',
             'sources/hooks/systems/tasks/import_wordpress.php',
+            'sources/hooks/systems/config/search_news.php',
         );
     }
 

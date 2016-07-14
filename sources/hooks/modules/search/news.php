@@ -49,7 +49,7 @@ class Hook_search_news extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('NEWS');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_news') == '1');
         $info['category'] = 'news_category';
         $info['integer_category'] = true;
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_news');

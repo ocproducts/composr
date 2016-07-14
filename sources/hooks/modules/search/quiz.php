@@ -49,7 +49,7 @@ class Hook_search_quiz extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('QUIZZES');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_quiz') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_quiz');
 
         $info['permissions'] = array(

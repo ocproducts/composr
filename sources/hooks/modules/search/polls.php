@@ -49,7 +49,7 @@ class Hook_search_polls extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('POLL_ARCHIVE');
-        $info['default'] = true;
+        $info['default'] = (get_option('search_polls') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_poll');
 
         $info['permissions'] = array(

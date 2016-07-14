@@ -49,7 +49,7 @@ class Hook_search_cns_posts extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('FORUM_POSTS');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_cns_posts') == '1');
         $info['special_on'] = array();
         $info['special_off'] = array('open' => do_lang_tempcode('POST_SEARCH_OPEN'), 'closed' => do_lang_tempcode('POST_SEARCH_CLOSED'), 'pinned' => do_lang_tempcode('POST_SEARCH_PINNED'), 'starter' => do_lang_tempcode('POST_SEARCH_STARTER'));
         if ((has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {

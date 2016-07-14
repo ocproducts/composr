@@ -49,7 +49,7 @@ class Hook_search_cns_clubs extends FieldsSearchHook
 
         $info = array();
         $info['lang'] = do_lang_tempcode('CLUBS');
-        $info['default'] = false;
+        $info['default'] = (get_option('search_cns_clubs') == '1');
         $info['extra_sort_fields'] = $this->_get_extra_sort_fields('_group');
 
         $info['permissions'] = array(

@@ -179,6 +179,8 @@ class Hook_addon_registry_downloads
             'sources/hooks/systems/tasks/index_download.php',
             'site/download_gateway.php',
             'themes/default/templates/DOWNLOAD_GATEWAY_SCREEN.tpl',
+            'sources/hooks/systems/config/search_download_categories.php',
+            'sources/hooks/systems/config/search_downloads.php',
         );
     }
 
