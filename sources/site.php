@@ -1523,6 +1523,8 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
     if (isset($REDIRECT_CACHE)) {
         if (isset($REDIRECT_CACHE[$zone][$codename])) {
             $redirect = array($REDIRECT_CACHE[$zone][$codename]);
+        } elseif (($wildcard_mode) && (isset($REDIRECT_CACHE[$zone]['*'])) && (substr($codename, 0, 6) != 'panel_')) {
+            $redirect = array($REDIRECT_CACHE[$zone]['*']);
         } elseif (($wildcard_mode) && (isset($REDIRECT_CACHE['*'][$codename]))) {
             $redirect = array($REDIRECT_CACHE['*'][$codename]);
         } else {
@@ -1533,8 +1535,11 @@ function _request_page__redirects($codename, $zone, $wildcard_mode = false)
         if ($wildcard_mode) {
             $query .= ' OR ' . db_string_equal_to('r_from_zone', '*');
         }
-        $query .= ') AND ' . db_string_equal_to('r_from_page', $codename);
-        $query .= ' ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this
+        $query .= ') AND (' . db_string_equal_to('r_from_page', $codename);
+        if (($wildcard_mode) && (substr($codename, 0, 6) != 'panel_')) {
+            $query .= ' OR ' . db_string_equal_to('r_from_page', '*');
+        }
+        $query .= ') ORDER BY r_from_zone DESC'; // The ordering ensures '*' comes last, as we want to deprioritise this
         $redirect = $GLOBALS['SITE_DB']->query($query, 1, null, false, true);
     }
 
