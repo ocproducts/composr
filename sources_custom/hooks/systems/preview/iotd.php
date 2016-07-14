@@ -21,7 +21,7 @@ class Hook_preview_iotd
     /**
      * Find whether this preview hook applies.
      *
-     * @return array Triplet: Whether it applies, the attachment ID type, whether the forum DB is used [optional]
+     * @return array Triplet: Whether it applies, the attachment ID type (may be null), whether the forum DB is used [optional]
      */
     public function applies()
     {
@@ -33,7 +33,7 @@ class Hook_preview_iotd
     /**
      * Run function for preview hooks.
      *
-     * @return array A pair: The preview, the updated post Comcode
+     * @return array A pair: The preview, the updated post Comcode (may be null)
      */
     public function run()
     {

@@ -662,7 +662,7 @@ class DatabaseConnector
      * Insert a row.
      *
      * @param  string $table The table name
-     * @param  array $map The insertion map
+     * @param  array $map The insertion map. The map values may be arrays for a multi-insert, but if so they must all have the same arity. You must not pass an array of maps.
      * @param  boolean $ret Whether to return the auto-insert-id
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)

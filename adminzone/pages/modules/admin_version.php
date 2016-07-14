@@ -893,7 +893,7 @@ class Module_admin_version
                 'p_submitter' => $admin_user,
                 'p_show_as_edit' => 0,
                 'p_order' => 0,
-            ));
+            ), false, true);
 
             $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
                 'the_zone' => '',
@@ -909,7 +909,7 @@ class Module_admin_version
                 'p_submitter' => $admin_user,
                 'p_show_as_edit' => 0,
                 'p_order' => 0,
-            ));
+            ), false, true);
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', '#page_search__combined', array('cc_page_title', 'string_index'));
 

@@ -26,6 +26,7 @@ class Hook_task_send_newsletter
     /**
      * Run the task hook.
      *
+     * @param  integer $message_id The newsletter message in the newsletter archive
      * @param  LONG_TEXT $message The newsletter message
      * @param  SHORT_TEXT $subject The newsletter subject
      * @param  LANGUAGE_NAME $lang The language
@@ -39,25 +40,56 @@ class Hook_task_send_newsletter
      * @param  ID_TEXT $mail_template The template used to show the email
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
-    public function run($message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template)
+    public function run($message_id, $message, $subject, $lang, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template)
     {
+        $auto_pause = (get_option('newsletter_auto_pause') == '1');
+
+        if ($auto_pause) {
+            require_code('config2');
+            set_option('newsletter_paused', '1');
+        }
+
         require_code('newsletter');
         require_lang('newsletter');
         require_code('mail');
+        require_code('json');
 
         //mail_wrap($subject, $message, $addresses, $usernames, $from_email, $from_name, 3, null, true, null, true, $html_only == 1);  Not so easy any more as message needs tailoring per subscriber
 
         $last_cron = get_value('last_cron');
 
-        // These variables are for optimisation, we detect if we can avoid work on the loop iterations via looking at what happened on the first
-        $needs_substitutions = mixed();
-        $needs_tempcode = mixed();
-
         $blocked = newsletter_block_list();
+
+        disable_php_memory_limit();
+
+        $count = 0;
+
+        $using_drip_queue = (!is_null($last_cron)) || (get_option('newsletter_paused') == '1');
+
+        $in_html = false;
+        if (stripos(trim($message), '<') === 0) {
+            $in_html = true;
+        } else {
+            if ($html_only == 1) {
+                $in_html = true;
+            }
+        }
+
+        $max = 300;
+
+        $already_queued = collapse_2d_complexity('d_to_email', 'tmp', $GLOBALS['SITE_DB']->query_select('newsletter_drip_send', array('d_to_email', '1 AS tmp'), array('d_message_id' => $message_id)));
 
         $start = 0;
         do {
-            list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, 100, false, $csv_data);
+            list($addresses, $hashes, $usernames, $forenames, $surnames, $ids,) = newsletter_who_send_to($send_details, $lang, $start, $max, false, $csv_data);
+
+            $insert_maps = array( // We will do very efficient mass-inserts (making index maintenance and disk access much more efficient)
+                'd_inject_time' => array(),
+                'd_message_id' => array(),
+                'd_message_binding' => array(),
+                'd_to_email' => array(),
+                'd_to_name' => array(),
+            );
 
             // Send to all
             foreach ($addresses as $i => $email_address) {
@@ -65,82 +97,63 @@ class Hook_task_send_newsletter
                     continue;
                 }
 
-                // Variable substitution in body
-                if ($needs_substitutions === null || $needs_substitutions) {
-                    $newsletter_message_substituted = (strpos($message, '{') === false) ? $message : newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
-
-                    if ($needs_substitutions === null) {
-                        $needs_substitutions = ($newsletter_message_substituted != $message);
-                    }
-                } else {
-                    $newsletter_message_substituted = $message;
-                }
-                $in_html = false;
-                if (strpos($newsletter_message_substituted, '<html') === false) {
-                    if ($html_only == 1) {
-                        $comcode_version = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
-
-                        $newsletter_message_substituted = do_template(
-                            $mail_template,
-                            array(
-                                'TITLE' => $subject,
-                                'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
-                                'LANG' => get_site_default_lang(),
-                                'LOGOURL' => get_logo_url(''),
-                                'CONTENT' => $comcode_version
-                            ),
-                            null,
-                            false,
-                            null,
-                            '.tpl',
-                            'templates',
-                            $GLOBALS['FORUM_DRIVER']->get_theme('')
-                        );
-
-                        $in_html = true;
-                    }
-                } else {
-                    if ($needs_tempcode === null || $needs_tempcode) {
-                        require_code('tempcode_compiler');
-                        $_m = template_to_tempcode($newsletter_message_substituted);
-                        $temp = $_m->evaluate($lang);
-
-                        if ($needs_tempcode === null) {
-                            $needs_tempcode = (trim($temp) != trim($newsletter_message_substituted));
-                        }
-
-                        $newsletter_message_substituted = $temp;
-                    }
-                    $in_html = true;
-                }
-
-                if (!is_null($last_cron)) {
-                    $test = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_drip_send', 'd_to_email', array('d_to_email' => $email_address, 'd_subject' => $subject));
-                    if (is_null($test)) {
-                        $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', array(
+                if ($using_drip_queue) {
+                    if (!isset($already_queued[$email_address])) {
+                        $insert_map = array(
                             'd_inject_time' => time(),
-                            'd_subject' => $subject,
-                            'd_message' => $newsletter_message_substituted,
-                            'd_html_only' => $html_only,
+                            'd_message_id' => $message_id,
+                            'd_message_binding' => json_encode(array($forenames[$i], $surnames[$i], $usernames[$i], $ids[$i], $hashes[$i])), // Assortment of message binding details, could grow as Composr evolves, so we'll use JSON - and more efficient anyway, in terms of SQL performance (they don't need querying)
                             'd_to_email' => $email_address,
                             'd_to_name' => $usernames[$i],
-                            'd_from_email' => $from_email,
-                            'd_from_name' => $from_name,
-                            'd_priority' => $priority,
-                            'd_template' => $mail_template,
-                        ));
+                        );
+                        foreach ($insert_map as $key => $val) {
+                            $insert_maps[$key][] = $val;
+                        }
+
+                        $already_queued[$email_address] = 1;
                     }
-                } else {
+                } else { // Unlikely to use this code path, but we should support operation without CRON in those rare cases. Code path not optimised
+                    $newsletter_message_substituted = newsletter_variable_substitution($message, $subject, $forenames[$i], $surnames[$i], $usernames[$i], $email_address, $ids[$i], $hashes[$i]);
+                    if (stripos(trim($message), '<') === 0) { // HTML
+                        require_code('tempcode_compiler');
+                        $_m = template_to_tempcode($newsletter_message_substituted);
+                        $newsletter_message_substituted = $_m->evaluate($lang);
+                    } else { // Comcode
+                        if ($html_only == 1) {
+                            $_m = comcode_to_tempcode($newsletter_message_substituted, get_member(), true);
+                            $newsletter_message_substituted = $_m->evaluate($lang);
+                        }
+                    }
+
                     mail_wrap($subject, $newsletter_message_substituted, array($email_address), array($usernames[$i]), $from_email, $from_name, $priority, null, true, null, true, $in_html, false, $mail_template);
                 }
+
+                $count++;
 
                 if (function_exists('gc_collect_cycles')) {
                     gc_collect_cycles(); // Stop problem with PHP leaking memory
                 }
             }
-            $start += 100;
+            $start += $max;
+
+            if ($using_drip_queue && count($insert_maps['d_to_email']) > 0) {
+                $GLOBALS['SITE_DB']->query_insert('newsletter_drip_send', $insert_maps);
+            }
         } while (array_key_exists(0, $addresses));
 
-        return array('text/html', do_lang_tempcode('SENDING_NEWSLETTER'));
+        if ($count == 0) {
+            return array('text/html', do_lang_tempcode('NEWSLETTER_NO_TARGET'));
+        }
+
+        if ($auto_pause) {
+            require_code('notifications');
+            $subject = do_lang('NEWSLETTER_PAUSED_SUBJECT');
+            $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'), null, false, false, true);
+            $message = do_lang('NEWSLETTER_PAUSED_BODY', escape_html($newsletter_manage_url->evaluate()));
+            dispatch_notification('newsletter_paused', 'newsletter_' . strval(time()), $subject, $message, null, null, 2, true);
+        }
+
+        $newsletter_manage_url = build_url(array('page' => 'admin_newsletter'), get_module_zone('admin_newsletter'));
+        return array('text/html', do_lang_tempcode($auto_pause ? 'SENDING_NEWSLETTER_TO_QUEUE' : 'SENDING_NEWSLETTER', escape_html($newsletter_manage_url)));
     }
 }

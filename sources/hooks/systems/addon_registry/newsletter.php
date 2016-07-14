@@ -155,6 +155,23 @@ class Hook_addon_registry_newsletter
             'themes/default/templates/PERIODIC_NEWSLETTER_REMOVE.tpl',
             'sources/hooks/systems/tasks/send_newsletter.php',
             'data/incoming_bounced_email.php',
+            'sources/hooks/systems/config/newsletter_auto_pause.php',
+            'sources/hooks/systems/config/newsletter_paused.php',
+            'sources/hooks/blocks/main_staff_checklist/newsletter_paused.php',
+            'sources/hooks/systems/notifications/newsletter_paused.php',
+            'themes/default/templates/NEWSLETTER_STATUS_OVERVIEW.tpl',
+            'sources/hooks/systems/config/newsletter_allow_ext_images.php',
+            'sources/hooks/systems/config/newsletter_enveloper_override.php',
+            'sources/hooks/systems/config/newsletter_smtp_from_address.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_host.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_password.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_port.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_use.php',
+            'sources/hooks/systems/config/newsletter_smtp_sockets_username.php',
+            'sources/hooks/systems/config/newsletter_website_email.php',
+            'themes/default/javascript/newsletter.js',
+            'themes/default/templates/NEWSLETTER_PREVIEW.tpl',
+            'sources/hooks/systems/preview/newsletter_whatsnew.php',
         );
     }
 
@@ -173,9 +190,11 @@ class Hook_addon_registry_newsletter
             'templates/NEWSLETTER_SUBSCRIBERS_SCREEN.tpl' => 'administrative__newsletter_subscribers_screen',
             'text/NEWSLETTER_DEFAULT_FCOMCODE.txt' => 'newsletter_default',
             'templates/NEWSLETTER_CONFIRM_WRAP.tpl' => 'administrative__newsletter_confirm_wrap',
+            'templates/NEWSLETTER_PREVIEW.tpl' => 'administrative__newsletter_confirm_wrap',
             'templates/BLOCK_MAIN_NEWSLETTER_SIGNUP_DONE.tpl' => 'block_main_newsletter_signup_done',
             'templates/BLOCK_MAIN_NEWSLETTER_SIGNUP.tpl' => 'block_main_newsletter_signup',
             'templates/PERIODIC_NEWSLETTER_REMOVE.tpl' => 'periodic_newsletter_remove',
+            'templates/NEWSLETTER_STATUS_OVERVIEW.tpl' => 'newsletter_status_overview',
         );
     }
 
@@ -286,8 +305,10 @@ class Hook_addon_registry_newsletter
     {
         $preview = do_lorem_template('NEWSLETTER_CONFIRM_WRAP', array(
             'TEXT_PREVIEW' => lorem_sentence(),
-            'PREVIEW' => lorem_phrase(),
+            'HTML_PREVIEW' => lorem_phrase(),
             'SUBJECT' => lorem_phrase(),
+            'SPAM_REPORT' => lorem_paragraph(),
+            'SPAM_SCORE' => placeholder_number(),
         ));
 
         return array(
@@ -349,6 +370,28 @@ class Hook_addon_registry_newsletter
             lorem_globalise(do_lorem_template('PERIODIC_NEWSLETTER_REMOVE', array(
                 'TITLE' => lorem_title(),
                 'URL' => placeholder_url(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__newsletter_status_overview()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('NEWSLETTER_STATUS_OVERVIEW', array(
+                'UPDATE_URL' => placeholder_url(),
+                'NUM_IN_QUEUE' => placeholder_number(),
+                '_NUM_IN_QUEUE' => placeholder_number(),
+                'ETA' => placeholder_date(),
+                '_ETA' => placeholder_date_raw(),
+                'PAUSED' => true,
+                'QUEUE_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

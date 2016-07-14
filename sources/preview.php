@@ -45,6 +45,7 @@ function build_preview($multi_return = false)
     $output = null;
     $new_post_value = null;
     $attachment_type = null;
+    $has_device_preview_modes = true;
     $forum_db = false;
     $limit_to = null;
     foreach (array_keys($hooks) as $hook) {
@@ -61,7 +62,9 @@ function build_preview($multi_return = false)
             $limit_to = array_key_exists(3, $apply_bits) ? $apply_bits[3] : null;
 
             if (method_exists($object, 'run')) {
-                list($output, $new_post_value) = $object->run();
+                $result = $object->run();
+                list($output, $new_post_value) = $result;
+                $has_device_preview_modes = isset($result[2]) ? $result[2] : true;
             }
 
             break;
@@ -296,7 +299,7 @@ function build_preview($multi_return = false)
     }
 
     if ($multi_return) {
-        return array($output, $webstandards, $keyword_density, $spelling);
+        return array($output, $webstandards, $keyword_density, $spelling, $has_device_preview_modes);
     }
     return $output;
 }

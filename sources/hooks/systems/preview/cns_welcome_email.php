@@ -26,7 +26,7 @@ class Hook_preview_cns_welcome_email
     /**
      * Find whether this preview hook applies.
      *
-     * @return array A pair: The preview, the updated post Comcode
+     * @return array A pair: The preview, the updated post Comcode (may be null)
      */
     public function applies()
     {
@@ -52,7 +52,7 @@ class Hook_preview_cns_welcome_email
     /**
      * Run function for preview hooks.
      *
-     * @return array A pair: The preview, the updated post Comcode
+     * @return array A pair: The preview, the updated post Comcode (may be null)
      */
     public function run()
     {

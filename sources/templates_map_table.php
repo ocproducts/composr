@@ -23,9 +23,11 @@
  *
  * @param  Tempcode $title The title of the view space; should be out of get_screen_title
  * @param  array $fields An array of mappings between title and value (each mapping being a field)
+ * @param  ?Tempcode $text Text to show (null: none)
+ * @param  ?Tempcode $buttons Buttons to show (null: none)
  * @return Tempcode The generated view space
  */
-function map_table_screen($title, $fields)
+function map_table_screen($title, $fields, $text = null, $buttons = null)
 {
     $_fields = new Tempcode();
     foreach ($fields as $key => $val) {
@@ -37,7 +39,7 @@ function map_table_screen($title, $fields)
         $_fields->attach(map_table_field(do_lang_tempcode($key), $val, $raw));
     }
 
-    return do_template('MAP_TABLE_SCREEN', array('_GUID' => 'c8c6cbc8e7b5a47a3078fd69feb057a0', 'TITLE' => $title, 'FIELDS' => $_fields));
+    return do_template('MAP_TABLE_SCREEN', array('_GUID' => 'c8c6cbc8e7b5a47a3078fd69feb057a0', 'TITLE' => $title, 'TEXT' => $text, 'FIELDS' => $_fields, 'BUTTONS' => $buttons));
 }
 
 /**

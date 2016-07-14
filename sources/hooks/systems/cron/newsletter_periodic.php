@@ -50,6 +50,8 @@ class Hook_cron_newsletter_periodic
      */
     public function newsletter_periodic_handle($periodic_row)
     {
+        require_code('newsletter');
+
         // If we're here then we have a periodic newsletter along with details of
         // what we should put in it, who it should go to and when it should be
         // sent.
@@ -101,104 +103,18 @@ class Hook_cron_newsletter_periodic
         require_lang('newsletter');
         $lang = $periodic_row['np_lang'];
 
-        $in_full = ($periodic_row['np_in_full'] == 1);
-
-        // We need to build the content, based on the chosen categories. This code
-        // is lifted straight out of admin_newsletter.php
-
-        // Generate Comcode for content selected, drawing on hooks
-        $automatic = array();
-        $i = 0;
-        $contentarr = explode("\n", $periodic_row['np_message']);
-        $_hooks = find_all_hooks('modules', 'admin_newsletter');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
-            $found_one_match = false;
-            $last_find_id = mixed();
-            $last_cat_id = mixed();
-            $filter = '';
-            foreach ($contentarr as $find_id => $line) {
-                $matches = array();
-                if (preg_match('#\[' . preg_quote($hook, '#') . '/(.*)\]#', $line, $matches) != 0) {
-                    $found_one_match = true;
-
-                    if ((!is_null($last_find_id)) && (($find_id != $last_find_id + 1))) {
-                        $last_cat_id = intval($matches[1]);
-
-                        $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-                        if ((is_null($temp)) || (count($temp) == 0)) {
-                            continue;
-                        }
-                        if (!$temp[0]->is_empty()) {
-                            $automatic[$last_find_id] = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array('_GUID' => '88e90623e3ae6c58222010a8a1d50965', 'I' => strval($i + 1), 'TITLE' => $temp[1], 'CONTENT' => $temp[0]), null, false, null, '.txt', 'text');
-                            $i++;
-                        }
-
-                        $filter = $matches[1];
-                    } else {
-                        if ($filter != '') {
-                            $filter .= ',';
-                        }
-                        $filter .= $matches[1];
-                    }
-
-                    $last_find_id = $find_id;
-                }
-            }
-            if (!$found_one_match) {
-                $found = false;
-                foreach ($contentarr as $find_id => $line) {
-                    if (strpos($line, '[' . $hook . ']') !== false) {
-                        $found = true;
-                        break;
-                    }
-                }
-                if (!$found) {
-                    continue;
-                }
-
-                $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-                if ((is_null($temp)) || (count($temp) == 0)) {
-                    continue;
-                }
-                if (!$temp[0]->is_empty()) {
-                    $automatic[$find_id] = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array('_GUID' => '0a24698f1072c0e3e7d6f5ec65825ab6', 'I' => strval($i + 1), 'TITLE' => $temp[1], 'CONTENT' => $temp[0]), null, false, null, '.txt', 'text');
-                    $i++;
-                }
-            } elseif ($filter != '') {
-                $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
-                if ((is_null($temp)) || (count($temp) == 0)) {
-                    continue;
-                }
-                if (!$temp[0]->is_empty()) {
-                    $automatic[$last_find_id] = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array('_GUID' => 'a20519cc04ba5e98c1c6fc05a39d86a5', 'I' => strval($i + 1), 'TITLE' => $temp[1], 'CONTENT' => $temp[0]), null, false, null, '.txt', 'text');
-                    $i++;
-                }
-            }
+		// We need to build the content, based on the chosen categories.
+        $message = generate_whatsnew_comcode($periodic_row['np_message'], $periodic_row['np_in_full'], $lang, $cutoff_time);
+        if (is_null($message)) {
+            return null;
         }
-        ksort($automatic);
-        $_automatic = new Tempcode();
-        if (count($automatic) == 0) {
-            return null; // Nothing new
-        }
-        foreach ($automatic as $tp) {
-            $_automatic->attach($tp);
-        }
-        $completed = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => 'b8897fb43a341f6b7058ea6125630f5a', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
 
-        // Now we have the contents of our newsletter, we can send it to all of
-        // those listed in the newsletter_periodic row
-        $message = $completed->evaluate($lang);
         $subject = $periodic_row['np_subject'] . '-' . get_timezoned_date(time(), false, false, false, true);
 
         $time = time();
 
         require_code('newsletter');
-        actual_send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
+        send_newsletter($message, $subject, $lang, unserialize($periodic_row['np_send_details']), $periodic_row['np_html_only'], $periodic_row['np_from_email'], $periodic_row['np_from_name'], $periodic_row['np_priority'], $periodic_row['np_csv_data'], $periodic_row['np_template']);
 
         return $time;
     }

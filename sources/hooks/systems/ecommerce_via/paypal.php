@@ -326,7 +326,7 @@ class Hook_paypal
                 fatal_ipn_exit(do_lang('IPN_SOCKET_ERROR'));
             }
             if (!(strcmp($res, 'VERIFIED') == 0)) {
-                fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), strpos($res, '<html') !== false);
+                fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), stripos($res, '<html') !== false);
             }
         }
 

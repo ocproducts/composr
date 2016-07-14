@@ -700,7 +700,7 @@ class Module_tester
         $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST'));
         $post_url = build_url(array('page' => '_SELF', 'type' => '_edit'), '_SELF', null, false, true);
         require_code('form_templates');
-        $fields = form_input_list(do_lang_tempcode('NAME'), '', 'id', $list, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('NAME'), '', 'id', $list, null, true);
         $submit_name = do_lang_tempcode('PROCEED');
 
         return do_template('FORM_SCREEN', array('_GUID' => '37f70ba9d23204bceda6e84375b52270', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => $text, 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));

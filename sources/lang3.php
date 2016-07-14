@@ -67,7 +67,7 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
     }
     $langs->attach(create_selection_list_langs());
     require_code('form_templates');
-    $fields = form_input_list(do_lang_tempcode('LANGUAGE'), do_lang_tempcode('DESCRIPTION_LANGUAGE'), 'lang', $langs, null, true);
+    $fields = form_input_huge_list(do_lang_tempcode('LANGUAGE'), do_lang_tempcode('DESCRIPTION_LANGUAGE'), 'lang', $langs, null, true);
 
     $hidden = build_keep_post_fields();
     $url = get_self_url();

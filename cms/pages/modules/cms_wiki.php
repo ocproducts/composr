@@ -364,7 +364,7 @@ class Module_cms_wiki
     {
         $list = create_selection_list_wiki_page_tree();
         require_code('form_templates');
-        $fields = form_input_list(do_lang_tempcode('_WIKI_PAGE'), '', 'id', $list, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('_WIKI_PAGE'), '', 'id', $list, null, true);
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_page'), '_SELF', null, false, true);
         $submit_name = do_lang_tempcode('PAGE');

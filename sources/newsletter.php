@@ -109,6 +109,272 @@ function basic_newsletter_join($email, $interest_level = 4, $language = null, $g
 }
 
 /**
+ * Get text representing content categories the user can rearrange etc.
+ *
+ * @param  TIME $cutoff_time Cutoff time for when new content must be available
+ * @param  LANGUAGE_NAME $lang Language to send in
+ * @return string Categories
+ */
+function newsletter_get_category_choices($cutoff_time, $lang)
+{
+    require_code('global4');
+
+    $chosen_categories = '';
+
+    $_hooks = find_all_hooks('modules', 'admin_newsletter');
+    foreach (array_keys($_hooks) as $hook) {
+        require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
+        if (is_null($object)) {
+            continue;
+        }
+
+        $done = false;
+        if (method_exists($object, 'choose_categories')) {
+            list($cats, $_title) = $object->choose_categories($cutoff_time);
+            if (is_object($cats)) {
+                $cats = $cats->evaluate($lang);
+            }
+            $matches = array();
+            $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches); // HACKHACK: A bit of a fudge, but it works
+            if ($num_matches < 1500) { /*reasonable limit on how many categories to consider*/
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $hook_result = $object->run($cutoff_time, $lang, $matches[1][$i]);
+                    if ($hook_result == array()) {
+                        continue;
+                    }
+                    list($hook_content, $_title) = $hook_result;
+                    if (!$hook_content->is_empty()) {
+                        $decoded = @html_entity_decode($matches[2][$i], ENT_QUOTES, get_charset());
+                        $chosen_categories .= $_title . ': ' . trim($decoded) . ' [' . $hook . '/' . $matches[1][$i] . "]\n";
+                    }
+                }
+                $done = true;
+            }
+        }
+        if (!$done) {
+            $new = $object->run($cutoff_time, $lang, '*');
+            if ($new != array()) {
+                list($hook_content, $_title) = $new;
+                if (!$hook_content->is_empty()) {
+                    $chosen_categories .= $_title . ' [' . $hook . "]\n";
+                }
+            }
+        }
+    }
+
+    return $chosen_categories;
+}
+
+/**
+ * Generate Comcode for a what's new newsletter.
+ *
+ * @param  LONG_TEXT $chosen_categories Category selection
+ * @param  BINARY $in_full Whether to show artices in full (as opposed to summaries)
+ * @param  LANGUAGE_NAME $lang Language to send in
+ * @param  TIME $cutoff_time When to cut off content from
+ * @return ?string The Comcode (null: no content)
+ */
+function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time)
+{
+    require_code('global4');
+
+    $_hooks = find_all_hooks('modules', 'admin_newsletter');
+
+    // Generate Comcode for content selected, drawing on hooks
+    $automatic = array();
+    $i = 0;
+    $catarr = explode("\n", $chosen_categories);
+    foreach (array_keys($_hooks) as $hook) {
+        require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
+        if (is_null($object)) {
+            continue;
+        }
+        $found_one_match = false;
+        $last_find_id = mixed();
+        $last_cat_id = null;
+        $filter = '';
+        foreach ($catarr as $find_id => $line) {
+            $matches = array();
+            if (preg_match('#\[' . preg_quote($hook, '#') . '/(.*)\]#', $line, $matches) != 0) {
+                $found_one_match = true;
+
+                if ((!is_null($last_find_id)) && (($find_id != $last_find_id + 1)/* || ($last_cat_id>intval($matches[1]))*/)) {
+                    $last_cat_id = intval($matches[1]);
+
+                    $temp = $object->run(intval($cutoff_time), $lang, $filter);
+                    if ((is_null($temp)) || (count($temp) == 0)) {
+                        continue;
+                    }
+                    if (!$temp[0]->is_empty()) {
+                        $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
+                            '_GUID' => 'bd228cdeafacfffac2d8d98d5f2da565',
+                            'I' => strval($i + 1),
+                            'TITLE' => $temp[1],
+                            'CONTENT' => $temp[0],
+                            'THUMBNAIL' => array_key_exists(2, $temp) ? $temp[2] : ''
+                        ), null, false, null, '.txt', 'text');
+                        $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
+                        $i++;
+                    }
+
+                    $filter = $matches[1];
+                } else {
+                    if ($filter != '') {
+                        $filter .= ',';
+                    }
+                    $filter .= $matches[1];
+                }
+
+                $last_find_id = $find_id;
+            }
+        }
+        if (!$found_one_match) {
+            $found = false;
+            foreach ($catarr as $find_id => $line) {
+                if (strpos($line, '[' . $hook . ']') !== false) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                continue;
+            }
+
+            $temp = $object->run(intval($cutoff_time), $lang, '*', $in_full);
+            if ((is_null($temp)) || (count($temp) == 0)) {
+                continue;
+            }
+            if (!$temp[0]->is_empty()) {
+                $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
+                    '_GUID' => '64c8870e7c75354c07b2e94f299cd38c',
+                    'I' => strval($i + 1),
+                    'TITLE' => $temp[1],
+                    'CONTENT' => $temp[0]
+                ), null, false, null, '.txt', 'text');
+                $automatic[$find_id] = $tmp->evaluate($lang); /*FUDGE*/
+                $i++;
+            }
+        } elseif ($filter != '') {
+            $temp = $object->run(intval($cutoff_time), $lang, $filter, $in_full);
+            if ((is_null($temp)) || (count($temp) == 0)) {
+                continue;
+            }
+            if (!$temp[0]->is_empty()) {
+                $tmp = do_template('NEWSLETTER_WHATSNEW_SECTION_FCOMCODE', array(
+                    '_GUID' => '8d1e7f448d11853b675a0949b8a0c2c9',
+                    'I' => strval($i + 1),
+                    'TITLE' => $temp[1],
+                    'CONTENT' => $temp[0]
+                ), null, false, null, '.txt', 'text');
+                $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
+                $i++;
+            }
+        }
+    }
+
+    if (count($automatic) == 0) {
+        return null;
+    }
+
+    ksort($automatic);
+    $_automatic = '';
+    foreach ($automatic as $tp) {
+        $_automatic .= $tp;
+    }
+    $__message = do_template('NEWSLETTER_WHATSNEW_FCOMCODE', array('_GUID' => '20f6adc244b04d9e5206682ec4e0cc0f', 'CONTENT' => $_automatic), null, false, null, '.txt', 'text');
+    $_message = $__message->evaluate($lang);
+
+    $message = newsletter_wrap($_message, $lang);
+    $message = newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang);
+
+    return $message;
+}
+
+/**
+ * Convert what may be a snippet of a newsletter, into a full newsletter with wrapper.
+ * Find if it is HTML or Comcode.
+ * Supports reading one referenced from the GET environment via 'from_news' parameter.
+ * Supports reading one populated into the POST environment via 'message' parameter.
+ *
+ * @param  LONG_TEXT $_message A default newsletter message, with the newsletter wrapper assumed already-applied unless it's blank
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  string $default_subject The default subject for this newsletter
+ * @return array A pair: The newsletter message, Whether it is written in HTML
+ */
+function get_full_newsletter_code($_message, $lang, $default_subject)
+{
+    $_message = post_param_string('message', $_message);
+
+    if ($_message == '') {
+        // from_news GET parameter?
+        $from_news = get_param_integer('from_news', null);
+        if (($from_news !== null) && (addon_installed('news'))) {
+            $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array('id' => $from_news), '', 1);
+            if (!array_key_exists(0, $rows)) {
+                require_lang('news');
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
+            $myrow = $rows[0];
+
+            $_message = get_translated_text($myrow['news_article'], null, $lang);
+            if ($_message == '') {
+                $_message = get_translated_text($myrow['news'], null, $lang);
+            }
+        }
+
+        $message = newsletter_wrap($_message, $lang, $default_subject);
+        $message = newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang, $default_subject);
+    } else {
+        $message = $_message;
+    }
+
+    $final_message_is_html = (strpos(trim($message), '<') === 0);
+
+    return array($message, $final_message_is_html);
+}
+
+/**
+ * Apply the newsletter wrapper with a Comcode early parse, if we find the newsletter wrapper is sending us straight to HTML.
+ *
+ * @param  LONG_TEXT $_message The newsletter message without wrapper
+ * @param  LONG_TEXT $message The newsletter message with wrapper
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  SHORT_TEXT $subject The newsletter subject
+ * @return string The newsletter with wrapper, with Comcode pre-parsed
+ */
+function newsletter_rewrap_with_early_comcode_parse_if_needed($_message, $message, $lang, $subject = '')
+{
+    $original_message_is_html = (strpos(trim($_message), '<') === 0);
+    $final_message_is_html = (strpos(trim($message), '<') === 0);
+
+    if ($final_message_is_html && !$original_message_is_html) {
+        // Ah, can't allow Comcode through, as Comcode parser won't run after final send
+        $html = static_evaluate_tempcode(comcode_to_tempcode($_message, get_member(), true));
+        $tempcode_escaped_html = str_replace('{', '\{', $html);
+        $message = newsletter_wrap($tempcode_escaped_html, $lang, $subject);
+    }
+
+    return $message;
+}
+
+/**
+ * Apply the newsletter wrapper.
+ *
+ * @param  LONG_TEXT $_message The newsletter message
+ * @param  LANGUAGE_NAME $lang The language
+ * @param  SHORT_TEXT $subject The newsletter subject
+ * @return string The newsletter with wrapper
+ */
+function newsletter_wrap($_message, $lang, $subject = '')
+{
+    $message_wrapped = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '53c02947915806e519fe14c318813f42', 'CONTENT' => $_message, 'LANG' => $lang, 'SUBJECT' => $subject), null, false, null, '.txt', 'text');
+    $message = $message_wrapped->evaluate($lang);
+    return $message;
+}
+
+/**
  * Send out the newsletter.
  *
  * @param  LONG_TEXT $message The newsletter message
@@ -124,12 +390,26 @@ function basic_newsletter_join($email, $interest_level = 4, $language = null, $g
  * @param  ID_TEXT $mail_template The template used to show the email
  * @return Tempcode UI
  */
-function actual_send_newsletter($message, $subject, $language, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
+function send_newsletter($message, $subject, $language, $send_details, $html_only = 0, $from_email = '', $from_name = '', $priority = 3, $csv_data = '', $mail_template = 'MAIL')
 {
     require_lang('newsletter');
 
     // Put in archive
-    $GLOBALS['SITE_DB']->query_insert('newsletter_archive', array('date_and_time' => time(), 'subject' => $subject, 'newsletter' => $message, 'language' => $language, 'importance_level' => 1));
+    $archive_map = array(
+        'subject' => $subject,
+        'newsletter' => $message,
+        'language' => $language,
+        'importance_level' => 1,
+        'from_email' => $from_email,
+        'from_name' => $from_name,
+        'priority' => $priority,
+        'template' => $mail_template,
+        'html_only' => $html_only,
+    );
+    $message_id = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_archive', 'id', $archive_map);
+    if (is_null($message_id)) {
+        $message_id = $GLOBALS['SITE_DB']->query_insert('newsletter_archive', $archive_map + array('date_and_time' => time()), true);
+    }
 
     // Mark as done
     log_it('NEWSLETTER_SEND', $subject);
@@ -137,7 +417,7 @@ function actual_send_newsletter($message, $subject, $language, $send_details, $h
 
     // Schedule the task
     require_code('tasks');
-    return call_user_func_array__long_task(do_lang('NEWSLETTER_SEND'), get_screen_title('NEWSLETTER_SEND'), 'send_newsletter', array($message, $subject, $language, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template), false, get_param_integer('keep_send_immediately', 0) == 1, false);
+    return call_user_func_array__long_task(do_lang('NEWSLETTER_SEND'), get_screen_title('NEWSLETTER_SEND'), 'send_newsletter', array($message_id, $message, $subject, $language, $send_details, $html_only, $from_email, $from_name, $priority, $csv_data, $mail_template), false, get_param_integer('keep_send_immediately', 0) == 1, false);
 }
 
 /**
@@ -219,6 +499,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
         foreach ($send_details as $_id => $is_on) {
             if ((is_string($_id)) && (substr($_id, 0, 1) == 'g') && ($is_on == 1)) {
                 $id = intval(substr($_id, 1));
+                $fields = 'm.id,m.m_email_address,m.m_username,m.m_pass_hash_salted';
                 $query = 'SELECT xxxxx  FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON m.id=g.gm_member_id AND g.gm_validated=1 WHERE ' . db_string_not_equal_to('m_email_address', '') . ' AND ' . $where_lang . 'm_validated=1 AND gm_group_id=' . strval($id);
                 if (get_option('allow_email_from_staff_disable') == '1') {
                     $query .= ' AND m_allow_emails=1';
@@ -230,22 +511,22 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 }
                 $query .= ' AND m_is_perm_banned=0';
                 $query .= ' ORDER BY id';
-                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', 'm.id,m.m_email_address,m.m_username', $query), $max, $start, false, true);
+                $_rows = $GLOBALS['FORUM_DB']->query(str_replace('xxxxx', $fields, $query), $max, $start, false, true);
                 if ($start == 0) {
                     $total['g' . strval($id)] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT (' . str_replace(' UNION ', ') + (', str_replace('xxxxx', 'COUNT(*)', $query)) . ')', false, true);
                 }
 
-                foreach ($_rows as $row) { // For each member
-                    if (!in_array($row['m_email_address'], $emails)) { // If not already added
+                foreach ($_rows as $_temp) { // For each member
+                    if (!in_array($_temp['m_email_address'], $emails)) { // If not already added
                         if (!$get_raw_rows) {
-                            $emails[] = $row['m_email_address'];
+                            $emails[] = $_temp['m_email_address'];
                             $forenames[] = '';
                             $surnames[] = '';
-                            $usernames[] = $row['m_username'];
-                            $ids[] = 'm' . strval($row['id']);
-                            $hashes[] = '';
+                            $usernames[] = $_temp['m_username'];
+                            $ids[] = 'm' . strval($_temp['id']);
+                            $hashes[] = ratchet_hash($_temp['m_pass_hash_salted'], 'xunsub');
                         } else {
-                            $raw_rows[] = $row;
+                            $raw_rows[] = $_temp;
                         }
                     }
                 }
@@ -259,7 +540,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                 $query .= ' AND m_allow_emails=1';
             }
             $query .= ' AND m_is_perm_banned=0';
-            $_rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_email_address,m_username' . $query, $max, $start);
+            $_rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_email_address,m_username,m_pass_hash_salted' . $query, $max, $start);
             if ($start == 0) {
                 $total['-1'] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*)' . $query);
             }
@@ -271,7 +552,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                         $surnames[] = '';
                         $usernames[] = $_temp['m_username'];
                         $ids[] = 'm' . strval($_temp['id']);
-                        $hashes[] = '';
+                        $hashes[] = ratchet_hash($_temp['m_pass_hash_salted'], 'xunsub');
                     } else {
                         $raw_rows[] = $_temp;
                     }
@@ -360,10 +641,15 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
  */
 function newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $email_address, $sendid, $hash)
 {
+    $unsub_url = new Tempcode();
     if ($hash == '') {
         $unsub_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
     } else {
-        $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
+        if (substr($sendid, 0, 1) == 'm') {
+            $unsub_url = build_url(array('page' => 'members', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('members'), null, false, false, true);
+        } else {
+            $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
+        }
     }
 
     $member_id = mixed();
@@ -372,15 +658,18 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
         $name = $GLOBALS['FORUM_DRIVER']->get_displayname($name);
     }
 
+    require_lang('newsletter');
+
     $vars = array(
         'title' => $subject,
         'forename' => $forename,
         'surname' => $surname,
         'name' => $name,
-        'member_id' => is_null($member_id) ? '' : strval($member_id),
+        'member_id' => empty($member_id) ? '' : strval($member_id),
         'email_address' => $email_address,
         'sendid' => $sendid,
         'unsub_url' => $unsub_url,
+        'unsub_comcode' => do_lang(empty($member_id) ? 'NEWSLETTER_UNSUBSCRIBE_NEWSLETTER' : 'NEWSLETTER_UNSUBSCRIBE_MEMBER', $unsub_url->evaluate()),
     );
 
     foreach ($vars as $var => $sub) {
@@ -389,6 +678,93 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
     }
 
     return $message;
+}
+
+/**
+ * Generate a newsletter preview in full HTML and full text.
+ *
+ * @param  string $message The message
+ * @param  string $subject The subject
+ * @param  boolean $html_only Send in HTML only
+ * @param  ?string $forename Forename (null: reasonable default)
+ * @param  ?string $surname Surname (null: reasonable default)
+ * @param  ?string $name Name (null: reasonable default)
+ * @param  ?string $address Address (null: reasonable default)
+ * @param  ?string $sendid Send ID (null: reasonable default)
+ * @param  ?string $hash Password hash (null: reasonable default)
+ * @return array A triple: HTML version, Text version, Whether the e-mail has to be fully HTML
+ */
+function newsletter_preview($message, $subject, $html_only, $forename = null, $surname = null, $name = null, $address = null, $sendid = null, $hash = null)
+{
+    if (is_null($forename)) {
+        $forename = do_lang('SAMPLE_FORENAME');
+    }
+
+    if (is_null($surname)) {
+        $surname = do_lang('SAMPLE_SURNAME');
+    }
+
+    if (is_null($name)) {
+        $name = do_lang('SAMPLE_NAME');
+    }
+
+    if (is_null($address)) {
+        $address = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
+        if ($address == '') {
+            $address = do_lang('SAMPLE_ADDRESS');
+        }
+    }
+
+    if (is_null($sendid)) {
+        $sendid = 'm' . strval(get_member());
+    }
+
+    if (is_null($hash)) {
+        require_code('crypt');
+        $hash = ratchet_hash($GLOBALS['FORUM_DRIVER']->get_member_row_field(get_member(), 'm_pass_hash_salted'), 'xunsub');
+    }
+
+    require_code('tempcode_compiler');
+
+    // HTML message
+    $message = newsletter_variable_substitution($message, $subject, $forename, $surname, $name, $address, $sendid, $hash);
+    if (stripos(trim($message), '<') === 0) {
+        // Is already full HTML (with maybe some Tempcode)
+
+        $html_version = template_to_tempcode($message);
+
+        $html_only = true; // Force on, regardless
+    } else {
+        // Is Comcode
+
+        require_code('media_renderer');
+        push_media_mode(peek_media_mode() | MEDIA_LOWFI);
+        $comcode_version = comcode_to_tempcode($message, get_member(), true);
+        pop_media_mode();
+
+        $html_version = do_template(
+            'MAIL',
+            array(
+                '_GUID' => 'b081cf9104748b090f63b6898027985e',
+                'TITLE' => $subject,
+                'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
+                'LANG' => get_site_default_lang(),
+                'LOGOURL' => get_logo_url(''),
+                'CONTENT' => $comcode_version
+            ),
+            null,
+            false,
+            null,
+            '.tpl',
+            'templates',
+            $GLOBALS['FORUM_DRIVER']->get_theme('')
+        );
+    }
+
+    // Text message
+    $text_version = $html_only ? '' : comcode_to_clean_text($message);
+
+    return array($html_version, $text_version, $html_only);
 }
 
 /**
@@ -716,5 +1092,40 @@ function delete_newsletter_subscriber($id)
     if ((addon_installed('commandr')) && (!running_script('install'))) {
         require_code('resource_fs');
         expunge_resource_fs_moniker('newsletter_subscriber', strval($id));
+    }
+}
+
+/**
+ * Remove bounced addresses from the newsletter / turn off staff e-mails on member accounts.
+ *
+ * @param  array $bounces List of e-mail addresses
+ */
+function remove_email_bounces($bounces)
+{
+    if (count($bounces) == 0) {
+        return;
+    }
+
+    $delete_sql = '';
+    $delete_sql_members = '';
+
+    foreach ($bounces as $email_address) {
+        if ($delete_sql != '') {
+            $delete_sql .= ' OR ';
+            $delete_sql_members .= ' OR ';
+        }
+        $delete_sql .= db_string_equal_to('email', $email_address);
+        $delete_sql_members .= db_string_equal_to('m_email_address', $email_address);
+    }
+
+    $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribers WHERE ' . $delete_sql;
+    $GLOBALS['SITE_DB']->query($query);
+
+    $query = 'DELETE FROM ' . get_table_prefix() . 'newsletter_subscribe WHERE ' . $delete_sql;
+    $GLOBALS['SITE_DB']->query($query);
+
+    if (get_forum_type() == 'cns') {
+        $query = 'UPDATE ' . get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
+        $GLOBALS['FORUM_DB']->query($query);
     }
 }

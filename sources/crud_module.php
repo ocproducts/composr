@@ -754,7 +754,7 @@ abstract class Standard_crud_module
         }
 
         require_code('form_templates');
-        $fields = form_input_list(do_lang_tempcode('CATALOGUE'), '', 'catalogue_name', $tree, null, true);
+        $fields = form_input_huge_list(do_lang_tempcode('CATALOGUE'), '', 'catalogue_name', $tree, null, true);
         $post_url = get_self_url(false, false, null, false, true);
         $submit_name = do_lang_tempcode('PROCEED');
         $hidden = build_keep_post_fields();

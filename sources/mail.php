@@ -27,9 +27,10 @@ function init__mail()
 {
     require_lang('mail');
 
-    global $SENDING_MAIL, $EMAIL_ATTACHMENTS;
+    global $SENDING_MAIL, $EMAIL_ATTACHMENTS, $LAST_MIME_MAIL_SENT;
     $SENDING_MAIL = false;
     $EMAIL_ATTACHMENTS = array();
+    $LAST_MIME_MAIL_SENT = null;
 }
 
 /**
@@ -581,10 +582,47 @@ http://people.dsv.su.se/~jpalme/ietf/ietf-mail-attributes.html
  * @param  ?array $extra_cc_addresses Extra CC addresses to use (null: none)
  * @param  ?array $extra_bcc_addresses Extra BCC addresses to use (null: none)
  * @param  ?TIME $require_recipient_valid_since Implement the Require-Recipient-Valid-Since header (null: no restriction)
+ * @param  ?boolean $smtp_sockets_use Whether to use SMTP sockets (null: default configured)
+ * @param  ?string $smtp_sockets_host SMTP hostname (null: default configured)
+ * @param  ?integer $smtp_sockets_port SMTP port (null: default configured)
+ * @param  ?string $smtp_sockets_username SMTP username (null: default configured)
+ * @param  ?string $smtp_sockets_password SMTP password (null: default configured)
+ * @param  ?EMAIL $smtp_from_address SMTP from address (null: default configured)
+ * @param  ?boolean $enveloper_override Use envelope override option for sendmail (null: default configured)
+ * @param  ?boolean $allow_ext_images Allow external image references rather than embedding images (null: default configured)
+ * @param  ?EMAIL $website_email Website e-mail address (null: default configured)
  * @return ?Tempcode A full page (not complete XHTML) piece of Tempcode to output (null: it worked so no Tempcode message)
  */
-function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null)
+function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = null, $from_email = '', $from_name = '', $priority = 3, $attachments = null, $no_cc = false, $as = null, $as_admin = false, $in_html = false, $coming_out_of_queue = false, $mail_template = 'MAIL', $bypass_queue = null, $extra_cc_addresses = null, $extra_bcc_addresses = null, $require_recipient_valid_since = null, $smtp_sockets_use = null, $smtp_sockets_host = null, $smtp_sockets_port = null, $smtp_sockets_username = null, $smtp_sockets_password = null, $smtp_from_address = null, $enveloper_override = null, $allow_ext_images = null, $website_email = null)
 {
+    if (is_null($smtp_sockets_use)) {
+        $smtp_sockets_use = (get_option('smtp_sockets_use') == '1');
+    }
+    if (is_null($smtp_sockets_host)) {
+        $smtp_sockets_host = get_option('smtp_sockets_host');
+    }
+    if (is_null($smtp_sockets_port)) {
+        $smtp_sockets_port = intval(get_option('smtp_sockets_port'));
+    }
+    if (is_null($smtp_sockets_username)) {
+        $smtp_sockets_username = get_option('smtp_sockets_username');
+    }
+    if (is_null($smtp_sockets_password)) {
+        $smtp_sockets_password = get_option('smtp_sockets_password');
+    }
+    if (is_null($smtp_from_address)) {
+        $smtp_from_address = get_option('smtp_from_address');
+    }
+    if (is_null($enveloper_override)) {
+        $enveloper_override = (get_option('enveloper_override') == '1');
+    }
+    if (is_null($allow_ext_images)) {
+        $allow_ext_images = (get_option('allow_ext_images') == '1');
+    }
+    if (is_null($website_email)) {
+        $website_email = get_option('website_email');
+    }
+
     if (running_script('stress_test_loader')) {
         return null;
     }
@@ -730,7 +768,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $line_term = "\r\n";
     }
     */
-    if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') || (get_option('smtp_sockets_use') == '1')) {
+    if ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') || ($smtp_sockets_use)) {
         $line_term = "\r\n";
     /*} elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'MAC')
     {
@@ -747,7 +785,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     // Our subject
     $subject = do_template('MAIL_SUBJECT', array('_GUID' => '44a57c666bb00f96723256e26aade9e5', 'SUBJECT_LINE' => $subject_line), $lang, false, null, '.txt', 'text', $theme);
-    $tightened_subject = $subject->evaluate($lang); // Note that this is slightly against spec, because characters aren't forced to be printable us-ascii. But it's better we allow this (which works in practice) than risk incompatibility via charset-base64 encoding.
+    $tightened_subject = $subject->evaluate($lang);
     $tightened_subject = str_replace(array("\r", "\n"), array('', ''), $tightened_subject);
 
     $regexp = '#^[\x' . dechex(32) . '-\x' . dechex(126) . ']*$#';
@@ -799,10 +837,15 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             $LAX_COMCODE = $temp;
             $GLOBALS['NO_LINK_TITLES'] = false;
 
+            $message_html = null;
+            $html_evaluated = null;
+            $derive_css = true;
             $_html_content = $html_content->evaluate($lang);
             $_html_content = preg_replace('#(keep|for)_session=\w*#', 'filtered=1', $_html_content);
-            if (strpos($_html_content, '<html') !== false) {
-                $message_html = make_string_tempcode($_html_content);
+            $is_already_full_html = (stripos($_html_content, '<html') !== false);
+            if ($is_already_full_html) {
+                $html_evaluated = $_html_content;
+                $derive_css = (strpos($_html_content, '{CSS') !== false);
             } else {
                 $message_html = do_template($mail_template, array(
                     '_GUID' => 'b23069c20202aa59b7450ebf8d49cde1',
@@ -813,16 +856,20 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                     'CONTENT' => $_html_content,
                 ), $lang, false, null, '.tpl', 'templates', $theme);
             }
-            require_css('email');
-            $css = css_tempcode(true, false, $message_html->evaluate($lang), $theme);
-            $_css = $css->evaluate($lang);
-            if (!GOOGLE_APPENGINE) {
-                if (get_option('allow_ext_images') != '1') {
-                    $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+            if ($derive_css) {
+                require_css('email');
+                $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
+                $_css = $css->evaluate($lang);
+                if (!GOOGLE_APPENGINE) {
+                    if (!$allow_ext_images) {
+                        $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', '_mail_css_rep_callback', $_css);
+                    }
+                }
+                if ($message_html !== null) {
+                    $message_html->singular_bind('CSS', $_css);
+                    $html_evaluated = $message_html->evaluate($lang);
                 }
             }
-            $html_evaluated = $message_html->evaluate($lang);
-            $html_evaluated = str_replace('{CSS}', $_css, $html_evaluated);
 
             // Cleanup the Comcode a bit
             $message_plain = comcode_to_clean_text($message_raw);
@@ -837,7 +884,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     }
 
     // Headers
-    $website_email = get_option('website_email');
     if ($website_email == '') {
         $website_email = $from_email;
     }
@@ -969,7 +1015,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $sending_message .= 'Content-Type: multipart/related; type="text/html"; boundary="' . $boundary3 . '"' . $line_term . $line_term . $line_term;
     $sending_message .= '--' . $boundary3 . $line_term;
     $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? do_lang('charset', null, null, null, $lang) : 'us-ascii') . $line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
-    if (get_option('allow_ext_images') != '1') {
+    if (!$allow_ext_images) {
         $cid_before = array_keys($CID_IMG_ATTACHMENT);
         $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', '_mail_img_rep_callback', $html_evaluated);
         $cid_just_html = array_diff(array_keys($CID_IMG_ATTACHMENT), $cid_before);
@@ -1045,55 +1091,65 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
         $sending_message .= $line_term . '--' . $boundary . '--' . $line_term;
     }
 
+    $GLOBALS['LAST_MIME_MAIL_SENT'] = gather_full_mime_message($line_term, $to_name, $to_email, 0, $tightened_subject, $headers, $sending_message);
+
     // Support for SMTP sockets rather than PHP mail()
     $error = null;
-    if ((get_option('smtp_sockets_use') == '1') && (php_function_allowed('fsockopen'))) {
+    if (($smtp_sockets_use) && (php_function_allowed('fsockopen'))) {
         $worked = false;
 
-        $host = get_option('smtp_sockets_host');
-        $port = intval(get_option('smtp_sockets_port'));
+        $host = $smtp_sockets_host;
+        $port = $smtp_sockets_port;
 
         $errno = 0;
         $errstr = '';
         foreach ($to_email as $i => $to) {
-            $socket = @fsockopen($host, $port, $errno, $errstr, 30.0);
+            static $socket = null;
+            if ($socket === null || $socket === false) {
+                $socket = @fsockopen($host, $port, $errno, $errstr, 30.0);
+                $new_connection = true;
+            } else {
+                $new_connection = false;
+            }
             if ($socket !== false) {
-                $rcv = fread($socket, 1024);
-                $base_url = parse_url(get_base_url());
-                $domain = $base_url['host'];
+                if ($new_connection) {
+                    $base_url = parse_url(get_base_url());
+                    $domain = $base_url['host'];
 
-                // Log in if necessary
-                $username = get_option('smtp_sockets_username');
-                $password = get_option('smtp_sockets_password');
-                if ($username != '') {
-                    fwrite($socket, 'EHLO ' . $domain . "\r\n");
                     $rcv = fread($socket, 1024);
 
-                    fwrite($socket, "AUTH LOGIN\r\n");
-                    $rcv = fread($socket, 1024);
-                    if (strtolower(substr($rcv, 0, 3)) == '334') {
-                        fwrite($socket, base64_encode($username) . "\r\n");
+                    // Log in if necessary
+                    $username = $smtp_sockets_username;
+                    $password = $smtp_sockets_password;
+                    if ($username != '') {
+                        fwrite($socket, 'EHLO ' . $domain . "\r\n");
                         $rcv = fread($socket, 1024);
-                        if ((strtolower(substr($rcv, 0, 3)) == '235') || (strtolower(substr($rcv, 0, 3)) == '334')) {
-                            fwrite($socket, base64_encode($password) . "\r\n");
+
+                        fwrite($socket, "AUTH LOGIN\r\n");
+                        $rcv = fread($socket, 1024);
+                        if (strtolower(substr($rcv, 0, 3)) == '334') {
+                            fwrite($socket, base64_encode($username) . "\r\n");
                             $rcv = fread($socket, 1024);
-                            if (strtolower(substr($rcv, 0, 3)) == '235') {
+                            if ((strtolower(substr($rcv, 0, 3)) == '235') || (strtolower(substr($rcv, 0, 3)) == '334')) {
+                                fwrite($socket, base64_encode($password) . "\r\n");
+                                $rcv = fread($socket, 1024);
+                                if (strtolower(substr($rcv, 0, 3)) == '235') {
+                                } else {
+                                    $error = do_lang('MAIL_ERROR_CONNECT_PASSWORD') . ' (' . str_replace($password, '*', $rcv) . ')';
+                                }
                             } else {
-                                $error = do_lang('MAIL_ERROR_CONNECT_PASSWORD') . ' (' . str_replace($password, '*', $rcv) . ')';
+                                $error = do_lang('MAIL_ERROR_CONNECT_USERNAME') . ' (' . $rcv . ')';
                             }
                         } else {
-                            $error = do_lang('MAIL_ERROR_CONNECT_USERNAME') . ' (' . $rcv . ')';
+                            $error = do_lang('MAIL_ERROR_CONNECT_AUTH') . ' (' . $rcv . ')';
                         }
                     } else {
-                        $error = do_lang('MAIL_ERROR_CONNECT_AUTH') . ' (' . $rcv . ')';
+                        fwrite($socket, 'HELO ' . $domain . "\r\n");
+                        $rcv = fread($socket, 1024);
                     }
-                } else {
-                    fwrite($socket, 'HELO ' . $domain . "\r\n");
-                    $rcv = fread($socket, 1024);
                 }
 
                 if (is_null($error)) {
-                    $smtp_from_address = get_option('smtp_from_address');
                     if ($smtp_from_address == '') {
                         $smtp_from_address = $website_email;
                     }
@@ -1112,21 +1168,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                             fwrite($socket, "DATA\r\n");
                             $rcv = fread($socket, 1024);
                             if (strtolower(substr($rcv, 0, 3)) == '354') {
-                                $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
-                                if (count($to_email) == 1) {
-                                    if ($_to_name == '') {
-                                        fwrite($socket, 'To: ' . $to_email[$i] . "\r\n");
-                                    } else {
-                                        fwrite($socket, 'To: ' . $_to_name . ' <' . $to_email[$i] . '>' . "\r\n");
-                                    }
-                                } else {
-                                    fwrite($socket, 'To: ' . $_to_name . "\r\n");
-                                }
-                                fwrite($socket, 'Subject: ' . $tightened_subject . "\r\n");
-                                $headers = preg_replace('#^\.#m', '..', $headers);
-                                $sending_message = preg_replace('#^\.#m', '..', $sending_message);
-                                fwrite($socket, $headers . "\r\n\r\n");
-                                fwrite($socket, $sending_message);
+                                fwrite($socket, preg_replace('#^\.#m', '..', gather_full_mime_message($line_term, $to_name, $to_email, $i, $tightened_subject, $headers, $sending_message)));
                                 fwrite($socket, "\r\n.\r\n");
                                 $rcv = fread($socket, 1024);
                                 if (strtolower(substr($rcv, 0, 3)) != '250') {
@@ -1151,7 +1193,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 }
 
                 if (!is_null($socket)) {
-                    fclose($socket);
+                    //fclose($socket);  Let it disconnect at script end or time-out
                 }
                 if (is_null($error)) {
                     $worked = true;
@@ -1163,11 +1205,10 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     } else {
         $worked = false;
         foreach ($to_email as $i => $to) {
-            //exit($headers."\n".$sending_message);
             $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
 
             $additional = '';
-            if (get_option('enveloper_override') == '1') {
+            if ($enveloper_override) {
                 $additional = '-f ' . $website_email;
             }
             $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
@@ -1176,7 +1217,6 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             } else {
                 $to_line = '"' . $_to_name . '" <' . $to . '>';
             }
-            //if (function_exists('mb_language')) mb_language('en'); Stop overridden mbstring mail function from messing and base64'ing stuff. Actually we don't need this as we make sure to pass through as headers with blank message, bypassing any filtering.
             $php_errormsg = mixed();
             if (get_value('manualproc_mail') === '1') {
                 require_code('mail2');
@@ -1207,6 +1247,42 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
 
     $SENDING_MAIL = false;
     return null;
+}
+
+/**
+ * Download a URL, for use as an inline mail image.
+ *
+ * @param  string $line_term Line separator
+ * @param  mixed $to_name Recipient names (string or array)
+ * @param  mixed $to_email Recipient e-mails (string or array)
+ * @param  integer $i Position in recipients
+ * @param  string $tightened_subject Subject
+ * @param  string $headers Headers
+ * @param  string $sending_message Message body
+ * @return string The mime message
+ */
+function gather_full_mime_message($line_term, $to_name, $to_email, $i, $tightened_subject, $headers, $sending_message)
+{
+    $full_mime_message = '';
+
+    $_to_name = preg_replace('#@.*$#', '', is_array($to_name) ? $to_name[$i] : $to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
+    if (count($to_email) == 1) {
+        if ($_to_name == '') {
+            $full_mime_message .= 'To: ' . $to_email[$i] . $line_term;
+        } else {
+            $full_mime_message .= 'To: ' . $_to_name . ' <' . $to_email[$i] . '>' . $line_term;
+        }
+    } else {
+        $full_mime_message .= 'To: ' . $_to_name . $line_term;
+    }
+
+    $full_mime_message .= 'Subject: ' . $tightened_subject . $line_term;
+
+    $full_mime_message .= $headers;
+
+    $full_mime_message .= $line_term . $sending_message;
+
+	return $full_mime_message;
 }
 
 /**

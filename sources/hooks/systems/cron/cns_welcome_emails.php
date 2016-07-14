@@ -99,7 +99,7 @@ class Hook_cron_cns_welcome_emails
                     }
                 }
                 $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90f', 'CONTENT' => $text, 'LANG' => get_site_default_lang()), null, false, null, '.txt', 'text');
-                if (strpos($_text->evaluate(), '<html') !== false) {
+                if (stripos($_text->evaluate(), '<html') !== false) {
                     $is_html = true;
                     $text_comcode = comcode_to_tempcode($text, null, true);
                     $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90g', 'CONTENT' => $text_comcode, 'LANG' => get_lang($member['id'])));
