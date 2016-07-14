@@ -13430,7 +13430,7 @@ function replace_file_input(page_type,name,_btn_submit_id,posting_field_name,fil
 	main_div.style.display='inline-block';
 	rep.parentNode.appendChild(main_div);
 	var sub_div=document.createElement('div');
-	sub_div.style.display='inline-block';
+	sub_div.className='vertical_alignment';
 	main_div.appendChild(sub_div);
 
 	var progress_div=document.createElement('div');

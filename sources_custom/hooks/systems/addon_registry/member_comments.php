@@ -137,6 +137,7 @@ class Hook_addon_registry_member_comments
             'sources_custom/hooks/systems/profiles_tabs/comments.php',
             'lang_custom/EN/member_comments.ini',
             'themes/default/templates_custom/CNS_MEMBER_PROFILE_COMMENTS.tpl',
+            'sources_custom/hooks/systems/config/member_comments_forum_name.php',
         );
     }
 }

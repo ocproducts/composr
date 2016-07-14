@@ -62,7 +62,7 @@ class Hook_profiles_tabs_edit
      */
     public function render_tab($member_id_of, $member_id_viewing, $leave_to_ajax_if_possible = false)
     {
-        $title = do_lang_tempcode('EDIT_EM');
+        $title = do_lang_tempcode('EDIT');
 
         require_lang('cns');
         require_css('cns');

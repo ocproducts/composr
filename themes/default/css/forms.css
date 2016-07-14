@@ -292,10 +292,6 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	max-width: 31em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
 }
 
-.upload_field input[type="button"] {
-	margin-top: 2px;
-}
-
 /*{+START,IF,{$MOBILE}}*/
 	.input_upload, .input_upload_required {
 		max-width: 240px;

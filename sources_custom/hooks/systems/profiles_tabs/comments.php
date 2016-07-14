@@ -27,7 +27,9 @@ class Hook_profiles_tabs_comments
      */
     public function is_active($member_id_of, $member_id_viewing)
     {
-        return true;
+        $forum_name = get_option('member_comments_forum_name');
+        $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
+        return !is_null($forum_id);
     }
 
     /**
@@ -50,18 +52,8 @@ class Hook_profiles_tabs_comments
             return array($title, null, $order, 'feedback/comment');
         }
 
-        $forum_name = do_lang('MEMBER_COMMENTS_FORUM_NAME');
+        $forum_name = get_option('member_comments_forum_name');
         $forum_id = $GLOBALS['FORUM_DRIVER']->forum_id_from_name($forum_name);
-        if (is_null($forum_id)) {
-            require_code('cns_forums_action');
-
-            $forum_grouping_id = $GLOBALS['FORUM_DB']->query_select_value('f_forum_groupings', 'MIN(id)');
-
-            $val = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'AVG(f_allows_anonymous_posts)');
-            $allows_anonymous_posts = is_null($val) ? 1 : intval(round($val));
-
-            $forum_id = cns_make_forum($forum_name, '', $forum_grouping_id, array(), db_get_first_id()/*parent*/, 20/*position*/, 1, 1, '', '', '', 'last_post', 1/*is threaded*/, $allows_anonymous_posts);
-        }
 
         // The member who 'owns' the tab should be receiving notifications
         require_code('notifications');
@@ -78,7 +70,7 @@ class Hook_profiles_tabs_comments
             ) + $main_map);
         }
 
-        $content = do_template('CNS_MEMBER_PROFILE_COMMENTS', array('_GUID' => '5ce1949e4fa0d247631f52f48698df4e', 'MEMBER_ID' => strval($member_id_of), 'FORUM_NAME' => $forum_name));
+        $content = do_template('CNS_MEMBER_PROFILE_COMMENTS', array('_GUID' => '5ce1949e4fa0d247631f52f48698df4e', 'MEMBER_ID' => strval($member_id_of), 'FORUM_ID' => strval($forum_id)));
         $content->handle_symbol_preprocessing();
 
         return array($title, $content, $order, 'feedback/comment');

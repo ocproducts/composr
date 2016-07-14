@@ -1,0 +1,178 @@
+/*
+ {$BRAND_NAME`}
+ Copyright (c) ocProducts, 2004-2016
+*/
+
+/*
+This is a simple and clean equivalent to the main traditional-UI tabs implementation in global.css.
+
+It makes more assumptions than the traditional tabs, like all the tabs will fit on one row.
+*/
+
+.modern_tabs {
+	border: 1px solid {$GET,dark_border};
+	background: {$GET,WB};
+}
+
+.modern_tab_headers {
+	overflow: hidden;
+	background: {$GET,box_title_background};
+}
+
+.modern_tab_headers>div {
+	color: {$GET,WB};
+	float: left;
+	overflow: hidden;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.modern_tab_headers>div {
+		width: 50%;
+	}
+/*{+END}*/
+
+.modern_tab_headers>div:last-child {
+	float: none;
+}
+
+.modern_tab_headers>div.tab_active {
+	background: {$GET,WB};
+	color: {$GET,seed};
+}
+
+.modern_tab_headers>div * {
+	vertical-align: middle;
+}
+
+.modern_tab_headers>div>a {
+	display: inline-block;
+	padding: 1em;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		border-right: 1px solid {$GET,WB};
+	/*{+END}*/
+	cursor: pointer;
+}
+
+/*{+START,IF,{$MOBILE}}*/
+	.modern_tab_headers>div>a {
+		display: block;
+	}
+/*{+END}*/
+
+.modern_tab_headers>div:last-child>a {
+	border-right: 0;
+}
+
+/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	/*
+	Enable instead of the below selector if you would rather icon goes above label for short widths. In this case you also need to get equal header widths via  style="width: { $DIV_FLOAT*,100,{ TABS}}%" on the header div.
+	.modern_tab_headers>div>a>span {
+		min-width: 5em; / * To force uniform wrapping if not enough space * /
+		padding: 0.3em 0; / * Will only take effect if wrapped * /
+	}*/
+
+	.modern_tab_headers>div>a>span {
+		min-width: 47px; /* Space things out - you may want to adjust this based on however many tabs you have */
+		display: inline-block;
+		padding-left: 3px;
+	}
+/*{+END}*/
+
+.modern_tab_headers>div>a, .modern_tab_headers>div>a:visited, .modern_tab_headers>div>a:active, .modern_tab_headers>div>a:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+.modern_tab_bodies {
+	overflow: hidden;
+	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+		padding: 1em 0.5em;
+	/*{+END}*/
+	/*{+START,IF,{$MOBILE}}*/
+		padding: 3px;
+	/*{+END}*/
+}
+
+.modern_tab_bodies>div {
+}
+
+/* Sub tabs, nested */
+
+.modern_tabs .modern_tabs .modern_tab_headers {
+	overflow: hidden;
+	background: {$GET,box_title_background_2};
+}
+
+.modern_tabs .modern_tabs .modern_tab_headers>div>a {
+	padding: 0.5em;
+}
+
+/* Sub tabs, which look entirely different as they go down in an lhs column */
+
+.modern_subtabs {
+	border: 0;
+	background: {$GET,area_background} url('{$IMG;,tabs/modern_subtab_header_column}') repeat-y;
+	overflow: hidden;
+}
+
+.modern_subtab_headers {
+	overflow: hidden;
+	float: left;
+	width: 158px; /* 150px+8px, 150px matches the background size in the tabs/modern_subtab_header_column theme image */
+}
+
+.modern_subtab_headers>div {
+	color: {$GET,WB};
+}
+.modern_subtab_headers>div:last-child {
+	border-bottom: 0;
+}
+
+.modern_subtab_headers>div.tab_active, .modern_subtab_headers>div:hover {
+	background: url('{$IMG;,1x/tabs/modern_subtab_active}') no-repeat right center;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	.modern_subtab_headers>div.tab_active {
+		background-image: url('{$IMG;,2x/tabs/modern_subtab_active}') !important;
+		background-size: 8px 16px;
+	}
+}
+
+.modern_subtab_headers>div * {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.modern_subtab_headers>div>a {
+	padding: 1em 0 1em 30px;
+	margin-right: 8px; /* For modern_subtab_active to overlay into */
+	border-bottom: 1px solid {$GET,standard_border};
+	display: block;
+	cursor: pointer;
+	background: url('{$IMG;,1x/tabs/modern_subtab_chevron}') no-repeat 10px center;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	.modern_subtab_headers>div>a {
+		background-image: url('{$IMG;,2x/tabs/modern_subtab_chevron}') !important;
+		background-size: 9px 9px;
+	}
+}
+
+.modern_subtab_headers>div>a, .modern_subtab_headers>div>a:visited, .modern_subtab_headers>div>a:active, .modern_subtab_headers>div>a:hover {
+	text-decoration: none;
+	color: inherit;
+}
+
+.modern_subtab_headers>div>a img {
+	display: none; /* No images shown for sub-tabs */
+}
+
+.modern_subtab_bodies {
+	overflow: hidden;
+	padding: 1.5em 1em 1.5em 0em;
+}
+
+.modern_subtab_bodies>div {
+}
