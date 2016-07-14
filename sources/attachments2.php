@@ -205,20 +205,20 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
                     $image = @imagecreatefromstring($data);
                     if ($image !== false) {
                         require_code('urls2');
-                        list($place, $new_url, $new_filename) = find_unique_path('uploads/attachments', null, true);
-                        imagepng($image, $place, 9);
+                        list($new_path, $new_url, $new_filename) = find_unique_path('uploads/attachments', null, true);
+                        imagepng($image, $new_path, 9);
                         imagedestroy($image);
 
-                        require_code('images_png');
-                        png_compress($place);
+                        fix_permissions($new_path);
+                        sync_file($new_path);
 
-                        fix_permissions($place);
-                        sync_file($place);
+                        require_code('uploads');
+                        $test = handle_upload_post_processing(CMS_UPLOAD_IMAGE, $new_path, 'uploads/attachments', $new_filename, 0);
+                        if ($test !== null) {
+                            unlink($new_path);
+                            sync_file($new_path);
 
-                        // Special code to re-orientate JPEG images if required (browsers cannot do this)
-                        require_code('images');
-                        if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
-                            convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
+                            $new_url = $test;
                         }
 
                         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
@@ -318,18 +318,18 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 }
 
                 require_code('urls2');
-                list($place, , $_file) = find_unique_path('uploads/attachments', basename($entry['path']), true);
-                list($place_thumb, , $_file_thumb) = find_unique_path('uploads/attachments_thumbs', basename($entry['path']), true);
+                list($new_path, $new_url, $new_filename) = find_unique_path('uploads/attachments', basename($entry['path']), true);
+                list($new_path_thumb, , $new_filename_thumb) = find_unique_path('uploads/attachments_thumbs', basename($entry['path']), true);
 
                 if ($arcext == 'tar') {
-                    $file_details = tar_get_file($myfile, $entry['path'], false, $place);
+                    $file_details = tar_get_file($myfile, $entry['path'], false, $new_path);
                 } elseif ($arcext == 'zip') {
                     zip_entry_open($myfile, $entry['zip_entry']);
                     $file_details = array(
                         'size' => $entry['size'],
                     );
 
-                    $out_file = @fopen($place, 'wb') or intelligent_write_error($place);
+                    $out_file = @fopen($new_path, 'wb') or intelligent_write_error($new_path);
                     $more = mixed();
                     do {
                         $more = zip_entry_read($entry['zip_entry']);
@@ -349,18 +349,21 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     $description = do_lang('EXTRACTED_FILE_PATH', dirname($entry['path']));
                 }
 
-                // Special code to re-orientate JPEG images if required (browsers cannot do this)
-                require_code('images');
-                if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
-                    convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
+                require_code('uploads');
+                $test = handle_upload_post_processing(CMS_UPLOAD_IMAGE, $new_path, 'uploads/attachments', $new_filename, 0);
+                if ($test !== null) {
+                    unlink($new_path);
+                    sync_file($new_path);
+
+                    $new_url = $test;
                 }
 
                 // Thumbnail
                 $thumb_url = '';
                 require_code('images');
-                if (is_image($_file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
+                if (is_image($new_filename, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous'))) {
                     require_code('images');
-                    $thumb_url = convert_image('uploads/attachments/' . $_file, $place_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
+                    $thumb_url = convert_image('uploads/attachments/' . $new_filename, $new_path_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
                     if (is_forum_db($connection)) {
                         $thumb_url = get_custom_base_url() . '/' . $thumb_url;
@@ -368,11 +371,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 }
 
                 // Create new attachment from extracted file
-                $url = 'uploads/attachments/' . rawurlencode($_file);
                 $attachment_id = $connection->query_insert('attachments', array(
                     'a_member_id' => get_member(),
                     'a_file_size' => $file_details['size'],
-                    'a_url' => $url,
+                    'a_url' => $new_url,
                     'a_thumb_url' => $thumb_url,
                     'a_original_filename' => basename($entry['path']),
                     'a_num_downloads' => 0,
@@ -383,9 +385,9 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                 $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
                 if (addon_installed('galleries')) {
                     require_code('images');
-                    if ((is_video($url, true, true)) && ($connection->connection_read == $GLOBALS['SITE_DB']->connection_read)) {
+                    if ((is_video($new_url, true, true)) && ($connection->connection_read == $GLOBALS['SITE_DB']->connection_read)) {
                         require_code('transcoding');
-                        transcode_video($url, 'attachments', $attachment_id, 'id', 'a_url', 'a_original_filename', null, null);
+                        transcode_video($new_url, 'attachments', $attachment_id, 'id', 'a_url', 'a_original_filename', null, null);
                     }
                 }
 

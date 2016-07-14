@@ -249,15 +249,15 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
  * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
- * @param  ?string $ext2 The file extension to save with (null: same as our input file)
+ * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
- * @return URLPATH The thumbnail URL
+ * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  *
  * @ignore
  */
-function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
+function _convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = false, $thumb_options = null)
 {
     disable_php_memory_limit();
 
@@ -344,19 +344,21 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
 
     // Derive actual width x height, for the given maximum box (maintain aspect ratio)
-    // ===============================================================================
     $sx = imagesx($source);
     $sy = imagesy($source);
+
+    // Fix bad parameters
+    if ($width == 0) {
+        $width = 1;
+    }
+    if ($height == 0) {
+        $height = 1;
+    }
 
     $red = null;
 
     if (is_null($thumb_options)) {
-        if ($width == 0) {
-            $width = 1;
-        }
-        if ($height == 0) {
-            $height = 1;
-        }
+        // Simpler algorithm
 
         // If we're not sure if this is gonna stretch to fit a width or stretch to fit a height
         if (($width == -1) && ($height == -1)) {
@@ -606,7 +608,7 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
         $ext2 = get_file_extension($to);
     }
     // If we've got transparency then we have to save as PNG
-    if (!is_null($thumb_options) && isset($using_alpha) && $using_alpha) {
+    if (!is_null($thumb_options) && isset($using_alpha) && $using_alpha || $ext2 == '') {
         $ext2 = 'png';
     }
 
@@ -682,7 +684,8 @@ function _image_path_to_url($to_path)
 {
     $file_base = get_custom_file_base();
     if (substr($to_path, 0, strlen($file_base) + 1) != $file_base . '/') {
-        fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Nothing in the code should be trying to generate a thumbnail outside the base directory
+        //fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // Nothing in the code should be trying to generate a thumbnail outside the base directory
+        return '';
     }
 
     $to_url = str_replace('%2F', '/', rawurlencode(substr($to_path, strlen($file_base) + 1)));

@@ -36,15 +36,15 @@ class Hook_cdn_transfer_cloudinary
     /**
      * Converts an uploaded file into a URL, by moving it to an appropriate place on the CDN.
      *
-     * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload.
+     * @param  PATH $path The disk path of the upload. Should be a temporary path that is deleted by the calling code
      * @param  ID_TEXT $upload_folder The folder name in uploads/ where we would normally put this upload, if we weren't transferring it to the CDN
      * @param  string $filename Filename to upload with. May not be respected, depending on service implementation
      * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
      * @set    0 1 2
      * @param  boolean $accept_errors Whether to accept upload errors
-     * @return ?array A pair: the URL and the filename (null: did nothing)
+     * @return ?URLPATH URL on syndicated server (null: did not syndicate)
      */
-    public function transfer_upload($attach_name, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
+    public function transfer_upload($path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
     {
         if (version_compare(PHP_VERSION, '5.3.0') < 0) {
             return null;
@@ -65,7 +65,7 @@ class Hook_cdn_transfer_cloudinary
 
         require_code('Cloudinary/Cloudinary');
 
-        return cloudinary_transfer_upload($attach_name, $upload_folder, $filename, $obfuscate, $accept_errors);
+        return cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate, $accept_errors);
     }
 
     // IDEA: Support deletion. This is hard though, as we would need to track upload ownership somewhere or uniqueness (else temporary URL "uploads" could be used as a vector to hijack other people's original uploads).

@@ -860,12 +860,12 @@ function remap_urlpath_as_portable($urlpath)
         return $urlpath;
     }
 
-    $place = get_custom_file_base() . '/' . $urlpath;
-    if (!file_exists($place)) {
+    $path = get_custom_file_base() . '/' . $urlpath;
+    if (!file_exists($path)) {
         return $urlpath;
     }
 
-    return array($urlpath, base64_encode(file_get_contents($place)));
+    return array($urlpath, base64_encode(file_get_contents($path)));
 }
 
 /**
@@ -885,17 +885,17 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
 
     $urlpath = $portable_data[0];
 
-    $place = get_custom_file_base() . '/' . $urlpath;
+    $path = get_custom_file_base() . '/' . $urlpath;
 
     if ($ignore_conflicts) {
         // Hunt with sensible names until we don't get a conflict
         require_code('urls2');
-        list($place, $urlpath) = find_unique_path(dirname(urldecode($urlpath)), basename(urldecode($urlpath)));
+        list($path, $urlpath) = find_unique_path(dirname(urldecode($urlpath)), basename(urldecode($urlpath)));
     }
 
-    file_put_contents($place, $binary);
-    fix_permissions($place);
-    sync_file($place);
+    file_put_contents($path, $binary);
+    fix_permissions($path);
+    sync_file($path);
 
     return $urlpath;
 }

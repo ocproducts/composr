@@ -245,11 +245,11 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
  * @param  integer $height The maximum height we want our new image to be (-1 means "don't factor this in")
  * @param  integer $box_width This is only considered if both $width and $height are -1. If set, it will fit the image to a box of this dimension (suited for resizing both landscape and portraits fairly)
  * @param  boolean $exit_on_error Whether to exit Composr if an error occurs
- * @param  ?string $ext2 The file extension to save with (null: same as our input file)
+ * @param  ?string $ext2 The file extension representing the file type to save with (null: same as our input file)
  * @param  boolean $using_path Whether $from was in fact a path, not a URL
  * @param  boolean $only_make_smaller Whether to apply a 'never make the image bigger' rule for thumbnail creation (would affect very small images)
  * @param  ?array $thumb_options This optional parameter allows us to specify cropping or padding for the image. See comments in the function. (null: no details passed)
- * @return URLPATH The thumbnail URL
+ * @return URLPATH The thumbnail URL (blank: URL is outside of base URL)
  */
 function convert_image($from, &$to, $width, $height, $box_width = -1, $exit_on_error = true, $ext2 = null, $using_path = false, $only_make_smaller = true, $thumb_options = null)
 {
@@ -304,6 +304,9 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
             if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
                 $found = true;
             }
+            if (($ext == 'webp') && (function_exists('imagecreatefromwebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
+                $found = true;
+            }
         } else {
             $found = (($ext == 'jpg') || ($ext == 'jpeg') || ($ext == 'png'));
         }
@@ -324,6 +327,9 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
                 $found = true;
             }
             if (($ext == 'png') && (($gd & IMG_PNG) != 0)) {
+                $found = true;
+            }
+            if (($ext == 'webp') && (function_exists('imagewebp')/* https://bugs.php.net/bug.php?id=72596 */)) {
                 $found = true;
             }
         } else {

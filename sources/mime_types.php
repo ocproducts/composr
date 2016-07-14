@@ -82,13 +82,13 @@ function get_mime_types($as_admin)
         'jpe' => 'image/jpeg',
         'jpeg' => 'image/jpeg',
         'psd' => 'image/x-photoshop',
+        'webp' => 'image/webp',
 
         // Non/badly compressed images
         'bmp' => 'image/x-MS-bmp',
         'tga' => 'image/x-targa',
         'tif' => 'image/tiff',
         'tiff' => 'image/tiff',
-        'pcx' => 'image/x-pcx',
         'ico' => 'image/vnd.microsoft.icon',
 
         // Movies

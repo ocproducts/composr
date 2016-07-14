@@ -810,23 +810,13 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
         $place = $upload_folder_full . '/' . $filename;
     }
 
-    // Is a CDN transfer hook going to kick in?
-    $hooks = find_all_hooks('systems', 'cdn_transfer');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/cdn_transfer/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_cdn_transfer_' . filter_naughty_harsh($hook), true);
-        if ((!is_null($object)) && ($object->is_enabled())) {
-            $test = $object->transfer_upload($attach_name, $upload_folder, basename($place), $obfuscate, $accept_errors);
-            if ($test !== null) {
-                $url = array();
-                $url[0] = $test;
-                $url[1] = $file;
-                return $url;
-            }
-        }
+    $test_cdn = handle_upload_post_processing($enforce_type, $filearrays[$attach_name]['tmp_name'], $upload_folder, basename($place), $obfuscate, $accept_errors);
+    if ($test_cdn !== null) {
+        $url = array();
+        $url[0] = $test_cdn;
+        $url[1] = $test_cdn;
+        return $url;
     }
-
-    check_shared_space_usage($filearrays[$attach_name]['size']);
 
     // Copy there, and return our URL
     if ($filearrays[$attach_name]['type'] != 'plupload') {
@@ -846,16 +836,52 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
     fix_permissions($place);
     sync_file($place);
 
-    // Special code to re-orientate JPEG images if required (browsers cannot do this)
-    require_code('images');
-    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($place, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
-        convert_image($place, $place, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
-    }
-
     $url = array();
     $url[0] = $upload_folder . '/' . rawurlencode($filename);
     $url[1] = $file;
     return $url;
+}
+
+/**
+ * Does post-processing of a new upload into the system.
+ *
+ * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
+ * @param  PATH $path The disk path of the upload. Should be a temporary path that is deleted by the calling code
+ * @param  ID_TEXT $upload_folder The folder name in uploads/ where we would normally put this upload, if we weren't transferring it to the CDN
+ * @param  string $filename Filename to upload with. May not be respected, depending on service implementation
+ * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
+ * @set    0 1 2
+ * @param  boolean $accept_errors Whether to accept upload errors
+ * @return ?URLPATH URL on syndicated server (null: did not syndicate)
+ */
+function handle_upload_post_processing($enforce_type, $path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
+{
+    // Image filtering
+    require_code('images');
+    if ((($enforce_type & CMS_UPLOAD_ANYTHING) == 0) && (($enforce_type & CMS_UPLOAD_IMAGE) != 0) && (is_image($path, IMAGE_CRITERIA_WEBSAFE | IMAGE_CRITERIA_GD_WRITE, has_privilege(get_member(), 'comcode_dangerous')))) {
+        // Special code to re-orientate JPEG images if required (browsers cannot do this)
+        convert_image($path, $path, -1, -1, 100000/*Impossibly large size, so no resizing happens*/, false, null, true, true);
+
+        // Compress PNG files
+        require_code('images_png');
+        png_compress($path);
+    }
+
+    // Is a CDN transfer hook going to kick in?
+    $hooks = find_all_hooks('systems', 'cdn_transfer');
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/cdn_transfer/' . filter_naughty_harsh($hook));
+        $object = object_factory('Hook_cdn_transfer_' . filter_naughty_harsh($hook), true);
+        if ((!is_null($object)) && ($object->is_enabled())) {
+            $test = $object->transfer_upload($path, $upload_folder, $filename, $obfuscate, $accept_errors);
+            if ($test !== null) {
+                return $test;
+            }
+        }
+    }
+
+    // Check space
+    check_shared_space_usage(filesize($path));
 }
 
 /**

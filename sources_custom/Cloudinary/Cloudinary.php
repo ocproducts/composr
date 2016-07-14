@@ -3,15 +3,15 @@
 /**
  * Converts an uploaded file into a URL, by moving it to an appropriate place on the CDN.
  *
- * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload.
+ * @param  PATH $path The disk path of the upload. Should be a temporary path that is deleted by the calling code
  * @param  ID_TEXT $upload_folder The folder name in uploads/ where we would normally put this upload, if we weren't transferring it to the CDN
  * @param  string $filename Filename to upload with. May not be respected, depending on service implementation
  * @param  integer $obfuscate Whether to obfuscate file names so the URLs can not be guessed/derived (0=do not, 1=do, 2=make extension .dat as well)
  * @set    0 1 2
  * @param  boolean $accept_errors Whether to accept upload errors
- * @return ?array A pair: the URL and the filename (NULL: did nothing)
+ * @return ?URLPATH URL on syndicated server (null: did not syndicate)
  */
-public function cloudinary_transfer_upload($attach_name, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
+public function cloudinary_transfer_upload($path, $upload_folder, $filename, $obfuscate = 0, $accept_errors = false)
 {
     require_code('Cloudinary/Uploader');
 
@@ -41,12 +41,9 @@ public function cloudinary_transfer_upload($attach_name, $upload_folder, $filena
         $options['unique_filename'] = true;
     }
 
-    $filearrays = array();
-    get_upload_filearray($attach_name, $filearrays);
-
     try {
         $result = \Cloudinary\Uploader::upload(
-            $filearrays[$attach_name]['tmp_name'],
+            $path,
             $options
         );
         if (get_param_integer('keep_fatalistic', 0) == 1) {

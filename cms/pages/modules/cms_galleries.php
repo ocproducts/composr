@@ -730,18 +730,28 @@ class Module_cms_galleries extends Standard_crud_module
      */
     public function store_from_archive($file, &$in, $cat, $time = null)
     {
-        list($place, $aurl, $_file) = find_unique_path('uploads/galleries', filter_naughty($file), true);
-        list($place_thumb, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
+        list($new_path, $new_url, $new_filename) = find_unique_path('uploads/galleries', filter_naughty($file), true);
+        list(, $thumb_url) = find_unique_path('uploads/galleries_thumbs', filter_naughty($file), true);
 
         // Store on server
-        if (rename($in, $place) === false) {
-            intelligent_write_error($place);
+        if (rename($in, $new_path) === false) {
+            intelligent_write_error($new_path);
         }
-        fix_permissions($place);
-        sync_file($place);
+        fix_permissions($new_path);
+        sync_file($new_path);
+
+        // Post-process
+        require_code('uploads');
+        $test = handle_upload_post_processing(is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')) ? CMS_UPLOAD_IMAGE : CMS_UPLOAD_VIDEO, $new_path, 'uploads/galleries', $file, 0);
+        if ($test !== null) {
+            unlink($new_path);
+            sync_file($new_path);
+
+            $new_url = $test;
+        }
 
         // Add to database
-        return $this->simple_add($aurl, $thumb_url, $_file, $cat, $time);
+        return $this->simple_add($new_url, $thumb_url, $new_filename, $cat, $time);
     }
 
     /**
