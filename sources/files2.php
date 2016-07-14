@@ -683,27 +683,67 @@ function get_max_file_size($source_member = null, $connection = null, $consider_
 function check_extension($name, $skip_server_side_security_check = false, $file_to_delete = null, $accept_errors = false)
 {
     $ext = get_file_extension($name);
+
     $_types = get_option('valid_types');
     $types = array_flip(explode(',', $_types));
-    $_types = '';
     ksort($types);
     if (!$skip_server_side_security_check) {
         if (!has_privilege(get_member(), 'use_very_dangerous_comcode')) {
-            unset($types['js']);
-            unset($types['swf']);
-            unset($types['html']);
-            unset($types['htm']);
-            unset($types['shtml']);
-            unset($types['svg']);
-            unset($types['xml']);
+            $dangerous_markup_types = array(
+                'js',
+                'swf',
+                'html',
+                'htm',
+                'shtml',
+                'svg',
+                'xml',
+            );
+            foreach ($dangerous_markup_types as $type) {
+                unset($types[$type]);
+            }
         }
     }
-    foreach (array_flip($types) as $val) {
-        $_types .= $val . ',';
+    $types = array_flip($types);
+
+    $_types = '';
+    foreach ($types as $val) {
+        if ($_types != '') {
+            $_types .= ',';
+        }
+        $_types .= $val;
     }
-    $_types = substr($_types, 0, strlen($_types) - 1);
+
     if (!$skip_server_side_security_check) {
-        if (($ext == 'py') || ($ext == 'fcgi') || ($ext == 'yaws') || ($ext == 'dll') || ($ext == 'cgi') || ($ext == 'cfm') || ($ext == 'vbs') || ($ext == 'rhtml') || ($ext == 'rb') || ($ext == 'pl') || ($ext == 'phtml') || ($ext == 'php') || ($ext == 'php3') || ($ext == 'php4') || ($ext == 'php5') || ($ext == 'php6') || ($ext == 'phtml') || ($ext == 'aspx') || ($ext == 'ashx') || ($ext == 'asmx') || ($ext == 'asx') || ($ext == 'axd') || ($ext == 'asp') || ($ext == 'aspx') || ($ext == 'jsp') || ($ext == 'sh') || ($ext == 'cgi') || (strtolower($name) == '.htaccess')) {
+        $dangerous_code_types = array(
+            'py',
+            'dll',
+            'cfm',
+            'vbs',
+            'rhtml',
+            'rb',
+            'pl',
+            'phtml',
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php7',
+            'phps',
+            'aspx',
+            'ashx',
+            'asmx',
+            'asx',
+            'axd',
+            'asp',
+            'aspx',
+            'asmx',
+            'ashx',
+            'jsp',
+            'sh',
+            'cgi',
+            'fcgi',
+        );
+        if ((in_array($ext, $dangerous_code_types)) || (strtolower($name) == '.htaccess')) {
             if (!is_null($file_to_delete)) {
                 unlink($file_to_delete);
             }
@@ -713,13 +753,14 @@ function check_extension($name, $skip_server_side_security_check = false, $file_
             log_hack_attack_and_exit('SCRIPT_UPLOAD_HACK');
         }
     }
+
     if ($_types != '') {
-        $types = explode(',', $_types);
         foreach ($types as $val) {
             if (strtolower(trim($val)) == $ext) {
                 return true;
             }
         }
+
         if (!is_null($file_to_delete)) {
             unlink($file_to_delete);
         }
