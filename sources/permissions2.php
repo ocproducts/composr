@@ -98,15 +98,15 @@ function _handle_permission_check_logging($member, $op, $params, $result)
 }
 
 /**
- * Find if a group has a specified permission
+ * Find if a group has a specified privilege
  *
- * @param  GROUP $group_id The being checked whether to have the permission
- * @param  ID_TEXT $permission The ID code for the permission being checked for
+ * @param  GROUP $group_id The being checked whether to have the privilege
+ * @param  ID_TEXT $privilege The ID code for the privilege being checked for
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
  * @param  ?array $cats A list of cat details to require access to (c-type-1,c-id-1,c-type-2,c-d-2,...) (null: N/A)
- * @return boolean Whether the member has the permission
+ * @return boolean Whether the member has the privilege
  */
-function has_privilege_group($group_id, $permission, $page = null, $cats = null)
+function has_privilege_group($group_id, $privilege, $page = null, $cats = null)
 {
     if (is_null($page)) {
         $page = get_page_name();
@@ -119,18 +119,18 @@ function has_privilege_group($group_id, $permission, $page = null, $cats = null)
                 if (is_null($cats[$i * 2])) {
                     continue;
                 }
-                if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
-                    return $GROUP_PRIVILEGE_CACHE[$group_id][$permission][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
+                if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]])) {
+                    return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][$cats[$i * 2 + 0]][$cats[$i * 2 + 1]] == 1;
                 }
             }
         }
         if ($page != '') {
-            if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$permission][$page][''][''])) {
-                return $GROUP_PRIVILEGE_CACHE[$group_id][$permission][$page][''][''] == 1;
+            if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][$page][''][''])) {
+                return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][$page][''][''] == 1;
             }
         }
-        if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$permission][''][''][''])) {
-            return $GROUP_PRIVILEGE_CACHE[$group_id][$permission][''][''][''] == 1;
+        if (isset($GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][''][''])) {
+            return $GROUP_PRIVILEGE_CACHE[$group_id][$privilege][''][''][''] == 1;
         }
         return false;
     }
@@ -146,7 +146,7 @@ function has_privilege_group($group_id, $permission, $page = null, $cats = null)
         }
     }
 
-    return has_privilege_group($group_id, $permission, $page, $cats);
+    return has_privilege_group($group_id, $privilege, $page, $cats);
 }
 
 /**
