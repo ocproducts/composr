@@ -382,7 +382,6 @@ class Hook_addon_registry_core_cns
             'themes/default/css/cns_editor.css',
             'lang/EN/cns_member_directory.ini',
             'data/username_check.php',
-            'sources/hooks/systems/cns_auth/aef.php',
             'sources/hooks/systems/cns_auth/converge.php',
             'sources/hooks/systems/cns_auth/phpbb3.php',
             'sources/hooks/systems/cns_auth/smf.php',
