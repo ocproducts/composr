@@ -32,8 +32,6 @@ Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a
  - APC (free)
  - wincache (free, Windows only)
  - xcache (free)
- - eAccelerator (free)
- - ionCube PHP Accelerator (free)
 
 Only one opcode cache can be used, and they often need to be manually compiled against the PHP version on the server and then installed as an extension. Such system administration is beyond the scope of this tutorial.
 
@@ -101,7 +99,6 @@ The cache is implemented to work with any one of:
   - or [b]memcached[/b], which works via the other PHP memcached server extension
  - [b]Wincache[/b] -- a PHP accelerator developed by Microsoft, optimised for Windows
  - [b]XCache[/b] -- another PHP accelerator
- - [b]eAccelerator[/b] -- an old PHP accelerator that is no longer developed, so using this is not recommended
  - [b]disk cache[/b] -- while this does increase disk access, it still provides a performance boost over not having a persistent cache
 
 Composr will not use a persistent cache by default but it may be enabled from the Installation Options editor.

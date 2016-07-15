@@ -1165,7 +1165,6 @@ class Hook_addon_registry_core
             'sources/caches3.php',
             'sources/persistent_caching/index.html',
             'sources/persistent_caching/filesystem.php',
-            'sources/persistent_caching/eaccelerator.php',
             'sources/persistent_caching/apc.php',
             'sources/persistent_caching/xcache.php',
             'sources/persistent_caching/wincache.php',
