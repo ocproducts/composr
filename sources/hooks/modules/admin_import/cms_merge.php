@@ -80,10 +80,8 @@ class Hook_cms_merge
             'polls', // including rating, trackbacks, seo
             'pointstore',
             'redirects',
-            'searches_saved',
             'staff_links',
             'staff_website_monitoring',
-            'searches_saved',
             'wiki', // including rating, trackbacks, seo
             'stats',
             'themes',
@@ -111,7 +109,6 @@ class Hook_cms_merge
                                        'chat_rooms' => array('cns_members', 'cns_groups'),
                                        'downloads_and_categories' => array('cns_members', 'catalogues'),
                                        'filedump' => array('cns_members'),
-                                       'searches_saved' => array('cns_members'),
                                        'images_and_galleries' => array('cns_members', 'catalogues'),
                                        'news_and_categories' => array('cns_members', 'attachments', 'catalogues'),
                                        'polls' => array('cns_members', 'catalogues'),
@@ -3792,31 +3789,6 @@ class Hook_cms_merge
             $row['p_description'] = $this->get_lang_string($db, $row['p_description']);
 
             $GLOBALS['SITE_DB']->query_insert('pstore_permissions', $row);
-        }
-    }
-
-    /**
-     * Import saved searches.
-     *
-     * @param  object $db The DB connection to import from
-     * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  PATH $file_base The base directory we are importing from
-     */
-    public function import_searches_saved($db, $table_prefix, $file_base)
-    {
-        $rows = $db->query('SELECT * FROM ' . $table_prefix . 'searches_saved', null, null, true);
-        if (is_null($rows)) {
-            return;
-        }
-        foreach ($rows as $row) {
-            $member_id = import_id_remap_get('member', strval($row['s_member_id']), true);
-            if (is_null($member_id)) {
-                continue;
-            }
-            unset($row['id']);
-            $row['s_member_id'] = $member_id;
-
-            $GLOBALS['SITE_DB']->query_insert('searches_saved', $row);
         }
     }
 

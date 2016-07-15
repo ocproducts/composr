@@ -9147,7 +9147,6 @@ function string_scan($lang, $do_guessing = false)
         SALE_MADE
         SATURDAY
         SAVE
-        SAVED_SEARCHES
         SAVE_COMPUTER_USING_COOKIE
         SCREEN_DEV_TOOLS
         SEARCH

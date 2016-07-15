@@ -35,7 +35,7 @@ class Module_search
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 5;
+        $info['version'] = 6;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -46,7 +46,6 @@ class Module_search
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         $GLOBALS['SITE_DB']->drop_table_if_exists('searches_logged');
 
         delete_privilege('autocomplete_past_search');
@@ -63,15 +62,6 @@ class Module_search
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if (is_null($upgrade_from)) {
-            $GLOBALS['SITE_DB']->create_table('searches_saved', array(
-                'id' => '*AUTO',
-                's_title' => 'SHORT_TEXT',
-                's_member_id' => 'MEMBER',
-                's_time' => 'TIME',
-                's_primary' => 'SHORT_TEXT',
-                's_auxillary' => 'LONG_TEXT',
-            ));
-
             $GLOBALS['SITE_DB']->create_table('searches_logged', array(
                 'id' => '*AUTO',
                 's_member_id' => 'MEMBER',
@@ -90,6 +80,10 @@ class Module_search
             add_privilege('SEARCH', 'autocomplete_past_search', false);
             add_privilege('SEARCH', 'autocomplete_keyword_comcode_page', false);
             add_privilege('SEARCH', 'autocomplete_title_comcode_page', false);
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         }
     }
 
@@ -580,21 +574,6 @@ class Module_search
             }
         }
         $max = get_param_integer('search_max', $default_max);  // Also see get_search_rows
-
-        $save_title = get_param_string('save_title', '');
-        if ((!is_guest()) && ($save_title != '') && ($start == 0)) {
-            static $saved_search = false;
-            if (!$saved_search) {
-                $GLOBALS['SITE_DB']->query_insert('searches_saved', array(
-                    's_title' => $save_title,
-                    's_member_id' => get_member(),
-                    's_time' => time(),
-                    's_primary' => $content,
-                    's_auxillary' => serialize(array_merge($_POST, $_GET)),
-                ));
-                $saved_search = true;
-            }
-        }
 
         $boolean_operator = get_param_string('conjunctive_operator', 'OR');
         $boolean_search = $this->_is_boolean_search();
