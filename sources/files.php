@@ -250,7 +250,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'bingsiteauth.xml' => '',
         'php.ini' => '.*',
         '.htpasswd' => '.*',
-        'iirf.ini' => '',
         'robots.txt' => '',
         'favicon.ico' => '', // Not used for Composr, but default path for other scripts on server
         '400.shtml' => '',

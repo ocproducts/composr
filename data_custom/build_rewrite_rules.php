@@ -153,9 +153,6 @@ write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', 'E
 // Write rules to web.config (new IIS)
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);
 
-// Write rules to tut_adv_configuration.txt (old IIS)
-write_to('docs/pages/comcode_custom/EN/tut_adv_configuration.txt', 'IIRF', '[staff_note]begin_rewrite_rules[/staff_note][codebox]', '[/codebox][staff_note]end_rewrite_rules[/staff_note]', 0, $rewrite_rules);
-
 // Write rules to cms.hdf (Hip Hop PHP)
 write_to('cms.hdf', 'HPHP', 'RewriteRules {', "\t\t}", 3, $rewrite_rules);
 
@@ -168,7 +165,6 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
     $existing = file_get_contents($file_path);
 
     switch ($type) {
-        case 'IIRF':
         case 'Apache':
             $new = $match_start;
 
