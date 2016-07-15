@@ -678,7 +678,7 @@ class Hook_mybb
 
                 $forum_id = import_id_remap_get('forum', strval($row['fid']));
 
-                $id_new = cns_make_topic($forum_id, $row['subject'], '', 1, ($row['visible'] == 1) ? 0 : 1, 0, 0, 0, null, null, false, $row['views']);
+                $id_new = cns_make_topic($forum_id, $row['subject'], '', 1, ($row['visible'] == 1) ? 0 : 1, 0, 0, null, null, false, $row['views']);
 
                 import_id_remap_put('topic', strval($row['tid']), $id_new);
             }
@@ -1003,7 +1003,7 @@ class Hook_mybb
             if (is_null($to_id)) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
-            $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $from_id, $to_id, false);
+            $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, $from_id, $to_id, false);
 
             $first_post = true;
             foreach ($group as $_post) {

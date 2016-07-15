@@ -945,7 +945,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
                 $topic_id = $GLOBALS['FORUM_DB']->query_select_value_if_there($table, 'id', array('t_cache_first_title' => do_lang('INSTANT_MESSAGING_CONVO'), 't_pt_from' => $members[0], 't_pt_to' => $members[1]));
                 if (is_null($topic_id)) {
                     require_code('cns_topics_action');
-                    $topic_id = cns_make_topic(null, '', '', 1, 0, 0, 0, 0, $members[0], $members[1], false);
+                    $topic_id = cns_make_topic(null, '', '', 1, 0, 0, 0, $members[0], $members[1], false);
                     for ($i = 2; $i < count($members); $i++) {
                         $GLOBALS['FORUM_DB']->query_insert('f_special_pt_access', array('s_member_id' => $members[$i], 's_topic_id' => $topic_id));
                     }

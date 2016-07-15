@@ -428,7 +428,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
                 if ($intro_title == '') {
                     $intro_title = do_lang('INTRO_POST_DEFAULT', $username);
                 }
-                $topic_id = cns_make_topic(intval($forum_id), '', '', $initial_validated, 1, 0, 0, 0, null, null, false);
+                $topic_id = cns_make_topic(intval($forum_id), '', '', $initial_validated, 1, 0, 0, null, null, false);
                 require_code('cns_posts_action');
                 cns_make_post($topic_id, $intro_title, $intro_post, 0, true, $initial_validated, 0, null, null, null, $member_id, null, null, null, false);
             }

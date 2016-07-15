@@ -734,7 +734,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, 1, null, null, null, null, '');
+            cns_edit_topic($topic_id, null, null, 1, null, null, null, '');
         }
 
         return $this->redirect_to_forum('VALIDATE_TOPICS', $forum_id);
@@ -760,7 +760,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, null, 1, null, null, '');
+            cns_edit_topic($topic_id, null, null, null, null, 1, null, '');
         }
 
         return $this->redirect_to_forum('PIN_TOPIC', $forum_id);
@@ -786,7 +786,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, null, 0, null, null, '');
+            cns_edit_topic($topic_id, null, null, null, null, 0, null, '');
         }
 
         return $this->redirect_to_forum('UNPIN_TOPIC', $forum_id);
@@ -812,7 +812,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, null, null, null, 1, '');
+            cns_edit_topic($topic_id, null, null, null, null, null, 1, '');
         }
 
         return $this->redirect_to_forum('CASCADE_TOPIC', $forum_id);
@@ -838,7 +838,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, null, null, null, 0, '');
+            cns_edit_topic($topic_id, null, null, null, null, null, 0, '');
         }
 
         return $this->redirect_to_forum('UNCASCADE_TOPIC', $forum_id);
@@ -864,7 +864,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, 1, null, null, null, '');
+            cns_edit_topic($topic_id, null, null, null, 1, null, null, '');
         }
 
         return $this->redirect_to_forum('OPEN_TOPIC', $forum_id);
@@ -890,7 +890,7 @@ class Module_topics
             if ($i == 0) {
                 $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
             }
-            cns_edit_topic($topic_id, null, null, null, 0, null, null, null, '');
+            cns_edit_topic($topic_id, null, null, null, 0, null, null, '');
         }
 
         return $this->redirect_to_forum('CLOSE_TOPIC', $forum_id);
@@ -2236,7 +2236,7 @@ class Module_topics
                 if (!is_null($topic_id)) {
                     // Already a topic
                 } else { // New topic
-                    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false, $metadata['views']);
+                    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, null, null, false, $metadata['views']);
                 }
 
                 $_title = get_screen_title('REPORT_POST');
@@ -3739,7 +3739,7 @@ END;
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
         cns_move_topics($from, $to, array($topic_id));
-        cns_edit_topic($topic_id, null, null, null, null, null, null, null, '', post_param_string('title'));
+        cns_edit_topic($topic_id, null, null, null, null, null, null, '', post_param_string('title'));
         return (post_param_integer('redir_topic', 0) == 0) ? $this->redirect_to_forum('MOVE_TOPIC', $from) : $this->redirect_to('MOVE_TOPIC', $topic_id);
     }
 
@@ -3753,7 +3753,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, 1, null, null, '');
+        cns_edit_topic($topic_id, null, null, null, null, 1, null, '');
         return $this->redirect_to('PIN_TOPIC', $topic_id);
     }
 
@@ -3767,7 +3767,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, 0, null, null, '');
+        cns_edit_topic($topic_id, null, null, null, null, 0, null, '');
         return $this->redirect_to('UNPIN_TOPIC', $topic_id);
     }
 
@@ -3781,7 +3781,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, null, null, 1, '');
+        cns_edit_topic($topic_id, null, null, null, null, null, 1, '');
         return $this->redirect_to('CASCADE_TOPIC', $topic_id);
     }
 
@@ -3795,7 +3795,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, null, null, 0, '');
+        cns_edit_topic($topic_id, null, null, null, null, null, 0, '');
         return $this->redirect_to('UNCASCADE_TOPIC', $topic_id);
     }
 
@@ -3809,7 +3809,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, 1, null, null, null, '');
+        cns_edit_topic($topic_id, null, null, null, 1, null, null, '');
         return $this->redirect_to('OPEN_TOPIC', $topic_id);
     }
 
@@ -3823,7 +3823,7 @@ END;
         $topic_id = get_param_integer('id');
         require_code('cns_topics_action');
         require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, 0, null, null, null, '');
+        cns_edit_topic($topic_id, null, null, null, 0, null, null, '');
         return $this->redirect_to('CLOSE_TOPIC', $topic_id);
     }
 

@@ -137,7 +137,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
         $is_starter = true;
 
         require_code('cns_topics_action');
-        $topic_id = cns_make_topic($forum_id, $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, '', $topic_validated, 1, 0, 0, 0, null, null, false, 0, null, is_null($content_url) ? '' : $content_url);
+        $topic_id = cns_make_topic($forum_id, $topic_identifier_encapsulation_prefix . ': #' . $topic_identifier, '', $topic_validated, 1, 0, 0, null, null, false, 0, null, is_null($content_url) ? '' : $content_url);
 
         if (strpos($topic_identifier, ':') !== false) {
             // Sync comment_posted ones to also monitor the forum ones; no need for opposite way as comment ones already trigger forum ones

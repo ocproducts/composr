@@ -227,28 +227,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * From a member row, get the member's primary usergroup.
-     *
-     * @param  array $r The profile-row
-     * @return GROUP The member's primary usergroup
-     */
-    public function mrow_group($r)
-    {
-        return $r['mgroup'];
-    }
-
-    /**
-     * From a member row, get the member's member ID.
-     *
-     * @param  array $r The profile-row
-     * @return MEMBER The member ID
-     */
-    public function mrow_id($r)
-    {
-        return $r['id'];
-    }
-
-    /**
      * From a member row, get the member's last visit date.
      *
      * @param  array $r The profile-row
@@ -271,17 +249,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
     }
 
     /**
-     * Get a URL to the specified member's home (control panel).
-     *
-     * @param  MEMBER $id The member ID
-     * @return URLPATH The URL to the members home
-     */
-    public function member_home_url($id)
-    {
-        return get_forum_base_url() . '/index.php?act=UserCP&CODE=00';
-    }
-
-    /**
      * Get a URL to the specified member's profile.
      *
      * @param  MEMBER $id The member ID
@@ -290,37 +257,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
     protected function _member_profile_url($id)
     {
         return get_forum_base_url() . '/index.php?showuser=' . strval($id);
-    }
-
-    /**
-     * Get a URL to the registration page (for people to create member accounts).
-     *
-     * @return URLPATH The URL to the registration page
-     */
-    protected function _join_url()
-    {
-        return get_forum_base_url() . '/index.php?act=Reg&CODE=00';
-    }
-
-    /**
-     * Get a URL to the members-online page.
-     *
-     * @return URLPATH The URL to the members-online page
-     */
-    protected function _users_online_url()
-    {
-        return get_forum_base_url() . '/index.php?act=Online&CODE=listall';
-    }
-
-    /**
-     * Get a URL to send a private/personal message to the given member.
-     *
-     * @param  MEMBER $id The member ID
-     * @return URLPATH The URL to the private/personal message page
-     */
-    protected function _member_pm_url($id)
-    {
-        return get_forum_base_url() . '/index.php?act=Msg&CODE=04&MID=' . strval($id);
     }
 
     /**
@@ -392,26 +328,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
         }
         $url = get_forum_base_url() . '/index.php?act=findpost&pid=' . strval($id);
         return $url;
-    }
-
-    /**
-     * Get an array of members who are in at least one of the given array of usergroups.
-     *
-     * @param  array $groups The array of usergroups
-     * @param  ?integer $max Return up to this many entries for primary members and this many entries for secondary members (null: no limit, only use no limit if querying very restricted usergroups!)
-     * @param  integer $start Return primary members after this offset and secondary members after this offset
-     * @return ?array The array of members (null: no members)
-     */
-    public function member_group_query($groups, $max = null, $start = 0)
-    {
-        $_groups = '';
-        foreach ($groups as $group) {
-            if ($_groups != '') {
-                $_groups .= ' OR ';
-            }
-            $_groups .= 'mgroup=' . strval($group);
-        }
-        return $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'members WHERE ' . $_groups . ' ORDER BY mgroup,id ASC', $max, $start);
     }
 
     /**
@@ -531,57 +447,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
     public function get_topic_count($member)
     {
         return $this->connection->query_select_value('topics', 'COUNT(*)', array('starter_id' => $member));
-    }
-
-    /**
-     * Find out if the given member ID is banned.
-     *
-     * @param  MEMBER $member The member ID
-     * @return boolean Whether the member is banned
-     */
-    public function is_banned($member)
-    {
-        // Are they banned
-        $banned = $this->connection->query_select_value_if_there('groups', 'g_id', array('g_view_board' => 0));
-        if (is_null($banned)) {
-            return false;
-        }
-        $group = $this->get_member_row_field($member, 'mgroup');
-        if (($group == $banned) || (is_null($group))) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Find if the specified member ID is marked as staff or not.
-     *
-     * @param  MEMBER $member The member ID
-     * @return boolean Whether the member is staff
-     */
-    protected function _is_staff($member)
-    {
-        $usergroup = $this->get_member_row_field($member, 'mgroup');
-        if ((!is_null($usergroup)) && ($this->connection->query_select_value_if_there('groups', 'g_is_supmod', array('g_id' => $usergroup)) == 1)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Find if the specified member ID is marked as a super admin or not.
-     *
-     * @param  MEMBER $member The member ID
-     * @return boolean Whether the member is a super admin
-     */
-    protected function _is_super_admin($member)
-    {
-        $usergroup = $this->get_member_row_field($member, 'mgroup');
-        if ((!is_null($usergroup)) && ($this->connection->query_select_value_if_there('groups', 'g_access_cp', array('g_id' => $usergroup)) == 1)) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -737,55 +602,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
     public function mrow_id($r)
     {
         return $r['member_id'];
-    }
-
-    /**
-     * Get the rows for the top given number of posters on the forum.
-     *
-     * @param  integer $limit The limit to the number of top posters to fetch
-     * @return array The rows for the given number of top posters in the forum
-     */
-    public function get_top_posters($limit)
-    {
-        return $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'members WHERE member_id<>' . strval($this->get_guest_id()) . ' ORDER BY posts DESC', $limit);
-    }
-
-    /**
-     * This is the opposite of the get_next_member function.
-     *
-     * @param  MEMBER $member The member ID to decrement
-     * @return ?MEMBER The previous member ID (null: no previous member)
-     */
-    public function get_previous_member($member)
-    {
-        $tempid = $this->connection->query_value_if_there('SELECT member_id FROM ' . $this->connection->get_table_prefix() . 'members WHERE member_id<' . strval($member) . ' AND member_id<>0 ORDER BY member_id DESC');
-        return $tempid;
-    }
-
-    /**
-     * Get the member ID of the next member after the given one, or null.
-     * It cannot be assumed there are no gaps in member IDs, as members may be deleted.
-     *
-     * @param  MEMBER $member The member ID to increment
-     * @return ?MEMBER The next member ID (null: no next member)
-     */
-    public function get_next_member($member)
-    {
-        $tempid = $this->connection->query_value_if_there('SELECT member_id FROM ' . $this->connection->get_table_prefix() . 'members WHERE member_id>' . strval($member) . ' ORDER BY member_id');
-        return $tempid;
-    }
-
-    /**
-     * Try to find a member with the given IP address
-     *
-     * @param  IP $ip The IP address
-     * @return array The distinct rows found
-     */
-    public function probe_ip($ip)
-    {
-        $a = $this->connection->query_select('members', array('DISTINCT member_id'), array('ip_address' => $ip));
-        $b = $this->connection->query_select('posts', array('DISTINCT author_id AS id'), array('ip_address' => $ip));
-        return array_merge($a, $b);
     }
 
     /**
@@ -985,24 +801,6 @@ class Forum_driver_ipb3 extends Forum_driver_base
         }
 
         return $avatar;
-    }
-
-    /**
-     * Get the photo thumbnail URL for the specified member ID.
-     *
-     * @param  MEMBER $member The member ID
-     * @return URLPATH The URL (blank: none)
-     */
-    public function get_member_photo_url($member)
-    {
-        $pic = $this->connection->query_select_value_if_there('profile_portal', 'pp_main_photo', array('pp_member_id' => $member));
-        if (is_null($pic)) {
-            $pic = '';
-        } elseif ((url_is_local($pic)) && ($pic != '')) {
-            $pic = get_forum_base_url() . '/uploads/' . $pic;
-        }
-
-        return $pic;
     }
 
     /**

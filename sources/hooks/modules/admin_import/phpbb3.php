@@ -782,7 +782,7 @@ class Hook_phpbb3
                 }
                 $forum_id = import_id_remap_get('forum', strval($row['forum_id']));
 
-                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_visibility'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, 0, null, null, false, $row['topic_views']);
+                $id_new = cns_make_topic($forum_id, '', $this->convert_topic_emoticon($row['icon_id']), $row['topic_visibility'], ($row['topic_status'] == 1) ? 0 : 1, ($row['topic_type'] > 0) ? 1 : 0, ($row['topic_type'] > 2) ? 1 : 0, null, null, false, $row['topic_views']);
 
                 import_id_remap_put('topic', strval($row['topic_id']), $id_new);
             }
@@ -1074,7 +1074,7 @@ class Hook_phpbb3
             if (is_null($to_id)) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
-            $topic_id = cns_make_topic(null, '', $this->convert_topic_emoticon($row['icon_id']), 1, 1, 0, 0, 0, $from_id, $to_id, false);
+            $topic_id = cns_make_topic(null, '', $this->convert_topic_emoticon($row['icon_id']), 1, 1, 0, 0, $from_id, $to_id, false);
 
             $first_post = true;
             foreach ($group as $_postdetails) {
@@ -1472,7 +1472,7 @@ class Hook_phpbb3
             }
 
             $title = do_lang('REPORTED_POST_TITLE', $post_title);
-            $topic_id = cns_make_topic($forum_id, $title, '', $row['topic_approved'], ($row['report_closed'] == 1) ? 0 : 1, 0, 0, 0, null, null, false);
+            $topic_id = cns_make_topic($forum_id, $title, '', $row['topic_approved'], ($row['report_closed'] == 1) ? 0 : 1, 0, 0, null, null, false);
             $post = do_template('CNS_REPORTED_POST', array('_GUID' => '0dd1532216390f75385323ce11baedba', 'POST_ID' => strval($post_id), 'MEMBER' => $member, 'TOPIC_NAME' => $topic_info[0]['t_cache_first_title'], 'POST' => $row['report_text'], 'POSTER' => $poster));
             cns_make_post($topic_id, $title, $post->evaluate(), 0, true, 1, 0, $member, null, $row['report_time'], $user_id, null, null, null, false, true, null, true, $title, null, false);
         }

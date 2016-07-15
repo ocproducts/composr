@@ -702,7 +702,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'unread_forums', array('t_forum_id', 't_cache_last_time'));
 
         // Welcome topic
-        $topic_id = cns_make_topic($staff_forum_id, '', '', 1, 1, 0, 0, 0, null, null, false);
+        $topic_id = cns_make_topic($staff_forum_id, '', '', 1, 1, 0, 0, null, null, false);
 
         $GLOBALS['FORUM_DB']->create_table('f_posts', array(
             'id' => '*AUTO',

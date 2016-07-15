@@ -624,7 +624,7 @@ class Hook_vb3
 
                 $emoticon = $this->convert_topic_emoticon($row['iconid']);
 
-                $id_new = cns_make_topic($forum_id, '', $emoticon, $row['visible'], $row['open'], $row['sticky'], 0, 0, null, null, false, $row['views']);
+                $id_new = cns_make_topic($forum_id, '', $emoticon, $row['visible'], $row['open'], $row['sticky'], 0, null, null, false, $row['views']);
 
                 import_id_remap_put('topic', strval($row['threadid']), $id_new);
             }
@@ -645,7 +645,7 @@ class Hook_vb3
             $sticky = ($row['enddate'] < time()) ? 1 : 0;
             $cascading = $sticky;
 
-            $id_new = cns_make_topic($forum_id, '', $emoticon, 1, 0, $sticky, $cascading, 0, null, null, false, $row['views']);
+            $id_new = cns_make_topic($forum_id, '', $emoticon, 1, 0, $sticky, $cascading, null, null, false, $row['views']);
             cns_make_post($id_new, @html_entity_decode($row['title'], ENT_QUOTES, get_charset()), $this->fix_links($row['pagetext'], $db, $table_prefix), 0, true, 1, 1, null, null, $row['startdate'], $row['userid'], null, null, null, false, false, $forum_id, false, $row['title']);
 
             import_id_remap_put('announcement', strval($row['announcementid']), $id_new);
@@ -1095,7 +1095,7 @@ class Hook_vb3
             if (is_null($to_id)) {
                 $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
             }
-            $topic_id = cns_make_topic(null, '', $this->convert_topic_emoticon($row['iconid']), 1, 1, 0, 0, 0, $from_id, $to_id, false);
+            $topic_id = cns_make_topic(null, '', $this->convert_topic_emoticon($row['iconid']), 1, 1, 0, 0, $from_id, $to_id, false);
 
             $first_post = true;
             foreach ($group as $_postdetails) {

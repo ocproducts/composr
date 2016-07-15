@@ -979,7 +979,7 @@ class Hook_smf2
 
                 $forum_id = import_id_remap_get('forum', strval($row['id_board']));
                 $emoticon = $this->convert_topic_emoticon($row['icon']);
-                $id_new = cns_make_topic($forum_id, $row['subject'], $emoticon, 1, ($row['locked'] == 0) ? 1 : 0, 0, 0, 0, null, null, false, $row['num_views']);
+                $id_new = cns_make_topic($forum_id, $row['subject'], $emoticon, 1, ($row['locked'] == 0) ? 1 : 0, 0, 0, null, null, false, $row['num_views']);
 
                 import_id_remap_put('topic', strval($row['id_topic']), $id_new);
             }
@@ -1310,7 +1310,7 @@ class Hook_smf2
                 if (is_null($to_id)) {
                     $to_id = $GLOBALS['CNS_DRIVER']->get_guest_id();
                 }
-                $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $from_id, $to_id, false);
+                $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, $from_id, $to_id, false);
 
                 $first_post = true;
                 foreach ($group as $_post) {
