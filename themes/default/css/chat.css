@@ -280,7 +280,7 @@
 }
 
 .chat_lobby_convos_tab_uptodate, .chat_lobby_convos_tab_new_messages {
-	background: url('{$IMG;,tab}');
+	background: url('{$IMG;,tabs/tab}');
 	background-repeat: no-repeat;
 	float: {!en_left};
 	padding: 3px 5px 0 5px;

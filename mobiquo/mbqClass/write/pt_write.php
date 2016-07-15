@@ -228,7 +228,6 @@ class CMSPtWrite
             cns_ping_topic_read($topic_id);
         }
 
-        decache('side_cns_personal_topics', array(get_member()));
-        decache('_new_pp', array(get_member()));
+        decache_private_topics(get_member());
     }
 }

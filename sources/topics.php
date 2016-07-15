@@ -928,9 +928,7 @@ class CMS_Topic
             // Mark read
             if (array_key_exists('intended_solely_for', $post)) {
                 // Has now read
-                decache('side_cns_personal_topics', null, get_member());
-                decache('_new_pp', null, get_member());
-                decache('_get_pts', null, get_member());
+                decache_private_topics(get_member());
             }
 
             // Make sure that pre-processing happens to pick up metadata 'image' for post attachment -- but only for the first post

@@ -26,6 +26,7 @@
 function get_staff_actions_list()
 {
     require_lang('lang');
+    require_lang('themes');
     $list = array(
         'view' => do_lang_tempcode('SCREEN_DEV_TOOLS'),
     );

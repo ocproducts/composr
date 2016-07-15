@@ -307,10 +307,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
                 access_denied('PRIVILEGE', 'view_other_pt');
             }
 
-            decache(array(
-                array('side_cns_personal_topics', array(get_member())),
-                array('_new_pp', array(get_member())),
-            ));
+            decache_private_topics(get_member());
         }
         // Check validated
         if (($topic_info['t_validated'] == 0) && (addon_installed('unvalidated'))) {

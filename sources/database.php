@@ -1603,19 +1603,21 @@ class DatabaseConnector
      *
      * @param  ID_TEXT $table The table name
      * @param  ID_TEXT $index The index name
+     * @param  boolean $do_check_first Check the index actually exists first (sometimes we add new indexes in patch releases for performance reasons, but referencing them would cause a fatal error)
      * @return string SQL to add
      */
-    public function prefer_index($table, $index)
+    public function prefer_index($table, $index, $do_check_first = true)
     {
         static $cache = array();
         if (isset($cache[$table][$index])) {
             return $cache[$table][$index];
         }
 
-        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index))))) {
-            $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
-        } else {
-            $ret = '';
+        $ret = '';
+        if (substr(get_db_type(), 0, 5) == 'mysql') {
+            if ((!$do_check_first) || (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index))))) {
+                $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
+            }
         }
         $cache[$table][$index] = $ret;
         return $ret;

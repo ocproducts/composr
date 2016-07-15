@@ -560,9 +560,7 @@ function has_caching_for($type)
  */
 function decache_private_topics($member_id = null)
 {
-    decache('side_cns_private_topics', null, $member_id);
-    decache('_new_pp', null, $member_id);
-    decache('_get_pts', null, $member_id);
+    decache(array('side_cns_private_topics', '_new_pp', '_get_pts'), null, $member_id);
 }
 
 /**

@@ -364,10 +364,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                     $with = $info[0]['t_pt_to'];
                 }
 
-                decache(array(
-                    array('side_cns_personal_topics', array($with)),
-                    array('_new_pp', array($with)),
-                ));
+                decache_private_topics($with);
             }
         }
 
@@ -515,14 +512,13 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
         array('bottom_news', array($forum_name)),
     );
 
-    if (!is_null($member)) {
-        $decache[] = array('side_cns_personal_topics', array($member));
-        $decache[] = array('_new_pp', array($member));
-    }
-
     if (get_option('show_post_validation') == '1') {
         $decache[] = array('main_staff_checklist', null);
     }
 
     decache($decache);
+
+    if (!is_null($member)) {
+        decache_private_topics($member);
+    }
 }
