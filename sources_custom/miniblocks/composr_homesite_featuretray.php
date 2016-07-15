@@ -302,7 +302,6 @@ $featuretree = array(
                 null, // divider
                 array('Ping support and <abbr title="Really Simple Syndication">RSS</abbr> Cloud support'),
                 array('Multiple news categories, and filtering'),
-                array('Chicklet support'),
                 array('Multiple ways to integrate news into your website'),
                 array('Import from RSS feeds <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of News" href="http://shareddemo.composr.info/cms/index.php?page=cms_news"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Easily syndicate to Facebook and Twitter'),

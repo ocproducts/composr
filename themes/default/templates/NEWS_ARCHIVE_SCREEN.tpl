@@ -1,15 +1,7 @@
 {TITLE}
 
 <div class="float_surrounder" itemprop="significantLinks">
-	{+START,SET,commented_out}
-		<div class="chicklets">
-			{+START,INCLUDE,NEWS_CHICKLETS}RSS_URL={$FIND_SCRIPT*,backend}{+END}
-		</div>
-	{+END}
-
-	{$,<div class="chicklets_spacer">}
-		{CONTENT}
-	{$,</div>}
+	{CONTENT}
 </div>
 
 {+START,IF_PASSED,CAT}

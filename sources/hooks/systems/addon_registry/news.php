@@ -133,7 +133,6 @@ class Hook_addon_registry_news
             'themes/default/templates/BLOCK_SIDE_NEWS.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_SUMMARY.tpl',
             'themes/default/templates/BLOCK_SIDE_NEWS_CATEGORIES.tpl',
-            'themes/default/templates/NEWS_CHICKLETS.tpl',
             'themes/default/templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl',
             'themes/default/images/newscats/index.html',
             'themes/default/images/newscats/art.jpg',
@@ -196,7 +195,6 @@ class Hook_addon_registry_news
             'templates/BLOCK_SIDE_NEWS_SUMMARY.tpl' => 'block_side_news',
             'templates/BLOCK_BOTTOM_NEWS.tpl' => 'block_bottom_news',
             'templates/NEWS_ENTRY_SCREEN.tpl' => 'news_full_screen',
-            'templates/NEWS_CHICKLETS.tpl' => 'news_chicklets',
             'templates/NEWS_ARCHIVE_SCREEN.tpl' => 'news_archive_screen',
             'templates/NEWS_WORDPRESS_IMPORT_SCREEN.tpl' => 'administrative__news_wordpress_import_screen',
             'templates/NEWS_BRIEF.tpl' => 'news_archive_screen',
@@ -425,24 +423,6 @@ class Hook_addon_registry_news
                 'CONTENT' => $content,
                 'SUBMIT_URL' => placeholder_url(),
                 'BLOG' => false,
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__news_chicklets()
-    {
-        require_css('news');
-
-        return array(
-            lorem_globalise(do_lorem_template('NEWS_CHICKLETS', array(
-                'RSS_URL' => placeholder_url(),
             )), null, '', true)
         );
     }

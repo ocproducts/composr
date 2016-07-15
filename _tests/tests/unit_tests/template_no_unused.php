@@ -122,7 +122,6 @@ class template_no_unused_test_set extends cms_test_case
             'MENU_SPACER_sitemap',
             'MENU_SPACER_tree',
             'MENU_tree',
-            'NEWS_CHICKLETS',
             'NOTIFICATION_BUTTONS',
             'NOTIFICATION_TYPES',
             'POINTSTORE_CUSTOM',
