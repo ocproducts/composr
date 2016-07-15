@@ -87,8 +87,8 @@ class Hook_choose_theme_files
                 ></category>';
             }
         } else {
-            $related = (substr($id, -8) == '-related');
-            if ($related) {
+            $is_related = (substr($id, -8) == '-related');
+            if ($is_related) {
                 $id = substr($id, 0, strlen($id) - 8);
                 $relations = collapse_2d_complexity('rel_a', 'cnt', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_a', 'COUNT(*) AS cnt'), null, 'GROUP BY rel_a'));
             }
@@ -113,7 +113,7 @@ class Hook_choose_theme_files
 
                         $description_html = $this->get_template_details_table($theme, $template_file, $template_file_path, $action_log_times);
 
-                        if ($related) {
+                        if ($is_related) {
                             $has_children = isset($relations[$template_file]);
 
                             if ($has_children) {
@@ -290,7 +290,7 @@ class Hook_choose_theme_files
     /**
      * Find what addons templates are.
      *
-     * @param ?ID_TEXT $addon Just for this addon (null: all)
+     * @param ?ID_TEXT $filter_addon Just for this addon (null: all)
      * @return array Map of template file to addon
      */
     private function templates_for_addons($filter_addon = null)
@@ -499,10 +499,10 @@ class Hook_choose_theme_files
     /**
      * Find icon and labelling details for a node.
      *
-     * @param $file ID_TEXT File
+     * @param  ID_TEXT $file File
      * @return array A triple: icon, retina icon, label
      */
-    function get_template_file_icons($file)
+    private function get_template_file_icons($file)
     {
         $ext = get_file_extension(basename($file));
 

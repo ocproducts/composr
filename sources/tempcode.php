@@ -221,7 +221,7 @@ function missing_template_parameter($origin)
     if (strtolower($template_name) !== $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
-    trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name === '') ? '???' : $template_name));
+    trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name === '') ? '???' : $template_name), E_NOTICE);
     return '';
 }
 
@@ -1146,7 +1146,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
 
                 if (($GLOBALS['RECORD_TEMPLATES_USED']) && (is_object($param[1]))) {
                     require_code('themes_meta_tree');
-                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, $key);
+                    $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__SET, is_object($param[0]) ? $param[0]->evaluate() : $param[0]);
                 }
             }
             return;
@@ -1922,7 +1922,7 @@ class Tempcode
      * Replace the named parameter with a specific value. Hardly used, but still important. Note that this will bind to all kinds of things that might not normally take named parameters, like symbols; this should not cause problems though.
      *
      * @param  string $key Named parameter
-     * @param  Tempcode $parameter Specific value
+     * @param  mixed $value Specific value
      */
     public function singular_bind($key, $value)
     {

@@ -30,7 +30,12 @@ class Tempcode_test_set extends cms_test_case
             'NONEMPTY' => $nonempty,
             'PASSED' => 'This is a passed parameter',
             'SIMPLE_ARRAY' => array('1', '2', '3'),
-            'ARRAY' => array(array('a' => 'A1', 'b' => 'B1', 'c' => 'C1'), array('a' => 'A2', 'b' => 'B2', 'c' => 'C2'), array('a' => 'A3', 'b' => 'B3', 'c' => 'C3'), array('a' => 'A4', 'b' => 'B4', 'c' => 'C4')),
+            'ARRAY' => array(
+                array('A' => 'A1', 'B' => 'B1', 'C' => 'C1'),
+                array('A' => 'A2', 'B' => 'B2', 'C' => 'C2'),
+                array('A' => 'A3', 'B' => 'B3', 'C' => 'C3'),
+                array('A' => 'A4', 'B' => 'B4', 'C' => 'C4'),
+            ),
         ), null, false, null, '.txt', 'text');
         $got = $tpl->evaluate();
 
@@ -418,19 +423,19 @@ bar
 <table><tbody>
 <tr>
 	<td>
-
+		A1 B1 C1
 	</td>
-
+		
 	<td>
-
+		A2 B2 C2
 	</td>
 </tr><tr>
 	<td>
-
+		A3 B3 C3
 	</td>
 
 	<td>
-
+		A4 B4 C4
 	</td>
 </tr>
 </tbody></table>';

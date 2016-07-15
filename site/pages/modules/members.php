@@ -246,7 +246,7 @@ class Module_members
             warn_exit(do_lang_tempcode('COULD_NOT_UNSUBSCRIBE'));
         }
 
-        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('id' => $id), '' ,1);
+        $GLOBALS['FORUM_DB']->query_update('f_members', array('m_allow_emails_from_staff' => 0), array('id' => $id), '', 1);
 
         return inform_screen($this->title, do_lang_tempcode('newsletter:MEMBER_NEWSLETTER_UNSUBSCRIBED', escape_html(get_site_name())));
     }

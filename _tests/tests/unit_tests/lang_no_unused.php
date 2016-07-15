@@ -83,7 +83,7 @@ class lang_no_unused_test_set extends cms_test_case
             'PROGRAMMATIC_SYMBOL__',
             'LOGICAL_SYMBOL__',
             'FORMATTING_SYMBOL__',
-            'SYMBOL__',
+            'MISC_SYMBOL__',
             'CALENDAR_MONTHLY_RECURRENCE_',
             'CHAT_EFFECT_',
             'EMOTICON_RELEVANCE_LEVEL_',

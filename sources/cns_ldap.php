@@ -229,7 +229,7 @@ function cns_ldap_bind()
                 require_code('site');
                 $extended_error = '';
                 ldap_get_option($LDAP_CONNECTION, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
-                fatal_exit(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION) . '; ' . $extended_error . ' -- (initial connection bind)'), 'warn', false, true);
+                fatal_exit(make_string_tempcode('LDAP: ' . ldap_error($LDAP_CONNECTION) . '; ' . $extended_error . ' -- (initial connection bind)'));
             }
         }
     } else {

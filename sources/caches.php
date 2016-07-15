@@ -540,7 +540,10 @@ function has_caching_for($type)
         return false;
     }
 
-    static $cache;
+    static $cache = array();
+    if (isset($cache[$type])) {
+        return $cache[$type];
+    }
 
     $setting = (get_option('is_on_' . $type . '_cache') == '1');
 

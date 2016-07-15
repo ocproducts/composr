@@ -107,7 +107,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                         ocp_mark_as_escaped($value);
                     }
                     if (!running_script('install')) {
-                        trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)));
+                        trigger_error(do_lang('MISSING_SYMBOL', escape_html($name)), E_NOTICE);
                     }
                 }
             }
@@ -471,7 +471,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                 break;
 
             default:
-                trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)));
+                trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)), E_NOTICE);
         }
 
         if ($escaped !== array()) {
@@ -499,7 +499,7 @@ function ecv($lang, $escaped, $type, $name, $param)
     }
     $value = $dle ? do_lang($name, $a, $b, $c, $lang, false) : escape_html($name . ':' . (($a !== null) ? $a : '') . ',' . (($b !== null) ? $b : ''));
     if ($value === null) {
-        trigger_error(do_lang('MISSING_LANG_STRING', escape_html($name)));
+        trigger_error(do_lang('MISSING_LANG_STRING', escape_html($name)), E_NOTICE);
 
         $value = '';
         if ($GLOBALS['XSS_DETECT']) {

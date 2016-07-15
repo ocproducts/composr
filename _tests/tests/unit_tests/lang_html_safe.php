@@ -116,6 +116,7 @@ class lang_html_safe_test_set extends cms_test_case
                             'SU_CHATTING_AS',
                             'NUM_GUESTS',
                             'ALT_FIELD',
+                            'NO_SUCH_THEME_IMAGE',
         );
 
         $result = array_keys(array_intersect_key($LANGUAGE_LITERAL, $LANGUAGE_HTML));

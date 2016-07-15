@@ -258,7 +258,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         // Missing
         if (!$silent_fail) {
             require_code('site');
-            trigger_error(do_lang('NO_SUCH_THEME_IMAGE', escape_html($id)));
+            trigger_error(do_lang('NO_SUCH_THEME_IMAGE', escape_html($id)), E_USER_NOTICE);
         }
     }
 

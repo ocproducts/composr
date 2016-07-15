@@ -124,7 +124,6 @@ function init__tempcode_compiler()
         'CLEAN_FILE_SIZE' => SYMBOL_COMPILE_STATIC_SAFE,
         'COPPA_ON' => SYMBOL_COMPILE_STATIC_SAFE,
         'CSS_DIMENSION_REDUCE' => SYMBOL_COMPILE_STATIC_SAFE,
-        'DEC' => SYMBOL_COMPILE_STATIC_SAFE,
         'DIV_CEIL' => SYMBOL_COMPILE_STATIC_SAFE,
         'DOMAIN' => SYMBOL_COMPILE_STATIC_SAFE,
         'ENTITY_DECODE' => SYMBOL_COMPILE_STATIC_SAFE,
@@ -732,15 +731,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 case 'IF':
                                 case 'IF_EMPTY':
                                 case 'IF_NON_EMPTY':
-                                case 'IF_PASSED':
-                                case 'IF_NON_PASSED':
-                                case 'IF_PASSED_AND_TRUE':
-                                case 'IF_NON_PASSED_OR_FALSE':
                                 case 'BOX':
-                                case 'IF_IN_ARRAY':
-                                case 'IF_NOT_IN_ARRAY':
-                                case 'IF_ARRAY_EMPTY':
-                                case 'IF_ARRAY_NON_EMPTY':
                                     $tpl_funcs = array();
                                     $eval = debug_eval('return ' . $regular_code_with_faux . ';', $tpl_funcs, array(), $cl);
 

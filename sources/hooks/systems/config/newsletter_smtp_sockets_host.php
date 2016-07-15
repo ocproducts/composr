@@ -39,7 +39,6 @@ class Hook_config_newsletter_smtp_sockets_host
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
-            'order_in_category_group' => 21,
 
             'addon' => 'newsletter',
         );

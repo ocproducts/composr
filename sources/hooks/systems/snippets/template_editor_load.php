@@ -51,6 +51,7 @@ class Hook_snippet_template_editor_load
 
         $revisions = new Tempcode();
 
+        $live_preview_url = mixed();
         $live_preview_url = get_param_string('live_preview_url', null, true);
         $screen_preview_url = null;
 

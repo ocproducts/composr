@@ -143,6 +143,8 @@ class Hook_addon_registry_core_themeing
             'sources/lorem.php',
             'sources/themes_meta_tree.php',
             'sources/hooks/systems/config/enable_theme_img_buttons.php',
+            'sources/hooks/systems/snippets/template_editor_load.php',
+            'sources/hooks/systems/snippets/template_editor_save.php',
         );
     }
 

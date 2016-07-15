@@ -393,7 +393,7 @@
 {+END}
 
 <table><tbody>
-{+START,LOOP,ARRAY,2,<tr>,</tr>,a,DESC}
+{+START,LOOP,ARRAY,2,<tr>,</tr>,A,DESC}
 	<td>
 		{A} {B} {C}
 	</td>

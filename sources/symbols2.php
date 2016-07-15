@@ -3825,7 +3825,7 @@ function ecv2_LOOP(&$value, $lang, $escaped, $param)
 {
     if (isset($param[0])) {
         if (!array_key_exists($param[0]->evaluate(), $param['vars'])) {
-            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'));
+            trigger_error(do_lang('MISSING_TEMPLATE_PARAMETER', $param[0]->evaluate(), '???'), E_NOTICE);
             return;
         }
 

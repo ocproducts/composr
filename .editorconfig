@@ -52,6 +52,7 @@ tab_width = 3
 #  sources/lang_stemmer_EN.php sources_custom/Swift-4.1.1 sources_custom/facebook sources_custom/geshi.php sources_custom/geshi sources_custom/getid3 \
 #  sources_custom/openid.php sources_custom/photobucket sources_custom/php-crossword sources_custom/programe sources_custom/sabredav sources_custom/vimeo.php \
 #  sources_custom/Cloudinary sources_custom/ILess sources_custom/openid.php sources_custom/spout sources_custom/twitter.php data/ckeditor data_custom/ckeditor data/ace \
+#  sources_custom/aws \
 #  themes/default/javascript/widget_color.js themes/default/javascript/widget_date.js themes/default/javascript/jwplayer.js \
 #  themes/default/javascript_custom/mediaelement-and-player.js themes/default/css_custom/mediaelementplayer.css themes/default/javascript/sound.js \
 #  themes/default/javascript/modernizr.js themes/default/javascript/select2.js \
