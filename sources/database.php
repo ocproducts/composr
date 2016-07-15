@@ -1599,6 +1599,29 @@ class DatabaseConnector
     }
 
     /**
+     * Get extra SQL for marking an index preferred within a query. Output should be appended after table name within a query (basically).
+     *
+     * @param  ID_TEXT $table The table name
+     * @param  ID_TEXT $index The index name
+     * @return string SQL to add
+     */
+    public function prefer_index($table, $index)
+    {
+        static $cache = array();
+        if (isset($cache[$table][$index])) {
+            return $cache[$table][$index];
+        }
+
+        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => $table, 'i_name' => $index))))) {
+            $ret = ' FORCE INDEX (' . filter_naughty_harsh($index) . ')';
+        } else {
+            $ret = '';
+        }
+        $cache[$table][$index] = $ret;
+        return $ret;
+    }
+
+    /**
      * Find if a table is locked for more than 5 seconds. Only works with MySQL.
      *
      * @param  ID_TEXT $table The table name

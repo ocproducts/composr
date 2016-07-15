@@ -156,10 +156,7 @@ function erase_comcode_cache()
     cms_profile_start_for('erase_comcode_cache');
 
     if (multi_lang_content()) {
-        $sql = 'UPDATE ' . get_table_prefix() . 'translate';
-        if ((substr(get_db_type(), 0, 5) == 'mysql') && (!is_null($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta_indices', 'i_fields', array('i_table' => 'translate', 'i_name' => 'decache')/*LEGACY*/)))) {
-            $sql .= ' FORCE INDEX (decache)';
-        }
+        $sql = 'UPDATE ' . get_table_prefix() . 'translate' . $GLOBALS['FORUM_DB']->prefer_index('translate', 'decache');
         $sql .= ' SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/;
         $GLOBALS['SITE_DB']->query($sql);
     } else {

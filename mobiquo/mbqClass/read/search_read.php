@@ -41,19 +41,9 @@ class CMSSearchRead
         $table_prefix = get_table_prefix();
         $boolean_operator = 'AND';
 
-        $sql1 = ' FROM ' . $table_prefix . 'f_posts p';
-        if ($keywords != '') {
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql1 .= ' FORCE INDEX (p_title)';
-            }
-        }
+        $sql1 = ' FROM ' . $table_prefix . 'f_posts p' . (($keywords == '') ? '' : $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'p_title'));
         $sql1 .= ' JOIN ' . $table_prefix . 'f_topics t ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
-        $sql2 = ' FROM ' . $table_prefix . 'f_topics t';
-        if ($keywords != '') {
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql2 .= ' FORCE INDEX (t_description)';
-            }
-        }
+        $sql2 = ' FROM ' . $table_prefix . 'f_topics t' . (($keywords == '') ? '' : $GLOBALS['FORUM_DB']->prefer_index('f_topics', 't_description'));
         $sql2 .= ' JOIN ' . $table_prefix . 'f_posts p ON t.t_cache_first_post_id=p.id LEFT JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id WHERE 1=1';
 
         $where = '';
@@ -187,10 +177,7 @@ class CMSSearchRead
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
-            $sql = 'FROM ' . $table_prefix . 'f_posts p';
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql .= (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)');
-            }
+            $sql = 'FROM ' . $table_prefix . 'f_posts p' . (($search_sql == '1=1') ? '' : $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'p_post'));
             $sql .= '
                 JOIN ' . $table_prefix . 'translate trans ON trans.id=p.p_post
                 JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
@@ -201,10 +188,7 @@ class CMSSearchRead
             if ($search_sql == '') {
                 $search_sql = '1=1';
             }
-            $sql = 'FROM ' . $table_prefix . 'f_posts p';
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql .= (($search_sql == '1=1') ? '' : ' FORCE INDEX (p_post)');
-            }
+            $sql = 'FROM ' . $table_prefix . 'f_posts p' . (($search_sql == '1=1') ? '' : $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'p_post'));
             $sql .= '
                 JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id
                 JOIN ' . $table_prefix . 'f_forums f ON t.t_forum_id=f.id

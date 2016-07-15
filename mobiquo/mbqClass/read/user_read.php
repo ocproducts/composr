@@ -466,10 +466,7 @@ class CMSUserRead
         cms_verify_parameters_phpdoc();
 
         $table_prefix = $GLOBALS['FORUM_DB']->get_table_prefix();
-        $table = 'f_posts p';
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $table .= ' FORCE INDEX (posts_by_in_forum)';
-        }
+        $table = 'f_posts p' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'posts_by_in_forum');
         $table .= ' JOIN ' . $table_prefix . 'f_topics t ON p.p_topic_id=t.id JOIN ' . $table_prefix . 'f_forums f ON f.id=t.t_forum_id';
 
         $select = array('*', 'p.id AS post_id', 'f.id AS forum_id', 't.id AS topic_id');

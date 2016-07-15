@@ -421,10 +421,7 @@ function load_download_rows()
                 array('id' => 60, 'nice_title' => 'Composr Version 4', 'add_date' => time() - 60 * 60 * 1, 'nice_description' => '[Test message] This is the 4 and you can find bug reports somewhere.'),
             );
         } else {
-            $sql = 'SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d';
-            if (strpos(get_db_type(), 'mysql') !== false) {
-                $sql .= ' FORCE INDEX (recent_downloads)';
-            }
+            $sql = 'SELECT d.* FROM ' . get_table_prefix() . 'download_downloads d' . $GLOBALS['FORUM_DB']->prefer_index('download_downloads', 'recent_downloads');
             $sql .= ' WHERE validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('Composr Version %') . '\' ORDER BY add_date';
             $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
             foreach ($DOWNLOAD_ROWS as $i => $row) {

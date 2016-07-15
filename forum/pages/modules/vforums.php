@@ -188,10 +188,7 @@ class Module_vforums
         );
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
-        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $initial_table .= ' FORCE INDEX (unread_forums)';
-        }
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top' . $GLOBALS['FORUM_DB']->prefer_index('f_topics', 'unread_forums');
 
         return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }
@@ -215,10 +212,7 @@ class Module_vforums
         }
         $condition = array($_condition);
 
-        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos';
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $initial_table .= ' FORCE INDEX (posts_by)';
-        }
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'posts_by');
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
         return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
