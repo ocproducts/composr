@@ -130,7 +130,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
                 $cats = $cats->evaluate($lang);
             }
             $matches = array();
-            $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches); // HACKHACK: A bit of a fudge, but it works
+            $num_matches = preg_match_all('#<option [^>]*value="([^"]*)"[^>]*>([^<]*)</option>#', $cats, $matches); // FUDGE: but it works
             if ($num_matches < 1500) { /*reasonable limit on how many categories to consider*/
                 for ($i = 0; $i < $num_matches; $i++) {
                     $hook_result = $object->run($cutoff_time, $lang, $matches[1][$i]);

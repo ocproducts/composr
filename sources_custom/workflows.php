@@ -630,20 +630,26 @@ function workflow_update_handler()
     $info = $ob->info();
     $content_table = $info['table'];
     $content_field = $info['id_field'];
+    $title_field = $info['title_field'];
+    $title_field_dereference = false;
+    $content_validated_field = 'validated';
     if (array_key_exists('validated_field', $info)) {
         $content_validated_field = $info['validated_field'];
-    } else {
-        // Fall back to 'validated' if nothing is specified
-        $content_validated_field = 'validated';
+    }
+    if (array_key_exists('title_field', $info)) {
+        $title_field = $info['title_field'];
+    }
+    if (array_key_exists('title_field_dereference', $info)) {
+        $title_field_dereference = $info['title_field_dereference'];
     }
 
     // Now we have the details required to lookup this entry, wherever it
     // is. Let's get its current validation status and compare to what
     // the workflow would have it be
-    $content_is_validated = $GLOBALS['SITE_DB']->query_select($content_table, array($content_validated_field), array($content_field => $info['id_field_numeric'] ? intval($content_details[0]['content_id']) : $content_details[0]['content_id']), '', 1);
+    $content_row = $GLOBALS['SITE_DB']->query_select($content_table, array($title_field, $content_validated_field), array($content_field => $info['id_field_numeric'] ? intval($content_details[0]['content_id']) : $content_details[0]['content_id']), '', 1);
 
     // Make sure we've actually found something
-    if ($content_is_validated == array()) {
+    if (!isset($content_row[0])) {
         $content_id = $content_details[0]['content_id'];
         $validated_field = $content_id->content_validated_field;
         warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($content_table . '->' . $content_field . '->' . $validated_field)));
@@ -659,9 +665,14 @@ function workflow_update_handler()
 
     // We need to act if the validation status is different to the total
     // completion of the workflow
-    if (($content_is_validated[0][$content_validated_field] == 1) != $all_points_approved) {
+    if (($content_row[0][$content_validated_field] == 1) != $all_points_approved) {
         $success_message = $all_points_approved ? do_lang('APPROVAL_COMPLETE') : do_lang('APPROVAL_REVOKED');
         $GLOBALS['SITE_DB']->query_update($content_table, array($content_validated_field => $all_points_approved ? 1 : 0), array($content_field => $info['id_field_numeric'] ? intval($content_details[0]['content_id']) : $content_details[0]['content_id']), '', 1);
+    }
+
+    $content_title = $content_row[$title_field];
+    if ($title_field_dereference) {
+        $content_title = get_translated_text($content_title);
     }
 
     ///////////////////////////////////////////
@@ -681,8 +692,7 @@ function workflow_update_handler()
     if (count($send_to_members) > 0) {
         $success_message .= do_lang('APPROVAL_CHANGED_NOTIFICATIONS');
     }
-    $subject = do_lang('APPROVAL_EMAIL_SUBJECT',/*TODO: Should pass title in, for unique email subject line*/
-        null, null, null, get_site_default_lang());
+    $subject = do_lang('APPROVAL_EMAIL_SUBJECT', $content_title, null, null, get_site_default_lang());
     $body = do_notification_lang('APPROVAL_EMAIL_BODY', post_param_string('http_referer', cms_srv('HTTP_REFERER')), $status_list, $workflow_notes, get_site_default_lang());
     dispatch_notification('workflow_step', strval($workflow_id), $subject, $body, $send_to_members);
 

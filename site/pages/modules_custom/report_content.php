@@ -278,9 +278,3 @@ class Module_report_content
         return redirect_screen($this->title, $content_url, do_lang_tempcode('SUCCESS'));
     }
 }
-
-
-/*FUDGE...
-
-Before this can be an official Composr feature new content_meta_aware hooks are needed. Currently for instance there's no 'post' one.
-*/

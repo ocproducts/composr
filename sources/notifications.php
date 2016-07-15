@@ -171,8 +171,9 @@ function do_notification_template($codename, $parameters = null, $lang = null, $
  * @param  string $body_suffix Only relevant if $store_in_staff_messaging_system is true: body suffix for storage
  * @param  ?array $attachments A list of attachments (each attachment being a map, path=>filename) (null: none)
  * @param  boolean $use_real_from Whether we will make a "reply to" direct -- we only do this if we're allowed to disclose email addresses for this particular notification type (i.e. if it's a direct contact)
+ * @param  boolean $send_immediately Whether to send immediately rather than script end; this may be the case if the notification settings are expected to change before script end
  */
-function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $priority = 3, $store_in_staff_messaging_system = false, $no_cc = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false)
+function dispatch_notification($notification_code, $code_category, $subject, $message, $to_member_ids = null, $from_member_id = null, $priority = 3, $store_in_staff_messaging_system = false, $no_cc = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $attachments = null, $use_real_from = false, $send_immediately = false)
 {
     global $NOTIFICATIONS_ON;
     if (!$NOTIFICATIONS_ON) {
@@ -191,7 +192,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 
     $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $attachments, $use_real_from);
 
-    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($notification_code == 'task_completed')) {
+    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($send_immediately)) {
         $dispatcher->dispatch();
     } else {
         require_code('tasks');

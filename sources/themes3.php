@@ -61,7 +61,7 @@ function compile_all_templates()
     @ignore_user_abort(false);
 
     foreach ($themes as $theme) {
-        $USER_THEME_CACHE = $theme; // HACKHACK: due to {$THEME} in global.css, and some templates (it's considered static, as it's tied to cache directory)
+        $USER_THEME_CACHE = $theme; // FUDGE: due to {$THEME} in global.css, and some templates (it's considered static, as it's tied to cache directory)
 
         foreach ($directories as $directory => $suffix) {
             $dh = opendir($base_path . '/default/' . $directory);

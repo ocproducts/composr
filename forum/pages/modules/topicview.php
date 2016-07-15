@@ -216,7 +216,7 @@ class Module_topicview
             foreach ($topic_info['posts'] as $array_id => $_postdetails) {
                 if (($GLOBALS['METADATA']['description'] == '') && (($_postdetails['id'] === $jump_post_id) || (($array_id == 0) && ($jump_post_id === null)))) {
                     // NB: A side-effect of this is that the Tempcode is evaluated, causing the 'image' metadata for an attachment (in MEDIA_WEBSAFE.tpl) to fill. We want this.
-                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Should we hard-code this?
+                    $truncated = symbol_truncator(array($_postdetails['post'], '200', '0', '1', '0.2'), 'left'); // FUDGE: Ideally wouldn't hard-code '200', but adding an option would be bloat.
                     set_extra_request_metadata(array(
                         'description' => strip_html($truncated),
                     ));

@@ -1350,15 +1350,26 @@ class Module_tickets
             ),
             get_site_default_lang()
         );
-        $_GET['keep_debug_notifications'] = '1'; // FUDGE: Force it to go out BEFORE we run disable_notifications
         dispatch_notification(
             'ticket_assigned_staff',
             $ticket_id,
             $subject,
             $message,
-            array($member_id)
+            array($member_id),
+            null,
+            3,
+            false,
+            false,
+            null,
+            null,
+            '',
+            '',
+            '',
+            '',
+            null,
+            false,
+            true
         );
-        unset($_GET['keep_debug_notifications']);
 
         disable_notifications('ticket_assigned_staff', $ticket_id, $member_id);
 

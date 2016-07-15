@@ -62,7 +62,7 @@ class modularisation_test_set extends cms_test_case
                             if ((strpos($data, 'ocProducts') !== false || !should_ignore_file($file, IGNORE_NONBUNDLED_SCATTERED)) && ($file != '_config.php') && ($file != 'data_custom/errorlog.php') && ($file != 'tracker/config_inc.php')) {
                                 $matches = array();
                                 $m_count = preg_match_all('#@package\s+(\w+)#', $data, $matches);
-                                if (($m_count != 0) && ($matches[1][0] != $addon_name) && (@$matches[1][1] != $addon_name/*HACKHACK: should ideally do a loop, but we'll assume max of 2 packages for now*/)) {
+                                if (($m_count != 0) && ($matches[1][0] != $addon_name) && (@$matches[1][1] != $addon_name/*FUDGE: should ideally do a loop, but we'll assume max of 2 packages for now*/)) {
                                     $this->assertTrue(false, '@package wrong for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');
                                 } elseif ($m_count == 0) {
                                     $this->assertTrue(false, 'No @package for <a href="txmt://open?url=file://' . htmlentities(get_file_base() . '/' . $file) . '">' . htmlentities($path) . '</a> (should be ' . $addon_name . ')');

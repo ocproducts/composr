@@ -1129,7 +1129,7 @@ class Module_cms_comcode_pages
             }
             if (!empty($page_contents)) {
                 if ($user_lang == 'EN') {
-                    $page_contents_lower = $page_contents; // HACKHACK: For performance we can assume English only requires ASCII characters for this check
+                    $page_contents_lower = $page_contents; // FUDGE: For performance we can assume English only requires ASCII characters for this check
                 } else {
                     $page_contents_lower = cms_mb_strtolower($page_contents);
                 }

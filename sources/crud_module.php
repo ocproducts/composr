@@ -1418,7 +1418,7 @@ abstract class Standard_crud_module
         $action_fields = new Tempcode();
         if ($may_delete) {
             if (!$all_delete_fields_given) {
-                // HACKHACK: Improve with #1789
+                // FUDGE: Improve with #1789
                 if ($this->content_type === 'catalogue_category' && $GLOBALS['SITE_DB']->query_select_value_if_there('catalogues c JOIN ' . get_table_prefix() . 'catalogue_categories cc ON c.c_name=cc.c_name', 'c_is_tree', array('id' => $id)) == 0) {
                     $action_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_LOSE_CONTENTS'), 'delete', false));
                 } elseif ($this->content_type === 'gallery') {

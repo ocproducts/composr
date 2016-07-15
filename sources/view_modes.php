@@ -404,7 +404,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $collected_templates = array(
-            'templates/HTML_HEAD.tpl' => true, // FUDGEFUDGE. Due to the Tempcode inlining optimisation, this might not be picked up on, but is an important template - so we'll force it into here
+            'templates/HTML_HEAD.tpl' => true, // FUDGE. Due to the Tempcode inlining optimisation, this might not be picked up on, but is an important template - so we'll force it into here
         );
         $_tree = find_template_tree_nice($out->metadata, $collected_templates);
 
