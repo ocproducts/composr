@@ -613,20 +613,11 @@ function step_3()
         if (($database == 'mysqli') && (!function_exists('mysqli_connect'))) {
             continue;
         }
-        if (($database == 'mysql_dbx') && (!function_exists('dbx_connect'))) {
-            continue;
-        }
         if ($database == 'mysqli') {
             $selected = true;
         }
         if (($database == 'mysql') && (!function_exists('mysqli_connect'))) {
             $selected = true;
-        }
-        if (($database == 'mysql_dbx') && (!function_exists('mysql_connect')) && (!function_exists('mysqli_connect'))) {
-            $selected = true;
-        }
-        if (($database == 'access') && (!function_exists('odbc_connect'))) {
-            continue;
         }
         if (($database == 'ibm') && (!function_exists('odbc_connect'))) {
             continue;
@@ -635,9 +626,6 @@ function step_3()
             continue;
         }
         if (($database == 'postgresql') && (!function_exists('pg_connect'))) {
-            continue;
-        }
-        if (($database == 'sqlite') && (!function_exists('sqlite_popen'))) {
             continue;
         }
         if (($database == 'sqlserver') && (!function_exists('mssql_connect')) && (!function_exists('sqlsrv_connect'))) {
