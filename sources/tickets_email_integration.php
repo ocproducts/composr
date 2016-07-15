@@ -549,12 +549,20 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     // Add in attachments
     foreach ($attachments as $filename => $filedata) {
         $new_filename = preg_replace('#\..*#', '', $filename) . '.dat';
-        list($new_path, $new_url) ensure_path_uniqueness('uploads/attachments', $new_filename, true);
+        do {
+            $new_path = get_custom_file_base() . '/uploads/attachments/' . $new_filename;
+            if (file_exists($new_path)) {
+                $new_filename = uniqid('', true) . '_' . preg_replace('#\..*#', '', $filename) . '.dat';
+            }
+        } while (file_exists($new_path));
+        file_put_contents($new_path, $filedata);
+        sync_file($new_path);
+        fix_permissions($new_path);
 
         $attachment_id = $GLOBALS['SITE_DB']->query_insert('attachments', array(
             'a_member_id' => $member_id,
             'a_file_size' => strlen($filedata),
-            'a_url' => $new_url,
+            'a_url' => 'uploads/attachments/' . rawurlencode($new_filename),
             'a_thumb_url' => '',
             'a_original_filename' => $filename,
             'a_num_downloads' => 0,

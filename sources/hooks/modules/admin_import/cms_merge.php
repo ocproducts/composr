@@ -83,7 +83,6 @@ class Hook_cms_merge
             'searches_saved',
             'staff_links',
             'staff_website_monitoring',
-            'searches_saved',
             'wiki', // including rating, trackbacks, seo
             'stats',
             'themes',
