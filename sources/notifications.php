@@ -689,7 +689,7 @@ function _dispatch_notification_to_member($to_member_id, $setting, $notification
 
             // NB: These are posted by Guest (system) although the display name is set to the member triggering. This is intentional to stop said member getting unexpected replies.
             $topic_id = cns_make_topic(null, '', 'icons/14x14/cns_topic_modifiers/announcement', 1, 1, 0, 0, 0, $from_member_id_shown, $to_member_id, false, 0, null, '');
-            cns_make_post($topic_id, $wrapped_subject, $wrapped_message, 0, true, 1, 0, ($from_member_id < 0) ? do_lang('SYSTEM') : $from_name, null, null, $from_member_id_shown, null, null, null, false, true, null, true, $wrapped_subject, 0, null, true, true, true, ($from_member_id == A_FROM_SYSTEM_PRIVILEGED));
+            cns_make_post($topic_id, $wrapped_subject, $wrapped_message, 0, true, 1, 0, ($from_member_id < 0) ? do_lang('SYSTEM') : $from_name, null, null, $from_member_id_shown, null, null, null, false, true, null, true, $wrapped_subject, null, true, true, true, ($from_member_id == A_FROM_SYSTEM_PRIVILEGED));
         }
     }
 

@@ -99,7 +99,7 @@ class Hook_upon_query_add_mentor
             $subject = do_lang('MENTOR_PT_TOPIC', $GLOBALS['FORUM_DRIVER']->get_username($mentor_id, true), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
             $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $mentor_id, $member_id, false, 0, null, '');
             $body = do_lang('MENTOR_PT_TOPIC_POST', comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($mentor_id)), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($member_id)), array(comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($mentor_id, true)), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($member_id))));
-            $post_id = cns_make_post($topic_id, $subject, $body, 0, true, 1, 0, null, null, null, $mentor_id, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+            $post_id = cns_make_post($topic_id, $subject, $body, 0, true, 1, 0, null, null, null, $mentor_id, null, null, null, false, true, null, true, $subject, null, true, true, true);
             send_pt_notification($post_id, $subject, $topic_id, $member_id, $mentor_id);
             send_pt_notification($post_id, $subject, $topic_id, $mentor_id, $member_id);
         }

@@ -26,12 +26,11 @@
  * @param  LONG_TEXT $post_text The default post text to add when applying (may be blank).
  * @param  ?AUTO_LINK $move_to The forum to move the topic when applying (null: do not move).
  * @param  ?BINARY $pin_state The pin state after applying (null: unchanged).
- * @param  ?BINARY $sink_state The sink state after applying (null: unchanged).
  * @param  ?BINARY $open_state The open state after applying (null: unchanged).
  * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this multi moderation may be applied.
  * @param  SHORT_TEXT $title_suffix The title suffix.
  */
-function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix)
+function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code, $title_suffix)
 {
     $_name = $GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'mm_name', array('id' => $id));
 
@@ -39,7 +38,6 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
         'mm_post_text' => $post_text,
         'mm_move_to' => $move_to,
         'mm_pin_state' => $pin_state,
-        'mm_sink_state' => $sink_state,
         'mm_open_state' => $open_state,
         'mm_forum_multi_code' => $forum_multi_code,
         'mm_title_suffix' => $title_suffix,
@@ -109,16 +107,12 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
 
     $pin_state = $mm[0]['mm_pin_state'];
     $open_state = $mm[0]['mm_open_state'];
-    $sink_state = $mm[0]['mm_sink_state'];
     $move_to = $mm[0]['mm_move_to'];
     $title_suffix = $mm[0]['mm_title_suffix'];
     //$post_text = $mm[0]['mm_post_text']; We'll allow user to specify the post_text, with this as a default
     $update_array = array();
     if (!is_null($pin_state)) {
         $update_array['t_pinned'] = $pin_state;
-    }
-    if (!is_null($sink_state)) {
-        $update_array['t_sunk'] = $sink_state;
     }
     if (!is_null($open_state)) {
         $update_array['t_is_open'] = $open_state;

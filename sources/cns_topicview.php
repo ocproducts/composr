@@ -558,11 +558,6 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             } else {
                 $out['may_unpin_topic'] = true;
             }
-            if ($topic_info['t_sunk'] == 0) {
-                $out['may_sink_topic'] = true;
-            } else {
-                $out['may_unsink_topic'] = true;
-            }
             if ($topic_info['t_cascading'] == 0) {
                 $out['may_cascade_topic'] = true;
             } else {

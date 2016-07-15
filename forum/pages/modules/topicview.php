@@ -864,12 +864,6 @@ class Module_topicview
             if (array_key_exists('may_unpin_topic', $topic_info)) {
                 $moderator_actions .= '<option value="unpin_topic">' . do_lang('UNPIN_TOPIC') . '</option>';
             }
-            if (array_key_exists('may_sink_topic', $topic_info)) {
-                $moderator_actions .= '<option value="sink_topic">' . do_lang('SINK_TOPIC') . '</option>';
-            }
-            if (array_key_exists('may_unsink_topic', $topic_info)) {
-                $moderator_actions .= '<option value="unsink_topic">' . do_lang('UNSINK_TOPIC') . '</option>';
-            }
             if (array_key_exists('may_cascade_topic', $topic_info)) {
                 $moderator_actions .= '<option value="cascade_topic">' . do_lang('CASCADE_TOPIC') . '</option>';
             }

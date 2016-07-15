@@ -38,7 +38,7 @@ class posts_test_set extends cms_test_case
 
         $this->topic_id = cns_make_topic(db_get_first_id(), 'Test');
 
-        $this->post_id = cns_make_post($this->topic_id, 'welcome', 'welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', 0, null, false, false, false);
+        $this->post_id = cns_make_post($this->topic_id, 'welcome', 'welcome to the posts', 0, false, null, 0, null, null, null, null, null, null, null, true, true, null, true, '', null, false, false, false);
 
         $this->assertTrue('welcome' == $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_title', array('id' => $this->post_id)));
     }

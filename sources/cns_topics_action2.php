@@ -27,7 +27,6 @@
  * @param  ?BINARY $validated Whether the topic is validated (null: do not change).
  * @param  ?BINARY $open Whether the topic is open (null: do not change).
  * @param  ?BINARY $pinned Whether the topic is pinned (null: do not change).
- * @param  ?BINARY $sunk Whether the topic is sunk (null: do not change).
  * @param  ?BINARY $cascading Whether the topic is cascading (null: do not change).
  * @param  LONG_TEXT $reason The reason for this action.
  * @param  ?string $title New title for the topic (null: do not change).
@@ -36,7 +35,7 @@
  * @param  ?integer $views Number of views (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
-function cns_edit_topic($topic_id, $description = null, $emoticon = null, $validated = null, $open = null, $pinned = null, $sunk = null, $cascading = null, $reason = '', $title = null, $description_link = null, $check_perms = true, $views = null, $null_is_literal = false)
+function cns_edit_topic($topic_id, $description = null, $emoticon = null, $validated = null, $open = null, $pinned = null, $cascading = null, $reason = '', $title = null, $description_link = null, $check_perms = true, $views = null, $null_is_literal = false)
 {
     $info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('*'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $info)) {
@@ -50,7 +49,6 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
     if ($check_perms) {
         if (!cns_may_moderate_forum($forum_id)) {
             $pinned = 0;
-            $sunk = 0;
             if (($info[0]['t_cache_first_member_id'] != get_member()) || (!has_privilege(get_member(), 'close_own_topics'))) {
                 $open = 1;
             }
@@ -109,9 +107,6 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
     }
     if (!is_null($pinned)) {
         $update['t_pinned'] = $pinned;
-    }
-    if (!is_null($sunk)) {
-        $update['t_sunk'] = $sunk;
     }
     if (!is_null($cascading)) {
         $update['t_cascading'] = $cascading;
@@ -612,7 +607,7 @@ function handle_topic_ticket_reply($forum_id, $topic_id, $topic_title, $post)
         require_code('tickets2');
         require_code('feedback');
         if (is_ticket_forum($forum_id)) {
-            $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_sunk', 't_forum_id', 't_is_open', 't_description'), array('id' => $topic_id), '', 1);
+            $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_forum_id', 't_is_open', 't_description'), array('id' => $topic_id), '', 1);
             if (!array_key_exists(0, $topic_info)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }

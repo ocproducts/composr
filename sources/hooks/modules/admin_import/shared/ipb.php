@@ -912,7 +912,7 @@ class Hook_ipb_base
             } elseif ($row['topic_state'] == 'open') {
                 $open_state = 1;
             }
-            $id_new = cns_make_multi_moderation(@html_entity_decode($row['mm_title'], ENT_QUOTES, get_charset()), '[html]' . $row['topic_reply_content'] . '[/html]', $move_to, $pin_state, 0, $open_state);
+            $id_new = cns_make_multi_moderation(@html_entity_decode($row['mm_title'], ENT_QUOTES, get_charset()), '[html]' . $row['topic_reply_content'] . '[/html]', $move_to, $pin_state, $open_state);
 
             import_id_remap_put('multi_moderation', strval($row['mm_id']), $id_new);
         }

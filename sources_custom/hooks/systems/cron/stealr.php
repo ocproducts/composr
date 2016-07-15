@@ -104,7 +104,7 @@ class Hook_cron_stealr
 
                     $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $member['id'], $give_to_member, false, 0, null, '');
 
-                    $post_id = cns_make_post($topic_id, $subject, $body, 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+                    $post_id = cns_make_post($topic_id, $subject, $body, 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
                     send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $GLOBALS['FORUM_DRIVER']->mrow_id($member));
                     send_pt_notification($post_id, $subject, $topic_id, $GLOBALS['FORUM_DRIVER']->mrow_id($member), $give_to_member);
@@ -152,7 +152,7 @@ class Hook_cron_stealr
                     $subject = do_lang('STEALR_PT_TOPIC', strval($stealr_points));
                     $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $member_id, $give_to_member, false, 0, null, '');
 
-                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
                     send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
                     send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
@@ -187,7 +187,7 @@ class Hook_cron_stealr
                     $subject = do_lang('STEALR_PT_TOPIC', strval($stealr_points));
                     $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $member['id'], $give_to_member, false, 0, null, '');
 
-                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
                     send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $member);
                     send_pt_notification($post_id, $subject, $topic_id, $member, $give_to_member);
@@ -238,7 +238,7 @@ class Hook_cron_stealr
                     $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $members[$member_rand_key], $give_to_member, false, 0, null, '');
 
                     require_code('cns_posts_action');
-                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+                    $post_id = cns_make_post($topic_id, $subject, do_lang('STEALR_PT_TOPIC_POST'), 0, true, 1, 0, null, null, null, $give_to_member, null, null, null, false, true, null, true, $subject, null, true, true, true);
 
                     require_code('cns_topics_action2');
                     send_pt_notification($post_id, $subject, $topic_id, $give_to_member, $stealr_number);

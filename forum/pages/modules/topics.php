@@ -181,8 +181,6 @@ class Module_topics
             '_edit_topic',
             'pin_topic',
             'unpin_topic',
-            'sink_topic',
-            'unsink_topic',
             'cascade_topic',
             'uncascade_topic',
             'open_topic',
@@ -194,8 +192,6 @@ class Module_topics
             'validate_topics',
             'pin_topics',
             'unpin_topics',
-            'sink_topics',
-            'unsink_topics',
             'cascade_topics',
             'uncascade_topics',
             'open_topics',
@@ -797,58 +793,6 @@ class Module_topics
     }
 
     /**
-     * The actualiser to pin topics.
-     *
-     * @return Tempcode The UI
-     */
-    public function sink_topics() // Type
-    {
-        require_code('cns_topics_action');
-        require_code('cns_topics_action2');
-
-        $topics = $this->get_markers();
-        if (count($topics) == 0) {
-            warn_exit(do_lang_tempcode('NO_MARKERS_SELECTED'));
-        }
-
-        $forum_id = null;
-        foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
-                $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
-            }
-            cns_edit_topic($topic_id, null, null, null, null, 1, null, null, '');
-        }
-
-        return $this->redirect_to_forum('SINK_TOPIC', $forum_id);
-    }
-
-    /**
-     * The actualiser to unpin topics.
-     *
-     * @return Tempcode The UI
-     */
-    public function unsink_topics() // Type
-    {
-        require_code('cns_topics_action');
-        require_code('cns_topics_action2');
-
-        $topics = $this->get_markers();
-        if (count($topics) == 0) {
-            warn_exit(do_lang_tempcode('NO_MARKERS_SELECTED'));
-        }
-
-        $forum_id = null;
-        foreach ($topics as $i => $topic_id) {
-            if ($i == 0) {
-                $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
-            }
-            cns_edit_topic($topic_id, null, null, null, null, 0, null, null, '');
-        }
-
-        return $this->redirect_to_forum('UNSINK_TOPIC', $forum_id);
-    }
-
-    /**
      * The actualiser to cascade topics.
      *
      * @return Tempcode The UI
@@ -1019,12 +963,6 @@ class Module_topics
         }
         if ($_mm['mm_pin_state'] == 0) {
             $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_UNPIN'));
-        }
-        if ($_mm['mm_sink_state'] == 1) {
-            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_SINK'));
-        }
-        if ($_mm['mm_sink_state'] == 0) {
-            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_UNSINK'));
         }
         if ($_mm['mm_title_suffix'] != '') {
             $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_TITLE_SUFFIX', escape_html($_mm['mm_title_suffix'])));
@@ -1637,9 +1575,6 @@ class Module_topics
             if (addon_installed('unvalidated')) {
                 $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', true, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
             }
-            if (get_option('enable_sunk') == '1') {
-                $moderation_options[] = array(do_lang_tempcode('SUNK'), 'sunk', false, do_lang_tempcode('DESCRIPTION_SUNK'));
-            }
             if (!$private_topic) {
                 $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));
             }
@@ -2004,9 +1939,6 @@ class Module_topics
 
                 $options[] = array(do_lang_tempcode('VALIDATED'), 'topic_validated', $topic_info[0]['t_validated'] == 1, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
             }
-            if (get_option('enable_sunk') == '1') {
-                $moderation_options[] = array(do_lang_tempcode('SUNK'), 'sunk', $topic_info[0]['t_sunk'] == 1, do_lang_tempcode('DESCRIPTION_SUNK'));
-            }
             if (!is_null($forum_id)) {
                 $options[] = array(do_lang_tempcode('CASCADING'), 'cascading', $topic_info[0]['t_cascading'] == 1, do_lang_tempcode('DESCRIPTION_CASCADING'));
             }
@@ -2265,7 +2197,6 @@ class Module_topics
                 warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'title'));
             }
 
-            $sunk = post_param_integer('sunk', 0);
             $topic_title = $title;
 
             require_code('content2');
@@ -2280,7 +2211,7 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
+                $topic_id = cns_make_topic(null, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), get_member(), $member_id, true, $metadata['views']);
                 $_title = get_screen_title('ADD_PRIVATE_TOPIC');
             } elseif ($forum_id == -2) { // New reported post topic
                 if (!cns_may_report_post()) {
@@ -2323,7 +2254,7 @@ class Module_topics
                     }
                 }
 
-                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), $sunk, post_param_integer('cascading', 0), null, null, true, $metadata['views']);
+                $topic_id = cns_make_topic($forum_id, post_param_string('description', ''), post_param_string('emoticon', ''), $topic_validated, post_param_integer('open', 0), post_param_integer('pinned', 0), post_param_integer('cascading', 0), null, null, true, $metadata['views']);
                 $_title = get_screen_title('ADD_TOPIC');
 
                 $_topic_id = strval($topic_id);
@@ -2364,13 +2295,12 @@ END;
             $_title = get_screen_title('ADD_POST');
             $first_post = false;
 
-            $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_sunk', 't_forum_id', 't_is_open', 't_description'), array('id' => $topic_id), '', 1);
+            $topic_info = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_cache_first_title', 't_forum_id', 't_is_open', 't_description'), array('id' => $topic_id), '', 1);
             if (!array_key_exists(0, $topic_info)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'topic'));
             }
             $forum_id = $topic_info[0]['t_forum_id'];
             $topic_title = $topic_info[0]['t_cache_first_title'];
-            $sunk = $topic_info[0]['t_sunk'];
 
             if ($topic_info[0]['t_is_open'] == 0) {
                 $may_moderate_forum = cns_may_moderate_forum($forum_id);
@@ -2384,7 +2314,6 @@ END;
             if ((!is_null($new_title)) && (!is_null($forum_id)) && (cns_may_moderate_forum($forum_id, get_member()))) {
                 $cascading = post_param_integer('cascading', 0);
                 $pinned = post_param_integer('pinned', 0);
-                $sunk = post_param_integer('sunk', 0);
                 $open = post_param_integer('open', 0);
                 $topic_validated = post_param_integer('topic_validated', 0);
                 $to = post_param_integer('to', null);
@@ -2399,7 +2328,7 @@ END;
                     $_new_title = is_null($new_title) ? 'null' : ('\'' . str_replace("\n", '\'."\n".\'', addslashes($new_title)) . '\'');
 
                     $schedule_code = <<<END
-:require_code('cns_topics_action2'); require_code('cns_topics_action'); cns_edit_topic($topic_id,null,null,$validated,$open,$pinned,$sunk,$cascading,'',$_new_title); if (($to!=$forum_id) && (!is_null($to))) cns_move_topics($forum_id,$to,array($topic_id)); \$post_id=cns_make_post($topic_id,$__title,$_postdetails,$skip_sig,$_first_post,$validated,$is_emphasised,$_postdetailser_name_if_guest,null,null,null,$_intended_solely_for,null,nullfalse,true,null,true,$topic_title,$sunk,null,$anonymous==1); if (addon_installed('awards')) { require_code('awards'); handle_award_setting('post',strval(\$post_id)); }
+:require_code('cns_topics_action2'); require_code('cns_topics_action'); cns_edit_topic($topic_id,null,null,$validated,$open,$pinned,$cascading,'',$_new_title); if (($to!=$forum_id) && (!is_null($to))) cns_move_topics($forum_id,$to,array($topic_id)); \$post_id=cns_make_post($topic_id,$__title,$_postdetails,$skip_sig,$_first_post,$validated,$is_emphasised,$_postdetailser_name_if_guest,null,null,null,$_intended_solely_for,null,nullfalse,true,null,true,$topic_title,null,$anonymous==1); if (addon_installed('awards')) { require_code('awards'); handle_award_setting('post',strval(\$post_id)); }
 END;
                     require_code('calendar');
                     $start_year = intval(date('Y', $schedule));
@@ -2428,7 +2357,7 @@ END;
                     return redirect_screen($_title, $url, $text);
                 }
 
-                cns_edit_topic($topic_id, null, null, $topic_validated, $open, $pinned, $sunk, $cascading, '', ($new_title == '') ? null : $new_title);
+                cns_edit_topic($topic_id, null, null, $topic_validated, $open, $pinned, $cascading, '', ($new_title == '') ? null : $new_title);
                 if (($to != $forum_id) && (!is_null($to))) {
                     cns_move_topics($forum_id, $to, array($topic_id));
                 }
@@ -2453,7 +2382,7 @@ END;
             }
         }
 
-        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $metadata['add_time'], $metadata['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, $sunk, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
+        $post_id = cns_make_post($topic_id, $title, $post, $skip_sig, $first_post, $validated, $is_emphasised, $poster_name_if_guest, null, $metadata['add_time'], $metadata['submitter'], $intended_solely_for, null, null, $check_permissions, true, null, true, $topic_title, null, $anonymous == 1, $forum_id == -1 || is_null($forum_id), $forum_id == -1 || is_null($forum_id), false, $parent_id);
 
         set_url_moniker('post', strval($post_id));
 
@@ -3390,9 +3319,6 @@ END;
                 }
                 $moderation_options[] = array(do_lang_tempcode('VALIDATED'), 'validated', $topic_info[0]['t_validated'] == 1, do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'));
             }
-            if (get_option('enable_sunk') == '1') {
-                $moderation_options[] = array(do_lang_tempcode('SUNK'), 'sunk', $topic_info[0]['t_sunk'] == 1, do_lang_tempcode('DESCRIPTION_SUNK'));
-            }
             if (!$private_topic) {
                 $options[] = array(do_lang_tempcode('CASCADING'), 'cascading', $topic_info[0]['t_cascading'] == 1, do_lang_tempcode('DESCRIPTION_CASCADING'));
             }
@@ -3444,7 +3370,6 @@ END;
         $topic_id = get_param_integer('id');
         $cascading = post_param_integer('cascading', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $pinned = post_param_integer('pinned', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
-        $sunk = post_param_integer('sunk', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $open = post_param_integer('open', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $validated = post_param_integer('validated', fractional_edit() ? INTEGER_MAGIC_NULL : 0);
         $title = post_param_string('title');
@@ -3455,7 +3380,7 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('topic', strval($topic_id), array('submitter', 'add_time', 'edit_time'));
 
-        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $sunk, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $metadata['views']);
+        cns_edit_topic($topic_id, post_param_string('description', STRING_MAGIC_NULL), post_param_string('emoticon', STRING_MAGIC_NULL), $validated, $open, $pinned, $cascading, post_param_string('reason', STRING_MAGIC_NULL), $title, null, true, $metadata['views']);
 
         require_code('fields');
         if (has_tied_catalogue('topic')) {
@@ -3847,34 +3772,6 @@ END;
     }
 
     /**
-     * The actualiser to pin a topic.
-     *
-     * @return Tempcode The UI
-     */
-    public function sink_topic() // Type
-    {
-        $topic_id = get_param_integer('id');
-        require_code('cns_topics_action');
-        require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, null, 1, null, '');
-        return $this->redirect_to('SINK_TOPIC', $topic_id);
-    }
-
-    /**
-     * The actualiser to unpin a topic.
-     *
-     * @return Tempcode The UI
-     */
-    public function unsink_topic() // Type
-    {
-        $topic_id = get_param_integer('id');
-        require_code('cns_topics_action');
-        require_code('cns_topics_action2');
-        cns_edit_topic($topic_id, null, null, null, null, null, 0, null, '');
-        return $this->redirect_to('UNSINK_TOPIC', $topic_id);
-    }
-
-    /**
      * The actualiser to cascade a topic.
      *
      * @return Tempcode The UI
@@ -3990,12 +3887,6 @@ END;
         }
         if ($_mm['mm_pin_state'] == 0) {
             $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_UNPIN'));
-        }
-        if ($_mm['mm_sink_state'] == 1) {
-            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_SINK'));
-        }
-        if ($_mm['mm_sink_state'] == 0) {
-            $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_UNSINK'));
         }
         if ($_mm['mm_title_suffix'] != '') {
             $action_list->attach(do_lang_tempcode('MULTI_MODERATION_WILL_TITLE_SUFFIX', escape_html($_mm['mm_title_suffix'])));

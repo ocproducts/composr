@@ -108,7 +108,7 @@ class Hook_upon_query_insults
                                 require_code('cns_posts_action');
                                 $congratulations_post = do_lang('CONGRATULATIONS_WON'); // Congratulations that is the correct response
 
-                                cns_make_post($topic_id, '', $congratulations_post, 0, true, 1, 0, do_lang('SYSTEM'), null, null, $GLOBALS['FORUM_DRIVER']->get_guest_id(), $poster_id, null, null, false, true, null, true, '', 0, null, false, true, true);
+                                cns_make_post($topic_id, '', $congratulations_post, 0, true, 1, 0, do_lang('SYSTEM'), null, null, $GLOBALS['FORUM_DRIVER']->get_guest_id(), $poster_id, null, null, false, true, null, true, '', null, false, true, true);
                             }
                         }
                     }

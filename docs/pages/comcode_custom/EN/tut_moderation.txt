@@ -18,7 +18,7 @@ Topic moderation actions are:
  - moving topics
  - deleting topics
  - editing topics ([i]this can not be done with mass moderation[/i])
- - closing/opening, (un)pinning, (un)sinking, and (un)cascading topics (these are available individually, or together by editing the topic)
+ - closing/opening, (un)pinning, and (un)cascading topics (these are available individually, or together by editing the topic)
  - validating topics
  - multi-moderations ([i]explained later in this tutorial[/i])
  - (also mark as read/unread is an option, but this is not actually a moderation action)

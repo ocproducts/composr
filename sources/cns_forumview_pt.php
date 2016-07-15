@@ -121,9 +121,6 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         if ($topic_row['t_pinned'] == 1) {
             $topic['modifiers'][] = 'pinned';
         }
-        if ($topic_row['t_sunk'] == 1) {
-            $topic['modifiers'][] = 'sunk';
-        }
         if ($topic_row['t_is_open'] == 0) {
             $topic['modifiers'][] = 'closed';
         }

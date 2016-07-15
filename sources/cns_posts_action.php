@@ -130,7 +130,6 @@ function cns_check_post($post, $topic_id = null, $poster = null)
  * @param  ?AUTO_LINK $forum_id The forum the post will be in (null: find out from the DB).
  * @param  boolean $support_attachments Whether to allow attachments in this post.
  * @param  ?string $topic_title The title of the topic (null: find from the DB).
- * @param  BINARY $sunk Whether the topic is a sunk topic.
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  boolean $anonymous Whether to make the post anonymous
  * @param  boolean $skip_post_checks Whether to skip post checks
@@ -140,7 +139,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
  * @param  boolean $send_notification Whether to send out notifications
  * @return AUTO_LINK The ID of the new post.
  */
-function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = false, $validated = null, $is_emphasised = 0, $poster_name_if_guest = null, $ip_address = null, $time = null, $poster = null, $intended_solely_for = null, $last_edit_time = null, $last_edit_by = null, $check_permissions = true, $update_caching = true, $forum_id = null, $support_attachments = true, $topic_title = '', $sunk = 0, $id = null, $anonymous = false, $skip_post_checks = false, $is_pt = false, $insert_comcode_as_admin = false, $parent_id = null, $send_notification = true)
+function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = false, $validated = null, $is_emphasised = 0, $poster_name_if_guest = null, $ip_address = null, $time = null, $poster = null, $intended_solely_for = null, $last_edit_time = null, $last_edit_by = null, $check_permissions = true, $update_caching = true, $forum_id = null, $support_attachments = true, $topic_title = '', $id = null, $anonymous = false, $skip_post_checks = false, $is_pt = false, $insert_comcode_as_admin = false, $parent_id = null, $send_notification = true)
 {
     cms_profile_start_for('cns_make_post');
 
@@ -381,11 +380,6 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             }
             if ($validated == 1) {
                 if (!is_null($forum_id)) {
-                    /* Don't hide posts to sunk topics actually, it's too weird
-                    if ($sunk == 1) {
-                        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums SET f_cache_num_topics=(f_cache_num_topics+' . (($is_starter) ? '1' : '0') . '),f_cache_num_posts=(f_cache_num_posts+1) WHERE id=' . strval($topic_id));
-                    } else {
-                    */
                     require_code('cns_posts_action2');
 
                     // Find if the topic is validated. This can be approximate, if we don't get 1 then cns_force_update_forum_caching will do a search, making the code very slightly slower

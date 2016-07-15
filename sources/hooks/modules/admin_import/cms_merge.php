@@ -3265,7 +3265,7 @@ class Hook_cms_merge
                     }
                 }
                 $id = (get_param_integer('keep_preserve_ids', 0) == 0) ? null : $row['id'];
-                $id_new = cns_make_topic($forum_id, $row['t_description'], $row['t_emoticon'], $row['t_validated'], $row['t_is_open'], array_key_exists('t_is_sunk', $row) ? $row['t_is_sunk'] : 0, $row['t_pinned'], $row['t_cascading'], $t_pt_from, $t_pt_to, false, $row['t_num_views'], $id);
+                $id_new = cns_make_topic($forum_id, $row['t_description'], $row['t_emoticon'], $row['t_validated'], $row['t_is_open'], $row['t_pinned'], $row['t_cascading'], $t_pt_from, $t_pt_to, false, $row['t_num_views'], $id);
 
                 import_id_remap_put('topic', strval($row['id']), $id_new);
             }
@@ -3531,7 +3531,7 @@ class Hook_cms_merge
             if (is_null($test)) {
                 $move_to = is_null($row['mm_move_to']) ? null : import_id_remap_get('forum', strval($row['mm_move_to']), true);
                 $multi_code = $this->convert_multi_code($row['mm_forum_multi_code']);
-                cns_make_multi_moderation($name, $row['mm_post_text'], $move_to, $row['mm_pin_state'], array_key_exists('mm_sink_state', $row) ? $row['mm_sink_state'] : null, $row['mm_open_state'], $multi_code, array_key_exists('mm_title_suffix', $row) ? $row['mm_title_suffix'] : '');
+                cns_make_multi_moderation($name, $row['mm_post_text'], $move_to, $row['mm_pin_state'], $row['mm_open_state'], $multi_code, array_key_exists('mm_title_suffix', $row) ? $row['mm_title_suffix'] : '');
             }
         }
     }

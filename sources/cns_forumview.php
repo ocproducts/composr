@@ -39,9 +39,6 @@ function get_forum_sort_order_simplified($_sort = 'first_post')
 function get_forum_sort_order($_sort = 'first_post', $simplified = false)
 {
     $sort = 't_cascading DESC,t_pinned DESC,';
-    if (get_option('enable_sunk') == '1') {
-        $sort .= 't_sunk ASC,';
-    }
 
     if ($simplified) {
         $sort = '';
@@ -329,8 +326,6 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     if (cns_may_moderate_forum($id)) {
         $moderator_actions .= '<option value="pin_topics">' . do_lang('PIN_TOPIC') . '</option>';
         $moderator_actions .= '<option value="unpin_topics">' . do_lang('UNPIN_TOPIC') . '</option>';
-        $moderator_actions .= '<option value="sink_topics">' . do_lang('SINK_TOPIC') . '</option>';
-        $moderator_actions .= '<option value="unsink_topics">' . do_lang('UNSINK_TOPIC') . '</option>';
         $moderator_actions .= '<option value="cascade_topics">' . do_lang('CASCADE_TOPIC') . '</option>';
         $moderator_actions .= '<option value="uncascade_topics">' . do_lang('UNCASCADE_TOPIC') . '</option>';
         $moderator_actions .= '<option value="open_topics">' . do_lang('OPEN_TOPIC') . '</option>';
@@ -564,9 +559,6 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     }
     if ($topic_row['t_pinned'] == 1) {
         $topic['modifiers'][] = 'pinned';
-    }
-    if ($topic_row['t_sunk'] == 1) {
-        $topic['modifiers'][] = 'sunk';
     }
     if ($topic_row['t_is_open'] == 0) {
         $topic['modifiers'][] = 'closed';
@@ -911,7 +903,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
         }
         $query .= ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics ttop';
         if (strpos(get_db_type(), 'mysql') !== false) {
-            $query .= ' FORCE INDEX (' . ((get_option('enable_sunk') == '1') ? 'topic_order_2' : 'topic_order_3') . ')';
+            $query .= ' FORCE INDEX (topic_order_forum)';
         }
     } else {
         $query = 'SELECT ttop.*,l_time';
@@ -922,7 +914,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
         }
         $query .= ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics ttop';
         if (strpos(get_db_type(), 'mysql') !== false) {
-            $query .= ' FORCE INDEX (' . ((get_option('enable_sunk') == '1') ? 'topic_order_2' : 'topic_order_3') . ')';
+            $query .= ' FORCE INDEX (topic_order_forum)';
         }
         $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON ttop.id=l.l_topic_id AND l.l_member_id=' . strval(get_member());
     }

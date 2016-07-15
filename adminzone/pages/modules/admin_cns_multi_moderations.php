@@ -194,7 +194,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         $target_forum = read_multi_code('forum_multi_code');
 
-        $multi_mods = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('id'), array('mm_move_to' => null, 'mm_pin_state' => null, 'mm_sink_state' => null, 'mm_open_state' => null, 'mm_title_suffix' => '', 'mm_forum_multi_code' => $target_forum));
+        $multi_mods = $GLOBALS['FORUM_DB']->query_select('f_multi_moderations', array('id'), array('mm_move_to' => null, 'mm_pin_state' => null, 'mm_open_state' => null, 'mm_title_suffix' => '', 'mm_forum_multi_code' => $target_forum));
         require_code('cns_moderation_action2');
         foreach ($multi_mods as $multi_mod) {
             cns_delete_multi_moderation($multi_mod['id']);
@@ -291,7 +291,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         $data = fix_bad_unicode($data);
 
-        cns_make_multi_moderation($name, $data, null, null, null, null, $target_forum, '');
+        cns_make_multi_moderation($name, $data, null, null, null, $target_forum, '');
     }
 
     /**
@@ -302,12 +302,11 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      * @param  ?AUTO_LINK $move_to Move the topic to this forum (null: don't move)
      * @param  ?BINARY $pin_state What to change the pin state to (null: don't change)
      * @param  ?BINARY $open_state What to change the open state to (null: don't change)
-     * @param  ?BINARY $sink_state What to change the sink state to (null: don't change)
      * @param  SHORT_TEXT $forum_multi_code The forum multicode identifying where the multi-moderation is applicable
      * @param  SHORT_TEXT $title_suffix The title suffix
      * @return array A pair: The input fields, Hidden fields
      */
-    public function get_form_fields($name = '', $post_text = '', $move_to = null, $pin_state = null, $open_state = null, $sink_state = null, $forum_multi_code = '*', $title_suffix = '')
+    public function get_form_fields($name = '', $post_text = '', $move_to = null, $pin_state = null, $open_state = null, $forum_multi_code = '*', $title_suffix = '')
     {
         require_code('cns_forums2');
 
@@ -325,11 +324,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $open_state_list->attach(form_input_radio_entry('open_state', '0', $open_state === 0, do_lang_tempcode('CLOSE_TOPIC')));
         $open_state_list->attach(form_input_radio_entry('open_state', '1', $open_state === 1, do_lang_tempcode('OPEN_TOPIC')));
         $fields->attach(form_input_radio(do_lang_tempcode('OPEN_STATE'), do_lang_tempcode('DESCRIPTION_OPEN_STATE'), 'open_state', $open_state_list));
-        $sink_state_list = new Tempcode();
-        $sink_state_list->attach(form_input_radio_entry('sink_state', '-1', is_null($sink_state), do_lang_tempcode('NA_EM')));
-        $sink_state_list->attach(form_input_radio_entry('sink_state', '0', $sink_state === 0, do_lang_tempcode('SINK_TOPIC')));
-        $sink_state_list->attach(form_input_radio_entry('sink_state', '1', $sink_state === 1, do_lang_tempcode('UNSINK_TOPIC')));
-        $fields->attach(form_input_radio(do_lang_tempcode('SINK_STATE'), do_lang_tempcode('DESCRIPTION_SINK_STATE'), 'sink_state', $sink_state_list));
         $fields->attach(cns_get_forum_multi_code_field($forum_multi_code));
         $fields->attach(form_input_line(do_lang_tempcode('TITLE_SUFFIX'), do_lang_tempcode('DESCRIPTION_TITLE_SUFFIX'), 'title_suffix', $title_suffix, false));
 
@@ -355,7 +349,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             'mm_name' => do_lang_tempcode('NAME'),
             'mm_pin_state' => do_lang_tempcode('PIN_STATE'),
             'mm_open_state' => do_lang_tempcode('OPEN_STATE'),
-            'mm_sink_state' => do_lang_tempcode('SINK_STATE'),
         );
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
@@ -366,7 +359,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             do_lang_tempcode('DESTINATION'),
             do_lang_tempcode('PIN_STATE'),
             do_lang_tempcode('OPEN_STATE'),
-            do_lang_tempcode('SINK_STATE'),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -397,17 +389,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
                         break;
                 }
             }
-            $sink_state = do_lang_tempcode('NA_EM');
-            if (!is_null($row['mm_sink_state'])) {
-                switch ($row['mm_sink_state']) {
-                    case 0:
-                        $sink_state = do_lang_tempcode('SINK_TOPIC');
-                        break;
-                    case 1:
-                        $sink_state = do_lang_tempcode('UNSINK_TOPIC');
-                        break;
-                }
-            }
 
             $destination = is_null($row['mm_move_to']) ? null : $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $row['mm_move_to']));
             if (is_null($destination)) {
@@ -416,7 +397,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $fields->attach(results_entry(array(get_translated_text($row['mm_name'], $GLOBALS['FORUM_DB']), $destination, $pin_state, $open_state, $sink_state, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
+            $fields->attach(results_entry(array(get_translated_text($row['mm_name'], $GLOBALS['FORUM_DB']), $destination, $pin_state, $open_state, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), either_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -452,7 +433,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
         $r = $m[0];
 
-        return $this->get_form_fields(get_translated_text($r['mm_name'], $GLOBALS['FORUM_DB']), $r['mm_post_text'], $r['mm_move_to'], $r['mm_pin_state'], $r['mm_open_state'], $r['mm_sink_state'], $r['mm_forum_multi_code'], $r['mm_title_suffix']);
+        return $this->get_form_fields(get_translated_text($r['mm_name'], $GLOBALS['FORUM_DB']), $r['mm_post_text'], $r['mm_move_to'], $r['mm_pin_state'], $r['mm_open_state'], $r['mm_forum_multi_code'], $r['mm_title_suffix']);
     }
 
     /**
@@ -468,12 +449,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             $pin_state = null;
         }
 
-        $sink_state = mixed();
-        $sink_state = post_param_integer('sink_state', 0);
-        if ($sink_state == -1) {
-            $sink_state = null;
-        }
-
         $open_state = mixed();
         $open_state = post_param_integer('open_state', 0);
         if ($open_state == -1) {
@@ -481,7 +456,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
 
         require_code('form_templates');
-        return strval(cns_make_multi_moderation(post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $sink_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix')));
+        return strval(cns_make_multi_moderation(post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix')));
     }
 
     /**
@@ -497,12 +472,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
             $pin_state = null;
         }
 
-        $sink_state = mixed();
-        $sink_state = post_param_integer('sink_state', 0);
-        if ($sink_state == -1) {
-            $sink_state = null;
-        }
-
         $open_state = mixed();
         $open_state = post_param_integer('open_state', 0);
         if ($open_state == -1) {
@@ -510,7 +479,7 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         }
 
         require_code('form_templates');
-        cns_edit_multi_moderation(intval($id), post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $sink_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix'));
+        cns_edit_multi_moderation(intval($id), post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix'));
     }
 
     /**

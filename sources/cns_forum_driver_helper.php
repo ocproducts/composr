@@ -162,7 +162,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
             $home_link = hyperlink($content_url, $content_title, false, true);
             $spacer_post = '[semihtml]' . do_lang('SPACER_POST', $home_link->evaluate(), '', '', get_site_default_lang()) . '[/semihtml]';
             $spacer_post_username = ($spacer_post_member_id == ($this_ref->get_guest_id()) ? do_lang('SYSTEM') : $this_ref->get_username($spacer_post_member_id));
-            cns_make_post($topic_id, $spacer_post_title, $spacer_post, 0, true, 1, 0, $spacer_post_username, $ip, $time, $spacer_post_member_id, null, null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, 0, null, false, false, false, false, null, false);
+            cns_make_post($topic_id, $spacer_post_title, $spacer_post, 0, true, 1, 0, $spacer_post_username, $ip, $time, $spacer_post_member_id, null, null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, null, false, false, false, false, null, false);
             $is_starter = false;
         }
 
@@ -181,7 +181,7 @@ function _helper_make_post_forum_topic($this_ref, $forum_name, $topic_identifier
     if ($poster_name == '') {
         $poster_name = $this_ref->get_username($member_id);
     }
-    $post_id = cns_make_post($topic_id, $post_title, $post, 0, $is_starter, $validated, 0, $poster_name, $ip, $time_post, $member_id, ($staff_only ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null), null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, 0, null, false, $skip_post_checks, false, false, $parent_id, false);
+    $post_id = cns_make_post($topic_id, $post_title, $post, 0, $is_starter, $validated, 0, $poster_name, $ip, $time_post, $member_id, ($staff_only ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : null), null, null, false, $update_caching, $forum_id, $support_attachments, $content_title, null, false, $skip_post_checks, false, false, $parent_id, false);
     $GLOBALS['LAST_POST_ID'] = $post_id;
 
     if ($is_new) {

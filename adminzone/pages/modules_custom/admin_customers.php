@@ -659,14 +659,14 @@ class Module_admin_customers
         // Multi-moderations...
 
         require_code('cns_moderation_action');
-        cns_make_multi_moderation(do_lang('TICKET_MM_TAKE_OWNERSHIP'), do_lang('TICKET_MM_TAKE_OWNERSHIP_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_QUOTE'), do_lang('TICKET_MM_QUOTE_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_PRICE'), do_lang('TICKET_MM_PRICE_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_CLOSE'), do_lang('TICKET_MM_CLOSE_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_CHARGED'), do_lang('TICKET_MM_CHARGED_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_NOT_FOR_FREE'), do_lang('TICKET_MM_NOT_FOR_FREE_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_FREE_WORK'), do_lang('TICKET_MM_FREE_WORK_POST'), null, null, null, null, '*');
-        cns_make_multi_moderation(do_lang('TICKET_MM_FREE_CREDITS'), do_lang('TICKET_MM_FREE_CREDITS_POST'), null, null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_TAKE_OWNERSHIP'), do_lang('TICKET_MM_TAKE_OWNERSHIP_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_QUOTE'), do_lang('TICKET_MM_QUOTE_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_PRICE'), do_lang('TICKET_MM_PRICE_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_CLOSE'), do_lang('TICKET_MM_CLOSE_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_CHARGED'), do_lang('TICKET_MM_CHARGED_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_NOT_FOR_FREE'), do_lang('TICKET_MM_NOT_FOR_FREE_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_FREE_WORK'), do_lang('TICKET_MM_FREE_WORK_POST'), null, null, null, '*');
+        cns_make_multi_moderation(do_lang('TICKET_MM_FREE_CREDITS'), do_lang('TICKET_MM_FREE_CREDITS_POST'), null, null, null, '*');
     }
 
     /**

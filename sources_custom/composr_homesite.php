@@ -73,7 +73,7 @@ function server__create_forum_post($_replying_to_post, $post_reply_title, $post_
 
     require_code('cns_posts_action');
     require_code('mantis'); // Defines LEAD_DEVELOPER_MEMBER_ID
-    $post_id = cns_make_post($topic_id, $post_reply_title, $post_reply_message, 0, false, 1, $post_important, null, null, null, LEAD_DEVELOPER_MEMBER_ID, null, null, null, false, true, null, false, '', 0, null, false, false, false, false, $replying_to_post);
+    $post_id = cns_make_post($topic_id, $post_reply_title, $post_reply_message, 0, false, 1, $post_important, null, null, null, LEAD_DEVELOPER_MEMBER_ID, null, null, null, false, true, null, false, '', null, false, false, false, false, $replying_to_post);
 
     echo strval($post_id);
 }

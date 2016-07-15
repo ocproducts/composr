@@ -954,7 +954,7 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
                     $is_starter = false;
                 }
                 require_code('cns_posts_action');
-                cns_make_post($topic_id, $is_starter ? do_lang('INSTANT_MESSAGING_CONVO') : '', $message, 0, $is_starter, 1, 0, null, null, null, get_member(), null, null, null, false, true, null, false, '', 0, null, false, true);
+                cns_make_post($topic_id, $is_starter ? do_lang('INSTANT_MESSAGING_CONVO') : '', $message, 0, $is_starter, 1, 0, null, null, null, get_member(), null, null, null, false, true, null, false, '', null, false, true);
                 require_code('cns_topics');
                 for ($i = 0; $i < count($members); $i++) {
                     cns_ping_topic_read($topic_id, $members[$i]);

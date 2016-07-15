@@ -217,6 +217,14 @@ function install_cns($upgrade_from = null)
         ));
         $GLOBALS['FORUM_DB']->create_index('f_password_history', 'p_member_id', array('p_member_id'));
     }
+    if ((!is_null($upgrade_from)) && ($upgrade_from < 11.0)) {
+        $GLOBALS['FORUM_DB']->delete_table_field('f_multi_moderations', 'mm_sink_state');
+        $GLOBALS['FORUM_DB']->delete_table_field('f_topics', 't_sunk');
+
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'topic_order_2');
+        $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'topic_order_3');
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_forum', array('t_forum_id', 't_cascading', 't_pinned', 't_cache_last_time'));
+    }
     if ((!is_null($upgrade_from)) && ($upgrade_from < 10.0)) {
         delete_config_option('no_dob_ask');
 
@@ -650,7 +658,6 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_table('f_topics', array(
             'id' => '*AUTO',
             't_pinned' => 'BINARY',
-            't_sunk' => 'BINARY',
             't_cascading' => 'BINARY', // Cascades to deeper forums, as an announcement
             't_forum_id' => '?AUTO_LINK', // Null if it's a Private Topic
             't_pt_from' => '?MEMBER',
@@ -690,8 +697,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cascading', array('t_cascading'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 't_cascading_or_forum', array('t_cascading', 't_forum_id'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order', array('t_cascading', 't_pinned', 't_cache_last_time')); // Ordering for forumview, is picked up over topic_order_3 for just the ordering bit (it seems)
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_2', array('t_forum_id', 't_cascading', 't_pinned', 't_sunk', 't_cache_last_time')); // Total index for forumview, including ordering. Doesn't work on current MySQL.
-        $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_3', array('t_forum_id', 't_cascading', 't_pinned', 't_cache_last_time')); // Total index for forumview, including ordering. Works if disable_sunk is turned on.
+        $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_forum', array('t_forum_id', 't_cascading', 't_pinned', 't_cache_last_time')); // Total index for forumview, including ordering
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'ownedtopics', array('t_cache_first_member_id'));
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'unread_forums', array('t_forum_id', 't_cache_last_time'));
 
@@ -793,12 +799,11 @@ function install_cns($upgrade_from = null)
             'mm_post_text' => 'LONG_TEXT',    // Comcode
             'mm_move_to' => '?AUTO_LINK',
             'mm_pin_state' => '?BINARY',
-            'mm_sink_state' => '?BINARY',
             'mm_open_state' => '?BINARY',
             'mm_forum_multi_code' => 'SHORT_TEXT',
             'mm_title_suffix' => 'SHORT_TEXT'
         ));
-        cns_make_multi_moderation(do_lang('TRASH_VERB'), '', $trash_forum_id, 0, 0, 0);
+        cns_make_multi_moderation(do_lang('TRASH_VERB'), '', $trash_forum_id, 0, 0);
 
         $GLOBALS['FORUM_DB']->create_table('f_warnings', array(
             'id' => '*AUTO',

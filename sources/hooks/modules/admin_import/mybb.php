@@ -1335,7 +1335,6 @@ class Hook_mybb
 
             $topic_options = unserialize($row['threadoptions']);
 
-            $mm_sink_state = ($topic_options['approvethread'] == 'approve') ? 1 : ($topic_options['approvethread'] == 'unapprove') ? 0 : null;
             $mm_open_state = ($topic_options['openthread'] == 'open') ? 1 : ($topic_options['openthread'] == 'close') ? 0 : null;
             $mm_move_to = ($topic_options['movethread'] != 0) ? $topic_options['movethread'] : null;
 
@@ -1345,7 +1344,6 @@ class Hook_mybb
             $mm_post_text .= ($topic_options['addreply'] != '') ? preg_replace('#\{username\}#', '', $topic_options['addreply']) : '';
             $map = array(
                 'mm_forum_multi_code' => $mm_forum_multi_code,
-                'mm_sink_state' => $mm_sink_state,
                 'mm_open_state' => $mm_open_state,
                 'mm_move_to' => $mm_move_to,
                 'mm_title_suffix' => $mm_title_suffix,

@@ -2421,7 +2421,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_enable_skip_sig
         CONFIG_OPTION_enable_spell_check
         CONFIG_OPTION_enable_staff_notes
-        CONFIG_OPTION_enable_sunk
         CONFIG_OPTION_enable_theme_img_buttons
         CONFIG_OPTION_enable_user_online_groups
         CONFIG_OPTION_enable_views_sigs_option
@@ -3556,7 +3555,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_SIGN_UP_REMINDER_GROUPS
         DESCRIPTION_SILENCE_FROM_FORUM
         DESCRIPTION_SILENCE_FROM_TOPIC
-        DESCRIPTION_SINK_STATE
         DESCRIPTION_SKILLS
         DESCRIPTION_SMART_TOPIC_NOTIFICATION
         DESCRIPTION_SOURCE
@@ -4042,7 +4040,6 @@ function string_scan($lang, $do_guessing = false)
         ENABLE_SKIP_SIG
         ENABLE_SPELL_CHECK
         ENABLE_STAFF_NOTES
-        ENABLE_SUNK
         ENABLE_THEME_IMG_BUTTONS
         ENABLE_USER_ONLINE_GROUPS
         ENABLE_VIEWS_SIGS_OPTION
@@ -5149,10 +5146,8 @@ function string_scan($lang, $do_guessing = false)
         MULTI_MODERATION_WILL_OPEN
         MULTI_MODERATION_WILL_PIN
         MULTI_MODERATION_WILL_POST
-        MULTI_MODERATION_WILL_SINK
         MULTI_MODERATION_WILL_TITLE_SUFFIX
         MULTI_MODERATION_WILL_UNPIN
-        MULTI_MODERATION_WILL_UNSINK
         MULTI_SITE_NETWORKING
         MUST_BE_EMAIL_DOMAIN
         MUST_DELETE_INSTALLER
@@ -6093,7 +6088,6 @@ function string_scan($lang, $do_guessing = false)
         SIMPLIFIED_ATTACHMENTS_UI
         SIMPLIFIED_DONEXT
         SIMPLIFY_WYSIWYG_BY_PERMISSIONS
-        SINK_STATE
         SITEMAP_EDITOR
         SITEMAP_LINK
         SITEMAP_TOOLS
@@ -7782,7 +7776,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_SET_TICKET_EXTRA_ACCESS
         DESCRIPTION_SKIP_SIGNATURE
         DESCRIPTION_SUBSCRIBE_ADDRESS
-        DESCRIPTION_SUNK
         DESCRIPTION_TIMEZONE_MEMBER
         DESCRIPTION_TOPICS_POSTED_IN
         DESCRIPTION_UPLOAD_CSV_FILE
@@ -8435,7 +8428,6 @@ function string_scan($lang, $do_guessing = false)
         MODIFIER_involved
         MODIFIER_pinned
         MODIFIER_poll
-        MODIFIER_sunk
         MODIFIER_unvalidated
         MODIFY_POINTS
         MODULE_TRANS_NAME_authors
@@ -9219,7 +9211,6 @@ function string_scan($lang, $do_guessing = false)
         SIGNATURE
         SIGNATURE_NOW
         SIGNATURE_TOO_BIG
-        SINK_TOPIC
         SITE
         SITEMAP
         SITE_META
@@ -9343,7 +9334,6 @@ function string_scan($lang, $do_guessing = false)
         SUCCESS_UPLOAD_SYNDICATION_AUTH
         SUGGESTIONS_ONLY
         SUNDAY
-        SUNK
         SUPER_MODERATORS
         SUPPORT_NO_TICKETS
         SUPPORT_SEARCH_FAQ
@@ -9504,7 +9494,6 @@ function string_scan($lang, $do_guessing = false)
         UNNAMED
         UNRATED
         UNSEEN_PERSONAL_POSTS
-        UNSINK_TOPIC
         UNSUBSCRIBE
         UNSUBSCRIBE_EVENT
         UNVALIDATED

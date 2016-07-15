@@ -46,7 +46,6 @@ You can delete a forum grouping from the bottom of its edit form.
 
 Within a forum, there are a number of to modify a topic, to change their behaviour:
  - A topic may be 'pinned' (also known as 'stickied' in some systems). A pinned topic is placed at the top of the topic list, usually as it contains important information
- - A topic may be 'sunk'. This is the opposite of pinning -- a sunk topic will display at the bottom of the topic list, on the last page of results
  - A topic may be made 'cascading'. Cascaded topics appear in all forums in the forum tree, underneath (and including) the forum they are placed in. The cascade property is often used to make forum-wide announcements
  - A topic may be 'closed'. Only those with the necessary privilege may post in a closed topic
  - The validation status of a topic (or post) may be changed. Topics that are not validated are only viewable by moderators and the topic creator. Whether topics are automatically set as validated or not depends on permissions (specifically the 'May bypass low-impact validation' permission)
@@ -149,7 +148,6 @@ Here are some features we have in Conversr that are mostly unique across forum s
  - Inline private posts (private messages embedded in public forum topics, so people can make private remarks to each other)
  - Forum introduction questions (a much more general concept than the silly 'password protected' forums, which duplicate what usergroup permissions are for)
  - True tree structure for forum, and cascading topics that can show as pinned just for a subtree (e.g. have a pinned topic under all the 'Games' forums, but not under the 'Politics' forums)
- - Sinking topics (the opposite of pinning)
  - Reported post forum (so moderators can discuss reported posts as part of their normal forum workflow, rather than them being stored elsewhere)
  - Clubs (so members can create their own usergroups and forums)
  - JavaScript overlay for profile info next to posts, rather than having repetitive information placed everywhere
@@ -170,9 +168,8 @@ Since the time of Conversr's development, standalone forums have actually reduce
  5_key="Topic"               5_value="A sequence of posts"
  6_key="Post"                6_value="A piece of writing made by a user and displayed as a continuation, or start, of a topic"
  7_key="Pin"                 7_value="A pinned topic is displayed above a non-pinned topic (otherwise, date order is used for sorting)"
- 8_key="Sunk"                8_value="A sunk topic is displayed beneath all other topics"
- 9_key="Cascade"             9_value="A cascading topic is displayed in its forum, and all subforums there-of"
-10_key="Home forum"         10_value="The forum at the root of the forum tree structure"
+ 8_key="Cascade"             8_value="A cascading topic is displayed in its forum, and all subforums there-of"
+ 9_key="Home forum"          9_value="The forum at the root of the forum tree structure"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

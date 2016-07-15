@@ -94,12 +94,11 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
         $post_text = $this->_default_property_str($properties, 'post_text');
         $move_to = $this->_default_property_int($properties, 'move_to');
         $pin_state = $this->_default_property_int($properties, 'pin_state');
-        $sink_state = $this->_default_property_int($properties, 'sink_state');
         $open_state = $this->_default_property_int($properties, 'open_state');
         $forum_multi_code = $this->_default_property_str($properties, 'forum_multi_code');
         $title_suffix = $this->_default_property_str($properties, 'title_suffix');
 
-        $id = cns_make_multi_moderation($label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
+        $id = cns_make_multi_moderation($label, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code, $title_suffix);
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
@@ -128,7 +127,6 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
             'post_text' => $row['mm_post_text'],
             'move_to' => $row['mm_move_to'],
             'pin_state' => $row['mm_pin_state'],
-            'sink_state' => $row['mm_sink_state'],
             'open_state' => $row['mm_open_state'],
             'forum_multi_code' => $row['mm_forum_multi_code'],
             'title_suffix' => $row['mm_title_suffix']
@@ -156,12 +154,11 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
         $post_text = $this->_default_property_str($properties, 'post_text');
         $move_to = $this->_default_property_int($properties, 'move_to');
         $pin_state = $this->_default_property_int($properties, 'pin_state');
-        $sink_state = $this->_default_property_int($properties, 'sink_state');
         $open_state = $this->_default_property_int($properties, 'open_state');
         $forum_multi_code = $this->_default_property_str($properties, 'forum_multi_code');
         $title_suffix = $this->_default_property_str($properties, 'title_suffix');
 
-        cns_edit_multi_moderation(intval($resource_id), $label, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix);
+        cns_edit_multi_moderation(intval($resource_id), $label, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code, $title_suffix);
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 

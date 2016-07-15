@@ -260,14 +260,13 @@ class Hook_commandr_fs_forums extends Resource_fs_base
         $validated = $this->_default_property_int($properties, 'validated');
         $open = $this->_default_property_int($properties, 'open');
         $pinned = $this->_default_property_int($properties, 'pinned');
-        $sunk = $this->_default_property_int($properties, 'sunk');
         $cascading = $this->_default_property_int($properties, 'cascading');
         $pt_from = $this->_default_property_member_null($properties, 'pt_from');
         $pt_to = $this->_default_property_member_null($properties, 'pt_to');
         $num_views = $this->_default_property_int($properties, 'views');
         $description_link = $this->_default_property_str($properties, 'description_link');
 
-        return array($description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link);
+        return array($description, $emoticon, $validated, $open, $pinned, $cascading, $pt_from, $pt_to, $num_views, $description_link);
     }
 
     /**
@@ -316,9 +315,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
 
             $forum_id = $this->_integer_category($category);
 
-            list($description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
+            list($description, $emoticon, $validated, $open, $pinned, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
 
-            $id = cns_make_topic($forum_id, $description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
+            $id = cns_make_topic($forum_id, $description, $emoticon, $validated, $open, $pinned, $cascading, $pt_from, $pt_to, false, $num_views, null, $description_link);
             $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_cache_first_title' => $label), array('id' => $id), '', 1);
             generate_resource_fs_moniker('topic', strval($id));
             if ((array_key_exists('poll', $properties)) && (!empty($properties['poll']))) {
@@ -452,7 +451,6 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             'validated' => $row['t_validated'],
             'open' => $row['t_is_open'],
             'pinned' => $row['t_pinned'],
-            'sunk' => $row['t_sunk'],
             'cascading' => $row['t_cascading'],
             'pt_from' => remap_resource_id_as_portable('member', $row['t_pt_from']),
             'pt_to' => remap_resource_id_as_portable('member', $row['t_pt_to']),
@@ -514,9 +512,9 @@ class Hook_commandr_fs_forums extends Resource_fs_base
             }
 
             $label = $this->_default_property_str($properties, 'label');
-            list($description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
+            list($description, $emoticon, $validated, $open, $pinned, $cascading, $pt_from, $pt_to, $num_views, $description_link) = $this->__folder_read_in_properties_topic($path, $properties);
 
-            cns_edit_topic(intval($resource_id), $description, $emoticon, $validated, $open, $pinned, $sunk, $cascading, '', $label, $description_link, false, $num_views, true);
+            cns_edit_topic(intval($resource_id), $description, $emoticon, $validated, $open, $pinned, $cascading, '', $label, $description_link, false, $num_views, true);
 
             $poll_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_poll_id', array('id' => intval($resource_id)));
 

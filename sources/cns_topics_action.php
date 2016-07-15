@@ -28,7 +28,6 @@
  * @param  ?BINARY $validated Whether the topic is validated (null: detect whether it should be).
  * @param  BINARY $open Whether the topic is open.
  * @param  BINARY $pinned Whether the topic is pinned.
- * @param  BINARY $sunk Whether the topic is sunk.
  * @param  BINARY $cascading Whether the topic is cascading.
  * @param  ?MEMBER $pt_from If it is a Private Topic, who is it 'from' (null: not a Private Topic).
  * @param  ?MEMBER $pt_to If it is a Private Topic, who is it 'to' (null: not a Private Topic).
@@ -38,13 +37,10 @@
  * @param  SHORT_TEXT $description_link Link related to the topic (e.g. link to view a ticket).
  * @return AUTO_LINK The ID of the newly created topic.
  */
-function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated = null, $open = 1, $pinned = 0, $sunk = 0, $cascading = 0, $pt_from = null, $pt_to = null, $check_perms = true, $num_views = 0, $id = null, $description_link = '')
+function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated = null, $open = 1, $pinned = 0, $cascading = 0, $pt_from = null, $pt_to = null, $check_perms = true, $num_views = 0, $id = null, $description_link = '')
 {
     if (is_null($pinned)) {
         $pinned = 0;
-    }
-    if (is_null($sunk)) {
-        $sunk = 0;
     }
     if (is_null($description)) {
         $description = '';
@@ -74,7 +70,6 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         require_code('cns_forums');
         if (!cns_may_moderate_forum($forum_id)) {
             $pinned = 0;
-            $sunk = 0;
             $open = 1;
             $cascading = 0;
         }
@@ -93,7 +88,6 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
     }
     $map = array(
         't_pinned' => $pinned,
-        't_sunk' => $sunk,
         't_cascading' => $cascading,
         't_forum_id' => $forum_id,
         't_pt_from' => $pt_from,

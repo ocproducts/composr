@@ -77,7 +77,7 @@ class Hook_cron_insults
                 $topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, $selected_member2, $selected_member1, true, 0, null, '');
 
                 require_code('cns_posts_action');
-                $post_id = cns_make_post($topic_id, $subject, $insult_pt_topic_post, 0, true, 1, 0, do_lang('SYSTEM'), null, null, $GLOBALS['FORUM_DRIVER']->get_guest_id(), null, null, null, false, true, null, true, $subject, 0, null, true, true, true);
+                $post_id = cns_make_post($topic_id, $subject, $insult_pt_topic_post, 0, true, 1, 0, do_lang('SYSTEM'), null, null, $GLOBALS['FORUM_DRIVER']->get_guest_id(), null, null, null, false, true, null, true, $subject, null, true, true, true);
 
                 require_code('cns_topics_action2');
                 send_pt_notification($post_id, $subject, $topic_id, $selected_member2, $selected_member1);
