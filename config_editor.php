@@ -39,7 +39,7 @@ if (get_magic_quotes_gpc()) {
 }
 
 require_once($FILE_BASE . '/_config.php');
-if (isset($GLOBALS['SITE_INFO']['admin_password'])) {
+if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
     $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
     unset($GLOBALS['SITE_INFO']['admin_password']);
 }
