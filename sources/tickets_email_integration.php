@@ -181,8 +181,7 @@ function ticket_incoming_scan()
         $error = imap_last_error();
         imap_errors(); // Works-around weird PHP bug where "Retrying PLAIN authentication after [AUTHENTICATIONFAILED] Authentication failed. (errflg=1) in Unknown on line 0" may get spit out into any stream (even the backup log)
 
-        $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
-        if (!$cli && get_param_integer('no_fatal_cron_errors', 0) != 1) {
+        if (!is_cli()) {
             warn_exit(do_lang_tempcode('IMAP_ERROR', $error), false, true);
         }
     }

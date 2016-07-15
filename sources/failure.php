@@ -41,8 +41,8 @@ function init__failure()
      */
     global $WANT_TEXT_ERRORS;
     $cli = false;
-    if (function_exists('php_sapi_name')) {
-        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
+    if (function_exists('is_cli')) {
+        $cli = is_cli();
     }
     $WANT_TEXT_ERRORS = $cli;
 

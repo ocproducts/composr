@@ -3519,3 +3519,13 @@ function escape_header($str)
 {
     return str_replace("\r", '', str_replace("\n", '', addslashes($str)));
 }
+
+/**
+ * Find if running as CLI (i.e. on the command prompt). This implies admin credentials (web users can't initiate a CLI call), and text output.
+ *
+ * @return boolean Whether running as CLI
+ */
+function is_cli()
+{
+    return ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+}

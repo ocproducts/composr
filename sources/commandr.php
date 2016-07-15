@@ -36,16 +36,14 @@ function init__commandr()
  */
 function commandr_script()
 {
-    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
-
-    if ($cli) {
+    if (is_cli()) {
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(0);
         }
     }
 
     // Closed site
-    if (!$cli) {
+    if (!is_cli()) {
         prepare_for_known_ajax_response();
 
         $site_closed = get_option('site_closed');
@@ -97,7 +95,7 @@ function commandr_script()
         }
     } else {
         // Executing a command from the command-line
-        $command = post_param_string('command', $cli ? null : false);
+        $command = post_param_string('command', is_cli() ? null : false);
         if (is_null($command)) {
             require_code('comcode_from_html');
             require_code('mail');

@@ -142,8 +142,7 @@ function convert_lang_code_to_transifex($lang)
 function transifex_push_script()
 {
     if (!$GLOBALS['DEV_MODE']) {
-        $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-        if (!$cli) {
+        if (!is_cli()) {
             header('Content-type: text/plain');
             exit('Must run this script on command line, for security reasons');
         }
@@ -790,8 +789,7 @@ function _transifex($call, $http_verb, $params = null, $trigger_error = true)
     global $HTTP_MESSAGE;
     $result = http_download_file($url, null, $trigger_error, false, 'Composr', ($http_verb == 'GET') ? null : $params, null, null, null, null, null, null, $auth, 30.0, $raw_post, null, null, $http_verb, $raw_content_type);
 
-    $cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-    if ($cli) {
+    if (is_cli()) {
         @print('Done call to ' . $url . ' [' . $HTTP_MESSAGE . ']' . "\n");
     }
 

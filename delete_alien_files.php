@@ -48,8 +48,7 @@ header('Content-type: text/plain; charset=' . get_charset());
 
 safe_ini_set('ocproducts.xss_detect', '0');
 
-$cli = ((php_sapi_name() == 'cli') && (empty($_SERVER['REMOTE_ADDR'])) && (empty($_ENV['REMOTE_ADDR'])));
-if (!$cli) {
+if (!is_cli()) {
     exit('Must run this script on command line, for security reasons');
 }
 

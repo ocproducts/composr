@@ -91,8 +91,7 @@ function init__urls()
  */
 function get_self_url_easy($script_name_if_cli = false)
 {
-    $cli = ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
-    if ($cli) {
+    if (is_cli()) {
         if ($script_name_if_cli) {
             return $_SERVER['argv'][0];
         }
