@@ -121,14 +121,8 @@ function newsletter_get_category_choices($cutoff_time, $lang)
 
     $chosen_categories = '';
 
-    $_hooks = find_all_hooks('modules', 'admin_newsletter');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
-
+    $_hooks = find_all_hook_obs('modules', 'admin_newsletter', 'Hook_whatsnew_');
+    foreach ($_hooks as $hook => $object) {
         $done = false;
         if (method_exists($object, 'choose_categories')) {
             list($cats, $_title) = $object->choose_categories($cutoff_time);
@@ -179,18 +173,12 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
 {
     require_code('global4');
 
-    $_hooks = find_all_hooks('modules', 'admin_newsletter');
-
     // Generate Comcode for content selected, drawing on hooks
     $automatic = array();
     $i = 0;
     $catarr = explode("\n", $chosen_categories);
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/modules/admin_newsletter/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_whatsnew_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
+    $_hooks = find_all_hook_obs('modules', 'admin_newsletter', 'Hook_whatsnew_');
+    foreach ($_hooks as $hook => $object) {
         $found_one_match = false;
         $last_find_id = mixed();
         $last_cat_id = null;

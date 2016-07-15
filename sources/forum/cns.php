@@ -840,10 +840,8 @@ class Forum_driver_cns extends Forum_driver_base
 
         // Now implicit usergroup hooks
         if ($start == 0) {
-            $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-                $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+            $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
+            foreach ($hooks as $ob) {
                 $group_ids = $ob->get_bound_group_ids();
                 foreach ($group_ids as $group_id) {
                     if (in_array($group_id, $groups)) {

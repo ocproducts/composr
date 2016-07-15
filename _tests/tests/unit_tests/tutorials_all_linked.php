@@ -52,10 +52,8 @@ class tutorials_all_linked_test_set extends cms_test_case
             }
         }
 
-        $hooks = find_all_hooks('systems', 'addon_registry');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/addon_registry/' . $hook);
-            $ob = object_factory('Hook_addon_registry_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($hooks as $hook => $ob) {
             $tutorials = $ob->get_applicable_tutorials();
             foreach ($tutorials as $tutorial_name) {
                 $tutorial = get_tutorial_metadata($tutorial_name);

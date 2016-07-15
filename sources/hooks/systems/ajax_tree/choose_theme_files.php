@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_choose_theme_files
+class Hook_ajax_tree_choose_theme_files
 {
     /**
      * Run function for ajax-tree hooks. Generates XML for a tree list, which is interpreted by JavaScript and expanded on-demand (via new calls).
@@ -301,14 +301,12 @@ class Hook_choose_theme_files
         }
 
         $_templates_for_addons = array();
-        $addons = find_all_hooks('systems', 'addon_registry');
-        foreach (array_keys($addons) as $addon) {
+        $addons = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($addons as $addon => $ob) {
             if ($filter_addon !== null && $filter_addon != $addon) {
                 continue;
             }
 
-            require_code('hooks/systems/addon_registry/' . $addon);
-            $ob = object_factory('Hook_addon_registry_' . $addon);
             $_files = $ob->get_file_list();
 
             foreach (array('templates', 'css', 'javascript', 'xml', 'text') as $subdir) {

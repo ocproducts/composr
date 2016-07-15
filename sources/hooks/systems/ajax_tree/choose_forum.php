@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_choose_forum
+class Hook_ajax_tree_choose_forum
 {
     /**
      * Run function for ajax-tree hooks. Generates XML for a tree list, which is interpreted by JavaScript and expanded on-demand (via new calls).

@@ -78,11 +78,9 @@ class Hook_sitemap_config_category extends Hook_sitemap_base
         $page = $this->_make_zone_concrete($zone, $page_link);
 
         // Find all categories
-        $hooks = find_all_hooks('systems', 'config');
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $categories = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        foreach ($hooks as $ob) {
             $option = $ob->get_details();
             if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
                 if (!is_null($ob->get_default())) {

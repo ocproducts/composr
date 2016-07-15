@@ -969,7 +969,7 @@ function report_post($post_id, $reason = '')
     } else // New topic
     {
         require_code('cns_topics_action');
-        $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false);
+        $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, null, null, false);
         $first_post = true;
     }
 

@@ -20,10 +20,8 @@ class config_test_set extends cms_test_case
 {
     public function testListConfigConsistency()
     {
-        $hooks = find_all_hooks('systems', 'config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
             if ($details['type'] == 'list') {
                 $list = explode('|', $details['list_options']);
@@ -36,10 +34,8 @@ class config_test_set extends cms_test_case
     {
         $categories = array();
 
-        $hooks = find_all_hooks('systems', 'config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
             if (!isset($categories[$details['category']])) {
                 $categories[$details['category']] = 0;
@@ -57,10 +53,8 @@ class config_test_set extends cms_test_case
     {
         $categories = array();
 
-        $hooks = find_all_hooks('systems', 'config');
-        foreach ($hooks as $hook => $hook_type) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
             if (!isset($categories[$details['category']])) {
                 $categories[$details['category']] = array();

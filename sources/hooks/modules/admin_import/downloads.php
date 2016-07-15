@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_downloads
+class Hook_import_downloads
 {
     /**
      * Standard importer hook info function.

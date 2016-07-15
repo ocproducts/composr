@@ -221,13 +221,8 @@ class Module_pointstore
 
         $items = new Tempcode();
 
-        $_hooks = find_all_hooks('modules', 'pointstore');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/pointstore/' . filter_naughty_harsh($hook), true);
-            $object = object_factory('Hook_pointstore_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('modules', 'pointstore', 'Hook_pointstore_');
+        foreach ($_hooks as $object) {
             $object->init();
             $tpls = $object->info();
             foreach ($tpls as $tpl) {

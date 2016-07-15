@@ -49,10 +49,8 @@ function cns_get_group_members_raw_count($group_id, $include_primaries = true, $
 
     // Now implicit usergroup hooks
     if ($include_secondaries) {
-        $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-            $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
+        foreach ($hooks as $ob) {
             if (in_array($group_id, $ob->get_bound_group_ids())) {
                 $c = $ob->get_member_list_count($group_id);
                 if (!is_null($c)) {
@@ -131,10 +129,8 @@ function cns_get_group_members_raw($group_id, $include_primaries = true, $non_va
 
     // Now implicit usergroup hooks
     if ($include_secondaries) {
-        $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-            $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
+        foreach ($hooks as $ob) {
             if (in_array($group_id, $ob->get_bound_group_ids())) {
                 $c = $ob->get_member_list($group_id);
                 if (!is_null($c)) {

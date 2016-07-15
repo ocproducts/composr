@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_choose_composr_homesite_addon
+class Hook_ajax_tree_choose_composr_homesite_addon
 {
     /**
      * This will get the XML file from compo.sr.

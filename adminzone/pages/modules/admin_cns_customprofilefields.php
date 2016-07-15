@@ -287,15 +287,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         // Load up filters
-        $hooks = find_all_hooks('systems', 'cns_cpf_filter');
+        $hooks = find_all_hook_obs('systems', 'cns_cpf_filter', 'Hook_cns_cpf_filter_');
         $to_keep = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_cpf_filter/' . $hook);
-            $_hook = object_factory('Hook_cns_cpf_filter_' . $hook, true);
-            if (is_null($_hook)) {
-                continue;
-            }
-            $to_keep += $_hook->to_enable();
+        foreach ($hooks as $ob) {
+            $to_keep += $ob->to_enable();
         }
 
         // Load rows, according to pagination

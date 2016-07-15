@@ -103,13 +103,8 @@ function handle_active_login($username)
     $member = $login_array['id'];
 
     // Run hooks, if any exist
-    $hooks = find_all_hooks('systems', 'upon_login');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_login/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upon_login_' . filter_naughty($hook), true);
-        if (is_null($ob)) {
-            continue;
-        }
+    $hooks = find_all_hook_obs('systems', 'upon_login', 'Hook_upon_login_');
+    foreach ($hooks as $ob) {
         $ob->run(true, $username, $member); // true means "a new login attempt"
     }
 

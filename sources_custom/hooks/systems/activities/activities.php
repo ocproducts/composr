@@ -53,10 +53,8 @@ class Hook_activities_activities
      */
     public function has_external_site_wide_syndication()
     {
-        $dests = find_all_hooks('systems', 'syndication');
-        foreach (array_keys($dests) as $hook) {
-            require_code('hooks/systems/syndication/' . $hook);
-            $ob = object_factory('Hook_syndication_' . $hook);
+        $dests = find_all_hook_obs('systems', 'syndication', 'Hook_syndication_');
+        foreach ($dests as $ob) {
             if (($ob->is_available()) && ($ob->auth_is_set_site())) {
                 return true;
             }

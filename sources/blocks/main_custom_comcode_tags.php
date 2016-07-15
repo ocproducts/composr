@@ -62,11 +62,8 @@ class Block_main_custom_comcode_tags
         }
 
         // From Comcode hooks
-        $hooks = find_all_hooks('systems', 'comcode');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/comcode/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_comcode_' . filter_naughty_harsh($hook), true);
-
+        $hooks = find_all_hook_obs('systems', 'comcode', 'Hook_comcode_');
+        foreach ($hooks as $object) {
             $tags[] = $object->get_tag();
         }
 

@@ -251,14 +251,8 @@ function get_fields_hook($type)
 
     $path = 'hooks/systems/fields/' . filter_naughty($type);
     if ((!/*common ones we know have hooks*/in_array($type, array('author', 'codename', 'color', 'content_link', 'date', 'email', 'float', 'guid', 'integer', 'just_date', 'just_time', 'list', 'long_text', 'long_trans', 'page_link', 'password', 'picture', 'video', 'posting_field', 'reference', 'short_text', 'short_trans', 'theme_image', 'tick', 'upload', 'url', 'member'))) && (!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
-        $hooks = find_all_hooks('systems', 'fields');
-        foreach (array_keys($hooks) as $hook) {
-            $path = 'hooks/systems/fields/' . filter_naughty($hook);
-            require_code($path);
-            $ob = object_factory('Hook_fields_' . filter_naughty($hook, true));
-            if (is_null($ob)) {
-                return get_fields_hook('short_text');
-            }
+        $hooks = find_all_hook_obs('systems', 'fields', 'Hook_fields_');
+        foreach ($hooks as $ob) {
             if (method_exists($ob, 'get_field_types')) {
                 if (array_key_exists($type, $ob->get_field_types($type))) {
                     $fields_hook_cache[$type] = $ob;
@@ -269,6 +263,9 @@ function get_fields_hook($type)
     }
     require_code($path);
     $ob = object_factory('Hook_fields_' . filter_naughty($type));
+    if (is_null($ob)) {
+        return get_fields_hook('short_text');
+    }
     $fields_hook_cache[$type] = $ob;
     return $ob;
 }

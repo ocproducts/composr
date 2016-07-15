@@ -74,7 +74,8 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
-        $_hooks = find_all_hooks('modules', 'search');
+        require_code('search');
+        $_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
 
         if ($child_cutoff !== null) {
             if (count($_hooks) > $child_cutoff) {
@@ -84,12 +85,7 @@ class Hook_sitemap_search extends Hook_sitemap_base
 
         $hooks = array();
         require_code('database_search');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
-            if (is_null($ob)) {
-                continue;
-            }
+        foreach ($_hooks as $hook => $ob) {
             $info = $ob->info(false);
             if (is_null($info)) {
                 continue;

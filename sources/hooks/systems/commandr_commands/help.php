@@ -35,15 +35,10 @@ class Hook_commandr_command_help
     {
         if (array_key_exists(0, $parameters)) {
             // Load up the relevant block and grab its help output
-            $hooks = find_all_hooks('systems', 'commandr_commands');
+            $hooks = find_all_hook_obs('systems', 'commandr_commands', 'Hook_commandr_command_');
             $hook_return = null;
-            foreach (array_keys($hooks) as $hook) {
+            foreach ($hooks as $hook => $object) {
                 if ($hook == $parameters[0]) {
-                    require_code('hooks/systems/commandr_commands/' . filter_naughty_harsh($hook));
-                    $object = object_factory('Hook_commandr_command_' . filter_naughty_harsh($hook), true);
-                    if (is_null($object)) {
-                        continue;
-                    }
                     $hook_return = $object->run(array('help' => null), array(), $commandr_fs);
                     break;
                 }

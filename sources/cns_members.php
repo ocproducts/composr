@@ -137,15 +137,10 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         $result = $CUSTOM_FIELD_CACHE[$x];
     } else {
         // Load up filters
-        $hooks = find_all_hooks('systems', 'cns_cpf_filter');
+        $hooks = find_all_hook_obs('systems', 'cns_cpf_filter', 'Hook_cns_cpf_filter_');
         $to_keep = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cns_cpf_filter/' . $hook);
-            $_hook = object_factory('Hook_cns_cpf_filter_' . $hook, true);
-            if ($_hook === null) {
-                continue;
-            }
-            $to_keep += $_hook->to_enable();
+        foreach ($hooks as $ob) {
+            $to_keep += $ob->to_enable();
         }
 
         $where = 'WHERE 1=1 ';

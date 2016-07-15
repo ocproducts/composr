@@ -77,13 +77,9 @@ function _decache($cached_for, $identifier = null, $member = null)
 
     $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
 
-    $hooks = find_all_hooks('systems', 'decache');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/decache/' . filter_naughty($hook));
-        $ob = object_factory('Hook_decache_' . filter_naughty($hook), true);
-        if (!is_null($ob)) {
-            $ob->decache($cached_for, $identifier);
-        }
+    $hooks = find_all_hook_obs('systems', 'decache', 'Hook_decache_');
+    foreach ($hooks as $ob) {
+        $ob->decache($cached_for, $identifier);
     }
 
     if ($identifier === null) {

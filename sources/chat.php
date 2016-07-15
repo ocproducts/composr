@@ -905,11 +905,9 @@ function chat_post_message($room_id, $message, $font_name, $text_colour, $wrap_p
         sync_file(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat');
 
         // Bot support
-        $hooks = find_all_hooks('modules', 'chat_bots');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/chat_bots/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_chat_bot_' . $hook, true);
-            if ((!is_null($ob)) && (method_exists($ob, 'reply_to_any_communication'))) {
+        $hooks = find_all_hook_obs('modules', 'chat_bots', 'Hook_chat_bot_');
+        foreach ($hooks as $hook => $ob) {
+            if (method_exists($ob, 'reply_to_any_communication')) {
                 $response = $ob->reply_to_any_communication($room_id, $message);
                 if (!is_null($response)) {
                     // Store bots message
@@ -1343,13 +1341,8 @@ function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $r
     if (((!is_guest()) && ($from == get_member())) || (($username != 'bot') && ($username == $GLOBALS['FORUM_DRIVER']->get_username(get_member())))) {
         // Handle bot messages
         if ($pm_user == 'bot') {
-            $hooks = find_all_hooks('modules', 'chat_bots');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/modules/chat_bots/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_chat_bot_' . $hook, true);
-                if (is_null($ob)) {
-                    continue;
-                }
+            $hooks = find_all_hook_obs('modules', 'chat_bots', 'Hook_chat_bot_');
+            foreach ($hooks as $ob) {
                 if (method_exists($ob, 'handle_commands')) {
                     $response = $ob->handle_commands($room_id, $pm_message);
                     if (!is_null($response)) {

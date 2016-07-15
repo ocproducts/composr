@@ -363,7 +363,7 @@ class Module_shopping
 
                 require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($_hook));
 
-                $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($_hook));
+                $object = object_factory('Hook_ecommerce_via_' . filter_naughty_harsh($_hook));
 
                 if (method_exists($object, 'show_cart_entry')) {
                     $object->show_cart_entry($shopping_cart, $value);
@@ -568,7 +568,7 @@ class Module_shopping
     {
         $via = get_option('payment_gateway');
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $object = object_factory('Hook_ecommerce_via_' . $via);
 
         $message = mixed();
         if (method_exists($object, 'get_callback_url_message')) {

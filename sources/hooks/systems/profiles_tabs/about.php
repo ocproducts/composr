@@ -121,13 +121,8 @@ class Hook_profiles_tabs_about
         $extra_sections = array();
         $extra_info_details = array();
         $extra_tracking_details = array();
-        $hooks = find_all_hooks('modules', 'members');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/members/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_members_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $hooks = find_all_hook_obs('modules', 'members', 'Hook_members_');
+        foreach ($hooks as $object) {
             if (method_exists($object, 'run')) {
                 $hook_result = $object->run($member_id_of);
                 $modules = array_merge($modules, $hook_result);

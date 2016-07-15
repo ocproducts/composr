@@ -319,11 +319,8 @@ class template_previews_test_set extends cms_test_case
     {
         $all_used = array();
 
-        $hooks = find_all_hooks('systems', 'addon_registry');
-        foreach ($hooks as $hook => $place) {
-            require_code('hooks/systems/addon_registry/' . $hook);
-
-            $ob = object_factory('Hook_addon_registry_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($hooks as $ob) {
             if (!method_exists($ob, 'tpl_previews')) {
                 continue;
             }

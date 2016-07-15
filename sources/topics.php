@@ -861,26 +861,14 @@ class CMS_Topic
                 }
 
                 // Conversr renderings of poster
-                static $hooks = null;
-                if (is_null($hooks)) {
-                    $hooks = find_all_hooks('modules', 'topicview');
-                }
                 static $hook_objects = null;
                 if (is_null($hook_objects)) {
-                    $hook_objects = array();
-                    foreach (array_keys($hooks) as $hook) {
-                        require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
-                        $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
-                        if (is_null($object)) {
-                            continue;
-                        }
-                        $hook_objects[$hook] = $object;
-                    }
+                    $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
                 }
                 if (!$is_spacer_post) {
                     if (!is_guest($post['member'])) {
                         require_code('cns_members2');
-                        $poster_details = render_member_box($post['member'], false, $hooks, $hook_objects, false, null, false);
+                        $poster_details = render_member_box($post['member'], false, $hook_objects, false, null, false);
                     } else {
                         $custom_fields = new Tempcode();
                         if ((array_key_exists('ip_address', $post)) && (addon_installed('cns_forum'))) {

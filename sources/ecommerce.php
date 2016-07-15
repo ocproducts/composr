@@ -93,7 +93,7 @@ function get_transaction_form_fields($trans_id, $purchase_id, $item_name, $amoun
 
     if (is_null($trans_id)) {
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $object = object_factory('Hook_ecommerce_via_' . $via);
         if (!method_exists($object, 'do_transaction')) {
             warn_exit(do_lang_tempcode('LOCAL_PAYMENT_NOT_SUPPORTED', escape_html($via)));
         }
@@ -163,7 +163,7 @@ function get_transaction_fee($amount, $via)
 
     if ((file_exists(get_file_base() . '/sources/hooks/systems/ecommerce_via/' . $via)) || (file_exists(get_file_base() . '/sources_custom/hooks/systems/ecommerce_via/' . $via))) {
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $object = object_factory('Hook_ecommerce_via_' . $via);
         return $object->get_transaction_fee($amount);
     }
 
@@ -187,7 +187,7 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $amount, 
         $via = get_option('payment_gateway');
     }
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
     return $object->make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency);
 }
 
@@ -211,7 +211,7 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $amount,
         $via = get_option('payment_gateway');
     }
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
     return $object->make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency);
 }
 
@@ -231,7 +231,7 @@ function make_cancel_button($purchase_id, $via)
         return null;
     }
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
     if (!method_exists($object, 'make_cancel_button')) {
         return null;
     }
@@ -261,14 +261,9 @@ function send_invoice_notification($member_id, $id)
  */
 function find_all_products($site_lang = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
     $products = array();
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $object) {
         $_products = $object->get_products($site_lang);
         foreach ($_products as $type_code => $details) {
             if (!array_key_exists(4, $details)) {
@@ -291,14 +286,8 @@ function find_all_products($site_lang = false)
  */
 function find_product($search, $site_lang = false, $search_item_names = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
-
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $object) {
         $_products = $object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
@@ -331,14 +320,8 @@ function find_product($search, $site_lang = false, $search_item_names = false)
  */
 function find_product_row($search, $site_lang = false, $search_item_names = false)
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
-
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+    foreach ($_hooks as $object) {
         $_products = $object->get_products($site_lang, $search, $search_item_names);
 
         $type_code = mixed();
@@ -370,7 +353,7 @@ function perform_local_payment()
 {
     $via = get_option('payment_gateway');
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
     return ((get_option('use_local_payment') == '1') && (method_exists($object, 'do_transaction')));
 }
 
@@ -409,7 +392,7 @@ function handle_transaction_script()
 
     $via = get_param_string('from', get_option('payment_gateway'));
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
 
     ob_start();
 
@@ -651,7 +634,7 @@ function make_cart_payment_button($order_id, $currency)
 
     require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
 
-    $object = object_factory('Hook_' . $via);
+    $object = object_factory('Hook_ecommerce_via_' . $via);
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));

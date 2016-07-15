@@ -38,7 +38,7 @@ function init__hooks__modules__admin_import__vb3()
 /**
  * Forum Driver.
  */
-class Hook_vb3
+class Hook_import_vb3
 {
     /**
      * Standard importer hook info function.

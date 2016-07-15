@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_newsletter_subscribers
+class Hook_import_newsletter_subscribers
 {
     /**
      * Standard importer hook info function.

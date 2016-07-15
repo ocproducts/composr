@@ -595,14 +595,9 @@ class Module_admin_setupwizard
 
         $main_blocks = array();
         $side_blocks = array();
-        $hooks = find_all_hooks('modules', 'admin_setupwizard');
-        foreach (array_keys($hooks) as $hook) {
+        $hooks = find_all_hook_obs('modules', 'admin_setupwizard', 'Hook_sw_');
+        foreach ($hooks as $hook => $ob) {
             if (post_param_integer('addon_' . $hook, 0) == 1) {
-                require_code('hooks/modules/admin_setupwizard/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_sw_' . filter_naughty_harsh($hook), true);
-                if (is_null($ob)) {
-                    continue;
-                }
                 if (method_exists($ob, 'get_blocks')) {
                     $ret = $ob->get_blocks();
                     if (count($ret) != 0) {

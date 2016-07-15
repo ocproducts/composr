@@ -278,7 +278,7 @@ class Module_search
                 list($ajax_hook, $ajax_options) = $ajax_tree;
 
                 require_code('hooks/systems/ajax_tree/' . $ajax_hook);
-                $tree_hook_ob = object_factory('Hook_' . $ajax_hook);
+                $tree_hook_ob = object_factory('Hook_ajax_tree_' . $ajax_hook);
                 $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
 
                 $nice_label = $under;
@@ -364,13 +364,8 @@ class Module_search
 
             $search_domains = new Tempcode();
             $_search_domains = array();
-            $_hooks = find_all_hooks('modules', 'search');
-            foreach (array_keys($_hooks) as $hook) {
-                require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
-                if (is_null($ob)) {
-                    continue;
-                }
+            $_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
+            foreach ($_hooks as $hook => $ob) {
                 $info = $ob->info();
                 if (is_null($info)) {
                     continue;
@@ -580,16 +575,11 @@ class Module_search
 
         // Search under all hooks we've asked to search under
         $results = array();
-        $_hooks = find_all_hooks('modules', 'search');
-        foreach (array_keys($_hooks) as $hook) {
+        $_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
+        foreach ($_hooks as $hook => $ob) {
             $test = get_param_integer('search_' . $hook, 0);
 
             if ((($id == '') || ($id == $hook)) && (($test == 1) || ((get_param_integer('all_defaults', 0) == 1) && (true)) || ($id == $hook))) {
-                require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_search_' . filter_naughty_harsh($hook), true);
-                if (is_null($ob)) {
-                    continue;
-                }
                 $info = $ob->info();
                 if (is_null($info)) {
                     continue;

@@ -69,7 +69,7 @@ class Hook_commandr_command_continue_import
             load_import_deps();
 
             require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
-            $object = object_factory('Hook_' . filter_naughty_harsh($importer));
+            $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
 
             $import_source = is_null($db_name) ? null : new DatabaseConnector($db_name, $db_host, $db_user, $db_password, $db_table_prefix);
 

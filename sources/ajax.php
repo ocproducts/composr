@@ -147,13 +147,8 @@ function namelike_script()
         $names = array();
         if ($id != '') {
             require_all_lang();
-            $hooks = find_all_hooks('systems', 'page_groupings');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_page_groupings_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
+            $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
+            foreach ($hooks as $hook => $object) {
                 $info = $object->run();
                 foreach ($info as $i) {
                     if (is_null($i)) {
@@ -466,7 +461,7 @@ function ajax_tree_script()
     header('Content-Type: text/xml');
     $hook = filter_naughty_harsh(get_param_string('hook'));
     require_code('hooks/systems/ajax_tree/' . $hook);
-    $object = object_factory('Hook_' . $hook);
+    $object = object_factory('Hook_ajax_tree_' . $hook);
     $id = get_param_string('id', '', true);
     if ($id == '') {
         $id = null;

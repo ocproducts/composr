@@ -246,13 +246,8 @@ class Module_admin_pointstore
         $add_forms = new Tempcode();
 
         // Load up configuration from hooks
-        $_hooks = find_all_hooks('modules', 'pointstore');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/pointstore/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_pointstore_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('modules', 'pointstore', 'Hook_pointstore_');
+        foreach ($_hooks as $object) {
             if (method_exists($object, 'config')) {
                 $fg = $object->config();
                 if (!is_null($fg)) {
@@ -327,13 +322,8 @@ class Module_admin_pointstore
         modsecurity_workaround_enable();
 
         // Save configuration for hooks
-        $_hooks = find_all_hooks('modules', 'pointstore');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/pointstore/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_pointstore_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('modules', 'pointstore', 'Hook_pointstore_');
+        foreach ($_hooks as $object) {
             if (method_exists($object, 'save_config')) {
                 $object->save_config();
             }

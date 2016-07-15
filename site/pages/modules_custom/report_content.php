@@ -235,7 +235,7 @@ class Module_report_content
             // Already a topic
             $new_topic = false;
         } else { // New topic
-            $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false);
+            $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, null, null, false);
             $new_topic = true;
         }
         $topic_title = do_lang('REPORTED_CONTENT_TITLE', $content_title);

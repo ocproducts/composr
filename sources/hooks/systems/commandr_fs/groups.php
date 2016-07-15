@@ -375,11 +375,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => $id), TABLE_REPLACE_MODE_NONE);
         }
 
-        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
-        foreach (array_keys($hooks) as $hook) {
+        $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_member', 'Hook_commandr_fs_extended_member__');
+        foreach ($hooks as $hook => $ob) {
             if (isset($properties[$hook])) {
-                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
                 $ob->write_property($id, $properties[$hook]);
             }
         }
@@ -476,10 +474,8 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             $properties[$key] = $cpf['RAW'];
         }
 
-        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
+        $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_member', 'Hook_commandr_fs_extended_member__');
+        foreach ($hooks as $hook => $ob) {
             $properties[$hook] = $ob->read_property(intval($resource_id));
         }
 
@@ -515,11 +511,9 @@ class Hook_commandr_fs_groups extends Resource_fs_base
             table_from_portable_rows('f_group_members', $properties['groups'], array('gm_member_id' => intval($resource_id)), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA);
         }
 
-        $hooks = find_all_hooks('systems', 'commandr_fs_extended_member');
-        foreach (array_keys($hooks) as $hook) {
+        $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_member', 'Hook_commandr_fs_extended_member__');
+        foreach ($hooks as $hook => $ob) {
             if (isset($properties[$hook])) {
-                require_code('hooks/systems/commandr_fs_extended_member/' . filter_naughty($hook));
-                $ob = object_factory('Hook_commandr_fs_extended_member__' . $hook);
                 $ob->write_property(intval($resource_id), $properties[$hook]);
             }
         }

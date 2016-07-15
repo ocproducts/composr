@@ -46,10 +46,8 @@ function get_upload_syndication_json($file_handling_types)
 
     $all_hook_file_handling_types = 0;
 
-    $hooks = find_all_hooks('systems', 'upload_syndication');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'upload_syndication', 'Hook_upload_syndication_');
+    foreach ($hooks as $hook => $ob) {
         if ($ob->is_enabled()) {
             $hook_file_handling_types = $ob->get_file_handling_types();
             if (($hook_file_handling_types & $file_handling_types) != 0) {
@@ -137,10 +135,8 @@ function upload_syndication_auth_script()
  */
 function upload_will_syndicate($name)
 {
-    $hooks = find_all_hooks('systems', 'upload_syndication');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'upload_syndication', 'Hook_upload_syndication_');
+    foreach ($hooks as $hook => $ob) {
         if ((post_param_integer('upload_syndicate__' . $hook . '__' . $name, 0) == 1) || ($ob->happens_always())) {
             if (($ob->is_enabled()) && ($ob->is_authorised())) {
                 require_code('uploads');
@@ -180,10 +176,8 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
     $url = get_custom_base_url() . '/' . $url;
 
     $remote_urls = array();
-    $hooks = find_all_hooks('systems', 'upload_syndication');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upload_syndication_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'upload_syndication', 'Hook_upload_syndication_');
+    foreach ($hooks as $hook => $ob) {
         if ((post_param_integer('upload_syndicate__' . $hook . '__' . $name, 0) == 1) || ($ob->happens_always())) {
             if (($ob->is_enabled()) && ($ob->is_authorised())) {
                 $hook_file_handling_types = $ob->get_file_handling_types();

@@ -85,7 +85,6 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  *
  * @param  mixed $poster_details Either a member ID or an array containing: ip_address, poster_num_warnings, poster, poster_posts, poster_points, poster_join_date_string, primary_group_name.
  * @param  boolean $preview Whether only to show 'preview' details
- * @param  ?array $hooks An array of hooks. (null: lookup)
  * @param  ?array $hook_objects An array of hook objects that allow us to collect additional mouse-over member information. (null: lookup)
  * @param  boolean $show_avatar Whether to show the avatar
  * @param  ?array $extra_fields Map of extra fields to show (null: none)
@@ -93,7 +92,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
  * @param  ID_TEXT $guid Overridden GUID to send to templates (blank: none)
  * @return Tempcode The member box
  */
-function render_member_box($poster_details, $preview = false, $hooks = null, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
+function render_member_box($poster_details, $preview = false, $hook_objects = null, $show_avatar = true, $extra_fields = null, $give_context = true, $guid = '')
 {
     if (is_null($poster_details)) { // Should never happen, but we need to be defensive
         return new Tempcode();
@@ -159,18 +158,9 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
 
     $member_id = $poster_details['poster'];
 
-    if ($hooks === null) {
+    if ($hook_objects === null) {
         // Poster detail hooks
-        $hooks = find_all_hooks('modules', 'topicview');
-        $hook_objects = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
-            if ($object === null) {
-                continue;
-            }
-            $hook_objects[$hook] = $object;
-        }
+        $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
     }
 
     $custom_fields = new Tempcode();
@@ -249,8 +239,8 @@ function render_member_box($poster_details, $preview = false, $hooks = null, $ho
         }
     }
 
-    foreach (array_keys($hooks) as $hook) {
-        $hook_result = $hook_objects[$hook]->run($member_id);
+    foreach ($hook_objects as $hook_object) {
+        $hook_result = $hook_object->run($member_id);
         if ($hook_result !== null) {
             $custom_fields->attach($hook_result);
         }

@@ -340,10 +340,8 @@ class Hook_sitemap_page extends Hook_sitemap_base
             }
 
             // Look for virtual nodes to put under this
-            $hooks = find_all_hooks('systems', 'sitemap');
-            foreach (array_keys($hooks) as $_hook) {
-                require_code('hooks/systems/sitemap/' . $_hook);
-                $ob = object_factory('Hook_sitemap_' . $_hook);
+            $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
+            foreach ($hooks as $ob) {
                 if ($ob->is_active()) {
                     $is_handled = $ob->handles_page_link($page_link);
                     if ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY) {

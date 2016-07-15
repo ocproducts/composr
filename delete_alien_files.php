@@ -108,15 +108,13 @@ $GFILE_ARRAY = array();
 do_dir();
 
 // Non-installed addons
-$hooks = find_all_hooks('systems', 'addon_registry');
+$hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
 $installed_addons = collapse_1d_complexity('addon_name', $GLOBALS['SITE_DB']->query_select('addons', array('addon_name')));
 $intersection = array_intersect(array_keys($hooks), $installed_addons);
 if ($intersection == array()) {
     echo 'All addons seem still installed. You should uninstall from within Composr.';
 } else {
-    foreach ($hooks as $hook => $hook_type) {
-        require_code('hooks/systems/addon_registry/' . $hook);
-        $ob = object_factory('Hook_addon_registry_' . $hook);
+    foreach ($hooks as $hook => $ob) {
         $files = $ob->get_file_list();
         foreach ($files as $file) {
             if (((!in_array($hook, $installed_addons)) || (in_array($hook, $addons_definitely_not_wanted))) && (!force_keep($file, $files_to_always_keep))) {

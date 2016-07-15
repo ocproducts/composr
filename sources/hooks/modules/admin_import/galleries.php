@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_galleries
+class Hook_import_galleries
 {
     /**
      * Standard importer hook info function.

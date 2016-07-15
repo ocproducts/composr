@@ -35,7 +35,7 @@ function init__hooks__modules__admin_import__ipb()
 /**
  * Hook class.
  */
-class Hook_ipb2
+class Hook_import_ipb2
 {
     /**
      * Standard importer hook info function.

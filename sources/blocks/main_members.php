@@ -326,28 +326,16 @@ class Block_main_members
             ));
         }*/
 
-        $hooks = null;
-        if (is_null($hooks)) {
-            $hooks = find_all_hooks('modules', 'topicview');
-        }
         $hook_objects = null;
         if (is_null($hook_objects)) {
-            $hook_objects = array();
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
-                $hook_objects[$hook] = $object;
-            }
+            $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
         }
 
         $cnt = 0;
         $member_boxes = array();
         foreach ($rows as $row) {
             $member_id = $row['id'];
-            $box = render_member_box($member_id, true, $hooks, $hook_objects, $show_avatar, null, false);
+            $box = render_member_box($member_id, true, $hook_objects, $show_avatar, null, false);
 
             if ($display_mode == 'media') {
                 $gallery_sql = 'SELECT name,fullname FROM ' . get_table_prefix() . 'galleries WHERE';

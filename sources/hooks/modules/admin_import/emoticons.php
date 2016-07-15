@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_emoticons
+class Hook_import_emoticons
 {
     /**
      * Standard importer hook info function.

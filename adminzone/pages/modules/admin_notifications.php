@@ -120,13 +120,11 @@ class Module_admin_notifications
         $current_setting = mixed();
 
         $notification_sections = array();
-        $hooks = find_all_hooks('systems', 'notifications');
-        foreach (array_keys($hooks) as $hook) {
+        $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');
+        foreach ($hooks as $hook => $ob) {
             if ((substr($hook, 0, 4) == 'cns_') && (get_forum_type() != 'cns')) {
                 continue;
             }
-            require_code('hooks/systems/notifications/' . $hook);
-            $ob = object_factory('Hook_notification_' . $hook);
             $_notification_codes = $ob->list_handled_codes();
             foreach ($_notification_codes as $notification_code => $notification_details) {
                 $allowed_setting = $ob->allowed_settings($notification_code);

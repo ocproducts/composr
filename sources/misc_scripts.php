@@ -305,15 +305,9 @@ function cron_bridge_script($caller)
 
     // Call the hooks which do the real work
     set_value('last_cron', strval(time()));
-    $cron_hooks = find_all_hooks('systems', 'cron');
-    foreach (array_keys($cron_hooks) as $hook) {
+    $cron_hooks = find_all_hook_obs('systems', 'cron', 'Hook_cron_');
+    foreach ($cron_hooks as $hook => $object) {
         if (($limit_hook != '') && ($limit_hook != $hook)) {
-            continue;
-        }
-
-        require_code('hooks/systems/cron/' . $hook);
-        $object = object_factory('Hook_cron_' . $hook, true);
-        if (is_null($object)) {
             continue;
         }
 

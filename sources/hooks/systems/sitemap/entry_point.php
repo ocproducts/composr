@@ -154,10 +154,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
 
                     // Not actually an entry-point, so maybe something else handles it directly?
                     // Technically this would be better code to have in page_grouping.php, but we don't want to do a scan for entry-points that are easy to find.
-                    $hooks = find_all_hooks('systems', 'sitemap');
-                    foreach (array_keys($hooks) as $_hook) {
-                        require_code('hooks/systems/sitemap/' . $_hook);
-                        $ob = object_factory('Hook_sitemap_' . $_hook);
+                    $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
+                    foreach ($hooks as $ob) {
                         if ($ob->is_active()) {
                             $is_handled = $ob->handles_page_link($page_link);
                             if ($is_handled == SITEMAP_NODE_HANDLED) {
@@ -257,10 +255,8 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
 
         // Look for virtual nodes to put under this
         if ($type != 'browse') {
-            $hooks = find_all_hooks('systems', 'sitemap');
-            foreach (array_keys($hooks) as $_hook) {
-                require_code('hooks/systems/sitemap/' . $_hook);
-                $ob = object_factory('Hook_sitemap_' . $_hook);
+            $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
+            foreach ($hooks as $ob) {
                 if ($ob->is_active()) {
                     $is_handled = $ob->handles_page_link($page_link);
                     if ($is_handled == SITEMAP_NODE_HANDLED_VIRTUALLY) {

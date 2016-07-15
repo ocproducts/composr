@@ -111,20 +111,14 @@ class Module_admin_cleanup
      */
     public function choose_cache_type()
     {
-        $hooks = find_all_hooks('systems', 'cleanup');
-
         $url = build_url(array('page' => '_SELF', 'type' => 'rebuild'), '_SELF');
 
         require_code('form_templates');
 
         $fields_cache = new Tempcode();
         $fields_optimise = new Tempcode();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $hooks = find_all_hook_obs('systems', 'cleanup', 'Hook_cleanup_');
+        foreach ($hooks as $hook => $object) {
             $output = $object->info();
             if (!is_null($output)) {
                 $tick = form_input_tick($output['title'], $output['description'], $hook, false);

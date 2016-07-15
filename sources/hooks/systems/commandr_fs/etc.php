@@ -64,10 +64,8 @@ class Hook_commandr_fs_etc
         }
 
         require_code('resource_fs');
-        $hooks = find_all_hooks('systems', 'commandr_fs_extended_config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/commandr_fs_extended_config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_commandr_fs_extended_config__' . $hook);
+        $hooks = find_all_hook_obs('systems', 'commandr_fs_extended_config', 'Hook_commandr_fs_extended_config__');
+        foreach ($hooks as $hook => $ob) {
             $modification_time = $ob->get_edit_date();
 
             $listing[] = array(

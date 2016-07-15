@@ -83,7 +83,7 @@ function server__create_forum_topic($forum_id, $topic_title, $post)
     require_code('cns_topics_action');
     require_code('cns_posts_action');
     require_code('mantis'); // Defines LEAD_DEVELOPER_MEMBER_ID
-    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, 0, null, null, false);
+    $topic_id = cns_make_topic($forum_id, '', '', 1, 1, 0, 0, null, null, false);
 
     $post_id = cns_make_post($topic_id, $topic_title, $post, 0, true, 1, 0, null, null, null, LEAD_DEVELOPER_MEMBER_ID, null, null, null, false);
 

@@ -114,12 +114,10 @@ class Block_main_google_map
         }
 
         $hooks_to_use = explode('|', isset($map['extra_sources']) ? $map['extra_sources'] : '');
-        $hooks = find_all_hooks('blocks', 'main_google_map');
+        $hooks = find_all_hook_obs('blocks', 'main_google_map', 'Hook_Map_');
         $entries_to_load = array();
-        foreach (array_keys($hooks) as $hook) {
+        foreach ($hooks as $hook => $ob) {
             if (in_array($hook, $hooks_to_use)) {
-                require_code('hooks/blocks/main_google_map/' . $hook);
-                $ob = object_factory('Hook_Map_' . $hook);
                 $hook_results = $ob->get_data($map, $max_results, $min_latitude, $max_latitude, $min_longitude, $max_longitude, $latitude_key, $longitude_key, $catalogue_row, $catalogue_name);
                 $data = array_merge($data, $hook_results[0]);
                 $entries_to_load = $hook_results[1] + $entries_to_load;

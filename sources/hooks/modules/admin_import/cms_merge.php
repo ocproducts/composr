@@ -30,7 +30,7 @@ There is overlap, but intentionally each approach is optimised in a different wa
 /**
  * Hook class.
  */
-class Hook_cms_merge
+class Hook_import_cms_merge
 {
     /**
      * Standard importer hook info function.

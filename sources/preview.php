@@ -41,19 +41,14 @@ function build_preview($multi_return = false)
     }
 
     require_code('attachments2');
-    $hooks = find_all_hooks('systems', 'preview');
+    $hooks = find_all_hook_obs('systems', 'preview', 'Hook_preview_');
     $output = null;
     $new_post_value = null;
     $attachment_type = null;
     $has_device_preview_modes = true;
     $forum_db = false;
     $limit_to = null;
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/preview/' . $hook);
-        $object = object_factory('Hook_preview_' . $hook, true);
-        if (is_null($object)) {
-            continue;
-        }
+    foreach ($hooks as $object) {
         $apply_bits = $object->applies();
         $applies = $apply_bits[0];
         if ($applies) {

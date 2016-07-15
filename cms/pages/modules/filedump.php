@@ -848,10 +848,8 @@ class Module_filedump
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', false, do_lang('MEDIA_TYPE_')));
         require_code('media_renderer');
-        $hooks = find_all_hooks('systems', 'media_rendering');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/media_rendering/' . $hook);
-            $ob = object_factory('Hook_media_rendering_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'media_rendering', 'Hook_media_rendering_');
+        foreach ($hooks as $hook => $ob) {
             $hooks[$hook] = $ob->get_type_label();
         }
         asort($hooks);

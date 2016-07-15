@@ -239,11 +239,8 @@ function _custom_comcode_import($connection)
         }
 
         // From Comcode hooks
-        $hooks = find_all_hooks('systems', 'comcode');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/comcode/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_comcode_' . filter_naughty_harsh($hook), true);
-
+        $hooks = find_all_hook_obs('systems', 'comcode', 'Hook_comcode_');
+        foreach ($hooks as $object) {
             $tag = $object->get_tag();
 
             $VALID_COMCODE_TAGS[$tag['tag_tag']] = true;
@@ -1994,10 +1991,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     }
                     if (($size_uploaded_today + $attach_size) > floatval($daily_quota)) {
                         $syn_services = array();
-                        $hooks = find_all_hooks('systems', 'upload_syndication');
-                        foreach (array_keys($hooks) as $hook) {
-                            require_code('hooks/systems/upload_syndication/' . filter_naughty($hook));
-                            $ob = object_factory('Hook_upload_syndication_' . $hook);
+                        $hooks = find_all_hook_obs('systems', 'upload_syndication', 'Hook_upload_syndication_');
+                        foreach ($hooks as $ob) {
                             if ($ob->is_enabled()) {
                                 $syn_services[] = $ob->get_label();
                             }

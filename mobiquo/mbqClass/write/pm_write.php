@@ -97,7 +97,7 @@ class CMSPmWrite
                 }
 
                 foreach ($member_ids as $to_member) {
-                    $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, 0, $from_id, $to_member);
+                    $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, $from_id, $to_member);
                     $new_post_id = cns_make_post($new_topic_id, $subject, $message, 0, true);
                     if ($first_new_post_id === null) {
                         $first_new_post_id = $new_post_id;
@@ -153,7 +153,7 @@ class CMSPmWrite
                 }
 
                 foreach ($member_ids as $to_member) {
-                    $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, 0, $from_id, $to_member);
+                    $new_topic_id = cns_make_topic(null, '', '', null, 1, 0, 0, $from_id, $to_member);
                     $new_post_id = cns_make_post($new_topic_id, $subject, $message, 0, true);
                     if ($first_new_post_id === null) {
                         $first_new_post_id = $new_post_id;

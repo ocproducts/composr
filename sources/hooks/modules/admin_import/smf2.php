@@ -38,7 +38,7 @@ function init__hooks__modules__admin_import__smf2()
 /**
  * Hook class.
  */
-class Hook_smf2
+class Hook_import_smf2
 {
     /**
      * Standard importer hook info function.

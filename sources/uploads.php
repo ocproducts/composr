@@ -868,11 +868,9 @@ function handle_upload_post_processing($enforce_type, $path, $upload_folder, $fi
     }
 
     // Is a CDN transfer hook going to kick in?
-    $hooks = find_all_hooks('systems', 'cdn_transfer');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/cdn_transfer/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_cdn_transfer_' . filter_naughty_harsh($hook), true);
-        if ((!is_null($object)) && ($object->is_enabled())) {
+    $hooks = find_all_hook_obs('systems', 'cdn_transfer', 'Hook_cdn_transfer_');
+    foreach ($hooks as $object) {
+        if ($object->is_enabled()) {
             $test = $object->transfer_upload($path, $upload_folder, $filename, $obfuscate, $accept_errors);
             if ($test !== null) {
                 return $test;

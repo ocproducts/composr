@@ -29,12 +29,9 @@ class Hook_page_groupings_gallery_syndication
     {
         $menu_items = array();
 
-        $hooks = find_all_hooks('modules', 'video_syndication');
+        $hooks = find_all_hook_obs('modules', 'video_syndication', 'Hook_video_syndication_');
 
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/video_syndication/' . filter_naughty($hook));
-            $ob = object_factory('Hook_video_syndication_' . filter_naughty($hook));
-
+        foreach ($hooks as $hook => $ob) {
             $service_title = $ob->get_service_title();
 
             $menu_items[] = array(

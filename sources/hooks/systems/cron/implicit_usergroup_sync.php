@@ -31,10 +31,8 @@ class Hook_cron_implicit_usergroup_sync
         if (get_value('implicit_usergroup_sync') === '1') {
             $last = get_value('last_implicit_sync', null, true);
             if ((is_null($last)) || (intval($last) < time() - 60 * 60)) {
-                $hooks = find_all_hooks('systems', 'cns_implicit_usergroups');
-                foreach (array_keys($hooks) as $hook) {
-                    require_code('hooks/systems/cns_implicit_usergroups/' . $hook);
-                    $ob = object_factory('Hook_implicit_usergroups_' . $hook);
+                $hooks = find_all_hook_obs('systems', 'cns_implicit_usergroups', 'Hook_implicit_usergroups_');
+                foreach ($hooks as $ob) {
                     $group_ids = $ob->get_bound_group_ids();
                     foreach ($group_ids as $group_id) {
                         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array('gm_group_id' => $group_id));

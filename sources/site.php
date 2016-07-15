@@ -1174,13 +1174,8 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
     }
 
     // Run hooks, if any exist
-    $hooks = find_all_hooks('systems', 'upon_page_load');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_page_load/' . filter_naughty($hook));
-        $ob = object_factory('upon_page_load' . filter_naughty($hook), true);
-        if ($ob === null) {
-            continue;
-        }
+    $hooks = find_all_hook_obs('systems', 'upon_page_load', 'Hook_upon_page_load');
+    foreach ($hooks as $ob) {
         $ob->run($codename, $required, $zone, $page_type, $being_included, $details);
     }
 

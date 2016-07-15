@@ -781,12 +781,9 @@ function find_all_previews__by_template()
 {
     $all_previews = array();
 
-    $hooks = find_all_hooks('systems', 'addon_registry');
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
     ksort($hooks);
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/addon_registry/' . $hook);
-        $ob = object_factory('Hook_addon_registry_' . $hook);
-
+    foreach ($hooks as $hook => $ob) {
         if (method_exists($ob, 'tpl_previews')) {
             $previews = $ob->tpl_previews();
 
@@ -808,11 +805,8 @@ function find_all_previews__by_screen()
 {
     $all_previews = array();
 
-    $hooks = find_all_hooks('systems', 'addon_registry');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/addon_registry/' . $hook);
-        $ob = object_factory('Hook_addon_registry_' . $hook);
-
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $hook => $ob) {
         if (method_exists($ob, 'tpl_previews')) {
             $previews = $ob->tpl_previews();
             foreach ($previews as $tpl => $function) {
@@ -838,11 +832,8 @@ function find_all_previews__by_screen()
 function render_screen_preview($template, $hook, $function)
 {
     if (is_null($hook)) {
-        $hooks = find_all_hooks('systems', 'addon_registry');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/addon_registry/' . $hook);
-            $ob = object_factory('Hook_addon_registry_' . $hook);
-
+        $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($hooks as $hook => $ob) {
             if (method_exists($ob, 'tpl_previews')) {
                 $previews = $ob->tpl_previews();
                 foreach ($previews as $_function) {

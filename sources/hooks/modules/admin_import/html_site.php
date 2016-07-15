@@ -45,7 +45,7 @@ function fake_levenshtein($a, $b)
 /**
  * Hook class.
  */
-class Hook_html_site
+class Hook_import_html_site
 {
     /**
      * Standard importer hook info function.

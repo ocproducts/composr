@@ -61,13 +61,8 @@ class Block_main_notes
 
         $new = post_param_string('new', null);
         if (!is_null($new)) {
-            $hooks = find_all_hooks('blocks', 'main_notes');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/blocks/main_notes/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_notes_' . filter_naughty_harsh($hook), true);
-                if (is_null($ob)) {
-                    continue;
-                }
+            $hooks = find_all_hook_obs('blocks', 'main_notes', 'Hook_notes_');
+            foreach ($hooks as $ob) {
                 $ob->run($file);
             }
             write_text_file($file, $lang, $new);

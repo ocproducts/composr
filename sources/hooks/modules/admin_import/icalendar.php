@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_icalendar
+class Hook_import_icalendar
 {
     /**
      * Standard importer hook info function.

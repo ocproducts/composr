@@ -164,13 +164,8 @@ class Module_admin_stats
             $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
         }
 
-        $hooks = find_all_hooks('modules', 'admin_stats');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_admin_stats_' . filter_naughty_harsh($hook), true);
-            if (is_null($ob)) {
-                continue;
-            }
+        $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
+        foreach ($hooks as $ob) {
             $info = $ob->info();
             if (!is_null($info)) {
                 $ret += $info[0];
@@ -312,10 +307,8 @@ class Module_admin_stats
         } elseif ($type == 'page') {
             return $this->page_stats();
         } else {
-            $hooks = find_all_hooks('modules', 'admin_stats');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
-                $ob = object_factory('Hook_admin_stats_' . filter_naughty_harsh($hook));
+            $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
+            foreach ($hooks as $ob) {
                 if (method_exists($ob, $type)) {
                     return call_user_func_array(array(&$ob, $type), array(&$this, $type));
                 }
@@ -343,13 +336,8 @@ class Module_admin_stats
             array('menu/adminzone/audit/statistics/top_keywords', array('_SELF', array('type' => 'keywords'), '_SELF'), do_lang('TOP_SEARCH_KEYWORDS'), 'DOC_TOP_SEARCH_KEYWORDS'),
         );
 
-        $hooks = find_all_hooks('modules', 'admin_stats');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/admin_stats/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_admin_stats_' . filter_naughty_harsh($hook), true);
-            if (is_null($ob)) {
-                continue;
-            }
+        $hooks = find_all_hook_obs('modules', 'admin_stats', 'Hook_admin_stats_');
+        foreach ($hooks as $ob) {
             $info = $ob->info();
             if (!is_null($info)) {
                 $actions = array_merge($actions, array($info[1]));

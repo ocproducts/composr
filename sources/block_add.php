@@ -227,12 +227,7 @@ function block_helper_script()
         $fields = new Tempcode();
 
         // Load up renderer hooks
-        $block_ui_renderers = array();
-        $_block_ui_renderers = find_all_hooks('systems', 'block_ui_renderers');
-        foreach (array_keys($_block_ui_renderers) as $_block_ui_renderer) {
-            require_code('hooks/systems/block_ui_renderers/' . filter_naughty($_block_ui_renderer));
-            $block_ui_renderers[] = object_factory('Hook_block_ui_renderers_' . $_block_ui_renderer);
-        }
+        $block_ui_renderers = find_all_hook_obs('systems', 'block_ui_renderers', 'Hook_block_ui_renderers_');
 
         // Work out parameters involved, and their sets ("classes")
         $parameters = get_block_parameters($block, true);

@@ -164,17 +164,15 @@ function rss_backend_script()
     if ($mode == 'opml') {
         header('Content-Type: text/xml');
 
-        $_feeds = find_all_hooks('systems', 'rss');
+        $_feeds = find_all_hook_obs('systems', 'rss', 'Hook_rss_');
         $feeds = array();
-        foreach (array_keys($_feeds) as $feed) {
+        foreach ($_feeds as $feed => $object) {
             if ((get_forum_type() != 'cns') && (substr($feed, 0, 4) == 'cns_')) {
                 continue;
             }
             $feed_title = titleify($feed);
 
             // Try and get a better feed title
-            require_code('hooks/systems/rss/' . filter_naughty_harsh($feed), true);
-            $object = object_factory('Hook_rss_' . $feed);
             require_code('selectcode');
             $_content = $object->run('', time(), 'ATOM_', '', 0);
             if (is_array($_content)) {

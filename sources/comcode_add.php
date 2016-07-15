@@ -157,11 +157,8 @@ function _get_details_comcode_tags()
     }
 
     // From Custom Comcode hooks too
-    $hooks = find_all_hooks('systems', 'comcode');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/comcode/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_comcode_' . filter_naughty_harsh($hook), true);
-
+    $hooks = find_all_hook_obs('systems', 'comcode', 'Hook_comcode_');
+    foreach ($hooks as $object) {
         $tag = $object->get_tag();
         $custom_tag_list[$tag['tag_tag']] = $tag;
 
@@ -906,10 +903,8 @@ function _try_for_special_comcode_tag_specific_param_ui($tag, $actual_tag, $para
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', $default == '', do_lang('MEDIA_TYPE_')));
         require_code('media_renderer');
-        $hooks = find_all_hooks('systems', 'media_rendering');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/media_rendering/' . $hook);
-            $ob = object_factory('Hook_media_rendering_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'media_rendering', 'Hook_media_rendering_');
+        foreach ($hooks as $hook => $ob) {
             $hooks[$hook] = $ob->get_type_label();
         }
         asort($hooks);

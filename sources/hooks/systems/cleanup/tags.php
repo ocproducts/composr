@@ -45,10 +45,8 @@ class Hook_cleanup_tags
      */
     public function run()
     {
-        $hooks = find_all_hooks('systems', 'content_meta_aware');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/content_meta_aware/' . $hook);
-            $ob = object_factory('Hook_content_meta_aware_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'content_meta_aware', 'Hook_content_meta_aware_');
+        foreach ($hooks as $hook => $ob) {
             $info = $ob->info();
             $seo_type_code = $info['seo_type_code'];
             if (!is_null($seo_type_code)) {

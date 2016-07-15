@@ -159,10 +159,8 @@ function find_sitemap_object($page_link)
     } else {
         $hook = mixed();
         $matches = array();
-        $hooks = find_all_hooks('systems', 'sitemap');
-        foreach (array_keys($hooks) as $_hook) {
-            require_code('hooks/systems/sitemap/' . $_hook);
-            $ob = object_factory('Hook_sitemap_' . $_hook);
+        $hooks = find_all_hook_obs('systems', 'sitemap', 'Hook_sitemap_');
+        foreach ($hooks as $_hook => $ob) {
             if ($ob->is_active()) {
                 $is_handled = $ob->handles_page_link($page_link);
                 if ($is_handled != SITEMAP_NODE_NOT_HANDLED) {
@@ -1091,11 +1089,8 @@ function get_page_grouping_links()
     if ($links === null) {
         $links = array();
 
-        $hooks = find_all_hooks('systems', 'page_groupings');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/page_groupings/' . $hook);
-
-            $ob = object_factory('Hook_page_groupings_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
+        foreach ($hooks as $ob) {
             $links = array_merge($links, $ob->run());
         }
     }

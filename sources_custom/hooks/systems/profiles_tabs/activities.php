@@ -60,10 +60,8 @@ class Hook_profiles_tabs_activities
         // Allow user to link up things for syndication
         $syndications = array();
         if ($member_id_of == $member_id_viewing) {
-            $dests = find_all_hooks('systems', 'syndication');
-            foreach (array_keys($dests) as $hook) {
-                require_code('hooks/systems/syndication/' . $hook);
-                $ob = object_factory('Hook_syndication_' . $hook);
+            $dests = find_all_hook_obs('systems', 'syndication', 'Hook_syndication_');
+            foreach ($dests as $hook => $ob) {
                 if ($ob->is_available()) {
                     if (either_param_string('syndicate_stop__' . $hook, null) !== null) {
                         $ob->auth_unset($member_id_of);

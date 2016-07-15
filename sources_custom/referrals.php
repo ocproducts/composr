@@ -358,13 +358,9 @@ function _assign_referral_awards(
     }
 
     // Run any actioning code defined in hooks
-    $hooks = find_all_hooks('systems', 'referrals');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/referrals/' . $hook);
-        $ob = object_factory('Hook_referrals_' . $hook, true);
-        if ($ob !== null) {
-            $ob->fire_referral($trigger, $referrer, $referrer_is_qualified, $referee, $qualified_trigger, $num_total_qualified_by_referrer, $num_total_by_referrer, $one_trigger_already);
-        }
+    $hooks = find_all_hook_obs('systems', 'referrals', 'Hook_referrals_');
+    foreach ($hooks as $ob) {
+        $ob->fire_referral($trigger, $referrer, $referrer_is_qualified, $referee, $qualified_trigger, $num_total_qualified_by_referrer, $num_total_by_referrer, $one_trigger_already);
     }
 
     return $qualified_trigger;

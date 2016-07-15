@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_csv_members
+class Hook_import_csv_members
 {
     /**
      * Standard importer hook info function.

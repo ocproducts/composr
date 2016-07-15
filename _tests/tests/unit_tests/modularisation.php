@@ -32,10 +32,8 @@ class modularisation_test_set extends cms_test_case
         global $GFILE_ARRAY;
 
         $addon_data = array();
-        $hooks = find_all_hooks('systems', 'addon_registry');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/addon_registry/' . $hook);
-            $ob = object_factory('Hook_addon_registry_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($hooks as $hook => $ob) {
             $addon_data[$hook] = $ob->get_file_list();
         }
 

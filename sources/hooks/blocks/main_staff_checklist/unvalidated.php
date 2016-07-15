@@ -63,13 +63,8 @@ class Hook_checklist_unvalidated
         $sum = 0;
         $sum2 = 0;
 
-        $_hooks = find_all_hooks('modules', 'admin_unvalidated');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/admin_unvalidated/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_unvalidated_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('modules', 'admin_unvalidated', 'Hook_unvalidated_');
+        foreach ($_hooks as $object) {
             $info = $object->info();
             if (is_null($info)) {
                 continue;

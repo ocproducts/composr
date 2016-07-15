@@ -200,11 +200,9 @@ function set_option($name, $value, $will_be_formally_set = 1)
  */
 function config_update_value_ref($old_setting, $setting, $type)
 {
-    $hooks = find_all_hooks('systems', 'config');
+    $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
     $all_options = array();
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/config/' . filter_naughty($hook));
-        $ob = object_factory('Hook_config_' . $hook);
+    foreach ($hooks as $hook => $ob) {
         $option = $ob->get_details();
         if (($option['type'] == $type) && (get_option($hook) == $old_setting)) {
             $GLOBALS['FORUM_DB']->query_update('config', array('c_value' => $setting), array('c_name' => $hook), '', 1);

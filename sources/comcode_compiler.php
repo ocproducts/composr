@@ -352,13 +352,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     $print_mode = get_param_integer('wide_print', 0) === 1;
 
-    $preparse_hooks = find_all_hooks('systems', 'comcode_preparse');
-    foreach (array_keys($preparse_hooks) as $preparse_hook) {
-        require_code('hooks/systems/comcode_preparse/' . $preparse_hook);
-        $preparse_ob = object_factory('Hook_comcode_preparse_' . $preparse_hook, true);
-        if (is_null($preparse_ob)) {
-            continue;
-        }
+    $preparse_hooks = find_all_hook_obs('systems', 'comcode_preparse', 'Hook_comcode_preparse_');
+    foreach ($preparse_hooks as $preparse_ob) {
         $preparse_ob->preparse($comcode);
     }
 
@@ -1555,13 +1550,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                         $embed_output = _do_tags_comcode('url', array(), make_string_tempcode($auto_link), $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits, null, false, false, $html_errors);
                                     } else {
                                         if (!$check_only) {
-                                            $link_handlers = find_all_hooks('systems', 'comcode_link_handlers');
-                                            foreach (array_keys($link_handlers) as $link_handler) {
-                                                require_code('hooks/systems/comcode_link_handlers/' . $link_handler);
-                                                $link_handler_ob = object_factory('Hook_comcode_link_handler_' . $link_handler, true);
-                                                if (!is_null($link_handler_ob)) {
-                                                    $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
-                                                }
+                                            $link_handlers = find_all_hook_obs('systems', 'comcode_link_handlers', 'Hook_comcode_link_handler_');
+                                            foreach ($link_handlers as $link_handler_ob) {
+                                                $embed_output = $link_handler_ob->bind($auto_link, $comcode_dangerous, $pass_id, $pos, $source_member, $as_admin, $connection, $comcode, $structure_sweep, $semiparse_mode, $highlight_bits);
                                             }
                                         }
                                     }

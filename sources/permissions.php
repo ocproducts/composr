@@ -638,7 +638,7 @@ function check_privilege($privilege, $cats = null, $member_id = null, $page_name
  * @param  MEMBER $member The member being checked whether to have the privilege
  * @param  ID_TEXT $privilege The ID code for the privilege being checked for
  * @param  ?ID_TEXT $page The ID code for the page being checked (null: current page)
- * @param  ID_TEXT $privilege_module The ID code for the permission module being checked for
+ * @param  ID_TEXT $permission_module The ID code for the permission module being checked for
  * @return boolean Whether the member has the privilege
  */
 function has_some_cat_privilege($member, $privilege, $page, $permission_module)

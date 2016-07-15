@@ -24,10 +24,8 @@ class core_fields_test_set extends cms_test_case
         require_code('form_templates');
         require_code('database_search');
 
-        $fields = find_all_hooks('systems', 'fields');
-        foreach (array_keys($fields) as $field) {
-            require_code('hooks/systems/fields/' . $field);
-            $ob = object_factory('Hook_fields_' . $field);
+        $fields = find_all_hook_obs('systems', 'fields', 'Hook_fields_');
+        foreach ($fields as $field => $ob) {
             if (method_exists($ob, 'get_field_types')) {
                 $types = $ob->get_field_types();
             } else {

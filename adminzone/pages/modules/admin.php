@@ -421,13 +421,8 @@ class Module_admin
         cms_profile_start_for('admin search: ' . $current_results_type);
         if ($this->_section_match($section_limitations, $current_results_type)) {
             $content[$current_results_type] = new Tempcode();
-            $hooks = find_all_hooks('systems', 'page_groupings');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_page_groupings_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
+            $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
+            foreach ($hooks as $object) {
                 $info = $object->run(null, true);
                 foreach ($info as $i) {
                     if (is_null($i)) {
@@ -479,13 +474,8 @@ class Module_admin
                                 $breadcrumbs->attach(hyperlink(build_url(array('page' => ''), $zone), $zone_details[1], false, true));
                                 if (($zone == 'cms') || ($zone == 'adminzone')) {
                                     if (($page != 'admin') && ($page != 'cms')) {
-                                        $hooks = find_all_hooks('systems', 'page_groupings');
-                                        foreach (array_keys($hooks) as $hook) {
-                                            require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook));
-                                            $object = object_factory('Hook_page_groupings_' . filter_naughty_harsh($hook), true);
-                                            if (is_null($object)) {
-                                                continue;
-                                            }
+                                        $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
+                                        foreach ($hooks as $object) {
                                             $info = $object->run();
                                             foreach ($info as $i) {
                                                 if (is_null($i)) {
@@ -559,7 +549,7 @@ class Module_admin
             foreach (array_keys($hooks) as $hook) {
                 if ($this->_keyword_match($hook)) {
                     require_code('hooks/modules/admin_import/' . filter_naughty_harsh($hook));
-                    $_hook = object_factory('Hook_' . filter_naughty_harsh($hook));
+                    $_hook = object_factory('Hook_import_' . filter_naughty_harsh($hook));
                     $info = $_hook->info();
                     $name = $info['product'];
                     $_url = build_url(array('page' => 'admin_import', 'type' => 'session', 'importer' => $hook), get_module_zone('admin_import'));
@@ -575,11 +565,9 @@ class Module_admin
         if ((($this->_section_match($section_limitations, $current_results_type)) || ($this->_section_match($section_limitations, do_lang('OPTION_CATEGORIES'))) || ($this->_section_match($section_limitations, do_lang('OPTION_GROUPS')))) && (has_actual_page_access(get_member(), 'admin_config'))) {
             $content[$current_results_type] = new Tempcode();
             $map = array();
-            $hooks = find_all_hooks('systems', 'config');
+            $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
             $all_options = array();
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/config/' . filter_naughty($hook));
-                $ob = object_factory('Hook_config_' . $hook);
+            foreach ($hooks as $hook => $ob) {
                 $option = $ob->get_details();
                 if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
                     if (!is_null($ob->get_default())) {

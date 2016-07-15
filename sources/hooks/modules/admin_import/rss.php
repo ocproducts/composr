@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_rss
+class Hook_import_rss
 {
     /**
      * Standard importer hook info function.

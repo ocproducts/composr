@@ -1386,7 +1386,7 @@ class Virtual_shell
  */
 function get_queued_messages($xml = true)
 {
-    $hooks = find_all_hooks('systems', 'commandr_notifications');
+    $hooks = find_all_hook_obs('systems', 'commandr_notifications', 'Hook_commandr_notification_');
     $output = mixed();
     if ($xml) {
         $output = '';
@@ -1397,9 +1397,7 @@ function get_queued_messages($xml = true)
     $_loc = get_value('last_commandr_command');
     $loc = is_null($_loc) ? null : intval($_loc);
 
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/commandr_notifications/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_commandr_notification_' . filter_naughty_harsh($hook));
+    foreach ($hooks as $object) {
         $object_values = $object->run($loc);
         if ($object_values === false) {
             continue;

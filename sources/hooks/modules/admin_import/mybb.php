@@ -38,7 +38,7 @@ function init__hooks__modules__admin_import__mybb()
 /**
  * Forum Driver.
  */
-class Hook_mybb
+class Hook_import_mybb
 {
     /**
      * Standard importer hook info function.

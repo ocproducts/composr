@@ -35,13 +35,8 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
         $main_title = $title;
     }
 
-    $hooks = find_all_hooks('systems', 'page_groupings');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/page_groupings/' . filter_naughty_harsh($hook));
-        $object = object_factory('Hook_page_groupings_' . filter_naughty_harsh($hook), true);
-        if (is_null($object)) {
-            continue;
-        }
+    $hooks = find_all_hook_obs('systems', 'page_groupings', 'Hook_page_groupings_');
+    foreach ($hooks as $object) {
         $_links = $object->run(null, true);
         foreach ($_links as $link) {
             if (is_null($link)) {

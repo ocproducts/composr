@@ -78,15 +78,11 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
 
         // External places
         if (($a_is_public == 1) && (($a_language_string_code == 'RAW_DUMP') || (!$GLOBALS['IS_ACTUALLY_ADMIN']/*SU means oauth'd user is not intended user*/))) {
-            $dests = find_all_hooks('systems', 'syndication');
-            foreach (array_keys($dests) as $hook) {
-                require_code('hooks/systems/syndication/' . $hook);
-                $ob = object_factory('Hook_syndication_' . $hook);
-                if ($ob->is_available()) {
-                    $ob->syndicate_user_activity($a_member_id, $row);
-                    if (($sitewide_too) && (has_privilege(get_member(), 'syndicate_site_activity')) && (post_param_integer('syndicate_this', 0) == 1)) {
-                        $ob->syndicate_site_activity($row);
-                    }
+            $dests = find_all_hook_obs('systems', 'syndication', 'Hook_syndication_');
+            foreach ($dests as $ob) {
+                $ob->syndicate_user_activity($a_member_id, $row);
+                if (($sitewide_too) && (has_privilege(get_member(), 'syndicate_site_activity')) && (post_param_integer('syndicate_this', 0) == 1)) {
+                    $ob->syndicate_site_activity($row);
                 }
             }
         }

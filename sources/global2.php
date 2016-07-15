@@ -475,13 +475,8 @@ function init__global2()
 
     if (!running_script('upgrader')) {
         // Startup hooks
-        $startup_hooks = find_all_hooks('systems', 'startup');
-        foreach (array_keys($startup_hooks) as $hook) {
-            require_code('hooks/systems/startup/' . filter_naughty_harsh($hook));
-            $ob = object_factory('Hook_startup_' . filter_naughty_harsh($hook), true);
-            if ($ob === null) {
-                continue;
-            }
+        $startup_hooks = find_all_hook_obs('systems', 'startup', 'Hook_startup_');
+        foreach ($startup_hooks as $ob) {
             $ob->run($MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, 0);
         }
 

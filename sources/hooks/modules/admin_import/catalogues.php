@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_catalogues
+class Hook_import_catalogues
 {
     /**
      * Standard importer hook info function.

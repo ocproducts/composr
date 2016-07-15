@@ -314,16 +314,7 @@ class Module_topicview
         $threaded = ($topic_info['is_threaded'] == 1);
         if (!$threaded) {
             // Poster detail hooks
-            $hooks = find_all_hooks('modules', 'topicview');
-            $hook_objects = array();
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
-                $hook_objects[$hook] = $object;
-            }
+            $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
 
             $jump_post_id = get_param_integer('post_id', null);
 
@@ -408,7 +399,7 @@ class Module_topicview
                     if (!$is_spacer_post) {
                         if (!is_guest($_postdetails['poster'])) {
                             require_code('cns_members2');
-                            $poster_details = render_member_box($_postdetails, false, $hooks, $hook_objects, false, null, false);
+                            $poster_details = render_member_box($_postdetails, false, $hook_objects, false, null, false);
                         } else {
                             $custom_fields = new Tempcode();
                             if (array_key_exists('ip_address', $_postdetails)) {

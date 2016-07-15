@@ -248,11 +248,9 @@ class Module_admin_config
     public function config_choose()
     {
         // Find all categories
-        $hooks = find_all_hooks('systems', 'config');
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $categories = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        foreach ($hooks as $ob) {
             $option = $ob->get_details();
             if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {
                 if (!is_null($ob->get_default())) {
@@ -344,11 +342,9 @@ class Module_admin_config
         $category_description = do_lang_tempcode('CONFIG_CATEGORY_DESCRIPTION__' . $category);
 
         // Find all options in category
-        $hooks = find_all_hooks('systems', 'config');
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $options = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        foreach ($hooks as $hook => $ob) {
             $option = $ob->get_details();
             if (($GLOBALS['CURRENT_SHARE_USER'] === null) || ($option['shared_hosting_restricted'] == 0)) {
                 if ($category == $option['category']) {
@@ -693,11 +689,9 @@ class Module_admin_config
         }
 
         // Find all options in category
-        $hooks = find_all_hooks('systems', 'config');
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         $options = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . filter_naughty($hook));
-            $ob = object_factory('Hook_config_' . $hook);
+        foreach ($hooks as $hook => $ob) {
             $option = $ob->get_details();
             if ($category == $option['category']) {
                 if ((is_null($GLOBALS['CURRENT_SHARE_USER'])) || ($option['shared_hosting_restricted'] == 0)) {

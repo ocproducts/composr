@@ -46,7 +46,7 @@ function init__hooks__modules__admin_import__phpbb3()
 /**
  * Forum Driver.
  */
-class Hook_phpbb3
+class Hook_import_phpbb3
 {
     /**
      * Standard importer hook info function.

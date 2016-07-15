@@ -1366,13 +1366,8 @@ function _access_denied($class, $param, $force_login)
     }
 
     // Run hooks, if any exist
-    $hooks = find_all_hooks('systems', 'upon_access_denied');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/upon_access_denied/' . filter_naughty($hook));
-        $ob = object_factory('Hook_upon_access_denied_' . filter_naughty($hook), true);
-        if (is_null($ob)) {
-            continue;
-        }
+    $hooks = find_all_hook_obs('systems', 'upon_access_denied', 'Hook_upon_access_denied_');
+    foreach ($hooks as $ob) {
         $ob->run($class, $param, $force_login);
     }
 

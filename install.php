@@ -377,10 +377,8 @@ function step_1()
     }
 
     // Various checks
-    $hooks = find_all_hooks('systems', 'checks');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/checks/' . filter_naughty($hook));
-        $ob = object_factory('Hook_check_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
+    foreach ($hooks as $ob) {
         $warning = $ob->run();
         foreach ($warning as $_warning) {
             $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
@@ -1592,11 +1590,9 @@ function step_5_checks_b()
     $log = new Tempcode();
 
     // MySQL check (could not be checked earlier due to lack of active connection)
-    $hooks = find_all_hooks('systems', 'checks');
-    foreach (array_keys($hooks) as $hook) {
+    $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
+    foreach ($hooks as $hook => $ob) {
         if ($hook == 'mysql') {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));

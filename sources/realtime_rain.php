@@ -100,10 +100,8 @@ function get_realtime_events($from, $to)
 
     $drops = array();
 
-    $hooks = find_all_hooks('systems', 'realtime_rain');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/realtime_rain/' . filter_naughty($hook));
-        $ob = object_factory('Hook_realtime_rain_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'realtime_rain', 'Hook_realtime_rain_');
+    foreach ($hooks as $ob) {
         $drops = array_merge($drops, $ob->run($from, $to));
     }
 

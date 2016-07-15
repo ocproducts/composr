@@ -1271,12 +1271,7 @@ class DatabaseConnector
         // Run hooks, if any exist
         if ($UPON_QUERY_HOOKS_CACHE === null) {
             if ((!running_script('restore')) && (function_exists('find_all_hooks')) && (!isset($GLOBALS['DOING_USERS_INIT'])/*can't check for safe mode meaning can't get a full hook list yet*/)) {
-                $UPON_QUERY_HOOKS_CACHE = array();
-                $hooks = find_all_hooks('systems', 'upon_query');
-                foreach (array_keys($hooks) as $hook) {
-                    require_code('hooks/systems/upon_query/' . filter_naughty($hook));
-                    $UPON_QUERY_HOOKS_CACHE[$hook] = object_factory('Hook_upon_query_' . filter_naughty($hook), true);
-                }
+                $UPON_QUERY_HOOKS_CACHE = find_all_hook_obs('systems', 'upon_query', 'Hook_upon_query_');
             }
         }
         if ($UPON_QUERY_HOOKS_CACHE !== null) {

@@ -764,14 +764,9 @@ function clear_caches_2()
  */
 function get_chmod_array_2()
 {
-    $hooks = find_all_hooks('systems', 'chmod');
+    $hooks = find_all_hook_obs('systems', 'chmod', 'Hook_chmod_');
     $directories = array();
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/chmod/' . filter_naughty_harsh($hook));
-        $ob = object_factory('Hook_chmod_' . filter_naughty_harsh($hook), true);
-        if (is_null($ob)) {
-            continue;
-        }
+    foreach ($hooks as $ob) {
         $directories = array_merge($directories, $ob->run());
     }
     return $directories;
@@ -1601,10 +1596,8 @@ function version_specific()
             $GLOBALS['SITE_DB']->alter_table_field('config', 'the_name', '*ID_TEXT', 'c_name');
             $GLOBALS['SITE_DB']->alter_table_field('config', 'config_value', 'LONG_TEXT', 'c_value');
             $GLOBALS['SITE_DB']->add_table_field('config', 'c_needs_dereference', 'BINARY', 0);
-            $hooks = find_all_hooks('systems', 'config');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/systems/config/' . filter_naughty($hook));
-                $ob = object_factory('Hook_config_' . $hook);
+            $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+            foreach ($hooks as $hook => $ob) {
                 $option = $ob->get_details();
                 $needs_dereference = ($option['type'] == 'transtext' || $option['type'] == 'transline' || $option['type'] == 'comcodetext' || $option['type'] == 'comcodeline') ? 1 : 0;
                 $GLOBALS['SITE_DB']->query_update('config', array('c_needs_dereference' => $needs_dereference), array('c_name' => $hook), '', 1);

@@ -946,18 +946,39 @@ function _get_module_path($zone, $module)
 }
 
 /**
- * Get an array of all the hook implementations for a hook class.
+ * Get an array of all the hook implementation objects for a hook sub-type.
+ *
+ * @param  ID_TEXT $type The type of hook
+ * @param  ID_TEXT $subtype The hook sub-type to find hook implementations for (e.g. the name of a module)
+ * @param  string $classname_prefix The hook class-name prefix, the classes are named {$classname_prefix}{$hook}
+ * @return array A map of hook implementation name to hook object
+ */
+function find_all_hook_obs($type, $subtype, $classname_prefix)
+{
+    $hooks = find_all_hooks($type, $subtype);
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/' . $type . '/' . $subtype . '/' . $hook);
+        $ob = object_factory($classname_prefix . $hook, true);
+        if (!is_null($ob)) {
+            $hooks[$hook] = $ob;
+        }
+    }
+    return $hooks;
+}
+
+/**
+ * Get an array of all the hook implementation names for a hook sub-type.
  *
  * @param  ID_TEXT $type The type of hook
  * @set    blocks endpoints modules systems
- * @param  ID_TEXT $entry The hook class to find hook implementations for (e.g. the name of a module)
+ * @param  ID_TEXT $subtype The hook sub-type to find hook implementations for (e.g. the name of a module)
  * @return array A map of hook implementation name to [sources|sources_custom]
  */
-function find_all_hooks($type, $entry)
+function find_all_hooks($type, $subtype)
 {
     global $HOOKS_CACHE;
-    if (isset($HOOKS_CACHE[$type . '/' . $entry])) {
-        return $HOOKS_CACHE[$type . '/' . $entry];
+    if (isset($HOOKS_CACHE[$type . '/' . $subtype])) {
+        return $HOOKS_CACHE[$type . '/' . $subtype];
     }
 
     $out = array();
@@ -965,10 +986,10 @@ function find_all_hooks($type, $entry)
     if (strpos($type, '..') !== false) {
         $type = filter_naughty($type);
     }
-    if (strpos($entry, '..') !== false) {
-        $entry = filter_naughty($entry);
+    if (strpos($subtype, '..') !== false) {
+        $subtype = filter_naughty($subtype);
     }
-    $dir = get_file_base() . '/sources/hooks/' . $type . '/' . $entry;
+    $dir = get_file_base() . '/sources/hooks/' . $type . '/' . $subtype;
     $dh = @scandir($dir);
     if ($dh !== false) {
         foreach ($dh as $file) {
@@ -979,8 +1000,8 @@ function find_all_hooks($type, $entry)
         }
     }
 
-    if ((!isset($GLOBALS['DOING_USERS_INIT'])) && ((!in_safe_mode()) || ($GLOBALS['RELATIVE_PATH'] === '_tests') && ($entry === 'addon_registry'))) { // The !isset is because of if the user init causes a DB query to load sessions which loads DB hooks which checks for safe mode which leads to a permissions check for safe mode and thus a failed user check (as sessions not loaded yet)
-        $dir = get_file_base() . '/sources_custom/hooks/' . $type . '/' . $entry;
+    if ((!isset($GLOBALS['DOING_USERS_INIT'])) && ((!in_safe_mode()) || ($GLOBALS['RELATIVE_PATH'] === '_tests') && ($subtype === 'addon_registry'))) { // The !isset is because of if the user init causes a DB query to load sessions which loads DB hooks which checks for safe mode which leads to a permissions check for safe mode and thus a failed user check (as sessions not loaded yet)
+        $dir = get_file_base() . '/sources_custom/hooks/' . $type . '/' . $subtype;
         $dh = @scandir($dir);
         if ($dh !== false) {
             foreach ($dh as $file) {
@@ -1001,7 +1022,7 @@ function find_all_hooks($type, $entry)
     }
 
     if (!isset($GLOBALS['DOING_USERS_INIT'])) {
-        $HOOKS_CACHE[$type . '/' . $entry] = $out;
+        $HOOKS_CACHE[$type . '/' . $subtype] = $out;
     }
 
     if (function_exists('persistent_cache_set')) {

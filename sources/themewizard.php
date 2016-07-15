@@ -37,13 +37,8 @@ function init__themewizard()
         $THEME_WIZARD_IMAGES[] = '';
     }
 
-    $hooks = find_all_hooks('modules', 'admin_themewizard');
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/modules/admin_themewizard/' . filter_naughty_harsh($hook));
-        $ob = object_factory('Hook_admin_themewizard_' . filter_naughty_harsh($hook), true);
-        if (is_null($ob)) {
-            continue;
-        }
+    $hooks = find_all_hook_obs('modules', 'admin_themewizard', 'Hook_admin_themewizard_');
+    foreach ($hooks as $ob) {
         $results = $ob->run();
         if (is_null($results)) {
             continue;

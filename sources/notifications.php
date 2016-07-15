@@ -64,12 +64,8 @@ function init__notifications()
     $ALL_NOTIFICATION_TYPES = array(A_INSTANT_SMS, A_INSTANT_EMAIL, A_DAILY_EMAIL_DIGEST, A_WEEKLY_EMAIL_DIGEST, A_MONTHLY_EMAIL_DIGEST, A_INSTANT_PT, A_WEB_NOTIFICATION);
 
     global $HOOKS_NOTIFICATION_TYPES_EXTENDED;
-    $HOOKS_NOTIFICATION_TYPES_EXTENDED = find_all_hooks('systems', 'notification_types_extended');
-
-    foreach (array_keys($HOOKS_NOTIFICATION_TYPES_EXTENDED) as $hook) {
-        require_code('hooks/systems/notification_types_extended/' . filter_naughty($hook));
-        $ob = object_factory('Hook_notification_types_extended_' . filter_naughty($hook));
-        $HOOKS_NOTIFICATION_TYPES_EXTENDED[$hook] = $ob;
+    $HOOKS_NOTIFICATION_TYPES_EXTENDED = find_all_hook_obs('systems', 'notification_types_extended', 'Hook_notification_types_extended_');
+    foreach ($HOOKS_NOTIFICATION_TYPES_EXTENDED as $ob) {
         $ob->init();
     }
 }
@@ -86,11 +82,8 @@ function _get_notification_ob_for_code($notification_code)
     $path = 'hooks/systems/notifications/' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code));
     if ((!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_all_lang();
-        $hooks = find_all_hooks('systems', 'notifications');
-        foreach (array_keys($hooks) as $hook) {
-            $path = 'hooks/systems/notifications/' . filter_naughty($hook);
-            require_code($path);
-            $ob = object_factory('Hook_notification_' . filter_naughty($hook));
+        $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');
+        foreach ($hooks as $ob) {
             if (method_exists($ob, 'list_handled_codes')) {
                 if (array_key_exists($notification_code, $ob->list_handled_codes())) {
                     return $ob;

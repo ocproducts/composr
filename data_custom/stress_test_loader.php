@@ -257,13 +257,13 @@ function do_work()
     require_code('cns_forums');
     require_code('cns_topics');
     for ($i = intval(floatval($GLOBALS['FORUM_DB']->query_select_value('f_topics', 'COUNT(*)')) / 2.0); $i < $num_wanted; $i++) {
-        $topic_id = cns_make_topic(db_get_first_id(), '', '', null, 1, 0, 0, 0, null, null, false);
+        $topic_id = cns_make_topic(db_get_first_id(), '', '', null, 1, 0, 0, null, null, false);
         cns_make_post($topic_id, random_line(), random_text(), 0, true, 0, 0, null, null, null, null, null, null, null, false, false);
     }
     // forum posts in a topic
     require_code('cns_topics_action');
     require_code('cns_posts_action');
-    $topic_id = cns_make_topic(db_get_first_id() + 1, '', '', null, 1, 0, 0, 0, null, null, false);
+    $topic_id = cns_make_topic(db_get_first_id() + 1, '', '', null, 1, 0, 0, null, null, false);
     for ($i = intval(floatval($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)')) / 3.0); $i < $num_wanted; $i++) {
         cns_make_post($topic_id, random_line(), random_text(), 0, true, 0, 0, null, null, null, mt_rand(db_get_first_id(), $num_wanted - 1), null, null, null, false, false);
     }

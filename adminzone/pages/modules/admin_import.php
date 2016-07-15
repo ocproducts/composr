@@ -217,19 +217,12 @@ class Module_admin_import
     public function choose_importer()
     {
         $hooks = new Tempcode();
-        $_hooks = find_all_hooks('modules', 'admin_import');
+        $_hooks = find_all_hook_obs('modules', 'admin_import', 'Hook_import_');
         $__hooks = array();
         require_code('form_templates');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/modules/admin_import/' . filter_naughty_harsh($hook));
-            if (class_exists('Hook_' . filter_naughty_harsh($hook))) {
-                $object = object_factory('Hook_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
-                $info = $object->info();
-                $__hooks[$hook] = $info['product'];
-            }
+        foreach ($_hooks as $hook => $object) {
+            $info = $object->info();
+            $__hooks[$hook] = $info['product'];
         }
         uasort($__hooks, 'strnatcmp');
         foreach ($__hooks as $hook => $hook_title) {
@@ -255,7 +248,7 @@ class Module_admin_import
         // Code to detect redirect hooks for import
         $importer = filter_naughty(get_param_string('importer'));
         require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
-        $object = object_factory('Hook_' . filter_naughty_harsh($importer));
+        $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
         $info = $object->info();
 
         if (array_key_exists('hook_type', $info)) {
@@ -337,7 +330,7 @@ class Module_admin_import
         // Get details from the session row
         $importer = filter_naughty(get_param_string('importer'));
         require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
-        $object = object_factory('Hook_' . filter_naughty_harsh($importer));
+        $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
         $info = $object->info();
 
         $session_row = $GLOBALS['SITE_DB']->query_select('import_session', array('*'), array('imp_session' => get_session_id()), '', 1);
@@ -390,7 +383,7 @@ class Module_admin_import
         $importer = filter_naughty(get_param_string('importer'));
 
         require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
-        $object = object_factory('Hook_' . filter_naughty_harsh($importer));
+        $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
 
         // Test import source is good
         $db_host = get_db_site_host();
@@ -429,10 +422,8 @@ class Module_admin_import
         ));
 
         $lang_array = array();
-        $hooks = find_all_hooks('modules', 'admin_import_types');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/admin_import_types/' . filter_naughty_harsh($hook));
-            $_hook = object_factory('Hook_admin_import_types_' . filter_naughty_harsh($hook));
+        $hooks = find_all_hook_obs('modules', 'admin_import_types', 'Hook_admin_import_types_');
+        foreach ($hooks as $_hook) {
             $lang_array += $_hook->run();
         }
 
@@ -545,7 +536,7 @@ class Module_admin_import
 
         $importer = get_param_string('importer');
         require_code('hooks/modules/admin_import/' . filter_naughty_harsh($importer));
-        $object = object_factory('Hook_' . filter_naughty_harsh($importer));
+        $object = object_factory('Hook_import_' . filter_naughty_harsh($importer));
 
         // Get data
         $old_base_dir = either_param_string('old_base_dir');
@@ -609,10 +600,8 @@ class Module_admin_import
         $all_skipped = true;
 
         $lang_array = array();
-        $hooks = find_all_hooks('modules', 'admin_import_types');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/admin_import_types/' . filter_naughty_harsh($hook));
-            $_hook = object_factory('Hook_admin_import_types_' . filter_naughty_harsh($hook));
+        $hooks = find_all_hook_obs('modules', 'admin_import_types', 'Hook_admin_import_types_');
+        foreach ($hooks as $_hook) {
             $lang_array += $_hook->run();
         }
 

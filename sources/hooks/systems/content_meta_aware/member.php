@@ -136,6 +136,6 @@ class Hook_content_meta_aware_member
 
         $GLOBALS['CNS_DRIVER']->MEMBER_ROWS_CACHED[$row['id']] = $row;
 
-        return render_member_box($row['id'], false, null, null, true, null, $give_context, $guid);
+        return render_member_box($row['id'], false, null, true, null, $give_context, $guid);
     }
 }

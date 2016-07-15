@@ -113,7 +113,7 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
+        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) != 0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }
@@ -123,7 +123,7 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'meta tree') !== false) {
             $this->assertTrue(false, 'The phrase \'meta tree\' was used in ' . $file . '. This should be changed to \'meta-tree\'.');
         }
-        if (preg_match('#([^\[\]<>\|"\'/\_])popup#', $string, $matches) !=0) {
+        if (preg_match('#([^\[\]<>\|"\'/\_])popup#', $string, $matches) != 0) {
             $this->assertTrue(false, 'The phrase \'popup\' was used in ' . $file . '. This should be changed to \'pop-up\'.');
         }
         if ((preg_match('#[^e]built in[^t]#', $string) != 0) && (strpos($string, 'in a ') === false)) {

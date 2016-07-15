@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_choose_wiki_page
+class Hook_ajax_tree_choose_wiki_page
 {
     /**
      * Run function for ajax-tree hooks. Generates XML for a tree list, which is interpreted by JavaScript and expanded on-demand (via new calls).

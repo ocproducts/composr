@@ -237,7 +237,7 @@ function render_gallery_box($myrow, $root = 'root', $show_member_stats_if_approp
         if (($is_member) && (get_forum_type() == 'cns')) {
             require_code('cns_members');
             require_code('cns_members2');
-            $member_info = render_member_box($member_id, true, null, null, true, null, false);
+            $member_info = render_member_box($member_id, true, null, true, null, false);
         } else {
             $member_info = new Tempcode();
         }

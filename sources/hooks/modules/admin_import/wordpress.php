@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_wordpress
+class Hook_import_wordpress
 {
     /**
      * Standard importer hook info function.

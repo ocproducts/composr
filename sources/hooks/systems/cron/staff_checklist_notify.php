@@ -48,13 +48,8 @@ class Hook_cron_staff_checklist_notify
                 $outstanding++;
             }
         }
-        $_hooks = find_all_hooks('blocks', 'main_staff_checklist');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/blocks/main_staff_checklist/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_checklist_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('blocks', 'main_staff_checklist', 'Hook_checklist_');
+        foreach ($_hooks as $object) {
             $ret = $object->run();
             if ((!is_null($ret)) && (count($ret) != 0)) {
                 foreach ($ret as $r) {

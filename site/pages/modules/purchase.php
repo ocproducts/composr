@@ -406,7 +406,7 @@ class Module_purchase
 
         $via = get_param_string('via', get_option('payment_gateway'));
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $purchase_object = object_factory('Hook_' . $via);
+        $purchase_object = object_factory('Hook_ecommerce_via_' . $via);
 
         $test = $this->_check_availability($type_code);
         if (!is_null($test)) {
@@ -530,7 +530,7 @@ class Module_purchase
     {
         $via = get_option('payment_gateway');
         require_code('hooks/systems/ecommerce_via/' . filter_naughty_harsh($via));
-        $object = object_factory('Hook_' . $via);
+        $object = object_factory('Hook_ecommerce_via_' . $via);
 
         $message = mixed();
         if (method_exists($object, 'get_callback_url_message')) {

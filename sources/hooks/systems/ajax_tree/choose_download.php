@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_choose_download
+class Hook_ajax_tree_choose_download
 {
     /**
      * Run function for ajax-tree hooks. Generates XML for a tree list, which is interpreted by JavaScript and expanded on-demand (via new calls).

@@ -2443,13 +2443,8 @@ class Module_cms_galleries_cat extends Standard_crud_module
     {
         $extra = array();
         if (!is_null($cat)) {
-            $hooks = find_all_hooks('modules', 'galleries_users');
-            foreach (array_keys($hooks) as $hook) {
-                require_code('hooks/modules/galleries_users/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_gu_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
+            $hooks = find_all_hook_obs('modules', 'galleries_users', 'Hook_gu_');
+            foreach ($hooks as $object) {
                 $extra = array_merge($extra, $object->new_donext_icons($cat));
             }
         }

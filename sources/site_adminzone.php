@@ -41,11 +41,9 @@ function adminzone_special_cases($codename)
 
     if ($codename == 'start' && get_option('site_closed') == '1'/*can be checked on PHP-info page after site is open*/) {
         // Various checks
-        $hooks = find_all_hooks('systems', 'checks');
+        $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
         $found_issues = false;
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/checks/' . filter_naughty($hook));
-            $ob = object_factory('Hook_check_' . $hook);
+        foreach ($hooks as $ob) {
             $warning = $ob->run();
             foreach ($warning as $_warning) {
                 attach_message($_warning, 'warn');

@@ -40,10 +40,8 @@ class Hook_profiles_tabs_edit
             return false;
         }
 
-        $hooks = find_all_hooks('systems', 'profiles_tabs_edit');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/profiles_tabs_edit/' . $hook);
-            $ob = object_factory('Hook_profiles_tabs_edit_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'profiles_tabs_edit', 'Hook_profiles_tabs_edit_');
+        foreach ($hooks as $ob) {
             if ($ob->is_active($member_id_of, $member_id_viewing)) {
                 return true;
             }

@@ -39,10 +39,8 @@ function syndicate_described_activity($a_language_string_code = '', $a_label_1 =
     if (running_script('install')) {
         return;
     }
-    $hooks = find_all_hooks('systems', 'activities');
-    foreach (array_keys($hooks) as $hook) { // We only expect one actually
-        require_code('hooks/systems/activities/' . $hook);
-        $ob = object_factory('Hook_activities_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'activities', 'Hook_activities_');
+    foreach ($hooks as $ob) { // We only expect only one actually
         if (get_param_integer('keep_debug_notifications', 0) == 1) {
             $ob->syndicate_described_activity($a_language_string_code, $a_label_1, $a_label_2, $a_label_3, $a_page_link_1, $a_page_link_2, $a_page_link_3, $a_addon, $a_is_public, $a_member_id, $sitewide_too, $a_also_involving);
         } else {
@@ -58,11 +56,9 @@ function syndicate_described_activity($a_language_string_code = '', $a_label_1 =
  */
 function has_external_site_wide_syndication()
 {
-    $hooks = find_all_hooks('systems', 'activities');
     $ret = false;
-    foreach (array_keys($hooks) as $hook) { // We only expect one actually
-        require_code('hooks/systems/activities/' . $hook);
-        $ob = object_factory('Hook_activities_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'activities', 'Hook_activities_');
+    foreach ($hooks as $ob) { // We only expect only one actually
         $ret = $ret || $ob->has_external_site_wide_syndication();
     }
     return $ret;
@@ -76,11 +72,9 @@ function has_external_site_wide_syndication()
  */
 function get_syndication_option_fields($content_type)
 {
-    $hooks = find_all_hooks('systems', 'activities');
     $ret = new Tempcode();
-    foreach (array_keys($hooks) as $hook) { // We only expect one actually
-        require_code('hooks/systems/activities/' . $hook);
-        $ob = object_factory('Hook_activities_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'activities', 'Hook_activities_');
+    foreach ($hooks as $ob) { // We only expect only one actually
         $ret->attach($ob->get_syndication_option_fields($content_type));
     }
     return $ret;

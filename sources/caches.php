@@ -556,7 +556,7 @@ function has_caching_for($type)
 /**
  * Decache any notification areas relating to private topics.
  *
- * @param  ?MEMBER $member Member to only decache for (null: decache for all members, due to a mass-topic-operation)
+ * @param  ?MEMBER $member_id Member to only decache for (null: decache for all members, due to a mass-topic-operation)
  */
 function decache_private_topics($member_id = null)
 {

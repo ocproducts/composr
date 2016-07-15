@@ -30,18 +30,9 @@ class Hook_snippet_member_tooltip
         require_lang('cns');
         require_code('cns_members2');
 
-        $hooks = find_all_hooks('modules', 'topicview');
-        $sga_hook_objects = array();
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/topicview/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_topicview_' . filter_naughty_harsh($hook), true);
-            if (is_null($object)) {
-                continue;
-            }
-            $sga_hook_objects[$hook] = $object;
-        }
-
-        return render_member_box(get_param_integer('member_id'), true, $hooks, $sga_hook_objects, false);
+        $hook_objects = find_all_hook_obs('modules', 'topicview', 'Hook_topicview_');
+ 
+        return render_member_box(get_param_integer('member_id'), true, $hook_objects, false);
     }
 }
 
