@@ -555,7 +555,7 @@ function _inet_pton($ip)
     $_ip = explode(':', $ip);
     $normalised_ip = '';
     $normalised_ip .= str_pad('', (4 * (8 - count($_ip))), '0000', STR_PAD_LEFT); // Fill out trimmed 0's on left
-    foreach ($_ip as $seg) {// Copy rest in
+    foreach ($_ip as $seg) { // Copy rest in
         $normalised_ip .= str_pad($seg, 4, '0', STR_PAD_LEFT); // Pad out each component in full, building up $normalised_ip
     }
     return $normalised_ip;
@@ -1387,7 +1387,7 @@ function _access_denied($class, $param, $force_login)
         fatal_exit($message);
     }
 
-    if (((is_guest()) && ((running_script('attachment')) || (running_script('dload')) || (running_script('index')))) || ($force_login)) {// Show login screen if appropriate
+    if (((is_guest()) && ((running_script('attachment')) || (running_script('dload')) || (running_script('index')))) || ($force_login)) { // Show login screen if appropriate
         // We do want to supply a nice login screen for attachment/dload scripts because they are sometimes externally linked to (e.g. in emails or hotlinks)
         // Otherwise we want flat access denied due to a flat request/response model
         // NB: Also see similar running_script lines in globalise function

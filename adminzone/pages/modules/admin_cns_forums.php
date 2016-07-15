@@ -630,7 +630,7 @@ class Module_admin_cns_forums extends Standard_crud_module
 
             $lost_groups = array();
             foreach ($old_access_mapping as $group_id) {
-                if (post_param_integer('access_' . strval($group_id), 0) == 0) {// Lost access
+                if (post_param_integer('access_' . strval($group_id), 0) == 0) { // Lost access
                     $lost_groups[] = $group_id;
                 }
             }

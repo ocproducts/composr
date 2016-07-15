@@ -525,7 +525,7 @@ class Module_topicview
 
             // Get other gathered details
             $replied = $threaded_topic_ob->replied;
-            if (!is_null($threaded_topic_ob->topic_title)) {// Updated topic title
+            if (!is_null($threaded_topic_ob->topic_title)) { // Updated topic title
                 $topic_info['title'] = $threaded_topic_ob->topic_title;
             }
             $topic_info['max_rows'] = $threaded_topic_ob->total_posts;

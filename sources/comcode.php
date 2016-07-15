@@ -224,7 +224,7 @@ function strip_comcode($text, $for_extract = false, $tags_to_preserve = null)
     }
 
     require_code('mail');
-    if (function_exists('comcode_to_clean_text')) {// For benefit of installer, which disables mail.php
+    if (function_exists('comcode_to_clean_text')) { // For benefit of installer, which disables mail.php
         $text = comcode_to_clean_text($text, $for_extract, $tags_to_preserve);
     }
 

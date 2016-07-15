@@ -128,7 +128,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
 
         $answer['answer'] = $_answer['pa_answer'];
         $answer['id'] = $_answer['id'];
-        if ((($request_results) || ($poll_info[0]['po_is_open'] == 0)) && ($poll_info[0]['po_is_private'] == 0)) {// We usually will show the results for a closed poll, but not one still private
+        if ((($request_results) || ($poll_info[0]['po_is_open'] == 0)) && ($poll_info[0]['po_is_private'] == 0)) { // We usually will show the results for a closed poll, but not one still private
             $answer['num_votes'] = $_answer['pa_cache_num_votes'];
         }
 

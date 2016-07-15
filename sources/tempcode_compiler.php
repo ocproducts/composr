@@ -702,7 +702,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         if ($directive_name === 'SET_NOPREEVAL') {
                             $myfunc = 'do_runtime_' . uniqid('', true)/*fast_uniqid()*/;
                             $_past_level_data = $directive_internal;
-                            if (strpos($_past_level_data, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
+                            if (strpos($_past_level_data, 'isset($bound') !== false) { // Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
                                 $reset_code = "eval(\\\$FULL_RESET_VAR_CODE); ";
                             } elseif (strpos($_past_level_data, '$bound') !== false) {
                                 $reset_code = "eval(\\\$RESET_VAR_CODE); ";
@@ -1336,7 +1336,7 @@ function build_closure_function($myfunc, $parts)
 
     //   Eval version also works. Easier to debug. Less performant due to re-parse requirement each time it is called
     if ($GLOBALS['DEV_MODE']) {
-        if (strpos($code, 'isset($bound') !== false) {// Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
+        if (strpos($code, 'isset($bound') !== false) { // Horrible but efficient code needed to allow IF_PASSED/IF_NON_PASSED to keep working when templates are put adjacent to each other, where some have it, and don't. This is needed as eval does not set a scope block.
             $reset_code = "eval(\\\$FULL_RESET_VAR_CODE); ";
         } elseif (strpos($code, '$bound') !== false) {
             $reset_code = "eval(\\\$RESET_VAR_CODE); ";

@@ -983,7 +983,7 @@ class Module_admin_setupwizard
                         // Check dependencies
                         $dependencies = isset($addon_info['dependencies_on_this']) ? $addon_info['dependencies_on_this'] : array();
                         foreach (array_keys($uninstalling) as $d) {
-                            if (in_array($d, $dependencies)) {// Can mark this dependency as irrelevant, as we are uninstalling the addon for it anyway
+                            if (in_array($d, $dependencies)) { // Can mark this dependency as irrelevant, as we are uninstalling the addon for it anyway
                                 unset($dependencies[array_search($d, $dependencies)]);
                             }
                         }

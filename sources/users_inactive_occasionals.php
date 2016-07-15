@@ -144,7 +144,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
         );
         $big_change = ($prior_session_row['last_activity'] < time() - 10) || ($prior_session_row['session_confirmed'] != $session_confirmed) || ($prior_session_row['ip'] != $new_session_row['ip']);
         if ($big_change) {
-            if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {// Better to have wrong session than a 5+ second loading page
+            if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) { // Better to have wrong session than a 5+ second loading page
                 $GLOBALS['SITE_DB']->query_update('sessions', $new_session_row, array('the_session' => $new_session), '', 1, null, false, true);
             }
         }

@@ -1568,7 +1568,7 @@ class Forum_driver_cns extends Forum_driver_base
         if ((!isset($_COOKIE['last_visit'])) && (!is_guest($id))) {
             require_code('users_active_actions');
             $lvt = $this->get_member_row_field($id, 'm_last_visit_time');
-            if (function_exists('cms_setcookie')) {// May be trying to check in safe mode when doing above require_code, so recurse
+            if (function_exists('cms_setcookie')) { // May be trying to check in safe mode when doing above require_code, so recurse
                 cms_setcookie('last_visit', is_null($lvt) ? strval(time()) : strval($lvt), true);
             }
             $new_visit = true;

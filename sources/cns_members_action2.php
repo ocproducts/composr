@@ -700,7 +700,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
             if (get_option('enable_highlight_name') == '1') {
                 $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('pointstore') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
             }
-            if ((!is_null($member_id)) && ($member_id != get_member())) {// Can't ban someone new, and can't ban yourself
+            if ((!is_null($member_id)) && ($member_id != get_member())) { // Can't ban someone new, and can't ban yourself
                 $fields->attach(form_input_tick(do_lang_tempcode('BANNED'), do_lang_tempcode('DESCRIPTION_MEMBER_BANNED'), 'is_perm_banned', $is_perm_banned == 1));
             }
         }

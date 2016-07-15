@@ -94,7 +94,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                         $view_private = false;
                     }
 
-                    if (!$view_private) {// If not friended by this person, the view is filtered.
+                    if (!$view_private) { // If not friended by this person, the view is filtered.
                         $_where_clause = '(' . $_where_clause . ' AND a_is_public=1)';
                     }
                 }

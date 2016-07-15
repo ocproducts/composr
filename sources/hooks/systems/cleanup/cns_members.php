@@ -36,7 +36,7 @@ class Hook_cleanup_cns_members
             cns_require_all_forum_stuff();
         }
 
-        if (($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 5000) && ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'MAX(m_cache_num_posts)') > 50)) {// Too much work, unless we have due to an obvious issue
+        if (($GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)') > 5000) && ($GLOBALS['FORUM_DB']->query_select_value('f_members', 'MAX(m_cache_num_posts)') > 50)) { // Too much work, unless we have due to an obvious issue
             return null;
         }
 

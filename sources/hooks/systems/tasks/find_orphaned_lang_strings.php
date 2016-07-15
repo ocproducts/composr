@@ -101,7 +101,7 @@ class Hook_task_find_orphaned_lang_strings
                     }
                     $fused_lang_strings[$id] = $looked_up;
                 }
-                if ($langidfield['m_name'] != 't_cache_first_post') {// 'if..!=' is for special exception for one that may be re-used in a cache position
+                if ($langidfield['m_name'] != 't_cache_first_post') { // 'if..!=' is for special exception for one that may be re-used in a cache position
                     $ids_seen_so_far[$id] = true;
                 }
             }

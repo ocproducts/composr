@@ -743,7 +743,7 @@ class Module_cms_blogs extends Standard_crud_module
             $rss = new CMS_RSS($rss_url, true);
 
             // Cleanup
-            if (url_is_local($rss_url)) {// Means it is a temp file
+            if (url_is_local($rss_url)) { // Means it is a temp file
                 @unlink($rss_url);
             }
 

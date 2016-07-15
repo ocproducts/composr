@@ -932,7 +932,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $members = array_keys($GLOBALS['FORUM_DRIVER']->member_group_query($rem_groups, 300, $start));
                     $members = array_diff($members, array(get_member(), $GLOBALS['FORUM_DRIVER']->get_guest_id()));
                 }
-                if (($start == 0) && (post_param_integer('sign_up_reminder', 0) == 1)) {// If this member is signing up
+                if (($start == 0) && (post_param_integer('sign_up_reminder', 0) == 1)) { // If this member is signing up
                     $members[] = get_member();
                 }
                 if (count($members) != 0) { // Now add their reminders

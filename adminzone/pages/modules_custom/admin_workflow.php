@@ -357,7 +357,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // See if we need to define any
         foreach ($point_names as $p) {
-            if (!in_array($p, $all_points)) {// This point has not been defined previously...
+            if (!in_array($p, $all_points)) { // This point has not been defined previously...
                 return true;
             }
         }

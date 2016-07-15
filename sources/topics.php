@@ -499,7 +499,7 @@ class CMS_Topic
             cns_cache_member_details(array_keys($members));
         }
 
-        if (!is_null($this->topic_id)) {// If FALSE then Posts will have been passed in manually as full already anyway
+        if (!is_null($this->topic_id)) { // If FALSE then Posts will have been passed in manually as full already anyway
             $posts = $this->_grab_full_post_details($posts);
         }
 

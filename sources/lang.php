@@ -647,7 +647,7 @@ function lang_code_to_default_content($field_name, $code, $comcode = false, $lev
         $langs = find_all_langs();
         foreach ($langs as $lang => $lang_type) {
             if ($lang != user_lang()) {
-                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) {// Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
+                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
                     insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, null, true, $insert_map[$field_name], $lang);
                 }
             }

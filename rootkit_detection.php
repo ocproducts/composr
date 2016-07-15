@@ -65,7 +65,7 @@ if ($type == '') {
 			<p>Database password: <input type="password" name="db_password" /></p>
 END;
 
-    if (isset($_SERVER['APPLICATION_ID'])) {// Google App Engine
+    if (isset($_SERVER['APPLICATION_ID'])) { // Google App Engine
         echo <<<END
 			<p>E-mail results to (required): <input type="text" name="email" /></p>
 END;

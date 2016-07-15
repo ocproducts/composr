@@ -390,7 +390,7 @@ function step_1()
     // Some checks relating to installation permissions
     global $FILE_ARRAY;
     if (!@is_array($FILE_ARRAY)) { // Talk about manual permission setting a bit
-        if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) {// NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
+        if ((php_function_allowed('posix_getuid')) && (!isset($_SERVER['HTTP_X_MOSSO_DT'])) && (@posix_getuid() == @fileowner(get_file_base() . '/install.php'))) { // NB: Could also be that files are owned by 'apache'/'nobody'. In these cases the users have consciously done something special and know what they're doing (they have open_basedir at least hopefully!) so we'll still consider this 'suexec'. It's too much an obscure situation.
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('SUEXEC_SERVER'))));
         } elseif (is_writable_wrap(get_file_base() . '/install.php')) {
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
@@ -1409,7 +1409,7 @@ function step_5_ftp()
                 (($filename != 'forum/index.php') || (!file_exists(get_file_base() . '/' . $filename)))
             ) {
                 if ((strpos($filename, '/' . fallback_lang() . '/') !== false) && (is_string($contents))) {
-                    foreach (array_keys($langs) as $lang) {// Write out all the files under language directories (as we only packed them into our installer under EN) {
+                    foreach (array_keys($langs) as $lang) { // Write out all the files under language directories (as we only packed them into our installer under EN) {
                         if (($lang == fallback_lang()) || (strpos($lang, '.') !== false)) {
                             continue;
                         }

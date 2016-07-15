@@ -1671,7 +1671,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 $has_it = true;
                                 break;
                             }
-                            if (($in_semihtml) && (($current_tag === 'html') || ($current_tag === 'semihtml'))) {// Only search one level for this
+                            if (($in_semihtml) && (($current_tag === 'html') || ($current_tag === 'semihtml'))) { // Only search one level for this
                                 break;
                             }
                         }

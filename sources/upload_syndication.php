@@ -191,7 +191,7 @@ function handle_upload_syndication($name, $title, $description, $url, $filename,
                     $remote_url = $ob->syndicate($url, $filepath, $filename, $title, $description);
                     if (!is_null($remote_url)) {
                         $remote_urls[$hook] = array($remote_url, $ob->get_reference_precedence());
-                        if ($ob->get_reference_precedence() == UPLOAD_PRECEDENCE_REGARDLESS) {// Cloud-filesystem use-case
+                        if ($ob->get_reference_precedence() == UPLOAD_PRECEDENCE_REGARDLESS) { // Cloud-filesystem use-case
                             $remove_locally_if_no_quota = true;
                         }
                     }

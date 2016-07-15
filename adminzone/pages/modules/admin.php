@@ -206,7 +206,7 @@ class Module_admin
             if (!isset($bad[$b])) {
                 if ((($b != 'chat') || (!array_key_exists($i + 1, $words)) || (($words[$i + 1] != 'room') && ($words[$i + 1] != 'rooms'))) && (($b != 'user') || (!array_key_exists($i + 1, $words)) || (($words[$i + 1] != 'group') && ($words[$i + 1] != 'groups')))) {
                     $_words[] = $b;
-                } else {// Special case of compound terms that are actually single words in Composr; fix the word, and also stop ridiculous amounts of spurious result
+                } else { // Special case of compound terms that are actually single words in Composr; fix the word, and also stop ridiculous amounts of spurious result
                     $words[$i + 1] = $b . $words[$i + 1];
                 }
             }

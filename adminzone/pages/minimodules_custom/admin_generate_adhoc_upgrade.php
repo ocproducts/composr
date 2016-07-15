@@ -86,7 +86,7 @@ if ($type == 'auto_probe') {
                 }
             }
         }
-        if ((!$has_openid) && (in_array('openid', $auto_probe)) && (in_array('facebook', $auto_probe))) {// OpenID and Facebook shared files, probably they only wanted Facebook!
+        if ((!$has_openid) && (in_array('openid', $auto_probe)) && (in_array('facebook', $auto_probe))) { // OpenID and Facebook shared files, probably they only wanted Facebook!
             unset($auto_probe[array_search('openid', $auto_probe)]);
         }
 

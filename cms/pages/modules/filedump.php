@@ -669,7 +669,7 @@ class Module_filedump
     {
         if ($type_filter == '') {
             if ($search != '') {
-                if ((stripos(basename($place), $search) !== false) || (stripos($description, $search) !== false)) {// Directory itself matches
+                if ((stripos(basename($place), $search) !== false) || (stripos($description, $search) !== false)) { // Directory itself matches
                     return true;
                 }
             } else {

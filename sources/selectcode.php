@@ -317,7 +317,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                 $out_accept[] = $numeric_record_set_ids ? $id : strval($id);
             }
         } elseif (preg_match('#^\!(.*)$#', $token, $matches) != 0) { // e.g. '!1'
-            if ($matches[1] != '') {// Likely came from referencing some Tempcode that didn't return a result
+            if ($matches[1] != '') { // Likely came from referencing some Tempcode that didn't return a result
                 $out_avoid[] = $numeric_record_set_ids ? intval($matches[1]) : $matches[1];
             }
         } elseif (($numeric_record_set_ids) && (preg_match('#^(\d+)\-(\d+)$#', $token, $matches) != 0)) { // e.g. '1-3')

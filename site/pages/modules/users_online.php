@@ -150,7 +150,7 @@ class Module_users_online
 
             $link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member);
 
-            if ($ip != '') {// CRON?
+            if ($ip != '') { // CRON?
                 $rows[] = array('IP' => $ip, 'AT_URL' => $at_url, 'LOCATION' => $location, 'MEMBER' => $link, 'TIME' => integer_format(intval((time() - $last_activity) / 60)));
             }
         }

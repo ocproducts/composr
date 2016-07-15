@@ -287,7 +287,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= ' WHERE (' . $id_list . ')' . $topic_filter_sup;
             $query_simplified = $query;
 
-            if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         } else {
@@ -313,7 +313,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 $query .= $query_more;
                 $query_simplified .= $query_more;
 
-                if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                     $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
                 }
             }
@@ -337,7 +337,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= $query_more;
             $query_simplified .= $query_more;
 
-            if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if (get_option('is_on_strong_forum_tie') == '1') { // So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         }
@@ -404,7 +404,7 @@ function not_like_spacer_posts($field)
     $ret = '';
     $langs = find_all_langs();
     foreach (array_keys($langs) as $lang) {
-        if ((@filesize(get_file_base() . '/lang/' . $lang . '/global.ini')) || (@filesize(get_file_base() . '/lang_custom/' . $lang . '/global.ini'))) {// Check it's a real lang and not a stub dir
+        if ((@filesize(get_file_base() . '/lang/' . $lang . '/global.ini')) || (@filesize(get_file_base() . '/lang_custom/' . $lang . '/global.ini'))) { // Check it's a real lang and not a stub dir
             $ret .= ' AND ' . $field . ' NOT LIKE \'%' . db_encode_like(do_lang('SPACER_POST_MATCHER', '', '', '', $lang) . '%') . '\'';
         }
     }

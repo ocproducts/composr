@@ -53,7 +53,7 @@ class Block_side_friends
             return new Tempcode(); // Guest has no friends
         }
 
-        if ((get_page_name() == 'chat') && (get_param_string('type', 'browse') == 'browse')) {// Don't want to show if actually on chat lobby, which already has this functionality
+        if ((get_page_name() == 'chat') && (get_param_string('type', 'browse') == 'browse')) { // Don't want to show if actually on chat lobby, which already has this functionality
             return new Tempcode();
         }
 

@@ -198,7 +198,7 @@ class Hook_upload_syndication_photobucket
             try {
                 $response = $api->getParsedResponse(true);
             } catch (PBAPI_Exception $e1) {
-                if ($e1->getCode() != 116) {// If it's not an expected possible "Album already exists: <albumname>"
+                if ($e1->getCode() != 116) { // If it's not an expected possible "Album already exists: <albumname>"
                     throw $e1;
                 }
             }

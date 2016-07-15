@@ -3216,7 +3216,7 @@ function ecv_HIDE_HELP_PANEL($lang, $escaped, $param)
  */
 function ecv_FIND_SCRIPT_NOHTTP($lang, $escaped, $param)
 {
-    if ($GLOBALS['DEV_MODE']) {// Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
+    if ($GLOBALS['DEV_MODE']) { // Dev mode changes base domain so we need to actually use it in full (fine, we don't have HTTPS in dev mode).
         return ecv_FIND_SCRIPT($lang, $escaped, $param);
     }
 
@@ -3645,7 +3645,7 @@ function ecv_FROM_TIMESTAMP($lang, $escaped, $param)
             $timestamp = utctime_to_usertime($timestamp);
         }
         $value = locale_filter(cms_strftime($param[0], $timestamp));
-        if ($value === $param[0]) {// If no conversion happened then the syntax must have been for 'date' not 'strftime'
+        if ($value === $param[0]) { // If no conversion happened then the syntax must have been for 'date' not 'strftime'
             $value = date($param[0], $timestamp);
         }
     } else {

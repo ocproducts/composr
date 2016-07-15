@@ -45,7 +45,7 @@ foreach ($addons as $name => $place) {
         continue;
     }
 
-    if ((get_param_integer('export_bundled_addons', 0) == 0) && ($place == 'sources')) {// We are not normally concerned about these, but maybe it is useful sometimes
+    if ((get_param_integer('export_bundled_addons', 0) == 0) && ($place == 'sources')) { // We are not normally concerned about these, but maybe it is useful sometimes
         continue;
     }
     if ((get_param_integer('export_addons', 1) == 0) && ($place == 'sources_custom')) {
@@ -59,7 +59,7 @@ foreach ($addons as $name => $place) {
 
     $new_addon_files = array();
     foreach ($addon_info['files'] as $_file) {
-        if (substr($_file, -9) != '.editfrom') {// This would have been added back in automatically
+        if (substr($_file, -9) != '.editfrom') { // This would have been added back in automatically
             $new_addon_files[] = $_file;
         }
     }

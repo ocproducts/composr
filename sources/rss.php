@@ -389,9 +389,9 @@ class CMS_RSS
                                 break;
                             case 'HTTP://PURL.ORG/RSS/1.0/MODULES/CONTENT/:ENCODED':
                                 $current_item['news_article'] = $data;
-                                if ((preg_match('#[<>]#', $current_item['news_article']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news_article'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                if ((preg_match('#[<>]#', $current_item['news_article']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news_article'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news_article'] = @html_entity_decode($current_item['news_article'], ENT_QUOTES);
-                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news_article']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news_article'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news_article']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news_article'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news_article'] = @html_entity_decode($current_item['news_article'], ENT_QUOTES);
                                 }
                                 if (preg_match('#^http://compo.sr/#', $this->feed_url) == 0) {
@@ -406,9 +406,9 @@ class CMS_RSS
                             // wp namespace
                             case 'HTTP://WORDPRESS.ORG/EXPORT/1.2/EXCERPT/:ENCODED':
                                 $current_item['news'] = $data;
-                                if ((preg_match('#[<>]#', $current_item['news']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                if ((preg_match('#[<>]#', $current_item['news']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news'] = @html_entity_decode($current_item['news'], ENT_QUOTES);
-                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news'] = @html_entity_decode($current_item['news'], ENT_QUOTES);
                                 }
                                 if (preg_match('#^' . preg_quote(get_brand_base_url(), '#') . '/#', $this->feed_url) == 0) {
@@ -422,9 +422,9 @@ class CMS_RSS
 
                             case 'TITLE':
                                 $current_item['title'] = $data;
-                                if ((preg_match('#[<>]#', $current_item['title']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['title'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                if ((preg_match('#[<>]#', $current_item['title']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['title'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['title'] = @html_entity_decode($current_item['title'], ENT_QUOTES);
-                                } elseif ((preg_match('#&(?!amp;)#', $current_item['title']) == 0) && (preg_match('#&#', html_entity_decode($current_item['title'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                } elseif ((preg_match('#&(?!amp;)#', $current_item['title']) == 0) && (preg_match('#&#', html_entity_decode($current_item['title'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['title'] = @html_entity_decode($current_item['title'], ENT_QUOTES);
                                 }
                                 if (preg_match('#^' . preg_quote(get_brand_base_url(), '#') . '/#', $this->feed_url) == 0) {
@@ -434,9 +434,9 @@ class CMS_RSS
                                 break;
                             case 'DESCRIPTION':
                                 $current_item['news'] = $data;
-                                if ((preg_match('#[<>]#', $current_item['news']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                if ((preg_match('#[<>]#', $current_item['news']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news'] = @html_entity_decode($current_item['news'], ENT_QUOTES);
-                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) {// Double escaped HTML
+                                } elseif ((preg_match('#&(?!amp;)#', $current_item['news']) == 0) && (preg_match('#&#', html_entity_decode($current_item['news'], ENT_QUOTES)) != 0)) { // Double escaped HTML
                                     $current_item['news'] = @html_entity_decode($current_item['news'], ENT_QUOTES);
                                 } elseif (strpos($current_item['news'], '>') === false) {
                                     $current_item['news'] = nl2br(escape_html($current_item['news']));

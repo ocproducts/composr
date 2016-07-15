@@ -818,7 +818,7 @@ class Module_admin_addons
 
         $new_addon_files = array();
         foreach ($addon_info['files'] as $_file) {
-            if (substr($_file, -9) != '.editfrom') {// This would have been added back in automatically
+            if (substr($_file, -9) != '.editfrom') { // This would have been added back in automatically
                 $new_addon_files[] = $_file;
             }
         }

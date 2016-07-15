@@ -108,9 +108,9 @@ class shopping_test_set extends cms_test_case
                     $_POST['field_' . strval($id)] = '68.35';
                     break;
                 case    'list':
-                    if ($val['cf_order'] == 6) {//Order 6 is tax
+                    if ($val['cf_order'] == 6) { //Order 6 is tax
                         $_POST['field_' . strval($id)] = 'Arizona=7.8%';
-                    } elseif ($val['cf_order'] == 5) {//Order 5 yes keep stock "yes/no"
+                    } elseif ($val['cf_order'] == 5) { //Order 5 yes keep stock "yes/no"
                         $_POST['field_' . strval($id)] = 'yes';
                     }
                     break;

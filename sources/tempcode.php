@@ -880,7 +880,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         }
     }
 
-    if ($loaded_this_once && !$inlining_mode) {// On 3rd load (and onwards) it will be fully cached
+    if ($loaded_this_once && !$inlining_mode) { // On 3rd load (and onwards) it will be fully cached
         $LOADED_TPL_CACHE[$codename][$theme] = $_data;
     }
 

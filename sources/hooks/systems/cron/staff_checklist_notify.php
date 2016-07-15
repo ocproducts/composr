@@ -63,7 +63,7 @@ class Hook_cron_staff_checklist_notify
                             $outstanding++; // A tally of undone stuff
                         }
                     } elseif (!is_null($r[1])) {
-                        if ($r[1] < 0) {// Needed doing in the past
+                        if ($r[1] < 0) { // Needed doing in the past
                             $outstanding++;
                         }
                     }

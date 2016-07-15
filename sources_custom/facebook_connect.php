@@ -254,7 +254,7 @@ function handle_facebook_connection_login($current_logged_in_member)
             }
 
             $username = post_param_string('username', $username);//user may have customised username
-            if ((count($_custom_fields) != 0) && (get_value('no_finish_profile') !== '1')) {// Was not auto-generated, so needs to be checked
+            if ((count($_custom_fields) != 0) && (get_value('no_finish_profile') !== '1')) { // Was not auto-generated, so needs to be checked
                 cns_check_name_valid($username, null, null);
             }
             $member_id = cns_member_external_linker($username, $facebook_uid, 'facebook', false, $email_address, $dob_day, $dob_month, $dob_year, $timezone, $language, $avatar_url, $photo_url, $photo_thumb_url);

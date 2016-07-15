@@ -182,7 +182,7 @@ function find_remote_addons()
     for ($i = 0; $i < $num_matches; $i++) {
         $id = intval($matches[1][$i]);
         $title = html_entity_decode($matches[2][$i], ENT_QUOTES);
-        if ((!array_key_exists($title, $addons)) || ($addons[$title] > $id)) {// We want the one with the lowest ID, as that will be the official one (uploaded via automated process, then maintained since then)
+        if ((!array_key_exists($title, $addons)) || ($addons[$title] > $id)) { // We want the one with the lowest ID, as that will be the official one (uploaded via automated process, then maintained since then)
             $addons[$title] = $id;
         }
     }
@@ -244,7 +244,7 @@ function find_updated_addons()
         }
         if (!$found) { // Don't have our original .tar, so lets say we need to reinstall
             $mtime = find_addon_effective_mtime($addon[3]);
-            if ((!is_null($addon[0])) && (!is_null($mtime)) && ($mtime < $addon[0])) {// If server has it and is newer
+            if ((!is_null($addon[0])) && (!is_null($mtime)) && ($mtime < $addon[0])) { // If server has it and is newer
                 $updated_addons[$addon[3]] = array($addon[1]);
             }
         }

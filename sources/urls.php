@@ -1285,11 +1285,11 @@ function find_id_moniker($url_parts, $zone)
         load_moniker_hooks();
     }
     if (!array_key_exists('id', $url_parts)) {
-        if (is_file(get_file_base() . '/' . $zone . '/pages/modules/' . $url_parts['page'] . '.php')) {// Wasteful of resources
+        if (is_file(get_file_base() . '/' . $zone . '/pages/modules/' . $url_parts['page'] . '.php')) { // Wasteful of resources
             return null;
         }
         if (($zone == '') && (get_option('collapse_user_zones') == '1')) {
-            if (is_file(get_file_base() . '/site/pages/modules/' . $url_parts['page'] . '.php')) {// Wasteful of resources
+            if (is_file(get_file_base() . '/site/pages/modules/' . $url_parts['page'] . '.php')) { // Wasteful of resources
                 return null;
             }
         }

@@ -76,7 +76,7 @@ class Hook_choose_composr_homesite_addon
         $file = $this->get_file($id);
 
         $list = new Tempcode();
-        if (is_null($id)) {// Root, needs an NA option
+        if (is_null($id)) { // Root, needs an NA option
             $list->attach(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
         }
 

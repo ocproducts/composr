@@ -1470,7 +1470,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
                     if (array_key_exists($rela . $file, $addon_files)) {
                         $addon .= $file_html;
                     } else {
-                        if ($alien_count <= 10000) {// Reasonable limit
+                        if ($alien_count <= 10000) { // Reasonable limit
                             $alien .= $file_html;
                             $alien_count++;
                         }
@@ -1480,7 +1480,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
     }
 
-    if ($alien_count > 10000) {// Reasonable limit
+    if ($alien_count > 10000) { // Reasonable limit
         $alien = '';
     }
 

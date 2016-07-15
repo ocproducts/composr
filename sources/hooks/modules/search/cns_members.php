@@ -244,7 +244,7 @@ class Hook_search_cns_members extends FieldsSearchHook
                 }
             }
             if (strpos($storage_type, '_trans') === false) {
-                if (!$index_issue) {// MySQL limit for fulltext index querying
+                if (!$index_issue) { // MySQL limit for fulltext index querying
                     $raw_fields[] = 'field_' . strval($row['id']);
                 }
             } else {

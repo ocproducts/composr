@@ -450,7 +450,7 @@ function get_logo_url($zone_name = null)
     }
 
     $image = find_theme_image('logo/' . $zone_name . '-logo', true);
-    if ($image == '') {// Fallback to welcome zone logo
+    if ($image == '') { // Fallback to welcome zone logo
         $image = find_theme_image('logo/-logo');
     }
 
