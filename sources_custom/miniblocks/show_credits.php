@@ -24,7 +24,7 @@ require_code('tickets2');
 
 $credits = intval(get_cms_cpf('support_credits'));
 
-$professional_support_url = build_url(array('page' => 'professional_support'), '_SEARCH');
+$professional_support_url = build_url(array('page' => 'professional_support'));
 
 if ($credits == 0) {
     $whats_this = do_lang_tempcode('SHOW_CREDITS_WHATS_THIS', escape_html($professional_support_url->evaluate()));
@@ -34,7 +34,7 @@ if ($credits == 0) {
 
 if ($credits == 0) {
     $credits_msg = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
-    $help_link = build_url(array('page' => 'tut_software_feedback'), '_SEARCH');
+    $help_link = build_url(array('page' => 'tut_software_feedback'));
     $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK', escape_html($help_link->evaluate()));
 } else {
     $credits_msg = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', escape_html(integer_format($credits)), escape_html($professional_support_url->evaluate()));

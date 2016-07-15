@@ -124,16 +124,16 @@ $decision_tree = array(
         ),
         'next' => array(
             //    Parameter             Value                                   Target
-            array('free_service_type',  'Go to the community chatroom',         build_url(array('page' => 'chat'), '_SEARCH')),
+            array('free_service_type',  'Go to the community chatroom',         build_url(array('page' => 'chat'), get_module_zone('chat'))),
             array('free_service_type',  'Go to the community forum',            build_url(array('page' => ''), 'forum')),
             array('free_service_type',  'Report a bug',                         get_base_url() . '/tracker/bug_report_page.php?severity=50'),
             array('free_service_type',  'Report a usability/UX issue',          get_base_url() . '/tracker/bug_report_page.php?severity=50'),
             array('free_service_type',  'Report a security hole',               get_base_url() . '/tracker/bug_report_page.php?view_state=50&severity=80'),
             array('free_service_type',  'Request a feature',                    get_base_url() . '/tracker/bug_report_page.php?severity=10'),
             array('free_service_type',  'Send some documentation feedback',     get_base_url() . '/tracker/set_project.php?project_id=7'),
-            array('free_service_type',  'Send some general feedback',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), '_SEARCH')),
+            array('free_service_type',  'Send some general feedback',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Feedback'), get_module_zone('tickets'))),
             array('free_service_type',  'Contribute some code',                 'contribute_code'),
-            array('free_service_type',  'Make a partnership enquiry',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Partnership'), '_SEARCH')),
+            array('free_service_type',  'Make a partnership enquiry',           build_url(array('page' => 'tickets', 'type' => 'ticket', 'ticket_type' => 'Partnership'), get_module_zone('tickets'))),
             array('free_service_type',  'Apply for a job with ocProducts Ltd',  'job'),
         ),
     ),
@@ -188,7 +188,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Job'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Job'), get_module_zone('tickets')),
     ),
 
     'paid' => array(
@@ -886,7 +886,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ),
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Project'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Project'), get_module_zone('tickets')),
         'expects_parameters' => array(
             'title',
             'description',
@@ -952,7 +952,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Installation'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Installation'), get_module_zone('tickets')),
     ),
 
     'secondment' => array(
@@ -1013,7 +1013,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => true,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Secondment'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Secondment'), get_module_zone('tickets')),
     ),
 
     'support' => array(
@@ -1069,7 +1069,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Professional support'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Professional support'), get_module_zone('tickets')),
     ),
 
     'sponsor' => array(
@@ -1156,7 +1156,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Upgrade'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Upgrade'), get_module_zone('tickets')),
     ),
 );
 

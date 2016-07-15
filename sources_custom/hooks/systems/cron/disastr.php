@@ -100,7 +100,7 @@ class Hook_cron_disastr
                     }
 
                     if (!$has_immunization) {
-                        $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                        $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), get_module_zone('pointstore'), null, false, false, true);
                         $cure_url = $_cure_url->evaluate();
 
                         if ($insert) {
@@ -150,7 +150,7 @@ class Hook_cron_disastr
 
                 require_code('notifications');
 
-                $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), '_SEARCH', null, false, false, true);
+                $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action', 'id' => 'disastr'), get_module_zone('pointstore'), null, false, false, true);
                 $cure_url = $_cure_url->evaluate();
 
                 if ($insert) {

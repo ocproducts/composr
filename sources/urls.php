@@ -401,7 +401,7 @@ function has_keep_parameters()
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return Tempcode The URL in Tempcode format.
  */
-function build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
+function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
     if (empty($vars['page']) && running_script('index')) { // For SEO purposes we need to make sure we get the right URL
         $vars['page'] = get_zone_default_page($zone_name);

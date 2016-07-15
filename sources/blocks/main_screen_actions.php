@@ -62,7 +62,7 @@ class Block_main_screen_actions
         if (array_key_exists('title', $map)) {
             $_map['title'] = $map['title'];
         }
-        $recommend_url = build_url($_map, '_SEARCH');
+        $recommend_url = build_url($_map, get_module_zone('recommend'));
 
         return do_template('BLOCK_MAIN_SCREEN_ACTIONS', array(
             '_GUID' => '2f5ceee4e1cc3d31c184c62e0710b1c3',

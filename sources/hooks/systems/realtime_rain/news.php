@@ -60,7 +60,7 @@ class Hook_realtime_rain_news
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => $ticker_text,
-                        'URL' => build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), get_module_zone('news')),
                         'IS_POSITIVE' => false,
                         'IS_NEGATIVE' => false,
 

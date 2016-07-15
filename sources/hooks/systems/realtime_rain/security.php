@@ -52,7 +52,7 @@ class Hook_realtime_rain_security
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), get_module_zone('admin_security')),
                         'IS_POSITIVE' => false,
                         'IS_NEGATIVE' => true,
 

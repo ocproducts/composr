@@ -52,7 +52,7 @@ class Hook_realtime_rain_recommend
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
                         'IS_POSITIVE' => true,
                         'IS_NEGATIVE' => false,
 

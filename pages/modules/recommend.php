@@ -266,7 +266,7 @@ class Module_recommend
                 $field_set->attach($email_address_field);
 
                 //add an upload CSV contacts file field
-                $_help_url = build_url(array('page' => 'recommend_help'), get_page_zone('recommend_help'));
+                $_help_url = build_url(array('page' => 'recommend_help'));
                 $help_url = $_help_url->evaluate();
 
                 $field_set->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_UPLOAD_CSV_FILE', escape_html($help_url)), 'upload', false, null, null, false));

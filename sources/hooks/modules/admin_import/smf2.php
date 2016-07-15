@@ -1813,7 +1813,7 @@ class Hook_import_smf2
 
                 $id_new = add_news($subject, $news, $author, $validated, $allow_rating, $allow_comments, $allow_trackbacks, '', $news_article, $main_news_category, $news_categories, $time, $submitter, $views, $edit_date, null, $image);
 
-                $content_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id_new), get_page_zone('news'));
+                $content_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id_new), get_module_zone('news'));
 
                 // Comments
                 $comments = $db->query_select('tp_variables', array('value1 AS subject', 'value2 AS post', 'value3 AS poster', 'value4 AS time'), array('type' => 'article_comment', 'value5' => $row['id']));

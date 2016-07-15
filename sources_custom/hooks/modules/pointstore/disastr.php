@@ -57,10 +57,10 @@ class Hook_pointstore_disastr
         $member_id = get_member();
         $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
         foreach ($rows as $disease) {
-            $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), '_SEARCH');
+            $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), get_module_zone('pointstore'));
             $cure_url = $_cure_url->evaluate();
 
-            $_immunization_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'immunization' => 1), '_SEARCH');
+            $_immunization_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'immunization' => 1), get_module_zone('pointstore'));
             $immunization_url = $_immunization_url->evaluate();
 
             $member_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => $member_id, 'disease_id' => $disease['id']), '', 1);

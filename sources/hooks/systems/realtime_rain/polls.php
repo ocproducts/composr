@@ -67,7 +67,7 @@ class Hook_realtime_rain_polls
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => $ticker_text,
-                        'URL' => build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row[1]['id']), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row[1]['id']), get_module_zone('polls')),
                         'IS_POSITIVE' => false,
                         'IS_NEGATIVE' => false,
 

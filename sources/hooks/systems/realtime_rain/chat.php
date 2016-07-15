@@ -65,7 +65,7 @@ class Hook_realtime_rain_chat
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => $message,
-                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points')),
                         'IS_POSITIVE' => false,
                         'IS_NEGATIVE' => false,
 

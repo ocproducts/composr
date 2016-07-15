@@ -412,7 +412,7 @@ class Module_warnings extends Standard_crud_module
 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
-            $_rules_url = build_url(array('page' => 'rules'), '_SEARCH');
+            $_rules_url = build_url(array('page' => 'rules'));
             $rules_url = $_rules_url->evaluate();
             $_history_url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
             $history_url = $_history_url->evaluate();

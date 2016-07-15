@@ -349,7 +349,7 @@ class Module_tickets
                 }
             }
         } else {
-            $_login_url = build_url(array('page' => 'login'), '_SEARCH');
+            $_login_url = build_url(array('page' => 'login'));
             $login_url = $_login_url->evaluate();
             $message = do_lang_tempcode('NO_TICKETS_GUESTS', escape_html($login_url));
             $tickets = array();

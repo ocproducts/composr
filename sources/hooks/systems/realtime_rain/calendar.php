@@ -52,7 +52,7 @@ class Hook_realtime_rain_calendar
                         'TIMESTAMP' => strval($timestamp),
                         'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                         'TICKER_TEXT' => null,
-                        'URL' => build_url(array('page' => 'calendar', 'type' => 'event', 'id' => $row[1]['id']), '_SEARCH'),
+                        'URL' => build_url(array('page' => 'calendar', 'type' => 'event', 'id' => $row[1]['id']), get_module_zone('calendar')),
                         'IS_POSITIVE' => false,
                         'IS_NEGATIVE' => false,
 
