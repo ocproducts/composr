@@ -42,9 +42,6 @@ class Hook_cron_ip_address_sharing
         if (is_cns_satellite_site()) {
             return;
         }
-        if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_write)) {
-            return;
-        }
 
         $time = time();
 

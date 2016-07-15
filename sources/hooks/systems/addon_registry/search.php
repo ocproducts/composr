@@ -452,7 +452,6 @@ class Hook_addon_registry_search
             lorem_globalise(do_lorem_template('SEARCH_FORM_SCREEN', array(
                 'SEARCH_TERM' => lorem_word_2(),
                 'NUM_RESULTS' => placeholder_number(),
-                'CAN_ORDER_BY_RATING' => false,
                 'EXTRA_SORT_FIELDS' => placeholder_array(0),
                 'USER_LABEL' => lorem_word(),
                 'DAYS_LABEL' => lorem_word(),

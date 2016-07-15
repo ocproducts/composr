@@ -865,9 +865,7 @@ class Module_cms_news_cat extends Standard_crud_module
         $sortables = array(
             'nc_title' => do_lang_tempcode('TITLE'),
         );
-        if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-            $sortables['((SELECT COUNT(*) FROM ' . get_table_prefix() . 'news WHERE news_category=r.id) + (SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_category_entries WHERE news_entry_category=r.id))'] = do_lang_tempcode('COUNT_TOTAL');
-        }
+        $sortables['((SELECT COUNT(*) FROM ' . get_table_prefix() . 'news WHERE news_category=r.id) + (SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_category_entries WHERE news_entry_category=r.id))'] = do_lang_tempcode('COUNT_TOTAL');
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }

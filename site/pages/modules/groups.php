@@ -226,10 +226,7 @@ class Module_groups
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
             $sql .= 'g_hidden=0 AND ';
         }
-        $sql .= '(g_promotion_target IS NOT NULL';
-        if (db_has_subqueries($GLOBALS['FORUM_DB'])) {
-            $sql .= ' OR EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
-        }
+        $sql .= '(g_promotion_target IS NOT NULL OR EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         foreach ($staff_groups as $g_id) {
             $sql .= ' OR g.id=' . strval($g_id);
         }
@@ -407,10 +404,7 @@ class Module_groups
         if (!has_privilege(get_member(), 'see_hidden_groups')) {
             $sql .= 'g_hidden=0 AND ';
         }
-        $sql .= '(g_promotion_target IS NULL';
-        if (db_has_subqueries($GLOBALS['FORUM_DB'])) {
-            $sql .= ' AND NOT EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
-        }
+        $sql .= '(g_promotion_target IS NULL AND NOT EXISTS(SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups h WHERE h.g_promotion_target=g.id)';
         foreach ($staff_groups as $g_id) {
             $sql .= ' AND g.id<>' . strval($g_id);
         }

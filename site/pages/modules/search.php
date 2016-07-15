@@ -408,8 +408,6 @@ class Module_search
 
         $has_fulltext_search = db_has_full_text($GLOBALS['SITE_DB']->connection_read);
 
-        $can_order_by_rating = db_has_subqueries($GLOBALS['SITE_DB']->connection_read);
-
         $days = mixed();
 
         $cutoff_from_day = mixed();
@@ -469,7 +467,6 @@ class Module_search
             'SEARCH_TERM' => is_null($content) ? '' : $content,
             'HAS_TEMPLATE_SEARCH' => $has_template_search,
             'NUM_RESULTS' => integer_format($num_results),
-            'CAN_ORDER_BY_RATING' => $can_order_by_rating,
             'EXTRA_SORT_FIELDS' => $extra_sort_fields,
             'USER_LABEL' => $user_label,
             'BOOLEAN_SEARCH' => $this->_is_boolean_search(),

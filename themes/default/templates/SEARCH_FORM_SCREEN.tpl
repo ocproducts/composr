@@ -172,10 +172,8 @@
 								<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 								<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 								<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
-								{+START,IF,{CAN_ORDER_BY_RATING}}
-									<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
-									<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
-								{+END}
+								<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
+								<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 								{+START,LOOP,EXTRA_SORT_FIELDS}
 									<option{+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 								{+END}

@@ -181,7 +181,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
             if ($matches[2] == '#') {
                 $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
             } else {
-                if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($category_field_name == 'cc_id') && ($matches[2] != '>') && (db_has_subqueries($db->connection_read))) { // Special case (optimisation) for catalogues
+                if (($parent_spec__table_name == 'catalogue_categories') && (strpos($field_name, 'c_name') === false) && ($category_field_name == 'cc_id') && ($matches[2] != '>')) { // Special case (optimisation) for catalogues
                     // MySQL should be smart enough to not enumerate the 'IN' clause here, which would be bad - instead it can jump into the embedded WHERE clause on each test iteration
                     $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
                     if ($this_details[0]['c_is_tree'] == 0) {

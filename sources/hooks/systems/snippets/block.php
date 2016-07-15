@@ -57,9 +57,7 @@ class Hook_snippet_block
         if (mt_rand(0, 1000) == 123) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('temp_block_permissions')) {
                 $sql = 'DELETE FROM ' . get_table_prefix() . 'temp_block_permissions WHERE p_time<' . strval(time() - intval(60.0 * 60.0 * floatval(get_option('session_expiry_time'))));
-                if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-                    $sql .= ' AND NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'sessions WHERE the_session=p_session_id)';
-                }
+                $sql .= ' AND NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'sessions WHERE the_session=p_session_id)';
                 $GLOBALS['SITE_DB']->query($sql);
             }
         }

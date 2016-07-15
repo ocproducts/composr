@@ -287,7 +287,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= ' WHERE (' . $id_list . ')' . $topic_filter_sup;
             $query_simplified = $query;
 
-            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         } else {
@@ -313,7 +313,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
                 $query .= $query_more;
                 $query_simplified .= $query_more;
 
-                if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+                if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                     $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
                 }
             }
@@ -337,7 +337,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
             $query .= $query_more;
             $query_simplified .= $query_more;
 
-            if ((db_has_subqueries($this_ref->connection)) && (get_option('is_on_strong_forum_tie') == '1')) {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
+            if (get_option('is_on_strong_forum_tie') == '1') {// So topics with no validated posts, or only spacer posts, are not drawn out only to then be filtered layer (meaning we don't get enough result). Done after $max_rows calculated as that would be slow with this clause
                 $query .= ' AND (t_cache_first_member_id>' . strval(db_get_first_id()) . ' OR t_cache_num_posts>1 OR EXISTS(' . $post_query_sql . '))';
             }
         }
@@ -467,12 +467,10 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
     }
 
     $order = $reverse ? 'p_time DESC,p.id DESC' : 'p_time ASC,p.id ASC';
-    if (db_has_subqueries($this_ref->connection->connection_read)) {
-        if ($sort == 'compound_rating') {
-            $order = (($reverse ? 'compound_rating DESC' : 'compound_rating ASC') . ',' . $order);
-        } elseif ($sort == 'average_rating') {
-            $order = (($reverse ? 'average_rating DESC' : 'average_rating ASC') . ',' . $order);
-        }
+    if ($sort == 'compound_rating') {
+        $order = (($reverse ? 'compound_rating DESC' : 'compound_rating ASC') . ',' . $order);
+    } elseif ($sort == 'average_rating') {
+        $order = (($reverse ? 'average_rating DESC' : 'average_rating ASC') . ',' . $order);
     }
 
     if (($light_if_threaded) && ($is_threaded)) {
@@ -480,7 +478,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
     } else {
         $select = 'p.*';
     }
-    if ((($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) && (db_has_subqueries($this_ref->connection->connection_read))) {
+    if (($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) {
         $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
         $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->connection->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
     }

@@ -83,17 +83,6 @@ class Database_super_mysql
     }
 
     /**
-     * Find whether subquery support is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_subqueries($db)
-    {
-        return true;
-    }
-
-    /**
      * Find whether collate support is present
      *
      * @param  array $db A DB connection

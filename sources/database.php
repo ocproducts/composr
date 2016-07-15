@@ -258,26 +258,6 @@ function db_full_text_assemble($content, $boolean)
 }
 
 /**
- * Find whether subquery support is present
- *
- * @param  array $db A DB connection
- * @return boolean Whether it is
- */
-function db_has_subqueries($db)
-{
-    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_has_subqueries')) {
-        return true;
-    }
-
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
-        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
-        _general_db_init();
-    }
-
-    return $GLOBALS['DB_STATIC_OBJECT']->db_has_subqueries($db);
-}
-
-/**
  * Find whether expression ordering support is present
  *
  * @param  array $db A DB connection

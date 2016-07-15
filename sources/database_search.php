@@ -1043,13 +1043,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $_keywords_query .= (($where_clause != '') ? (' AND ' . $where_clause) : '');
 
             $keywords_query = 'SELECT ' . $select . ' FROM ' . $_keywords_query;
-            if (!db_has_subqueries($db->connection_read)) {
-                $_count_query_keywords_search = 'SELECT COUNT(*) FROM ' . $_keywords_query;
-            } else {
-                $_count_query_keywords_search = '(SELECT COUNT(*) FROM (';
-                $_count_query_keywords_search .= 'SELECT 1 FROM ' . $_keywords_query;
-                $_count_query_keywords_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
-            }
+            $_count_query_keywords_search = '(SELECT COUNT(*) FROM (';
+            $_count_query_keywords_search .= 'SELECT 1 FROM ' . $_keywords_query;
+            $_count_query_keywords_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
 
             if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC')) {
                 $keywords_query .= ' ORDER BY ' . $order;
@@ -1120,7 +1116,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                     if ((!$only_titles) || ($i == 0)) {
                         $where_clause_2 = preg_replace('#\?#', 't' . strval($i) . '.text_original', $content_where);
                         $where_clause_3 = $where_clause;
-                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_') && (db_has_subqueries($db->connection_read))) {
+                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_')) {
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
@@ -1147,7 +1143,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                         $where_clause_2 = preg_replace('#\?#', $field, $content_where);
                         $where_clause_3 = $where_clause;
-                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_') && (db_has_subqueries($db->connection_read))) {
+                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_')) {
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
@@ -1227,13 +1223,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
                     $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                    if (!db_has_subqueries($db->connection_read)) {
-                        $_query .= '(SELECT COUNT(*) FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3)) . ')';
-                    } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
-                        $_query .= '(SELECT COUNT(*) FROM (';
-                        $_query .= 'SELECT 1 FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
-                        $_query .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
-                    }
+                    // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                    $_query .= '(SELECT COUNT(*) FROM (';
+                    $_query .= 'SELECT 1 FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
+                    $_query .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
                 }
                 $_count_query_main_search = 'SELECT (' . $_query . ')';
             }
@@ -1327,7 +1320,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             break;
                         }
 
-                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_') && (db_has_subqueries($db->connection_read))) {
+                        if (($table == 'f_members') && (substr($field, 0, 6) == 'field_')) {
                             if ($where_clause_or != '') {
                                 $where_clause_or .= ' OR ';
                             }
@@ -1394,13 +1387,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if ($group_by_ok && false/*Actually we cannot assume that r.id exists*/) {
                 $_count_query_main_search = 'SELECT COUNT(DISTINCT r.id)' . $query;
             } else {
-                if (!db_has_subqueries($db->connection_read)) {
-                    $_count_query_main_search = 'SELECT COUNT(*) ' . $query;
-                } else { // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
-                    $_count_query_main_search = 'SELECT COUNT(*) FROM (';
-                    $_count_query_main_search .= 'SELECT 1 ' . $query;
-                    $_count_query_main_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter';
-                }
+                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                $_count_query_main_search = 'SELECT COUNT(*) FROM (';
+                $_count_query_main_search .= 'SELECT 1 ' . $query;
+                $_count_query_main_search .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter';
             }
             $query = 'SELECT ' . $select . $query . ($group_by_ok ? ' GROUP BY r.id' : '');
             if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {

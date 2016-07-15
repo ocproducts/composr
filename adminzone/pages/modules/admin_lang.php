@@ -393,23 +393,9 @@ class Module_admin_lang
             return $lang;
         }
 
-        // Fiddle around in order to find what we haven't translated. Subqueries and self joins don't work well enough across different db's
-        if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-            $_done_id_list = collapse_2d_complexity('id', 'text_original', $GLOBALS['SITE_DB']->query_select('translate', array('id', 'text_original'), array('language' => $lang, 'broken' => 0)));
-            $done_id_list = '';
-            foreach (array_keys($_done_id_list) as $done_id) {
-                if ($done_id_list != '') {
-                    $done_id_list .= ',';
-                }
-                $done_id_list .= strval($done_id);
-            }
-            $and_clause = ($done_id_list == '') ? '' : 'AND id NOT IN (' . $done_id_list . ')';
-            $query = 'FROM ' . get_table_prefix() . 'translate WHERE ' . db_string_not_equal_to('language', $lang) . ' ' . $and_clause . ' AND ' . db_string_not_equal_to('text_original', '') . ' ORDER BY importance_level,id DESC';
-            $to_translate = $GLOBALS['SITE_DB']->query('SELECT * ' . $query, $max/*reasonable limit*/);
-        } else {
-            $query = 'FROM ' . get_table_prefix() . 'translate a LEFT JOIN ' . get_table_prefix() . 'translate b ON a.id=b.id AND b.broken=0 AND ' . db_string_equal_to('b.language', $lang) . ' WHERE b.id IS NULL AND ' . db_string_not_equal_to('a.language', $lang) . ' AND ' . db_string_not_equal_to('a.text_original', '');
-            $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level,a.id DESC', $max/*reasonable limit*/, $start);
-        }
+        // Find what we haven't translated
+        $query = 'FROM ' . get_table_prefix() . 'translate a LEFT JOIN ' . get_table_prefix() . 'translate b ON a.id=b.id AND b.broken=0 AND ' . db_string_equal_to('b.language', $lang) . ' WHERE b.id IS NULL AND ' . db_string_not_equal_to('a.language', $lang) . ' AND ' . db_string_not_equal_to('a.text_original', '');
+        $to_translate = $GLOBALS['SITE_DB']->query('SELECT a.* ' . $query . (can_arbitrary_groupby() ? ' GROUP BY a.id' : '') . ' ORDER BY a.importance_level,a.id DESC', $max/*reasonable limit*/, $start);
         $total = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) ' . $query);
         if (count($to_translate) == 0) {
             inform_exit(do_lang_tempcode('NOTHING_TO_TRANSLATE'));

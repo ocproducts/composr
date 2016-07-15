@@ -32,9 +32,6 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
     if (is_guest()) {
         return new Tempcode();
     }
-    if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-        return new Tempcode();
-    }
 
     if (!addon_installed('cns_cpfs')) { // This is coded as a dependency
         return new Tempcode();
@@ -140,9 +137,6 @@ function save_privacy_form_fields($content_type, $content_id, $privacy_level, $a
     }
 
     if (is_guest()) {
-        return false;
-    }
-    if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
         return false;
     }
 

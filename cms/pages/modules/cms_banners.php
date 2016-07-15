@@ -688,9 +688,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             't_max_file_size' => do_lang_tempcode('FILE_SIZE'),
             't_comcode_inline' => do_lang_tempcode('COMCODE_INLINE'),
         );
-        if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-            $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'banners WHERE b_type=r.id)'] = do_lang_tempcode('COUNT_TOTAL');
-        }
+        $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'banners WHERE b_type=r.id)'] = do_lang_tempcode('COUNT_TOTAL');
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }

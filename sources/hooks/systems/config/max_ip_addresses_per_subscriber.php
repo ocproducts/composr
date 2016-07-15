@@ -59,9 +59,6 @@ class Hook_config_max_ip_addresses_per_subscriber
         if (is_cns_satellite_site()) {
             return null;
         }
-        if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_write)) {
-            return null;
-        }
 
         return '';
     }

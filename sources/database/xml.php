@@ -164,17 +164,6 @@ class Database_Static_xml
     }
 
     /**
-     * Find whether subquery support is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_subqueries($db)
-    {
-        return true;
-    }
-
-    /**
      * Get a map of Composr field types, to actual database types.
      *
      * @return array The map

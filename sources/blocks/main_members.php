@@ -112,8 +112,6 @@ class Block_main_members
 
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
-        $has_exists = db_has_subqueries($GLOBALS['SITE_DB']->connection_read);
-
         $where = 'id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
 
         $usergroup = array_key_exists('usergroup', $map) ? $map['usergroup'] : '';
@@ -195,11 +193,7 @@ class Block_main_members
                         return paragraph(do_lang_tempcode('MISSING_RESOURCE', 'group'), 'red_alert');
                     }
                 }
-                if ($has_exists) {
-                    $where .= ' OR (m_primary_group=' . strval($group_id) . ' OR EXISTS(SELECT gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members x WHERE x.gm_member_id=r.id AND gm_validated=1 AND gm_group_id=' . strval($group_id) . '))';
-                } else {
-                    $where .= ' OR (m_primary_group=' . strval($group_id) . ' OR gm_member_id=r.id AND gm_group_id=' . strval($group_id) . ')';
-                }
+                $where .= ' OR (m_primary_group=' . strval($group_id) . ' OR EXISTS(SELECT gm_member_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members x WHERE x.gm_member_id=r.id AND gm_validated=1 AND gm_group_id=' . strval($group_id) . '))';
             }
             $where .= ')';
         }
@@ -301,9 +295,6 @@ class Block_main_members
         $sql = 'SELECT r.*' . $extra_select_sql . ' FROM ';
         $main_sql = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members r';
         $main_sql .= $extra_join_sql;
-        if ((!$has_exists) && ($usergroup != '')) {
-            $main_sql .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON (r.id=g.gm_member_id AND gm_validated=1)';
-        }
         $main_sql .= ' WHERE ' . $where;
         $sql .= $main_sql;
         $sql .= (can_arbitrary_groupby() ? ' GROUP BY r.id' : '');

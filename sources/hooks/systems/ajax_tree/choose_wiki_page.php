@@ -72,29 +72,12 @@ class Hook_choose_wiki_page
         }
 
         if (is_null($id)) {
-            if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-                $where = '';
-                $wiki_seen = array();
-                get_wiki_page_tree($wiki_seen, is_null($id) ? null : intval($id)); // To build up $wiki_seen
-                foreach ($wiki_seen as $seen) {
-                    if ($where != '') {
-                        $where .= ' AND ';
-                    }
-                    $where .= 'p.id<>' . strval($seen);
-                }
-
-                $orphans = $GLOBALS['SITE_DB']->query('SELECT p.id,p.title FROM ' . get_table_prefix() . 'wiki_pages p WHERE ' . $where . ' ORDER BY add_date DESC', 50/*reasonable limit*/, null, false, true, array('title' => 'SHORT_TRANS'));
-                foreach ($orphans as $i => $orphan) {
-                    $orphans[$i]['_title'] = get_translated_text($orphan['title']);
-                }
-            } else {
-                $orphans = $GLOBALS['SITE_DB']->query('SELECT p.id,p.title FROM ' . get_table_prefix() . 'wiki_pages p WHERE NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'wiki_children WHERE child_id=p.id) ORDER BY add_date DESC', 50/*reasonable limit*/, null, false, false, array('title' => 'SHORT_TRANS'));
-                foreach ($orphans as $i => $orphan) {
-                    $orphans[$i]['_title'] = get_translated_text($orphan['title']);
-                }
-                if (count($orphans) < 50) {
-                    sort_maps_by($orphans, '_title');
-                }
+            $orphans = $GLOBALS['SITE_DB']->query('SELECT p.id,p.title FROM ' . get_table_prefix() . 'wiki_pages p WHERE NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'wiki_children WHERE child_id=p.id) ORDER BY add_date DESC', 50/*reasonable limit*/, null, false, false, array('title' => 'SHORT_TRANS'));
+            foreach ($orphans as $i => $orphan) {
+                $orphans[$i]['_title'] = get_translated_text($orphan['title']);
+            }
+            if (count($orphans) < 50) {
+                sort_maps_by($orphans, '_title');
             }
 
             foreach ($orphans as $orphan) {

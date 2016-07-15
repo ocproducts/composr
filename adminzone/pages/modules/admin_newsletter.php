@@ -1697,9 +1697,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $sortables = array(
             'title' => do_lang_tempcode('TITLE'),
         );
-        if (db_has_subqueries($GLOBALS['SITE_DB']->connection_read)) {
-            $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id WHERE code_confirm=0)'] = do_lang_tempcode('COUNT_MEMBERS');
-        }
+        $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id WHERE code_confirm=0)'] = do_lang_tempcode('COUNT_MEMBERS');
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }

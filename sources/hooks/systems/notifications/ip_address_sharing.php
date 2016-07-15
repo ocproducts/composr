@@ -57,9 +57,6 @@ class Hook_notification_ip_address_sharing extends Hook_notification__Staff
         if (is_cns_satellite_site()) {
             return array();
         }
-        if (!db_has_subqueries($GLOBALS['SITE_DB']->connection_write)) {
-            return array();
-        }
 
         $list = array();
         $list['ip_address_sharing'] = array(do_lang('MEMBERS'), do_lang('ecommerce:NOTIFICATION_TYPE_ip_address_sharing'));
