@@ -727,10 +727,10 @@ class Module_recommend
                 $invite = true;
             } elseif ((get_option('is_on_invites') == '0') && (get_forum_type() == 'cns')) {
                 $GLOBALS['FORUM_DB']->query_insert('f_invites', array( // Used for referral tracking
-                                                                       'i_inviter' => get_member(),
-                                                                       'i_email_address' => $email_address,
-                                                                       'i_time' => time(),
-                                                                       'i_taken' => 0
+                    'i_inviter' => get_member(),
+                    'i_email_address' => $email_address,
+                    'i_time' => time(),
+                    'i_taken' => 0
                 ));
             }
 

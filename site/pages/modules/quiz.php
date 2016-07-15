@@ -131,14 +131,14 @@ class Module_quiz
             $GLOBALS['SITE_DB']->create_index('quizzes', 'q_validated', array('q_validated'));
 
             $GLOBALS['SITE_DB']->create_table('quiz_questions', array( // Note there is only a matching question_answer if it is not a free question. If there is just one answer, then it is not multiple-choice.
-                                                                       'id' => '*AUTO',
-                                                                       'q_type' => 'ID_TEXT',
-                                                                       'q_quiz' => 'AUTO_LINK',
-                                                                       'q_question_text' => 'LONG_TRANS__COMCODE',
-                                                                       'q_question_extra_text' => 'LONG_TRANS__COMCODE',
-                                                                       'q_order' => 'INTEGER',
-                                                                       'q_required' => 'BINARY',
-                                                                       'q_marked' => 'BINARY',
+                'id' => '*AUTO',
+                'q_type' => 'ID_TEXT',
+                'q_quiz' => 'AUTO_LINK',
+                'q_question_text' => 'LONG_TRANS__COMCODE',
+                'q_question_extra_text' => 'LONG_TRANS__COMCODE',
+                'q_order' => 'INTEGER',
+                'q_required' => 'BINARY',
+                'q_marked' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_table('quiz_question_answers', array(
@@ -453,9 +453,9 @@ class Module_quiz
             }
         } else {
             $GLOBALS['SITE_DB']->query_insert('quiz_member_last_visit', array( // First attempt
-                                                                               'v_quiz_id' => $quiz_id,
-                                                                               'v_time' => time(),
-                                                                               'v_member_id' => get_member(),
+                'v_quiz_id' => $quiz_id,
+                'v_time' => time(),
+                'v_member_id' => get_member(),
             ));
             $timer_offset = 0;
         }
@@ -581,8 +581,10 @@ class Module_quiz
             }
         }
         $GLOBALS['SITE_DB']->query_update('quiz_member_last_visit', array( // Say quiz was completed on time limit, to force next attempt to be considered a re-do
-                                                                           'v_time' => time() - (is_null($quiz['q_timeout']) ? 0 : $quiz['q_timeout']) * 60,
-        ), array('v_member_id' => get_member(), 'v_quiz_id' => $quiz_id), '', 1);
+            'v_time' => time() - (is_null($quiz['q_timeout']) ? 0 : $quiz['q_timeout']) * 60,
+        ), array(
+            'v_member_id' => get_member(), 'v_quiz_id' => $quiz_id,
+        ), '', 1);
 
         // Calculate results
         list(

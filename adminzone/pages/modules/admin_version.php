@@ -472,18 +472,18 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'l_notification_code', array('l_notification_code'));
 
             $GLOBALS['SITE_DB']->create_table('digestives_tin', array( // Notifications queued up ready for the regular digest email
-                                                                       'id' => '*AUTO',
-                                                                       'd_subject' => 'LONG_TEXT',
-                                                                       'd_message' => 'LONG_TRANS__COMCODE',
-                                                                       'd_from_member_id' => '?MEMBER',
-                                                                       'd_to_member_id' => 'MEMBER',
-                                                                       'd_priority' => 'SHORT_INTEGER',
-                                                                       'd_no_cc' => 'BINARY',
-                                                                       'd_date_and_time' => 'TIME',
-                                                                       'd_notification_code' => 'ID_TEXT',
-                                                                       'd_code_category' => 'SHORT_TEXT',
-                                                                       'd_frequency' => 'INTEGER', // e.g. A_DAILY_EMAIL_DIGEST
-                                                                       'd_read' => 'BINARY',
+                'id' => '*AUTO',
+                'd_subject' => 'LONG_TEXT',
+                'd_message' => 'LONG_TRANS__COMCODE',
+                'd_from_member_id' => '?MEMBER',
+                'd_to_member_id' => 'MEMBER',
+                'd_priority' => 'SHORT_INTEGER',
+                'd_no_cc' => 'BINARY',
+                'd_date_and_time' => 'TIME',
+                'd_notification_code' => 'ID_TEXT',
+                'd_code_category' => 'SHORT_TEXT',
+                'd_frequency' => 'INTEGER', // e.g. A_DAILY_EMAIL_DIGEST
+                'd_read' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'd_date_and_time', array('d_date_and_time'));
             $GLOBALS['SITE_DB']->create_index('digestives_tin', 'd_frequency', array('d_frequency'));
@@ -821,12 +821,12 @@ class Module_admin_version
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 17)) {
             $GLOBALS['SITE_DB']->create_table('alternative_ids', array( // Needs to be first, as install_create_custom_field needs it
-                                                                        'resource_type' => '*ID_TEXT',
-                                                                        'resource_id' => '*ID_TEXT',
-                                                                        'resource_moniker' => 'ID_TEXT',
-                                                                        'resource_label' => 'SHORT_TEXT',
-                                                                        'resource_guid' => 'ID_TEXT',
-                                                                        'resource_resource_fs_hook' => 'ID_TEXT',
+                'resource_type' => '*ID_TEXT',
+                'resource_id' => '*ID_TEXT',
+                'resource_moniker' => 'ID_TEXT',
+                'resource_label' => 'SHORT_TEXT',
+                'resource_guid' => 'ID_TEXT',
+                'resource_resource_fs_hook' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_guid', array('resource_guid'));
             $GLOBALS['SITE_DB']->create_index('alternative_ids', 'resource_label', array('resource_label'/*, 'resource_type'key would be too long*/));

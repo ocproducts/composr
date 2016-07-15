@@ -537,12 +537,12 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Store in DB
     $GLOBALS['SITE_DB']->query_delete('comcode_pages', array( // To support rename
-                                                              'the_zone' => $zone,
-                                                              'the_page' => $file,
+        'the_zone' => $zone,
+        'the_page' => $file,
     ));
     $GLOBALS['SITE_DB']->query_delete('comcode_pages', array( // To stop conflicts
-                                                              'the_zone' => $zone,
-                                                              'the_page' => $new_file,
+        'the_zone' => $zone,
+        'the_page' => $new_file,
     ));
     $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
         'the_zone' => $zone,

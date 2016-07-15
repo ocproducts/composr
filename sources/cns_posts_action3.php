@@ -57,7 +57,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     $is_starter = ($topic_info[0]['t_cache_first_post_id'] == $post_id);
 
     $GLOBALS['FORUM_DB']->query_update('f_topics', array( // Validating a post will also validate a topic
-                                                          't_validated' => 1,
+        't_validated' => 1,
     ), array('id' => $topic_id), '', 1);
 
     $_url = build_url(array('page' => 'topicview', 'id' => $topic_id), 'forum', null, false, false, true, 'post_' . strval($post_id));
