@@ -149,12 +149,8 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
         require_code('cns_posts_action');
         cns_decache_cms_blocks($forum_id);
     } else {
-        decache('side_cns_private_topics', null, $info[0]['t_pt_from']);
-        decache('_new_pp', null, $info[0]['t_pt_from']);
-        decache('_get_pts', null, $info[0]['t_pt_from']);
-        decache('side_cns_private_topics', null, $info[0]['t_pt_to']);
-        decache('_new_pp', null, $info[0]['t_pt_to']);
-        decache('_get_pts', null, $info[0]['t_pt_to']);
+        decache_private_topics($info[0]['t_pt_from']);
+        decache_private_topics($info[0]['t_pt_to']);
     }
 
     if (!is_null($forum_id)) {
@@ -311,12 +307,8 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
         require_code('cns_posts_action');
         cns_decache_cms_blocks($forum_id);
     } else {
-        decache('side_cns_private_topics', null, $info[0]['t_pt_from']);
-        decache('_new_pp', null, $info[0]['t_pt_from']);
-        decache('_get_pts', null, $info[0]['t_pt_from']);
-        decache('side_cns_private_topics', null, $info[0]['t_pt_to']);
-        decache('_new_pp', null, $info[0]['t_pt_to']);
-        decache('_get_pts', null, $info[0]['t_pt_to']);
+        decache_private_topics($info[0]['t_pt_from']);
+        decache_private_topics($info[0]['t_pt_to']);
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {
@@ -490,16 +482,10 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         cns_decache_cms_blocks($from);
     } else {
         if (count($topics) == 1) {
-            decache('side_cns_private_topics', null, $topic_info[0]['t_pt_from']);
-            decache('_new_pp', null, $topic_info[0]['t_pt_from']);
-            decache('_get_pts', null, $topic_info[0]['t_pt_from']);
-            decache('side_cns_private_topics', null, $topic_info[0]['t_pt_to']);
-            decache('_new_pp', null, $topic_info[0]['t_pt_to']);
-            decache('_get_pts', null, $topic_info[0]['t_pt_to']);
+            decache_private_topics($info[0]['t_pt_from']);
+            decache_private_topics($info[0]['t_pt_to']);
         } else {
-            decache('side_cns_private_topics');
-            decache('_new_pp');
-            decache('_get_pts');
+            decache_private_topics();
         }
     }
     cns_decache_cms_blocks($to, $forum_name);

@@ -332,9 +332,7 @@ class Module_topicview
             $replied = false;
             if (is_null($topic_info['forum_id'])) {
                 // Has now read
-                decache('side_cns_private_topics', null, get_member());
-                decache('_new_pp', null, get_member());
-                decache('_get_pts', null, get_member());
+                decache_private_topics(get_member());
             }
             $second_poster = $topic_info['first_poster'];
             $poster_details_cache = array();
@@ -459,9 +457,7 @@ class Module_topicview
 
                 if ((array_key_exists('intended_solely_for', $_postdetails)) && ($_postdetails['intended_solely_for'] == get_member())) {
                     // Has now read
-                    decache('side_cns_private_topics', null, get_member());
-                    decache('_new_pp', null, get_member());
-                    decache('_get_pts', null, get_member());
+                    decache_private_topics(get_member());
                 }
 
                 $emphasis = cns_get_post_emphasis($_postdetails);

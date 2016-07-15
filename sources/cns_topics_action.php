@@ -134,12 +134,8 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
     dispatch_member_mention_notifications('topic', strval($topic_id));
 
     if (is_null($forum_id)) {
-        decache('side_cns_private_topics', null, $pt_from);
-        decache('_new_pp', null, $pt_from);
-        decache('_get_pts', null, $pt_from);
-        decache('side_cns_private_topics', null, $pt_to);
-        decache('_new_pp', null, $pt_to);
-        decache('_get_pts', null, $pt_to);
+        decache_private_topics($pt_from);
+        decache_private_topics($pt_to);
     }
 
     return $topic_id;

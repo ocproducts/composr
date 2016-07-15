@@ -554,6 +554,18 @@ function has_caching_for($type)
 }
 
 /**
+ * Decache any notification areas relating to private topics.
+ *
+ * @param  ?MEMBER $member Member to only decache for (null: decache for all members, due to a mass-topic-operation)
+ */
+function decache_private_topics($member_id = null)
+{
+    decache('side_cns_private_topics', null, $member_id);
+    decache('_new_pp', null, $member_id);
+    decache('_get_pts', null, $member_id);
+}
+
+/**
  * Remove an item from the general cache (most commonly used for blocks).
  *
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)

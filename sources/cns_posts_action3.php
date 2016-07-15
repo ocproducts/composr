@@ -357,12 +357,8 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     if (!is_null($forum_id)) {
         cns_decache_cms_blocks($forum_id);
     } else {
-        decache('side_cns_private_topics', null, $info[0]['t_pt_from']);
-        decache('_new_pp', null, $info[0]['t_pt_from']);
-        decache('_get_pts', null, $info[0]['t_pt_from']);
-        decache('side_cns_private_topics', null, $info[0]['t_pt_to']);
-        decache('_new_pp', null, $info[0]['t_pt_to']);
-        decache('_get_pts', null, $info[0]['t_pt_to']);
+        decache_private_topics($info[0]['t_pt_from']);
+        decache_private_topics($info[0]['t_pt_to']);
     }
 
     if ((addon_installed('commandr')) && (!running_script('install'))) {

@@ -642,9 +642,7 @@ class Module_topics
         }
 
         if (is_null($forum_id)) {
-            decache('side_cns_private_topics', null, get_member());
-            decache('_new_pp', null, get_member());
-            decache('_get_pts', null, get_member());
+            decache_private_topics(get_member());
         }
 
         $title = get_screen_title('MARK_READ');
@@ -706,9 +704,7 @@ class Module_topics
         }
 
         if (is_null($forum_id)) {
-            decache('side_cns_private_topics', null, get_member());
-            decache('_new_pp', null, get_member());
-            decache('_get_pts', null, get_member());
+            decache_private_topics(get_member());
         }
 
         return $this->redirect_to_forum('MARK_UNREAD', $forum_id);
@@ -2526,9 +2522,7 @@ END;
 
         cns_ping_topic_read($topic_id, get_member(), get_param_integer('timestamp', null));
         if ((is_null($forum_id)) || (get_param_integer('ajax', 0) == 1)) {
-            decache('side_cns_private_topics', null, get_member());
-            decache('_new_pp', null, get_member());
-            decache('_get_pts', null, get_member());
+            decache_private_topics(get_member());
         }
 
         if (get_param_integer('ajax', 0) == 1) {
@@ -2548,9 +2542,7 @@ END;
         $topic_id = get_param_integer('id');
         $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
         if (is_null($forum_id)) {
-            decache('side_cns_private_topics', null, get_member());
-            decache('_new_pp', null, get_member());
-            decache('_get_pts', null, get_member());
+            decache_private_topics(get_member());
         }
 
         $this->cns_ping_topic_unread($topic_id);
