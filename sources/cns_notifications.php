@@ -89,7 +89,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $query .= ' WHERE
     ' . $unread_clause . $time_clause . '
     t_pt_from=' . strval($member_id) . '
-    ' . (can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
+    ' . ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
 
     $query .= ' UNION ';
 
@@ -110,7 +110,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $query .= ' WHERE
     ' . $unread_clause . $time_clause . '
     t_pt_to=' . strval($member_id) . '
-    ' . (can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
+    ' . ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
 
     $query .= ' UNION ';
 
@@ -132,7 +132,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
     $query .= ' WHERE
     ' . $unread_clause . $time_clause . '
     i.s_member_id=' . strval($member_id) . '
-    ' . (can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
+    ' . ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
 
     if ($include_inline) {
         $query .= ' UNION ';
@@ -154,7 +154,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
         $query .= ' WHERE
         ' . $unread_clause . $time_clause . '
         p.p_intended_solely_for=' . strval($member_id) . '
-        ' . (can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
+        ' . ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY t.id' : '');
     }
 
     $query .= ' ORDER BY t_cache_last_time DESC';

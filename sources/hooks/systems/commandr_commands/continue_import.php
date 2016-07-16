@@ -76,7 +76,7 @@ class Hook_commandr_command_continue_import
             if (get_forum_type() != 'cns') {
                 require_code('forum/cns');
                 $GLOBALS['CNS_DRIVER'] = new Forum_driver_cns();
-                $GLOBALS['CNS_DRIVER']->connection = $GLOBALS['SITE_DB'];
+                $GLOBALS['CNS_DRIVER']->db = $GLOBALS['SITE_DB'];
                 $GLOBALS['CNS_DRIVER']->MEMBER_ROWS_CACHED = array();
             }
 

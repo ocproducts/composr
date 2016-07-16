@@ -263,7 +263,7 @@ class Block_main_members
             'm_profile_views' => do_lang_tempcode('PROFILE_VIEWS'),
             'random' => do_lang_tempcode('RANDOM'),
         );
-        if (strpos(get_db_type(), 'mysql') !== false) {
+        if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
             $sortables['m_total_sessions'] = do_lang_tempcode('LOGIN_FREQUENCY');
         }
         if (strpos($sort, ' ') === false) {
@@ -297,7 +297,7 @@ class Block_main_members
         $main_sql .= $extra_join_sql;
         $main_sql .= ' WHERE ' . $where;
         $sql .= $main_sql;
-        $sql .= (can_arbitrary_groupby() ? ' GROUP BY r.id' : '');
+        $sql .= ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY r.id' : '');
         $sql .= ' ORDER BY ' . $sort;
         $count_sql = 'SELECT COUNT(DISTINCT r.id) FROM ' . $main_sql;
 

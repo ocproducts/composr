@@ -206,11 +206,9 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
             }
         }
     }
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
-        $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
-        _general_db_init();
-    }
-    $this_ref->static_ob->db_create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
+
+    $this_ref->ensure_connected();
+    $this_ref->static_ob->create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
 
     // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
@@ -307,12 +305,8 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
     $this_ref->query_insert('db_meta_indices', array('i_table' => $table_name, 'i_name' => $index_name, 'i_fields' => implode(',', $fields)), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
 
     if ($ok_to_create) {
-        if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
-            $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
-            _general_db_init();
-        }
-
-        $this_ref->static_ob->db_create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $unique_key_field);
+        $this_ref->ensure_connected();
+        $this_ref->static_ob->create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $unique_key_field);
     }
 }
 
@@ -367,11 +361,9 @@ function _helper_drop_table_if_exists($this_ref, $table)
         $this_ref->query_delete('db_meta', array('m_table' => $table));
         $this_ref->query_delete('db_meta_indices', array('i_table' => $table));
     }
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
-        $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
-        _general_db_init();
-    }
-    $this_ref->static_ob->db_drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
+
+    $this_ref->ensure_connected();
+    $this_ref->static_ob->drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
 
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
@@ -450,7 +442,7 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     }
 
     if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {
-        $type_remap = $this_ref->static_ob->db_get_type_remap();
+        $type_remap = $this_ref->static_ob->get_type_remap();
 
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
             $sub_name = $name . '__' . $sub_name;
@@ -531,7 +523,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
         }
     }
 
-    $type_remap = $this_ref->static_ob->db_get_type_remap();
+    $type_remap = $this_ref->static_ob->get_type_remap();
 
     $_final_type = $_type;
     if (strpos($_type, '_TRANS') !== false) {
@@ -611,7 +603,7 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
  */
 function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $new_name = null)
 {
-    $type_remap = $this_ref->static_ob->db_get_type_remap();
+    $type_remap = $this_ref->static_ob->get_type_remap();
 
     if ((strpos($_type, '__COMCODE') !== false) && (!is_null($new_name)) && ($new_name != $name)) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
@@ -670,17 +662,14 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
  */
 function _helper_change_primary_key($this_ref, $table_name, $new_key)
 {
-    if (count($this_ref->connection_write) > 4) { // Okay, we can't be lazy anymore
-        $this_ref->connection_write = call_user_func_array(array($this_ref->static_ob, 'db_get_connection'), $this_ref->connection_write);
-        _general_db_init();
-    }
+    $this_ref->ensure_connected();
 
     $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name));
     foreach ($new_key as $_new_key) {
         $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
     }
 
-    $this_ref->static_ob->db_change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
+    $this_ref->static_ob->change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
 }
 
 /**

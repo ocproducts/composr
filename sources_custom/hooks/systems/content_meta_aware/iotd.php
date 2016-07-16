@@ -32,7 +32,7 @@ class Hook_content_meta_aware_iotd
             'content_type_label' => 'iotds:IOTD',
             'content_type_universal_label' => 'Image of the day',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'iotd',
             'id_field' => 'id',
             'id_field_numeric' => true,

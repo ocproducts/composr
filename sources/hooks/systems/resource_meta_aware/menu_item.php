@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_menu_item
             'content_type_label' => 'menus:MENU_ITEM',
             'content_type_universal_label' => 'Menu item',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'menu_items',
             'id_field' => 'id',
             'id_field_numeric' => true,

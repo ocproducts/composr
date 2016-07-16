@@ -122,8 +122,11 @@ function destrictify($change_content_type = true, $db_too = false)
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(200);
     }
-    if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
-        $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(false), null, null, true);
+    if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read))) {
+        $smq = $GLOBALS['SITE_DB']->strict_mode_query(false);
+        if ($smq !== null) {
+            $GLOBALS['SITE_DB']->query($smq, null, null, true);
+        }
     }
     global $PREVIOUS_XSS_STATE;
     @array_push($PREVIOUS_XSS_STATE, ini_get('ocproducts.xss_detect'));
@@ -166,8 +169,11 @@ function restrictify()
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(isset($SITE_INFO['max_execution_time']) ? intval($SITE_INFO['max_execution_time']) : 60);
     }
-    if ((is_object($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->connection_read, 'strict_mode_query'))) {
-        $GLOBALS['SITE_DB']->query($GLOBALS['SITE_DB']->connection_read->strict_mode_query(true), null, null, true);
+    if (is_object($GLOBALS['SITE_DB']->connection_read)) {
+        $smq = $GLOBALS['SITE_DB']->strict_mode_query(true);
+        if ($smq !== null) {
+            $GLOBALS['SITE_DB']->query($smq, null, null, true);
+        }
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
         safe_ini_set('ocproducts.type_strictness', '1');

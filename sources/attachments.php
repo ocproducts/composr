@@ -32,13 +32,13 @@ Viewing attachments (but not direct rendering - that is in media_rendering.php).
  * @param  string $pass_id A special identifier to mark where the resultant Tempcode is going to end up (e.g. the ID of a post)
  * @param  MEMBER $source_member The member who is responsible for this Comcode
  * @param  boolean $as_admin Whether to check as arbitrary admin
- * @param  object $connection The database connection to use
+ * @param  object $db The database connector to use
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
  * @param  boolean $semiparse_mode Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
  * @return Tempcode The Tempcode for the attachment
  */
-function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source_member, $as_admin, $connection, $highlight_bits = null, $on_behalf_of_member = null, $semiparse_mode = false)
+function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source_member, $as_admin, $db, $highlight_bits = null, $on_behalf_of_member = null, $semiparse_mode = false)
 {
     require_code('comcode_renderer');
     require_code('media_renderer');
@@ -74,7 +74,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         $url = new Tempcode();
 
         $url->attach(find_script('attachment') . '?id=' . urlencode(strval($attachment_row['id'])));
-        if (is_forum_db($connection)) {
+        if ($db->is_forum_db()) {
             $url->attach('&forum_db=1');
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '1'));
         } else {
@@ -122,20 +122,20 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
  *
  * @param  MEMBER $member The member being checked whether to have the access
  * @param  AUTO_LINK $id The ID code for the attachment being checked
- * @param  ?object $connection The database connection to use (null: site DB)
+ * @param  ?object $db The database connector to use (null: site DB)
  * @return boolean Whether the member has attachment access
  */
-function has_attachment_access($member, $id, $connection = null)
+function has_attachment_access($member, $id, $db = null)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     if ($GLOBALS['FORUM_DRIVER']->is_super_admin($member)) {
         return true;
     }
 
-    $refs = $connection->query_select('attachment_refs', array('r_referer_type', 'r_referer_id'), array('a_id' => $id));
+    $refs = $db->query_select('attachment_refs', array('r_referer_type', 'r_referer_id'), array('a_id' => $id));
 
     foreach ($refs as $ref) {
         $type = $ref['r_referer_type'];
@@ -144,7 +144,7 @@ function has_attachment_access($member, $id, $connection = null)
             require_code('hooks/systems/attachments/' . filter_naughty_harsh($type));
             $object = object_factory('Hook_attachments_' . filter_naughty_harsh($type));
 
-            if ($object->run($ref_id, $connection)) {
+            if ($object->run($ref_id, $db)) {
                 return true;
             }
         }
@@ -166,8 +166,8 @@ function attachments_script()
     }
 
     $id = get_param_integer('id', 0);
-    $connection = $GLOBALS[(get_param_integer('forum_db', 0) == 1) ? 'FORUM_DB' : 'SITE_DB'];
-    $has_no_restricts = !is_null($connection->query_select_value_if_there('attachment_refs', 'id', array('r_referer_type' => 'null', 'a_id' => $id)));
+    $db = $GLOBALS[(get_param_integer('forum_db', 0) == 1) ? 'FORUM_DB' : 'SITE_DB'];
+    $has_no_restricts = !is_null($db->query_select_value_if_there('attachment_refs', 'id', array('r_referer_type' => 'null', 'a_id' => $id)));
 
     if (!$has_no_restricts) {
         global $SITE_INFO;
@@ -181,7 +181,7 @@ function attachments_script()
     require_lang('comcode');
 
     // Lookup
-    $rows = $connection->query_select('attachments', array('*'), array('id' => $id), 'ORDER BY a_add_time DESC');
+    $rows = $db->query_select('attachments', array('*'), array('id' => $id), 'ORDER BY a_add_time DESC');
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ATTACHMENT')));
     }
@@ -194,7 +194,7 @@ function attachments_script()
     if (!$has_no_restricts) {
         // Permission
         if (substr($myrow['a_url'], 0, 20) == 'uploads/attachments/') {
-            if (!has_attachment_access(get_member(), $id, $connection)) {
+            if (!has_attachment_access(get_member(), $id, $db)) {
                 access_denied('ATTACHMENT_ACCESS');
             }
         }
@@ -212,7 +212,7 @@ function attachments_script()
         if (get_param_integer('no_count', 0) == 0) {
             // Update download count
             if (cms_srv('HTTP_RANGE') == '') {
-                $connection->query_update('attachments', array('a_num_downloads' => $myrow['a_num_downloads'] + 1, 'a_last_downloaded_time' => time()), array('id' => $id), '', 1, null, false, true);
+                $db->query_update('attachments', array('a_num_downloads' => $myrow['a_num_downloads'] + 1, 'a_last_downloaded_time' => time()), array('id' => $id), '', 1, null, false, true);
             }
         }
     }
@@ -335,14 +335,14 @@ function attachment_popup_script()
     require_lang('comcode');
     require_javascript('editing');
 
-    $connection = (get_page_name() == 'topics') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    $db = (get_page_name() == 'topics') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
 
     $members = array();
     if (!is_guest()) {
         $members[get_member()] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     }
     if (has_privilege(get_member(), 'reuse_others_attachments')) {
-        $_members = $connection->query_select('attachments', array('DISTINCT a_member_id'));
+        $_members = $db->query_select('attachments', array('DISTINCT a_member_id'));
         foreach ($_members as $_member) {
             $members[$_member['a_member_id']] = $GLOBALS['FORUM_DRIVER']->get_username($_member['a_member_id']);
         }
@@ -362,19 +362,19 @@ function attachment_popup_script()
     $field_name = filter_naughty_harsh(get_param_string('field_name', 'post'));
     $post_url = get_self_url();
 
-    $rows = $connection->query_select('attachments', array('*'), array('a_member_id' => $member_now));
+    $rows = $db->query_select('attachments', array('*'), array('a_member_id' => $member_now));
     $attachments = array();
     foreach ($rows as $myrow) {
         $may_delete = (get_member() == $myrow['a_member_id']) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
 
         if ((post_param_integer('delete_' . strval($myrow['id']), 0) == 1) && ($may_delete)) {
             require_code('attachments3');
-            _delete_attachment($myrow['id'], $connection);
+            _delete_attachment($myrow['id'], $db);
             continue;
         }
 
         $myrow['description'] = $myrow['a_description'];
-        $tpl = render_attachment('attachment', array(), $myrow, uniqid('', true), get_member(), false, $connection, null, get_member());
+        $tpl = render_attachment('attachment', array(), $myrow, uniqid('', true), get_member(), false, $db, null, get_member());
         $attachments[] = array(
             'FIELD_NAME' => $field_name,
             'TPL' => $tpl,

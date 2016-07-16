@@ -109,7 +109,7 @@ class Block_main_content
         }
         if (((!array_key_exists('id_field_numeric', $info)) || ($info['id_field_numeric'])) && ($content_id !== null) && (!is_numeric($content_id))) {
             list(, $resource_page, $resource_type) = explode(':', $info['view_page_link_pattern']);
-            $content_id = $info['connection']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $resource_page, 'm_resource_type' => $resource_type, 'm_moniker' => $content_id));
+            $content_id = $info['db']->query_select_value_if_there('url_id_monikers', 'm_resource_id', array('m_resource_page' => $resource_page, 'm_resource_type' => $resource_type, 'm_moniker' => $content_id));
             if ($content_id === null) {
                 return new Tempcode();
             }
@@ -222,7 +222,7 @@ class Block_main_content
                 $x1 = $this->build_select($select, $info, 'g.' . $category_field_access, is_array($info['category_is_string']) ? $info['category_is_string'][0] : $info['category_is_string']);
                 $parent_spec__table_name = array_key_exists('parent_spec__table_name', $info) ? $info['parent_spec__table_name'] : null;
                 if (($parent_spec__table_name !== null) && ($parent_spec__table_name != $info['table'])) {
-                    $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $info['id_field'];
+                    $query .= ' LEFT JOIN ' . $info['db']->get_table_prefix() . $parent_spec__table_name . ' parent ON parent.' . $info['parent_spec__field_name'] . '=r.' . $info['id_field'];
                 }
             }
             if (($select_b != '') && ($category_field_select !== null)) {
@@ -242,7 +242,7 @@ class Block_main_content
                 }
             }
 
-            $rows = $info['connection']->query('SELECT COUNT(*) as cnt ' . $query);
+            $rows = $info['db']->query('SELECT COUNT(*) as cnt ' . $query);
 
             $cnt = $rows[0]['cnt'];
             if ($cnt == 0) {
@@ -256,7 +256,7 @@ class Block_main_content
                 ));
             }
 
-            $rows = $info['connection']->query('SELECT *,r.' . $info['id_field'] . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
+            $rows = $info['db']->query('SELECT *,r.' . $info['id_field'] . ' ' . $query, 1, mt_rand(0, $cnt - 1), false, false, $lang_fields);
             $award_content_row = $rows[0];
 
             // Get content ID
@@ -276,7 +276,7 @@ class Block_main_content
 
             $wherea = get_content_where_for_str_id($content_id, $info, 'r');
 
-            $rows = $info['connection']->query_select($info['table'] . ' r', array('r.*'), $wherea, '', 1, null, false, $lang_fields);
+            $rows = $info['db']->query_select($info['table'] . ' r', array('r.*'), $wherea, '', 1, null, false, $lang_fields);
             if (!array_key_exists(0, $rows)) {
                 if ((isset($map['render_if_empty'])) && ($map['render_if_empty'] == '0')) {
                     return new Tempcode();

@@ -60,7 +60,7 @@ class Hook_fields_short_trans_multi
      * @param  ?array $field The field details (null: new field)
      * @param  ?boolean $required Whether a default value cannot be blank (null: don't "lock in" a new default value)
      * @param  ?string $default The given default value as a string (null: don't "lock in" a new default value)
-     * @param  ?object $db Database connection (null: main site database)
+     * @param  ?object $db Database connector (null: main site database)
      * @return array Tuple of details (row-type,default-value-to-use,db row-type)
      */
     public function get_field_value_row_bits($field, $required = null, $default = null, $db = null)

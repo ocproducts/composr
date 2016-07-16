@@ -37,7 +37,7 @@ class Hook_content_meta_aware_banner
             'content_type_label' => 'global:BANNER',
             'content_type_universal_label' => 'Banner',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'banners',
             'id_field' => 'name',
             'id_field_numeric' => false,

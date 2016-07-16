@@ -84,7 +84,7 @@ class Hook_cron_content_reviews
             switch ($auto_action) {
                 case 'unvalidate':
                     if (!is_null($info['validated_field'])) {
-                        $info['connection']->query_update($info['table'], array($info['validated_field'] => 0), get_content_where_for_str_id($content_id, $info), '', 1);
+                        $info['db']->query_update($info['table'], array($info['validated_field'] => 0), get_content_where_for_str_id($content_id, $info), '', 1);
                     }
                     break;
 

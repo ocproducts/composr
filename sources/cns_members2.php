@@ -21,7 +21,7 @@
 /**
  * Make sure we are doing necessary join to be able to access the given field
  *
- * @param  object $db Database connection
+ * @param  object $db Database connector
  * @param  array $info Content type info
  * @param  ID_TEXT $context Context (unused)
  * @param  array $extra_join List of joins (passed as reference)

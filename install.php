@@ -692,6 +692,7 @@ function step_4()
     $js->attach("\n");
     $js->attach(do_template('ajax', null, null, false, null, '.js', 'javascript'));
 
+    require_code('database');
     require_code('database/' . post_param_string('db_type'));
     $GLOBALS['DB_STATIC_OBJECT'] = object_factory('Database_Static_' . post_param_string('db_type'));
 
@@ -891,7 +892,7 @@ function step_4()
                 $forum_text = do_lang_tempcode('AUTODETECT');
             }
             $forum_options->attach(make_option(do_lang_tempcode('DATABASE_NAME'), new Tempcode(), 'db_forums', $db_forums, false, true));
-            if (!$GLOBALS['DB_STATIC_OBJECT']->db_is_flat_file_simple()) {
+            if (!$GLOBALS['DB_STATIC_OBJECT']->is_flat_file_simple()) {
                 $forum_options->attach(make_option(do_lang_tempcode('DATABASE_HOST'), example('', 'DATABASE_HOST_TEXT'), 'db_forums_host', $db_forums_host, false, true));
                 $forum_options->attach(make_option(do_lang_tempcode('DATABASE_USERNAME'), new Tempcode(), 'db_forums_user', $db_forums_user, false, true));
                 $forum_options->attach(make_option(do_lang_tempcode('DATABASE_PASSWORD'), new Tempcode(), 'db_forums_password', $db_forums_password, true));
@@ -918,7 +919,7 @@ function step_4()
 
     $text = ($use_msn == 1) ? do_lang_tempcode(($forum_type == 'cns') ? 'DUPLICATE_CNS' : 'DUPLICATE') : new Tempcode();
     $options = make_option(do_lang_tempcode('DATABASE_NAME'), new Tempcode(), 'db_site', $db_site, false, true);
-    if (!$GLOBALS['DB_STATIC_OBJECT']->db_is_flat_file_simple()) {
+    if (!$GLOBALS['DB_STATIC_OBJECT']->is_flat_file_simple()) {
         $options->attach(make_option(do_lang_tempcode('DATABASE_HOST'), example('', 'DATABASE_HOST_TEXT'), 'db_site_host', $db_site_host, false, true));
         $options->attach(make_option(do_lang_tempcode('DATABASE_USERNAME'), new Tempcode(), 'db_site_user', $db_site_user, false, true));
         $options->attach(make_option(do_lang_tempcode('DATABASE_PASSWORD'), new Tempcode(), 'db_site_password', $db_site_password, true));
@@ -1234,7 +1235,7 @@ function include_cns()
     $SITE_INFO['cns_table_prefix'] = array_key_exists('table_prefix', $SITE_INFO) ? $SITE_INFO['table_prefix'] : get_default_table_prefix();
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_cns');
     $GLOBALS['FORUM_DB'] = $GLOBALS['SITE_DB'];
-    $GLOBALS['FORUM_DRIVER']->connection = $GLOBALS['SITE_DB'];
+    $GLOBALS['FORUM_DRIVER']->db = $GLOBALS['SITE_DB'];
     $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
     $GLOBALS['CNS_DRIVER'] = $GLOBALS['FORUM_DRIVER'];
 }
@@ -2126,10 +2127,10 @@ function big_installation_common()
     require_code('forum/' . $forum_type);
     $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_' . filter_naughty_harsh($forum_type));
     if ($forum_type != 'none') {
-        $GLOBALS['FORUM_DRIVER']->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
+        $GLOBALS['FORUM_DRIVER']->db = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix());
     }
     $GLOBALS['FORUM_DRIVER']->MEMBER_ROWS_CACHED = array();
-    $GLOBALS['FORUM_DB'] = &$GLOBALS['FORUM_DRIVER']->connection;
+    $GLOBALS['FORUM_DB'] = &$GLOBALS['FORUM_DRIVER']->db;
 
     if (method_exists($GLOBALS['FORUM_DRIVER'], 'check_db')) {
         if (!$GLOBALS['FORUM_DRIVER']->check_db()) {
@@ -2524,10 +2525,7 @@ function handle_self_referencing_embedment()
                 } else {
                     $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password'), '', true);
                 }
-                $connection = &$db->connection_write;
-                if (count($connection) > 4) { // Okay, we can't be lazy anymore
-                    call_user_func_array(array($db->static_ob, 'db_get_connection'), $connection);
-                }
+                $db->ensure_connected();
                 exit();
 
             case 'logo':

@@ -37,7 +37,7 @@ class Hook_content_meta_aware_event
             'content_type_label' => 'calendar:EVENT',
             'content_type_universal_label' => 'Calendar event',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'calendar_events',
             'id_field' => 'id',
             'id_field_numeric' => true,

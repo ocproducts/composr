@@ -912,7 +912,7 @@ function find_id_via_url_moniker($content_type, $url_moniker)
     list(, $url_bits) = page_link_decode($cma_info['view_page_link_pattern']);
     $where = array('m_resource_page' => $url_bits['page'], 'm_resource_type' => $url_bits['type'], 'm_moniker' => $url_moniker);
 
-    $ret = $cma_info['connection']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $where);
+    $ret = $cma_info['db']->query_select_value_if_there('url_id_monikers', 'm_resource_id', $where);
     return $ret;
 }
 

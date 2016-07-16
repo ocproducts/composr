@@ -374,7 +374,7 @@ function find_template_parameters($file)
  * @param  boolean $required Whether a code is required
  * @param  ID_TEXT $field_file Form field for uploading
  * @param  ID_TEXT $field_choose Form field for choosing
- * @param  ?object $db Database connection (null: site database)
+ * @param  ?object $db Database connector (null: site database)
  * @param  ?PATH $upload_to Where to upload the theme images to (null: something sensible)
  * @return ID_TEXT The (possibly randomised) theme image code
  */
@@ -604,7 +604,7 @@ function find_images_do_dir($theme, $subdir, $langs)
  *
  * @param  ID_TEXT $type The type of image (e.g. 'cns_emoticons')
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
- * @param  ?object $db The database connection to work over (null: site db)
+ * @param  ?object $db The database connector to work over (null: site db)
  * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: current theme)
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  boolean $db_only Whether to only return from the database (advanced option, rarely used)
@@ -647,7 +647,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
 
     $ids = array();
 
-    if ((!$db_only) && ((!is_forum_db($db)) || ($dirs_only) || (!is_on_multi_site_network()))) {
+    if ((!$db_only) && ((!$db->is_forum_db()) || ($dirs_only) || (!is_on_multi_site_network()))) {
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         _get_all_image_ids_type($ids, get_file_base() . '/themes/default/images/' . get_site_default_lang() . '/' . (($type == '') ? '' : ($type . '/')), $type, $recurse, $dirs_only, $skip);
         if ($theme != 'default') {
@@ -922,7 +922,7 @@ function create_selection_list_theme_images($it = null, $filter = null, $do_id =
  * @param  ID_TEXT $old The old theme image we might be tidying up
  * @param  ID_TEXT $table Table to check against
  * @param  ID_TEXT $field Field in table
- * @param  ?object $db Database connection to check against (null: site database)
+ * @param  ?object $db Database connector to check against (null: site database)
  */
 function tidy_theme_img_code($new, $old, $table, $field, $db = null)
 {

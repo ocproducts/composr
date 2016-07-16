@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_welcome_email
             'content_type_label' => 'cns_welcome_emails:WELCOME_EMAIL',
             'content_type_universal_label' => 'Welcome e-mail',
 
-            'connection' => $GLOBALS['FORUM_DB'],
+            'db' => $GLOBALS['FORUM_DB'],
             'table' => 'f_welcome_emails',
             'id_field' => 'id',
             'id_field_numeric' => true,

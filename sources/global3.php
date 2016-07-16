@@ -596,7 +596,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
                         case 'title':
                             if ($cma_info['title_field_dereference']) {
-                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['db']);
                             } else {
                                 $val_raw = $row[$cma_info[$cma_field]];
                             }
@@ -609,7 +609,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
                         case 'description':
                             if (is_integer($row[$cma_info[$cma_field]])) {
-                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['connection']);
+                                $val_raw = get_translated_text($row[$cma_info[$cma_field]], $cma_info['db']);
                             } else {
                                 $val_raw = $row[$cma_info[$cma_field]];
                             }
@@ -668,7 +668,7 @@ function set_extra_request_metadata($metadata, $row = null, $content_type = null
 
         // Add all $cma_info
         $METADATA += $cma_info;
-        unset($METADATA['connection']);
+        unset($METADATA['db']);
         $METADATA['content_type_label_trans'] = do_lang($cma_info['content_type_label']);
     }
 
@@ -3317,7 +3317,7 @@ function secure_serialized_data(&$data, $safe_replacement = null)
  */
 function update_catalogue_content_ref($type, $from, $to)
 {
-    if (strpos(get_db_type(), 'mysql') !== false) {
+    if ($GLOBALS['SITE_DB']->has_update_joins()) {
         $GLOBALS['SITE_DB']->query_update('catalogue_fields f JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short v ON v.cf_id=f.id', array('cv_value' => $to), array('cv_value' => $from, 'cf_type' => $type));
     } else {
         $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('cf_type' => $type));

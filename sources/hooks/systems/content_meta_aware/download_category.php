@@ -37,7 +37,7 @@ class Hook_content_meta_aware_download_category
             'content_type_label' => 'downloads:DOWNLOAD_CATEGORY',
             'content_type_universal_label' => 'Download category',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'download_categories',
             'id_field' => 'id',
             'id_field_numeric' => true,

@@ -131,7 +131,7 @@ function _get_sql_keywords()
  *
  * @package    core_database_drivers
  */
-class Database_Static_xml
+class Database_Static_xml extends DatabaseDriver
 {
     /**
      * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
@@ -148,7 +148,7 @@ class Database_Static_xml
      *
      * @return string The default user for db connections
      */
-    public function db_default_user()
+    public function default_user()
     {
         return '';
     }
@@ -158,7 +158,7 @@ class Database_Static_xml
      *
      * @return string The default password for db connections
      */
-    public function db_default_password()
+    public function default_password()
     {
         return '';
     }
@@ -168,7 +168,7 @@ class Database_Static_xml
      *
      * @return array The map
      */
-    public function db_get_type_remap()
+    public function get_type_remap()
     {
         $type_remap = array(
             'AUTO' => 'AUTO',
@@ -204,7 +204,7 @@ class Database_Static_xml
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
+    public function create_index($table_name, $index_name, $_fields, $db)
     {
         // Indexes not supported
     }
@@ -216,22 +216,12 @@ class Database_Static_xml
      * @param  array $new_key A list of fields to put in the new key
      * @param  array $db The DB connection to make on
      */
-    public function db_change_primary_key($table_name, $new_key, $db)
+    public function change_primary_key($table_name, $new_key, $db)
     {
-        $this->db_query('UPDATE db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
+        $this->query('UPDATE db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
         foreach ($new_key as $_new_key) {
-            $this->db_query('UPDATE db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
+            $this->query('UPDATE db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
         }
-    }
-
-    /**
-     * Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).
-     *
-     * @return integer First ID used
-     */
-    public function db_get_first_id()
-    {
-        return 1;
     }
 
     /**
@@ -242,11 +232,11 @@ class Database_Static_xml
      * @param  array $db The DB connection to make on
      * @param  boolean $if_not_exists Whether to only do it if it does not currently exist
      */
-    public function db_create_table($table_name, $fields, $db, $if_not_exists = false)
+    public function create_table($table_name, $fields, $db, $if_not_exists = false)
     {
         if (!is_null($GLOBALS['XML_CHAIN_DB'])) {
             // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->db_create_table($table_name, $fields, $GLOBALS['XML_CHAIN_DB']->connection_write, $if_not_exists);
+            $GLOBALS['XML_CHAIN_DB']->static_ob->create_table($table_name, $fields, $GLOBALS['XML_CHAIN_DB']->connection_write, $if_not_exists);
         }
 
         $path = $db[0] . '/' . $table_name;
@@ -272,50 +262,16 @@ class Database_Static_xml
     }
 
     /**
-     * Encode an SQL statement fragment for a conditional to see if two strings are equal.
-     *
-     * @param  ID_TEXT $attribute The attribute
-     * @param  string $compare The comparison
-     * @return string The SQL
-     */
-    public function db_string_equal_to($attribute, $compare)
-    {
-        return $attribute . "='" . $this->db_escape_string($compare) . "'";
-    }
-
-    /**
-     * Encode an SQL statement fragment for a conditional to see if two strings are not equal.
-     *
-     * @param  ID_TEXT $attribute The attribute
-     * @param  string $compare The comparison
-     * @return string The SQL
-     */
-    public function db_string_not_equal_to($attribute, $compare)
-    {
-        return $attribute . "<>'" . $this->db_escape_string($compare) . "'";
-    }
-
-    /**
-     * This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.
-     *
-     * @return boolean Whether a blank string IS NULL
-     */
-    public function db_empty_is_null()
-    {
-        return false;
-    }
-
-    /**
      * Delete a table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $db The DB connection to delete on
      */
-    public function db_drop_table_if_exists($table_name, $db)
+    public function drop_table_if_exists($table_name, $db)
     {
         if (!is_null($GLOBALS['XML_CHAIN_DB'])) {
             // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->db_drop_table_if_exists($table_name, $GLOBALS['XML_CHAIN_DB']->connection_write);
+            $GLOBALS['XML_CHAIN_DB']->static_ob->drop_table_if_exists($table_name, $GLOBALS['XML_CHAIN_DB']->connection_write);
         }
 
         $file_path = $db[0] . '/' . $table_name;
@@ -342,26 +298,15 @@ class Database_Static_xml
      *
      * @return boolean Whether the database is a flat file database
      */
-    public function db_is_flat_file_simple()
+    public function is_flat_file_simple()
     {
         return true;
     }
 
     /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
-     *
-     * @param  string $pattern The pattern
-     * @return string The encoded pattern
-     */
-    public function db_encode_like($pattern)
-    {
-        return $this->db_escape_string($pattern);
-    }
-
-    /**
      * Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.
      */
-    public function db_close_connections()
+    public function close_connections()
     {
     }
 
@@ -376,7 +321,7 @@ class Database_Static_xml
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (null: failed)
      */
-    public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
+    public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
         if ((strpos($db_name, '\\') === false) && (strpos($db_name, '/') === false)) {
             $db_name = get_custom_file_base() . '/uploads/website_specific/' . $db_name;
@@ -397,9 +342,9 @@ class Database_Static_xml
      * @param  array $db A DB connection
      * @return boolean Whether it is
      */
-    public function db_has_full_text($db)
+    public function has_full_text($db)
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->db_has_full_text($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->has_full_text($GLOBALS['XML_CHAIN_DB']->connection_read);
     }
 
     /**
@@ -409,9 +354,9 @@ class Database_Static_xml
      * @param  boolean $boolean Whether to do a boolean full text search
      * @return string Part of a WHERE clause for doing full-text search
      */
-    public function db_full_text_assemble($content, $boolean)
+    public function full_text_assemble($content, $boolean)
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? '' : $GLOBALS['XML_CHAIN_DB']->static_ob->db_full_text_assemble($content, $boolean);
+        return is_null($GLOBALS['XML_CHAIN_DB']) ? '' : $GLOBALS['XML_CHAIN_DB']->static_ob->full_text_assemble($content, $boolean);
     }
 
     /**
@@ -419,9 +364,9 @@ class Database_Static_xml
      *
      * @return boolean Whether it is
      */
-    public function db_has_full_text_boolean()
+    public function has_full_text_boolean()
     {
-        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->db_has_full_text_boolean($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return is_null($GLOBALS['XML_CHAIN_DB']) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->has_full_text_boolean($GLOBALS['XML_CHAIN_DB']->connection_read);
     }
 
     /**
@@ -430,7 +375,7 @@ class Database_Static_xml
      * @param  string $string The string
      * @return string The escaped string
      */
-    public function db_escape_string($string)
+    public function escape_string($string)
     {
         $string = fix_bad_unicode($string);
 
@@ -450,7 +395,7 @@ class Database_Static_xml
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false, $no_syndicate = false, $save_as_volatile = false)
+    public function query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false, $no_syndicate = false, $save_as_volatile = false)
     {
         global $DELIMITERS_FLIPPED, $DELIMITERS, $SYMBOL_DELIMITER;
 
@@ -534,14 +479,11 @@ class Database_Static_xml
         $random_key = mt_rand(0, min(2147483647, mt_getrandmax())); // Generated later, passed by reference. We will assume we only need one; multi inserts will need to each specify the key in full
 
         if ((!is_null($GLOBALS['XML_CHAIN_DB'])) && (!$no_syndicate)) {
+            $GLOBALS['XML_CHAIN_DB']->ensure_connected();
             if (substr(strtoupper($query), 0, 7) == 'SELECT ') {
                 $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_read;
             } else {
                 $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_write;
-            }
-            if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-                $chain_connection = call_user_func_array(array($GLOBALS['XML_CHAIN_DB']->static_ob, 'db_get_connection'), $chain_connection);
-                _general_db_init();
             }
 
             switch ($tokens[0]) {
@@ -565,7 +507,7 @@ class Database_Static_xml
                                     $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
                                 }
 
-                                $inserts[$i][$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->db_get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
+                                $inserts[$i][$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
                                 while ((file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml-volatile')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml-volatile'))) {
                                     if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // In particular the f_groups/f_forum_groupings/calendar_types usage of tables references ID numbers for things. But let's just make all installer stuff linear
                                         $inserts[$i][$key]++;
@@ -612,17 +554,17 @@ class Database_Static_xml
                         $query_new .= ')';
                     }
 
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query_new, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
+                    $GLOBALS['XML_CHAIN_DB']->static_ob->query($query_new, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
                     break;
 
                 case 'UPDATE':
                 case 'DELETE':
                     // DB chaining: It's a write query, so needs doing on chained DB too
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
+                    $GLOBALS['XML_CHAIN_DB']->static_ob->query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
                     break;
 
                 case 'SELECT':
-                    return $GLOBALS['XML_CHAIN_DB']->static_ob->db_query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
+                    return $GLOBALS['XML_CHAIN_DB']->static_ob->query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
             }
         }
 
@@ -732,7 +674,7 @@ class Database_Static_xml
             if (get_db_type() != 'xml') {
                 $fields = $GLOBALS['SITE_DB']->query($schema_query);
             } else {
-                $fields = $this->db_query($schema_query, $db, null, null, $fail_ok);
+                $fields = $this->query($schema_query, $db, null, null, $fail_ok);
             }
             if (is_null($fields)) {
                 return array(); // Can happen during installation
@@ -1417,7 +1359,7 @@ class Database_Static_xml
             }
         }
 
-        $test_results = $this->db_query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, null, $fail_ok, false, true);
+        $test_results = $this->query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, null, $fail_ok, false, true);
         if (count($test_results) == 0) {
             return false;
         }
@@ -1462,7 +1404,7 @@ class Database_Static_xml
                 }
             }
             $table_name = $this->_parsing_read($at, $tokens, $query);
-            $this->db_drop_table_if_exists($table_name, $db);
+            $this->drop_table_if_exists($table_name, $db);
         } else {
             return $this->_bad_query($query, $fail_ok, 'Unrecognised DROP type, ' . $type);
         }
@@ -1703,7 +1645,7 @@ class Database_Static_xml
             return null;
         }
 
-        $this->db_create_table($table_name, $fields, $db, $if_not_exists);
+        $this->create_table($table_name, $fields, $db, $if_not_exists);
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
@@ -1838,7 +1780,7 @@ class Database_Static_xml
                     } elseif (substr($key, -13) == '__source_user') {
                         $record[$key] = strval(db_get_first_id());
                     } elseif (preg_replace('#[^\w]#', '', $val) == 'AUTO') {
-                        $record[$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->db_get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
+                        $record[$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
                         while ((file_exists($db[0] . '/' . $table_name . '/' . strval($record[$key]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $record) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . strval($record[$key]) . '.xml-volatile')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $record) . '.xml-volatile'))) {
                             if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // In particular the f_groups/f_forum_groupings/calendar_types usage of tables references ID numbers for things. But let's just make all installer stuff linear
                                 $record[$key]++;

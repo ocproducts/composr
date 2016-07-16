@@ -43,7 +43,7 @@ function init__forum_stub()
  */
 class Forum_driver_base
 {
-    public $connection;
+    public $db;
 
     public $MEMBER_ROWS_CACHED = array();
 
@@ -285,7 +285,7 @@ class Forum_driver_base
                 return $IS_STAFF_CACHE[$id];
             }
 
-            if ((isset($this->connection)) && (is_forum_db($this->connection)) && (get_option('is_on_staff_filter', true) === '1') && (get_forum_type() != 'none') && (!$GLOBALS['FORUM_DRIVER']->disable_staff_filter())) {
+            if ((isset($this->db)) && ($this->db->is_forum_db()) && (get_option('is_on_staff_filter', true) === '1') && (get_forum_type() != 'none') && (!$GLOBALS['FORUM_DRIVER']->disable_staff_filter())) {
                 if (stripos(get_cms_cpf('sites', $id), substr(get_site_name(), 0, 200)) === false) {
                     $IS_STAFF_CACHE[$id] = false;
                     return false;

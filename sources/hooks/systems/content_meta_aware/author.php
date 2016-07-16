@@ -37,7 +37,7 @@ class Hook_content_meta_aware_author
             'content_type_label' => 'global:AUTHOR',
             'content_type_universal_label' => 'Author',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'authors',
             'id_field' => 'author',
             'id_field_numeric' => false,

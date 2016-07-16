@@ -206,8 +206,8 @@ abstract class FieldsSearchHook
                                 $where_clause .= db_string_equal_to($search_field, $param);
                             }
                         } else {
-                            if ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($param))) {
-                                $temp = db_full_text_assemble($param, true);
+                            if (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!is_under_radar($param))) {
+                                $temp = $GLOBALS['SITE_DB']->full_text_assemble($param, true);
                             } else {
                                 list($temp,) = db_like_assemble($param);
                             }
@@ -369,8 +369,8 @@ function find_search_suggestions($request, $search_type = '')
     // Based on past searches
     if (has_privilege(get_member(), 'autocomplete_past_search')) {
         $q = 'SELECT s_primary AS search FROM ' . get_table_prefix() . 'searches_logged WHERE ';
-        if ((db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!is_under_radar($request))) {
-            $q .= preg_replace('#\?#', 's_primary', db_full_text_assemble($request, false));
+        if (($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!is_under_radar($request))) {
+            $q .= preg_replace('#\?#', 's_primary', $GLOBALS['SITE_DB']->full_text_assemble($request, false));
         } else {
             $q .= 's_primary LIKE \'' . db_encode_like($request . '%') . '\'';
         }
@@ -424,16 +424,16 @@ function find_search_suggestions($request, $search_type = '')
                     if (($cma_info['title_field_dereference']) && (multi_lang_content())) {
                         $q = 'SELECT text_original AS search FROM ' . get_table_prefix() . $cma_info['table'] . 'r';
                         $q = ' JOIN ' . get_table_prefix() . 'translate t ON t.id=r.' . $cma_info['title_field'];
-                        if (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) {
-                            $q .= ' WHERE ' . preg_replace('#\?#', 'text_original', db_full_text_assemble(str_replace('?', '', $request), false));
+                        if ($GLOBALS['SITE_DB']->has_full_text()) {
+                            $q .= ' WHERE ' . preg_replace('#\?#', 'text_original', $GLOBALS['SITE_DB']->full_text_assemble(str_replace('?', '', $request), false));
                         } else {
                             $q .= ' WHERE text_original LIKE \'' . db_encode_like($request . '%') . '\'';
                         }
                         $q .= ' GROUP BY text_original';
                     } else {
                         $q = 'SELECT ' . $cma_info['title_field'] . ' AS search FROM ' . get_table_prefix() . $cma_info['table'];
-                        if (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) {
-                            $q .= ' WHERE ' . preg_replace('#\?#', $cma_info['title_field'], db_full_text_assemble(str_replace('?', '', $request), false));
+                        if ($GLOBALS['SITE_DB']->has_full_text()) {
+                            $q .= ' WHERE ' . preg_replace('#\?#', $cma_info['title_field'], $GLOBALS['SITE_DB']->full_text_assemble(str_replace('?', '', $request), false));
                         } else {
                             $q .= ' WHERE ' . $cma_info['title_field'] . ' LIKE \'' . db_encode_like($request . '%') . '\'';
                         }

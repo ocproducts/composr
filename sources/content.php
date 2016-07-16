@@ -224,7 +224,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
         return array(null, null, null, null, null, null);
     }
 
-    $db = $cma_info['connection'];
+    $db = $cma_info['db'];
 
     $content_row = content_get_row($content_id, $cma_info);
     if (is_null($content_row)) {
@@ -334,7 +334,7 @@ function content_get_row($content_id, $cma_info)
         return $cache[$cache_key];
     }
 
-    $db = $cma_info['connection'];
+    $db = $cma_info['db'];
 
     $id_field_numeric = array_key_exists('id_field_numeric', $cma_info) ? $cma_info['id_field_numeric'] : true;
     $where = get_content_where_for_str_id($content_id, $cma_info);

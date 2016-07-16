@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_post_template
             'content_type_label' => 'cns_post_templates:POST_TEMPLATE',
             'content_type_universal_label' => 'Post template',
 
-            'connection' => $GLOBALS['FORUM_DB'],
+            'db' => $GLOBALS['FORUM_DB'],
             'table' => 'f_post_templates',
             'id_field' => 'id',
             'id_field_numeric' => true,

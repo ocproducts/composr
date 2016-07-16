@@ -44,7 +44,7 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  boolean $fail_ok Whether to on error echo an error and return with a null, rather than giving a critical error
      * @return ?array A database connection (note for MySQL, it's actually a pair, containing the database name too: because we need to select the name before each query on the connection) (null: failed)
      */
-    public function db_get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
+    public function get_connection($persistent, $db_name, $db_host, $db_user, $db_password, $fail_ok = false)
     {
         if (!function_exists('mysql_connect')) {
             $error = 'The MySQL PHP extension not installed (anymore?). You need to contact the system administrator of this server, or use a different MySQL database driver (drivers can be chosen by editing _config.php).';
@@ -66,8 +66,8 @@ class Database_Static_mysql extends Database_super_mysql
             return array($this->cache_db[$x], $db_name);
         }
 
-        $db = $persistent ? @mysql_pconnect($db_host, $db_user, $db_password) : @mysql_connect($db_host, $db_user, $db_password, true);
-        if ($db === false) {
+        $db_link = $persistent ? @mysql_pconnect($db_host, $db_user, $db_password) : @mysql_connect($db_host, $db_user, $db_password, true);
+        if ($db_link === false) {
             $error = 'Could not connect to database-server (' . mysql_error() . ', ' . (@strval($php_errormsg)) . ')';
             if ($fail_ok) {
                 echo $error . "\n";
@@ -75,12 +75,12 @@ class Database_Static_mysql extends Database_super_mysql
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
         }
-        if (!mysql_select_db($db_name, $db)) {
+        if (!mysql_select_db($db_name, $db_link)) {
             if ($db_user == 'root') {
-                @mysql_query('CREATE DATABASE IF NOT EXISTS ' . $db_name, $db);
+                @mysql_query('CREATE DATABASE IF NOT EXISTS ' . $db_name, $db_link);
             }
 
-            if (!mysql_select_db($db_name, $db)) {
+            if (!mysql_select_db($db_name, $db_link)) {
                 $error = 'Could not connect to database (' . mysql_error() . ')';
                 if ($fail_ok) {
                     echo $error . "\n";
@@ -89,75 +89,46 @@ class Database_Static_mysql extends Database_super_mysql
                 critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
             }
         }
-        $this->last_select_db = array($db, $db_name);
+        $this->last_select_db = array($db_link, $db_name);
 
-        $this->cache_db[$x] = $db;
+        $this->cache_db[$x] = $db_link;
 
         $init_queries = $this->get_init_queries();
         foreach ($init_queries as $init_query) {
-            @mysql_query($init_query, $db);
+            @mysql_query($init_query, $db_link);
         }
 
         global $SITE_INFO;
         if (function_exists('mysql_set_charset')) {
-            mysql_set_charset($SITE_INFO['database_charset'], $db);
+            mysql_set_charset($SITE_INFO['database_charset'], $db_link);
         } else {
-            @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db);
+            @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db_link);
         }
 
-        return array($db, $db_name);
-    }
-
-    /**
-     * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
-     *
-     * @param  string $string The string
-     * @return string The escaped string
-     */
-    public function db_escape_string($string)
-    {
-        if (function_exists('ctype_alnum')) {
-            if (ctype_alnum($string)) {
-                return $string; // No non-trivial characters
-            }
-        }
-        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
-            return $string; // No non-trivial characters
-        }
-
-        $string = fix_bad_unicode($string);
-
-        static $mres = null;
-        if ($mres === null) {
-            $mres = function_exists('mysql_real_escape_string');
-        }
-        if (($mres) && (isset($GLOBALS['SITE_DB']->connection_read[0])) && ($GLOBALS['SITE_DB']->connection_read[0] !== false)) {
-            return mysql_real_escape_string($string, $GLOBALS['SITE_DB']->connection_read[0]);
-        }
-        return @mysql_escape_string($string);
+        return array($db_link, $db_name);
     }
 
     /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $db_parts A DB connection
+     * @param  array $connection A DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function db_query($query, $db_parts, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        list($db, $db_name) = $db_parts;
+        list($db_link, $db_name) = $connection;
 
-        if (!$this->db_query_may_run($query, $db_parts, $get_insert_id)) {
+        if (!$this->query_may_run($query, $connection, $get_insert_id)) {
             return null;
         }
 
         if ($this->last_select_db[1] !== $db_name) {
-            mysql_select_db($db_name, $db);
+            mysql_select_db($db_name, $db_link);
             $this->last_select_db = $db_name;
         }
 
@@ -169,41 +140,41 @@ class Database_Static_mysql extends Database_super_mysql
             $query .= ' LIMIT ' . strval($start) . ',30000000';
         }
 
-        $results = @mysql_query($query, $db);
-        if (($results === false) && ((!$fail_ok) || (strpos(mysql_error($db), 'is marked as crashed and should be repaired') !== false))) {
-            $err = mysql_error($db);
+        $results = @mysql_query($query, $db_link);
+        if (($results === false) && ((!$fail_ok) || (strpos(@strval(mysql_error($db_link)), 'is marked as crashed and should be repaired') !== false))) {
+            $err = @strval(mysql_error($db_link));
 
             if ((function_exists('mysql_ping')) && ($err == 'MySQL server has gone away') && (!$this->reconnected_once)) {
                 $this->reconnected_once = true;
-                if ((!mysql_ping($db)) && (isset($GLOBALS['SITE_DB'])) && ($db_parts[1] == $GLOBALS['SITE_DB']->connection_write[1])) {
+                if ((!mysql_ping($db_link)) && (isset($GLOBALS['SITE_DB'])) && ($connection[1] == $GLOBALS['SITE_DB']->connection_write[1])) {
                     $this->cache_db = array();
-                    $db_parts = $this->db_get_connection(get_use_persistent(), get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password());
-                    $GLOBALS['SITE_DB']->connection_write = $db_parts;
-                    $GLOBALS['SITE_DB']->connection_read = $db_parts;
+                    $connection = $this->get_connection(get_use_persistent(), get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password());
+                    $GLOBALS['SITE_DB']->connection_write = $connection;
+                    $GLOBALS['SITE_DB']->connection_read = $connection;
                 }
-                $ret = $this->db_query($query, $db_parts, null/*already encoded*/, null/*already encoded*/, $fail_ok, $get_insert_id);
+                $ret = $this->query($query, $connection, null/*already encoded*/, null/*already encoded*/, $fail_ok, $get_insert_id);
                 $this->reconnected_once = false;
                 return $ret;
             }
 
-            $this->handle_failed_query($query, $err, $db_parts);
+            $this->handle_failed_query($query, $err, $connection);
             return null;
         }
 
         $query = ltrim($query);
         $sub = substr($query, 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
-            return $this->db_get_query_rows($results);
+            return $this->get_query_rows($results);
         }
 
         if ($get_insert_id) {
             if (($sub === 'UPDA') || ($sub === 'upda')) {
-                return mysql_affected_rows($db);
+                return mysql_affected_rows($db_link);
             }
-            $ins = mysql_insert_id($db);
+            $ins = mysql_insert_id($db_link);
             if ($ins === 0) {
                 $table = substr($query, 12, strpos($query, ' ', 12) - 12);
-                $rows = $this->db_query('SELECT MAX(id) AS x FROM ' . $table, $db_parts, 1, 0, false, false);
+                $rows = $this->query('SELECT MAX(id) AS x FROM ' . $table, $connection, 1, 0, false, false);
                 return $rows[0]['x'];
             }
             return $ins;
@@ -218,7 +189,7 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  resource $results The query result pointer
      * @return array A list of row maps
      */
-    public function db_get_query_rows($results)
+    public function get_query_rows($results)
     {
         $row = mysql_fetch_row($results); // cannot use mysql_fetch_assoc because no dupe results are returned, which knocks off the offsets used by mysql_field_type
         if ($row === false) { // Quick get away
@@ -283,5 +254,34 @@ class Database_Static_mysql extends Database_super_mysql
 
         mysql_free_result($results);
         return $out;
+    }
+
+    /**
+     * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
+     *
+     * @param  string $string The string
+     * @return string The escaped string
+     */
+    public function escape_string($string)
+    {
+        if (function_exists('ctype_alnum')) {
+            if (ctype_alnum($string)) {
+                return $string; // No non-trivial characters
+            }
+        }
+        if (preg_match('#[^a-zA-Z0-9\.]#', $string) === 0) {
+            return $string; // No non-trivial characters
+        }
+
+        $string = fix_bad_unicode($string);
+
+        static $mres = null;
+        if ($mres === null) {
+            $mres = function_exists('mysql_real_escape_string');
+        }
+        if (($mres) && (isset($GLOBALS['SITE_DB']->connection_read[0])) && ($GLOBALS['SITE_DB']->connection_read[0] !== false)) {
+            return mysql_real_escape_string($string, $GLOBALS['SITE_DB']->connection_read[0]);
+        }
+        return @mysql_escape_string($string);
     }
 }

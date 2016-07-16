@@ -58,7 +58,7 @@ function init__database()
     $TABLE_LANG_FIELDS_CACHE = array();
     if ((!empty($SITE_INFO['db_site'])) || (!empty($SITE_INFO['db_site_user']))) {
         global $SITE_DB;
-        /** The connection to the active site database.
+        /** The connector to the active site database.
          *
          * @global object $SITE_DB
          */
@@ -67,43 +67,6 @@ function init__database()
 
     global $UPON_QUERY_HOOKS_CACHE;
     $UPON_QUERY_HOOKS_CACHE = null;
-}
-
-/**
- * Extract certain fields, including any Tempcode details for them, from a DB table row array.
- *
- * @param  array $row DB table row.
- * @param  array $fields List of fields to copy through.
- * @return array Map of fields.
- */
-function db_map_restrict($row, $fields)
-{
-    $out = array();
-    foreach ($fields as $field) {
-        $out[$field] = $row[$field];
-        if (isset($row[$field . '__text_parsed'])) {
-            $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
-        }
-        if (array_key_exists($field . '__source_user', $row)) {
-            $out[$field . '__source_user'] = $row[$field . '__source_user'];
-        }
-    }
-    return $out;
-}
-
-/**
- * Find whether to run in multi-lang mode for content translations.
- *
- * @return boolean Whether to run in multi-lang mode for content translations.
- */
-function multi_lang_content()
-{
-    global $HAS_MULTI_LANG_CONTENT;
-    if ($HAS_MULTI_LANG_CONTENT === null) {
-        global $SITE_INFO;
-        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] === '1') : true; // For legacy reasons
-    }
-    return $HAS_MULTI_LANG_CONTENT;
 }
 
 /**
@@ -122,6 +85,48 @@ function _general_db_init()
     if ($TABLE_LANG_FIELDS_CACHE === null) {
         reload_lang_fields();
     }
+}
+
+/**
+ * Find whether we are on a multi-site-network.
+ * We will check to see that the specification for the forum database and site database differ.
+ *
+ * @return boolean Whether we are
+ */
+function is_on_multi_site_network()
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+
+    if (get_forum_type() == 'none') {
+        $cache = false;
+        return false;
+    }
+
+    $cache = (
+        (get_db_site_host() != get_db_forums_host()) ||
+        (get_db_site() != get_db_forums()) ||
+        (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix())
+    );
+
+    return $cache;
+}
+
+/**
+ * Find whether to run in multi-lang mode for content translations.
+ *
+ * @return boolean Whether to run in multi-lang mode for content translations.
+ */
+function multi_lang_content()
+{
+    global $HAS_MULTI_LANG_CONTENT;
+    if ($HAS_MULTI_LANG_CONTENT === null) {
+        global $SITE_INFO;
+        $HAS_MULTI_LANG_CONTENT = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] === '1') : true; // For legacy reasons
+    }
+    return $HAS_MULTI_LANG_CONTENT;
 }
 
 /**
@@ -157,26 +162,13 @@ function reload_lang_fields($full = false)
 }
 
 /**
- * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
- *
- * @return boolean Whether it can
- */
-function can_arbitrary_groupby()
-{
-    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'can_arbitrary_groupby')) {
-        return false;
-    }
-    return $GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby();
-}
-
-/**
  * Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).
  *
  * @return integer First ID used
  */
 function db_get_first_id()
 {
-    return $GLOBALS['DB_STATIC_OBJECT']->db_get_first_id();
+    return $GLOBALS['DB_STATIC_OBJECT']->get_first_id();
 }
 
 /**
@@ -188,7 +180,7 @@ function db_get_first_id()
  */
 function db_string_equal_to($attribute, $compare)
 {
-    return $GLOBALS['DB_STATIC_OBJECT']->db_string_equal_to($attribute, $compare);
+    return $GLOBALS['DB_STATIC_OBJECT']->string_equal_to($attribute, $compare);
 }
 
 /**
@@ -200,7 +192,7 @@ function db_string_equal_to($attribute, $compare)
  */
 function db_string_not_equal_to($attribute, $compare)
 {
-    return $GLOBALS['DB_STATIC_OBJECT']->db_string_not_equal_to($attribute, $compare);
+    return $GLOBALS['DB_STATIC_OBJECT']->string_not_equal_to($attribute, $compare);
 }
 
 /**
@@ -211,7 +203,7 @@ function db_string_not_equal_to($attribute, $compare)
  */
 function db_encode_like($pattern)
 {
-    $ret = $GLOBALS['DB_STATIC_OBJECT']->db_encode_like($pattern);
+    $ret = $GLOBALS['DB_STATIC_OBJECT']->encode_like($pattern);
 
     if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
         require_code('database_security_filter');
@@ -223,60 +215,6 @@ function db_encode_like($pattern)
 }
 
 /**
- * Find whether full-text-search is present
- *
- * @param  array $db A DB connection
- * @return boolean Whether it is
- */
-function db_has_full_text($db)
-{
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
-        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
-        _general_db_init();
-    }
-
-    return $GLOBALS['DB_STATIC_OBJECT']->db_has_full_text($db);
-}
-
-/**
- * Assemble part of a WHERE clause for doing full-text search
- *
- * @param  string $content Our match string (assumes "?" has been stripped already)
- * @param  boolean $boolean Whether to do a boolean full text search
- * @return string Part of a WHERE clause for doing full-text search
- */
-function db_full_text_assemble($content, $boolean)
-{
-    $ret = $GLOBALS['DB_STATIC_OBJECT']->db_full_text_assemble($content, $boolean);
-
-    if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
-        require_code('database_security_filter');
-        $GLOBALS['DB_ESCAPE_STRING_LIST'][$content] = true;
-    }
-
-    return $ret;
-}
-
-/**
- * Find whether expression ordering support is present
- *
- * @param  array $db A DB connection
- * @return boolean Whether it is
- */
-function db_has_expression_ordering($db)
-{
-    if (count($db) > 4) { // Okay, we can't be lazy anymore
-        $db = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $db);
-        _general_db_init();
-    }
-
-    if (!method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_has_expression_ordering')) {
-        return false;
-    }
-    return $GLOBALS['DB_STATIC_OBJECT']->db_has_expression_ordering($db);
-}
-
-/**
  * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
  *
  * @param  string $string The string
@@ -284,19 +222,36 @@ function db_has_expression_ordering($db)
  */
 function db_escape_string($string)
 {
-    if (isset($GLOBALS['SITE_DB']->connection_read[4])) { // Okay, we can't be lazy anymore
-        $GLOBALS['SITE_DB']->connection_read = call_user_func_array(array($GLOBALS['DB_STATIC_OBJECT'], 'db_get_connection'), $GLOBALS['SITE_DB']->connection_read);
-        _general_db_init();
-    }
-
     if (function_exists('has_solemnly_declared')) {
         if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
             require_code('database_security_filter');
-            $GLOBALS['DB_ESCAPE_STRING_LIST'][trim($GLOBALS['DB_STATIC_OBJECT']->db_escape_string($string), ' %')] = true;
+            $GLOBALS['DB_ESCAPE_STRING_LIST'][trim($GLOBALS['DB_STATIC_OBJECT']->escape_string($string), ' %')] = true;
         }
     }
 
-    return $GLOBALS['DB_STATIC_OBJECT']->db_escape_string($string);
+    return $GLOBALS['DB_STATIC_OBJECT']->escape_string($string);
+}
+
+/**
+ * Extract certain fields, including any Tempcode details for them, from a DB table row array.
+ *
+ * @param  array $row DB table row.
+ * @param  array $fields List of fields to copy through.
+ * @return array Map of fields.
+ */
+function db_map_restrict($row, $fields)
+{
+    $out = array();
+    foreach ($fields as $field) {
+        $out[$field] = $row[$field];
+        if (isset($row[$field . '__text_parsed'])) {
+            $out[$field . '__text_parsed'] = $row[$field . '__text_parsed'];
+        }
+        if (array_key_exists($field . '__source_user', $row)) {
+            $out[$field . '__source_user'] = $row[$field . '__source_user'];
+        }
+    }
+    return $out;
 }
 
 /**
@@ -307,12 +262,13 @@ function db_escape_string($string)
 function get_db_type()
 {
     global $SITE_INFO;
-    if (!isset($SITE_INFO['db_type'])) {
-        return is_dir(get_custom_file_base() . '/uploads/website_specific/' . get_db_site()) ? 'xml' : 'mysql';
-    }
-    $ret = $SITE_INFO['db_type'];
-    if ($ret === 'mysql' && !function_exists('mysql_connect')) {
+    if (isset($SITE_INFO['db_type'])) {
+        $ret = $SITE_INFO['db_type'];
+    } else {
         $ret = 'mysqli';
+    }
+    if ($ret === 'mysqli' && !function_exists('mysqli_connect')) {
+        $ret = 'mysql';
     }
     return $ret;
 }
@@ -329,7 +285,7 @@ function get_use_persistent()
 }
 
 /**
- * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it)
+ * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it)
  *
  * @return string The table prefix
  */
@@ -449,51 +405,175 @@ function get_db_forums_password()
 }
 
 /**
- * Find whether we are on a multi-site-network.
+ * Base class for database drivers.
  *
- * @param  ?object $db The DB connection to check against (null: site's main active forum database)
- * @return boolean Whether we are
+ * @package    core_database_drivers
  */
-function is_on_multi_site_network($db = null)
+class DatabaseDriver
 {
-    static $cache = null;
-    if ($db === null && $cache !== null) {
-        return $cache;
+    /**
+     * Delete a table.
+     *
+     * @param  ID_TEXT $table The table name
+     * @param  mixed $connection The DB connection to delete on
+     */
+    public function drop_table_if_exists($table, $connection)
+    {
+        $this->query('DROP TABLE ' . $table, $connection, null, null, true);
     }
 
-    if (get_forum_type() == 'none') {
-        $cache = false;
+    /**
+     * Find whether full-text-search is present
+     *
+     * @param  mixed $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_full_text($connection)
+    {
         return false;
     }
 
-    if ($db !== null) {
-        $ret = !is_forum_db($db); // If passed connection is not the same as the forum connection, then it must be a multi-site-network
-        return $ret;
-    }
-    $cache = ((get_db_site_host() != get_db_forums_host()) || (get_db_site() != get_db_forums()) || (isset($GLOBALS['FORUM_DRIVER'])) && ($GLOBALS['FORUM_DRIVER']->get_drivered_table_prefix() != get_table_prefix()));
-    return $cache;
-}
-
-/**
- * Find whether a database connection is to the forum database.
- *
- * @param  object $db The DB connection to check against
- * @return boolean Whether we are
- */
-function is_forum_db($db)
-{
-    if (isset($db->is_forum_db)) {
-        return $db->is_forum_db;
-    }
-
-    if (!is_on_multi_site_network()) {
-        // Not on a multi-site-network
+    /**
+     * Find whether full-text-boolean-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_full_text_boolean()
+    {
         return false;
     }
 
-    $ret = ((isset($GLOBALS['FORUM_DB'])) && ($db->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($db->connection_write != $GLOBALS['SITE_DB']->connection_write));
-    $db->is_forum_db = $ret;
-    return $ret;
+    /**
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     *
+     * @return boolean Whether it can
+     */
+    public function can_arbitrary_groupby()
+    {
+        return false;
+    }
+
+    /**
+     * Find whether expression ordering support is present
+     *
+     * @param  mixed $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_expression_ordering($connection)
+    {
+        return false;
+    }
+
+    /**
+     * Find whether collate support is present
+     *
+     * @param  mixed $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_collate_settings($connection)
+    {
+        return false;
+    }
+
+    /**
+     * Find whether update queries may have joins
+     *
+     * @param  mixed $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_update_joins($connection)
+    {
+        return false;
+    }
+
+    /**
+     * This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.
+     *
+     * @return boolean Whether a blank string IS NULL
+     */
+    public function empty_is_null()
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.
+     *
+     * @return boolean Whether the database is a flat file database
+     */
+    public function is_flat_file_simple()
+    {
+        return false;
+    }
+
+    /**
+     * Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).
+     *
+     * @return integer First ID used
+     */
+    public function get_first_id()
+    {
+        return 1;
+    }
+
+    /**
+     * Get a strict mode set query. Takes into account configuration also.
+     *
+     * @param boolean $setting Whether it is on (may be overridden be configuration)
+     * @return ?string The query (null: none)
+     */
+    public function strict_mode_query($setting)
+    {
+        return null;
+    }
+
+    /**
+     * Find if a database query may run, showing errors if it cannot
+     *
+     * @param  string $query The complete SQL query
+     * @param  mixed $connection A DB connection
+     * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
+     * @return boolean Whether it can
+     */
+    protected function query_may_run($query, $connection, $get_insert_id)
+    {
+        return true;
+    }
+
+    /**
+     * Encode an SQL statement fragment for a conditional to see if two strings are equal.
+     *
+     * @param  ID_TEXT $attribute The attribute
+     * @param  string $compare The comparison
+     * @return string The SQL
+     */
+    public function string_equal_to($attribute, $compare)
+    {
+        return $attribute . "='" . db_escape_string($compare) . "'";
+    }
+
+    /**
+     * Encode an SQL statement fragment for a conditional to see if two strings are not equal.
+     *
+     * @param  ID_TEXT $attribute The attribute
+     * @param  string $compare The comparison
+     * @return string The SQL
+     */
+    public function string_not_equal_to($attribute, $compare)
+    {
+        return $attribute . "<>'" . db_escape_string($compare) . "'";
+    }
+
+    /**
+     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     *
+     * @param  string $pattern The pattern
+     * @return string The encoded pattern
+     */
+    public function encode_like($pattern)
+    {
+        return $this->escape_string($pattern);
+    }
 }
 
 /**
@@ -551,7 +631,23 @@ class DatabaseConnector
     }
 
     /**
-     * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'.
+     * Ensure the database connection is connected.
+     */
+    public function ensure_connected()
+    {
+        if (isset($this->connection_read[4])) { // Okay, we can't be lazy anymore
+            $this->connection_read = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_read);
+            if (isset($this->connection_write[4])) { // Okay, we can't be lazy anymore
+                $this->connection_write = call_user_func_array(array($this->static_ob, 'get_connection'), $this->connection_write);
+            }
+            if (isset($GLOBALS['SITE_DB']) && $this === $GLOBALS['SITE_DB']) {
+                _general_db_init();
+            }
+        }
+    }
+
+    /**
+     * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms_'.
      *
      * @return string The table prefix
      */
@@ -568,157 +664,8 @@ class DatabaseConnector
         global $FILECACHE_OBJECT;
         require_code('database/xml');
         $chain_db = new DatabaseConnector(get_custom_file_base() . '/caches/persistent', '', '', '', get_table_prefix(), false, object_factory('Database_Static_xml'));
-        $chain_connection = &$chain_db->connection_write;
-        if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-            $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);
-            _general_db_init();
-        }
+        $chain_db->ensure_connected();
         $FILECACHE_OBJECT = $chain_db;
-    }
-
-    /**
-     * Check if a table exists.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  boolean $really Check direct, not using meta-table (if possible)
-     * @return boolean Whether it exists
-     */
-    public function table_exists($table_name, $really = false)
-    {
-        if ($really && strpos(get_db_type(), 'mysql') !== false) {
-            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
-            $full_table_name = $this->get_table_prefix() . $table_name;
-            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
-            foreach ($rows as $row) {
-                foreach ($row as $field) {
-                    if ($field == $full_table_name) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        if (array_key_exists($table_name, $this->table_exists_cache)) {
-            return $this->table_exists_cache[$table_name];
-        }
-
-        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
-        $this->table_exists_cache[$table_name] = ($test !== null);
-        return $this->table_exists_cache[$table_name];
-    }
-
-    /**
-     * Create a table with the given name and the given array of field name to type mappings.
-     * If a field type starts '*', then it is part of that field's key. If it starts '?', then it is an optional field.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  array $fields The fields
-     * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
-     * @param  boolean $skip_null_check Whether to skip the check for null string fields
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
-     */
-    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
-    {
-        require_code('database_helper');
-        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check, $save_bytes);
-    }
-
-    /**
-     * Add an index to a table without disturbing the contents, after the table has been created.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  ID_TEXT $index_name The index name
-     * @param  array $fields The fields
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
-     */
-    public function create_index($table_name, $index_name, $fields, $unique_key_field = 'id')
-    {
-        require_code('database_helper');
-        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_field);
-    }
-
-    /**
-     * Insert a row.
-     *
-     * @param  string $table The table name
-     * @param  array $map The insertion map. The map values may be arrays for a multi-insert, but if so they must all have the same arity. You must not pass an array of maps.
-     * @param  boolean $ret Whether to return the auto-insert-id
-     * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
-     * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
-     * @return integer The ID of the new row
-     */
-    public function query_insert($table, $map, $ret = false, $fail_ok = false, $save_as_volatile = false)
-    {
-        $keys = '';
-        $all_values = array();
-
-        $eis = $this->static_ob->db_empty_is_null();
-
-        foreach ($map as $key => $value) {
-            if ($keys !== '') {
-                $keys .= ', ';
-            }
-            $keys .= $key;
-
-            $_value = (!is_array($value)) ? array($value) : $value;
-
-            $v = mixed();
-            foreach ($_value as $i => $v) {
-                if (!isset($all_values[$i])) {
-                    $all_values[$i] = '';
-                }
-                $values = $all_values[$i];
-
-                if ($values !== '') {
-                    $values .= ', ';
-                }
-
-                if ($value === null) {
-                    if (($eis) && ($v === '')) {
-                        $values .= '\' \'';
-                    } else {
-                        $values .= 'NULL';
-                    }
-                } else {
-                    if (($eis) && ($v === '')) {
-                        $v = ' ';
-                    }
-                    if (is_integer($v)) {
-                        $values .= strval($v);
-                    } elseif (is_float($v)) {
-                        $values .= float_to_raw_string($v, 10);
-                    } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                        $values .= $v; // Fudge, for all our known large unsigned integers
-                    } else {
-                        $values .= '\'' . $this->static_ob->db_escape_string($v) . '\'';
-                    }
-                }
-
-                $all_values[$i] = $values; // essentially appends, as $values was loaded from former $all_values[$i] value
-            }
-        }
-
-        if (count($all_values) === 1) { // usually $all_values only has length of 1
-            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) === 'mysql')) {
-                $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
-            } else {
-                $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
-            }
-        } else {
-            // So we can do batch inserts...
-            $all_v = '';
-            foreach ($all_values as $v) {
-                if ($all_v !== '') {
-                    $all_v .= ', ';
-                }
-                $all_v .= '(' . $v . ')';
-            }
-
-            $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES ' . $all_v;
-        }
-
-        return $this->_query($query, null, null, $fail_ok, $ret, null, '', $save_as_volatile);
     }
 
     /**
@@ -772,7 +719,7 @@ class DatabaseConnector
                     if ($value === null) {
                         $where .= $key . ' IS NULL';
                     } else {
-                        if (($value === '') && ($this->static_ob->db_empty_is_null())) {
+                        if (($value === '') && ($this->static_ob->empty_is_null())) {
                             $value = ' ';
                         }
 
@@ -1108,7 +1055,7 @@ class DatabaseConnector
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
 
-                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!is_forum_db($this)) && (is_cns_satellite_site())) {
+                if ((get_forum_type() != 'none') && (strpos($query, get_table_prefix() . 'f_') !== false) && (strpos($query, get_table_prefix() . 'f_') < 100) && (strpos($query, 'f_welcome_emails') === false) && (!$this->is_forum_db()) && (is_cns_satellite_site())) {
                     fatal_exit('Using Conversr queries on the wrong driver');
                 }
             }
@@ -1119,7 +1066,7 @@ class DatabaseConnector
             /*if ($QUERY_COUNT > 10) {
                 @ob_end_clean();
             }
-            @print('Query: ' . $query . "\n");*/
+            @header('Query: ' . $query . "\n");*/
         }
         static $fb = null;
         if ($fb === null) {
@@ -1234,15 +1181,14 @@ class DatabaseConnector
         if ($QUERY_LOG) {
             $before = microtime(true);
         }
+
+        $this->ensure_connected();
+
         $sub = substr($query, 0, 6); // NB: We don't get 7, because it's time-consuming to check for space/tab/new-lines after 'SELECT', so we'll make the correct assumption SELECT is not a stem of any other keyword
         if ($sub === 'SELECT' || $sub === 'select' || $sub === '(SELEC' || $sub === '(selec') {
             $connection = &$this->connection_read;
         } else {
             $connection = &$this->connection_write;
-        }
-        if (isset($connection[4])) { // Okay, we can't be lazy anymore
-            $connection = call_user_func_array(array($this->static_ob, 'db_get_connection'), $connection);
-            _general_db_init();
         }
 
         // Special handling for searches, which are slow and specific - we want to recognise if previous active searches were the same and kill them (as this would have been a double form submit)
@@ -1258,11 +1204,11 @@ class DatabaseConnector
                 $real_query .= ' LIMIT ' . strval($start) . ',30000000';
             }
 
-            $ret = $this->static_ob->db_query('SHOW FULL PROCESSLIST', $connection, null, null, true);
+            $ret = $this->static_ob->query('SHOW FULL PROCESSLIST', $connection, null, null, true);
             if (is_array($ret)) {
                 foreach ($ret as $process) {
                     if ($process['Info'] === $real_query) {
-                        $this->static_ob->db_query('KILL ' . strval($process['Id']), $connection, null, null, true);
+                        $this->static_ob->query('KILL ' . strval($process['Id']), $connection, null, null, true);
                     }
                 }
             }
@@ -1283,7 +1229,7 @@ class DatabaseConnector
         }
 
         // Run/log query
-        $ret = $this->static_ob->db_query($query, $connection, $max, $start, $fail_ok, $get_insert_id, false, $save_as_volatile);
+        $ret = $this->static_ob->query($query, $connection, $max, $start, $fail_ok, $get_insert_id, false, $save_as_volatile);
         if ($QUERY_LOG) {
             $after = microtime(true);
             $text = (!is_null($max)) ? ($query . ' (' . (is_null($start) ? '0' : strval($start)) . '-' . strval((is_null($start) ? 0 : $start) + $max) . ')') : $query;
@@ -1342,6 +1288,190 @@ class DatabaseConnector
     }
 
     /**
+     * Find whether this database connector is to the forum database.
+     * If we are not on a multi-site-network then the answer is always 'No', because really we're checking to see if we are the forum database and also not the site database.
+     *
+     * @return boolean Whether we are
+     */
+    public function is_forum_db()
+    {
+        if (isset($this->is_forum_db)) {
+            return $this->is_forum_db;
+        }
+
+        if (!is_on_multi_site_network()) {
+            // Not on a multi-site-network
+            return false;
+        }
+
+        $ret = ((isset($GLOBALS['FORUM_DB'])) && ($this->connection_write == $GLOBALS['FORUM_DB']->connection_write) && ($this->connection_write != $GLOBALS['SITE_DB']->connection_write));
+        $this->is_forum_db = $ret;
+        return $ret;
+    }
+
+    /**
+     * Find whether full-text-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_full_text()
+    {
+        return $this->static_ob->has_full_text($this->connection_read);
+    }
+
+    /**
+     * Find whether full-text-boolean-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_full_text_boolean()
+    {
+        return $this->static_ob->has_full_text_boolean($this->connection_read);
+    }
+
+    /**
+     * Assemble part of a WHERE clause for doing full-text search
+     *
+     * @param  string $content Our match string (assumes "?" has been stripped already)
+     * @param  boolean $boolean Whether to do a boolean full text search
+     * @return string Part of a WHERE clause for doing full-text search
+     */
+    public function full_text_assemble($content, $boolean)
+    {
+        $ret = $this->static_ob->full_text_assemble($content, $boolean);
+
+        if (($GLOBALS['DEV_MODE']) || (!has_solemnly_declared(I_UNDERSTAND_SQL_INJECTION))) {
+            require_code('database_security_filter');
+            $GLOBALS['DB_ESCAPE_STRING_LIST'][$content] = true;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     *
+     * @return boolean Whether it can
+     */
+    public function can_arbitrary_groupby()
+    {
+        return $this->static_ob->can_arbitrary_groupby();
+    }
+
+    /**
+     * Find whether expression ordering support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_expression_ordering()
+    {
+        return $this->static_ob->has_expression_ordering($this->connection_read);
+    }
+
+    /**
+     * Find whether collate support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_collate_settings()
+    {
+        return $this->static_ob->has_collate_settings($this->connection_read);
+    }
+
+    /**
+     * Find whether update queries may have joins
+     *
+     * @return boolean Whether it is
+     */
+    public function has_update_joins()
+    {
+        return $this->static_ob->has_update_joins($this->connection_read);
+    }
+
+    /**
+     * Insert a row.
+     *
+     * @param  string $table The table name
+     * @param  array $map The insertion map. The map values may be arrays for a multi-insert, but if so they must all have the same arity. You must not pass an array of maps.
+     * @param  boolean $ret Whether to return the auto-insert-id
+     * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
+     * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
+     * @return integer The ID of the new row
+     */
+    public function query_insert($table, $map, $ret = false, $fail_ok = false, $save_as_volatile = false)
+    {
+        $keys = '';
+        $all_values = array();
+
+        $eis = $this->static_ob->empty_is_null();
+
+        foreach ($map as $key => $value) {
+            if ($keys !== '') {
+                $keys .= ', ';
+            }
+            $keys .= $key;
+
+            $_value = (!is_array($value)) ? array($value) : $value;
+
+            $v = mixed();
+            foreach ($_value as $i => $v) {
+                if (!isset($all_values[$i])) {
+                    $all_values[$i] = '';
+                }
+                $values = $all_values[$i];
+
+                if ($values !== '') {
+                    $values .= ', ';
+                }
+
+                if ($value === null) {
+                    if (($eis) && ($v === '')) {
+                        $values .= '\' \'';
+                    } else {
+                        $values .= 'NULL';
+                    }
+                } else {
+                    if (($eis) && ($v === '')) {
+                        $v = ' ';
+                    }
+                    if (is_integer($v)) {
+                        $values .= strval($v);
+                    } elseif (is_float($v)) {
+                        $values .= float_to_raw_string($v, 10);
+                    } elseif (($key === 'begin_num') || ($key === 'end_num')) {
+                        $values .= $v; // Fudge, for all our known large unsigned integers
+                    } else {
+                        $values .= '\'' . $this->static_ob->escape_string($v) . '\'';
+                    }
+                }
+
+                $all_values[$i] = $values; // essentially appends, as $values was loaded from former $all_values[$i] value
+            }
+        }
+
+        if (count($all_values) === 1) { // usually $all_values only has length of 1
+            if ((get_value('enable_delayed_inserts') === '1') && (in_array($table, array('stats', 'banner_clicks', 'member_tracking', 'usersonline_track', 'download_logging'/*FUDGE: Ideally we would define this list via database_relations.php, but performance matters*/))) && (substr(get_db_type(), 0, 5) === 'mysql')) {
+                $query = 'INSERT DELAYED INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
+            } else {
+                $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
+            }
+        } else {
+            // So we can do batch inserts...
+            $all_v = '';
+            foreach ($all_values as $v) {
+                if ($all_v !== '') {
+                    $all_v .= ', ';
+                }
+                $all_v .= '(' . $v . ')';
+            }
+
+            $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES ' . $all_v;
+        }
+
+        return $this->_query($query, null, null, $fail_ok, $ret, null, '', $save_as_volatile);
+    }
+
+    /**
      * Update (edit) a row in the database.
      *
      * @param  string $table The table name
@@ -1377,7 +1507,7 @@ class DatabaseConnector
                     if ($value === null) {
                         $where .= $key . ' IS NULL';
                     } else {
-                        if (($value === '') && ($this->static_ob->db_empty_is_null())) {
+                        if (($value === '') && ($this->static_ob->empty_is_null())) {
                             $value = ' ';
                         }
                         $where .= db_string_equal_to($key, $value);
@@ -1404,7 +1534,7 @@ class DatabaseConnector
                 } elseif (($key === 'begin_num') || ($key === 'end_num')) {
                     $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
                 } else {
-                    $update .= $key . '=\'' . $this->static_ob->db_escape_string($value) . '\'';
+                    $update .= $key . '=\'' . $this->static_ob->escape_string($value) . '\'';
                 }
             }
         }
@@ -1457,7 +1587,7 @@ class DatabaseConnector
                 if ($value === null) {
                     $where .= $key . ' IS NULL';
                 } else {
-                    if (($value === '') && ($this->static_ob->db_empty_is_null())) {
+                    if (($value === '') && ($this->static_ob->empty_is_null())) {
                         $where .= $key . ' IS NULL'; // $value = ' ';
                     } else {
                         $where .= db_string_equal_to($key, $value);
@@ -1471,26 +1601,51 @@ class DatabaseConnector
     }
 
     /**
-     * Delete an index from a table.
+     * Check if a table exists.
      *
      * @param  ID_TEXT $table_name The table name
-     * @param  ID_TEXT $index_name The index name
+     * @param  boolean $really Check direct, not using meta-table (if possible)
+     * @return boolean Whether it exists
      */
-    public function delete_index_if_exists($table_name, $index_name)
+    public function table_exists($table_name, $really = false)
     {
-        require_code('database_helper');
-        _helper_delete_index_if_exists($this, $table_name, $index_name);
+        if ($really && strpos(get_db_type(), 'mysql') !== false) {
+            // Just works with MySQL (too complex to do for all SQL's http://forums.whirlpool.net.au/forum-replies-archive.cfm/523219.html)
+            $full_table_name = $this->get_table_prefix() . $table_name;
+            $rows = $this->query("SHOW TABLES LIKE '" . $full_table_name . "'");
+            foreach ($rows as $row) {
+                foreach ($row as $field) {
+                    if ($field == $full_table_name) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        if (array_key_exists($table_name, $this->table_exists_cache)) {
+            return $this->table_exists_cache[$table_name];
+        }
+
+        $test = $this->query_select_value_if_there('db_meta', 'm_name', array('m_table' => $table_name));
+        $this->table_exists_cache[$table_name] = ($test !== null);
+        return $this->table_exists_cache[$table_name];
     }
 
     /**
-     * Drop the given table, or if it doesn't exist, silently return.
+     * Create a table with the given name and the given array of field name to type mappings.
+     * If a field type starts '*', then it is part of that field's key. If it starts '?', then it is an optional field.
      *
-     * @param  ID_TEXT $table The table name
+     * @param  ID_TEXT $table_name The table name
+     * @param  array $fields The fields
+     * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
+     * @param  boolean $skip_null_check Whether to skip the check for null string fields
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
-    public function drop_table_if_exists($table)
+    public function create_table($table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
     {
         require_code('database_helper');
-        _helper_drop_table_if_exists($this, $table);
+        _helper_create_table($this, $table_name, $fields, $skip_size_check, $skip_null_check, $save_bytes);
     }
 
     /**
@@ -1503,6 +1658,17 @@ class DatabaseConnector
     {
         require_code('database_helper');
         _helper_rename_table($this, $old, $new);
+    }
+
+    /**
+     * Drop the given table, or if it doesn't exist, silently return.
+     *
+     * @param  ID_TEXT $table The table name
+     */
+    public function drop_table_if_exists($table)
+    {
+        require_code('database_helper');
+        _helper_drop_table_if_exists($this, $table);
     }
 
     /**
@@ -1531,6 +1697,18 @@ class DatabaseConnector
     {
         require_code('database_helper');
         _helper_alter_table_field($this, $table_name, $name, $_type, $new_name);
+    }
+
+    /**
+     * Delete the specified field from the specified table.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  ID_TEXT $name The field name
+     */
+    public function delete_table_field($table_name, $name)
+    {
+        require_code('database_helper');
+        _helper_delete_table_field($this, $table_name, $name);
     }
 
     /**
@@ -1576,18 +1754,6 @@ class DatabaseConnector
     }
 
     /**
-     * Delete the specified field from the specified table.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  ID_TEXT $name The field name
-     */
-    public function delete_table_field($table_name, $name)
-    {
-        require_code('database_helper');
-        _helper_delete_table_field($this, $table_name, $name);
-    }
-
-    /**
      * If we've changed what $type is stored as, this function will need to be called to change the typing in the DB.
      *
      * @param  ID_TEXT $type The field type
@@ -1621,6 +1787,32 @@ class DatabaseConnector
         }
         $cache[$table][$index] = $ret;
         return $ret;
+    }
+
+    /**
+     * Add an index to a table without disturbing the contents, after the table has been created.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  ID_TEXT $index_name The index name
+     * @param  array $fields The fields
+     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     */
+    public function create_index($table_name, $index_name, $fields, $unique_key_field = 'id')
+    {
+        require_code('database_helper');
+        _helper_create_index($this, $table_name, $index_name, $fields, $unique_key_field);
+    }
+
+    /**
+     * Delete an index from a table.
+     *
+     * @param  ID_TEXT $table_name The table name
+     * @param  ID_TEXT $index_name The index name
+     */
+    public function delete_index_if_exists($table_name, $index_name)
+    {
+        require_code('database_helper');
+        _helper_delete_index_if_exists($this, $table_name, $index_name);
     }
 
     /**
@@ -1666,5 +1858,16 @@ class DatabaseConnector
 
         $cache[$table] = $locked;
         return $locked;
+    }
+
+    /**
+     * Get a strict mode set query. Takes into account configuration also.
+     *
+     * @param boolean $setting Whether it is on (may be overridden be configuration)
+     * @return ?string The query (null: none)
+     */
+    public function strict_mode_query($setting)
+    {
+        return $this->static_ob->strict_mode_query($setting);
     }
 }

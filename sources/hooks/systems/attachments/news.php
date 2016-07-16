@@ -27,12 +27,12 @@ class Hook_attachments_news
      * Run function for attachment hooks. They see if permission to an attachment of an ID relating to this content is present for the current member.
      *
      * @param  ID_TEXT $id The ID
-     * @param  object $connection The database connection to check on
+     * @param  object $db The database connector to check on
      * @return boolean Whether there is permission
      */
-    public function run($id, $connection)
+    public function run($id, $db)
     {
-        if (is_forum_db($connection)) {
+        if ($db->is_forum_db()) {
             return false;
         }
 

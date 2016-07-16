@@ -54,12 +54,9 @@ class Hook_cleanup_mysql_optimise
         $out = new Tempcode();
 
         $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
-        if (count($GLOBALS['SITE_DB']->connection_write) > 4) { // Okay, we can't be lazy anymore
-            $GLOBALS['SITE_DB']->connection_write = call_user_func_array(array($GLOBALS['SITE_DB']->static_ob, 'db_get_connection'), $GLOBALS['SITE_DB']->connection_write);
-            _general_db_init();
-        }
-        $db = $GLOBALS['SITE_DB']->connection_write;
 
+        $GLOBALS['SITE_DB']->ensure_connected();
+        $connection = $GLOBALS['SITE_DB']->connection_write;
         $static_ob = $GLOBALS['SITE_DB']->static_ob;
 
         foreach ($tables as $table) {
@@ -70,17 +67,17 @@ class Hook_cleanup_mysql_optimise
             $table = get_table_prefix() . $table['m_table'];
 
             // Check/Repair
-            $result = $static_ob->db_query('CHECK TABLE ' . $table . ' FAST', $db);
+            $result = $static_ob->query('CHECK TABLE ' . $table . ' FAST', $connection);
             $status_row = end($result);
             if ($status_row['Msg_type'] != 'status') {
                 $out->attach(paragraph(do_lang_tempcode('TABLE_ERROR', escape_html($table), escape_html($status_row['Msg_type']), array(escape_html($status_row['Msg_text']))), 'dfsdgdsgfgd'));
-                $result2 = $static_ob->db_query('REPAIR TABLE ' . $table, $db);
+                $result2 = $static_ob->query('REPAIR TABLE ' . $table, $connection);
                 $status_row_2 = end($result2);
                 $out->attach(paragraph(do_lang_tempcode('TABLE_FIXED', escape_html($table), escape_html($status_row_2['Msg_type']), array(escape_html($status_row_2['Msg_text']))), 'dfsdfgdst4'));
             }
 
             // Optimise
-            $static_ob->db_query('OPTIMIZE TABLE ' . $table, $db);
+            $static_ob->query('OPTIMIZE TABLE ' . $table, $connection);
         }
 
         return $out;

@@ -117,7 +117,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -250,7 +250,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     public function import_cns_groups($db, $table_prefix)
@@ -302,7 +302,7 @@ class Hook_import_smf2
     /**
      * Update Promotion Thresholds for Imported Groups
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     public function update_group_promotions($db, $table_prefix)
@@ -341,7 +341,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -460,7 +460,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     public function import_cns_custom_profile_fields($db, $table_prefix)
@@ -597,7 +597,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -703,7 +703,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -755,7 +755,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -785,7 +785,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -895,7 +895,7 @@ class Hook_import_smf2
      *
      * @param integer $pid Profile ID to use
      * @param integer $fid Forum ID to use
-     * @param object $db The DB connection to import from
+     * @param object $db The database connector to import from
      * @param string $table_prefix The table prefix the target prefix is using
      */
     public function fill_static_perms_all($pid, $fid, $db, $table_prefix)
@@ -929,7 +929,7 @@ class Hook_import_smf2
      *
      * @param  integer $gid Group ID to use
      * @param  integer $pid Profile ID to use
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @return integer The role value
      */
@@ -961,7 +961,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -970,7 +970,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics t LEFT JOIN ' . $table_prefix . 'messages m ON t.id_first_msg=m.id_msg' . (can_arbitrary_groupby() ? ' GROUP BY t.id_topic' : ''), 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics t LEFT JOIN ' . $table_prefix . 'messages m ON t.id_first_msg=m.id_msg' . ($db->can_arbitrary_groupby() ? ' GROUP BY t.id_topic' : ''), 200, $row_start);
             $rows = remove_duplicate_rows($rows, 'id_topic');
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['id_topic']))) {
@@ -991,7 +991,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1078,7 +1078,7 @@ class Hook_import_smf2
      * Convert SMF URLs pasted in text fields into Composr ones.
      *
      * @param  string $post The text field text (e.g. a post)
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      * @return string The new text field text
@@ -1103,7 +1103,7 @@ class Hook_import_smf2
      * @param  string $data The file data
      * @param  string $filename The optimal filename
      * @param  ID_TEXT $sections The upload type (e.g. cns_photos)
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  string $output_filename The filename to output to
      * @param  PATH $file_base The base directory we are importing from
@@ -1141,7 +1141,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1154,7 +1154,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments a JOIN ' . $table_prefix . 'messages m ON a.id_msg=m.id_msg WHERE a.id_msg<>0' . (can_arbitrary_groupby() ? ' GROUP BY id_attach' : ''), 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments a JOIN ' . $table_prefix . 'messages m ON a.id_msg=m.id_msg WHERE a.id_msg<>0' . ($db->can_arbitrary_groupby() ? ' GROUP BY id_attach' : ''), 200, $row_start);
             $rows = remove_duplicate_rows($rows, 'id_attach');
             foreach ($rows as $row) {
                 if (substr($row['filename'], -5) == 'thumb') {
@@ -1194,7 +1194,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1265,7 +1265,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -1386,7 +1386,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1423,7 +1423,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1628,7 +1628,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1707,7 +1707,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1732,7 +1732,7 @@ class Hook_import_smf2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */

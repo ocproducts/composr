@@ -71,7 +71,7 @@ class Hook_import_html_site
      */
     public function probe_db_access($file_base)
     {
-        return array(null, null, null, null); // No DB connection needed
+        return array(null, null, null, null); // No database connector needed
     }
 
     /**
@@ -114,7 +114,7 @@ class Hook_import_html_site
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */

@@ -92,7 +92,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -136,7 +136,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -172,7 +172,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -255,7 +255,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -319,7 +319,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -438,7 +438,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -531,7 +531,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -633,7 +633,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -742,7 +742,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -858,7 +858,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -898,7 +898,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -977,7 +977,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1067,7 +1067,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1176,7 +1176,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1238,7 +1238,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1276,7 +1276,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1330,7 +1330,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1360,7 +1360,7 @@ class Hook_import_ipb2
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */

@@ -37,7 +37,7 @@ class Hook_content_meta_aware_gallery
             'content_type_label' => 'galleries:GALLERY',
             'content_type_universal_label' => 'Gallery',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'where' => 'name NOT LIKE \'' . db_encode_like('download\_%') . '\'',
             'table' => 'galleries',
             'id_field' => 'name',

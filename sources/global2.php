@@ -652,17 +652,17 @@ function load_user_stuff()
          */
         $FORUM_DRIVER = object_factory($class);
         if (($SITE_INFO['forum_type'] == 'cns') && (!is_on_multi_site_network()) && (!$GLOBALS['DEV_MODE'])) { // NB: In dev mode needs separating so we can properly test our boundaries
-            $FORUM_DRIVER->connection = &$SITE_DB;
+            $FORUM_DRIVER->db = &$SITE_DB;
         } elseif ($SITE_INFO['forum_type'] != 'none') {
-            $FORUM_DRIVER->connection = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
+            $FORUM_DRIVER->db = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), $FORUM_DRIVER->get_drivered_table_prefix());
         }
         $FORUM_DRIVER->MEMBER_ROWS_CACHED = array();
-        /** The connection to the active forum database.
+        /** The connector to the active forum database.
          *
          * @global object $FORUM_DB
          */
         $FORUM_DB = mixed();
-        $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->connection; // Done like this to workaround that PHP can't put a reference in a global'd variable
+        $GLOBALS['FORUM_DB'] = &$FORUM_DRIVER->db; // Done like this to workaround that PHP can't put a reference in a global'd variable
     }
 }
 
@@ -688,8 +688,16 @@ function catch_fatal_errors()
                 i_force_refresh();
             }
         }
-        //$tmp = $GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);@exit();
-        //@var_dump(get_defined_functions()); exit(); // Useful for debugging memory problems, finding unneeded stuff that is loaded
+
+        // Useful for debugging memory problems, finding unneeded stuff that is loaded
+        //$tmp = $GLOBALS;unset($tmp['GLOBALS']);@var_dump($tmp);
+        //@var_dump(get_defined_functions());
+        //exit();
+
+        if ((error_reporting() & $error['type']) === 0) {
+            return;
+        }
+
         switch ($error['type']) {
             case E_ERROR:
             case E_CORE_ERROR:
@@ -717,6 +725,8 @@ function catch_fatal_errors()
 function composr_error_handler($errno, $errstr, $errfile, $errline)
 {
     if (((error_reporting() & $errno) !== 0) && (strpos($errstr, 'Illegal length modifier specified')/*Weird random error in dev PHP version*/ === false) || ($GLOBALS['DYING_BADLY'])) {
+        $GLOBALS['DYING_BADLY'] = false;
+
         // Work out the simplified error type and how to handle it
         switch ($errno) {
             case E_RECOVERABLE_ERROR:

@@ -49,12 +49,12 @@ class Hook_login_providers_direct_auth_external_db
         $email_address_field = get_value('external_db_login__email_address_field', null, true);
 
         // Handle active login
-        $query = 'SELECT * FROM ' . $table . ' WHERE (' . $db->static_ob->db_string_equal_to($username_field, $username);
+        $query = 'SELECT * FROM ' . $table . ' WHERE (' . $db->static_ob->string_equal_to($username_field, $username);
         if (get_option('one_per_email_address') == '1') {
-            $query .= ' OR ' . $db->static_ob->db_string_equal_to($email_address_field, $username);
+            $query .= ' OR ' . $db->static_ob->string_equal_to($email_address_field, $username);
         }
         $query .= ')';
-        $query .= ' AND ' . $db->static_ob->db_string_equal_to($password_field, $password_raw);
+        $query .= ' AND ' . $db->static_ob->string_equal_to($password_field, $password_raw);
         $records = $db->query($query);
         if (isset($records[0])) {
             // Create new member

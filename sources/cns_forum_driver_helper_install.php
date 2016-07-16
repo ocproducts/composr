@@ -44,7 +44,7 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
     require_code('cns_members_action');
 
     $name = 'cms_' . $name;
-    $id = $this_ref->connection->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $name));
+    $id = $this_ref->db->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $name));
     if (is_null($id)) {
         if (is_null($default)) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
@@ -103,8 +103,8 @@ function _helper_install_test_load_from($path)
 {
     global $PROBED_FORUM_CONFIG;
     $PROBED_FORUM_CONFIG['sql_database'] = 'cms';
-    $PROBED_FORUM_CONFIG['sql_user'] = $GLOBALS['DB_STATIC_OBJECT']->db_default_user();
-    $PROBED_FORUM_CONFIG['sql_pass'] = $GLOBALS['DB_STATIC_OBJECT']->db_default_password();
+    $PROBED_FORUM_CONFIG['sql_user'] = $GLOBALS['DB_STATIC_OBJECT']->default_user();
+    $PROBED_FORUM_CONFIG['sql_pass'] = $GLOBALS['DB_STATIC_OBJECT']->default_password();
 
     $base_url = post_param_string('base_url', get_base_url());
 

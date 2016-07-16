@@ -969,7 +969,7 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  string $text The text
  * @param  integer $level The level of importance this language string holds
  * @set    1 2 3 4
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?integer $wrap_pos Comcode parser wrap position (null: no wrapping)
@@ -977,13 +977,13 @@ function create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
  * @return array The language string ID save fields
  */
-function insert_lang_comcode($field_name, $text, $level, $connection = null, $insert_as_admin = false, $pass_id = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
+function insert_lang_comcode($field_name, $text, $level, $db = null, $insert_as_admin = false, $pass_id = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
-    return insert_lang($field_name, $text, $level, $connection, true, null, null, $insert_as_admin, $pass_id, null, $wrap_pos, $preparse_mode, $save_as_volatile);
+    return insert_lang($field_name, $text, $level, $db, true, null, null, $insert_as_admin, $pass_id, null, $wrap_pos, $preparse_mode, $save_as_volatile);
 }
 
 /**
@@ -993,7 +993,7 @@ function insert_lang_comcode($field_name, $text, $level, $connection = null, $in
  * @param  string $text The text
  * @param  integer $level The level of importance this language string holds
  * @set    1 2 3 4
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
  * @param  ?integer $id The ID to use for the language string (null: work out next available)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
@@ -1005,10 +1005,10 @@ function insert_lang_comcode($field_name, $text, $level, $connection = null, $in
  * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to subversion)
  * @return array The language string ID save fields
  */
-function insert_lang($field_name, $text, $level, $connection = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
+function insert_lang($field_name, $text, $level, $db = null, $comcode = false, $id = null, $lang = null, $insert_as_admin = false, $pass_id = null, $text_parsed = null, $wrap_pos = null, $preparse_mode = true, $save_as_volatile = false)
 {
     require_code('lang3');
-    return _insert_lang($field_name, $text, $level, $connection, $comcode, $id, $lang, $insert_as_admin, $pass_id, $text_parsed, $wrap_pos, $preparse_mode, $save_as_volatile);
+    return _insert_lang($field_name, $text, $level, $db, $comcode, $id, $lang, $insert_as_admin, $pass_id, $text_parsed, $wrap_pos, $preparse_mode, $save_as_volatile);
 }
 
 /**
@@ -1017,15 +1017,15 @@ function insert_lang($field_name, $text, $level, $connection = null, $comcode = 
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
  * @return array The language string ID save fields
  */
-function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_id = null, $source_user = null, $as_admin = false)
+function lang_remap_comcode($field_name, $id, $text, $db = null, $pass_id = null, $source_user = null, $as_admin = false)
 {
-    return lang_remap($field_name, $id, $text, $connection, true, $pass_id, $source_user, $as_admin);
+    return lang_remap($field_name, $id, $text, $db, true, $pass_id, $source_user, $as_admin);
 }
 
 /**
@@ -1034,35 +1034,35 @@ function lang_remap_comcode($field_name, $id, $text, $connection = null, $pass_i
  * @param  ID_TEXT $field_name The field name
  * @param  mixed $id The ID (if multi-lang-content on), or the string itself
  * @param  string $text The text to remap to
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $comcode Whether it is to be parsed as Comcode
  * @param  ?string $pass_id The special identifier for this language string on the page it will be displayed on; this is used to provide an explicit binding between languaged elements and greater templated areas (null: none)
  * @param  ?MEMBER $source_user The member that owns the content this is for (null: current member)
  * @param  boolean $as_admin Whether to generate Comcode as arbitrary admin
  * @return array The language string ID save fields
  */
-function lang_remap($field_name, $id, $text, $connection = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false)
+function lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pass_id = null, $source_user = null, $as_admin = false)
 {
     require_code('lang3');
-    return _lang_remap($field_name, $id, $text, $connection, $comcode, $pass_id, $source_user, $as_admin);
+    return _lang_remap($field_name, $id, $text, $db, $comcode, $pass_id, $source_user, $as_admin);
 }
 
 /**
  * Delete the specified language string from the translation table.
  *
  * @param  integer $id The ID
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  */
-function delete_lang($id, $connection = null)
+function delete_lang($id, $db = null)
 {
     if (!multi_lang_content()) {
         return;
     }
 
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
-    $connection->query_delete('translate', array('id' => $id));
+    $db->query_delete('translate', array('id' => $id));
 }
 
 /**
@@ -1072,27 +1072,27 @@ function delete_lang($id, $connection = null)
  * @param  ID_TEXT $table The table name
  * @param  array $row The table row. Must not have aspects of other tables in it (i.e. joins). Pre-filter using 'db_map_restrict' if required
  * @param  ID_TEXT $field_name The field name
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
  * @param  boolean $clear_away_from_cache Whether to remove from the Tempcode cache when we're done, for performance reasons (normally don't bother with this, but some code knows it won't be needed again -- esp Comcode cache layer -- and saves RAM by removing it)
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
-function get_translated_tempcode__and_simplify($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false)
+function get_translated_tempcode__and_simplify($table, $row, $field_name, $db = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false)
 {
-    if ($connection === null) {
-        $connection = $GLOBALS['SITE_DB'];
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
     }
-    $ret = get_translated_tempcode($table, $row, $field_name, $connection, $lang, $force, $as_admin, $clear_away_from_cache);
+    $ret = get_translated_tempcode($table, $row, $field_name, $db, $lang, $force, $as_admin, $clear_away_from_cache);
     if (is_null($ret)) {
         return $ret;
     }
     $ret = make_string_tempcode($ret->evaluate());
     if (multi_lang_content()) {
-        $connection->query_update('translate', array('text_parsed' => $ret->to_assembly()), array('id' => $row[$field_name], 'language' => $lang), '', 1);
+        $db->query_update('translate', array('text_parsed' => $ret->to_assembly()), array('id' => $row[$field_name], 'language' => $lang), '', 1);
     } else {
-        $connection->query_update($table, array($field_name . '__text_parsed' => $ret->to_assembly()), $row, '', 1);
+        $db->query_update($table, array($field_name . '__text_parsed' => $ret->to_assembly()), $row, '', 1);
     }
     return $ret;
 }
@@ -1103,7 +1103,7 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  ID_TEXT $table The table name
  * @param  array $row The table row. Must not have aspects of other tables in it (i.e. joins). Pre-filter using 'db_map_restrict' if required
  * @param  ID_TEXT $field_name The field name
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
  * @param  boolean $as_admin Whether to force as_admin, even if the language string isn't stored against an admin (designed for Comcode page caching)
@@ -1111,10 +1111,10 @@ function get_translated_tempcode__and_simplify($table, $row, $field_name, $conne
  * @param  boolean $ignore_browser_decaching If we have just re-populated so will not decache
  * @return ?Tempcode The parsed Comcode (null: the text couldn't be looked up)
  */
-function get_translated_tempcode($table, $row, $field_name, $connection = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false, $ignore_browser_decaching = false)
+function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = null, $force = false, $as_admin = false, $clear_away_from_cache = false, $ignore_browser_decaching = false)
 {
-    if ($connection === null) {
-        $connection = $GLOBALS['SITE_DB'];
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     if ($lang === null) {
@@ -1132,24 +1132,24 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
         global $RECORD_LANG_STRINGS_CONTENT;
         if ($RECORD_LANG_STRINGS_CONTENT) {
             global $RECORDED_LANG_STRINGS_CONTENT;
-            $RECORDED_LANG_STRINGS_CONTENT[$entry] = is_forum_db($connection);
+            $RECORDED_LANG_STRINGS_CONTENT[$entry] = $db->is_forum_db();
         }
 
         if ($lang === 'xxx') {
             return make_string_tempcode('!!!'); // Helpful for testing language compliancy. We don't expect to see non x's/!'s if we're running this language
         }
 
-        if ((isset($connection->text_lookup_cache[$entry])) && ($lang === user_lang())) {
-            $ret = $connection->text_lookup_cache[$entry];
+        if ((isset($db->text_lookup_cache[$entry])) && ($lang === user_lang())) {
+            $ret = $db->text_lookup_cache[$entry];
             if ($ret !== '') {
                 if (is_string($ret)) {
-                    $connection->text_lookup_cache[$entry] = new Tempcode();
-                    $connection->text_lookup_cache[$entry]->from_assembly($ret);
-                    $ret = $connection->text_lookup_cache[$entry];
+                    $db->text_lookup_cache[$entry] = new Tempcode();
+                    $db->text_lookup_cache[$entry]->from_assembly($ret);
+                    $ret = $db->text_lookup_cache[$entry];
                 }
                 if ($clear_away_from_cache) {
-                    unset($connection->text_lookup_cache[$entry]);
-                    unset($connection->text_lookup_original_cache[$entry]);
+                    unset($db->text_lookup_cache[$entry]);
+                    unset($db->text_lookup_original_cache[$entry]);
                 }
                 return $ret;
             }
@@ -1157,7 +1157,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
 
         global $SEARCH__CONTENT_BITS;
         if ($SEARCH__CONTENT_BITS !== null) { // Doing a search so we need to reparse, with highlighting on
-            $_result = $connection->query_select('translate', array('text_original', 'source_user'), array('id' => $entry, 'language' => $lang), '', 1);
+            $_result = $db->query_select('translate', array('text_original', 'source_user'), array('id' => $entry, 'language' => $lang), '', 1);
             if (array_key_exists(0, $_result)) {
                 global $LAX_COMCODE;
                 $temp = $LAX_COMCODE;
@@ -1169,17 +1169,17 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
                     $result['text_original'] = force_clean_comcode($result['text_original']); // Highlighting only works with pure Comcode
                 }
 
-                $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $connection, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+                $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
                 $LAX_COMCODE = $temp;
                 return $ret;
             }
         }
 
-        $_result = $connection->query_select('translate', array('text_parsed', 'text_original'), array('id' => $entry, 'language' => $lang), '', 1);
+        $_result = $db->query_select('translate', array('text_parsed', 'text_original'), array('id' => $entry, 'language' => $lang), '', 1);
         $result = isset($_result[0]) ? $_result[0]['text_parsed'] : null;
         if (isset($_result[0])) {
             if ($lang === user_lang()) {
-                $connection->text_lookup_original_cache[$entry] = $_result[0]['text_original'];
+                $db->text_lookup_original_cache[$entry] = $_result[0]['text_original'];
             }
         }
     } else {
@@ -1194,7 +1194,7 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
                 $row[$field_name] = force_clean_comcode($row[$field_name]); // Highlighting only works with pure Comcode
             }
 
-            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $connection, false, false, false, false, false, $SEARCH__CONTENT_BITS);
+            $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
             $LAX_COMCODE = $temp;
             return $ret;
         }
@@ -1204,18 +1204,18 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
 
     if (($result === null) || ($result == '') || (!$ignore_browser_decaching && is_browser_decaching())) { // Not cached
         require_code('lang3');
-        return parse_translated_text($table, $row, $field_name, $connection, $lang, $force, $as_admin);
+        return parse_translated_text($table, $row, $field_name, $db, $lang, $force, $as_admin);
     }
 
     $parsed = new Tempcode();
     if (!$parsed->from_assembly($result, true)) { // Corrupted
         require_code('lang3');
-        return parse_translated_text($table, $row, $field_name, $connection, $lang, $force, $as_admin);
+        return parse_translated_text($table, $row, $field_name, $db, $lang, $force, $as_admin);
     }
 
     if (multi_lang_content()) {
         if ($lang === user_lang()) {
-            $connection->text_lookup_cache[$entry] = $parsed;
+            $db->text_lookup_cache[$entry] = $parsed;
         }
     }
 
@@ -1226,12 +1226,12 @@ function get_translated_tempcode($table, $row, $field_name, $connection = null, 
  * Try to return the human-readable version of the language string ID, passed in as $entry.
  *
  * @param  mixed $entry The ID (if multi-lang-content on), or the string itself
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?LANGUAGE_NAME $lang The language (null: uses the current language)
  * @param  boolean $force Whether to force it to the specified language
  * @return ?string The human-readable version (null: could not look up when $force was on)
  */
-function get_translated_text($entry, $connection = null, $lang = null, $force = false)
+function get_translated_text($entry, $db = null, $lang = null, $force = false)
 {
     if (!multi_lang_content()) {
         return $entry;
@@ -1246,44 +1246,44 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
         trigger_error(do_lang('NULL_LANG_STRING'), E_USER_WARNING);
     }
 
-    if ($connection === null) {
-        $connection = $GLOBALS['SITE_DB'];
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     global $RECORD_LANG_STRINGS_CONTENT;
     if ($RECORD_LANG_STRINGS_CONTENT) {
         global $RECORDED_LANG_STRINGS_CONTENT;
-        $RECORDED_LANG_STRINGS_CONTENT[$entry] = is_forum_db($connection);
+        $RECORDED_LANG_STRINGS_CONTENT[$entry] = $db->is_forum_db();
     }
 
     if ($lang === null) {
         $lang = user_lang();
     }
 
-    if ((isset($connection->text_lookup_original_cache[$entry])) && ($lang === user_lang())) {
-        return $connection->text_lookup_original_cache[$entry];
+    if ((isset($db->text_lookup_original_cache[$entry])) && ($lang === user_lang())) {
+        return $db->text_lookup_original_cache[$entry];
     }
 
     if ($lang === 'xxx') {
         return '!!!'; // Helpful for testing language compliancy. We don't expect to see non x's/!'s if we're running this language
     }
-    $result = $connection->query_select('translate', array('text_original', 'text_parsed'), array('id' => $entry, 'language' => $lang), '', 1);
+    $result = $db->query_select('translate', array('text_original', 'text_parsed'), array('id' => $entry, 'language' => $lang), '', 1);
     if (!isset($result[0])) {
         if ($force) {
             return null;
         }
 
-        $result = $connection->query_select('translate', array('*'), array('id' => $entry), '', 1);
+        $result = $db->query_select('translate', array('*'), array('id' => $entry), '', 1);
         if (!isset($result[0])) {
-            $result = $connection->query_select('translate', array('*'), array('id' => $entry), '', 1);
+            $result = $db->query_select('translate', array('*'), array('id' => $entry), '', 1);
         }
         if (isset($result[0])) {
-            $connection->query_insert('translate', array('broken' => 1, 'language' => $lang) + $result[0]);
+            $db->query_insert('translate', array('broken' => 1, 'language' => $lang) + $result[0]);
         }
     }
     if (!isset($result[0])) {
         $member_id = function_exists('get_member') ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
-        $connection->query_insert('translate', array('id' => $entry, 'source_user' => $member_id, 'broken' => 0, 'importance_level' => 3, 'text_original' => '', 'text_parsed' => '', 'language' => $lang));
+        $db->query_insert('translate', array('id' => $entry, 'source_user' => $member_id, 'broken' => 0, 'importance_level' => 3, 'text_original' => '', 'text_parsed' => '', 'language' => $lang));
         $msg = do_lang('LANGUAGE_CORRUPTION', strval($entry));
         if ($GLOBALS['DEV_MODE']) {
             fatal_exit($msg);
@@ -1293,8 +1293,8 @@ function get_translated_text($entry, $connection = null, $lang = null, $force = 
         return '';
     }
     if ($lang === user_lang()) {
-        $connection->text_lookup_original_cache[$entry] = $result[0]['text_original'];
-        $connection->text_lookup_cache[$entry] = $result[0]['text_parsed'];
+        $db->text_lookup_original_cache[$entry] = $result[0]['text_original'];
+        $db->text_lookup_cache[$entry] = $result[0]['text_parsed'];
     }
 
     return $result[0]['text_original'];

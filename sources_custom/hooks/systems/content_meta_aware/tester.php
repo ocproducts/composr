@@ -32,7 +32,7 @@ class Hook_content_meta_aware_tester
             'content_type_label' => 'tester:TEST_SECTION',
             'content_type_universal_label' => 'Test section',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'tests',
             'id_field' => 'id',
             'id_field_numeric' => true,

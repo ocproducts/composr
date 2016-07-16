@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_ticket_type
             'content_type_label' => 'tickets:TICKET_TYPE',
             'content_type_universal_label' => 'Ticket type',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'ticket_types',
             'id_field' => 'id',
             'id_field_numeric' => true,

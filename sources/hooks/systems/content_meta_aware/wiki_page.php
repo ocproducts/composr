@@ -37,7 +37,7 @@ class Hook_content_meta_aware_wiki_page
             'content_type_label' => 'wiki:_WIKI_PAGE',
             'content_type_universal_label' => 'Wiki+ Page',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'wiki_pages',
             'id_field' => 'id',
             'id_field_numeric' => true,

@@ -579,7 +579,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 /**
  * Make sure we are doing necessary join to be able to access the given field
  *
- * @param  object $db Database connection
+ * @param  object $db Database connector
  * @param  array $info Content type info
  * @param  ?ID_TEXT $catalogue_name Name of the catalogue (null: unknown; reduces performance)
  * @param  array $extra_join List of joins (passed as reference)
@@ -1327,7 +1327,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         $query .= ' WHERE EXISTS(SELECT * FROM ' . get_table_prefix() . 'catalogue_entries e' . $privacy_join . ' WHERE ce_validated=1 AND ce_add_date>' . strval($updated_since) . $privacy_where . ')';
     } else {
         if ($prefer_ones_with_entries) {
-            if (can_arbitrary_groupby()) {
+            if ($GLOBALS['SITE_DB']->can_arbitrary_groupby()) {
                 $query .= ' JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name GROUP BY c.c_name';
             }
         }

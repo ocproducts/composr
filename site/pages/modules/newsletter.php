@@ -91,7 +91,7 @@ class Module_newsletter
                 'newsletter' => 'LONG_TEXT',
                 'language' => 'ID_TEXT',
                 'importance_level' => 'INTEGER',
-                'from_email' => 'EMAIL',
+                'from_email' => 'SHORT_TEXT',
                 'from_name' => 'SHORT_TEXT',
                 'priority' => 'INTEGER',
                 'template' => 'ID_TEXT',

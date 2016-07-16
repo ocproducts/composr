@@ -1144,8 +1144,8 @@ function check_method($c, $c_pos, $function_guard = '')
 
         $params = $c[2];
 
-        // Special rule for 'this->connection'
-        if (($c[1][1] == 'this') && ($c[1][2][1][1] == 'connection') && ((!isset($c[1][2][2][0])) || ($c[1][2][2][0] != 'DEREFERENCE'))) {
+        // Special rule for 'this->db'
+        if (($c[1][1] == 'this') && ($c[1][2][1][1] == 'db') && ((!isset($c[1][2][2][0])) || ($c[1][2][2][0] != 'DEREFERENCE'))) {
             $method = $c[1][2][2][1][1];
             $class = 'DatabaseConnector';
             return actual_check_method($class, $method, $params, $c_pos, $function_guard);
@@ -1933,8 +1933,8 @@ function check_variable($variable, $reference = false, $function_guard = '')
 
             $next = $next[2];
         } elseif ($next[0] == 'DEREFERENCE') {
-            // Special rule for 'this->connection'
-            if (($variable[1] == 'this') && ($variable[2][1][1] == 'connection') && ((!isset($variable[2][2][0])) || ($variable[2][2][0] != 'DEREFERENCE'))) {
+            // Special rule for 'this->db'
+            if (($variable[1] == 'this') && ($variable[2][1][1] == 'db') && ((!isset($variable[2][2][0])) || ($variable[2][2][0] != 'DEREFERENCE'))) {
                 $type = 'DatabaseConnector';
             }
 

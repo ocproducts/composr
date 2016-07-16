@@ -905,7 +905,7 @@ function make_install_sql()
         warn_exit('Failed to execute installer, while building install.sql');
     }
 
-    // Get database connection
+    // Get database connector
     $conn = new DatabaseConnector($database, get_db_site_host(), $username, $password, $table_prefix);
 
     // Remove caching

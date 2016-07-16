@@ -723,7 +723,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $domains = array();
         $start = 0;
         do {
-            if (strpos(get_db_type(), 'mysql') !== false) {
+            if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
                 $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
             } else {
                 $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email'), null, '', 500, $start);
@@ -745,7 +745,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
 
             $start += 500;
-        } while ((array_key_exists(0, $rows)) && (strpos(get_db_type(), 'mysql') === false));
+        } while ((array_key_exists(0, $rows)) && (!$GLOBALS['SITE_DB']->has_expression_ordering()));
         arsort($domains);
         foreach ($domains as $key => $val) {
             $domains[$key] = strval($val);

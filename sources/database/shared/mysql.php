@@ -23,8 +23,71 @@
  *
  * @package    core_database_drivers
  */
-class Database_super_mysql
+class Database_super_mysql extends DatabaseDriver
 {
+    /**
+     * Get the default user for making db connections (used by the installer as a default).
+     *
+     * @return string The default user for db connections
+     */
+    public function default_user()
+    {
+        return 'root';
+    }
+
+    /**
+     * Get the default password for making db connections (used by the installer as a default).
+     *
+     * @return string The default password for db connections
+     */
+    public function default_password()
+    {
+        return '';
+    }
+
+    /**
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     *
+     * @return boolean Whether it can
+     */
+    public function can_arbitrary_groupby()
+    {
+        return true;
+    }
+
+    /**
+     * Find whether expression ordering support is present
+     *
+     * @param  array $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_expression_ordering($connection)
+    {
+        return true;
+    }
+
+    /**
+     * Find whether collate support is present
+     *
+     * @param  array $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_collate_settings($connection)
+    {
+        return true;
+    }
+
+    /**
+     * Find whether update queries may have joins
+     *
+     * @param  array $connection A DB connection
+     * @return boolean Whether it is
+     */
+    public function has_update_joins($connection)
+    {
+        return true;
+    }
+
     /**
      * Get queries needed to initialise the DB connection.
      *
@@ -53,7 +116,7 @@ class Database_super_mysql
      * Get a strict mode set query. Takes into account configuration also.
      *
      * @param boolean $setting Whether it is on (may be overridden be configuration)
-     * @return string The query
+     * @return ?string The query (null: none)
      */
     public function strict_mode_query($setting)
     {
@@ -68,63 +131,17 @@ class Database_super_mysql
     }
 
     /**
-     * Find whether full-text-search is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_full_text($db)
-    {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Find whether collate support is present
-     *
-     * @param  array $db A DB connection
-     * @return boolean Whether it is
-     */
-    public function db_has_collate_settings($db)
-    {
-        return true;
-    }
-
-    /**
-     * Find whether full-text-boolean-search is present
-     *
-     * @return boolean Whether it is
-     */
-    public function db_has_full_text_boolean()
-    {
-        return true;
-    }
-
-    /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
-     *
-     * @return boolean Whether it can
-     */
-    public function can_arbitrary_groupby()
-    {
-        return true;
-    }
-
-    /**
      * Find if a database query may run, showing errors if it cannot
      *
      * @param  string $query The complete SQL query
-     * @param  array $db_parts A DB connection
+     * @param  array $connection A DB connection
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return boolean Whether it can
      */
-    protected function db_query_may_run($query, $db_parts, $get_insert_id)
+    protected function query_may_run($query, $connection, $get_insert_id)
     {
         if (isset($query[500000])) { // Let's hope we can fail on this, because it's a huge query. We can only allow it if MySQL can.
-            $test_result = $this->db_query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $db_parts, null, null, true);
+            $test_result = $this->query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $connection, null, null, true);
 
             if (!is_array($test_result)) {
                 return false;
@@ -149,9 +166,9 @@ class Database_super_mysql
      *
      * @param  string $query The complete SQL query
      * @param  string $err The error message
-     * @param  array $db_parts A DB connection
+     * @param  array $connection A DB connection
      */
-    protected function handle_failed_query($query, $err, $db_parts)
+    protected function handle_failed_query($query, $err, $connection)
     {
         if (function_exists('ocp_mark_as_escaped')) {
             ocp_mark_as_escaped($err);
@@ -159,7 +176,7 @@ class Database_super_mysql
         if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
             $matches = array();
             if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
-                $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
+                $this->query('REPAIR TABLE ' . $matches[1], $connection);
             }
 
             if (!function_exists('do_lang') || is_null(do_lang('QUERY_FAILED', null, null, null, null, false))) {
@@ -172,122 +189,11 @@ class Database_super_mysql
     }
 
     /**
-     * Get the default user for making db connections (used by the installer as a default).
-     *
-     * @return string The default user for db connections
-     */
-    public function db_default_user()
-    {
-        return 'root';
-    }
-
-    /**
-     * Get the default password for making db connections (used by the installer as a default).
-     *
-     * @return string The default password for db connections
-     */
-    public function db_default_password()
-    {
-        return '';
-    }
-
-    /**
-     * Create a table index.
-     *
-     * @param  ID_TEXT $table_name The name of the table to create the index on
-     * @param  ID_TEXT $index_name The index name (not really important at all)
-     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @param  array $db The DB connection to make on
-     */
-    public function db_create_index($table_name, $index_name, $_fields, $db)
-    {
-        $query = $this->db_create_index_sql($table_name, $index_name, $_fields, $db);
-        if (!is_null($query)) {
-            $this->db_query($query, $db);
-        }
-    }
-
-    /**
-     * SQL to create a table index.
-     *
-     * @param  ID_TEXT $table_name The name of the table to create the index on
-     * @param  ID_TEXT $index_name The index name (not really important at all)
-     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @return ?string SQL (null: do nothing)
-     */
-    public function db_create_index_sql($table_name, $index_name, $_fields)
-    {
-        if ($index_name[0] == '#') {
-            if ($this->using_innodb()) {
-                return null;
-            }
-            $index_name = substr($index_name, 1);
-            $type = 'FULLTEXT';
-        } else {
-            $type = 'INDEX';
-        }
-        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
-    }
-
-    /**
-     * Change the primary key of a table.
-     *
-     * @param  ID_TEXT $table_name The name of the table to create the index on
-     * @param  array $new_key A list of fields to put in the new key
-     * @param  array $db The DB connection to make on
-     */
-    public function db_change_primary_key($table_name, $new_key, $db)
-    {
-        $this->db_query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $db);
-    }
-
-    /**
-     * Assemble part of a WHERE clause for doing full-text search
-     *
-     * @param  string $content Our match string (assumes "?" has been stripped already)
-     * @param  boolean $boolean Whether to do a boolean full text search
-     * @return string Part of a WHERE clause for doing full-text search
-     */
-    public function db_full_text_assemble($content, $boolean)
-    {
-        static $stopwords = null;
-        if (is_null($stopwords)) {
-            require_code('database_search');
-            $stopwords = get_stopwords_list();
-        }
-        if (isset($stopwords[trim(strtolower($content), '"')])) {
-            // This is an imperfect solution for searching for a stop-word
-            // It will not cover the case where the stop-word is within the wider text. But we can't handle that case efficiently anyway
-            return db_string_equal_to('?', trim($content, '"'));
-        }
-
-        if (!$boolean) {
-            $content = str_replace('"', '', $content);
-            if ((strtoupper($content) == $content) && (!is_numeric($content))) {
-                return 'MATCH (?) AGAINST (_latin1\'' . $this->db_escape_string($content) . '\' COLLATE latin1_general_cs)';
-            }
-            return 'MATCH (?) AGAINST (\'' . $this->db_escape_string($content) . '\')';
-        }
-
-        return 'MATCH (?) AGAINST (\'' . $this->db_escape_string($content) . '\' IN BOOLEAN MODE)';
-    }
-
-    /**
-     * Get the ID of the first row in an auto-increment table (used whenever we need to reference the first).
-     *
-     * @return integer First ID used
-     */
-    public function db_get_first_id()
-    {
-        return 1;
-    }
-
-    /**
      * Get a map of Composr field types, to actual database types.
      *
      * @return array The map
      */
-    public function db_get_type_remap()
+    public function get_type_remap()
     {
         $type_remap = array(
             'AUTO' => 'integer unsigned auto_increment',
@@ -316,28 +222,18 @@ class Database_super_mysql
     }
 
     /**
-     * Whether to use InnoDB for MySQL. Change this function by hand - official only MyISAM supported
-     *
-     * @return boolean Answer
-     */
-    public function using_innodb()
-    {
-        return false;
-    }
-
-    /**
      * Create a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  array $db The DB connection to make on
+     * @param  array $connection The DB connection to make on
      * @param  ID_TEXT $raw_table_name The table name with no table prefix
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      */
-    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
+    public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)
     {
-        $query = $this->db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
-        $this->db_query($query, $db, null, null);
+        $query = $this->create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
+        $this->query($query, $connection, null, null);
     }
 
     /**
@@ -349,9 +245,9 @@ class Database_super_mysql
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
      * @return string SQL
      */
-    public function db_create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
+    public function create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
     {
-        $type_remap = $this->db_get_type_remap();
+        $type_remap = $this->get_type_remap();
 
         $_fields = '';
         $keys = '';
@@ -383,8 +279,7 @@ class Database_super_mysql
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $innodb = $this->using_innodb();
-        $table_type = ($innodb ? 'INNODB' : 'MyISAM');
+        $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
         $type_key = 'engine';
         if ($raw_table_name == 'sessions') {
             $table_type = 'HEAP';
@@ -411,86 +306,119 @@ class Database_super_mysql
     }
 
     /**
-     * Encode an SQL statement fragment for a conditional to see if two strings are equal.
+     * Delete a table.
      *
-     * @param  ID_TEXT $attribute The attribute
-     * @param  string $compare The comparison
-     * @return string The SQL
+     * @param  ID_TEXT $table The table name
+     * @param  array $connection The DB connection to delete on
      */
-    public function db_string_equal_to($attribute, $compare)
+    public function drop_table_if_exists($table, $connection)
     {
-        return $attribute . "='" . db_escape_string($compare) . "'";
+        $this->query('DROP TABLE IF EXISTS ' . $table, $connection);
     }
 
     /**
-     * Encode an SQL statement fragment for a conditional to see if two strings are not equal.
+     * Change the primary key of a table.
      *
-     * @param  ID_TEXT $attribute The attribute
-     * @param  string $compare The comparison
-     * @return string The SQL
+     * @param  ID_TEXT $table_name The name of the table to create the index on
+     * @param  array $new_key A list of fields to put in the new key
+     * @param  array $connection The DB connection to make on
      */
-    public function db_string_not_equal_to($attribute, $compare)
+    public function change_primary_key($table_name, $new_key, $connection)
     {
-        return $attribute . "<>'" . db_escape_string($compare) . "'";
+        $this->query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $connection);
     }
 
     /**
-     * Find whether expression ordering support is present
+     * Create a table index.
      *
-     * @param  array $db A DB connection
+     * @param  ID_TEXT $table_name The name of the table to create the index on
+     * @param  ID_TEXT $index_name The index name (not really important at all)
+     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
+     * @param  array $connection The DB connection to make on
+     */
+    public function create_index($table_name, $index_name, $_fields, $connection)
+    {
+        $query = $this->create_index_sql($table_name, $index_name, $_fields, $connection);
+        if (!is_null($query)) {
+            $this->query($query, $connection);
+        }
+    }
+
+    /**
+     * SQL to create a table index.
+     *
+     * @param  ID_TEXT $table_name The name of the table to create the index on
+     * @param  ID_TEXT $index_name The index name (not really important at all)
+     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
+     * @return ?string SQL (null: do nothing)
+     */
+    public function create_index_sql($table_name, $index_name, $_fields)
+    {
+        if ($index_name[0] == '#') {
+            $index_name = substr($index_name, 1);
+            $type = 'FULLTEXT';
+        } else {
+            $type = 'INDEX';
+        }
+        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
+    }
+
+    /**
+     * Find whether full-text-search is present
+     *
+     * @param  array $connection A DB connection
      * @return boolean Whether it is
      */
-    public function db_has_expression_ordering($db)
+    public function has_full_text($connection)
     {
         return true;
     }
 
     /**
-     * This function is internal to the database system, allowing SQL statements to be build up appropriately. Some databases require IS NULL to be used to check for blank strings.
+     * Find whether full-text-boolean-search is present
      *
-     * @return boolean Whether a blank string IS NULL
+     * @return boolean Whether it is
      */
-    public function db_empty_is_null()
+    public function has_full_text_boolean()
     {
-        return false;
+        return true;
     }
 
     /**
-     * Delete a table.
+     * Assemble part of a WHERE clause for doing full-text search
      *
-     * @param  ID_TEXT $table The table name
-     * @param  array $db The DB connection to delete on
+     * @param  string $content Our match string (assumes "?" has been stripped already)
+     * @param  boolean $boolean Whether to do a boolean full text search
+     * @return string Part of a WHERE clause for doing full-text search
      */
-    public function db_drop_table_if_exists($table, $db)
+    public function full_text_assemble($content, $boolean)
     {
-        $this->db_query('DROP TABLE IF EXISTS ' . $table, $db);
-    }
+        static $stopwords = null;
+        if (is_null($stopwords)) {
+            require_code('database_search');
+            $stopwords = get_stopwords_list();
+        }
+        if (isset($stopwords[trim(strtolower($content), '"')])) {
+            // This is an imperfect solution for searching for a stop-word
+            // It will not cover the case where the stop-word is within the wider text. But we can't handle that case efficiently anyway
+            return db_string_equal_to('?', trim($content, '"'));
+        }
 
-    /**
-     * Determine whether the database is a flat file database, and thus not have a meaningful connect username and password.
-     *
-     * @return boolean Whether the database is a flat file database
-     */
-    public function db_is_flat_file_simple()
-    {
-        return false;
-    }
+        if (!$boolean) {
+            $content = str_replace('"', '', $content);
+            if ((strtoupper($content) == $content) && (!is_numeric($content))) {
+                return 'MATCH (?) AGAINST (_latin1\'' . $this->escape_string($content) . '\' COLLATE latin1_general_cs)';
+            }
+            return 'MATCH (?) AGAINST (\'' . $this->escape_string($content) . '\')';
+        }
 
-    /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
-     *
-     * @param  string $pattern The pattern
-     * @return string The encoded pattern
-     */
-    public function db_encode_like($pattern)
-    {
-        return $this->db_escape_string($pattern);
+        return 'MATCH (?) AGAINST (\'' . $this->escape_string($content) . '\' IN BOOLEAN MODE)';
     }
 
     /**
      * Close the database connections. We don't really need to close them (will close at exit), just disassociate so we can refresh them.
      */
-    public function db_close_connections()
+    public function close_connections()
     {
         $this->cache_db = array();
         $this->last_select_db = null;

@@ -37,7 +37,7 @@ class Hook_content_meta_aware_video
             'content_type_label' => 'global:VIDEO',
             'content_type_universal_label' => 'Video',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'where' => 'cat NOT LIKE \'' . db_encode_like('download\_%') . '\'',
             'table' => 'videos',
             'id_field' => 'id',

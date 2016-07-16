@@ -37,7 +37,7 @@ class Hook_content_meta_aware_wiki_post
             'content_type_label' => 'wiki:WIKI_POST',
             'content_type_universal_label' => 'Wiki+ Post',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'wiki_posts',
             'id_field' => 'id',
             'id_field_numeric' => true,

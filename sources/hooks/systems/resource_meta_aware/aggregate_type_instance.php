@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_aggregate_type_instance
             'content_type_label' => 'aggregate_type_instances:AGGREGATE_TYPE_INSTANCE',
             'content_type_universal_label' => 'Aggregate type instance',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'aggregate_type_instances',
             'id_field' => 'id',
             'id_field_numeric' => true,

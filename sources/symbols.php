@@ -669,7 +669,7 @@ function ecv_HAS_ACTUAL_PAGE_ACCESS($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[0])) {
-        $value = has_actual_page_access(((isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], isset($param[1]) ? $param[1] : null) ? '1' : '0';
+        $value = (function_exists('get_member') && has_actual_page_access(((isset($param[2]))) ? intval($param[2]) : get_member(), $param[0], isset($param[1]) ? $param[1] : null)) ? '1' : '0';
     }
 
     if ($GLOBALS['XSS_DETECT']) {

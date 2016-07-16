@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_zone
             'content_type_label' => 'zones:ZONE',
             'content_type_universal_label' => 'Zone',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'zones',
             'id_field' => 'zone_name',
             'id_field_numeric' => false,

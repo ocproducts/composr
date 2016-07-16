@@ -530,22 +530,22 @@ function table_to_json($table, $fields_to_skip = null, $where_map = null)
  * @param  string $table Table name
  * @param  ?array $fields_to_skip Fields to not include in the table dump (null: none). Any keys from $where_map will also be skipped, as these are obviously constant for all rows returned.
  * @param  ?array $where_map Extra WHERE constraints (null: none)
- * @param  ?object $connection Database connection to look up from (null: work out from table name)
+ * @param  ?object $db Database connector to look up from (null: work out from table name)
  * @return array Portable rows
  */
-function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $connection = null)
+function table_to_portable_rows($table, $fields_to_skip = null, $where_map = null, $db = null)
 {
     if (is_null($where_map)) {
         $where_map = array();
     }
 
-    if (is_null($connection)) {
-        $connection = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     }
 
-    $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
+    $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
 
-    $rows = $connection->query_select($table, array('*'), $where_map);
+    $rows = $db->query_select($table, array('*'), $where_map);
 
     $relation_map = get_relation_map_for_table($table);
 
@@ -559,7 +559,7 @@ function table_to_portable_rows($table, $fields_to_skip = null, $where_map = nul
             unset($row[$field_to_skip]);
         }
 
-        $row = table_row_to_portable_row($row, $db_fields, $relation_map, $connection);
+        $row = table_row_to_portable_row($row, $db_fields, $relation_map, $db);
     }
 
     return $rows;
@@ -588,16 +588,16 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
  * @param  array $rows Portable rows
  * @param  ?array $extra_field_data Extra data to add to each row (null: none)
  * @param  integer $replace_mode Whether to fully replace the current table contents
- * @param  ?object $connection Database connection to look up from (null: work out from table name)
+ * @param  ?object $db Database connector to look up from (null: work out from table name)
  * @return boolean Success status
  */
-function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $connection = null)
+function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mode, $db = null)
 {
-    if (is_null($connection)) {
-        $connection = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = (substr($table, 0, 2) == 'f_' && get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
     }
 
-    $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
+    $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table)));
 
     $lang_fields = array();
     $upload_fields = array();
@@ -621,12 +621,12 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
         }
 
         if (count($lang_fields) != 0 || count($upload_fields) != 0) {
-            $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), $delete_where);
+            $old_rows = $db->query_select($table, array_merge($lang_fields, $upload_fields), $delete_where);
 
             foreach ($old_rows as $old_row) {
                 // Cleanup old language fields
                 foreach ($lang_fields as $lang_field) {
-                    delete_lang($old_row[$lang_field], $connection);
+                    delete_lang($old_row[$lang_field], $db);
                 }
 
                 // Cleanup old files
@@ -638,7 +638,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
         }
 
         // Delete old rows
-        $connection->query_delete($table, $delete_where);
+        $db->query_delete($table, $delete_where);
     } else {
         // For a poor-mans REPLACE INTO (which is a MySQL extension)
         $keys = array();
@@ -660,16 +660,16 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
             $row += $extra_field_data;
         }
 
-        $row = table_row_from_portable_row($row, $db_fields, $relation_map, $connection);
+        $row = table_row_from_portable_row($row, $db_fields, $relation_map, $db);
 
         if ($replace_mode == TABLE_REPLACE_MODE_NONE) {
             if (count($lang_fields) != 0 || count($upload_fields) != 0) {
-                $old_rows = $connection->query_select($table, array_merge($lang_fields, $upload_fields), array_intersect_key($row, $keys));
+                $old_rows = $db->query_select($table, array_merge($lang_fields, $upload_fields), array_intersect_key($row, $keys));
 
                 foreach ($old_rows as $old_row) {
                     // Cleanup old language fields
                     foreach ($lang_fields as $lang_field) {
-                        delete_lang($old_row[$lang_field], $connection);
+                        delete_lang($old_row[$lang_field], $db);
                     }
 
                     // Cleanup old files
@@ -681,10 +681,10 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
             }
 
             // Delete old row with same key
-            $connection->query_delete($table, array_intersect_key($row, $keys));
+            $db->query_delete($table, array_intersect_key($row, $keys));
         }
 
-        $connection->query_insert($table, $row);
+        $db->query_insert($table, $row);
     }
 
     return true;
@@ -700,13 +700,13 @@ ROW LEVEL
  * @param  array $row Table row
  * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
  * @param  array $relation_map Relation map
- * @param  ?object $connection Database connection to look up from (null: main site DB)
+ * @param  ?object $db Database connector to look up from (null: main site DB)
  * @return array Portable row
  */
-function table_row_to_portable_row($row, $db_fields, $relation_map, $connection = null)
+function table_row_to_portable_row($row, $db_fields, $relation_map, $db = null)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     foreach ($db_fields as $db_field_name => $db_field_type) {
@@ -717,7 +717,7 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection 
         $db_field_type = trim($db_field_type, '*?');
 
         if (strpos($db_field_type, '_TRANS') !== false) {
-            $row[$db_field_name] = remap_trans_as_portable($row, $db_field_name, $connection);
+            $row[$db_field_name] = remap_trans_as_portable($row, $db_field_name, $db);
         }
 
         elseif ($db_field_type == 'MEMBER') {
@@ -758,13 +758,13 @@ function table_row_to_portable_row($row, $db_fields, $relation_map, $connection 
  * @param  array $row Portable row
  * @param  array $db_fields A map of DB-style schema data for the fields we have in $row; helps us build portability
  * @param  array $relation_map Relation map
- * @param  ?object $connection Database connection to look up from (null: main site DB)
+ * @param  ?object $db Database connector to look up from (null: main site DB)
  * @return array Table row
  */
-function table_row_from_portable_row($row, $db_fields, $relation_map, $connection = null)
+function table_row_from_portable_row($row, $db_fields, $relation_map, $db = null)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     foreach ($db_fields as $db_field_name => $db_field_type) {
@@ -775,7 +775,7 @@ function table_row_from_portable_row($row, $db_fields, $relation_map, $connectio
         $db_field_type = trim($db_field_type, '*?');
 
         if (strpos($db_field_type, '_TRANS') !== false) {
-            $row += remap_portable_as_trans($row[$db_field_name], $db_field_name, $connection);
+            $row += remap_portable_as_trans($row[$db_field_name], $db_field_name, $db);
         }
 
         elseif ($db_field_type == 'MEMBER') {
@@ -1025,10 +1025,10 @@ function remap_portable_as_resource_id($resource_type, $portable_data)
  *
  * @param  array $db_row Database row
  * @param  string $field Database field
- * @param  object $connection Database connection to look up from
+ * @param  object $db Database connector to look up from
  * @return array Portable data
  */
-function remap_trans_as_portable($db_row, $field, $connection)
+function remap_trans_as_portable($db_row, $field, $db)
 {
     if (!multi_lang_content()) {
         if (isset($db_row[$field . '__source_user'])) {
@@ -1038,7 +1038,7 @@ function remap_trans_as_portable($db_row, $field, $connection)
         }
     }
 
-    return table_to_portable_rows('translate', array('id', 'text_parsed'), array('id' => $db_row[$field]), $connection);
+    return table_to_portable_rows('translate', array('id', 'text_parsed'), array('id' => $db_row[$field]), $db);
 }
 
 /**
@@ -1046,10 +1046,10 @@ function remap_trans_as_portable($db_row, $field, $connection)
  *
  * @param  array $portable_data Portable data
  * @param  string $field Database field
- * @param  object $connection Database connection to look up from
+ * @param  object $db Database connector to look up from
  * @return array Extra database row data
  */
-function remap_portable_as_trans($portable_data, $field, $connection)
+function remap_portable_as_trans($portable_data, $field, $db)
 {
     if (!multi_lang_content()) {
         if (is_array($portable_data)) {
@@ -1059,13 +1059,13 @@ function remap_portable_as_trans($portable_data, $field, $connection)
         }
     }
 
-    $connection->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, null, true);
-    $id = $connection->query_select_value('translate', 'MAX(id)');
+    $db->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, null, true);
+    $id = $db->query_select_value('translate', 'MAX(id)');
     $id = ($id === null) ? null : ($id + 1);
 
-    table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $connection);
+    table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $db);
 
-    $connection->query('UNLOCK TABLES', null, null, true);
+    $db->query('UNLOCK TABLES', null, null, true);
 
     return array($field => $id);
 }

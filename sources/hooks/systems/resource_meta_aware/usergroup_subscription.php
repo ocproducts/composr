@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_usergroup_subscription
             'content_type_label' => 'ecommerce:USERGROUP_SUBSCRIPTION',
             'content_type_universal_label' => 'Usergroup subscription',
 
-            'connection' => (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'],
+            'db' => (get_forum_type() == 'cns') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'],
             'table' => 'f_usergroup_subs',
             'id_field' => 'id',
             'id_field_numeric' => true,

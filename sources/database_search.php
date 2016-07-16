@@ -1120,7 +1120,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
-                        if (($order == '') && (db_has_expression_ordering($db->connection_read)) && ($content_where != '')) {
+                        if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
                             $_select = preg_replace('#\?#', 't' . strval($i) . '.text_original', $content_where) . ' AS contextual_relevance';
                         } else {
                             $_select = '1';
@@ -1147,7 +1147,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
-                        if (($order == '') && (db_has_expression_ordering($db->connection_read)) && ($content_where != '')) {
+                        if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
                             $_select = preg_replace('#\?#', $field, $content_where) . ' AS contextual_relevance';
                         } else {
                             $_select = '1';
@@ -1163,12 +1163,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if (count($where_alternative_matches) == 0) {
                 $where_alternative_matches[] = array($where_clause, '', '', $table_clause, null);
             } else {
-                if (($order == '') && (db_has_expression_ordering($db->connection_read)) && ($content_where != '')) {
+                if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
                     $order = 'contextual_relevance DESC';
                 }
             }
 
-            $group_by_ok = (can_arbitrary_groupby() && $meta_id_field === 'id');
+            $group_by_ok = ($db->can_arbitrary_groupby() && $meta_id_field === 'id');
             if (strpos($table, ' LEFT JOIN') === false) {
                 $group_by_ok = false; // Don't actually need to do a group by, as no duplication possible. We want to avoid GROUP BY as it forces MySQL to create a temporary table, slowing things down a lot.
             }
@@ -1202,34 +1202,23 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
             $query .= ' LIMIT ' . strval($max + $start);
             $query .= ')';
-            // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
-            $_query = '';
-            if (strpos(get_db_type(), 'mysql') === false) {
-                foreach ($where_alternative_matches as $parts) {
-                    list($where_clause_2, $where_clause_3, , $_table_clause, $tid) = $parts;
+            // Work out COUNT(*) query. This is inaccurate (does not filter dupes from each +'d query) but much more efficient on MySQL
+            $_count_query = '';
+            foreach ($where_alternative_matches as $parts) { // We "+" them, because doing OR's on MATCH's is insanely slow in MySQL (sometimes I hate SQL...)
+                list($where_clause_2, $where_clause_3, $_select, $_table_clause, $tid) = $parts;
 
-                    $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
-
-                    $_query .= (($where_clause_3 != '') ? ((($_query == '') ? ' WHERE ' : ' OR ') . $where_clause_3) : '');
+                if ($_count_query != '') {
+                    $_count_query .= '+';
                 }
-                $_count_query_main_search = 'SELECT COUNT(*) FROM ' . $table_clause . $_query;
-            } else { // This is inaccurate (does not filter dupes from each +'d query) but much more efficient on MySQL
-                foreach ($where_alternative_matches as $parts) { // We "+" them, because doing OR's on MATCH's is insanely slow in MySQL (sometimes I hate SQL...)
-                    list($where_clause_2, $where_clause_3, $_select, $_table_clause, $tid) = $parts;
 
-                    if ($_query != '') {
-                        $_query .= '+';
-                    }
+                $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
 
-                    $where_clause_3 = $where_clause_2 . (($where_clause_3 == '') ? '' : ((($where_clause_2 == '') ? '' : ' AND ') . $where_clause_3));
-
-                    // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
-                    $_query .= '(SELECT COUNT(*) FROM (';
-                    $_query .= 'SELECT 1 FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
-                    $_query .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
-                }
-                $_count_query_main_search = 'SELECT (' . $_query . ')';
+                // Has to do a nested subquery to reduce scope of COUNT(*), because the unbounded full-text's binary tree descendence can be extremely slow on physical disks if common words exist that aren't defined as MySQL stop words
+                $_count_query .= '(SELECT COUNT(*) FROM (';
+                $_count_query .= 'SELECT 1 FROM ' . $_table_clause . (($where_clause_3 == '') ? '' : (' WHERE ' . $where_clause_3));
+                $_count_query .= ' LIMIT ' . strval(MAXIMUM_RESULT_COUNT_POINT) . ') counter)';
             }
+            $_count_query_main_search = 'SELECT (' . $_count_query . ')';
 
             if (($order != '') && ($order . ' ' . $direction != 'contextual_relevance DESC') && ($order != 'contextual_relevance DESC')) {
                 $query .= ' ORDER BY ' . $order;
@@ -1374,7 +1363,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 }
             }
 
-            $group_by_ok = (can_arbitrary_groupby() && $meta_id_field === 'id');
+            $group_by_ok = ($db->can_arbitrary_groupby() && $meta_id_field === 'id');
             if (strpos($table, ' LEFT JOIN') === false) {
                 $group_by_ok = false; // Don't actually need to do a group by, as no duplication possible. We want to avoid GROUP BY as it forces MySQL to create a temporary table, slowing things down a lot.
             }
@@ -1622,7 +1611,7 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
     if ((is_under_radar($content)) && ($content != '')) {
         $under_radar = true;
     }
-    if (($under_radar) || ($boolean_search) || (!db_has_full_text($GLOBALS['SITE_DB']->connection_read))) {
+    if (($under_radar) || ($boolean_search) || (!$GLOBALS['SITE_DB']->has_full_text())) {
         if (!in_array(strtoupper($boolean_operator), array('AND', 'OR'))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
@@ -1633,8 +1622,8 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
             $include_where = array();
             $disclude_where = '';
         } else {
-            if ((get_param_integer('force_like', 0) == 0) && (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) && ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) && (!$under_radar)) {
-                $content_where = db_full_text_assemble($content, true);
+            if ((get_param_integer('force_like', 0) == 0) && ($GLOBALS['SITE_DB']->has_full_text()) && ($GLOBALS['SITE_DB']->has_full_text_boolean()) && (!$under_radar)) {
+                $content_where = $GLOBALS['SITE_DB']->full_text_assemble($content, true);
                 $body_where = array($content_where);
                 $include_where = array();
                 $disclude_where = '';
@@ -1652,7 +1641,7 @@ function build_content_where($content, $boolean_search, &$boolean_operator, $ful
             $include_where = array();
             $disclude_where = '';
         } else {
-            $content_where = db_full_text_assemble($content, false);
+            $content_where = $GLOBALS['SITE_DB']->full_text_assemble($content, false);
             $body_where = array($content_where);
             $include_where = array();
             $disclude_where = '';
@@ -1681,7 +1670,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
 
     $body_where = array();
     foreach ($body_words as $word) {
-        if ((strtoupper($word) == $word) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_collate_settings')) && ($GLOBALS['SITE_DB']->static_ob->db_has_collate_settings($GLOBALS['SITE_DB']->connection_read)) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
             $body_where[] = 'CONVERT(? USING latin1) LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $body_where[] = '? LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
@@ -1689,7 +1678,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
     }
     $include_where = array();
     foreach ($include_words as $word) {
-        if ((strtoupper($word) == $word) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_collate_settings')) && ($GLOBALS['SITE_DB']->static_ob->db_has_collate_settings($GLOBALS['SITE_DB']->connection_read)) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
             $include_where[] = 'CONVERT(? USING latin1) LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $include_where[] = '? LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
@@ -1700,7 +1689,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
         if ($disclude_where != '') {
             $disclude_where .= ' AND ';
         }
-        if ((strtoupper($word) == $word) && (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_collate_settings')) && ($GLOBALS['SITE_DB']->static_ob->db_has_collate_settings($GLOBALS['SITE_DB']->connection_read)) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
             $disclude_where .= 'CONVERT(? USING latin1) NOT LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $disclude_where .= '? NOT LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';

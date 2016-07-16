@@ -57,9 +57,9 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
     $skip_auth = false;
 
     if ($userid === null) {
-        $rows = $this_ref->connection->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
+        $rows = $this_ref->db->query_select('f_members', array('*'), array('m_username' => $username), '', 1);
         if ((!array_key_exists(0, $rows)) && (get_option('one_per_email_address') == '1')) {
-            $rows = $this_ref->connection->query_select('f_members', array('*'), array('m_email_address' => $username), 'ORDER BY id ASC', 1);
+            $rows = $this_ref->db->query_select('f_members', array('*'), array('m_email_address' => $username), 'ORDER BY id ASC', 1);
         }
         if (array_key_exists(0, $rows)) {
             $this_ref->MEMBER_ROWS_CACHED[$rows[0]['id']] = $rows[0];
@@ -227,15 +227,15 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
     if ((cns_get_best_group_property($this_ref->get_members_groups($row['id']), 'enquire_on_new_ips') == 1)) { // High security usergroup membership
         global $SENT_OUT_VALIDATE_NOTICE, $IN_SELF_ROUTING_SCRIPT;
         $ip = get_ip_address(3);
-        $test2 = $this_ref->connection->query_select_value_if_there('f_member_known_login_ips', 'i_val_code', array('i_member_id' => $row['id'], 'i_ip' => $ip));
+        $test2 = $this_ref->db->query_select_value_if_there('f_member_known_login_ips', 'i_val_code', array('i_member_id' => $row['id'], 'i_ip' => $ip));
         if (((is_null($test2)) || ($test2 != '')) && (!compare_ip_address($ip, $row['m_ip_address']))) {
             if (!$SENT_OUT_VALIDATE_NOTICE) {
                 if (!is_null($test2)) { // Tidy up
-                    $this_ref->connection->query_delete('f_member_known_login_ips', array('i_member_id' => $row['id'], 'i_ip' => $ip), '', 1);
+                    $this_ref->db->query_delete('f_member_known_login_ips', array('i_member_id' => $row['id'], 'i_ip' => $ip), '', 1);
                 }
 
                 $code = !is_null($test2) ? $test2 : uniqid('', true);
-                $this_ref->connection->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
+                $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
                 $url = find_script('approve_ip') . '?code=' . $code;
                 $url_simple = find_script('approve_ip');
                 require_code('comcode');

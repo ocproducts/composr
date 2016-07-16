@@ -152,7 +152,7 @@ class Hook_import_cms_merge
     /**
      * Do some tests, to make sure we're happy to continue importing.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      * @return ?Tempcode Error/warning UI (null: no error/warning)
@@ -179,7 +179,7 @@ class Hook_import_cms_merge
         // Check actually is Composr file path (ERROR)
         if ((!file_exists($file_base . '/_config.php')) || (!file_exists($file_base . '/sources_custom'))) {
             attach_message(do_lang_tempcode('ERROR_NOT_CORRECT_FILES'), 'warn');
-            if ((is_on_multi_site_network($db)) && (!file_exists($file_base . '/_config.php'))) {
+            if ((is_on_multi_site_network()) && (!file_exists($file_base . '/_config.php'))) {
                 attach_message(do_lang_tempcode('ERROR_NOT_CORRECT_LINKING_POSSIBLY'), 'warn');
             }
             $bad = true;
@@ -194,7 +194,7 @@ class Hook_import_cms_merge
             if (is_null($SITE_INFO)) {
                 $SITE_INFO = $backup_site_info;
                 attach_message(do_lang_tempcode('ERROR_INACCESSIBLE_DIR'), 'warn');
-                if (is_on_multi_site_network($db)) {
+                if (is_on_multi_site_network()) {
                     attach_message(do_lang_tempcode('ERROR_NOT_CORRECT_LINKING_POSSIBLY'), 'warn');
                 }
                 $bad = true;
@@ -251,7 +251,7 @@ class Hook_import_cms_merge
     /**
      * Fetch and clean up a language string.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  integer $id The string ID
      * @return string The cleaned-up string
      */
@@ -279,7 +279,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -312,7 +312,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -337,7 +337,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -502,7 +502,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -600,7 +600,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -635,7 +635,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -667,7 +667,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -776,7 +776,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -803,7 +803,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -893,7 +893,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -956,7 +956,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -982,7 +982,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1071,7 +1071,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1151,7 +1151,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1237,7 +1237,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1272,7 +1272,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1378,7 +1378,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1456,7 +1456,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1634,7 +1634,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1671,7 +1671,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1715,7 +1715,7 @@ class Hook_import_cms_merge
     /**
      * Import custom tasks.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1742,7 +1742,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1763,7 +1763,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1889,7 +1889,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1905,7 +1905,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1939,7 +1939,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1961,7 +1961,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2009,7 +2009,7 @@ class Hook_import_cms_merge
     /**
      * Import ticket extra access.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     protected function _import_ticket_extra_access($db, $table_prefix)
@@ -2033,7 +2033,7 @@ class Hook_import_cms_merge
     /**
      * Imports ticket known emailers.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     protected function _import_ticket_known_emailers($db, $table_prefix)
@@ -2057,7 +2057,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2073,7 +2073,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2108,7 +2108,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2131,7 +2131,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2292,7 +2292,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2415,7 +2415,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2474,7 +2474,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2499,7 +2499,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2778,7 +2778,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2837,7 +2837,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -2883,7 +2883,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3013,7 +3013,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3063,7 +3063,7 @@ class Hook_import_cms_merge
     /**
      * Import cpf premissions.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     protected function _import_f_member_cpf_perms($db, $table_prefix)
@@ -3092,7 +3092,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3126,7 +3126,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3207,7 +3207,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3318,7 +3318,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3387,7 +3387,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3446,7 +3446,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3513,7 +3513,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3539,7 +3539,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3560,7 +3560,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3604,7 +3604,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3632,7 +3632,7 @@ class Hook_import_cms_merge
     /**
      * Import privacy for a particular record.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  ID_TEXT $content_type The content type
      * @param  ID_TEXT $old_id The old ID
      * @param  ID_TEXT $id_new The new ID
@@ -3663,7 +3663,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3687,7 +3687,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3713,7 +3713,7 @@ class Hook_import_cms_merge
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3751,7 +3751,7 @@ class Hook_import_cms_merge
     /**
      * Imports custom products.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     protected function _import_pstore_customs($db, $table_prefix)
@@ -3773,7 +3773,7 @@ class Hook_import_cms_merge
     /**
      * Imports product store permissions.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      */
     protected function _import_pstore_permissions($db, $table_prefix)
@@ -3795,7 +3795,7 @@ class Hook_import_cms_merge
     /**
      * Imports site-watch-list.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3819,7 +3819,7 @@ class Hook_import_cms_merge
     /**
      * Imports staff-links.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -3839,7 +3839,7 @@ class Hook_import_cms_merge
     /**
      * Import reviews.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  ID_TEXT $rating_type The rating type.
      * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).
@@ -3879,7 +3879,7 @@ class Hook_import_cms_merge
     /**
      * Import content review schedules.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  ID_TEXT $content_type The content type.
      * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).
@@ -3906,7 +3906,7 @@ class Hook_import_cms_merge
     /**
      * Import custom fields for a particular record.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  ID_TEXT $content_type The content type.
      * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).

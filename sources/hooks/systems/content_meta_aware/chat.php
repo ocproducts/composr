@@ -37,7 +37,7 @@ class Hook_content_meta_aware_chat
             'content_type_label' => 'chat:CHATROOM',
             'content_type_universal_label' => 'Chatroom',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'chat_rooms',
             'id_field' => 'id',
             'id_field_numeric' => true,

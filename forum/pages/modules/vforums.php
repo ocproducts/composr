@@ -304,7 +304,7 @@ class Module_vforums
             $query_cnt = $query;
             $_query_cnt = $query;
             $query .= $sql_sup;
-            if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
+            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && (!is_null($initial_table))) {
                 $query .= ' GROUP BY top.id';
                 $query_cnt .= ' GROUP BY top.id';
             }
@@ -322,7 +322,7 @@ class Module_vforums
             } else {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start));
             }
-            if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
+            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && (!is_null($initial_table))) {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT top.id) ' . $_query_cnt);
             } else {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query_cnt);

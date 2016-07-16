@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_award_type
             'content_type_label' => 'awards:AWARD',
             'content_type_universal_label' => 'Award',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'award_types',
             'id_field' => 'id',
             'id_field_numeric' => true,

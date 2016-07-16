@@ -467,7 +467,6 @@ function get_workflow_form($workflow_content_id)
 function workflow_update_handler()
 {
     require_lang('workflows');
-    require_code('database');
 
     $success_message = do_lang('APPROVAL_UNCHANGED');
 

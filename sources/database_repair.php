@@ -183,7 +183,7 @@ class DatabaseRepair
     {
         $needs_changes = false;
 
-        $type_map = $GLOBALS['SITE_DB']->static_ob->db_get_type_remap();
+        $type_map = $GLOBALS['SITE_DB']->static_ob->get_type_remap();
 
         // Tables missing from DB -or- inconsistent in DB
         foreach ($meta_tables as $table_name => $table) {
@@ -236,7 +236,7 @@ class DatabaseRepair
                             $field_type = $expected_tables[$table_name]['fields'][$field_name];
                         } else {
                             $field_type_raw = $field['type'];
-                            $field_type = $this->db_type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                            $field_type = $this->type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
                         }
 
                         $this->fix_table_missing_in_meta__create_field($table_name, $field_name, $field_type);
@@ -261,7 +261,7 @@ class DatabaseRepair
                     if (isset($expected_tables[$table_name]['fields'][$field_name])) {
                         $table_cleaned[$field_name] = $expected_tables[$table_name]['fields'][$field_name];
                     } else {
-                        $table_cleaned[$field_name] = $this->db_type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                        $table_cleaned[$field_name] = $this->type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
                     }
                 }
 
@@ -334,7 +334,7 @@ class DatabaseRepair
     {
         $needs_changes = false;
 
-        $type_map = $GLOBALS['SITE_DB']->static_ob->db_get_type_remap();
+        $type_map = $GLOBALS['SITE_DB']->static_ob->get_type_remap();
 
         // Tables missing from DB -or- inconsistent in DB
         foreach ($expected_tables as $table_name => $table) {
@@ -563,7 +563,7 @@ class DatabaseRepair
             }
         }
 
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_table_sql(get_table_prefix() . $table_name, $table, $table_name);
+        $query = $GLOBALS['SITE_DB']->static_ob->create_table_sql(get_table_prefix() . $table_name, $table, $table_name);
         $this->add_fixup_query($query);
     }
 
@@ -585,7 +585,7 @@ class DatabaseRepair
         $this->add_fixup_query($query);
 
         if ((!multi_lang_content()) && (strpos($field_type, '__COMCODE') !== false)) {
-            $type_remap = $GLOBALS['SITE_DB']->static_ob->db_get_type_remap();
+            $type_remap = $GLOBALS['SITE_DB']->static_ob->get_type_remap();
 
             foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
                 $sub_name = $field_name . '__' . $sub_name;
@@ -738,7 +738,7 @@ class DatabaseRepair
         $table_name = $index['table'];
         $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
         $_fields = implode(',', $index['fields']);
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
+        $query = $GLOBALS['SITE_DB']->static_ob->create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
         if (!is_null($query)) {
             $this->add_fixup_query($query);
         }

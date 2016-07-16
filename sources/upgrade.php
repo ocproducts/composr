@@ -1871,7 +1871,7 @@ function cns_upgrade()
 
         require_code('forum/cns');
         $GLOBALS['FORUM_DRIVER'] = object_factory('Forum_driver_cns');
-        $GLOBALS['FORUM_DRIVER']->connection = $GLOBALS['SITE_DB'];
+        $GLOBALS['FORUM_DRIVER']->db = $GLOBALS['SITE_DB'];
 
         require_code('cns_install');
         install_cns($version_database);
@@ -1927,7 +1927,7 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
     flush();
     $db->query('ALTER DATABASE ' . get_db_site() . ' CHARACTER SET ' . $new_charset);
 
-    $remap = $db->static_ob->db_get_type_remap();
+    $remap = $db->static_ob->get_type_remap();
 
     $tables = collapse_1d_complexity('m_table', $db->query_select('db_meta', array('DISTINCT m_table')));
     foreach ($tables as $table) {

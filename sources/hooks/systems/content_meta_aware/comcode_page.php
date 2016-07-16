@@ -37,7 +37,7 @@ class Hook_content_meta_aware_comcode_page
             'content_type_label' => 'zones:COMCODE_PAGE',
             'content_type_universal_label' => 'Comcode page',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'comcode_pages',
             'id_field' => array('the_page', 'the_zone'),
             'id_field_numeric' => false,

@@ -127,7 +127,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -200,7 +200,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -244,7 +244,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -307,7 +307,7 @@ class Hook_import_phpbb3
     /**
      * Helper function to import a global permission to a usergroup, from a specific phpBB option row.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  integer $option_id Option row ID
      * @param  GROUP $group_id Group it applies to
@@ -335,7 +335,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -458,7 +458,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -533,7 +533,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -572,7 +572,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -688,7 +688,7 @@ class Hook_import_phpbb3
     /**
      * Helper function to import a permission to a usergroup, from a specific phpBB option row.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  integer $option_id Option row ID
      * @param  GROUP $group_id Group it applies to
@@ -762,7 +762,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -794,7 +794,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -911,7 +911,7 @@ class Hook_import_phpbb3
      *
      * @param  string $post The text field text (e.g. a post)
      * @param  string $uid Bbcode uid
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  ?AUTO_LINK $post_id The ID of the post/message being imported (null: attachments not supported)
      * @param  boolean $is_pm Whether it is a personal message
@@ -975,7 +975,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1026,7 +1026,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $old_base_dir The base directory we are importing from
      */
@@ -1162,7 +1162,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1224,7 +1224,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1270,7 +1270,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1294,7 +1294,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1309,7 +1309,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1370,7 +1370,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1405,7 +1405,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */
@@ -1435,7 +1435,7 @@ class Hook_import_phpbb3
     /**
      * Standard import function.
      *
-     * @param  object $db The DB connection to import from
+     * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
      * @param  PATH $file_base The base directory we are importing from
      */

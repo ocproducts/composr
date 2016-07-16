@@ -27,10 +27,10 @@ class Hook_attachments_calendar
      * Run function for attachment hooks. They see if permission to an attachment of an ID relating to this content is present for the current member.
      *
      * @param  ID_TEXT $id The ID
-     * @param  object $connection The database connection to check on
+     * @param  object $db The database connector to check on
      * @return boolean Whether there is permission
      */
-    public function run($id, $connection)
+    public function run($id, $db)
     {
         if (addon_installed('content_privacy')) {
             require_code('content_privacy');
@@ -39,7 +39,7 @@ class Hook_attachments_calendar
             }
         }
 
-        $info = $connection->query_select('calendar_events', array('e_submitter', 'e_type'), array('id' => intval($id)), '', 1);
+        $info = $db->query_select('calendar_events', array('e_submitter', 'e_type'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $info)) {
             return false;
         }

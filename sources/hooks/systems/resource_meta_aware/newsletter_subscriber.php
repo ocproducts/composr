@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_newsletter_subscriber
             'content_type_label' => 'newsletter:NEWSLETTER_SUBSCRIBER',
             'content_type_universal_label' => 'Newsletter subscriber',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'newsletter_subscribers',
             'id_field' => 'id',
             'id_field_numeric' => true,

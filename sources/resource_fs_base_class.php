@@ -789,7 +789,7 @@ abstract class Resource_fs_base
             // Do we need to load up a linker table for getting the category?
             if ((!is_null($relationship['linker_table'])) && ($cma_info['table'] != $relationship['linker_table'])) {
                 $where = array($relationship['id_field_linker'] => $content_row[$cma_info['id_field']]);
-                $categories = $cma_info['connection']->query_select($relationship['linker_table'], array($relationship['cat_field']), $where);
+                $categories = $cma_info['db']->query_select($relationship['linker_table'], array($relationship['cat_field']), $where);
             } else {
                 $categories = array($content_row);
             }
@@ -1085,18 +1085,18 @@ abstract class Resource_fs_base
         switch ($resource_type) {
             case 'comcode_page':
                 list($zone_name, $page_name) = explode(':', $category);
-                $cma_info['connection']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
-                $cma_info['connection']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
+                $cma_info['db']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
+                $cma_info['db']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name));
                 break;
 
             case 'zone':
-                $cma_info['connection']->query_delete('group_zone_access', array('zone_name' => $category));
-                $cma_info['connection']->query_delete('member_zone_access', array('zone_name' => $category));
+                $cma_info['db']->query_delete('group_zone_access', array('zone_name' => $category));
+                $cma_info['db']->query_delete('member_zone_access', array('zone_name' => $category));
                 break;
 
             default:
-                $cma_info['connection']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
-                $cma_info['connection']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category));
+                $cma_info['db']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category));
+                $cma_info['db']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category));
                 break;
         }
     }
@@ -1129,15 +1129,15 @@ abstract class Resource_fs_base
             switch ($resource_type) {
                 case 'comcode_page':
                     list($zone_name, $page_name) = explode(':', $category);
-                    $cma_info['connection']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id));
+                    $cma_info['db']->query_delete('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id));
                     break;
 
                 case 'zone':
-                    $cma_info['connection']->query_delete('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id));
+                    $cma_info['db']->query_delete('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id));
                     break;
 
                 default:
-                    $cma_info['connection']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
+                    $cma_info['db']->query_delete('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id));
                     break;
             }
         }
@@ -1152,15 +1152,15 @@ abstract class Resource_fs_base
                 switch ($resource_type) {
                     case 'comcode_page':
                         list($zone_name, $page_name) = explode(':', $category);
-                        $cma_info['connection']->query_insert('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('group_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'group_id' => $group_id), false, true); // Race/corruption condition
                         break;
 
                     case 'zone':
-                        $cma_info['connection']->query_insert('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('group_zone_access', array('zone_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
                         break;
 
                     default:
-                        $cma_info['connection']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('group_category_access', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id), false, true); // Race/corruption condition
                         break;
                 }
             }
@@ -1201,15 +1201,15 @@ abstract class Resource_fs_base
         switch ($resource_type) {
             case 'comcode_page':
                 list($zone_name, $page_name) = explode(':', $category);
-                $groups = $cma_info['connection']->query_select('group_zone_access', array('group_id'), array('zone_name' => $zone_name, 'page_name' => $page_name));
+                $groups = $cma_info['db']->query_select('group_zone_access', array('group_id'), array('zone_name' => $zone_name, 'page_name' => $page_name));
                 break;
 
             case 'zone':
-                $groups = $cma_info['connection']->query_select('group_page_access', array('group_id'), array('page_name' => $category));
+                $groups = $cma_info['db']->query_select('group_page_access', array('group_id'), array('page_name' => $category));
                 break;
 
             default:
-                $groups = $cma_info['connection']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
+                $groups = $cma_info['db']->query_select('group_category_access', array('group_id'), array('module_the_name' => $module, 'category_name' => $category));
                 break;
         }
         foreach ($groups as $group) {
@@ -1244,15 +1244,15 @@ abstract class Resource_fs_base
             switch ($resource_type) {
                 case 'comcode_page':
                     list($zone_name, $page_name) = explode(':', $category);
-                    $cma_info['connection']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null));
+                    $cma_info['db']->query_delete('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null));
                     break;
 
                 case 'zone':
-                    $cma_info['connection']->query_delete('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null));
+                    $cma_info['db']->query_delete('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null));
                     break;
 
                 default:
-                    $cma_info['connection']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null));
+                    $cma_info['db']->query_delete('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null));
                     break;
             }
         }
@@ -1263,15 +1263,15 @@ abstract class Resource_fs_base
                 switch ($resource_type) {
                     case 'comcode_page':
                         list($zone_name, $page_name) = explode(':', $category);
-                        $cma_info['connection']->query_insert('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('member_page_access', array('zone_name' => $zone_name, 'page_name' => $page_name, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
                         break;
 
                     case 'zone':
-                        $cma_info['connection']->query_insert('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('member_zone_access', array('page_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
                         break;
 
                     default:
-                        $cma_info['connection']->query_insert('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
+                        $cma_info['db']->query_insert('member_category_access', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'active_until' => null), false, true); // Race/corruption condition
                         break;
                 }
             }
@@ -1302,15 +1302,15 @@ abstract class Resource_fs_base
         switch ($resource_type) {
             case 'comcode_page':
                 list($zone_name, $page_name) = explode(':', $category);
-                $members = $cma_info['connection']->query_select('member_page_access', array('member_id'), array('zone_name' => $zone_name, 'page_name' => $page_name, 'active_until' => null));
+                $members = $cma_info['db']->query_select('member_page_access', array('member_id'), array('zone_name' => $zone_name, 'page_name' => $page_name, 'active_until' => null));
                 break;
 
             case 'zone':
-                $members = $cma_info['connection']->query_select('member_zone_access', array('member_id'), array('zone_name' => $category, 'active_until' => null));
+                $members = $cma_info['db']->query_select('member_zone_access', array('member_id'), array('zone_name' => $category, 'active_until' => null));
                 break;
 
             default:
-                $members = $cma_info['connection']->query_select('member_category_access', array('member_id'), array('module_the_name' => $module, 'category_name' => $category, 'active_until' => null));
+                $members = $cma_info['db']->query_select('member_category_access', array('member_id'), array('module_the_name' => $module, 'category_name' => $category, 'active_until' => null));
                 break;
         }
         $ret = array();
@@ -1347,8 +1347,8 @@ abstract class Resource_fs_base
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
-        $cma_info['connection']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category));
-        $cma_info['connection']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category));
+        $cma_info['db']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category));
+        $cma_info['db']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category));
     }
 
     /**
@@ -1473,8 +1473,8 @@ abstract class Resource_fs_base
 
             foreach ($value as $privilege => $setting) {
                 if ($setting != '') {
-                    $cma_info['connection']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => ''));
-                    $cma_info['connection']->query_insert('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting)), false, true); // Race/corruption condition
+                    $cma_info['db']->query_delete('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => ''));
+                    $cma_info['db']->query_insert('group_privileges', array('module_the_name' => $module, 'category_name' => $category, 'group_id' => $group_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting)), false, true); // Race/corruption condition
                 }
             }
         }
@@ -1533,7 +1533,7 @@ abstract class Resource_fs_base
                 }
             }
         }
-        $groups = $cma_info['connection']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
+        $groups = $cma_info['db']->query_select('group_privileges', array('group_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => ''));
         foreach ($groups as $group) {
             $ret[$group['group_id']][$group['privilege']] = strval($group['the_value']);
         }
@@ -1602,8 +1602,8 @@ abstract class Resource_fs_base
         foreach ($member_settings as $member_id => $value) {
             foreach ($value as $privilege => $setting) {
                 if ($setting != '') {
-                    $cma_info['connection']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => ''));
-                    $cma_info['connection']->query_insert('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting), 'active_until' => null), false, true); // Race/corruption condition
+                    $cma_info['db']->query_delete('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => ''));
+                    $cma_info['db']->query_insert('member_privileges', array('module_the_name' => $module, 'category_name' => $category, 'member_id' => $member_id, 'privilege' => $privilege, 'the_page' => '', 'the_value' => intval($setting), 'active_until' => null), false, true); // Race/corruption condition
                 }
             }
         }
@@ -1637,7 +1637,7 @@ abstract class Resource_fs_base
         $cma_info = $this->_get_cma_info($resource_type);
         $module = $cma_info['permissions_type_code'];
 
-        $members = $cma_info['connection']->query_select('member_privileges', array('member_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'active_until' => null));
+        $members = $cma_info['db']->query_select('member_privileges', array('member_id', 'privilege', 'the_value'), array('module_the_name' => $module, 'category_name' => $category, 'the_page' => '', 'active_until' => null));
         $ret = array();
         foreach ($members as $member) {
             $ret[$member['member_id']][$member['privilege']] = strval($member['the_value']);
@@ -1817,7 +1817,7 @@ abstract class Resource_fs_base
     protected function _resource_load_extend($resource_type, $resource_id, &$properties, $filename, $path)
     {
         $cma_info = $this->_get_cma_info($resource_type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         $reserved_fields = array(
             'alternative_ids',
@@ -1840,20 +1840,20 @@ abstract class Resource_fs_base
         }
 
         // Alternative IDs
-        $properties['alternative_ids'] = table_to_portable_rows('alternative_ids', /*skip*/array('resource_moniker', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), $connection);
+        $properties['alternative_ids'] = table_to_portable_rows('alternative_ids', /*skip*/array('resource_moniker', 'resource_label'), array('resource_type' => $resource_type, 'resource_id' => $resource_id), $db);
 
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             $page_bits = explode(':', $cma_info['view_page_link_pattern']);
-            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $connection);
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $db);
         }
 
         // Attachments
         if (!is_null($cma_info['attachment_hook'])) {
-            $attachment_refs_rows = collapse_1d_complexity('a_id', $connection->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id)));
+            $attachment_refs_rows = collapse_1d_complexity('a_id', $db->query_select('attachment_refs', array('a_id'), array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id)));
             $properties['attachments'] = array();
             foreach ($attachment_refs_rows as $attachment_id) {
-                $attachment_rows = table_to_portable_rows('attachments', /*skip*/array(), array('id' => $attachment_id), $connection);
+                $attachment_rows = table_to_portable_rows('attachments', /*skip*/array(), array('id' => $attachment_id), $db);
                 if (isset($attachment_rows[0])) {
                     $properties['attachments'][] = $attachment_rows[0] + array('_foreign_id' => $attachment_id);
                 }
@@ -1862,13 +1862,13 @@ abstract class Resource_fs_base
 
         // Content privacy
         if ($cma_info['support_privacy']) {
-            $properties['content_privacy'] = table_to_portable_rows('content_privacy', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
-            $properties['content_privacy__members'] = table_to_portable_rows('content_privacy__members', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
+            $properties['content_privacy'] = table_to_portable_rows('content_privacy', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $db);
+            $properties['content_privacy__members'] = table_to_portable_rows('content_privacy__members', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $db);
         }
 
         // Content reviews (by staff)
         if ($cma_info['support_content_reviews'] && addon_installed('content_reviews')) {
-            $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $connection);
+            $properties['content_reviews'] = table_to_portable_rows('content_reviews', /*skip*/array(), array('content_type' => $resource_type, 'content_id' => $resource_id), $db);
         }
 
         if (!is_null($cma_info['feedback_type_code'])) {
@@ -1890,15 +1890,15 @@ abstract class Resource_fs_base
                     }
                 }
 
-                $properties['reviews'] = table_to_portable_rows('review_supplement', /*skip*/array('id'), array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), $connection);
+                $properties['reviews'] = table_to_portable_rows('review_supplement', /*skip*/array('id'), array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), $db);
                 // NB: r_topic_id and r_post_id will automatically be made portable, so associated with the correct comment
             }
 
             // Ratings
-            $properties['ratings'] = table_to_portable_rows('rating', /*skip*/array('id'), array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), $connection);
+            $properties['ratings'] = table_to_portable_rows('rating', /*skip*/array('id'), array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), $db);
 
             // Trackbacks
-            $properties['trackbacks'] = table_to_portable_rows('trackbacks', /*skip*/array('id'), array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), $connection);
+            $properties['trackbacks'] = table_to_portable_rows('trackbacks', /*skip*/array('id'), array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), $db);
         }
 
         // Custom fields
@@ -1939,12 +1939,12 @@ abstract class Resource_fs_base
     protected function _resource_save_extend_pre(&$properties, $resource_type, $filename, $label)
     {
         $cma_info = $this->_get_cma_info($resource_type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         // New Attachment IDs need generating and substituting
         if (!is_null($cma_info['attachment_hook'])) {
             if (isset($properties['attachments'])) {
-                $new_id = $connection->query_select_value_if_there('attachments', 'MAX(id)');
+                $new_id = $db->query_select_value_if_there('attachments', 'MAX(id)');
                 if (is_null($new_id)) {
                     $new_id = db_get_first_id();
                 } else {
@@ -1981,7 +1981,7 @@ abstract class Resource_fs_base
     protected function _resource_save_extend($resource_type, $resource_id, $filename, $label, $properties)
     {
         $cma_info = $this->_get_cma_info($resource_type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         // Alternative IDs
         if (isset($properties['alternative_ids'])) {
@@ -1989,14 +1989,14 @@ abstract class Resource_fs_base
                 $alternative_id['resource_moniker'] = basename($filename, '.' . RESOURCE_FS_DEFAULT_EXTENSION);
                 $alternative_id['resource_label'] = $label;
             }
-            table_from_portable_rows('alternative_ids', $properties['alternative_ids'], array('resource_type' => $resource_type, 'resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+            table_from_portable_rows('alternative_ids', $properties['alternative_ids'], array('resource_type' => $resource_type, 'resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
         }
 
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             if (isset($properties['url_id_monikers'])) {
                 $page_bits = explode(':', $cma_info['view_page_link_pattern']);
-                table_from_portable_rows('url_id_monikers', $properties['url_id_monikers'], array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('url_id_monikers', $properties['url_id_monikers'], array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
         }
 
@@ -2007,10 +2007,10 @@ abstract class Resource_fs_base
 
                 // Delete old attachments
                 require_code('attachments3');
-                delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $connection, true);
+                delete_comcode_attachments($cma_info['attachment_hook'], $resource_id, $db, true);
 
                 // Metadata
-                $db_fields = collapse_2d_complexity('m_name', 'm_type', $connection->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => 'attachments')));
+                $db_fields = collapse_2d_complexity('m_name', 'm_type', $db->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => 'attachments')));
                 $relation_map = get_relation_map_for_table('attachments');
 
                 // Insert new attachments
@@ -2022,8 +2022,8 @@ abstract class Resource_fs_base
 
                     $attachment_row = table_row_from_portable_row($attachment, $db_fields, $relation_map);
                     $attachment_row['id'] = $new_attachment_id;
-                    $connection->query_insert('attachments', $attachment_row);
-                    $connection->query_insert('attachment_refs', array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id, 'a_id' => $new_attachment_id));
+                    $db->query_insert('attachments', $attachment_row);
+                    $db->query_insert('attachment_refs', array('r_referer_type' => $cma_info['attachment_hook'], 'r_referer_id' => $resource_id, 'a_id' => $new_attachment_id));
                 }
             }
         }
@@ -2031,18 +2031,18 @@ abstract class Resource_fs_base
         // Content privacy
         if ($cma_info['support_privacy']) {
             if (isset($properties['content_privacy'])) {
-                table_from_portable_rows('content_privacy', $properties['content_privacy'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('content_privacy', $properties['content_privacy'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
 
             if (isset($properties['content_privacy__members'])) {
-                table_from_portable_rows('content_privacy__members', $properties['content_privacy__members'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('content_privacy__members', $properties['content_privacy__members'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
         }
 
         // Content reviews (by staff)
         if ($cma_info['support_content_reviews']) {
             if (isset($properties['content_reviews'])) {
-                table_from_portable_rows('content_reviews', $properties['content_reviews'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('content_reviews', $properties['content_reviews'], array('content_type' => $resource_type, 'content_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
         }
 
@@ -2082,18 +2082,18 @@ abstract class Resource_fs_base
                     }
                 }
                 if (isset($properties['reviews'])) {
-                    table_from_portable_rows('review_supplement', $properties['reviews'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                    table_from_portable_rows('review_supplement', $properties['reviews'], array('r_rating_type' => $cma_info['feedback_type_code'], 'r_rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
                 }
             }
 
             // Ratings
             if (isset($properties['ratings'])) {
-                table_from_portable_rows('rating', $properties['ratings'], array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('rating', $properties['ratings'], array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
 
             // Trackbacks
             if (isset($properties['trackbacks'])) {
-                table_from_portable_rows('trackbacks', $properties['trackbacks'], array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $connection);
+                table_from_portable_rows('trackbacks', $properties['trackbacks'], array('trackback_for_type' => $cma_info['feedback_type_code'], 'trackback_for_id' => $resource_id), TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA, $db);
             }
         }
 
@@ -2140,7 +2140,7 @@ abstract class Resource_fs_base
         }
 
         $cma_info = $this->_get_cma_info($type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         require_code('fields');
         if (!has_tied_catalogue($type)) {
@@ -2151,7 +2151,7 @@ abstract class Resource_fs_base
 
         $fields = get_catalogue_fields('_' . $type);
         foreach ($fields as $field_bits) {
-            $cf_name = get_translated_text($field_bits['cf_name'], $connection);
+            $cf_name = get_translated_text($field_bits['cf_name'], $db);
             $fixed_id = 'custom__' . fix_id($cf_name);
             if (!array_key_exists($fixed_id, $props)) {
                 $key = $fixed_id;
@@ -2203,7 +2203,7 @@ abstract class Resource_fs_base
         }
 
         $cma_info = $this->_get_cma_info($type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         $properties = array();
 
@@ -2213,7 +2213,7 @@ abstract class Resource_fs_base
         if (!is_null($catalogue_entry_id)) {
             $special_fields = get_catalogue_entry_field_values('_' . $type, $catalogue_entry_id);
         } else {
-            $special_fields = $connection->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+            $special_fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         }
 
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -2249,14 +2249,14 @@ abstract class Resource_fs_base
         }
 
         $cma_info = $this->_get_cma_info($type);
-        $connection = $cma_info['connection'];
+        $db = $cma_info['db'];
 
         $existing = get_bound_content_entry($type, $id);
 
         require_code('catalogues');
 
         // Get field values
-        $fields = $connection->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $fields = $db->query_select('catalogue_fields', array('*'), array('c_name' => '_' . $type), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         $map = array();
         require_code('fields');
         $prop_names = array_keys($this->_custom_fields_enumerate_properties($type));
@@ -2268,7 +2268,7 @@ abstract class Resource_fs_base
             $map[$field['id']] = $properties[$prop_name];
         }
 
-        $first_cat = $connection->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $type));
+        $first_cat = $db->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $type));
 
         require_code('catalogues2');
 
@@ -2277,7 +2277,7 @@ abstract class Resource_fs_base
         } else {
             $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, $map);
 
-            $connection->query_insert('catalogue_entry_linkage', array(
+            $db->query_insert('catalogue_entry_linkage', array(
                 'catalogue_entry_id' => $catalogue_entry_id,
                 'content_type' => $type,
                 'content_id' => $id,
@@ -2334,7 +2334,7 @@ abstract class Resource_fs_base
             $table = $folder_info['table'] . ' main';
             if ((!is_null($relationship['linker_table'])) && ($relationship['linker_table'] != $folder_info['table'])) {
                 if ((!is_null($_cat_id)) && ($_cat_id !== '')) {
-                    $table = $folder_info['table'] . ' main JOIN ' . $folder_info['connection']->get_table_prefix() . $relationship['linker_table'] . ' cats ON cats.' . $relationship['id_field_linker'] . '=main.' . $relationship['id_field'];
+                    $table = $folder_info['table'] . ' main JOIN ' . $folder_info['db']->get_table_prefix() . $relationship['linker_table'] . ' cats ON cats.' . $relationship['id_field_linker'] . '=main.' . $relationship['id_field'];
                 }
             }
             if (!is_null($folder_info['add_time_field'])) {
@@ -2347,7 +2347,7 @@ abstract class Resource_fs_base
                 $select[] = 'main.' . $folder_info['id_field'];
             }
             $extra = '';
-            if (can_arbitrary_groupby()) {
+            if ($folder_info['db']->can_arbitrary_groupby()) {
                 $extra .= 'GROUP BY main.' . $relationship['id_field'] . ' '; // In case it's not a real category table, just an implied one by self-categorisation of entries
             }
             $extra .= 'ORDER BY main.' . $relationship['id_field'];
@@ -2361,7 +2361,7 @@ abstract class Resource_fs_base
                 }
             }
             $select = array_unique($select);
-            $child_folders = $folder_info['connection']->query_select($table, $select, $where, $extra, 10000/*Reasonable limit*/);
+            $child_folders = $folder_info['db']->query_select($table, $select, $where, $extra, 10000/*Reasonable limit*/);
             foreach ($child_folders as $folder) {
                 $str_id = extract_content_str_id_from_data($folder, $folder_info);
                 $filename = $this->folder_convert_id_to_filename($resource_type, $str_id);
@@ -2416,7 +2416,7 @@ abstract class Resource_fs_base
                 $select[] = $file_info['id_field'];
             }
             $select = array_unique($select);
-            $files = $file_info['connection']->query_select($file_info['table'], $select, $where, '', 10000/*Reasonable limit*/);
+            $files = $file_info['db']->query_select($file_info['table'], $select, $where, '', 10000/*Reasonable limit*/);
             foreach ($files as $file) {
                 $str_id = extract_content_str_id_from_data($file, $file_info);
                 $filename = $this->file_convert_id_to_filename($resource_type, $str_id);

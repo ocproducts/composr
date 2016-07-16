@@ -30,12 +30,12 @@ Adding attachments.
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  boolean $previewing_only Whether we are only previewing the attachments (i.e. don't store them!)
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  ?boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges) (null: autodetect)
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
  * @return array A map containing 'Comcode' (after substitution for tying down the new attachments) and 'tempcode'
  */
-function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, $connection = null, $insert_as_admin = null, $for_member = null)
+function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, $db = null, $insert_as_admin = null, $for_member = null)
 {
     require_lang('comcode');
     require_code('comcode_compiler');
@@ -47,8 +47,8 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     global $COMCODE_ATTACHMENTS;
     unset($COMCODE_ATTACHMENTS[$id]); // In case we have some kind of conflict
 
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     if ($for_member !== null) {
@@ -61,13 +61,13 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     }
 
     // Handle data URLs for attachment embedding
-    _handle_data_url_attachments($comcode, $type, $id, $connection);
+    _handle_data_url_attachments($comcode, $type, $id, $db);
 
     // Find out about attachments already involving this content
     global $ATTACHMENTS_ALREADY_REFERENCED;
     $old_already = $ATTACHMENTS_ALREADY_REFERENCED;
     $ATTACHMENTS_ALREADY_REFERENCED = array();
-    $before = $connection->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type, 'r_referer_id' => $id));
+    $before = $db->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type, 'r_referer_id' => $id));
     foreach ($before as $ref) {
         $ATTACHMENTS_ALREADY_REFERENCED[$ref['a_id']] = 1;
     }
@@ -97,7 +97,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
 
             $matches_extract = array();
             if (preg_match('#\[attachment( [^\]]*)type="extract"( [^\]]*)?\]new_' . $matches[1] . '\[/attachment\]#', $comcode, $matches_extract) != 0) { // Handle attachment extraction
-                _handle_attachment_extraction($comcode, $key, $type, $id, $matches_extract, $connection); // Handle missing attachment markup for uploaded attachments
+                _handle_attachment_extraction($comcode, $key, $type, $id, $matches_extract, $db); // Handle missing attachment markup for uploaded attachments
             } elseif ((!browser_matches('simplified_attachments_ui')) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment]') === false) && (strpos($comcode, ']new_' . $matches[1] . '[/attachment_safe]') === false)) {
                 if (preg_match('#\]\d+\[/attachment\]#', $comcode) == 0) { // Attachment could have already been put through (e.g. during a preview). If we have actual ID's referenced, it's almost certainly the case.
                     $comcode .= "\n\n" . '[attachment]new_' . $matches[1] . '[/attachment]';
@@ -112,7 +112,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     if ($has_one) {
         $LAX_COMCODE = true; // We don't want a simple syntax error to cause us to lose our attachments
     }
-    $tempcode = comcode_to_tempcode($comcode, $member, $insert_as_admin, null, $id, $connection, false, false, false, false, false, null, $for_member);
+    $tempcode = comcode_to_tempcode($comcode, $member, $insert_as_admin, null, $id, $db, false, false, false, false, false, null, $for_member);
     $LAX_COMCODE = $temp;
     $ATTACHMENTS_ALREADY_REFERENCED = $old_already;
     if (!array_key_exists($id, $COMCODE_ATTACHMENTS)) {
@@ -139,12 +139,12 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
                 $comcode = preg_replace('#(\[(attachment|attachment_safe)[^\]]*\])new_' . strval($marker_id) . '(\[/)#', '${1}' . strval($attachment['id']) . '${3}', $comcode);
 
                 if (!is_null($type)) {
-                    $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
+                    $db->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
                 }
             } else {
                 // (Re-)Reference it
-                $connection->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']), '', 1);
-                $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
+                $db->query_delete('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']), '', 1);
+                $db->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment['id']));
             }
         }
 
@@ -158,13 +158,13 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
         foreach ($before as $ref) {
             if ((!in_array($ref['a_id'], $ids_present)) && (strpos($comcode, 'attachment.php?id=') === false) && (!multi_lang())) {
                 // Delete reference (as it's not actually in the new comcode!)
-                $connection->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
+                $db->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
 
                 // Was that the last reference to this attachment? (if so -- delete attachment)
-                $test = $connection->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
+                $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
                 if (is_null($test)) {
                     require_code('attachments3');
-                    _delete_attachment($ref['a_id'], $connection);
+                    _delete_attachment($ref['a_id'], $db);
                 }
             }
         }
@@ -182,11 +182,11 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
  * @param  string $comcode Our Comcode
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
  * @param  ID_TEXT $id The ID the attachment will be used for
- * @param  object $connection The database connection to use
+ * @param  object $db The database connector to use
  *
  * @ignore
  */
-function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
+function _handle_data_url_attachments(&$comcode, $type, $id, $db)
 {
     if (function_exists('imagepng')) {
         $matches = array();
@@ -250,11 +250,11 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $connection)
  * @param  ID_TEXT $type The type the attachment will be used for (e.g. download)
  * @param  ID_TEXT $id The ID the attachment will be used for
  * @param  array $matches_extract Reg-exp grabbed parameters from the extract marker attachment (we will re-use them for each individual attachment)
- * @param  object $connection The database connection to use
+ * @param  object $db The database connector to use
  *
  * @ignore
  */
-function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_extract, $connection)
+function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_extract, $db)
 {
     require_code('uploads');
     require_code('files');
@@ -365,13 +365,13 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     require_code('images');
                     $thumb_url = convert_image('uploads/attachments/' . $new_filename, $new_path_thumb, -1, -1, intval(get_option('thumb_width')), true, null, false, true);
 
-                    if (is_forum_db($connection)) {
+                    if ($db->is_forum_db()) {
                         $thumb_url = get_custom_base_url() . '/' . $thumb_url;
                     }
                 }
 
                 // Create new attachment from extracted file
-                $attachment_id = $connection->query_insert('attachments', array(
+                $attachment_id = $db->query_insert('attachments', array(
                     'a_member_id' => get_member(),
                     'a_file_size' => $file_details['size'],
                     'a_url' => $new_url,
@@ -382,10 +382,10 @@ function _handle_attachment_extraction(&$comcode, $key, $type, $id, $matches_ext
                     'a_description' => $description,
                     'a_add_time' => time()
                 ), true);
-                $connection->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
+                $db->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
                 if (addon_installed('galleries')) {
                     require_code('images');
-                    if ((is_video($new_url, true, true)) && ($connection->connection_read == $GLOBALS['SITE_DB']->connection_read)) {
+                    if ((is_video($new_url, true, true)) && (!$db->is_forum_db())) {
                         require_code('transcoding');
                         transcode_video($new_url, 'attachments', $attachment_id, 'id', 'a_url', 'a_original_filename', null, null);
                     }
@@ -451,27 +451,27 @@ function _check_attachment_count()
  * @param  LONG_TEXT $text The Comcode content
  * @param  ID_TEXT $type The arbitrary type that the attached is for (e.g. download)
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @param  boolean $insert_as_admin Whether to insert it as an admin (any Comcode parsing will be carried out with admin privileges)
  * @param  ?MEMBER $for_member The member to use for ownership permissions (null: current member)
  * @return array The language string ID save fields
  */
-function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $connection = null, $insert_as_admin = false, $for_member = null)
+function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id, $db = null, $insert_as_admin = false, $for_member = null)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     require_lang('comcode');
 
     _check_attachment_count();
 
-    $_info = do_comcode_attachments($text, $type, $id, false, $connection, $insert_as_admin, $for_member);
+    $_info = do_comcode_attachments($text, $type, $id, false, $db, $insert_as_admin, $for_member);
     $text_parsed = $_info['tempcode']->to_assembly();
     $source_user = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
     if (!multi_lang_content()) {
-        final_attachments_from_preview($id, $connection);
+        final_attachments_from_preview($id, $db);
 
         $ret = array();
         $ret[$field_name] = $_info['comcode'];
@@ -483,10 +483,10 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
     $lang_id = null;
 
     if (user_lang() == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
-        $lang_id = $connection->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), true);
+        $lang_id = $db->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), true);
     }
     if (is_null($lang_id)) {
-        $lang_id = $connection->query_insert('translate', array(
+        $lang_id = $db->query_insert('translate', array(
             'source_user' => $source_user,
             'broken' => 0,
             'importance_level' => $level,
@@ -495,7 +495,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
             'language' => user_lang(),
         ), true);
     } else {
-        $connection->query_insert('translate', array(
+        $db->query_insert('translate', array(
             'id' => $lang_id,
             'source_user' => $source_user,
             'broken' => 0,
@@ -506,7 +506,7 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
         ));
     }
 
-    final_attachments_from_preview($id, $connection);
+    final_attachments_from_preview($id, $db);
 
     return array(
         $field_name => $lang_id,
@@ -517,12 +517,12 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
  * Finalise attachments which were created during a preview, so that they have the proper reference IDs.
  *
  * @param  ID_TEXT $id The ID in the set of the arbitrary types that the attached is for
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  */
-function final_attachments_from_preview($id, $connection = null)
+function final_attachments_from_preview($id, $db = null)
 {
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     // Clean up the any attachments added at the preview stage
@@ -531,7 +531,7 @@ function final_attachments_from_preview($id, $connection = null)
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     if (!is_null($posting_ref_id)) {
-        $connection->query_delete('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => strval(-$posting_ref_id)), '', 1);
-        $connection->query_delete('attachment_refs', array('r_referer_id' => strval(-$posting_ref_id))); // Can trash this, was made during preview but we made a new one in do_comcode_attachments (recalled by insert_lang_comcode_attachments)
+        $db->query_delete('attachment_refs', array('r_referer_type' => 'null', 'r_referer_id' => strval(-$posting_ref_id)), '', 1);
+        $db->query_delete('attachment_refs', array('r_referer_id' => strval(-$posting_ref_id))); // Can trash this, was made during preview but we made a new one in do_comcode_attachments (recalled by insert_lang_comcode_attachments)
     }
 }

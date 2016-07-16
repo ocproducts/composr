@@ -335,31 +335,31 @@ function delete_privilege($name)
  * Delete attachments solely used by the specified hook.
  *
  * @param  ID_TEXT $type The hook
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  */
-function delete_attachments($type, $connection = null)
+function delete_attachments($type, $db = null)
 {
     if (get_option('attachment_cleanup') == '0') {
         return;
     }
 
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     require_code('attachments2');
     require_code('attachments3');
 
     // Clear any de-referenced attachments
-    $before = $connection->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type));
+    $before = $db->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type));
     foreach ($before as $ref) {
         // Delete reference (as it's not actually in the new comcode!)
-        $connection->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
+        $db->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
 
         // Was that the last reference to this attachment? (if so -- delete attachment)
-        $test = $connection->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
+        $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
         if (is_null($test)) {
-            _delete_attachment($ref['a_id'], $connection);
+            _delete_attachment($ref['a_id'], $db);
         }
     }
 }
@@ -369,26 +369,26 @@ function delete_attachments($type, $connection = null)
  *
  * @param  ID_TEXT $table The table
  * @param  array $attrs The attributes
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  */
-function mass_delete_lang($table, $attrs, $connection)
+function mass_delete_lang($table, $attrs, $db)
 {
     if (count($attrs) == 0) {
         return;
     }
 
-    if (is_null($connection)) {
-        $connection = $GLOBALS['SITE_DB'];
+    if (is_null($db)) {
+        $db = $GLOBALS['SITE_DB'];
     }
 
     $start = 0;
     do {
-        $rows = $connection->query_select($table, $attrs, null, '', 1000, $start, true);
+        $rows = $db->query_select($table, $attrs, null, '', 1000, $start, true);
         if (!is_null($rows)) {
             foreach ($rows as $row) {
                 foreach ($attrs as $attr) {
                     if (!is_null($row[$attr])) {
-                        delete_lang($row[$attr], $connection);
+                        delete_lang($row[$attr], $db);
                     }
                 }
             }

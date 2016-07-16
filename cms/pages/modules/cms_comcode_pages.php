@@ -336,7 +336,7 @@ class Module_cms_comcode_pages
 
             // De-duplication
             $group_by = '';
-            if (can_arbitrary_groupby()) {
+            if ($GLOBALS['SITE_DB']->can_arbitrary_groupby()) {
                 $group_by = ' GROUP BY c.the_zone,c.the_page';
             }
 

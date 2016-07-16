@@ -37,7 +37,7 @@ class Hook_content_meta_aware_news_category
             'content_type_label' => 'news:NEWS_CATEGORY',
             'content_type_universal_label' => 'News category',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'news_categories',
             'id_field' => 'id',
             'id_field_numeric' => true,

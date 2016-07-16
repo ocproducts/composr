@@ -201,7 +201,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
         // Store result of search in database
         if ((!$GLOBALS['SEMI_DEV_MODE']) || ($url_path !== '')) { // We don't cache failure on dev-mode as we may add it later while writing code and don't want to have to keep doing cache flushes
-            if (!is_forum_db($db)) { // If guard is here because a MSN site can't code assumptions about the file system of the central site into that site's database, we rely on that site to maintain its own theme_images table for performance
+            if (!$db->is_forum_db()) { // If guard is here because a MSN site can't code assumptions about the file system of the central site into that site's database, we rely on that site to maintain its own theme_images table for performance
                 $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
                 $GLOBALS['NO_QUERY_LIMIT'] = true;
                 $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang, 'path' => $url_path), false, true); // Allow for race conditions
@@ -226,7 +226,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         // Turn to full URL (the default behaviour)?
         if (!$leave_local) {
             if (url_is_local($url_path)) {
-                if (is_forum_db($db)) {
+                if ($db->is_forum_db()) {
                     $url_path = get_forum_base_url() . '/' . $url_path;
                 } else {
                     if ((substr($url_path, 0, 22) === 'themes/default/images/') || (!is_file(get_custom_file_base() . '/' . rawurldecode($url_path)))) {

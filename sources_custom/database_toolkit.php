@@ -29,11 +29,9 @@ function xml_dump_script()
     } else {
         warn_exit('It makes no sense to run this script if you have not set up the following config options in _config.php: db_chain_type, db_chain_host, db_chain_user, db_chain_password, db_chain');
     }
+
+    $chain_db->ensure_connected();
     $chain_connection = &$chain_db->connection_write;
-    if (count($chain_connection) > 4) { // Okay, we can't be lazy anymore
-        $chain_connection = call_user_func_array(array($chain_db->static_ob, 'db_get_connection'), $chain_connection);
-        _general_db_init();
-    }
 
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(0);
@@ -145,7 +143,7 @@ function xml_dump_script()
         flush();
 
         $fail_ok = (substr($s, 0, 5) == 'ALTER');
-        $chain_db->static_ob->db_query($s, $chain_connection, null, null, $fail_ok, false);
+        $chain_db->static_ob->query($s, $chain_connection, null, null, $fail_ok, false);
     }
 
     print('!!Done!!');
@@ -154,7 +152,7 @@ function xml_dump_script()
 /**
  * Get a list of the defined tables.
  *
- * @param  object $db Database connection to look in
+ * @param  object $db Database connector to look in
  * @return array The tables
  */
 function find_all_tables($db)
@@ -184,7 +182,7 @@ function find_all_tables($db)
  * @param  ?array $skip Array of table names to skip (null: none)
  * @param  ?array $only Array of only table names to do (null: all)
  * @param  boolean $echo Whether to echo out
- * @param  ?object $conn Database connection to use (null: site database)
+ * @param  ?object $conn Database connector to use (null: site database)
  * @return array The SQL statements
  */
 function get_sql_dump($include_drops = false, $output_statuses = false, $from = null, $skip = null, $only = null, $echo = false, $conn = null)
@@ -378,7 +376,7 @@ function db_get_type_remap()
  *
  * @param  ID_TEXT $table_name The table name
  * @param  array $fields A map of field names to Composr field types (with *#? encodings)
- * @param  ?object $conn Database connection to use (null: site database)
+ * @param  ?object $conn Database connector to use (null: site database)
  * @return string The SQL for it
  */
 function db_create_table_sql($table_name, $fields, $conn)

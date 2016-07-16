@@ -58,7 +58,7 @@ $results = selectcode_to_idlist_using_callback('1,3-10,!6,12*', '_callback_get_d
  * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return array A list of ID numbers
  */
 function selectcode_to_idlist_using_db($filter, $field_name, $table_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
@@ -77,7 +77,7 @@ function selectcode_to_idlist_using_db($filter, $field_name, $table_name, $paren
  * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return array A list of ID numbers
  */
 function selectcode_to_idlist_using_memory($filter, $ids_and_parents, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
@@ -96,7 +96,7 @@ function selectcode_to_idlist_using_memory($filter, $ids_and_parents, $parent_sp
  * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return array A list of ID numbers
  */
 function selectcode_to_idlist_using_callback($filter, $ids_and_parents_callback, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
@@ -115,7 +115,7 @@ function selectcode_to_idlist_using_callback($filter, $ids_and_parents_callback,
  * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base). E.g. 'id'.
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return string SQL query fragment. Note that brackets will be put around this automatically if required, so there's no need to do this yourself.
  */
 function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_name = null, $parent_spec__parent_name = null, $category_field_name = null, $parent_spec__field_name = null, $numeric_record_set_ids = true, $numeric_category_set_ids = true, $db = null)
@@ -247,7 +247,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
  * @param  ?string $parent_spec__field_name The database's field name for the category-set's category-ID (null: don't support subtree [*-style] searches beyond the tree base)
  * @param  boolean $numeric_record_set_ids Whether the record-set IDs are numeric
  * @param  boolean $numeric_category_set_ids Whether the category-set IDs are numeric
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return array A list of ID numbers
  *
  * @ignore
@@ -419,7 +419,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
  * @param  ?string $field_name The database's ID field for the record-set we're matching (null: use a different lookup method)
  * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
  * @param  boolean $has_no_parents Whether there are parents in the filter
- * @param  ?object $db Database connection to use (null: website)
+ * @param  ?object $db Database connector to use (null: website)
  * @return array A list of ID numbers
  *
  * @ignore
@@ -480,7 +480,7 @@ function _selectcode_eq($field_name, $var, $numeric)
  * @param  ?string $parent_name The database's field name for the category-set's parent-category-ID (null: don't support subtree [*-style] searches beyond the tree base)
  * @param  string $field_name The database's field name for the category-set's category-ID
  * @param  boolean $numeric_ids Whether the category-set IDs are numeric
- * @param  object $db Database connection to use
+ * @param  object $db Database connector to use
  * @param  array $cached_mappings A place to store cached data we've already loaded once in this function. Pass in an null variable (not a null literal)
  * @param  boolean $first Whether this is the base call to this recursive function (just leave it as the default, true)
  * @param  boolean $recurse Whether to run recursively
@@ -541,7 +541,7 @@ function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $fiel
  * @param  string $field_name The ID field name in the record-set
  * @param  string $table_name The table name of the record-set
  * @param  ?string $category_field_name The database's field name for the record-set's container-category specifier (null: don't support subtree [*-style] searches)
- * @param  object $db Database connection to use
+ * @param  object $db Database connector to use
  * @return array A map between record-set IDs and record-set parent-category-IDs
  *
  * @ignore

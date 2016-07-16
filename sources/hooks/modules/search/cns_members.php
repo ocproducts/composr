@@ -225,12 +225,11 @@ class Hook_search_cns_members extends FieldsSearchHook
                 } elseif (
                     (array_key_exists('field_' . strval($row['id']), $indexes)) &&
                     ($indexes['field_' . strval($row['id'])][0] == '#') &&
-                    (db_has_full_text($GLOBALS['SITE_DB']->connection_read)) &&
-                    (method_exists($GLOBALS['SITE_DB']->static_ob, 'db_has_full_text_boolean')) &&
-                    ($GLOBALS['SITE_DB']->static_ob->db_has_full_text_boolean()) &&
+                    ($GLOBALS['SITE_DB']->has_full_text()) &&
+                    ($GLOBALS['SITE_DB']->has_full_text_boolean()) &&
                     (!is_under_radar($param))
                 ) {
-                    $temp = db_full_text_assemble('"' . $param . '"', true);
+                    $temp = $GLOBALS['SITE_DB']->full_text_assemble('"' . $param . '"', true);
                 } else {
                     list($temp,) = db_like_assemble($param);
                 }

@@ -48,9 +48,9 @@ class Hook_upon_login_external_db
         $password_field = get_value('external_db_login__password_field', null, true);
         $email_address_field = get_value('external_db_login__email_address_field', null, true);
 
-        $query = 'SELECT * FROM ' . $table . ' WHERE (' . $db->static_ob->db_string_equal_to($username_field, $username);
+        $query = 'SELECT * FROM ' . $table . ' WHERE (' . $db->static_ob->string_equal_to($username_field, $username);
         if (get_option('one_per_email_address') == '1') {
-            $query .= ' OR ' . $db->static_ob->db_string_equal_to($email_address_field, $username);
+            $query .= ' OR ' . $db->static_ob->string_equal_to($email_address_field, $username);
         }
         $query .= ')';
         $records = $db->query($query);

@@ -37,7 +37,7 @@ class Hook_resource_meta_aware_emoticon
             'content_type_label' => 'global:EMOTICON',
             'content_type_universal_label' => 'Emoticon',
 
-            'connection' => $GLOBALS['FORUM_DB'],
+            'db' => $GLOBALS['FORUM_DB'],
             'table' => 'f_emoticons',
             'id_field' => 'e_code',
             'id_field_numeric' => false,

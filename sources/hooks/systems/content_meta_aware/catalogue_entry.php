@@ -38,7 +38,7 @@ class Hook_content_meta_aware_catalogue_entry
             'content_type_label' => 'catalogues:CATALOGUE_ENTRY',
             'content_type_universal_label' => 'Catalogue entry',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'catalogue_entries',
             'id_field' => 'id',
             'id_field_numeric' => true,

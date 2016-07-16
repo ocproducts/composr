@@ -79,7 +79,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_top_posters($limit)
     {
-        return $this->connection->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<>' . strval($this->get_guest_id()) . ' ORDER BY m_cache_num_posts DESC', $limit);
+        return $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'f_members WHERE id<>' . strval($this->get_guest_id()) . ' ORDER BY m_cache_num_posts DESC', $limit);
     }
 
     /**
@@ -145,7 +145,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     protected function _install_delete_custom_field($name)
     {
-        $id = $this->connection->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $name));
+        $id = $this->db->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $name));
         if (!is_null($id)) {
             require_code('cns_members_action2');
             cns_delete_custom_field($id);
@@ -324,7 +324,7 @@ class Forum_driver_cns extends Forum_driver_base
             return $TOPIC_IS_THREADED_CACHE[$topic_id] == 1;
         }
 
-        $TOPIC_IS_THREADED_CACHE[$topic_id] = $this->connection->query_select_value_if_there('f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id', 'f_is_threaded', array('t.id' => $topic_id));
+        $TOPIC_IS_THREADED_CACHE[$topic_id] = $this->db->query_select_value_if_there('f_topics t JOIN ' . $this->db->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id', 'f_is_threaded', array('t.id' => $topic_id));
         return $TOPIC_IS_THREADED_CACHE[$topic_id] == 1;
     }
 
@@ -348,7 +348,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function pin_topic($id, $pin = true)
     {
-        $this->connection->query_update('f_topics', array('t_pinned' => $pin ? 1 : 0), array('id' => $id), '', 1);
+        $this->db->query_update('f_topics', array('t_pinned' => $pin ? 1 : 0), array('id' => $id), '', 1);
     }
 
     /**
@@ -419,10 +419,10 @@ class Forum_driver_cns extends Forum_driver_base
         require_code('cns_members_action');
         require_code('cns_members_action2');
 
-        $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+        $field_bits = $this->db->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
         if (!array_key_exists(0, $field_bits)) { // Should never happen, but sometimes on upgrades/corruption...
             $this->install_create_custom_field($field, 10);
-            $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+            $field_bits = $this->db->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
             if (!array_key_exists(0, $field_bits)) {
                 return; // Possible on an MSN, and there's an inconsistency (e.g. no points addon)
             }
@@ -468,7 +468,7 @@ class Forum_driver_cns extends Forum_driver_base
                 return $row;
             }
         }
-        $rows = $this->connection->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
+        $rows = $this->db->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
         if (!array_key_exists(0, $rows)) {
             return null;
         }
@@ -687,7 +687,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (is_numeric($forum_name)) {
             $result = intval($forum_name);
         } else {
-            $_result = $this->connection->query_select('f_forums', array('id', 'f_is_threaded'), array('f_name' => $forum_name), '', 1);
+            $_result = $this->db->query_select('f_forums', array('id', 'f_is_threaded'), array('f_name' => $forum_name), '', 1);
             $result = mixed();
             if (array_key_exists(0, $_result)) {
                 $result = $_result[0]['id'];
@@ -733,7 +733,7 @@ class Forum_driver_cns extends Forum_driver_base
             return null;
         }
 
-        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->connection->get_table_prefix() . 'f_topics t JOIN ' . $this->connection->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND ';
+        $query = 'SELECT t.id,f_is_threaded FROM ' . $this->db->get_table_prefix() . 'f_topics t JOIN ' . $this->db->get_table_prefix() . 'f_forums f ON f.id=t.t_forum_id WHERE t_forum_id=' . strval($forum_id) . ' AND ';
         $query .= '(';
         if ($topic_identifier_encapsulation_prefix === null) {
             $query .= db_string_equal_to('t_description', $topic_identifier);
@@ -745,7 +745,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $query .= ')';
 
-        $_result = $this->connection->query($query, 1, null, false, true);
+        $_result = $this->db->query($query, 1, null, false, true);
         if (array_key_exists(0, $_result)) {
             $TOPIC_IDENTIFIERS_TO_IDS_CACHE[$key] = $_result[0]['id'];
             global $TOPIC_IS_THREADED_CACHE;
@@ -832,8 +832,8 @@ class Forum_driver_cns extends Forum_driver_base
         if ($_groups == '') {
             return array();
         }
-        $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members m WHERE m_primary_group IN (' . $_groups . ') OR EXISTS(SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_group_members WHERE gm_group_id IN (' . $_groups . ') AND gm_member_id=m.id AND gm_validated=1) ORDER BY m_primary_group ASC,id ASC';
-        $a = $this->connection->query($sql, $max, $start, false, true);
+        $sql = 'SELECT * FROM ' . $this->db->get_table_prefix() . 'f_members m WHERE m_primary_group IN (' . $_groups . ') OR EXISTS(SELECT * FROM ' . $this->db->get_table_prefix() . 'f_group_members WHERE gm_group_id IN (' . $_groups . ') AND gm_member_id=m.id AND gm_validated=1) ORDER BY m_primary_group ASC,id ASC';
+        $a = $this->db->query($sql, $max, $start, false, true);
         foreach ($a as $x) {
             $out[$x['id']] = $x;
         }
@@ -867,7 +867,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_previous_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 ORDER BY id DESC');
+        $tempid = $this->db->query_value_if_there('SELECT id FROM ' . $this->db->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 ORDER BY id DESC');
         if ($tempid == $this->get_guest_id()) {
             return null;
         }
@@ -883,7 +883,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_next_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' ORDER BY id');
+        $tempid = $this->db->query_value_if_there('SELECT id FROM ' . $this->db->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' ORDER BY id');
         return $tempid;
     }
 
@@ -896,11 +896,11 @@ class Forum_driver_cns extends Forum_driver_base
     public function probe_ip($ip)
     {
         if (strpos($ip, '*') !== false) {
-            $a = $this->connection->query('SELECT DISTINCT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE m_ip_address LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
-            $b = $this->connection->query('SELECT DISTINCT p_poster AS id FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_ip_address LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
+            $a = $this->db->query('SELECT DISTINCT id FROM ' . $this->db->get_table_prefix() . 'f_members WHERE m_ip_address LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
+            $b = $this->db->query('SELECT DISTINCT p_poster AS id FROM ' . $this->db->get_table_prefix() . 'f_posts WHERE p_ip_address LIKE \'' . db_encode_like(str_replace('*', '%', $ip)) . '\'');
         } else {
-            $a = $this->connection->query_select('f_members', array('DISTINCT id'), array('m_ip_address' => $ip));
-            $b = $this->connection->query_select('f_posts', array('DISTINCT p_poster AS id'), array('p_ip_address' => $ip));
+            $a = $this->db->query_select('f_members', array('DISTINCT id'), array('m_ip_address' => $ip));
+            $b = $this->db->query_select('f_posts', array('DISTINCT p_poster AS id'), array('p_ip_address' => $ip));
         }
         return array_merge($a, $b);
     }
@@ -1111,13 +1111,13 @@ class Forum_driver_cns extends Forum_driver_base
         if (($pattern == '') || ($pattern == '%')) {
             $like = '';
         }
-        $sql = 'SELECT * FROM ' . $this->connection->get_table_prefix() . 'f_members';
+        $sql = 'SELECT * FROM ' . $this->db->get_table_prefix() . 'f_members';
         if ($friends) {
-            $sql .= ' JOIN ' . $this->connection->get_table_prefix() . 'chat_friends ON member_liked=id AND member_likes=' . strval(get_member());
+            $sql .= ' JOIN ' . $this->db->get_table_prefix() . 'chat_friends ON member_liked=id AND member_likes=' . strval(get_member());
         }
         $sql .= ' WHERE ' . $like . 'id<>' . strval($this->get_guest_id());
         $sql .= ' ORDER BY m_last_submit_time DESC';
-        $rows = $this->connection->query($sql, $limit);
+        $rows = $this->db->query($sql, $limit);
 
         sort_maps_by($rows, 'm_username');
 
@@ -1143,7 +1143,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_topic_count($member)
     {
-        return $this->connection->query_select_value('f_topics', 'COUNT(*)', array('t_cache_first_member_id' => $member));
+        return $this->db->query_select_value('f_topics', 'COUNT(*)', array('t_cache_first_member_id' => $member));
     }
 
     /**
@@ -1208,13 +1208,13 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
+                $value = $this->db->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->db->get_table_prefix() . 'f_members\'');
             } else {
                 $where = array('m_validated_email_confirm_code' => '');
                 if (addon_installed('unvalidated')) {
                     $where['m_validated'] = 1;
                 }
-                $value = $this->connection->query_select_value('f_members', 'COUNT(*)', $where) - 1;
+                $value = $this->db->query_select_value('f_members', 'COUNT(*)', $where) - 1;
             }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_member_count', strval($value));
@@ -1235,13 +1235,13 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
+                $value = $this->db->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->db->get_table_prefix() . 'f_topics\'');
             } else {
                 $where = array();
                 if (addon_installed('unvalidated')) {
                     $where['t_validated'] = 1;
                 }
-                $value = $this->connection->query_select_value('f_topics', 'COUNT(*)', $where);
+                $value = $this->db->query_select_value('f_topics', 'COUNT(*)', $where);
             }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_topic_count', strval($value));
@@ -1262,13 +1262,13 @@ class Forum_driver_cns extends Forum_driver_base
 
         if ($value == 0) {
             if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
+                $value = $this->db->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->db->get_table_prefix() . 'f_posts\'');
             } else {
                 $where = '';
                 if (addon_installed('unvalidated')) {
                     $where = ' AND p_validated=1';
                 }
-                $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL' . $where);
+                $value = $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL' . $where);
             }
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
@@ -1285,7 +1285,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     protected function _get_num_new_forum_posts()
     {
-        return $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_time>' . strval(time() - 60 * 60 * 24));
+        return $this->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'f_posts WHERE p_time>' . strval(time() - 60 * 60 * 24));
     }
 
     /**
@@ -1301,7 +1301,7 @@ class Forum_driver_cns extends Forum_driver_base
                 return $id;
             }
         }
-        $row = $this->connection->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
+        $row = $this->db->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
         if (!array_key_exists(0, $row)) {
             if ((is_numeric($name)) && (!is_null($this->get_username(intval($name))))) {
                 return intval($name);
@@ -1326,7 +1326,7 @@ class Forum_driver_cns extends Forum_driver_base
                 return $id;
             }
         }
-        $row = $this->connection->query_select('f_members', array('*'), array('m_email_address' => $email_address), '', 1);
+        $row = $this->db->query_select('f_members', array('*'), array('m_email_address' => $email_address), '', 1);
         if (!array_key_exists(0, $row)) {
             return null;
         }
@@ -1345,7 +1345,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_ADMIN_GROUPS') : null;
 
         if ($ret === null) {
-            $ret = collapse_1d_complexity('id', $this->connection->query_select('f_groups', array('id'), array('g_is_super_admin' => 1)));
+            $ret = collapse_1d_complexity('id', $this->db->query_select('f_groups', array('id'), array('g_is_super_admin' => 1)));
 
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('SUPER_ADMIN_GROUPS', $ret);
@@ -1366,7 +1366,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_MODERATOR_GROUPS') : null;
 
         if ($ret === null) {
-            $ret = collapse_1d_complexity('id', $this->connection->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1)));
+            $ret = collapse_1d_complexity('id', $this->db->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1)));
 
             if (function_exists('persistent_cache_set')) {
                 persistent_cache_set('SUPER_MODERATOR_GROUPS', $ret);
@@ -1396,7 +1396,7 @@ class Forum_driver_cns extends Forum_driver_base
         $where = $only_permissive ? ' WHERE g_is_private_club=0' : '';
 
         $select = 'g.id,g_name,g.g_hidden';
-        $sup = ' ORDER BY g_order,' . $this->connection->translate_field_ref('g_name');
+        $sup = ' ORDER BY g_order,' . $this->db->translate_field_ref('g_name');
         if (running_script('upgrader')) {
             $sup = '';
         }
@@ -1406,8 +1406,8 @@ class Forum_driver_cns extends Forum_driver_base
         } else {
             $count = persistent_cache_get('GROUPS_COUNT' . ($only_permissive ? '_PO' : ''));
             if ($count === null) {
-                $groups_count_sql = 'SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_groups g' . $where;
-                $count = $this->connection->query_value_if_there($groups_count_sql, false, true);
+                $groups_count_sql = 'SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'f_groups g' . $where;
+                $count = $this->db->query_value_if_there($groups_count_sql, false, true);
                 $cnt_cache[$where] = $count;
                 persistent_cache_set('GROUPS_COUNT' . ($only_permissive ? '_PO' : ''), $cnt_cache[$where]);
             } else {
@@ -1431,7 +1431,7 @@ class Forum_driver_cns extends Forum_driver_base
         if (!function_exists('require_lang')) {
             require_code('lang');
         }
-        $query = 'SELECT ' . $select . ' FROM ' . $this->connection->get_table_prefix() . 'f_groups g' . $where . $sup;
+        $query = 'SELECT ' . $select . ' FROM ' . $this->db->get_table_prefix() . 'f_groups g' . $where . $sup;
         static $rows_cache = array();
         $rows = mixed();
         if (!$too_many) {
@@ -1441,7 +1441,7 @@ class Forum_driver_cns extends Forum_driver_base
             if (isset($rows_cache[$where]) && !running_script('install')) {
                 $rows = $rows_cache[$where];
             } else {
-                $rows = $this->connection->query($query, null, null, false, true, array('g_name' => 'SHORT_TRANS'));
+                $rows = $this->db->query($query, null, null, false, true, array('g_name' => 'SHORT_TRANS'));
                 $rows_cache[$where] = $rows;
                 if (!$too_many) {
                     persistent_cache_set('GROUPS' . ($only_permissive ? '_PO' : ''), $rows);
@@ -1514,7 +1514,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         $member_id = $this->get_member_from_username($username);
         if (((is_null($GLOBALS['LDAP_CONNECTION'])) || (!cns_is_on_ldap($username))) && (is_null($member_id))) {
-            $member_id = $this->connection->query_select_value_if_there('f_members', 'id', array('m_email_address' => $username));
+            $member_id = $this->db->query_select_value_if_there('f_members', 'id', array('m_email_address' => $username));
             if (is_null($member_id)) {
                 return '!'; // Invalid user logging in
             }
@@ -1687,7 +1687,7 @@ class Forum_driver_cns extends Forum_driver_base
                 if (get_page_name() != 'lost_password') {
                     if (get_db_type() != 'xml') {
                         if (!$GLOBALS['SITE_DB']->table_is_locked('f_members')) {
-                            $this->connection->query_update('f_members', $change_map, array('id' => $id), '', 1, null, false, true);
+                            $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, null, false, true);
                         }
                     }
                 }
@@ -1718,12 +1718,12 @@ class Forum_driver_cns extends Forum_driver_base
             return $this->MEMBER_ROWS_CACHED[$member];
         }
 
-        $rows = $this->connection->query_select('f_members m LEFT JOIN ' . $this->connection->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id', array('*'), array('id' => $member), '', 1);
+        $rows = $this->db->query_select('f_members m LEFT JOIN ' . $this->db->get_table_prefix() . 'f_member_custom_fields f ON m.id=f.mf_member_id', array('*'), array('id' => $member), '', 1);
         if (!array_key_exists(0, $rows)) {
             $this->MEMBER_ROWS_CACHED[$member] = null;
             return null;
         }
-        if ($this->connection == $GLOBALS['FORUM_DB'] && !multi_lang_content()) {
+        if ($this->db == $GLOBALS['FORUM_DB'] && !multi_lang_content()) {
             // Optimisation
             require_code('cns_members');
             global $MEMBER_CACHE_FIELD_MAPPINGS;

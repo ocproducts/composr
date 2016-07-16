@@ -37,7 +37,7 @@ class Hook_content_meta_aware_poll
             'content_type_label' => 'polls:POLL',
             'content_type_universal_label' => 'Poll',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'poll',
             'id_field' => 'id',
             'id_field_numeric' => true,

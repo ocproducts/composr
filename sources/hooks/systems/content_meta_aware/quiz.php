@@ -37,7 +37,7 @@ class Hook_content_meta_aware_quiz
             'content_type_label' => 'quiz:QUIZ',
             'content_type_universal_label' => 'Quiz',
 
-            'connection' => $GLOBALS['SITE_DB'],
+            'db' => $GLOBALS['SITE_DB'],
             'table' => 'quizzes',
             'id_field' => 'id',
             'id_field_numeric' => true,

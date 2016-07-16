@@ -1876,7 +1876,7 @@ function form_input_radio_entry($name, $value, $selected = false, $text = '', $t
  * @param  ?string $selected_code The currently selected entry in our picture choosing, by code (null: none)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $allow_none Whether to allow the selection of 'no' picture
- * @param  ?object $db The database connection to the Conversr install we are choosing images from (null: site db)
+ * @param  ?object $db The database connector to the Conversr install we are choosing images from (null: site db)
  * @param  ?ID_TEXT $theme Theme to use (null: current theme)
  * @param  ?ID_TEXT $lang Language to use (null: current language)
  * @param  boolean $linear Whether choices are presented in a list (as opposed to a grid); useful when sizes are irregular

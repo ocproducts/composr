@@ -31,7 +31,7 @@ class RevisionEngineDatabase
      * Constructor.
      *
      * @param  boolean $is_log_mod Whether the logs are done via the forum moderator's log.
-     * @param  ?object $db Database connection to use (null: work out using norms for $is_log_mod value).
+     * @param  ?object $db Database connector to use (null: work out using norms for $is_log_mod value).
      */
     public function __construct($is_log_mod = false, $db = null)
     {

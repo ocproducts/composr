@@ -621,11 +621,11 @@ function get_upload_limit_config_url()
  * Get the maximum allowed upload filesize, as specified in the configuration
  *
  * @param  ?MEMBER $source_member Member we consider quota for (null: do not consider quota)
- * @param  ?object $connection Database connection to get quota from (null: site DB)
+ * @param  ?object $db Database connector to get quota from (null: site DB)
  * @param  boolean $consider_php_limits Whether to consider limitations in PHP's configuration
  * @return integer The maximum allowed upload filesize, in bytes
  */
-function get_max_file_size($source_member = null, $connection = null, $consider_php_limits = true)
+function get_max_file_size($source_member = null, $db = null, $consider_php_limits = true)
 {
     $possibilities = array();
 
@@ -645,10 +645,10 @@ function get_max_file_size($source_member = null, $connection = null, $consider_
         } else {
             $daily_quota = 5; // 5 is a hard-coded default for non-Conversr forums
         }
-        if (is_null($connection)) {
-            $connection = $GLOBALS['SITE_DB'];
+        if (is_null($db)) {
+            $db = $GLOBALS['SITE_DB'];
         }
-        $_size_uploaded_today = $connection->query('SELECT SUM(a_file_size) AS the_answer FROM ' . $connection->get_table_prefix() . 'attachments WHERE a_member_id=' . strval($source_member) . ' AND a_add_time>' . strval(time() - 60 * 60 * 24) . ' AND a_add_time<=' . strval(time()));
+        $_size_uploaded_today = $db->query('SELECT SUM(a_file_size) AS the_answer FROM ' . $db->get_table_prefix() . 'attachments WHERE a_member_id=' . strval($source_member) . ' AND a_add_time>' . strval(time() - 60 * 60 * 24) . ' AND a_add_time<=' . strval(time()));
         $size_uploaded_today = intval($_size_uploaded_today[0]['the_answer']);
         $d = max(0, $daily_quota * 1024 * 1024 - $size_uploaded_today);
     }
