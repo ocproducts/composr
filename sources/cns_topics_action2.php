@@ -482,8 +482,8 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
         cns_decache_cms_blocks($from);
     } else {
         if (count($topics) == 1) {
-            decache_private_topics($info[0]['t_pt_from']);
-            decache_private_topics($info[0]['t_pt_to']);
+            decache_private_topics($topic_info[0]['t_pt_from']);
+            decache_private_topics($topic_info[0]['t_pt_to']);
         } else {
             decache_private_topics();
         }
