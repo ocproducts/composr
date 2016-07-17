@@ -402,7 +402,7 @@ function init__m_zip()
                 // unlink($a_dir);
                 // comment this if you want to skip warning
                 if (php_function_allowed('error_log')) {
-                    error_log('m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
+                    error_log('Composr: m_deldir() -- <b>Warning!</b> Not a directory: ' . $a_dir);
                 }
             }
         }

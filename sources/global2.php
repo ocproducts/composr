@@ -502,7 +502,7 @@ function monitor_slow_urls()
     if ($time > intval(get_value('monitor_slow_urls'))) {
         require_code('urls');
         if (php_function_allowed('error_log')) {
-            error_log('Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
+            error_log('Profiling: Over time limit @ ' . get_self_url_easy(true) . "\t" . strval($time) . 'secs' . "\t" . date('Y-m-d H:i:s', time()), 0);
         }
     }
 }
@@ -515,7 +515,7 @@ function memory_tracking()
     $memory_tracking = intval(get_value('memory_tracking'));
     if (memory_get_peak_usage() > 1024 * 1024 * $memory_tracking) {
         if (php_function_allowed('error_log')) {
-            error_log('Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(true), 0);
+            error_log('Profiling: Memory usage above memory_tracking (' . strval($memory_tracking) . 'MB) @ ' . get_self_url_easy(true), 0);
         }
     }
 }
