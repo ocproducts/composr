@@ -374,7 +374,7 @@ function newsletter_wrap($_message, $lang, $subject = '')
  * @param  string $from_name Override the name the mail is sent from (blank: site name)
  * @param  integer $priority The message priority (1=urgent, 3=normal, 5=low)
  * @range  1 5
- * @param  string $csv_data CSV data of extra subscribers (blank: none). This is in the same Composr newsletter CSV format that we export elsewhere.
+ * @param  string $csv_data CSV data of extra subscribers in JSON format (blank: none). This is in the same Composr newsletter CSV format that we export elsewhere.
  * @param  ID_TEXT $mail_template The template used to show the email
  * @return Tempcode UI
  */
@@ -416,7 +416,7 @@ function send_newsletter($message, $subject, $language, $send_details, $html_onl
  * @param  integer $start Start position in result set (results are returned in parallel for each category of result)
  * @param  integer $max Maximum records to return from each category
  * @param  boolean $get_raw_rows Whether to get raw rows rather than mailer-ready correspondance lists
- * @param  string $csv_data Serialized CSV data to also consider
+ * @param  string $csv_data JSON CSV data to also consider
  * @param  boolean $strict_level Whether to do exact level matching, rather than "at least" matching
  * @return array Returns a tuple of corresponding detail lists, emails,hashes,usernames,forenames,surnames,ids, and a record count for levels (depending on requests: csv, 1, <newsletterID>, g<groupID>) [record counts not returned if $start is not zero, for performance reasons]
  */
@@ -551,7 +551,8 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
 
     // From CSV
     if ($csv_data != '') {
-        $_csv_data = unserialize($csv_data);
+        require_code('json');
+        $_csv_data = json_decode($csv_data, true);
 
         $email_index = 0;
         $forename_index = 1;
@@ -868,7 +869,7 @@ function delete_newsletter($id)
  * @param  SHORT_TEXT $from_email From address
  * @param  SHORT_TEXT $from_name From name
  * @param  SHORT_INTEGER $priority Priority
- * @param  LONG_TEXT $csv_data CSV data of who to send to
+ * @param  LONG_TEXT $csv_data CSV data of who to send to (JSON)
  * @param  SHORT_TEXT $frequency Send frequency
  * @set weekly biweekly monthly
  * @param  SHORT_INTEGER $day Weekday to send on
@@ -925,7 +926,7 @@ function add_periodic_newsletter($subject, $message, $lang, $send_details, $html
  * @param  SHORT_TEXT $from_email From address
  * @param  SHORT_TEXT $from_name From name
  * @param  SHORT_INTEGER $priority Priority
- * @param  LONG_TEXT $csv_data CSV data of who to send to
+ * @param  LONG_TEXT $csv_data CSV data of who to send to (JSON)
  * @param  SHORT_TEXT $frequency Send frequency
  * @set weekly biweekly monthly
  * @param  SHORT_INTEGER $day Weekday to send on

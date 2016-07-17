@@ -3262,53 +3262,6 @@ function appengine_live_guard()
 }
 
 /**
- * Check serialized data for objects, as a security measure.
- *
- * @param string $data &$data Serialized data
- * @param ?mixed     $safe_replacement What to substitute if objects are contained (null: substitute null)
- */
-function secure_serialized_data(&$data, $safe_replacement = null)
-{
-    // Security check, unserialize can result in unchecked magic method invocation on defined objects
-    //  Would be a vulnerability if there's a defined class where such method invocation has dangerous side-effects
-
-    $matches = array();
-    $num_matches = preg_match_all('#(^|;)O:\d+:"([^"]+)"#', $data, $matches);
-    for ($i = 0; $i < $num_matches; $i++) {
-        $harsh = true; // Could be turned into a method parameter later, if needed
-        if ($harsh) {
-            $bad_methods = array(
-                '__.*',
-            );
-        } else {
-            $bad_methods = array(
-                '__sleep',
-                '__wakeup',
-                '__destruct',
-                '__toString',
-                '__set_state',
-                '__isset',
-                '__get',
-                '__set',
-                '__call',
-                '__callStatic',
-            );
-        }
-
-        $methods = get_class_methods($matches[2][$i]);
-
-        foreach ($bad_methods as $bad_method) {
-            foreach ($methods as $method) {
-                if (preg_match('#^' . $bad_method . '$#', $method) != 0) {
-                    $data = serialize($safe_replacement);
-                    return;
-                }
-            }
-        }
-    }
-}
-
-/**
  * Update a catalogue content field reference, to a new value.
  *
  * @param ID_TEXT $type Content type

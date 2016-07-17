@@ -29,6 +29,7 @@ function init__commandr()
     require_code('users_active_actions');
     require_code('commandr_fs');
     require_code('xml');
+    require_code('json');
 }
 
 /**
@@ -1197,8 +1198,7 @@ class Virtual_shell
                     $_COOKIE['commandr_state'] = stripslashes($_COOKIE['commandr_state']);
                 }
                 $_commandr_state_diff = base64_decode($_COOKIE['commandr_state']);
-                secure_serialized_data($_commandr_state_diff);
-                $commandr_state_diff = @unserialize($_commandr_state_diff);
+                $commandr_state_diff = @json_decode($_commandr_state_diff, true);
                 if (!is_array($commandr_state_diff)) {
                     $commandr_state_diff = array();
                 }
@@ -1211,8 +1211,7 @@ class Virtual_shell
                     $_COOKIE['commandr_state_lang'] = stripslashes($_COOKIE['commandr_state_lang']);
                 }
                 $_commandr_state_lang_diff = base64_decode($_COOKIE['commandr_state_lang']);
-                secure_serialized_data($_commandr_state_lang_diff);
-                $commandr_state_lang_diff = @unserialize($_commandr_state_lang_diff);
+                $commandr_state_lang_diff = @json_decode($_commandr_state_lang_diff, true);
                 if (!is_array($commandr_state_lang_diff)) {
                     $commandr_state_lang_diff = array();
                 }
@@ -1230,8 +1229,7 @@ class Virtual_shell
                     $_COOKIE['commandr_state_code'] = stripslashes($_COOKIE['commandr_state_code']);
                 }
                 $_commandr_state_code_diff = base64_decode($_COOKIE['commandr_state_code']);
-                secure_serialized_data($_commandr_state_code_diff);
-                $commandr_state_code_diff = @unserialize($_commandr_state_code_diff);
+                $commandr_state_code_diff = @json_decode($_commandr_state_code_diff, true);
                 if (!is_array($commandr_state_code_diff)) {
                     $commandr_state_code_diff = array();
                 }
@@ -1282,7 +1280,7 @@ class Virtual_shell
 
             // Save settings...
 
-            $cookie_size = strlen(serialize($_COOKIE));
+            $cookie_size = strlen(json_encode($_COOKIE));
             if ($cookie_size < 4096) { // Be careful, large cookies can block Apache requests
                 // Variables
                 $commandr_env_neglect = array('SITE_DB', 'FORUM_DB', 'FORUM_DRIVER', 'GLOBALS', '_SERVER', '_COOKIE', '_GET', '_POST', '_ENV', '_FILES', '_REQUEST', '_SESSION', 'this', 'php_errormsg');
@@ -1294,20 +1292,20 @@ class Virtual_shell
                         $commandr_state_diff[$commandr_change] = $commandr_env_after[$commandr_change];
                     }
                 }
-                $data = base64_encode(serialize($commandr_state_diff));
+                $data = base64_encode(json_encode($commandr_state_diff));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state', $data, true);
                 }
 
                 // Code includes
                 $newly_required = array_diff(array_keys($GLOBALS['REQUIRED_CODE']), $already_required);
-                $data = base64_encode(serialize($newly_required));
+                $data = base64_encode(json_encode($newly_required));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state_code', $data, true);
                 }
 
                 // Lang file includes
-                $data = base64_encode(serialize(array_keys($GLOBALS['LANGS_REQUESTED'])));
+                $data = base64_encode(json_encode(array_keys($GLOBALS['LANGS_REQUESTED'])));
                 if (strlen($data) < 4096) {
                     cms_setcookie('commandr_state_lang', $data, true);
                 }

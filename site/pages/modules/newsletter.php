@@ -35,7 +35,7 @@ class Module_newsletter
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 12;
+        $info['version'] = 13;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -181,6 +181,17 @@ class Module_newsletter
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 12)) {
             $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_message_id', array('d_message_id'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 13)) {
+            // We've switched to JSON for CSV data
+            require_code('json');
+            $periodic = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id', 'np_csv_data'));
+            foreach ($periodic as $p) {
+                if ($p['np_csv_data'] != '') {
+                    $GLOBALS['SITE_DB']->query_update('newsletter_periodic', array('np_csv_data' => json_encode(unserialize($p['np_csv_data']))), array('id' => $p['id']), '', 1);
+                }
+            }
         }
     }
 

@@ -457,7 +457,9 @@ function ajax_tree_script()
 
     // NB: We use ajax_tree hooks to power this. Those hooks may or may not use the Sitemap API to get the tree structure. However, the default ones are hard-coded, for better performance.
 
+    require_code('json');
     require_code('xml');
+
     header('Content-Type: text/xml');
     $hook = filter_naughty_harsh(get_param_string('hook'));
     require_code('hooks/systems/ajax_tree/' . $hook);
@@ -474,10 +476,9 @@ function ajax_tree_script()
     echo($html_mask ? '<html>' : '<request>');
     $_options = get_param_string('options', '', true);
     if ($_options == '') {
-        $_options = serialize(array());
+        $_options = json_encode(array());
     }
-    secure_serialized_data($_options);
-    $options = @unserialize($_options);
+    $options = @json_decode($_options, true);
     if ($options === false) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }

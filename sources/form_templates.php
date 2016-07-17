@@ -1773,6 +1773,8 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         }
     }
 
+    require_code('json');
+
     $_required = ($required) ? '_required' : '';
     $input = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
         '_GUID' => '21e9644eeac24356f38459ebe37f693a',
@@ -1786,7 +1788,7 @@ function form_input_tree_list($pretty_name, $description, $name, $root_id, $hook
         'DEFAULT' => ($default === null) ? '' : $default,
         'HOOK' => $hook,
         'ROOT_ID' => ($root_id === null) ? '' : $root_id,
-        'OPTIONS' => serialize($options),
+        'OPTIONS' => json_encode($options),
         'DESCRIPTION' => $description,
         'CONTENT_TYPE' => $content_type,
     ));

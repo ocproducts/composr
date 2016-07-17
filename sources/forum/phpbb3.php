@@ -1365,10 +1365,10 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         }
 
         require_code('crypt');
+
         $hash = substr(get_rand_password(), 0, 17);
         $this->db->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
 
-        require_code('crypt');
         $session_id = get_rand_password();
         $this->db->query_insert('sessions', array(
             'session_id' => $session_id,

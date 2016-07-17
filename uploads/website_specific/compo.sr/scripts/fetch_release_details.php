@@ -64,7 +64,12 @@ if ((array_key_exists(0, $news_rows)) && (has_category_access($GLOBALS['FORUM_DR
     $news_html = str_replace('display: none', 'display: block', $news_html);
     $notes = $news_html;
 
-    echo serialize(array($notes, $tar_url, $changes));
+    if (get_param_string('mode', 'serialize') == 'serialize') {
+        echo serialize(array($notes, $tar_url, $changes)); // LEGACY
+    } else {
+        require_code('json');
+        echo json_encode(array($notes, $tar_url, $changes));
+    }
 } else {
     echo serialize(array('', '', ''));
 }

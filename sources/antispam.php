@@ -432,7 +432,7 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     require_code('files');
     require_code('character_sets');
     $key = get_option('stopforumspam_api_key');
-    $url = 'http://www.stopforumspam.com/api?f=serial&unix&confidence&ip=' . urlencode($user_ip);
+    $url = 'http://www.stopforumspam.com/api?f=json&unix&confidence&ip=' . urlencode($user_ip);
     if (!is_null($username)) {
         $url .= '&username=' . urlencode(convert_to_internal_encoding($username, get_charset(), 'utf-8'));
     }
@@ -444,9 +444,8 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
     }
     $_result = http_download_file($url, null, false);
 
-    secure_serialized_data($_result);
-
-    $result = @unserialize($_result);
+    require_code('json');
+    $result = @json_decode($_result, true);
     if ($result !== false) {
         if ($result['success']) {
             foreach (array('username', 'email', 'ip') as $criterion) {

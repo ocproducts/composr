@@ -374,9 +374,8 @@ function try_cookie_login()
 
     // Preprocess if this is a serialized cookie
     $member_cookie_name = get_member_cookie();
-    $bar_pos = strpos($member_cookie_name, '|');
     $colon_pos = strpos($member_cookie_name, ':');
-    if ($colon_pos !== false) {
+    if ($colon_pos !== false) { // E.g. phpBB3, SMF2
         $base = substr($member_cookie_name, 0, $colon_pos);
         if ((array_key_exists($base, $_COOKIE)) && ($_COOKIE[$base] != '')) {
             $real_member_cookie = substr($member_cookie_name, $colon_pos + 1);
@@ -386,8 +385,6 @@ function try_cookie_login()
             if (get_magic_quotes_gpc()) {
                 $the_cookie = stripslashes($_COOKIE[$base]);
             }
-
-            secure_serialized_data($the_cookie, array());
 
             $unserialize = @unserialize($the_cookie);
 
@@ -407,31 +404,6 @@ function try_cookie_login()
                     $_COOKIE[get_pass_cookie()] = $the_pass;
                 }
             }
-        }
-    } elseif ($bar_pos !== false) {
-        $base = substr($member_cookie_name, 0, $bar_pos);
-        if ((array_key_exists($base, $_COOKIE)) && ($_COOKIE[$base] != '')) {
-            $real_member_cookie = substr($member_cookie_name, $bar_pos + 1);
-            $real_pass_cookie = substr(get_pass_cookie(), $bar_pos + 1);
-
-            $the_cookie = $_COOKIE[$base];
-            if (get_magic_quotes_gpc()) {
-                $the_cookie = stripslashes($_COOKIE[$base]);
-            }
-
-            $cookie_contents = explode('||', $the_cookie);
-
-            $the_member = $cookie_contents[intval($real_member_cookie)];
-            if (get_magic_quotes_gpc()) {
-                $the_member = addslashes(@strval($the_member));
-            }
-            $_COOKIE[get_member_cookie()] = $the_member;
-
-            $the_pass = $cookie_contents[intval($real_pass_cookie)];
-            if (get_magic_quotes_gpc()) {
-                $the_pass = addslashes($the_pass);
-            }
-            $_COOKIE[get_pass_cookie()] = $the_pass;
         }
     }
 

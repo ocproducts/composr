@@ -166,7 +166,8 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
         $content_url = $content_url->evaluate();
     }
 
-    $serialized_options = serialize(array($page_name, $content_id, $allow_comments, $submitter, $content_url, $content_title, $forum, $time));
+    require_code('json');
+    $serialized_options = json_encode(array($page_name, $content_id, $allow_comments, $submitter, $content_url, $content_title, $forum, $time));
     require_code('crypt');
     $hash = ratchet_hash($serialized_options, get_site_salt()); // A little security, to ensure $serialized_options is not tampered with
 
@@ -194,8 +195,8 @@ function post_comment_script()
         post_param_string('options'); // Trigger an error
     }
     $options = isset($_POST['options']) ? $_POST['options'] : $_GET['options'];
-    secure_serialized_data($options);
-    $_options = @unserialize($options);
+    require_code('json');
+    $_options = @json_decode($options, true);
     if (!is_array($_options)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }

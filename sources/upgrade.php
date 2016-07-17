@@ -96,11 +96,11 @@ function upgrade_script()
                     $tar_url = '';
                     if (!is_null($news_id)) {
                         require_code('files');
-                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
+                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?format=json&news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
-                        secure_serialized_data($news);
-                        $details = unserialize($news);
+                        require_code('json');
+                        $details = json_decode($news, true);
                         if ($details[0] != '') {
                             $l_refer_release_notes = $details[0] . '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
                         }

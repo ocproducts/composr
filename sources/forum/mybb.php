@@ -1211,7 +1211,7 @@ class Forum_driver_mybb extends Forum_driver_base
         $loginkey = $row['loginkey']; //used for 'mybbuser' memberid.'_'.'loginkey'
         $loguid = $row['uid']; //member ID
 
-        //Set a User COOKIE
+        // Set a User COOKIE
         cms_setcookie('mybbuser', $loguid . '_' . $loginkey);
 
         $current_ip = get_ip_address();
@@ -1227,7 +1227,7 @@ class Forum_driver_mybb extends Forum_driver_base
             $this->db->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'ip' => $current_ip));
         }
 
-        //Now lets try and set a COOKIE of MyBB Session ID
+        // Now lets try and set a COOKIE of MyBB Session ID
         @cms_setcookie('sid', $session_id);
 
         $_COOKIE['mybbuser'] = strval($loguid) . '_' . $loginkey;

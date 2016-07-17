@@ -1105,13 +1105,14 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
             }
             if (count($_csv_data) > 1) {
-                $csv_data = serialize($_csv_data);
+                require_code('json');
+                $csv_data = json_encode($_csv_data);
             }
         }
         if (!is_null($csv_data)) {
             $hidden->attach(form_input_hidden('csv_data', $csv_data));
-            secure_serialized_data($csv_data, array());
-            $_csv_data = unserialize($csv_data);
+            require_code('json');
+            $_csv_data = json_decode($csv_data, true);
             $num_csv_data = count($_csv_data) - 1;
             $send_to_help = do_lang_tempcode('SOME_NEWSLETTER_TARGETS_KNOWN', escape_html(integer_format($num_csv_data)));
         }
@@ -1311,7 +1312,8 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
                 fclose($myfile);
 
-                $extra_post_data['csv_data'] = serialize($__csv_data);
+                require_code('json');
+                $extra_post_data['csv_data'] = json_encode($__csv_data);
             }
         }
 
@@ -1429,7 +1431,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $message = post_param_string('message');
         $subject = post_param_string('subject');
-        $csv_data = post_param_string('csv_data', ''); // serialized PHP array
+        $csv_data = post_param_string('csv_data', ''); // JSON
 
         $template = post_param_string('template', 'MAIL');
         $in_full = post_param_integer('in_full', 0);
