@@ -1225,7 +1225,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_members()
+    public function get_num_members()
     {
         $r = $this->db->query('SELECT COUNT(*) AS a FROM ' . $this->db->get_table_prefix() . 'members WHERE member_group_id<>1');
         return $r[0]['a'];
@@ -1236,7 +1236,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_topics()
+    public function get_num_topics()
     {
         return $this->db->query_select_value('topics', 'COUNT(*)');
     }

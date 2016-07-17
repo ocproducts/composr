@@ -73,7 +73,7 @@ class Hook_sitemap_member extends Hook_sitemap_content
 
         if ($child_cutoff !== null) {
             if ($consider_validation) {
-                $count = $GLOBALS['FORUM_DRIVER']->get_members();
+                $count = $GLOBALS['FORUM_DRIVER']->get_num_members();
             } else {
                 $count = $GLOBALS['FORUM_DB']->query_select_value('f_members', 'COUNT(*)');
             }

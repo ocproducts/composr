@@ -1069,7 +1069,7 @@ class Forum_driver_mybb extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_members()
+    public function get_num_members()
     {
         return $this->db->query_select_value('users', 'COUNT(*)') - 1;
     }
@@ -1079,7 +1079,7 @@ class Forum_driver_mybb extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_topics()
+    public function get_num_topics()
     {
         return $this->db->query_select_value('threads', 'COUNT(*)');
     }

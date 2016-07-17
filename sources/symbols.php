@@ -973,7 +973,7 @@ function ecv_METADATA($lang, $escaped, $param)
                 break;
             case 'site_nummembers':
                 if (!is_null($GLOBALS['FORUM_DRIVER'])) {
-                    $value = strval($GLOBALS['FORUM_DRIVER']->get_members());
+                    $value = strval($GLOBALS['FORUM_DRIVER']->get_num_members());
                 }
                 break;
             case 'site_bestmember':
@@ -984,7 +984,7 @@ function ecv_METADATA($lang, $escaped, $param)
                 break;
             case 'forum_numtopics':
                 if (!is_null($GLOBALS['FORUM_DRIVER'])) {
-                    $value = strval($GLOBALS['FORUM_DRIVER']->get_topics());
+                    $value = strval($GLOBALS['FORUM_DRIVER']->get_num_topics());
                 }
                 break;
             case 'forum_numposts':

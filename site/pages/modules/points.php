@@ -260,13 +260,13 @@ class Module_points
     public function points_search_results()
     {
         $username = str_replace('*', '%', get_param_string('username'));
-        if ((substr($username, 0, 1) == '%') && ($GLOBALS['FORUM_DRIVER']->get_members() > 3000)) {
+        if ((substr($username, 0, 1) == '%') && ($GLOBALS['FORUM_DRIVER']->get_num_members() > 3000)) {
             warn_exit(do_lang_tempcode('CANNOT_WILDCARD_START'));
         }
-        if ((strpos($username, '%') !== false) && (strpos($username, '%') < 6) && ($GLOBALS['FORUM_DRIVER']->get_members() > 30000)) {
+        if ((strpos($username, '%') !== false) && (strpos($username, '%') < 6) && ($GLOBALS['FORUM_DRIVER']->get_num_members() > 30000)) {
             warn_exit(do_lang_tempcode('CANNOT_WILDCARD_START'));
         }
-        if ((strpos($username, '%') !== false) && (strpos($username, '%') < 12) && ($GLOBALS['FORUM_DRIVER']->get_members() > 300000)) {
+        if ((strpos($username, '%') !== false) && (strpos($username, '%') < 12) && ($GLOBALS['FORUM_DRIVER']->get_num_members() > 300000)) {
             warn_exit(do_lang_tempcode('CANNOT_WILDCARD_START'));
         }
         $rows = $GLOBALS['FORUM_DRIVER']->get_matching_members($username, 100);

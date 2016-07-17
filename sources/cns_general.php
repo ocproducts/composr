@@ -39,9 +39,9 @@ function cns_get_forums_stats()
     $out = array();
 
     if (isset($GLOBALS['CNS_DRIVER'])) {
-        $out['num_topics'] = $GLOBALS['CNS_DRIVER']->get_topics();
+        $out['num_topics'] = $GLOBALS['CNS_DRIVER']->get_num_topics();
         $out['num_posts'] = $GLOBALS['CNS_DRIVER']->get_num_forum_posts();
-        $out['num_members'] = $GLOBALS['CNS_DRIVER']->get_members();
+        $out['num_members'] = $GLOBALS['CNS_DRIVER']->get_num_members();
     } else {
         $out['num_topics'] = 0;
         $out['num_posts'] = 0;

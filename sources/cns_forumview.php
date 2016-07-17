@@ -83,7 +83,7 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
             break;
     }
 
-    if ($GLOBALS['FORUM_DRIVER']->get_topics() < intval(get_option('keyset_pagination'))) { // Not enabled
+    if ($GLOBALS['FORUM_DRIVER']->get_num_topics() < intval(get_option('keyset_pagination'))) { // Not enabled
         $keyset_field = null;
         $keyset_field_stripped = null;
     }

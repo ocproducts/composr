@@ -1202,7 +1202,7 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_members()
+    public function get_num_members()
     {
         $value = intval(get_value_newer_than('cns_member_count', time() - 60 * 60 * 3));
 
@@ -1229,7 +1229,7 @@ class Forum_driver_cns extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_topics()
+    public function get_num_topics()
     {
         $value = intval(get_value_newer_than('cns_topic_count', time() - 60 * 60 * 3));
 

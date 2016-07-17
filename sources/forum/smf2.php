@@ -975,7 +975,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_members()
+    public function get_num_members()
     {
         return $this->db->query_select_value('members', 'COUNT(*)');
     }
@@ -985,7 +985,7 @@ class Forum_driver_smf2 extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_topics()
+    public function get_num_topics()
     {
         return $this->db->query_select_value('topics', 'COUNT(*)');
     }

@@ -33,7 +33,7 @@ class Hook_stats_forum
         if (get_forum_type() != 'none') {
             $bits = new Tempcode();
             if (get_option('forum_show_stats_count_members') == '1') {
-                $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => 'a2dbcdec813d5a5edbb416bf087b4a97', 'KEY' => do_lang_tempcode('COUNT_MEMBERS'), 'VALUE' => integer_format($GLOBALS['FORUM_DRIVER']->get_members()))));
+                $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array('_GUID' => 'a2dbcdec813d5a5edbb416bf087b4a97', 'KEY' => do_lang_tempcode('COUNT_MEMBERS'), 'VALUE' => integer_format($GLOBALS['FORUM_DRIVER']->get_num_members()))));
             }
             if (get_forum_type() == 'cns') {
                 if (get_option('forum_show_stats_count_members_new_today') == '1') {
@@ -84,7 +84,7 @@ class Hook_stats_forum
                     $bits->attach(do_template('BLOCK_SIDE_STATS_SUBLINE', array(
                         '_GUID' => '2e0fe7ccbb15052743c94aab6a3654bc',
                         'KEY' => do_lang_tempcode('COUNT_TOPICS'),
-                        'VALUE' => integer_format($GLOBALS['FORUM_DRIVER']->get_topics()),
+                        'VALUE' => integer_format($GLOBALS['FORUM_DRIVER']->get_num_topics()),
                     )));
                 }
                 if (get_option('forum_show_stats_count_posts') == '1') {

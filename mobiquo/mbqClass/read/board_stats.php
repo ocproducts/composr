@@ -44,7 +44,7 @@ class CMSBoardStats
      */
     private function get_topics_count()
     {
-        return $GLOBALS['FORUM_DRIVER']->get_topics();
+        return $GLOBALS['FORUM_DRIVER']->get_num_topics();
     }
 
     /**
@@ -64,7 +64,7 @@ class CMSBoardStats
      */
     private function get_members_count()
     {
-        return $GLOBALS['FORUM_DRIVER']->get_members();
+        return $GLOBALS['FORUM_DRIVER']->get_num_members();
     }
 
     /**

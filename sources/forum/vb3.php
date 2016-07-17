@@ -794,7 +794,7 @@ class Forum_driver_vb3 extends Forum_driver_base
      *
      * @return integer The number of members
      */
-    public function get_members()
+    public function get_num_members()
     {
         return $this->db->query_select_value('user', 'COUNT(*)');
     }
@@ -804,7 +804,7 @@ class Forum_driver_vb3 extends Forum_driver_base
      *
      * @return integer The number of topics
      */
-    public function get_topics()
+    public function get_num_topics()
     {
         return $this->db->query_select_value('thread', 'COUNT(*)');
     }
