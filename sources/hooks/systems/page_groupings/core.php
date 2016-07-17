@@ -94,7 +94,7 @@ class Hook_page_groupings_core
             (get_forum_type() != 'cns') ? null : array('security', 'menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('group_member_timeouts:GROUP_MEMBER_TIMEOUTS'), 'group_member_timeouts:DOC_MANAGE_GROUP_MEMBER_TIMEOUTS'),
             (get_forum_type() == 'cns') ? null : array('security', 'menu/social/groups', array('admin_permissions', array('type' => 'absorb'), get_module_zone('admin_security')), do_lang_tempcode('permissions:ABSORB_PERMISSIONS'), 'permissions:DOC_ABSORB_PERMISSIONS'),
 
-            //(get_comcode_zone('start', false) === null) ? null : array('', 'menu/start', array('start', array(), get_comcode_zone('start')), do_lang_tempcode('HOME')),  Attached to zone, so this is not needed
+            //(get_comcode_zone(DEFAULT_ZONE_PAGE_NAME, false) === null) ? null : array('', 'menu/home', array(DEFAULT_ZONE_PAGE_NAME, array(), get_comcode_zone(DEFAULT_ZONE_PAGE_NAME)), do_lang_tempcode('HOME')),  Attached to zone, so this is not needed
             array('', 'menu/pages', array('admin', array('type' => 'pages'), 'adminzone'), do_lang_tempcode('PAGES')),
             array('', 'menu/rich_content', array('admin', array('type' => 'rich_content'), 'adminzone'), do_lang_tempcode('menus:RICH_CONTENT')),
             array('', 'menu/site_meta', array('admin', array('type' => 'site_meta'), 'adminzone'), do_lang_tempcode('menus:SITE_META')),

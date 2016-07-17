@@ -505,7 +505,7 @@ Please be aware also that ocProducts doesn't take payment-in-kind, such as payme
 
 [title="3"]Don't start over over-optimistic, then end up leaning on the developers[/title]
 
-[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/start.png[/media]
+[media width="64" thumb="0" float="right" framed="0" framed="0"]themes/default/images/icons/64x64/menu/adminzone/home.png[/media]
 Despite [page="_SEARCH:antifeatures"]attempts to accurately describe[/page] what Composr can do, many people see Composr as a way of achieving the equivalent to what high-funded Silicon Valley companies achieve, but for free. Whenever there are roadblocks to that, people often end up trying to lean on the developers to get closer to it.
 
 This can be very frustrating for the developers, who are probably as squeezed for time as anyone around (often already working 15 hour days, 7 days a week). Building and maintaining Composr is a huge effort, and if individual users take more resources from the project than they provide financially, it makes it unsustainable.
