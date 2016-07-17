@@ -1472,7 +1472,7 @@ class Module_calendar
                 foreach ($subscriptions as $subscription) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id']);
                     if (!is_null($username)) {
-                        $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], false, true);
+                        $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], true);
                         $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);
                     }
                 }

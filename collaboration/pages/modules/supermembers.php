@@ -163,7 +163,7 @@ class Module_supermembers
             }
             $points_url = addon_installed('points') ? build_url(array('page' => 'points', 'type' => 'member', 'id' => $id), get_module_zone('points')) : new Tempcode();
             $pm_url = $GLOBALS['FORUM_DRIVER']->member_pm_url($id, true);
-            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true);
+            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, true);
 
             // Template
             $groups_current[] = array(

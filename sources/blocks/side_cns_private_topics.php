@@ -91,11 +91,11 @@ class Block_side_cns_private_topics
             $num_posts = $topic['t_cache_num_posts'];
 
             $last_post_by_username = $topic['t_cache_last_username'];
-            $last_post_by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['t_cache_last_member_id'], false, true);
+            $last_post_by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['t_cache_last_member_id'], true);
 
             $with_poster_id = ($topic['t_pt_from'] == get_member()) ? $topic['t_pt_to'] : $topic['t_pt_from'];
             $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
-            $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
+            $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, true);
 
             $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 

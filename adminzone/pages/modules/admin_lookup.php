@@ -222,7 +222,7 @@ class Module_admin_lookup
             } else {
                 $search_url = null;
             }
-            $profile_url = (is_guest($id)) ? null : $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true);
+            $profile_url = (is_guest($id)) ? null : $GLOBALS['FORUM_DRIVER']->member_profile_url($id, true);
             if (addon_installed('actionlog')) {
                 $actionlog_url = (is_guest($id)) ? null : build_url(array('page' => 'admin_actionlog', 'type' => 'list', 'id' => $id), get_module_zone('admin_actionlog'));
             } else {

@@ -253,9 +253,9 @@ class Module_admin_messaging
                 }
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id']);
-                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['l_member_id'], false, true);
+                $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['l_member_id'], true);
                 $date = get_timezoned_date_time($row['l_time']);
-                $whos_read[] = array('USERNAME' => $username, 'MEMBER_ID' => strval($row['l_member_id']), 'MEMBER_URL' => $member_link, 'DATE' => $date);
+                $whos_read[] = array('USERNAME' => $username, 'MEMBER_ID' => strval($row['l_member_id']), 'MEMBER_URL' => $member_url, 'DATE' => $date);
             }
         }
 

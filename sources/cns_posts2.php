@@ -107,7 +107,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
                         'ONLINE' => member_is_online($row['p_poster']),
                         'ID' => strval($row['p_poster']),
                         'POSTER_DETAILS' => $poster_details,
-                        'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_poster'], false, true),
+                        'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_poster'], true),
                         'POSTER_USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['p_poster']),
                         'HIGHLIGHT_NAME' => null,
                     ));
@@ -130,7 +130,7 @@ function render_post_box($row, $use_post_title = false, $give_context = true, $i
             '_GUID' => ($guid != '') ? $guid : 'cb1724a9d97f93e097cf49b50eeafa66',
             'LAST_EDIT_DATE_RAW' => is_null($row['p_last_edit_time']) ? '' : strval($row['p_last_edit_time']),
             'LAST_EDIT_DATE' => get_timezoned_date_time_tempcode($row['p_last_edit_time']),
-            'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], false, true),
+            'LAST_EDIT_PROFILE_URL' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($row['p_last_edit_by'], true),
             'LAST_EDIT_USERNAME' => is_null($row['p_last_edit_by']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($row['p_last_edit_by']),
         ));
     } else {

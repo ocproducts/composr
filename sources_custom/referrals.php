@@ -620,7 +620,7 @@ function referrer_report_script($ret = false)
                     if ($val == '') {
                         $val = do_lang('UNKNOWN');
                     } else {
-                        $val = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink(intval($val), true);
+                        $val = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink(intval($val));
                     }
                 }
                 $data_row[$key] = escape_html($val);

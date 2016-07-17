@@ -52,12 +52,12 @@ function attach_message_site_closed(&$messages_bottom)
  */
 function attach_message_su(&$messages_bottom)
 {
-    $unsu_link = get_self_url(true, true, array('keep_su' => null));
+    $unsu_url = get_self_url(true, true, array('keep_su' => null));
     $su_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
     $messages_bottom->attach(do_template('MESSAGE', array(
         '_GUID' => '13a41a91606b3ad05330e7d6f3e741c1',
         'TYPE' => 'notice',
-        'MESSAGE' => do_lang_tempcode('USING_SU', escape_html($unsu_link), escape_html($su_username)),
+        'MESSAGE' => do_lang_tempcode('USING_SU', escape_html($unsu_url), escape_html($su_username)),
     )));
 }
 
@@ -173,7 +173,7 @@ function member_personal_links_and_details($member_id)
 
         // Member profile view link
         if (get_option('cns_show_profile_link') == '1') {
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true);
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '2c8648c953c802a9de41c3adeef0e97f', 'NAME' => do_lang_tempcode('MY_PROFILE'), 'URL' => $url, 'REL' => 'me')));
         }
     }

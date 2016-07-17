@@ -209,7 +209,7 @@ class Module_staff
         }
         $email_address = obfuscate_email_address($GLOBALS['FORUM_DRIVER']->mrow_email($row_staff));
         $username = $GLOBALS['FORUM_DRIVER']->mrow_username($row_staff);
-        $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true);
+        $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, true);
 
         $all_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
 

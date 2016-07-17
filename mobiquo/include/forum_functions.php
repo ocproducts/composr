@@ -1000,11 +1000,11 @@ function report_post($post_id, $reason = '')
  */
 function get_id_by_url($url)
 {
-    $pagelink = url_to_page_link($url);
-    if ($pagelink == '') {
+    $page_link = url_to_page_link($url);
+    if ($page_link == '') {
         return null;
     }
-    list(, $parts, $hash) = page_link_decode($pagelink);
+    list(, $parts, $hash) = page_link_decode($page_link);
 
     // A post?
     $matches = array();

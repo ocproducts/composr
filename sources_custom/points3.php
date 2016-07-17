@@ -40,7 +40,7 @@ function points_profile($member_id_of, $member_id_viewing)
         warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
     }
 
-    $profile_link = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, false, true);
+    $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true);
 
     // Show stats about $member_id_of
     $post_count = $GLOBALS['FORUM_DRIVER']->get_post_count($member_id_of);
@@ -142,7 +142,7 @@ function points_profile($member_id_of, $member_id_viewing)
         '_GUID' => '900deaa0bba64762271ca63bf1606d87',
 
         'MEMBER' => strval($member_id_of),
-        'PROFILE_URL' => $profile_link,
+        'PROFILE_URL' => $profile_url,
         'USERNAME' => $username,
 
         'POINTS_JOINING' => integer_format($points_joining),

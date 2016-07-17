@@ -86,7 +86,7 @@ class Block_main_bottom_bar
                 if (is_null($username)) {
                     continue;
                 }
-                $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member, false, true);
+                $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member, true);
                 if (!array_key_exists('m_primary_group', $bits)) {
                     $bits['m_primary_group'] = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_primary_group');
                 }
@@ -121,7 +121,7 @@ class Block_main_bottom_bar
                 $birthday_url = build_url(array('page' => 'topics', 'type' => 'birthday', 'id' => $_birthday['username']), get_module_zone('topics'));
                 $birthdays[] = array(
                     'AGE' => array_key_exists('age', $_birthday) ? integer_format($_birthday['age']) : null,
-                    'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], false, true),
+                    'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], true),
                     'USERNAME' => $_birthday['username'],
                     'MEMBER_ID' => strval($_birthday['id']),
                     'BIRTHDAY_URL' => $birthday_url,
@@ -143,7 +143,7 @@ class Block_main_bottom_bar
 
         return do_template('BLOCK_MAIN_BOTTOM_BAR', array(
             '_GUID' => 'sdflkdlfd303frksdf',
-            'NEWEST_MEMBER_PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($stats['newest_member_id'], false, true),
+            'NEWEST_MEMBER_PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($stats['newest_member_id'], true),
             'NEWEST_MEMBER_USERNAME' => $stats['newest_member_username'],
             'NUM_MEMBERS' => integer_format($stats['num_members']),
             'NUM_TOPICS' => integer_format($stats['num_topics']),

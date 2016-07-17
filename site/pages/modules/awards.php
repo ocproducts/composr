@@ -216,7 +216,7 @@ class Module_awards
                         if (is_null($awardee_username)) {
                             $awardee_username = do_lang('UNKNOWN');
                         }
-                        $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true, true);
+                        $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);
                     }
 
                     $rendered = do_template('AWARDED_CONTENT', array(
@@ -276,7 +276,7 @@ class Module_awards
                     if (is_null($awardee_username)) {
                         $awardee_username = do_lang('UNKNOWN');
                     }
-                    $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], false, true);
+                    $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);
                 }
 
                 $content->attach(do_template('AWARDED_CONTENT', array(

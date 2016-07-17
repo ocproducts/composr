@@ -202,7 +202,7 @@ class Module_contact_member
         $redirect = mixed();
         $redirect = get_param_string('redirect', '');
         if ($redirect == '') {
-            $redirect = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+            $redirect = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             if (is_object($redirect)) {
                 $redirect = $redirect->evaluate();
             }

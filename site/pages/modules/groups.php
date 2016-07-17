@@ -575,7 +575,7 @@ class Module_groups
             $max_rows = cns_get_group_members_raw_count($id, true, true, false, false);
             $primary_members = new Tempcode();
             foreach ($_primary_members as $i => $primary_member) {
-                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($primary_member['gm_member_id'], false, true);
+                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($primary_member['gm_member_id'], true);
                 $temp = do_template('CNS_VIEW_GROUP_MEMBER', array(
                     '_GUID' => 'b96b674ac713e9790ecb78c15af1baab',
                     'ID' => strval($primary_member['gm_member_id']),
@@ -606,7 +606,7 @@ class Module_groups
                 continue;
             }
             if ($secondary_member['gm_validated'] == 1) {
-                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($secondary_member['gm_member_id'], false, true);
+                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($secondary_member['gm_member_id'], true);
                 $remove_url = build_url(array('page' => '_SELF', 'type' => 'remove_from', 'id' => $id, 'member_id' => $secondary_member['gm_member_id']), '_SELF');
                 $may_control = (cns_may_control_group($id, get_member()) && (!$secondary_member['implicit']));
                 $temp = do_template('CNS_VIEW_GROUP_MEMBER' . ($may_control ? '_SECONDARY' : ''), array(
@@ -617,7 +617,7 @@ class Module_groups
                 ));
                 $secondary_members->attach(results_entry(array($temp), false));
             } elseif (!$add_url->is_empty()) {
-                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($secondary_member['gm_member_id'], false, true);
+                $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($secondary_member['gm_member_id'], true);
                 $accept_url = build_url(array('page' => '_SELF', 'type' => 'accept', 'id' => $id, 'member_id' => $secondary_member['gm_member_id']), '_SELF');
                 $decline_url = build_url(array('page' => '_SELF', 'type' => 'decline', 'id' => $id, 'member_id' => $secondary_member['gm_member_id']), '_SELF');
                 $temp = do_template('CNS_VIEW_GROUP_MEMBER_PROSPECTIVE', array(
@@ -802,7 +802,7 @@ class Module_groups
                     if (is_null($leader_username)) {
                         $leader_username = do_lang('UNKNOWN');
                     }
-                    $leader_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($_leader, false, true);
+                    $leader_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($_leader, true);
                     $text = do_lang_tempcode('ABOUT_TO_APPLY_LEADER', escape_html($group_name), escape_html($leader_username), escape_html($leader_url));
                 }
             }

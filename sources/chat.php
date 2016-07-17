@@ -484,7 +484,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($_message['member_id']);
         if (!is_guest($_message['member_id'])) {
-            $user = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($_message['member_id'], true, $_message['username'], false);
+            $user = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($_message['member_id'], $_message['username'], false);
         } else {
             if (preg_match('#[:\.]#', $_message['ip_address']) != 0) {
                 $user = make_string_tempcode(escape_html(do_lang('GUEST') . '-' . substr(md5($_message['ip_address']), 0, 5)));
@@ -1041,9 +1041,9 @@ function get_chatters_in_room_tpl($users)
                     require_code('cns_members');
 
                     $colour = get_group_colour(cns_get_member_primary_group($member_id));
-                    $usernames->attach(do_template('CNS_USER_MEMBER', array('_GUID' => 'ef5f13f50d242a49474337b8e979c419', 'FIRST' => $usernames->is_empty(), 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'COLOUR' => $colour)));
+                    $usernames->attach(do_template('CNS_USER_MEMBER', array('_GUID' => 'ef5f13f50d242a49474337b8e979c419', 'FIRST' => $usernames->is_empty(), 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 'MEMBER_ID' => strval($member_id), 'USERNAME' => $username, 'COLOUR' => $colour)));
                 } else {
-                    $usernames->attach($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, true, $username, false));
+                    $usernames->attach($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($member_id, $username, false));
                 }
             } else {
                 $usernames->attach(escape_html(do_lang('GUEST')));

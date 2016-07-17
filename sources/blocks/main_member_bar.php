@@ -64,7 +64,7 @@ class Block_main_member_bar
 
             $member_info = cns_read_in_member_profile($member_id, true);
 
-            $profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id, true, true);
+            $profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id, true);
 
             $new_topics = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE t_forum_id IS NOT NULL AND t_cache_first_time>' . strval($member_info['last_visit_time']));
             $new_posts = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) AS mycnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL AND p_time>' . strval($member_info['last_visit_time']));

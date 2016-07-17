@@ -145,7 +145,7 @@ class Block_main_awards
             if (is_null($awardee_username)) {
                 $awardee_username = do_lang('UNKNOWN');
             }
-            $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true, true);
+            $awardee_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['member_id'], true);
         }
 
         return do_template('BLOCK_MAIN_AWARDS', array(

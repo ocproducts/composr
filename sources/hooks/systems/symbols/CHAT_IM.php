@@ -90,7 +90,7 @@ class Hook_symbol_CHAT_IM
 
                 $block_member_url = build_url(array('page' => '_SELF', 'type' => 'blocking_add', 'member_id' => '__id__'), '_SELF', null, false, false, true);
 
-                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(-100, true);
+                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(-100);
                 $profile_url = str_replace('-100', '__id__', $profile_url);
 
                 $im_participant_template = do_template('CHAT_LOBBY_IM_PARTICIPANT', array(

@@ -236,11 +236,11 @@ class Module_pointstore
             $forwarding_url = build_url(array('page' => '_SELF', 'type' => 'newforwarding', 'id' => 'forwarding'), '_SELF');
 
             if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('forw_%') . '\'') > 0) {
-                $_pointstore_mail_forwarding_link = $forwarding_url;
+                $_pointstore_mail_forwarding_url = $forwarding_url;
             } else {
-                $_pointstore_mail_forwarding_link = null;
+                $_pointstore_mail_forwarding_url = null;
             }
-            $pointstore_mail_forwarding_link = do_template('POINTSTORE_MFORWARDING_LINK', array('_GUID' => 'e93666809dc3e47e3660245711f545ee', 'FORWARDING_URL' => $_pointstore_mail_forwarding_link));
+            $pointstore_mail_forwarding_link = do_template('POINTSTORE_MFORWARDING_LINK', array('_GUID' => 'e93666809dc3e47e3660245711f545ee', 'FORWARDING_URL' => $_pointstore_mail_forwarding_url));
         } else {
             $pointstore_mail_forwarding_link = new Tempcode();
         }
@@ -248,11 +248,11 @@ class Module_pointstore
             $pop3_url = build_url(array('page' => '_SELF', 'type' => 'pop3info', 'id' => 'pop3'), '_SELF');
 
             if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'prices WHERE name LIKE \'' . db_encode_like('pop3_%') . '\'') > 0) {
-                $_pointstore_mail_pop3_link = $pop3_url;
+                $_pointstore_mail_pop3_url = $pop3_url;
             } else {
-                $_pointstore_mail_pop3_link = null;
+                $_pointstore_mail_pop3_url = null;
             }
-            $pointstore_mail_pop3_link = do_template('POINTSTORE_MPOP3_LINK', array('_GUID' => '42925a17262704450e451ad8502bce0d', 'POP3_URL' => $_pointstore_mail_pop3_link));
+            $pointstore_mail_pop3_link = do_template('POINTSTORE_MPOP3_LINK', array('_GUID' => '42925a17262704450e451ad8502bce0d', 'POP3_URL' => $_pointstore_mail_pop3_url));
         } else {
             $pointstore_mail_pop3_link = new Tempcode();
         }

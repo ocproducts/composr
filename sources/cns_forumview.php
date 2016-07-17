@@ -175,7 +175,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                                     '_GUID' => '39r932rwefldjfldjlf',
                                     'FIRST' => true,
                                     'USERNAME' => $subforum['last_username'],
-                                    'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($subforum['last_member_id'], false, true),
+                                    'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($subforum['last_member_id'], true),
                                     'MEMBER_ID' => strval($subforum['last_member_id'])
                                 ));
                             } else {
@@ -603,7 +603,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
                     '_GUID' => '8cf92d50e26ed25fcb2a551419ce6c82',
                     'FIRST' => true,
                     'USERNAME' => $topic['last_username'],
-                    'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($topic['last_member_id'], false, true),
+                    'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($topic['last_member_id'], true),
                     'MEMBER_ID' => strval($topic['last_member_id'])
                 ));
             } else {
@@ -642,7 +642,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     }
 
     if ((!is_null($topic['first_member_id'])) && (!is_guest($topic['first_member_id']))) {
-        $poster_profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['first_member_id'], false, true);
+        $poster_profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['first_member_id'], true);
         $poster = do_template('CNS_USER_MEMBER', array(
             '_GUID' => '75e8ae20f2942f898f45df6013678a72',
             'FIRST' => true,
@@ -664,7 +664,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
             '_GUID' => 'e7806e13ba51edd88c8b090ee4b31444',
             'FIRST' => true,
             'COLOUR' => $colour,
-            'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($with, false, true),
+            'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($with, true),
             'USERNAME' => $with_username,
             'MEMBER_ID' => strval($with)
         ));

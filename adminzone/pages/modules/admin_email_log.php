@@ -177,7 +177,7 @@ class Module_admin_email_log
             if ($from_name == '') {
                 $from_name = get_site_name();
             }
-            $from_link = 'mailto:' . $from_email . '?subject=' . rawurlencode('Re: ' . $row['m_subject']);
+            $from_url = 'mailto:' . $from_email . '?subject=' . rawurlencode('Re: ' . $row['m_subject']);
 
             $to_email = unserialize($row['m_to_email']);
             if (is_string($to_email)) {
@@ -186,7 +186,7 @@ class Module_admin_email_log
             if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
                 $to_email[0] = get_option('staff_address');
             }
-            $to_link = 'mailto:' . $to_email[0] . '?subject=' . rawurlencode($row['m_subject']);
+            $to_url = 'mailto:' . $to_email[0] . '?subject=' . rawurlencode($row['m_subject']);
 
             $to_name = unserialize($row['m_to_name']);
             if (is_string($to_name)) {
@@ -201,8 +201,8 @@ class Module_admin_email_log
 
             $fields->attach(results_entry(array(
                 $date,
-                hyperlink($from_link, $from_name, false, true),
-                hyperlink($to_link, $to_name[0], false, true),
+                hyperlink($from_url, $from_name, false, true),
+                hyperlink($to_url, $to_name[0], false, true),
                 escape_html($row['m_subject']),
             ), false));
         }
@@ -266,13 +266,13 @@ class Module_admin_email_log
         }
         $to_emails = new Tempcode();
         foreach ($to_email as $i => $_to_email) {
-            $to_link = 'mailto:' . $_to_email;
-            $to_link .= '?subject=' . rawurlencode($row['m_subject']);
-            $to_link .= '&body=' . rawurlencode($body);
+            $to_url = 'mailto:' . $_to_email;
+            $to_url .= '?subject=' . rawurlencode($row['m_subject']);
+            $to_url .= '&body=' . rawurlencode($body);
             if ($i != 0) {
                 $to_emails->attach(escape_html(', '));
             }
-            $to_emails->attach(hyperlink($to_link, $_to_email, false, true));
+            $to_emails->attach(hyperlink($to_url, $_to_email, false, true));
         }
         $fields['TO_EMAIL'] = protect_from_escaping($to_emails);
 

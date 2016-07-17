@@ -540,7 +540,7 @@ class Module_chat
         $im_area_template = do_template('CHAT_LOBBY_IM_AREA', array('_GUID' => 'cd230527da03caa596135f74647b2ca7', 'MESSAGES_PHP' => $messages_php, 'CHATROOM_ID' => '__room_id__'));
         $make_friend_url = build_url(array('page' => '_SELF', 'type' => 'friend_add', 'member_id' => '__id__'), '_SELF');
         $block_member_url = build_url(array('page' => '_SELF', 'type' => 'blocking_add', 'member_id' => '__id__'), '_SELF');
-        $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(-100, true, true);
+        $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(-100, true);
         if (is_object($profile_url)) {
             $profile_url = $profile_url->evaluate();
         }

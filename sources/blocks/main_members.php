@@ -408,7 +408,7 @@ class Block_main_members
                     '_GUID' => '868074cc21dcdf4427e93ce78e8f5637',
                     'ID' => strval($row['id']),
                     'USERNAME' => $row['m_username'],
-                    'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true, true),
+                    'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true),
                     'AVATAR_URL' => addon_installed('cns_member_avatars') ? $row['m_avatar_url'] : $row['m_photo_thumb_url'],
                     'PHOTO_THUMB_URL' => $row['m_photo_thumb_url'],
                     'VALIDATED' => ($row['m_validated'] == 1),

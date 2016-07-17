@@ -349,7 +349,7 @@ class Module_admin_quiz
         $_winners = new Tempcode();
         foreach ($winners as $i => $winner) {
             $member_id = $GLOBALS['SITE_DB']->query_select_value('quiz_entries', 'q_member', array('id' => $winner['q_entry']));
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             switch ($i) {
                 case 0:
                     $name = do_lang_tempcode('WINNER_FIRST', escape_html(integer_format($i + 1)), $GLOBALS['FORUM_DRIVER']->get_username($member_id));
@@ -496,7 +496,7 @@ class Module_admin_quiz
                 $results_entry[] = get_translated_text($myrow['q_name']);
                 $results_entry[] = do_lang_tempcode($myrow['q_type']);
             } else {
-                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['q_member'], false, '', false);
+                $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['q_member'], '', false);
                 $results_entry[] = $member_link;
             }
             $results_entry[] = ($myrow['q_type'] == 'SURVEY') ? '' : integer_format($myrow['q_results']);
@@ -544,7 +544,7 @@ class Module_admin_quiz
         $member_url = mixed();
         $member_url = get_base_url();
         if (!is_guest($member_id)) {
-            $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+            $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             if (is_object($member_url)) {
                 $member_url = $member_url->evaluate();
             }

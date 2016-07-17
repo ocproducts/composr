@@ -229,7 +229,7 @@ class Module_warnings extends Standard_crud_module
         $results_table = results_table(do_lang_tempcode('PUNITIVE_HISTORY'), 0, 'start', 1000000, 'max', $max_rows, $fields_title, $out, null, null, null, null, paragraph(do_lang_tempcode('PUNITIVE_HISTORY_TEXT'), '4t4ygyerhrth4'));
 
         $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => get_self_url(true)), '_SELF');
-        $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+        $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
         $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit');
 
         $tpl = do_template('CNS_WARNING_HISTORY_SCREEN', array(
@@ -416,7 +416,7 @@ class Module_warnings extends Standard_crud_module
             $rules_url = $_rules_url->evaluate();
             $_history_url = build_url(array('page' => '_SELF', 'type' => 'history', 'id' => $member_id), '_SELF');
             $history_url = $_history_url->evaluate();
-            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+            $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             if (is_object($profile_url)) {
                 $profile_url = $profile_url->evaluate();
             }
@@ -572,7 +572,7 @@ class Module_warnings extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_member_id'], false, '', false);
+            $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_member_id'], '', false);
             $by = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_by']);
 
             $map = array(
@@ -833,7 +833,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '') == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }
 
         return strval($warning_id);
@@ -850,7 +850,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '') == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }
     }
 
@@ -880,7 +880,7 @@ class Module_warnings extends Standard_crud_module
 
         if (get_param_string('redirect', '') == '') {
             require_code('site2');
-            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true, true), 0.0);
+            assign_refresh($GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true), 0.0);
         }
     }
 }

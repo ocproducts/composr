@@ -25,11 +25,11 @@
             $av_post_length = $_member['avg'];
 
             $_avatar_url = escape_html($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member));
-            $link = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, false, true);
-            if (is_object($link)) {
-                $link = $link->evaluate();
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
+            if (is_object($url)) {
+                $url = $url->evaluate();
             }
-            $_link = escape_html($link);
+            $_url = escape_html($url);
             $_avatar = ($_avatar_url != '') ? ('<img alt="Avatar" src="' . $_avatar_url . '" />') : '';
             $_username = escape_html($GLOBALS['FORUM_DRIVER']->get_username($member, true));
             $_av_post_length = escape_html(integer_format(intval($av_post_length)));
@@ -38,7 +38,7 @@
             echo <<<END
             <tr>
                     <td>{$_avatar}</td>
-                    <td><a href="{$_link}">{$_username}</a></td>
+                    <td><a href="{$_url}">{$_username}</a></td>
                     <td>{$_av_post_length} letters</td>
                     <td>{$_num_posts} posts</td>
             </tr>

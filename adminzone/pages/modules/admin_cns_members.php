@@ -565,7 +565,7 @@ class Module_admin_cns_members
                 warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 
-            $_lurkers[] = array('ID' => strval($id), 'USERNAME' => $username, 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true));
+            $_lurkers[] = array('ID' => strval($id), 'USERNAME' => $username, 'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($id, true));
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => '__delurk'), '_SELF');

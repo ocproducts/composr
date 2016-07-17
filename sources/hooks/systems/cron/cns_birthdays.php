@@ -39,7 +39,7 @@ class Hook_cron_cns_birthdays
 
             $combined_birthdays_mail = '';
             foreach ($_birthdays as $_birthday) {
-                $member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], false, true);
+                $member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], true);
 
                 $username = $_birthday['username'];
                 $displayname = $GLOBALS['CNS_DRIVER']->get_displayname($username);

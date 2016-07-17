@@ -86,7 +86,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
                     if (!$also->is_empty()) {
                         $also->attach(do_lang('LIST_SEP'));
                     }
-                    $also->attach($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($_id['id'], false, '', false));
+                    $also->attach($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($_id['id'], '', false));
                 }
             }
             attach_message(do_lang_tempcode('MEMBERS_ALSO_ON_IP', $also), 'inform');

@@ -96,7 +96,7 @@ class Block_side_users_online
                 if (!array_key_exists($member, $done_members)) {
                     $colour = (get_forum_type() == 'cns') ? get_group_colour(cns_get_member_primary_group($member)) : null;
                     $done_members[$member] = 1;
-                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true, true);
+                    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
                     $online[] = array(
                         'URL' => $url,
                         'USERNAME' => $username,
@@ -117,7 +117,7 @@ class Block_side_users_online
             // Show newest member
             if (get_option('usersonline_show_newest_member') == '1') {
                 $newest_member = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_username', 'id'), array('m_validated' => 1), 'ORDER BY id DESC', 1);
-                $username_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($newest_member[0]['id'], false, $newest_member[0]['m_username']);
+                $username_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($newest_member[0]['id'], $newest_member[0]['m_username']);
                 $newest->attach(paragraph(do_lang_tempcode('NEWEST_MEMBER_WELCOME', $username_link), 'gdgdfhrug'));
             }
 
@@ -129,7 +129,7 @@ class Block_side_users_online
                     $birthday_url = build_url(array('page' => 'topics', 'type' => 'birthday', 'id' => $_birthday['username']), get_module_zone('topics'));
                     $birthdays[] = array(
                         'AGE' => array_key_exists('age', $_birthday) ? integer_format($_birthday['age']) : null,
-                        'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], false, true),
+                        'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($_birthday['id'], true),
                         'USERNAME' => $_birthday['username'],
                         'MEMBER_ID' => strval($_birthday['id']),
                         'BIRTHDAY_URL' => $birthday_url,

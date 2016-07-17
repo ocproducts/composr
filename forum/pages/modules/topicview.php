@@ -347,7 +347,7 @@ class Module_topicview
                         '_GUID' => '77a28e8bc3cf2ec2211aafdb5ba192bf',
                         'LAST_EDIT_DATE_RAW' => is_null($_postdetails['last_edit_time']) ? '' : strval($_postdetails['last_edit_time']),
                         'LAST_EDIT_DATE' => $_postdetails['last_edit_date'],
-                        'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['last_edit_by'], false, true),
+                        'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['last_edit_by'], true),
                         'LAST_EDIT_USERNAME' => $_postdetails['last_edit_by_username'],
                     ));
                 } else {
@@ -420,7 +420,7 @@ class Module_topicview
                             'ONLINE' => member_is_online($_postdetails['poster']),
                             'ID' => strval($_postdetails['poster']),
                             'POSTER_DETAILS' => $poster_details,
-                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['poster'], false, true),
+                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['poster'], true),
                             'POSTER_USERNAME' => $_postdetails['poster_username'],
                             'HIGHLIGHT_NAME' => array_key_exists('poster_highlighted_name', $_postdetails) ? strval($_postdetails['poster_highlighted_name']) : null,
                         ));

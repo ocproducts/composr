@@ -203,7 +203,7 @@ function get_web_notifications($max = null, $start = 0)
             $avatar_url = find_theme_image('cns_default_avatars/default');
         } else {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-            $from_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
+            $from_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
             $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
         }
 
@@ -263,7 +263,7 @@ function web_notification_to_xml($row)
     if (is_null($username)) {
         $username = do_lang('UNKNOWN');
     }
-    $from_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
+    $from_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
     $_message = get_translated_tempcode('digestives_tin', $row, 'd_message');
@@ -343,11 +343,11 @@ function get_pts($max = null, $start = 0)
         $num_posts = $topic['t_cache_num_posts'];
 
         $last_post_by_username = $topic['t_cache_last_username'];
-        $last_post_by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['t_cache_last_member_id'], false, true);
+        $last_post_by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($topic['t_cache_last_member_id'], true);
 
         $with_poster_id = ($topic['t_pt_from'] == get_member()) ? $topic['t_pt_to'] : $topic['t_pt_from'];
         $with_username = $GLOBALS['FORUM_DRIVER']->get_username($with_poster_id);
-        $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, false, true);
+        $with_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($with_poster_id, true);
 
         $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && ((is_null($topic['l_time'])) || ($topic['l_time'] < $topic['p_time']));
 
@@ -391,8 +391,8 @@ function get_pts($max = null, $start = 0)
 function pt_to_xml($row)
 {
     $member_id = $row['p_poster'];
-    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
+    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
     $just_post_row = db_map_restrict($row, array('id', 'p_post'));

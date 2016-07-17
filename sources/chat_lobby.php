@@ -94,7 +94,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
         }
         $username = array_key_exists($friend['member_liked'], $friend_active) ? $friend_active[$friend['member_liked']] : $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']);
         if (!is_null($username)) {
-            $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true, true);
+            $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true);
 
             $friend = array(
                 /*'DATE_RAW' => strval($friend['date_and_time']),

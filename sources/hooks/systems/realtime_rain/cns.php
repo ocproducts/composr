@@ -55,7 +55,7 @@ class Hook_realtime_rain_cns
                             'TIMESTAMP' => strval($timestamp),
                             'RELATIVE_TIMESTAMP' => strval($timestamp - $from),
                             'TICKER_TEXT' => null,
-                            'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true),
+                            'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true),
                             'IS_POSITIVE' => true,
                             'IS_NEGATIVE' => false,
 

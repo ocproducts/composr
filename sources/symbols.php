@@ -2467,7 +2467,7 @@ function ecv_IS_HTTPAUTH_LOGIN($lang, $escaped, $param)
 function ecv_MEMBER_PROFILE_URL($lang, $escaped, $param)
 {
     $member_id = ((!is_null($param)) && (isset($param[0]))) ? intval($param[0]) : get_member();
-    $value = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+    $value = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
     if (is_object($value)) {
         $value = $value->evaluate();
     }

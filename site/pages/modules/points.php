@@ -298,7 +298,7 @@ class Module_points
         $member_id_of = $this->member_id_of;
 
         if (get_forum_type() == 'cns') {
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true, true);
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true);
             if (is_object($url)) {
                 $url = $url->evaluate();
             }

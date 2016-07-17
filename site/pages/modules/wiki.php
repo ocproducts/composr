@@ -557,7 +557,7 @@ class Module_wiki
             } else {
                 $extra = new Tempcode();
             }
-            $poster_url = is_guest($poster) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($poster, false, true);
+            $poster_url = is_guest($poster) ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url($poster, true);
             $rate_url = get_self_url(true);
             $posts->attach(do_template('WIKI_POST', array(
                 '_GUID' => 'a29b107abfaf7689c8392676c63093f5',

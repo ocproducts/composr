@@ -766,7 +766,7 @@ class CMS_Topic
             // Misc details
             $timestamp = $post['date'];
             $date = get_timezoned_date_time($post['date']);
-            $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true);
+            $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
             $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
             if (is_null($poster_name)) {
                 $poster_name = do_lang('UNKNOWN');
@@ -827,7 +827,7 @@ class CMS_Topic
                         '_GUID' => '6301ad8d8f80948ad8270828f1bdaf33',
                         'LAST_EDIT_DATE_RAW' => is_null($post['last_edit_time']) ? '' : strval($post['last_edit_time']),
                         'LAST_EDIT_DATE' => $post['last_edit_date'],
-                        'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['last_edit_by'], false, true),
+                        'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['last_edit_by'], true),
                         'LAST_EDIT_USERNAME' => $post['last_edit_by_username'],
                     ));
                     $last_edited_raw = (is_null($post['last_edit_time']) ? '' : strval($post['last_edit_time']));
@@ -887,14 +887,14 @@ class CMS_Topic
                             'ONLINE' => member_is_online($post['member']),
                             'ID' => strval($post['member']),
                             'POSTER_DETAILS' => $poster_details,
-                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true),
+                            'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true),
                             'POSTER_USERNAME' => $post['poster_username'],
                         ));
                     } else {
-                        $ip_link = ((array_key_exists('ip_address', $post)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $post['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();
+                        $ip_url = ((array_key_exists('ip_address', $post)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $post['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();
                         $poster = do_template('CNS_POSTER_GUEST', array(
                             '_GUID' => '93107543c6a0138f379e7124b72b24ff',
-                            'LOOKUP_IP_URL' => $ip_link,
+                            'LOOKUP_IP_URL' => $ip_url,
                             'POSTER_DETAILS' => $poster_details,
                             'POSTER_USERNAME' => $post['poster_username'],
                         ));
@@ -1035,7 +1035,7 @@ class CMS_Topic
     protected function render_post_map_item($post)
     {
         $date = get_timezoned_date_time($post['date']);
-        $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true);
+        $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
         $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
         if (is_null($poster_name)) {
             $poster_name = do_lang('UNKNOWN');

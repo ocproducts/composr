@@ -124,7 +124,7 @@ class Block_main_friends_list
                         'APPEARS_TWICE' => $appears_twice,
                         'USERGROUP' => $friend_usergroup,
                         'USERNAME' => $friend_username,
-                        'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($f_id, false, true),
+                        'URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($f_id, true),
                         'F_ID' => strval($f_id),
                         'BOX' => $box,
                     );

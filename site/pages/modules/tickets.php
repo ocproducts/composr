@@ -394,7 +394,7 @@ class Module_tickets
         $first_poster_profile_url = '';
         $first_poster = do_lang('UNKNOWN');
         if (!is_null($first_poster_id)) {
-            $first_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($first_poster_id, false, true);
+            $first_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($first_poster_id, true);
             $first_poster = $topic['firstusername'];
         }
 
@@ -403,7 +403,7 @@ class Module_tickets
         $last_poster = do_lang('UNKNOWN');
         $last_poster_profile_url = '';
         if (!is_null($last_poster_id)) {
-            $last_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($last_poster_id, false, true);
+            $last_poster_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($last_poster_id, true);
             $last_poster = $topic['lastusername'];
         }
 

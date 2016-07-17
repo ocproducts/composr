@@ -684,7 +684,7 @@ class Module_quiz
                     'QUIZ_NAME' => $quiz_name,
                     'GIVEN_ANSWERS_ARR' => $given_answers,
                     'GIVEN_ANSWERS' => $given_answers_to_staff,
-                    'MEMBER_PROFILE_URL' => is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), false, true),
+                    'MEMBER_PROFILE_URL' => is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), true),
                     'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
                 ), null, false, null, '.txt', 'text');
 

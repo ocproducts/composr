@@ -75,21 +75,12 @@ class Forum_driver_base
      * Get a URL to a forum member's member profile.
      *
      * @param  MEMBER $id The forum member
-     * @param  boolean $definitely_profile Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile
      * @param  boolean $tempcode_okay Whether it is okay to return the result using Tempcode (more efficient, and allows keep_* parameters to propagate which you almost certainly want!)
      * @return mixed The URL
      */
-    public function member_profile_url($id, $definitely_profile = false, $tempcode_okay = false)
+    public function member_profile_url($id, $tempcode_okay = false)
     {
         $url = mixed();
-
-        if ((!$definitely_profile) && (get_option('username_click_im', true) === '1') && ($id != $this->get_guest_id()) && (addon_installed('chat')) && (has_privilege(get_member(), 'start_im'))) {
-            $url = build_url(array('page' => 'chat', 'type' => 'browse', 'enter_im' => $id), get_module_zone('chat'));
-            if (!$tempcode_okay) {
-                $url = $url->evaluate();
-            }
-            return $url;
-        }
 
         $url = $this->_member_profile_url($id, $tempcode_okay);
         if (($tempcode_okay) && (!is_object($url))) {
@@ -108,12 +99,11 @@ class Forum_driver_base
      * Get a hyperlink (i.e. HTML link, not just a URL) to a forum member's member profile.
      *
      * @param  MEMBER $id The forum member
-     * @param  boolean $definitely_profile Whether to be insistent that we go to the profile, rather than possibly starting an IM which can link to the profile
      * @param  string $_username The username (blank: look it up)
      * @param  boolean $use_displayname Whether to use the displayname rather than the username (if we have them)
      * @return Tempcode The hyperlink
      */
-    public function member_profile_hyperlink($id, $definitely_profile = false, $_username = '', $use_displayname = true)
+    public function member_profile_hyperlink($id, $_username = '', $use_displayname = true)
     {
         if (is_guest($id)) {
             return ($_username == '') ? do_lang_tempcode('GUEST') : make_string_tempcode(escape_html($_username));
@@ -124,7 +114,7 @@ class Forum_driver_base
         if (is_null($_username)) {
             return do_lang_tempcode('UNKNOWN');
         }
-        $url = $this->member_profile_url($id, $definitely_profile, true);
+        $url = $this->member_profile_url($id, true);
         return hyperlink($url, $_username, false, true);
     }
 

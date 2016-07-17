@@ -132,7 +132,7 @@ class Module_leader_board
             foreach ($rows as $member => $points) {
                 $points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
 
-                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, false, true);
+                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
                 if (is_null($username)) {

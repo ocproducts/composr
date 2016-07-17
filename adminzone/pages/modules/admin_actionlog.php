@@ -335,7 +335,7 @@ class Module_admin_actionlog
             if ($pos >= $start) {
                 $myrow = $rows[$best];
 
-                $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['member_id'], false, '', false);
+                $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['member_id'], '', false);
                 $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), '_SELF');
                 $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
@@ -423,7 +423,7 @@ class Module_admin_actionlog
         }
 
         $fields = array(
-            'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], false, '', false),
+            'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], '', false),
             'DATE_TIME' => get_timezoned_date_time($row['date_and_time']),
             'TYPE' => $type_str,
             'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],

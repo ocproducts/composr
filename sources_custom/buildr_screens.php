@@ -26,7 +26,7 @@ function realms()
             $owner = do_lang('UNKNOWN');
             $url = '';
         } else {
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['owner'], false, true);
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($myrow['owner'], true);
         }
         if ($myrow['r_private'] == 1) {
             $pp = do_lang_tempcode('W_PRIVATE_REALM');
@@ -255,7 +255,7 @@ function output_room_screen($member_id)
         if ($id < 0) {
             $member_url = '';
         } else {
-            $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true);
+            $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, true);
         }
 
         $members->attach(do_template('W_MAIN_MEMBER', array('_GUID' => '83d9f930b68d4988b009b3c06ef783e9', 'HEALTH' => integer_format($health), 'ID' => strval($id), 'MEMBER_URL' => $member_url, 'STYLE' => $style, 'NAME' => $name, 'AUX' => $aux)));

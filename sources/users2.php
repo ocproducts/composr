@@ -182,7 +182,7 @@ function get_members_viewing_wrap($page = null, $type = null, $id = null, $forum
                 $num_guests += $at_details;/*is integer for guest*/
             } else {
                 $num_members++;
-                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, true);
+                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
                 $map = array('FIRST' => $num_members == 1, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'MEMBER_ID' => strval($member_id));
                 if (isset($at_details['the_title'])) {
                     if ((has_privilege(get_member(), 'show_user_browsing')) || ((in_array($at_details['the_page'], array('topics', 'topicview'))) && ($at_details['the_id'] == $id))) {

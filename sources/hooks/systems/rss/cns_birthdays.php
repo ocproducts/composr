@@ -91,7 +91,7 @@ class Hook_rss_cns_birthdays
                 $category = do_lang('BIRTHDAY');
                 $category_raw = do_lang('BIRTHDAY');
 
-                $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], false, true);
+                $view_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true);
 
                 $if_comments = new Tempcode();
 

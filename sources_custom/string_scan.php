@@ -2812,7 +2812,6 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_use_local_payment
         CONFIG_OPTION_use_true_from
         CONFIG_OPTION_user_postsize_errors
-        CONFIG_OPTION_username_click_im
         CONFIG_OPTION_username_profile_links
         CONFIG_OPTION_users_online_time
         CONFIG_OPTION_valid_audios
@@ -6705,7 +6704,6 @@ function string_scan($lang, $do_guessing = false)
         USERGROUP_APPLICATIONS
         USERGROUP_SETTINGS_SEARCH_GROUP
         USERNAMES_AND_PASSWORDS
-        USERNAME_CLICK_IM
         USERNAME_PROFILE_LINKS
         USERS_ONLINE_STATISTICS
         USERS_ONLINE_TIME

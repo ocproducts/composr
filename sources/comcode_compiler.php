@@ -1185,7 +1185,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $continuation = '';
 
                                             if (!is_guest($this_member_id)) {
-                                                $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($this_member_id, false, true);
+                                                $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($this_member_id, true);
                                                 if ((get_forum_type() === 'cns') && ($username_info)) {
                                                     require_lang('cns');
                                                     require_code('cns_members2');

@@ -209,7 +209,7 @@ function render_activity($row, $use_inside_cms = true)
     // Details of member
     $member_id = $row['a_member_id'];
     $member_avatar = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
-    $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, $use_inside_cms);
+    $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, $use_inside_cms);
 
     $timestamp = $row['a_time'];
 
@@ -240,7 +240,7 @@ function render_activity($row, $use_inside_cms = true)
     );
     if (!is_null($row['a_also_involving'])) {
         $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_also_involving'], true);
-        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['a_also_involving'], false, $use_inside_cms);
+        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['a_also_involving'], $use_inside_cms);
         $hyperlink = hyperlink($url, $_username, false, true);
 
         $extra_lang_string_params[] = $hyperlink;

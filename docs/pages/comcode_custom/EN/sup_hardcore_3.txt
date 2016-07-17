@@ -141,7 +141,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                 if ($description != '') {
                     $description = ' (' . $description . ')';
                 }
-                $profile_link = $GLOBALS['CNS_DRIVER']->member_profile_url($unread_pp['p_poster']);
+                $profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($unread_pp['p_poster']);
                 $redirect_url = get_self_url(true, true);
                 $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'redirect' => $redirect_url), get_module_zone('topics'));
                 $notifications->attach(do_template('CNS_NOTIFICATION', array(
@@ -156,7 +156,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                     'DATE' => $date,
                     'TIME_RAW' => strval($time_raw),
                     'BY' => $by,
-                    'PROFILE_LINK' => $profile_link,
+                    'PROFILE_URL' => $profile_url,
                     'TYPE' => $type,
                 )));
             }
@@ -213,9 +213,9 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
             $_this_url = build_url(array('page' => '_SELF'), '_SELF', null, true);
             $this_url = $_this_url->evaluate();
             $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
-            $full_link = build_url(array('page' => 'login', 'type' => 'browse', 'redirect_passon' => $this_url), get_module_zone('login'));
+            $full_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect_passon' => $this_url), get_module_zone('login'));
             $join_url = build_url(array('page' => 'join'), get_module_zone('join'));
-            $head = do_template('CNS_GUEST_BAR', array('NAVIGATION' => get_zone_chooser(true), 'LOGIN_URL' => $login_url, 'JOIN_LINK' => $join_url, 'FULL_LINK' => $full_link));
+            $head = do_template('CNS_GUEST_BAR', array('NAVIGATION' => get_zone_chooser(true), 'LOGIN_URL' => $login_url, 'JOIN_LINK' => $join_url, 'FULL_LINK' => $full_url));
         }
     } else {
         $head = new Tempcode();
