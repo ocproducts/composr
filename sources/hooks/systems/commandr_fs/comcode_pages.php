@@ -115,7 +115,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $default_page = $this->_default_property_str($properties, 'default_page');
         if ($default_page == '') {
-            $default_page = 'start';
+            $default_page = DEFAULT_ZONE_PAGE_NAME;
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');
@@ -193,7 +193,7 @@ class Hook_commandr_fs_comcode_pages extends Resource_fs_base
         }
         $default_page = $this->_default_property_str($properties, 'default_page');
         if ($default_page == '') {
-            $default_page = 'start';
+            $default_page = DEFAULT_ZONE_PAGE_NAME;
         }
         $header_text = $this->_default_property_str($properties, 'header_text');
         $theme = $this->_default_property_str($properties, 'theme');

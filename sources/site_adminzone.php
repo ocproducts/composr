@@ -29,7 +29,7 @@ function adminzone_special_cases($codename)
     The current design does not require these, but this code may be useful in the future.
     If we put it back, we should do it with hooks, for proper modularity.
 
-    if (($codename == 'start') && (get_page_name() == 'start') && (get_option('show_docs') !== '0')) {
+    if (($codename == DEFAULT_ZONE_PAGE_NAME) && (get_page_name() == DEFAULT_ZONE_PAGE_NAME) && (get_option('show_docs') !== '0')) {
         require_lang('menus');
         set_helper_panel_text(comcode_lang_string('menus:DOC_ADMIN_ZONE'));
         set_helper_panel_tutorial('tut_adminzone');
@@ -39,7 +39,7 @@ function adminzone_special_cases($codename)
     }
     */
 
-    if ($codename == 'start' && get_option('site_closed') == '1'/*can be checked on PHP-info page after site is open*/) {
+    if ($codename == DEFAULT_ZONE_PAGE_NAME && get_option('site_closed') == '1'/*can be checked on PHP-info page after site is open*/) {
         // Various checks
         $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
         $found_issues = false;

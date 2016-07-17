@@ -33,7 +33,7 @@ So please bear this in mind and structure your own processes accordingly.
 We don't want people to have to labour over bug reports. However there are some basic rules you will need to follow...
 
 Before starting your report:
- - [b]Check the bug has not already been fixed[/b]. If you are on the latest release then you'll find a bug list linked to from your Admin Zone front page. Don't spend more than 5 minutes looking, but at least have a glance over.
+ - [b]Check the bug has not already been fixed[/b]. If you are on the latest release then you'll find a bug list linked to from your Admin Zone dashboard. Don't spend more than 5 minutes looking, but at least have a glance over.
  - [b]Try not to report unrelated problems together[/b]. We're not strict on this, because we would encourage people to submit large testing reports and we'll tolerate some collation for that, but generally speaking it is better each issue is reported separately so that it can be handled in one go without interdependence.
  - [b]Check it is a Composr bug[/b]. If it relates to a third-party addon, it should not be reported as a Composr bug.
  - [b]Check the FAQ[/b]. If your problem looks like it might be caused by a server configuration issue (for example if you are getting an 'Internal server error' message), please check our [page="_SEARCH:faq"]FAQ[/page] first.

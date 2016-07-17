@@ -329,7 +329,7 @@ function get_table_descriptions()
         'sessions' => 'stores user sessions, for guests and members (session ID\'s are treated with high security)',
         'sitemap_cache' => 'a cache of all addressable sitemap nodes for building out the full XML sitemaps across multiple files iteratively, which is extremely intensive on large sites',
         'sms_log' => 'logs what SMS messages were sent out on behalf of what users and when',
-        'staff_tips_dismissed' => 'stores what webmaster tips (Admin Zone front page) have been read so far',
+        'staff_tips_dismissed' => 'stores what webmaster tips (Admin Zone dashboard) have been read so far',
         'trackbacks' => 'stores trackbacks for all kinds of content',
         'tracking' => 'stores tracking for all content that supports it except forum/topic tracking (Composr 4.2 doesn\'t really use this table much, except for the staff-messaging tracking)',
         'translate' => 'very important table, stores most of the text; this table exists to internationalise content and also to store compiled Comcode',

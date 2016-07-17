@@ -2104,16 +2104,16 @@ All the three functions have the same parameter order, which is as follows:
 
 [title="3"]Match-key example[/title]
 
-[media width="150" description="Match-key example, running from start page (nothing would be seen if we placed the block on another page)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp7.png[/media]
+[media width="150" description="Match-key example, running from front page (nothing would be seen if we placed the block on another page)" float="right"]data_custom/images/docs/tut_tempcode/poweroftemp7.png[/media]
 We can use that to show a specific message only if a match-key is satisfied.
 
 A match-key is basically the same thing as a page-link. The only difference is that a match-key is used for matching and will also match any page-links with additional parameters not mentioned in the match-key -- i.e. the match is performed against the parameters in the match-key, all other parameters are ignored. As you are probably already comfortable with the term "page-link", we'll use that henceforth.
 
 [code="HTML"]
-{+START,IF,{$MATCH_KEY_MATCH,site:start}}
+{+START,IF,{$MATCH_KEY_MATCH,site:example}}
 	<p>
-		I want this displayed only for the start page<br />
-		(the page-link means "'site' zone, 'start' page)
+		I want this displayed only for the example page<br />
+		(the page-link means "'site' zone, 'example' page)
 	</p>
 {+END}
 [/code]

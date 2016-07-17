@@ -59,7 +59,7 @@ function fetch_more_fields()
 	set_edited_panel(null,'panel_right');
 	set_edited_panel(null,'panel_top');
 	set_edited_panel(null,'panel_bottom');
-	set_edited_panel(null,'start');
+	set_edited_panel(null,'{$DEFAULT_ZONE_PAGE_NAME;}');
 
 	var form=document.getElementById('middle_fields');
 	var edit_field_store=document.getElementById('edit_field_store');

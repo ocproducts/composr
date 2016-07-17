@@ -36,13 +36,13 @@ Existing members who sign in will see the following...
 
 [title="2"]Page tag[/title]
 
-A page tag creates a clickable button which links to your start page, the default one looks something like this...
+A page tag creates a clickable button which links to your front page, the default one looks something like this...
 
 [media thumb="1" description="How the button will look"]data_custom/images/docs/sup_editing_the_composr_front_page/03dee74af0e51a80c0c92f1c66ef2feb.png[/media]
 
-Clicking the link takes users to the site zone's start page. As shown below...
+Clicking the link takes users to the site zone's front page. As shown below...
 
-[media thumb="1" description="Composr start page"]data_custom/images/docs/sup_editing_the_composr_front_page/fe5e98e01c8520a25bbac1dc9cf515b3.png[/media]
+[media thumb="1" description="Composr front page"]data_custom/images/docs/sup_editing_the_composr_front_page/fe5e98e01c8520a25bbac1dc9cf515b3.png[/media]
 
 [title="2"]Main image fader (news)[/title]
 

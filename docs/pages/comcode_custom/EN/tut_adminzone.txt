@@ -101,4 +101,4 @@ The content review settings are shown on content add/edit forms.
  1_key="Admin Zone"   1_value="The zone used to perform most site maintenance, accessible only by staff"
 ]Concepts[/concepts]
 
-{$SET,tutorial_tags,Administration,errorlog,core_adminzone_dashboard,content_reviews,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of how to use the Admin Zone, and the special features available from the Admin Zone front page.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Administration,errorlog,core_adminzone_dashboard,content_reviews,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An explanation of how to use the Admin Zone, and the special features available from the Admin Zone dashboard.}[block]main_tutorial_rating[/block]

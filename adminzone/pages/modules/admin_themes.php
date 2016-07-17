@@ -796,7 +796,7 @@ class Module_admin_themes
                 'css/global.css',
                 'javascript/custom_globals.js',
                 'templates/MAIL.tpl',
-                ':start',
+                ':' . DEFAULT_ZONE_PAGE_NAME,
             );
         }
 

@@ -110,7 +110,7 @@ class Hook_commandr_fs_menus extends Resource_fs_base
         $order = db_get_first_id();
         $parent = null;
         $caption = do_lang('HOME');
-        $url = '_SELF:start';
+        $url = '_SELF:' . DEFAULT_ZONE_PAGE_NAME;
         $check_permissions = 1;
         $page_only = '';
         $expanded = 1;

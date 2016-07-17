@@ -112,7 +112,7 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
             }
         }
 
-        // Start page
+        // Front page
         $comcode = '';
         $comcode .= "[semihtml]\n[title=\"1\"]Welcome to {\$SITE_NAME*}[/title]\n\n[block=\"3\"]main_greeting[/block]\n\n";
         if ($cells != '') {
@@ -120,7 +120,7 @@ function _get_zone_pages($installprofileblocks, $block_options, $collapse_zones,
         }
         $main .= "\n\n[block]main_comcode_page_children[/block]\n[/semihtml]";
         $comcode .= $main;
-        $page_structure[$zone]['start'] = $comcode;
+        $page_structure[$zone][DEFAULT_ZONE_PAGE_NAME] = $comcode;
 
         // Left panel
         $comcode = '';

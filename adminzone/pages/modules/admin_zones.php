@@ -493,7 +493,7 @@ class Module_admin_zones
         }
 
         // Edit pages
-        foreach (array('panel_left', 'start', 'panel_right') as $for) {
+        foreach (array('panel_left', DEFAULT_ZONE_PAGE_NAME, 'panel_right') as $for) {
             $redirect = post_param_string('redirect_' . $for, null);
             if (!is_null($redirect)) {
                 if (addon_installed('redirects_editor')) {
@@ -579,7 +579,7 @@ class Module_admin_zones
      * @param  ?ID_TEXT $zone Name of the zone (null: unknown)
      * @return array A tuple: The Tempcode for the fields, hidden fields, and extra JavaScript
      */
-    public function get_form_fields($in_zone_editor = false, $title = '', $default_page = 'start', $header_text = '', $theme = null, $require_session = 0, $zone = null)
+    public function get_form_fields($in_zone_editor = false, $title = '', $default_page = DEFAULT_ZONE_PAGE_NAME, $header_text = '', $theme = null, $require_session = 0, $zone = null)
     {
         require_lang('permissions');
 

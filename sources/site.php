@@ -212,7 +212,7 @@ function load_zone_data()
                         $GLOBALS['SITE_DB']->query_insert('group_zone_access', array('group_id' => $a['group_id'], 'zone_name' => $real_zone));
                     }
                 } else {
-                    $zone_default_page = 'start';
+                    $zone_default_page = DEFAULT_ZONE_PAGE_NAME;
                     if ($real_zone == 'forum') { // A bit of an architectural fudge, but people get confused why it doesn't come back the same
                         $zone_default_page = 'forumview';
                     }
@@ -968,7 +968,7 @@ function do_site()
     // When someone hits the Admin Zone
     if ($ZONE['zone_name'] == 'adminzone') {
         // Security feature admins can turn on
-        if (get_page_name() == 'start') {
+        if (get_page_name() == DEFAULT_ZONE_PAGE_NAME) {
             require_code('notifications');
             $current_username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             $subject = do_lang('AFA_NOTIFICATION_MAIL_SUBJECT', $current_username, get_site_name(), get_ip_address());
@@ -1650,7 +1650,7 @@ function _load_comcodes_page_from_cache($pages)
 /**
  * Get the parsed contents of a Comcode page.
  *
- * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/start.txt)
+ * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/example.txt)
  * @param  ID_TEXT $zone The zone the page is being loaded from
  * @param  ID_TEXT $codename The codename of the page
  * @param  ?PATH $file_base The file base to load from (null: standard)

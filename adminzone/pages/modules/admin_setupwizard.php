@@ -1087,7 +1087,7 @@ class Module_admin_setupwizard
 
             foreach ($page_structure as $zone => $zone_pages) {
                 // Start
-                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/start.txt';
+                $full_path = get_custom_file_base() . '/' . $zone . '/pages/comcode_custom/' . get_site_default_lang() . '/' . DEFAULT_ZONE_PAGE_NAME . '.txt';
                 if (!file_exists(dirname($full_path))) {
                     require_code('files2');
                     make_missing_directory(dirname($full_path));
@@ -1097,8 +1097,8 @@ class Module_admin_setupwizard
                 }
                 $myfile = @fopen($full_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($full_path);
                 if ($myfile !== false) {
-                    if (fwrite($myfile, $zone_pages['start']) == 0) {
-                        if ($zone_pages['start'] != '') {
+                    if (fwrite($myfile, $zone_pages[DEFAULT_ZONE_PAGE_NAME]) == 0) {
+                        if ($zone_pages[DEFAULT_ZONE_PAGE_NAME] != '') {
                             warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'), false, true);
                         }
                     }

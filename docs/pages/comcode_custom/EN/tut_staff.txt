@@ -38,9 +38,9 @@ If more than one user is editing the same thing at the same time, Composr will p
 
 [title="3"]Staff checklist[/title]
 
-On the Admin Zone front page is a checklist of tasks to be performed. This combines tasks that are auto-detected with a set of shared manually added tasks.
+On the Admin Zone dashboard is a checklist of tasks to be performed. This combines tasks that are auto-detected with a set of shared manually added tasks.
 
-You can also share links and notes on the Admin Zone front page.
+You can also share links and notes on the Admin Zone dashboard.
 
 More can be read on the Admin Zone in the [page="_SEARCH:tut_adminzone"]Admin Zone overview tutorial[/page].
 

@@ -26,7 +26,7 @@ There is also an Advanced section which allows you to set tooltips when the menu
 [media width="150" description="Choosing links from the Sitemap" float="right"]data_custom/images/docs/sup_editing_menus_in_composr/e4887d7c4a51e36c25ba6e827a0c6001.jpg[/media]
 To choose where the link is going you can either add a manual URL, add a manual page-link, or use the tree structure to select a link.
 
-For example to manually set a page-link to the start page in the [tt]music[/tt] zone we would enter [tt]music:start[/tt]. A [tt]news[/tt] page within the [tt]music[/tt] zone would be [tt]music:news[/tt]. To link to the Home page you can just use a colon ([tt]:[/tt]).
+For example to manually set a page-link to the example page in the [tt]music[/tt] zone we would enter [tt]music:example[/tt]. A [tt]news[/tt] page within the [tt]music[/tt] zone would be [tt]music:news[/tt]. To link to the Home page you can just use a colon ([tt]:[/tt]).
 
 It is easiest though just to use the tree structure on the right of the page to select where the link should go to.
 

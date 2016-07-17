@@ -151,7 +151,7 @@ $profile .= <<<END
             'YES' => array(
 
 END;
-$blocks = find_blocks_in_page('start');
+$blocks = find_blocks_in_page(DEFAULT_ZONE_PAGE_NAME);
 foreach (array_keys($blocks) as $block) {
     $profile .= "\t\t\t\t\"" . php_addslashes($block) . "\",\n";
 }
@@ -191,7 +191,7 @@ $profile .= <<<END
 
 END;
 require_code('zones2');
-$blocks = array_merge(find_blocks_in_page('start'), find_blocks_in_page('panel_left'), find_blocks_in_page('panel_right'));
+$blocks = array_merge(find_blocks_in_page(DEFAULT_ZONE_PAGE_NAME), find_blocks_in_page('panel_left'), find_blocks_in_page('panel_right'));
 foreach ($blocks as $block => $full_tag) {
     require_code('comcode_compiler');
     $parameters = parse_single_comcode_tag($full_tag, 'block');

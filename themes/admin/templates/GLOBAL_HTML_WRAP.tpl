@@ -27,10 +27,10 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 			<div{+START,IF,{$MOBILE}} class="global_navigation"{+END}>
 				{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
-					{$BLOCK,block=menu,param=adminzone:start\,include=node\,title={!menus:DASHBOARD}\,icon=menu/adminzone/start + adminzone:\,include=children\,max_recurse_depth=4\,use_page_groupings=1 + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
+					{$BLOCK,block=menu,param=adminzone:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!menus:DASHBOARD}\,icon=menu/adminzone/start + adminzone:\,include=children\,max_recurse_depth=4\,use_page_groupings=1 + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
 				{+END}
 				{+START,IF,{$NOT,{$HAS_ZONE_ACCESS,adminzone}}}
-					{$BLOCK,block=menu,param=site:start\,include=node\,title={!HOME}\,icon=close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
+					{$BLOCK,block=menu,param=site:{$DEFAULT_ZONE_PAGE_NAME}\,include=node\,title={!HOME}\,icon=close + cms:\,include=node\,max_recurse_depth=3\,use_page_groupings=1,type={$?,{$MOBILE},mobile,dropdown}}
 				{+END}
 
 				{+START,IF,{$MOBILE}}

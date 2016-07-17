@@ -51,15 +51,12 @@ function init__transifex()
     $EXTRA_LANGUAGE_FILES = array(
         'adminzone/pages/comcode/EN/netlink.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'adminzone/pages/comcode/EN/quotes.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
-        'adminzone/pages/comcode/EN/start.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'adminzone/pages/comcode_custom/EN/comcode_whitelist.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_YES),
         'adminzone/pages/comcode_custom/EN/insults.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_YES),
         'adminzone/pages/comcode_custom/EN/referrals.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_YES),
         'buildr/pages/comcode_custom/EN/docs.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
         'buildr/pages/comcode_custom/EN/rules.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
-        'buildr/pages/comcode_custom/EN/start.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
         'collaboration/pages/comcode/EN/about.txt' => array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
-        'collaboration/pages/comcode/EN/start.txt' => array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/about_us.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/advertise.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
         'data/modules/cms_comcode_pages/EN/article.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES),
@@ -83,10 +80,8 @@ function init__transifex()
         'pages/comcode/EN/recommend_help.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'pages/comcode/EN/rules.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'pages/comcode/EN/sitemap.txt' => array(null, TRANSLATE_PRIORITY_URGENT, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
-        'pages/comcode/EN/start.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'site/pages/comcode/EN/help.txt' => array(null, TRANSLATE_PRIORITY_URGENT, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'site/pages/comcode/EN/popup_blockers.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
-        'site/pages/comcode/EN/start.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'site/pages/comcode/EN/userguide_chatcode.txt' => array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'site/pages/comcode/EN/userguide_comcode.txt' => array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'text/EN/quotes.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
@@ -95,6 +90,11 @@ function init__transifex()
         'text/EN/word_characters.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO),
         'text_custom/EN/insults.txt' => array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO),
     );
+    $EXTRA_LANGUAGE_FILES['adminzone/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES);
+    $EXTRA_LANGUAGE_FILES['buildr/pages/comcode_custom/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_ADDON, TRANSLATE_ADMINISTRATIVE_NO);
+    $EXTRA_LANGUAGE_FILES['collaboration/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_HIGH, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_YES);
+    $EXTRA_LANGUAGE_FILES['pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO);
+    $EXTRA_LANGUAGE_FILES['site/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt'] = array(null, TRANSLATE_PRIORITY_NORMAL, TRANSLATE_CORE, TRANSLATE_ADMINISTRATIVE_NO);
     foreach ($EXTRA_LANGUAGE_FILES as $file => &$properties) {
         $properties[0] = basename(str_replace('/', '__', $file), '.txt') . (($properties[3] == TRANSLATE_ADMINISTRATIVE_YES) ? '__administrative' : '');
     }

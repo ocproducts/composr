@@ -422,7 +422,7 @@ $featuretree = array(
         'adminzone' => array(
             'Administration Zone',
             array(
-                array('Status overview', 'Upgrade and task notification from the Admin Zone front page <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Admin Zone" href="http://shareddemo.composr.info/adminzone/index.php?page=start&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Status overview', 'Upgrade and task notification from the Admin Zone dashboard <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Admin Zone" href="http://shareddemo.composr.info/adminzone/index.php?page=start&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Backups', 'Create and schedule full and incremental backups, local or remote <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Backups" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_backup&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Analytics', 'Website statistics rendered as charts <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Statistics" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_stats&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Conflict detection', 'Detect when two staff are trying to change the same thing at the same time'),
@@ -433,7 +433,7 @@ $featuretree = array(
                 array('Configurable access', 'Restrict to no/partial/full access based on usergroup'),
                 array('Configure a staff roster, for an automatically created staff page <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Staff" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_staff&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
                 array('Detect broken URLs <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Cleanup Tools" href="http://shareddemo.composr.info/adminzone/index.php?page=admin_cleanup&amp;type=browse"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
-                array('Content versioning <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Page Versioning" href="http://shareddemo.composr.info/cms/index.php?page=cms_comcode_pages&amp;type=_edit&amp;page_link=:start"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
+                array('Content versioning <a target="_blank" class="link_exempt no_print" title="(Opens in new window) Example of Page Versioning" href="http://shareddemo.composr.info/cms/index.php?page=cms_comcode_pages&amp;type=_edit&amp;page_link=:' . DEFAULT_ZONE_PAGE_NAME . '"><img class="inline_image_3" alt="" src="{$IMG*,help_small}" /></a>'),
             ),
         ),
         'tools' => array(

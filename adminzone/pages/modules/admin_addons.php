@@ -1106,7 +1106,7 @@ class Module_admin_addons
                         if ((preg_match('#^/((\w+)/)?pages/comcode_custom/[^/]*/(\w+)\.txt$#', $file, $matches) != 0) && ($matches[1] != 'docs' . strval(cms_version()))) {
                             $auto_ticked = false;
                             if ($matches[1] == '') {
-                                $auto_ticked = ($matches[3] == 'start') || (substr($matches[3], 0, 6) == 'panel_');
+                                $auto_ticked = ($matches[3] == DEFAULT_ZONE_PAGE_NAME) || (substr($matches[3], 0, 6) == 'panel_');
                             }
                             $field = form_input_tick($matches[1] . ': ' . $matches[3], '', 'file_' . strval($i), $auto_ticked, null, $file);
                             if ($auto_ticked) {

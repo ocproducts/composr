@@ -15,7 +15,7 @@ Put another way, blocks are dynamic elements, elements that automatically genera
  - a list of recent topics on a forum ([tt]main_forum_topics[/tt])
  - information about the currently logged in user ([tt]side_personal_stats[/tt])
 
-The default start page in the Welcome Zone, and the panels make use of blocks.
+The default front page in the Welcome Zone, and the panels make use of blocks.
 [/surround]
 
 [title="2"]Available blocks[/title]

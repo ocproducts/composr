@@ -572,7 +572,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
                         $v = $v->evaluate();
                     }
                     if (($v == '') && ($k == 'page')) {
-                        $v = 'start';
+                        $v = DEFAULT_ZONE_PAGE_NAME;
                         if ($zone_name == $users_current_zone) { // More precision if current zone (don't want to do query for any zone)
                             global $ZONE;
                             $v = $ZONE['zone_default_page'];

@@ -320,7 +320,7 @@ function page_not_found($codename, $zone)
 /**
  * Load Comcode page from disk, then cache it.
  *
- * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/start.txt)
+ * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/example.txt)
  * @param  ID_TEXT $zone The zone the page is being loaded from
  * @param  ID_TEXT $codename The codename of the page
  * @param  PATH $file_base The file base to load from
@@ -479,7 +479,7 @@ function apply_comcode_page_substitutions(&$comcode)
 /**
  * Load Comcode page from disk.
  *
- * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/start.txt)
+ * @param  PATH $string The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/example.txt)
  * @param  ID_TEXT $zone The zone the page is being loaded from
  * @param  ID_TEXT $codename The codename of the page
  * @param  PATH $file_base The file base to load from
@@ -545,7 +545,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
 /**
  * Turn an HTML title, which could be complex with images, into a nice simple string we can use in <title> and ;.
  *
- * @param  string $title The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/start.txt)
+ * @param  string $title The relative (to Composr's base directory) path to the page (e.g. pages/comcode/EN/example.txt)
  * @return string Fixed
  */
 function clean_html_title($title)

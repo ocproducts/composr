@@ -176,7 +176,7 @@ function actual_delete_zone($zone, $force = false, $skip_afm = false)
         $pages = find_all_pages_wrap($zone, false, false, FIND_ALL_PAGES__ALL);
         $bad = array();
         foreach (array_keys($pages) as $page) {
-            if ((substr($page, 0, 6) != 'panel_') && ($page != 'start')) {
+            if ((substr($page, 0, 6) != 'panel_') && ($page != DEFAULT_ZONE_PAGE_NAME)) {
                 $bad[] = $page;
             }
         }

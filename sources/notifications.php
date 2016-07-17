@@ -27,7 +27,7 @@ People may get an RSS feed of notifications if they enable notifications via PT,
 
 There is a separate Composr action log, called via log_it. This is not related to the notifications system, although staff may choose a notification when anything is added to the action log.
 Similarly, there is the Composr activities syndication system. This is not related either, but again notifications may be generated through this.
-The Admin Zone front page shows tasks. These are not the same thing as notifications, although notifications may have been sent when they were set up (specifically there is a notification for when custom tasks have been added).
+The Admin Zone dashboard shows tasks. These are not the same thing as notifications, although notifications may have been sent when they were set up (specifically there is a notification for when custom tasks have been added).
 
 There are RSS feeds in Composr. These are completely unrelated to notifications, although can be used in a similar way (in that they'll change when the website content changes, so a polling RSS reader can detect new content).
 Similarly, there is "realtime rain".

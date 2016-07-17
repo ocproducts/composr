@@ -168,7 +168,7 @@ class Hook_import_html_site
             // Create new zones as needed (and set them to our chosen theme too)
             require_code('zones2');
             foreach ($new_zones as $zone) {
-                actual_add_zone($zone, titleify($zone), 'start', '', $theme, 0);
+                actual_add_zone($zone, titleify($zone), DEFAULT_ZONE_PAGE_NAME, '', $theme, 0);
             }
 
             sync_htaccess_with_zones();
@@ -409,8 +409,8 @@ class Hook_import_html_site
                 $content_file = str_replace('/', '_', substr($content_file, 0, $last_slash_pos)) . substr($content_file, 0, $last_slash_pos);
             }
             list($zone, $page) = explode('/', preg_replace('#\..*$#', '', $content_file), 2);
-            if ($page == 'index') {
-                $page = 'start';
+            if ($page == 'index' || $page == 'home') {
+                $page = DEFAULT_ZONE_PAGE_NAME;
             }
 
             if (substr($content_file, -4) == '.php') {
@@ -564,8 +564,8 @@ class Hook_import_html_site
                         $stripped_decoded_url = '/' . $stripped_decoded_url;
                     }
                     list($zone, $page) = explode('/', $stripped_decoded_url, 2);
-                    if ($page == 'index') {
-                        $page = 'start';
+                    if ($page == 'index' || $page == 'home') {
+                        $page = DEFAULT_ZONE_PAGE_NAME;
                     }
                     $file_contents = str_replace($matches[2][$i], '{$PAGE_LINK*,' . $zone . ':' . $page . '}', $file_contents);
                 } else {

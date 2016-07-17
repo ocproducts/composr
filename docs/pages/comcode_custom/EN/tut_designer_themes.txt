@@ -68,7 +68,7 @@ Make sure you have followed these guidelines:
 This section will step through how to build your design, in a number of steps and sub-steps.
 
 This is what will happen with the elements of your static design (roughly):
- - The XHTML will be spread between your theme's [tt]GLOBAL_HTML_WRAP.tpl[/tt] template, Comcode panels, the Comcode start page, and many block templates within your theme.
+ - The XHTML will be spread between your theme's [tt]GLOBAL_HTML_WRAP.tpl[/tt] template, Comcode panels, the Comcode front page, and many block templates within your theme.
  - The CSS will mostly be incorporated into your theme's [tt]global.css[/tt] CSS file, and possibly also some other CSS files in your theme.
  - Your images will be added into your theme as theme images.
  - Your JavaScript will be added to the [tt]custom_globals.js[/tt] template.
@@ -135,11 +135,11 @@ You will probably want to blank out what is already in the files and start them 
 
 Place the blocks as appropriate onto your:
 [list]
-	[*] Comcode page: Start page, [tt]:start[/tt]
-	[*] Comcode page: Left panel (if you have one on the design), [tt]:panel_left[/tt]
-	[*] Comcode page: Right panel (if you have one on the design), [tt]:panel_right[/tt]
-	[*] Comcode page: Top panel (if you have one on the design), [tt]:panel_top[/tt]
-	[*] Comcode page: Bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
+	[*] Comcode page: front page, [tt]:start[/tt]
+	[*] Comcode page: left panel (if you have one on the design), [tt]:panel_left[/tt]
+	[*] Comcode page: right panel (if you have one on the design), [tt]:panel_right[/tt]
+	[*] Comcode page: top panel (if you have one on the design), [tt]:panel_top[/tt]
+	[*] Comcode page: bottom panel (if you have one on the design), [tt]:panel_bottom[/tt]
 	[*][tt]GLOBAL_HTML_WRAP.tpl[/tt]: Often there will be blocks in the header, like search or login blocks. You can place these using Tempcode rather than Comcode like:
 [tt]{$BLOCK,block=<blockname>}[/tt]. The default template already shows this in some cases, and the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page] provides a section "Tempcode syntax". Similarly sometimes there is a menu in the footer, which can be placed like:
 [code="Tempcode"]{$BLOCK,block=menu,type=<menu-type>,param=<menu-name>}[/code]
@@ -451,14 +451,14 @@ These are achieved using Composr's [tt]main_screen_actions[/tt] block. We have d
 
 [title="3"]Complex content arrangements[/title]
 
-Sometimes a design will have what looks like a panel but actually only appears on the start page. For example, there might be an obvious page area, panels either side of the page area, and an obvious header, but also a bar that goes above the panels and is only shown for the start page. The best way to implement this is by actually making it a panel (one of the default ones, [tt]panel_top[/tt]) but putting some special code in there to make it only show for the start page. You can do this with the following code:
+Sometimes a design will have what looks like a panel but actually only appears on the front page. For example, there might be an obvious page area, panels either side of the page area, and an obvious header, but also a bar that goes above the panels and is only shown for the front page. The best way to implement this is by actually making it a panel (one of the default ones, [tt]panel_top[/tt]) but putting some special code in there to make it only show for the front page. You can do this with the following code:
 [code="Tempcode"]
 {+START,IF,{$MATCH_KEY_MATCH,:start}}
 ...
 {+END}
 [/code]
 
-It's easier to put it all in a panel like this and say that panel should only show on one page than trying to make the rest of the start page be a weird shape.
+It's easier to put it all in a panel like this and say that panel should only show on one page than trying to make the rest of the front page be a weird shape.
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/x2Q5xz7CXvA">video</a>.[/b][/semihtml]
 

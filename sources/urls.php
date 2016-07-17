@@ -406,7 +406,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = fals
     if (empty($vars['page']) && running_script('index')) { // For SEO purposes we need to make sure we get the right URL
         $vars['page'] = get_zone_default_page($zone_name);
         if ($vars['page'] === null) {
-            $vars['page'] = 'start';
+            $vars['page'] = DEFAULT_ZONE_PAGE_NAME;
         }
     }
 

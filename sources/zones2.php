@@ -102,7 +102,7 @@ function render_comcode_page_box($row, $give_context = true, $include_breadcrumb
  * @param  string $base_url The base URL (blank: natural)
  * @return ID_TEXT The name
  */
-function actual_add_zone($zone, $title, $default_page = 'start', $header_text = '', $theme = 'default', $require_session = 0, $uniqify = false, $base_url = '')
+function actual_add_zone($zone, $title, $default_page = DEFAULT_ZONE_PAGE_NAME, $header_text = '', $theme = 'default', $require_session = 0, $uniqify = false, $base_url = '')
 {
     require_lang('zones');
 

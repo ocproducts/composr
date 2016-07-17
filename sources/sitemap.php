@@ -499,7 +499,7 @@ abstract class Hook_sitemap_base
                     if ((isset($link[2][1]['type'])) && ($link[2][1]['type'] != $type)) {
                         $is_a_match = false;
                     } else {
-                        if (($link[2][2] != $zone) && ($page == 'start')) {
+                        if (($link[2][2] != $zone) && ($page == DEFAULT_ZONE_PAGE_NAME)) {
                             $is_a_match = false;
                         } else {
                             if ((isset($link[2][1]['id'])) && ($link[2][1]['id'] !== $id)) {

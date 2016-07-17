@@ -112,7 +112,7 @@ class Hook_addon_registry_collaboration_zone
             'collaboration/pages/comcode/EN/about.txt',
             'collaboration/pages/comcode/EN/index.html',
             'collaboration/pages/comcode/EN/panel_right.txt',
-            'collaboration/pages/comcode/EN/start.txt',
+            'collaboration/pages/comcode/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt',
             'collaboration/pages/comcode/index.html',
             'collaboration/pages/comcode_custom/.htaccess',
             'collaboration/pages/comcode_custom/EN/.htaccess',

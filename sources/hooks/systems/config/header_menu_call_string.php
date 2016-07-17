@@ -50,6 +50,6 @@ class Hook_config_header_menu_call_string
      */
     public function get_default()
     {
-        return 'site:start,include=node,title=' . do_lang('HOME') . ',icon=menu/start + site:,use_page_groupings=1,max_recurse_depth=4,child_cutoff=15,collapse_zones=1';
+        return 'site:' . DEFAULT_ZONE_PAGE_NAME . ',include=node,title=' . do_lang('HOME') . ',icon=menu/start + site:,use_page_groupings=1,max_recurse_depth=4,child_cutoff=15,collapse_zones=1';
     }
 }

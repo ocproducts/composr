@@ -33,7 +33,7 @@ class Hook_check_modsecurity
         $warning = array();
 
         // Test to see if we have any ModSecurity issue that blocks config form submissions, via posting through some perfectly legitimate things that it might be paranoid about
-        if (get_zone_name() . ':' . get_page_name() != 'adminzone:start') {
+        if (get_zone_name() . ':' . get_page_name() != 'adminzone:' . DEFAULT_ZONE_PAGE_NAME) {
             $test_url = get_custom_base_url() . '/uploads/index.html';
             $test_a = http_download_file($test_url, 0, false, true);
             $message_a = $GLOBALS['HTTP_MESSAGE'];

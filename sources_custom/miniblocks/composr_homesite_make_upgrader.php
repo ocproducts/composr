@@ -22,7 +22,7 @@ if (!function_exists('mu_ui')) {
 
         echo <<<END
 <p>
-    You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone front page then we'll automatically know what version you're running.
+    You can generate an upgrader from any version of Composr to any other version. If you access this upgrade post via the version information box on your Admin Zone dashboard then we'll automatically know what version you're running.
     <br />
     If you'd prefer though you can enter in your version number right here:
 </p>

@@ -191,7 +191,7 @@ Buildr is a full zone addon for Composr.';
             'buildr/pages/comcode_custom/EN/docs.txt',
             'buildr/pages/comcode/EN/index.html',
             'buildr/pages/comcode_custom/EN/rules.txt',
-            'buildr/pages/comcode_custom/EN/start.txt',
+            'buildr/pages/comcode_custom/EN/' . DEFAULT_ZONE_PAGE_NAME . '.txt',
             'buildr/pages/comcode/index.html',
             'buildr/pages/comcode_custom/.htaccess',
             'buildr/pages/comcode_custom/EN/.htaccess',

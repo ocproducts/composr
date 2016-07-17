@@ -601,7 +601,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
                     if (is_null($test)) {
                         $map = array(
                             'zone_name' => $zone,
-                            'zone_default_page' => ($zone == 'forum') ? 'forumview' : 'start',
+                            'zone_default_page' => ($zone == 'forum') ? 'forumview' : DEFAULT_ZONE_PAGE_NAME,
                             'zone_theme' => '-1',
                             'zone_require_session' => 0,
                         );
