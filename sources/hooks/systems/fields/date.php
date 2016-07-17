@@ -35,7 +35,7 @@ class Hook_fields_date
      */
     public function get_search_inputter($field)
     {
-        $type = '_DATE';
+        $type = '_JUST_DATE';
         $special = $this->get_search_filter_from_env($field);
         $extra = '';
         $display = array_key_exists('trans_name', $field) ? $field['trans_name'] : get_translated_text($field['cf_name']);
@@ -78,20 +78,20 @@ class Hook_fields_date
             $_from = post_param_date('option_' . strval($field['id']) . '_from', true, false);
             $from = '';
             if (!is_null($_from)) {
-                $from = date('Y-m-d H:i', $_from);
+                $from = date('Y-m-d', $_from);
             }
 
             $_to = post_param_date('option_' . strval($field['id']) . '_to', true, false);
             $to = '';
             if (!is_null($_to)) {
-                $to = date('Y-m-d H:i', $_to);
+                $to = date('Y-m-d', $_to);
             }
 
             return $from . ';' . $to;
         }
 
         $filter = post_param_date('option_' . strval($field['id']), true);
-        return is_null($filter) ? '' : date('Y-m-d H:i', $filter);
+        return is_null($filter) ? '' : date('Y-m-d', $filter);
     }
 
     // ===================
@@ -110,7 +110,7 @@ class Hook_fields_date
     {
         if ($required !== null) {
             if (($required) && ($default == '')) {
-                $default = date('Y-m-d H:i', utctime_to_usertime());
+                $default = date('Y-m-d', utctime_to_usertime());
             }
         }
         return array('short_unescaped', $default, 'short');
@@ -133,28 +133,17 @@ class Hook_fields_date
             if (stripos($ev, 'now') !== false) {
                 $time = time();
             } else {
-                // Y-m-d H:i
-                $bits = explode(' ', $ev, 2);
-                $date_bits = explode((strpos($bits[0], '-') !== false) ? '-' : '/', $bits[0], 3);
+                // Y-m-d H:i:s
+                $date_bits = explode((strpos($ev, '-') !== false) ? '-' : '/', $ev, 3);
                 if (!array_key_exists(1, $date_bits)) {
                     $date_bits[1] = date('m');
                 }
                 if (!array_key_exists(2, $date_bits)) {
                     $date_bits[2] = date('Y');
                 }
-                if (!array_key_exists(1, $bits)) {
-                    $bits[1] = '00:00:00';
-                }
-                $time_bits = explode(':', $bits[1], 3);
-                if (!array_key_exists(1, $time_bits)) {
-                    $time_bits[1] = '00';
-                }
-                if (!array_key_exists(2, $time_bits)) {
-                    $time_bits[2] = '00';
-                }
-                $time = mktime(intval($time_bits[0]), intval($time_bits[1]), intval($time_bits[2]), intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
+                $time = mktime(0, 0, 0, intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
             }
-            $ev = get_timezoned_date_time($time, false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $ev = get_timezoned_date($time, false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
         }
         return escape_html($ev);
     }
@@ -179,30 +168,19 @@ class Hook_fields_date
 
         if ((is_null($actual_value)) || ($actual_value == '')) {
             $time = null;
-        } elseif ($actual_value == 'NOW') {
+        } elseif (stripos($actual_value, 'now') !== false) {
             $time = time();
         } else {
-            // Y-m-d H:i
-            $bits = explode(' ', $actual_value, 2);
-            $date_bits = explode((strpos($bits[0], '-') !== false) ? '-' : '/', $bits[0], 3);
+            // Y-m-d
+            $date_bits = explode((strpos($actual_value, '-') !== false) ? '-' : '/', $actual_value, 3);
             if (!array_key_exists(1, $date_bits)) {
                 $date_bits[1] = date('m');
             }
             if (!array_key_exists(2, $date_bits)) {
                 $date_bits[2] = date('Y');
             }
-            if (!array_key_exists(1, $bits)) {
-                $bits[1] = '0';
-            }
-            $time_bits = explode(':', $bits[1], 3);
-            if (!array_key_exists(1, $time_bits)) {
-                $time_bits[1] = '00';
-            }
-            if (!array_key_exists(2, $time_bits)) {
-                $time_bits[2] = '00';
-            }
 
-            $time = array(intval($time_bits[1]), intval($time_bits[0]), intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
+            $time = array(0, 0, intval($date_bits[1]), intval($date_bits[2]), intval($date_bits[0]));
         }
         /*
         $min_year = 1902; // 1902 is based on signed integer limit
@@ -213,7 +191,7 @@ class Hook_fields_date
         $min_year = intval(option_value_from_field_array($field, 'min_year', strval(intval(date('Y')) - 10)));
         $years_to_show = intval(option_value_from_field_array($field, 'max_year', strval(intval(date('Y')) + 10))) - $min_year;
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
-        return form_input_date($_cf_name, $_cf_description, $input_name, $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($actual_value == ''), true, $time, $years_to_show, $min_year);
+        return form_input_date($_cf_name, $_cf_description, $input_name, $field['cf_required'] == 1, ($field['cf_required'] == 0) && ($actual_value == ''), false, $time, $years_to_show, $min_year);
     }
 
     /**
@@ -231,7 +209,7 @@ class Hook_fields_date
         $stub = 'field_' . strval($id);
 
         require_code('temporal2');
-        list($year, $month, $day, $hour, $minute) = post_param_date_components($stub);
+        list($year, $month, $day) = post_param_date_components($stub);
         if (is_null($year)) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
@@ -248,6 +226,6 @@ class Hook_fields_date
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
-        return str_pad(strval($year), 4, '0', STR_PAD_LEFT) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT) . ' ' . strval($hour) . ':' . str_pad(strval($minute), 2, '0', STR_PAD_LEFT);
+        return str_pad(strval($year), 4, '0', STR_PAD_LEFT) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
     }
 }

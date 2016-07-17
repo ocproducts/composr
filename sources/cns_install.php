@@ -224,6 +224,10 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'topic_order_2');
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_topics', 'topic_order_3');
         $GLOBALS['FORUM_DB']->create_index('f_topics', 'topic_order_forum', array('t_forum_id', 't_cascading', 't_pinned', 't_cache_last_time'));
+
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
     }
     if ((!is_null($upgrade_from)) && ($upgrade_from < 10.0)) {
         delete_config_option('no_dob_ask');

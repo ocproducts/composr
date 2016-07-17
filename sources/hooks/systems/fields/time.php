@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_fields_just_time
+class Hook_fields_time
 {
     // ==============
     // Module: search

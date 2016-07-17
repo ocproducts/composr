@@ -35,7 +35,7 @@ class Module_catalogues
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
+        $info['version'] = 9;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -486,6 +486,12 @@ class Module_catalogues
 
         if ((is_null($upgrade_from)) || ($upgrade_from < 8)) {
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
+        }
+
+        if ((!is_null($upgrade_from)) && ($upgrade_from < 9)) {
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
         }
     }
 
