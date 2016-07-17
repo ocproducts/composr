@@ -335,8 +335,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
 {
     global $COMCODE_PARSE_TITLE;
 
-    $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     // Not cached :(
     $tmp = fopen($file_base . '/' . $string, 'rb');
@@ -369,15 +368,13 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
 
     // Parse and work out how to add
     $lang = user_lang();
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
-    $LAX_COMCODE = true;
+    push_lax_comcode(true);
     require_code('attachments2');
     push_tempcode_parameter_inlining_mode(true);
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, $as_admin/*Ideally we assign $page_submitter based on this as well so it is safe if the Comcode cache is emptied*/, $page_submitter);
     push_tempcode_parameter_inlining_mode(false);
     $_text_parsed = $_new['tempcode'];
-    $LAX_COMCODE = $temp;
+    pop_lax_comcode();
 
     // Flatten for performance reasons?
     if (strpos($comcode, '{$,Quick Cache}') !== false) {
@@ -459,7 +456,7 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         }
     }
 
-    $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+    pop_query_limiting();
 
     return array($_text_parsed, $title_to_use, $comcode_page_row, $comcode);
 }
@@ -522,13 +519,11 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
     }
     apply_comcode_page_substitutions($comcode);
 
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
-    $LAX_COMCODE = true;
+    push_lax_comcode(true);
     require_code('attachments2');
     $_new = do_comcode_attachments($comcode, 'comcode_page', $zone . ':' . $codename, false, null, (!array_key_exists(0, $_comcode_page_row)) || (is_guest($_comcode_page_row[0]['p_submitter'])), array_key_exists(0, $_comcode_page_row) ? $_comcode_page_row[0]['p_submitter'] : get_member());
     $html = $_new['tempcode'];
-    $LAX_COMCODE = $temp;
+    pop_lax_comcode();
     $title_to_use = is_null($COMCODE_PARSE_TITLE) ? null : clean_html_title($COMCODE_PARSE_TITLE);
 
     // Try and insert corresponding page; will silently fail if already exists. This is only going to add a row for a page that was not created in-system

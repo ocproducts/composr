@@ -225,13 +225,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     $CID_IMG_ATTACHMENT = array();
 
     // Decide message
-    $GLOBALS['NO_LINK_TITLES'] = true;
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
-    $LAX_COMCODE = true;
+    push_lax_comcode(true);
     $html_content = comcode_to_tempcode($message_raw, $as, $as_admin);
-    $LAX_COMCODE = $temp;
-    $GLOBALS['NO_LINK_TITLES'] = false;
+    pop_lax_comcode();
     if (!$in_html) {
         $message_html = null;
         $html_evaluated = null;

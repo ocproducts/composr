@@ -337,7 +337,7 @@ class Module_admin_addons
         }
         send_http_output_ping();
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $addons_installed = find_installed_addons(false, false);
         $addons_available_for_installation = find_available_addons(false);

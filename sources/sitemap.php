@@ -118,7 +118,7 @@ function init__sitemap()
  */
 function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $options = 0, $zone = '_SEARCH', $meta_gather = 0)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     cms_profile_start_for('retrieve_sitemap_node');
 

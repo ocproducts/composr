@@ -57,7 +57,7 @@ class Hook_cron_block_caching
         $where = array('c_theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'c_lang' => user_lang());
         $requests = $GLOBALS['SITE_DB']->query_select('cron_caching_requests', array('*'), $where);
         foreach ($requests as $request) {
-            $GLOBALS['NO_QUERY_LIMIT'] = true;
+            push_query_limiting(false);
 
             $codename = $request['c_codename'];
             $map = unserialize($request['c_map']);

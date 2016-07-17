@@ -37,15 +37,14 @@ class Hook_task_find_broken_urls
 
         $checked_already = array();
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $this->check_url_fields($checked_already, $found_404, $found);
         $this->check_comcode_fields($checked_already, $found_404, $found);
         $this->check_catalogues($checked_already, $found_404, $found);
         $this->check_comcode_pages($checked_already, $found_404, $found);
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         $ret = do_template('BROKEN_URLS', array(
             '_GUID' => '7b60d02e1b95f8d9053fb0a49f45d892',
@@ -109,9 +108,7 @@ class Hook_task_find_broken_urls
     {
         global $COMCODE_BROKEN_URLS;
 
-        global $LAX_COMCODE;
-        $temp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
+        push_lax_comcode(true);
 
         $sql = 'SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%LONG_TRANS__COMCODE%') . '\'';
         $possible_comcode_fields = $GLOBALS['SITE_DB']->query($sql);
@@ -144,7 +141,7 @@ class Hook_task_find_broken_urls
             }
         }
 
-        $LAX_COMCODE = $temp;
+        pop_lax_comcode();
     }
 
     /**
@@ -196,9 +193,7 @@ class Hook_task_find_broken_urls
     {
         global $COMCODE_BROKEN_URLS;
 
-        global $LAX_COMCODE;
-        $temp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
+        push_lax_comcode(true);
 
         $zones = find_all_zones();
         foreach ($zones as $zone) {
@@ -231,7 +226,7 @@ class Hook_task_find_broken_urls
             }
         }
 
-        $lax_comcode = $temp;
+        pop_lax_comcode();
     }
 
     /**

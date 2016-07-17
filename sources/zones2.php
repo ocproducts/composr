@@ -326,7 +326,7 @@ function upgrade_module($zone, $module)
  */
 function reinstall_module($zone, $module)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     $module_path = get_file_base() . '/' . _get_module_path($zone, $module);
 

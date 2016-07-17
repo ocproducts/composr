@@ -27,7 +27,7 @@ function rebuild_indices($only_trans = false)
 {
     global $TABLE_LANG_FIELDS_CACHE;
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
     foreach ($indices as $index) {
@@ -51,8 +51,8 @@ function rebuild_indices($only_trans = false)
  */
 function disable_content_translation()
 {
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_db_scope_check(false);
+    push_query_limiting(false);
 
     if (get_file_base() != get_custom_file_base()) {
         warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
@@ -135,8 +135,8 @@ function disable_content_translation()
  */
 function enable_content_translation()
 {
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_db_scope_check(false);
+    push_query_limiting(false);
 
     if (get_file_base() != get_custom_file_base()) {
         warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));

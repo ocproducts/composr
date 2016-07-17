@@ -42,7 +42,7 @@ class Hook_task_import_rss
         require_code('news');
         require_code('news2');
 
-        $GLOBALS['LAX_COMCODE'] = true;
+        push_lax_comcode(true);
 
         if (!is_null($rss->error)) {
             return array(null, $rss->error);
@@ -475,6 +475,8 @@ class Hook_task_import_rss
                 }
             }
         }
+
+        pop_lax_comcode();
 
         $ret = do_lang_tempcode('IMPORT_NEWS_DONE');
         return array('text/html', $ret);

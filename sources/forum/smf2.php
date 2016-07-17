@@ -542,11 +542,9 @@ class Forum_driver_smf2 extends Forum_driver_base
             if (is_null($temp['title'])) {
                 $temp['title'] = '';
             }
-            global $LAX_COMCODE;
-            $temp2 = $LAX_COMCODE;
-            $LAX_COMCODE = true;
+            push_lax_comcode(true);
             $temp['message'] = comcode_to_tempcode(str_replace('<br />', "\n", $myrow['body']), $myrow['id_member']);
-            $LAX_COMCODE = $temp2;
+            pop_lax_comcode();
             $temp['member'] = $myrow['id_member'];
             $temp['date'] = $myrow['poster_time'];
 
@@ -655,11 +653,9 @@ class Forum_driver_smf2 extends Forum_driver_base
             $out[$i]['lasttime'] = $fp_rows[count($fp_rows) - 1]['poster_time'];
             $out[$i]['firsttime'] = $fp_rows[0]['poster_time'];
             if ($show_first_posts) {
-                global $LAX_COMCODE;
-                $temp = $LAX_COMCODE;
-                $LAX_COMCODE = true;
+                push_lax_comcode(true);
                 $out[$i]['firstpost'] = comcode_to_tempcode(str_replace('<br />', "\n", $fp_rows[0]['body']), $fp_rows[0]['id_member']);
-                $LAX_COMCODE = $temp;
+                pop_lax_comcode();
             }
         }
         if (count($out) != 0) {

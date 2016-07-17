@@ -68,8 +68,7 @@ class Block_main_friends_list
         $where = '';
         $friends_search = get_param_string('friends_search', '');
 
-        $dbsc = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $msn = is_on_multi_site_network();
 
@@ -145,7 +144,7 @@ class Block_main_friends_list
         require_code('templates_pagination');
         $pagination = pagination($text_id, $start, $block_id . '_start', $max, $block_id . '_max', $max_rows);
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbsc;
+        pop_db_scope_check();
 
         return do_template('BLOCK_MAIN_FRIENDS_LIST', array(
             '_GUID' => '70b11d3c01ff551be42a0472d27dd207',

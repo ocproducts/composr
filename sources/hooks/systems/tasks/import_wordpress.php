@@ -42,7 +42,7 @@ class Hook_task_import_wordpress
 
         log_it('IMPORT_NEWS');
 
-        $GLOBALS['LAX_COMCODE'] = true;
+        push_lax_comcode(true);
 
         $data = _get_wordpress_db_data();
 
@@ -435,6 +435,8 @@ class Hook_task_import_wordpress
                 }
             }
         }
+
+        pop_lax_comcode();
 
         $ret = do_lang_tempcode('IMPORT_WORDPRESS_DONE');
         return array('text/html', $ret);

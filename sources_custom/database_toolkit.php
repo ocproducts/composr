@@ -191,8 +191,8 @@ function get_sql_dump($include_drops = false, $output_statuses = false, $from = 
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(0);
     }
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_db_scope_check(false);
+    push_query_limiting(false);
 
     if (is_null($skip)) {
         $skip = array();

@@ -447,7 +447,7 @@ function cleanup()
         /*wordfilter - not really wanted */
     );
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     foreach ($purgeable as $p) {
         list($function, $codefile, $table, $id_field, $skip) = $p;

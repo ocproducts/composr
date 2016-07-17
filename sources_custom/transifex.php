@@ -166,7 +166,7 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
 {
     global $EXISTING_LANGUAGE_AUTHORS, $EXTRA_LANGUAGE_FILES;
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(3000);
     }
@@ -464,7 +464,7 @@ function pull_from_transifex($version, $tar_file, $lang, $core_only)
 {
     $project_slug = 'composr-cms-' . str_replace('.', '-', $version);
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(3000);
     }

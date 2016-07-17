@@ -53,7 +53,7 @@ function init__resource_fs()
 
     define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     global $RESOURCE_FS_LOGGER, $RESOURCE_FS_LOGGER_LEVEL;
     $RESOURCE_FS_LOGGER = null;

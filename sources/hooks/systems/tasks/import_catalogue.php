@@ -98,9 +98,7 @@ class Hook_task_import_catalogue
             }
         }
 
-        global $LAX_COMCODE;
-        $temp2 = $LAX_COMCODE;
-        $LAX_COMCODE = true;
+        push_lax_comcode(true);
 
         if (($meta_keywords_field != '') && (!array_key_exists($meta_keywords_field, $csv_field_titles))) {
             fclose($handle);
@@ -147,7 +145,7 @@ class Hook_task_import_catalogue
             }
         }
 
-        $LAX_COMCODE = $temp2;
+        pop_lax_comcode();
 
         fclose($handle);
         @unlink($csv_name);

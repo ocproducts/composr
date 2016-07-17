@@ -580,7 +580,7 @@ safe_ini_set('docref_root', 'http://php.net/manual/en/');
 safe_ini_set('docref_ext', '.php');
 
 // Get ready for some global variables
-global $REQUIRED_CODE, $CURRENT_SHARE_USER, $PURE_POST, $NO_QUERY_LIMIT, $NO_QUERY_LIMIT, $IN_MINIKERNEL_VERSION;
+global $REQUIRED_CODE, $CURRENT_SHARE_USER, $PURE_POST, $IN_MINIKERNEL_VERSION;
 /** Details of what code files have been loaded up.
  *
  * @global array $REQUIRED_CODE
@@ -598,7 +598,6 @@ if ((!isset($CURRENT_SHARE_USER)) || (isset($_SERVER['REQUEST_METHOD']))) {
  * @global array $PURE_POST
  */
 $PURE_POST = $_POST;
-$NO_QUERY_LIMIT = false;
 $IN_MINIKERNEL_VERSION = false;
 
 // Critical error reporting system

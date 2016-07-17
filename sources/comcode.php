@@ -31,15 +31,42 @@ function init__comcode()
     global $OVERRIDE_SELF_ZONE;
     $OVERRIDE_SELF_ZONE = null; // This is not pretty, but needed to properly scope links for search results.
 
-    global $LAX_COMCODE;
-    /** Set whether the lax Comcode parser should be used, which is important for any Comcode not being interactively added (i.e. existing Comcode should not cause errors, even if it is poor quality).
-     *
-     * @global boolean $LAX_COMCODE
-     */
-    $LAX_COMCODE = null;
-
     global $VALID_COMCODE_TAGS;
     $VALID_COMCODE_TAGS = null;
+
+    global $LAX_COMCODE;
+    $LAX_COMCODE = array(get_option('lax_comcode') === '1');
+}
+
+/**
+ * Add new lax Comcode setting. Set whether the lax Comcode parser should be used, which is important for any Comcode not being interactively added (i.e. existing Comcode should not cause errors, even if it is poor quality).
+ *
+ * @param  boolean $setting New setting
+ */
+function push_lax_comcode($setting)
+{
+    global $LAX_COMCODE;
+    array_push($LAX_COMCODE, $setting);
+}
+
+/**
+ * Remove last lax Comcode setting.
+ */
+function pop_lax_comcode()
+{
+    global $LAX_COMCODE;
+    array_pop($LAX_COMCODE);
+}
+
+/**
+ * See lax Comcode setting.
+ *
+ * @return boolean Last setting
+ */
+function peek_lax_comcode()
+{
+    global $LAX_COMCODE;
+    return end($LAX_COMCODE);
 }
 
 /**

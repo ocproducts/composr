@@ -202,10 +202,9 @@ class Hook_search_downloads extends FieldsSearchHook
         if ($_text_summary === false) {
             $_text_summary = '';
         }
-        global $LAX_COMCODE;
-        $LAX_COMCODE = true;
+        push_lax_comcode(true);
         $text_summary_h = comcode_to_tempcode($_text_summary, null, false, null, null, null, false, false, false, false, false, $highlight_bits);
-        $LAX_COMCODE = false;
+        pop_lax_comcode();
         $text_summary = generate_text_summary($text_summary_h->evaluate(), $highlight_bits);
 
         return render_download_box($row, true, true, null, $text_summary);

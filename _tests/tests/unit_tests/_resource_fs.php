@@ -29,7 +29,7 @@ class _resource_fs_test_set extends cms_test_case
     {
         parent::setUp();
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         require_code('content');
         require_code('resource_fs');

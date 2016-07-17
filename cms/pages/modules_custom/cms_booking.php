@@ -827,8 +827,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         $table = is_null($this->table) ? $this->module_type : $this->table;
         $db = ((substr($table, 0, 2) == 'f_') && (!$force_site_db) && (get_forum_type() != 'none')) ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
         if ($force_site_db) {
-            $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
         }
         $request = array();
         if (get_param_integer('id', null) !== null) {
@@ -860,7 +859,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         $start = get_param_integer('start', 0);
 
         if ($force_site_db) {
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+            pop_db_scope_check();
         }
         $_entries = array();
         foreach ($request as $i => $row) {

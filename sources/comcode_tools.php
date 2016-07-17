@@ -104,7 +104,7 @@ function comcode_convert_script()
 
     } elseif ($from_html == 0) { // "Convert Comcode to HTML"
         if (either_param_integer('lax', 0) == 1) {
-            $GLOBALS['LAX_COMCODE'] = true;
+            push_lax_comcode();
         }
 
         $db = $GLOBALS['SITE_DB'];

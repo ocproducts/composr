@@ -36,10 +36,9 @@ function handle_usergroup_subscription($purchase_id, $details, $type_code, $paym
     require_code('notifications');
 
     $usergroup_subscription_id = intval(substr($type_code, 9));
-    $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $usergroup_subscription_id), '', 1);
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+    pop_db_scope_check();
     if (array_key_exists(0, $rows)) {
         $myrow = $rows[0];
         $new_group = $myrow['s_group_id'];
@@ -199,8 +198,7 @@ class Hook_ecommerce_usergroup
             return array();
         }
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $usergroup_subs = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('s_enabled' => 1));
         $products = array();
@@ -217,7 +215,7 @@ class Hook_ecommerce_usergroup
             );
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         return $products;
     }
@@ -230,8 +228,7 @@ class Hook_ecommerce_usergroup
      */
     public function get_message($type_code)
     {
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $id = intval(substr($type_code, 9));
 
@@ -243,7 +240,7 @@ class Hook_ecommerce_usergroup
 
         $ret = get_translated_tempcode('f_usergroup_subs', $sub[0], 's_description', $db);
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         return $ret;
     }
@@ -275,10 +272,9 @@ class Hook_ecommerce_usergroup
         }
 
         $id = intval(substr($type_code, 9));
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id));
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
         if (!isset($rows[0])) {
             return ECOMMERCE_PRODUCT_MISSING;
         }

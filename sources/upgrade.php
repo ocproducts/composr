@@ -864,7 +864,7 @@ function fix_perms()
     require_code('themes2');
     $themes = find_all_themes();
 
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+    push_suppress_error_death(true);
 
     for ($i = 0; $i < count($array); $i++) {
         $chmod = $array[$i];
@@ -928,7 +928,7 @@ function fix_perms()
 
     $super_out .= '<p>' . do_lang('SUCCESS') . '</p>';
 
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+    pop_suppress_error_death();
 
     return $super_out;
 }
@@ -1910,8 +1910,7 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
         set_time_limit(0);
     }
 
-    $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $fulltext_indices = $GLOBALS['SITE_DB']->query_select('db_meta_indices', array('*'));
     foreach ($fulltext_indices as $index) {
@@ -1970,7 +1969,7 @@ function change_mysql_database_charset($new_charset, $db, $reencode = false)
         }
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
+    pop_db_scope_check();
 }
 
 /**

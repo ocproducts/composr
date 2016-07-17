@@ -85,9 +85,6 @@ function init__comcode_compiler()
     global $ADVERTISING_BANNERS_CACHE;
     $ADVERTISING_BANNERS_CACHE = null;
 
-    global $NO_LINK_TITLES;
-    $NO_LINK_TITLES = false;
-
     global $COMCODE_ATTACHMENTS, $ATTACHMENTS_ALREADY_REFERENCED;
     $COMCODE_ATTACHMENTS = array();
     $ATTACHMENTS_ALREADY_REFERENCED = array();
@@ -338,11 +335,6 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  */
 function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $db, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
 {
-    global $LAX_COMCODE;
-    if ($LAX_COMCODE === null && function_exists('get_option')) {
-        $LAX_COMCODE = (get_option('lax_comcode') === '1');
-    }
-
     init_valid_comcode_tags();
     init_potential_js_naughty_array();
 
@@ -477,7 +469,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
     // Our state
     $status = CCP_NO_MANS_LAND;
-    $lax = $GLOBALS['LAX_COMCODE'] || function_exists('get_member') && $source_member != get_member() || !has_interesting_post_fields(); // if we don't want to produce errors for technically invalid Comcode
+    $lax = (peek_lax_comcode()) || (function_exists('get_member')) && ($source_member != get_member()) || (!has_interesting_post_fields()); // if we don't want to produce errors for technically invalid Comcode
     if ((!$lax) && (substr($comcode, 0, 10) === '[semihtml]')) {
         $lax = true;
     }

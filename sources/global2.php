@@ -321,12 +321,8 @@ function init__global2()
     }
 
     // At this point we can display errors nicely
-    /** Whether error display is suppressed
-     *
-     * @global boolean $SUPPRESS_ERROR_DEATH
-     */
     global $SUPPRESS_ERROR_DEATH;
-    $SUPPRESS_ERROR_DEATH = false;
+    $SUPPRESS_ERROR_DEATH = array(false);
     set_error_handler('composr_error_handler');
     if (function_exists('error_get_last')) {
         register_shutdown_function('catch_fatal_errors');
@@ -667,6 +663,37 @@ function load_user_stuff()
 }
 
 /**
+ * Add new suppress error death setting. Whether error display is suppressed.
+ *
+ * @param  boolean $setting New setting
+ */
+function push_suppress_error_death($setting)
+{
+    global $SUPPRESS_ERROR_DEATH;
+    array_push($SUPPRESS_ERROR_DEATH, $setting);
+}
+
+/**
+ * Remove last suppress error death setting.
+ */
+function pop_suppress_error_death()
+{
+    global $SUPPRESS_ERROR_DEATH;
+    array_pop($SUPPRESS_ERROR_DEATH);
+}
+
+/**
+ * See suppress error death setting.
+ *
+ * @return boolean Last setting
+ */
+function peek_suppress_error_death()
+{
+    global $SUPPRESS_ERROR_DEATH;
+    return end($SUPPRESS_ERROR_DEATH);
+}
+
+/**
  * Composr error catcher for fatal versions. This is hooked in only on PHP5.2 as error_get_last() only works on these versions.
  *
  * @ignore
@@ -703,7 +730,7 @@ function catch_fatal_errors()
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
             case E_USER_ERROR:
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = false; // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
+                push_suppress_error_death(false); // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
                 $GLOBALS['DYING_BADLY'] = true; // Tells composr_error_handler to roll through, definitely an error.
                 $GLOBALS['EXITING'] = 2; // Fudge to force a critical error, we're too desparate to show a Tempcode stack trace.
                 composr_error_handler($error['type'], $error['message'], $error['file'], $error['line']);

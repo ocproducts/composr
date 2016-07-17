@@ -683,7 +683,7 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
  */
 function _helper_add_auto_key($this_ref, $table_name, $field_name)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     // Add integer field, as it is a safe op (auto_increment can only be active key, and we already have a key)
     $this_ref->add_table_field($table_name, $field_name, 'INTEGER');

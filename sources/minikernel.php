@@ -62,16 +62,16 @@ function init__minikernel()
     global $IN_SELF_ROUTING_SCRIPT;
     $IN_SELF_ROUTING_SCRIPT = false;
 
-    global $XSS_DETECT, $LAX_COMCODE;
+    global $XSS_DETECT;
     $XSS_DETECT = false;
-    $LAX_COMCODE = false;
 
     set_error_handler('composr_error_handler');
     if (function_exists('error_get_last')) {
         register_shutdown_function('catch_fatal_errors');
     }
     safe_ini_set('track_errors', '1');
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+    global $SUPPRESS_ERROR_DEATH;
+    $SUPPRESS_ERROR_DEATH = array(false);
 
     safe_ini_set('ocproducts.type_strictness', '1');
 
@@ -81,6 +81,37 @@ function init__minikernel()
     @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
+}
+
+/**
+ * Add new suppress error death setting. Whether error display is suppressed.
+ *
+ * @param  boolean $setting New setting
+ */
+function push_suppress_error_death($setting)
+{
+    global $SUPPRESS_ERROR_DEATH;
+    array_push($SUPPRESS_ERROR_DEATH, $setting);
+}
+
+/**
+ * Remove last suppress error death setting.
+ */
+function pop_suppress_error_death()
+{
+    global $SUPPRESS_ERROR_DEATH;
+    array_pop($SUPPRESS_ERROR_DEATH);
+}
+
+/**
+ * See suppress error death setting.
+ *
+ * @return boolean Last setting
+ */
+function peek_suppress_error_death()
+{
+    global $SUPPRESS_ERROR_DEATH;
+    return end($SUPPRESS_ERROR_DEATH);
 }
 
 /**
@@ -141,7 +172,9 @@ function get_html_trace()
     if (is_string($x)) {
         @print($x);
     }
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+
+    push_suppress_error_death(true);
+
     $_trace = debug_backtrace();
     $trace = array();
     foreach ($_trace as $i => $stage) {
@@ -197,7 +230,8 @@ function get_html_trace()
         }
         $trace[] = array('TRACES' => $traces);
     }
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+
+    pop_suppress_error_death();
 
     return do_template('STACK_TRACE', array('_GUID' => 'da6c0ef0d8d793807d22e51555d73929', 'TRACE' => $trace, 'POST' => ''));
 }
@@ -287,7 +321,7 @@ function catch_fatal_errors()
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
             case E_USER_ERROR:
-                $GLOBALS['SUPPRESS_ERROR_DEATH'] = false; // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
+                push_suppress_error_death(false); // We can't recover as we've lost our execution track. Force a nice death rather than trying to display a recoverable error.
                 $GLOBALS['DYING_BADLY'] = true; // Does not actually work unfortunately. @'d calls never get here at all.
                 composr_error_handler($error['type'], $error['message'], $error['file'], $error['line']);
         }

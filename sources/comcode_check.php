@@ -33,8 +33,6 @@ function check_comcode($comcode, $source_member = null, $as_admin = false, $db =
         return;
     }
 
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
     if ($attachment_possibility) {
         $has_one = false;
         foreach ($_POST as $key => $value) {
@@ -50,9 +48,15 @@ function check_comcode($comcode, $source_member = null, $as_admin = false, $db =
             }
         }
         if ($has_one) {
-            $LAX_COMCODE = true; // We don't want a simple syntax error to cause us to lose our attachments
+            push_lax_comcode(true); // We don't want a simple syntax error to cause us to lose our attachments
         }
+
+        comcode_to_tempcode($comcode, $source_member, $as_admin, null, null, $db, false, false, false, false, true);
+
+        if ($has_one) {
+            pop_lax_comcode();
+        }
+    } else {
+        comcode_to_tempcode($comcode, $source_member, $as_admin, null, null, $db, false, false, false, false, true);
     }
-    comcode_to_tempcode($comcode, $source_member, $as_admin, null, null, $db, false, false, false, false, true);
-    $LAX_COMCODE = $temp;
 }

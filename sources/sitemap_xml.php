@@ -228,7 +228,7 @@ function build_sitemap_cache_table()
         warn_exit('Will not generate sitemap as non-Guest');
     }
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     if (php_function_allowed('set_time_limit')) {
         set_time_limit(0);

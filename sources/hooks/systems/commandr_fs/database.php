@@ -33,7 +33,7 @@ class Hook_commandr_fs_database
      */
     public function listing($meta_dir, $meta_root_node, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $listing = array();
         if (count($meta_dir) < 1) {
@@ -134,7 +134,7 @@ class Hook_commandr_fs_database
      */
     public function make_directory($meta_dir, $meta_root_node, $new_dir_name, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (count($meta_dir) < 1) {
             return false;
@@ -175,7 +175,7 @@ class Hook_commandr_fs_database
      */
     public function remove_directory($meta_dir, $meta_root_node, $dir_name, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (count($meta_dir) < 1) {
             // We're at the top level, and removing a table
@@ -202,7 +202,7 @@ class Hook_commandr_fs_database
      */
     public function remove_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (count($meta_dir) == 2) {
             // We're in a row, and deleting a field entry for this row
@@ -237,7 +237,7 @@ class Hook_commandr_fs_database
      */
     public function read_file($meta_dir, $meta_root_node, $file_name, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (count($meta_dir) == 2) {
             // We're in a row, and reading a field entry for this row
@@ -268,7 +268,7 @@ class Hook_commandr_fs_database
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (count($meta_dir) == 2) {
             // We're in a row, and writing a field entry for this row
@@ -312,7 +312,7 @@ class Hook_commandr_fs_database
      */
     protected function _do_where($table_name, $keys)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $db_keys = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'), array('m_table' => $table_name));
         $_db_keys = array();

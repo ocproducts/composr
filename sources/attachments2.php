@@ -107,13 +107,13 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     }
 
     // Parse the Comcode to find details of attachments (and add into the database)
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
     if ($has_one) {
-        $LAX_COMCODE = true; // We don't want a simple syntax error to cause us to lose our attachments
+        push_lax_comcode(true); // We don't want a simple syntax error to cause us to lose our attachments
     }
     $tempcode = comcode_to_tempcode($comcode, $member, $insert_as_admin, null, $id, $db, false, false, false, false, false, null, $for_member);
-    $LAX_COMCODE = $temp;
+    if ($has_one) {
+        pop_lax_comcode();
+    }
     $ATTACHMENTS_ALREADY_REFERENCED = $old_already;
     if (!array_key_exists($id, $COMCODE_ATTACHMENTS)) {
         $COMCODE_ATTACHMENTS[$id] = array();

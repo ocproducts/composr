@@ -65,7 +65,7 @@ class Hook_profiles_tabs_edit
         require_lang('cns');
         require_css('cns');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $order = 200;
 

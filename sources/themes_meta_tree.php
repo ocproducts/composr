@@ -413,7 +413,7 @@ class Meta_tree_builder
         require_code('files');
         require_code('themes2');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
     }
 
     /**

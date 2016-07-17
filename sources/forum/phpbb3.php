@@ -693,11 +693,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
             if (is_null($temp['title'])) {
                 $temp['title'] = '';
             }
-            global $LAX_COMCODE;
-            $temp2 = $LAX_COMCODE;
-            $LAX_COMCODE = true;
+            push_lax_comcode(true);
             $temp['message'] = comcode_to_tempcode($this->_cleanup_post($myrow['bbcode_uid'], $myrow['post_text']), $myrow['poster_id']);
-            $LAX_COMCODE = $temp2;
+            pop_lax_comcode();
             $temp['member'] = $myrow['poster_id'];
             $temp['date'] = $myrow['post_time'];
 
@@ -859,11 +857,9 @@ class Forum_driver_phpbb3 extends Forum_driver_base
                     }
                     $out[$i]['firsttitle'] = $fp_rows[0]['post_subject'];
                     if ($show_first_posts) {
-                        global $LAX_COMCODE;
-                        $temp = $LAX_COMCODE;
-                        $LAX_COMCODE = true;
+                        push_lax_comcode(true);
                         $out[$i]['firstpost'] = comcode_to_tempcode($this->_cleanup_post($fp_rows[0]['bbcode_uid'], $fp_rows[0]['post_text']), $fp_rows[0]['poster_id']);
-                        $LAX_COMCODE = $temp;
+                        pop_lax_comcode();
                     }
 
                     $i++;

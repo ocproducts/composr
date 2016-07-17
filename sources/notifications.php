@@ -1207,9 +1207,7 @@ class Hook_Notification
      */
     protected function _all_members_who_have_enabled($only_if_enabled_on__notification_code, $only_if_enabled_on__category, $to_member_ids, $start, $max, $catch_all_too = true)
     {
-        global $NO_DB_SCOPE_CHECK;
-        $bak = $NO_DB_SCOPE_CHECK;
-        $NO_DB_SCOPE_CHECK = true;
+        push_db_scope_check(false);
 
         $initial_setting = $this->get_initial_setting($only_if_enabled_on__notification_code, $only_if_enabled_on__category);
         $has_by_default = ($initial_setting != A_NA);
@@ -1261,7 +1259,7 @@ class Hook_Notification
             }
         }
 
-        $NO_DB_SCOPE_CHECK = $bak;
+        pop_db_scope_check();
 
         $possibly_has_more = (count($results) == $max);
 

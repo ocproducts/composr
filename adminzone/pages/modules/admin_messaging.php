@@ -217,8 +217,9 @@ class Module_admin_messaging
             $message_title = $_comments[0]['title'];
             $message = $_comments[0]['message'];
             if (isset($_comments[0]['message_comcode'])) {
-                $GLOBALS['LAX_COMCODE'] = true;
+                push_lax_comcode(true);
                 $message = comcode_to_tempcode(str_replace('[/staff_note]', '', str_replace('[staff_note]', '', $_comments[0]['message_comcode'])), $GLOBALS['FORUM_DRIVER']->get_guest_id());
+                pop_lax_comcode();
             }
             $by = $_comments[0]['username'];
 

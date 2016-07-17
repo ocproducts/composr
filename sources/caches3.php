@@ -465,7 +465,7 @@ function erase_comcode_page_cache()
         return;
     }
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     do {
         $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), null, '', 50, null, true, array());
@@ -479,7 +479,7 @@ function erase_comcode_page_cache()
     } while (count($rows) != 0);
     erase_persistent_cache();
 
-    $GLOBALS['NO_QUERY_LIMIT'] = false;
+    pop_query_limiting();
 }
 
 /**

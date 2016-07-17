@@ -1381,11 +1381,10 @@ function find_id_moniker($url_parts, $zone)
                     }
                 }
                 if ($or_list != '') {
-                    $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-                    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+                    push_db_scope_check(false);
                     $query = 'SELECT m_moniker,m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE m_deprecated=0 AND (' . $or_list . ')';
                     $results = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
-                    $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
+                    pop_db_scope_check();
                     foreach ($results as $result) {
                         $LOADED_MONIKERS_CACHE[$result['m_resource_type']][$result['m_resource_page']][$result['m_resource_id']] = $result['m_moniker'];
                     }
@@ -1405,8 +1404,7 @@ function find_id_moniker($url_parts, $zone)
                 $test = null;
             }
         } else {
-            $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
             $where = array(
                 'm_deprecated' => 0,
                 'm_resource_page' => $url_parts['page'],
@@ -1414,7 +1412,7 @@ function find_id_moniker($url_parts, $zone)
                 'm_resource_id' => is_integer($effective_id) ? strval($effective_id) : $effective_id,
             );
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', $where);
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
+            pop_db_scope_check();
             if ($test !== null) {
                 $LOADED_MONIKERS_CACHE[$url_parts['type']][$url_parts['page']][$effective_id] = $test;
             } else {

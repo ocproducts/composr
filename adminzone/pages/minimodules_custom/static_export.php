@@ -19,7 +19,7 @@ disable_php_memory_limit();
 if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
-$GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+push_db_scope_check(false);
 
 $GLOBALS['STATIC_TEMPLATE_TEST_MODE'] = true;
 
@@ -78,7 +78,7 @@ if (get_param_integer('dir', 0) == 0) {
 }
 $STATIC_EXPORT_TAR = tar_open($tar_path, 'wb');
 
-$GLOBALS['NO_QUERY_LIMIT'] = true;
+push_query_limiting(false);
 
 // The content in the sitemap
 require_code('sitemap');

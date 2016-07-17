@@ -1004,9 +1004,9 @@ class Virtual_shell
             $this->_handle_php_command();
         } elseif ($this->parse_runtime['commandr_command'] == COMMAND_SQL) {
             // SQL command
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
             $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, null, false, true);
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+            pop_db_scope_check();
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
                 $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, true, true);
                 $commandr_output[] = array('...' => '...');

@@ -41,7 +41,7 @@ class Hook_task_import_member_csv
 
         log_it('IMPORT_MEMBER_CSV');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $num_added = 0;
         $num_edited = 0;

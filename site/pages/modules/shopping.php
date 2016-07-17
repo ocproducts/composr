@@ -274,7 +274,7 @@ class Module_shopping
             warn_exit(do_lang_tempcode('PURCHASE_DISABLED'));
         }
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $type = get_param_string('type', 'browse');
 

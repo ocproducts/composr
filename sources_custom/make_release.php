@@ -721,7 +721,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 {
     require_code('database_relations');
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     // Work out what addons everything belongs to...
 
@@ -885,7 +885,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     fix_permissions($path);
     sync_file($path);
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+    pop_db_scope_check();
 }
 
 function make_install_sql()

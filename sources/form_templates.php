@@ -373,13 +373,11 @@ function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_
         $class .= ' wysiwyg';
     }
 
-    global $LAX_COMCODE;
-    $temp = $LAX_COMCODE;
-    $LAX_COMCODE = true;
-    $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // Little hack to stop it checking any URLs
+    push_lax_comcode(true);
+    $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
     /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
     $default_parsed = @comcode_to_tempcode($post, null, false, null, null, null, true);
-    $LAX_COMCODE = $temp;
+    pop_lax_comcode();
 
     global $MODSECURITY_WORKAROUND_ENABLED;
 
@@ -1118,13 +1116,11 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
         if ($w) {
             $_required .= ' wysiwyg';
         }
-        global $LAX_COMCODE;
-        $temp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
-        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // Little hack to stop it checking any URLs
+        push_lax_comcode(true);
+        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
         /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
         $default_parsed = @comcode_to_tempcode($default, null, false, null, null, null, true);
-        $LAX_COMCODE = $temp;
+        pop_lax_comcode();
     } else {
         $w = false;
         $default_parsed = new Tempcode();
@@ -1183,13 +1179,11 @@ function form_input_huge_comcode($pretty_name, $description, $name, $default, $r
         if ($w) {
             $_required .= ' wysiwyg';
         }
-        global $LAX_COMCODE;
-        $temp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
-        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // Little hack to stop it checking any URLs
+        push_lax_comcode(true);
+        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
         /*Actually we reparse always to ensure it is done in semiparse mode if ($default_parsed === null) */
         $default_parsed = @comcode_to_tempcode($default, null, false, null, null, null, true);
-        $LAX_COMCODE = $temp;
+        pop_lax_comcode();
     } else {
         $w = false;
         $default_parsed = new Tempcode();

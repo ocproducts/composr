@@ -74,7 +74,7 @@ function upgrade_addon_soft($addon)
  */
 function reinstall_addon_soft($addon, $ini_info = null)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     require_code('database_action');
     require_code('config2');

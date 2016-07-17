@@ -32,8 +32,7 @@ class Hook_sw_cns_forum
     {
         $settings = array();
 
-        $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         require_lang('cns');
         require_lang('cns_special_cpf');
@@ -57,7 +56,7 @@ class Hook_sw_cns_forum
             $settings['have_default_cpf_set'] = $have_default_cpf_set ? '1' : '0';
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+        pop_db_scope_check();
 
         return $settings;
     }
@@ -104,8 +103,7 @@ class Hook_sw_cns_forum
             return;
         }
 
-        $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         require_lang('cns');
         if (!is_cns_satellite_site()) {
@@ -136,7 +134,7 @@ class Hook_sw_cns_forum
             }
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+        pop_db_scope_check();
     }
 
     /**

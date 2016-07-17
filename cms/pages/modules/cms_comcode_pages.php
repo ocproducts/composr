@@ -240,7 +240,7 @@ class Module_cms_comcode_pages
 
         $number_pages_parsed_for_titles = 0;
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 25);

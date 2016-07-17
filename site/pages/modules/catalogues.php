@@ -746,7 +746,7 @@ class Module_catalogues
     {
         require_css('catalogues');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $type = get_param_string('type', 'browse');
 

@@ -552,11 +552,9 @@ class Forum_driver_mybb extends Forum_driver_base
             if (is_null($temp['title'])) {
                 $temp['title'] = '';
             }
-            global $LAX_COMCODE;
-            $temp2 = $LAX_COMCODE;
-            $LAX_COMCODE = true;
+            push_lax_comcode(true);
             $temp['message'] = $myrow['message'];
-            $LAX_COMCODE = $temp2;
+            pop_lax_comcode();
             $temp['member'] = $myrow['uid'];
             $temp['date'] = $myrow['dateline'];
 
@@ -725,11 +723,7 @@ class Forum_driver_mybb extends Forum_driver_base
                     }
                     $out[$i]['firsttitle'] = $fp_rows[0]['subject'];
                     if ($show_first_posts) {
-                        global $LAX_COMCODE;
-                        $temp = $LAX_COMCODE;
-                        $LAX_COMCODE = true;
                         $out[$i]['firstpost'] = $fp_rows[0]['message'];
-                        $LAX_COMCODE = $temp;
                     }
 
                     $i++;

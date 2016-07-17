@@ -883,7 +883,7 @@ class Module_admin_themes
             return $lang;
         }
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $theme = $this->theme;
 

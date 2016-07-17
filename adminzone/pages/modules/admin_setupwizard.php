@@ -825,7 +825,7 @@ class Module_admin_setupwizard
      */
     public function step10()
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         require_code('abstract_file_manager');
         force_have_afm_details();

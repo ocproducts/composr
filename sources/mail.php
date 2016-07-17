@@ -829,13 +829,9 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             require_code('media_renderer');
             push_media_mode(peek_media_mode() | MEDIA_LOWFI);
 
-            $GLOBALS['NO_LINK_TITLES'] = true;
-            global $LAX_COMCODE;
-            $temp = $LAX_COMCODE;
-            $LAX_COMCODE = true;
+            push_lax_comcode(true);
             $html_content = comcode_to_tempcode($message_raw, $as, $as_admin);
-            $LAX_COMCODE = $temp;
-            $GLOBALS['NO_LINK_TITLES'] = false;
+            pop_lax_comcode();
 
             $message_html = null;
             $html_evaluated = null;
@@ -1205,7 +1201,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
     } else {
         $worked = false;
         foreach ($to_email as $i => $to) {
-            $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+            push_suppress_error_death(true);
 
             $additional = '';
             if ($enveloper_override && $website_email != '') {
@@ -1231,7 +1227,8 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
             if ((!$worked) && (isset($php_errormsg))) {
                 $error = $php_errormsg;
             }
-            $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+
+            pop_suppress_error_death();
         }
     }
 

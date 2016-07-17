@@ -49,7 +49,7 @@ if (function_exists('gc_enable')) {
     gc_enable();
 }
 
-$GLOBALS['NO_QUERY_LIMIT'] = true;
+push_query_limiting(false);
 
 do_work();
 

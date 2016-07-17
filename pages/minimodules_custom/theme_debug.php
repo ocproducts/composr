@@ -22,7 +22,7 @@ $title->evaluate_echo();
 
 echo '<p>Pick a theme&hellip;</p><ul class="spaced_list">';
 
-$GLOBALS['NO_QUERY_LIMIT'] = true;
+push_query_limiting(false);
 
 require_code('images');
 

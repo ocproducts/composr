@@ -31,8 +31,7 @@ class Hook_cleanup_broken_urls
     public function info()
     {
         $skip_hooks = find_all_hooks('systems', 'non_active_urls');
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $urlpaths = $GLOBALS['SITE_DB']->query('SELECT m_name,m_table FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%URLPATH%') . '\'');
         $count = 0;
         foreach ($urlpaths as $urlpath) {
@@ -56,7 +55,7 @@ class Hook_cleanup_broken_urls
                 return null; // Too much!
             }
         }
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         $info = array();
         $info['title'] = do_lang_tempcode('BROKEN_URLS');

@@ -69,7 +69,7 @@ function initialise_composr()
     require_code('character_sets');
     convert_data_encodings(true);
 
-    $GLOBALS['LAX_COMCODE'] = true;
+    push_lax_comcode(true);
 }
 
 /**

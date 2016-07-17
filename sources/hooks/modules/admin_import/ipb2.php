@@ -1044,11 +1044,9 @@ class Hook_import_ipb2
                         }
                         $end = $e_pos + strlen('[/right]');
                         $segment = substr($post, $pos, $end - $pos);
-                        global $LAX_COMCODE;
-                        $temp = $LAX_COMCODE;
-                        $LAX_COMCODE = true;
+                        push_lax_comcode(true);
                         $_comcode = comcode_to_tempcode($segment, $member_id);
-                        $LAX_COMCODE = $temp;
+                        pop_lax_comcode();
                         $comcode = $_comcode->evaluate();
                         $comcode = str_replace($comcode, get_base_url(), '{$BASE_URL}');
                         $post = substr($post, 0, $pos) . $comcode . substr($post, $end);

@@ -202,10 +202,9 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
         // Store result of search in database
         if ((!$GLOBALS['SEMI_DEV_MODE']) || ($url_path !== '')) { // We don't cache failure on dev-mode as we may add it later while writing code and don't want to have to keep doing cache flushes
             if (!$db->is_forum_db()) { // If guard is here because a MSN site can't code assumptions about the file system of the central site into that site's database, we rely on that site to maintain its own theme_images table for performance
-                $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-                $GLOBALS['NO_QUERY_LIMIT'] = true;
+                push_query_limiting(false);
                 $db->query_insert('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang, 'path' => $url_path), false, true); // Allow for race conditions
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                pop_query_limiting();
             }
         }
 

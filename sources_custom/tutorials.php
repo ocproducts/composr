@@ -132,7 +132,7 @@ function list_tutorials()
         return unserialize(file_get_contents($cache_path));
     }
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_id', 't_tag'));
     $external = $GLOBALS['SITE_DB']->query_select('tutorials_external t', array('t.*', tutorial_sql_rating('t.id'), tutorial_sql_rating_recent('t.id'), tutorial_sql_likes('t.id'), tutorial_sql_likes_recent('t.id')));

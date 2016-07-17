@@ -52,7 +52,7 @@ function compile_all_templates()
 
     $lang = user_lang();
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     require_code('files2');
 
@@ -110,7 +110,7 @@ function compile_all_templates()
  */
 function actual_add_theme($name)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
@@ -513,11 +513,10 @@ function regen_theme_images($theme, $langs = null, $target_theme = null)
             }
 
             if (!$found) {
-                $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-                $GLOBALS['NO_QUERY_LIMIT'] = true;
+                push_query_limiting(false);
                 $correct_path = find_theme_image($id, false, true, $theme, $lang);
                 $GLOBALS['SITE_DB']->query_insert('theme_images', array('id' => $id, 'lang' => $lang, 'theme' => $target_theme, 'path' => $correct_path), false, true); // race conditions
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                pop_query_limiting();
 
                 $made_change = false;
             }

@@ -20,7 +20,7 @@ class _commandr_fs_test_set extends cms_test_case
 {
     public function setUp()
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         require_code('commandr_fs');
 

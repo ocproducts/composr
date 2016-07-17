@@ -246,7 +246,7 @@ class Module_admin_orders
 
         $extra_join = '';
         if ((!is_null($search)) && ($search != '')) {
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
 
             $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
             $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
@@ -289,8 +289,7 @@ class Module_admin_orders
             ), $sortables, 'sort', $sortable . ' ' . $sort_order
         );
 
-        global $NO_DB_SCOPE_CHECK;
-        $NO_DB_SCOPE_CHECK = true;
+        push_db_scope_check(false);
 
         $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
@@ -369,6 +368,8 @@ class Module_admin_orders
             'SEARCH_VAL' => $search,
             'HIDDEN' => $hidden,
         ));
+
+        pop_db_scope_check();
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);

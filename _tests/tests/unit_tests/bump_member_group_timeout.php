@@ -22,7 +22,7 @@ class bump_member_group_timeout_test_set extends cms_test_case
     {
         parent::setUp();
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $GLOBALS['FORUM_DB']->query_delete('f_group_member_timeouts');
         $GLOBALS['FORUM_DB']->query_delete('f_group_members');

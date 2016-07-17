@@ -140,7 +140,7 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function run_start($type)
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         require_code('newsletter');
         require_css('newsletter');

@@ -230,7 +230,7 @@ function improperly_filled_in_post($name)
  */
 function _composr_error_handler($type, $errno, $errstr, $errfile, $errline, $syslog_type, $handling_method)
 {
-    $fatal = (!$GLOBALS['SUPPRESS_ERROR_DEATH']) && ($handling_method == 'FATAL'); 
+    $fatal = (!peek_suppress_error_death()) && ($handling_method == 'FATAL'); 
 
     if ($fatal) {
         // Turn off MSN, as this increases stability
@@ -504,9 +504,9 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     if ((get_forum_type() == 'cns') && (get_db_type() != 'xml') && (isset($GLOBALS['FORUM_DRIVER']))) {
         require_code('cns_groups');
         $restrict_answer = cns_get_best_group_property($GLOBALS['FORUM_DRIVER']->get_members_groups(get_member()), 'flood_control_submit_secs');
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $GLOBALS['SITE_DB']->query_update('f_members', array('m_last_submit_time' => time() - $restrict_answer - 1), array('id' => get_member()), '', 1);
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
     }
 
     if (($template == 'INFORM_SCREEN') && (is_object($GLOBALS['DISPLAYED_TITLE']))) {
@@ -1222,7 +1222,7 @@ function get_html_trace()
 {
     require_code('templates');
 
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+    push_suppress_error_death(true);
     $_trace = debug_backtrace();
     $trace = array();
     foreach ($_trace as $i => $stage) {
@@ -1254,7 +1254,7 @@ function get_html_trace()
         }
         $trace[] = array('TRACES' => $traces);
     }
-    $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+    pop_suppress_error_death();
 
     return do_template('STACK_TRACE', array('_GUID' => '9620695fb8c3e411a6a4926432cea64f', 'POST' => (count($_POST) < 200) ? $_POST : array(), 'TRACE' => $trace));
 }

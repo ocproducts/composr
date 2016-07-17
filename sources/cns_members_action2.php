@@ -1331,8 +1331,7 @@ function cns_unban_member($member_id)
  */
 function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options)
 {
-    $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     if ($only_group == '-1') {
         $only_group = '';
@@ -1386,7 +1385,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
         generate_resource_fs_moniker('cpf', strval($id));
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+    pop_db_scope_check();
 
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('CUSTOM_FIELD_CACHE');
@@ -1403,8 +1402,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
  */
 function cns_delete_custom_field($id)
 {
-    $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $info = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('cf_name', 'cf_description'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $info)) {
@@ -1420,7 +1418,7 @@ function cns_delete_custom_field($id)
     $GLOBALS['FORUM_DB']->delete_table_field('f_member_custom_fields', 'field_' . strval($id));
     $GLOBALS['FORUM_DB']->query_delete('f_custom_fields', array('id' => $id), '', 1);
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+    pop_db_scope_check();
 
     global $TABLE_LANG_FIELDS_CACHE;
     unset($TABLE_LANG_FIELDS_CACHE['f_member_custom_fields']);

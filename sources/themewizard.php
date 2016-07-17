@@ -431,7 +431,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
  */
 function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark = false, $inherit_css = false)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     require_code('themes3');
 

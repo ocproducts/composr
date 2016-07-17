@@ -572,7 +572,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     // Mark that this was e-mailed in
     $body .= "\n\n" . do_lang('TICKET_EMAILED_IN');
 
-    $GLOBALS['LAX_COMCODE'] = true;
+    push_lax_comcode(true);
 
     // Post
     if (is_null($existing_ticket)) {
@@ -632,4 +632,6 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         // Send email (to staff & to confirm receipt to $member_id)
         send_ticket_email($existing_ticket, $__title, $body, $home_url, $from_email, null, $member_id, true);
     }
+
+    pop_lax_comcode();
 }

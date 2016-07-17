@@ -183,7 +183,9 @@ class Module_admin_import
         require_code('import');
         load_import_deps();
 
-        $GLOBALS['LAX_COMCODE'] = true;
+        push_query_limiting(true);
+
+        push_lax_comcode(true);
 
         set_mass_import_mode();
 

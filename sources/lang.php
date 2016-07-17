@@ -1159,9 +1159,8 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
         if ($SEARCH__CONTENT_BITS !== null) { // Doing a search so we need to reparse, with highlighting on
             $_result = $db->query_select('translate', array('text_original', 'source_user'), array('id' => $entry, 'language' => $lang), '', 1);
             if (array_key_exists(0, $_result)) {
-                global $LAX_COMCODE;
-                $temp = $LAX_COMCODE;
-                $LAX_COMCODE = true;
+                push_lax_comcode(true);
+
                 $result = $_result[0];
 
                 if (get_value('really_want_highlighting') === '1') {
@@ -1170,7 +1169,9 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
                 }
 
                 $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
-                $LAX_COMCODE = $temp;
+
+                pop_lax_comcode();
+
                 return $ret;
             }
         }
@@ -1185,9 +1186,7 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
     } else {
         global $SEARCH__CONTENT_BITS;
         if ($SEARCH__CONTENT_BITS !== null) { // Doing a search so we need to reparse, with highlighting on
-            global $LAX_COMCODE;
-            $temp = $LAX_COMCODE;
-            $LAX_COMCODE = true;
+            push_lax_comcode(true);
 
             if (get_value('really_want_highlighting') === '1') {
                 require_code('comcode_from_html');
@@ -1195,7 +1194,9 @@ function get_translated_tempcode($table, $row, $field_name, $db = null, $lang = 
             }
 
             $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
-            $LAX_COMCODE = $temp;
+
+            pop_lax_comcode();
+
             return $ret;
         }
 

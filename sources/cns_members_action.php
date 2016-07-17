@@ -566,8 +566,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     require_code('global4');
     prevent_double_submit('ADD_CUSTOM_PROFILE_FIELD', null, $name);
 
-    $dbs_back = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     if ($only_group == '-1') {
         $only_group = '';
@@ -582,7 +581,7 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
     if ($no_name_dupe) {
         $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $name));
         if (!is_null($test)) {
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+            pop_db_scope_check();
             return $test;
         }
     }
@@ -642,7 +641,8 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
         persistent_cache_delete('LIST_CPFS');
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_back;
+    pop_db_scope_check();
+
     return $id;
 }
 

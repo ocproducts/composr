@@ -48,11 +48,10 @@ class Module_subscriptions
     {
         $GLOBALS['SITE_DB']->drop_table_if_exists('subscriptions');
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $GLOBALS['SITE_DB']->drop_table_if_exists('f_usergroup_subs');
         $GLOBALS['SITE_DB']->drop_table_if_exists('f_usergroup_sub_mails');
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
     }
 
     /**
@@ -63,8 +62,7 @@ class Module_subscriptions
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('subscriptions', array(
@@ -139,7 +137,7 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_auto_recur', 'BINARY', 1);
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
     }
 
     /**

@@ -19,7 +19,7 @@ disable_php_memory_limit();
 if (php_function_allowed('set_time_limit')) {
     set_time_limit(0);
 }
-$GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+push_db_scope_check(false);
 
 require_code('tar');
 

@@ -30,7 +30,7 @@
  */
 function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_file)
 {
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     // Get a list of tables
     $tables = $GLOBALS['SITE_DB']->query_select($db_meta, array('DISTINCT m_table AS m_table'));
@@ -106,7 +106,7 @@ function get_table_backup($logfile, $db_meta, $db_meta_indices, &$install_php_fi
         }
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+    pop_db_scope_check();
 }
 
 /**

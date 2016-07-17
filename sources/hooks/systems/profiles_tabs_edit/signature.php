@@ -126,13 +126,11 @@ class Hook_profiles_tabs_edit_signature
             $class .= ' wysiwyg';
         }
 
-        global $LAX_COMCODE;
-        $temp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
-        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // Little hack to stop it checking any URLs
+        push_lax_comcode(true);
+        $GLOBALS['COMCODE_PARSE_URLS_CHECKED'] = 100; // FUDGE: Little hack to stop it checking any URLs
         /*Make sure we reparse with semi-parse mode if (is_null($default_parsed)) */
         $default_parsed = comcode_to_tempcode($signature_original, null, false, null, null, null, true);
-        $LAX_COMCODE = $temp;
+        pop_lax_comcode();
 
         $fields = new Tempcode();
         $fields->attach(do_template('POSTING_FIELD', array(

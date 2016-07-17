@@ -570,8 +570,7 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
 {
     $effective_id = ($url_parts['type'] == '') ? $url_parts['page'] : $url_parts['id'];
 
-    $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
     require_code('content');
     $select = array();
     append_content_select_for_id($select, $ob_info);
@@ -587,7 +586,7 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
         $where['the_zone'] = $zone;
     }
     $_moniker_src = $db->query_select($ob_info['table'], $select, $where); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
+    pop_db_scope_check();
     if (!array_key_exists(0, $_moniker_src)) {
         return null; // been deleted?
     }
@@ -841,8 +840,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         }
 
         // Lookup DB record so we can discern the category
-        $bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         require_code('content');
         $select = array();
         append_content_select_for_id($select, $ob_info);
@@ -857,7 +855,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
             $where['the_zone'] = $zone;
         }
         $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where);
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
+        pop_db_scope_check();
         if (!array_key_exists(0, $_moniker_src)) {
             return $moniker; // been deleted?
         }

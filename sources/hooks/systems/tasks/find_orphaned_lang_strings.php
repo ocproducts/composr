@@ -35,7 +35,7 @@ class Hook_task_find_orphaned_lang_strings
         require_lang('cleanup');
         require_code('json');
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         // When a language string isn't there
         $missing_lang_strings = array();

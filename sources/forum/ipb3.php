@@ -1036,7 +1036,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
                     }
                 }
 
-                global $LAX_COMCODE;
+                push_lax_comcode(true);
                 $end = 0;
                 while (($pos = strpos($post, '[right]', $end)) !== false) {
                     $e_pos = strpos($post, '[/right]', $pos);
@@ -1045,16 +1045,11 @@ class Forum_driver_ipb3 extends Forum_driver_base
                     }
                     $end = $e_pos + strlen('[/right]');
                     $segment = substr($post, $pos, $end - $pos);
-                    $temp = $LAX_COMCODE;
-                    $LAX_COMCODE = true;
                     $comcode = comcode_to_tempcode($segment, $r['starter_id']);
-                    $LAX_COMCODE = $temp;
                     $post = substr($post, 0, $pos) . $comcode->evaluate() . substr($post, $end);
                 }
-                $temp = $LAX_COMCODE;
-                $LAX_COMCODE = true;
                 $out[$i]['firstpost'] = comcode_to_tempcode(xhtmlise_html($post), $r['starter_id'], false, null, null, null, false, false, true); // Assumes HTML for posts
-                $LAX_COMCODE = $temp;
+                pop_lax_comcode();
             }
         }
         if (count($out) != 0) {

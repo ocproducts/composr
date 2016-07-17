@@ -1114,8 +1114,7 @@ function do_block($codename, $map = null, $ttl = null)
                 }
                 $cache = get_cache_entry($codename, $cache_identifier, $special_cache_flags, $ttl, true, $map['cache'] === '2', $map);
                 if ($cache === null) {
-                    $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-                    $GLOBALS['NO_QUERY_LIMIT'] = true;
+                    push_query_limiting(false);
 
                     if ($object === null) {
                         list($object, $new_security_scope) = do_block_hunt_file($codename, $map);
@@ -1192,7 +1191,7 @@ function do_block($codename, $map = null, $ttl = null)
                     }
                     $LANGS_REQUESTED += $backup_langs_requested;
 
-                    $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                    pop_query_limiting();
                 }
                 if (!$GLOBALS['OUTPUT_STREAMING']) {
                     restore_output_state(false, true);
@@ -1209,8 +1208,8 @@ function do_block($codename, $map = null, $ttl = null)
         list($object, $new_security_scope) = do_block_hunt_file($codename, $map);
     }
     if (is_object($object)) {
-        $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
+
         $backup_langs_requested = $LANGS_REQUESTED;
         $LANGS_REQUESTED = array();
         if ($new_security_scope) {
@@ -1225,7 +1224,7 @@ function do_block($codename, $map = null, $ttl = null)
             }
         }
 
-        $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+        pop_query_limiting();
     } else {
         $out = new Tempcode();
         $out->attach(@strval($object));

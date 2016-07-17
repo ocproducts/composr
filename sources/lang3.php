@@ -422,10 +422,9 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
  */
 function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $as_admin)
 {
-    global $SEARCH__CONTENT_BITS, $LAX_COMCODE;
+    global $SEARCH__CONTENT_BITS;
 
-    $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     $entry = $row[$field_name];
 
@@ -438,7 +437,7 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
 
         if ($result === null) { // A missing translation
             if ($force) {
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                pop_query_limiting();
                 return null;
             }
 
@@ -464,22 +463,21 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
                 }
                 $result = array_key_exists(0, $result) ? $result[0] : null;
 
-                $temp = $LAX_COMCODE;
-                $LAX_COMCODE = true;
+                push_lax_comcode(true);
                 _lang_remap($field_name, $entry, ($result === null) ? '' : $result['text_original'], $db, true, null, $result['source_user'], $as_admin, true);
                 if ($SEARCH__CONTENT_BITS !== null) {
                     $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
-                    $LAX_COMCODE = $temp;
-                    $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                    pop_lax_comcode();
+                    pop_query_limiting();
                     return $ret;
                 }
-                $LAX_COMCODE = $temp;
+                pop_lax_comcode();
                 $ret = get_translated_tempcode($table, $row, $field_name, $db, $lang);
-                $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+                pop_query_limiting();
                 return $ret;
             }
 
-            $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+            pop_query_limiting();
             return $db->text_lookup_cache[$entry];
         }
     }
@@ -489,16 +487,15 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
     require_code('comcode'); // might not have been loaded for a quick-boot
     require_code('permissions');
 
-    $temp = $LAX_COMCODE;
-    $LAX_COMCODE = true;
+    push_lax_comcode(true);
 
     if (multi_lang_content()) {
         _lang_remap($field_name, $entry, $result['text_original'], $db, true, null, $result['source_user'], $as_admin, true);
 
         if ($SEARCH__CONTENT_BITS !== null) {
             $ret = comcode_to_tempcode($result['text_original'], $result['source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
-            $LAX_COMCODE = $temp;
-            $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+            pop_lax_comcode();
+            pop_query_limiting();
             return $ret;
         }
     } else {
@@ -509,15 +506,15 @@ function parse_translated_text($table, &$row, $field_name, $db, $lang, $force, $
 
         if ($SEARCH__CONTENT_BITS !== null) {
             $ret = comcode_to_tempcode($row[$field_name], $row[$field_name . '__source_user'], $as_admin, null, null, $db, false, false, false, false, false, $SEARCH__CONTENT_BITS);
-            $LAX_COMCODE = $temp;
-            $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+            pop_lax_comcode();
+            pop_query_limiting();
             return $ret;
         }
     }
 
-    $LAX_COMCODE = $temp;
+    pop_lax_comcode();
     $ret = get_translated_tempcode($table, $row, $field_name, $db, $lang, false, false, false, true);
-    $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+    pop_query_limiting();
     return $ret;
 }
 
@@ -580,8 +577,8 @@ function _comcode_lang_string($lang_code)
         }
     }
 
-    $nql_backup = $GLOBALS['NO_QUERY_LIMIT'];
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
+
     $looked_up = do_lang($lang_code, null, null, null, null, false);
     if ($looked_up === null) {
         return make_string_tempcode(escape_html('{!' . $lang_code . '}'));
@@ -597,7 +594,7 @@ function _comcode_lang_string($lang_code)
     $parsed = get_translated_tempcode('cached_comcode_pages', $map, 'string_index');
     $COMCODE_LANG_STRING_CACHE[$lang_code] = $parsed;
 
-    $GLOBALS['NO_QUERY_LIMIT'] = $nql_backup;
+    pop_query_limiting();
 
     return $parsed;
 }

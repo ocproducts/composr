@@ -40,9 +40,9 @@ class Hook_cron_cns_welcome_emails
 
         require_code('mail');
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $mails = $GLOBALS['SITE_DB']->query_select('f_welcome_emails', array('*'));
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
         foreach ($mails as $mail) {
             $send_seconds_after_joining = $mail['w_send_time'] * 60 * 60;
 

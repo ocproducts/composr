@@ -31,7 +31,7 @@ class template_previews_test_set extends cms_test_case
         }
 
         $_GET['keep_has_js'] = '0';
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
         $_GET['keep_no_query_limit'] = '1';
         safe_ini_set('memory_limit', '-1');
         $_GET['wide'] = '1';

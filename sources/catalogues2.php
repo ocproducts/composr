@@ -609,7 +609,7 @@ function rebuild_catalogue_cat_treecache()
     $GLOBALS['SITE_DB']->query_delete('catalogue_cat_treecache');
     $GLOBALS['SITE_DB']->query_delete('catalogue_childcountcache');
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     $max = 1000;
     $start = 0;

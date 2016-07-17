@@ -1117,8 +1117,7 @@ abstract class Standard_crud_module
             $orderer = 'r.' . $orderer;
         }
         if ($force_site_db) {
-            $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
         }
         $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, 'ORDER BY ' . $orderer, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
@@ -1128,7 +1127,7 @@ abstract class Standard_crud_module
         $max = get_param_integer('max', 20);
         $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($force_site_db) {
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+            pop_db_scope_check();
         }
         $_entries = array();
         foreach ($rows as $row) {

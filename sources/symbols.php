@@ -3785,9 +3785,9 @@ function ecv_PREG_REPLACE($lang, $escaped, $param)
     }
 
     if (isset($param[2])) {
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+        push_suppress_error_death(true);
         $value = preg_replace('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[3]) ? str_replace('e', '', $param[3]) : ''), $param[1], $param[2]);
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+        pop_suppress_error_death();
         if (isset($php_errormsg)) {
             attach_message($php_errormsg, 'warn', false, true);
         }

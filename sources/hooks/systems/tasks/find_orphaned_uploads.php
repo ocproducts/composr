@@ -32,8 +32,7 @@ class Hook_task_find_orphaned_uploads
     {
         require_lang('cleanup');
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         // Find known paths
         $known_urls = array();
@@ -61,7 +60,7 @@ class Hook_task_find_orphaned_uploads
             }
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         $ret = do_template('CLEANUP_ORPHANED_UPLOADS', array(
             '_GUID' => '21049d738f67554cff0891d343c02ad3',

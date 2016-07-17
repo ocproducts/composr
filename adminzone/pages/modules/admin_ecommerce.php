@@ -362,8 +362,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function create_selection_list_entries()
     {
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $_m = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'));
         $entries = new Tempcode();
@@ -371,7 +370,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB'])));
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         return $entries;
     }
@@ -384,8 +383,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function fill_in_edit_form($id)
     {
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $m = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('*'), array('id' => intval($id)), '', 1);
         if (!array_key_exists(0, $m)) {
@@ -421,7 +419,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $id
         );
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         return $fields;
     }

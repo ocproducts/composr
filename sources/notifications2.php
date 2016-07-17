@@ -59,7 +59,7 @@ function _get_available_notification_types($member_id_of = null)
  */
 function notifications_ui($member_id_of)
 {
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
 
     require_css('notifications');
     require_code('notifications');

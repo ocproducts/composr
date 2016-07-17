@@ -36,9 +36,9 @@ class DatabaseRepair
         require_code('database_helper');
         require_code('database_relations');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $meta_tables = array();
         $field_details = $GLOBALS['SITE_DB']->query_select('db_meta', array('*'));
@@ -165,7 +165,7 @@ class DatabaseRepair
             $needs_changes = $this->search_for_privilege_issues($existent_privileges, $expected_privileges) || $needs_changes;
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
 
         $sql = implode("\n\n", $this->sql_fixup);
         return array($phase, $sql);

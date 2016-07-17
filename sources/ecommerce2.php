@@ -46,8 +46,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
     require_code('global4');
     prevent_double_submit('ADD_USERGROUP_SUBSCRIPTION', null, $title);
 
-    $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $map = array(
         's_cost' => $cost,
@@ -83,7 +82,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
         generate_resource_fs_moniker('usergroup_subscription', strval($id), null, null, true);
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+    pop_db_scope_check();
 
     return $id;
 }
@@ -109,8 +108,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  */
 function edit_usergroup_subscription($id, $title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
-    $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
@@ -202,7 +200,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         generate_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+    pop_db_scope_check();
 }
 
 /**
@@ -213,8 +211,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
  */
 function delete_usergroup_subscription($id, $uhoh_mail = '')
 {
-    $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
 
     $rows = $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_select('f_usergroup_subs', array('*'), array('id' => $id), '', 1);
     if (!array_key_exists(0, $rows)) {
@@ -276,5 +273,5 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
         expunge_resource_fs_moniker('usergroup_subscription', strval($id));
     }
 
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+    pop_db_scope_check();
 }

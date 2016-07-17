@@ -933,11 +933,9 @@ function ecv2_COMCODE($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        global $LAX_COMCODE;
-        $tmp = $LAX_COMCODE;
-        $LAX_COMCODE = true;
+        push_lax_comcode(true);
         $_value = comcode_to_tempcode($param[0], null, !isset($param[1]) || $param[1] == '1');
-        $LAX_COMCODE = $tmp;
+        pop_lax_comcode();
         $value = $_value->evaluate();
     }
 
@@ -2652,9 +2650,9 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+        push_suppress_error_death(true);
         $value = (preg_match('#' . str_replace('#', '\#', $param[0]) . '#' . (isset($param[2]) ? str_replace('e', '', $param[2]) : ''), $param[1]) != 0) ? '1' : '0';
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+        pop_suppress_error_death();
         if (isset($php_errormsg)) {
             attach_message($php_errormsg, 'warn', false, true);
         }

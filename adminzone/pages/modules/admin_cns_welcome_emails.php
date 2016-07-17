@@ -57,9 +57,9 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      */
     public function uninstall()
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
         $GLOBALS['SITE_DB']->drop_table_if_exists('f_welcome_emails');
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
     }
 
     /**
@@ -70,7 +70,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('f_welcome_emails', array(
@@ -91,7 +91,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             $GLOBALS['SITE_DB']->alter_table_field('f_welcome_emails', 'w_newsletter', '?AUTO_LINK');
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+        pop_db_scope_check();
     }
 
     /**
@@ -150,7 +150,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
      */
     public function run_start($type)
     {
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         require_code('cns_general_action');
         require_code('cns_general_action2');

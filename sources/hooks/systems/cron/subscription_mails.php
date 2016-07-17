@@ -47,8 +47,7 @@ class Hook_cron_subscription_mails
             $subscribers[$subscriber] = find_member_subscriptions($subscriber, true);
         }
 
-        $dbs_bak = $GLOBALS['NO_DB_SCOPE_CHECK'];
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+        push_db_scope_check(false);
 
         $mails = $GLOBALS['SITE_DB']->query_select('f_usergroup_sub_mails m JOIN ' . get_table_prefix() . 'f_usergroup_subs s ON s.id=m.m_usergroup_sub_id', array('m.*'));
         foreach ($mails as $mail) {
@@ -84,7 +83,7 @@ class Hook_cron_subscription_mails
             }
         }
 
-        $GLOBALS['NO_DB_SCOPE_CHECK'] = $dbs_bak;
+        pop_db_scope_check();
 
         set_value('last_subscription_mail_send', strval($time), true);
     }

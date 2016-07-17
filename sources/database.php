@@ -30,19 +30,12 @@ function init__database()
     global $HAS_MULTI_LANG_CONTENT;
     $HAS_MULTI_LANG_CONTENT = null;
 
-    global $QUERY_LIST, $QUERY_COUNT, $NO_QUERY_LIMIT, $NO_DB_SCOPE_CHECK, $QUERY_FILE_LOG, $SITE_INFO;
+    global $QUERY_LIST, $QUERY_COUNT, $QUERY_LIMITING, $DB_SCOPE_CHECK, $QUERY_FILE_LOG, $SITE_INFO;
     $QUERY_LIST = array();
     $QUERY_COUNT = 0;
-    /** Disable the query limit that operates during development mode
-     *
-     * @global boolean $NO_QUERY_LIMIT
-     */
-    $NO_QUERY_LIMIT = false;
-    /** Disable the database driver scope check that operates during development mode
-     *
-     * @global boolean $NO_DB_SCOPE_CHECK
-     */
-    $NO_DB_SCOPE_CHECK = false;
+    $QUERY_LIMITING = array(array(true, 0));
+    define('DEV_MODE_QUERY_LIMIT', 250);
+    $DB_SCOPE_CHECK = array(true);
     if (((!isset($SITE_INFO['no_extra_logs'])) || ($SITE_INFO['no_extra_logs'] != '1')) && (is_file(get_custom_file_base() . '/data_custom/queries.log'))) {
         $QUERY_FILE_LOG = fopen(get_custom_file_base() . '/data_custom/queries.log', 'at');
     } else {
@@ -67,6 +60,70 @@ function init__database()
 
     global $UPON_QUERY_HOOKS_CACHE;
     $UPON_QUERY_HOOKS_CACHE = null;
+}
+
+/**
+ * Add new query limiting setting. The query limit operates during development mode. Setting it on or off will also reset the query count to 0, and restore it when it's popped.
+ *
+ * @param  boolean $setting New setting
+ */
+function push_query_limiting($setting)
+{
+    global $QUERY_LIMITING;
+    array_push($QUERY_LIMITING, array($setting, 0));
+}
+
+/**
+ * Remove last query limiting setting.
+ */
+function pop_query_limiting()
+{
+    global $QUERY_LIMITING, $QUERY_COUNT;
+    $last = array_pop($QUERY_LIMITING);
+    $QUERY_COUNT = $last[1];
+}
+
+/**
+ * See query limiting setting.
+ *
+ * @return boolean Last setting
+ */
+function peek_query_limiting()
+{
+    global $QUERY_LIMITING;
+    $ret = end($QUERY_LIMITING);
+    return $ret[0];
+}
+
+/**
+ * Add new DB scope check setting. The database driver scope check that operates during development mode.
+ *
+ * @param  boolean $setting New setting
+ */
+function push_db_scope_check($setting)
+{
+    global $DB_SCOPE_CHECK;
+    array_push($DB_SCOPE_CHECK, $setting);
+}
+
+/**
+ * Remove last DB scope check setting.
+ */
+function pop_db_scope_check()
+{
+    global $DB_SCOPE_CHECK;
+    array_pop($DB_SCOPE_CHECK);
+}
+
+/**
+ * See DB scope check setting.
+ *
+ * @return boolean Last setting
+ */
+function peek_db_scope_check()
+{
+    global $DB_SCOPE_CHECK;
+    return end($DB_SCOPE_CHECK);
 }
 
 /**
@@ -1043,14 +1100,14 @@ class DatabaseConnector
      */
     public function _query($query, $max = null, $start = null, $fail_ok = false, $get_insert_id = false, $lang_fields = null, $field_prefix = '', $save_as_volatile = false)
     {
-        global $QUERY_COUNT, $NO_QUERY_LIMIT, $QUERY_LOG, $QUERY_LIST, $DEV_MODE, $IN_MINIKERNEL_VERSION, $QUERY_FILE_LOG, $UPON_QUERY_HOOKS_CACHE;
+        global $QUERY_COUNT, $QUERY_LOG, $QUERY_LIST, $DEV_MODE, $IN_MINIKERNEL_VERSION, $QUERY_FILE_LOG, $UPON_QUERY_HOOKS_CACHE;
 
         if ($QUERY_FILE_LOG !== null) {
             fwrite($QUERY_FILE_LOG, $query . ';' . "\n\n");
         }
 
         if ($DEV_MODE) {
-            if (!$GLOBALS['NO_DB_SCOPE_CHECK']) {
+            if (peek_db_scope_check()) {
                 if ((!multi_lang_content()) && (strpos($query, $this->get_table_prefix() . 'translate') !== false) && (strpos($query, 'DROP INDEX') === false) && (strpos($query, 'ALTER TABLE') === false) && (strpos($query, 'CREATE TABLE') === false)) {
                     fatal_exit('Assumption of multi-lang-content being on, and it\'s not');
                 }
@@ -1061,7 +1118,7 @@ class DatabaseConnector
             }
         }
 
-        if (!$NO_QUERY_LIMIT) {
+        if (peek_query_limiting()) {
             $QUERY_COUNT++;
             /*if ($QUERY_COUNT > 10) {
                 @ob_end_clean();
@@ -1076,16 +1133,13 @@ class DatabaseConnector
             fb('Query: ' . $query);
         }
 
-        if (($QUERY_COUNT === 250) && (get_param_integer('keep_no_query_limit', 0) === 0) && ($GLOBALS['RELATIVE_PATH'] !== '_tests') && (count($_POST) === 0) && (get_page_name() !== 'admin_importer') && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') !== 'query')) {
+        if (($QUERY_COUNT === DEV_MODE_QUERY_LIMIT) && (get_param_integer('keep_no_query_limit', 0) === 0) && ($GLOBALS['RELATIVE_PATH'] !== '_tests') && (count($_POST) === 0) && (!$IN_MINIKERNEL_VERSION) && (get_param_string('special_page_type', '') !== 'query')) {
             cms_profile_start_for('_query:HIGH_VOLUME_ALERT');
 
-            $NO_QUERY_LIMIT = true;
-            $log_path = get_custom_file_base() . '/data_custom/big_query_screens.log';
-            if (is_writable_wrap($log_path)) {
-                $myfile = fopen($log_path, 'at');
-                fwrite($myfile, get_self_url_easy(true) . "\n");
-                fclose($myfile);
-            }
+            push_query_limiting(false);
+
+            error_log('Profiling: Over ' . integer_format(DEV_MODE_QUERY_LIMIT) . ' queries @ ' . get_self_url_easy(true), 0);
+
             if ($DEV_MODE) {
                 $QUERY_COUNT = 0;
                 fatal_exit(do_lang_tempcode('TOO_MANY_QUERIES'));

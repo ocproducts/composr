@@ -178,13 +178,14 @@ function post_import_cleanup()
 function set_database_index_maintenance($on)
 {
     if (strpos(get_db_type(), 'mysql') !== false) {
-        global $NO_DB_SCOPE_CHECK;
-        $NO_DB_SCOPE_CHECK = true;
+        push_db_scope_check(false);
 
         $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
         foreach ($tables as $table) {
             $tbl = $table['m_table'];
             $GLOBALS['SITE_DB']->query('ALTER TABLE ' . $GLOBALS['SITE_DB']->get_table_prefix() . $tbl . ' ' . ($on ? 'ENABLE' : 'DISABLE') . ' KEYS');
         }
+
+        pop_db_scope_check();
     }
 }

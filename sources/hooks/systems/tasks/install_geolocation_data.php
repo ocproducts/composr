@@ -30,7 +30,7 @@ class Hook_task_install_geolocation_data
      */
     public function run()
     {
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
         if ($test !== null) {

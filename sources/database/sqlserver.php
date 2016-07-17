@@ -210,13 +210,13 @@ class Database_Static_sqlserver extends DatabaseDriver
             }
         }
 
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = true;
+        push_suppress_error_death(true);
         if (function_exists('sqlsrv_query')) {
             $results = sqlsrv_query($connection, $query, array(), array('Scrollable' => 'static'));
         } else {
             $results = mssql_query($query, $connection);
         }
-        $GLOBALS['SUPPRESS_ERROR_DEATH'] = false;
+        pop_suppress_error_death();
         if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);

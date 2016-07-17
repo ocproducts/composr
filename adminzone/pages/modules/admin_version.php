@@ -658,7 +658,7 @@ class Module_admin_version
                     's_description',
                 ),
             );
-            $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+            push_db_scope_check(false);
             $custom_fields = $GLOBALS['SITE_DB']->query_select('f_custom_fields', array('id'), null, 'WHERE cf_type IN (\'short_trans\',\'long_trans\')');
             $comcode_lang_fields['f_member_custom_fields'] = array();
             foreach ($custom_fields as $custom_field) {

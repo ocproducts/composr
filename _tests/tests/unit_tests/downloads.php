@@ -24,7 +24,7 @@ class downloads_test_set extends cms_test_case
     {
         parent::setUp();
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         require_code('downloads');
         require_code('downloads2');

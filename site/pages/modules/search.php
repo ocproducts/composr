@@ -173,7 +173,7 @@ class Module_search
         require_css('search');
         require_css('forms');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         if (php_function_allowed('set_time_limit')) {
             set_time_limit(15); // We really don't want to let it thrash the DB too long

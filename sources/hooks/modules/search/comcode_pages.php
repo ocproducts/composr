@@ -299,8 +299,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
             $comcode_file = get_custom_file_base() . '/' . $page_request[count($page_request) - 1];
 
             if (file_exists($comcode_file)) {
-                global $LAX_COMCODE;
-                $LAX_COMCODE = true;
+                push_lax_comcode(true);
                 /* Tempcode compiler slowed things down so easier just to show full thing
                 $temp_summary = comcode_to_tempcode(file_get_contents($comcode_file), null, true);
                 $_temp_summary = $temp_summary->evaluate();
@@ -322,13 +321,13 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                 $GLOBALS['OVERRIDE_SELF_ZONE'] = $zone;
                 $backup_search__contents_bits = $SEARCH__CONTENT_BITS;
                 $SEARCH__CONTENT_BITS = null; // We do not want highlighting, as it'll result in far too much Comcode being parsed (ok for short snippets, not many full pages!)
-                $GLOBALS['TEMPCODE_SETGET']['no_comcode_page_edit_links'] = '1';
+                $GLOBALS['TEMPCODE_SETGET']['no_comcode_page_edit_links'] = '1'; // FUDGE
                 push_output_state();
                 $temp_summary = request_page($page, true, $zone, strpos($comcode_file, '/comcode_custom/') ? 'comcode_custom' : 'comcode', true);
                 restore_output_state();
                 $SEARCH__CONTENT_BITS = $backup_search__contents_bits;
                 $GLOBALS['OVERRIDE_SELF_ZONE'] = null;
-                $LAX_COMCODE = false;
+                pop_lax_comcode();
                 $_temp_summary = $temp_summary->evaluate();
                 global $PAGES_CACHE;
                 $PAGES_CACHE = array(); // Decache this, or we'll eat up a tonne of RAM

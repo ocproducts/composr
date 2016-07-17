@@ -900,7 +900,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                 break;
         }
     }
-    if ((!array_key_exists('LAX_COMCODE', $GLOBALS)) || ($GLOBALS['LAX_COMCODE'] === false)) {
+    require_code('comcode');
+    if (!peek_lax_comcode()) {
         if ($stack !== array()) {
             if (!$tolerate_errors) {
                 warn_exit(do_lang_tempcode('UNCLOSED_DIRECTIVE_OR_BRACE', escape_html($template_name), escape_html(integer_format(1 + substr_count(substr($data, 0, _length_so_far($bits, $i)), "\n")))), false, true);

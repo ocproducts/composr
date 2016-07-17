@@ -40,7 +40,7 @@ class Hook_task_import_newsletter_subscribers
 
         $done_special_notice = false;
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         if (filesize($path) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
             $fixed_contents = unixify_line_format(file_get_contents($path));
