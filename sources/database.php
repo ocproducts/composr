@@ -34,7 +34,9 @@ function init__database()
     $QUERY_LIST = array();
     $QUERY_COUNT = 0;
     $QUERY_LIMITING = array(array(true, 0));
-    define('DEV_MODE_QUERY_LIMIT', 250);
+    if (!defined('DEV_MODE_QUERY_LIMIT')) {
+        define('DEV_MODE_QUERY_LIMIT', 250);
+    }
     $DB_SCOPE_CHECK = array(true);
     if (((!isset($SITE_INFO['no_extra_logs'])) || ($SITE_INFO['no_extra_logs'] != '1')) && (is_file(get_custom_file_base() . '/data_custom/queries.log'))) {
         $QUERY_FILE_LOG = fopen(get_custom_file_base() . '/data_custom/queries.log', 'at');
@@ -1138,7 +1140,9 @@ class DatabaseConnector
 
             push_query_limiting(false);
 
-            error_log('Profiling: Over ' . integer_format(DEV_MODE_QUERY_LIMIT) . ' queries @ ' . get_self_url_easy(true), 0);
+            if (php_function_allowed('error_log')) {
+                @error_log('Profiling: Over ' . integer_format(DEV_MODE_QUERY_LIMIT) . ' queries @ ' . get_self_url_easy(true), 0);
+            }
 
             if ($DEV_MODE) {
                 $QUERY_COUNT = 0;
