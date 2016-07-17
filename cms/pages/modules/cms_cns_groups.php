@@ -175,14 +175,14 @@ class Module_cms_cns_groups extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($count > 300 || (!has_privilege(get_member(), 'control_usergroups'))) ? array('g_group_leader' => get_member(), 'g_is_private_club' => 1) : array('g_is_private_club' => 1));
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array(
                 protect_from_escaping(cns_get_group_link($row['id'])),
                 ($row['g_open_membership'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
             );
 
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
         }

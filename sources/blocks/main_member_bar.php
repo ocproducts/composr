@@ -108,20 +108,12 @@ class Block_main_member_bar
                 'DETAILS' => $details
             ));
         } else { // Guest
-            if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
-                $_this_url = build_url(array('page' => 'forumview'), 'forum', array('keep_session' => 1, 'redirect' => 1));
-            } else {
-                $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
-            }
-            $this_url = $_this_url->evaluate();
-            $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
-            $full_link = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
-            $join_url = build_url(array('page' => 'join', 'redirect' => $this_url), get_module_zone('join'));
+            list($full_url, $login_url, $join_url) = get_login_url();
             $bar = do_template('CNS_GUEST_BAR', array(
                 '_GUID' => '3b613deec9d4786f5b53dbd52af00d3c',
                 'LOGIN_URL' => $login_url,
                 'JOIN_URL' => $join_url,
-                'FULL_LOGIN_URL' => $full_link,
+                'FULL_LOGIN_URL' => $full_url,
                 'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
                 'UNANSWERED_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unanswered'), get_module_zone('vforums')),
             ));

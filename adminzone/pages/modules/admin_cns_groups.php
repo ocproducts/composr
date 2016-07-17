@@ -417,7 +417,7 @@ class Module_admin_cns_groups extends Standard_crud_module
             list($rows, $max_rows) = $this->get_entry_rows(true, $current_ordering, ($group_count > 300) ? array('g_is_private_club' => 0) : null);
         }
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             if (($row['id'] == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => '1')) == 0)) {
                 $row['g_is_presented_at_install'] = 1;
@@ -457,7 +457,7 @@ class Module_admin_cns_groups extends Standard_crud_module
 
             $fr[] = $ordererx;
 
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
         }

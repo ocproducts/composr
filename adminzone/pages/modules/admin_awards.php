@@ -223,7 +223,7 @@ class Module_admin_awards extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'awards', 'type' => 'award', 'id' => $row['id']), get_module_zone('awards')), get_translated_text($row['a_title']), false, true));
@@ -247,7 +247,7 @@ class Module_admin_awards extends Standard_crud_module
             }
             $fr[] = $hook_title;
             $fr[] = integer_format($GLOBALS['SITE_DB']->query_select_value('award_archive', 'COUNT(*)', array('a_type_id' => $row['id'])));
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
         }

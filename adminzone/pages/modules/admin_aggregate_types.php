@@ -287,9 +287,9 @@ class Module_admin_aggregate_types extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $fields->attach(results_entry(array($row['aggregate_label'], $row['aggregate_type'], get_timezoned_date($row['add_time']), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
+            $fields->attach(results_entry(array($row['aggregate_label'], $row['aggregate_type'], get_timezoned_date($row['add_time']), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
 
         $search_url = null;

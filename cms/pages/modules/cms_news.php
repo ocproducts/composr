@@ -239,7 +239,7 @@ class Module_cms_news extends Standard_crud_module
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, is_null($only_owned) ? null : array('submitter' => $only_owned));
         $news_cat_titles = array();
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), get_module_zone('news')), get_translated_text($row['title']), false, true));
@@ -261,7 +261,7 @@ class Module_cms_news extends Standard_crud_module
             }
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['submitter']));
             $fr[] = $username;
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -882,7 +882,7 @@ class Module_cms_news_cat extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $total = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('news_category' => $row['id']));
             $total += $GLOBALS['SITE_DB']->query_select_value('news_category_entries', 'COUNT(*)', array('news_entry_category' => $row['id']));
@@ -891,7 +891,7 @@ class Module_cms_news_cat extends Standard_crud_module
                 protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'browse', 'filter' => $row['id']), get_module_zone('news')), get_translated_text($row['nc_title']), false, true)),
                 protect_from_escaping(($row['nc_img'] == '') ? '' : ('<img width="15" alt="' . do_lang('IMAGE') . '" src="' . escape_html(get_news_category_image_url($row['nc_img'])) . '" />')), // XHTMLXHTML
                 integer_format($total),
-                protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
+                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
             ), true));
         }
 

@@ -34,8 +34,8 @@ if ($credits == 0) {
 
 if ($credits == 0) {
     $credits_msg = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS');
-    $help_link = build_url(array('page' => 'tut_software_feedback'));
-    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK', escape_html($help_link->evaluate()));
+    $help_url = build_url(array('page' => 'tut_software_feedback'));
+    $no_credits_link = do_lang_tempcode('SHOW_CREDITS_NO_CREDITS_LINK', escape_html($help_url->evaluate()));
 } else {
     $credits_msg = do_lang_tempcode('SHOW_CREDITS_SOME_CREDITS', escape_html(integer_format($credits)), escape_html($professional_support_url->evaluate()));
     $no_credits_link = new Tempcode();

@@ -243,14 +243,7 @@ function closed_site()
 
         $GLOBALS['SCREEN_TEMPLATE_CALLED'] = '';
 
-        if (has_interesting_post_fields()) {
-            $_redirect = build_url(array('page' => ''), '', array('keep_session' => 1));
-        } else {
-            $_redirect = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1), true);
-        }
-        $redirect = $_redirect->evaluate();
-        $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
-        $join_url = (get_forum_type() == 'none') ? '' : $GLOBALS['FORUM_DRIVER']->join_url();
+        list($login_url, , $join_url) = get_login_url();
         $middle = do_template('CLOSED_SITE', array('_GUID' => '4e753c50eca7c98344d2107fc18c4554', 'CLOSED' => comcode_to_tempcode(get_option('closed'), null, true), 'LOGIN_URL' => $login_url, 'JOIN_URL' => $join_url));
         $echo = globalise($middle, null, '', true);
         $echo->evaluate_echo();

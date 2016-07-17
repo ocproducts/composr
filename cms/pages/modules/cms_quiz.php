@@ -190,7 +190,7 @@ class Module_cms_quiz extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $type = do_lang_tempcode($row['q_type']);
 
@@ -202,7 +202,7 @@ class Module_cms_quiz extends Standard_crud_module
             if (addon_installed('points')) {
                 $results_entry[] = integer_format($row['q_points_for_passing']);
             }
-            $results_entry[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $results_entry[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($results_entry, true));
         }

@@ -344,7 +344,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
                 }
             }
 
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $order_list = '';
             $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
@@ -373,7 +373,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             //$fr[]=($row['cf_show_in_post_previews']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO');
             $fr[] = protect_from_escaping($orderer);
             if ($used) {
-                $edit_link = hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id']));
+                $edit_link = hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id']));
             } else {
                 $edit_link = do_lang_tempcode('UNUSED_CPF');
             }

@@ -242,8 +242,8 @@ class Module_login
         // Lost password link
         if (get_forum_type() == 'cns' && !has_interesting_post_fields()) {
             require_lang('cns');
-            $forgotten_link = build_url(array('page' => 'lost_password', 'wide_high' => get_param_integer('wide_high', null)), get_module_zone('lost_password'));
-            $extra = do_lang_tempcode('cns:IF_FORGOTTEN_PASSWORD', escape_html($forgotten_link->evaluate()));
+            $lost_password_url = build_url(array('page' => 'lost_password', 'wide_high' => get_param_integer('wide_high', null)), get_module_zone('lost_password'));
+            $extra = do_lang_tempcode('cns:IF_FORGOTTEN_PASSWORD', escape_html($lost_password_url->evaluate()));
         } else {
             $extra = new Tempcode();
         }
@@ -302,15 +302,15 @@ class Module_login
                 require_lang('cns');
 
                 if ($text->evaluate() == do_lang('MEMBER_BAD_PASSWORD')) {
-                    $forgotten_link = build_url(array('page' => 'lost_password'), get_module_zone('lost_password'));
-                    $extra = do_lang_tempcode('IF_FORGOTTEN_PASSWORD', escape_html($forgotten_link->evaluate()));
+                    $lost_password_url = build_url(array('page' => 'lost_password'), get_module_zone('lost_password'));
+                    $extra = do_lang_tempcode('IF_FORGOTTEN_PASSWORD', escape_html($lost_password_url->evaluate()));
 
                     attach_message($extra, 'inform');
                 }
 
                 if ($text->evaluate() == do_lang('MEMBER_NOT_VALIDATED_EMAIL')) {
-                    $forgotten_link = build_url(array('page' => 'lost_password'), get_module_zone('lost_password'));
-                    $extra = do_lang_tempcode('IF_NO_CONFIRM', escape_html($forgotten_link->evaluate()));
+                    $lost_password_url = build_url(array('page' => 'lost_password'), get_module_zone('lost_password'));
+                    $extra = do_lang_tempcode('IF_NO_CONFIRM', escape_html($lost_password_url->evaluate()));
 
                     attach_message($extra, 'inform');
                 }

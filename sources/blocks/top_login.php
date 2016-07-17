@@ -74,15 +74,7 @@ class Block_top_login
 
         $title = do_lang_tempcode('NOT_LOGGED_IN');
 
-        if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
-            $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
-        } else {
-            $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
-        }
-        $this_url = $_this_url->evaluate();
-        $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
-        $full_link = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
-        $join_url = (get_forum_type() != 'none') ? $GLOBALS['FORUM_DRIVER']->join_url() : '';
-        return do_template('BLOCK_TOP_LOGIN', array('_GUID' => '9d1547632875ecd466ced4f90a866df9', 'TITLE' => $title, 'FULL_LOGIN_URL' => $full_link, 'JOIN_URL' => $join_url, 'LOGIN_URL' => $login_url));
+        list($full_url, $login_url, $join_url) = get_login_url();
+        return do_template('BLOCK_TOP_LOGIN', array('_GUID' => '9d1547632875ecd466ced4f90a866df9', 'TITLE' => $title, 'FULL_LOGIN_URL' => $full_url, 'JOIN_URL' => $join_url, 'LOGIN_URL' => $login_url));
     }
 }

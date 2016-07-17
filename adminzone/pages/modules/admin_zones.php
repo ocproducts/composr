@@ -823,7 +823,7 @@ class Module_admin_zones
         foreach ($_zones as $_zone_details) {
             list($zone_name, $zone_title, $zone_default_page, $remaining_row) = $_zone_details;
 
-            $edit_link = build_url($url_map + array('id' => $zone_name), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $zone_name), '_SELF');
 
             $fields->attach(results_entry(array(
                 hyperlink(build_url(array('page' => ''), $zone_name), ($zone_name == '') ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html($zone_name)), false, false),
@@ -831,7 +831,7 @@ class Module_admin_zones
                 $zone_default_page,
                 ($remaining_row['zone_theme'] == '-1') ? do_lang_tempcode('NA_EM') : hyperlink(build_url(array('page' => 'admin_themes'), 'adminzone'), $remaining_row['zone_theme'], false, true),
                 ($remaining_row['zone_require_session'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, $zone_name)),
+                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, $zone_name)),
             ), true));
         }
 

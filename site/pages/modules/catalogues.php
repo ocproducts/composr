@@ -941,9 +941,9 @@ class Module_catalogues
 
         // Management links
         if (has_actual_page_access(null, 'cms_catalogues', null, (get_value('disable_cat_cat_perms') === '1') ? array('catalogues_catalogue', $catalogue_name) : array('catalogues_catalogue', $catalogue_name, 'catalogues_category', strval($id)), 'submit_midrange_content')) {
-            $add_link = build_url(array('page' => 'cms_catalogues', 'type' => 'add_entry', 'catalogue_name' => $catalogue_name, 'category_id' => $id), get_module_zone('cms_catalogues'));
+            $add_url = build_url(array('page' => 'cms_catalogues', 'type' => 'add_entry', 'catalogue_name' => $catalogue_name, 'category_id' => $id), get_module_zone('cms_catalogues'));
         } else {
-            $add_link = new Tempcode();
+            $add_url = new Tempcode();
         }
         if (has_actual_page_access(null, 'cms_catalogues', null, (get_value('disable_cat_cat_perms') === '1') ? array('catalogues_catalogue', $catalogue_name) : array('catalogues_catalogue', $catalogue_name, 'catalogues_category', strval($id)), 'submit_cat_midrange_content')) {
             $add_cat_url = build_url(array('page' => 'cms_catalogues', 'type' => 'add_category', 'catalogue_name' => $catalogue_name, 'parent_id' => $id), get_module_zone('cms_catalogues'));
@@ -969,7 +969,7 @@ class Module_catalogues
                 '_TITLE' => $_title,
                 'TAGS' => get_loaded_tags('catalogue_categories'),
                 'CATALOGUE' => $catalogue_name,
-                'ADD_ENTRY_URL' => $add_link,
+                'ADD_ENTRY_URL' => $add_url,
                 'ADD_CAT_URL' => $add_cat_url,
                 'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
                 'EDIT_CAT_URL' => $edit_cat_url,
@@ -1025,9 +1025,9 @@ class Module_catalogues
 
         // Management links
         if (has_actual_page_access(null, 'cms_catalogues', null, (get_value('disable_cat_cat_perms') === '1') ? array('catalogues_catalogue', $catalogue_name) : array('catalogues_catalogue', $catalogue_name, 'catalogues_category', strval($id)), 'submit_midrange_content')) {
-            $add_link = build_url(array('page' => 'cms_catalogues', 'type' => 'add_entry', 'catalogue_name' => $catalogue_name, 'category_id' => $id), get_module_zone('cms_catalogues'));
+            $add_url = build_url(array('page' => 'cms_catalogues', 'type' => 'add_entry', 'catalogue_name' => $catalogue_name, 'category_id' => $id), get_module_zone('cms_catalogues'));
         } else {
-            $add_link = new Tempcode();
+            $add_url = new Tempcode();
         }
         if (has_actual_page_access(null, 'cms_catalogues', null, (get_value('disable_cat_cat_perms') === '1') ? array('catalogues_catalogue', $catalogue_name) : array('catalogues_catalogue', $catalogue_name, 'catalogues_category', strval($id)), 'submit_cat_midrange_content')) {
             $add_cat_url = build_url(array('page' => 'cms_catalogues', 'type' => 'add_category', 'catalogue_name' => $catalogue_name, 'parent_id' => $id), get_module_zone('cms_catalogues'));
@@ -1086,7 +1086,7 @@ class Module_catalogues
             '_TITLE' => $_title,
             'TAGS' => get_loaded_tags('catalogue_categories'),
             'CATALOGUE' => $catalogue_name,
-            'ADD_ENTRY_URL' => $add_link,
+            'ADD_ENTRY_URL' => $add_url,
             'ADD_CAT_URL' => $add_cat_url,
             'ADD_CAT_TITLE' => do_lang_tempcode('ADD_CATALOGUE_CATEGORY'),
             'EDIT_CAT_URL' => $edit_cat_url,

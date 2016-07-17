@@ -3482,3 +3482,39 @@ function is_cli()
 {
     return ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
 }
+
+/**
+ * Get login URL.
+ *
+ * @return array A triple: URL to log in from, URL to direct login form posts to, URL to join from
+ */
+function get_login_url()
+{
+    if (has_interesting_post_fields() || (get_page_name() == 'join') || (get_page_name() == 'login') || (get_page_name() == 'lost_password')) {
+        $_this_url = build_url(array('page' => ''), '_SELF', array('keep_session' => 1, 'redirect' => 1));
+    } else {
+        $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
+    }
+    $this_url = $_this_url->evaluate();
+
+    $full_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
+
+    $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
+
+    $join_url = mixed();
+    switch (get_forum_type()) {
+        case 'cns':
+            $join_url = build_url(array('page' => 'join', 'redirect' => $this_url), get_module_zone('join'));
+            break;
+
+        case 'none':
+            $join_url = '';
+            break;
+
+        default:
+            $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
+            break;
+    }
+
+    return array($full_url, $login_url, $join_url);
+}

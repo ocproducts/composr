@@ -198,7 +198,7 @@ class Module_cms_booking extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $row, 'title'));
@@ -207,7 +207,7 @@ class Module_cms_booking extends Standard_crud_module
             $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, true, false, true);
             $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, true, false, true);
             $fr[] = ($row['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -451,12 +451,12 @@ class Module_cms_booking_supplements extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_supplement', $row, 'title'));
             $fr[] = float_format($row['price']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -648,13 +648,13 @@ class Module_cms_booking_blacks extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false);
             $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false);
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $row, 'blacked_explanation'));
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -921,7 +921,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['_id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['_id']), '_SELF');
 
             $fr = array();
             $fr[] = get_translated_text($GLOBALS['SITE_DB']->query_select_value('bookable', 'title', array('id' => $row['bookable_id'])));
@@ -934,7 +934,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             }
             $fr[] = number_format($row['quantity']);
             $fr[] = get_timezoned_date($row['_rows'][0]['booked_at']);
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));
         }

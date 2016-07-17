@@ -186,7 +186,7 @@ class Module_cms_polls extends Standard_crud_module
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (is_null($only_owned) ? array() : array('submitter' => $only_owned)));
         require_code('form_templates');
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['submitter']));
 
@@ -202,7 +202,7 @@ class Module_cms_polls extends Standard_crud_module
                 $username,
                 integer_format($row['poll_views']),
                 do_lang_tempcode('VOTES', escape_html(integer_format($total_votes))),
-                protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
+                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
             ), true));
         }
 

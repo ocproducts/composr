@@ -341,7 +341,7 @@ class Module_cms_catalogues extends Standard_crud_module
         $_fields = array();
         $cat_titles = array();
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $catalogue_name = $row['c_name'];
 
@@ -368,7 +368,7 @@ class Module_cms_catalogues extends Standard_crud_module
             if (addon_installed('unvalidated')) {
                 $fr[] = $row['ce_validated'] ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             }
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $_fields[] = array('row' => $fr, 'title' => $name);
         }
@@ -1202,13 +1202,13 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, array('c_name' => $catalogue_name));
         $news_cat_titles = array();
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $row['id']), get_module_zone('catalogues')), get_translated_text($row['cc_title']), false, true));
             $fr[] = get_timezoned_date($row['cc_add_date']);
             $fr[] = ($row['cc_order'] == ORDER_AUTOMATED_CRITERIA) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($row['cc_order']));
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 
             $fields->attach(results_entry($fr, true));
         }

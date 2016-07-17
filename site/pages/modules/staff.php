@@ -211,8 +211,8 @@ class Module_staff
         $username = $GLOBALS['FORUM_DRIVER']->mrow_username($row_staff);
         $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($id, false, true);
 
-        $all_link = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
+        $all_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
 
-        return do_template('STAFF_SCREEN', array('_GUID' => 'fd149466f16722fcbcef0fba5685a895', 'TITLE' => $this->title, 'REAL_NAME' => $real_name, 'ROLE' => $role, 'ADDRESS' => $email_address, 'USERNAME' => $username, 'MEMBER_ID' => strval($id), 'PROFILE_URL' => $profile_url, 'ALL_STAFF_URL' => $all_link));
+        return do_template('STAFF_SCREEN', array('_GUID' => 'fd149466f16722fcbcef0fba5685a895', 'TITLE' => $this->title, 'REAL_NAME' => $real_name, 'ROLE' => $role, 'ADDRESS' => $email_address, 'USERNAME' => $username, 'MEMBER_ID' => strval($id), 'PROFILE_URL' => $profile_url, 'ALL_STAFF_URL' => $all_url));
     }
 }

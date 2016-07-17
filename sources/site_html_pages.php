@@ -50,14 +50,14 @@ function load_html_page($string, $file_base = null, &$out = null)
         foreach ($link_attributes as $attribute) {
             $num_matches = preg_match_all('#<[^<>]* ' . $attribute . '="([^&"]+\.[^&"\.]+)"[^<>]*>#mis', $html, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
-                $old_link = html_entity_decode($matches[1][$i], ENT_QUOTES);
+                $old_url = html_entity_decode($matches[1][$i], ENT_QUOTES);
 
                 $zone = '_SELF';
-                if ($old_link[0] == '/') {
-                    $old_link = substr($old_link, 1);
+                if ($old_url[0] == '/') {
+                    $old_url = substr($old_url, 1);
                     $zone = '';
                 }
-                $possible_zone = str_replace('/', '_', dirname($old_link));
+                $possible_zone = str_replace('/', '_', dirname($old_url));
                 if ($possible_zone == '.') {
                     $possible_zone = '';
                 }
@@ -65,32 +65,32 @@ function load_html_page($string, $file_base = null, &$out = null)
                     $zone = $possible_zone;
                 }
 
-                if (substr($old_link, -4) == '.htm') {
-                    $_new_link = build_url(array('page' => basename(substr($old_link, 0, strlen($old_link) - 4))), $zone);
-                    $new_link = $_new_link->evaluate();
-                } elseif (substr($old_link, -5) == '.html') {
-                    $_new_link = build_url(array('page' => basename(substr($old_link, 0, strlen($old_link) - 5))), $zone);
-                    $new_link = $_new_link->evaluate();
+                if (substr($old_url, -4) == '.htm') {
+                    $_new_url = build_url(array('page' => basename(substr($old_url, 0, strlen($old_url) - 4))), $zone);
+                    $new_url = $_new_url->evaluate();
+                } elseif (substr($old_url, -5) == '.html') {
+                    $_new_url = build_url(array('page' => basename(substr($old_url, 0, strlen($old_url) - 5))), $zone);
+                    $new_url = $_new_url->evaluate();
                 } else {
-                    $new_link = $old_link;
-                    if (url_is_local($old_link)) {
-                        if (is_file(get_custom_file_base() . '/' . dirname($string) . '/' . urldecode($old_link))) { // HTML pages dir
+                    $new_url = $old_url;
+                    if (url_is_local($old_url)) {
+                        if (is_file(get_custom_file_base() . '/' . dirname($string) . '/' . urldecode($old_url))) { // HTML pages dir
                             $dirname = dirname($string);
                             if ($dirname == '.') {
                                 $dirname = '';
                             }
-                            $new_link = get_base_url() . '/' . (($dirname == '') ? '' : ($dirname . '/')) . $old_link;
-                        } elseif (is_file(get_custom_file_base() . '/' . get_zone_name() . '/' . urldecode($old_link))) { // Zone dir
-                            $new_link = get_base_url() . '/' . ((get_zone_name() == '') ? '' : (get_zone_name() . '/')) . $old_link;
-                        } elseif (is_file(get_custom_file_base() . '/' . urldecode($old_link))) { // Root dir
-                            $new_link = get_base_url() . '/' . $old_link;
+                            $new_url = get_base_url() . '/' . (($dirname == '') ? '' : ($dirname . '/')) . $old_url;
+                        } elseif (is_file(get_custom_file_base() . '/' . get_zone_name() . '/' . urldecode($old_url))) { // Zone dir
+                            $new_url = get_base_url() . '/' . ((get_zone_name() == '') ? '' : (get_zone_name() . '/')) . $old_url;
+                        } elseif (is_file(get_custom_file_base() . '/' . urldecode($old_url))) { // Root dir
+                            $new_url = get_base_url() . '/' . $old_url;
                         } else {
-                            $new_link = get_base_url() . '/uploads/website_specific/' . $old_link; // uploads/website_specific
+                            $new_url = get_base_url() . '/uploads/website_specific/' . $old_url; // uploads/website_specific
                         }
                     }
                 }
 
-                $html = str_replace(' ' . $attribute . '="' . $old_link . '"', ' ' . $attribute . '="' . $new_link . '"', $html);
+                $html = str_replace(' ' . $attribute . '="' . $old_url . '"', ' ' . $attribute . '="' . $new_url . '"', $html);
             }
         }
 

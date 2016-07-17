@@ -1130,9 +1130,7 @@ class CMS_Topic
 
         $join_bits = new Tempcode();
         if (is_guest()) {
-            $redirect = get_self_url(true, true);
-            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
-            $join_url = $GLOBALS['FORUM_DRIVER']->join_url();
+            list($login_url, , $join_url) = get_login_url();
             $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
         }
 

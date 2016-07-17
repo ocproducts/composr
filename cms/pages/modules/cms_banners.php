@@ -271,7 +271,7 @@ class Module_cms_banners extends Standard_crud_module
 
         require_code('form_templates');
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['name']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['name']), '_SELF');
 
             $deployment_agreement = new Tempcode();
             switch ($row['the_type']) {
@@ -300,7 +300,7 @@ class Module_cms_banners extends Standard_crud_module
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             }
-            $fr[] = protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, $row['name']));
+            $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, $row['name']));
 
             $fields->attach(results_entry($fr, true));
         }
@@ -710,11 +710,11 @@ class Module_cms_banners_cat extends Standard_crud_module
         require_code('files');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
-            $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
+            $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $total = integer_format($GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', array('b_type' => $row['id'])));
 
-            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
+            $fields->attach(results_entry(array(($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'], ($row['t_is_textual'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), escape_html(integer_format($row['t_image_width'])), escape_html(integer_format($row['t_image_height'])), clean_file_size($row['t_max_file_size'] * 1024), ($row['t_comcode_inline'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), $total, protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, '#' . $row['id']))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', get_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);

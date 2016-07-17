@@ -766,10 +766,10 @@ function check_extension($name, $skip_server_side_security_check = false, $file_
         }
         $message = do_lang_tempcode('INVALID_FILE_TYPE', escape_html($ext), escape_html(str_replace(',', ', ', $_types)));
         if (has_actual_page_access(get_member(), 'admin_config')) {
-            $_link = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SECURITY'), get_module_zone('admin_config'));
-            $link = $_link->evaluate();
-            $link .= '#group_UPLOAD';
-            $message = do_lang_tempcode('INVALID_FILE_TYPE_ADMIN', escape_html($ext), escape_html(str_replace(',', ', ', $_types)), escape_html($link));
+            $_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SECURITY'), get_module_zone('admin_config'));
+            $url = $_link->evaluate();
+            $url .= '#group_UPLOAD';
+            $message = do_lang_tempcode('INVALID_FILE_TYPE_ADMIN', escape_html($ext), escape_html(str_replace(',', ', ', $_types)), escape_html($url));
         }
         if ($accept_errors) {
             require_code('site');

@@ -385,7 +385,7 @@ class Module_banners
         $start = get_param_integer('banner_start', 0);
         $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), is_null($only_owned) ? null : array('submitter' => $only_owned), 'ORDER BY ' . $current_ordering, $max, $start);
         foreach ($rows as $row) {
-            $view_link = build_url($url_map + array('source' => $row['name']), '_SELF');
+            $view_url = build_url($url_map + array('source' => $row['name']), '_SELF');
 
             $deployment_agreement = new Tempcode();
             switch ($row['the_type']) {
@@ -412,7 +412,7 @@ class Module_banners
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             }
-            $fr[] = protect_from_escaping(hyperlink($view_link, do_lang_tempcode('VIEW'), false, true, $row['name']));
+            $fr[] = protect_from_escaping(hyperlink($view_url, do_lang_tempcode('VIEW'), false, true, $row['name']));
 
             $fields->attach(results_entry($fr, true));
         }
