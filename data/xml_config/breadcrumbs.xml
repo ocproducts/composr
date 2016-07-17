@@ -24,7 +24,7 @@
 	<substitution match_key="collaboration:_WILD_NOT_START">
 		<link label="{!COLLABORATION}">collaboration:</link>
 	</substitution>
-	<substitution match_key="collaboration:start">
+	<substitution match_key="collaboration:home">
 		<link label="{!HOME}">:</link>
 	</substitution>
 	<substitution match_key="docs:_WILD_NOT_START">
@@ -39,7 +39,7 @@
 	<substitution match_key="adminzone:_WILD_NOT_START">
 		<link label="{!ADMIN_ZONE}">adminzone:</link>
 	</substitution>
-	<substitution match_key="adminzone:start">
+	<substitution match_key="adminzone:home">
 		<link label="{!HOME}">:</link>
 	</substitution>
 
@@ -68,7 +68,7 @@
 
 	<!-- Extend it a bit more, -->
 	<!--<substitution label="Our page" match_key="site:page_for_distorted_gallery">
-		<link label="Home">:start</link>
+		<link label="Home">:home</link>
 	</substitution>-->
 
 	<!-- Changing just the label of a node, preserving the rest of the chain -->

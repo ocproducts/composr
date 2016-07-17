@@ -43,7 +43,7 @@ Here is an example of the definition of two aggregate content types: Course, and
             <property key="human_title">{LABEL*}</property>
             <access usergroup="*" value="1" />
         </resource>
-        <resource type="comcode_page" subpath="{LABEL|*}" label="start">
+        <resource type="comcode_page" subpath="{LABEL|*}" label="home">
             <property resync="false" key="text">
                 All about {LABEL*}.
             </property>
@@ -56,7 +56,7 @@ Here is an example of the definition of two aggregate content types: Course, and
             <access usergroup="*" value="1" />
         </resource>
         <resource type="menu_item" subpath="{LABEL|*}" label="Home">
-            <property key="page_link">{LABEL|*}:start</property>
+            <property key="page_link">{LABEL|*}:home</property>
         </resource>
     </aggregateType>
 </aggregateTypes>

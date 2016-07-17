@@ -135,7 +135,7 @@ You will probably want to blank out what is already in the files and start them 
 
 Place the blocks as appropriate onto your:
 [list]
-	[*] Comcode page: front page, [tt]:start[/tt]
+	[*] Comcode page: front page, [tt]:home[/tt]
 	[*] Comcode page: left panel (if you have one on the design), [tt]:panel_left[/tt]
 	[*] Comcode page: right panel (if you have one on the design), [tt]:panel_right[/tt]
 	[*] Comcode page: top panel (if you have one on the design), [tt]:panel_top[/tt]
@@ -453,7 +453,7 @@ These are achieved using Composr's [tt]main_screen_actions[/tt] block. We have d
 
 Sometimes a design will have what looks like a panel but actually only appears on the front page. For example, there might be an obvious page area, panels either side of the page area, and an obvious header, but also a bar that goes above the panels and is only shown for the front page. The best way to implement this is by actually making it a panel (one of the default ones, [tt]panel_top[/tt]) but putting some special code in there to make it only show for the front page. You can do this with the following code:
 [code="Tempcode"]
-{+START,IF,{$MATCH_KEY_MATCH,:start}}
+{+START,IF,{$MATCH_KEY_MATCH,:home}}
 ...
 {+END}
 [/code]
