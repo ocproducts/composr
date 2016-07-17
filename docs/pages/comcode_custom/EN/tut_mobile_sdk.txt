@@ -774,17 +774,32 @@ Assign a default value for key, to [tt]NSUserDefaults[/tt].
 
 [title="3"]CMS_Timestamps[/title]
 
-Timestamp-related functionalities such as [tt]get_timezoned_date[/tt] and [tt]time[/tt] are available as functions under the [tt]CMS_Timestamps[/tt] class.
+Timestamp-related functionalities such as [tt]get_timezoned_date_time[/tt] and [tt]time[/tt] are available as functions under the [tt]CMS_Timestamps[/tt] class.
+
+[title="4"]get_timezoned_date_time[/title]
+
+[i]Prototype:[/i]
+[code="objc"]
+(NSString *)get_timezoned_date_time:(int)timestamp;
+[/code]
+
+[i]Description:[/i]
+Converts the given timestamp to [tt]@"MMM dd, yyyy - HH:mm:ss"[/tt] date format and returns the value as a string.
+
+[i]Usage:[/i]
+[code="objc"]
+[CMS_Timestamps get_timezoned_date:<timestamp> :<includeTime ?>]
+[/code]
 
 [title="4"]get_timezoned_date[/title]
 
 [i]Prototype:[/i]
 [code="objc"]
-(NSString *)get_timezoned_date:(int)timestamp :(BOOL)includeTime;
+(NSString *)get_timezoned_date:(int)timestamp;
 [/code]
 
 [i]Description:[/i]
-Converts the given timestamp to [tt]@"MMM dd, yyyy - HH:mm:ss"[/tt] date format and returns the value as a string. If the [tt]includeTime[/tt] parameter is set to [tt]FALSE[/tt], then the time is excluded from the output.
+Converts the given timestamp to [tt]@"MMM dd, yyyy"[/tt] date format and returns the value as a string.
 
 [i]Usage:[/i]
 [code="objc"]

@@ -14,7 +14,7 @@
 	</p>
 
 	<ul class="notification_meta horizontal_meta_details">
-		<li>{DATE_WRITTEN_TIME*}</li>
+		<li>{DATE*}</li>
 		<li>({$?,{HAS_READ},{!notifications:HAS_READ},{!notifications:HAS_NOT_READ}})</li>
 	</ul>
 </div>

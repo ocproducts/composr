@@ -26,7 +26,7 @@
 
 <div class="activities_line">
 	<div class="activity_time right">
-		{$MAKE_RELATIVE_DATE*,{DATETIME},1} {!AGO}
+		{$MAKE_RELATIVE_DATE*,{TIMESTAMP},1} {!AGO}
 	</div>
 
 	{+START,SET,commented_out}

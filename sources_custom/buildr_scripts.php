@@ -36,7 +36,7 @@ function buildr_messages_script()
         if (is_null($message_sender)) {
             $message_sender = do_lang('UNKNOWN');
         }
-        $messages->attach(do_template('W_MESSAGE_' . (is_null($myrow['destination']) ? 'ALL' : 'TO'), array('MESSAGESENDER' => $message_sender, 'MESSAGE' => comcode_to_tempcode($myrow['m_message'], $myrow['originator_id']), 'DATETIME' => get_timezoned_date($myrow['m_datetime']))));
+        $messages->attach(do_template('W_MESSAGE_' . (is_null($myrow['destination']) ? 'ALL' : 'TO'), array('MESSAGE_SENDER' => $message_sender, 'MESSAGE' => comcode_to_tempcode($myrow['m_message'], $myrow['originator_id']), 'DATE' => get_timezoned_date_time($myrow['m_datetime']))));
     }
 
     $tpl = do_template('W_MESSAGES_HTML_WRAP', array('_GUID' => '05b40c794578d3221e2775895ecf8dbb', 'MESSAGES' => $messages));

@@ -346,7 +346,7 @@ class Module_topicview
                     $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
                         '_GUID' => '77a28e8bc3cf2ec2211aafdb5ba192bf',
                         'LAST_EDIT_DATE_RAW' => is_null($_postdetails['last_edit_time']) ? '' : strval($_postdetails['last_edit_time']),
-                        'LAST_EDIT_DATE' => $_postdetails['last_edit_time_string'],
+                        'LAST_EDIT_DATE' => $_postdetails['last_edit_date'],
                         'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($_postdetails['last_edit_by'], false, true),
                         'LAST_EDIT_USERNAME' => $_postdetails['last_edit_by_username'],
                     ));
@@ -481,7 +481,7 @@ class Module_topicview
                     'POSTER_TITLE' => $is_spacer_post ? '' : $_postdetails['poster_title'],
                     'POST_TITLE' => $post_title,
                     'POST_DATE_RAW' => strval($_postdetails['time']),
-                    'POST_DATE' => $_postdetails['time_string'],
+                    'POST_DATE' => $_postdetails['date'],
                     'POST' => $_postdetails['post'],
                     'TOPIC_ID' => is_null($id) ? '' : strval($id),
                     'LAST_EDITED_RAW' => $last_edited_raw,

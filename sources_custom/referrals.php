@@ -502,7 +502,7 @@ function referrer_report_script($ret = false)
     }
     foreach ($referrals as $ref) {
         $data_row = array();
-        $data_row[do_lang('DATE_TIME')] = get_timezoned_date($ref['time'], true, true, false, true);
+        $data_row[do_lang('DATE_TIME')] = get_timezoned_date_time($ref['time'], false);
         if (is_null($member_id)) {
             if ($csv) {
                 $deleted = true;
@@ -558,7 +558,7 @@ function referrer_report_script($ret = false)
                 $data_row_x[do_lang('ACTION')] = $qual['q_action'];
                 $data_row_x[do_lang('QUALIFIED_REFERRAL', $scheme_name)] = do_lang('QUALIFY_BY_THIS');
 
-                $data_row_x[do_lang('DATE_TIME')] = get_timezoned_date($qual['q_time']);
+                $data_row_x[do_lang('DATE_TIME')] = get_timezoned_date_time($qual['q_time']);
 
                 $data[] = $data_row_x;
             }

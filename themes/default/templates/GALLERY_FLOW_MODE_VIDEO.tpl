@@ -28,7 +28,7 @@
 						<tr>
 							<th class="de_th metadata_title">{!ADDED}</th>
 							<td>
-								<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{$DATE_AND_TIME*,1,0,0,{ADD_DATE_RAW}}</time>
+								<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{ADD_DATE_RAW}}" itemprop="datePublished">{$DATE_TIME*,{ADD_DATE_RAW}}</time>
 							</td>
 						</tr>
 
@@ -44,7 +44,7 @@
 						{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 							<tr>
 								<th class="de_th metadata_title">{!EDITED}</th>
-								<td>{$DATE_AND_TIME*,1,0,0,{EDIT_DATE_RAW}}</td>
+								<td>{$DATE_TIME*,{EDIT_DATE_RAW}}</td>
 							</tr>
 						{+END}
 

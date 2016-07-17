@@ -363,7 +363,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
                     if (!$given_message) {
                         require_lang('cns');
                         require_code('site');
-                        attach_message(do_lang_tempcode('IN_PROBATION', escape_html(get_timezoned_date($opt))), 'notice');
+                        attach_message(do_lang_tempcode('IN_PROBATION', escape_html(get_timezoned_date_time($opt))), 'notice');
                         $given_message = true;
                     }
                 }

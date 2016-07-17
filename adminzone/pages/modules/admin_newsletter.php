@@ -1010,7 +1010,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $default_subject = $defaults['np_subject'];
         }
         if ($periodic_action != 'make' && $periodic_action != 'replace') {
-            $default_subject .= ' - ' . get_timezoned_date(time(), false, false, false, true);
+            $default_subject .= ' - ' . get_timezoned_date(time(), false);
         }
         $default_subject = post_param_string('subject', $default_subject);
 
@@ -1336,7 +1336,7 @@ class Module_admin_newsletter extends Standard_crud_module
         // Subject line
         $_full_subject = $subject;
         if (post_param_integer('make_periodic', 0) == 1) {
-            $_full_subject .= ' - ' . get_timezoned_date(time(), false, false, false, true);
+            $_full_subject .= ' - ' . get_timezoned_date(time(), false);
         }
         $full_subject = do_lang('NEWSLETTER_PREVIEW_SUBJECT', $_full_subject);
 
@@ -1517,7 +1517,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 $event_id = add_calendar_event(db_get_first_id(), '', null, 0, do_lang('NEWSLETTER_SEND', $subject), $schedule_code, 3, $start_year, $start_month, $start_day, 'day_of_month', $start_hour, $start_minute);
                 regenerate_event_reminder_jobs($event_id);
 
-                return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_DEFERRED', get_timezoned_date($schedule)));
+                return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_DEFERRED', get_timezoned_date_time($schedule)));
             }
         }
 
@@ -1553,7 +1553,7 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $newsletters = new Tempcode();
         foreach ($rows as $newsletter) {
-            $newsletter_line = do_lang('NEWSLETTER_IN_ARCHIVE_LIST', $newsletter['subject'], get_timezoned_date($newsletter['date_and_time']), array(integer_format($newsletter['queued']), strval($newsletter['id'])));
+            $newsletter_line = do_lang('NEWSLETTER_IN_ARCHIVE_LIST', $newsletter['subject'], get_timezoned_date_time($newsletter['date_and_time']), array(integer_format($newsletter['queued']), strval($newsletter['id'])));
             $newsletters->attach(form_input_list_entry(strval($newsletter['id']), false, $newsletter_line));
         }
         if ($newsletters->is_empty()) {
@@ -1596,8 +1596,8 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $display_map = array();
 
-        $date_and_time = get_timezoned_date($rows[0]['date_and_time']);
-        $display_map['DATE_TIME'] = $date_and_time;
+        $date = get_timezoned_date_time($rows[0]['date_and_time']);
+        $display_map['DATE_TIME'] = $date;
 
         $subject = $rows[0]['subject'];
         $display_map['SUBJECT'] = $subject;

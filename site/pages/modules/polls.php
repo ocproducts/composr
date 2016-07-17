@@ -283,9 +283,9 @@ class Module_polls
         $date_raw = is_null($myrow['date_and_time']) ? '' : strval($myrow['date_and_time']);
         $add_date_raw = strval($myrow['add_time']);
         $edit_date_raw = is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']);
-        $date = get_timezoned_date($myrow['date_and_time']);
-        $add_date = get_timezoned_date($myrow['add_time']);
-        $edit_date = get_timezoned_date($myrow['edit_date']);
+        $date = get_timezoned_date_time($myrow['date_and_time']);
+        $add_date = get_timezoned_date_time($myrow['add_time']);
+        $edit_date = get_timezoned_date_time($myrow['edit_date']);
 
         // Views
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (is_null(get_bot_type()))) {

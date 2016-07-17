@@ -89,8 +89,8 @@ if (!is_null($field_id)) {
         $credits = $member['field_' . $field_id];
         $member_id = intval($member['mf_member_id']);
         $member_name = $member['m_username'];
-        $member_join_date = get_timezoned_date($member['m_join_time']);
-        $member_visit_date = get_timezoned_date($member['m_last_visit_time']);
+        $member_join_date = get_timezoned_date_time($member['m_join_time']);
+        $member_visit_date = get_timezoned_date_time($member['m_last_visit_time']);
 
         if ($csv) {
             $csv_data = array();

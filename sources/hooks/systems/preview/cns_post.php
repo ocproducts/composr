@@ -85,7 +85,7 @@ class Hook_preview_cns_post
                 $_post_date = time();
             }
         }
-        $post_date = get_timezoned_date($_post_date);
+        $post_date = get_timezoned_date_time($_post_date);
 
         $post_title = post_param_string('title', '');
         if (strlen($post_title) > 120) {
@@ -154,7 +154,7 @@ class Hook_preview_cns_post
             $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
                 '_GUID' => '3c476cf570fc4ba9780cc6b9c358b7f4',
                 'LAST_EDIT_DATE_RAW' => strval(time()),
-                'LAST_EDIT_DATE' => get_timezoned_date(time(), true),
+                'LAST_EDIT_DATE' => get_timezoned_date_time(time()),
                 'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), false, true),
                 'LAST_EDIT_USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ));

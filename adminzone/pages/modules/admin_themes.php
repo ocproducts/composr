@@ -383,7 +383,7 @@ class Module_admin_themes
 
             // Theme date
             $date = filemtime(($theme == 'default') ? (get_file_base() . '/themes/default') : (get_custom_file_base() . '/themes/' . $theme));
-            $_date = ($theme == 'default') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date, false)));
+            $_date = ($theme == 'default') ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($date)));
 
             // Where the theme is used
             $zone_list = new Tempcode();

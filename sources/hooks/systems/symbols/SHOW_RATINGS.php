@@ -46,7 +46,7 @@ class Hook_symbol_SHOW_RATINGS
                     'RATING_USERNAME' => is_guest($rating['rating_member']) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($rating['rating_member']),
                     'RATING_IP' => $rating['rating_ip'],
                     'RATING_TIME' => strval($rating['rating_time']),
-                    'RATING_TIME_FORMATTED' => get_timezoned_date($rating['rating_time']),
+                    'RATING_TIME_FORMATTED' => get_timezoned_date_time($rating['rating_time']),
                     'RATING' => strval($rating['rating']),
                 );
             }

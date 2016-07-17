@@ -389,7 +389,7 @@ class Module_tickets
 
         $title = $topic['firsttitle'];
 
-        $first_date = get_timezoned_date($topic['firsttime']);
+        $first_date = get_timezoned_date_time($topic['firsttime']);
         $first_poster_id = isset($topic['firstmemberid']) ? $topic['firstmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($topic['firstusername']);
         $first_poster_profile_url = '';
         $first_poster = do_lang('UNKNOWN');
@@ -398,7 +398,7 @@ class Module_tickets
             $first_poster = $topic['firstusername'];
         }
 
-        $last_date = get_timezoned_date($topic['lasttime']);
+        $last_date = get_timezoned_date_time($topic['lasttime']);
         $last_poster_id = isset($topic['lastmemberid']) ? $topic['lastmemberid'] : $GLOBALS['FORUM_DRIVER']->get_member_from_username($topic['lastusername']);
         $last_poster = do_lang('UNKNOWN');
         $last_poster_profile_url = '';

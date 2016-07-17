@@ -896,7 +896,7 @@ class Hook_addon_registry_cns_forum
             'TOPIC_URL' => placeholder_url(),
             'POST' => lorem_phrase(),
             'DESCRIPTION' => lorem_paragraph_html(),
-            'TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
             'TIME_RAW' => placeholder_date_raw(),
             'BY' => lorem_phrase(),
             'PROFILE_URL' => placeholder_url(),

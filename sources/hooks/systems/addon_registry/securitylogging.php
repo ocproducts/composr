@@ -188,7 +188,7 @@ class Hook_addon_registry_securitylogging
                 'ID' => placeholder_id(),
                 'USERNAME' => lorem_word_html(),
                 'TIME_RAW' => placeholder_date_raw(),
-                'TIME' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'POST' => lorem_phrase(),
             ), null, false, null, '.txt', 'text'), null, '', true)

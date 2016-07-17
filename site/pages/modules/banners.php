@@ -406,8 +406,8 @@ class Module_banners
                 //$deployment_agreement,  Too much detail
                 //integer_format($row['campaign_remaining']),  Too much detail
                 strval($row['importance_modulus']),
-                is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date($row['expiry_date'])),
-                get_timezoned_date($row['add_date'], false),
+                is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date'])),
+                get_timezoned_date($row['add_date']),
             );
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
@@ -482,9 +482,9 @@ class Module_banners
             $fields->attach(map_table_field(do_lang_tempcode('FILTER_REGIONS'), ($banners_regions == '') ? do_lang_tempcode('ALL_EM') : protect_from_escaping(escape_html($banners_regions))));
         }
 
-        $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date($myrow['add_date'])));
+        $fields->attach(map_table_field(do_lang_tempcode('ADDED'), get_timezoned_date_time($myrow['add_date'])));
 
-        $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date($myrow['expiry_date'], true)));
+        $expiry_date = is_null($myrow['expiry_date']) ? do_lang_tempcode('NA_EM') : make_string_tempcode(escape_html(get_timezoned_date_time($myrow['expiry_date'])));
         $fields->attach(map_table_field(do_lang_tempcode('EXPIRY_DATE'), $expiry_date));
 
         if ($has_banner_network) {
@@ -541,7 +541,7 @@ class Module_banners
             $tally_sets = array();
             foreach ($rows as $row) {
                 if ($sortable == 'day') {
-                    $period = get_timezoned_date($row['c_date_and_time'], false);
+                    $period = get_timezoned_date($row['c_date_and_time']);
                 } else {
                     $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
                 }

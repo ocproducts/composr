@@ -197,7 +197,7 @@ class Module_cms_quiz extends Standard_crud_module
             $results_entry = array(
                 protect_from_escaping(hyperlink(build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $row['id']), get_module_zone('quiz')), get_translated_text($row['q_name']), false, true)),
                 $type,
-                get_timezoned_date($row['q_add_date'], false),
+                get_timezoned_date($row['q_add_date']),
             );
             if (addon_installed('points')) {
                 $results_entry[] = integer_format($row['q_points_for_passing']);

@@ -196,7 +196,7 @@ class Module_admin_revisions
             do_lang_tempcode('MEMBER'),
             do_lang_tempcode('DATE'),
             do_lang_tempcode('CONTENT_OWNER'),
-            do_lang_tempcode('CONTENT_DATE_AND_TIME'),
+            do_lang_tempcode('CONTENT_DATE_TIME'),
             do_lang_tempcode('ACTION'),
         );
         if (has_privilege(get_member(), 'delete_revisions')) {
@@ -229,7 +229,7 @@ class Module_admin_revisions
 
         $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
 
-        $date = get_timezoned_date($revision['log_time']);
+        $date = get_timezoned_date_time($revision['log_time']);
 
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');
@@ -243,7 +243,7 @@ class Module_admin_revisions
             $member_link,
             escape_html($date),
             $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['r_original_content_owner']),
-            escape_html(get_timezoned_date($revision['r_original_content_timestamp'])),
+            escape_html(get_timezoned_date_time($revision['r_original_content_timestamp'])),
             $action,
         );
 

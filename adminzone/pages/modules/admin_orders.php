@@ -322,7 +322,7 @@ class Module_admin_orders
             $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['c_member']), get_module_zone('members'));
             $member = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
 
-            $order_date = hyperlink($view_url, get_timezoned_date($row['add_date'], true, false, true, true), false, true);
+            $order_date = hyperlink($view_url, get_timezoned_date_time($row['add_date'], false), false, true);
 
             if (($row['transaction_id'] != '') && ($row['order_status'] != 'ORDER_STATUS_awaiting_payment')) {
                 $transaction_details_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'logs', 'type_code' => $order_title, 'id' => $row['id']), get_module_zone('admin_ecommerce_logs'));
@@ -486,7 +486,7 @@ class Module_admin_orders
             'RESULTS_TABLE' => $results_table,
             'PAGINATION' => $pagination,
             'ORDER_NUMBER' => strval($id),
-            'ADD_DATE' => get_timezoned_date($data['add_date'], true, false, true, true),
+            'ADD_DATE' => get_timezoned_date($data['add_date'], false),
             'CURRENCY' => get_option('currency'),
             'TOTAL_PRICE' => float_format($data['tot_price'], 2),
             'ORDERED_BY_MEMBER_ID' => strval($ordered_by_member_id),
@@ -542,7 +542,7 @@ class Module_admin_orders
         $note = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => $id));
 
         if (!is_null($last_action)) {
-            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date(time(), true, false, true, true), do_lang('ORDER_STATUS_' . $last_action));
+            $note .= do_lang('ADD_NOTE_APPEND_TEXT', get_timezoned_date_time(time(), false), do_lang('ORDER_STATUS_' . $last_action));
         }
 
         $fields->attach(form_input_text(do_lang_tempcode('NOTE'), do_lang_tempcode('NOTE_DESCRIPTION'), 'note', $note, true));
@@ -737,7 +737,7 @@ class Module_admin_orders
         $end_date = post_param_date('end_date', true);
         $order_status = post_param_string('order_status');
 
-        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false, false, false, true) . '-' . get_timezoned_date($end_date, false, false, false, true) . '.csv';
+        $filename = 'Orders_' . $order_status . '__' . get_timezoned_date($start_date, false) . '-' . get_timezoned_date($end_date, false) . '.csv';
 
         $orders = array();
         $data = array();
@@ -757,7 +757,7 @@ class Module_admin_orders
 
         foreach ($rows as $order) {
             $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
-            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date($order['add_date'], true, false, true, true);
+            $orders[do_lang('ORDERED_DATE')] = get_timezoned_date_time($order['add_date']);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);
             $orders[do_lang('ORDER_TAX_OPT_OUT')] = ($order['tax_opted_out']) ? do_lang('YES') : do_lang('NO');

@@ -420,7 +420,7 @@ class Module_filedump
                     'width' => $width,
                     'height' => $height,
                     'size' => clean_file_size($file['_size']),
-                    'time' => is_null($file['_time']) ? null : get_timezoned_date($file['_time'], false),
+                    'date' => is_null($file['_time']) ? null : get_timezoned_date($file['_time']),
                     'choosable' => $choosable,
                 );
 
@@ -469,7 +469,7 @@ class Module_filedump
                     '_SIZE' => is_null($file['_size']) ? '' : strval($file['_size']),
                     'SIZE' => $file['size'],
                     '_TIME' => is_null($file['_time']) ? '' : strval($file['_time']),
-                    'TIME' => is_null($file['time']) ? '' : $file['time'],
+                    'DATE' => is_null($file['date']) ? '' : $file['date'],
                     'WIDTH' => is_null($file['width']) ? '' : strval($file['width']),
                     'HEIGHT' => is_null($file['height']) ? '' : strval($file['height']),
                     'IS_DIRECTORY' => $file['is_directory'],
@@ -522,7 +522,7 @@ class Module_filedump
                     $description_field,
                     $size,
                     $owner,
-                    is_null($file['time']) ? do_lang_tempcode('NA') : make_string_tempcode(escape_html($file['time'])),
+                    is_null($file['date']) ? do_lang_tempcode('NA') : make_string_tempcode(escape_html($file['date'])),
                     is_null($embed_url) ? ($file['is_directory'] ? do_lang_tempcode('IS_DIRECTORY') : new Tempcode()) : hyperlink($embed_url, do_lang_tempcode('_FILEDUMP_EMBED'), false, false),
                     $choose_action
                 ), false));

@@ -87,7 +87,7 @@ class Block_side_cns_private_topics
             $topic_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['id']), get_module_zone('topicview'));
             $topic_url->attach('#post_' . strval($topic['id']));
             $title = $topic['t_cache_first_title'];
-            $date = get_timezoned_date_tempcode($topic['t_cache_last_time']);
+            $date = get_timezoned_date_time_tempcode($topic['t_cache_last_time']);
             $num_posts = $topic['t_cache_num_posts'];
 
             $last_post_by_username = $topic['t_cache_last_username'];

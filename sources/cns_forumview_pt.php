@@ -103,7 +103,7 @@ function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_s
         $topic['first_member_id'] = $topic_row['t_cache_first_member_id'];
         $topic['last_post_id'] = $topic_row['t_cache_last_post_id'];
         $topic['last_time'] = $topic_row['t_cache_last_time'];
-        $topic['last_time_string'] = is_null($topic_row['t_cache_last_time']) ? '' : get_timezoned_date($topic_row['t_cache_last_time']);
+        $topic['last_date'] = is_null($topic_row['t_cache_last_time']) ? '' : get_timezoned_date_time($topic_row['t_cache_last_time']);
         $topic['last_title'] = $topic_row['t_cache_last_title'];
         $topic['last_username'] = $topic_row['t_cache_last_username'];
         $topic['last_member_id'] = $topic_row['t_cache_last_member_id'];

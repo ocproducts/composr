@@ -489,7 +489,7 @@ class Module_admin_quiz
         foreach ($rows as $myrow) {
             $results_entry = array();
 
-            $date_link = hyperlink(build_url(array('page' => '_SELF', 'type' => '__quiz_results', 'id' => $myrow['e_id']), '_SELF'), get_timezoned_date($myrow['q_time']), false, true);
+            $date_link = hyperlink(build_url(array('page' => '_SELF', 'type' => '__quiz_results', 'id' => $myrow['e_id']), '_SELF'), get_timezoned_date_time($myrow['q_time']), false, true);
             $results_entry[] = $date_link;
 
             if (is_null($id)) {
@@ -550,7 +550,7 @@ class Module_admin_quiz
             }
         }
 
-        $date = get_timezoned_date($row['q_time']);
+        $date = get_timezoned_date_time($row['q_time']);
 
         list(
             $marks,

@@ -66,7 +66,7 @@ class Hook_preview_iotd
 
         $title = comcode_to_tempcode(post_param_string('title', ''));
         $caption = comcode_to_tempcode(post_param_string('caption', ''));
-        $date = get_timezoned_date(time());
+        $date = get_timezoned_date_time(time());
 
         $submitter = get_member();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);

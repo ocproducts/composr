@@ -503,8 +503,8 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
             'MEMBER' => $user,
             'MEMBER_ID' => strval($_message['member_id']),
             'MESSAGE' => $_message['the_message'],
-            'TIME' => $_message['date_and_time_nice'],
-            'RAW_TIME' => strval($_message['date_and_time']),
+            'DATE' => $_message['date_and_time_nice'],
+            '_TIME' => strval($_message['date_and_time']),
             'FONT_COLOUR' => $_message['text_colour'],
             'FONT_FACE' => $_message['font_name'],
         ));
@@ -694,8 +694,8 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
             'MEMBER' => do_lang('SYSTEM'),
             'MEMBER_ID' => strval($_message['member_id']),
             'MESSAGE' => $the_message,
-            'TIME' => get_timezoned_date($_message['date_and_time']),
-            'RAW_TIME' => strval($_message['date_and_time']),
+            'DATE' => get_timezoned_date_time($_message['date_and_time']),
+            '_TIME' => strval($_message['date_and_time']),
             'FONT_COLOUR' => $_message['text_colour'],
             'FONT_FACE' => $_message['font_name'],
         ));
@@ -789,7 +789,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                         $subject = do_lang('IM_INVITED_SUBJECT', null, null, null, get_lang($allow));
                         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
                         $username2 = $GLOBALS['FORUM_DRIVER']->get_username($allow);
-                        $message = do_notification_lang('IM_INVITED_MESSAGE', get_timezoned_date(time(), true), $username, array($lobby_url, $username2, $message, strval($allow)), get_lang($allow));
+                        $message = do_notification_lang('IM_INVITED_MESSAGE', get_timezoned_date_time(time()), $username, array($lobby_url, $username2, $message, strval($allow)), get_lang($allow));
 
                         dispatch_notification('im_invited', null, $subject, $message, array($allow), $room_row['room_owner'], 1);
                     }
@@ -1237,7 +1237,7 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
         if (is_null($rows[$i]['username'])) {
             $rows[$i]['username'] = do_lang('UNKNOWN');
         }
-        $rows[$i]['date_and_time_nice'] = get_timezoned_date($rows[$i]['date_and_time']);
+        $rows[$i]['date_and_time_nice'] = get_timezoned_date_time($rows[$i]['date_and_time']);
         $just_message_row = db_map_restrict($rows[$i], array('id', 'the_message'));
         $message = get_translated_tempcode('chat_messages', $just_message_row, 'the_message');
 

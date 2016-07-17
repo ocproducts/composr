@@ -73,8 +73,8 @@ function chat_logs_script()
             'STAFF_ACTIONS' => '',
             'MEMBER' => escape_html($_message['username']),
             'MESSAGE' => $_message['the_message'],
-            'TIME' => $_message['date_and_time_nice'],
-            'TIME_RAW' => strval($_message['date_and_time']),
+            'DATE' => $_message['date_and_time_nice'],
+            '_TIME' => strval($_message['date_and_time']),
             'FONT_COLOUR' => $_message['text_colour'],
             'FONT_FACE' => $_message['font_name'],
         )));

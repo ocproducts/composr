@@ -190,7 +190,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
                         $latest = do_template('CNS_FORUM_LATEST', array(
                             '_GUID' => 'dlfsdfkoewfdlfsldfk',
-                            'DATE' => is_null($subforum['last_time']) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date($subforum['last_time']))),
+                            'DATE' => is_null($subforum['last_time']) ? do_lang_tempcode('NA_EM') : protect_from_escaping(escape_html(get_timezoned_date_time($subforum['last_time']))),
                             'DATE_RAW' => is_null($subforum['last_time']) ? '' : strval($subforum['last_time']),
                             'TOPIC_URL' => $topic_url,
                             'TOPIC_TITLE' => ($subforum['last_title'] == '') ? do_lang_tempcode('NA') : $subforum['last_title'],
@@ -539,7 +539,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
     if (!is_null($topic_row['t_cache_last_post_id'])) {
         $topic['last_post_id'] = $topic_row['t_cache_last_post_id'];
         $topic['last_time'] = $topic_row['t_cache_last_time'];
-        $topic['last_time_string'] = get_timezoned_date($topic_row['t_cache_last_time']);
+        $topic['last_date'] = get_timezoned_date_time($topic_row['t_cache_last_time']);
         $topic['last_title'] = $topic_row['t_cache_last_title'];
         $topic['last_username'] = $topic_row['t_cache_last_username'];
         $topic['last_member_id'] = $topic_row['t_cache_last_member_id'];
@@ -612,7 +612,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         } else {
             $poster = do_lang_tempcode('NA');
         }
-        $last_post = do_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array('_GUID' => '6aa8d0f4024ae12bf94b68b74faae7cf', 'ID' => strval($topic['id']), 'DATE_RAW' => strval($topic['last_time']), 'DATE' => $topic['last_time_string'], 'POSTER' => $poster, 'LAST_URL' => $last_post_url));
+        $last_post = do_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array('_GUID' => '6aa8d0f4024ae12bf94b68b74faae7cf', 'ID' => strval($topic['id']), 'DATE_RAW' => strval($topic['last_time']), 'DATE' => $topic['last_date'], 'POSTER' => $poster, 'LAST_URL' => $last_post_url));
     } else {
         $last_post = do_lang_tempcode('NA_EM');
     }
@@ -688,10 +688,10 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     // Tpl
     $post = $topic['first_post'];
     if (!is_null($show_forum)) {
-        $hover = do_lang_tempcode('FORUM_AND_TIME_HOVER', $show_forum, protect_from_escaping(escape_html(get_timezoned_date($topic['first_time']))));
+        $hover = do_lang_tempcode('FORUM_AND_TIME_HOVER', $show_forum, protect_from_escaping(escape_html(get_timezoned_date_time($topic['first_time']))));
         $breadcrumbs = breadcrumb_segments_to_tempcode(cns_forum_breadcrumbs($topic['forum_id'], null, null, false));
     } else {
-        $hover = protect_from_escaping(is_null($topic['first_time']) ? '' : escape_html(get_timezoned_date($topic['first_time'])));
+        $hover = protect_from_escaping(is_null($topic['first_time']) ? '' : escape_html(get_timezoned_date_time($topic['first_time'])));
         $breadcrumbs = new Tempcode();
     }
 

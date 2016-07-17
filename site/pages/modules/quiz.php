@@ -412,7 +412,7 @@ class Module_quiz
         if ((!has_privilege(get_member(), 'bypass_quiz_repeat_time_restriction')) && (!is_null($quiz['q_redo_time']))) {
             $last_entry = $GLOBALS['SITE_DB']->query_select_value_if_there('quiz_entries', 'q_time', array('q_member' => get_member(), 'q_quiz' => $quiz['id']), 'ORDER BY q_time DESC');
             if ((!is_null($last_entry)) && ($last_entry + $quiz['q_redo_time'] * 60 * 60 > time()) && ((is_null($quiz['q_timeout'])) || (time() - $last_entry >= $quiz['q_timeout']))) { // If passed timeout and less than redo time, error
-                warn_exit(do_lang_tempcode('REPEATING_TOO_SOON', get_timezoned_date($last_entry + $quiz['q_redo_time'] * 60 * 60)));
+                warn_exit(do_lang_tempcode('REPEATING_TOO_SOON', get_timezoned_date_time($last_entry + $quiz['q_redo_time'] * 60 * 60)));
             }
         }
     }

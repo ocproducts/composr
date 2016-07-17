@@ -76,22 +76,6 @@ function display_time_period($seconds)
 }
 
 /**
- * Set up the locale filter array from the terse language string specifying it.
- */
-function make_locale_filter()
-{
-    global $LOCALE_FILTER_CACHE;
-    $LOCALE_FILTER_CACHE = explode(',', do_lang('LOCALE_SUBST'));
-    foreach ($LOCALE_FILTER_CACHE as $i => $filter) {
-        if ($filter == '') {
-            unset($LOCALE_FILTER_CACHE[$i]);
-        } else {
-            $LOCALE_FILTER_CACHE[$i] = explode('=', $filter);
-        }
-    }
-}
-
-/**
  * Get the timezone the server is configured with.
  *
  * @return string Server timezone in "boring" format.
@@ -206,8 +190,8 @@ function convert_timezone_offset_to_formal_timezone($offset)
 }
 
 /**
- * Convert a UTC timestamp to a user timestamp. The user timestamp should not be pumped through get_timezoned_date as this already performs the conversions internally.
- * What complicate understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
+ * Convert a UTC timestamp to a user timestamp. The user timestamp should not be pumped through get_timezoned_* as this already performs the conversions internally.
+ * What complicates understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
  *
  * @param  ?TIME $timestamp Input timestamp (null: now)
  * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
@@ -226,7 +210,7 @@ function utctime_to_usertime($timestamp = null, $member = null)
 
 /**
  * Convert a user timestamp to a UTC timestamp. This is not a function to use much- you probably want utctime_to_usertime.
- * What complicate understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
+ * What complicates understanding of matters is that "user time" is not the timestamp that would exist on a user's PC, as all timestamps are meant to be stored in UTC. "user time" is offsetted to compensate, a virtual construct.
  *
  * @param  ?TIME $timestamp Input timestamp (null: now)
  * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
@@ -242,6 +226,187 @@ function usertime_to_utctime($timestamp = null, $member = null)
 
     $amount_forward = tz_time($timestamp, $timezone) - $timestamp;
     return $timestamp - $amount_forward;
+}
+
+/**
+ * For a UTC timestamp, find the equivalent virtualised local timestamp.
+ *
+ * @param  TIME $time UTC time
+ * @param  string $zone Timezone (boring style)
+ * @return TIME Virtualised local time
+ */
+function tz_time($time, $zone)
+{
+    if ($zone == '') {
+        $zone = get_server_timezone();
+    }
+    static $zone_offsets = array();
+    //if (!isset($zone_offsets[$zone])) {  Actually, cannot do this, as $time is not constant
+    @date_default_timezone_set($zone);
+    $zone_offsets[$zone] = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
+    date_default_timezone_set('UTC');
+    //}
+    $ret = $time + $zone_offsets[$zone];
+    return $ret;
+}
+
+/**
+ * Get a list of timezones.
+ *
+ * @return array Timezone (map between boring-style and human-readable name). Sorted in offset order then likelihood orde.
+ */
+function get_timezone_list()
+{
+    require_code('temporal2');
+    return _get_timezone_list();
+}
+
+/**
+ * Get a nice formatted date from the specified Unix timestamp.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $use_contextual_dates Whether contextual dates will be used
+ * @param  boolean $utc_time Whether to work in UTC time
+ * @param  ?MEMBER $member Member for which the date is being rendered (null: current member). Use $GLOBALS['FORUM_DRIVER']->get_guest_id() for server times
+ * @return string Formatted time
+ */
+function get_timezoned_date_time($timestamp, $use_contextual_dates = true, $utc_time = false, $member = null)
+{
+    return _get_timezoned_date_time(true, $timestamp, $use_contextual_dates, $utc_time, $member);
+}
+
+/**
+ * Get a nice formatted date from the specified Unix timestamp.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $use_contextual_dates Whether contextual dates will be used
+ * @param  boolean $utc_time Whether to work in UTC time
+ * @param  ?MEMBER $member Member for which the date is being rendered (null: current member). Use $GLOBALS['FORUM_DRIVER']->get_guest_id() for server times
+ * @return string Formatted time
+ */
+function get_timezoned_date($timestamp, $use_contextual_dates = true, $utc_time = false, $member = null)
+{
+    return _get_timezoned_date_time(false, $timestamp, $use_contextual_dates, $utc_time, $member);
+}
+
+/**
+ * Get a nice formatted date from the specified Unix timestamp.
+ *
+ * @param  boolean $include_time Whether to include the time in the output
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $use_contextual_dates Whether contextual dates will be used
+ * @param  boolean $utc_time Whether to work in UTC time
+ * @param  ?MEMBER $member Member for which the date is being rendered (null: current member). Use $GLOBALS['FORUM_DRIVER']->get_guest_id() for server times
+ * @return string Formatted time
+ */
+function _get_timezoned_date_time($include_time, $timestamp, $use_contextual_dates, $utc_time, $member)
+{
+    if ($member === null) {
+        $member = get_member();
+    }
+
+    if ($use_contextual_dates && gmdate('H:i:s', $timestamp) == '00:00:00') {
+        $include_time = false; // Probably means no time is known
+    }
+
+    // Work out timezone
+    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
+    $usered_now_timestamp = $utc_time ? time() : utctime_to_usertime(time(), $member);
+
+    if ($usered_timestamp < 0) {
+        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
+            return 'pre-1970';
+        }
+    }
+
+    // Render basic date
+    $date_string1 = do_lang('date_date'); // The date renderer string
+    $joiner = do_lang('date_joiner');
+    $date_string2 = $include_time ? do_lang('date_time') : ''; // The time renderer string
+    $ret1 = cms_strftime($date_string1, $usered_timestamp);
+    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
+    $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
+
+    // If we can do contextual dates, have our shot
+    if (get_option('use_contextual_dates') == '0') {
+        $use_contextual_dates = false;
+    }
+    if ($use_contextual_dates) {
+        $today = cms_strftime($date_string1, $usered_now_timestamp);
+
+        if ($ret1 == $today) { // It is/was today
+            $ret = /*Today is obvious do_lang('TODAY').$joiner.*/$ret2;
+            if ($ret == '') {
+                $ret = do_lang('TODAY'); // it'll be because avoid contextual dates is not on
+            }
+        } else {
+            $yesterday = cms_strftime($date_string1, $usered_now_timestamp - 24 * 60 * 60);
+            if ($ret1 == $yesterday) { // It is/was yesterday
+                $ret = do_lang('YESTERDAY') . (($ret2 == '') ? '' : ($joiner . $ret2));
+            } else {
+                $week = cms_strftime('%U %Y', $usered_timestamp);
+                $now_week = cms_strftime('%U %Y', $usered_now_timestamp);
+                if ($week == $now_week) { // It is/was this week
+                    $date_string1 = do_lang('date_withinweek_date'); // The date renderer string
+                    $joiner = do_lang('date_withinweek_joiner');
+                    $date_string2 = $include_time ? do_lang('date_time') : ''; // The time renderer string
+                    $ret1 = cms_strftime($date_string1, $usered_timestamp);
+                    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
+                    $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
+                } // We could go on, and check for month, and year, but it would serve little value - probably would make the user think more than help.
+            }
+        }
+    }
+
+    return locale_filter($ret);
+}
+
+/**
+ * Similar to get_timezoned_date_time, except works via Tempcode so is cache-safe for relative date display.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @return Tempcode Formatted date/time
+ */
+function get_timezoned_date_time_tempcode($timestamp)
+{
+    return symbol_tempcode('DATE_TIME', array('0', '0', '0', strval($timestamp)));
+}
+
+/**
+ * Similar to get_timezoned_date, except works via Tempcode so is cache-safe for relative date display.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @return Tempcode Formatted date
+ */
+function get_timezoned_date_tempcode($timestamp)
+{
+    return symbol_tempcode('DATE', array('0', '0', '0', strval($timestamp)));
+}
+
+/**
+ * Get a nice formatted time from the specified Unix timestamp.
+ *
+ * @param  TIME $timestamp Input timestamp
+ * @param  boolean $use_contextual_times Whether contextual times will be used. Note that we don't currently use contextual (relative) times due to it being a breaker for cache layers. This parameter may be used in the future.
+ * @param  boolean $utc_time Whether to work in UTC time
+ * @param  ?MEMBER $member Member for which the time is being rendered (null: current member). Use $GLOBALS['FORUM_DRIVER']->get_guest_id() for server times
+ * @return string Formatted time
+ */
+function get_timezoned_time($timestamp, $use_contextual_times = true, $utc_time = false, $member = null)
+{
+    if ($member === null) {
+        $member = get_member();
+    }
+
+    if (get_option('use_contextual_dates') == '0') {
+        $use_contextual_times = false;
+    }
+
+    $date_string = do_lang('date_withinday_time');
+    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
+    $ret = cms_strftime($date_string, $usered_timestamp);
+
+    return locale_filter($ret);
 }
 
 /**
@@ -279,92 +444,19 @@ function cms_strftime($format, $timestamp = null)
 }
 
 /**
- * Similar to get_timezoned_date, except works via Tempcode so is cache-safe for relative date display.
- *
- * @param  TIME $timestamp Input timestamp
- * @param  boolean $include_time Whether to include the time in the output
- * @return Tempcode Formatted time
+ * Set up the locale filter array from the terse language string specifying it.
  */
-function get_timezoned_date_tempcode($timestamp, $include_time = true)
+function make_locale_filter()
 {
-    if (!$include_time) {
-        return symbol_tempcode('DATE', array('0', '0', '0', strval($timestamp)));
-    }
-
-    return symbol_tempcode('DATE_AND_TIME', array('0', '0', '0', strval($timestamp)));
-}
-
-/**
- * Get a nice formatted date from the specified Unix timestamp.
- *
- * @param  TIME $timestamp Input timestamp
- * @param  boolean $include_time Whether to include the time in the output
- * @param  boolean $verbose Whether to make this a verbose date (longer than usual)
- * @param  boolean $utc_time Whether to work in UTC time
- * @param  boolean $avoid_contextual_dates Whether contextual dates will be avoided
- * @param  ?MEMBER $member Member for which the date is being rendered (null: current member)
- * @return string Formatted time
- */
-function get_timezoned_date($timestamp, $include_time = true, $verbose = false, $utc_time = false, $avoid_contextual_dates = false, $member = null)
-{
-    if ($member === null) {
-        $member = get_member();
-    }
-
-    if (!$avoid_contextual_dates && gmdate('H:i', $timestamp) == '00:00') {
-        $include_time = false; // Probably means no time is known
-    }
-
-    // Work out timezone
-    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $usered_now_timestamp = $utc_time ? time() : utctime_to_usertime(time(), $member);
-
-    if ($usered_timestamp < 0) {
-        if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
-            return 'pre-1970';
-        }
-    }
-
-    // Render basic date
-    $date_string1 = ($verbose) ? do_lang('date_verbose_date') : do_lang('date_regular_date'); // The date renderer string
-    $joiner = ($verbose) ? do_lang('date_verbose_joiner') : do_lang('date_regular_joiner');
-    $date_string2 = ($include_time) ? ($verbose ? do_lang('date_verbose_time') : do_lang('date_regular_time')) : ''; // The time renderer string
-    $ret1 = cms_strftime($date_string1, $usered_timestamp);
-    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
-    $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
-
-    // If we can do contextual dates, have our shot
-    if (get_option('use_contextual_dates') == '0') {
-        $avoid_contextual_dates = true;
-    }
-    if (!$avoid_contextual_dates) {
-        $today = cms_strftime($date_string1, $usered_now_timestamp);
-
-        if ($ret1 == $today) { // It is/was today
-            $ret = /*Today is obvious do_lang('TODAY').$joiner.*/$ret2;
-            if ($ret == '') {
-                $ret = do_lang('TODAY'); // it'll be because avoid contextual dates is not on
-            }
+    global $LOCALE_FILTER_CACHE;
+    $LOCALE_FILTER_CACHE = explode(',', do_lang('LOCALE_SUBST'));
+    foreach ($LOCALE_FILTER_CACHE as $i => $filter) {
+        if ($filter == '') {
+            unset($LOCALE_FILTER_CACHE[$i]);
         } else {
-            $yesterday = cms_strftime($date_string1, $usered_now_timestamp - 24 * 60 * 60);
-            if ($ret1 == $yesterday) { // It is/was yesterday
-                $ret = do_lang('YESTERDAY') . (($ret2 == '') ? '' : ($joiner . $ret2));
-            } else {
-                $week = cms_strftime('%U %Y', $usered_timestamp);
-                $now_week = cms_strftime('%U %Y', $usered_now_timestamp);
-                if ($week == $now_week) { // It is/was this week
-                    $date_string1 = do_lang('date_withinweek_date'); // The date renderer string
-                    $joiner = do_lang('date_withinweek_joiner');
-                    $date_string2 = ($include_time) ? do_lang('date_regular_time') : ''; // The time renderer string
-                    $ret1 = cms_strftime($date_string1, $usered_timestamp);
-                    $ret2 = ($date_string2 == '') ? '' : cms_strftime($date_string2, $usered_timestamp);
-                    $ret = $ret1 . (($ret2 == '') ? '' : ($joiner . $ret2));
-                } // We could go on, and check for month, and year, but it would serve little value - probably would make the user think more than help.
-            }
+            $LOCALE_FILTER_CACHE[$i] = explode('=', $filter);
         }
     }
-
-    return locale_filter($ret);
 }
 
 /**
@@ -389,32 +481,6 @@ function locale_filter($ret)
 }
 
 /**
- * Get a nice formatted time from the specified Unix timestamp.
- *
- * @param  TIME $timestamp Input timestamp
- * @param  boolean $avoid_contextual_dates Whether contextual times will be avoided. Note that we don't currently use contextual (relative) times. This parameter may be used in the future.
- * @param  ?MEMBER $member Member for which the time is being rendered (null: current member)
- * @param  boolean $utc_time Whether to work in UTC time
- * @return string Formatted time
- */
-function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member = null, $utc_time = false)
-{
-    if ($member === null) {
-        $member = get_member();
-    }
-
-    if (get_option('use_contextual_dates') == '0') {
-        $avoid_contextual_dates = true;
-    }
-
-    $date_string = do_lang('date_withinday');
-    $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $ret = cms_strftime($date_string, $usered_timestamp);
-
-    return locale_filter($ret);
-}
-
-/**
  * Sanitise a POST inputted date, and get the Unix timestamp for the inputted date.
  *
  * @param  ID_TEXT $stub The stub of the parameter name (stub_year, stub_month, stub_day, stub_hour, stub_minute)
@@ -426,37 +492,4 @@ function post_param_date($stub, $get_also = false, $do_timezone_conversion = tru
 {
     require_code('temporal2');
     return _post_param_date($stub, $get_also, $do_timezone_conversion);
-}
-
-/**
- * For a UTC timestamp, find the equivalent virtualised local timestamp.
- *
- * @param  TIME $time UTC time
- * @param  string $zone Timezone (boring style)
- * @return TIME Virtualised local time
- */
-function tz_time($time, $zone)
-{
-    if ($zone == '') {
-        $zone = get_server_timezone();
-    }
-    static $zone_offsets = array();
-    //if (!isset($zone_offsets[$zone])) {  Actually, cannot do this, as $time is not constant
-    @date_default_timezone_set($zone);
-    $zone_offsets[$zone] = intval(60.0 * 60.0 * floatval(date('O', $time)) / 100.0);
-    date_default_timezone_set('UTC');
-    //}
-    $ret = $time + $zone_offsets[$zone];
-    return $ret;
-}
-
-/**
- * Get a list of timezones.
- *
- * @return array Timezone (map between boring-style and human-readable name). Sorted in offset order then likelihood orde.
- */
-function get_timezone_list()
-{
-    require_code('temporal2');
-    return _get_timezone_list();
 }

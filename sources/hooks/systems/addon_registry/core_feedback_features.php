@@ -347,8 +347,8 @@ class Hook_addon_registry_core_feedback_features
                 'INDIVIDUAL_REVIEW_RATINGS' => array(),
                 'HIGHLIGHT' => ($i == 1),
                 'TITLE' => lorem_word(),
-                'TIME_RAW' => placeholder_number(),
-                'TIME' => placeholder_date(),
+                '_TIME' => placeholder_number(),
+                'DATE' => placeholder_date(),
                 'POSTER_ID' => placeholder_id(),
                 'POSTER_URL' => placeholder_url(),
                 'POSTER_NAME' => lorem_word(),
@@ -444,8 +444,8 @@ class Hook_addon_registry_core_feedback_features
         foreach ($trackbacks as $i => $value) {
             $content->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id() . strval($i),
-                'TIME_RAW' => placeholder_date(),
-                'TIME' => placeholder_date(),
+                '_TIME' => placeholder_date_raw(),
+                'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'EXCERPT' => '',

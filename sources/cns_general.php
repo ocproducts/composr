@@ -94,11 +94,11 @@ function cns_read_in_member_profile($member_id, $lite = true)
     $out = array(
         'username' => $row['m_username'],
         'last_visit_time' => $last_visit_time,
-        'last_visit_time_string' => get_timezoned_date($last_visit_time),
+        'last_visit_date' => get_timezoned_date_time($last_visit_time),
         'signature' => $row['m_signature'],
         'posts' => $row['m_cache_num_posts'],
         'join_time' => $join_time,
-        'join_time_string' => get_timezoned_date($join_time),
+        'join_date' => get_timezoned_date_time($join_time),
     );
 
     if (addon_installed('points')) {
@@ -123,7 +123,7 @@ function cns_read_in_member_profile($member_id, $lite = true)
                 if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                     $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                 } else {
-                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
+                    $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
                 }
             } else {
                 $dob = cms_strftime(do_lang('date_no_year'), mktime(12, 0, 0, $month, $day));

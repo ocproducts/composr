@@ -157,7 +157,7 @@ class Block_main_awards
             'AWARDEE' => $awardee,
             'AWARDEE_USERNAME' => $awardee_username,
             'RAW_AWARD_DATE' => strval($myrow['date_and_time']),
-            'AWARD_DATE' => get_timezoned_date_tempcode($myrow['date_and_time']),
+            'AWARD_DATE' => get_timezoned_date_time_tempcode($myrow['date_and_time']),
             'CONTENT' => $rendered_content,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,

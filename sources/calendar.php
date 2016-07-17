@@ -578,7 +578,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
 function date_range($from, $to, $do_time = true, $force_absolute = false, $timezone = '')
 {
     if (is_null($to)) {
-        return get_timezoned_date($from, true, true, false, true);
+        return get_timezoned_date($from, false);
     }
 
     $days = ($to - $from) / (60 * 60 * 24.0);

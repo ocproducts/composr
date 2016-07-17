@@ -2978,7 +2978,7 @@ function ecv_MAKE_RELATIVE_DATE($lang, $escaped, $param)
 
     if (isset($param[0])) {
         if ((get_option('use_contextual_dates') == '0') && ((!array_key_exists(1, $param)) || ($param[1] != '1'))) {
-            $value = get_timezoned_date(intval($param[0]));
+            $value = get_timezoned_date_time(intval($param[0]));
         } else {
             $value = display_time_period(time() - intval($param[0]));
         }
@@ -3558,14 +3558,13 @@ function ecv_HAS_DELETE_PERMISSION($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
-function ecv_DATE_AND_TIME($lang, $escaped, $param)
+function ecv_DATE_TIME($lang, $escaped, $param)
 {
-    $use_contextual_dates = (isset($param[0]) && ($param[0] == '1'));
-    $verbose = (isset($param[1]) && ($param[1] == '1'));
-    $server_time = (isset($param[2]) && ($param[2] == '1'));
-    $time = empty($param[3]) ? time() : intval($param[3]);
-    $member = isset($param[4]) ? intval($param[2]) : null;
-    $value = get_timezoned_date($time, true, $verbose, $server_time, !$use_contextual_dates, $member);
+    $time = empty($param[0]) ? time() : intval($param[0]);
+    $use_contextual_dates = (!isset($param[1]) || ($param[1] == '1'));
+    $utc_time = (isset($param[2]) && ($param[2] == '1'));
+    $member = isset($param[3]) ? intval($param[3]) : null;
+    $value = get_timezoned_date_time($time, $use_contextual_dates, $utc_time, $member);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3585,12 +3584,11 @@ function ecv_DATE_AND_TIME($lang, $escaped, $param)
  */
 function ecv_DATE($lang, $escaped, $param)
 {
-    $use_contextual_dates = (isset($param[0]) && ($param[0] === '1'));
-    $verbose = (isset($param[1]) && ($param[1] === '1'));
-    $server_time = (isset($param[2]) && ($param[2] === '1'));
-    $time = (!empty($param[3])) ? intval($param[3]) : time();
-    $member = isset($param[4]) ? intval($param[2]) : null;
-    $value = get_timezoned_date($time, false, $verbose, $server_time, !$use_contextual_dates, $member);
+    $time = empty($param[0]) ? time() : intval($param[0]);
+    $use_contextual_dates = (!isset($param[1]) || ($param[1] == '1'));
+    $utc_time = (isset($param[2]) && ($param[2] == '1'));
+    $member = isset($param[3]) ? intval($param[3]) : null;
+    $value = get_timezoned_date($time, $use_contextual_dates, $utc_time, $member);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3611,10 +3609,10 @@ function ecv_DATE($lang, $escaped, $param)
 function ecv_TIME($lang, $escaped, $param)
 {
     $time = (!empty($param[0])) ? intval($param[0]) : time();
-    $use_contextual_dates = (isset($param[1]) && ($param[1] === '1'));
-    $server_time = (isset($param[2]) && ($param[2] === '1'));
+    $use_contextual_times = (isset($param[1]) && ($param[1] === '1'));
+    $utc_time = (isset($param[2]) && ($param[2] === '1'));
     $member = isset($param[3]) ? intval($param[3]) : null;
-    $value = get_timezoned_time($time, !$use_contextual_dates, $member, $server_time);
+    $value = get_timezoned_time($time, $use_contextual_times, $utc_time, $member);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

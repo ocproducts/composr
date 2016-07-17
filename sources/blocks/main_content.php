@@ -319,7 +319,7 @@ class Block_main_content
             'TYPE' => do_lang_tempcode($info['content_type_label']),
             'TITLE' => $title,
             'RAW_AWARD_DATE' => ($raw_date === null) ? '' : strval($raw_date),
-            'AWARD_DATE' => ($raw_date === null) ? new Tempcode() : get_timezoned_date_tempcode($raw_date),
+            'AWARD_DATE' => ($raw_date === null) ? new Tempcode() : get_timezoned_date_time_tempcode($raw_date),
             'CONTENT' => $rendered_content,
             'SUBMIT_URL' => $submit_url,
             'ARCHIVE_URL' => $archive_url,

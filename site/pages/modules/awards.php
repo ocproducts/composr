@@ -225,7 +225,7 @@ class Module_awards
                         'AWARDEE' => $awardee,
                         'AWARDEE_USERNAME' => $awardee_username,
                         'RAW_AWARD_DATE' => strval($myrow['date_and_time']),
-                        'AWARD_DATE' => get_timezoned_date($myrow['date_and_time']),
+                        'AWARD_DATE' => get_timezoned_date_time($myrow['date_and_time']),
                         'CONTENT' => $rendered_content,
                     ));
                     $archive_url = build_url(array('page' => '_SELF', 'type' => 'award', 'id' => $award_type_row['id']), '_SELF');
@@ -285,7 +285,7 @@ class Module_awards
                     'AWARDEE' => $awardee,
                     'AWARDEE_USERNAME' => $awardee_username,
                     'RAW_AWARD_DATE' => strval($myrow['date_and_time']),
-                    'AWARD_DATE' => get_timezoned_date($myrow['date_and_time'], false, false, false, true),
+                    'AWARD_DATE' => get_timezoned_date($myrow['date_and_time'], false),
                     'CONTENT' => $rendered_content,
                 )));
             }

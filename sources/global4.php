@@ -223,7 +223,7 @@ function member_personal_links_and_details($member_id)
         } else {
             $last_visit = $GLOBALS['FORUM_DRIVER']->mrow_lastvisit($row);
         }
-        $_last_visit = get_timezoned_date($last_visit);
+        $_last_visit = get_timezoned_date_time($last_visit);
         $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array('_GUID' => 'sas41eddsdsdsdsdsa2618fd7fff', 'KEY' => do_lang_tempcode('LAST_HERE'), 'RAW_KEY' => strval($last_visit), 'VALUE' => $_last_visit)));
     }
 
@@ -238,7 +238,7 @@ function member_personal_links_and_details($member_id)
                 $expiry_time = $subscription['expiry_time'];
                 if ((!is_null($expiry_time)) && (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) && ($expiry_time >= time())) {
                     require_lang('ecommerce');
-                    $expiry_date = is_null($expiry_time) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false, false, false, true);
+                    $expiry_date = is_null($expiry_time) ? do_lang('INTERNAL_ERROR') : get_timezoned_date($expiry_time, false);
                     $details->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINE', array(
                         '_GUID' => '2675d56aa278616aa9f00b051ca084fc',
                         'KEY' => do_lang_tempcode('SUBSCRIPTION_EXPIRY_MESSAGE', escape_html($subscription['item_name'])),

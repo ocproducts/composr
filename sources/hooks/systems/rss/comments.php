@@ -110,8 +110,8 @@ class Hook_rss_comments
                         break 2;
                     }
 
-                    $datetime_raw = $comment['date'];
-                    if ($datetime_raw < $cutoff) {
+                    $timestamp = $comment['date'];
+                    if ($timestamp < $cutoff) {
                         break 2;
                     }
 
@@ -123,7 +123,7 @@ class Hook_rss_comments
                         $author = do_lang('UNKNOWN');
                     }
 
-                    $news_date = date($date_string, $datetime_raw);
+                    $news_date = date($date_string, $timestamp);
                     $edit_date = escape_html('');
 
                     $news_title = xmlentities($comment['title']);

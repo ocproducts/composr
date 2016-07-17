@@ -704,14 +704,14 @@ class Module_downloads
         }
 
         // Stats
-        $add_date = get_timezoned_date($myrow['add_date'], false);
+        $add_date = get_timezoned_date($myrow['add_date']);
 
         // Additional information
         $additional_details = get_translated_tempcode('download_downloads', $myrow, 'additional_details');
 
         // Edit date
         if (!is_null($myrow['edit_date'])) {
-            $edit_date = make_string_tempcode(get_timezoned_date($myrow['edit_date'], false));
+            $edit_date = make_string_tempcode(get_timezoned_date($myrow['edit_date']));
         } else {
             $edit_date = new Tempcode();
         }

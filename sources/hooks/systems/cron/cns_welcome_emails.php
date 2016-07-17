@@ -95,7 +95,7 @@ class Hook_cron_cns_welcome_emails
                 $text = get_translated_text($mail['w_text'], null, get_lang($member['id']));
                 for ($i = 0; $i < 100; $i++) {
                     if (strpos($text, '{{' . strval($i) . '}}') !== false) {
-                        $text = str_replace('{{' . strval($i) . '}}', get_timezoned_date($time_now + $i * 60 * 60 * 24), $text);
+                        $text = str_replace('{{' . strval($i) . '}}', get_timezoned_date_time($time_now + $i * 60 * 60 * 24), $text);
                     }
                 }
                 $_text = do_template('NEWSLETTER_DEFAULT_FCOMCODE', array('_GUID' => '8ffc0470c6e457cee14c413c10f7a90f', 'CONTENT' => $text, 'LANG' => get_site_default_lang()), null, false, null, '.txt', 'text');

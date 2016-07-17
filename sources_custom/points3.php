@@ -110,7 +110,7 @@ function points_profile($member_id_of, $member_id_viewing)
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('DATE'), do_lang_tempcode('AMOUNT'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('REASON')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
-            $date = get_timezoned_date($myrow['date_and_time']);
+            $date = get_timezoned_date_time($myrow['date_and_time']);
             $amount = $myrow['amount'];
             $reason = get_translated_tempcode('chargelog', $myrow, 'reason');
 

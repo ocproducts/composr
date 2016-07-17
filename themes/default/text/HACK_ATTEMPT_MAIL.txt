@@ -7,7 +7,7 @@
 {!USER_AGENT}: [tt]{USER_AGENT@}[/tt]
 {!REFERER}: {REFERER@}
 {!USER_OS}: [tt]{USER_OS@}[/tt]
-{!DATE_TIME@}: [tt]{TIME@}[/tt]
+{!DATE_TIME@}: [tt]{DATE@}[/tt]
 {!URL@}: {URL@}
 {+START,IF_NON_EMPTY,{POST}}
 {!POST_DATA@}...

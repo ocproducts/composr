@@ -1141,8 +1141,8 @@ class Module_galleries
             $edit_url = new Tempcode();
         }
 
-        $add_date = get_timezoned_date($myrow['add_date']);
-        $edit_date = is_null($myrow['edit_date']) ? '' : get_timezoned_date($myrow['edit_date']);
+        $add_date = get_timezoned_date_time($myrow['add_date']);
+        $edit_date = is_null($myrow['edit_date']) ? '' : get_timezoned_date_time($myrow['edit_date']);
 
         list($n, $x, $nav) = $this->build_set_navigation(db_string_equal_to('cat', $cat), '', $category_name, $id, $root, 'image', get_param_integer('slideshow', 0), get_param_integer('wide_high', 0), get_param_integer('module_start', 0), get_param_integer('module_max', get_default_gallery_max()), $cat, $sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos, get_param_string('select', '*'), get_param_string('video_select', '*'));
 
@@ -1258,8 +1258,8 @@ class Module_galleries
             $edit_url = new Tempcode();
         }
 
-        $add_date = get_timezoned_date($myrow['add_date']);
-        $edit_date = is_null($myrow['edit_date']) ? '' : get_timezoned_date($myrow['edit_date']);
+        $add_date = get_timezoned_date_time($myrow['add_date']);
+        $edit_date = is_null($myrow['edit_date']) ? '' : get_timezoned_date_time($myrow['edit_date']);
 
         // Video HTML
         $video = show_gallery_video_media($url, $thumb_url, $myrow['video_width'], $myrow['video_height'], $myrow['video_length'], $myrow['submitter']);

@@ -228,7 +228,7 @@ function generate_notifications($member_id)
                 $additional_posts = 0;
             }
             $time_raw = $unread_pp['p_time'];
-            $time = get_timezoned_date($unread_pp['p_time']);
+            $date = get_timezoned_date_time($unread_pp['p_time']);
             $topic_url = $GLOBALS['CNS_DRIVER']->post_url($unread_pp['id'], null, true);
             $post = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
             $description = $unread_pp['t_description'];
@@ -252,7 +252,7 @@ function generate_notifications($member_id)
                 'TOPIC_URL' => $topic_url,
                 'POST' => $post,
                 'DESCRIPTION' => $description,
-                'TIME' => $time,
+                'DATE' => $date,
                 'TIME_RAW' => strval($time_raw),
                 'BY' => $by,
                 'PROFILE_URL' => $profile_link,

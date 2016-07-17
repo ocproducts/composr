@@ -21,5 +21,5 @@
 		{!BY_SIMPLE_LOWER,<a href="{POSTER_URL*}">{POSTER_NAME*}</a>},
 	{+END}
 
-	{TIME*}
+	{DATE*}
 </li>

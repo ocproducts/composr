@@ -165,7 +165,7 @@ class Hook_addon_registry_filedump
             '_SIZE' => placeholder_number(),
             'SIZE' => placeholder_number(),
             '_TIME' => placeholder_date_raw(),
-            'TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
             'WIDTH' => placeholder_number(),
             'HEIGHT' => placeholder_number(),
             'IS_DIRECTORY' => false,

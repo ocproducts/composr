@@ -44,8 +44,8 @@ class Hook_members_booking
         $links = array();
 
         foreach ($request as $i => $r) {
-            $from = get_timezoned_date(mktime(0, 0, 0, $r['start_month'], $r['start_day'], $r['start_year']), false);
-            $to = get_timezoned_date(mktime(0, 0, 0, $r['end_month'], $r['end_day'], $r['end_year']), false);
+            $from = get_timezoned_date(mktime(0, 0, 0, $r['start_month'], $r['start_day'], $r['start_year']));
+            $to = get_timezoned_date(mktime(0, 0, 0, $r['end_month'], $r['end_day'], $r['end_year']));
 
             $bookable = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), array('id' => $r['bookable_id']), '', 1);
             if (!array_key_exists(0, $bookable)) {

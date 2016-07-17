@@ -197,7 +197,7 @@ class CMSSocialRead
                 $username = do_lang('UNKNOWN');
             }
 
-            list($message, $memberpic, $datetime, $member_url) = render_activity($row, false);
+            list($message, $memberpic, $date, $member_url) = render_activity($row, false);
 
             switch ($row['a_language_string_code']) {
                 case 'cns:ACTIVITY_ADD_TOPIC':
@@ -219,7 +219,7 @@ class CMSSocialRead
                 'username' => $username,
                 'icon_url' => $memberpic,
                 'message' => strip_html($message->evaluate()),
-                'timestamp' => $datetime,
+                'timestamp' => $date,
                 'content_type' => $content_type,
                 'content_id' => $content_id,
             );

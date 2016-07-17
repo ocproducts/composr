@@ -732,7 +732,7 @@ function cleanup_date($date)
         }
 
         $timestamp -= $their_dif * 60 * 60;
-        return array(get_timezoned_date($timestamp), $timestamp);
+        return array(get_timezoned_date_time($timestamp), $timestamp);
     }
     if (preg_match('#(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z#', $date, $matches) != 0) {
         $hour = intval($matches[4]);
@@ -743,7 +743,7 @@ function cleanup_date($date)
         $year = intval($matches[1]);
 
         $timestamp = gmmktime($hour, $minute, $second, $month, $day, $year);
-        return array(get_timezoned_date($timestamp), $timestamp);
+        return array(get_timezoned_date_time($timestamp), $timestamp);
     }
     if (preg_match('#(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)([\+\-]\d\d):(\d\d)#', $date, $matches) != 0) {
         $hour = intval($matches[4]);
@@ -755,7 +755,7 @@ function cleanup_date($date)
 
         $timestamp = gmmktime($hour, $minute, $second, $month, $day, $year);
         $timestamp += intval($matches[7]) * 60 * 60 + intval($matches[8]) * 60;
-        return array(get_timezoned_date($timestamp), $timestamp);
+        return array(get_timezoned_date_time($timestamp), $timestamp);
     }
     if (preg_match('#(\d+?) (\D\D\D) (\d\d\d\d) (\d\d):(\d\d):(\d\d) ([\+\-]\d\d)(\d\d)#', $date, $matches) != 0) {
         $hour = intval($matches[4]);
@@ -769,7 +769,7 @@ function cleanup_date($date)
 
         $timestamp = gmmktime($hour, $minute, $second, $month, $day, $year);
         $timestamp -= intval($matches[7]) * 60 * 60 + intval($matches[8]) * 60;
-        return array(get_timezoned_date($timestamp), $timestamp);
+        return array(get_timezoned_date_time($timestamp), $timestamp);
     }
     return array($date);
 }

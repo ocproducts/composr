@@ -174,7 +174,7 @@ class Module_invoices
             $products = $object->get_products(false, $type_code);
 
             $invoice_title = $products[$type_code][4];
-            $time = get_timezoned_date($row['i_time'], true, false, false, true);
+            $date = get_timezoned_date_time($row['i_time'], false);
             $payable = ($row['i_state'] == 'new');
             $deliverable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);
@@ -189,7 +189,7 @@ class Module_invoices
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
                 'AMOUNT' => $row['i_amount'],
-                'TIME' => $time,
+                'DATE' => $date,
                 'STATE' => $state,
                 'DELIVERABLE' => $deliverable,
                 'PAYABLE' => $payable,

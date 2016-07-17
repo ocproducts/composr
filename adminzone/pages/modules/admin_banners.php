@@ -155,7 +155,7 @@ class Module_admin_banners
                 $banner_type = do_lang('_DEFAULT');
             }
 
-            $date_and_time = get_timezoned_date($myrow['add_date'], false);
+            $date = get_timezoned_date($myrow['add_date']);
 
             $hits_from = integer_format($myrow['hits_from']);
             $views_from = integer_format($myrow['views_from']);
@@ -181,7 +181,7 @@ class Module_admin_banners
             if ($has_banner_network) {
                 $result = array_merge($result, array(escape_html($hits_from), escape_html($views_from)));
             }
-            $result = array_merge($result, array(escape_html($hits_to), escape_html($views_to), escape_html($click_through), escape_html(strval($importance_modulus)), $username, escape_html($date_and_time)));
+            $result = array_merge($result, array(escape_html($hits_to), escape_html($views_to), escape_html($click_through), escape_html(strval($importance_modulus)), $username, escape_html($date)));
             if (addon_installed('unvalidated')) {
                 $result[] = escape_html($validated);
             }

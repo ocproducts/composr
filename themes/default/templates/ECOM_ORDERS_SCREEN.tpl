@@ -35,7 +35,7 @@
 					{$CURRENCY_SYMBOL}{AMOUNT*}
 				</td>
 				<td>
-					{TIME*}
+					{DATE*}
 				</td>
 				{+START,IF,{$NOT,{$MOBILE}}}
 					<td>

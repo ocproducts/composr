@@ -145,7 +145,7 @@ class Module_admin_content_reviews
                 list($title,) = content_get_details($content_type, $content_id);
                 if (!is_null($title)) {
                     $title = ($content_type == 'comcode_page') ? $content_id : strip_comcode($title);
-                    $title .= ' (' . get_timezoned_date($next_review_time, false) . ')';
+                    $title .= ' (' . get_timezoned_date($next_review_time) . ')';
                     $_content_ids[$content_id] = $title;
                 } else {
                     $GLOBALS['SITE_DB']->query_delete('content_reviews', array('content_type' => $content_type, 'content_id' => $content_id), '', 1); // The actual content was deleted, I guess

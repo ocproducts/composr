@@ -178,7 +178,7 @@ class Module_admin_pointstore
             }
             $details_1 = $row['details'];
             $details_2 = $row['details2'];
-            $date = get_timezoned_date($row['date_and_time']);
+            $date = get_timezoned_date_time($row['date_and_time']);
 
             $url = build_url(array('page' => '_SELF', 'type' => '_logs', 'date_and_time' => $row['date_and_time'], 'memberid' => $row['memberid']), '_SELF');
             $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '12e3ea365f1a1ed2e7800293f3203283', 'NAME' => $username, 'URL' => $url));
@@ -224,12 +224,12 @@ class Module_admin_pointstore
     /**
      * Delete a Point Store purchase.
      *
-     * @param  integer $date_and_time The time of the purchase
+     * @param  integer $timestamp The time of the purchase
      * @param  MEMBER $memberid The member that made the purchase
      */
-    public function _delete_log_entry($date_and_time, $memberid)
+    public function _delete_log_entry($timestamp, $memberid)
     {
-        $GLOBALS['SITE_DB']->query_delete('sales', array('date_and_time' => $date_and_time, 'memberid' => $memberid), '', 1);
+        $GLOBALS['SITE_DB']->query_delete('sales', array('date_and_time' => $timestamp, 'memberid' => $memberid), '', 1);
     }
 
     /**

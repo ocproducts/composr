@@ -35,7 +35,7 @@ class Hook_task_export_points_log
         require_lang('points');
         require_code('points');
 
-        $label = do_lang('POINTS_GAINED_BETWEEN', get_timezoned_date($from, false, false, false, true), get_timezoned_date($to, false, false, false, true));
+        $label = do_lang('POINTS_GAINED_BETWEEN', get_timezoned_date_time($from, false), get_timezoned_date_time($to, false));
 
         $data = array();
 

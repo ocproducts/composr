@@ -795,7 +795,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 '_GUID' => 'af7b6920e58027256d536a8cdb8a164a',
                 'URL' => $GLOBALS['FORUM_DRIVER']->post_url($post_id, $forum, true),
                 'TITLE' => $s_title,
-                'DATE' => is_null($_date) ? null : get_timezoned_date($_date, true, false, false, true),
+                'DATE' => is_null($_date) ? null : get_timezoned_date($_date, false),
                 '_DATE' => is_null($_date) ? null : strval($_date),
                 'POST_ID' => strval($post_id),
             ));

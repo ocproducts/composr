@@ -267,13 +267,13 @@ function cns_get_forum_multi_code_field($forum_multi_code)
  * @param  SHORT_TEXT $param_b Second detailing parameter.
  * @param  LONG_TEXT $reason The reason for the moderation (may be blank).
  * @param  ?MEMBER $by The member performing the moderation (null: current member).
- * @param  ?TIME $date_and_time The time of the moderation (null: just now).
+ * @param  ?TIME $timestamp The time of the moderation (null: just now).
  * @return AUTO_LINK The log ID.
  */
-function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $by = null, $date_and_time = null)
+function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $by = null, $timestamp = null)
 {
-    if (is_null($date_and_time)) {
-        $date_and_time = time();
+    if (is_null($timestamp)) {
+        $timestamp = time();
     }
     if (is_null($by)) {
         $by = get_member();
@@ -287,7 +287,7 @@ function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $
         'l_the_type' => $the_type,
         'l_param_a' => $param_a,
         'l_param_b' => $param_b,
-        'l_date_and_time' => $date_and_time,
+        'l_date_and_time' => $timestamp,
         'l_reason' => $reason,
         'l_by' => $by
     ), true);

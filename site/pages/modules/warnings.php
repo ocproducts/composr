@@ -187,7 +187,7 @@ class Module_warnings extends Standard_crud_module
         $f = array(do_lang_tempcode('SLASH_OR', do_lang_tempcode('DATE'), do_lang_tempcode('BY')), do_lang('WHETHER_MAKE_WARNING'), do_lang('CHANGED_USERGROUP'), do_lang('PUNISHMENT_UNDOING'));
         $fields_title = results_field_title($f, array());
         foreach ($rows as $row) {
-            $date = hyperlink(build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $row['id'], 'redirect' => get_self_url(true)), '_SELF'), get_timezoned_date($row['w_time']), false, true, $row['w_explanation']);
+            $date = hyperlink(build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $row['id'], 'redirect' => get_self_url(true)), '_SELF'), get_timezoned_date_time($row['w_time']), false, true, $row['w_explanation']);
             $by = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_by']);
             $date_by = new Tempcode();
             $date_by->attach(do_lang_tempcode('SLASH_OR', $date, $by));
@@ -578,7 +578,7 @@ class Module_warnings extends Standard_crud_module
             $map = array(
                 protect_from_escaping($username),
                 protect_from_escaping($by),
-                get_timezoned_date($row['w_time']),
+                get_timezoned_date_time($row['w_time']),
             );
 
             if (addon_installed('points')) {
@@ -606,7 +606,7 @@ class Module_warnings extends Standard_crud_module
         $_m = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), null, 'ORDER BY w_time DESC');
         $entries = new Tempcode();
         foreach ($_m as $m) {
-            $entries->attach(form_input_list_entry(strval($m['id']), false, $GLOBALS['FORUM_DRIVER']->get_username($m['w_member_id']) . ' (' . get_timezoned_date($m['w_time']) . ')'));
+            $entries->attach(form_input_list_entry(strval($m['id']), false, $GLOBALS['FORUM_DRIVER']->get_username($m['w_member_id']) . ' (' . get_timezoned_date_time($m['w_time']) . ')'));
         }
 
         return $entries;

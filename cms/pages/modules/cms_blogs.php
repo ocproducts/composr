@@ -200,7 +200,7 @@ class Module_cms_blogs extends Standard_crud_module
 
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), get_module_zone('news')), get_translated_text($row['title']), false, true));
-            $fr[] = get_timezoned_date($row['date_and_time']);
+            $fr[] = get_timezoned_date_time($row['date_and_time']);
             $fr[] = integer_format($row['news_views']);
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');

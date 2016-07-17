@@ -421,12 +421,12 @@ function booking_date_available($bookable_id, $day, $month, $year, $quantity, $i
     // Check bookable time is in active period
     $from = mktime(0, 0, 0, $bookable_row['active_from_month'], $bookable_row['active_from_day'], $bookable_row['active_from_year']);
     if ($asked < $from) {
-        return do_lang_tempcode('BOOKING_IMPOSSIBLE_NOT_STARTED', escape_html(get_timezoned_date($from, false, true, false, true)));
+        return do_lang_tempcode('BOOKING_IMPOSSIBLE_NOT_STARTED', escape_html(get_timezoned_date($from, false)));
     }
     if (!is_null($bookable_row['active_to_month'])) {
         $to = mktime(0, 0, 0, $bookable_row['active_to_month'], $bookable_row['active_to_day'], $bookable_row['active_to_year']);
         if ($asked >= $to) {
-            return do_lang_tempcode('BOOKING_IMPOSSIBLE_ENDED', escape_html(get_timezoned_date($to, false, true, false, true)));
+            return do_lang_tempcode('BOOKING_IMPOSSIBLE_ENDED', escape_html(get_timezoned_date($to, false)));
         }
     }
 
@@ -437,9 +437,9 @@ function booking_date_available($bookable_id, $day, $month, $year, $quantity, $i
         $to = mktime(0, 0, 0, $black['blacked_to_month'], $black['blacked_to_day'], $black['blacked_to_year']);
         if (($asked >= $from) && ($asked < $to)) {
             if ($from == $to) {
-                return do_lang_tempcode('BOOKING_IMPOSSIBLE_BLACKED_ONEOFF', escape_html(get_timezoned_date($from, false, true, false, true)), escape_html(get_translated_text($black['blacked_explanation'])));
+                return do_lang_tempcode('BOOKING_IMPOSSIBLE_BLACKED_ONEOFF', escape_html(get_timezoned_date($from, false)), escape_html(get_translated_text($black['blacked_explanation'])));
             } else {
-                return do_lang_tempcode('BOOKING_IMPOSSIBLE_BLACKED_PERIOD', escape_html(get_timezoned_date($from, false, true, false, true)), escape_html(get_timezoned_date($to, false, true, false, true)), escape_html(get_translated_text($black['blacked_explanation'])));
+                return do_lang_tempcode('BOOKING_IMPOSSIBLE_BLACKED_PERIOD', escape_html(get_timezoned_date($from, false)), escape_html(get_timezoned_date($to, false)), escape_html(get_translated_text($black['blacked_explanation'])));
             }
         }
     }
@@ -451,7 +451,7 @@ function booking_date_available($bookable_id, $day, $month, $year, $quantity, $i
     }
     $codes_taken_already = $GLOBALS['SITE_DB']->query_value_if_there($query, false, true);
     if ($codes_taken_already + $quantity > $codes_in_total) {
-        return do_lang_tempcode('BOOKING_IMPOSSIBLE_FULL', get_timezoned_date($asked, false, true, false, true));
+        return do_lang_tempcode('BOOKING_IMPOSSIBLE_FULL', get_timezoned_date($asked, false));
     }
 
     // Good!
@@ -536,8 +536,8 @@ function make_booking_request_printable($request)
             'DESCRIPTION' => get_translated_tempcode('bookable', $bookable_row[0], 'description'),
             'QUANTITY' => integer_format($_part['quantity']),
             '_QUANTITY' => strval($_part['quantity']),
-            'START' => get_timezoned_date($start, false, true, false, true),
-            'END' => ($start == $end) ? '' : get_timezoned_date($end, false, true, false, true),
+            'START' => get_timezoned_date($start, false),
+            'END' => ($start == $end) ? '' : get_timezoned_date($end, false),
             '_START' => strval($start),
             '_END' => strval($end),
             'NOTES' => $_part['notes'],

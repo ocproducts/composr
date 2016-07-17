@@ -786,9 +786,9 @@ class Module_admin_customers
                 $charging_username = do_lang('DELETED');
             }
             $_num_credits = integer_format($log['num_credits']);
-            $date_and_time = get_timezoned_date($log['date_and_time']);
+            $date = get_timezoned_date_time($log['date_and_time']);
             $reason = $log['reason'];
-            $rows->attach(columned_table_row(array($charging_username, $_num_credits, $date_and_time, $reason), true));
+            $rows->attach(columned_table_row(array($charging_username, $_num_credits, $date, $reason), true));
         }
         if (!$rows->is_empty()) {
             $_header_row = array(

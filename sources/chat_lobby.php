@@ -97,8 +97,8 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
             $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true, true);
 
             $friend = array(
-                /*'DATE_AND_TIME_RAW' => strval($friend['date_and_time']),
-                'DATE_AND_TIME' => get_timezoned_date($friend['date_and_time'], false),*/
+                /*'DATE_RAW' => strval($friend['date_and_time']),
+                'DATE' => get_timezoned_date($friend['date_and_time']),*/
                 'MEMBER_PROFILE_URL' => $member_profile_url,
                 'MEMBER_ID' => strval($friend['member_liked']),
                 'USERNAME' => $username,

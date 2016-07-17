@@ -46,7 +46,7 @@ function render_iotd_box($myrow, $zone = '_SEARCH', $include_manage_links = fals
 
     $i_title = get_translated_tempcode('iotd', $just_iotd_row, 'i_title');
     $caption = get_translated_tempcode('iotd', $just_iotd_row, 'caption');
-    $date = get_timezoned_date($myrow['date_and_time']);
+    $date = get_timezoned_date_time($myrow['date_and_time']);
 
     $submitter = $myrow['submitter'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);

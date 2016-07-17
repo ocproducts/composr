@@ -214,10 +214,10 @@ function prepare_templated_subscription($subscription)
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
         '_EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : strval($subscription['expiry_time']),
-        'START_TIME' => get_timezoned_date($subscription['start_time'], false, false, false, true),
-        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false, false, false, true),
-        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false, false, false, true),
-        'EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : get_timezoned_date($subscription['expiry_time'], false, false, false, true),
+        'START_TIME' => get_timezoned_date($subscription['start_time'], false),
+        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false),
+        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false),
+        'EXPIRY_TIME' => is_null($subscription['expiry_time']) ? '' : get_timezoned_date($subscription['expiry_time'], false),
         'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
     );
 }

@@ -510,7 +510,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 
 	<tbody>
 		<tr style="background: #DDFFDD">
-			<td>{$DATE_AND_TIME}</td>
+			<td>{$DATE_TIME}</td>
 			<td>The formatted current date and time (may take optional parameters, not discussed here)</td>
 		</tr>
 		<tr style="background: #DDFFDD">

@@ -245,7 +245,7 @@
 
 						<tr>
 							<th class="de_th">{!ONLINE_NOW}:</th>
-							<td>{ONLINE_NOW*} <span class="associated_details">({$DATE_AND_TIME*,1,0,0,{LAST_VISIT_TIME_RAW}})</span></td>
+							<td>{ONLINE_NOW*} <span class="associated_details">({$DATE_TIME*,{LAST_VISIT_TIME_RAW}})</span></td>
 						</tr>
 
 						{+START,IF_NON_EMPTY,{JOIN_DATE}}
@@ -260,7 +260,7 @@
 						{+START,IF_PASSED,ON_PROBATION}
 							<tr>
 								<th class="de_th">{!ON_PROBATION_UNTIL}:</th>
-								<td>{$DATE_AND_TIME*,1,0,0,{ON_PROBATION}}</td>
+								<td>{$DATE_TIME*,{ON_PROBATION}}</td>
 							</tr>
 						{+END}
 

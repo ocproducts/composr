@@ -35,7 +35,7 @@ function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
 
     require_lang('quiz');
 
-    $date = get_timezoned_date_tempcode($row['q_add_date']);
+    $date = get_timezoned_date_time_tempcode($row['q_add_date']);
     $url = build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $row['id']), $zone);
 
     $just_quiz_row = db_map_restrict($row, array('id', 'q_start_text'));

@@ -388,7 +388,7 @@ class Hook_ajax_tree_choose_theme_files
             'FILE' => $template_file,
             'FULL_PATH' => $template_file_path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$template_file]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$template_file]['member_id']) : null,
-            'LAST_EDITING_DATE' => (filectime($template_file_path) == filemtime($template_file_path)) ? null : get_timezoned_date(filemtime($template_file_path)),
+            'LAST_EDITING_DATE' => (filectime($template_file_path) == filemtime($template_file_path)) ? null : get_timezoned_date_time(filemtime($template_file_path)),
             'FILE_SIZE' => clean_file_size(filesize($template_file_path)),
             'ADDON' => isset($templates_for_addons[$template_file]) ? $templates_for_addons[$template_file] : null,
         ));
@@ -413,7 +413,7 @@ class Hook_ajax_tree_choose_theme_files
             'FILE' => $zone . ':' . $page,
             'FULL_PATH' => $path,
             'LAST_EDITING_USERNAME' => isset($action_log_times[$page]) ? $GLOBALS['FORUM_DRIVER']->get_username($action_log_times[$page]['member_id']) : null,
-            'LAST_EDITING_DATE' => (filectime($path) == filemtime($path)) ? null : get_timezoned_date(filemtime($path)),
+            'LAST_EDITING_DATE' => (filectime($path) == filemtime($path)) ? null : get_timezoned_date_time(filemtime($path)),
             'FILE_SIZE' => clean_file_size(filesize($path)),
             'ADDON' => null,
         ));

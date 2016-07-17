@@ -211,7 +211,7 @@ function render_activity($row, $use_inside_cms = true)
     $member_avatar = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
     $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, false, $use_inside_cms);
 
-    $datetime = $row['a_time'];
+    $timestamp = $row['a_time'];
 
     $message = new Tempcode();
 
@@ -264,7 +264,7 @@ function render_activity($row, $use_inside_cms = true)
         }
     }
 
-    return array($message, $member_avatar, $datetime, $member_url, $row['a_language_string_code'], $row['a_is_public'] == 1);
+    return array($message, $member_avatar, $timestamp, $member_url, $row['a_language_string_code'], $row['a_is_public'] == 1);
 }
 
 /**

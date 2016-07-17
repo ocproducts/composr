@@ -289,7 +289,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $fields->attach(results_entry(array($row['aggregate_label'], $row['aggregate_type'], get_timezoned_date($row['add_time']), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
+            $fields->attach(results_entry(array($row['aggregate_label'], $row['aggregate_type'], get_timezoned_date_time($row['add_time']), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
 
         $search_url = null;

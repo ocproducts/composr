@@ -196,7 +196,7 @@ class Module_cms_polls extends Standard_crud_module
 
             $fields->attach(results_entry(array(
                 protect_from_escaping(hyperlink(build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row['id']), get_module_zone('polls')), get_translated_text($row['question']), false, true)),
-                get_timezoned_date($row['add_time']),
+                get_timezoned_date_time($row['add_time']),
                 $current ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
                 ($used || $current) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
                 $username,

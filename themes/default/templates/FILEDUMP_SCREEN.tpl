@@ -47,7 +47,7 @@
 
 								<p class="meta associated_details">
 									<strong>{FILENAME*}</strong><br />
-									<span class="associated_details">({+START,IF_NON_EMPTY,{_SIZE}}{SIZE*}{+END}{+START,IF_NON_EMPTY,{TIME}}{+START,IF_NON_EMPTY,{_SIZE}}, {+END}{TIME*}{+END}{+START,IF_NON_EMPTY,{WIDTH}}, {WIDTH*}&times;{HEIGHT*}{+END})</span>
+									<span class="associated_details">({+START,IF_NON_EMPTY,{_SIZE}}{SIZE*}{+END}{+START,IF_NON_EMPTY,{DATE}}{+START,IF_NON_EMPTY,{_SIZE}}, {+END}{DATE*}{+END}{+START,IF_NON_EMPTY,{WIDTH}}, {WIDTH*}&times;{HEIGHT*}{+END})</span>
 								</p>
 							</div></div>
 						{+END}

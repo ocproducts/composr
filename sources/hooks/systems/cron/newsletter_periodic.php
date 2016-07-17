@@ -109,7 +109,7 @@ class Hook_cron_newsletter_periodic
             return null;
         }
 
-        $subject = $periodic_row['np_subject'] . '-' . get_timezoned_date(time(), false, false, false, true);
+        $subject = $periodic_row['np_subject'] . '-' . get_timezoned_date_time(time(), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
 
         $time = time();
 

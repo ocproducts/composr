@@ -158,7 +158,7 @@ function build_preview($multi_return = false)
             if (is_null($timestamp)) {
                 $is_hidden = true;
             } else {
-                $val = get_timezoned_date($timestamp, false, true, false, true);
+                $val = get_timezoned_date($timestamp, false);
             }
         } elseif ((substr($key, -6) == '_month') || (substr($key, -5) == '_year')) {
             $is_hidden = true;

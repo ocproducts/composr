@@ -851,7 +851,7 @@ class Module_calendar
 
         for ($i = 0; $i < 24; $i++) {
             // Work out the hour
-            $hour = locale_filter(date(do_lang('time_hour_and_mins'), $i * 60 * 60));
+            $hour = locale_filter(date(do_lang('calendar_time_hour_and_mins'), $i * 60 * 60));
 
             // The streams need rendering for each hour
             $_streams = new Tempcode();
@@ -1019,7 +1019,7 @@ class Module_calendar
         // Now render
         $hours = new Tempcode();
         for ($i = 0; $i < 24; $i++) {
-            $hour = locale_filter(date(do_lang('time_hour_and_mins'), $i * 60 * 60));
+            $hour = locale_filter(date(do_lang('calendar_time_hour_and_mins'), $i * 60 * 60));
 
             $days = new Tempcode();
             for ($j = 0; $j < 7; $j++) {
@@ -1562,7 +1562,7 @@ class Module_calendar
             'TAGS' => get_loaded_tags('calendar'),
             'WARNING_DETAILS' => $warning_details,
             'SUBMITTER' => strval($event['e_submitter']),
-            'ADD_DATE' => get_timezoned_date($event['e_add_date']),
+            'ADD_DATE' => get_timezoned_date_time($event['e_add_date']),
             'ADD_DATE_RAW' => strval($event['e_add_date']),
             'EDIT_DATE_RAW' => is_null($event['e_edit_date']) ? '' : strval($event['e_edit_date']),
             'VIEWS' => integer_format($event['e_views']),

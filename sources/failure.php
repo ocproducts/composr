@@ -758,7 +758,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                     $is_spammer = true;
                 }
                 $full_reason = do_lang($row['reason'], $row['reason_param_a'], $row['reason_param_b'], null, get_site_default_lang());
-                $summary .= "\n" . '[*]' . $full_reason . "\n" . $row['url'] . "\n" . get_timezoned_date($row['date_and_time']);
+                $summary .= "\n" . '[*]' . $full_reason . "\n" . $row['url'] . "\n" . get_timezoned_date_time($row['date_and_time']);
             }
             $summary .= "\n" . '[/list]';
             if ($is_spammer) {
@@ -785,7 +785,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $reason_full = do_lang($reason, $reason_param_a, $reason_param_b, null, get_site_default_lang());
         $_stack_trace = get_html_trace();
         $stack_trace = str_replace('html', '&#104;tml', $_stack_trace->evaluate());
-        $time = get_timezoned_date(time(), true, true, true);
+        $date = get_timezoned_date_time(time(), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
         $message = do_notification_template(
             'HACK_ATTEMPT_MAIL',
             array(
@@ -799,7 +799,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 'ID' => strval($id),
                 'USERNAME' => $username,
                 'TIME_RAW' => strval(time()),
-                'TIME' => $time,
+                'DATE' => $date,
                 'URL' => $url,
                 'POST' => $post,
             ),

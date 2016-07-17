@@ -78,7 +78,7 @@ class Hook_admin_stats_downloads
                 $time_end = time();
             }
 
-            $title = get_screen_title('SECTION_DOWNLOADS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
+            $title = get_screen_title('SECTION_DOWNLOADS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
 
             $rows = $GLOBALS['SITE_DB']->query('SELECT id,num_downloads,name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'download_downloads WHERE add_date>' . strval($time_start) . ' AND add_date<' . strval($time_end));
         }

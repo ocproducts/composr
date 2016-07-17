@@ -229,8 +229,8 @@ function get_web_notifications($max = null, $start = 0)
             'FROM_URL' => $from_url,
             'FROM_AVATAR_URL' => $avatar_url,
             'PRIORITY' => strval($row['d_priority']),
-            'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
-            'DATE_WRITTEN_TIME' => get_timezoned_date($row['d_date_and_time']),
+            '_TIME' => strval($row['d_date_and_time']),
+            'DATE' => get_timezoned_date_time($row['d_date_and_time']),
             'NOTIFICATION_CODE' => $row['d_notification_code'],
             'CODE_CATEGORY' => $row['d_code_category'],
             'HAS_READ' => ($row['d_read'] == 1),
@@ -278,8 +278,8 @@ function web_notification_to_xml($row)
         'FROM_URL' => $from_url,
         'FROM_AVATAR_URL' => $avatar_url,
         'PRIORITY' => strval($row['d_priority']),
-        'DATE_TIMESTAMP' => strval($row['d_date_and_time']),
-        'DATE_WRITTEN_TIME' => get_timezoned_date($row['d_date_and_time']),
+        '_TIME' => strval($row['d_date_and_time']),
+        'DATE' => get_timezoned_date_time($row['d_date_and_time']),
         'NOTIFICATION_CODE' => $row['d_notification_code'],
         'CODE_CATEGORY' => $row['d_code_category'],
     ));
@@ -297,7 +297,7 @@ function web_notification_to_xml($row)
             from_avatar_url="' . escape_html($avatar_url) . '"
             priority="' . escape_html(strval($row['d_priority'])) . '"
             date_timestamp="' . escape_html(strval($row['d_date_and_time'])) . '"
-            date_written_time="' . escape_html(get_timezoned_date($row['d_date_and_time'])) . '"
+            date_written_time="' . escape_html(get_timezoned_date_time($row['d_date_and_time'])) . '"
             notification_code="' . escape_html($row['d_notification_code']) . '"
             code_category="' . escape_html($row['d_code_category']) . '"
             sound="on"
@@ -339,7 +339,7 @@ function get_pts($max = null, $start = 0)
     foreach ($rows as $i => $topic) {
         $topic_url = build_url(array('page' => 'topicview', 'id' => $topic['t_id']), get_module_zone('topicview'));
         $title = $topic['t_cache_first_title'];
-        $date = get_timezoned_date($topic['t_cache_last_time'], true);
+        $date = get_timezoned_date_time($topic['t_cache_last_time']);
         $num_posts = $topic['t_cache_num_posts'];
 
         $last_post_by_username = $topic['t_cache_last_username'];
@@ -407,8 +407,8 @@ function pt_to_xml($row)
         'FROM_MEMBER_ID' => strval($member_id),
         'URL' => $url,
         'FROM_AVATAR_URL' => $avatar_url,
-        'DATE_TIMESTAMP' => strval($row['p_time']),
-        'DATE_WRITTEN_TIME' => get_timezoned_date($row['p_time']),
+        '_TIME' => strval($row['p_time']),
+        'DATE' => get_timezoned_date_time($row['p_time']),
     ));
 
     return '
@@ -422,7 +422,7 @@ function pt_to_xml($row)
             url="' . escape_html($url) . '"
             from_avatar_url="' . escape_html($avatar_url) . '"
             date_timestamp="' . escape_html(strval($row['p_time'])) . '"
-            date_written_time="' . escape_html(get_timezoned_date($row['p_time'])) . '"
+            date_written_time="' . escape_html(get_timezoned_date_time($row['p_time'])) . '"
             sound="on"
         />
     ';

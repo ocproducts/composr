@@ -377,7 +377,7 @@ class RevisionEngineFiles
         $more_recent_text = $text;
         $field_rows = new Tempcode();
         foreach ($revisions as $revision) {
-            $date = get_timezoned_date($revision['id']);
+            $date = get_timezoned_date_time($revision['id']);
 
             $size_change = strlen($more_recent_text) - strlen($revision['r_original_text']);
 

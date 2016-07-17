@@ -272,7 +272,7 @@ class Module_admin_ecommerce_logs
             do_lang('MEMBER')
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
-            $date = get_timezoned_date($myrow['t_time']);
+            $date = get_timezoned_date_time($myrow['t_time']);
 
             if ($myrow['t_status'] != 'Completed') {
                 $trigger_url = build_url(array('page' => '_SELF', 'type' => 'trigger', 'type_code' => $myrow['t_type_code'], 'id' => $myrow['t_purchase_id']), '_SELF');
@@ -732,7 +732,7 @@ class Module_admin_ecommerce_logs
             $s_length_units = $products[$subs['s_type_code']][3]['length_units']; // y-year, m-month, w-week, d-day
             $time_period_units = array('y' => 'year', 'm' => 'month', 'w' => 'week', 'd' => 'day');
             $expiry_time = strtotime('+' . strval($s_length) . ' ' . $time_period_units[$s_length_units], $subs['s_time']);
-            $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
+            $expiry_date = get_timezoned_date($expiry_time, false);
             $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($subs['s_member_id'], true, '', false);
             $cancel_url = build_url(array('page' => '_SELF', 'type' => 'cancel_subscription', 'subscription_id' => $subs['id']), '_SELF');
 

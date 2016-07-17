@@ -361,7 +361,7 @@ class Module_cms_catalogues extends Standard_crud_module
             } else {
                 $fr[] = do_lang('UNKNOWN');
             }
-            $fr[] = get_timezoned_date($row['ce_add_date']);
+            $fr[] = get_timezoned_date_time($row['ce_add_date']);
             $fr[] = integer_format($row['ce_views']);
             $username = protect_from_escaping($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['ce_submitter']));
             $fr[] = $username;
@@ -1206,7 +1206,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
             $fr = array();
             $fr[] = protect_from_escaping(hyperlink(build_url(array('page' => 'catalogues', 'type' => 'category', 'id' => $row['id']), get_module_zone('catalogues')), get_translated_text($row['cc_title']), false, true));
-            $fr[] = get_timezoned_date($row['cc_add_date']);
+            $fr[] = get_timezoned_date_time($row['cc_add_date']);
             $fr[] = ($row['cc_order'] == ORDER_AUTOMATED_CRITERIA) ? do_lang_tempcode('NA_EM') : make_string_tempcode(strval($row['cc_order']));
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])));
 

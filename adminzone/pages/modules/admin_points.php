@@ -207,7 +207,7 @@ class Module_admin_points
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('AMOUNT'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('REASON'), do_lang_tempcode('REVERSE')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {
-            $date = get_timezoned_date($myrow['date_and_time']);
+            $date = get_timezoned_date_time($myrow['date_and_time']);
 
             $reason = get_translated_tempcode('gifts', $myrow, 'reason');
 

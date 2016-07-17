@@ -11,7 +11,7 @@
 			<tbody>
 				<tr>
 					<th class="de_th metadata_title">{!ADDED}</th>
-					<td>{$DATE_AND_TIME*,1,0,0,{ADD_DATE_RAW}}</td>
+					<td>{$DATE_TIME*,{ADD_DATE_RAW}}</td>
 				</tr>
 
 				<tr>
@@ -22,7 +22,7 @@
 				{+START,IF_NON_EMPTY,{EDIT_DATE_RAW}}
 					<tr>
 						<th class="de_th metadata_title">{!EDITED}</th>
-						<td>{$DATE_AND_TIME*,1,0,0,{EDIT_DATE_RAW}}</td>
+						<td>{$DATE_TIME*,{EDIT_DATE_RAW}}</td>
 					</tr>
 				{+END}
 

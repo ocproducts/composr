@@ -301,7 +301,7 @@ class Module_admin_backup
                         break;
                 }
 
-                $rows->attach(columned_table_row(array(hyperlink($url, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date($entry['mtime'])), $actions), true));
+                $rows->attach(columned_table_row(array(hyperlink($url, $entry['file'], false, true), $type, escape_html(clean_file_size($entry['size'])), escape_html(get_timezoned_date_time($entry['mtime'])), $actions), true));
             }
 
             $files = do_template('COLUMNED_TABLE', array('_GUID' => '726070efa71843236e975d87d4a17dae', 'HEADER_ROW' => $header_row, 'ROWS' => $rows));

@@ -349,7 +349,7 @@ class CMSUserRead
                     if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                         $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                     } else {
-                        $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
+                        $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
                     }
                     $custom_fields_list[do_lang('DATE_OF_BIRTH')] = $dob;
                 } else {
@@ -382,7 +382,7 @@ class CMSUserRead
             }
 
             $time_for_them_raw = tz_time(time(), get_users_timezone($user_id));
-            $time_for_them = get_timezoned_time(time(), true, $user_id);
+            $time_for_them = get_timezoned_time(time(), false, false, $user_id);
             $custom_fields_list[do_lang('TIME_FOR_THEM')] = $time_for_them;
 
             if ((has_privilege(get_member(), 'see_warnings')) && (addon_installed('cns_warnings'))) {

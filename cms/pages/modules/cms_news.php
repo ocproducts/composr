@@ -254,7 +254,7 @@ class Module_cms_news extends Standard_crud_module
             } else {
                 $fr[] = do_lang('UNKNOWN');
             }
-            $fr[] = get_timezoned_date($row['date_and_time']);
+            $fr[] = get_timezoned_date_time($row['date_and_time']);
             $fr[] = integer_format($row['news_views']);
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');

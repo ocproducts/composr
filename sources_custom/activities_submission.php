@@ -209,7 +209,7 @@ function activities_ajax_update_list_handler()
         if (count($activities) > 0) {
             $list_items = '';
             foreach ($activities as $row) {
-                list($message, $member_avatar, $datetime, $member_url, $is_public) = render_activity($row);
+                list($message, $member_avatar, $timestamp, $member_url, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
                 if (is_null($username)) {
@@ -225,7 +225,7 @@ function activities_ajax_update_list_handler()
                     'AVATAR' => $member_avatar,
                     'MEMBER_ID' => strval($row['a_member_id']),
                     'USERNAME' => $username,
-                    'DATETIME' => strval($datetime),
+                    'TIMESTAMP' => strval($timestamp),
                     'MEMBER_URL' => $member_url,
                     'LIID' => strval($row['id']),
                     'ALLOW_REMOVE' => (($row['a_member_id'] == $viewer_id) || $can_remove_others),

@@ -339,7 +339,7 @@ class Module_admin_actionlog
                 $mode = array_key_exists('l_reason', $myrow) ? 'cns' : 'cms';
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $myrow['id'], 'mode' => $mode), '_SELF');
                 $mode_nice = ($mode == 'cms') ? 'Composr' : 'Conversr';
-                $date = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true, $mode_nice . '/' . $row['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
+                $date = hyperlink($url, get_timezoned_date_time($myrow['date_and_time']), false, true, $mode_nice . '/' . $row['the_type'] . '/' . strval($myrow['id']), null, null, null, '_top');
 
                 if (!is_null($myrow['param_a'])) {
                     $a = $myrow['param_a'];
@@ -424,7 +424,7 @@ class Module_admin_actionlog
 
         $fields = array(
             'USERNAME' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['member_id'], false, '', false),
-            'DATE_TIME' => get_timezoned_date($row['date_and_time']),
+            'DATE_TIME' => get_timezoned_date_time($row['date_and_time']),
             'TYPE' => $type_str,
             'PARAMETER_A' => is_null($row['param_a']) ? '' : $row['param_a'],
             'PARAMETER_B' => is_null($row['param_b']) ? '' : $row['param_b'],
@@ -508,7 +508,7 @@ class Module_admin_actionlog
             }
 
             if (isset($revision['r_original_content_timestamp'])) {
-                $fields['CONTENT_DATE_AND_TIME'] = get_timezoned_date($revision['r_original_content_timestamp']);
+                $fields['CONTENT_DATE_TIME'] = get_timezoned_date_time($revision['r_original_content_timestamp']);
             }
 
             if (isset($revision['r_original_title'])) {

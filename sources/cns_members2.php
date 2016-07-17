@@ -118,7 +118,7 @@ function render_member_box($poster_details, $preview = false, $hook_objects = nu
             'poster' => $poster_details,
             'poster_posts' => $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_cache_num_posts'),
             'poster_join_date' => $GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_join_time'),
-            'poster_join_date_string' => get_timezoned_date($GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_join_time'), false),
+            'poster_join_date_string' => get_timezoned_date($GLOBALS['CNS_DRIVER']->get_member_row_field($poster_details, 'm_join_time')),
             'primary_group_name' => cns_get_group_name($primary_group),
         );
         $poster_details['custom_fields'] = cns_get_all_custom_fields_match_member(
@@ -214,7 +214,7 @@ function render_member_box($poster_details, $preview = false, $hook_objects = nu
             if (@strftime('%Y', @mktime(0, 0, 0, 1, 1, 1963)) != '1963') {
                 $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
             } else {
-                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, false, true);
+                $dob = get_timezoned_date(mktime(12, 0, 0, $month, $day, $year), false, true);
             }
 
             $age = intval(date('Y')) - $year;

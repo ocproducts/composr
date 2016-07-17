@@ -397,7 +397,11 @@ class Module_cms_calendar extends Standard_crud_module
 
             $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], is_null($row['e_start_hour']) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], is_null($row['e_start_minute']) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
             $time_raw = mktime($row['e_start_hour'], $row['e_start_minute'], 0, $row['e_start_month'], $start_day_of_month, $row['e_start_year']);
-            $date = get_timezoned_date($time_raw, !is_null($row['e_start_hour']));
+            if (is_null($row['e_start_hour'])) {
+                $date = get_timezoned_date($time_raw);
+            } else {
+                $date = get_timezoned_date_time($time_raw);
+            }
 
             $fields->attach(results_entry(array(protect_from_escaping(hyperlink(build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar')), get_translated_text($row['e_title']), false, true)), $date, $type, ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
@@ -536,7 +540,7 @@ class Module_cms_calendar extends Standard_crud_module
         $start_day_of_month = find_concrete_day_of_month($start_year, $start_month, $start_day, $start_monthly_spec_type, is_null($start_hour) ? find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_hour, is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, $timezone, $do_timezone_conv == 1);
         $fields->attach(form_input_date(do_lang_tempcode('DATE_TIME'), '', 'start', true, false, true, array(is_null($start_minute) ? find_timezone_start_minute_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) : $start_minute, is_null($start_hour) ? (find_timezone_start_hour_in_utc($timezone, $start_year, $start_month, $start_day, $start_monthly_spec_type) + 9) : $start_hour, $start_month, $start_day_of_month, $start_year), 120, intval(date('Y')) - 100, null, true, $timezone, get_param_string('date', '') == ''));
         $end_day_of_month = find_concrete_day_of_month($end_year, $end_month, $end_day, $end_monthly_spec_type, is_null($end_hour) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, is_null($end_minute) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, $timezone, $do_timezone_conv == 1);
-        $fields->attach(form_input_date(do_lang_tempcode('END_DATE_AND_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_AND_TIME'), 'end', false, is_null($end_year), true, array(is_null($end_minute) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, is_null($end_hour) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
+        $fields->attach(form_input_date(do_lang_tempcode('END_DATE_TIME'), do_lang_tempcode('DESCRIPTION_END_DATE_TIME'), 'end', false, is_null($end_year), true, array(is_null($end_minute) ? find_timezone_end_minute_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_minute, is_null($end_hour) ? find_timezone_end_hour_in_utc($timezone, $end_year, $end_month, $end_day, $end_monthly_spec_type) : $end_hour, $end_month, $end_day_of_month, $end_year), 120, intval(date('Y')) - 100, null, true, $timezone));
 
         // Type
         $type_list = create_selection_list_event_types($type);

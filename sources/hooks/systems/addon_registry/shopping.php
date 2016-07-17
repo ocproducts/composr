@@ -517,7 +517,7 @@ class Hook_addon_registry_shopping
                 'ORDER_DET_URL' => placeholder_url(),
                 'ORDER_TITLE' => lorem_word(),
                 'AMOUNT' => placeholder_id(),
-                'TIME' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'STATE' => lorem_word_2(),
                 'NOTE' => lorem_phrase(),
             );

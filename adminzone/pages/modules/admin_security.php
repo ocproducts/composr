@@ -106,7 +106,6 @@ class Module_admin_security
     public $title;
     public $id;
     public $row;
-    public $time;
 
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
@@ -139,13 +138,12 @@ class Module_admin_security
             $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('id' => $id), '', 1);
             $row = $rows[0];
 
-            $time = get_timezoned_date($row['date_and_time']);
+            $date = get_timezoned_date_time($row['date_and_time']);
 
-            $this->title = get_screen_title('VIEW_ALERT', true, array(escape_html($time)));
+            $this->title = get_screen_title('VIEW_ALERT', true, array(escape_html($date)));
 
             $this->id = $id;
             $this->row = $row;
-            $this->time = $time;
         }
 
         return null;
@@ -203,9 +201,9 @@ class Module_admin_security
         $rows = $GLOBALS['SITE_DB']->query_select('failedlogins', array('*'), $map, 'ORDER BY ' . $_sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
         foreach ($rows as $row) {
-            $time = get_timezoned_date($row['date_and_time']);
+            $date = get_timezoned_date_time($row['date_and_time']);
             $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
-            $fields->attach(results_entry(array($row['failed_account'], $time, hyperlink($lookup_url, $row['ip'], false, true)), true));
+            $fields->attach(results_entry(array($row['failed_account'], $date, hyperlink($lookup_url, $row['ip'], false, true)), true));
         }
         $failed_logins = results_table(do_lang_tempcode('FAILED_LOGINS'), $start, 'failed_start', $max, 'failed_max', $max_rows, $fields_title, $fields, $sortables, $_sortable, $sort_order, 'failed_sort', new Tempcode());
 
@@ -263,7 +261,6 @@ class Module_admin_security
     {
         $id = $this->id;
         $row = $this->row;
-        $time = $this->time;
 
         $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
         $member_url = build_url(array('page' => 'admin_lookup', 'param' => $row['member_id']), '_SELF');

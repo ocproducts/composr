@@ -38,7 +38,7 @@ class Hook_checklist_cron
             $url = get_tutorial_url('tut_configuration');
         } else {
             $status = 1;
-            $date = get_timezoned_date(intval($last_cron), true, true, false, true);
+            $date = get_timezoned_date_time(intval($last_cron), false);
             $mails_sent = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) AS cnt FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_queued=0 AND m_date_and_time>' . strval(time() - 60 * 60 * 24));
             $mails_queued = $GLOBALS['SITE_DB']->query_select_value('logged_mail_messages', 'COUNT(*) AS cnt', array('m_queued' => 1));
             $info = do_lang_tempcode('LAST_RAN_AT', escape_html($date), escape_html(integer_format($mails_sent)), escape_html(integer_format($mails_queued)));

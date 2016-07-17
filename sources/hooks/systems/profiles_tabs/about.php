@@ -249,7 +249,7 @@ class Hook_profiles_tabs_about
                     $dob = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($day), 2, '0', STR_PAD_LEFT);
                     $_dob = $_dob_censored; // Have to use censored as other is broken
                 } else {
-                    $dob = get_timezoned_date($_dob, false, false, true);
+                    $dob = get_timezoned_date($_dob, false);
                     $_dob_censored = $_dob; // No censoring needed
                 }
             } else {
@@ -279,7 +279,7 @@ class Hook_profiles_tabs_about
         $users_timezone = get_users_timezone($member_id_of);
         require_code('temporal2');
         $time_for_them_raw = tz_time(time(), $users_timezone);
-        $time_for_them = get_timezoned_time(time(), true, $member_id_of);
+        $time_for_them = get_timezoned_time(time(), false, false, $member_id_of);
 
         $banned = ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_is_perm_banned') == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
 
@@ -319,7 +319,7 @@ class Hook_profiles_tabs_about
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_join_time');
         $days_joined = intval(round((time() - $join_time) / 60 / 60 / 24));
         $total_posts = $GLOBALS['FORUM_DRIVER']->get_num_forum_posts();
-        $join_date = ($join_time == 0) ? '' : get_timezoned_date($join_time, false);
+        $join_date = ($join_time == 0) ? '' : get_timezoned_date($join_time);
         $count_posts = do_lang_tempcode('_COUNT_POSTS', escape_html(integer_format($post_count)), escape_html(float_format(floatval($post_count) / floatval(($days_joined == 0) ? 1 : $days_joined))), array(escape_html(float_format(floatval(100 * $post_count) / floatval(($total_posts == 0) ? 1 : $total_posts)))));
 
         $a = ($avatar_url == '') ? 0 : cns_get_member_best_group_property($member_id_of, 'max_avatar_width');

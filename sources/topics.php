@@ -764,8 +764,8 @@ class CMS_Topic
             }
 
             // Misc details
-            $datetime_raw = $post['date'];
-            $datetime = get_timezoned_date($post['date']);
+            $timestamp = $post['date'];
+            $date = get_timezoned_date_time($post['date']);
             $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true);
             $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
             if (is_null($poster_name)) {
@@ -826,7 +826,7 @@ class CMS_Topic
                     $last_edited = do_template('CNS_TOPIC_POST_LAST_EDITED', array(
                         '_GUID' => '6301ad8d8f80948ad8270828f1bdaf33',
                         'LAST_EDIT_DATE_RAW' => is_null($post['last_edit_time']) ? '' : strval($post['last_edit_time']),
-                        'LAST_EDIT_DATE' => $post['last_edit_time_string'],
+                        'LAST_EDIT_DATE' => $post['last_edit_date'],
                         'LAST_EDIT_PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($post['last_edit_by'], false, true),
                         'LAST_EDIT_USERNAME' => $post['last_edit_by_username'],
                     ));
@@ -957,8 +957,8 @@ class CMS_Topic
                 'INDIVIDUAL_REVIEW_RATINGS' => $individual_review_ratings,
                 'HIGHLIGHT' => $highlight,
                 'TITLE' => $post['title'],
-                'TIME_RAW' => strval($datetime_raw),
-                'TIME' => $datetime,
+                '_TIME' => strval($timestamp),
+                'DATE' => $date,
                 'POSTER_ID' => strval($post['member']),
                 'POSTER_URL' => $poster_url,
                 'POSTER_NAME' => $poster_name,
@@ -1034,7 +1034,7 @@ class CMS_Topic
      */
     protected function render_post_map_item($post)
     {
-        $datetime = get_timezoned_date($post['date']);
+        $date = get_timezoned_date_time($post['date']);
         $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], false, true);
         $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
         if (is_null($poster_name)) {
@@ -1056,7 +1056,7 @@ class CMS_Topic
             'POSTER_NAME' => $poster_name,
             'LEVEL_HAS_ADJACENT_SIBLING' => $post['level_has_adjacent_sibling'],
             'POST_LEVEL' => strval(count($post['level_has_adjacent_sibling']) - 1), // Calculate this post's level
-            'TIME' => $datetime,
+            'DATE' => $date,
             'IS_UNREAD' => $is_unread,
         ));
 

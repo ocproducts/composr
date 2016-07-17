@@ -127,7 +127,7 @@ class Block_main_staff_actions
                 $username = do_lang('UNKNOWN');
             }
 
-            $date = escape_html_tempcode(get_timezoned_date_tempcode($myrow['date_and_time']));
+            $date = escape_html_tempcode(get_timezoned_date_time_tempcode($myrow['date_and_time']));
 
             if (!is_null($myrow['param_a'])) {
                 $a = $myrow['param_a'];

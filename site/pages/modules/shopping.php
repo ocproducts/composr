@@ -679,7 +679,7 @@ class Module_shopping
                 $order_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_det['p_id']), get_module_zone('catalogues'));
             }
 
-            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['tot_price']), 'TIME' => get_timezoned_date($row['add_date'], true, false, true, true), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_det_url, 'DELIVERABLE' => '');
+            $orders[] = array('ORDER_TITLE' => $order_title, 'ID' => strval($row['id']), 'AMOUNT' => strval($row['tot_price']), 'DATE' => get_timezoned_date_time($row['add_date'], false), 'STATE' => do_lang_tempcode($row['order_status']), 'NOTE' => '', 'ORDER_DET_URL' => $order_det_url, 'DELIVERABLE' => '');
         }
 
         if (count($orders) == 0) {

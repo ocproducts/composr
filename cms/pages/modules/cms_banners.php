@@ -294,9 +294,9 @@ class Module_cms_banners extends Standard_crud_module
                 strval($row['importance_modulus']),
             );
             if ($has_expiry_dates) {
-                $fr[] = is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date($row['expiry_date']));
+                $fr[] = is_null($row['expiry_date']) ? protect_from_escaping(do_lang_tempcode('NA_EM')) : make_string_tempcode(get_timezoned_date_time($row['expiry_date']));
             }
-            $fr[] = get_timezoned_date($row['add_date'], false);
+            $fr[] = get_timezoned_date($row['add_date']);
             if (addon_installed('unvalidated')) {
                 $fr[] = ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             }
@@ -626,7 +626,7 @@ class Module_cms_banners extends Standard_crud_module
                 $csv_row[do_lang('FILTER_REGIONS')] = $banners_regions;
             }
 
-            $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date($row['expiry_date']);
+            $csv_row[do_lang('EXPIRY_DATE')] = is_null($row['expiry_date']) ? do_lang('NA') : get_timezoned_date_time($row['expiry_date']);
 
             if (addon_installed('unvalidated')) {
                 $csv_row[do_lang('VALIDATED')] = ($row['validated'] == 1) ? do_lang('YES') : do_lang('NO');
@@ -636,7 +636,7 @@ class Module_cms_banners extends Standard_crud_module
 
             $csv_row[do_lang('SUBMITTER')] = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
 
-            $csv_row[do_lang('ADDED')] = get_timezoned_date($row['add_date']);
+            $csv_row[do_lang('ADDED')] = get_timezoned_date_time($row['add_date']);
             $csv_row[do_lang('EDITED')] = is_null($row['edit_date']) ? '' : date('Y-m-d', $row['edit_date']);
 
             $csv_rows[] = $csv_row;

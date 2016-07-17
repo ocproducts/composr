@@ -587,7 +587,7 @@ class Module_news
         );
 
         // Load details
-        $date = get_timezoned_date($myrow['date_and_time']);
+        $date = get_timezoned_date_time($myrow['date_and_time']);
         $author_url = addon_installed('authors') ? build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $myrow['author']), get_module_zone('authors')) : new Tempcode();
         $author = $myrow['author'];
         $news_full_plain = get_translated_text($myrow['news_article']);

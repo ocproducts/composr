@@ -531,7 +531,7 @@ class Module_wiki
 
             // Date post was made
             $post_date_raw = $myrow['date_and_time'];
-            $post_date = get_timezoned_date($myrow['date_and_time']);
+            $post_date = get_timezoned_date_time($myrow['date_and_time']);
 
             // Rating
             actualise_rating(true, 'wiki_post', strval($post_id), build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $chain), '_SELF'), $current_title);
@@ -718,7 +718,7 @@ class Module_wiki
 
         $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($revision['log_member_id']);
 
-        $date = get_timezoned_date($revision['log_time']);
+        $date = get_timezoned_date_time($revision['log_time']);
 
         $action = do_lang_tempcode($revision['log_action']);
         $do_actionlog = has_actual_page_access(get_member(), 'admin_actionlog');

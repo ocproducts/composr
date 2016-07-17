@@ -204,8 +204,8 @@ class Module_cms_booking extends Standard_crud_module
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $row, 'title'));
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable', $row, 'categorisation'));
             $fr[] = float_format($row['price']);
-            $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, true, false, true);
-            $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, true, false, true);
+            $fr[] = get_timezoned_date(mktime($row['active_from_month'], $row['active_from_day'], $row['active_from_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $fr[] = get_timezoned_date(mktime($row['active_to_month'], $row['active_to_day'], $row['active_to_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $fr[] = ($row['enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
@@ -651,8 +651,8 @@ class Module_cms_booking_blacks extends Standard_crud_module
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
             $fr = array();
-            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false);
-            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false);
+            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_from_month'], $row['blacked_from_day'], $row['blacked_from_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['blacked_to_month'], $row['blacked_to_day'], $row['blacked_to_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $fr[] = protect_from_escaping(get_translated_tempcode('bookable_blacked', $row, 'blacked_explanation'));
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
@@ -925,15 +925,15 @@ class Module_cms_booking_bookings extends Standard_crud_module
 
             $fr = array();
             $fr[] = get_translated_text($GLOBALS['SITE_DB']->query_select_value('bookable', 'title', array('id' => $row['bookable_id'])));
-            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['start_month'], $row['start_day'], $row['start_year']), false, true, true);
-            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['end_month'], $row['end_day'], $row['end_year']), false, true, false, true);
+            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['start_month'], $row['start_day'], $row['start_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $fr[] = get_timezoned_date(mktime(0, 0, 0, $row['end_month'], $row['end_day'], $row['end_year']), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
             if (get_option('member_booking_only') == '1') {
                 $fr[] = $GLOBALS['FORUM_DRIVER']->get_username($row['_rows'][0]['member_id'], true);
             } else {
                 $fr[] = $row['_rows'][0]['customer_name'];
             }
             $fr[] = number_format($row['quantity']);
-            $fr[] = get_timezoned_date($row['_rows'][0]['booked_at']);
+            $fr[] = get_timezoned_date_time($row['_rows'][0]['booked_at']);
             $fr[] = protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true));
 
             $fields->attach(results_entry($fr, true));

@@ -139,7 +139,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         'title' => $_postdetails['p_title'],
         'post' => $_postdetails['message'],
         'time' => $_postdetails['p_time'],
-        'time_string' => get_timezoned_date($_postdetails['p_time']),
+        'date' => get_timezoned_date_time($_postdetails['p_time']),
         'validated' => $_postdetails['p_validated'],
         'is_emphasised' => $_postdetails['p_is_emphasised'],
         'poster_username' => $_postdetails['p_poster_name_if_guest'],
@@ -163,7 +163,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
     if (!is_null($_postdetails['p_last_edit_by'])) {
         $post['last_edit_by'] = $_postdetails['p_last_edit_by'];
         $post['last_edit_time'] = $_postdetails['p_last_edit_time'];
-        $post['last_edit_time_string'] = get_timezoned_date($_postdetails['p_last_edit_time']);
+        $post['last_edit_date'] = get_timezoned_date_time($_postdetails['p_last_edit_time']);
         $post['last_edit_by_username'] = $GLOBALS['CNS_DRIVER']->get_username($_postdetails['p_last_edit_by']);
         if ($post['last_edit_by_username'] == '') {
             $post['last_edit_by_username'] = do_lang('UNKNOWN'); // Shouldn't happen, but imported data can be weird
@@ -229,7 +229,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
 
         // Join date
         $post['poster_join_date'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_join_time');
-        $post['poster_join_date_string'] = get_timezoned_date($post['poster_join_date']);
+        $post['poster_join_date_string'] = get_timezoned_date_time($post['poster_join_date']);
     } elseif ($_postdetails['p_poster'] == $GLOBALS['CNS_DRIVER']->get_guest_id()) {
         if ($_postdetails['p_poster_name_if_guest'] == do_lang('SYSTEM')) {
             $post['poster_avatar'] = find_theme_image('cns_default_avatars/system', true);

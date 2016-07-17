@@ -2859,7 +2859,7 @@ function string_scan($lang, $do_guessing = false)
         CONNECT_DB_ERROR
         CONNECT_ERROR
         CONTACT_US_MESSAGING
-        CONTENT_DATE_AND_TIME
+        CONTENT_DATE_TIME
         CONTENT_NEEDING_REVIEWING
         CONTENT_OWNER
         CONTENT_REVIEWS
@@ -3285,7 +3285,7 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_EMOTICON_CODE
         DESCRIPTION_EMOTICON_IS_SPECIAL
         DESCRIPTION_ENCRYPTED
-        DESCRIPTION_END_DATE_AND_TIME
+        DESCRIPTION_END_DATE_TIME
         DESCRIPTION_ENQUIRE_ON_NEW_IPS
         DESCRIPTION_EVENT_TEXT
         DESCRIPTION_EVENT_TIMEZONE
@@ -4047,7 +4047,7 @@ function string_scan($lang, $do_guessing = false)
         ENCRYPTION_ERROR
         ENCRYPTION_KEY
         ENCRYPTION_KEY_ERROR
-        END_DATE_AND_TIME
+        END_DATE_TIME
         ENQUIRE_ON_NEW_IPS
         ENSURE_FINISH_PROFILE
         ENTER_IMAP_DETAILS
@@ -6226,7 +6226,7 @@ function string_scan($lang, $do_guessing = false)
         SYMBOLS_AND_DIRECTIVES
         MISC_SYMBOL__BASE_URL
         MISC_SYMBOL__DATE
-        MISC_SYMBOL__DATE_AND_TIME
+        MISC_SYMBOL__DATE_TIME
         MISC_SYMBOL__IS_STAFF
         MISC_SYMBOL__LANG
         MISC_SYMBOL__MATCH_KEY_MATCH
@@ -9802,13 +9802,10 @@ function string_scan($lang, $do_guessing = false)
         calendar_month_in_year_verbose
         charset
         date_no_year
-        date_regular_date
-        date_regular_joiner
-        date_regular_time
-        date_verbose_date
-        date_verbose_joiner
-        date_verbose_time
-        date_withinday
+        date_date
+        date_joiner
+        date_time
+        date_withinday_time
         date_withinweek_date
         date_withinweek_joiner
         dictionary
@@ -9824,7 +9821,7 @@ function string_scan($lang, $do_guessing = false)
         links__CATALOGUE_ENTRY
         links__CATALOGUE_INDEX
         locale
-        time_hour_and_mins
+        calendar_time_hour_and_mins
     ')));
 
     // Start with what we know

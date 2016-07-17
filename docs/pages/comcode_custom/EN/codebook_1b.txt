@@ -348,7 +348,7 @@ $rows = $GLOBALS['SITE_DB']->query_select('example', array('name', 'add_date'), 
 foreach ($rows as $row) {
     $fr = array(
         $row['name'],
-        get_timezoned_date($row['add_date']),
+        get_timezoned_date_time($row['add_date']),
     );
 
     $fields->attach(results_entry($fr), true);

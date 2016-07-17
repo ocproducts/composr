@@ -131,7 +131,7 @@ class Block_main_forum_news
             $myrow = $rows[$i];
 
             $id = $myrow['id'];
-            $date = get_timezoned_date_tempcode($myrow[$date_key]);
+            $date = get_timezoned_date_time_tempcode($myrow[$date_key]);
             $author_url = (((array_key_exists('member_based', $map)) && ($map['member_based'] == '1')) || (!addon_installed('authors'))) ? new Tempcode() : build_url(array('page' => 'authors', 'type' => 'browse', 'author' => $myrow['firstusername']), get_module_zone('authors'));
             $author = $myrow['firstusername'];
             $news_title = escape_html($myrow['title']);

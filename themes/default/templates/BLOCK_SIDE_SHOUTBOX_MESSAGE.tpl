@@ -4,7 +4,7 @@
 	</p>
 
 	<p class="tiny_paragraph associated_details">
-		{!POSTED_TIME_SIMPLE,{TIME*}}
+		{!POSTED_TIME_SIMPLE,{DATE*}}
 	</p>
 
 	<blockquote class="shoutbox_message">{$TRUNCATE_LEFT,{MESSAGE},92,1,1}</blockquote>

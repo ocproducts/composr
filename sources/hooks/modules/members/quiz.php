@@ -156,7 +156,7 @@ class Hook_members_quiz
                 'QUIZ_ID' => strval($entry['id']),
                 'QUIZ_URL' => build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $entry['id']), get_module_zone('quiz')),
                 'ENTRY_ID' => strval($entry['e_id']),
-                'ENTRY_DATE' => get_timezoned_date($entry['q_time'], false),
+                'ENTRY_DATE' => get_timezoned_date($entry['q_time']),
                 '_ENTRY_DATE' => strval($entry['q_time']),
                 'OUT_OF' => strval($out_of),
                 'MARKS_RANGE' => $marks_range,

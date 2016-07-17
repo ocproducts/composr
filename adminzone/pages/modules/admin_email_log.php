@@ -161,12 +161,12 @@ class Module_admin_email_log
 
             if ($queued) {
                 $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $row['id']), '_SELF');
-                $date_time = hyperlink($edit_url, get_timezoned_date($row['m_date_and_time']), false, true);
-                $date_time = do_lang_tempcode('MAIL_WAS_QUEUED', $date_time);
+                $date = hyperlink($edit_url, get_timezoned_date_time($row['m_date_and_time']), false, true);
+                $date = do_lang_tempcode('MAIL_WAS_QUEUED', $date);
             } else {
                 $edit_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
-                $date_time = hyperlink($edit_url, get_timezoned_date($row['m_date_and_time']), false, true);
-                $date_time = do_lang_tempcode('MAIL_WAS_LOGGED', $date_time);
+                $date = hyperlink($edit_url, get_timezoned_date_time($row['m_date_and_time']), false, true);
+                $date = do_lang_tempcode('MAIL_WAS_LOGGED', $date);
             }
 
             $from_email = $row['m_from_email'];
@@ -200,7 +200,7 @@ class Module_admin_email_log
             }
 
             $fields->attach(results_entry(array(
-                $date_time,
+                $date,
                 hyperlink($from_link, $from_name, false, true),
                 hyperlink($to_link, $to_name[0], false, true),
                 escape_html($row['m_subject']),
@@ -241,7 +241,7 @@ class Module_admin_email_log
 
         $fields['SUBJECT'] = $row['m_subject'];
 
-        $fields['DATE_TIME'] = get_timezoned_date($row['m_date_and_time']);
+        $fields['DATE_TIME'] = get_timezoned_date_time($row['m_date_and_time']);
 
         $body = comcode_to_clean_text($row['m_message']);
 

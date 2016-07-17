@@ -153,7 +153,7 @@ class Hook_ecommerce_usergroup
             if (is_null($username)) {
                 $username = do_lang('UNKNOWN');
             }
-            $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date($row['s_time']))));
+            $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date_time($row['s_time']))));
         }
 
         $fields = alternate_fields_set__start('options');

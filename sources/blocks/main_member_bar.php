@@ -90,7 +90,7 @@ class Block_main_member_bar
                 'NUM_POSTS' => integer_format($member_info['posts']),
                 'PRIMARY_GROUP' => $member_info['primary_group_name'],
                 'LAST_VISIT_DATE_RAW' => strval($member_info['last_visit_time']),
-                'LAST_VISIT_DATE' => $member_info['last_visit_time_string'],
+                'LAST_VISIT_DATE' => $member_info['last_visit_date'],
                 'PRIVATE_TOPIC_URL' => $private_topic_url,
                 'NEW_POSTS_URL' => build_url(array('page' => 'vforums', 'type' => 'browse'), get_module_zone('vforums')),
                 'UNREAD_TOPICS_URL' => build_url(array('page' => 'vforums', 'type' => 'unread'), get_module_zone('vforums')),

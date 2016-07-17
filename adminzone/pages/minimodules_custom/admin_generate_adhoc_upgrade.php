@@ -223,7 +223,7 @@ if ($type == 'go') {
     $cutoff_point = time() - $cutoff_days * 60 * 60 * 24;
 
     require_code('tar');
-    $generate_filename = 'upgrade-to-git--' . get_timezoned_date(time(), false, false, false, true) . '.tar';
+    $generate_filename = 'upgrade-to-git--' . get_timezoned_date(time(), false) . '.tar';
     $gpath = get_custom_file_base() . '/exports/addons/' . $generate_filename;
     $tar = tar_open($gpath, 'wb');
 

@@ -138,7 +138,7 @@ function make_backup_2($file, $b_type, $max_size) // This is called as a shutdow
     $myfile = tar_open(get_custom_file_base() . '/exports/backups/' . filter_naughty($file) . '.tmp', 'wb');
 
     // Write readme.txt file
-    tar_add_file($myfile, 'readme.txt', do_lang('BACKUP_README', get_timezoned_date(time())), 0664, time());
+    tar_add_file($myfile, 'readme.txt', do_lang('BACKUP_README', get_timezoned_date_time(time())), 0664, time());
 
     // Write restore.php file
     $template = get_custom_file_base() . '/data_custom/modules/admin_backup/restore.php.pre';

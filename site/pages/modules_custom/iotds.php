@@ -227,11 +227,11 @@ class Module_iotds
             $myrow['add_date']
         );
 
-        $date = get_timezoned_date($myrow['date_and_time']);
+        $date = get_timezoned_date_time($myrow['date_and_time']);
         $date_raw = strval($myrow['date_and_time']);
-        $add_date = get_timezoned_date($myrow['add_date']);
+        $add_date = get_timezoned_date_time($myrow['add_date']);
         $add_date_raw = strval($myrow['add_date']);
-        $edit_date = get_timezoned_date($myrow['edit_date']);
+        $edit_date = get_timezoned_date_time($myrow['edit_date']);
         $edit_date_raw = is_null($myrow['edit_date']) ? '' : strval($myrow['edit_date']);
 
         // Views

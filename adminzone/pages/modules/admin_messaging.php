@@ -177,7 +177,7 @@ class Module_admin_messaging
                 }
                 $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id, 'message_type' => $message_type), '_SELF');
 
-                $fields->attach(results_entry(array(hyperlink($url, $name, false, true), get_timezoned_date($row['firsttime']), $message_type), true));
+                $fields->attach(results_entry(array(hyperlink($url, $name, false, true), get_timezoned_date_time($row['firsttime']), $message_type), true));
             }
         }
 
@@ -253,7 +253,7 @@ class Module_admin_messaging
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id']);
                 $member_link = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['l_member_id'], false, true);
-                $date = get_timezoned_date($row['l_time']);
+                $date = get_timezoned_date_time($row['l_time']);
                 $whos_read[] = array('USERNAME' => $username, 'MEMBER_ID' => strval($row['l_member_id']), 'MEMBER_URL' => $member_link, 'DATE' => $date);
             }
         }

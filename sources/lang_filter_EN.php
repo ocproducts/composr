@@ -297,12 +297,8 @@ class LangFilter_EN extends LangFilter
                     $value = 'g:i a (M jS)';
                     break;
 
-                case 'date_regular_date=%e%k %B %Y':
+                case 'date_date=%e%k %B %Y':
                     $value = '%B %e%k %Y';
-                    break;
-
-                case 'date_verbose_date=%a %e%k %B %Y':
-                    $value = '%a %B %e%k %Y';
                     break;
 
                 case 'locale=en-GB':

@@ -134,7 +134,7 @@ foreach ($_issues as $issue) {
         'CREDITS' => $_credits,
 
         'NUM_COMMENTS' => integer_format($issue['num_comments']),
-        'DATE' => get_timezoned_date($issue['date_submitted'], false),
+        'DATE' => get_timezoned_date($issue['date_submitted']),
         'MEMBER_LINK' => $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($issue['reporter_id']),
 
         'VOTED' => $voted,

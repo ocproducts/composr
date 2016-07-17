@@ -240,7 +240,7 @@ class Block_side_calendar
             $bits = explode('-', $__day);
             $day_start = mktime(12, 0, 0, intval($bits[1]), intval($bits[2]), intval($bits[0]));
             if (!array_key_exists($day_start, $days)) {
-                $date_section = get_timezoned_date($day_start, false); // Must be rendered in user's timezone not GMT, as GMT day may be ahead of the user's timezoned day and hence render the wrong contextual date.
+                $date_section = get_timezoned_date($day_start); // Must be rendered in user's timezone not GMT, as GMT day may be ahead of the user's timezoned day and hence render the wrong contextual date.
                 if (($from < $period_start) && ($date_section != do_lang('YESTERDAY'))) {
                     $date_section = do_lang('DATE_IN_PAST', $date_section);
                 }
@@ -263,10 +263,10 @@ class Block_side_calendar
             $days[$day_start]['EVENTS'][] = array(
                 'DESCRIPTION' => is_string($event['e_content']) ? protect_from_escaping($event['e_content']) : get_translated_tempcode('calendar_events', $just_event_row, 'e_content'),
                 'TIMESTAMP' => strval($real_from),
-                'TIME' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (is_null($event['e_start_hour']) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, false, null, true))),
+                'TIME' => ($real_from != $from) ? do_lang('EVENT_CONTINUES') : (is_null($event['e_start_hour']) ? do_lang_tempcode('ALL_DAY_EVENT') : make_string_tempcode(get_timezoned_time($real_from, true, true))),
                 'TIME_RAW' => strval($real_from),
-                'FROM_DAY' => get_timezoned_date($real_from, !is_null($event['e_start_hour']), false, true),
-                'TO_DAY' => is_null($real_to) ? null : get_timezoned_date($real_to, !is_null($event['e_end_hour']), false, true),
+                'FROM_DAY' => get_timezoned_date($real_from, !is_null($event['e_start_hour'])),
+                'TO_DAY' => is_null($real_to) ? null : get_timezoned_date($real_to, !is_null($event['e_end_hour'])),
                 'TO_DAY_RAW' => is_null($real_to) ? '' : strval($real_to),
                 'TIME_VCAL' => date('Y-m-d', $real_from) . ' ' . date('H:i:s', $real_from),
                 'TO_TIME_VCAL' => is_null($real_to) ? null : (date('Y-m-d', $real_to) . ' ' . date('H:i:s', $real_to)),

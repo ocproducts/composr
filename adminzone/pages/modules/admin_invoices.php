@@ -274,10 +274,10 @@ class Module_admin_invoices
         $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_state' => 'new'), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
-            $time = get_timezoned_date($row['i_time']);
+            $date = get_timezoned_date_time($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
-            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
+            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'DATE' => $date, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
         }
         if (count($invoices) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
@@ -297,10 +297,10 @@ class Module_admin_invoices
         $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_state' => 'paid'), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $invoice_title = do_lang('CUSTOM_PRODUCT_' . $row['i_type_code']);
-            $time = get_timezoned_date($row['i_time']);
+            $date = get_timezoned_date_time($row['i_time']);
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['i_member_id'], false, true);
-            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'TIME' => $time, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
+            $invoices[] = array('INVOICE_TITLE' => $invoice_title, 'PROFILE_URL' => $profile_url, 'USERNAME' => $username, 'ID' => strval($row['id']), 'STATE' => $row['i_state'], 'AMOUNT' => $row['i_amount'], 'DATE' => $date, 'NOTE' => $row['i_note'], 'TYPE_CODE' => $row['i_type_code']);
         }
         if (count($invoices) == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES'));

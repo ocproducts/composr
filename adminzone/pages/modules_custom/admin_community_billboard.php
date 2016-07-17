@@ -209,7 +209,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $activation_time = $row['activation_time'];
             $days = is_null($activation_time) ? '' : float_format(floatval(time() - $activation_time) / 60.0 / 60.0 / 24.0, 3);
 
-            $fields->attach(results_entry(array(protect_from_escaping(get_translated_tempcode('community_billboard', $row, 'the_message')), integer_format($row['days']), get_timezoned_date($row['order_time']), ($row['active_now'] == 1) ? $days : do_lang_tempcode('NA_EM'), $username, protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
+            $fields->attach(results_entry(array(protect_from_escaping(get_translated_tempcode('community_billboard', $row, 'the_message')), integer_format($row['days']), get_timezoned_date_time($row['order_time']), ($row['active_now'] == 1) ? $days : do_lang_tempcode('NA_EM'), $username, protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), either_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -251,7 +251,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $myrow = $rows[0];
-        $date = get_timezoned_date($myrow['order_time']);
+        $date = get_timezoned_date_time($myrow['order_time']);
         $date_raw = $myrow['order_time'];
         list($fields, $hidden) = $this->get_form_fields(get_translated_text($myrow['the_message']), $myrow['days'], $myrow['notes'], $myrow['active_now']);
 

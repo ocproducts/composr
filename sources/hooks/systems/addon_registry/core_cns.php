@@ -1066,7 +1066,7 @@ class Hook_addon_registry_core_cns
                 'AT_URL' => placeholder_url(),
                 'LOCATION' => lorem_word(),
                 'MEMBER' => placeholder_link(),
-                'TIME' => placeholder_date(),
+                'TIME' => lorem_word(),
             );
         }
 
@@ -1252,7 +1252,7 @@ class Hook_addon_registry_core_cns
             'POSTER_NAME' => lorem_phrase(),
             'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
             'POST_LEVEL' => '0',
-            'TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
             'IS_UNREAD' => true,
         )));
         $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
@@ -1265,7 +1265,7 @@ class Hook_addon_registry_core_cns
             'POSTER_NAME' => lorem_phrase(),
             'LEVEL_HAS_ADJACENT_SIBLING' => array(true),
             'POST_LEVEL' => '0',
-            'TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
             'IS_UNREAD' => false,
         )));
         $items->attach(do_lorem_template('CNS_POST_MAP_ITEM', array(
@@ -1278,7 +1278,7 @@ class Hook_addon_registry_core_cns
             'POSTER_NAME' => lorem_phrase(),
             'LEVEL_HAS_ADJACENT_SIBLING' => array(false, true),
             'POST_LEVEL' => '1',
-            'TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
             'IS_UNREAD' => false,
         )));
 

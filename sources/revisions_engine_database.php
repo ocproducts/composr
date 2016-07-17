@@ -480,7 +480,7 @@ class RevisionEngineDatabase
         $more_recent_text = $text;
         $field_rows = new Tempcode();
         foreach ($revisions as $revision) {
-            $date = get_timezoned_date($revision['log_time']);
+            $date = get_timezoned_date_time($revision['log_time']);
 
             $size_change = strlen($more_recent_text) - strlen($revision['r_original_text']);
 

@@ -352,9 +352,9 @@ class Module_cms_chat
 
             $message = get_translated_tempcode('chat_messages', $myrow, 'the_message');
 
-            $link_time = hyperlink($url, get_timezoned_date($myrow['date_and_time']), false, true);
+            $link_date = hyperlink($url, get_timezoned_date_time($myrow['date_and_time']), false, true);
 
-            $_row = array($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($GLOBALS['FORUM_DRIVER']->get_member_from_username($username), false, '', false), escape_html($link_time), $message);
+            $_row = array($GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($GLOBALS['FORUM_DRIVER']->get_member_from_username($username), false, '', false), escape_html($link_date), $message);
             if (has_js()) {
                 $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '40c6bd03e455c98589542b704259351d', 'ID' => strval($myrow['id'])));
                 $_row[] = $deletion_tick;

@@ -347,8 +347,8 @@ class Hook_addon_registry_chat
                 'MEMBER' => lorem_word(),
                 'MEMBER_ID' => placeholder_number(),
                 'MESSAGE' => lorem_phrase(),
-                'TIME' => placeholder_date(),
-                'RAW_TIME' => placeholder_date(),
+                'DATE' => placeholder_date(),
+                '_TIME' => placeholder_date(),
                 'FONT_COLOUR' => '0000FF',
                 'FONT_FACE' => 'Arial',
             )), null, '', true)
@@ -406,8 +406,8 @@ class Hook_addon_registry_chat
         $tpl = do_lorem_template('BLOCK_SIDE_SHOUTBOX_MESSAGE', array(
             'MEMBER' => lorem_word(),
             'MESSAGE' => lorem_phrase(),
-            'TIME_RAW' => placeholder_date(),
-            'TIME' => placeholder_date(),
+            '_TIME' => placeholder_date(),
+            'DATE' => placeholder_date(),
         ));
 
         return array(
@@ -452,8 +452,8 @@ class Hook_addon_registry_chat
         $friends = array();
         foreach (placeholder_array() as $key => $friend) {
             $friends[] = array(
-                'DATE_AND_TIME_RAW' => placeholder_date(),
-                'DATE_AND_TIME' => placeholder_date(),
+                'DATE_RAW' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'MEMBER_PROFILE_URL' => placeholder_url(),
                 'MEMBER_ID' => strval($key),
                 'USERNAME' => lorem_word(),
@@ -542,8 +542,8 @@ class Hook_addon_registry_chat
         $friends = array();
         foreach (placeholder_array() as $key => $friend) {
             $friends[] = array(
-                'DATE_AND_TIME_RAW' => placeholder_date(),
-                'DATE_AND_TIME' => placeholder_date(),
+                'DATE_RAW' => placeholder_date(),
+                'DATE' => placeholder_date(),
                 'MEMBER_PROFILE_URL' => placeholder_url(),
                 'MEMBER_ID' => strval($key),
                 'USERNAME' => lorem_word(),

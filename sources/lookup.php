@@ -150,7 +150,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
     require_code('templates_results_table');
     $fields_title = results_field_title(array(do_lang_tempcode('PAGE'), do_lang_tempcode('DATE'), do_lang_tempcode('PARAMETERS'), do_lang_tempcode('USER_AGENT'), do_lang_tempcode('USER_OS')), $sortables, 'sort', $sortable . ' ' . $sort_order);
     foreach ($rows as $myrow) {
-        $date = get_timezoned_date($myrow['date_and_time']);
+        $date = get_timezoned_date_time($myrow['date_and_time']);
         $page = $myrow['the_page'];
 
         $page_converted = preg_replace('#/pages/[^/]*/#', '/', $page);
@@ -215,7 +215,7 @@ function find_security_alerts($where)
     $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
     $fields = new Tempcode();
     foreach ($rows as $row) {
-        $time = get_timezoned_date($row['date_and_time']);
+        $date = get_timezoned_date_time($row['date_and_time']);
         $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
         $member_url = build_url(array('page' => 'admin_lookup', 'param' => $row['member_id']), '_SELF');
         $full_url = build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), '_SELF');
@@ -230,7 +230,7 @@ function find_security_alerts($where)
             $username = do_lang('UNKNOWN');
         }
 
-        $_row = array(hyperlink($member_url, $username, false, true), hyperlink($full_url, $time, false, true), hyperlink($lookup_url, $row['ip'], false, true), $reason);
+        $_row = array(hyperlink($member_url, $username, false, true), hyperlink($full_url, $date, false, true), hyperlink($lookup_url, $row['ip'], false, true), $reason);
         if (has_js()) {
             $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '9d310a90afa8bd1817452e476385bc57', 'ID' => strval($row['id'])));
             $_row[] = $deletion_tick;

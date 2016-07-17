@@ -1,4 +1,4 @@
 <p>
-	<em>{DATETIME*}</em> &ndash; <strong>{MESSAGESENDER}</strong> &ndash; {MESSAGE}
+	<em>{DATE*}</em> &ndash; <strong>{MESSAGE_SENDER*}</strong> &ndash; {MESSAGE}
 </p>
 

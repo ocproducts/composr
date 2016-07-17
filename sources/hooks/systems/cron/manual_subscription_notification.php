@@ -65,7 +65,7 @@ class Hook_cron_manual_subscription_notification
                         }
 
                         if (($expiry_time - time()) < ($manual_subscription_expiry_notice * 24 * 60 * 60)) {
-                            $expiry_date = get_timezoned_date($expiry_time, false, false, false, true);
+                            $expiry_date = get_timezoned_date_time($expiry_time, false);
                             $member_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                             if (!is_null($member_name)) { // If not a deleted member
                                 $member_profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($member_id);

@@ -283,7 +283,7 @@ class Hook_snippet_template_editor_load
             array('MEMBER', '0'),
             array('AVATAR', '0-1'),
             array('PHOTO', '0-1'),
-            array('DATE_AND_TIME', '0'),
+            array('DATE_TIME', '0'),
             array('DATE', '0'),
             array('TIME', '0'),
             array('ZONE', '0'),

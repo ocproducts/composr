@@ -169,8 +169,8 @@ Now let's do some simple Composr API calls.
 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
 echo '<p>Hello, ' . htmlentities($username) . '.</p>';
 
-$time = get_timezoned_date(time());
-echo '<p>It is ' . htmlentities($time) . '.</p>';
+$date = get_timezoned_date_time(time());
+echo '<p>It is ' . htmlentities($date) . '.</p>';
 [/code]
 
 [title="5"]Example 3[/title]

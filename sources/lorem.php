@@ -419,7 +419,7 @@ function placeholder_image()
  */
 function placeholder_date()
 {
-    return get_timezoned_date(123456789);
+    return get_timezoned_date_time(123456789);
 }
 
 /**

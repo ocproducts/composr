@@ -73,7 +73,7 @@ class Hook_chat_bot_default
                 return do_lang('CHAT_WEBSITE_HELPER_BOT', $out);
 
             case 'time':
-                $out = do_lang('CHAT_TIME_BOTMSG', get_timezoned_date(time(), true, true, true, true));
+                $out = do_lang('CHAT_TIME_BOTMSG', get_timezoned_date_time(time(), false));
                 return do_lang('CHAT_WEBSITE_HELPER_BOT', $out);
         }
 

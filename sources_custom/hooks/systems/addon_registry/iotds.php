@@ -300,8 +300,8 @@ class Hook_addon_registry_iotds
         foreach (placeholder_array(1) as $k => $v) {
             $trackbacks->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id(),
-                'TIME_RAW' => placeholder_date_raw(),
-                'TIME' => placeholder_date(),
+                '_TIME' => placeholder_date_raw(),
+                'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
                 'EXCERPT' => lorem_paragraph(),

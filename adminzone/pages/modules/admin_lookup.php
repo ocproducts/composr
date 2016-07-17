@@ -199,7 +199,7 @@ class Module_admin_lookup
                 $inner_ip_list = new Tempcode();
                 $one_sub_is_banned = false;
                 foreach ($group as $row) {
-                    $date = get_timezoned_date($row['date_and_time']);
+                    $date = get_timezoned_date_time($row['date_and_time']);
                     $lookup_url = build_url(array('page' => '_SELF', 'param' => $row['ip']), '_SELF');
                     $inner_ip_list->attach(do_template('LOOKUP_IP_LIST_ENTRY', array('_GUID' => '94a133f5f711bbf09100346661e3f7c9', 'LOOKUP_URL' => $lookup_url, 'DATE' => $date, '_DATE' => strval($row['date_and_time']), 'IP' => $row['ip'], 'BANNED' => in_array($row['ip'], $all_banned))));
                     if (in_array($row['ip'], $all_banned)) {

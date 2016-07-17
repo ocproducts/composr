@@ -535,7 +535,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
             $to_link = '[page="' . get_module_zone('topicview') . ':topicview:browse:' . strval($to_topic_id) . '"]' . str_replace('"', '\"', str_replace('[', '\\[', $topic_title)) . '[/page]';
         }
         $me_link = '[page="' . get_module_zone('members') . ':members:view:' . strval(get_member()) . '"]' . $GLOBALS['CNS_DRIVER']->get_username(get_member(), true) . '[/page]';
-        $lang = do_lang('INLINE_POSTS_MOVED_MESSAGE', $me_link, integer_format(count($posts)), array($to_link, get_timezoned_date(time())));
+        $lang = do_lang('INLINE_POSTS_MOVED_MESSAGE', $me_link, integer_format(count($posts)), array($to_link, get_timezoned_date_time(time())));
         require_code('cns_posts_action');
         cns_make_post($from_topic_id, '', $lang, 0, false, 1, 1, null, null, $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_time', array('id' => $posts[0])) + 1, null, null, null, null, false);
 

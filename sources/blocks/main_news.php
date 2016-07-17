@@ -247,7 +247,7 @@ class Block_main_news
 
                 // Basic details
                 $id = $myrow['p_id'];
-                $date = get_timezoned_date_tempcode($myrow['date_and_time']);
+                $date = get_timezoned_date_time_tempcode($myrow['date_and_time']);
                 $news_title = get_translated_tempcode('news', $just_news_row, 'title');
                 $news_title_plain = get_translated_text($myrow['title']);
 
@@ -360,7 +360,7 @@ class Block_main_news
                 $just_news_row = db_map_restrict($myrow, array('id', 'title', 'news', 'news_article'));
 
                 // Basic details
-                $date = get_timezoned_date_tempcode($myrow['date_and_time']);
+                $date = get_timezoned_date_time_tempcode($myrow['date_and_time']);
 
                 // URL
                 $tmp = array('page' => 'news', 'type' => 'view', 'id' => $myrow['p_id']) + $prop_url;

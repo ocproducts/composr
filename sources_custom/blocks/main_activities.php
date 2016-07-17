@@ -161,7 +161,7 @@ class Block_main_activities
             $activities = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'activities WHERE ' . $whereville . ' ORDER BY a_time DESC', $max, $start, false, true);
 
             foreach ($activities as $row) {
-                list($message, $member_avatar, $datetime, $member_url, $lang_string, $is_public) = render_activity($row);
+                list($message, $member_avatar, $timestamp, $member_url, $lang_string, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
                 if (is_null($username)) {
@@ -178,7 +178,7 @@ class Block_main_activities
                     'MEMBER_ID' => strval($row['a_member_id']),
                     'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']),
                     'MEMBER_URL' => $member_url,
-                    'DATETIME' => strval($datetime),
+                    'TIMESTAMP' => strval($timestamp),
                     'LIID' => strval($row['id']),
                     'ALLOW_REMOVE' => (($row['a_member_id'] == $viewing_member) || $can_remove_others),
                 );

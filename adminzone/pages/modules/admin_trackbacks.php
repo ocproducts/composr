@@ -121,8 +121,8 @@ class Module_admin_trackbacks
             $trackbacks .= static_evaluate_tempcode(do_template('TRACKBACK', array(
                 '_GUID' => 'eb005ff4cf387e4c18cbc862c38555e3',
                 'ID' => strval($value['id']),
-                'TIME_RAW' => strval($value['trackback_time']),
-                'TIME' => get_timezoned_date($value['trackback_time']),
+                '_TIME' => strval($value['trackback_time']),
+                'DATE' => get_timezoned_date_time($value['trackback_time']),
                 'URL' => $value['trackback_url'],
                 'TITLE' => $value['trackback_title'],
                 'EXCERPT' => $value['trackback_excerpt'],

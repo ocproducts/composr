@@ -70,10 +70,10 @@ class Hook_cron_notification_digests
                                 }
                                 if (strlen($_message) + strlen($message['d_message']) < MAXIMUM_DIGEST_LENGTH)
                                 {
-                                    $_message .= do_lang('DIGEST_EMAIL_INDIVIDUAL_MESSAGE_WRAP', comcode_escape($message['d_subject']), get_translated_text($message['d_message']), array(comcode_escape(get_site_name()), get_timezoned_date($message['d_date_and_time'])));
+                                    $_message .= do_lang('DIGEST_EMAIL_INDIVIDUAL_MESSAGE_WRAP', comcode_escape($message['d_subject']), get_translated_text($message['d_message']), array(comcode_escape(get_site_name()), get_timezoned_date_time($message['d_date_and_time'])));
                                 } else
                                 {
-                                    $_message .= do_lang('DIGEST_ITEM_OMITTED', comcode_escape($message['d_subject']), get_timezoned_date($message['d_date_and_time']), array(comcode_escape(get_site_name())));
+                                    $_message .= do_lang('DIGEST_ITEM_OMITTED', comcode_escape($message['d_subject']), get_timezoned_date_time($message['d_date_and_time']), array(comcode_escape(get_site_name())));
                                 }
                             }
                             delete_lang($message['d_message']);
