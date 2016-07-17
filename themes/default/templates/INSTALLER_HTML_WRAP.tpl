@@ -35,12 +35,12 @@
 
 			function submit_settings(form)
 			{
-				if ((form.elements['board_prefix']) && (form.elements['board_prefix'].type!='hidden') && (form.elements['board_prefix'].value==form.elements['base_url'].value))
+				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type!='hidden') && (form.elements['forum_base_url'].value==form.elements['base_url'].value))
 				{
 					window.alert('{!FORUM_BASE_URL_INVALID;/}');
 					return false;
 				}
-				if ((form.elements['board_prefix']) && (form.elements['board_prefix'].type!='hidden') && (form.elements['board_prefix'].value.substr(-7)=='/forums') && (!form.elements['board_prefix'].changed))
+				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type!='hidden') && (form.elements['forum_base_url'].value.substr(-7)=='/forums') && (!form.elements['forum_base_url'].changed))
 				{
 					if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) return false;
 				}

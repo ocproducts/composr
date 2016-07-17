@@ -155,7 +155,7 @@ function do_access($given_password)
         'on_msn' => 'Whether this is a site on an Conversr multi-site-network (enable for to trigger URLs to avatars and photos to be absolute).',
 
         'forum_type' => '<em>Forum:</em> The forum driver to use. Note that it is unwise to change this unless expert, as member-IDs and usergroup-IDs form a binding between portal and forum, and would need remapping. To convert to Conversr, the forum importers can handle all of this automatically.',
-        'board_prefix' => '<em>Forum:</em> This is the base-URL for the forums. If it is not correct, various links, such as links to topics, will not function correctly.',
+        'forum_base_url' => '<em>Forum:</em> This is the base-URL for the forums. If it is not correct, various links, such as links to topics, will not function correctly.',
 
         'db_type' => '<em>Database:</em> The database driver to use (code of PHP file in sources[_custom]/database/). Only MySQL supported officially.',
         'table_prefix' => '<em>Database:</em> The table prefix for Composr\'s database tables.',

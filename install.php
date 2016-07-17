@@ -719,7 +719,7 @@ function step_4()
     $board_path = post_param_string('board_path', '');
     find_forum_path($board_path);
 
-    if ((!array_key_exists('board_url', $PROBED_FORUM_CONFIG)) || (!(strlen($PROBED_FORUM_CONFIG['board_url']) > 0))) {
+    if ((!array_key_exists('forum_base_url', $PROBED_FORUM_CONFIG)) || (!(strlen($PROBED_FORUM_CONFIG['forum_base_url']) > 0))) {
         $file_base = get_file_base();
         for ($i = 0; $i < strlen($board_path); $i++) {
             if ($i >= strlen($file_base)) {
@@ -731,7 +731,7 @@ function step_4()
         }
 
         $append = str_replace('\\', '/', substr($board_path, $i));
-        $PROBED_FORUM_CONFIG['board_url'] = (strlen($append) < 15) ? (substr($base_url, 0, strlen($base_url) - ($i - strlen($board_path))) . ((((strlen($append) > 0) && ($append[0] == '/'))) ? '' : '/') . $append) : ($base_url . '/forums');
+        $PROBED_FORUM_CONFIG['forum_base_url'] = (strlen($append) < 15) ? (substr($base_url, 0, strlen($base_url) - ($i - strlen($board_path))) . ((((strlen($append) > 0) && ($append[0] == '/'))) ? '' : '/') . $append) : ($base_url . '/forums');
     }
 
     if (!array_key_exists('cookie_member_id', $PROBED_FORUM_CONFIG)) {
@@ -759,7 +759,7 @@ function step_4()
     $db_forums_user = $db_site_user;
     $db_forums_password = $db_site_password;
     $db_forums = $db_site;
-    $board_prefix = $PROBED_FORUM_CONFIG['board_url'];
+    $forum_base_url = $PROBED_FORUM_CONFIG['forum_base_url'];
     $member_cookie = $PROBED_FORUM_CONFIG['cookie_member_id'];
     $pass_cookie = $PROBED_FORUM_CONFIG['cookie_member_hash'];
 
@@ -904,7 +904,7 @@ function step_4()
             $hidden->attach(form_input_hidden('use_msn', strval($use_msn)));
         }
         if (($forum_type != 'cns') || ($use_msn == 1)) {
-            $forum_options->attach(make_option(do_lang_tempcode('BASE_URL'), example('FORUM_BASE_URL_EXAMPLE', 'BASE_URL_TEXT_FORUM'), 'board_prefix', $board_prefix, false, true));
+            $forum_options->attach(make_option(do_lang_tempcode('BASE_URL'), example('FORUM_BASE_URL_EXAMPLE', 'BASE_URL_TEXT_FORUM'), 'forum_base_url', $forum_base_url, false, true));
         }
     }
     foreach ($specifics as $specific) {

@@ -721,7 +721,7 @@ class Module_admin_import
         $SITE_INFO['db_forums_host'] = array_key_exists('db_site_host', $SITE_INFO) ? $SITE_INFO['db_site_host'] : 'localhost';
         $SITE_INFO['db_forums_user'] = $SITE_INFO['db_site_user'];
         $SITE_INFO['db_forums_password'] = $SITE_INFO['db_site_password'];
-        $SITE_INFO['board_prefix'] = get_base_url();
+        $SITE_INFO['forum_base_url'] = get_base_url();
         foreach ($SITE_INFO as $key => $val) {
             $_val = str_replace('\\', '\\\\', $val);
             fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n");

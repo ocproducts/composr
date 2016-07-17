@@ -567,10 +567,10 @@ function get_forum_base_url()
         return '';
     }
     global $SITE_INFO;
-    if (empty($SITE_INFO['board_prefix'])) {
+    if (empty($SITE_INFO['forum_base_url'])) {
         return get_base_url();
     }
-    return $SITE_INFO['board_prefix'];
+    return $SITE_INFO['forum_base_url'];
 }
 
 /**

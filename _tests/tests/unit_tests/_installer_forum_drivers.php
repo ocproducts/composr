@@ -35,7 +35,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
             $this->assertTrue(false, 'Cannot run test, ' . $board_path . '/db.sql is not there');
             return;
         }
-        $board_prefix = dirname(get_base_url()) . '/phpBB3';
+        $forum_base_url = dirname(get_base_url()) . '/phpBB3';
         $database_forums = 'forum_phpbb_31';
         $extra_settings = array(
             'phpbb_table_prefix' => 'phpbb_',
@@ -48,7 +48,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
         $cmd .= ' ' . $database_forums . ' < ' . $board_path . '/db.sql';
         shell_exec($cmd);
 
-        $this->doHeadlessInstall(false, 'phpbb3', $username, $password, $board_path, $board_prefix, $database_forums, null, null, $extra_settings);
+        $this->doHeadlessInstall(false, 'phpbb3', $username, $password, $board_path, $forum_base_url, $database_forums, null, null, $extra_settings);
     }
 
     public function testNoneInstall()
@@ -60,7 +60,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
         $this->doHeadlessInstall(false, 'none', $username, $password);
     }
 
-    private function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $board_prefix = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null)
+    private function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $forum_base_url = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null)
     {
         $database = 'test';
         $table_prefix = 'cms_unit_test_';
@@ -75,7 +75,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
             $safe_mode,
             $forum_driver,
             $board_path,
-            $board_prefix,
+            $forum_base_url,
             $database_forums,
             $username_forums,
             $password_forums,

@@ -244,7 +244,7 @@ class Hook_import_mybb
             set_privilege($id, 'use_quick_reply', $additional_data['quickreply']);
         }
 
-        $PROBED_FORUM_CONFIG['board_prefix'] = $board_url;
+        $PROBED_FORUM_CONFIG['forum_base_url'] = $board_url;
         $PROBED_FORUM_CONFIG['user_cookie'] = 'mybbuser';
     }
 

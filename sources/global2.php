@@ -1075,21 +1075,30 @@ function get_forum_base_url($forum_base = false)
 {
     global $SITE_INFO;
 
-    if (empty($SITE_INFO['board_prefix'])) {
-        $SITE_INFO['board_prefix'] = get_base_url();
+    if (empty($SITE_INFO['forum_base_url'])) {
+        if (empty($SITE_INFO['board_prefix'])) {
+            $SITE_INFO['forum_base_url'] = get_base_url();
+        } else {
+            $SITE_INFO['forum_base_url'] = $SITE_INFO['board_prefix']; // LEGACY
+        }
     }
-    $forum_type = get_forum_type();
-    if ($forum_type === 'none') {
-        return '';
+
+    switch (get_forum_type()) {
+        case 'none':
+            return '';
+
+        case 'cns':
+            $needs_forum_strip = (substr($SITE_INFO['forum_base_url'], -6) === '/forum') && (substr(get_base_url(), -6) !== '/forum');
+            if ((!$forum_base) && ($needs_forum_strip)) {
+                return substr($SITE_INFO['forum_base_url'], 0, strlen($SITE_INFO['forum_base_url']) - 6);
+            }
+            if (($forum_base) && (!$needs_forum_strip)) {
+                return $SITE_INFO['forum_base_url'] . '/forum';
+            }
+            break;
     }
-    $needs_forum_strip = (substr($SITE_INFO['board_prefix'], -6) === '/forum') && (substr(get_base_url(), -6) !== '/forum');
-    if (($forum_type === 'cns') && (!$forum_base) && ($needs_forum_strip)) {
-        return substr($SITE_INFO['board_prefix'], 0, strlen($SITE_INFO['board_prefix']) - 6);
-    }
-    if (($forum_type === 'cns') && ($forum_base) && ($needs_forum_strip)) {
-        return $SITE_INFO['board_prefix'] . '/forum';
-    }
-    return $SITE_INFO['board_prefix'];
+
+    return $SITE_INFO['forum_base_url'];
 }
 
 /**
