@@ -115,28 +115,45 @@ class Module_admin_cleanup
 
         require_code('form_templates');
 
-        $fields_cache = new Tempcode();
-        $fields_optimise = new Tempcode();
+        $js = '';
+        $_fields_cache = array();
+        $_fields_optimise = array();
         $hooks = find_all_hook_obs('systems', 'cleanup', 'Hook_cleanup_');
         foreach ($hooks as $hook => $object) {
             $output = $object->info();
             if (!is_null($output)) {
-                $tick = form_input_tick($output['title'], $output['description'], $hook, false);
+                $tick = form_input_tick($output['title'], $output['description'], 'cleanup_' . $hook, false);
                 if ($output['type'] == 'cache') {
-                    $fields_cache->attach($tick);
+                    $_fields_cache[$output['title']->evaluate()] = $tick;
+                    $js .= 'var ob=document.getElementById(\'cleanup_' . $hook . '\'); ob.checked=!ob.checked;';
                 } else {
-                    $fields_optimise->attach($tick);
+                    $_fields_optimise[$output['title']->evaluate()] = $tick;
                 }
             }
         }
 
+        ksort($_fields_cache);
+        ksort($_fields_optimise);
+
+        $fields_cache = new Tempcode();
+        foreach ($_fields_cache as $tick) {
+            $fields_cache->attach($tick);
+        }
+
+        $fields_optimise = new Tempcode();
+        foreach ($_fields_optimise as $tick) {
+            $fields_optimise->attach($tick);
+        }
+
         $fields = new Tempcode();
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_OPTIMISERS'), 'HELP' => '')));
-        $fields->attach($fields_optimise);
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'TITLE' => do_lang_tempcode('CACHES_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CACHES_PAGE_CACHES'))));
+
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html($js)))));
         $fields->attach($fields_cache);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '85bfdf171484604594a157aa8983f920', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => do_lang_tempcode('CACHES_PAGE'), 'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));
+        $fields->attach($fields_optimise);
+
+        return do_template('FORM_SCREEN', array('_GUID' => '85bfdf171484604594a157aa8983f920', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => '', 'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url));
     }
 
     /**
@@ -164,7 +181,7 @@ class Module_admin_cleanup
 
         $todo = array();
         foreach (array_keys($hooks) as $hook) {
-            if (post_param_integer($hook, 0) == 1) {
+            if (post_param_integer('cleanup_' . $hook, 0) == 1) {
                 $todo[] = $hook;
             }
         }
