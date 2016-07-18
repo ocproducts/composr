@@ -181,6 +181,9 @@ class Module_admin_themes
         }
 
         if ($type == '_edit_templates') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             set_helper_panel_text(comcode_lang_string('DOC_MARKUP'));
             set_helper_panel_tutorial('tut_themes');
 
@@ -191,6 +194,9 @@ class Module_admin_themes
         }
 
         if ($type == '__edit_templates') {
+            require_code('input_filter_2');
+            modsecurity_workaround_enable();
+
             $theme = post_param_string('theme');
             $file = '';
             foreach (array_keys($_REQUEST) as $_i) {
@@ -1754,6 +1760,8 @@ class Module_admin_themes
 
         require_code('caches3');
 
+        $file = mixed();
+
         foreach (array_keys($_REQUEST) as $_i) {
             $matches = array();
             if (preg_match('#f(\d+)file#', $_i, $matches) != 0) {
@@ -1861,6 +1869,10 @@ class Module_admin_themes
                         window.fauxmodal_alert(\'' . addslashes(do_lang('SUCCESS')) . '\');
                 //]]></script>
             '));
+        }
+
+        if (is_null($file)) {
+            warn_exit(do_lang_tempcode('NOTHING_SELECTED'));
         }
 
         return $this->do_next_manager($this->title, do_lang_tempcode('SUCCESS'), $theme, '', 'templates', $file);

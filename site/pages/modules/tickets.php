@@ -757,7 +757,7 @@ class Module_tickets
             ));
 
             require_code('templates_internalise_screen');
-            return internalise_own_screen($tpl, 30, ($_comments == array()) ? -2 : $_comments);
+            return internalise_own_screen($tpl, 30, is_array($_comments) ? count($_comments) : 0);
         } else { // Guest has posted ticket successfully. Actually, this code problem never runs (as they in fact see a separate screen from do_update_ticket), but it's here as a fail safe.
             return inform_screen(get_screen_title('ADD_TICKET'), do_lang_tempcode('SUCCESS'));
         }

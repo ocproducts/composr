@@ -24,13 +24,13 @@
 							detect_change('{CHANGE_DETECTION_URL;/}','{REFRESH_IF_CHANGED;/}',function() {
 								if ((!document.getElementById('post')) || (document.getElementById('post').value==''))
 								{
-									call_block('{URL;/}','',document.getElementById('{$GET;,wrapper_id}'),false,null,true);
+									call_block('{URL;/}','',document.getElementById('{$GET;,wrapper_id}'),false,null,true,null,true);
 								}
 							});
 						}
 					{+END}
 					{+START,IF_NON_PASSED,CHANGE_DETECTION_URL}
-						call_block('{URL;/}','',document.getElementById('{$GET;,wrapper_id}'),false,null,true);
+						call_block('{URL;/}','',document.getElementById('{$GET;,wrapper_id}'),false,null,true,null,true);
 					{+END}
 				},
 				{REFRESH_TIME%}*1000);
