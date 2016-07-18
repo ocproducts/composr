@@ -61,7 +61,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
 
         if (!is_null($pt_to)) {
             decache(array(
-                array('side_cns_personal_topics', array($pt_to)),
+                array('side_cns_private_topics', array($pt_to)),
                 array('_new_pp', array($pt_to)),
             ));
         }

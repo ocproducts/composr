@@ -600,7 +600,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         $redirect_url = get_param_string('redirect_passon', get_param_string('redirect', $redirect_url));
 
-        $_url = build_url(array('page' => 'join', 'redirect' => (get_page_name() == 'recommend') ? null : $redirect_url), get_module_zone('join'));
+        $_url = build_url(array('page' => 'join', 'redirect' => (get_page_name() == 'recommend') ? null : $redirect_url), get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
         $url = $_url->evaluate();
         if (get_option('forum_in_portal') == '0') {
             $url = str_replace(get_base_url(), get_forum_base_url(), $url);

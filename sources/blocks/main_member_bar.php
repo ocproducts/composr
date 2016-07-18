@@ -116,7 +116,7 @@ class Block_main_member_bar
             $this_url = $_this_url->evaluate();
             $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
             $full_link = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $this_url), get_module_zone('login'));
-            $join_url = build_url(array('page' => 'join', 'redirect' => $this_url), get_module_zone('join'));
+            $join_url = build_url(array('page' => 'join', 'redirect' => $this_url), get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
             $bar = do_template('CNS_GUEST_BAR', array(
                 '_GUID' => '3b613deec9d4786f5b53dbd52af00d3c',
                 'LOGIN_URL' => $login_url,

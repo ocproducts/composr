@@ -1035,7 +1035,7 @@ function get_forum_base_url($forum_base = false)
     if (($forum_type === 'cns') && (!$forum_base) && ($needs_forum_strip)) {
         return substr($SITE_INFO['board_prefix'], 0, strlen($SITE_INFO['board_prefix']) - 6);
     }
-    if (($forum_type === 'cns') && ($forum_base) && ($needs_forum_strip)) {
+    if (($forum_type === 'cns') && ($forum_base) && (!$needs_forum_strip)) {
         return $SITE_INFO['board_prefix'] . '/forum';
     }
     return $SITE_INFO['board_prefix'];
