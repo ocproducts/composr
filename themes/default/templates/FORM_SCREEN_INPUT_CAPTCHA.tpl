@@ -34,8 +34,9 @@
 {+START,IF,{$CONFIG_OPTION,js_captcha}}
 	<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
+	<div id="captcha_spot"></div>
 	<script>// <![CDATA[
-		document.write('{$GET;^/,CAPTCHA}');
+		set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
 	//]]></script>
 {+END}
 {+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}

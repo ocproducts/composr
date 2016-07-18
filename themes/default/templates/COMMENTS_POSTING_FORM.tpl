@@ -236,9 +236,12 @@
 									{+START,IF,{$CONFIG_OPTION,js_captcha}}
 										<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
-										<script>// <![CDATA[
-											document.write('{$GET;^/,CAPTCHA}');
-										//]]></script>
+										{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
+											<div id="captcha_spot"></div>
+											<script>// <![CDATA[
+												set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
+											//]]></script>
+										{+END}
 									{+END}
 									{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 										{$GET,CAPTCHA}
@@ -256,9 +259,12 @@
 						{+START,IF,{$CONFIG_OPTION,js_captcha}}
 							<noscript>{!JAVASCRIPT_REQUIRED}</noscript>
 
-							<script>// <![CDATA[
-								document.write('{$GET;^/,CAPTCHA}');
-							//]]></script>
+							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
+								<div id="captcha_spot"></div>
+								<script>// <![CDATA[
+									set_inner_html(document.getElementById('captcha_spot'),'{$GET;^/,CAPTCHA}');
+								//]]></script>
+							{+END}
 						{+END}
 						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
 							{$GET,CAPTCHA}

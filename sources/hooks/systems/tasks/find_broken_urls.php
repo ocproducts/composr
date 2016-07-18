@@ -231,7 +231,7 @@ class Hook_task_find_broken_urls
             }
         }
 
-        $lax_comcode = $temp;
+        $LAX_COMCODE = $temp;
     }
 
     /**
