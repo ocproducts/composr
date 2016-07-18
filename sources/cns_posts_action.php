@@ -366,7 +366,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
                 }
 
                 decache(array(
-                    array('side_cns_personal_topics', array($with)),
+                    array('side_cns_private_topics', array($with)),
                     array('_new_pp', array($with)),
                 ));
             }
@@ -522,7 +522,7 @@ function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member =
     );
 
     if (!is_null($member)) {
-        $decache[] = array('side_cns_personal_topics', array($member));
+        $decache[] = array('side_cns_private_topics', array($member));
         $decache[] = array('_new_pp', array($member));
     }
 

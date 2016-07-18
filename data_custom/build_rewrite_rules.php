@@ -154,7 +154,7 @@ write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', 'E
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);
 
 // Write rules to tut_adv_configuration.txt (old IIS)
-write_to('docs/pages/comcode_custom/EN/tut_adv_configuration.txt', 'IIRF', '[staff_note]begin_rewrite_rules[/staff_note][codebox]', '[/codebox][staff_note]end_rewrite_rules[/staff_note]', 0, $rewrite_rules);
+write_to('docs/pages/comcode_custom/EN/tut_short_urls.txt', 'IIRF', '[staff_note]begin_rewrite_rules[/staff_note][codebox]', '[/codebox][staff_note]end_rewrite_rules[/staff_note]', 0, $rewrite_rules);
 
 // Write rules to cms.hdf (Hip Hop PHP)
 write_to('cms.hdf', 'HPHP', 'RewriteRules {', "\t\t}", 3, $rewrite_rules);

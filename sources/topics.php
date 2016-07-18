@@ -940,7 +940,7 @@ class CMS_Topic
             // Mark read
             if (array_key_exists('intended_solely_for', $post)) {
                 // Has now read
-                decache('side_cns_personal_topics', null, get_member());
+                decache('side_cns_private_topics', null, get_member());
                 decache('_new_pp', null, get_member());
                 decache('_get_pts', null, get_member());
             }

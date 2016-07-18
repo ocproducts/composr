@@ -349,7 +349,7 @@ function get_use_persistent()
 }
 
 /**
- * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it)
+ * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it)
  *
  * @return string The table prefix
  */
@@ -571,7 +571,7 @@ class DatabaseConnector
     }
 
     /**
-     * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms4_'.
+     * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms_'.
      *
      * @return string The table prefix
      */

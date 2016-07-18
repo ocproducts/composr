@@ -308,7 +308,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             }
 
             decache(array(
-                array('side_cns_personal_topics', array(get_member())),
+                array('side_cns_private_topics', array(get_member())),
                 array('_new_pp', array(get_member())),
             ));
         }

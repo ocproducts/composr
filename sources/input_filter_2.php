@@ -58,6 +58,7 @@ function modsecurity_workaround_enable()
 
         require_code('json');
         $_POST = _parse_raw_http_request_urlencoded($data);
+        $_REQUEST += $_POST;
     }
 }
 

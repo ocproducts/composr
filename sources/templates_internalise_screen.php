@@ -65,6 +65,9 @@ function internalise_own_screen($screen_content, $refresh_time = null, $refresh_
         $params .= '&utheme=' . urlencode(get_param_string('utheme', $GLOBALS['FORUM_DRIVER']->get_theme()));
     }
     $params .= '&zone=' . urlencode(get_zone_name());
+    if (get_param_integer('refreshing', 0) == 0) {
+        $params .= '&refreshing=1';
+    }
 
     $url = find_script('iframe') . $params;
 

@@ -250,7 +250,7 @@ class CMSPmWrite
             }
         }
 
-        decache('side_cns_personal_topics', array(get_member()));
+        decache('side_cns_private_topics', array(get_member()));
         decache('_new_pp', array(get_member()));
     }
 }

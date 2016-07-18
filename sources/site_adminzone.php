@@ -130,7 +130,7 @@ function adminzone_extended_breadcrumbs()
                             $link_zone = 'adminzone';
                             $link_map = array('page' => 'admin', 'type' => $i[0]);
                         }
-                        $link_lang = strtoupper($i[0]);
+                        $link_lang = 'menus:' . strtoupper($i[0]);
 
                         $SMART_CACHE->set('extended_breadcrumbs', array($link_map, $link_zone, $link_lang));
 

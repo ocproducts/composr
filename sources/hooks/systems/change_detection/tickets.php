@@ -45,8 +45,9 @@ class Hook_change_detection_tickets
         $forum = 0;
         $topic_id = 0;
         $ticket_type_id = 0;
+        require_lang('tickets');
         $_comments = get_ticket_posts($id, $forum, $topic_id, $ticket_type_id);
 
-        return md5(serialize($_comments)) != $data;
+        return md5(serialize(is_array($_comments) ? count($_comments) : 0)) != $data;
     }
 }
