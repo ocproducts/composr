@@ -1088,7 +1088,6 @@ class Module_cms_comcode_pages
     {
         static $todo_checks = null;
         static $no_validation_support = null;
-        static $path_prefix = null;
         static $menu_branches_by_url = null;
         static $menu_branches_by_id = null;
         static $user_lang = null;
@@ -1097,8 +1096,6 @@ class Module_cms_comcode_pages
             $todo_checks = ($_todo_checks == '') ? array() : explode('|', $_todo_checks);
 
             $no_validation_support = !addon_installed('unvalidated');
-
-            $path_prefix = get_custom_file_base() . '/';
 
             $menu_branches = $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), null, 'ORDER BY i_menu');
             $menu_branches_by_url = array();
@@ -1123,7 +1120,10 @@ class Module_cms_comcode_pages
                 if ($located === false) {
                     $page_contents = '';
                 } else {
-                    $path = $path_prefix . $located[4];
+                    $path = get_custom_file_base() . '/' . $located[4];
+                    if (!is_file($path)) {
+                        $path = get_file_base() . '/' . $located[4];
+                    }
                     $page_contents = file_get_contents($path);
                 }
             }
