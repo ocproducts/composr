@@ -137,11 +137,11 @@ textarea.mono_textbox {
 #install_newsletter {
 	border: 1px dotted {$GET,standard_border};
 	{$BETA_CSS_PROPERTY,border-radius: 5px;}
-	width: 15em;
+	width: 22em;
 	float: {!en_right};
 	margin-left: 15px;
 	background-color: {$GET,area_background};
-	padding: 5px;
+	padding: 0.5em;
 }
 
 /* Step 2 */

@@ -35,7 +35,7 @@ function init__comcode()
     $VALID_COMCODE_TAGS = null;
 
     global $LAX_COMCODE;
-    $LAX_COMCODE = array(get_option('lax_comcode') === '1');
+    $LAX_COMCODE = array(!function_exists('get_option') || get_option('lax_comcode') === '1');
 }
 
 /**
