@@ -155,7 +155,7 @@ class Hook_addon_registry_downloads
             'sources/downloads.php',
             'sources/downloads2.php',
             'sources/downloads_stats.php',
-            'sources/hooks/blocks/side_stats/stats_downloads.php',
+            'sources/hooks/blocks/side_stats/downloads.php',
             'sources/hooks/modules/admin_newsletter/downloads.php',
             'sources/hooks/modules/admin_unvalidated/downloads.php',
             'sources/hooks/modules/galleries_users/downloads.php',

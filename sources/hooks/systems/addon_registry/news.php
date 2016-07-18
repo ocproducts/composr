@@ -113,7 +113,7 @@ class Hook_addon_registry_news
             'sources/hooks/systems/content_meta_aware/news_category.php',
             'sources/hooks/systems/commandr_fs/news.php',
             'sources/hooks/systems/meta/news.php',
-            'sources/hooks/blocks/side_stats/stats_news.php',
+            'sources/hooks/blocks/side_stats/news.php',
             'sources/hooks/systems/addon_registry/news.php',
             'sources/hooks/modules/admin_import_types/news.php',
             'sources/hooks/systems/config/blog_update_time.php',

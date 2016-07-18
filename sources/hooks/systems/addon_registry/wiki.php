@@ -139,7 +139,7 @@ class Hook_addon_registry_wiki
             'sources/wiki.php',
             'sources/wiki_stats.php',
             'sources/hooks/blocks/main_staff_checklist/wiki.php',
-            'sources/hooks/blocks/side_stats/stats_wiki.php',
+            'sources/hooks/blocks/side_stats/wiki.php',
             'sources/hooks/modules/admin_newsletter/wiki.php',
             'sources/hooks/modules/admin_unvalidated/wiki.php',
             'sources/hooks/modules/search/wiki_pages.php',

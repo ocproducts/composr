@@ -138,7 +138,7 @@ The new stats include: Google PageRank, Alexa rank, Back links and Speed results
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/analysr.php',
-            'sources_custom/hooks/blocks/side_stats/stats_external.php',
+            'sources_custom/hooks/blocks/side_stats/external.php',
         );
     }
 }

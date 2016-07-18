@@ -150,7 +150,7 @@ class Hook_addon_registry_galleries
             'sources/hooks/systems/meta/image.php',
             'sources/hooks/systems/meta/video.php',
             'sources/hooks/systems/meta/gallery.php',
-            'sources/hooks/blocks/side_stats/stats_galleries.php',
+            'sources/hooks/blocks/side_stats/galleries.php',
             'sources/hooks/systems/addon_registry/galleries.php',
             'sources/hooks/modules/admin_import_types/galleries.php',
             'sources/hooks/systems/symbols/GALLERY_VIDEO_FOR_URL.php',

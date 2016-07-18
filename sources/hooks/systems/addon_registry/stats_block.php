@@ -120,7 +120,7 @@ class Hook_addon_registry_stats_block
             'themes/default/templates/BLOCK_SIDE_STATS_SUBLINE.tpl',
             'themes/default/templates/BLOCK_SIDE_STATS.tpl',
             'sources/blocks/side_stats.php',
-            'sources/hooks/blocks/side_stats/stats_forum.php',
+            'sources/hooks/blocks/side_stats/forum.php',
             'sources/hooks/blocks/side_stats/.htaccess',
             'sources_custom/hooks/blocks/side_stats/.htaccess',
             'sources/hooks/blocks/side_stats/index.html',

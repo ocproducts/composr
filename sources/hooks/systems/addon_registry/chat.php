@@ -199,7 +199,7 @@ class Hook_addon_registry_chat
             'sources/chat_stats.php',
             'sources/chat_poller.php',
             'sources/chat2.php',
-            'sources/hooks/blocks/side_stats/stats_chat.php',
+            'sources/hooks/blocks/side_stats/chat.php',
             'sources/hooks/systems/commandr_commands/send_chatmessage.php',
             'sources/hooks/systems/commandr_commands/watch_chatroom.php',
             'sources/hooks/systems/commandr_notifications/chat.php',
